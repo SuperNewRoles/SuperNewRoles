@@ -68,6 +68,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ButtonerButton;
         public static CustomButton RevolutionistButton;
         public static CustomButton SuicidalIdeationButton;
+        public static CustomButton StefinderKillButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2075,6 +2076,39 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("SuicidalIdeationButtonName"),
+                showButtonText = true
+            };
+
+            StefinderKillButton = new(
+                () =>
+                {
+                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.Stefinder.target);
+                    RoleClass.Stefinder.IsKill = true;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Stefinder && !RoleClass.Stefinder.IsKill; },
+                () =>
+                {
+                    RoleClass.Stefinder.target = SetTarget();
+                    return RoleClass.Stefinder.target != null && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    StefinderKillButton.MaxTimer = RoleClass.Stefinder.KillCoolDown;
+                    StefinderKillButton.Timer = RoleClass.Stefinder.KillCoolDown;
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.Q,
+                8,
+                () =>
+                {
+                    return !PlayerControl.LocalPlayer.CanMove;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("FinalStatusKill"),
                 showButtonText = true
             };
 

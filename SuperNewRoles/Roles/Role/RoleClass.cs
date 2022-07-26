@@ -2594,12 +2594,16 @@ namespace SuperNewRoles.Roles
             public static int KillCoolDown;
             public static bool UseVent;
             public static bool UseSabo;
+            public static bool IsKill;
+            public static PlayerControl target;
+            public static DateTime ButtonTimer;
             public static void ClearAndReload()
             {
                 StefinderPlayer = new();
                 KillCoolDown = CustomOptions.StefinderKillCoolDown.GetInt();
                 UseVent = CustomOptions.StefinderVent.GetBool();
                 UseSabo = CustomOptions.StefinderSabo.GetBool();
+                IsKill = false;
             }
         }
         //新ロールクラス

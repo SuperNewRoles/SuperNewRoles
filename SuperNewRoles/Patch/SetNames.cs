@@ -160,6 +160,12 @@ namespace SuperNewRoles.Patch
                     roleColors = RoleClass.CrewmateWhite;
                 }
             }
+            else if (PlayerControl.LocalPlayer.IsRole(RoleId.Stefinder) && RoleClass.Stefinder.IsKill)
+            {
+                var introdate = IntroDate.GetIntroDate(role);
+                roleNames = introdate.Name;
+                roleColors = RoleClass.ImpostorRed;
+            }
             else
             {
                 var introdate = IntroDate.GetIntroDate(role);
@@ -362,8 +368,16 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
-                SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
-                SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
+                if (LocalRole == RoleId.Stefinder && RoleClass.Stefinder.IsKill)
+                {
+                    SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
+                    SetNamesClass.SetPlayerNameColor(PlayerControl.LocalPlayer, RoleClass.ImpostorRed);
+                }
+                else
+                {
+                    SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
+                    SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
+                }
             }
             SetNamesClass.ArsonistSet();
             SetNamesClass.DemonSet();
