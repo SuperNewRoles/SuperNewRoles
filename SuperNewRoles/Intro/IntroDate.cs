@@ -182,10 +182,13 @@ namespace SuperNewRoles.Intro
         public static IntroDate NeetIntro = new("Neet", RoleClass.Neet.color, 1, RoleId.Neet, TeamRoleType.Neutral);
         public static IntroDate FastMakerIntro = new("FastMaker", RoleClass.FastMaker.color, 1, RoleId.FastMaker, TeamRoleType.Impostor);
         public static IntroDate ToiletFanIntro = new("ToiletFan", RoleClass.ToiletFan.color, 1, RoleId.ToiletFan, TeamRoleType.Crewmate);
-        public static IntroDate EvilBotanerIntro = new("EvilBotaner", RoleClass.EvilBotaner.color, 1, RoleId.EvilBotaner, TeamRoleType.Impostor);
-        public static IntroDate NiceBotanerIntro = new("NiceBotaner", RoleClass.NiceBotaner.color, 1, RoleId.NiceBotaner, TeamRoleType.Crewmate);
+        public static IntroDate EvilButtonerIntro = new("EvilButtoner", RoleClass.EvilButtoner.color, 1, RoleId.EvilButtoner, TeamRoleType.Impostor);
+        public static IntroDate NiceButtonerIntro = new("NiceButtoner", RoleClass.NiceButtoner.color, 1, RoleId.NiceButtoner, TeamRoleType.Crewmate);
+        public static IntroDate FinderIntro = new("Finder", RoleClass.Finder.color, 1, RoleId.Finder, TeamRoleType.Impostor);
         public static IntroDate RevolutionistIntro = new("Revolutionist", RoleClass.Revolutionist.color, 1, RoleId.Revolutionist, TeamRoleType.Neutral);
         public static IntroDate DictatorIntro = new("Dictator", RoleClass.Dictator.color, 1, RoleId.Dictator, TeamRoleType.Crewmate);
+        public static IntroDate SpelunkerIntro = new("Spelunker", RoleClass.Spelunker.color, 1, RoleId.Spelunker, TeamRoleType.Neutral);
+        public static IntroDate SuicidalIdeationIntro = new("SuicidalIdeation", RoleClass.SuicidalIdeation.color, 1, RoleId.SuicidalIdeation, TeamRoleType.Neutral);
         //イントロオブジェ
     }
 }
