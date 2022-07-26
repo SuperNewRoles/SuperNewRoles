@@ -2591,15 +2591,15 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> StefinderPlayer;
             public static Color32 color = new(0, 255, 0, byte.MaxValue);
-            public static int StefinderKillCoolDown;
-            public static bool StefinderUseVent;
-            public static bool StefinderUseSabo;
+            public static int KillCoolDown;
+            public static bool UseVent;
+            public static bool UseSabo;
             public static void ClearAndReload()
             {
                 StefinderPlayer = new();
-                StefinderKillCoolDown = CustomOptions.StefinderKillCoolDown.GetInt();
-                StefinderUseVent = CustomOptions.StefinderVent.GetBool();
-                StefinderUseSabo = CustomOptions.StefinderSabo.GetBool();
+                KillCoolDown = CustomOptions.StefinderKillCoolDown.GetInt();
+                UseVent = CustomOptions.StefinderVent.GetBool();
+                UseSabo = CustomOptions.StefinderSabo.GetBool();
             }
         }
         //新ロールクラス
