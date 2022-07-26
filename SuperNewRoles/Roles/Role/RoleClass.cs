@@ -2595,6 +2595,7 @@ namespace SuperNewRoles.Roles
             public static bool UseVent;
             public static bool UseSabo;
             public static bool IsKill;
+            public static bool SoloWin;
             public static List<byte> IsKillPlayer;
             public static PlayerControl target;
             public static DateTime ButtonTimer;
@@ -2604,6 +2605,7 @@ namespace SuperNewRoles.Roles
                 KillCoolDown = CustomOptions.StefinderKillCoolDown.GetInt();
                 UseVent = CustomOptions.StefinderVent.GetBool();
                 UseSabo = CustomOptions.StefinderSabo.GetBool();
+                SoloWin = CustomOptions.StefinderSoloWin.GetBool();
                 IsKill = false;
                 IsKillPlayer = new();
             }

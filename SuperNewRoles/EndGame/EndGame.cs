@@ -37,6 +37,7 @@ namespace SuperNewRoles.EndGame
         NeetWin,
         RevolutionistWin,
         SuicidalIdeationWin,
+        StefinderWin,
         BugEnd
     }
     enum WinCondition
@@ -60,6 +61,7 @@ namespace SuperNewRoles.EndGame
         NeetWin,
         RevolutionistWin,
         SuicidalIdeationWin,
+        StefinderWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -251,6 +253,10 @@ namespace SuperNewRoles.EndGame
                 case WinCondition.SuicidalIdeationWin:
                     text = RoleClass.SuicidalIdeation.SuicidalIdeationWinText ? "SuicidalIdeationWinText" : "SuicidalIdeationName"; 
                     RoleColor = RoleClass.SuicidalIdeation.color;
+                    break;
+                case WinCondition.StefinderWin:
+                    text = "StefinderName";
+                    RoleColor = RoleClass.Stefinder.color;
                     break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
@@ -789,7 +795,17 @@ namespace SuperNewRoles.EndGame
                     AdditionalTempData.gameOverReason == GameOverReason.HumansByVote ||
                     AdditionalTempData.gameOverReason == GameOverReason.HumansDisconnect))
                 {
-                    TempData.winners.Add(new WinningPlayerData(player.Data));
+                    if (RoleClass.Stefinder.SoloWin)
+                    {
+                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        WinningPlayerData wpd = new(player.Data);
+                        TempData.winners.Add(wpd);
+                        AdditionalTempData.winCondition = WinCondition.StefinderWin;
+                    }
+                    else
+                    {
+                        TempData.winners.Add(new WinningPlayerData(player.Data));
+                    }
                 }
                 if (player.IsAlive() && RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
                    (AdditionalTempData.gameOverReason == GameOverReason.ImpostorByKill ||
@@ -797,7 +813,17 @@ namespace SuperNewRoles.EndGame
                     AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote ||
                     AdditionalTempData.gameOverReason == GameOverReason.ImpostorDisconnect))
                 {
-                    TempData.winners.Add(new WinningPlayerData(player.Data));
+                    if (RoleClass.Stefinder.SoloWin)
+                    {
+                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        WinningPlayerData wpd = new(player.Data) ;
+                        TempData.winners.Add(wpd);
+                        AdditionalTempData.winCondition = WinCondition.StefinderWin;
+                    }
+                    else
+                    {
+                        TempData.winners.Add(new WinningPlayerData(player.Data));
+                    }
                 }
             }
             foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
