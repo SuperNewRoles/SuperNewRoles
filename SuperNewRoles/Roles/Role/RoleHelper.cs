@@ -961,7 +961,7 @@ namespace SuperNewRoles
                 case (RoleId.SuicidalIdeation):
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
                     break;
-                    case RoleId.Stefinder:
+                case RoleId.Stefinder:
                     RoleClass.Stefinder.StefinderPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
