@@ -744,6 +744,9 @@ namespace SuperNewRoles.CustomOption
         
         public static CustomRoleOption StefinderOption;
         public static CustomOption StefinderPlayerCount;
+        public static CustomOption StefinderKillCoolDown;
+        public static CustomOption StefinderVent;
+        public static CustomOption StefinderSabo;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1528,6 +1531,9 @@ namespace SuperNewRoles.CustomOption
             
             StefinderOption = new CustomRoleOption(929, false, CustomOptionType.Neutral, "StefinderName",RoleClass.Stefinder.color, 1);
             StefinderPlayerCount = CustomOption.Create(930, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StefinderOption);
+            StefinderKillCoolDown = CustomOption.Create(931, false, CustomOptionType.Neutral, "StefinderKillCoolDownSetting", 30f, 0f, 120f, 2.5f, StefinderOption, format: "unitSeconds");
+            StefinderVent = CustomOption.Create(932, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
+            StefinderSabo = CustomOption.Create(933, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
