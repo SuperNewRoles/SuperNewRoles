@@ -87,7 +87,7 @@ namespace SuperNewRoles.Patch
                 var MyRole = PlayerControl.LocalPlayer.GetRole();
                 SetBasePlayerOutlines();
                 VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
-                if (CustomOptions.LadderDead.GetBool())
+                if (CustomOptions.LadderDead.GetBool() || CustomOptions.SuicidalIdeationFallProbability.GetSelection() != 0)
                     LadderDead.FixedUpdate();
                 var ThisMode = ModeHandler.GetMode();
                 if (ThisMode == ModeId.Default)
@@ -153,6 +153,9 @@ namespace SuperNewRoles.Patch
                                 break;
                             case RoleId.Revolutionist:
                                 Roles.Neutral.Revolutionist.FixedUpdate();
+                                break;
+                            case RoleId.SuicidalIdeation:
+                                SuicidalIdeation.Postfix();
                                 break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
