@@ -2590,7 +2590,7 @@ namespace SuperNewRoles.Roles
         public static class Stefinder
         {
             public static List<PlayerControl> StefinderPlayer;
-            public static Color32 color = new Color32(0, 0, 0, byte.MaxValue);
+            public static Color32 color = new(0, 255, 0, byte.MaxValue);
             public static int StefinderKillCoolDown;
             public static bool StefinderUseVent;
             public static bool StefinderUseSabo;
