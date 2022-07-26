@@ -1553,8 +1553,8 @@ namespace SuperNewRoles.CustomOption
             StefinderOption = new CustomRoleOption(937, false, CustomOptionType.Neutral, "StefinderName",RoleClass.Stefinder.color, 1);
             StefinderPlayerCount = CustomOption.Create(938, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StefinderOption);
             StefinderKillCoolDown = CustomOption.Create(939, false, CustomOptionType.Neutral, "StefinderKillCoolDownSetting", 30f, 0f, 120f, 2.5f, StefinderOption, format: "unitSeconds");
-            StefinderVent = CustomOption.Create(940, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
-            StefinderSabo = CustomOption.Create(941, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
+            StefinderVent = CustomOption.Create(940, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
+            StefinderSabo = CustomOption.Create(941, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
             StefinderSoloWin = CustomOption.Create(942, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
             //表示設定
 
