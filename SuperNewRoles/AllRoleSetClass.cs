@@ -930,6 +930,7 @@ namespace SuperNewRoles
                 RoleId.Revolutionist => CustomOptions.RevolutionistPlayerCount.GetFloat(),
                 RoleId.Dictator => CustomOptions.DictatorPlayerCount.GetFloat(),
                 RoleId.SuicidalIdeation => CustomOptions.SuicidalIdeationPlayerCount.GetFloat(),
+                RoleId.Stefinder => CustomOptions.StefinderPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

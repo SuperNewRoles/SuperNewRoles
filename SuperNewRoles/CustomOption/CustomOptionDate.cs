@@ -741,6 +741,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SuicidalIdeationCommonTask;
         public static CustomOption SuicidalIdeationShortTask;
         public static CustomOption SuicidalIdeationLongTask;
+        
+        public static CustomRoleOption StefinderOption;
+        public static CustomOption StefinderPlayerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1522,6 +1525,9 @@ namespace SuperNewRoles.CustomOption
             SuicidalIdeationCommonTask = SuicidalIdeationoption.Item1;
             SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
             SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
+            
+            StefinderOption = new CustomRoleOption(930, false, CustomOptionType.Neutral, "StefinderName",RoleClass.Stefinder.color, 1);
+            StefinderPlayerCount = CustomOption.Create(9302, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StefinderOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

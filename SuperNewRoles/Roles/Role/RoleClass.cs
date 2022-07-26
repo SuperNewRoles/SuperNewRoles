@@ -160,6 +160,7 @@ namespace SuperNewRoles.Roles
             Revolutionist.ClearAndReload();
             Dictator.ClearAndReload();
             SuicidalIdeation.ClearAndReload();
+            Stefinder.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2584,6 +2585,16 @@ namespace SuperNewRoles.Roles
                 AddTimeLeft = CustomOptions.SuicidalIdeationAddTimeLeft.GetFloat();
                 ButtonTimer = DateTime.Now;
                 CompletedTask = 0;
+            }
+        }
+        public static class Stefinder
+        {
+            public static List<PlayerControl> StefinderPlayer;
+            public static Color32 color = new Color32(0, 0, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                StefinderPlayer = new();
+                
             }
         }
         //新ロールクラス
