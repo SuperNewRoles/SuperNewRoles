@@ -593,7 +593,6 @@ namespace SuperNewRoles.Patches
                         case RoleId.DarkKiller:
                             var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                             if (ma != null && !ma.IsActive) { return false; }//停電じゃないならキルをブロック
-                            else { __instance.RpcMurderPlayer(target); }//停電なら殺す
                             break;
                     }
                     break;
