@@ -18,7 +18,7 @@ namespace SuperNewRoles.Patch
             this.timeOfDeath = timeOfDeath;
             this.deathReason = deathReason;
             this.killerIfExisting = killerIfExisting;
-            if (killerIfExisting != null) this.killerIfExistingId = killerIfExisting.PlayerId;
+            if (killerIfExisting != null) killerIfExistingId = killerIfExisting.PlayerId;
         }
     }
 }

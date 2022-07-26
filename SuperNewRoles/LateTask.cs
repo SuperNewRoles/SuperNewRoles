@@ -13,7 +13,7 @@ namespace SuperNewRoles
         public Action action;
         public static List<LateTask> Tasks = new();
         public static List<LateTask> AddTasks = new();
-        public bool run(float deltaTime)
+        public bool Run(float deltaTime)
         {
             timer -= deltaTime;
             if (timer <= 0)
@@ -26,7 +26,7 @@ namespace SuperNewRoles
         public LateTask(Action action, float time, string name = "No Name Task")
         {
             this.action = action;
-            this.timer = time;
+            timer = time;
             this.name = name;
             AddTasks.Add(this);
             //Logger.info("New LateTask \"" + name + "\" is created");
@@ -37,7 +37,7 @@ namespace SuperNewRoles
             Tasks.ForEach((task) =>
             {
                 //SuperNewRolesPlugin.Logger.LogInfo("LateTask \"" + task.name + "\" Start");
-                if (task.run(deltaTime))
+                if (task.Run(deltaTime))
                 {
                     //SuperNewRolesPlugin.Logger.LogInfo("LateTask \"" + task.name + "\" is finished");
                     TasksToRemove.Add(task);
@@ -54,7 +54,7 @@ namespace SuperNewRoles
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     class LateUpdate
     {
-        public static void Postfix(HudManager __instance)
+        public static void Postfix()
         {
             LateTask.Update(Time.deltaTime);
         }

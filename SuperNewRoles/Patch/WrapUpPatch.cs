@@ -43,21 +43,21 @@ namespace SuperNewRoles.Patch
             {
                 FalseCharges.WrapUp(exiled.Object);
             }
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.CognitiveDeficit)
                 {
-                    if (!Sabotage.CognitiveDeficit.main.IsLocalEnd)
+                    if (!Sabotage.CognitiveDeficit.Main.IsLocalEnd)
                     {
-                        Sabotage.CognitiveDeficit.main.UpdateTime = 0;
+                        Sabotage.CognitiveDeficit.Main.UpdateTime = 0;
                     }
                 }
                 if (exiled == null) return;
                 FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.Object.PlayerId] = FinalStatus.Exiled;
                 if (exiled.Object.PlayerId != CachedPlayer.LocalPlayer.PlayerId) return;
-                if (exiled.Object.isRole(RoleId.SideKiller))
+                if (exiled.Object.IsRole(RoleId.SideKiller))
                 {
-                    var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
+                    var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
                     if (sideplayer != null)
                     {
                         if (!RoleClass.SideKiller.IsUpMadKiller)
@@ -73,7 +73,7 @@ namespace SuperNewRoles.Patch
         {
             Kunoichi.WrapUp();
             SerialKiller.WrapUp();
-            Assassin.WrapUp(exiled);
+            Assassin.WrapUp();
             CountChanger.CountChangerPatch.WrapUpPatch();
             CustomButton.MeetingEndedUpdate();
 
@@ -82,28 +82,29 @@ namespace SuperNewRoles.Patch
             {
                 RoleClass.IsMeeting = false;
             }, 0.1f, "SetIsMeeting");
-            if (ModeHandler.isMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
             ModeHandler.Wrapup(exiled);
             RedRidingHood.WrapUp(exiled);
+            Roles.Neutral.Revolutionist.WrapUp();
             if (exiled == null) return;
 
-            Seer.ExileControllerWrapUpPatch.WrapUpPostfix(exiled);
+            Seer.ExileControllerWrapUpPatch.WrapUpPostfix();
             Nekomata.NekomataEnd(exiled);
 
             exiled.Object.Exiled();
             exiled.IsDead = true;
             FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
             var Player = ModHelpers.playerById(exiled.PlayerId);
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (RoleClass.Lovers.SameDie && Player.IsLovers())
                 {
                     if (AmongUsClient.Instance.AmHost)
                     {
                         PlayerControl SideLoverPlayer = Player.GetOneSideLovers();
-                        if (SideLoverPlayer.isAlive())
+                        if (SideLoverPlayer.IsAlive())
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
                             writer.Write(SideLoverPlayer.PlayerId);
                             writer.Write(SideLoverPlayer.PlayerId);
                             writer.Write(byte.MaxValue);
@@ -117,25 +118,24 @@ namespace SuperNewRoles.Patch
                 if (RoleHelpers.IsQuarreled(Player))
                 {
                     var Side = RoleHelpers.GetOneSideQuarreled(Player);
-                    if (Side.isDead())
+                    if (Side.IsDead())
                     {
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(Player.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
+                        RPCProcedure.ShareWinner(Player.PlayerId);
                         RoleClass.Quarreled.IsQuarreledWin = true;
                         CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
                     }
                 }
 
-                if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(Player))
+                if (Player.IsRole(RoleId.Jester))
                 {
 
                     if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
                     {
                         RPCProcedure.ShareWinner(Player.PlayerId);
-
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(Player.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RoleClass.Jester.IsJesterWin = true;
@@ -143,12 +143,12 @@ namespace SuperNewRoles.Patch
                     }
                 }
 
-                if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(Player))
+                if (Player.IsRole(RoleId.MadJester))
                 {
                     if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
                     {
                         RPCProcedure.ShareWinner(Player.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(Player.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RoleClass.MadJester.IsMadJesterWin = true;
@@ -156,7 +156,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
             }
-            Mode.SuperHostRoles.main.RealExiled = null;
+            Mode.SuperHostRoles.Main.RealExiled = null;
         }
     }
 }

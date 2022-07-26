@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
-    class main
+    class Main
     {
         public static void ClearAndReloads()
         {
@@ -15,21 +15,21 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static PlayerControl RealExiled;
         public static void SendAllRoleChat()
         {/*
-            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 float Time = 3;
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!p.Data.Disconnected && p.PlayerId != 0)
                     {
-                        IntroDate RoleIntroDate = IntroDate.GetIntroDate(p.getRole(), p);
+                        IntroDate RoleIntroDate = IntroDate.GetIntroDate(p.GetRole(), p);
                         string Chat = "";
-                        if (p.isDead())
+                        if (p.IsDead())
                         {
                             Chat = "\n";
                         }
                         SuperNewRolesPlugin.Logger.LogInfo("テスト");
-                        string RoleName = ModTranslation.getString(RoleIntroDate.NameKey + "Name");
+                        string RoleName = ModTranslation.GetString(RoleIntroDate.NameKey + "Name");
                         Chat += "あなたの役職は「" + RoleName + "」です！\n";
                         Chat += IntroDate.GetTitle(RoleIntroDate.NameKey, RoleIntroDate.TitleNum) + "\n";
                         Chat += RoleIntroDate.Description + "\n";
@@ -68,9 +68,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Time += 3;
                     }
                 }
-                IntroDate RoleIntroDate2 = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole(), PlayerControl.LocalPlayer);
+                IntroDate RoleIntroDate2 = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
                 string Chat2 = "";
-                string RoleName2 = ModTranslation.getString(RoleIntroDate2.NameKey + "Name");
+                string RoleName2 = ModTranslation.GetString(RoleIntroDate2.NameKey + "Name");
                 Chat2 = Chat2 + "あなたの役職は「" + RoleName2 + "」です！\n";
                 Chat2 += IntroDate.GetTitle(RoleIntroDate2.NameKey, RoleIntroDate2.TitleNum) + "\n";
                 Chat2 += RoleIntroDate2.Description + "\n";

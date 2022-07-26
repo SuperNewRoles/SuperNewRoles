@@ -5,12 +5,12 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
     {
         public static bool CheckEndGame(ShipStatus __instance)
         {
-            var statistics = new PlayerStatistics(__instance);
-            if (CheckAndEndGameForSabotageWin(__instance)) return false;
-            if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
-            if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
-            if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
-            return false;
+            var statistics = new PlayerStatistics();
+            return CheckAndEndGameForSabotageWin(__instance)
+            || CheckAndEndGameForImpostorWin(__instance, statistics)
+                ? false
+                : !CheckAndEndGameForCrewmateWin(__instance, statistics)
+&& !PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance) && false;
         }
         public static void CustomEndGame(ShipStatus __instance, GameOverReason reason, bool showAd)
         {
@@ -94,7 +94,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
             public int TeamImpostorsAlive { get; set; }
             public int CrewAlive { get; set; }
             public int TotalAlive { get; set; }
-            public PlayerStatistics(ShipStatus __instance)
+            public PlayerStatistics()
             {
                 GetPlayerCounts();
             }
@@ -109,14 +109,14 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                     GameData.PlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
                     if (!playerInfo.Disconnected)
                     {
-                        if (playerInfo.Object.isAlive())
+                        if (playerInfo.Object.IsAlive())
                         {
                             numTotalAlive++;
-                            if (main.Impostors.Contains(playerInfo.PlayerId))
+                            if (Main.Impostors.Contains(playerInfo.PlayerId))
                             {
                                 numImpostorsAlive++;
                             }
-                            else if (!playerInfo.Object.isNeutral())
+                            else if (!playerInfo.Object.IsNeutral())
                             {
                                 numCrewAlive++;
                             }

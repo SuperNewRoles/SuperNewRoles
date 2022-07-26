@@ -12,7 +12,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             public static void Prefix(MeetingHud __instance)
             {
                 if (!AmongUsClient.Instance.AmHost) return;
-                if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
+                if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles))
                 {
                     EndMeetingPatch();
                 }
@@ -22,24 +22,24 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {/*
             //霊界用暗転バグ対処
             foreach (var pc in CachedPlayer.AllPlayers)
-                if (IsAntiBlackOut(pc) && pc.isDead()) pc.ResetPlayerCam(19f);*/
+                if (IsAntiBlackOut(pc) && pc.IsDead()) pc.ResetPlayerCam(19f);*/
         }
         public static bool IsAntiBlackOut(PlayerControl player)
         {
             if (player.IsMod()) return false;
             /*
-			if (player.isRole(RoleId.Egoist)) return true;
-			if (player.isRole(RoleId.Sheriff)) return true;
-            if (player.isRole(RoleId.truelover)) return true;
-            if (player.isRole(RoleId.FalseCharges)) return true;
-            if (player.isRole(RoleId.RemoteSheriff)) return true;
+			if (player.IsRole(RoleId.Egoist)) return true;
+			if (player.IsRole(RoleId.Sheriff)) return true;
+            if (player.IsRole(RoleId.truelover)) return true;
+            if (player.IsRole(RoleId.FalseCharges)) return true;
+            if (player.IsRole(RoleId.RemoteSheriff)) return true;
             */
             return false;
         }
         public static void ResetPlayerCam(this PlayerControl pc, float delay = 0f)
         {
             if (pc == null || !AmongUsClient.Instance.AmHost || pc.AmOwner) return;
-            int clientId = pc.getClientId();
+            int clientId = pc.GetClientId();
 
             byte reactorId = 3;
             if (PlayerControl.GameOptions.MapId == 2) reactorId = 21;

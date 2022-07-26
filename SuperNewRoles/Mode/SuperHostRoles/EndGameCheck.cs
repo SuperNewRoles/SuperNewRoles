@@ -14,12 +14,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static bool CheckEndGame(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (CheckAndEndGameForDefaultWin(__instance, statistics)) return false;
-            if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
-            if (CheckAndEndGameForSabotageWin(__instance)) return false;
-            if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
-            if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
-            return false;
+            return CheckAndEndGameForDefaultWin(__instance, statistics)
+            || CheckAndEndGameForJackalWin(__instance, statistics)
+            || CheckAndEndGameForSabotageWin(__instance)
+                ? false
+                : (PlusModeHandler.IsMode(PlusModeId.NotTaskWin) || !CheckAndEndGameForTaskWin(__instance))
+&& CheckAndEndGameForWorkpersonWin(__instance) && false;
         }
         public static void WinNeutral(List<PlayerControl> players)
         {
@@ -42,7 +42,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             List<PlayerControl> WinGods = null;
             foreach (PlayerControl p in RoleClass.God.GodPlayer)
             {
-                if (p.isAlive())
+                if (p.IsAlive())
                 {
                     var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
                     if (!RoleClass.God.IsTaskEndWin || complate >= all)
@@ -61,23 +61,25 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 WinNeutral(WinGods);
                 Chat.Winner = WinGods;
             }
-            foreach (PlayerControl p in RoleClass.Sheriff.SheriffPlayer)
+
+            /*============死亡時守護天使============*/
+            List<PlayerControl> SetDeadGuardianAngel = new();
+            SetDeadGuardianAngel.AddRange(RoleClass.Sheriff.SheriffPlayer);
+            SetDeadGuardianAngel.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
+            SetDeadGuardianAngel.AddRange(RoleClass.Arsonist.ArsonistPlayer);
+            SetDeadGuardianAngel.AddRange(RoleClass.ToiletFan.ToiletFanPlayer);
+            SetDeadGuardianAngel.AddRange(RoleClass.NiceButtoner.NiceButtonerPlayer);
+            /*============死亡時守護天使============*/
+            foreach (PlayerControl p in SetDeadGuardianAngel)
             {
                 p.RpcSetRole(RoleTypes.GuardianAngel);
             }
-            foreach (PlayerControl p in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
-            {
-                p.RpcSetRole(RoleTypes.GuardianAngel);
-            }
-            foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
-            {
-                p.RpcSetRole(RoleTypes.GuardianAngel);
-            }
+
             if (OnGameEndPatch.EndData == null && (reason == GameOverReason.ImpostorByKill || reason == GameOverReason.ImpostorBySabotage || reason == GameOverReason.ImpostorByVote || reason == GameOverReason.ImpostorDisconnect))
             {
                 foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
                 {
-                    if (p.isDead())
+                    if (p.IsDead())
                     {
                         p.RpcSetRole(RoleTypes.GuardianAngel);
                     }
@@ -87,7 +89,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.isRole(RoleId.Jackal))
+                    if (!p.IsRole(RoleId.Jackal))
                     {
                         p.RpcSetRole(RoleTypes.GuardianAngel);
                     }
@@ -146,7 +148,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                 Writer.Write((byte)CustomGameOverReason.JackalWin);
                 Writer.EndRPC();
-                CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.JackalWin);
+                RPCProcedure.SetWinCond((byte)CustomGameOverReason.JackalWin);
                 __instance.enabled = false;
                 CustomEndGame(__instance, GameOverReason.ImpostorByKill, false);
                 return true;
@@ -165,13 +167,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (!allPlayer.Disconnected && allPlayer.Object.IsPlayer())
                 {
                     //インポスター判定ならnum3にカウント
-                    if (allPlayer.Object.isImpostor() || allPlayer.Object.isRole(RoleId.Egoist))
+                    if (allPlayer.Object.IsImpostor() || allPlayer.Object.IsRole(RoleId.Egoist))
                         ++num3;
                     //生存しているかつ
                     if (!allPlayer.IsDead)
                     {
                         //インポスターならnum2に追加
-                        if (allPlayer.Object.isImpostor() || allPlayer.Object.isRole(RoleId.Egoist))
+                        if (allPlayer.Object.IsImpostor() || allPlayer.Object.IsRole(RoleId.Egoist))
                             ++num2;
                         //違うならnum1に追加
                         else
@@ -197,10 +199,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     int egoistplayer = 0;
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p.isAlive())
+                        if (p.IsAlive())
                         {
-                            if (p.isImpostor()) impostorplayer++;
-                            else if (p.isRole(RoleId.Egoist)) egoistplayer++;
+                            if (p.IsImpostor()) impostorplayer++;
+                            else if (p.IsRole(RoleId.Egoist)) egoistplayer++;
                         }
                     }
                     if (impostorplayer <= 0 && egoistplayer >= 1)
@@ -249,19 +251,19 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (!p.Data.Disconnected)
                 {
-                    if (p.isAlive() || !RoleClass.Workperson.IsAliveWin)
+                    if (p.IsAlive() || !RoleClass.Workperson.IsAliveWin)
                     {
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                            CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
+                            RPCProcedure.ShareWinner(p.PlayerId);
                             Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                             Writer.Write((byte)CustomGameOverReason.WorkpersonWin);
                             Writer.EndRPC();
-                            CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.WorkpersonWin);
+                            RPCProcedure.SetWinCond((byte)CustomGameOverReason.WorkpersonWin);
                             Chat.WinCond = CustomGameOverReason.WorkpersonWin;
                             __instance.enabled = false;
                             CustomEndGame(__instance, (GameOverReason)CustomGameOverReason.CrewmateWin, false);

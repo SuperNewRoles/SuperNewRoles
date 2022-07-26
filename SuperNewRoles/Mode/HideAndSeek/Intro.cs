@@ -1,12 +1,13 @@
+using Il2CppSystem.Collections.Generic;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.HideAndSeek
 {
     class Intro
     {
-        public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler(IntroCutscene __instance)
+        public static List<PlayerControl> ModeHandler()
         {
-            Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
+            List<PlayerControl> ImpostorTeams = new();
             int ImpostorNum = 0;
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
@@ -20,7 +21,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
         }
         public static void IntroHandler(IntroCutscene __instance)
         {
-            Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
+            List<PlayerControl> ImpostorTeams = new();
             int ImpostorNum = 0;
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
@@ -31,7 +32,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
                 }
             }
             __instance.BackgroundBar.material.color = Color.white;
-            __instance.TeamTitle.text = ModTranslation.getString("HideAndSeekModeName");
+            __instance.TeamTitle.text = ModTranslation.GetString("HideAndSeekModeName");
             __instance.TeamTitle.color = Color.yellow;
             __instance.ImpostorText.text = string.Format("この{0}人が鬼だ。", ImpostorNum.ToString());
             __instance.ImpostorText.color = Color.yellow;
