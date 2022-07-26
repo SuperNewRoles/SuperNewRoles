@@ -2595,6 +2595,7 @@ namespace SuperNewRoles.Roles
             public static bool UseVent;
             public static bool UseSabo;
             public static bool IsKill;
+            public static List<byte> IsKillPlayer;
             public static PlayerControl target;
             public static DateTime ButtonTimer;
             public static void ClearAndReload()
@@ -2604,6 +2605,7 @@ namespace SuperNewRoles.Roles
                 UseVent = CustomOptions.StefinderVent.GetBool();
                 UseSabo = CustomOptions.StefinderSabo.GetBool();
                 IsKill = false;
+                IsKillPlayer = new();
             }
         }
         //新ロールクラス

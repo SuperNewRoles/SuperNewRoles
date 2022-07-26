@@ -210,10 +210,15 @@ namespace SuperNewRoles.CustomRPC
         KunaiKill,
         SetSecretRoomTeleportStatus,
         ChiefSidekick,
-        StartRevolutionMeeting
+        StartRevolutionMeeting,
+        StefinderIsKilled
     }
     public static class RPCProcedure
     {
+        public static void StefinderIsKilled(byte PlayerId)
+        {
+            RoleClass.Stefinder.IsKillPlayer.Add(PlayerId);
+        }
         public static void StartRevolutionMeeting(byte sourceid)
         {
             PlayerControl source = ModHelpers.playerById(sourceid);
@@ -1263,6 +1268,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.StartRevolutionMeeting:
                             StartRevolutionMeeting(reader.ReadByte());
+                            break;
+                        case CustomRPC.StefinderIsKilled:
+                            StefinderIsKilled(reader.ReadByte());
                             break;
                     }
                 }

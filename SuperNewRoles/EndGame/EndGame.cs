@@ -432,6 +432,10 @@ namespace SuperNewRoles.EndGame
                 {
                     //var p = pc.Data;
                     var roles = Intro.IntroDate.GetIntroDate(p.Object.GetRole(), p.Object);
+                    if (RoleClass.Stefinder.IsKillPlayer.Contains(p.PlayerId))
+                    {
+                        roles = Intro.IntroDate.StefinderIntro1;
+                    }
                     var ghostRoles = Intro.IntroDate.GetIntroDate(p.Object.GetGhostRole(), p.Object);
                     var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
                     if (p.Object.IsImpostor())
@@ -501,6 +505,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Neet.NeetPlayer);
             notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
             notWinners.AddRange(RoleClass.SuicidalIdeation.SuicidalIdeationPlayer);
+            notWinners.AddRange(RoleClass.Stefinder.StefinderPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -773,6 +778,24 @@ namespace SuperNewRoles.EndGame
             foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
             {
                 if (player.IsAlive())
+                {
+                    TempData.winners.Add(new WinningPlayerData(player.Data));
+                }
+            }
+            foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
+            {
+                if (player.IsAlive() && !RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
+                   (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask ||
+                    AdditionalTempData.gameOverReason == GameOverReason.HumansByVote ||
+                    AdditionalTempData.gameOverReason == GameOverReason.HumansDisconnect))
+                {
+                    TempData.winners.Add(new WinningPlayerData(player.Data));
+                }
+                if (player.IsAlive() && RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
+                   (AdditionalTempData.gameOverReason == GameOverReason.ImpostorByKill ||
+                    AdditionalTempData.gameOverReason == GameOverReason.ImpostorBySabotage ||
+                    AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote ||
+                    AdditionalTempData.gameOverReason == GameOverReason.ImpostorDisconnect))
                 {
                     TempData.winners.Add(new WinningPlayerData(player.Data));
                 }

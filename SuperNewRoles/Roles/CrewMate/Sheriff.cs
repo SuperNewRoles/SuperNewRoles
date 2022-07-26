@@ -84,6 +84,7 @@ namespace SuperNewRoles.Roles
                     RoleId.Tuna => CustomOptions.SheriffCanKillTuna.GetBool(),
                     RoleId.Neet => CustomOptions.SheriffCanKillNeet.GetBool(),
                     RoleId.Revolutionist => CustomOptions.SheriffCanKillRevolutionist.GetBool(),
+                    RoleId.Stefinder => CustomOptions.SheriffCanKillStefinder.GetBool(),
                     //シェリフが第3陣営を切れる
                     _ => false,
                 };
