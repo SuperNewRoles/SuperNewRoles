@@ -100,7 +100,7 @@ namespace SuperNewRoles.Patches
                 }
                 if (CustomHats.HatManagerPatch.IsLoadingnow)
                 {
-                    __instance.text.text += "\n" + "ハットを読込中です...";
+                    __instance.text.text += $"\n{ModTranslation.GetString("LoadHat")}";
                 }
             }
         }
