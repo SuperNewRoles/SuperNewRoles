@@ -68,6 +68,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetDeadGuardianAngel.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
             SetDeadGuardianAngel.AddRange(RoleClass.Arsonist.ArsonistPlayer);
             SetDeadGuardianAngel.AddRange(RoleClass.ToiletFan.ToiletFanPlayer);
+            SetDeadGuardianAngel.AddRange(RoleClass.NiceButtoner.NiceButtonerPlayer);
             /*============死亡時守護天使============*/
             foreach (PlayerControl p in SetDeadGuardianAngel)
             {

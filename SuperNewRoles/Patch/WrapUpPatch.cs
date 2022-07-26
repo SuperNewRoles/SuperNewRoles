@@ -85,6 +85,8 @@ namespace SuperNewRoles.Patch
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
             ModeHandler.Wrapup(exiled);
             RedRidingHood.WrapUp(exiled);
+            Roles.Neutral.Revolutionist.WrapUp();
+            Roles.Neutral.Spelunker.WrapUp();
             if (exiled == null) return;
 
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();

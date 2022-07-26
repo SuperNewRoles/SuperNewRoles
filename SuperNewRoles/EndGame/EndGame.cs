@@ -35,6 +35,9 @@ namespace SuperNewRoles.EndGame
         VultureWin,
         TunaWin,
         NeetWin,
+        RevolutionistWin,
+        SpelunkerWin,
+        SuicidalIdeationWin,
         BugEnd
     }
     enum WinCondition
@@ -56,6 +59,9 @@ namespace SuperNewRoles.EndGame
         VultureWin,
         TunaWin,
         NeetWin,
+        RevolutionistWin,
+        SpelunkerWin,
+        SuicidalIdeationWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -118,33 +124,33 @@ namespace SuperNewRoles.EndGame
         }
         public static void Postfix(EndGameManager __instance)
         {
-
             foreach (PoolablePlayer pb in __instance.transform.GetComponentsInChildren<PoolablePlayer>())
             {
                 UnityEngine.Object.Destroy(pb.gameObject);
             }
             int num = Mathf.CeilToInt(7.5f);
-            List<WinningPlayerData> list = TempData.winners.GetFastEnumerator().ToArray().ToList().OrderBy(delegate (WinningPlayerData b)
+            List<WinningPlayerData> list = TempData.winners.ToArray().ToList().OrderBy(delegate (WinningPlayerData b)
             {
-                return !b.IsYou ? 0 : -1;
-            }).ToList();
-
+                if (!b.IsYou)
+                {
+                    return 0;
+                }
+                return -1;
+            }).ToList<WinningPlayerData>();
             for (int i = 0; i < list.Count; i++)
             {
                 WinningPlayerData winningPlayerData2 = list[i];
                 int num2 = (i % 2 == 0) ? -1 : 1;
                 int num3 = (i + 1) / 2;
-                float num4 = num3 / (float)num;
+                float num4 = (float)num3 / (float)num;
                 float num5 = Mathf.Lerp(1f, 0.75f, num4);
-                float num6 = (i == 0) ? -8 : -1;
-                PoolablePlayer poolablePlayer = UnityEngine.Object.Instantiate(__instance.PlayerPrefab, __instance.transform);
-
-                poolablePlayer.transform.localPosition = new Vector3(1f * num2 * num3 * num5, FloatRange.SpreadToEdges(-1.125f, 0f, num3, num), num6 + num3 * 0.01f) * 0.9f;
-
+                float num6 = (float)((i == 0) ? -8 : -1);
+                PoolablePlayer poolablePlayer = UnityEngine.Object.Instantiate<PoolablePlayer>(__instance.PlayerPrefab, __instance.transform);
+                poolablePlayer.transform.localPosition = new Vector3(1f * (float)num2 * (float)num3 * num5, FloatRange.SpreadToEdges(-1.125f, 0f, num3, num), num6 + (float)num3 * 0.01f) * 0.9f;
                 float num7 = Mathf.Lerp(1f, 0.65f, num4) * 0.9f;
                 Vector3 vector = new(num7, num7, 1f);
                 poolablePlayer.transform.localScale = vector;
-                poolablePlayer.UpdateFromPlayerOutfit(winningPlayerData2, PlayerMaterial.MaskType.ComplexUI, winningPlayerData2.IsDead, true);
+                poolablePlayer.UpdateFromPlayerOutfit((GameData.PlayerOutfit)winningPlayerData2, PlayerMaterial.MaskType.ComplexUI, winningPlayerData2.IsDead, true);
                 if (winningPlayerData2.IsDead)
                 {
                     poolablePlayer.cosmetics.currentBodySprite.BodySprite.sprite = poolablePlayer.cosmetics.currentBodySprite.GhostSprite;
@@ -155,19 +161,19 @@ namespace SuperNewRoles.EndGame
                     poolablePlayer.SetFlipX(i % 2 == 0);
                 }
 
-                poolablePlayer.NameText().color = Color.white;
-                poolablePlayer.NameText().lineSpacing *= 0.7f;
-                poolablePlayer.NameText().transform.localScale = new Vector3(1f / vector.x, 1f / vector.y, 1f / vector.z);
-                poolablePlayer.NameText().transform.localPosition = new Vector3(poolablePlayer.NameText().transform.localPosition.x, poolablePlayer.NameText().transform.localPosition.y, -15f);
-
-                poolablePlayer.NameText().text = winningPlayerData2.PlayerName;
+                poolablePlayer.cosmetics.nameText.color = Color.white;
+                poolablePlayer.cosmetics.nameText.transform.localScale = new Vector3(1f / vector.x, 1f / vector.y, 1f / vector.z);
+                poolablePlayer.cosmetics.nameText.transform.localPosition = new Vector3(poolablePlayer.cosmetics.nameText.transform.localPosition.x, poolablePlayer.cosmetics.nameText.transform.localPosition.y, -15f);
+                poolablePlayer.cosmetics.nameText.text = winningPlayerData2.PlayerName;
 
                 foreach (var data in AdditionalTempData.playerRoles)
                 {
+                    Logger.Info(data.PlayerName + ":" + winningPlayerData2.PlayerName);
                     if (data.PlayerName != winningPlayerData2.PlayerName) continue;
-                    poolablePlayer.NameText().text = data.PlayerName + data.NameSuffix + $"\n<size=80%>{string.Join("\n", CustomOptions.Cs(data.IntroDate.color, data.IntroDate.NameKey + "Name"))}</size>";
+                    poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", ModHelpers.Cs(data.IntroDate.color, data.IntroDate.Name))}";
                 }
             }
+
             GameObject bonusTextObject = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
             bonusTextObject.transform.position = new Vector3(__instance.WinText.transform.position.x, __instance.WinText.transform.position.y - 0.8f, __instance.WinText.transform.position.z);
             bonusTextObject.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
@@ -239,6 +245,18 @@ namespace SuperNewRoles.EndGame
                 case WinCondition.NeetWin:
                     text = "NeetName";
                     RoleColor = RoleClass.Neet.color;
+                    break;
+                case WinCondition.RevolutionistWin:
+                    text = "RevolutionistName";
+                    RoleColor = RoleClass.Revolutionist.color;
+                    break;
+                case WinCondition.SpelunkerWin:
+                    text = "SpelunkerName";
+                    RoleColor = RoleClass.Spelunker.color;
+                    break;
+                case WinCondition.SuicidalIdeationWin:
+                    text = RoleClass.SuicidalIdeation.SuicidalIdeationWinText ? "SuicidalIdeationWinText" : "SuicidalIdeationName";
+                    RoleColor = RoleClass.SuicidalIdeation.color;
                     break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
@@ -381,13 +399,12 @@ namespace SuperNewRoles.EndGame
             AdditionalTempData.Clear();
 
             IsHaison = false;
-
-            static string GetStatusText(FinalStatus status) => ModTranslation.GetString("FinalStatus" + status.ToString()); //ローカル関数
         }
+        static string GetStatusText(FinalStatus status) => ModTranslation.GetString("FinalStatus" + status.ToString()); //ローカル関数
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
-    public class OnGameEndPatch
+    public static class OnGameEndPatch
     {
         public static PlayerControl WinnerPlayer;
         public static CustomGameOverReason? EndData = null;
@@ -406,7 +423,7 @@ namespace SuperNewRoles.EndGame
         }
 
         public static void Postfix()
-        {
+    { 
             if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Zombie))
             {
                 PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();
@@ -415,7 +432,7 @@ namespace SuperNewRoles.EndGame
             var gameOverReason = AdditionalTempData.gameOverReason;
             AdditionalTempData.Clear();
 
-            foreach (var p in GameData.Instance.AllPlayers.GetFastEnumerator())
+            foreach (var p in GameData.Instance.AllPlayers)
             {
                 if (p.Object.IsPlayer())
                 {
@@ -488,6 +505,8 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Tuna.TunaPlayer);
             notWinners.AddRange(RoleClass.BlackCat.BlackCatPlayer);
             notWinners.AddRange(RoleClass.Neet.NeetPlayer);
+            notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
+            notWinners.AddRange(RoleClass.SuicidalIdeation.SuicidalIdeationPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -519,6 +538,8 @@ namespace SuperNewRoles.EndGame
             bool ArsonistWin = gameOverReason == (GameOverReason)CustomGameOverReason.ArsonistWin;
             bool VultureWin = gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
             bool NeetWin = gameOverReason == (GameOverReason)CustomGameOverReason.NeetWin;
+            bool RevolutionistWin = gameOverReason == (GameOverReason)CustomGameOverReason.RevolutionistWin;
+            bool SuicidalIdeationWin = gameOverReason == (GameOverReason)CustomGameOverReason.SuicidalIdeationWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles) && EndData != null)
             {
@@ -625,6 +646,20 @@ namespace SuperNewRoles.EndGame
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.VultureWin;
             }
+            else if (RevolutionistWin)
+            {
+                TempData.winners = new();
+                WinningPlayerData wpd = new(WinnerPlayer.Data);
+                TempData.winners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.RevolutionistWin;
+            }
+            else if (SuicidalIdeationWin)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                WinningPlayerData wpd = new(WinnerPlayer.Data);
+                TempData.winners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.SuicidalIdeationWin;
+            }
 
             if (TempData.winners.GetFastEnumerator().ToArray().Any(x => x.IsImpostor))
             {
@@ -716,12 +751,44 @@ namespace SuperNewRoles.EndGame
                     TempData.winners.Add(new WinningPlayerData(p.Data));
                 }
             }
-
+            foreach (PlayerControl p in RoleClass.Spelunker.SpelunkerPlayer)
+            {
+                bool isreset = false;
+                if (p.IsAlive())
+                {
+                    if (!isreset)
+                    {
+                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        WinningPlayerData wpd = new(p.Data);
+                        TempData.winners.Add(wpd);
+                        AdditionalTempData.winCondition = WinCondition.SpelunkerWin;
+                    }
+                    isreset = true;
+                }
+            }
+            foreach (PlayerControl p in RoleClass.SuicidalIdeation.SuicidalIdeationPlayer)
+            {
+                var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                if (p.IsAlive() && playerTotal > playerCompleted) 
+                {
+                    TempData.winners.Add(new WinningPlayerData(p.Data));
+                }
+            }
             foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer)
             {
                 if (player.IsAlive())
                 {
                     TempData.winners.Add(new WinningPlayerData(player.Data));
+                }
+            }
+            if (RoleClass.Revolutionist.IsAddWin)
+            {
+                foreach (PlayerControl player in RoleClass.Revolutionist.RevolutionistPlayer)
+                {
+                    if (!RoleClass.Revolutionist.IsAddWinAlive || player.IsAlive() && !TempData.winners.Contains(new(player.Data)))
+                    {
+                        TempData.winners.Add(new WinningPlayerData(player.Data));
+                    }
                 }
             }
             foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
@@ -900,6 +967,7 @@ namespace SuperNewRoles.EndGame
             if (!RoleManagerSelectRolesPatch.IsSetRoleRPC) return false;
             if (DebugMode.IsDebugMode()) return false;
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
+            if (RoleClass.Revolutionist.MeetingTrigger != null) return false;
             var statistics = new PlayerStatistics(__instance);
             if (!ModeHandler.IsMode(ModeId.Default))
             {
@@ -913,6 +981,7 @@ namespace SuperNewRoles.EndGame
                 if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
+                if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
                 if (!PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             }
             return false;
@@ -1058,6 +1127,30 @@ namespace SuperNewRoles.EndGame
                             RPCProcedure.ShareWinner(p.PlayerId);
                             __instance.enabled = false;
                             CustomEndGame((GameOverReason)CustomGameOverReason.WorkpersonWin, false);
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        public static bool CheckAndEndGameForSuicidalIdeationWin(ShipStatus __instance)
+        {
+            foreach (PlayerControl p in RoleClass.SuicidalIdeation.SuicidalIdeationPlayer)
+            {
+                if (!p.Data.Disconnected)
+                {
+                    if (p.IsAlive())
+                    {
+                        var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                        if (playerCompleted >= playerTotal)
+                        {
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            Writer.Write(p.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                            RPCProcedure.ShareWinner(p.PlayerId);
+                            __instance.enabled = false;
+                            CustomEndGame((GameOverReason)CustomGameOverReason.SuicidalIdeationWin, false);
                             return true;
                         }
                     }

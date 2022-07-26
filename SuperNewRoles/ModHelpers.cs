@@ -401,6 +401,14 @@ namespace SuperNewRoles
             var client = player.GetClient();
             return client == null ? -1 : client.Id;
         }
+        public static bool IsSucsessChance(int SucsessChance, int MaxChance = 10)
+        {
+            //成功確率が0%ならfalseを返す
+            if (SucsessChance == 0) return false;
+            //成功確率が最大と一緒かそれ以上ならtrueを返す
+            if (SucsessChance >= MaxChance) return true;
+            return UnityEngine.Random.Range(1, MaxChance) <= SucsessChance;
+        }
         public static bool HidePlayerName(PlayerControl source, PlayerControl target)
         {
             if (source == null || target == null) return true;
