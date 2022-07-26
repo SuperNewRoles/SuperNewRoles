@@ -2570,6 +2570,7 @@ namespace SuperNewRoles.Roles
             public static float CommsOrLightdownDeathTime;
             public static float CommsOrLightdownTime;
             public static int LiftDeathChance;
+            public static int DoorOpenChance;
             public static void ClearAndReload()
             {
                 SpelunkerPlayer = new();
@@ -2582,7 +2583,8 @@ namespace SuperNewRoles.Roles
                     CommsOrLightdownDeathTime = -1f;
                 CommsOrLightdownTime = 0f;
                 LiftDeathChance = CustomOptions.SpelunkerLiftDeathChance.GetSelection();
-                Roles.Neutral.Spelunker.DeathPosition = null;
+                Neutral.Spelunker.DeathPosition = null;
+                DoorOpenChance = CustomOptions.SpelunkerDoorOpenChance.GetSelection();
             }
         }
         //新ロールクラス

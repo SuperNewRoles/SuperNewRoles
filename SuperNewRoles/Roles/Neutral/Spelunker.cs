@@ -91,5 +91,20 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             }
         }
+        [HarmonyPatch(typeof(DoorConsole), nameof(DoorConsole.Use))]
+        class DoorConsoleOpenPatch
+        {
+            public static void Postfix(DoorConsole __instance)
+            {
+                __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
+                if (canUse)
+                {
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSucsessChance(RoleClass.Spelunker.DoorOpenChance))
+                    {
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    }
+                }
+            }
+        }
     }
 }
