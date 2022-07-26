@@ -36,6 +36,7 @@ namespace SuperNewRoles.EndGame
         TunaWin,
         NeetWin,
         RevolutionistWin,
+        SpelunkerWin,
         SuicidalIdeationWin,
         BugEnd
     }
@@ -59,6 +60,7 @@ namespace SuperNewRoles.EndGame
         TunaWin,
         NeetWin,
         RevolutionistWin,
+        SpelunkerWin,
         SuicidalIdeationWin,
         BugEnd
     }
@@ -166,7 +168,7 @@ namespace SuperNewRoles.EndGame
 
                 foreach (var data in AdditionalTempData.playerRoles)
                 {
-                    Logger.Info(data.PlayerName+":"+winningPlayerData2.PlayerName);
+                    Logger.Info(data.PlayerName + ":" + winningPlayerData2.PlayerName);
                     if (data.PlayerName != winningPlayerData2.PlayerName) continue;
                     poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", ModHelpers.Cs(data.IntroDate.color, data.IntroDate.Name))}";
                 }
@@ -248,8 +250,12 @@ namespace SuperNewRoles.EndGame
                     text = "RevolutionistName";
                     RoleColor = RoleClass.Revolutionist.color;
                     break;
+                case WinCondition.SpelunkerWin:
+                    text = "SpelunkerName";
+                    RoleColor = RoleClass.Spelunker.color;
+                    break;
                 case WinCondition.SuicidalIdeationWin:
-                    text = RoleClass.SuicidalIdeation.SuicidalIdeationWinText ? "SuicidalIdeationWinText" : "SuicidalIdeationName"; 
+                    text = RoleClass.SuicidalIdeation.SuicidalIdeationWinText ? "SuicidalIdeationWinText" : "SuicidalIdeationName";
                     RoleColor = RoleClass.SuicidalIdeation.color;
                     break;
                 default:
@@ -398,7 +404,7 @@ namespace SuperNewRoles.EndGame
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
-    public class OnGameEndPatch
+    public static class OnGameEndPatch
     {
         public static PlayerControl WinnerPlayer;
         public static CustomGameOverReason? EndData = null;
@@ -417,7 +423,7 @@ namespace SuperNewRoles.EndGame
         }
 
         public static void Postfix()
-        {
+    { 
             if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Zombie))
             {
                 PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();
@@ -743,6 +749,21 @@ namespace SuperNewRoles.EndGame
                 if (p.IsAlive() && RoleClass.Neet.IsAddWin)
                 {
                     TempData.winners.Add(new WinningPlayerData(p.Data));
+                }
+            }
+            foreach (PlayerControl p in RoleClass.Spelunker.SpelunkerPlayer)
+            {
+                bool isreset = false;
+                if (p.IsAlive())
+                {
+                    if (!isreset)
+                    {
+                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        WinningPlayerData wpd = new(p.Data);
+                        TempData.winners.Add(wpd);
+                        AdditionalTempData.winCondition = WinCondition.SpelunkerWin;
+                    }
+                    isreset = true;
                 }
             }
             foreach (PlayerControl p in RoleClass.SuicidalIdeation.SuicidalIdeationPlayer)

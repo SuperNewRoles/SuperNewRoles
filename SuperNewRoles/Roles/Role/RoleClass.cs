@@ -159,6 +159,7 @@ namespace SuperNewRoles.Roles
             Finder.ClearAndReload();
             Revolutionist.ClearAndReload();
             Dictator.ClearAndReload();
+            Spelunker.ClearAndReload();
             SuicidalIdeation.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -2560,10 +2561,39 @@ namespace SuperNewRoles.Roles
                 SubExileLimitData = new();
             }
         }
+
+        public static class Spelunker
+        {
+            public static List<PlayerControl> SpelunkerPlayer;
+            public static Color32 color = new(255, 255, 0, byte.MaxValue);
+            public static bool IsVentChecked;
+            public static int VentDeathChance;
+            public static int LadderDeathChance;
+            public static float CommsOrLightdownDeathTime;
+            public static float CommsOrLightdownTime;
+            public static int LiftDeathChance;
+            public static int DoorOpenChance;
+            public static void ClearAndReload()
+            {
+                SpelunkerPlayer = new();
+                IsVentChecked = false;
+                VentDeathChance = CustomOptions.SpelunkerVentDeathChance.GetSelection();
+                LadderDeathChance = CustomOptions.SpelunkerLadderDeadChance.GetSelection();
+                if (CustomOptions.SpelunkerIsDeathCommsOrPowerdown.GetBool())
+                    CommsOrLightdownDeathTime = CustomOptions.SpelunkerDeathCommsOrPowerdownTime.GetFloat();
+                else
+                    CommsOrLightdownDeathTime = -1f;
+                CommsOrLightdownTime = 0f;
+                LiftDeathChance = CustomOptions.SpelunkerLiftDeathChance.GetSelection();
+                Neutral.Spelunker.DeathPosition = null;
+                DoorOpenChance = CustomOptions.SpelunkerDoorOpenChance.GetSelection();
+            }
+        }
+
         public static class SuicidalIdeation
         {
             public static List<PlayerControl> SuicidalIdeationPlayer;
-            public static Color32 color = new Color32(71, 71, 71, byte.MaxValue);
+            public static Color32 color = new(71, 71, 71, byte.MaxValue);
             public static bool SuicidalIdeationWinText;
             public static float TimeLeft;
             public static DateTime ButtonTimer;
