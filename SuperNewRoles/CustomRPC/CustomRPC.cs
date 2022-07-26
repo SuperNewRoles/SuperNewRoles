@@ -140,6 +140,7 @@ namespace SuperNewRoles.CustomRPC
         Spelunker,
         SuicidalIdeation,
         Stefinder,
+        Stefinder1
         //RoleId
     }
 
