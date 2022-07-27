@@ -2626,6 +2626,8 @@ namespace SuperNewRoles.Roles
             public static bool IsCrewBom;
             public static int SucPar;
             public static bool IsSuc;
+            public static int SucsPar;//クルーを巻き込む確率
+            public static bool IsSucs;
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
@@ -2639,6 +2641,9 @@ namespace SuperNewRoles.Roles
                 IsSuc = false;
                 var temp = CustomOptions.NiceSelfBomberKillPar.GetString().Replace("0%", "");
                 SucPar = temp == "" ? 0 : int.Parse(temp);
+                IsSucs = false;
+                var temps = CustomOptions.NiceSelfBomberCrewKillPar.GetString().Replace("0%", "");
+                SucsPar = temps == "" ? 0 : int.Parse(temps);
             }
             public static bool GetSuc()
             {
@@ -2648,6 +2653,19 @@ namespace SuperNewRoles.Roles
                     a.Add("Suc");
                 }
                 for (int i = 0; i < 10 - SucPar; i++)
+                {
+                    a.Add("No");
+                }
+                return ModHelpers.GetRandom<string>(a) == "Suc";
+            }
+            public static bool GetSucs()
+            {
+                List<string> a = new();
+                for (int i = 0; i < SucsPar; i++)
+                {
+                    a.Add("Suc");
+                }
+                for (int i = 0; i < 10 - SucsPar; i++)
                 {
                     a.Add("No");
                 }

@@ -176,29 +176,44 @@ namespace SuperNewRoles.Patches
                         {
                             foreach (PlayerControl p in CachedPlayer.AllPlayers)
                             {
-                                    if (NiceSelfBomber.GetIsBomb(__instance, p))
+                                if (NiceSelfBomber.GetIsBomb(__instance, p))
+                                {
+                                    if (RoleClass.NiceSelfBomber.IsCrewBom)
                                     {
-                                        if (RoleClass.NiceSelfBomber.IsCrewBom)
-                                        {                                        
-                                                __instance.RpcMurderPlayerCheck(p);
-                                        }
-                                        //もしクルーを巻き込むの設定がオンなら役職関係なく全員ムッコロース！！
-                                        else
-                                        {
                                         if (!p.IsCrew())
                                         {
                                             if (RoleClass.NiceSelfBomber.GetSuc())
-                                            { 
-                                                    __instance.RpcMurderPlayerCheck(p);
-                                                
-                                                //もし運ゲーが成功したら
+                                            {
+                                                __instance.RpcMurderPlayerCheck(p);
+
+                                                //もしクルーじゃないand運ゲー成功なら
+                                            }
+                                        }
+                                        else { }
+                                        if (p.IsCrew())
+                                        {
+                                            if (RoleClass.NiceSelfBomber.GetSucs())
+                                            {
+                                                __instance.RpcMurderPlayerCheck(p);
+
+                                                //もしクルーを巻き込む運ゲーが成功なら
                                             }
                                             else { }
                                         }
-                                        else{}
-                                            //そうじゃないならクルーではないやつだけムッコロース！！！
-                                    　　}
-                            　　    }
+                                    }
+                                    else
+                                    {
+                                        if (!p.IsCrew())
+                                        {
+                                            if (RoleClass.NiceSelfBomber.GetSuc())
+                                            {
+                                                __instance.RpcMurderPlayerCheck(p);
+
+                                                //もしクルーじゃないand運ゲー成功なら
+                                            }
+                                        }
+                                    }
+                                }
                             }
                             __instance.RpcMurderPlayer(__instance);
                         }

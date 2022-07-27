@@ -756,6 +756,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption NiceSelfBomberScope;
         public static CustomOption NiceSelfBomberIsCrewBom;
         public static CustomOption NiceSelfBomberKillPar;
+        public static CustomOption NiceSelfBomberCrewKillPar;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1547,11 +1548,12 @@ namespace SuperNewRoles.CustomOption
             SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
             SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
 
-            NiceSelfBomberOption = new CustomRoleOption(922, true, CustomOptionType.Crewmate, "NiceSelfBomberName", RoleClass.NiceSelfBomber.color, 1);
-            NiceSelfBomberPlayerCount = CustomOption.Create(923, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceSelfBomberOption);
-            NiceSelfBomberScope = CustomOption.Create(924, true, CustomOptionType.Crewmate, "SelfBomberScopeSetting", 1f, 0.5f, 3f, 0.5f, NiceSelfBomberOption);
-            NiceSelfBomberIsCrewBom = CustomOption.Create(925, true, CustomOptionType.Crewmate, "NiceSelfBomberIsCrewBomSetting", false, NiceSelfBomberOption);
-            NiceSelfBomberKillPar = CustomOption.Create(926, true, CustomOptionType.Crewmate, "NiceSelfBomberSucParSetting", rates, NiceSelfBomberOption);
+            NiceSelfBomberOption = new CustomRoleOption(929, true, CustomOptionType.Crewmate, "NiceSelfBomberName", RoleClass.NiceSelfBomber.color, 1);
+            NiceSelfBomberPlayerCount = CustomOption.Create(930, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceSelfBomberOption);
+            NiceSelfBomberScope = CustomOption.Create(931, true, CustomOptionType.Crewmate, "SelfBomberScopeSetting", 1f, 0.5f, 3f, 0.5f, NiceSelfBomberOption);
+            NiceSelfBomberIsCrewBom = CustomOption.Create(932, true, CustomOptionType.Crewmate, "NiceSelfBomberIsCrewBomSetting", true, NiceSelfBomberOption);
+            NiceSelfBomberCrewKillPar = CustomOption.Create(933, true, CustomOptionType.Crewmate, "NiceSelfBomberKillCrewParSetting", rates, NiceSelfBomberIsCrewBom);
+            NiceSelfBomberKillPar = CustomOption.Create(934, true, CustomOptionType.Crewmate, "NiceSelfBomberSucParSetting", rates, NiceSelfBomberOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
