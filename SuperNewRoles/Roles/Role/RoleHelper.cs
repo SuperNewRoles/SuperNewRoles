@@ -222,6 +222,7 @@ namespace SuperNewRoles
 
         public static void SetRole(this PlayerControl player, RoleId role)
         {
+            if (!Roles.Neutral.Spelunker.CheckSetRole(player, role)) return;
             switch (role)
             {
                 case RoleId.SoothSayer:
@@ -572,6 +573,12 @@ namespace SuperNewRoles
                     break;
                 case RoleId.Dictator:
                     RoleClass.Dictator.DictatorPlayer.Add(player);
+                    break;
+                case RoleId.Spelunker:
+                    RoleClass.Spelunker.SpelunkerPlayer.Add(player);
+                    break;
+                case (RoleId.SuicidalIdeation):
+                    RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.Add(player);
                     break;
                 case RoleId.NiceSelfBomber:
                     RoleClass.NiceSelfBomber.NiceSelfBomberPlayer.Add(player);
@@ -948,6 +955,13 @@ namespace SuperNewRoles
                 case RoleId.Dictator:
                     RoleClass.Dictator.DictatorPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Spelunker:
+                    RoleClass.Spelunker.SpelunkerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (RoleId.SuicidalIdeation):
+                    RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
+                    break;
+                    //ロールリモベ
                     case RoleId.NiceSelfBomber:
                     RoleClass.NiceSelfBomber.NiceSelfBomberPlayer.RemoveAll(ClearRemove);
                     break;
@@ -1002,9 +1016,11 @@ namespace SuperNewRoles
                 case RoleId.BlackCat:
                 case RoleId.Neet:
                 case RoleId.Revolutionist:
-                    IsTaskClear = true;
-                    break;
+                case RoleId.Spelunker:
+                case RoleId.SuicidalIdeation:
                     //タスククリアか
+                    IsTaskClear = true;
+                    break; 
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
@@ -1068,8 +1084,19 @@ namespace SuperNewRoles
         {
             try
             {
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks.GetFastEnumerator())
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                     if (task.TaskType == TaskTypes.FixComms)
+                        return true;
+            }
+            catch { }
+            return false;
+        }
+        public static bool IsLightdown()
+        {
+            try
+            {
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                    if (task.TaskType == TaskTypes.FixLights)
                         return true;
             }
             catch { }
@@ -1145,9 +1172,11 @@ namespace SuperNewRoles
                 case RoleId.Tuna:
                 case RoleId.Neet:
                 case RoleId.Revolutionist:
+                case RoleId.Spelunker:
+                case RoleId.SuicidalIdeation:
+                    //第三か
                     IsNeutral = true;
                     break;
-                    //第三か
             }
             return IsNeutral;
         }
@@ -1419,6 +1448,8 @@ namespace SuperNewRoles
                 else if (RoleClass.Finder.FinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Finder;
                 else if (RoleClass.Revolutionist.RevolutionistPlayer.IsCheckListPlayerControl(player)) return RoleId.Revolutionist;
                 else if (RoleClass.Dictator.DictatorPlayer.IsCheckListPlayerControl(player)) return RoleId.Dictator;
+                else if (RoleClass.Spelunker.SpelunkerPlayer.IsCheckListPlayerControl(player)) return RoleId.Spelunker;
+                else if (RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicidalIdeation;
                 else if (RoleClass.NiceSelfBomber.NiceSelfBomberPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceSelfBomber;
                 //ロールチェック
             }

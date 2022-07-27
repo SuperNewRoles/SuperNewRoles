@@ -68,6 +68,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ButtonerButton;
         public static CustomButton RevolutionistButton;
         public static CustomButton NiceSelfBomberButton;
+        public static CustomButton SuicidalIdeationButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2077,6 +2078,34 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
             //(簡略化に苦戦中)
+
+            SuicidalIdeationButton = new CustomButton(
+                () =>{},
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SuicidalIdeation; },
+                () =>
+                {
+                    return true;
+                },
+                () =>
+                {
+                    SuicidalIdeationButton.MaxTimer = RoleClass.SuicidalIdeation.TimeLeft;
+                    SuicidalIdeationButton.Timer = RoleClass.SuicidalIdeation.TimeLeft;
+                },
+                RoleClass.SuicidalIdeation.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return RoleClass.IsMeeting;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("SuicidalIdeationButtonName"),
+                showButtonText = true
+            };
 
             SetCustomButtonCooldowns();
         }
