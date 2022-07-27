@@ -4142,6 +4142,21 @@
         "11": "\u5931\u6557\u53ef\u80fd\u6570",
         "13": "\u53ef\u80fd\u51fa\u73b0\u7684\u6545\u969c\u6570\u91cf"
     },
+    "HitmanWinKillCount": {
+        "0": "Number of missions performed required to win",
+        "11": "\u52dd\u5229\u306b\u5fc5\u8981\u306a\u4efb\u52d9\u9042\u884c\u6570",
+        "13": "\u80dc\u5229\u6240\u9700\u7684\u6267\u884c\u4efb\u52a1\u7684\u6570\u91cf\u3002"
+    },
+    "HitmanIsTargetArrow": {
+        "0": "Display arrow to target",
+        "11": "\u30bf\u30fc\u30b2\u30c3\u30c8\u3078\u77e2\u5370\u3092\u8868\u793a\u3059\u308b",
+        "13": "\u5411\u76ee\u6807\u663e\u793a\u7bad\u5934\u3002"
+    },
+    "HitmanUpdateTargetArrowTime": {
+        "0": "Interval to update arrows",
+        "11": "\u77e2\u5370\u3092\u66f4\u65b0\u3059\u308b\u9593\u9694",
+        "13": "\u66f4\u65b0\u7bad\u5934\u7684\u65f6\u95f4\u95f4\u9694\u3002"
+    },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
         "11": "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01",

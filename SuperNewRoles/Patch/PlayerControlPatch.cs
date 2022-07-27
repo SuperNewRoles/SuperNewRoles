@@ -850,6 +850,13 @@ namespace SuperNewRoles.Patches
                     RoleClass.Assassin.TriggerPlayer = target;
                     return;
                 }
+                if (target.IsDead())
+                {
+                    if (target.IsRole(RoleId.Hitman))
+                    {
+                        Roles.Neutral.Hitman.Death();
+                    }
+                }
                 Levelinger.MurderPlayer(__instance, target);
                 if (RoleClass.Lovers.SameDie && target.IsLovers())
                 {
@@ -921,6 +928,9 @@ namespace SuperNewRoles.Patches
                     }, 0.5f);
                     RoleClass.Assassin.TriggerPlayer = __instance;
                     return;
+                }
+                if (__instance.IsRole(RoleId.Hitman)) {
+                    Roles.Neutral.Hitman.Death();
                 }
                 if (RoleClass.Lovers.SameDie && __instance.IsLovers())
                 {

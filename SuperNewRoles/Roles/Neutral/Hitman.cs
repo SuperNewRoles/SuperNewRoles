@@ -4,12 +4,45 @@ using System.Text;
 using System.Linq;
 using UnityEngine;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.CustomObject;
+using Hazel;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.EndGame;
 
 namespace SuperNewRoles.Roles.Neutral
 {
     public static class Hitman
     {
         //ここにコードを書きこんでください
+        public static void KillSuc()
+        {
+            RoleClass.Hitman.WinKillCount--;
+            if (RoleClass.Hitman.WinKillCount <= 0)
+            {
+                RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
+                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(Writer);
+
+                Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                Writer.Write((byte)CustomGameOverReason.HitmanWin);
+                Writer.EndRPC();
+                RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
+                //SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                var reason = (GameOverReason)CustomGameOverReason.HitmanWin;
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    CheckGameEndPatch.CustomEndGame(reason, false);
+                }
+                else
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                    writer.Write((byte)reason);
+                    writer.Write(false);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                }
+            }
+        }
         public static void EndMeeting()
         {
             Buttons.HudManagerStartPatch.HitmanKillButton.MaxTimer = RoleClass.Hitman.KillCoolTime;
@@ -53,6 +86,24 @@ namespace SuperNewRoles.Roles.Neutral
                     }
                 }
             }
+            if (RoleClass.Hitman.TargetArrow != null)
+            {
+                RoleClass.Hitman.TargetArrow.arrow.SetActive(true);
+                RoleClass.Hitman.TargetArrow.Update(RoleClass.Hitman.ArrowPosition);
+                RoleClass.Hitman.ArrowUpdateTime -= Time.fixedDeltaTime;
+                if (RoleClass.Hitman.ArrowUpdateTime <= 0)
+                {
+                    RoleClass.Hitman.ArrowUpdateTime = RoleClass.Hitman.ArrowUpdateTimeDefault;
+                    RoleClass.Hitman.ArrowPosition = RoleClass.Hitman.Target.transform.position;
+                }
+            }
+        }
+        public static void Death()
+        {
+            if (RoleClass.Hitman.TargetArrow != null)
+            {
+                RoleClass.Hitman.TargetArrow.arrow.SetActive(false);
+            }
         }
         public static void WrapUp()
         {
@@ -78,6 +129,17 @@ namespace SuperNewRoles.Roles.Neutral
             if (RoleClass.Hitman.OutMissionLimit <= 0)
             {
                 PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+            }
+        }
+        public static void DestroyIntroHandle(IntroCutscene __instance)
+        {
+            if (RoleClass.Hitman.ArrowUpdateTimeDefault != -1)
+            {
+                RoleClass.Hitman.TargetArrow = new Arrow(RoleClass.Hitman.color);
+                if (RoleClass.Hitman.Target != null) {
+                    RoleClass.Hitman.ArrowPosition = RoleClass.Hitman.Target.transform.position;
+                    RoleClass.Hitman.TargetArrow.Update(RoleClass.Hitman.Target.transform.position);
+                }
             }
         }
     }

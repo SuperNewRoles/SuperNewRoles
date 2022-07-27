@@ -51,6 +51,7 @@ namespace SuperNewRoles.Patches
                 {
                     RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
                     Roles.Neutral.Hitman.SetTarget();
+                    Roles.Neutral.Hitman.DestroyIntroHandle(__instance);
                     if (FastDestroyableSingleton<HudManager>.Instance != null)
                     {
                         Vector3 bottomLeft = new Vector3(-FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.x, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.y, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.z) + new Vector3(-0.25f, 1f, 0);

@@ -2087,9 +2087,14 @@ namespace SuperNewRoles.Buttons
                     }
                     if (RoleClass.Hitman.Target.PlayerId != target.PlayerId)
                     {
-                        Roles.Neutral.Hitman.SetTarget();
                         Roles.Neutral.Hitman.LimitDown();
+                    } else
+                    {
+                        Roles.Neutral.Hitman.KillSuc();
                     }
+                    RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
+                    RoleClass.Hitman.ArrowUpdateTime = 0;
+                    Roles.Neutral.Hitman.SetTarget();
                     HitmanKillButton.Timer = HitmanKillButton.MaxTimer;
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Hitman; },

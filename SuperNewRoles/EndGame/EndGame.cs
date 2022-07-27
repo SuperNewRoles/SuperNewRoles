@@ -38,6 +38,7 @@ namespace SuperNewRoles.EndGame
         RevolutionistWin,
         SpelunkerWin,
         SuicidalIdeationWin,
+        HitmanWin,
         BugEnd
     }
     enum WinCondition
@@ -62,6 +63,7 @@ namespace SuperNewRoles.EndGame
         RevolutionistWin,
         SpelunkerWin,
         SuicidalIdeationWin,
+        HitmanWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -257,6 +259,10 @@ namespace SuperNewRoles.EndGame
                 case WinCondition.SuicidalIdeationWin:
                     text = RoleClass.SuicidalIdeation.SuicidalIdeationWinText ? "SuicidalIdeationWinText" : "SuicidalIdeationName";
                     RoleColor = RoleClass.SuicidalIdeation.color;
+                    break;
+                case WinCondition.HitmanWin:
+                    text = "HitmanName";
+                    RoleColor = RoleClass.Hitman.color;
                     break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
@@ -507,6 +513,8 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Neet.NeetPlayer);
             notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
             notWinners.AddRange(RoleClass.SuicidalIdeation.SuicidalIdeationPlayer);
+            notWinners.AddRange(RoleClass.Spelunker.SpelunkerPlayer);
+            notWinners.AddRange(RoleClass.Hitman.HitmanPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -540,6 +548,7 @@ namespace SuperNewRoles.EndGame
             bool NeetWin = gameOverReason == (GameOverReason)CustomGameOverReason.NeetWin;
             bool RevolutionistWin = gameOverReason == (GameOverReason)CustomGameOverReason.RevolutionistWin;
             bool SuicidalIdeationWin = gameOverReason == (GameOverReason)CustomGameOverReason.SuicidalIdeationWin;
+            bool HitmanWin = gameOverReason == (GameOverReason)CustomGameOverReason.HitmanWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles) && EndData != null)
             {
@@ -659,6 +668,13 @@ namespace SuperNewRoles.EndGame
                 WinningPlayerData wpd = new(WinnerPlayer.Data);
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.SuicidalIdeationWin;
+            }
+            else if (HitmanWin)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                WinningPlayerData wpd = new(WinnerPlayer.Data);
+                TempData.winners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.HitmanWin;
             }
 
             if (TempData.winners.GetFastEnumerator().ToArray().Any(x => x.IsImpostor))
