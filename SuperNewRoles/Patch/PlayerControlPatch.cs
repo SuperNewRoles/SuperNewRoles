@@ -185,17 +185,17 @@ namespace SuperNewRoles.Patches
                                         //もしクルーを巻き込むの設定がオンなら役職関係なく全員ムッコロース！！
                                         else
                                         {
-                                        var roledata = CountChanger.GetRoleType(target);
-                                        RoleId role = target.GetRole();
-
-                                        if ((roledata == TeamRoleType.Impostor) || target.IsRole(RoleId.HauntedWolf))
+                                        if (!p.IsCrew())
                                         {
-                                            __instance.RpcMurderPlayerCheck(p);
+                                            if (RoleClass.NiceSelfBomber.GetSuc())
+                                            { 
+                                                    __instance.RpcMurderPlayerCheck(p);
+                                                
+                                                //もし運ゲーが成功したら
+                                            }
+                                            else { }
                                         }
-                                        else if (roledata == TeamRoleType.Crewmate)
-                                        {
-
-                                        }
+                                        else{}
                                             //そうじゃないならクルーではないやつだけムッコロース！！！
                                     　　}
                             　　    }

@@ -736,6 +736,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption NiceSelfBomberPlayerCount;
         public static CustomOption NiceSelfBomberScope;
         public static CustomOption NiceSelfBomberIsCrewBom;
+        public static CustomOption NiceSelfBomberKillPar;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1511,6 +1512,7 @@ namespace SuperNewRoles.CustomOption
             NiceSelfBomberPlayerCount = CustomOption.Create(923, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceSelfBomberOption);
             NiceSelfBomberScope = CustomOption.Create(924, true, CustomOptionType.Crewmate, "SelfBomberScopeSetting", 1f, 0.5f, 3f, 0.5f, NiceSelfBomberOption);
             NiceSelfBomberIsCrewBom = CustomOption.Create(925, true, CustomOptionType.Crewmate, "NiceSelfBomberIsCrewBomSetting", false, NiceSelfBomberOption);
+            NiceSelfBomberKillPar = CustomOption.Create(926, true, CustomOptionType.Crewmate, "NiceSelfBomberSucParSetting", rates, NiceSelfBomberOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

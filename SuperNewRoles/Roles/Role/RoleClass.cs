@@ -1134,7 +1134,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MayorPlayer = new();
-                AddVote = CustomOptions.MayorVoteCount.GetInt();
+                AddVote = (int)CustomOptions.MayorVoteCount.GetFloat();
             }
         }
         public static class Truelover
@@ -2566,6 +2566,8 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new Color32(255, 157, 38, byte.MaxValue);
             private static Sprite ButtonSprite;
             public static bool IsCrewBom;
+            public static int SucPar;
+            public static bool IsSuc;
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
@@ -2576,6 +2578,22 @@ namespace SuperNewRoles.Roles
             {
                 NiceSelfBomberPlayer = new();
                 IsCrewBom = CustomOptions.NiceSelfBomberIsCrewBom.GetBool();
+                IsSuc = false;
+                var temp = CustomOptions.NiceSelfBomberKillPar.GetString().Replace("0%", "");
+                SucPar = temp == "" ? 0 : int.Parse(temp);
+            }
+            public static bool GetSuc()
+            {
+                List<string> a = new();
+                for (int i = 0; i < SucPar; i++)
+                {
+                    a.Add("Suc");
+                }
+                for (int i = 0; i < 10 - SucPar; i++)
+                {
+                    a.Add("No");
+                }
+                return ModHelpers.GetRandom<string>(a) == "Suc";
             }
         }
         //新ロールクラス

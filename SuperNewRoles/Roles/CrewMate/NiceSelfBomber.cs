@@ -1,8 +1,11 @@
 
 using System;
+using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -42,14 +45,18 @@ namespace SuperNewRoles.Roles
                         }
                         else
                         {
-                            if (!p.IsCrew())
+                            if (p.IsImpostor() || p.IsNeutral())
                             {
-                                RPCProcedure.ByNiceBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
+                                if (RoleClass.NiceSelfBomber.GetSuc())
+                                {
+                                        RPCProcedure.ByNiceBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
 
-                                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByNiceBomKill, SendOption.Reliable, -1);
-                                Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                                Writer.Write(p.PlayerId);
-                                AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByNiceBomKill, SendOption.Reliable, -1);
+                                        Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                                        Writer.Write(p.PlayerId);
+                                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                                }
+                                else { }
                             }
                             else { }
                         }
