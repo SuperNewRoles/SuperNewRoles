@@ -729,7 +729,8 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption DictatorSubstituteExileLimit;
         public static CustomOption RevolutionistCoolTime;
         public static CustomOption RevolutionistTouchTime;
-        public static CustomOption RevolutionistAddWin;public static CustomOption RevolutionistAddWinIsAlive;
+        public static CustomOption RevolutionistAddWin;
+        public static CustomOption RevolutionistAddWinIsAlive;
 
         public static CustomRoleOption SpelunkerOption;
         public static CustomOption SpelunkerPlayerCount;
