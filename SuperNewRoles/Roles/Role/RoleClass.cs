@@ -161,6 +161,7 @@ namespace SuperNewRoles.Roles
             Dictator.ClearAndReload();
             Spelunker.ClearAndReload();
             SuicidalIdeation.ClearAndReload();
+            Matryoshka.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2614,6 +2615,25 @@ namespace SuperNewRoles.Roles
                 AddTimeLeft = CustomOptions.SuicidalIdeationAddTimeLeft.GetFloat();
                 ButtonTimer = DateTime.Now;
                 CompletedTask = 0;
+            }
+        }
+        public static class Matryoshka
+        {
+            public static List<PlayerControl> MatryoshkaPlayer;
+            public static Color32 color = ImpostorRed;
+            public static int WearLimit;
+            public static bool WearReport;
+            public static float WearDefaultTime;
+            public static float WearTime;
+            public static float AddKillCoolTime;
+            public static void ClearAndReload()
+            {
+                MatryoshkaPlayer = new();
+                WearLimit = CustomOptions.MatryoshkaWearLimit.GetInt();
+                WearReport = CustomOptions.MatryoshkaWearReport.GetBool();
+                WearDefaultTime = CustomOptions.MatryoshkaWearTime.GetFloat();
+                AddKillCoolTime = CustomOptions.MatryoshkaAddKillCoolTime.GetFloat();
+                WearTime = 0;
             }
         }
         //新ロールクラス

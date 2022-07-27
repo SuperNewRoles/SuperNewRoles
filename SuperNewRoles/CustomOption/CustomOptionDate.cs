@@ -750,6 +750,13 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SuicidalIdeationCommonTask;
         public static CustomOption SuicidalIdeationShortTask;
         public static CustomOption SuicidalIdeationLongTask;
+        
+        public static CustomRoleOption MatryoshkaOption;
+        public static CustomOption MatryoshkaPlayerCount;
+        public static CustomOption MatryoshkaWearLimit;
+        public static CustomOption MatryoshkaAddKillCoolTime;
+        public static CustomOption MatryoshkaWearReport;
+        public static CustomOption MatryoshkaWearTime;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1540,6 +1547,13 @@ namespace SuperNewRoles.CustomOption
             SuicidalIdeationCommonTask = SuicidalIdeationoption.Item1;
             SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
             SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
+            
+            MatryoshkaOption = new CustomRoleOption(929, false, CustomOptionType.Impostor, "MatryoshkaName",RoleClass.Matryoshka.color, 1);
+            MatryoshkaPlayerCount = CustomOption.Create(930, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MatryoshkaOption);
+            MatryoshkaWearLimit = CustomOption.Create(931, false, CustomOptionType.Impostor, "MatryoshkaWearLimit", 3f, 1f, 15f, 1f, MatryoshkaOption);
+            MatryoshkaWearReport = CustomOption.Create(932, false, CustomOptionType.Impostor, "MatryoshkaWearReport", true, MatryoshkaOption);
+            MatryoshkaWearTime = CustomOption.Create(933, false, CustomOptionType.Impostor, "MatryoshkaWearTime", 7.5f, 0.5f, 60f, 0.5f, MatryoshkaOption);
+            MatryoshkaAddKillCoolTime = CustomOption.Create(934, false, CustomOptionType.Impostor, "MatryoshkaAddKillCoolTime", 2.5f, 0f, 30f, 0.5f, MatryoshkaOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
