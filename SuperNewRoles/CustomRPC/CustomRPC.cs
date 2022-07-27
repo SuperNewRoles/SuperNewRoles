@@ -211,10 +211,18 @@ namespace SuperNewRoles.CustomRPC
         KunaiKill,
         SetSecretRoomTeleportStatus,
         ChiefSidekick,
-        StartRevolutionMeeting
+        StartRevolutionMeeting,
+        SetMatryoshkaDeadbody
     }
     public static class RPCProcedure
     {
+        public static void SetMatryoshkaDeadBody(byte sourceid, byte targetid, bool Is)
+        {
+            PlayerControl source = ModHelpers.playerById(sourceid);
+            PlayerControl target = ModHelpers.playerById(targetid);
+            if (source == null) return;
+            Roles.Impostor.Matryoshka.Set(source, target, Is);
+        }
         public static void StartRevolutionMeeting(byte sourceid)
         {
             PlayerControl source = ModHelpers.playerById(sourceid);
@@ -1264,6 +1272,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.StartRevolutionMeeting:
                             StartRevolutionMeeting(reader.ReadByte());
+                            break;
+                        case CustomRPC.SetMatryoshkaDeadbody:
+                            SetMatryoshkaDeadBody(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                             break;
                     }
                 }

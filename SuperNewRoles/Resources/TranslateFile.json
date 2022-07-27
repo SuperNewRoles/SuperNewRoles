@@ -4147,6 +4147,16 @@
         "11": "\u307e\u3068\u3048\u308b\u6642\u9593",
         "13": "\u80c1\u8feb\u65f6\u95f4"
     },
+    "MatryoshkaPutOnButtonName": {
+        "0": "Put On",
+        "11": "\u7740\u308b",
+        "13": "\u7a7f\u4e0a"
+    },
+    "MatryoshkaTakeOffButtonName": {
+        "0": "Take Off",
+        "11": "\u8131\u3050",
+        "13": "\u8131\u4e0b"
+    },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
         "11": "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01",

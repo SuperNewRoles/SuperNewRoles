@@ -1254,6 +1254,9 @@ namespace SuperNewRoles
                     case RoleId.Kunoichi:
                         addition = RoleClass.Kunoichi.KillCoolTime;
                         break;
+                    case RoleId.Matryoshka:
+                        addition = RoleClass.Matryoshka.MyKillCoolTime;
+                        break;
                 }
             }
             return addition;

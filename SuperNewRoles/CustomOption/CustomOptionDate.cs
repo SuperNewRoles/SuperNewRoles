@@ -757,6 +757,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MatryoshkaAddKillCoolTime;
         public static CustomOption MatryoshkaWearReport;
         public static CustomOption MatryoshkaWearTime;
+        public static CustomOption MatryoshkaCoolTime;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1554,6 +1555,7 @@ namespace SuperNewRoles.CustomOption
             MatryoshkaWearReport = CustomOption.Create(932, false, CustomOptionType.Impostor, "MatryoshkaWearReport", true, MatryoshkaOption);
             MatryoshkaWearTime = CustomOption.Create(933, false, CustomOptionType.Impostor, "MatryoshkaWearTime", 7.5f, 0.5f, 60f, 0.5f, MatryoshkaOption);
             MatryoshkaAddKillCoolTime = CustomOption.Create(934, false, CustomOptionType.Impostor, "MatryoshkaAddKillCoolTime", 2.5f, 0f, 30f, 0.5f, MatryoshkaOption);
+            MatryoshkaCoolTime = CustomOption.Create(935, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 30f, 0f, 180f, 2.5f, MatryoshkaOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
