@@ -368,39 +368,35 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
-                if (LocalRole == RoleId.Stefinder && RoleClass.Stefinder.IsKill)
+                SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
+                SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
+                SetNamesClass.ArsonistSet();
+                SetNamesClass.DemonSet();
+                SetNamesClass.CelebritySet();
+                SetNamesClass.QuarreledSet();
+                SetNamesClass.LoversSet();
+                if (ModeHandler.IsMode(ModeId.Default))
                 {
-                    SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
-                    SetNamesClass.SetPlayerNameColor(PlayerControl.LocalPlayer, RoleClass.ImpostorRed);
-                }
-                else
-                {
-                    SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
-                    SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
-                }
-            }
-            SetNamesClass.ArsonistSet();
-            SetNamesClass.DemonSet();
-            SetNamesClass.CelebritySet();
-            SetNamesClass.QuarreledSet();
-            SetNamesClass.LoversSet();
-            if (ModeHandler.IsMode(ModeId.Default))
-            {
-                if (Sabotage.SabotageManager.thisSabotage == Sabotage.SabotageManager.CustomSabotage.CognitiveDeficit)
-                {
-                    foreach (PlayerControl p3 in CachedPlayer.AllPlayers)
+                    if (Sabotage.SabotageManager.thisSabotage == Sabotage.SabotageManager.CustomSabotage.CognitiveDeficit)
                     {
-                        if (p3.IsAlive() && !Sabotage.CognitiveDeficit.Main.OKPlayers.IsCheckListPlayerControl(p3))
+                        foreach (PlayerControl p3 in CachedPlayer.AllPlayers)
                         {
-                            if (PlayerControl.LocalPlayer.IsImpostor())
+                            if (p3.IsAlive() && !Sabotage.CognitiveDeficit.Main.OKPlayers.IsCheckListPlayerControl(p3))
                             {
-                                if (!(p3.IsImpostor() || p3.IsRole(RoleId.MadKiller)))
+                                if (PlayerControl.LocalPlayer.IsImpostor())
                                 {
-                                    SetNamesClass.SetPlayerNameColor(p3, new Color32(18, 112, 214, byte.MaxValue));
+                                    if (!(p3.IsImpostor() || p3.IsRole(RoleId.MadKiller)))
+                                    {
+                                        SetNamesClass.SetPlayerNameColor(p3, new Color32(18, 112, 214, byte.MaxValue));
+                                    }
                                 }
                             }
                         }
                     }
+                }
+                if (LocalRole == RoleId.Stefinder && RoleClass.Stefinder.IsKill)
+                {
+                    SetNamesClass.SetPlayerNameColor(PlayerControl.LocalPlayer, RoleClass.ImpostorRed);
                 }
             }
         }
