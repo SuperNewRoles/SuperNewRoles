@@ -46,31 +46,25 @@ namespace SuperNewRoles.Roles
                                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             }
                             //役職がクルーandクルーを巻き込む確率であたった人を爆発に巻き込む
-                            else
+                            else if (!p.IsCrew()　&&  RoleClass.NiceSelfBomber.GetSuc())
                             {
-                                if (RoleClass.NiceSelfBomber.GetSuc())
-                                {
                                     RPCProcedure.ByNiceBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
-
                                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByNiceBomKill, SendOption.Reliable, -1);
                                     Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                                     Writer.Write(p.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                                }
                             }
                             //役職がクルー以外andクルー以外を巻き込む確率であたった人を爆発に巻き込む
                         }
-                        else
+                        else if (!RoleClass.NiceSelfBomber.IsCrewBom && !p.IsCrew() && RoleClass.NiceSelfBomber.GetSuc())
                         {
-                            if (!p.IsCrew() && RoleClass.NiceSelfBomber.GetSuc())
-                            {
                            　      RPCProcedure.ByNiceBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
 
                                   MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByNiceBomKill, SendOption.Reliable, -1);
                                   Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                                   Writer.Write(p.PlayerId);
                                   AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                            }
+                            //クルーを巻き込むの設定をオフand対象がクルー以外and運ゲーが成功したら
                         }
                     }
                 }

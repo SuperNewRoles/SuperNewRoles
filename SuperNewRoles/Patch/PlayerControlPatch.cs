@@ -183,27 +183,18 @@ namespace SuperNewRoles.Patches
                                         if (p.IsCrew() && RoleClass.NiceSelfBomber.GetSucs())
                                         {
                                                 __instance.RpcMurderPlayerCheck(p);
-
-                                               //もしクルーを巻き込む運ゲーが成功なら
+                                            //もしクルーを巻き込む運ゲーが成功なら巻き込む
                                         }
-                                        else
-                                        {
-                                            if (RoleClass.NiceSelfBomber.GetSuc())
-                                            {
+                                        else if (!p.IsCrew() && RoleClass.NiceSelfBomber.GetSuc())
+                                        {  
                                                 __instance.RpcMurderPlayerCheck(p);
-
-                                                //もしクルーじゃないand運ゲー成功なら
-                                            }
+                                            //もしクルーじゃないand運ゲー成功なら巻き込む
                                         }
                                     }
-                                    else
+                                    else if(RoleClass.NiceSelfBomber.IsCrewBom && !p.IsCrew() && RoleClass.NiceSelfBomber.GetSuc())
                                     {
-                                        if (!p.IsCrew() && RoleClass.NiceSelfBomber.GetSuc())
-                                        {
                                                 __instance.RpcMurderPlayerCheck(p);
-
-                                                //もしクルーじゃないand運ゲー成功なら
-                                        }
+                                            //もしクルーじゃないandクルーを巻き込むの設定がオフand運ゲー成功なら巻き込む
                                     }
                                 }
                             }

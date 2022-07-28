@@ -961,11 +961,10 @@ namespace SuperNewRoles
                 case (RoleId.SuicidalIdeation):
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
                 case RoleId.NiceSelfBomber:
                     RoleClass.NiceSelfBomber.NiceSelfBomberPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
