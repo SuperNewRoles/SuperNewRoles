@@ -38,9 +38,9 @@ namespace SuperNewRoles.Roles
                         {
                             if (p.IsCrew()　&& RoleClass.NiceSelfBomber.GetSucs())
                             {
-                                    RPCProcedure.ByNiceBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
+                                    RPCProcedure.ByBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
 
-                                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByNiceBomKill, SendOption.Reliable, -1);
+                                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByBomKillRPC, SendOption.Reliable, -1);
                                     Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                                     Writer.Write(p.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -48,8 +48,8 @@ namespace SuperNewRoles.Roles
                             //役職がクルーandクルーを巻き込む確率であたった人を爆発に巻き込む
                             else if (!p.IsCrew()　&&  RoleClass.NiceSelfBomber.GetSuc())
                             {
-                                    RPCProcedure.ByNiceBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
-                                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByNiceBomKill, SendOption.Reliable, -1);
+                                    RPCProcedure.ByBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
+                                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByBomKillRPC, SendOption.Reliable, -1);
                                     Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                                     Writer.Write(p.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -58,9 +58,9 @@ namespace SuperNewRoles.Roles
                         }
                         else if (!RoleClass.NiceSelfBomber.IsCrewBom && !p.IsCrew() && RoleClass.NiceSelfBomber.GetSuc())
                         {
-                           　      RPCProcedure.ByNiceBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
+                           　      RPCProcedure.ByBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
 
-                                  MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByNiceBomKill, SendOption.Reliable, -1);
+                                  MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByBomKillRPC, SendOption.Reliable, -1);
                                   Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                                   Writer.Write(p.PlayerId);
                                   AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -69,8 +69,8 @@ namespace SuperNewRoles.Roles
                     }
                 }
             }
-            RPCProcedure.NiceBomKillRPC(CachedPlayer.LocalPlayer.PlayerId);
-            MessageWriter Writer2 = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.NiceBomKill, SendOption.Reliable, -1);
+            RPCProcedure.BomKillRPC(CachedPlayer.LocalPlayer.PlayerId);
+            MessageWriter Writer2 = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.BomKillRPC, SendOption.Reliable, -1);
             Writer2.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer2);
         }

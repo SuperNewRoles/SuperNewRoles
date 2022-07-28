@@ -212,33 +212,9 @@ namespace SuperNewRoles.CustomRPC
         SetSecretRoomTeleportStatus,
         ChiefSidekick,
         StartRevolutionMeeting,
-        NiceBomKill,
-        ByNiceBomKill
     }
     public static class RPCProcedure
     {
-
-        public static void NiceBomKillRPC(byte sourceId)
-        {
-            PlayerControl source = ModHelpers.playerById(sourceId);
-            if (source != null)
-            {
-                KillAnimationCoPerformKillPatch.hideNextAnimation = false;
-                source.MurderPlayer(source);
-                FinalStatusData.FinalStatuses[source.PlayerId] = FinalStatus.SelfBomb;
-            }
-        }
-        public static void ByNiceBomKillRPC(byte sourceId, byte targetId)
-        {
-            PlayerControl source = ModHelpers.playerById(sourceId);
-            PlayerControl target = ModHelpers.playerById(targetId);
-            if (source != null && target != null)
-            {
-                source.MurderPlayer(target);
-                FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.BySelfBomb;
-            }
-        }
-    
         public static void StartRevolutionMeeting(byte sourceid)
         {
             PlayerControl source = ModHelpers.playerById(sourceid);
@@ -1288,12 +1264,6 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.StartRevolutionMeeting:
                             StartRevolutionMeeting(reader.ReadByte());
-                            break;
-                        case CustomRPC.ByNiceBomKill:
-                            ByBomKillRPC(reader.ReadByte(), reader.ReadByte());
-                            break;
-                        case CustomRPC.NiceBomKill:
-                            NiceBomKillRPC(reader.ReadByte());
                             break;
                     }
                 }
