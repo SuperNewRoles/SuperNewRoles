@@ -580,6 +580,9 @@ namespace SuperNewRoles
                 case (RoleId.SuicidalIdeation):
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.Add(player);
                     break;
+                case RoleId.Nun:
+                    RoleClass.Nun.NunPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -958,7 +961,10 @@ namespace SuperNewRoles
                 case (RoleId.SuicidalIdeation):
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case RoleId.Nun:
+                    RoleClass.Nun.NunPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1443,6 +1449,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Dictator.DictatorPlayer.IsCheckListPlayerControl(player)) return RoleId.Dictator;
                 else if (RoleClass.Spelunker.SpelunkerPlayer.IsCheckListPlayerControl(player)) return RoleId.Spelunker;
                 else if (RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicidalIdeation;
+                else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
                 //ロールチェック
             }
             catch (Exception e)

@@ -19,6 +19,42 @@ using static SuperNewRoles.ModHelpers;
 
 namespace SuperNewRoles.Patches
 {
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcUsePlatform))]
+    public class UsePlatformPlayerControlPatch
+    {
+        public static bool Prefix(PlayerControl __instance)
+        {
+            Logger.Info("来た");
+            if (AmongUsClient.Instance.AmHost)
+            {
+                AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
+                if (airshipStatus)
+                {
+                    airshipStatus.GapPlatform.Use(__instance);
+                }
+            }
+            else
+            {
+                AmongUsClient.Instance.StartRpc(__instance.NetId, 32, (SendOption)1).EndMessage();
+            }
+            return false;
+        }
+    }
+    [HarmonyPatch(typeof(MovingPlatformBehaviour),nameof(MovingPlatformBehaviour.Use), new Type[] { typeof(PlayerControl) })]
+    public class UsePlatformPatch
+    {
+        public static Coroutine coro;
+        public static bool Prefix(MovingPlatformBehaviour __instance, PlayerControl player)
+        {
+            Vector3 val = __instance.transform.position - player.transform.position;
+            if (player.IsAlive())
+            {
+                __instance.IsDirty = true;
+                coro = __instance.StartCoroutine(__instance.UsePlatform(player));
+            }
+            return false;
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
     class RpcShapesihftPatch
     {

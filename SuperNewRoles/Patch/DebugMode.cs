@@ -89,16 +89,11 @@ namespace SuperNewRoles.Patch
                     //new LateTask(() => { foreach (var pc in CachedPlayer.AllPlayers) pc.PlayerControl.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
                     //new LateTask(() => bot.Despawn(), 0.6f, "Bot Despawn Task");
                 }
-                
+
+                //ここにデバッグ用のものを書いてね
                 if (Input.GetKeyDown(KeyCode.I))
                 {
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                    {
-                        if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
-                        {
-                            p.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                        }
-                    }
+                    SuperNewRoles.CustomRPC.RPCProcedure.UncheckedUsePlatform(0, false);
                 }
                 /*
                     if (Input.GetKeyDown(KeyCode.C))

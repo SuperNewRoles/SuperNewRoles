@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
@@ -9,6 +10,7 @@ using SuperNewRoles.EndGame;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
@@ -139,6 +141,7 @@ namespace SuperNewRoles.CustomRPC
         Dictator,
         Spelunker,
         SuicidalIdeation,
+        Nun,
         //RoleId
     }
 
@@ -210,10 +213,31 @@ namespace SuperNewRoles.CustomRPC
         KunaiKill,
         SetSecretRoomTeleportStatus,
         ChiefSidekick,
-        StartRevolutionMeeting
+        StartRevolutionMeeting,
+        UncheckedUsePlatform
     }
     public static class RPCProcedure
     {
+        public static void UncheckedUsePlatform(byte playerid, bool IsMove)
+        {
+            PlayerControl source = ModHelpers.playerById(playerid);
+            AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
+            if (airshipStatus)
+            {
+                if (IsMove)
+                {
+                    if (source == null) return;
+                    airshipStatus.GapPlatform.Use(source);
+                } else
+                {
+                    if (UsePlatformPatch.coro != null)
+                    {
+                        airshipStatus.GapPlatform.StopCoroutine(UsePlatformPatch.coro);
+                    }
+                    UsePlatformPatch.coro = airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));
+                }
+            }
+        }
         public static void StartRevolutionMeeting(byte sourceid)
         {
             PlayerControl source = ModHelpers.playerById(sourceid);
@@ -1026,6 +1050,25 @@ namespace SuperNewRoles.CustomRPC
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
         class RPCHandlerPatch
         {
+            static bool Prefix(PlayerControl __instance, byte callId, MessageWriter reader)
+            {
+                switch (callId)
+                {
+                    case (byte)RpcCalls.UsePlatform:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
+                            if (airshipStatus)
+                            {
+                                airshipStatus.GapPlatform.Use(__instance);
+                                __instance.SetDirtyBit(4096u);
+                            }
+                        }
+                        return false;
+                }
+
+                return true;
+            }
             static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
             {
                 try
@@ -1263,6 +1306,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.StartRevolutionMeeting:
                             StartRevolutionMeeting(reader.ReadByte());
+                            break;
+                        case CustomRPC.UncheckedUsePlatform:
+                            UncheckedUsePlatform(reader.ReadByte(), reader.ReadBoolean());
                             break;
                     }
                 }
