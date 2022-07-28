@@ -580,6 +580,9 @@ namespace SuperNewRoles
                 case (RoleId.SuicidalIdeation):
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.Add(player);
                     break;
+                case RoleId.Tactician:
+                    RoleClass.Tactician.TacticianPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -958,7 +961,10 @@ namespace SuperNewRoles
                 case (RoleId.SuicidalIdeation):
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case RoleId.Tactician:
+                    RoleClass.Tactician.TacticianPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1011,7 +1017,8 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
-                    //タスククリアか
+                    case RoleId.Tactician:
+                //タスククリアか
                     IsTaskClear = true;
                     break; 
             }
@@ -1167,7 +1174,8 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
-                    //第三か
+                    case RoleId.Tactician:
+                //第三か
                     IsNeutral = true;
                     break;
             }
@@ -1443,6 +1451,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Dictator.DictatorPlayer.IsCheckListPlayerControl(player)) return RoleId.Dictator;
                 else if (RoleClass.Spelunker.SpelunkerPlayer.IsCheckListPlayerControl(player)) return RoleId.Spelunker;
                 else if (RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicidalIdeation;
+                else if (RoleClass.Tactician.TacticianPlayer.IsCheckListPlayerControl(player)) return RoleId.Tactician;
                 //ロールチェック
             }
             catch (Exception e)

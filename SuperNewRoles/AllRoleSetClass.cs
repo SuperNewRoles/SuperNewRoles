@@ -931,6 +931,7 @@ namespace SuperNewRoles
                 RoleId.Dictator => CustomOptions.DictatorPlayerCount.GetFloat(),
                 RoleId.Spelunker => CustomOptions.SpelunkerPlayerCount.GetFloat(),
                 RoleId.SuicidalIdeation => CustomOptions.SuicidalIdeationPlayerCount.GetFloat(),
+                RoleId.Tactician => CustomOptions.TacticianPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

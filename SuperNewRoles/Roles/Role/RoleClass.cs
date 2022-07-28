@@ -161,6 +161,7 @@ namespace SuperNewRoles.Roles
             Dictator.ClearAndReload();
             Spelunker.ClearAndReload();
             SuicidalIdeation.ClearAndReload();
+            Tactician.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2614,6 +2615,16 @@ namespace SuperNewRoles.Roles
                 AddTimeLeft = CustomOptions.SuicidalIdeationAddTimeLeft.GetFloat();
                 ButtonTimer = DateTime.Now;
                 CompletedTask = 0;
+            }
+        }
+        public static class Tactician
+        {
+            public static List<PlayerControl> TacticianPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                TacticianPlayer = new();
+                //くりあぁあんどりろぉどぉ
             }
         }
         //新ロールクラス

@@ -189,6 +189,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate DictatorIntro = new("Dictator", RoleClass.Dictator.color, 1, RoleId.Dictator, TeamRoleType.Crewmate);
         public static IntroDate SpelunkerIntro = new("Spelunker", RoleClass.Spelunker.color, 1, RoleId.Spelunker, TeamRoleType.Neutral);
         public static IntroDate SuicidalIdeationIntro = new("SuicidalIdeation", RoleClass.SuicidalIdeation.color, 1, RoleId.SuicidalIdeation, TeamRoleType.Neutral);
+        public static IntroDate TacticianIntro = new("Tactician", RoleClass.Tactician.color, 1, RoleId.Tactician, TeamRoleType.Neutral);
         //イントロオブジェ
     }
 }
