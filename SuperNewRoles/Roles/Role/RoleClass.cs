@@ -1136,7 +1136,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MayorPlayer = new();
-                AddVote = (int)CustomOptions.MayorVoteCount.GetFloat();
+                AddVote = CustomOptions.MayorVoteCount.GetInt();
             }
         }
         public static class Truelover

@@ -139,7 +139,6 @@ namespace SuperNewRoles.CustomRPC
         Dictator,
         Spelunker,
         SuicidalIdeation,
-
         NiceSelfBomber,
         //RoleId
     }
@@ -235,21 +234,7 @@ namespace SuperNewRoles.CustomRPC
             PlayerControl target = ModHelpers.playerById(targetId);
             if (source != null && target != null)
             {
-                if (RoleClass.NiceSelfBomber.IsCrewBom)
-                {
-                    source.MurderPlayer(target);
-                }
-                else
-                {
-                    var roledata = CountChanger.GetRoleType(target);
-                    RoleId role = target.GetRole();
-
-                    if ((roledata == TeamRoleType.Impostor) || target.IsRole(RoleId.HauntedWolf))
-                    {
-                        source.MurderPlayer(target);
-                    }
-                    else { }
-                }
+                source.MurderPlayer(target);
                 FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.BySelfBomb;
             }
         }

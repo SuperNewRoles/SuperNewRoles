@@ -2054,10 +2054,7 @@ namespace SuperNewRoles.Buttons
             NiceSelfBomberButton = new Buttons.CustomButton(
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.CanMove)
-                    {
                         NiceSelfBomber.SelfBomb();
-                    }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && ModeHandler.IsMode(ModeId.Default) && NiceSelfBomber.IsNiceSelfBomber(PlayerControl.LocalPlayer); },
                 () =>

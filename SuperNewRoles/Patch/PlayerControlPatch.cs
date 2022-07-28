@@ -180,7 +180,13 @@ namespace SuperNewRoles.Patches
                                 {
                                     if (RoleClass.NiceSelfBomber.IsCrewBom)
                                     {
-                                        if (!p.IsCrew())
+                                        if (p.IsCrew() && RoleClass.NiceSelfBomber.GetSucs())
+                                        {
+                                                __instance.RpcMurderPlayerCheck(p);
+
+                                               //もしクルーを巻き込む運ゲーが成功なら
+                                        }
+                                        else
                                         {
                                             if (RoleClass.NiceSelfBomber.GetSuc())
                                             {
@@ -188,29 +194,15 @@ namespace SuperNewRoles.Patches
 
                                                 //もしクルーじゃないand運ゲー成功なら
                                             }
-                                        }
-                                        else { }
-                                        if (p.IsCrew())
-                                        {
-                                            if (RoleClass.NiceSelfBomber.GetSucs())
-                                            {
-                                                __instance.RpcMurderPlayerCheck(p);
-
-                                                //もしクルーを巻き込む運ゲーが成功なら
-                                            }
-                                            else { }
                                         }
                                     }
                                     else
                                     {
-                                        if (!p.IsCrew())
+                                        if (!p.IsCrew() && RoleClass.NiceSelfBomber.GetSuc())
                                         {
-                                            if (RoleClass.NiceSelfBomber.GetSuc())
-                                            {
                                                 __instance.RpcMurderPlayerCheck(p);
 
                                                 //もしクルーじゃないand運ゲー成功なら
-                                            }
                                         }
                                     }
                                 }
