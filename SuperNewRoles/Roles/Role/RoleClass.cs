@@ -162,6 +162,7 @@ namespace SuperNewRoles.Roles
             Spelunker.ClearAndReload();
             SuicidalIdeation.ClearAndReload();
             Nun.ClearAndReload();
+            PartTimer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2633,6 +2634,16 @@ namespace SuperNewRoles.Roles
             {
                 NunPlayer = new();
                 CoolTime = CustomOptions.NunCoolTime.GetFloat();
+            }
+        }
+        public static class PartTimer
+        {
+            public static List<PlayerControl> PartTimerPlayer;
+            public static Color32 color = new(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                PartTimerPlayer = new();
+                
             }
         }
         //新ロールクラス

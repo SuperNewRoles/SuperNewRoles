@@ -142,6 +142,7 @@ namespace SuperNewRoles.CustomRPC
         Spelunker,
         SuicidalIdeation,
         Nun,
+        PartTimer,
         //RoleId
     }
 
