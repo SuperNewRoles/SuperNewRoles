@@ -2621,10 +2621,11 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> TacticianPlayer;
             public static Color32 color = ImpostorRed;
+            public static bool CanUseVent;
             public static void ClearAndReload()
             {
                 TacticianPlayer = new();
-                //くりあぁあんどりろぉどぉ
+                CanUseVent = CustomOptions.TacticianCanUseVent.GetBool();
             }
         }
         //新ロールクラス
