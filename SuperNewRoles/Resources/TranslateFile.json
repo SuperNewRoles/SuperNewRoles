@@ -4132,6 +4132,26 @@
         "11": "\u306c\u30fc\u3093",
         "13": "\u545c\u545c\u54bd\u54bd"
     },
+    "PartTimerName": {
+        "0": "PartTimer",
+        "11": "\u30d5\u30ea\u30fc\u30bf\u30fc",
+        "13": "\u5f17\u91cc\u7279 "
+    },
+    "PartTimerTitle1": {
+        "0": "If you want a part-time job...!",
+        "11": "\u30d0\u30a4\u30c8\u3059\u308b\u306a\u3089\u2026\uff01 ",
+        "13": "\u5982\u679c\u4f60\u60f3\u505a\u517c\u804c\u5de5\u4f5c...!"
+    },
+    "PartTimerDeathTurn": {
+        "0": "Number of turns to die from unbited status",
+        "11": "\u672a\u30d0\u30a4\u30c8\u306e\u72b6\u614b\u304b\u3089\u6b7b\u4ea1\u3059\u308b\u30bf\u30fc\u30f3\u6570",
+        "13": "\u6b7b\u4e8e\u672a\u88ab\u54ac\u7684\u72b6\u6001\u7684\u56de\u5408\u6570\u3002"
+    },
+    "PartTimerIsCheckTargetRole": {
+        "0": "I can see your part-time position.",
+        "11": "\u30d0\u30a4\u30c8\u5148\u306e\u5f79\u8077\u304c\u898b\u3048\u308b",
+        "13": "\u53ef\u89c1\u517c\u804c\u5c97\u4f4d\u3002"
+    },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
         "11": "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01",

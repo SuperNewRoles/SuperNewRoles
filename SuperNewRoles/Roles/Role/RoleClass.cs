@@ -2640,10 +2640,50 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> PartTimerPlayer;
             public static Color32 color = new(0, 255, 0, byte.MaxValue);
+            public static int DeathDefaultTurn;
+            public static int DeathTurn;
+            public static float CoolTime;
+            public static bool IsCheckTargetRole;
+            public static Dictionary<byte, byte> Datas;
+            public static bool IsLocalOn
+            {
+                get
+                {
+                    return Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
+                }
+            }
+            public static PlayerControl CurrentTarget
+            {
+                get
+                {
+                    return IsLocalOn ? ModHelpers.playerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
+                }
+            }
+            public static Dictionary<PlayerControl, PlayerControl> PlayerDatas
+            {
+                get
+                {
+                    if (_playerDatas.Count != Datas.Count)
+                    {
+                        Dictionary<PlayerControl, PlayerControl> newdic = new();
+                        foreach (var data in Datas)
+                        {
+                            newdic.Add(ModHelpers.playerById(data.Key), ModHelpers.playerById(data.Value));
+                        }
+                        _playerDatas = newdic;
+                    }
+                    return _playerDatas;
+                }
+            }
+            private static Dictionary<PlayerControl, PlayerControl> _playerDatas;
             public static void ClearAndReload()
             {
                 PartTimerPlayer = new();
-                
+                DeathTurn = DeathDefaultTurn = CustomOptions.PartTimerDeathTurn.GetInt();
+                CoolTime = CustomOptions.PartTimerCoolTime.GetFloat();
+                IsCheckTargetRole = CustomOptions.PartTimerIsCheckTargetRole.GetBool();
+                Datas = new();
+                _playerDatas = new();
             }
         }
         //新ロールクラス
