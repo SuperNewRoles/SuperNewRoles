@@ -154,6 +154,7 @@ namespace SuperNewRoles.Roles
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
             ToiletFan.ClearAndReload();
+            SatsumaAndImo.ClearAndReload();
             EvilButtoner.ClearAndReload();
             NiceButtoner.ClearAndReload();
             Finder.ClearAndReload();
@@ -2614,6 +2615,19 @@ namespace SuperNewRoles.Roles
                 AddTimeLeft = CustomOptions.SuicidalIdeationAddTimeLeft.GetFloat();
                 ButtonTimer = DateTime.Now;
                 CompletedTask = 0;
+            }
+        }
+        public static class SatsumaAndImo
+        {
+            public static List<PlayerControl> SatsumaAndImoPlayer;
+            public static Color32 color = new(153, 0, 68, byte.MaxValue);
+            public static int TeamNumber;
+            public static void ClearAndReload()
+            {
+                SatsumaAndImoPlayer = new();
+                TeamNumber = 1;
+                //1=クルー
+                //2=マッド
             }
         }
         //新ロールクラス

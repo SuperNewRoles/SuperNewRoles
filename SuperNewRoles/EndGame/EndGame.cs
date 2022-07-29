@@ -505,6 +505,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Tuna.TunaPlayer);
             notWinners.AddRange(RoleClass.BlackCat.BlackCatPlayer);
             notWinners.AddRange(RoleClass.Neet.NeetPlayer);
+            notWinners.AddRange(RoleClass.SatsumaAndImo.SatsumaAndImoPlayer);
             notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
             notWinners.AddRange(RoleClass.SuicidalIdeation.SuicidalIdeationPlayer);
 
@@ -669,6 +670,14 @@ namespace SuperNewRoles.EndGame
                     {
                         WinningPlayerData wpd = new(cp.Data);
                         TempData.winners.Add(wpd);
+                    }
+                }
+                foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
+                {
+                    WinningPlayerData wpd = new(smp.Data);
+                    if (RoleClass.SatsumaAndImo.TeamNumber == 2)//マッドなら
+                    {
+                        TempData.winners.Add(wpd);//さつまいもも勝ち
                     }
                 }
             }

@@ -559,6 +559,9 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
                     break;
+                case (RoleId.SatsumaAndImo):
+                    RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.Add(player);
+                    break;
                 case RoleId.EvilButtoner:
                     RoleClass.EvilButtoner.EvilButtonerPlayer.Add(player);
                     break;
@@ -936,6 +939,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (RoleId.SatsumaAndImo):
+                    RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.EvilButtoner:
                     RoleClass.EvilButtoner.EvilButtonerPlayer.RemoveAll(ClearRemove);
@@ -1436,6 +1442,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player)) return RoleId.Neet;
                 else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
+                else if (RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.IsCheckListPlayerControl(player)) return RoleId.SatsumaAndImo;
                 else if (RoleClass.EvilButtoner.EvilButtonerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilButtoner;
                 else if (RoleClass.NiceButtoner.NiceButtonerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceButtoner;
                 else if (RoleClass.Finder.FinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Finder;
