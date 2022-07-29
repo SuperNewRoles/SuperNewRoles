@@ -41,7 +41,7 @@ namespace SuperNewRoles.CustomCosmetics
             FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
             running = true;
         }
-        private static string sanitizeResourcePath(string res)
+        private static string SanitizeResourcePath(string res)
         {
             if (res == null || !res.EndsWith(".png"))
                 return null;
@@ -52,7 +52,7 @@ namespace SuperNewRoles.CustomCosmetics
                     .Replace("..", "");
             return res;
         }
-        private static bool doesResourceRequireDownload(string respath, string reshash, MD5 md5)
+        private static bool DoesResourceRequireDownload(string respath, string reshash, MD5 md5)
         {
             if (reshash == null || !File.Exists(respath))
                 return true;
@@ -89,7 +89,7 @@ namespace SuperNewRoles.CustomCosmetics
                         CustomPlates.CustomPlate info = new()
                         {
                             name = current["name"]?.ToString(),
-                            resource = sanitizeResourcePath(current["resource"]?.ToString())
+                            resource = SanitizeResourcePath(current["resource"]?.ToString())
                         };
                         if (info.resource == null || info.name == null) // required
                             continue;
@@ -105,7 +105,7 @@ namespace SuperNewRoles.CustomCosmetics
                 MD5 md5 = MD5.Create();
                 foreach (CustomPlates.CustomPlate data in platedatas)
                 {
-                    if (doesResourceRequireDownload(filePath + data.resource, data.reshasha, md5))
+                    if (DoesResourceRequireDownload(filePath + data.resource, data.reshasha, md5))
                         markedfordownload.Add(data.resource);
                 }
 
