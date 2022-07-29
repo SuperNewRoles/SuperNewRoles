@@ -61,7 +61,7 @@ namespace SuperNewRoles.Roles
                                             p.RpcMurderPlayer(p);
                                         }
                                     }
-                                    var player = ModHelpers.playerById(data.Key);
+                                    var player = ModHelpers.PlayerById(data.Key);
                                     var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
                                     Writer.Write(player.PlayerId);
                                     Writer.EndRPC();

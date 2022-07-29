@@ -45,7 +45,7 @@ namespace SuperNewRoles.MapCustoms.Airship
             switch (status)
             {
                 case Status.UseConsole:
-                    PlayerControl useplayer = ModHelpers.playerById(data1);
+                    PlayerControl useplayer = ModHelpers.PlayerById(data1);
                     if (UsePlayer != null)
                     {
                         if (data1 == CachedPlayer.LocalPlayer.PlayerId)
@@ -71,7 +71,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                     }
                     break;
                 case Status.Join:
-                    PlayerControl player = ModHelpers.playerById(data1);
+                    PlayerControl player = ModHelpers.PlayerById(data1);
                     if (player == null) return;
                     if (data2 == 0)
                     {

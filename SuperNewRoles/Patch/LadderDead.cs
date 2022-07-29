@@ -36,7 +36,7 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (var data in TargetLadderData)
                     {
-                        PlayerControl player = ModHelpers.playerById(data.Key);
+                        PlayerControl player = ModHelpers.PlayerById(data.Key);
                         if (player.IsDead()) continue;
                         if (Vector2.Distance(data.Value, player.transform.position) < 0.5f)
                         {
@@ -59,7 +59,7 @@ namespace SuperNewRoles.Patch
                 if (sourcepos.y > targetpos.y)
                 {
                     if (!(ModHelpers.IsSucsessChance(CustomOptions.LadderDeadChance.GetSelection() + 1) ||
-                        (__instance.myPlayer.IsRole(RoleId.SuicidalIdeation) && ModHelpers.IsSucsessChance(CustomOptions.SuicidalIdeationFallProbability.GetSelection() + 1)) || 
+                        (__instance.myPlayer.IsRole(RoleId.SuicidalIdeation) && ModHelpers.IsSucsessChance(CustomOptions.SuicidalIdeationFallProbability.GetSelection() + 1)) ||
                         (__instance.myPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSucsessChance(RoleClass.Spelunker.LadderDeathChance))
                         ))
                     {

@@ -2053,7 +2053,7 @@ namespace SuperNewRoles.Buttons
             };
 
             SuicidalIdeationButton = new CustomButton(
-                () =>{},
+                () => { },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SuicidalIdeation; },
                 () =>
                 {

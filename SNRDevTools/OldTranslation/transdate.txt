@@ -823,4 +823,7 @@ ToiletCoolDownSetting,Toilet Cool Time,トイレクールタイム
 ToiletName,DoorOpen,ドア開放
 PolusrandomSpawn,RandomSpawn,ランダムスポーン
 NotImpostorExiled,Not taking the Imposter off the road,インポスターを道連れにしない
+SatsumaAndImoName,Satsuma And Imo,さつまといも
+SatsumaAndImoTitle1,Let's spin your palm around.,手のひらをくるくるまわそう。
+SatsumaAndImoDescription,Each meeting will be replaced by a crewmate and a madmate.\nInitially it is crewmate.,会議ごとにクルーメイトとマッドメイトで入れ替わります。\n初めはクルーメイトです。
 NeutralSubIntro,Think only of yourself. Use others.,自分の事だけ考えろ。他人の事は利用せよ。

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor
@@ -9,6 +10,14 @@ namespace SuperNewRoles.Roles.Impostor
     public static class Nun
     {
         //ここにコードを書きこんでください
+        [HarmonyPatch(typeof(Console), nameof(Console.Use))]
+        public static class MapConsoleCanUsePatch
+        {
+            public static void Postfix(Console __instance)
+            {
+                Logger.Info(__instance.name,"やったぜ");
+            }
+        }
         static bool Is = false;
         public static IEnumerator NotMoveUsePlatform(MovingPlatformBehaviour __instance)
         {

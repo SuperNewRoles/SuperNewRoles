@@ -423,7 +423,7 @@ namespace SuperNewRoles.EndGame
         }
 
         public static void Postfix()
-    { 
+        {
             if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Zombie))
             {
                 PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();
@@ -505,6 +505,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Tuna.TunaPlayer);
             notWinners.AddRange(RoleClass.BlackCat.BlackCatPlayer);
             notWinners.AddRange(RoleClass.Neet.NeetPlayer);
+            notWinners.AddRange(RoleClass.SatsumaAndImo.SatsumaAndImoPlayer);
             notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
             notWinners.AddRange(RoleClass.SuicidalIdeation.SuicidalIdeationPlayer);
             notWinners.AddRange(RoleClass.PartTimer.PartTimerPlayer);
@@ -672,6 +673,14 @@ namespace SuperNewRoles.EndGame
                         TempData.winners.Add(wpd);
                     }
                 }
+                foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
+                {
+                    WinningPlayerData wpd = new(smp.Data);
+                    if (RoleClass.SatsumaAndImo.TeamNumber == 2)//マッドなら
+                    {
+                        TempData.winners.Add(wpd);//さつまいもも勝ち
+                    }
+                }
             }
 
             if (ModeHandler.IsMode(ModeId.BattleRoyal))
@@ -770,7 +779,7 @@ namespace SuperNewRoles.EndGame
             foreach (PlayerControl p in RoleClass.SuicidalIdeation.SuicidalIdeationPlayer)
             {
                 var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
-                if (p.IsAlive() && playerTotal > playerCompleted) 
+                if (p.IsAlive() && playerTotal > playerCompleted)
                 {
                     TempData.winners.Add(new WinningPlayerData(p.Data));
                 }
@@ -932,7 +941,7 @@ namespace SuperNewRoles.EndGame
             {
                 if (ExileController.Instance != null && ExileController.Instance.exiled != null && ModeHandler.IsMode(ModeId.Default))
                 {
-                    PlayerControl player = ModHelpers.playerById(ExileController.Instance.exiled.Object.PlayerId);
+                    PlayerControl player = ModHelpers.PlayerById(ExileController.Instance.exiled.Object.PlayerId);
                     if (player == null) return;
                     FinalStatusPatch.FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Exiled;
                     // Exile role text

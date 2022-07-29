@@ -75,7 +75,7 @@ namespace SuperNewRoles.Mode.Werewolf
                 }
                 foreach (int playerid in WolfKillPlayers)
                 {
-                    PlayerControl player = ModHelpers.playerById((byte)playerid);
+                    PlayerControl player = ModHelpers.PlayerById((byte)playerid);
                     if (player != null) player.RpcMurderPlayer(player);
                 }
             }
@@ -84,8 +84,8 @@ namespace SuperNewRoles.Mode.Werewolf
                 Time = 3;
                 foreach (var players in SoothRoles)
                 {
-                    PlayerControl source = ModHelpers.playerById((byte)players.Key);
-                    PlayerControl target = ModHelpers.playerById((byte)players.Value);
+                    PlayerControl source = ModHelpers.PlayerById((byte)players.Key);
+                    PlayerControl target = ModHelpers.PlayerById((byte)players.Value);
                     if (source == null || target == null || source.Data.Disconnected) break;
                     string Chat = "";
                     var RoleDate = IntroDate.GetIntroDate(target.GetRole(), target);
@@ -115,7 +115,7 @@ namespace SuperNewRoles.Mode.Werewolf
                 }
                 foreach (var players in HunterKillPlayers)
                 {
-                    var player = ModHelpers.playerById((byte)players);
+                    var player = ModHelpers.PlayerById((byte)players);
                     player.RpcMurderPlayer(player);
                 }
                 if (Time <= 9)
@@ -127,7 +127,7 @@ namespace SuperNewRoles.Mode.Werewolf
                     GameData.PlayerInfo target;
                     try
                     {
-                        target = ModHelpers.playerById((byte)WolfKillPlayers[0]).Data;
+                        target = ModHelpers.PlayerById((byte)WolfKillPlayers[0]).Data;
                     }
                     catch
                     {

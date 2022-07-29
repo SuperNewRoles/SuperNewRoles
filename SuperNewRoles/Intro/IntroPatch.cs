@@ -140,6 +140,7 @@ namespace SuperNewRoles.Patches
                         case RoleId.JackalFriends:
                         case RoleId.SeerFriends:
                         case RoleId.MayorFriends:
+                        case RoleId.SatsumaAndImo:
                             IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
                             __instance.BackgroundBar.material.color = Intro.color;
                             __instance.TeamTitle.text = ModTranslation.GetString(Intro.NameKey + "Name");
@@ -189,7 +190,7 @@ namespace SuperNewRoles.Patches
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(SetTime);
                 }
-                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
         }
 

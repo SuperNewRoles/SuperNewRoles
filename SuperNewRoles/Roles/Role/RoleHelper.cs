@@ -136,7 +136,7 @@ namespace SuperNewRoles
             RoleClass.Lovers.LoversPlayer.Add(sets);
             if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
-                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
             ChacheManager.ResetLoversChache();
         }
@@ -559,6 +559,9 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
                     break;
+                case (RoleId.SatsumaAndImo):
+                    RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.Add(player);
+                    break;
                 case RoleId.EvilButtoner:
                     RoleClass.EvilButtoner.EvilButtonerPlayer.Add(player);
                     break;
@@ -577,7 +580,7 @@ namespace SuperNewRoles
                 case RoleId.Spelunker:
                     RoleClass.Spelunker.SpelunkerPlayer.Add(player);
                     break;
-                case (RoleId.SuicidalIdeation):
+                case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.Add(player);
                     break;
                 case RoleId.Nun:
@@ -602,7 +605,7 @@ namespace SuperNewRoles
             }
             if (flag)
             {
-                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
             SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
         }
@@ -943,6 +946,9 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
+                case (RoleId.SatsumaAndImo):
+                    RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.EvilButtoner:
                     RoleClass.EvilButtoner.EvilButtonerPlayer.RemoveAll(ClearRemove);
                     break;
@@ -961,10 +967,10 @@ namespace SuperNewRoles
                 case RoleId.Spelunker:
                     RoleClass.Spelunker.SpelunkerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (RoleId.SuicidalIdeation):
+                case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
                     break;
-                    case RoleId.Nun:
+                case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.PartTimer:
@@ -1026,7 +1032,7 @@ namespace SuperNewRoles
                     case RoleId.PartTimer:
                 //タスククリアか
                     IsTaskClear = true;
-                    break; 
+                    break;
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
@@ -1450,6 +1456,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player)) return RoleId.Neet;
                 else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
+                else if (RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.IsCheckListPlayerControl(player)) return RoleId.SatsumaAndImo;
                 else if (RoleClass.EvilButtoner.EvilButtonerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilButtoner;
                 else if (RoleClass.NiceButtoner.NiceButtonerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceButtoner;
                 else if (RoleClass.Finder.FinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Finder;
