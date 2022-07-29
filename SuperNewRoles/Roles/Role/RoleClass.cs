@@ -154,6 +154,7 @@ namespace SuperNewRoles.Roles
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
             ToiletFan.ClearAndReload();
+            SatsumaAndImo.ClearAndReload();
             EvilButtoner.ClearAndReload();
             NiceButtoner.ClearAndReload();
             Finder.ClearAndReload();
@@ -1338,12 +1339,12 @@ namespace SuperNewRoles.Roles
             {
                 if (MadKillerPair.ContainsKey(p.PlayerId))
                 {
-                    return ModHelpers.playerById(MadKillerPair[p.PlayerId]);
+                    return ModHelpers.PlayerById(MadKillerPair[p.PlayerId]);
                 }
                 else if (MadKillerPair.ContainsValue(p.PlayerId))
                 {
                     var key = MadKillerPair.GetKey(p.PlayerId);
-                    return key == null ? null : ModHelpers.playerById((byte)key);
+                    return key == null ? null : ModHelpers.PlayerById((byte)key);
                 }
                 return null;
             }
@@ -2515,7 +2516,7 @@ namespace SuperNewRoles.Roles
                         List<PlayerControl> newList = new();
                         foreach (byte playerid in RevolutionedPlayerId)
                         {
-                            PlayerControl player = ModHelpers.playerById(playerid);
+                            PlayerControl player = ModHelpers.PlayerById(playerid);
                             if (player == null) continue;
                             newList.Add(player);
                         }
@@ -2633,6 +2634,19 @@ namespace SuperNewRoles.Roles
             {
                 NunPlayer = new();
                 CoolTime = CustomOptions.NunCoolTime.GetFloat();
+            }
+        }
+        public static class SatsumaAndImo
+        {
+            public static List<PlayerControl> SatsumaAndImoPlayer;
+            public static Color32 color = new(153, 0, 68, byte.MaxValue);
+            public static int TeamNumber;
+            public static void ClearAndReload()
+            {
+                SatsumaAndImoPlayer = new();
+                TeamNumber = 1;
+                //1=クルー
+                //2=マッド
             }
         }
         //新ロールクラス

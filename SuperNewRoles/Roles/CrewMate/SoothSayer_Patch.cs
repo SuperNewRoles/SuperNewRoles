@@ -22,7 +22,7 @@ namespace SuperNewRoles.Roles
         private static string namedate;
         static void SoothSayerOnClick(int Index, MeetingHud __instance)
         {
-            var Target = ModHelpers.playerById(__instance.playerStates[Index].TargetPlayerId);
+            var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
             var introdate = Target.GetRole();
             if (RoleClass.SoothSayer.DisplayMode)
             {
@@ -56,7 +56,7 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                    var player = ModHelpers.playerById(__instance.playerStates[i].TargetPlayerId);
+                    var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
                     if (player.IsAlive() && !RoleClass.SoothSayer.DisplayedPlayer.Contains(player.PlayerId) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
@@ -76,7 +76,7 @@ namespace SuperNewRoles.Roles
 
         static void SpiritOnClick(int Index, MeetingHud __instance)
         {
-            var Target = ModHelpers.playerById(__instance.playerStates[Index].TargetPlayerId);
+            var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
             var introdate = Target.GetRole();
             namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
             if (RoleClass.SpiritMedium.DisplayMode)
@@ -111,7 +111,7 @@ namespace SuperNewRoles.Roles
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
 
-                    var player = ModHelpers.playerById(__instance.playerStates[i].TargetPlayerId);
+                    var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
                     if (!player.Data.Disconnected && player.IsDead() && !RoleClass.SoothSayer.DisplayedPlayer.Contains(player.PlayerId) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
