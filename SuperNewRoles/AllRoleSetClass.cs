@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -49,7 +49,7 @@ namespace SuperNewRoles
         }
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
-    class startgamepatch
+    class Startgamepatch
     {
         public static void Postfix()
         {
@@ -395,12 +395,12 @@ namespace SuperNewRoles
         }
         public static void SetPlayerNum()
         {
-            ImpostorPlayerNum = (int)CustomOptions.impostorRolesCountMax.GetFloat();
-            ImpostorGhostRolePlayerNum = (int)CustomOptions.impostorGhostRolesCountMax.GetFloat();
-            NeutralPlayerNum = (int)CustomOptions.neutralRolesCountMax.GetFloat();
-            NeutralGhostRolePlayerNum = (int)CustomOptions.neutralGhostRolesCountMax.GetFloat();
-            CrewMatePlayerNum = (int)CustomOptions.crewmateRolesCountMax.GetFloat();
-            CrewMateGhostRolePlayerNum = (int)CustomOptions.crewmateGhostRolesCountMax.GetFloat();
+            ImpostorPlayerNum = CustomOptions.impostorRolesCountMax.GetInt();
+            ImpostorGhostRolePlayerNum = CustomOptions.impostorGhostRolesCountMax.GetInt();
+            NeutralPlayerNum = CustomOptions.neutralRolesCountMax.GetInt();
+            NeutralGhostRolePlayerNum = CustomOptions.neutralGhostRolesCountMax.GetInt();
+            CrewMatePlayerNum = CustomOptions.crewmateRolesCountMax.GetInt();
+            CrewMateGhostRolePlayerNum = CustomOptions.crewmateGhostRolesCountMax.GetInt();
         }
         public static void ImpostorRandomSelect()
         {
@@ -924,11 +924,13 @@ namespace SuperNewRoles
                 RoleId.SuicideWisher => CustomOptions.SuicideWisherPlayerCount.GetFloat(),
                 RoleId.Neet => CustomOptions.NeetPlayerCount.GetFloat(),
                 RoleId.ToiletFan => CustomOptions.ToiletFanPlayerCount.GetFloat(),
-                RoleId.EvilBotaner => CustomOptions.EvilBotanerPlayerCount.GetFloat(),
-                RoleId.NiceBotaner => CustomOptions.NiceBotanerPlayerCount.GetFloat(),
+                RoleId.EvilButtoner => CustomOptions.EvilButtonerPlayerCount.GetFloat(),
+                RoleId.NiceButtoner => CustomOptions.NiceButtonerPlayerCount.GetFloat(),
                 RoleId.Finder => CustomOptions.FinderPlayerCount.GetFloat(),
                 RoleId.Revolutionist => CustomOptions.RevolutionistPlayerCount.GetFloat(),
                 RoleId.Dictator => CustomOptions.DictatorPlayerCount.GetFloat(),
+                RoleId.Spelunker => CustomOptions.SpelunkerPlayerCount.GetFloat(),
+                RoleId.SuicidalIdeation => CustomOptions.SuicidalIdeationPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

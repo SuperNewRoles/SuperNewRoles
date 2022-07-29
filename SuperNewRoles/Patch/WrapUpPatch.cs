@@ -77,7 +77,7 @@ namespace SuperNewRoles.Patch
             CountChanger.CountChangerPatch.WrapUpPatch();
             CustomButton.MeetingEndedUpdate();
 
-            PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             new LateTask(() =>
             {
                 RoleClass.IsMeeting = false;
@@ -86,6 +86,7 @@ namespace SuperNewRoles.Patch
             ModeHandler.Wrapup(exiled);
             RedRidingHood.WrapUp(exiled);
             Roles.Neutral.Revolutionist.WrapUp();
+            Roles.Neutral.Spelunker.WrapUp();
             if (exiled == null) return;
 
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();
@@ -94,7 +95,7 @@ namespace SuperNewRoles.Patch
             exiled.Object.Exiled();
             exiled.IsDead = true;
             FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
-            var Player = ModHelpers.playerById(exiled.PlayerId);
+            var Player = ModHelpers.PlayerById(exiled.PlayerId);
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (RoleClass.Lovers.SameDie && Player.IsLovers())

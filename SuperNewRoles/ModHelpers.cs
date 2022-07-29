@@ -43,7 +43,7 @@ namespace SuperNewRoles
 
         public static Sprite CreateSprite(string path, bool fromDisk = false)
         {
-            Texture2D texture = fromDisk ? ModHelpers.loadTextureFromDisk(path) : ModHelpers.LoadTextureFromResources(path);
+            Texture2D texture = fromDisk ? ModHelpers.LoadTextureFromDisk(path) : ModHelpers.LoadTextureFromResources(path);
             if (texture == null)
                 return null;
             Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
@@ -401,6 +401,14 @@ namespace SuperNewRoles
             var client = player.GetClient();
             return client == null ? -1 : client.Id;
         }
+        public static bool IsSucsessChance(int SucsessChance, int MaxChance = 10)
+        {
+            //成功確率が0%ならfalseを返す
+            if (SucsessChance == 0) return false;
+            //成功確率が最大と一緒かそれ以上ならtrueを返す
+            if (SucsessChance >= MaxChance) return true;
+            return UnityEngine.Random.Range(1, MaxChance) <= SucsessChance;
+        }
         public static bool HidePlayerName(PlayerControl source, PlayerControl target)
         {
             if (source == null || target == null) return true;
@@ -510,7 +518,7 @@ namespace SuperNewRoles
             }
             return MyRendCache[player.PlayerId];
         }
-        public static SpriteRenderer rend(this PlayerPhysics player)
+        public static SpriteRenderer Rend(this PlayerPhysics player)
         {
             byte PlayerId = player.myPlayer.PlayerId;
             bool Isnull = true;
@@ -604,7 +612,7 @@ namespace SuperNewRoles
             return player.transform.FindChild("Visor").GetComponent<VisorLayer>();
         }
 
-        public static Texture2D loadTextureFromDisk(string path)
+        public static Texture2D LoadTextureFromDisk(string path)
         {
             try
             {
@@ -632,7 +640,7 @@ namespace SuperNewRoles
             return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
         }
 
-        public static PlayerControl playerById(byte id)
+        public static PlayerControl PlayerById(byte id)
         {
             foreach (CachedPlayer player in CachedPlayer.AllPlayers)
             {

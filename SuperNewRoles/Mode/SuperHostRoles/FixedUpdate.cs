@@ -263,7 +263,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     foreach (var ChangePlayerData in ChangePlayers)
                     {
-                        PlayerControl ChangePlayer = ModHelpers.playerById(ChangePlayerData.Key);
+                        PlayerControl ChangePlayer = ModHelpers.PlayerById(ChangePlayerData.Key);
                         if (ChangePlayer != null)
                         {
                             ChangePlayer.RpcSetNamePrivate(ChangePlayerData.Value, player);

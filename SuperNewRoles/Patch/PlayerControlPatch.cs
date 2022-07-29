@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -64,7 +64,7 @@ namespace SuperNewRoles.Patches
                                     if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
                                         RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
                                     else
-                                        RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.RemoteSheriffKillMaxCount.GetFloat() - 1;
+                                        RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = CustomOptions.RemoteSheriffKillMaxCount.GetInt() - 1;
                                     if (RoleClass.RemoteSheriff.IsKillTeleport)
                                         __instance.RpcMurderPlayerCheck(target);
                                     else
@@ -156,19 +156,19 @@ namespace SuperNewRoles.Patches
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
                         return false;
-                    case RoleId.NiceBotaner:
-                        if (RoleClass.NiceBotaner.SkillCountSHR.ContainsKey(__instance.PlayerId))
-                            RoleClass.NiceBotaner.SkillCountSHR[__instance.PlayerId]--;
+                    case RoleId.NiceButtoner:
+                        if (RoleClass.NiceButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
+                            RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId]--;
                         else
-                            RoleClass.NiceBotaner.SkillCountSHR[__instance.PlayerId] = (int)CustomOptions.NiceBotanerCount.GetFloat() - 1;
-                        if (AmongUsClient.Instance.AmHost && RoleClass.NiceBotaner.SkillCountSHR[__instance.PlayerId] + 1 >= 1) EvilBotaner.EvilBotanerStartMeetingSHR(__instance);
+                            RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptions.NiceButtonerCount.GetInt() - 1;
+                        if (AmongUsClient.Instance.AmHost && RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1) EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
                         return false;
-                    case RoleId.EvilBotaner:
-                        if (RoleClass.EvilBotaner.SkillCountSHR.ContainsKey(__instance.PlayerId))
-                            RoleClass.EvilBotaner.SkillCountSHR[__instance.PlayerId]--;
+                    case RoleId.EvilButtoner:
+                        if (RoleClass.EvilButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
+                            RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId]--;
                         else
-                            RoleClass.EvilBotaner.SkillCountSHR[__instance.PlayerId] = (int)CustomOptions.EvilBotanerCount.GetFloat() - 1;
-                        if (AmongUsClient.Instance.AmHost && RoleClass.EvilBotaner.SkillCountSHR[__instance.PlayerId] + 1 >= 1) EvilBotaner.EvilBotanerStartMeetingSHR(__instance);
+                            RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptions.EvilButtonerCount.GetInt() - 1;
+                        if (AmongUsClient.Instance.AmHost && RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1) EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
                         return false;
                 }
             }
@@ -405,7 +405,7 @@ namespace SuperNewRoles.Patches
                     {
                         case RoleId.RemoteSheriff:
                         case RoleId.ToiletFan:
-                        case RoleId.NiceBotaner:
+                        case RoleId.NiceButtoner:
                             return false;
                         case RoleId.Egoist:
                             if (!RoleClass.Egoist.UseKill) return false;
@@ -444,7 +444,7 @@ namespace SuperNewRoles.Patches
                                     }
                                     else
                                     {
-                                        RoleClass.Sheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.SheriffKillMaxCount.GetFloat() - 1;
+                                        RoleClass.Sheriff.KillCount[__instance.PlayerId] = CustomOptions.SheriffKillMaxCount.GetInt() - 1;
                                     }
                                     __instance.RpcMurderPlayerCheck(target);
                                     Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
@@ -607,7 +607,7 @@ namespace SuperNewRoles.Patches
                     {
                         if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
                         {
-                            RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.GetFloat() - 1;
+                            RoleClass.StuntMan.GuardCount[target.PlayerId] = CustomOptions.StuntManMaxGuardCount.GetInt() - 1;
                             target.RpcProtectPlayer(target, 0);
                             new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
                             return false;
