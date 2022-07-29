@@ -4127,6 +4127,11 @@
         "11": "\u306c\u30fc\u3093",
         "13": "\u545c\u545c\u54bd\u54bd"
     },
+    "NunButtonName": {
+        "0": "Nun",
+        "11": "\u306c\u30fc\u3093",
+        "13": "\u545c\u545c\u54bd\u54bd"
+    },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
         "11": "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01",

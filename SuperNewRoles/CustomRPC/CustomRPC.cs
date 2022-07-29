@@ -230,11 +230,8 @@ namespace SuperNewRoles.CustomRPC
                     airshipStatus.GapPlatform.Use(source);
                 } else
                 {
-                    if (UsePlatformPatch.coro != null)
-                    {
-                        airshipStatus.GapPlatform.StopCoroutine(UsePlatformPatch.coro);
-                    }
-                    UsePlatformPatch.coro = airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));
+                    airshipStatus.GapPlatform.StopAllCoroutines();
+                    airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));
                 }
             }
         }

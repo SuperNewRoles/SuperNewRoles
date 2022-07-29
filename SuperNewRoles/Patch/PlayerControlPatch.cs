@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -36,21 +36,6 @@ namespace SuperNewRoles.Patches
             else
             {
                 AmongUsClient.Instance.StartRpc(__instance.NetId, 32, (SendOption)1).EndMessage();
-            }
-            return false;
-        }
-    }
-    [HarmonyPatch(typeof(MovingPlatformBehaviour),nameof(MovingPlatformBehaviour.Use), new Type[] { typeof(PlayerControl) })]
-    public class UsePlatformPatch
-    {
-        public static Coroutine coro;
-        public static bool Prefix(MovingPlatformBehaviour __instance, PlayerControl player)
-        {
-            Vector3 val = __instance.transform.position - player.transform.position;
-            if (player.IsAlive())
-            {
-                __instance.IsDirty = true;
-                coro = __instance.StartCoroutine(__instance.UsePlatform(player));
             }
             return false;
         }
