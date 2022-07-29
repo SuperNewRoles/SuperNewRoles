@@ -41,8 +41,8 @@ namespace SuperNewRoles.Roles
             //SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:"+RandomPlayer.PlayerId+"\n生存:"+!RandomPlayer.IsDead());
         }
         /*public static Vector3 GetSwapPosition(byte SwapPlayerID, byte SwapperID){
-            var SwapPlayer = ModHelpers.playerById(SwapPlayerID);
-            var SwapperPlayer = ModHelpers.playerById(SwapperID);
+            var SwapPlayer = ModHelpers.PlayerById(SwapPlayerID);
+            var SwapperPlayer = ModHelpers.PlayerById(SwapperID);
             if (PlayerControl.LocalPlayer.IsRole(RoleId.PositionSwapper)){
                 return SwapPlayer.transform.position;
             }

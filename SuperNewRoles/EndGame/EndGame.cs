@@ -423,7 +423,7 @@ namespace SuperNewRoles.EndGame
         }
 
         public static void Postfix()
-    { 
+        {
             if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Zombie))
             {
                 PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();
@@ -769,7 +769,7 @@ namespace SuperNewRoles.EndGame
             foreach (PlayerControl p in RoleClass.SuicidalIdeation.SuicidalIdeationPlayer)
             {
                 var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
-                if (p.IsAlive() && playerTotal > playerCompleted) 
+                if (p.IsAlive() && playerTotal > playerCompleted)
                 {
                     TempData.winners.Add(new WinningPlayerData(p.Data));
                 }
@@ -922,7 +922,7 @@ namespace SuperNewRoles.EndGame
             {
                 if (ExileController.Instance != null && ExileController.Instance.exiled != null && ModeHandler.IsMode(ModeId.Default))
                 {
-                    PlayerControl player = ModHelpers.playerById(ExileController.Instance.exiled.Object.PlayerId);
+                    PlayerControl player = ModHelpers.PlayerById(ExileController.Instance.exiled.Object.PlayerId);
                     if (player == null) return;
                     FinalStatusPatch.FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Exiled;
                     // Exile role text

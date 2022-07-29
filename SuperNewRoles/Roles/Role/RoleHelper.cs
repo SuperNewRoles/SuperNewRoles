@@ -136,7 +136,7 @@ namespace SuperNewRoles
             RoleClass.Lovers.LoversPlayer.Add(sets);
             if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
-                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
             ChacheManager.ResetLoversChache();
         }
@@ -577,7 +577,7 @@ namespace SuperNewRoles
                 case RoleId.Spelunker:
                     RoleClass.Spelunker.SpelunkerPlayer.Add(player);
                     break;
-                case (RoleId.SuicidalIdeation):
+                case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.Add(player);
                     break;
                 //ロールアド
@@ -596,7 +596,7 @@ namespace SuperNewRoles
             }
             if (flag)
             {
-                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
             SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
         }
@@ -955,7 +955,7 @@ namespace SuperNewRoles
                 case RoleId.Spelunker:
                     RoleClass.Spelunker.SpelunkerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (RoleId.SuicidalIdeation):
+                case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
                     break;
                     //ロールリモベ
@@ -1013,7 +1013,7 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                     //タスククリアか
                     IsTaskClear = true;
-                    break; 
+                    break;
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&

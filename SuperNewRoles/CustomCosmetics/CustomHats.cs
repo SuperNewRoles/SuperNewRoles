@@ -47,7 +47,7 @@ namespace SuperNewRoles.CustomCosmetics
             public bool behind { get; set; }
         }
 
-        private static List<CustomHat> createCustomHatDetails(string[] hats, bool fromDisk = false)
+        private static List<CustomHat> CreateCustomHatDetails(string[] hats, bool fromDisk = false)
         {
             Dictionary<string, CustomHat> fronts = new();
             Dictionary<string, string> backs = new();
@@ -113,7 +113,7 @@ namespace SuperNewRoles.CustomCosmetics
 
         private static Sprite CreateHatSprite(string path, bool fromDisk = false)
         {
-            Texture2D texture = fromDisk ? ModHelpers.loadTextureFromDisk(path) : ModHelpers.LoadTextureFromResources(path);
+            Texture2D texture = fromDisk ? ModHelpers.LoadTextureFromDisk(path) : ModHelpers.LoadTextureFromResources(path);
             if (texture == null)
                 return null;
             Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
@@ -214,7 +214,7 @@ namespace SuperNewRoles.CustomCosmetics
                                          where r.StartsWith(hatres) && r.EndsWith(".png")
                                          select r).ToArray<string>();
 
-                        List<CustomHat> customhats = createCustomHatDetails(hats);
+                        List<CustomHat> customhats = CreateCustomHatDetails(hats);
                         foreach (CustomHat ch in customhats)
                             __instance.allHats.Add(CreateHatData(ch));
                     }
@@ -242,15 +242,15 @@ namespace SuperNewRoles.CustomCosmetics
                 if (currentAnimation == __instance.CurrentAnimationGroup.ClimbAnim || currentAnimation == __instance.CurrentAnimationGroup.ClimbDownAnim) return;
                 HatParent hp = __instance.myPlayer.HatRenderer();
                 if (hp.Hat == null) return;
-                HatExtension extend = hp.Hat.getHatExtension();
+                HatExtension extend = hp.Hat.GetHatExtension();
                 if (extend == null) return;
                 if (extend.FlipImage != null)
                 {
-                    hp.FrontLayer.sprite = __instance.rend().flipX ? extend.FlipImage : hp.Hat.hatViewData.viewData.MainImage;
+                    hp.FrontLayer.sprite = __instance.Rend().flipX ? extend.FlipImage : hp.Hat.hatViewData.viewData.MainImage;
                 }
                 if (extend.BackFlipImage != null)
                 {
-                    hp.BackLayer.sprite = __instance.rend().flipX ? extend.BackFlipImage : hp.Hat.hatViewData.viewData.BackImage;
+                    hp.BackLayer.sprite = __instance.Rend().flipX ? extend.BackFlipImage : hp.Hat.hatViewData.viewData.BackImage;
                 }
             }
         }
@@ -265,7 +265,7 @@ namespace SuperNewRoles.CustomCosmetics
                     string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\Test";
                     DirectoryInfo d = new(filePath);
                     string[] filePaths = d.GetFiles("*.png").Select(x => x.FullName).ToArray(); // Getting Text files
-                    List<CustomHat> hats = createCustomHatDetails(filePaths, true);
+                    List<CustomHat> hats = CreateCustomHatDetails(filePaths, true);
                     if (hats.Count > 0)
                     {
                         foreach (PlayerControl pc in CachedPlayer.AllPlayers)
@@ -288,7 +288,7 @@ namespace SuperNewRoles.CustomCosmetics
         private static float inventoryBot = -2.5f;
         private static readonly float inventoryZ = -2f;
 
-        public static void calcItemBounds(HatsTab __instance)
+        public static void CalcItemBounds(HatsTab __instance)
         {
             inventoryTop = __instance.scroller.Inner.position.y - 0.5f;
             inventoryBot = __instance.scroller.Inner.position.y - 4.5f;
@@ -299,7 +299,7 @@ namespace SuperNewRoles.CustomCosmetics
         {
             public static TMPro.TMP_Text textTemplate;
 
-            public static float createHatPackage(List<System.Tuple<HatData, HatExtension>> hats, string packageName, float YStart, HatsTab __instance)
+            public static float CreateHatPackage(List<System.Tuple<HatData, HatExtension>> hats, string packageName, float YStart, HatsTab __instance)
             {
                 float offset = YStart;
                 if (textTemplate != null)
@@ -371,7 +371,7 @@ namespace SuperNewRoles.CustomCosmetics
             public static List<ColorChip> Chips;
             public static bool Prefix(HatsTab __instance)
             {
-                calcItemBounds(__instance);
+                CalcItemBounds(__instance);
 
                 HatData[] unlockedHats = DestroyableSingleton<HatManager>.Instance.GetUnlockedHats();
                 Dictionary<string, List<System.Tuple<HatData, HatExtension>>> packages = new();
@@ -386,7 +386,7 @@ namespace SuperNewRoles.CustomCosmetics
 
                 foreach (HatData hatData in unlockedHats)
                 {
-                    HatExtension ext = hatData.getHatExtension();
+                    HatExtension ext = hatData.GetHatExtension();
 
                     if (ext != null)
                     {
@@ -416,7 +416,7 @@ namespace SuperNewRoles.CustomCosmetics
                 foreach (string key in orderedKeys)
                 {
                     List<System.Tuple<HatData, HatExtension>> value = packages[key];
-                    YOffset = createHatPackage(value, key, YOffset, __instance);
+                    YOffset = CreateHatPackage(value, key, YOffset, __instance);
                 }
 
                 __instance.scroller.ContentYBounds.max = -(YOffset + 3.0f + headerSize);
@@ -511,7 +511,7 @@ namespace SuperNewRoles.CustomCosmetics
             running = false;
         }
 
-        private static string sanitizeResourcePath(string res)
+        private static string SanitizeResourcePath(string res)
         {
             if (res == null || !res.EndsWith(".png"))
                 return null;
@@ -551,18 +551,18 @@ namespace SuperNewRoles.CustomCosmetics
                         {
                             name = current["name"]?.ToString(),
                             author = current["author"]?.ToString(),
-                            resource = sanitizeResourcePath(current["resource"]?.ToString())
+                            resource = SanitizeResourcePath(current["resource"]?.ToString())
                         };
                         if (info.resource == null || info.name == null) // required
                             continue;
                         info.reshasha = info.resource + info.name + info.author;
-                        info.backresource = sanitizeResourcePath(current["backresource"]?.ToString());
+                        info.backresource = SanitizeResourcePath(current["backresource"]?.ToString());
                         info.reshashb = current["reshashb"]?.ToString();
-                        info.climbresource = sanitizeResourcePath(current["climbresource"]?.ToString());
+                        info.climbresource = SanitizeResourcePath(current["climbresource"]?.ToString());
                         info.reshashc = current["reshashc"]?.ToString();
-                        info.flipresource = sanitizeResourcePath(current["flipresource"]?.ToString());
+                        info.flipresource = SanitizeResourcePath(current["flipresource"]?.ToString());
                         info.reshashf = current["reshashf"]?.ToString();
-                        info.backflipresource = sanitizeResourcePath(current["backflipresource"]?.ToString());
+                        info.backflipresource = SanitizeResourcePath(current["backflipresource"]?.ToString());
                         info.reshashbf = current["reshashbf"]?.ToString();
 
                         info.package = current["package"]?.ToString();
@@ -593,15 +593,15 @@ namespace SuperNewRoles.CustomCosmetics
                 MD5 md5 = MD5.Create();
                 foreach (CustomHatOnline data in hatdatas)
                 {
-                    if (doesResourceRequireDownload(filePath + data.resource, data.reshasha, md5))
+                    if (DoesResourceRequireDownload(filePath + data.resource, data.reshasha, md5))
                         markedfordownload.Add(data.resource);
-                    if (data.backresource != null && doesResourceRequireDownload(filePath + data.backresource, data.reshashb, md5))
+                    if (data.backresource != null && DoesResourceRequireDownload(filePath + data.backresource, data.reshashb, md5))
                         markedfordownload.Add(data.backresource);
-                    if (data.climbresource != null && doesResourceRequireDownload(filePath + data.climbresource, data.reshashc, md5))
+                    if (data.climbresource != null && DoesResourceRequireDownload(filePath + data.climbresource, data.reshashc, md5))
                         markedfordownload.Add(data.climbresource);
-                    if (data.flipresource != null && doesResourceRequireDownload(filePath + data.flipresource, data.reshashf, md5))
+                    if (data.flipresource != null && DoesResourceRequireDownload(filePath + data.flipresource, data.reshashf, md5))
                         markedfordownload.Add(data.flipresource);
-                    if (data.backflipresource != null && doesResourceRequireDownload(filePath + data.backflipresource, data.reshashbf, md5))
+                    if (data.backflipresource != null && DoesResourceRequireDownload(filePath + data.backflipresource, data.reshashbf, md5))
                         markedfordownload.Add(data.backflipresource);
                 }
 
@@ -630,7 +630,7 @@ namespace SuperNewRoles.CustomCosmetics
             return HttpStatusCode.OK;
         }
 
-        private static bool doesResourceRequireDownload(string respath, string reshash, MD5 md5)
+        private static bool DoesResourceRequireDownload(string respath, string reshash, MD5 md5)
         {
             if (reshash == null || !File.Exists(respath))
                 return true;
@@ -651,7 +651,7 @@ namespace SuperNewRoles.CustomCosmetics
     }
     public static class CustomHatExtensions
     {
-        public static CustomHats.HatExtension getHatExtension(this HatData hat)
+        public static CustomHats.HatExtension GetHatExtension(this HatData hat)
         {
             if (CustomHats.TestExt != null && CustomHats.TestExt.condition.Equals(hat.name))
             {
