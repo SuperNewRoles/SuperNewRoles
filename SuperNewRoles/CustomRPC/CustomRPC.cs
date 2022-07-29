@@ -221,7 +221,7 @@ namespace SuperNewRoles.CustomRPC
     {
         public static void UncheckedUsePlatform(byte playerid, bool IsMove)
         {
-            PlayerControl source = ModHelpers.playerById(playerid);
+            PlayerControl source = ModHelpers.PlayerById(playerid);
             AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
             if (airshipStatus)
             {
