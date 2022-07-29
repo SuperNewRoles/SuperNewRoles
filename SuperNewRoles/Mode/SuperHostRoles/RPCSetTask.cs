@@ -4,7 +4,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     class RPCSetTask
     {/*
                 if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
-                PlayerControl player = ModHelpers.playerById(playerId);
+                PlayerControl player = ModHelpers.PlayerById(playerId);
                 if (player == null) return false;
                 if (player.IsClearTask() && !player.IsRole(RoleId.Workperson))
                 {

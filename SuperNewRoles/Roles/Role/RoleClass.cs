@@ -1337,12 +1337,12 @@ namespace SuperNewRoles.Roles
             {
                 if (MadKillerPair.ContainsKey(p.PlayerId))
                 {
-                    return ModHelpers.playerById(MadKillerPair[p.PlayerId]);
+                    return ModHelpers.PlayerById(MadKillerPair[p.PlayerId]);
                 }
                 else if (MadKillerPair.ContainsValue(p.PlayerId))
                 {
                     var key = MadKillerPair.GetKey(p.PlayerId);
-                    return key == null ? null : ModHelpers.playerById((byte)key);
+                    return key == null ? null : ModHelpers.PlayerById((byte)key);
                 }
                 return null;
             }
@@ -2514,7 +2514,7 @@ namespace SuperNewRoles.Roles
                         List<PlayerControl> newList = new();
                         foreach (byte playerid in RevolutionedPlayerId)
                         {
-                            PlayerControl player = ModHelpers.playerById(playerid);
+                            PlayerControl player = ModHelpers.PlayerById(playerid);
                             if (player == null) continue;
                             newList.Add(player);
                         }

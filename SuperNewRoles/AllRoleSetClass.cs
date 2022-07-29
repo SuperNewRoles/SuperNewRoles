@@ -49,7 +49,7 @@ namespace SuperNewRoles
         }
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
-    class startgamepatch
+    class Startgamepatch
     {
         public static void Postfix()
         {

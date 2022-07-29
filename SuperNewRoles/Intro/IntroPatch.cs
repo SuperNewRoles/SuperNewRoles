@@ -189,7 +189,7 @@ namespace SuperNewRoles.Patches
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(SetTime);
                 }
-                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
         }
 
