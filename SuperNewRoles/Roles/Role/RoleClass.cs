@@ -2676,6 +2676,13 @@ namespace SuperNewRoles.Roles
                 }
             }
             private static Dictionary<PlayerControl, PlayerControl> _playerDatas;
+            public static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PartTimerButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 PartTimerPlayer = new();

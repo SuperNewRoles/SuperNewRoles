@@ -4152,6 +4152,11 @@
         "11": "\u30d0\u30a4\u30c8\u5148\u306e\u5f79\u8077\u304c\u898b\u3048\u308b",
         "13": "\u53ef\u89c1\u517c\u804c\u5c97\u4f4d\u3002"
     },
+    "PartTimerButtonName": {
+        "0": "PartTime",
+        "11": "\u30d0\u30a4\u30c8",
+        "13": "\u5b57\u8282"
+    },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
         "11": "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01",

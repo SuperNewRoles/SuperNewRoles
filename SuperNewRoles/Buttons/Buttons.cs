@@ -2134,7 +2134,7 @@ namespace SuperNewRoles.Buttons
                     PartTimerButton.MaxTimer = RoleClass.PartTimer.CoolTime;
                     PartTimerButton.Timer = PartTimerButton.MaxTimer;
                 },
-                RoleClass.Nun.GetButtonSprite(),
+                RoleClass.PartTimer.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -2146,7 +2146,7 @@ namespace SuperNewRoles.Buttons
                 }
             )
             {
-                buttonText = ModTranslation.GetString("NunButtonName"),
+                buttonText = ModTranslation.GetString("PartTimerButtonName"),
                 showButtonText = true
             };
 
