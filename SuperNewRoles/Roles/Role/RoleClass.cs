@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -33,13 +34,13 @@ namespace SuperNewRoles.Roles
             IsCoolTimeSetted = false;
             IsStart = false;
             LadderDead.Reset();
-            Map.Data.ClearAndReloads();
+            //Map.Data.ClearAndReloads();
             SabotageManager.ClearAndReloads();
             Madmate.CheckedImpostor = new();
             Roles.MadMayor.CheckedImpostor = new();
             Roles.MadSeer.CheckedImpostor = new();
             Roles.JackalFriends.CheckedJackal = new();
-            Mode.BattleRoyal.main.VentData = new();
+            Mode.BattleRoyal.Main.VentData = new();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
             MapCustoms.AdditionalVents.ClearAndReload();
@@ -95,7 +96,7 @@ namespace SuperNewRoles.Roles
             Workperson.ClearAndReload();
             Magaziner.ClearAndReload();
             Mayor.ClearAndReload();
-            truelover.ClearAndReload();
+            Truelover.ClearAndReload();
             Technician.ClearAndReload();
             SerialKiller.ClearAndReload();
             OverKiller.ClearAndReload();
@@ -154,6 +155,13 @@ namespace SuperNewRoles.Roles
             FastMaker.ClearAndReload();
             ToiletFan.ClearAndReload();
             SatsumaAndImo.ClearAndReload();
+            EvilButtoner.ClearAndReload();
+            NiceButtoner.ClearAndReload();
+            Finder.ClearAndReload();
+            Revolutionist.ClearAndReload();
+            Dictator.ClearAndReload();
+            Spelunker.ClearAndReload();
+            SuicidalIdeation.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -169,18 +177,18 @@ namespace SuperNewRoles.Roles
             public static int Count;
             public static Color32 color = new(190, 86, 235, byte.MaxValue);
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SoothSayerButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SoothSayerButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
                 SoothSayerPlayer = new();
                 DisplayedPlayer = new();
-                DisplayMode = CustomOptions.SoothSayerDisplayMode.getBool();
-                Count = (int)CustomOptions.SoothSayerMaxCount.getFloat();
+                DisplayMode = CustomOptions.SoothSayerDisplayMode.GetBool();
+                Count = CustomOptions.SoothSayerMaxCount.GetInt();
             }
         }
         public static class Jester
@@ -195,9 +203,9 @@ namespace SuperNewRoles.Roles
             {
                 IsJesterWin = false;
                 JesterPlayer = new();
-                IsUseSabo = CustomOptions.JesterIsSabotage.getBool();
-                IsUseVent = CustomOptions.JesterIsVent.getBool();
-                IsJesterTaskClearWin = CustomOptions.JesterIsWinCleartask.getBool();
+                IsUseSabo = CustomOptions.JesterIsSabotage.GetBool();
+                IsUseVent = CustomOptions.JesterIsVent.GetBool();
+                IsJesterTaskClearWin = CustomOptions.JesterIsWinCleartask.GetBool();
             }
         }
         public static class Lighter
@@ -212,18 +220,18 @@ namespace SuperNewRoles.Roles
             public static DateTime ButtonTimer;
 
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.LighterLightOnButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.LighterLightOnButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
                 LighterPlayer = new();
-                CoolTime = CustomOptions.LighterCoolTime.getFloat();
-                DurationTime = CustomOptions.LighterDurationTime.getFloat();
-                UpVision = CustomOptions.LighterUpVision.getFloat();
+                CoolTime = CustomOptions.LighterCoolTime.GetFloat();
+                DurationTime = CustomOptions.LighterDurationTime.GetFloat();
+                UpVision = CustomOptions.LighterUpVision.GetFloat();
                 DefaultCrewVision = PlayerControl.GameOptions.CrewLightMod;
             }
         }
@@ -237,8 +245,8 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 EvilLighterPlayer = new();
-                //CoolTime = CustomOptions.EvilLighterCoolTime.getFloat();
-                //DurationTime = CustomOptions.EvilLighterDurationTime.getFloat();
+                //CoolTime = CustomOptions.EvilLighterCoolTime.GetFloat();
+                //DurationTime = CustomOptions.EvilLighterDurationTime.GetFloat();
             }
         }
         public static class EvilScientist
@@ -248,17 +256,17 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float DurationTime;
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.EvilScientistButton.png.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.EvilScientistButton.png.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
                 EvilScientistPlayer = new();
-                CoolTime = CustomOptions.EvilScientistCoolTime.getFloat();
-                DurationTime = CustomOptions.EvilScientistDurationTime.getFloat();
+                CoolTime = CustomOptions.EvilScientistCoolTime.GetFloat();
+                DurationTime = CustomOptions.EvilScientistDurationTime.GetFloat();
             }
         }
         public static class Sheriff
@@ -277,22 +285,22 @@ namespace SuperNewRoles.Roles
 
             private static Sprite buttonSprite;
 
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
                 return buttonSprite;
             }
 
             public static void ClearAndReload()
             {
                 SheriffPlayer = new();
-                CoolTime = CustomOptions.SheriffCoolTime.getFloat();
-                IsNeutralKill = CustomOptions.SheriffNeutralKill.getBool();
-                IsLoversKill = CustomOptions.SheriffLoversKill.getBool();
-                IsMadRoleKill = CustomOptions.SheriffMadRoleKill.getBool();
-                MadRoleKill = CustomOptions.SheriffMadRoleKill.getBool();
-                KillMaxCount = CustomOptions.SheriffKillMaxCount.getFloat();
+                CoolTime = CustomOptions.SheriffCoolTime.GetFloat();
+                IsNeutralKill = CustomOptions.SheriffNeutralKill.GetBool();
+                IsLoversKill = CustomOptions.SheriffLoversKill.GetBool();
+                IsMadRoleKill = CustomOptions.SheriffMadRoleKill.GetBool();
+                MadRoleKill = CustomOptions.SheriffMadRoleKill.GetBool();
+                KillMaxCount = CustomOptions.SheriffKillMaxCount.GetFloat();
                 KillCount = new();
             }
         }
@@ -307,19 +315,19 @@ namespace SuperNewRoles.Roles
 
             private static Sprite buttonSprite;
 
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
                 MeetingSheriffPlayer = new();
-                NeutralKill = CustomOptions.MeetingSheriffNeutralKill.getBool();
-                MadRoleKill = CustomOptions.MeetingSheriffMadRoleKill.getBool();
-                KillMaxCount = CustomOptions.MeetingSheriffKillMaxCount.getFloat();
-                OneMeetingMultiKill = CustomOptions.MeetingSheriffOneMeetingMultiKill.getBool();
+                NeutralKill = CustomOptions.MeetingSheriffNeutralKill.GetBool();
+                MadRoleKill = CustomOptions.MeetingSheriffMadRoleKill.GetBool();
+                KillMaxCount = CustomOptions.MeetingSheriffKillMaxCount.GetFloat();
+                OneMeetingMultiKill = CustomOptions.MeetingSheriffOneMeetingMultiKill.GetBool();
             }
         }
         public static class Jackal
@@ -339,10 +347,10 @@ namespace SuperNewRoles.Roles
             public static bool IsCreatedFriend;
             public static bool CanCreateFriend;
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.JackalSidekickButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSidekickButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -350,16 +358,16 @@ namespace SuperNewRoles.Roles
                 JackalPlayer = new();
                 SidekickPlayer = new();
                 FakeSidekickPlayer = new();
-                KillCoolDown = CustomOptions.JackalKillCoolDown.getFloat();
-                IsUseVent = CustomOptions.JackalUseVent.getBool();
-                IsUseSabo = CustomOptions.JackalUseSabo.getBool();
-                IsImpostorLight = CustomOptions.JackalIsImpostorLight.getBool();
-                CreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
-                IsCreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
-                NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.getBool();
+                KillCoolDown = CustomOptions.JackalKillCoolDown.GetFloat();
+                IsUseVent = CustomOptions.JackalUseVent.GetBool();
+                IsUseSabo = CustomOptions.JackalUseSabo.GetBool();
+                IsImpostorLight = CustomOptions.JackalIsImpostorLight.GetBool();
+                CreateSidekick = CustomOptions.JackalCreateSidekick.GetBool();
+                IsCreateSidekick = CustomOptions.JackalCreateSidekick.GetBool();
+                NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.GetBool();
                 IsCreatedFriend = false;
                 CreatePlayers = new();
-                CanCreateFriend = CustomOptions.JackalCreateFriend.getBool();
+                CanCreateFriend = CustomOptions.JackalCreateFriend.GetBool();
             }
         }
         public static class Teleporter
@@ -373,14 +381,14 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
             {
                 TeleporterPlayer = new();
-                CoolTime = CustomOptions.TeleporterCoolTime.getFloat();
-                DurationTime = CustomOptions.TeleporterDurationTime.getFloat();
+                CoolTime = CustomOptions.TeleporterCoolTime.GetFloat();
+                DurationTime = CustomOptions.TeleporterDurationTime.GetFloat();
             }
         }
         public static class SpiritMedium
@@ -393,8 +401,8 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 SpiritMediumPlayer = new();
-                DisplayMode = CustomOptions.SpiritMediumDisplayMode.getBool();
-                MaxCount = CustomOptions.SpiritMediumMaxCount.getFloat();
+                DisplayMode = CustomOptions.SpiritMediumDisplayMode.GetBool();
+                MaxCount = CustomOptions.SpiritMediumMaxCount.GetFloat();
             }
         }
         public static class SpeedBooster
@@ -411,16 +419,16 @@ namespace SuperNewRoles.Roles
             public static Sprite GetSpeedBoostButtonSprite()
             {
                 if (SpeedBoostButtonSprite) return SpeedBoostButtonSprite;
-                SpeedBoostButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                SpeedBoostButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
                 return SpeedBoostButtonSprite;
             }
 
             public static void ClearAndReload()
             {
                 SpeedBoosterPlayer = new();
-                CoolTime = CustomOptions.SpeedBoosterCoolTime.getFloat();
-                DurationTime = CustomOptions.SpeedBoosterDurationTime.getFloat();
-                Speed = CustomOptions.SpeedBoosterSpeed.getFloat();
+                CoolTime = CustomOptions.SpeedBoosterCoolTime.GetFloat();
+                DurationTime = CustomOptions.SpeedBoosterDurationTime.GetFloat();
+                Speed = CustomOptions.SpeedBoosterSpeed.GetFloat();
                 IsSpeedBoost = false;
                 IsBoostPlayers = new Dictionary<int, bool>();
             }
@@ -431,7 +439,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static float CoolTime;
             public static float DurationTime;
-            public static float Speed { get { return CustomOptions.EvilSpeedBoosterSpeed.getFloat(); } }
+            public static float Speed { get { return CustomOptions.EvilSpeedBoosterSpeed.GetFloat(); } }
             public static bool IsSpeedBoost;
             public static DateTime ButtonTimer;
             public static Dictionary<int, bool> IsBoostPlayers;
@@ -439,8 +447,8 @@ namespace SuperNewRoles.Roles
             {
                 ButtonTimer = DateTime.Now;
                 EvilSpeedBoosterPlayer = new();
-                CoolTime = CustomOptions.EvilSpeedBoosterCoolTime.getFloat();
-                DurationTime = CustomOptions.EvilSpeedBoosterDurationTime.getFloat();
+                CoolTime = CustomOptions.EvilSpeedBoosterCoolTime.GetFloat();
+                DurationTime = CustomOptions.EvilSpeedBoosterDurationTime.GetFloat();
                 IsSpeedBoost = false;
                 IsBoostPlayers = new Dictionary<int, bool>();
             }
@@ -455,8 +463,8 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 TaskerPlayer = new();
-                //IsKill = CustomOptions.TaskerIsKill.getBool();
-                //TaskCount = CustomOptions.TaskerAmount.getFloat();
+                //IsKill = CustomOptions.TaskerIsKill.GetBool();
+                //TaskCount = CustomOptions.TaskerAmount.GetFloat();
             }
         }
         public static class Doorr
@@ -469,14 +477,14 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.DoorrDoorButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoorrDoorButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
             {
                 ButtonTimer = DateTime.Now;
                 DoorrPlayer = new();
-                CoolTime = CustomOptions.DoorrCoolTime.getFloat();
+                CoolTime = CustomOptions.DoorrCoolTime.GetFloat();
             }
         }
         public static class EvilDoorr
@@ -487,7 +495,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 EvilDoorrPlayer = new();
-                CoolTime = CustomOptions.EvilDoorrCoolTime.getFloat();
+                CoolTime = CustomOptions.EvilDoorrCoolTime.GetFloat();
             }
         }
         public static class Shielder
@@ -501,14 +509,14 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ShielderButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ShielderButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
             {
                 ShielderPlayer = new();
-                CoolTime = CustomOptions.ShielderCoolTime.getFloat();
-                DurationTime = CustomOptions.ShielderDurationTime.getFloat();
+                CoolTime = CustomOptions.ShielderCoolTime.GetFloat();
+                DurationTime = CustomOptions.ShielderDurationTime.GetFloat();
                 IsShield = new Dictionary<byte, bool>();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers) RoleClass.Shielder.IsShield[p.PlayerId] = false;
             }
@@ -524,14 +532,14 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.FreezerButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.FreezerButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
             {
                 FreezerPlayer = new();
-                CoolTime = CustomOptions.FreezerCoolTime.getFloat();
-                DurationTime = CustomOptions.FreezerDurationTime.getFloat();
+                CoolTime = CustomOptions.FreezerCoolTime.GetFloat();
+                DurationTime = CustomOptions.FreezerDurationTime.GetFloat();
                 IsSpeedDown = false;
             }
         }
@@ -547,14 +555,14 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedDownButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedDownButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
             {
                 SpeederPlayer = new();
-                CoolTime = CustomOptions.SpeederCoolTime.getFloat();
-                DurationTime = CustomOptions.SpeederDurationTime.getFloat();
+                CoolTime = CustomOptions.SpeederCoolTime.GetFloat();
+                DurationTime = CustomOptions.SpeederDurationTime.GetFloat();
                 IsSpeedDown = false;
             }
         }
@@ -587,20 +595,20 @@ namespace SuperNewRoles.Roles
             public static bool ShowArrows;
             public static Arrow Arrow;
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
                 VulturePlayer = new();
-                CoolTime = CustomOptions.VultureCoolDown.getFloat();
-                DeadBodyCount = (int)CustomOptions.VultureDeadBodyMaxCount.getFloat();
-                IsUseVent = CustomOptions.VultureIsUseVent.getBool();
-                ShowArrows = CustomOptions.VultureShowArrows.getBool();
-                RoleClass.Vulture.Arrow = null;
+                CoolTime = CustomOptions.VultureCoolDown.GetFloat();
+                DeadBodyCount = CustomOptions.VultureDeadBodyMaxCount.GetInt();
+                IsUseVent = CustomOptions.VultureIsUseVent.GetBool();
+                ShowArrows = CustomOptions.VultureShowArrows.GetBool();
+                Arrow = null;
             }
         }
         public static class NiceScientist
@@ -613,17 +621,17 @@ namespace SuperNewRoles.Roles
             public static bool IsScientist;
             private static Sprite buttonSprite;
             public static Dictionary<int, bool> IsScientistPlayers;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.NiceScientistButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.NiceScientistButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
                 NiceScientistPlayer = new();
-                CoolTime = CustomOptions.NiceScientistCoolTime.getFloat();
-                DurationTime = CustomOptions.NiceScientistDurationTime.getFloat();
+                CoolTime = CustomOptions.NiceScientistCoolTime.GetFloat();
+                DurationTime = CustomOptions.NiceScientistDurationTime.GetFloat();
                 ButtonTimer = DateTime.Now;
                 IsScientist = false;
                 IsScientistPlayers = new Dictionary<int, bool>();
@@ -643,19 +651,19 @@ namespace SuperNewRoles.Roles
             public static float OldButtonTime;
 
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
                 ClergymanPlayer = new();
-                CoolTime = CustomOptions.ClergymanCoolTime.getFloat();
-                DurationTime = CustomOptions.ClergymanDurationTime.getFloat();
+                CoolTime = CustomOptions.ClergymanCoolTime.GetFloat();
+                DurationTime = CustomOptions.ClergymanDurationTime.GetFloat();
                 IsLightOff = false;
-                DownImpoVision = CustomOptions.ClergymanDownVision.getFloat();
+                DownImpoVision = CustomOptions.ClergymanDownVision.GetFloat();
                 DefaultImpoVision = PlayerControl.GameOptions.ImpostorLightMod;
                 OldButtonTimer = DateTime.Now;
                 OldButtonTime = 0;
@@ -672,12 +680,12 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MadMatePlayer = new();
-                IsImpostorCheck = CustomOptions.MadMateIsCheckImpostor.getBool();
-                IsUseVent = CustomOptions.MadMateIsUseVent.getBool();
-                IsImpostorLight = CustomOptions.MadMateIsImpostorLight.getBool();
-                int Common = (int)CustomOptions.MadMateCommonTask.getFloat();
-                int Long = (int)CustomOptions.MadMateLongTask.getFloat();
-                int Short = (int)CustomOptions.MadMateShortTask.getFloat();
+                IsImpostorCheck = CustomOptions.MadMateIsCheckImpostor.GetBool();
+                IsUseVent = CustomOptions.MadMateIsUseVent.GetBool();
+                IsImpostorLight = CustomOptions.MadMateIsImpostorLight.GetBool();
+                int Common = CustomOptions.MadMateCommonTask.GetInt();
+                int Long = CustomOptions.MadMateLongTask.GetInt();
+                int Short = CustomOptions.MadMateShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -685,7 +693,7 @@ namespace SuperNewRoles.Roles
                     Long = PlayerControl.GameOptions.NumLongTasks;
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
-                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMateCheckImpostorTask.getString().Replace("%", "")) / 100f));
+                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMateCheckImpostorTask.GetString().Replace("%", "")) / 100f));
             }
         }
         public static class Bait
@@ -700,7 +708,7 @@ namespace SuperNewRoles.Roles
             {
                 BaitPlayer = new();
                 Reported = false;
-                ReportTime = CustomOptions.BaitReportTime.getFloat();
+                ReportTime = CustomOptions.BaitReportTime.GetFloat();
                 ReportedPlayer = new();
             }
         }
@@ -735,23 +743,23 @@ namespace SuperNewRoles.Roles
             public static Vector3 setpostion;
             private static Sprite nosetbuttonSprite;
             private static Sprite setbuttonSprite;
-            public static Sprite getNoSetButtonSprite()
+            public static Sprite GetNoSetButtonSprite()
             {
                 if (setbuttonSprite) return setbuttonSprite;
-                setbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MovingLocationSetButton.png", 115f);
+                setbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MovingLocationSetButton.png", 115f);
                 return setbuttonSprite;
             }
-            public static Sprite getSetButtonSprite()
+            public static Sprite GetSetButtonSprite()
             {
                 if (nosetbuttonSprite) return nosetbuttonSprite;
-                nosetbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MovingTpButton.png", 115f);
+                nosetbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MovingTpButton.png", 115f);
                 return nosetbuttonSprite;
             }
             public static void ClearAndReload()
             {
                 MovingPlayer = new();
                 setpostion = new Vector3(0, 0, 0);
-                CoolTime = CustomOptions.MovingCoolTime.getFloat();
+                CoolTime = CustomOptions.MovingCoolTime.GetFloat();
             }
         }
         public static class Opportunist
@@ -771,7 +779,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 NiceGamblerPlayer = new();
-                //Num = (int)CustomOptions.NiceGamblerUseCount.getFloat();
+                //Num = CustomOptions.NiceGamblerUseCount.GetInt();
             }
         }
         public static class EvilGambler
@@ -786,17 +794,10 @@ namespace SuperNewRoles.Roles
             {
                 EvilGamblerPlayer = new();
                 IsSuc = false;
-                SucCool = (int)CustomOptions.EvilGamblerSucTime.getFloat();
-                NotSucCool = (int)CustomOptions.EvilGamblerNotSucTime.getFloat();
-                var temp = CustomOptions.EvilGamblerSucpar.getString().Replace("0%", "");
-                if (temp == "")
-                {
-                    SucPar = 0;
-                }
-                else
-                {
-                    SucPar = int.Parse(temp);
-                }
+                SucCool = CustomOptions.EvilGamblerSucTime.GetInt();
+                NotSucCool = CustomOptions.EvilGamblerNotSucTime.GetInt();
+                var temp = CustomOptions.EvilGamblerSucpar.GetString().Replace("0%", "");
+                SucPar = temp == "" ? 0 : int.Parse(temp);
             }
             public static bool GetSuc()
             {
@@ -809,14 +810,7 @@ namespace SuperNewRoles.Roles
                 {
                     a.Add("No");
                 }
-                if (ModHelpers.GetRandom<string>(a) == "Suc")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return ModHelpers.GetRandom<string>(a) == "Suc";
             }
         }
         public static class Bestfalsecharge
@@ -835,7 +829,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> ResearcherPlayer;
             public static Color32 color = new(0, 255, 0, byte.MaxValue);
             //public static Vector3 SamplePosition;
-            private static List<Vector3> SamplePoss = new()
+            private static readonly List<Vector3> SamplePoss = new()
             {
                 new Vector3(-11, -2.1f, 0),
                 new Vector3(16.9f, 0.4f, 0),
@@ -863,7 +857,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SelfBomberBomButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SelfBomberBomButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
@@ -880,8 +874,8 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 GodPlayer = new();
-                IsVoteView = CustomOptions.GodViewVote.getBool();
-                IsTaskEndWin = CustomOptions.GodIsEndTaskWin.getBool();
+                IsVoteView = CustomOptions.GodViewVote.GetBool();
+                IsTaskEndWin = CustomOptions.GodIsEndTaskWin.GetBool();
             }
         }
         public static class AllCleaner
@@ -901,7 +895,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 NiceNekomataPlayer = new();
-                IsChain = CustomOptions.NiceNekomataIsChain.getBool();
+                IsChain = CustomOptions.NiceNekomataIsChain.GetBool();
             }
         }
         public static class EvilNekomata
@@ -912,7 +906,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 EvilNekomataPlayer = new();
-                NotImpostorExiled = CustomOptions.EvilNekomataNotImpostorExiled.getBool();
+                NotImpostorExiled = CustomOptions.EvilNekomataNotImpostorExiled.GetBool();
             }
         }
         public static class JackalFriends
@@ -927,12 +921,12 @@ namespace SuperNewRoles.Roles
             {
                 JackalFriendsPlayer = new();
 
-                IsJackalCheck = CustomOptions.JackalFriendsIsCheckJackal.getBool();
-                IsUseVent = CustomOptions.JackalFriendsIsUseVent.getBool();
-                IsImpostorLight = CustomOptions.JackalFriendsIsImpostorLight.getBool();
-                int Common = (int)CustomOptions.JackalFriendsCommonTask.getFloat();
-                int Long = (int)CustomOptions.JackalFriendsLongTask.getFloat();
-                int Short = (int)CustomOptions.JackalFriendsShortTask.getFloat();
+                IsJackalCheck = CustomOptions.JackalFriendsIsCheckJackal.GetBool();
+                IsUseVent = CustomOptions.JackalFriendsIsUseVent.GetBool();
+                IsImpostorLight = CustomOptions.JackalFriendsIsImpostorLight.GetBool();
+                int Common = CustomOptions.JackalFriendsCommonTask.GetInt();
+                int Long = CustomOptions.JackalFriendsLongTask.GetInt();
+                int Short = CustomOptions.JackalFriendsShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -940,7 +934,7 @@ namespace SuperNewRoles.Roles
                     Long = PlayerControl.GameOptions.NumLongTasks;
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
-                JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.JackalFriendsCheckJackalTask.getString().Replace("%", "")) / 100f));
+                JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.JackalFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
                 Roles.JackalFriends.CheckedJackal = new();
             }
         }
@@ -951,7 +945,7 @@ namespace SuperNewRoles.Roles
             public static bool MyPanelFlag;
             public static Minigame Vital;
             private static Sprite VitalSprite;
-            public static Sprite getVitalsSprite()
+            public static Sprite GetVitalsSprite()
             {
                 if (VitalSprite) return VitalSprite;
                 VitalSprite = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.VitalsButton].Image;
@@ -973,10 +967,10 @@ namespace SuperNewRoles.Roles
             public static int Count;
             public static bool IsSet;
             private static Sprite ButtonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CountChangerButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CountChangerButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
@@ -984,7 +978,7 @@ namespace SuperNewRoles.Roles
                 CountChangerPlayer = new();
                 ChangeData = new();
                 Setdata = new();
-                Count = (int)CustomOptions.CountChangerMaxCount.getFloat();
+                Count = CustomOptions.CountChangerMaxCount.GetInt();
                 IsSet = false;
             }
         }
@@ -1015,10 +1009,10 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MinimalistPlayer = new();
-                KillCoolTime = CustomOptions.MinimalistKillCoolTime.getFloat();
-                UseVent = CustomOptions.MinimalistVent.getBool();
-                UseSabo = CustomOptions.MinimalistSabo.getBool();
-                UseReport = CustomOptions.MinimalistReport.getBool();
+                KillCoolTime = CustomOptions.MinimalistKillCoolTime.GetFloat();
+                UseVent = CustomOptions.MinimalistVent.GetBool();
+                UseSabo = CustomOptions.MinimalistSabo.GetBool();
+                UseReport = CustomOptions.MinimalistReport.GetBool();
             }
         }
         public static class Hawk
@@ -1033,17 +1027,17 @@ namespace SuperNewRoles.Roles
             private static Sprite buttonSprite;
             public static float Default;
             public static float CameraDefault;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.HawkHawkEye.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HawkHawkEye.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
                 HawkPlayer = new();
-                CoolTime = CustomOptions.HawkCoolTime.getFloat();
-                DurationTime = CustomOptions.HawkDurationTime.getFloat();
+                CoolTime = CustomOptions.HawkCoolTime.GetFloat();
+                DurationTime = CustomOptions.HawkDurationTime.GetFloat();
                 IsHawkOn = false;
                 Timer = 0;
                 ButtonTimer = DateTime.Now;
@@ -1062,10 +1056,10 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 EgoistPlayer = new();
-                ImpostorLight = CustomOptions.EgoistImpostorLight.getBool();
-                UseVent = CustomOptions.EgoistUseVent.getBool();
-                UseSabo = CustomOptions.EgoistUseSabo.getBool();
-                UseKill = CustomOptions.EgoistUseKill.getBool();
+                ImpostorLight = CustomOptions.EgoistImpostorLight.GetBool();
+                UseVent = CustomOptions.EgoistUseVent.GetBool();
+                UseSabo = CustomOptions.EgoistUseSabo.GetBool();
+                UseKill = CustomOptions.EgoistUseKill.GetBool();
             }
         }
         public static class NiceRedRidingHood
@@ -1077,7 +1071,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 NiceRedRidingHoodPlayer = new();
-                Count = (int)CustomOptions.NiceRedRidingHoodCount.getFloat();
+                Count = CustomOptions.NiceRedRidingHoodCount.GetInt();
                 deadbodypos = null;
             }
         }
@@ -1091,7 +1085,7 @@ namespace SuperNewRoles.Roles
             {
                 EvilEraserPlayer = new();
                 Counts = new();
-                Count = ((int)CustomOptions.EvilEraserMaxCount.getFloat()) - 1;
+                Count = CustomOptions.EvilEraserMaxCount.GetInt() - 1;
             }
         }
         public static class Workperson
@@ -1102,7 +1096,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 WorkpersonPlayer = new();
-                IsAliveWin = CustomOptions.WorkpersonIsAliveWin.getBool();
+                IsAliveWin = CustomOptions.WorkpersonIsAliveWin.GetBool();
             }
         }
         public static class Magaziner
@@ -1114,23 +1108,23 @@ namespace SuperNewRoles.Roles
             public static bool IsOKSet;
             private static Sprite GetbuttonSprite;
             private static Sprite AddbuttonSprite;
-            public static Sprite getGetButtonSprite()
+            public static Sprite GetGetButtonSprite()
             {
                 if (GetbuttonSprite) return GetbuttonSprite;
-                GetbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MagazinerGetButton.png", 115f);
+                GetbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MagazinerGetButton.png", 115f);
                 return GetbuttonSprite;
             }
-            public static Sprite getAddButtonSprite()
+            public static Sprite GetAddButtonSprite()
             {
                 if (AddbuttonSprite) return AddbuttonSprite;
-                AddbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MagazinerAddButton.png", 115f);
+                AddbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MagazinerAddButton.png", 115f);
                 return AddbuttonSprite;
             }
             public static void ClearAndReload()
             {
                 MagazinerPlayer = new();
                 MyPlayerCount = 0;
-                SetTime = CustomOptions.MagazinerSetKillTime.getFloat();
+                SetTime = CustomOptions.MagazinerSetKillTime.GetFloat();
                 IsOKSet = true;
             }
         }
@@ -1142,20 +1136,20 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MayorPlayer = new();
-                AddVote = (int)CustomOptions.MayorVoteCount.getFloat();
+                AddVote = CustomOptions.MayorVoteCount.GetInt();
             }
         }
-        public static class truelover
+        public static class Truelover
         {
             public static List<PlayerControl> trueloverPlayer;
             public static Color32 color = Lovers.color;
             public static bool IsCreate;
             public static List<int> CreatePlayers;
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.trueloverloveButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.trueloverloveButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -1189,10 +1183,10 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 SerialKillerPlayer = new();
-                SuicideTime = CustomOptions.SerialKillerSuicideTime.getFloat();
-                KillTime = CustomOptions.SerialKillerKillTime.getFloat();
+                SuicideTime = CustomOptions.SerialKillerSuicideTime.GetFloat();
+                KillTime = CustomOptions.SerialKillerKillTime.GetFloat();
                 SuicideDefaultTime = SuicideTime;
-                IsMeetingReset = CustomOptions.SerialKillerIsMeetingReset.getBool();
+                IsMeetingReset = CustomOptions.SerialKillerIsMeetingReset.GetBool();
                 IsSuicideView = false;
                 IsSuicideViews = new Dictionary<byte, bool>();
                 SuicideTimers = new Dictionary<byte, float>();
@@ -1207,8 +1201,8 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 OverKillerPlayer = new();
-                KillCoolTime = CustomOptions.OverKillerKillCoolTime.getFloat();
-                KillCount = (int)CustomOptions.OverKillerKillCount.getFloat();
+                KillCoolTime = CustomOptions.OverKillerKillCoolTime.GetFloat();
+                KillCount = CustomOptions.OverKillerKillCount.GetInt();
             }
         }
         public static class Levelinger
@@ -1239,36 +1233,21 @@ namespace SuperNewRoles.Roles
                     LevelingerPlayer = new();
                     ThisXP = 0;
                     IsCreateMadmate = false;
-                    OneKillXP = (int)CustomOptions.LevelingerOneKillXP.getFloat();
-                    UpLevelXp = (int)CustomOptions.LevelingerUpLevelXP.getFloat();
+                    OneKillXP = CustomOptions.LevelingerOneKillXP.GetInt();
+                    UpLevelXp = CustomOptions.LevelingerUpLevelXP.GetInt();
                     GetPowerData = new();
                     for (int i = 0; i < 5; i++)
                     {
                         string getdata = "";
-                        if (i == 0)
-                        {
-                            getdata = CustomOptions.LevelingerLevelOneGetPower.getString();
-                        }
-                        else if (i == 1)
-                        {
-                            getdata = CustomOptions.LevelingerLevelTwoGetPower.getString();
-                        }
-                        else if (i == 2)
-                        {
-                            getdata = CustomOptions.LevelingerLevelThreeGetPower.getString();
-                        }
-                        else if (i == 3)
-                        {
-                            getdata = CustomOptions.LevelingerLevelFourGetPower.getString();
-                        }
-                        else if (i == 4)
-                        {
-                            getdata = CustomOptions.LevelingerLevelFiveGetPower.getString();
-                        }
+                        if (i == 0) { getdata = CustomOptions.LevelingerLevelOneGetPower.GetString(); }
+                        else if (i == 1) { getdata = CustomOptions.LevelingerLevelTwoGetPower.GetString(); }
+                        else if (i == 2) { getdata = CustomOptions.LevelingerLevelThreeGetPower.GetString(); }
+                        else if (i == 3) { getdata = CustomOptions.LevelingerLevelFourGetPower.GetString(); }
+                        else if (i == 4) { getdata = CustomOptions.LevelingerLevelFiveGetPower.GetString(); }
                         GetPowerData.Add(GetLevelPowerType(getdata));
                     }
-                    IsUseOKRevive = CustomOptions.LevelingerReviveXP.getBool();
-                    ReviveUseXP = (int)CustomOptions.LevelingerUseXPRevive.getFloat();
+                    IsUseOKRevive = CustomOptions.LevelingerReviveXP.GetBool();
+                    ReviveUseXP = CustomOptions.LevelingerUseXPRevive.GetInt();
                 }
                 catch { }
             }
@@ -1279,7 +1258,7 @@ namespace SuperNewRoles.Roles
             public static LevelPowerTypes GetThisPower(int Level = 0, PlayerControl player = null)
             {
                 if (player == null) player = PlayerControl.LocalPlayer;
-                if (!player.isRole(RoleId.Levelinger)) return LevelPowerTypes.None;
+                if (!player.IsRole(RoleId.Levelinger)) return LevelPowerTypes.None;
                 if (Level == 0)
                 {
                     Level = ThisXP / UpLevelXp;
@@ -1293,37 +1272,20 @@ namespace SuperNewRoles.Roles
             {
                 try
                 {
-                    if (name == CustomOptions.LevelingerTexts[0])
-                    {
-                        return LevelPowerTypes.None;
-                    }
-                    else if (name == CustomOptions.LevelingerTexts[1])
-                    {
-                        return LevelPowerTypes.Keep;
-                    }
-                    else if (name == CustomOptions.LevelingerTexts[2])
-                    {
-                        return LevelPowerTypes.Pursuer;
-                    }
-                    else if (name == CustomOptions.LevelingerTexts[3])
-                    {
-                        return LevelPowerTypes.Teleporter;
-                    }
-                    else if (name == CustomOptions.LevelingerTexts[4])
-                    {
-                        return LevelPowerTypes.Sidekick;
-                    }
-                    else if (name == CustomOptions.LevelingerTexts[5])
-                    {
-                        return LevelPowerTypes.SpeedBooster;
-                    }
-                    else if (name == CustomOptions.LevelingerTexts[6])
-                    {
-                        return LevelPowerTypes.Moving;
-                    }
+                    if (name == CustomOptions.LevelingerTexts[0]) { return LevelPowerTypes.None; }
                     else
                     {
-                        return LevelPowerTypes.None;
+                        return name == CustomOptions.LevelingerTexts[1]
+                        ? LevelPowerTypes.Keep
+                        : name == CustomOptions.LevelingerTexts[2]
+                        ? LevelPowerTypes.Pursuer
+                        : name == CustomOptions.LevelingerTexts[3]
+                        ? LevelPowerTypes.Teleporter
+                        : name == CustomOptions.LevelingerTexts[4]
+                        ? LevelPowerTypes.Sidekick
+                        : name == CustomOptions.LevelingerTexts[5]
+                            ? LevelPowerTypes.SpeedBooster
+                            : name == CustomOptions.LevelingerTexts[6] ? LevelPowerTypes.Moving : LevelPowerTypes.None;
                     }
                 }
                 catch
@@ -1340,7 +1302,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 EvilMovingPlayer = new();
-                CoolTime = CustomOptions.EvilMovingCoolTime.getFloat();
+                CoolTime = CustomOptions.EvilMovingCoolTime.GetFloat();
             }
         }
         public static class Amnesiac
@@ -1367,22 +1329,21 @@ namespace SuperNewRoles.Roles
                 SideKillerPlayer = new();
                 MadKillerPlayer = new();
                 MadKillerPair = new Dictionary<byte, byte>();
-                KillCoolTime = CustomOptions.SideKillerKillCoolTime.getFloat();
-                MadKillerCoolTime = CustomOptions.SideKillerMadKillerKillCoolTime.getFloat();
+                KillCoolTime = CustomOptions.SideKillerKillCoolTime.GetFloat();
+                MadKillerCoolTime = CustomOptions.SideKillerMadKillerKillCoolTime.GetFloat();
                 IsCreateMadKiller = false;
                 IsUpMadKiller = false;
             }
-            public static PlayerControl getSidePlayer(PlayerControl p)
+            public static PlayerControl GetSidePlayer(PlayerControl p)
             {
                 if (MadKillerPair.ContainsKey(p.PlayerId))
                 {
-                    return ModHelpers.playerById(MadKillerPair[p.PlayerId]);
+                    return ModHelpers.PlayerById(MadKillerPair[p.PlayerId]);
                 }
                 else if (MadKillerPair.ContainsValue(p.PlayerId))
                 {
                     var key = MadKillerPair.GetKey(p.PlayerId);
-                    if (key == null) return null;
-                    return ModHelpers.playerById((byte)key);
+                    return key == null ? null : ModHelpers.PlayerById((byte)key);
                 }
                 return null;
             }
@@ -1395,7 +1356,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 SurvivorPlayer = new();
-                KillCoolTime = CustomOptions.SurvivorKillCoolTime.getFloat();
+                KillCoolTime = CustomOptions.SurvivorKillCoolTime.GetFloat();
             }
         }
         public static class MadMayor
@@ -1410,13 +1371,13 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MadMayorPlayer = new();
-                AddVote = (int)CustomOptions.MadMayorVoteCount.getFloat();
-                IsImpostorCheck = CustomOptions.MadMayorIsCheckImpostor.getBool();
-                IsUseVent = CustomOptions.MadMayorIsUseVent.getBool();
-                IsImpostorLight = CustomOptions.MadMayorIsImpostorLight.getBool();
-                int Common = (int)CustomOptions.MadMayorCommonTask.getFloat();
-                int Long = (int)CustomOptions.MadMayorLongTask.getFloat();
-                int Short = (int)CustomOptions.MadMayorShortTask.getFloat();
+                AddVote = CustomOptions.MadMayorVoteCount.GetInt();
+                IsImpostorCheck = CustomOptions.MadMayorIsCheckImpostor.GetBool();
+                IsUseVent = CustomOptions.MadMayorIsUseVent.GetBool();
+                IsImpostorLight = CustomOptions.MadMayorIsImpostorLight.GetBool();
+                int Common = CustomOptions.MadMayorCommonTask.GetInt();
+                int Long = CustomOptions.MadMayorLongTask.GetInt();
+                int Short = CustomOptions.MadMayorShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -1424,7 +1385,7 @@ namespace SuperNewRoles.Roles
                     Long = PlayerControl.GameOptions.NumLongTasks;
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
-                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
+                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.GetString().Replace("%", "")) / 100f));
                 Roles.MadMayor.CheckedImpostor = new();
             }
         }
@@ -1444,8 +1405,8 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 NiceHawkPlayer = new();
-                CoolTime = CustomOptions.NiceHawkCoolTime.getFloat();
-                DurationTime = CustomOptions.NiceHawkDurationTime.getFloat();
+                CoolTime = CustomOptions.NiceHawkCoolTime.GetFloat();
+                DurationTime = CustomOptions.NiceHawkDurationTime.GetFloat();
                 Timer = 0;
                 ButtonTimer = DateTime.Now;
                 CameraDefault = Camera.main.orthographicSize;
@@ -1474,8 +1435,8 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MadStuntManPlayer = new();
-                IsUseVent = CustomOptions.MadStuntManIsUseVent.getBool();
-                IsImpostorLight = CustomOptions.MadStuntManIsImpostorLight.getBool();
+                IsUseVent = CustomOptions.MadStuntManIsUseVent.GetBool();
+                IsImpostorLight = CustomOptions.MadStuntManIsImpostorLight.GetBool();
             }
         }
         public static class MadHawk
@@ -1496,11 +1457,11 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MadHawkPlayer = new();
-                IsUseVent = CustomOptions.MadHawkIsUseVent.getBool();
-                IsImpostorLight = CustomOptions.MadHawkIsImpostorLight.getBool();
+                IsUseVent = CustomOptions.MadHawkIsUseVent.GetBool();
+                IsImpostorLight = CustomOptions.MadHawkIsImpostorLight.GetBool();
                 MadHawkPlayer = new();
-                CoolTime = CustomOptions.MadHawkCoolTime.getFloat();
-                DurationTime = CustomOptions.MadHawkDurationTime.getFloat();
+                CoolTime = CustomOptions.MadHawkCoolTime.GetFloat();
+                DurationTime = CustomOptions.MadHawkDurationTime.GetFloat();
                 Timer = 0;
                 ButtonTimer = DateTime.Now;
                 CameraDefault = Camera.main.orthographicSize;
@@ -1525,12 +1486,12 @@ namespace SuperNewRoles.Roles
             {
                 MadJesterPlayer = new();
                 IsMadJesterWin = false;
-                IsUseVent = CustomOptions.MadJesterIsUseVent.getBool();
-                IsImpostorLight = CustomOptions.MadJesterIsImpostorLight.getBool();
-                IsMadJesterTaskClearWin = CustomOptions.IsMadJesterTaskClearWin.getBool();
-                int Common = (int)CustomOptions.MadJesterCommonTask.getFloat();
-                int Long = (int)CustomOptions.MadJesterLongTask.getFloat();
-                int Short = (int)CustomOptions.MadJesterShortTask.getFloat();
+                IsUseVent = CustomOptions.MadJesterIsUseVent.GetBool();
+                IsImpostorLight = CustomOptions.MadJesterIsImpostorLight.GetBool();
+                IsMadJesterTaskClearWin = CustomOptions.IsMadJesterTaskClearWin.GetBool();
+                int Common = CustomOptions.MadJesterCommonTask.GetInt();
+                int Long = CustomOptions.MadJesterLongTask.GetInt();
+                int Short = CustomOptions.MadJesterShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -1557,8 +1518,8 @@ namespace SuperNewRoles.Roles
                 FalseChargePlayers = new Dictionary<byte, byte>();
                 FalseChargePlayer = 255;
                 Turns = 255;
-                DefaultTurn = (int)CustomOptions.FalseChargesExileTurn.getFloat();
-                CoolTime = CustomOptions.FalseChargesCoolTime.getFloat();
+                DefaultTurn = CustomOptions.FalseChargesExileTurn.GetInt();
+                CoolTime = CustomOptions.FalseChargesCoolTime.GetFloat();
             }
         }
         public static class NiceTeleporter
@@ -1572,14 +1533,14 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
             {
                 NiceTeleporterPlayer = new();
-                CoolTime = CustomOptions.NiceTeleporterCoolTime.getFloat();
-                DurationTime = CustomOptions.NiceTeleporterDurationTime.getFloat();
+                CoolTime = CustomOptions.NiceTeleporterCoolTime.GetFloat();
+                DurationTime = CustomOptions.NiceTeleporterDurationTime.GetFloat();
             }
         }
         public static class Celebrity
@@ -1588,11 +1549,10 @@ namespace SuperNewRoles.Roles
             public static Color32 color = Color.yellow;
             public static bool ChangeRoleView;
             public static List<PlayerControl> ViewPlayers;
-
             public static void ClearAndReload()
             {
                 CelebrityPlayer = new();
-                ChangeRoleView = CustomOptions.CelebrityChangeRoleView.getBool();
+                ChangeRoleView = CustomOptions.CelebrityChangeRoleView.GetBool();
                 ViewPlayers = new();
             }
         }
@@ -1628,7 +1588,7 @@ namespace SuperNewRoles.Roles
             {
                 VampirePlayer = new();
                 target = null;
-                KillDelay = CustomOptions.VampireKillDelay.getFloat();
+                KillDelay = CustomOptions.VampireKillDelay.GetFloat();
                 Timer = 0;
                 KillTimer = DateTime.Now;
             }
@@ -1645,9 +1605,9 @@ namespace SuperNewRoles.Roles
             {
                 FoxPlayer = new();
                 KillGuard = new();
-                IsUseVent = CustomOptions.FoxIsUseVent.getBool();
-                UseReport = CustomOptions.FoxReport.getBool();
-                IsImpostorLight = CustomOptions.FoxIsImpostorLight.getBool();
+                IsUseVent = CustomOptions.FoxIsUseVent.GetBool();
+                UseReport = CustomOptions.FoxReport.GetBool();
+                IsImpostorLight = CustomOptions.FoxIsImpostorLight.GetBool();
             }
         }
         public static class DarkKiller
@@ -1659,7 +1619,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 DarkKillerPlayer = new();
-                KillCoolTime = CustomOptions.DarkKillerKillCoolTime.getFloat();
+                KillCoolTime = CustomOptions.DarkKillerKillCoolTime.GetFloat();
                 KillButtonDisable = false;
             }
         }
@@ -1677,9 +1637,9 @@ namespace SuperNewRoles.Roles
             {
                 SeerPlayer = new();
                 deadBodyPositions = new();
-                limitSoulDuration = CustomOptions.SeerLimitSoulDuration.getBool();
-                soulDuration = CustomOptions.SeerSoulDuration.getFloat();
-                mode = CustomOptions.SeerMode.getSelection();
+                limitSoulDuration = CustomOptions.SeerLimitSoulDuration.GetBool();
+                soulDuration = CustomOptions.SeerSoulDuration.GetFloat();
+                mode = CustomOptions.SeerMode.GetSelection();
             }
         }
         public static class MadSeer
@@ -1701,16 +1661,16 @@ namespace SuperNewRoles.Roles
             {
                 MadSeerPlayer = new();
                 deadBodyPositions = new();
-                limitSoulDuration = CustomOptions.MadSeerLimitSoulDuration.getBool();
-                soulDuration = CustomOptions.MadSeerSoulDuration.getFloat();
-                mode = CustomOptions.MadSeerMode.getSelection();
+                limitSoulDuration = CustomOptions.MadSeerLimitSoulDuration.GetBool();
+                soulDuration = CustomOptions.MadSeerSoulDuration.GetFloat();
+                mode = CustomOptions.MadSeerMode.GetSelection();
 
-                IsImpostorCheck = CustomOptions.MadSeerIsCheckImpostor.getBool();
-                IsUseVent = CustomOptions.MadSeerIsUseVent.getBool();
-                IsImpostorLight = CustomOptions.MadSeerIsImpostorLight.getBool();
-                int Common = (int)CustomOptions.MadSeerCommonTask.getFloat();
-                int Long = (int)CustomOptions.MadSeerLongTask.getFloat();
-                int Short = (int)CustomOptions.MadSeerShortTask.getFloat();
+                IsImpostorCheck = CustomOptions.MadSeerIsCheckImpostor.GetBool();
+                IsUseVent = CustomOptions.MadSeerIsUseVent.GetBool();
+                IsImpostorLight = CustomOptions.MadSeerIsImpostorLight.GetBool();
+                int Common = CustomOptions.MadSeerCommonTask.GetInt();
+                int Long = CustomOptions.MadSeerLongTask.GetInt();
+                int Short = CustomOptions.MadSeerShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -1718,7 +1678,7 @@ namespace SuperNewRoles.Roles
                     Long = PlayerControl.GameOptions.NumLongTasks;
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
-                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadSeerCheckImpostorTask.getString().Replace("%", "")) / 100f));
+                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadSeerCheckImpostorTask.GetString().Replace("%", "")) / 100f));
                 Roles.MadSeer.CheckedImpostor = new();
             }
         }
@@ -1735,9 +1695,9 @@ namespace SuperNewRoles.Roles
             {
                 EvilSeerPlayer = new();
                 deadBodyPositions = new();
-                limitSoulDuration = CustomOptions.EvilSeerLimitSoulDuration.getBool();
-                soulDuration = CustomOptions.EvilSeerSoulDuration.getFloat();
-                mode = CustomOptions.EvilSeerMode.getSelection();
+                limitSoulDuration = CustomOptions.EvilSeerLimitSoulDuration.GetBool();
+                soulDuration = CustomOptions.EvilSeerSoulDuration.GetFloat();
+                mode = CustomOptions.EvilSeerMode.GetSelection();
             }
         }
         public static class RemoteSheriff
@@ -1756,15 +1716,15 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 RemoteSheriffPlayer = new();
-                CoolTime = CustomOptions.RemoteSheriffCoolTime.getFloat();
-                IsNeutralKill = CustomOptions.RemoteSheriffNeutralKill.getBool();
-                IsLoversKill = CustomOptions.RemoteSheriffLoversKill.getBool();
-                IsMadRoleKill = CustomOptions.RemoteSheriffMadRoleKill.getBool();
-                MadRoleKill = CustomOptions.RemoteSheriffMadRoleKill.getBool();
-                KillMaxCount = CustomOptions.RemoteSheriffKillMaxCount.getFloat();
+                CoolTime = CustomOptions.RemoteSheriffCoolTime.GetFloat();
+                IsNeutralKill = CustomOptions.RemoteSheriffNeutralKill.GetBool();
+                IsLoversKill = CustomOptions.RemoteSheriffLoversKill.GetBool();
+                IsMadRoleKill = CustomOptions.RemoteSheriffMadRoleKill.GetBool();
+                MadRoleKill = CustomOptions.RemoteSheriffMadRoleKill.GetBool();
+                KillMaxCount = CustomOptions.RemoteSheriffKillMaxCount.GetFloat();
                 KillCount = new();
-                IsKillTeleport = CustomOptions.RemoteSheriffIsKillTeleportSetting.getBool();
-                KillCoolTime = CustomOptions.RemoteSheriffCoolTime.getFloat();
+                IsKillTeleport = CustomOptions.RemoteSheriffIsKillTeleportSetting.GetBool();
+                KillCoolTime = CustomOptions.RemoteSheriffCoolTime.GetFloat();
             }
         }
         public static class TeleportingJackal
@@ -1782,18 +1742,18 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
             {
                 TeleportingJackalPlayer = new();
-                KillCoolDown = CustomOptions.TeleportingJackalKillCoolDown.getFloat();
-                IsUseVent = CustomOptions.TeleportingJackalUseVent.getBool();
-                IsUseSabo = CustomOptions.TeleportingJackalUseSabo.getBool();
-                IsImpostorLight = CustomOptions.TeleportingJackalIsImpostorLight.getBool();
-                CoolTime = CustomOptions.TeleportingJackalCoolTime.getFloat();
-                DurationTime = CustomOptions.TeleportingJackalDurationTime.getFloat();
+                KillCoolDown = CustomOptions.TeleportingJackalKillCoolDown.GetFloat();
+                IsUseVent = CustomOptions.TeleportingJackalUseVent.GetBool();
+                IsUseSabo = CustomOptions.TeleportingJackalUseSabo.GetBool();
+                IsImpostorLight = CustomOptions.TeleportingJackalIsImpostorLight.GetBool();
+                CoolTime = CustomOptions.TeleportingJackalCoolTime.GetFloat();
+                DurationTime = CustomOptions.TeleportingJackalDurationTime.GetFloat();
             }
         }
         public static class MadMaker
@@ -1807,8 +1767,8 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MadMakerPlayer = new();
-                IsUseVent = CustomOptions.MadMakerIsUseVent.getBool();
-                IsImpostorLight = CustomOptions.MadMakerIsImpostorLight.getBool();
+                IsUseVent = CustomOptions.MadMakerIsUseVent.GetBool();
+                IsImpostorLight = CustomOptions.MadMakerIsImpostorLight.GetBool();
                 IsCreateMadmate = false;
                 CreatePlayers = new();
             }
@@ -1823,10 +1783,10 @@ namespace SuperNewRoles.Roles
             public static bool IsAliveWin;
             public static float CoolTime;
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.DemonButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DemonButton.png", 115f);
                 return buttonSprite;
             }
 
@@ -1834,10 +1794,10 @@ namespace SuperNewRoles.Roles
             {
                 DemonPlayer = new();
                 CurseDatas = new Dictionary<byte, List<PlayerControl>>();
-                IsUseVent = CustomOptions.DemonIsUseVent.getBool();
-                CoolTime = CustomOptions.DemonCoolTime.getFloat();
-                IsCheckImpostor = CustomOptions.DemonIsCheckImpostor.getBool();
-                IsAliveWin = CustomOptions.DemonIsAliveWin.getBool();
+                IsUseVent = CustomOptions.DemonIsUseVent.GetBool();
+                CoolTime = CustomOptions.DemonCoolTime.GetFloat();
+                IsCheckImpostor = CustomOptions.DemonIsCheckImpostor.GetBool();
+                IsAliveWin = CustomOptions.DemonIsAliveWin.GetBool();
             }
         }
         public static class TaskManager
@@ -1847,9 +1807,9 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 TaskManagerPlayer = new();
-                int Common = (int)CustomOptions.TaskManagerCommonTask.getFloat();
-                int Long = (int)CustomOptions.TaskManagerLongTask.getFloat();
-                int Short = (int)CustomOptions.TaskManagerShortTask.getFloat();
+                int Common = CustomOptions.TaskManagerCommonTask.GetInt();
+                int Long = CustomOptions.TaskManagerLongTask.GetInt();
+                int Short = CustomOptions.TaskManagerShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -1879,16 +1839,16 @@ namespace SuperNewRoles.Roles
                 SeerFriendsPlayer = new();
 
                 deadBodyPositions = new();
-                limitSoulDuration = CustomOptions.SeerFriendsLimitSoulDuration.getBool();
-                soulDuration = CustomOptions.SeerFriendsSoulDuration.getFloat();
-                mode = CustomOptions.SeerFriendsMode.getSelection();
+                limitSoulDuration = CustomOptions.SeerFriendsLimitSoulDuration.GetBool();
+                soulDuration = CustomOptions.SeerFriendsSoulDuration.GetFloat();
+                mode = CustomOptions.SeerFriendsMode.GetSelection();
 
-                IsJackalCheck = CustomOptions.SeerFriendsIsCheckJackal.getBool();
-                IsUseVent = CustomOptions.SeerFriendsIsUseVent.getBool();
-                IsImpostorLight = CustomOptions.SeerFriendsIsImpostorLight.getBool();
-                int Common = (int)CustomOptions.SeerFriendsCommonTask.getFloat();
-                int Long = (int)CustomOptions.SeerFriendsLongTask.getFloat();
-                int Short = (int)CustomOptions.SeerFriendsShortTask.getFloat();
+                IsJackalCheck = CustomOptions.SeerFriendsIsCheckJackal.GetBool();
+                IsUseVent = CustomOptions.SeerFriendsIsUseVent.GetBool();
+                IsImpostorLight = CustomOptions.SeerFriendsIsImpostorLight.GetBool();
+                int Common = CustomOptions.SeerFriendsCommonTask.GetInt();
+                int Long = CustomOptions.SeerFriendsLongTask.GetInt();
+                int Short = CustomOptions.SeerFriendsShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -1896,7 +1856,7 @@ namespace SuperNewRoles.Roles
                     Long = PlayerControl.GameOptions.NumLongTasks;
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
-                JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.SeerFriendsCheckJackalTask.getString().Replace("%", "")) / 100f));
+                JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.SeerFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
             }
         }
         public static class JackalSeer
@@ -1919,10 +1879,10 @@ namespace SuperNewRoles.Roles
             public static bool NewJackalCreateSidekick;
             public static bool IsCreateSidekick;
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -1932,17 +1892,17 @@ namespace SuperNewRoles.Roles
                 FakeSidekickSeerPlayer = new();
 
                 deadBodyPositions = new();
-                limitSoulDuration = CustomOptions.JackalSeerLimitSoulDuration.getBool();
-                soulDuration = CustomOptions.JackalSeerSoulDuration.getFloat();
-                mode = CustomOptions.JackalSeerMode.getSelection();
+                limitSoulDuration = CustomOptions.JackalSeerLimitSoulDuration.GetBool();
+                soulDuration = CustomOptions.JackalSeerSoulDuration.GetFloat();
+                mode = CustomOptions.JackalSeerMode.GetSelection();
 
-                KillCoolDown = CustomOptions.JackalSeerKillCoolDown.getFloat();
-                IsUseVent = CustomOptions.JackalSeerUseVent.getBool();
-                IsUseSabo = CustomOptions.JackalSeerUseSabo.getBool();
-                IsImpostorLight = CustomOptions.JackalSeerIsImpostorLight.getBool();
-                CreateSidekick = CustomOptions.JackalSeerCreateSidekick.getBool();
-                IsCreateSidekick = CustomOptions.JackalSeerCreateSidekick.getBool();
-                NewJackalCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.getBool();
+                KillCoolDown = CustomOptions.JackalSeerKillCoolDown.GetFloat();
+                IsUseVent = CustomOptions.JackalSeerUseVent.GetBool();
+                IsUseSabo = CustomOptions.JackalSeerUseSabo.GetBool();
+                IsImpostorLight = CustomOptions.JackalSeerIsImpostorLight.GetBool();
+                CreateSidekick = CustomOptions.JackalSeerCreateSidekick.GetBool();
+                IsCreateSidekick = CustomOptions.JackalSeerCreateSidekick.GetBool();
+                NewJackalCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.GetBool();
             }
         }
         public static class Assassin
@@ -1984,16 +1944,16 @@ namespace SuperNewRoles.Roles
             public static PlayerControl DouseTarget;
             private static Sprite DousebuttonSprite;
             private static Sprite IgnitebuttonSprite;
-            public static Sprite getDouseButtonSprite()
+            public static Sprite GetDouseButtonSprite()
             {
                 if (DousebuttonSprite) return DousebuttonSprite;
-                DousebuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistDouse.png", 115f);
+                DousebuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ArsonistDouse.png", 115f);
                 return DousebuttonSprite;
             }
-            public static Sprite getIgniteButtonSprite()
+            public static Sprite GetIgniteButtonSprite()
             {
                 if (IgnitebuttonSprite) return IgnitebuttonSprite;
-                IgnitebuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistIgnite.png", 115f);
+                IgnitebuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ArsonistIgnite.png", 115f);
                 return IgnitebuttonSprite;
             }
 
@@ -2001,9 +1961,9 @@ namespace SuperNewRoles.Roles
             {
                 ArsonistPlayer = new();
                 DouseDatas = new Dictionary<byte, List<PlayerControl>>();
-                IsUseVent = CustomOptions.ArsonistIsUseVent.getBool();
-                CoolTime = CustomOptions.ArsonistCoolTime.getFloat();
-                DurationTime = CustomOptions.ArsonistDurationTime.getFloat();
+                IsUseVent = CustomOptions.ArsonistIsUseVent.GetBool();
+                CoolTime = CustomOptions.ArsonistCoolTime.GetFloat();
+                DurationTime = CustomOptions.ArsonistDurationTime.GetFloat();
                 TriggerArsonistWin = true;
                 IsDouse = false;
                 DouseTarget = null;
@@ -2022,10 +1982,10 @@ namespace SuperNewRoles.Roles
             public static bool MadRoleKill;
             public static int KillLimit;
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ChiefSidekickButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ChiefSidekickButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -2033,11 +1993,11 @@ namespace SuperNewRoles.Roles
                 ChiefPlayer = new();
                 SheriffPlayer = new();
                 IsCreateSheriff = false;
-                CoolTime = CustomOptions.ChiefSheriffCoolTime.getFloat();
-                IsNeutralKill = CustomOptions.ChiefIsNeutralKill.getBool();
-                IsLoversKill = CustomOptions.ChiefIsLoversKill.getBool();
-                IsMadRoleKill = CustomOptions.ChiefIsMadRoleKill.getBool();
-                KillLimit = (int)CustomOptions.ChiefKillLimit.getFloat();
+                CoolTime = CustomOptions.ChiefSheriffCoolTime.GetFloat();
+                IsNeutralKill = CustomOptions.ChiefIsNeutralKill.GetBool();
+                IsLoversKill = CustomOptions.ChiefIsLoversKill.GetBool();
+                IsMadRoleKill = CustomOptions.ChiefIsMadRoleKill.GetBool();
+                KillLimit = CustomOptions.ChiefKillLimit.GetInt();
             }
         }
         public static class Cleaner
@@ -2048,17 +2008,17 @@ namespace SuperNewRoles.Roles
             public static int CleanMaxCount;
             public static float KillCoolTime;
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
                 CleanerPlayer = new();
-                CoolTime = CustomOptions.CleanerCoolDown.getFloat();
-                KillCoolTime = CustomOptions.CleanerKillCoolTime.getFloat();
+                CoolTime = CustomOptions.CleanerCoolDown.GetFloat();
+                KillCoolTime = CustomOptions.CleanerKillCoolTime.GetFloat();
             }
         }
         public static class MadCleaner
@@ -2070,18 +2030,18 @@ namespace SuperNewRoles.Roles
             public static bool IsImpostorLight;
 
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
                 MadCleanerPlayer = new();
-                CoolTime = CustomOptions.MadCleanerCoolDown.getFloat();
-                IsUseVent = CustomOptions.MadCleanerIsUseVent.getBool();
-                IsImpostorLight = CustomOptions.MadCleanerIsImpostorLight.getBool();
+                CoolTime = CustomOptions.MadCleanerCoolDown.GetFloat();
+                IsUseVent = CustomOptions.MadCleanerIsUseVent.GetBool();
+                IsImpostorLight = CustomOptions.MadCleanerIsImpostorLight.GetBool();
             }
         }
         public static class Samurai
@@ -2098,16 +2058,16 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SamuraiButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SamuraiButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
             {
                 SamuraiPlayer = new();
-                KillCoolTime = CustomOptions.SamuraiKillCoolTime.getFloat();
-                SwordCoolTime = CustomOptions.SamuraiSwordCoolTime.getFloat();
-                UseVent = CustomOptions.SamuraiVent.getBool();
-                UseSabo = CustomOptions.SamuraiSabo.getBool();
+                KillCoolTime = CustomOptions.SamuraiKillCoolTime.GetFloat();
+                SwordCoolTime = CustomOptions.SamuraiSwordCoolTime.GetFloat();
+                UseVent = CustomOptions.SamuraiVent.GetBool();
+                UseSabo = CustomOptions.SamuraiSabo.GetBool();
                 Sword = false;
                 SwordedPlayer = new();
             }
@@ -2124,12 +2084,12 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MayorFriendsPlayer = new();
-                IsJackalCheck = CustomOptions.MayorFriendsIsCheckJackal.getBool();
-                IsUseVent = CustomOptions.MayorFriendsIsUseVent.getBool();
-                IsImpostorLight = CustomOptions.MayorFriendsIsImpostorLight.getBool();
-                int Common = (int)CustomOptions.MayorFriendsCommonTask.getFloat();
-                int Long = (int)CustomOptions.MayorFriendsLongTask.getFloat();
-                int Short = (int)CustomOptions.MayorFriendsShortTask.getFloat();
+                IsJackalCheck = CustomOptions.MayorFriendsIsCheckJackal.GetBool();
+                IsUseVent = CustomOptions.MayorFriendsIsUseVent.GetBool();
+                IsImpostorLight = CustomOptions.MayorFriendsIsImpostorLight.GetBool();
+                int Common = CustomOptions.MayorFriendsCommonTask.GetInt();
+                int Long = CustomOptions.MayorFriendsLongTask.GetInt();
+                int Short = CustomOptions.MayorFriendsShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -2137,8 +2097,8 @@ namespace SuperNewRoles.Roles
                     Long = PlayerControl.GameOptions.NumLongTasks;
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
-                JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MayorFriendsCheckJackalTask.getString().Replace("%", "")) / 100f));
-                AddVote = (int)CustomOptions.MayorFriendsVoteCount.getFloat();
+                JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MayorFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
+                AddVote = CustomOptions.MayorFriendsVoteCount.GetInt();
             }
         }
         public static class VentMaker
@@ -2149,10 +2109,10 @@ namespace SuperNewRoles.Roles
             public static int VentCount;
             public static bool IsMakeVent;
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.VentMakerButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VentMakerButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -2169,16 +2129,16 @@ namespace SuperNewRoles.Roles
             public static Color32 color = Color.blue;
             public static int LimitCount;
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
                 GhostMechanicPlayer = new();
-                LimitCount = (int)CustomOptions.GhostMechanicRepairLimit.getFloat();
+                LimitCount = CustomOptions.GhostMechanicRepairLimit.GetInt();
             }
         }
         public static class EvilHacker
@@ -2187,7 +2147,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static bool IsCreateMadmate;
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
                 byte mapId = PlayerControl.GameOptions.MapId;
@@ -2201,7 +2161,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 EvilHackerPlayer = new();
-                IsCreateMadmate = CustomOptions.EvilHackerMadmateSetting.getBool();
+                IsCreateMadmate = CustomOptions.EvilHackerMadmateSetting.GetBool();
             }
         }
         public static class HauntedWolf
@@ -2221,17 +2181,17 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static DateTime ButtonTimer;
             public static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.PositionSwapperButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PositionSwapperButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
                 PositionSwapperPlayer = new();
-                CoolTime = CustomOptions.PositionSwapperCoolTime.getFloat();
-                SwapCount = (int)CustomOptions.PositionSwapperSwapCount.getFloat();
+                CoolTime = CustomOptions.PositionSwapperCoolTime.GetFloat();
+                SwapCount = CustomOptions.PositionSwapperSwapCount.GetInt();
             }
         }
 
@@ -2251,12 +2211,12 @@ namespace SuperNewRoles.Roles
                 TunaPlayer = new();
                 Position = new Dictionary<byte, Vector3>();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers) Position[p.PlayerId] = new Vector3(9999f, 9999f, 9999f);
-                StoppingTime = CustomOption.CustomOptions.TunaStoppingTime.getFloat();
-                if (Mode.ModeHandler.isMode(Mode.ModeId.Default)) Timer = StoppingTime;
-                IsUseVent = CustomOptions.TunaIsUseVent.getBool();
-                IsTunaAddWin = CustomOptions.TunaIsAddWin.getBool();
+                StoppingTime = CustomOption.CustomOptions.TunaStoppingTime.GetFloat();
+                if (Mode.ModeHandler.IsMode(Mode.ModeId.Default)) Timer = StoppingTime;
+                IsUseVent = CustomOptions.TunaIsUseVent.GetBool();
+                IsTunaAddWin = CustomOptions.TunaIsAddWin.GetBool();
                 IsMeetingEnd = false;
-                if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
+                if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles))
                 {
                     Timers = new();
                     foreach (PlayerControl p in CachedPlayer.AllPlayers) Timers[p.PlayerId] = StoppingTime;
@@ -2286,13 +2246,13 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 BlackCatPlayer = new();
-                NotImpostorExiled = CustomOptions.BlackCatNotImpostorExiled.getBool();
-                IsImpostorCheck = CustomOptions.BlackCatIsCheckImpostor.getBool();
-                IsUseVent = CustomOptions.BlackCatIsUseVent.getBool();
-                IsImpostorLight = CustomOptions.BlackCatIsImpostorLight.getBool();
-                int Common = (int)CustomOptions.BlackCatCommonTask.getFloat();
-                int Long = (int)CustomOptions.BlackCatLongTask.getFloat();
-                int Short = (int)CustomOptions.BlackCatShortTask.getFloat();
+                NotImpostorExiled = CustomOptions.BlackCatNotImpostorExiled.GetBool();
+                IsImpostorCheck = CustomOptions.BlackCatIsCheckImpostor.GetBool();
+                IsUseVent = CustomOptions.BlackCatIsUseVent.GetBool();
+                IsImpostorLight = CustomOptions.BlackCatIsImpostorLight.GetBool();
+                int Common = CustomOptions.BlackCatCommonTask.GetInt();
+                int Long = CustomOptions.BlackCatLongTask.GetInt();
+                int Short = CustomOptions.BlackCatShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -2300,7 +2260,7 @@ namespace SuperNewRoles.Roles
                     Long = PlayerControl.GameOptions.NumLongTasks;
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
-                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.BlackCatCheckImpostorTask.getString().Replace("%", "")) / 100f));
+                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.BlackCatCheckImpostorTask.GetString().Replace("%", "")) / 100f));
             }
         }
 
@@ -2320,20 +2280,14 @@ namespace SuperNewRoles.Roles
             public static PlayerControl target;
             public static DateTime ButtonTimer;
             public static Sprite buttonSprite;
-            /*public static Sprite getButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.KillButton.png", 115f);
-                return buttonSprite;
-            }*/
             public static void ClearAndReload()
             {
                 SecretlyKillerPlayer = new();
-                KillCoolTime = CustomOptions.SecretlyKillerKillCoolTime.getFloat();
-                IsKillCoolChange = CustomOptions.SecretlyKillerIsKillCoolTimeChange.getBool();
-                IsBlackOutKillCharge = CustomOptions.SecretlyKillerIsBlackOutKillCharge.getBool();
-                SecretlyKillLimit = (int)CustomOptions.SecretlyKillerSecretKillLimit.getFloat();
-                SecretlyKillCoolTime = CustomOptions.SecretlyKillerSecretKillCoolTime.getFloat();
+                KillCoolTime = CustomOptions.SecretlyKillerKillCoolTime.GetFloat();
+                IsKillCoolChange = CustomOptions.SecretlyKillerIsKillCoolTimeChange.GetBool();
+                IsBlackOutKillCharge = CustomOptions.SecretlyKillerIsBlackOutKillCharge.GetBool();
+                SecretlyKillLimit = CustomOptions.SecretlyKillerSecretKillLimit.GetInt();
+                SecretlyKillCoolTime = CustomOptions.SecretlyKillerSecretKillCoolTime.GetFloat();
             }
         }
 
@@ -2345,7 +2299,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 SpyPlayer = new();
-                CanUseVent = CustomOptions.SpyCanUseVent.getBool();
+                CanUseVent = CustomOptions.SpyCanUseVent.GetBool();
             }
         }
         public static class Kunoichi
@@ -2365,37 +2319,24 @@ namespace SuperNewRoles.Roles
             public static float StopTime;
             public static float HideTime;
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunaiButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunaiButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
-                HideKunai = CustomOptions.KunoichiHideKunai.getBool();
+                HideKunai = CustomOptions.KunoichiHideKunai.GetBool();
                 OldPosition = new();
                 StopTime = 0;
-                if (CustomOptions.KunoichiIsHide.getBool())
-                {
-                    HideTime = CustomOptions.KunoichiHideTime.getFloat();
-                }
-                else
-                {
-                    HideTime = -1;
-                }
+                HideTime = CustomOptions.KunoichiIsHide.GetBool() ? CustomOptions.KunoichiHideTime.GetFloat() : -1;
                 KunoichiPlayer = new();
-                KillCoolTime = CustomOptions.KunoichiCoolTime.getFloat();
-                KillKunai = (int)CustomOptions.KunoichiKillKunai.getFloat();
+                KillCoolTime = CustomOptions.KunoichiCoolTime.GetFloat();
+                KillKunai = CustomOptions.KunoichiKillKunai.GetInt();
                 HitCount = new();
-                if (Kunai != null)
-                {
-                    GameObject.Destroy(Kunai.kunai);
-                }
-                if (SendKunai != null)
-                {
-                    GameObject.Destroy(SendKunai.kunai);
-                }
+                if (Kunai != null) { GameObject.Destroy(Kunai.kunai); }
+                if (SendKunai != null) { GameObject.Destroy(SendKunai.kunai); }
                 if (Kunais.Count > 0)
                 {
                     foreach (Kunai kunai in Kunais)
@@ -2424,10 +2365,10 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 DoubleKillerPlayer = new();
-                MainCoolTime = CustomOptions.MainKillCoolTime.getFloat();
-                SubCoolTime = CustomOptions.SubKillCoolTime.getFloat();
-                CanUseSabo = CustomOptions.DoubleKillerSabo.getBool();
-                CanUseVent = CustomOptions.DoubleKillerVent.getBool();
+                MainCoolTime = CustomOptions.MainKillCoolTime.GetFloat();
+                SubCoolTime = CustomOptions.SubKillCoolTime.GetFloat();
+                CanUseSabo = CustomOptions.DoubleKillerSabo.GetBool();
+                CanUseVent = CustomOptions.DoubleKillerVent.GetBool();
             }
         }
         public static class Smasher
@@ -2439,7 +2380,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 SmasherPlayer = new();
-                KillCoolTime = CustomOptions.SmasherKillCoolTime.getFloat();
+                KillCoolTime = CustomOptions.SmasherKillCoolTime.GetFloat();
                 SmashOn = false;
             }
         }
@@ -2448,10 +2389,10 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> SuicideWisherPlayer;
             public static Color32 color = ImpostorRed;
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SuicideWisherButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuicideWisherButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -2463,9 +2404,11 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> NeetPlayer;
             public static Color32 color = new(127, 127, 127, byte.MaxValue);
+            public static bool IsAddWin;
             public static void ClearAndReload()
             {
                 NeetPlayer = new();
+                IsAddWin = CustomOptions.NeetIsAddWin.GetBool();
             }
         }
         public static class FastMaker
@@ -2487,16 +2430,191 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new(116, 80, 48, byte.MaxValue);
             public static float ToiletCool;
             private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ToiletFanButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ToiletFanButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
                 ToiletFanPlayer = new();
-                ToiletCool = CustomOptions.ToiletFanCoolTime.getFloat();
+                ToiletCool = CustomOptions.ToiletFanCoolTime.GetFloat();
+            }
+        }
+        public static class EvilButtoner
+        {
+            public static List<PlayerControl> EvilButtonerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static float SkillCount;
+            public static Dictionary<int, int> SkillCountSHR;
+            private static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ButtonerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                EvilButtonerPlayer = new();
+                CoolTime = CustomOptions.EvilButtonerCoolTime.GetFloat();
+                SkillCount = CustomOptions.EvilButtonerCount.GetFloat();
+                SkillCountSHR = new();
+            }
+        }
+        public static class NiceButtoner
+        {
+            public static List<PlayerControl> NiceButtonerPlayer;
+            public static Color32 color = new(0, 128, 128, byte.MaxValue);
+            public static float CoolTime;
+            public static float SkillCount;
+            public static Dictionary<int, int> SkillCountSHR;
+            public static void ClearAndReload()
+            {
+                NiceButtonerPlayer = new();
+                CoolTime = CustomOptions.NiceButtonerCoolTime.GetFloat();
+                SkillCount = CustomOptions.NiceButtonerCount.GetFloat();
+                SkillCountSHR = new();
+            }
+        }
+        public static class Finder
+        {
+            public static List<PlayerControl> FinderPlayer;
+            public static Color32 color = ImpostorRed;
+            public static int CheckMadmateKillCount;
+            public static int KillCount;
+            public static bool IsCheck
+            {
+                get
+                {
+                    return CheckMadmateKillCount <= KillCount;
+                }
+            }
+            public static void ClearAndReload()
+            {
+                FinderPlayer = new();
+                CheckMadmateKillCount = CustomOptions.FinderCheckMadmateSetting.GetInt();
+                KillCount = 0;
+            }
+        }
+        public static class Revolutionist
+        {
+            public static List<PlayerControl> RevolutionistPlayer;
+            public static Color32 color = new(255, 0, 51, byte.MaxValue);
+            public static float CoolTime;
+            public static float TouchTime;
+            public static List<byte> RevolutionedPlayerId;
+            public static List<PlayerControl> RevolutionedPlayer
+            {
+                get
+                {
+                    if (_revolutionedPlayer.Length != RevolutionedPlayerId.Count)
+                    {
+                        List<PlayerControl> newList = new();
+                        foreach (byte playerid in RevolutionedPlayerId)
+                        {
+                            PlayerControl player = ModHelpers.PlayerById(playerid);
+                            if (player == null) continue;
+                            newList.Add(player);
+                        }
+                        _revolutionedPlayer = newList.ToArray();
+                    }
+                    return _revolutionedPlayer.ToList();
+                }
+            }
+            public static PlayerControl[] _revolutionedPlayer;
+            public static bool IsAddWin;
+            public static bool IsAddWinAlive;
+            public static PlayerControl CurrentTarget;
+            public static PlayerControl MeetingTrigger;
+            public static bool IsEndMeeting;
+            public static PlayerControl WinPlayer;
+            public static void ClearAndReload()
+            {
+                RevolutionistPlayer = new();
+                CoolTime = CustomOptions.RevolutionistCoolTime.GetFloat();
+                TouchTime = CustomOptions.RevolutionistTouchTime.GetFloat();
+                RevolutionedPlayerId = new();
+                _revolutionedPlayer = new PlayerControl[] { };
+                IsAddWin = CustomOptions.RevolutionistAddWin.GetBool();
+                IsAddWinAlive = CustomOptions.RevolutionistAddWinIsAlive.GetBool();
+                CurrentTarget = null;
+                MeetingTrigger = null;
+                IsEndMeeting = false;
+                WinPlayer = null;
+            }
+        }
+        public static class Dictator
+        {
+            public static List<PlayerControl> DictatorPlayer;
+            public static Color32 color = new(0, 102, 51, byte.MaxValue);
+            public static int VoteCount;
+            public static int SubExileLimit;
+            public static Dictionary<byte, int> SubExileLimitData;
+            public static void ClearAndReload()
+            {
+                DictatorPlayer = new();
+                VoteCount = CustomOptions.DictatorVoteCount.GetInt();
+                if (CustomOptions.DictatorSubstituteExile.GetBool()) SubExileLimit = CustomOptions.DictatorSubstituteExileLimit.GetInt();
+                else SubExileLimit = 0;
+                SubExileLimitData = new();
+            }
+        }
+
+        public static class Spelunker
+        {
+            public static List<PlayerControl> SpelunkerPlayer;
+            public static Color32 color = new(255, 255, 0, byte.MaxValue);
+            public static bool IsVentChecked;
+            public static int VentDeathChance;
+            public static int LadderDeathChance;
+            public static float CommsOrLightdownDeathTime;
+            public static float CommsOrLightdownTime;
+            public static int LiftDeathChance;
+            public static int DoorOpenChance;
+            public static void ClearAndReload()
+            {
+                SpelunkerPlayer = new();
+                IsVentChecked = false;
+                VentDeathChance = CustomOptions.SpelunkerVentDeathChance.GetSelection();
+                LadderDeathChance = CustomOptions.SpelunkerLadderDeadChance.GetSelection();
+                if (CustomOptions.SpelunkerIsDeathCommsOrPowerdown.GetBool())
+                    CommsOrLightdownDeathTime = CustomOptions.SpelunkerDeathCommsOrPowerdownTime.GetFloat();
+                else
+                    CommsOrLightdownDeathTime = -1f;
+                CommsOrLightdownTime = 0f;
+                LiftDeathChance = CustomOptions.SpelunkerLiftDeathChance.GetSelection();
+                Neutral.Spelunker.DeathPosition = null;
+                DoorOpenChance = CustomOptions.SpelunkerDoorOpenChance.GetSelection();
+            }
+        }
+
+        public static class SuicidalIdeation
+        {
+            public static List<PlayerControl> SuicidalIdeationPlayer;
+            public static Color32 color = new(71, 71, 71, byte.MaxValue);
+            public static bool SuicidalIdeationWinText;
+            public static float TimeLeft;
+            public static DateTime ButtonTimer;
+            public static int CompletedTask;
+            public static float AddTimeLeft;
+            public static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuicidalIdeationButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                SuicidalIdeationPlayer = new();
+                SuicidalIdeationWinText = CustomOptions.SuicidalIdeationWinText.GetBool();
+                TimeLeft = CustomOptions.SuicidalIdeationTimeLeft.GetFloat();
+                AddTimeLeft = CustomOptions.SuicidalIdeationAddTimeLeft.GetFloat();
+                ButtonTimer = DateTime.Now;
+                CompletedTask = 0;
             }
         }
         public static class SatsumaAndImo
@@ -2532,8 +2650,8 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 LoversPlayer = new List<List<PlayerControl>>();
-                SameDie = CustomOptions.LoversSameDie.getBool();
-                AliveTaskCount = CustomOptions.LoversAliveTaskCount.getBool();
+                SameDie = CustomOptions.LoversSameDie.GetBool();
+                AliveTaskCount = CustomOptions.LoversAliveTaskCount.GetBool();
             }
         }
     }

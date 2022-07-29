@@ -26,11 +26,11 @@ namespace SuperNewRoles.Intro
         {
             this.color = color;
             this.NameKey = NameKey;
-            this.Name = ModTranslation.getString(NameKey + "Name");
+            this.Name = ModTranslation.GetString(NameKey + "Name");
             this.RoleId = RoleId;
             this.TitleNum = TitleNum;
             this.TitleDesc = GetTitle(NameKey, TitleNum);
-            this.Description = ModTranslation.getString(NameKey + "Description");
+            this.Description = ModTranslation.GetString(NameKey + "Description");
             this.Team = team;
             this.IsGhostRole = IsGhostRole;
 
@@ -44,14 +44,7 @@ namespace SuperNewRoles.Intro
         {
             if (RoleId == RoleId.DefaultRole)
             {
-                if (p != null && p.isImpostor())
-                {
-                    return ImpostorIntro;
-                }
-                else
-                {
-                    return CrewmateIntro;
-                }
+                return p != null && p.IsImpostor() ? ImpostorIntro : CrewmateIntro;
             }
             try
             {
@@ -73,7 +66,7 @@ namespace SuperNewRoles.Intro
         public static string GetTitle(string name, Int16 num)
         {
             System.Random r1 = new();
-            return ModTranslation.getString(name + "Title" + r1.Next(1, num + 1).ToString());
+            return ModTranslation.GetString(name + "Title" + r1.Next(1, num + 1).ToString());
         }
 
         public static IntroDate CrewmateIntro = new("CrewMate", Color.white, 1, RoleId.DefaultRole);
@@ -129,7 +122,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate WorkpersonIntro = new("Workperson", RoleClass.Workperson.color, 1, RoleId.Workperson, TeamRoleType.Neutral);
         public static IntroDate MagazinerIntro = new("Magaziner", RoleClass.Magaziner.color, 1, RoleId.Magaziner, TeamRoleType.Impostor);
         public static IntroDate MayorIntro = new("Mayor", RoleClass.Mayor.color, 1, RoleId.Mayor);
-        public static IntroDate trueloverIntro = new("truelover", RoleClass.truelover.color, 1, RoleId.truelover, TeamRoleType.Neutral);
+        public static IntroDate trueloverIntro = new("truelover", RoleClass.Truelover.color, 1, RoleId.truelover, TeamRoleType.Neutral);
         public static IntroDate TechnicianIntro = new("Technician", RoleClass.Technician.color, 1, RoleId.Technician);
         public static IntroDate SerialKillerIntro = new("SerialKiller", RoleClass.SerialKiller.color, 1, RoleId.SerialKiller, TeamRoleType.Impostor);
         public static IntroDate OverKillerIntro = new("OverKiller", RoleClass.OverKiller.color, 1, RoleId.OverKiller, TeamRoleType.Impostor);
@@ -183,13 +176,20 @@ namespace SuperNewRoles.Intro
         public static IntroDate SecretlyKillerIntro = new("SecretlyKiller", RoleClass.SecretlyKiller.color, 1, RoleId.SecretlyKiller, TeamRoleType.Impostor);
         public static IntroDate SpyIntro = new("Spy", RoleClass.Spy.color, 1, RoleId.Spy, TeamRoleType.Crewmate);
         public static IntroDate KunoichiIntro = new("Kunoichi", RoleClass.Kunoichi.color, 1, RoleId.Kunoichi, TeamRoleType.Impostor);
-        public static IntroDate DoubleKillerIntro = new IntroDate("DoubleKiller", RoleClass.DoubleKiller.color, 1, RoleId.DoubleKiller, TeamRoleType.Impostor);
-        public static IntroDate SmasherIntro = new IntroDate("Smasher", RoleClass.Smasher.color, 1, RoleId.Smasher, TeamRoleType.Impostor);
-        public static IntroDate SuicideWisherIntro = new IntroDate("SuicideWisher", RoleClass.SuicideWisher.color, 1, RoleId.SuicideWisher, TeamRoleType.Impostor);
+        public static IntroDate DoubleKillerIntro = new("DoubleKiller", RoleClass.DoubleKiller.color, 1, RoleId.DoubleKiller, TeamRoleType.Impostor);
+        public static IntroDate SmasherIntro = new("Smasher", RoleClass.Smasher.color, 1, RoleId.Smasher, TeamRoleType.Impostor);
+        public static IntroDate SuicideWisherIntro = new("SuicideWisher", RoleClass.SuicideWisher.color, 1, RoleId.SuicideWisher, TeamRoleType.Impostor);
         public static IntroDate NeetIntro = new("Neet", RoleClass.Neet.color, 1, RoleId.Neet, TeamRoleType.Neutral);
-        public static IntroDate FastMakerIntro = new IntroDate("FastMaker", RoleClass.FastMaker.color, 1, RoleId.FastMaker, TeamRoleType.Impostor);
+        public static IntroDate FastMakerIntro = new("FastMaker", RoleClass.FastMaker.color, 1, RoleId.FastMaker, TeamRoleType.Impostor);
         public static IntroDate ToiletFanIntro = new("ToiletFan", RoleClass.ToiletFan.color, 1, RoleId.ToiletFan, TeamRoleType.Crewmate);
-        public static IntroDate SatsumaAndImoIntro = new IntroDate("SatsumaAndImo", RoleClass.SatsumaAndImo.color, 1, RoleId.SatsumaAndImo, TeamRoleType.Crewmate);
+        public static IntroDate SatsumaAndImoIntro = new("SatsumaAndImo", RoleClass.SatsumaAndImo.color, 1, RoleId.SatsumaAndImo, TeamRoleType.Crewmate);
+        public static IntroDate EvilButtonerIntro = new("EvilButtoner", RoleClass.EvilButtoner.color, 1, RoleId.EvilButtoner, TeamRoleType.Impostor);
+        public static IntroDate NiceButtonerIntro = new("NiceButtoner", RoleClass.NiceButtoner.color, 1, RoleId.NiceButtoner, TeamRoleType.Crewmate);
+        public static IntroDate FinderIntro = new("Finder", RoleClass.Finder.color, 1, RoleId.Finder, TeamRoleType.Impostor);
+        public static IntroDate RevolutionistIntro = new("Revolutionist", RoleClass.Revolutionist.color, 1, RoleId.Revolutionist, TeamRoleType.Neutral);
+        public static IntroDate DictatorIntro = new("Dictator", RoleClass.Dictator.color, 1, RoleId.Dictator, TeamRoleType.Crewmate);
+        public static IntroDate SpelunkerIntro = new("Spelunker", RoleClass.Spelunker.color, 1, RoleId.Spelunker, TeamRoleType.Neutral);
+        public static IntroDate SuicidalIdeationIntro = new("SuicidalIdeation", RoleClass.SuicidalIdeation.color, 1, RoleId.SuicidalIdeation, TeamRoleType.Neutral);
         //イントロオブジェ
     }
 }

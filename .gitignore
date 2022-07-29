@@ -4,3 +4,5 @@ SuperNewRoles/bin/
 *.v2
 *.dll
 .vs/
+~$TranslateData.xlsx
+.~lock.TranslateData.xlsx#

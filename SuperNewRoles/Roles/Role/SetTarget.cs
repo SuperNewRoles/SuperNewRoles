@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using SuperNewRoles.Patches;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles
 {
@@ -8,7 +8,7 @@ namespace SuperNewRoles.Roles
     {
         public static void ImpostorSetTarget()
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.Kunoichi))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Kunoichi))
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControl.LocalPlayer);
                 return;
@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles
             List<PlayerControl> untarget = new();
             untarget.AddRange(RoleClass.SideKiller.MadKillerPlayer);
             untarget.AddRange(RoleClass.Spy.SpyPlayer);
-            FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget(untargetablePlayers: untarget, onlyCrewmates: true));
+            FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.SetTarget(untargetablePlayers: untarget, onlyCrewmates: true));
         }
     }
 }

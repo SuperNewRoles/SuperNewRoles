@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
 
                 foreach (var p in CachedPlayer.AllPlayers)
                 {
-                    if (p.PlayerControl.isAlive() && !p.PlayerControl.isImpostor())
+                    if (p.PlayerControl.IsAlive() && !p.PlayerControl.IsImpostor())
                     {
                         float target_distance = Vector3.Distance(CachedPlayer.LocalPlayer.transform.position, p.transform.position);
 
@@ -25,7 +25,7 @@ namespace SuperNewRoles.Roles
                         }
                     }
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("[Pursuer]Target:" + target?.nameText().text);
+                SuperNewRolesPlugin.Logger.LogInfo("[Pursuer]Target:" + target?.NameText().text);
                 if (target != null)
                 {
                     try

@@ -4,18 +4,7 @@ namespace SuperNewRoles.Roles
 {
     public class Hawk
     {
-        public static void TimerEnd()
-        {
-            /**
-            if (PlayerControl.LocalPlayer.isRole(RoleId.Hawk))
-            {
-                MapBehaviour.Instance.Close();
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
-                FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.SetActive(true);
-                FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(true);
-            }
-            **/
-        }
+        public static void TimerEnd() { }
         private static float count;
         public class FixedUpdate
         {

@@ -3,7 +3,6 @@ using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Roles
-
 {
     class JackalFriends
     {
@@ -11,7 +10,7 @@ namespace SuperNewRoles.Roles
         public static bool CheckJackal(PlayerControl p)
         {
             if (CheckedJackal.Contains(p.PlayerId)) return true;
-            RoleId role = p.getRole();
+            RoleId role = p.GetRole();
             int CheckTask = 0;
             switch (role)
             {

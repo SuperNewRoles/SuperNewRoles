@@ -15,24 +15,23 @@ namespace SuperNewRoles.Sabotage
         }
         public static bool IsOK(CustomSabotage sabotage)
         {
-            if (!Options.SabotageSetting.getBool()) return false;
-            switch (sabotage)
-            {
-                case CustomSabotage.CognitiveDeficit:
-                    if (PlayerControl.GameOptions.MapId != 4) return false;
-                    else return Options.CognitiveDeficitSetting.getBool();
-            }
-            return false;
+            return !Options.SabotageSetting.GetBool()
+                ? false
+                : sabotage switch
+                {
+                    CustomSabotage.CognitiveDeficit => PlayerControl.GameOptions.MapId == 4 && Options.CognitiveDeficitSetting.GetBool(),
+                    _ => false,
+                };
         }
         public static bool IsOKMeeting()
         {
-            if (RoleHelpers.IsSabotage()) return false;
-            if (thisSabotage == CustomSabotage.None) return true;
-            return thisSabotage switch
-            {
-                CustomSabotage.CognitiveDeficit => CognitiveDeficit.main.IsLocalEnd,
-                _ => false,
-            };
+            return !RoleHelpers.IsSabotage()
+&& (thisSabotage == CustomSabotage.None
+|| thisSabotage switch
+{
+    CustomSabotage.CognitiveDeficit => CognitiveDeficit.Main.IsLocalEnd,
+    _ => false,
+});
         }
         public static InfectedOverlay InfectedOverlayInstance;
         public const float SabotageMaxTime = 30f;
@@ -43,11 +42,11 @@ namespace SuperNewRoles.Sabotage
                 case CustomSabotage.CognitiveDeficit:
                     if (Is)
                     {
-                        CognitiveDeficit.main.StartSabotage();
+                        CognitiveDeficit.Main.StartSabotage();
                     }
                     else
                     {
-                        CognitiveDeficit.main.EndSabotage(player);
+                        CognitiveDeficit.Main.EndSabotage(player);
                     }
                     break;
             }
@@ -59,9 +58,9 @@ namespace SuperNewRoles.Sabotage
             CustomButtons = new List<ButtonBehavior>();
             if (IsOK(CustomSabotage.CognitiveDeficit))
             {
-                CognitiveDeficit.main.DefaultDistanceTime = Options.CognitiveDeficitReleaseTimeSetting.getFloat();
-                CognitiveDeficit.main.DefaultUpdateTime = Options.CognitiveDeficitOutfitUpdateTimeSetting.getFloat();
-                CognitiveDeficit.main.IsAllEndSabotage = Options.CognitiveDeficitIsAllEndSabotageSetting.getBool();
+                CognitiveDeficit.Main.DefaultDistanceTime = Options.CognitiveDeficitReleaseTimeSetting.GetFloat();
+                CognitiveDeficit.Main.DefaultUpdateTime = Options.CognitiveDeficitOutfitUpdateTimeSetting.GetFloat();
+                CognitiveDeficit.Main.IsAllEndSabotage = Options.CognitiveDeficitIsAllEndSabotageSetting.GetBool();
             }
         }
         public static void Update()
@@ -80,7 +79,7 @@ namespace SuperNewRoles.Sabotage
             switch (thisSabotage)
             {
                 case CustomSabotage.CognitiveDeficit:
-                    CognitiveDeficit.main.Update();
+                    CognitiveDeficit.Main.Update();
                     break;
             }
         }
