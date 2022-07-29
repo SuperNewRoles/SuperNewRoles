@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -193,45 +195,49 @@ namespace SuperNewRoles.CustomCosmetics
         }
 
         [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetHatById))]
-        private static class HatManagerPatch
+        public static class HatManagerPatch
         {
             private static bool LOADED;
             private static bool RUNNING = false;
+            public static bool IsLoadingnow = false;
 
             static void Prefix(HatManager __instance)
             {
                 if (!IsEnd) return;
                 if (RUNNING) return;
                 RUNNING = true; // prevent simultanious execution
+                AmongUsClient.Instance.StartCoroutine(LoadHat(__instance));
+            }
 
-                try
+            static IEnumerator LoadHat(HatManager __instance)
+            {
+                IsLoadingnow = true;
+                if (!LOADED)
                 {
-                    if (!LOADED)
-                    {
-                        Assembly assembly = Assembly.GetExecutingAssembly();
-                        string hatres = $"{assembly.GetName().Name}.Resources.CustomHats";
-                        string[] hats = (from r in assembly.GetManifestResourceNames()
-                                         where r.StartsWith(hatres) && r.EndsWith(".png")
-                                         select r).ToArray<string>();
+                    Assembly assembly = Assembly.GetExecutingAssembly();
+                    string hatres = $"{assembly.GetName().Name}.Resources.CustomHats";
+                    string[] hats = (from r in assembly.GetManifestResourceNames()
+                                     where r.StartsWith(hatres) && r.EndsWith(".png")
+                                     select r).ToArray<string>();
 
-                        List<CustomHat> customhats = CreateCustomHatDetails(hats);
-                        foreach (CustomHat ch in customhats)
-                            __instance.allHats.Add(CreateHatData(ch));
-                    }
-                    while (CustomHatLoader.hatDetails.Count > 0)
+                    List<CustomHat> customhats = CreateCustomHatDetails(hats);
+                    foreach (CustomHat ch in customhats)
                     {
-                        __instance.allHats.Add(CreateHatData(CustomHatLoader.hatDetails[0]));
-                        CustomHatLoader.hatDetails.RemoveAt(0);
+                        __instance.allHats.Add(CreateHatData(ch));
+                        yield return new WaitForSeconds(0.05f);
                     }
                 }
-                catch (System.Exception e)
+                while (CustomHatLoader.hatDetails.Count > 0)
                 {
-                    if (!LOADED)
-                        System.Console.WriteLine("Unable to add Custom Hats\n" + e);
+                    __instance.allHats.Add(CreateHatData(CustomHatLoader.hatDetails[0]));
+                    CustomHatLoader.hatDetails.RemoveAt(0);
+                    yield return new WaitForSeconds(0.05f);
                 }
                 LOADED = true;
+                IsLoadingnow = false;
             }
         }
+
 
         [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.HandleAnimation))]
         private static class PlayerPhysicsHandleAnimationPatch
@@ -452,18 +458,20 @@ namespace SuperNewRoles.CustomCosmetics
     {
         public static bool running = false;
 
-        public static string[] hatRepos = new string[]
+        //レポURL、レポ
+        public static Dictionary<string, string> hatRepos = new()
         {
-            "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master",
+            { "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master", "SuperNewNamePlates" },
 
-            "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master",
-            "https://raw.githubusercontent.com/Ujet222/TOPHats/main",
+            { "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master", "mememurahat" },
+            { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },
 
-            "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master",
-            "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master",
-            "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master"
+            { "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master", "TheOtherRolesGMHaoming"},
+            { "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master", "TheOtherRolesGM"},
+            { "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master", "TheOtherHats"},
         };
 
+        public static List<string> CachedRepos = new();
         public static List<CustomHatOnline> hatDetails = new();
         private static Task hatFetchTask = null;
         public static void LaunchHatFetcher()
@@ -479,11 +487,82 @@ namespace SuperNewRoles.CustomCosmetics
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\");
             hatDetails = new List<CustomHatOnline>();
-            List<string> repos = new(hatRepos);
+            List<string> repos = new(hatRepos.Keys);
             SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] フェチ");
             foreach (string repo in repos)
             {
                 Repos.Add(repo);
+            }
+            string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
+            foreach (string repo in repos)
+            {
+                if (File.Exists($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json"))
+                {
+                    StreamReader sr = new($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json");
+
+                    string text = sr.ReadToEnd();
+
+                    sr.Close();
+
+                    JToken jobj = JObject.Parse(text)["hats"];
+                    if (jobj.HasValues)
+                    {
+
+                        List<CustomHatOnline> hatdatas = new();
+
+                        for (JToken current = jobj.First; current != null; current = current.Next)
+                        {
+                            if (current.HasValues)
+                            {
+                                CustomHatOnline info = new()
+                                {
+                                    name = current["name"]?.ToString(),
+                                    author = current["author"]?.ToString(),
+                                    resource = SanitizeResourcePath(current["resource"]?.ToString())
+                                };
+                                if (info.resource == null || info.name == null) // required
+                                    continue;
+                                info.reshasha = info.resource + info.name + info.author;
+                                info.backresource = SanitizeResourcePath(current["backresource"]?.ToString());
+                                info.reshashb = current["reshashb"]?.ToString();
+                                info.climbresource = SanitizeResourcePath(current["climbresource"]?.ToString());
+                                info.reshashc = current["reshashc"]?.ToString();
+                                info.flipresource = SanitizeResourcePath(current["flipresource"]?.ToString());
+                                info.reshashf = current["reshashf"]?.ToString();
+                                info.backflipresource = SanitizeResourcePath(current["backflipresource"]?.ToString());
+                                info.reshashbf = current["reshashbf"]?.ToString();
+
+                                info.package = current["package"]?.ToString();
+                                SuperNewRolesPlugin.Logger.LogInfo(info.package);
+                                if (info.package != null && !CustomHats.Keys.Contains(info.package))
+                                {
+                                    CustomHats.Keys.Add(info.package);
+                                }
+                                info.condition = current["condition"]?.ToString();
+                                info.bounce = current["bounce"] != null;
+                                info.adaptive = current["adaptive"] != null;
+                                info.behind = current["behind"] != null;
+
+                                if (info.package == "Developer Hats")
+                                    info.package = "developerHats";
+
+                                if (info.package == "Community Hats")
+                                    info.package = "communityHats";
+
+                                hatdatas.Add(info);
+                            }
+                        }
+                        CustomHats.Keys.Add("InnerSloth");
+
+                        hatDetails.AddRange(hatdatas);
+                        CachedRepos.Add(repo);
+                        Repos.Remove(repo);
+                        if (Repos.Count < 1)
+                        {
+                            CustomHats.IsEnd = true;
+                        }
+                    }
+                }
             }
             foreach (string repo in repos)
             {
@@ -538,6 +617,9 @@ namespace SuperNewRoles.CustomCosmetics
                     return HttpStatusCode.ExpectationFailed;
                 }
                 string json = await response.Content.ReadAsStringAsync();
+                var responsestream = await response.Content.ReadAsStreamAsync();
+                string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
+                responsestream.CopyTo(File.Create($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json"));
                 JToken jobj = JObject.Parse(json)["hats"];
                 if (!jobj.HasValues) return HttpStatusCode.ExpectationFailed;
 
@@ -589,7 +671,6 @@ namespace SuperNewRoles.CustomCosmetics
 
                 List<string> markedfordownload = new();
 
-                string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
                 MD5 md5 = MD5.Create();
                 foreach (CustomHatOnline data in hatdatas)
                 {
@@ -614,12 +695,14 @@ namespace SuperNewRoles.CustomCosmetics
                     using var fileStream = File.Create($"{filePath}\\{file}");
                     responseStream.CopyTo(fileStream);
                 }
-
-                hatDetails.AddRange(hatdatas);
-                Repos.Remove(repo);
-                if (Repos.Count < 1)
+                if (!CachedRepos.Contains(repo))
                 {
-                    CustomHats.IsEnd = true;
+                    hatDetails.AddRange(hatdatas);
+                    Repos.Remove(repo);
+                    if (Repos.Count < 1)
+                    {
+                        CustomHats.IsEnd = true;
+                    }
                 }
             }
             catch (System.Exception ex)
