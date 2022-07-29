@@ -2620,7 +2620,7 @@ namespace SuperNewRoles.Roles
         public static class Tactician
         {
             public static List<PlayerControl> TacticianPlayer;
-            public static Color32 color = ImpostorRed;
+            public static Color32 color = new(128, 0, 0, byte.MaxValue);
             public static bool CanUseVent;
             public static void ClearAndReload()
             {
