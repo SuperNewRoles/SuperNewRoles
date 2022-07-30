@@ -2657,7 +2657,7 @@ namespace SuperNewRoles.Roles
             {
                 get
                 {
-                    return IsLocalOn ? ModHelpers.playerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
+                    return IsLocalOn ? ModHelpers.PlayerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
                 }
             }
             public static Dictionary<PlayerControl, PlayerControl> PlayerDatas
@@ -2669,7 +2669,7 @@ namespace SuperNewRoles.Roles
                         Dictionary<PlayerControl, PlayerControl> newdic = new();
                         foreach (var data in Datas)
                         {
-                            newdic.Add(ModHelpers.playerById(data.Key), ModHelpers.playerById(data.Value));
+                            newdic.Add(ModHelpers.PlayerById(data.Key), ModHelpers.PlayerById(data.Value));
                         }
                         _playerDatas = newdic;
                     }

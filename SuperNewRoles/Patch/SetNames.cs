@@ -404,7 +404,7 @@ namespace SuperNewRoles.Patch
             SetNamesClass.SatsumaimoSet();
             if (RoleClass.PartTimer.Datas.ContainsValue(CachedPlayer.LocalPlayer.PlayerId))
             {
-                PlayerControl PartTimerTarget = ModHelpers.playerById((byte)RoleClass.PartTimer.Datas.GetKey(CachedPlayer.LocalPlayer.PlayerId));
+                PlayerControl PartTimerTarget = ModHelpers.PlayerById((byte)RoleClass.PartTimer.Datas.GetKey(CachedPlayer.LocalPlayer.PlayerId));
                 SetNamesClass.SetPlayerRoleNames(PartTimerTarget);
                 SetNamesClass.SetPlayerNameColors(PartTimerTarget);
             }

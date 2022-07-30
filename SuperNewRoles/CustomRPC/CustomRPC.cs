@@ -223,7 +223,7 @@ namespace SuperNewRoles.CustomRPC
     {
         public static void PartTimerSet(byte playerid, byte targetid)
         {
-            PlayerControl source = ModHelpers.playerById(playerid);
+            PlayerControl source = ModHelpers.PlayerById(playerid);
             if (source == null) return;
             RoleClass.PartTimer.Datas[source.PlayerId] = targetid;
         }
