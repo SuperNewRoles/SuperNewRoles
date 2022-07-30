@@ -933,6 +933,7 @@ namespace SuperNewRoles
                 RoleId.SuicidalIdeation => CustomOptions.SuicidalIdeationPlayerCount.GetFloat(),
                 RoleId.Nun => CustomOptions.NunPlayerCount.GetFloat(),
                 RoleId.SatsumaAndImo => CustomOptions.SatsumaAndImoPlayerCount.GetFloat(),
+                RoleId.SeeThroughPerson => CustomOptions.SeeThroughPersonPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

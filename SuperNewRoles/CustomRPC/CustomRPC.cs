@@ -143,6 +143,7 @@ namespace SuperNewRoles.CustomRPC
         Spelunker,
         SuicidalIdeation,
         Nun,
+        SeeThroughPerson,
         //RoleId
     }
 

@@ -163,6 +163,7 @@ namespace SuperNewRoles.Roles
             Spelunker.ClearAndReload();
             SuicidalIdeation.ClearAndReload();
             Nun.ClearAndReload();
+            SeeThroughPerson.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2647,6 +2648,17 @@ namespace SuperNewRoles.Roles
                 TeamNumber = 1;
                 //1=クルー
                 //2=マッド
+            }
+        }
+        public static class SeeThroughPerson
+        {
+            public static List<PlayerControl> SeeThroughPersonPlayer;
+            public static Color32 color = new(157, 204, 224, byte.MaxValue);
+            public static List<EdgeCollider2D> Objects;
+            public static void ClearAndReload()
+            {
+                SeeThroughPersonPlayer = new();
+                Objects = new();
             }
         }
         //新ロールクラス
