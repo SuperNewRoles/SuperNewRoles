@@ -143,6 +143,7 @@ namespace SuperNewRoles.CustomRPC
         Spelunker,
         SuicidalIdeation,
         Nun,
+        PartTimer,
         //RoleId
     }
 
@@ -215,10 +216,17 @@ namespace SuperNewRoles.CustomRPC
         SetSecretRoomTeleportStatus,
         ChiefSidekick,
         StartRevolutionMeeting,
-        UncheckedUsePlatform
+        UncheckedUsePlatform,
+        PartTimerSet
     }
     public static class RPCProcedure
     {
+        public static void PartTimerSet(byte playerid, byte targetid)
+        {
+            PlayerControl source = ModHelpers.PlayerById(playerid);
+            if (source == null) return;
+            RoleClass.PartTimer.Datas[source.PlayerId] = targetid;
+        }
         public static void UncheckedUsePlatform(byte playerid, bool IsMove)
         {
             PlayerControl source = ModHelpers.PlayerById(playerid);
@@ -1307,6 +1315,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.UncheckedUsePlatform:
                             UncheckedUsePlatform(reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.PartTimerSet:
+                            PartTimerSet(reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }
