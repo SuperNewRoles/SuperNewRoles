@@ -70,6 +70,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SuicidalIdeationButton;
         public static CustomButton MatryoshkaButton;
         public static CustomButton NunButton;
+        public static CustomButton PartTimerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2188,6 +2189,41 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("NunButtonName"),
+                showButtonText = true
+            };
+
+            PartTimerButton = new(
+                () => {
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.PartTimerSet);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write(SetTarget().PlayerId);
+                    writer.EndRPC();
+                    RPCProcedure.PartTimerSet(CachedPlayer.LocalPlayer.PlayerId, SetTarget().PlayerId);
+                    PartTimerButton.Timer = PartTimerButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.PartTimer && !RoleClass.PartTimer.IsLocalOn; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                },
+                () =>
+                {
+                    PartTimerButton.MaxTimer = RoleClass.PartTimer.CoolTime;
+                    PartTimerButton.Timer = PartTimerButton.MaxTimer;
+                },
+                RoleClass.PartTimer.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return false;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("PartTimerButtonName"),
                 showButtonText = true
             };
 

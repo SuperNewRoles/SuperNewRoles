@@ -144,6 +144,7 @@ namespace SuperNewRoles.CustomRPC
         SuicidalIdeation,
         Matryoshka,
         Nun,
+        PartTimer,
         //RoleId
     }
 
@@ -217,6 +218,7 @@ namespace SuperNewRoles.CustomRPC
         ChiefSidekick,
         StartRevolutionMeeting,
         UncheckedUsePlatform,
+        PartTimerSet,
         SetMatryoshkaDeadbody
     }
     public static class RPCProcedure
@@ -228,7 +230,12 @@ namespace SuperNewRoles.CustomRPC
             if (source == null) return;
             Roles.Impostor.Matryoshka.Set(source, target, Is);
         }
-
+        public static void PartTimerSet(byte playerid, byte targetid)
+        {
+            PlayerControl source = ModHelpers.PlayerById(playerid);
+            if (source == null) return;
+            RoleClass.PartTimer.Datas[source.PlayerId] = targetid;
+        }
         public static void UncheckedUsePlatform(byte playerid, bool IsMove)
         {
             PlayerControl source = ModHelpers.PlayerById(playerid);
@@ -1320,6 +1327,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.UncheckedUsePlatform:
                             UncheckedUsePlatform(reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.PartTimerSet:
+                            PartTimerSet(reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }

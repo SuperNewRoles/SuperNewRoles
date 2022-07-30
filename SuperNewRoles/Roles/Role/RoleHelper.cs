@@ -589,6 +589,9 @@ namespace SuperNewRoles
                 case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.Add(player);
                     break;
+                case RoleId.PartTimer:
+                    RoleClass.PartTimer.PartTimerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -976,6 +979,9 @@ namespace SuperNewRoles
                 case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.PartTimer:
+                    RoleClass.PartTimer.PartTimerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -1029,7 +1035,8 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
-                    //タスククリアか
+                case RoleId.PartTimer:
+                //タスククリアか
                     IsTaskClear = true;
                     break;
             }
@@ -1185,7 +1192,8 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
-                    //第三か
+                case RoleId.PartTimer:
+                //第三か
                     IsNeutral = true;
                     break;
             }
@@ -1467,6 +1475,7 @@ namespace SuperNewRoles
                 else if (RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicidalIdeation;
                 else if (RoleClass.Matryoshka.MatryoshkaPlayer.IsCheckListPlayerControl(player)) return RoleId.Matryoshka;
                 else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
+                else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
                 //ロールチェック
             }
             catch (Exception e)
