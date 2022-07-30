@@ -154,6 +154,7 @@ namespace SuperNewRoles.Roles
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
             ToiletFan.ClearAndReload();
+            SatsumaAndImo.ClearAndReload();
             EvilButtoner.ClearAndReload();
             NiceButtoner.ClearAndReload();
             Finder.ClearAndReload();
@@ -162,6 +163,7 @@ namespace SuperNewRoles.Roles
             Spelunker.ClearAndReload();
             SuicidalIdeation.ClearAndReload();
             Matryoshka.ClearAndReload();
+            Nun.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2664,6 +2666,37 @@ namespace SuperNewRoles.Roles
                 Datas = new();
                 CoolTime = CustomOptions.MatryoshkaCoolTime.GetFloat();
                 MyKillCoolTime = PlayerControl.GameOptions.killCooldown;
+            }
+        }
+        public static class Nun
+        {
+            public static List<PlayerControl> NunPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.NunButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                NunPlayer = new();
+                CoolTime = CustomOptions.NunCoolTime.GetFloat();
+            }
+        }
+        public static class SatsumaAndImo
+        {
+            public static List<PlayerControl> SatsumaAndImoPlayer;
+            public static Color32 color = new(153, 0, 68, byte.MaxValue);
+            public static int TeamNumber;
+            public static void ClearAndReload()
+            {
+                SatsumaAndImoPlayer = new();
+                TeamNumber = 1;
+                //1=クルー
+                //2=マッド
             }
         }
         //新ロールクラス

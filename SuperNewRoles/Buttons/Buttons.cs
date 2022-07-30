@@ -69,6 +69,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton RevolutionistButton;
         public static CustomButton SuicidalIdeationButton;
         public static CustomButton MatryoshkaButton;
+        public static CustomButton NunButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2080,7 +2081,8 @@ namespace SuperNewRoles.Buttons
             };
 
             MatryoshkaButton = new(
-                () => {
+                () =>
+                {
                     if (RoleClass.Matryoshka.IsLocalOn)
                     {
                         Roles.Impostor.Matryoshka.RpcSet(null, false);
@@ -2101,7 +2103,8 @@ namespace SuperNewRoles.Buttons
                                 {
                                     if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
                                     {
-                                        if (RoleClass.Matryoshka.Datas.Values.All(data => {
+                                        if (RoleClass.Matryoshka.Datas.Values.All(data =>
+                                        {
                                             return data.Item1 == null || data.Item1.ParentId != component.ParentId;
                                         }))
                                         {
@@ -2124,7 +2127,8 @@ namespace SuperNewRoles.Buttons
                     {
                         MatryoshkaButton.Sprite = RoleClass.Matryoshka.TakeOffButtonSprite;
                         MatryoshkaButton.buttonText = ModTranslation.GetString("MatryoshkaTakeOffButtonName");
-                    } else
+                    }
+                    else
                     {
                         MatryoshkaButton.Sprite = RoleClass.Matryoshka.PutOnButtonSprite;
                         MatryoshkaButton.buttonText = ModTranslation.GetString("MatryoshkaPutOnButtonName");
@@ -2146,9 +2150,44 @@ namespace SuperNewRoles.Buttons
                 {
                     return false;
                 }
-            )
+                )
             {
                 buttonText = ModTranslation.GetString("MatryoshkaPutOnButtonName"),
+                showButtonText = true
+            };
+
+            NunButton = new(
+                () => {
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedUsePlatform);
+                    writer.Write((byte)255);
+                    writer.Write(false);
+                    writer.EndRPC();
+                    RPCProcedure.UncheckedUsePlatform((byte)255, false);
+                    NunButton.Timer = NunButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Nun; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    NunButton.MaxTimer = RoleClass.Nun.CoolTime;
+                    NunButton.Timer = NunButton.MaxTimer;
+                },
+                RoleClass.Nun.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return false;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("NunButtonName"),
                 showButtonText = true
             };
 
