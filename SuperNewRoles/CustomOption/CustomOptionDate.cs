@@ -1572,7 +1572,7 @@ namespace SuperNewRoles.CustomOption
             PsychometristCoolTime = CustomOption.Create(939, false, CustomOptionType.Crewmate, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PsychometristOption);
             PsychometristReadTime = CustomOption.Create(940, false, CustomOptionType.Crewmate, "PsychometristReadTime", 5f, 0f, 15f, 0.5f, PsychometristOption);
             PsychometristIsCheckDeathTime = CustomOption.Create(941, false, CustomOptionType.Crewmate, "PsychometristIsCheckDeathTime", true, PsychometristOption);
-            PsychometristDeathTimeDeviation = CustomOption.Create(942, false, CustomOptionType.Crewmate, "PsychometristDeathTimeDeviation", 5f, 0f, 30f, 0.5f, PsychometristIsCheckDeathTime);
+            PsychometristDeathTimeDeviation = CustomOption.Create(942, false, CustomOptionType.Crewmate, "PsychometristDeathTimeDeviation", 3f, 0f, 30f, 1f, PsychometristIsCheckDeathTime);
             PsychometristIsCheckDeathReason = CustomOption.Create(943, false, CustomOptionType.Crewmate, "PsychometristIsCheckDeathReason", true, PsychometristOption);
             PsychometristIsCheckFootprints = CustomOption.Create(944, false, CustomOptionType.Crewmate, "PsychometristIsCheckFootprints", true, PsychometristOption);
             PsychometristCanCheckFootprintsTime = CustomOption.Create(945, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);

@@ -2657,18 +2657,28 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float ReadTime;
             public static bool IsCheckDeathTime;
-            public static float DeathTimeDeviation;
+            public static int DeathTimeDeviation;
             public static bool IsCheckDeathReason;
             public static bool IsCheckFootprints;
             public static float CanCheckFootprintsTime;
             public static bool IsReportCheckedReportDeadbody;
+            //(死体, テキスト, 誤差)
+            public static List<(DeadBody, TextMeshPro, int)> DeathTimeTexts;
+            private static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PsychometristButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 PsychometristPlayer = new();
+                DeathTimeTexts = new();
                 CoolTime = CustomOptions.PsychometristCoolTime.GetFloat();
                 ReadTime = CustomOptions.PsychometristReadTime.GetFloat();
                 IsCheckDeathTime = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
-                DeathTimeDeviation = CustomOptions.PsychometristDeathTimeDeviation.GetFloat();
+                DeathTimeDeviation = CustomOptions.PsychometristDeathTimeDeviation.GetInt();
                 IsCheckDeathReason = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
                 IsCheckFootprints = CustomOptions.PsychometristIsCheckFootprints.GetBool();
                 CanCheckFootprintsTime = CustomOptions.PsychometristCanCheckFootprintsTime.GetFloat();

@@ -69,6 +69,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton RevolutionistButton;
         public static CustomButton SuicidalIdeationButton;
         public static CustomButton NunButton;
+        public static CustomButton PsychometristButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2111,6 +2112,36 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("NunButtonName"),
+                showButtonText = true
+            };
+
+            PsychometristButton = new(
+                () => {
+                    Roles.CrewMate.Psychometrist.ClickButton();
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Psychometrist; },
+                () =>
+                {
+                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    PsychometristButton.MaxTimer = RoleClass.Psychometrist.CoolTime;
+                    PsychometristButton.Timer = PsychometristButton.MaxTimer;
+                },
+                RoleClass.Psychometrist.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return false;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("PsychometristButtonName"),
                 showButtonText = true
             };
 

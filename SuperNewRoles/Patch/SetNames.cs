@@ -280,18 +280,33 @@ namespace SuperNewRoles.Patch
         }
         public static void SatsumaimoSet()
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.SatsumaAndImo) || PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+            if (PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
             {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
-                {//クルーなら
-                    if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
-                    {//名前に(C)をつける
-                        SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
-                    }
-                    if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
+                {
+                    if (player.IsRole(RoleId.SatsumaAndImo))
                     {
-                        SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
+                        //クルーなら
+                        if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
+                        {//名前に(C)をつける
+                            SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
+                        }
+                        if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
+                        {
+                            SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
+                        }
                     }
+                }
+            } else if (PlayerControl.LocalPlayer.IsRole(RoleId.SatsumaAndImo))
+            {
+                PlayerControl player = PlayerControl.LocalPlayer;
+                if (!player.NameText().text.Contains(ModHelpers.Cs(Palette.White, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
+                {//名前に(C)をつける
+                    SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
+                }
+                 else if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.ImpostorRed, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
+                {
+                    SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
                 }
             }
         }

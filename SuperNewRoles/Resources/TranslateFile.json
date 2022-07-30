@@ -4177,6 +4177,11 @@
         "11": "\u3088\u307f\u3068\u3063\u305f\u5f8c\u3067\u3082\u901a\u5831\u3067\u304d\u308b",
         "13": "\u4f60\u53ef\u4ee5\u5728\u8bfb\u8fc7\u4e4b\u540e\u518d\u4e3e\u62a5\u3002"
     },
+    "PsychometristButtonName": {
+        "0": "reading",
+        "11": "\u3088\u307f\u3068\u308a",
+        "13": "\u8bfb\u53d6"
+    },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
         "11": "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01",

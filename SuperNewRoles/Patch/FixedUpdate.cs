@@ -95,6 +95,7 @@ namespace SuperNewRoles.Patch
                     SetNameUpdate.Postfix(__instance);
                     Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
+                    Roles.CrewMate.Psychometrist.FixedUpdate();
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }

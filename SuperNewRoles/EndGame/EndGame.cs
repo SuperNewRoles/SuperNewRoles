@@ -370,7 +370,7 @@ namespace SuperNewRoles.EndGame
                     {
                         roleText += $" → {CustomOptions.Cs(datas.GhostIntroDate.color, datas.GhostIntroDate.NameKey + "Name")}";
                     }
-                    string result = $"{ModHelpers.Cs(Palette.PlayerColors[datas.ColorId], datas.PlayerName)}{datas.NameSuffix}{taskInfo} - {GetStatusText(datas.Status)} - {roleText}";
+                    string result = $"{ModHelpers.Cs(Palette.PlayerColors[datas.ColorId], datas.PlayerName)}{datas.NameSuffix}{taskInfo} - {FinalStatusPatch.GetStatusText(datas.Status)} - {roleText}";
                     if (ModeHandler.IsMode(ModeId.Zombie))
                     {
                         roleText = datas.ColorId == 1 ? CustomOptions.Cs(Mode.Zombie.Main.Policecolor, "ZombiePoliceName") : CustomOptions.Cs(Mode.Zombie.Main.Zombiecolor, "ZombieZombieName");
@@ -400,7 +400,6 @@ namespace SuperNewRoles.EndGame
 
             IsHaison = false;
         }
-        static string GetStatusText(FinalStatus status) => ModTranslation.GetString("FinalStatus" + status.ToString()); //ローカル関数
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
