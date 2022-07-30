@@ -1029,7 +1029,7 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
-                    case RoleId.PartTimer:
+                case RoleId.PartTimer:
                 //タスククリアか
                     IsTaskClear = true;
                     break;
@@ -1186,7 +1186,7 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
-                    case RoleId.PartTimer:
+                case RoleId.PartTimer:
                 //第三か
                     IsNeutral = true;
                     break;
