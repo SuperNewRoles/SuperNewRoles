@@ -25,11 +25,11 @@ namespace SuperNewRoles.Roles.Impostor
                         Data.Value.Item1.Reported = true;
                     }
                     Data.Value.Item1.bodyRenderer.enabled = false;
-                    Data.Value.Item1.transform.position = ModHelpers.playerById(Data.Key).transform.position;
+                    Data.Value.Item1.transform.position = ModHelpers.PlayerById(Data.Key).transform.position;
                     RoleClass.Matryoshka.Datas[Data.Key] = (Data.Value.Item1, Data.Value.Item2 - Time.fixedDeltaTime);
                     if (RoleClass.Matryoshka.Datas[Data.Key].Item2 <= 0)
                     {
-                        Set(ModHelpers.playerById(Data.Key), null, false);
+                        Set(ModHelpers.PlayerById(Data.Key), null, false);
                     }
                 }
             }
