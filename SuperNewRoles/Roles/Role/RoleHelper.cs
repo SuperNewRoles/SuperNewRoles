@@ -586,6 +586,9 @@ namespace SuperNewRoles
                 case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.Add(player);
                     break;
+                case RoleId.Psychometrist:
+                    RoleClass.Psychometrist.PsychometristPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -969,6 +972,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Psychometrist:
+                    RoleClass.Psychometrist.PsychometristPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1457,6 +1463,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Spelunker.SpelunkerPlayer.IsCheckListPlayerControl(player)) return RoleId.Spelunker;
                 else if (RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicidalIdeation;
                 else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
+                else if (RoleClass.Psychometrist.PsychometristPlayer.IsCheckListPlayerControl(player)) return RoleId.Psychometrist;
                 //ロールチェック
             }
             catch (Exception e)

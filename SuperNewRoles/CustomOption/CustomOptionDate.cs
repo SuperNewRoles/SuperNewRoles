@@ -757,6 +757,18 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption NunOption;
         public static CustomOption NunPlayerCount;
         public static CustomOption NunCoolTime;
+        
+        public static CustomRoleOption PsychometristOption;
+        public static CustomOption PsychometristPlayerCount;
+        public static CustomOption PsychometristCoolTime;
+        public static CustomOption PsychometristReadTime;
+        public static CustomOption PsychometristIsCheckDeathTime;
+        public static CustomOption PsychometristDeathTimeDeviation;
+        public static CustomOption PsychometristIsCheckDeathReason;
+        public static CustomOption PsychometristIsCheckFootprints;
+        public static CustomOption PsychometristCanCheckFootprintsTime;
+        public static CustomOption PsychometristIsReportCheckedDeadBody;
+
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1554,6 +1566,18 @@ namespace SuperNewRoles.CustomOption
             NunOption = new CustomRoleOption(929, false, CustomOptionType.Impostor, "NunName",RoleClass.Nun.color, 1);
             NunPlayerCount = CustomOption.Create(930, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NunOption);
             NunCoolTime = CustomOption.Create(931, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NunOption);
+            
+            PsychometristOption = new CustomRoleOption(937, false, CustomOptionType.Crewmate, "PsychometristName", RoleClass.Psychometrist.color, 1);
+            PsychometristPlayerCount = CustomOption.Create(938, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PsychometristOption);
+            PsychometristCoolTime = CustomOption.Create(939, false, CustomOptionType.Crewmate, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PsychometristOption);
+            PsychometristReadTime = CustomOption.Create(940, false, CustomOptionType.Crewmate, "PsychometristReadTime", 5f, 0f, 15f, 0.5f, PsychometristOption);
+            PsychometristIsCheckDeathTime = CustomOption.Create(941, false, CustomOptionType.Crewmate, "PsychometristIsCheckDeathTime", true, PsychometristOption);
+            PsychometristDeathTimeDeviation = CustomOption.Create(942, false, CustomOptionType.Crewmate, "PsychometristDeathTimeDeviation", 5f, 0f, 30f, 0.5f, PsychometristIsCheckDeathTime);
+            PsychometristIsCheckDeathReason = CustomOption.Create(943, false, CustomOptionType.Crewmate, "PsychometristIsCheckDeathReason", true, PsychometristOption);
+            PsychometristIsCheckFootprints = CustomOption.Create(944, false, CustomOptionType.Crewmate, "PsychometristIsCheckFootprints", true, PsychometristOption);
+            PsychometristCanCheckFootprintsTime = CustomOption.Create(945, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);
+            PsychometristIsReportCheckedDeadBody = CustomOption.Create(946, false, CustomOptionType.Crewmate, "PsychometristIsReportCheckedDeadBody", false, PsychometristOption);
+
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

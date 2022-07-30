@@ -163,6 +163,7 @@ namespace SuperNewRoles.Roles
             Spelunker.ClearAndReload();
             SuicidalIdeation.ClearAndReload();
             Nun.ClearAndReload();
+            Psychometrist.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2647,6 +2648,31 @@ namespace SuperNewRoles.Roles
                 TeamNumber = 1;
                 //1=クルー
                 //2=マッド
+            }
+        }
+        public static class Psychometrist
+        {
+            public static List<PlayerControl> PsychometristPlayer;
+            public static Color32 color = new(238, 130, 238, byte.MaxValue);
+            public static float CoolTime;
+            public static float ReadTime;
+            public static bool IsCheckDeathTime;
+            public static float DeathTimeDeviation;
+            public static bool IsCheckDeathReason;
+            public static bool IsCheckFootprints;
+            public static float CanCheckFootprintsTime;
+            public static bool IsReportCheckedReportDeadbody;
+            public static void ClearAndReload()
+            {
+                PsychometristPlayer = new();
+                CoolTime = CustomOptions.PsychometristCoolTime.GetFloat();
+                ReadTime = CustomOptions.PsychometristReadTime.GetFloat();
+                IsCheckDeathTime = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
+                DeathTimeDeviation = CustomOptions.PsychometristDeathTimeDeviation.GetFloat();
+                IsCheckDeathReason = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
+                IsCheckFootprints = CustomOptions.PsychometristIsCheckFootprints.GetBool();
+                CanCheckFootprintsTime = CustomOptions.PsychometristCanCheckFootprintsTime.GetFloat();
+                IsReportCheckedReportDeadbody = CustomOptions.PsychometristIsReportCheckedDeadBody.GetBool();
             }
         }
         //新ロールクラス
