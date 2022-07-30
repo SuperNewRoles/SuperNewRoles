@@ -216,10 +216,30 @@ namespace SuperNewRoles.CustomRPC
         SetSecretRoomTeleportStatus,
         ChiefSidekick,
         StartRevolutionMeeting,
-        UncheckedUsePlatform
+        UncheckedUsePlatform,
+        BlockReportDeadBody
     }
     public static class RPCProcedure
     {
+        public static void BlockReportDeadBody(byte TargetId, bool IsChangeReported)
+        {
+            if (IsChangeReported)
+            {
+                DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == TargetId)
+                    {
+                        array[i].Reported = true;
+                        return;
+                    }
+                }
+            } else
+            {
+                RoleClass.BlockPlayers.Add(TargetId);
+            }
+        }
+
         public static void UncheckedUsePlatform(byte playerid, bool IsMove)
         {
             PlayerControl source = ModHelpers.PlayerById(playerid);
@@ -1308,6 +1328,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.UncheckedUsePlatform:
                             UncheckedUsePlatform(reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.BlockReportDeadBody:
+                            BlockReportDeadBody(reader.ReadByte(), reader.ReadBoolean());
                             break;
                     }
                 }

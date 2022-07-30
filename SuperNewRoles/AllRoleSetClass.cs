@@ -967,7 +967,7 @@ namespace SuperNewRoles
             Crewnotonepar = new();
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {
-                if (intro.RoleId != RoleId.DefaultRole && !intro.IsGhostRole)
+                if (intro.RoleId != RoleId.DefaultRole && (intro.RoleId != RoleId.Nun || (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship) && !intro.IsGhostRole)
                 {
                     var option = IntroDate.GetOption(intro.RoleId);
                     if (option == null) continue;

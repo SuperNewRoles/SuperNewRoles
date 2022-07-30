@@ -22,9 +22,11 @@ namespace SuperNewRoles.Roles
         public static Color CrewmateWhite = Color.white;
         public static Color FoxPurple = Palette.Purple;
         public static bool IsStart;
+        public static List<byte> BlockPlayers;
 
         public static void ClearAndReloadRoles()
         {
+            BlockPlayers = new();
             DeadPlayer.deadPlayers = new();
             AllRoleSetClass.Assigned = false;
             LateTask.Tasks = new();
@@ -2662,8 +2664,15 @@ namespace SuperNewRoles.Roles
             public static bool IsCheckFootprints;
             public static float CanCheckFootprintsTime;
             public static bool IsReportCheckedReportDeadbody;
+            //(source, target) : Vector2
+            public static Dictionary<(byte, byte), (List<Vector2>, bool)> FootprintsPosition;
+            public static Dictionary<(byte, byte), float> FootprintsDeathTime;
+            public static Dictionary<(byte, byte), List<Footprint>> FootprintObjects;
+            public static float UpdateTime;
+            public static float Distance = 0.5f;
             //(死体, テキスト, 誤差)
             public static List<(DeadBody, TextMeshPro, int)> DeathTimeTexts;
+            public static DeadBody CurrentTarget;
             private static Sprite buttonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -2674,7 +2683,12 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 PsychometristPlayer = new();
+                UpdateTime = 0.1f;
+                CurrentTarget = null;
                 DeathTimeTexts = new();
+                FootprintsPosition = new();
+                FootprintObjects = new();
+                FootprintsDeathTime = new();
                 CoolTime = CustomOptions.PsychometristCoolTime.GetFloat();
                 ReadTime = CustomOptions.PsychometristReadTime.GetFloat();
                 IsCheckDeathTime = CustomOptions.PsychometristIsCheckDeathReason.GetBool();

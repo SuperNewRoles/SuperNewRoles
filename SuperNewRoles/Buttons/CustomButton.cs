@@ -72,10 +72,17 @@ namespace SuperNewRoles.Buttons
 
         void OnClickEvent()
         {
-            if ((Timer <= 0f || (HasEffect && isEffectActive && effectCancellable)) && CouldUse())
+            if ((this.Timer < 0f) || (this.HasEffect && this.isEffectActive && this.effectCancellable))
             {
-                actionButton.graphic.color = new(1f, 1f, 1f, 0.3f);
-                OnClick();
+                actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
+                this.OnClick();
+
+                if (this.HasEffect && !this.isEffectActive)
+                {
+                    this.Timer = this.EffectDuration;
+                    actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    this.isEffectActive = true;
+                }
             }
         }
 

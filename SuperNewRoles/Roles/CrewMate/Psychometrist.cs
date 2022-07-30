@@ -6,6 +6,10 @@ using SuperNewRoles.Patch;
 using UnityEngine;
 using TMPro;
 using SuperNewRoles.EndGame;
+using Hazel;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomObject;
 
 namespace SuperNewRoles.Roles.CrewMate
 {
@@ -39,36 +43,70 @@ namespace SuperNewRoles.Roles.CrewMate
                 DeathTimeTextData.Item2.text = newtext;
             }
         }
+        public static void PsychometristFixedUpdate()
+        {
+            if (RoleClass.Psychometrist.FootprintsPosition.Count != 0)
+            {
+                RoleClass.Psychometrist.UpdateTime -= Time.fixedDeltaTime;
+                foreach (var data in RoleClass.Psychometrist.FootprintsPosition.ToArray())
+                {
+                    if (data.Value.Item2)
+                    {
+                        if (RoleClass.Psychometrist.UpdateTime <= 0)
+                        {
+                            RoleClass.Psychometrist.UpdateTime = 0.1f;
+                            RoleClass.Psychometrist.FootprintsPosition[(data.Key.Item1, data.Key.Item2)].Item1.Add(ModHelpers.PlayerById(data.Key.Item1).GetTruePosition());
+                        }
+                        RoleClass.Psychometrist.FootprintsDeathTime[(data.Key.Item1, data.Key.Item2)] -= Time.fixedDeltaTime;
+                        Logger.Info($"{RoleClass.Psychometrist.FootprintsDeathTime[(data.Key.Item1, data.Key.Item2)]}");
+                        if (RoleClass.Psychometrist.FootprintsDeathTime[(data.Key.Item1, data.Key.Item2)] <= 0)
+                        {
+                            RoleClass.Psychometrist.FootprintsPosition[(data.Key.Item1, data.Key.Item2)] = (RoleClass.Psychometrist.FootprintsPosition[(data.Key.Item1, data.Key.Item2)].Item1, false);
+                        }
+                    }
+                }
+            }
+        }
+        public static void MurderPlayer(PlayerControl source, PlayerControl target)
+        {
+            if (RoleClass.Psychometrist.IsCheckFootprints)
+            {
+                RoleClass.Psychometrist.FootprintsPosition[(source.PlayerId, target.PlayerId)] = (new(), true);
+                RoleClass.Psychometrist.FootprintObjects[(source.PlayerId, target.PlayerId)] = new();
+                RoleClass.Psychometrist.FootprintsDeathTime[(source.PlayerId, target.PlayerId)] = RoleClass.Psychometrist.CanCheckFootprintsTime;
+            }
+        }
         public static void ClickButton()
         {
-            DeadBody targetbody = GetTargetDeadBody();
+            DeadBody targetbody = RoleClass.Psychometrist.CurrentTarget;
             if (targetbody == null || !PlayerControl.LocalPlayer.CanMove) return;
+            DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == targetbody.ParentId)?.FirstOrDefault();
             TextMeshPro DeathTimeText = GameObject.Instantiate(PlayerControl.LocalPlayer.NameText(), targetbody.transform);
             int count = UnityEngine.Random.Range(RoleClass.Psychometrist.DeathTimeDeviation * -1, RoleClass.Psychometrist.DeathTimeDeviation);
             RoleClass.Psychometrist.DeathTimeTexts.Add((targetbody, DeathTimeText, count));
             DeathTimeText.transform.localPosition = new(-0.2f, 0.5f, 0);
             DeathTimeText.transform.localScale = new(1.5f, 1.5f, 1.5f);
-            FixedUpdate();
-        }
-        public static DeadBody GetTargetDeadBody()
-        {
-            foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+            DeathTimeText.color = Color.white;
+            if (!RoleClass.Psychometrist.IsReportCheckedReportDeadbody)
             {
-                if (collider2D.tag == "DeadBody")
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.BlockReportDeadBody);
+                writer.Write(targetbody.ParentId);
+                writer.EndRPC();
+                CustomRPC.RPCProcedure.BlockReportDeadBody(targetbody.ParentId, false);
+            }
+            if (RoleClass.Psychometrist.IsCheckFootprints)
+            {
+                var index = (deadPlayer.killerIfExisting.PlayerId, deadPlayer.player.PlayerId);
+                var Lists = RoleClass.Psychometrist.FootprintsPosition[index].Item1;
+                Color color = Palette.PlayerColors[deadPlayer.killerIfExisting.Data.DefaultOutfit.ColorId];
+                foreach (var data in Lists)
                 {
-                    DeadBody component = collider2D.GetComponent<DeadBody>();
-                    if (component && !component.Reported)
-                    {
-                        Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
-                        Vector2 truePosition2 = component.TruePosition;
-                        if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
-                        {
-                            return component;
-                        }
-                    }
+                    RoleClass.Psychometrist.FootprintObjects[index].Add(new Footprint(-1, true, data));
                 }
             }
-            return null;
+            FixedUpdate();
+            HudManagerStartPatch.PsychometristButton.MaxTimer = RoleClass.Psychometrist.CoolTime;
+            HudManagerStartPatch.PsychometristButton.Timer = HudManagerStartPatch.PsychometristButton.MaxTimer;
         }
     }
 }
