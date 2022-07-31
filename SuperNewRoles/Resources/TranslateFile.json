@@ -4117,29 +4117,45 @@
         "11": "\u30c9\u30a2\u958b\u3051\u306e\u6307\u631f\u307f\u6b7b\u306e\u78ba\u7387",
         "13": "\u5f00\u95e8\u65f6\u624b\u6307\u88ab\u5939\u6b7b\u7684\u6982\u7387\u3002"
     },
-    "StefinderName": {
-        "0": "Stefinder",
-        "11": "\u30b9\u30c6\u30d5\u30a1\u30a4\u30f3\u30c0\u30fc"
+    "MatryoshkaName": {
+        "0": "Matryoshka",
+        "11": "\u30de\u30c8\u30ea\u30e7\u30fc\u30b7\u30ab",
+        "13": "\u9a6c\u7279\u7f57\u4ec0\u5361\uff5e "
     },
-    "StefinderTitle1": {
-        "0": "Let's commit a crime only once.",
-        "11": "\u4e00\u5ea6\u3060\u3051\u72af\u7f6a\u3092\u3057\u3088\u3046"
+    "MatryoshkaTitle1": {
+        "0": "Cloak the corpse and move the corpse. ",
+        "11": "\u6b7b\u4f53\u3092\u307e\u3068\u3063\u3066\u6b7b\u4f53\u3092\u79fb\u52d5\u3055\u305b\u3088\u3046 ",
+        "13": "\u7ed9\u5c38\u4f53\u62ab\u4e0a\u6597\u7bf7\uff0c\u79fb\u52a8\u5c38\u4f53\u3002 "
     },
-    "StefinderKillCoolDownSetting": {
-        "0": "Kill Cool Down",
-        "11": "\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+    "MatryoshkaWearLimit": {
+        "0": "Number of times you can wear it",
+        "11": "\u7e8f\u3048\u308b\u56de\u6570",
+        "13": "\u7a7f\u8863\u670d\u7684\u6b21\u6570"
     },
-    "StefinderSaboSetting": {
-        "0": "Can Use Sabotage",
-        "11": "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u3092\u4f7f\u7528\u3067\u304d\u308b"
+    "MatryoshkaAddKillCoolTime": {
+        "0": "Increased kill-cool time time for corpse coats",
+        "11": "\u6b7b\u4f53\u307e\u3068\u3044\u306e\u5897\u52a0\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0\u30bf\u30a4\u30e0",
+        "13": "\u5c38\u4f53\u9690\u8eab\u7684\u6740\u4f24\u51b7\u5374\u65f6\u95f4\u589e\u52a0"
     },
-    "StefinderVentSetting": {
-        "0": "Can Use Vent",
-        "11": "\u30d9\u30f3\u30c8\u3092\u4f7f\u7528\u3067\u304d\u308b"
+    "MatryoshkaWearReport": {
+        "0": "can be called in while the body is still circled",
+        "11": "\u307e\u3068\u3044\u4e2d\u3067\u3082\u901a\u5831\u53ef\u80fd",
+        "13": "\u53ef\u4ee5\u5728\u76d8\u7ed5\u65f6\u62a5\u544a"
     },
-    "StefinderSoloWinSetting": {
-        "0": "Solo Win",
-        "11": "\u5358\u72ec\u52dd\u5229"
+    "MatryoshkaWearTime": {
+        "0": "Coiling time",
+        "11": "\u307e\u3068\u3048\u308b\u6642\u9593",
+        "13": "\u80c1\u8feb\u65f6\u95f4"
+    },
+    "MatryoshkaPutOnButtonName": {
+        "0": "Put On",
+        "11": "\u7740\u308b",
+        "13": "\u7a7f\u4e0a"
+    },
+    "MatryoshkaTakeOffButtonName": {
+        "0": "Take Off",
+        "11": "\u8131\u3050",
+        "13": "\u8131\u4e0b"
     },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",

@@ -68,6 +68,9 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ButtonerButton;
         public static CustomButton RevolutionistButton;
         public static CustomButton SuicidalIdeationButton;
+        public static CustomButton MatryoshkaButton;
+        public static CustomButton NunButton;
+        public static CustomButton PartTimerButton;
         public static CustomButton StefinderKillButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
@@ -2052,7 +2055,7 @@ namespace SuperNewRoles.Buttons
             };
 
             SuicidalIdeationButton = new CustomButton(
-                () =>{},
+                () => { },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SuicidalIdeation; },
                 () =>
                 {
@@ -2076,6 +2079,152 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("SuicidalIdeationButtonName"),
+                showButtonText = true
+            };
+
+            MatryoshkaButton = new(
+                () =>
+                {
+                    if (RoleClass.Matryoshka.IsLocalOn)
+                    {
+                        Roles.Impostor.Matryoshka.RpcSet(null, false);
+                        MatryoshkaButton.MaxTimer = RoleClass.Matryoshka.CoolTime;
+                        MatryoshkaButton.Timer = RoleClass.Matryoshka.CoolTime;
+                    }
+                    else
+                    {
+                        foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                        {
+                            if (collider2D.tag == "DeadBody")
+                            {
+                                DeadBody component = collider2D.GetComponent<DeadBody>();
+                                Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                                Vector2 truePosition2 = component.TruePosition;
+                                Logger.Info((!component.Reported).ToString() + $"{truePosition2} : {truePosition} : {Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance} : {Vector2.Distance(truePosition2, truePosition)} : {PlayerControl.LocalPlayer.MaxReportDistance}");
+                                if (!component.Reported)
+                                {
+                                    if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                                    {
+                                        if (RoleClass.Matryoshka.Datas.Values.All(data =>
+                                        {
+                                            return data.Item1 == null || data.Item1.ParentId != component.ParentId;
+                                        }))
+                                        {
+                                            GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
+                                            Roles.Impostor.Matryoshka.RpcSet(playerInfo.Object, true);
+                                            RoleClass.Matryoshka.WearLimit--;
+                                            RoleClass.Matryoshka.MyKillCoolTime += RoleClass.Matryoshka.AddKillCoolTime;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Matryoshka && RoleClass.Matryoshka.WearLimit > 0; },
+                () =>
+                {
+                    if (RoleClass.Matryoshka.IsLocalOn)
+                    {
+                        MatryoshkaButton.Sprite = RoleClass.Matryoshka.TakeOffButtonSprite;
+                        MatryoshkaButton.buttonText = ModTranslation.GetString("MatryoshkaTakeOffButtonName");
+                    }
+                    else
+                    {
+                        MatryoshkaButton.Sprite = RoleClass.Matryoshka.PutOnButtonSprite;
+                        MatryoshkaButton.buttonText = ModTranslation.GetString("MatryoshkaPutOnButtonName");
+                    }
+                    return (__instance.ReportButton.graphic.color == Palette.EnabledColor || RoleClass.Matryoshka.IsLocalOn) && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    MatryoshkaButton.MaxTimer = RoleClass.Matryoshka.CoolTime;
+                    MatryoshkaButton.Timer = RoleClass.Matryoshka.CoolTime;
+                },
+                RoleClass.Matryoshka.PutOnButtonSprite,
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return false;
+                }
+                )
+            {
+                buttonText = ModTranslation.GetString("MatryoshkaPutOnButtonName"),
+                showButtonText = true
+            };
+
+            NunButton = new(
+                () => {
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedUsePlatform);
+                    writer.Write((byte)255);
+                    writer.Write(false);
+                    writer.EndRPC();
+                    RPCProcedure.UncheckedUsePlatform((byte)255, false);
+                    NunButton.Timer = NunButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Nun; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    NunButton.MaxTimer = RoleClass.Nun.CoolTime;
+                    NunButton.Timer = NunButton.MaxTimer;
+                },
+                RoleClass.Nun.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return false;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("NunButtonName"),
+                showButtonText = true
+            };
+
+            PartTimerButton = new(
+                () => {
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.PartTimerSet);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write(SetTarget().PlayerId);
+                    writer.EndRPC();
+                    RPCProcedure.PartTimerSet(CachedPlayer.LocalPlayer.PlayerId, SetTarget().PlayerId);
+                    PartTimerButton.Timer = PartTimerButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.PartTimer && !RoleClass.PartTimer.IsLocalOn; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                },
+                () =>
+                {
+                    PartTimerButton.MaxTimer = RoleClass.PartTimer.CoolTime;
+                    PartTimerButton.Timer = PartTimerButton.MaxTimer;
+                },
+                RoleClass.PartTimer.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return false;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("PartTimerButtonName"),
                 showButtonText = true
             };
 
