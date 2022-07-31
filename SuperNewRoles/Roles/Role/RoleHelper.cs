@@ -589,6 +589,9 @@ namespace SuperNewRoles
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.Add(player);
                     break;
+                case RoleId.Painter:
+                    RoleClass.Painter.PainterPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -975,6 +978,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Painter:
+                    RoleClass.Painter.PainterPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1466,6 +1472,7 @@ namespace SuperNewRoles
                 else if (RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicidalIdeation;
                 else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
                 else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
+                else if (RoleClass.Painter.PainterPlayer.IsCheckListPlayerControl(player)) return RoleId.Painter;
                 //ロールチェック
             }
             catch (Exception e)

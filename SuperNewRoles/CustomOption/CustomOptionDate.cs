@@ -763,6 +763,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption PartTimerDeathTurn;
         public static CustomOption PartTimerCoolTime;
         public static CustomOption PartTimerIsCheckTargetRole;
+        
+        public static CustomRoleOption PainterOption;
+        public static CustomOption PainterPlayerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1566,6 +1569,9 @@ namespace SuperNewRoles.CustomOption
             PartTimerDeathTurn = CustomOption.Create(934, false, CustomOptionType.Neutral, "PartTimerDeathTurn", 3f, 0f, 15f, 1f, PartTimerOption);
             PartTimerCoolTime = CustomOption.Create(935, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PartTimerOption);
             PartTimerIsCheckTargetRole = CustomOption.Create(935, false, CustomOptionType.Neutral, "PartTimerIsCheckTargetRole", true, PartTimerOption);
+            
+            PainterOption = new CustomRoleOption(941, false, CustomOptionType.Crewmate, "PainterName",RoleClass.Painter.color, 1);
+            PainterPlayerCount = CustomOption.Create(942, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PainterOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

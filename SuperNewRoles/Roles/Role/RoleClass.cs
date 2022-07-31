@@ -164,6 +164,7 @@ namespace SuperNewRoles.Roles
             SuicidalIdeation.ClearAndReload();
             Nun.ClearAndReload();
             PartTimer.ClearAndReload();
+            Painter.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2706,6 +2707,26 @@ namespace SuperNewRoles.Roles
                 TeamNumber = 1;
                 //1=クルー
                 //2=マッド
+            }
+        }
+        public static class Painter
+        {
+            public static List<PlayerControl> PainterPlayer;
+            public static Color32 color = new(170, 255, 0, byte.MaxValue);
+            public static Dictionary<CrewMate.Painter.ActionType, List<Vector2>> ActionDatas;
+            public static List<footprint>
+            public static bool IsLocalActionSend;
+            public static PlayerControl CurrentTarget;
+            public static void ClearAndReload()
+            {
+                PainterPlayer = new();
+                ActionDatas = new();
+                foreach (CrewMate.Painter.ActionType type in Enum.GetValues(typeof(CrewMate.Painter.ActionType)))
+                {
+                    ActionDatas[type] = new();
+                }
+                CurrentTarget = null;
+                IsLocalActionSend = false;
             }
         }
         //新ロールクラス

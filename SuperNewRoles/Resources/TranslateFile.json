@@ -4157,6 +4157,16 @@
         "11": "\u30d0\u30a4\u30c8",
         "13": "\u5b57\u8282"
     },
+    "PainterName": {
+        "0": "Painter ",
+        "11": "\u30da\u30a4\u30f3\u30bf\u30fc",
+        "13": "\u753b\u5bb6"
+    },
+    "PainterTitle1": {
+        "0": "Follow the traces of paint",
+        "11": "\u7d75\u5177\u306e\u75d5\u8de1\u3092\u305f\u3069\u308d\u3046",
+        "13": "\u9075\u5faa\u6cb9\u6f06\u7684\u75d5\u8ff9\u3002"
+    },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
         "11": "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01",
