@@ -162,6 +162,7 @@ namespace SuperNewRoles.Roles
             Dictator.ClearAndReload();
             Spelunker.ClearAndReload();
             SuicidalIdeation.ClearAndReload();
+            Matryoshka.ClearAndReload();
             Nun.ClearAndReload();
             PartTimer.ClearAndReload();
             Painter.ClearAndReload();
@@ -2620,6 +2621,55 @@ namespace SuperNewRoles.Roles
                 CompletedTask = 0;
             }
         }
+        public static class Matryoshka
+        {
+            public static List<PlayerControl> MatryoshkaPlayer;
+            public static Color32 color = ImpostorRed;
+            public static int WearLimit;
+            public static bool WearReport;
+            public static float WearDefaultTime;
+            public static float WearTime;
+            public static float AddKillCoolTime;
+            public static float MyKillCoolTime;
+            public static float CoolTime;
+            public static bool IsLocalOn => !Datas.Keys.All(data => data != CachedPlayer.LocalPlayer.PlayerId || Datas[data].Item1 == null);
+            public static Dictionary<byte, (DeadBody, float)> Datas;
+            public static Sprite PutOnButtonSprite {
+                get
+                {
+                    if (_PutOnButtonSprite == null)
+                    {
+                        _PutOnButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaPutOnButton.png", 115f);
+                    }
+                    return _PutOnButtonSprite;
+                }
+            }
+            public static Sprite _PutOnButtonSprite;
+            public static Sprite TakeOffButtonSprite
+            {
+                get
+                {
+                    if (_TakeOffButtonSprite == null)
+                    {
+                        _TakeOffButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaTakeOffButton.png", 115f);
+                    }
+                    return _TakeOffButtonSprite;
+                }
+            }
+            public static Sprite _TakeOffButtonSprite;
+            public static void ClearAndReload()
+            {
+                MatryoshkaPlayer = new();
+                WearLimit = CustomOptions.MatryoshkaWearLimit.GetInt();
+                WearReport = CustomOptions.MatryoshkaWearReport.GetBool();
+                WearDefaultTime = CustomOptions.MatryoshkaWearTime.GetFloat();
+                AddKillCoolTime = CustomOptions.MatryoshkaAddKillCoolTime.GetFloat();
+                WearTime = 0;
+                Datas = new();
+                CoolTime = CustomOptions.MatryoshkaCoolTime.GetFloat();
+                MyKillCoolTime = PlayerControl.GameOptions.killCooldown;
+            }
+        }
         public static class Nun
         {
             public static List<PlayerControl> NunPlayer;
@@ -2714,7 +2764,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> PainterPlayer;
             public static Color32 color = new(170, 255, 0, byte.MaxValue);
             public static Dictionary<CrewMate.Painter.ActionType, List<Vector2>> ActionDatas;
-            public static List<footprint>
+            public static List<FootPoint>
             public static bool IsLocalActionSend;
             public static PlayerControl CurrentTarget;
             public static void ClearAndReload()

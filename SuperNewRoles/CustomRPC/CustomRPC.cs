@@ -143,6 +143,7 @@ namespace SuperNewRoles.CustomRPC
         Dictator,
         Spelunker,
         SuicidalIdeation,
+        Matryoshka,
         Nun,
         PartTimer,
         Painter,
@@ -220,8 +221,9 @@ namespace SuperNewRoles.CustomRPC
         StartRevolutionMeeting,
         UncheckedUsePlatform,
         PartTimerSet,
+        SetMatryoshkaDeadbody,
         PainterPaintSet,
-        PainterSetTarget
+        PainterSetTarget,
     }
     public static class RPCProcedure
     {
@@ -239,6 +241,14 @@ namespace SuperNewRoles.CustomRPC
             position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
             position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
             RoleClass.Painter.ActionDatas[type].Add(position);
+        }
+
+        public static void SetMatryoshkaDeadBody(byte sourceid, byte targetid, bool Is)
+        {
+            PlayerControl source = ModHelpers.PlayerById(sourceid);
+            PlayerControl target = ModHelpers.PlayerById(targetid);
+            if (source == null) return;
+            Roles.Impostor.Matryoshka.Set(source, target, Is);
         }
         public static void PartTimerSet(byte playerid, byte targetid)
         {
@@ -1331,6 +1341,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.StartRevolutionMeeting:
                             StartRevolutionMeeting(reader.ReadByte());
+                            break;
+                        case CustomRPC.SetMatryoshkaDeadbody:
+                            SetMatryoshkaDeadBody(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                             break;
                         case CustomRPC.UncheckedUsePlatform:
                             UncheckedUsePlatform(reader.ReadByte(), reader.ReadBoolean());

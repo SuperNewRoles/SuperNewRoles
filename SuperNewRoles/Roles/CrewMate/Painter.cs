@@ -36,7 +36,6 @@ namespace SuperNewRoles.Roles.CrewMate
         {
             if (RoleClass.Painter.CurrentTarget != null)
             {
-                foreach ()
                 SetTarget(null);
             }
         }
