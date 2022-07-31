@@ -583,6 +583,9 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.Add(player);
                     break;
+                case RoleId.Matryoshka:
+                    RoleClass.Matryoshka.MatryoshkaPlayer.Add(player);
+                    break;
                 case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.Add(player);
                     break;
@@ -970,6 +973,9 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Matryoshka:
+                    RoleClass.Matryoshka.MatryoshkaPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.RemoveAll(ClearRemove);
                     break;
@@ -1268,6 +1274,9 @@ namespace SuperNewRoles
                     case RoleId.Kunoichi:
                         addition = RoleClass.Kunoichi.KillCoolTime;
                         break;
+                    case RoleId.Matryoshka:
+                        addition = RoleClass.Matryoshka.MyKillCoolTime;
+                        break;
                 }
             }
             return addition;
@@ -1464,6 +1473,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Dictator.DictatorPlayer.IsCheckListPlayerControl(player)) return RoleId.Dictator;
                 else if (RoleClass.Spelunker.SpelunkerPlayer.IsCheckListPlayerControl(player)) return RoleId.Spelunker;
                 else if (RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicidalIdeation;
+                else if (RoleClass.Matryoshka.MatryoshkaPlayer.IsCheckListPlayerControl(player)) return RoleId.Matryoshka;
                 else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
                 else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
                 //ロールチェック

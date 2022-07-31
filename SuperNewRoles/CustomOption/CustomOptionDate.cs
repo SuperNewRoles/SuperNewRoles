@@ -754,6 +754,14 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SuicidalIdeationShortTask;
         public static CustomOption SuicidalIdeationLongTask;
         
+        public static CustomRoleOption MatryoshkaOption;
+        public static CustomOption MatryoshkaPlayerCount;
+        public static CustomOption MatryoshkaWearLimit;
+        public static CustomOption MatryoshkaAddKillCoolTime;
+        public static CustomOption MatryoshkaWearReport;
+        public static CustomOption MatryoshkaWearTime;
+        public static CustomOption MatryoshkaCoolTime;
+
         public static CustomRoleOption NunOption;
         public static CustomOption NunPlayerCount;
         public static CustomOption NunCoolTime;
@@ -763,6 +771,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption PartTimerDeathTurn;
         public static CustomOption PartTimerCoolTime;
         public static CustomOption PartTimerIsCheckTargetRole;
+
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1557,6 +1566,14 @@ namespace SuperNewRoles.CustomOption
             SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
             SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
             
+            MatryoshkaOption = new CustomRoleOption(929, false, CustomOptionType.Impostor, "MatryoshkaName",RoleClass.Matryoshka.color, 1);
+            MatryoshkaPlayerCount = CustomOption.Create(930, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MatryoshkaOption);
+            MatryoshkaWearLimit = CustomOption.Create(931, false, CustomOptionType.Impostor, "MatryoshkaWearLimit", 3f, 1f, 15f, 1f, MatryoshkaOption);
+            MatryoshkaWearReport = CustomOption.Create(932, false, CustomOptionType.Impostor, "MatryoshkaWearReport", true, MatryoshkaOption);
+            MatryoshkaWearTime = CustomOption.Create(933, false, CustomOptionType.Impostor, "MatryoshkaWearTime", 7.5f, 0.5f, 60f, 0.5f, MatryoshkaOption);
+            MatryoshkaAddKillCoolTime = CustomOption.Create(934, false, CustomOptionType.Impostor, "MatryoshkaAddKillCoolTime", 2.5f, 0f, 30f, 0.5f, MatryoshkaOption);
+            MatryoshkaCoolTime = CustomOption.Create(935, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 30f, 0f, 180f, 2.5f, MatryoshkaOption);
+
             NunOption = new CustomRoleOption(929, false, CustomOptionType.Impostor, "NunName",RoleClass.Nun.color, 1);
             NunPlayerCount = CustomOption.Create(930, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NunOption);
             NunCoolTime = CustomOption.Create(931, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NunOption);
