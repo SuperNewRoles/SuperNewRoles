@@ -87,6 +87,8 @@ namespace SuperNewRoles.Patch
             RedRidingHood.WrapUp(exiled);
             Roles.Neutral.Revolutionist.WrapUp();
             Roles.Neutral.Spelunker.WrapUp();
+            Roles.Impostor.Matryoshka.WrapUp();
+            Roles.Neutral.PartTimer.WrapUp();
             if (exiled == null) return;
 
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();
