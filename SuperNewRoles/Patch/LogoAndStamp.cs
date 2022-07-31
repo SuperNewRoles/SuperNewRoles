@@ -98,6 +98,10 @@ namespace SuperNewRoles.Patches
                     __instance.text.text = $"{baseCredentials}\n{ModTranslation.GetString("creditsFull")}\n{__instance.text.text}";
                     __instance.transform.localPosition = new Vector3(4f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
                 }
+                if (CustomHats.HatManagerPatch.IsLoadingnow)
+                {
+                    __instance.text.text += $"\n{ModTranslation.GetString("LoadHat")}";
+                }
             }
         }
         public static GenericPopup popup;

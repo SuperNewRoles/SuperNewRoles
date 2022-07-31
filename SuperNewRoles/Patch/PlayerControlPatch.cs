@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -19,6 +19,27 @@ using static SuperNewRoles.ModHelpers;
 
 namespace SuperNewRoles.Patches
 {
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcUsePlatform))]
+    public class UsePlatformPlayerControlPatch
+    {
+        public static bool Prefix(PlayerControl __instance)
+        {
+            Logger.Info("来た");
+            if (AmongUsClient.Instance.AmHost)
+            {
+                AirshipStatus airshipStatus = GameObject.FindObjectOfType<AirshipStatus>();
+                if (airshipStatus)
+                {
+                    airshipStatus.GapPlatform.Use(__instance);
+                }
+            }
+            else
+            {
+                AmongUsClient.Instance.StartRpc(__instance.NetId, 32, (SendOption)1).EndMessage();
+            }
+            return false;
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
     class RpcShapesihftPatch
     {

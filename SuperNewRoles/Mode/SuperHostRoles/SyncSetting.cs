@@ -151,13 +151,23 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.ShapeshifterCooldown = RoleClass.ToiletFan.ToiletCool;
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
+                case RoleId.SatsumaAndImo:
+                    if (RoleClass.SatsumaAndImo.TeamNumber != 1)//クルーじゃないとき
+                    {
+                        optdata.CrewLightMod = optdata.ImpostorLightMod;
+                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystem2 != null && switchSystem2.IsActive)
+                        {
+                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
+                        }
+                    }
+                    break;
                 case RoleId.NiceButtoner:
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
                 case RoleId.EvilButtoner:
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
-
             }
             if (player.IsDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;

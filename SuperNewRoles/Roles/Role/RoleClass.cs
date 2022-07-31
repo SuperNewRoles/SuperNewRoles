@@ -154,6 +154,7 @@ namespace SuperNewRoles.Roles
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
             ToiletFan.ClearAndReload();
+            SatsumaAndImo.ClearAndReload();
             EvilButtoner.ClearAndReload();
             NiceButtoner.ClearAndReload();
             Finder.ClearAndReload();
@@ -161,6 +162,9 @@ namespace SuperNewRoles.Roles
             Dictator.ClearAndReload();
             Spelunker.ClearAndReload();
             SuicidalIdeation.ClearAndReload();
+            Matryoshka.ClearAndReload();
+            Nun.ClearAndReload();
+            PartTimer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1337,12 +1341,12 @@ namespace SuperNewRoles.Roles
             {
                 if (MadKillerPair.ContainsKey(p.PlayerId))
                 {
-                    return ModHelpers.playerById(MadKillerPair[p.PlayerId]);
+                    return ModHelpers.PlayerById(MadKillerPair[p.PlayerId]);
                 }
                 else if (MadKillerPair.ContainsValue(p.PlayerId))
                 {
                     var key = MadKillerPair.GetKey(p.PlayerId);
-                    return key == null ? null : ModHelpers.playerById((byte)key);
+                    return key == null ? null : ModHelpers.PlayerById((byte)key);
                 }
                 return null;
             }
@@ -2514,7 +2518,7 @@ namespace SuperNewRoles.Roles
                         List<PlayerControl> newList = new();
                         foreach (byte playerid in RevolutionedPlayerId)
                         {
-                            PlayerControl player = ModHelpers.playerById(playerid);
+                            PlayerControl player = ModHelpers.PlayerById(playerid);
                             if (player == null) continue;
                             newList.Add(player);
                         }
@@ -2614,6 +2618,144 @@ namespace SuperNewRoles.Roles
                 AddTimeLeft = CustomOptions.SuicidalIdeationAddTimeLeft.GetFloat();
                 ButtonTimer = DateTime.Now;
                 CompletedTask = 0;
+            }
+        }
+        public static class Matryoshka
+        {
+            public static List<PlayerControl> MatryoshkaPlayer;
+            public static Color32 color = ImpostorRed;
+            public static int WearLimit;
+            public static bool WearReport;
+            public static float WearDefaultTime;
+            public static float WearTime;
+            public static float AddKillCoolTime;
+            public static float MyKillCoolTime;
+            public static float CoolTime;
+            public static bool IsLocalOn => !Datas.Keys.All(data => data != CachedPlayer.LocalPlayer.PlayerId || Datas[data].Item1 == null);
+            public static Dictionary<byte, (DeadBody, float)> Datas;
+            public static Sprite PutOnButtonSprite {
+                get
+                {
+                    if (_PutOnButtonSprite == null)
+                    {
+                        _PutOnButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaPutOnButton.png", 115f);
+                    }
+                    return _PutOnButtonSprite;
+                }
+            }
+            public static Sprite _PutOnButtonSprite;
+            public static Sprite TakeOffButtonSprite
+            {
+                get
+                {
+                    if (_TakeOffButtonSprite == null)
+                    {
+                        _TakeOffButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaTakeOffButton.png", 115f);
+                    }
+                    return _TakeOffButtonSprite;
+                }
+            }
+            public static Sprite _TakeOffButtonSprite;
+            public static void ClearAndReload()
+            {
+                MatryoshkaPlayer = new();
+                WearLimit = CustomOptions.MatryoshkaWearLimit.GetInt();
+                WearReport = CustomOptions.MatryoshkaWearReport.GetBool();
+                WearDefaultTime = CustomOptions.MatryoshkaWearTime.GetFloat();
+                AddKillCoolTime = CustomOptions.MatryoshkaAddKillCoolTime.GetFloat();
+                WearTime = 0;
+                Datas = new();
+                CoolTime = CustomOptions.MatryoshkaCoolTime.GetFloat();
+                MyKillCoolTime = PlayerControl.GameOptions.killCooldown;
+            }
+        }
+        public static class Nun
+        {
+            public static List<PlayerControl> NunPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.NunButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                NunPlayer = new();
+                CoolTime = CustomOptions.NunCoolTime.GetFloat();
+            }
+        }
+        public static class PartTimer
+        {
+            public static List<PlayerControl> PartTimerPlayer;
+            public static Color32 color = new(0, 255, 0, byte.MaxValue);
+            public static int DeathDefaultTurn;
+            public static int DeathTurn;
+            public static float CoolTime;
+            public static bool IsCheckTargetRole;
+            public static Dictionary<byte, byte> Datas;
+            public static bool IsLocalOn
+            {
+                get
+                {
+                    return Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
+                }
+            }
+            public static PlayerControl CurrentTarget
+            {
+                get
+                {
+                    return IsLocalOn ? ModHelpers.PlayerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
+                }
+            }
+            public static Dictionary<PlayerControl, PlayerControl> PlayerDatas
+            {
+                get
+                {
+                    if (_playerDatas.Count != Datas.Count)
+                    {
+                        Dictionary<PlayerControl, PlayerControl> newdic = new();
+                        foreach (var data in Datas)
+                        {
+                            newdic.Add(ModHelpers.PlayerById(data.Key), ModHelpers.PlayerById(data.Value));
+                        }
+                        _playerDatas = newdic;
+                    }
+                    return _playerDatas;
+                }
+            }
+            private static Dictionary<PlayerControl, PlayerControl> _playerDatas;
+            public static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PartTimerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                PartTimerPlayer = new();
+                DeathTurn = DeathDefaultTurn = CustomOptions.PartTimerDeathTurn.GetInt();
+                CoolTime = CustomOptions.PartTimerCoolTime.GetFloat();
+                IsCheckTargetRole = CustomOptions.PartTimerIsCheckTargetRole.GetBool();
+                Datas = new();
+                _playerDatas = new();
+            }
+        }
+        
+        public static class SatsumaAndImo
+        {
+            public static List<PlayerControl> SatsumaAndImoPlayer;
+            public static Color32 color = new(153, 0, 68, byte.MaxValue);
+            public static int TeamNumber;
+            public static void ClearAndReload()
+            {
+                SatsumaAndImoPlayer = new();
+                TeamNumber = 1;
+                //1=クルー
+                //2=マッド
             }
         }
         //新ロールクラス
