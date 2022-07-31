@@ -505,8 +505,10 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Tuna.TunaPlayer);
             notWinners.AddRange(RoleClass.BlackCat.BlackCatPlayer);
             notWinners.AddRange(RoleClass.Neet.NeetPlayer);
+            notWinners.AddRange(RoleClass.SatsumaAndImo.SatsumaAndImoPlayer);
             notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
             notWinners.AddRange(RoleClass.SuicidalIdeation.SuicidalIdeationPlayer);
+            notWinners.AddRange(RoleClass.PartTimer.PartTimerPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -669,6 +671,14 @@ namespace SuperNewRoles.EndGame
                     {
                         WinningPlayerData wpd = new(cp.Data);
                         TempData.winners.Add(wpd);
+                    }
+                }
+                foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
+                {
+                    WinningPlayerData wpd = new(smp.Data);
+                    if (RoleClass.SatsumaAndImo.TeamNumber == 2)//マッドなら
+                    {
+                        TempData.winners.Add(wpd);//さつまいもも勝ち
                     }
                 }
             }
@@ -896,6 +906,15 @@ namespace SuperNewRoles.EndGame
                             TempData.winners.Add(wpd);
                         }
                     }
+                }
+            }
+            foreach (var PartTimerData in RoleClass.PartTimer.PlayerDatas)
+            {
+                Logger.Info(PartTimerData.Key.Data.PlayerName);
+                if (TempData.winners.ToArray().Any(x => x.PlayerName == PartTimerData.Value.Data.PlayerName))
+                { 
+                    WinningPlayerData wpd = new(PartTimerData.Key.Data);
+                    TempData.winners.Add(wpd);
                 }
             }
             if (HAISON)
