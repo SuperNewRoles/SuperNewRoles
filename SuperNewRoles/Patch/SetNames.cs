@@ -414,6 +414,10 @@ namespace SuperNewRoles.Patch
                 SetNamesClass.SetPlayerRoleNames(PartTimerTarget);
                 SetNamesClass.SetPlayerNameColors(PartTimerTarget);
             }
+            if (RoleClass.Stefinder.IsKill)
+            {
+                SetNamesClass.SetPlayerNameColor(PlayerControl.LocalPlayer, Color.red);
+            }
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (Sabotage.SabotageManager.thisSabotage == Sabotage.SabotageManager.CustomSabotage.CognitiveDeficit)
