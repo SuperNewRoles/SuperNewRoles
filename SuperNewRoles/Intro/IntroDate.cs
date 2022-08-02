@@ -195,9 +195,13 @@ namespace SuperNewRoles.Intro
         public static IntroDate NunIntro = new("Nun", RoleClass.Nun.color, 1, RoleId.Nun, TeamRoleType.Impostor);
         public static IntroDate PsychometristIntro = new("Psychometrist", RoleClass.Psychometrist.color, 1, RoleId.Psychometrist, TeamRoleType.Crewmate);
         public static IntroDate PartTimerIntro = new("PartTimer", RoleClass.PartTimer.color, 1, RoleId.PartTimer, TeamRoleType.Neutral);
+<<<<<<< HEAD
 =======
         public static IntroDate HitmanIntro = new("Hitman", RoleClass.Hitman.color, 1, RoleId.Hitman, TeamRoleType.Neutral);
 >>>>>>> NewRole/Hitman
+=======
+        public static IntroDate PainterIntro = new("Painter", RoleClass.Painter.color, 1, RoleId.Painter, TeamRoleType.Crewmate);
+>>>>>>> NewRole/Painter
         //イントロオブジェ
     }
 }

@@ -936,10 +936,14 @@ namespace SuperNewRoles
                 RoleId.Nun => CustomOptions.NunPlayerCount.GetFloat(),
                 RoleId.PartTimer => CustomOptions.PartTimerPlayerCount.GetFloat(),
                 RoleId.SatsumaAndImo => CustomOptions.SatsumaAndImoPlayerCount.GetFloat(),
+<<<<<<< HEAD
                 RoleId.Psychometrist => CustomOptions.PsychometristPlayerCount.GetFloat(),
 =======
                 RoleId.Hitman => CustomOptions.HitmanPlayerCount.GetFloat(),
 >>>>>>> NewRole/Hitman
+=======
+                RoleId.Painter => CustomOptions.PainterPlayerCount.GetFloat(),
+>>>>>>> NewRole/Painter
                 //プレイヤーカウント
                 _ => 1,
             };

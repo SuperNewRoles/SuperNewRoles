@@ -600,6 +600,9 @@ namespace SuperNewRoles
                     RoleClass.Hitman.HitmanPlayer.Add(player);
 >>>>>>> NewRole/Hitman
                     break;
+                case RoleId.Painter:
+                    RoleClass.Painter.PainterPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -997,6 +1000,9 @@ namespace SuperNewRoles
                     case RoleId.Hitman:
                     RoleClass.Hitman.HitmanPlayer.RemoveAll(ClearRemove);
 >>>>>>> NewRole/Hitman
+                    break;
+                case RoleId.Painter:
+                    RoleClass.Painter.PainterPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1502,9 +1508,13 @@ namespace SuperNewRoles
                 else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
                 else if (RoleClass.Psychometrist.PsychometristPlayer.IsCheckListPlayerControl(player)) return RoleId.Psychometrist;
                 else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
+<<<<<<< HEAD
 =======
                 else if (RoleClass.Hitman.HitmanPlayer.IsCheckListPlayerControl(player)) return RoleId.Hitman;
 >>>>>>> NewRole/Hitman
+=======
+                else if (RoleClass.Painter.PainterPlayer.IsCheckListPlayerControl(player)) return RoleId.Painter;
+>>>>>>> NewRole/Painter
                 //ロールチェック
             }
             catch (Exception e)

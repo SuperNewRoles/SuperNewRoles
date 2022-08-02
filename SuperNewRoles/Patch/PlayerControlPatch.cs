@@ -854,6 +854,7 @@ namespace SuperNewRoles.Patches
                 {
                     RoleClass.Finder.KillCount++;
                 }
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.Death);
                 if (target.IsRole(RoleId.Assassin))
                 {
                     target.Revive();
@@ -926,6 +927,14 @@ namespace SuperNewRoles.Patches
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance), RoleHelpers.GetCoolTime(__instance));
                 }
             }
+        }
+    }
+    [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CompleteTask))]
+    class CompleteTask
+    {
+        public static void Postfix(PlayerControl __instance, uint idx)
+        {
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.TaskComplete);
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Exiled))]
