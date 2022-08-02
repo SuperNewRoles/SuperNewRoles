@@ -4167,6 +4167,56 @@
         "11": "\u7d75\u5177\u306e\u75d5\u8de1\u3092\u305f\u3069\u308d\u3046",
         "13": "\u9075\u5faa\u6cb9\u6f06\u7684\u75d5\u8ff9\u3002"
     },
+    "PainterIsTaskComplateFootprint": {
+        "0": "Leave a trace when completing a task",
+        "11": "\u30bf\u30b9\u30af\u5b8c\u4e86\u6642\u75d5\u8de1\u3092\u6b8b\u3059",
+        "13": "\u4efb\u52a1\u5b8c\u6210\u540e\u7559\u4e0b\u75d5\u8ff9"
+    },
+    "PainterIsSabotageRepairFootprint": {
+        "0": "Leave a trace when repairing a sabotage",
+        "11": "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u4fee\u5fa9\u6642\u75d5\u8de1\u3092\u6b8b\u3059",
+        "13": "\u4fee\u590d\u7834\u574f\u884c\u4e3a\u65f6\u8981\u7559\u4e0b\u75d5\u8ff9"
+    },
+    "PainterIsInVentFootprint": {
+        "0": "Leave a trace when entering a vent",
+        "11": "\u30d9\u30f3\u30c8\u306b\u5165\u3063\u305f\u6642\u75d5\u8de1\u3092\u6b8b\u3059",
+        "13": "\u8fdb\u5165\u901a\u98ce\u53e3\u65f6\u7559\u4e0b\u75d5\u8ff9"
+    },
+    "PainterIsExitVentFootprint": {
+        "0": "Leave a trace when exiting a vent",
+        "11": "\u30d9\u30f3\u30c8\u304b\u3089\u51fa\u305f\u6642\u75d5\u8de1\u3092\u6b8b\u3059",
+        "13": "\u5728\u79bb\u5f00\u901a\u98ce\u53e3\u65f6\u7559\u4e0b\u75d5\u8ff9"
+    },
+    "PainterIsCheckVitalFootprint": {
+        "0": "Leave a trace when checking vitals",
+        "11": "\u30d0\u30a4\u30bf\u30eb\u30c1\u30a7\u30c3\u30af\u6642\u75d5\u8de1\u3092\u6b8b\u3059",
+        "13": "\u68c0\u67e5\u751f\u547d\u4f53\u5f81\u65f6\u7559\u4e0b\u75d5\u8ff9"
+    },
+    "PainterIsCheckAdminFootprint": {
+        "0": "Leave a trace when administering",
+        "11": "\u30a2\u30c9\u30df\u30f3\u6642\u75d5\u8de1\u3092\u6b8b\u3059",
+        "13": "\u7ba1\u7406\u65f6\u7559\u4e0b\u75d5\u8ff9"
+    },
+    "PainterIsDeathFootprint": {
+        "0": "Leave a trace of the place of death",
+        "11": "\u6b7b\u4ea1\u5834\u6240\u306e\u75d5\u8de1\u3092\u6b8b\u3059",
+        "13": "\u5728\u6b7b\u4ea1\u7684\u5730\u65b9\u7559\u4e0b\u75d5\u8ff9"
+    },
+    "PainterIsDeathFootprintBig": {
+        "0": "Increase the size of the trace at the place of death",
+        "11": "\u6b7b\u4ea1\u5834\u6240\u306e\u75d5\u8de1\u3092\u5927\u304d\u304f\u3059\u308b",
+        "13": "\u589e\u52a0\u6b7b\u4ea1\u5730\u70b9\u7684\u75d5\u8ff9\u5927\u5c0f"
+    },
+    "PainterIsFootprintMeetingDestroy": {
+        "0": "Trace disappears at meeting",
+        "11": "\u75d5\u8de1\u304c\u4f1a\u8b70\u3067\u6d88\u3048\u308b",
+        "13": "\u75d5\u8ff9\u5728\u4f1a\u8bae\u4e0a\u6d88\u5931"
+    },
+    "PainterButtonName": {
+        "0": "Paint",
+        "11": "\u30da\u30a4\u30f3\u30c8",
+        "13": "\u6d82\u6599"
+    },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
         "11": "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01",

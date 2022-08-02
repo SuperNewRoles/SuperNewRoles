@@ -71,6 +71,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton MatryoshkaButton;
         public static CustomButton NunButton;
         public static CustomButton PartTimerButton;
+        public static CustomButton PainterButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2224,6 +2225,37 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("PartTimerButtonName"),
+                showButtonText = true
+            };
+
+            PainterButton = new(
+                () => {
+                    Roles.CrewMate.Painter.SetTarget(SetTarget());
+                    PainterButton.Timer = PainterButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Painter && RoleClass.Painter.CurrentTarget == null; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                },
+                () =>
+                {
+                    PainterButton.MaxTimer = RoleClass.Painter.CoolTime;
+                    PainterButton.Timer = PainterButton.MaxTimer;
+                },
+                RoleClass.Painter.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return false;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("PainterButtonName"),
                 showButtonText = true
             };
 

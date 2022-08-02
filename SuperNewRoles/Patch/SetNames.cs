@@ -120,8 +120,8 @@ namespace SuperNewRoles.Patch
                     }
                     else
                     {
-                        var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
-                        TaskText += ModHelpers.Cs(Color.yellow, "(" + complate + "/" + all + ")");
+                        var (Complete, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                        TaskText += ModHelpers.Cs(Color.yellow, "(" + Complete + "/" + all + ")");
                     }
                 }
             }
