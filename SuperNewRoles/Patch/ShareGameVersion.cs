@@ -98,7 +98,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (CustomOptions.DisconnectNotPCOption.GetBool())
                     {
-                        foreach (InnerNet.ClientData p in AmongUsClient.Instance.allClients.GetFastEnumerator())
+                        foreach (InnerNet.ClientData p in AmongUsClient.Instance.allClients)
                         {
                             if (p.PlatformData.Platform is not Platforms.StandaloneEpicPC and not Platforms.StandaloneSteamPC)
                             {
@@ -138,7 +138,7 @@ namespace SuperNewRoles.Patch
                             }
                         }
                     }
-                    foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.GetFastEnumerator().ToArray())
+                    foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.ToArray())
                     {
                         if (client.Id != AmongUsClient.Instance.HostId)
                         {
