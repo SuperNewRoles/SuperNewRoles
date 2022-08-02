@@ -871,9 +871,18 @@ namespace SuperNewRoles.Patches
                     RoleClass.Assassin.TriggerPlayer = target;
                     return;
                 }
+<<<<<<< HEAD
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Psychometrist))
                 {
                     Roles.CrewMate.Psychometrist.MurderPlayer(__instance, target);
+=======
+                if (target.IsDead())
+                {
+                    if (target.IsRole(RoleId.Hitman))
+                    {
+                        Roles.Neutral.Hitman.Death();
+                    }
+>>>>>>> NewRole/Hitman
                 }
                 Levelinger.MurderPlayer(__instance, target);
                 if (RoleClass.Lovers.SameDie && target.IsLovers())
@@ -946,6 +955,9 @@ namespace SuperNewRoles.Patches
                     }, 0.5f);
                     RoleClass.Assassin.TriggerPlayer = __instance;
                     return;
+                }
+                if (__instance.IsRole(RoleId.Hitman)) {
+                    Roles.Neutral.Hitman.Death();
                 }
                 if (RoleClass.Lovers.SameDie && __instance.IsLovers())
                 {

@@ -142,10 +142,14 @@ namespace SuperNewRoles.CustomRPC
         Dictator,
         Spelunker,
         SuicidalIdeation,
+<<<<<<< HEAD
         Matryoshka,
         Nun,
         Psychometrist,
         PartTimer,
+=======
+        Hitman,
+>>>>>>> NewRole/Hitman
         //RoleId
     }
 

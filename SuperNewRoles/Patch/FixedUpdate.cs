@@ -161,8 +161,13 @@ namespace SuperNewRoles.Patch
                             case RoleId.SuicidalIdeation:
                                 SuicidalIdeation.Postfix();
                                 break;
+<<<<<<< HEAD
                             case RoleId.Psychometrist:
                                 Roles.CrewMate.Psychometrist.PsychometristFixedUpdate();
+=======
+                            case RoleId.Hitman:
+                                Roles.Neutral.Hitman.FixedUpdate();
+>>>>>>> NewRole/Hitman
                                 break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)

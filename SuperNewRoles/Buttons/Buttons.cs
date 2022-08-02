@@ -68,10 +68,14 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ButtonerButton;
         public static CustomButton RevolutionistButton;
         public static CustomButton SuicidalIdeationButton;
+<<<<<<< HEAD
         public static CustomButton MatryoshkaButton;
         public static CustomButton NunButton;
         public static CustomButton PsychometristButton;
         public static CustomButton PartTimerButton;
+=======
+        public static CustomButton HitmanKillButton;
+>>>>>>> NewRole/Hitman
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2082,6 +2086,7 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
 
+<<<<<<< HEAD
             MatryoshkaButton = new(
                 () =>
                 {
@@ -2290,6 +2295,45 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("PartTimerButtonName"),
+=======
+            HitmanKillButton = new(
+                () =>
+                {
+                    PlayerControl target = SetTarget();
+                    if (ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, target) == ModHelpers.MurderAttemptResult.PerformKill) {
+                    }
+                    if (RoleClass.Hitman.Target.PlayerId != target.PlayerId)
+                    {
+                        Roles.Neutral.Hitman.LimitDown();
+                    } else
+                    {
+                        Roles.Neutral.Hitman.KillSuc();
+                    }
+                    RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
+                    RoleClass.Hitman.ArrowUpdateTime = 0;
+                    Roles.Neutral.Hitman.SetTarget();
+                    HitmanKillButton.Timer = HitmanKillButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Hitman; },
+                () =>
+                {
+                    return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    Roles.Neutral.Hitman.EndMeeting();
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
+>>>>>>> NewRole/Hitman
                 showButtonText = true
             };
 

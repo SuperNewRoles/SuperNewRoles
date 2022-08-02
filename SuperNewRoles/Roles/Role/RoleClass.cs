@@ -164,10 +164,14 @@ namespace SuperNewRoles.Roles
             Dictator.ClearAndReload();
             Spelunker.ClearAndReload();
             SuicidalIdeation.ClearAndReload();
+<<<<<<< HEAD
             Matryoshka.ClearAndReload();
             Nun.ClearAndReload();
             Psychometrist.ClearAndReload();
             PartTimer.ClearAndReload();
+=======
+            Hitman.ClearAndReload();
+>>>>>>> NewRole/Hitman
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2623,6 +2627,7 @@ namespace SuperNewRoles.Roles
                 CompletedTask = 0;
             }
         }
+<<<<<<< HEAD
         public static class Matryoshka
         {
             public static List<PlayerControl> MatryoshkaPlayer;
@@ -2806,6 +2811,50 @@ namespace SuperNewRoles.Roles
                 IsCheckFootprints = CustomOptions.PsychometristIsCheckFootprints.GetBool();
                 CanCheckFootprintsTime = CustomOptions.PsychometristCanCheckFootprintsTime.GetFloat();
                 IsReportCheckedReportDeadbody = CustomOptions.PsychometristIsReportCheckedDeadBody.GetBool();
+=======
+        public static class Hitman
+        {
+            public static List<PlayerControl> HitmanPlayer;
+            public static Color32 color = new(86, 41, 18, byte.MaxValue);
+            public static float KillCoolTime;
+            public static int OutMissionLimit;
+            public static PlayerControl Target;
+            public static float ChangeTargetTime;
+            public static float UpdateTime;
+            public static Arrow TargetArrow;
+            public static float ArrowUpdateTimeDefault;
+            public static float ArrowUpdateTime;
+            public static int WinKillCount;
+            public static Vector3 ArrowPosition;
+            public static TextMeshPro cooldownText;
+            public static void ClearAndReload()
+            {
+                HitmanPlayer = new();
+                KillCoolTime = CustomOptions.HitmanKillCoolTime.GetFloat();
+                if (CustomOptions.HitmanIsOutMission.GetBool())
+                {
+                    OutMissionLimit = CustomOptions.HitmanOutMissionLimit.GetInt();
+                } else
+                {
+                    OutMissionLimit = -1;
+                }
+                ChangeTargetTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
+                UpdateTime = ChangeTargetTime;
+                cooldownText = null;
+                WinKillCount = CustomOptions.HitmanWinKillCount.GetInt();
+                if (TargetArrow != null && TargetArrow.arrow != null)
+                {
+                    UnityEngine.Object.Destroy(TargetArrow.arrow);
+                }
+                TargetArrow = null;
+                if (CustomOptions.HitmanIsArrowView.GetBool()) {
+                    ArrowUpdateTimeDefault = CustomOptions.HitmanArrowUpdateTime.GetFloat();
+                } else
+                {
+                    ArrowUpdateTimeDefault = -1f;
+                }
+                ArrowUpdateTime = ArrowUpdateTimeDefault;
+>>>>>>> NewRole/Hitman
             }
         }
         //新ロールクラス
