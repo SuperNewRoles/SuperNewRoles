@@ -2246,6 +2246,13 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     return false;
+                },
+                true,
+                RoleClass.Psychometrist.ReadTime,
+                () =>
+                {
+                    if (RoleClass.IsMeeting) return;
+                    Roles.CrewMate.Psychometrist.ClickButton();
                 }
                 )
             {
