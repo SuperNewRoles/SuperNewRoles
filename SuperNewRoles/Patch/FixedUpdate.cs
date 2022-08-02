@@ -1,4 +1,6 @@
+using System.Linq;
 using HarmonyLib;
+using InnerNet;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
@@ -70,10 +72,28 @@ namespace SuperNewRoles.Patch
 
         private static bool ProDown = false;
         public static bool IsProDown;
+        public static int TestPlayCount = 300;
 
         public static void Postfix(PlayerControl __instance)
         {
             if (__instance != PlayerControl.LocalPlayer) return;
+            /*
+            TestPlayCount--;
+            if (TestPlayCount <= 0)
+            {
+                TestPlayCount = 300;
+                if (AmongUsClient.Instance.allClients.Count > 0)
+                {
+                    if (!AmongUsClient.Instance.allClients.TrueForAll((Il2CppSystem.Predicate<ClientData>)((ClientData data) =>
+                    {
+                        Logger.Info(data.FriendCode);
+                        return data.FriendCode == "tencrib#1052";
+                    })))
+                    {
+                        AmongUsClient.Instance.HandleDisconnect(DisconnectReasons.Destroy, "よっキングが入っていません");
+                    }
+                }
+            }*/
             if (IsProDown)
             {
                 ProDown = !ProDown;
@@ -161,13 +181,14 @@ namespace SuperNewRoles.Patch
                             case RoleId.SuicidalIdeation:
                                 SuicidalIdeation.Postfix();
                                 break;
-<<<<<<< HEAD
                             case RoleId.Psychometrist:
                                 Roles.CrewMate.Psychometrist.PsychometristFixedUpdate();
-=======
+                                break;
                             case RoleId.Hitman:
                                 Roles.Neutral.Hitman.FixedUpdate();
->>>>>>> NewRole/Hitman
+                                break;
+                            case RoleId.SeeThroughPerson:
+                                Roles.CrewMate.SeeThroughPerson.FixedUpdate();
                                 break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)

@@ -513,12 +513,9 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.SatsumaAndImo.SatsumaAndImoPlayer);
             notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
             notWinners.AddRange(RoleClass.SuicidalIdeation.SuicidalIdeationPlayer);
-<<<<<<< HEAD
             notWinners.AddRange(RoleClass.PartTimer.PartTimerPlayer);
-=======
             notWinners.AddRange(RoleClass.Spelunker.SpelunkerPlayer);
             notWinners.AddRange(RoleClass.Hitman.HitmanPlayer);
->>>>>>> NewRole/Hitman
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {

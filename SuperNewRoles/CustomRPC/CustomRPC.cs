@@ -143,18 +143,13 @@ namespace SuperNewRoles.CustomRPC
         Dictator,
         Spelunker,
         SuicidalIdeation,
-<<<<<<< HEAD
         Matryoshka,
         Nun,
         Psychometrist,
         PartTimer,
-<<<<<<< HEAD
-=======
         Hitman,
->>>>>>> NewRole/Hitman
-=======
         Painter,
->>>>>>> NewRole/Painter
+        SeeThroughPerson,
         //RoleId
     }
 
@@ -236,7 +231,6 @@ namespace SuperNewRoles.CustomRPC
     }
     public static class RPCProcedure
     {
-<<<<<<< HEAD
         public static void BlockReportDeadBody(byte TargetId, bool IsChangeReported)
         {
             if (IsChangeReported)
@@ -254,7 +248,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 RoleClass.BlockPlayers.Add(TargetId);
             }
-=======
+        }
         public static void PainterSetTarget(byte target, bool Is)
         {
             if (target == CachedPlayer.LocalPlayer.PlayerId) RoleClass.Painter.IsLocalActionSend = Is;
@@ -269,7 +263,6 @@ namespace SuperNewRoles.CustomRPC
             position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
             position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
             RoleClass.Painter.ActionDatas[type].Add(position);
->>>>>>> NewRole/Painter
         }
 
         public static void SetMatryoshkaDeadBody(byte sourceid, byte targetid, bool Is)

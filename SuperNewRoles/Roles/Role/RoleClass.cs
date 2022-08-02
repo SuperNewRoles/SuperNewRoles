@@ -164,18 +164,13 @@ namespace SuperNewRoles.Roles
             Dictator.ClearAndReload();
             Spelunker.ClearAndReload();
             SuicidalIdeation.ClearAndReload();
-<<<<<<< HEAD
             Matryoshka.ClearAndReload();
             Nun.ClearAndReload();
             Psychometrist.ClearAndReload();
             PartTimer.ClearAndReload();
-<<<<<<< HEAD
-=======
             Hitman.ClearAndReload();
->>>>>>> NewRole/Hitman
-=======
             Painter.ClearAndReload();
->>>>>>> NewRole/Painter
+            SeeThroughPerson.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2631,7 +2626,6 @@ namespace SuperNewRoles.Roles
                 CompletedTask = 0;
             }
         }
-<<<<<<< HEAD
         public static class Matryoshka
         {
             public static List<PlayerControl> MatryoshkaPlayer;
@@ -2770,7 +2764,6 @@ namespace SuperNewRoles.Roles
                 //2=マッド
             }
         }
-<<<<<<< HEAD
         public static class Psychometrist
         {
             public static List<PlayerControl> PsychometristPlayer;
@@ -2797,7 +2790,27 @@ namespace SuperNewRoles.Roles
             {
                 if (buttonSprite) return buttonSprite;
                 buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PsychometristButton.png", 115f);
-=======
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                PsychometristPlayer = new();
+                UpdateTime = 0.1f;
+                CurrentTarget = null;
+                DeathTimeTexts = new();
+                FootprintsPosition = new();
+                FootprintObjects = new();
+                FootprintsDeathTime = new();
+                CoolTime = CustomOptions.PsychometristCoolTime.GetFloat();
+                ReadTime = CustomOptions.PsychometristReadTime.GetFloat();
+                IsCheckDeathTime = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
+                DeathTimeDeviation = CustomOptions.PsychometristDeathTimeDeviation.GetInt();
+                IsCheckDeathReason = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
+                IsCheckFootprints = CustomOptions.PsychometristIsCheckFootprints.GetBool();
+                CanCheckFootprintsTime = CustomOptions.PsychometristCanCheckFootprintsTime.GetFloat();
+                IsReportCheckedReportDeadbody = CustomOptions.PsychometristIsReportCheckedDeadBody.GetBool();
+            }
+        }
         public static class Painter
         {
             public static List<PlayerControl> PainterPlayer;
@@ -2815,28 +2828,32 @@ namespace SuperNewRoles.Roles
             {
                 if (buttonSprite) return buttonSprite;
                 buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PainterButton.png", 115f);
->>>>>>> NewRole/Painter
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
-<<<<<<< HEAD
-                PsychometristPlayer = new();
-                UpdateTime = 0.1f;
+                PainterPlayer = new();
+                CoolTime = CustomOptions.PainterCoolTime.GetFloat();
+                ActionDatas = new();
+                IsEnables = new();
+                foreach (CrewMate.Painter.ActionType type in Enum.GetValues(typeof(CrewMate.Painter.ActionType)))
+                {
+                    ActionDatas[type] = new();
+                }
+                Prints = new();
                 CurrentTarget = null;
-                DeathTimeTexts = new();
-                FootprintsPosition = new();
-                FootprintObjects = new();
-                FootprintsDeathTime = new();
-                CoolTime = CustomOptions.PsychometristCoolTime.GetFloat();
-                ReadTime = CustomOptions.PsychometristReadTime.GetFloat();
-                IsCheckDeathTime = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
-                DeathTimeDeviation = CustomOptions.PsychometristDeathTimeDeviation.GetInt();
-                IsCheckDeathReason = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
-                IsCheckFootprints = CustomOptions.PsychometristIsCheckFootprints.GetBool();
-                CanCheckFootprintsTime = CustomOptions.PsychometristCanCheckFootprintsTime.GetFloat();
-                IsReportCheckedReportDeadbody = CustomOptions.PsychometristIsReportCheckedDeadBody.GetBool();
-=======
+                IsLocalActionSend = false;
+                IsEnables[CrewMate.Painter.ActionType.TaskComplete] = CustomOptions.PainterIsTaskCompleteFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.SabotageRepair] = CustomOptions.PainterIsSabotageRepairFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.InVent] = CustomOptions.PainterIsInVentFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.ExitVent] = CustomOptions.PainterIsExitVentFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.CheckVital] = CustomOptions.PainterIsCheckVitalFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.CheckAdmin] = CustomOptions.PainterIsCheckAdminFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.Death] = CustomOptions.PainterIsDeathFootprint.GetBool();
+                IsDeathFootpointBig = CustomOptions.PainterIsDeathFootprintBig.GetBool();
+                IsFootprintMeetingDestroy = CustomOptions.PainterIsFootprintMeetingDestroy.GetBool();
+            }
+        }
         public static class Hitman
         {
             public static List<PlayerControl> HitmanPlayer;
@@ -2859,7 +2876,8 @@ namespace SuperNewRoles.Roles
                 if (CustomOptions.HitmanIsOutMission.GetBool())
                 {
                     OutMissionLimit = CustomOptions.HitmanOutMissionLimit.GetInt();
-                } else
+                }
+                else
                 {
                     OutMissionLimit = -1;
                 }
@@ -2872,36 +2890,26 @@ namespace SuperNewRoles.Roles
                     UnityEngine.Object.Destroy(TargetArrow.arrow);
                 }
                 TargetArrow = null;
-                if (CustomOptions.HitmanIsArrowView.GetBool()) {
+                if (CustomOptions.HitmanIsArrowView.GetBool())
+                {
                     ArrowUpdateTimeDefault = CustomOptions.HitmanArrowUpdateTime.GetFloat();
-                } else
+                }
+                else
                 {
                     ArrowUpdateTimeDefault = -1f;
                 }
                 ArrowUpdateTime = ArrowUpdateTimeDefault;
->>>>>>> NewRole/Hitman
-=======
-                PainterPlayer = new();
-                CoolTime = CustomOptions.PainterCoolTime.GetFloat();
-                ActionDatas = new();
-                IsEnables = new();
-                foreach (CrewMate.Painter.ActionType type in Enum.GetValues(typeof(CrewMate.Painter.ActionType)))
-                {
-                    ActionDatas[type] = new();
-                }
-                Prints = new();
-                CurrentTarget = null;
-                IsLocalActionSend = false;
-                IsEnables[CrewMate.Painter.ActionType.TaskComplete] = CustomOptions.PainterIsTaskCompleteFootprint.GetBool();
-                IsEnables[CrewMate.Painter.ActionType.SabotageRepair] = CustomOptions.PainterIsSabotageRepairFootprint.GetBool();
-                IsEnables[CrewMate.Painter.ActionType.InVent] = CustomOptions.PainterIsInVentFootprint.GetBool();
-                IsEnables[CrewMate.Painter.ActionType.ExitVent] = CustomOptions.PainterIsExitVentFootprint.GetBool();
-                IsEnables[CrewMate.Painter.ActionType.CheckVital] = CustomOptions.PainterIsCheckVitalFootprint.GetBool();
-                IsEnables[CrewMate.Painter.ActionType.CheckAdmin] = CustomOptions.PainterIsCheckAdminFootprint.GetBool();
-                IsEnables[CrewMate.Painter.ActionType.Death] = CustomOptions.PainterIsDeathFootprint.GetBool();
-                IsDeathFootpointBig = CustomOptions.PainterIsDeathFootprintBig.GetBool();
-                IsFootprintMeetingDestroy = CustomOptions.PainterIsFootprintMeetingDestroy.GetBool();
->>>>>>> NewRole/Painter
+            }
+        }
+        public static class SeeThroughPerson
+        {
+            public static List<PlayerControl> SeeThroughPersonPlayer;
+            public static Color32 color = new(157, 204, 224, byte.MaxValue);
+            public static List<EdgeCollider2D> Objects;
+            public static void ClearAndReload()
+            {
+                SeeThroughPersonPlayer = new();
+                Objects = new();
             }
         }
         //新ロールクラス

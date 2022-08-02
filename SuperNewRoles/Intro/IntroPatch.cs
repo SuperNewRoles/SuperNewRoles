@@ -210,6 +210,14 @@ namespace SuperNewRoles.Patches
             //SetUpRoleTextPatch.Postfix(__instance);
         }
 
+        [HarmonyPatch(typeof(IntroCutscene),nameof(IntroCutscene.ShowTeam))]
+        class ShowTeam
+        {
+            public static void Postfix()
+            {
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.SeeThroughPerson)) Roles.CrewMate.SeeThroughPerson.AwakePatch();
+            }
+        }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
         class IntroCutsceneDestroyPatch
         {

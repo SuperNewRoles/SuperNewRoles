@@ -872,18 +872,16 @@ namespace SuperNewRoles.Patches
                     RoleClass.Assassin.TriggerPlayer = target;
                     return;
                 }
-<<<<<<< HEAD
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Psychometrist))
                 {
                     Roles.CrewMate.Psychometrist.MurderPlayer(__instance, target);
-=======
+                }
                 if (target.IsDead())
                 {
                     if (target.IsRole(RoleId.Hitman))
                     {
                         Roles.Neutral.Hitman.Death();
                     }
->>>>>>> NewRole/Hitman
                 }
                 Levelinger.MurderPlayer(__instance, target);
                 if (RoleClass.Lovers.SameDie && target.IsLovers())

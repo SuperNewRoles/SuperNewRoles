@@ -6,16 +6,10 @@ namespace SuperNewRoles.CustomObject
 {
     public class Footprint
     {
-<<<<<<< HEAD
-        private static Sprite sprite;
-        private Color color;
-        private GameObject footprint;
-=======
         public static List<Footprint> footprints = new();
         private static Sprite sprite;
         private Color color;
         public GameObject footprint;
->>>>>>> NewRole/Painter
         private SpriteRenderer spriteRenderer;
         private PlayerControl owner;
         private bool anonymousFootprints;
@@ -27,11 +21,7 @@ namespace SuperNewRoles.CustomObject
             return sprite;
         }
 
-<<<<<<< HEAD
-        public Footprint(float footprintDuration, bool anonymousFootprints, PlayerControl player)
-=======
         public Footprint(float footprintDuration, bool anonymousFootprints, PlayerControl player, Vector3? pos = null)
->>>>>>> NewRole/Painter
         {
             this.owner = player;
             this.anonymousFootprints = anonymousFootprints;
@@ -40,15 +30,6 @@ namespace SuperNewRoles.CustomObject
             else
                 this.color = Palette.PlayerColors[(int)player.Data.DefaultOutfit.ColorId];
 
-<<<<<<< HEAD
-            footprint = new GameObject("Footprint");
-            Vector3 position = new(player.transform.position.x, player.transform.position.y, player.transform.position.z + 1f);
-            footprint.transform.position = position;
-            footprint.transform.localPosition = position;
-            footprint.transform.SetParent(player.transform.parent);
-
-            footprint.transform.Rotate(0.0f, 0.0f, UnityEngine.Random.Range(0.0f, 360.0f));
-=======
             Vector3 posdata = pos != null ? (Vector3)pos : player.transform.position;
             footprint = new GameObject("Footprint");
             Vector3 position = new(posdata.x, posdata.y, posdata.z + 1f);
@@ -56,7 +37,6 @@ namespace SuperNewRoles.CustomObject
             footprint.transform.localPosition = position;
 
             footprint.transform.Rotate(0f, 0f, UnityEngine.Random.Range(0f, 360f));
->>>>>>> NewRole/Painter
 
 
             spriteRenderer = footprint.AddComponent<SpriteRenderer>();
@@ -67,7 +47,6 @@ namespace SuperNewRoles.CustomObject
 
             if (footprintDuration > 0)
             {
-<<<<<<< HEAD
                 HudManager.Instance.StartCoroutine(Effects.Lerp(footprintDuration, new Action<float>((p) =>
                 {
                     Color c = color;
@@ -109,23 +88,14 @@ namespace SuperNewRoles.CustomObject
                 HudManager.Instance.StartCoroutine(Effects.Lerp(footprintDuration, new Action<float>((p) =>
                 {
                     Color c = this.color;
-=======
-                footprints.Add(this);
-
-                HudManager.Instance.StartCoroutine(Effects.Lerp(footprintDuration, new Action<float>((p) =>
-                {
-                    Color c = color;
->>>>>>> NewRole/Painter
 
                     if (spriteRenderer) spriteRenderer.color = new Color(c.r, c.g, c.b, Mathf.Clamp01(1 - p));
 
                     if (p == 1f && footprint != null)
                     {
                         UnityEngine.Object.Destroy(footprint);
-<<<<<<< HEAD
-=======
+
                         footprints.Remove(this);
->>>>>>> NewRole/Painter
                     }
                 })));
             }

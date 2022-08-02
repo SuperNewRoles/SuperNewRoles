@@ -49,7 +49,7 @@ namespace SuperNewRoles.Patch
                 {
                     GameStartManager.Instance.countDownTimer = 0;
                 }
-                if (CustomOptions.DebugModeFastStart.GetBool() && CustomOptions.IsDebugMode.GetBool())//デバッグモードでデバッグ即開始が有効
+                if (CustomOptions.DebugModeFastStart != null && CustomOptions.DebugModeFastStart.GetBool() && CustomOptions.IsDebugMode.GetBool())//デバッグモードでデバッグ即開始が有効
                 {//カウントダウン中
                     if (GameStartManager.InstanceExists && GameStartManager.Instance.startState == GameStartManager.StartingStates.Countdown)
                     {//カウント0

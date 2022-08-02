@@ -68,18 +68,12 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ButtonerButton;
         public static CustomButton RevolutionistButton;
         public static CustomButton SuicidalIdeationButton;
-<<<<<<< HEAD
         public static CustomButton MatryoshkaButton;
         public static CustomButton NunButton;
         public static CustomButton PsychometristButton;
         public static CustomButton PartTimerButton;
-<<<<<<< HEAD
-=======
         public static CustomButton HitmanKillButton;
->>>>>>> NewRole/Hitman
-=======
         public static CustomButton PainterButton;
->>>>>>> NewRole/Painter
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2090,7 +2084,6 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
 
-<<<<<<< HEAD
             MatryoshkaButton = new(
                 () =>
                 {
@@ -2261,7 +2254,8 @@ namespace SuperNewRoles.Buttons
             };
 
             PartTimerButton = new(
-                () => {
+                () =>
+                {
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.PartTimerSet);
                     writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(SetTarget().PlayerId);
@@ -2299,7 +2293,9 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("PartTimerButtonName"),
-=======
+                showButtonText = true
+            };
+
             HitmanKillButton = new(
                 () =>
                 {
@@ -2337,7 +2333,6 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
->>>>>>> NewRole/Hitman
                 showButtonText = true
             };
 

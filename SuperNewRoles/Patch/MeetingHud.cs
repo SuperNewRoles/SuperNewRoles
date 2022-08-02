@@ -406,7 +406,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
 
-                exiledPlayer = GameData.Instance.AllPlayers.GetFastEnumerator().ToArray().FirstOrDefault(info => !tie && info.PlayerId == exileId);
+                exiledPlayer = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tie && info.PlayerId == exileId);
 
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {

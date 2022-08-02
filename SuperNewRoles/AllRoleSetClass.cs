@@ -931,19 +931,14 @@ namespace SuperNewRoles
                 RoleId.Dictator => CustomOptions.DictatorPlayerCount.GetFloat(),
                 RoleId.Spelunker => CustomOptions.SpelunkerPlayerCount.GetFloat(),
                 RoleId.SuicidalIdeation => CustomOptions.SuicidalIdeationPlayerCount.GetFloat(),
-<<<<<<< HEAD
                 RoleId.Matryoshka => CustomOptions.MatryoshkaPlayerCount.GetFloat(),
                 RoleId.Nun => CustomOptions.NunPlayerCount.GetFloat(),
                 RoleId.PartTimer => CustomOptions.PartTimerPlayerCount.GetFloat(),
                 RoleId.SatsumaAndImo => CustomOptions.SatsumaAndImoPlayerCount.GetFloat(),
-<<<<<<< HEAD
                 RoleId.Psychometrist => CustomOptions.PsychometristPlayerCount.GetFloat(),
-=======
                 RoleId.Hitman => CustomOptions.HitmanPlayerCount.GetFloat(),
->>>>>>> NewRole/Hitman
-=======
                 RoleId.Painter => CustomOptions.PainterPlayerCount.GetFloat(),
->>>>>>> NewRole/Painter
+                RoleId.SeeThroughPerson => CustomOptions.SeeThroughPersonPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };
