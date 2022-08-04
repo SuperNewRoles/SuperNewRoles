@@ -165,6 +165,7 @@ namespace SuperNewRoles.Roles
             Matryoshka.ClearAndReload();
             Nun.ClearAndReload();
             PartTimer.ClearAndReload();
+            Photographer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2756,6 +2757,16 @@ namespace SuperNewRoles.Roles
                 TeamNumber = 1;
                 //1=クルー
                 //2=マッド
+            }
+        }
+        public static class Photographer
+        {
+            public static List<PlayerControl> PhotographerPlayer;
+            public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                PhotographerPlayer = new();
+                
             }
         }
         //新ロールクラス

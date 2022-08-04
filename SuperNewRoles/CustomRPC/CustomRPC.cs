@@ -145,6 +145,7 @@ namespace SuperNewRoles.CustomRPC
         Matryoshka,
         Nun,
         PartTimer,
+        Photographer,
         //RoleId
     }
 

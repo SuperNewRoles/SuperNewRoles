@@ -195,6 +195,7 @@ namespace SuperNewRoles.Intro
 
         public static IntroDate NunIntro = new("Nun", RoleClass.Nun.color, 1, RoleId.Nun, TeamRoleType.Impostor);
         public static IntroDate PartTimerIntro = new("PartTimer", RoleClass.PartTimer.color, 1, RoleId.PartTimer, TeamRoleType.Neutral);
+        public static IntroDate PhotographerIntro = new("Photographer", RoleClass.Photographer.color, 1, RoleId.Photographer, TeamRoleType.Neutral);
         //イントロオブジェ
     }
 }

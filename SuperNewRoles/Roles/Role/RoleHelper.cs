@@ -592,6 +592,9 @@ namespace SuperNewRoles
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.Add(player);
                     break;
+                case RoleId.Photographer:
+                    RoleClass.Photographer.PhotographerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -982,6 +985,9 @@ namespace SuperNewRoles
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Photographer:
+                    RoleClass.Photographer.PhotographerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -1036,6 +1042,7 @@ namespace SuperNewRoles
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
                 case RoleId.PartTimer:
+                case RoleId.Photographer:
                 //タスククリアか
                     IsTaskClear = true;
                     break;
@@ -1193,6 +1200,7 @@ namespace SuperNewRoles
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
                 case RoleId.PartTimer:
+                case RoleId.Photographer:
                 //第三か
                     IsNeutral = true;
                     break;
@@ -1476,6 +1484,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Matryoshka.MatryoshkaPlayer.IsCheckListPlayerControl(player)) return RoleId.Matryoshka;
                 else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
                 else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
+                else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
                 //ロールチェック
             }
             catch (Exception e)

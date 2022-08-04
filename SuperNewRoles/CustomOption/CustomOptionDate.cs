@@ -772,6 +772,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption PartTimerCoolTime;
         public static CustomOption PartTimerIsCheckTargetRole;
 
+        
+        public static CustomRoleOption PhotographerOption;
+        public static CustomOption PhotographerPlayerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1585,6 +1588,9 @@ namespace SuperNewRoles.CustomOption
             PartTimerDeathTurn = CustomOption.Create(852, false, CustomOptionType.Neutral, "PartTimerDeathTurn", 3f, 0f, 15f, 1f, PartTimerOption);
             PartTimerCoolTime = CustomOption.Create(853, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PartTimerOption);
             PartTimerIsCheckTargetRole = CustomOption.Create(854, false, CustomOptionType.Neutral, "PartTimerIsCheckTargetRole", true, PartTimerOption);
+            
+            PhotographerOption = new CustomRoleOption(855, false, CustomOptionType.Neutral, "PhotographerName",RoleClass.Photographer.color, 1);
+            PhotographerPlayerCount = CustomOption.Create(8552, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PhotographerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
