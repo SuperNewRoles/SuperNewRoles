@@ -5,8 +5,8 @@
 　・CRAはコメントを基準にしてソースを書き込んでいます。なのでここが欠如しているとうまく動作しない可能性があります
 　・コメントの場所
 　　・Roles/ロール名.cs　　  　 　　　→//ここにソースを書き込んでください
-　　・CustomRPC/CustomRPC.cs 　 　　　→//新ロールクラス
-　　・CustomRPC/CustomRPC.cs 　 　　　→//セットクラス
+　　・Roles/Role/RoleHelper.cs 　 　　　→//新ロールクラス
+　　・Roles/Role/RoleHelper.cs 　 　　　→//セットクラス
 
 　　・Roles/RoleHelper.cs　　　 　　　→//ロールチェック		GetRoleの後ろ
 　　・Roles/RoleHelper.cs　　　 　　　→//ロールアド			SetRoleの後ろ

@@ -211,10 +211,10 @@ namespace SuperNewRoles.Roles"""+namedata+"""
         //ここにコードを書きこんでください
     }
 }""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-        # CustomRPC/CustomRPC.cs
-        MainClass.WriteCodes("CustomRPC/CustomRPC.cs", "//RoleId",
+        # Roles/Role/RoleHelper.cs
+        MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//RoleId",
                              MainClass.GetInput("RoleName")+",\n        //RoleId")
-        MainClass.WriteCodes("CustomRPC/CustomRPC.cs", "//新ロールクラス",
+        MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//新ロールクラス",
                              """public static class ROLENAME
         {
             public static List<PlayerControl> ROLENAMEPlayer;
