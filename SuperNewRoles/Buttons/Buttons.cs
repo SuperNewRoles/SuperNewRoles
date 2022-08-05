@@ -68,6 +68,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ButtonerButton;
         public static CustomButton RevolutionistButton;
         public static CustomButton SuicidalIdeationButton;
+        public static CustomButton TacticianAllianceButton;
+        public static CustomButton tacticianFakeAllianceButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2075,6 +2077,39 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("SuicidalIdeationButtonName"),
+                showButtonText = true
+            };
+
+            TacticianAllianceButton = new(
+                () =>
+                {
+                    if (!RoleClass.Tactician.target.IsRole(RoleId.Tactician))
+                    {
+                        RoleClass.Tactician.AlliancePlayer.Add(PlayerControl.LocalPlayer.PlayerId, RoleClass.Tactician.target.PlayerId);
+                        RoleClass.Tactician.Alliance = true;
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Tactician && !RoleClass.Tactician.Alliance; },
+                () =>
+                {
+                    RoleClass.Tactician.target = SetTarget();
+                    return RoleClass.Tactician.target != null;
+                },
+                () =>
+                {
+                    TacticianAllianceButton.MaxTimer = 0f;
+                    TacticianAllianceButton.Timer = 0f;
+                },
+                RoleClass.ToiletFan.GetButtonSprite(),
+                new Vector3(-2.7f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("TacticianAllianceButtonName"),
                 showButtonText = true
             };
 
