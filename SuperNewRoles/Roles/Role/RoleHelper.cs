@@ -8,6 +8,135 @@ using SuperNewRoles.Roles;
 
 namespace SuperNewRoles
 {
+    public enum RoleId
+    {
+        DefaultRole,
+        SoothSayer,
+        Jester,
+        Lighter,
+        EvilLighter,
+        EvilScientist,
+        Sheriff,
+        MeetingSheriff,
+        Jackal,
+        Sidekick,
+        Teleporter,
+        SpiritMedium,
+        SpeedBooster,
+        EvilSpeedBooster,
+        Tasker,
+        Doorr,
+        EvilDoorr,
+        Shielder,
+        Speeder,
+        Freezer,
+        Guesser,
+        EvilGuesser,
+        Vulture,
+        NiceScientist,
+        Clergyman,
+        MadMate,
+        Bait,
+        HomeSecurityGuard,
+        StuntMan,
+        Moving,
+        Opportunist,
+        NiceGambler,
+        EvilGambler,
+        Bestfalsecharge,
+        Researcher,
+        SelfBomber,
+        God,
+        AllCleaner,
+        NiceNekomata,
+        EvilNekomata,
+        JackalFriends,
+        Doctor,
+        CountChanger,
+        Pursuer,
+        Minimalist,
+        Hawk,
+        Egoist,
+        NiceRedRidingHood,
+        EvilEraser,
+        Workperson,
+        Magaziner,
+        Hunter,
+        Mayor,
+        truelover,
+        Technician,
+        SerialKiller,
+        OverKiller,
+        Levelinger,
+        EvilMoving,
+        Amnesiac,
+        SideKiller,
+        MadKiller,
+        Survivor,
+        MadMayor,
+        NiceHawk,
+        Bakery,
+        Neta,
+        MadJester,
+        MadStuntMan,
+        MadHawk,
+        FalseCharges,
+        NiceTeleporter,
+        Celebrity,
+        Nocturnality,
+        Observer,
+        Vampire,
+        DarkKiller,
+        Fox,
+        Seer,
+        MadSeer,
+        EvilSeer,
+        RemoteSheriff,
+        TeleportingJackal,
+        MadMaker,
+        Demon,
+        TaskManager,
+        SeerFriends,
+        JackalSeer,
+        SidekickSeer,
+        Assassin,
+        Marine,
+        Arsonist,
+        Chief,
+        Cleaner,
+        MadCleaner,
+        Samurai,
+        MayorFriends,
+        VentMaker,
+        GhostMechanic,
+        EvilHacker,
+        HauntedWolf,
+        PositionSwapper,
+        Tuna,
+        Mafia,
+        BlackCat,
+        SecretlyKiller,
+        Spy,
+        Kunoichi,
+        DoubleKiller,
+        Smasher,
+        SuicideWisher,
+        Neet,
+        FastMaker,
+        ToiletFan,
+        SatsumaAndImo,
+        EvilButtoner,
+        NiceButtoner,
+        Finder,
+        Revolutionist,
+        Dictator,
+        Spelunker,
+        SuicidalIdeation,
+        Matryoshka,
+        Nun,
+        PartTimer,
+        //RoleId
+    }
     public enum TeamRoleType
     {
         Crewmate,
@@ -982,7 +1111,7 @@ namespace SuperNewRoles
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1036,7 +1165,7 @@ namespace SuperNewRoles
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
                 case RoleId.PartTimer:
-                //タスククリアか
+                    //タスククリアか
                     IsTaskClear = true;
                     break;
             }
@@ -1193,7 +1322,7 @@ namespace SuperNewRoles
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
                 case RoleId.PartTimer:
-                //第三か
+                    //第三か
                     IsNeutral = true;
                     break;
             }
