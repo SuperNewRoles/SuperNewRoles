@@ -116,7 +116,7 @@ namespace SuperNewRoles.Buttons
                     KunoichiKunaiButton.Timer = 0f;
                 },
                 RoleClass.Kunoichi.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -155,7 +155,7 @@ namespace SuperNewRoles.Buttons
                     FalseChargesFalseChargeButton.Timer = RoleClass.FalseCharges.CoolTime;
                 },
                 __instance.KillButton.graphic.sprite,
-                new Vector3(0, 1, 0),
+                new(0, 1, 0),
                 __instance,
                 __instance.KillButton,
                 KeyCode.Q,
@@ -186,7 +186,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { trueloverLoveButton.Timer = 0f; trueloverLoveButton.MaxTimer = 0f; },
                 RoleClass.Truelover.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -222,7 +222,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { MagazinerGetButton.Timer = 0f; MagazinerGetButton.MaxTimer = 0f; },
                 RoleClass.Magaziner.GetGetButtonSprite(),
-                new Vector3(-2.7f, -0.06f, 0),
+                new(-2.7f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -250,7 +250,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { MagazinerAddButton.Timer = 0f; MagazinerAddButton.MaxTimer = 0f; },
                 RoleClass.Magaziner.GetAddButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -277,7 +277,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { Scientist.EndMeeting(); },
                 RoleClass.NiceScientist.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -349,7 +349,7 @@ namespace SuperNewRoles.Buttons
                     RoleClass.Hawk.IsHawkOn = false;
                 },
                 RoleClass.Hawk.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -390,7 +390,7 @@ namespace SuperNewRoles.Buttons
                     CountChangerButton.Timer = PlayerControl.GameOptions.KillCooldown;
                 },
                 RoleClass.CountChanger.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -424,7 +424,7 @@ namespace SuperNewRoles.Buttons
                 {
                 },
                 RoleClass.Doctor.GetVitalsSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -462,7 +462,7 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
                 },
                 RoleClass.Jackal.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -500,7 +500,7 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
                 },
                 RoleClass.Jackal.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -543,7 +543,7 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
                 },
                 __instance.KillButton.graphic.sprite,
-                new Vector3(0, 1, 0),
+                new(0, 1, 0),
                 __instance,
                 __instance.KillButton,
                 KeyCode.Q,
@@ -570,7 +570,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { SelfBomber.EndMeeting(); },
                 RoleClass.SelfBomber.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -599,7 +599,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { Doorr.EndMeeting(); },
                 RoleClass.Doorr.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -627,7 +627,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { Teleporter.EndMeeting(); },
                 RoleClass.Teleporter.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -656,7 +656,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { Moving.EndMeeting(); },
                 RoleClass.Moving.GetNoSetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -685,7 +685,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { Moving.EndMeeting(); },
                 RoleClass.Moving.GetSetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -761,7 +761,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { Sheriff.EndMeeting(); },
                 RoleClass.Sheriff.GetButtonSprite(),
-                new Vector3(0f, 1f, 0),
+                new(0f, 1f, 0),
                 __instance,
                 __instance.KillButton,
                 KeyCode.Q,
@@ -791,7 +791,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { Clergyman.EndMeeting(); },
                 RoleClass.Clergyman.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -817,7 +817,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { SpeedBooster.EndMeeting(); },
                 RoleClass.SpeedBooster.GetSpeedBoostButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -844,7 +844,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { EvilSpeedBooster.EndMeeting(); },
                 RoleClass.SpeedBooster.GetSpeedBoostButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -871,7 +871,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { Lighter.EndMeeting(); },
                 RoleClass.Lighter.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -904,7 +904,7 @@ namespace SuperNewRoles.Buttons
                     ImpostorSidekickButton.Timer = PlayerControl.GameOptions.KillCooldown;
                 },
                 RoleClass.Jackal.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -942,7 +942,7 @@ namespace SuperNewRoles.Buttons
                     SideKillerSidekickButton.Timer = RoleClass.SideKiller.KillCoolTime;
                 },
                 RoleClass.Jackal.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -997,7 +997,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { },
                 RoleClass.Jackal.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1032,7 +1032,7 @@ namespace SuperNewRoles.Buttons
                     DemonButton.Timer = RoleClass.Demon.CoolTime;
                 },
                 RoleClass.Demon.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1066,7 +1066,7 @@ namespace SuperNewRoles.Buttons
                     ArsonistDouseButton.Timer = RoleClass.Arsonist.CoolTime;
                 },
                 RoleClass.Arsonist.GetDouseButtonSprite(),
-                new Vector3(0f, 1f, 0),
+                new(0f, 1f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.Q,
@@ -1119,7 +1119,7 @@ namespace SuperNewRoles.Buttons
                     ArsonistIgniteButton.Timer = 0;
                 },
                 RoleClass.Arsonist.GetIgniteButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1187,7 +1187,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { },
                 RoleClass.Chief.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1257,7 +1257,7 @@ namespace SuperNewRoles.Buttons
                     VultureButton.Timer = RoleClass.Vulture.CoolTime;
                 },
                 RoleClass.Vulture.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1292,7 +1292,7 @@ namespace SuperNewRoles.Buttons
                     ShielderButton.Timer = RoleClass.Shielder.CoolTime;
                 },
                 RoleClass.Shielder.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1348,7 +1348,7 @@ namespace SuperNewRoles.Buttons
                     CleanerButton.Timer = RoleClass.Cleaner.CoolTime;
                 },
                 RoleClass.Cleaner.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1397,7 +1397,7 @@ namespace SuperNewRoles.Buttons
                     MadCleanerButton.Timer = RoleClass.MadCleaner.CoolTime;
                 },
                 RoleClass.MadCleaner.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1424,7 +1424,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { Freezer.EndMeeting(); },
                 RoleClass.Freezer.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1452,7 +1452,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { Samurai.EndMeeting(); },
                 RoleClass.Samurai.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1486,7 +1486,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { },
                 RoleClass.VentMaker.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1555,7 +1555,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { GhostMechanicRepairButton.MaxTimer = 0f; GhostMechanicRepairButton.Timer = 0f; },
                 RoleClass.GhostMechanic.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1588,7 +1588,7 @@ namespace SuperNewRoles.Buttons
                     EvilHackerButton.Timer = 0f;
                 },
                 RoleClass.EvilHacker.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1622,7 +1622,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { },
                 RoleClass.Jackal.GetButtonSprite(),
-                new Vector3(-2.7f, -0.06f, 0),
+                new(-2.7f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.Q,
@@ -1661,7 +1661,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { PositionSwapper.EndMeeting(); },
                 RoleClass.PositionSwapper.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1699,7 +1699,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { SecretlyKiller.EndMeeting(); },
                 __instance.KillButton.graphic.sprite,
-                new Vector3(0, 1, 0),
+                new(0, 1, 0),
                 __instance,
                 __instance.KillButton,
                 KeyCode.F,
@@ -1739,7 +1739,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { SecretlyKiller.EndMeeting(); },
                 __instance.KillButton.graphic.sprite,
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.KillButton,
                 KeyCode.F,
@@ -1784,7 +1784,7 @@ namespace SuperNewRoles.Buttons
                     MapOptions.MapOption.IsZoomOn = false;
                 },
                 RoleClass.Hawk.GetButtonSprite(),
-                new Vector3(-2.7f, -0.06f, 0),
+                new(-2.7f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.Q,
@@ -1823,7 +1823,7 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.DoubleKiller)) { DoubleKiller.EndMeeting(); }
                 },
                 __instance.KillButton.graphic.sprite,
-                new Vector3(0, 1, 0),
+                new(0, 1, 0),
                 __instance,
                 __instance.KillButton,
                 KeyCode.Q,
@@ -1866,7 +1866,7 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.DoubleKiller)) { DoubleKiller.EndMeeting(); }
                 },
                 __instance.KillButton.graphic.sprite,
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.KillButton,
                 KeyCode.F,
@@ -1890,7 +1890,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { },
                 RoleClass.SuicideWisher.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -1929,7 +1929,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { },
                 __instance.KillButton.graphic.sprite,
-                new Vector3(0, 1, 0),
+                new(0, 1, 0),
                 __instance,
                 __instance.KillButton,
                 //マッドを作る前はキルボタンに擬態する
@@ -1961,7 +1961,7 @@ namespace SuperNewRoles.Buttons
                     ToiletFanButton.Timer = RoleClass.ToiletFan.ToiletCool;
                 },
                 RoleClass.ToiletFan.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -2012,7 +2012,7 @@ namespace SuperNewRoles.Buttons
                     }
                 },
                 RoleClass.EvilButtoner.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -2040,7 +2040,7 @@ namespace SuperNewRoles.Buttons
                     RevolutionistButton.Timer = RoleClass.Revolutionist.CoolTime;
                 },
                 RoleClass.Moving.GetNoSetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -2066,7 +2066,7 @@ namespace SuperNewRoles.Buttons
                     SuicidalIdeationButton.Timer = RoleClass.SuicidalIdeation.TimeLeft;
                 },
                 RoleClass.SuicidalIdeation.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -2142,7 +2142,7 @@ namespace SuperNewRoles.Buttons
                     MatryoshkaButton.Timer = RoleClass.Matryoshka.CoolTime;
                 },
                 RoleClass.Matryoshka.PutOnButtonSprite,
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -2158,7 +2158,8 @@ namespace SuperNewRoles.Buttons
             };
 
             NunButton = new(
-                () => {
+                () =>
+                {
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedUsePlatform);
                     writer.Write((byte)255);
                     writer.Write(false);
@@ -2177,7 +2178,7 @@ namespace SuperNewRoles.Buttons
                     NunButton.Timer = NunButton.MaxTimer;
                 },
                 RoleClass.Nun.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
@@ -2193,7 +2194,8 @@ namespace SuperNewRoles.Buttons
             };
 
             PartTimerButton = new(
-                () => {
+                () =>
+                {
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.PartTimerSet);
                     writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(SetTarget().PlayerId);
@@ -2212,7 +2214,7 @@ namespace SuperNewRoles.Buttons
                     PartTimerButton.Timer = PartTimerButton.MaxTimer;
                 },
                 RoleClass.PartTimer.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
