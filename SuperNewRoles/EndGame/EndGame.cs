@@ -507,6 +507,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Neet.NeetPlayer);
             notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
             notWinners.AddRange(RoleClass.SuicidalIdeation.SuicidalIdeationPlayer);
+            notWinners.AddRange(RoleClass.Tactician.TacticianPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -806,7 +807,15 @@ namespace SuperNewRoles.EndGame
             {
                 notWinners.AddRange(players);
             }
-
+            //戦術家の勝利処理のコード　一番下になるようにしてください
+            foreach (PlayerControl player in RoleClass.Tactician.TacticianPlayer)
+            {
+                var AllianceTargetPlayer = RoleClass.Tactician.AlliancePlayer[player.PlayerId];
+                if (TempData.winners.Contains(new WinningPlayerData(ModHelpers.playerById(AllianceTargetPlayer).Data)))
+                {
+                    TempData.winners.Add(new WinningPlayerData(player.Data));
+                }
+            }
             notWinners = new();
             winnersToRemove = new();
             foreach (WinningPlayerData winner in TempData.winners)
