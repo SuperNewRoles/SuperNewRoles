@@ -2621,17 +2621,19 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> TacticianPlayer;
             public static Dictionary<byte, byte> AlliancePlayer;
-            public static Dictionary<byte, byte> MyFakeAlliancePlayer;
+            public static Dictionary<byte, byte> FakeAlliancePlayer;
             public static Color32 color = new(128, 0, 0, byte.MaxValue);
             public static PlayerControl target;
             public static bool Alliance;
+            public static int FakeAlliance;
             public static bool CanUseVent;
             public static void ClearAndReload()
             {
                 TacticianPlayer = new();
                 AlliancePlayer = new Dictionary<byte, byte>();
-                MyFakeAlliancePlayer = new Dictionary<byte, byte>();
+                FakeAlliancePlayer = new Dictionary<byte, byte>();
                 Alliance = false;
+                FakeAlliance = CustomOptions.TacticianFakeAllianceCount.GetInt();
                 CanUseVent = CustomOptions.TacticianCanUseVent.GetBool();
             }
         }

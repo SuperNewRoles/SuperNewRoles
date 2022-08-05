@@ -69,7 +69,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton RevolutionistButton;
         public static CustomButton SuicidalIdeationButton;
         public static CustomButton TacticianAllianceButton;
-        public static CustomButton tacticianFakeAllianceButton;
+        public static CustomButton TacticianFakeAllianceButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2083,7 +2083,7 @@ namespace SuperNewRoles.Buttons
             TacticianAllianceButton = new(
                 () =>
                 {
-                    if (!RoleClass.Tactician.target.IsRole(RoleId.Tactician))
+                    if (!RoleClass.Tactician.target.IsRole(RoleId.Tactician) && !RoleClass.Tactician.FakeAlliancePlayer.ContainsKey(RoleClass.Tactician.target.PlayerId) && !RoleClass.Tactician.FakeAlliancePlayer.ContainsValue(RoleClass.Tactician.target.PlayerId))
                     {
                         RoleClass.Tactician.AlliancePlayer.Add(PlayerControl.LocalPlayer.PlayerId, RoleClass.Tactician.target.PlayerId);
                         RoleClass.Tactician.Alliance = true;
@@ -2110,6 +2110,39 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("TacticianAllianceButtonName"),
+                showButtonText = true
+            };
+
+            TacticianFakeAllianceButton = new(
+                () =>
+                {
+                    if (!RoleClass.Tactician.target.IsRole(RoleId.Tactician) && !RoleClass.Tactician.FakeAlliancePlayer.ContainsKey(RoleClass.Tactician.target.PlayerId) && !RoleClass.Tactician.FakeAlliancePlayer.ContainsValue(RoleClass.Tactician.target.PlayerId))
+                    {
+                        RoleClass.Tactician.FakeAlliancePlayer.Add(PlayerControl.LocalPlayer.PlayerId, RoleClass.Tactician.target.PlayerId);
+                        RoleClass.Tactician.FakeAlliance -= 1;
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Tactician && RoleClass.Tactician.FakeAlliance != 0; },
+                () =>
+                {
+                    RoleClass.Tactician.target = SetTarget();
+                    return RoleClass.Tactician.target != null;
+                },
+                () =>
+                {
+                    TacticianFakeAllianceButton.MaxTimer = 0f;
+                    TacticianFakeAllianceButton.Timer = 0f;
+                },
+                RoleClass.ToiletFan.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("TacticianFakeAllianceButtonName"),
                 showButtonText = true
             };
 
