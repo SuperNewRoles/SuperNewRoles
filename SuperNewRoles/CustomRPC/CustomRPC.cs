@@ -220,10 +220,19 @@ namespace SuperNewRoles.CustomRPC
         StartRevolutionMeeting,
         UncheckedUsePlatform,
         PartTimerSet,
-        SetMatryoshkaDeadbody
+        SetMatryoshkaDeadbody,
+        SharePhotograph
     }
     public static class RPCProcedure
     {
+        public static void SharePhotograph()
+        {
+            if (!RoleClass.Photographer.IsPhotographerShared)
+            {
+                Modules.ProctedMessager.ScheduleProctedMessage("写真屋が写真を撮影しました");
+            }
+            RoleClass.Photographer.IsPhotographerShared = true;
+        }
         public static void SetMatryoshkaDeadBody(byte sourceid, byte targetid, bool Is)
         {
             PlayerControl source = ModHelpers.PlayerById(sourceid);
@@ -1331,6 +1340,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.PartTimerSet:
                             PartTimerSet(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SharePhotograph:
+                            SharePhotograph();
                             break;
                     }
                 }

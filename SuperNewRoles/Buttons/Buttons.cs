@@ -71,6 +71,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton MatryoshkaButton;
         public static CustomButton NunButton;
         public static CustomButton PartTimerButton;
+        public static CustomButton PhotographerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -93,6 +94,49 @@ namespace SuperNewRoles.Buttons
 
         public static void Postfix(HudManager __instance)
         {
+
+            PhotographerButton = new(
+                () =>
+                {
+                    List<byte> Targets = Roles.Neutral.Photographer.SetTarget();
+                    RoleClass.Photographer.PhotedPlayerIds.AddRange(Targets);
+                    if (RoleClass.Photographer.BonusCount > 0 && Targets.Count >= RoleClass.Photographer.BonusCount)
+                    {
+                        PhotographerButton.Timer = RoleClass.Photographer.BonusCoolTime;
+                    }
+                    else
+                    {
+                        PhotographerButton.Timer = PhotographerButton.MaxTimer;
+                    }
+                    if (RoleClass.Photographer.IsNotification)
+                    {
+                        RPCHelper.StartRPC(CustomRPC.CustomRPC.SharePhotograph).EndRPC();
+                        RPCProcedure.SharePhotograph();
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Photographer; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove && Roles.Neutral.Photographer.SetTarget().Count > 0;
+                },
+                () =>
+                {
+                    PhotographerButton.MaxTimer = RoleClass.Photographer.CoolTime;
+                    PhotographerButton.Timer = PhotographerButton.MaxTimer;
+                },
+                RoleClass.Photographer.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("PhotographerButtonName"),
+                showButtonText = true
+            };
+
             KunoichiKunaiButton = new(
                 () =>
                 {
