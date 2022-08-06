@@ -2085,7 +2085,12 @@ namespace SuperNewRoles.Buttons
                 {
                     if (!RoleClass.Tactician.target.IsRole(RoleId.Tactician) && !RoleClass.Tactician.FakeAlliancePlayer.ContainsKey(RoleClass.Tactician.target.PlayerId) && !RoleClass.Tactician.FakeAlliancePlayer.ContainsValue(RoleClass.Tactician.target.PlayerId))
                     {
-                        RoleClass.Tactician.AlliancePlayer.Add(PlayerControl.LocalPlayer.PlayerId, RoleClass.Tactician.target.PlayerId);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TacticianAllianceSet, SendOption.Reliable, -1);
+                        Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                        Writer.Write(true);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+
+                        RPCProcedure.TacticianAllianceSet(PlayerControl.LocalPlayer.PlayerId, RoleClass.Tactician.target.PlayerId);
                         RoleClass.Tactician.Alliance = true;
                     }
                 },
@@ -2118,7 +2123,12 @@ namespace SuperNewRoles.Buttons
                 {
                     if (!RoleClass.Tactician.target.IsRole(RoleId.Tactician) && !RoleClass.Tactician.FakeAlliancePlayer.ContainsKey(RoleClass.Tactician.target.PlayerId) && !RoleClass.Tactician.FakeAlliancePlayer.ContainsValue(RoleClass.Tactician.target.PlayerId))
                     {
-                        RoleClass.Tactician.FakeAlliancePlayer.Add(PlayerControl.LocalPlayer.PlayerId, RoleClass.Tactician.target.PlayerId);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TacticianFakeAllianceSet, SendOption.Reliable, -1);
+                        Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                        Writer.Write(true);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+
+                        RPCProcedure.TacticianFakeAllianceSet(PlayerControl.LocalPlayer.PlayerId, RoleClass.Tactician.target.PlayerId);
                         RoleClass.Tactician.FakeAlliance -= 1;
                     }
                 },

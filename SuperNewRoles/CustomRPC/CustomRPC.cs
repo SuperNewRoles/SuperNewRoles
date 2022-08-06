@@ -211,10 +211,20 @@ namespace SuperNewRoles.CustomRPC
         KunaiKill,
         SetSecretRoomTeleportStatus,
         ChiefSidekick,
-        StartRevolutionMeeting
+        StartRevolutionMeeting,
+        TacticianAllianceSet,
+        TacticianFakeAllianceSet
     }
     public static class RPCProcedure
     {
+        public static void TacticianAllianceSet(byte sourceid, byte targetid)
+        {
+            RoleClass.Tactician.AlliancePlayer.Add(sourceid, targetid);
+        }
+        public static void TacticianFakeAllianceSet(byte sourceid, byte targetid)
+        {
+            RoleClass.Tactician.FakeAlliancePlayer.Add(sourceid, targetid);
+        }
         public static void StartRevolutionMeeting(byte sourceid)
         {
             PlayerControl source = ModHelpers.playerById(sourceid);
@@ -1264,6 +1274,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.StartRevolutionMeeting:
                             StartRevolutionMeeting(reader.ReadByte());
+                            break;
+                        case CustomRPC.TacticianAllianceSet:
+                            TacticianAllianceSet(reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }
