@@ -90,6 +90,7 @@ namespace SuperNewRoles.Patch
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
             Roles.Neutral.Hitman.WrapUp();
+            Roles.Neutral.Photographer.WrapUp();
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Roles.CrewMate.Painter.WrapUp();
             if (exiled == null) return;
 

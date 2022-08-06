@@ -808,6 +808,15 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption SeeThroughPersonOption;
         public static CustomOption SeeThroughPersonPlayerCount;
+        
+        public static CustomRoleOption PhotographerOption;
+        public static CustomOption PhotographerPlayerCount;
+        public static CustomOption PhotographerCoolTime;
+        public static CustomOption PhotographerIsBonus;
+        public static CustomOption PhotographerBonusCount;
+        public static CustomOption PhotographerBonusCoolTime;
+        public static CustomOption PhotographerIsImpostorVision;
+        public static CustomOption PhotographerIsNotification;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1658,6 +1667,15 @@ namespace SuperNewRoles.CustomOption
 
             SeeThroughPersonOption = new CustomRoleOption(971, false, CustomOptionType.Crewmate, "SeeThroughPersonName",RoleClass.SeeThroughPerson.color, 1);
             SeeThroughPersonPlayerCount = CustomOption.Create(972, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeeThroughPersonOption);
+            
+            PhotographerOption = new CustomRoleOption(973, false, CustomOptionType.Neutral, "PhotographerName",RoleClass.Photographer.color, 1);
+            PhotographerPlayerCount = CustomOption.Create(974, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PhotographerOption);
+            PhotographerCoolTime = CustomOption.Create(975, false,CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PhotographerOption);
+            PhotographerIsBonus = CustomOption.Create(976, false, CustomOptionType.Neutral, "PhotographerIsBonus", true, PhotographerOption);
+            PhotographerBonusCount = CustomOption.Create(977, false, CustomOptionType.Neutral, "PhotographerBonusCount", 5f, 1f, 15f, 1f, PhotographerIsBonus);
+            PhotographerBonusCoolTime = CustomOption.Create(978, false, CustomOptionType.Neutral, "PhotographerBonusCoolTime", 20f, 2.5f, 60f, 2.5f, PhotographerIsBonus);
+            PhotographerIsImpostorVision = CustomOption.Create(979, false, CustomOptionType.Neutral, "PhotographerIsImpostorVision", false, PhotographerOption);
+            PhotographerIsNotification = CustomOption.Create(980, false, CustomOptionType.Neutral, "PhotographerIsNotification", true, PhotographerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

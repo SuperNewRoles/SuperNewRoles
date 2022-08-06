@@ -1,8 +1,5 @@
-using System.Linq;
 using HarmonyLib;
-using InnerNet;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
@@ -189,6 +186,9 @@ namespace SuperNewRoles.Patch
                                 break;
                             case RoleId.SeeThroughPerson:
                                 Roles.CrewMate.SeeThroughPerson.FixedUpdate();
+                                break;
+                            case RoleId.Photographer:
+                                Roles.Neutral.Photographer.FixedUpdate();
                                 break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)

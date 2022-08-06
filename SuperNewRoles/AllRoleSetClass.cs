@@ -939,6 +939,7 @@ namespace SuperNewRoles
                 RoleId.Hitman => CustomOptions.HitmanPlayerCount.GetFloat(),
                 RoleId.Painter => CustomOptions.PainterPlayerCount.GetFloat(),
                 RoleId.SeeThroughPerson => CustomOptions.SeeThroughPersonPlayerCount.GetFloat(),
+                RoleId.Photographer => CustomOptions.PhotographerPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

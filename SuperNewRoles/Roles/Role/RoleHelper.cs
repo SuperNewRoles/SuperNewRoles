@@ -604,6 +604,9 @@ namespace SuperNewRoles
                 case RoleId.SeeThroughPerson:
                     RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.Add(player);
                     break;
+                case RoleId.Photographer:
+                    RoleClass.Photographer.PhotographerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1006,6 +1009,9 @@ namespace SuperNewRoles
                 case RoleId.SeeThroughPerson:
                     RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Photographer:
+                    RoleClass.Photographer.PhotographerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -1061,6 +1067,7 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                 case RoleId.PartTimer:
                 case RoleId.Hitman:
+                case RoleId.Photographer:
                 //タスククリアか
                     IsTaskClear = true;
                     break;
@@ -1185,6 +1192,7 @@ namespace SuperNewRoles
                     RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
                     RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
                     RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
+                    RoleId.Photographer => RoleClass.Photographer.IsImpostorVision,
                     _ => false,
                 };
         }
@@ -1219,6 +1227,7 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                 case RoleId.PartTimer:
                 case RoleId.Hitman:
+                case RoleId.Photographer:
                 //第三か
                     IsNeutral = true;
                     break;
@@ -1506,6 +1515,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Hitman.HitmanPlayer.IsCheckListPlayerControl(player)) return RoleId.Hitman;
                 else if (RoleClass.Painter.PainterPlayer.IsCheckListPlayerControl(player)) return RoleId.Painter;
                 else if (RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.IsCheckListPlayerControl(player)) return RoleId.SeeThroughPerson;
+                else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
                 //ロールチェック
             }
             catch (Exception e)

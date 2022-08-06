@@ -150,6 +150,7 @@ namespace SuperNewRoles.CustomRPC
         Hitman,
         Painter,
         SeeThroughPerson,
+        Photographer,
         //RoleId
     }
 
@@ -228,6 +229,7 @@ namespace SuperNewRoles.CustomRPC
         SetMatryoshkaDeadbody,
         PainterPaintSet,
         PainterSetTarget,
+        SharePhotograph
     }
     public static class RPCProcedure
     {
@@ -264,7 +266,14 @@ namespace SuperNewRoles.CustomRPC
             position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
             RoleClass.Painter.ActionDatas[type].Add(position);
         }
-
+        public static void SharePhotograph()
+        {
+            if (!RoleClass.Photographer.IsPhotographerShared)
+            {
+                Modules.ProctedMessager.ScheduleProctedMessage("写真屋が写真を撮影しました");
+            }
+            RoleClass.Photographer.IsPhotographerShared = true;
+        }
         public static void SetMatryoshkaDeadBody(byte sourceid, byte targetid, bool Is)
         {
             PlayerControl source = ModHelpers.PlayerById(sourceid);
@@ -1381,6 +1390,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.PainterSetTarget:
                             PainterSetTarget(reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.SharePhotograph:
+                            SharePhotograph();
                             break;
                     }
                 }
