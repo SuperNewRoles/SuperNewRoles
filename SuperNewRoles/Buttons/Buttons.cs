@@ -72,13 +72,12 @@ namespace SuperNewRoles.Buttons
         public static CustomButton NunButton;
         public static CustomButton PsychometristButton;
         public static CustomButton PartTimerButton;
-<<<<<<< HEAD
         public static CustomButton HitmanKillButton;
         public static CustomButton PainterButton;
         public static CustomButton PhotographerButton;
-=======
         public static CustomButton StefinderKillButton;
->>>>>>> develop
+        public static CustomButton TacticianAllianceButton;
+        public static CustomButton TacticianFakeAllianceButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -480,10 +479,10 @@ namespace SuperNewRoles.Buttons
                         }
                         else
                         {
-                            DoctorVitalsButton.Timer =(RoleClass.Doctor.Battery / 10f);
+                            DoctorVitalsButton.Timer = (RoleClass.Doctor.Battery / 10f);
                         }
                     }
-                     else if (RoleClass.Doctor.Battery > 0)
+                    else if (RoleClass.Doctor.Battery > 0)
                     {
                         DoctorVitalsButton.MaxTimer = 0f;
                         DoctorVitalsButton.Timer = 0f;
@@ -2369,111 +2368,44 @@ namespace SuperNewRoles.Buttons
                 buttonText = ModTranslation.GetString("PartTimerButtonName"),
                 showButtonText = true
             };
-
-<<<<<<< HEAD
-            HitmanKillButton = new(
+            TacticianAllianceButton = new(
                 () =>
                 {
-                    PlayerControl target = SetTarget();
-                    if (ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, target) == ModHelpers.MurderAttemptResult.PerformKill) {
-                    }
-                    if (RoleClass.Hitman.Target.PlayerId != target.PlayerId)
+                    if (!RoleClass.Tactician.target.IsRole(RoleId.Tactician) && !RoleClass.Tactician.FakeAlliancePlayer.ContainsKey(RoleClass.Tactician.target.PlayerId) && !RoleClass.Tactician.FakeAlliancePlayer.ContainsValue(RoleClass.Tactician.target.PlayerId))
                     {
-                        Roles.Neutral.Hitman.LimitDown();
-                    } else
-                    {
-                        Roles.Neutral.Hitman.KillSuc();
-                    }
-                    RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
-                    RoleClass.Hitman.ArrowUpdateTime = 0;
-                    Roles.Neutral.Hitman.SetTarget();
-                    HitmanKillButton.Timer = HitmanKillButton.MaxTimer;
-                },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Hitman; },
-                () =>
-                {
-                    return SetTarget() && PlayerControl.LocalPlayer.CanMove;
-                },
-                () =>
-                {
-                    Roles.Neutral.Hitman.EndMeeting();
-=======
-            StefinderKillButton = new(
-                () =>
-                {
-                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.StefinderIsKilled, SendOption.Reliable, -1);
-                    Writer.Write(PlayerControl.LocalPlayer.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TacticianAllianceSet, SendOption.Reliable, -1);
+                        Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                        Writer.Write(true);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
 
-                    RPCProcedure.StefinderIsKilled(PlayerControl.LocalPlayer.PlayerId);
-                    RoleClass.Stefinder.IsKill = true;
-                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.Stefinder.target);
+                        RPCProcedure.TacticianAllianceSet(PlayerControl.LocalPlayer.PlayerId, RoleClass.Tactician.target.PlayerId);
+                        RoleClass.Tactician.Alliance = true;
+                    }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Stefinder && !RoleClass.Stefinder.IsKill; },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Tactician && !RoleClass.Tactician.Alliance; },
                 () =>
                 {
-                    RoleClass.Stefinder.target = SetTarget();
-                    return RoleClass.Stefinder.target != null && PlayerControl.LocalPlayer.CanMove;
+                    RoleClass.Tactician.target = SetTarget();
+                    return RoleClass.Tactician.target != null;
                 },
                 () =>
                 {
-                    StefinderKillButton.MaxTimer = RoleClass.Stefinder.KillCoolDown;
-                    StefinderKillButton.Timer = RoleClass.Stefinder.KillCoolDown;
->>>>>>> develop
+                    TacticianAllianceButton.MaxTimer = 0f;
+                    TacticianAllianceButton.Timer = 0f;
                 },
-                __instance.KillButton.graphic.sprite,
-                new Vector3(0, 1, 0),
+                RoleClass.ToiletFan.GetButtonSprite(),
+                new Vector3(-2.7f, -0.06f, 0),
                 __instance,
-                __instance.KillButton,
+                __instance.AbilityButton,
                 KeyCode.Q,
                 8,
-<<<<<<< HEAD
                 () => { return false; }
             )
             {
-                buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
+                buttonText = ModTranslation.GetString("TacticianAllianceButtonName"),
                 showButtonText = true
             };
 
-            PainterButton = new(
-                () => {
-                    Roles.CrewMate.Painter.SetTarget(SetTarget());
-                    PainterButton.Timer = PainterButton.MaxTimer;
-                },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Painter && RoleClass.Painter.CurrentTarget == null; },
-                () =>
-                {
-                    return PlayerControl.LocalPlayer.CanMove && SetTarget();
-                },
-                () =>
-                {
-                    PainterButton.MaxTimer = RoleClass.Painter.CoolTime;
-                    PainterButton.Timer = PainterButton.MaxTimer;
-                },
-                RoleClass.Painter.GetButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
-                __instance,
-                __instance.AbilityButton,
-                KeyCode.F,
-                49,
-                () =>
-                {
-                    return false;
-                }
-            )
-            {
-                buttonText = ModTranslation.GetString("PainterButtonName"),
-=======
-                () =>
-                {
-                    return !PlayerControl.LocalPlayer.CanMove;
-                }
-            )
-            {
-                buttonText = ModTranslation.GetString("FinalStatusKill"),
->>>>>>> develop
-                showButtonText = true
-            };
 
             SetCustomButtonCooldowns();
         }

@@ -147,15 +147,13 @@ namespace SuperNewRoles.CustomRPC
         Nun,
         Psychometrist,
         PartTimer,
-<<<<<<< HEAD
         Hitman,
         Painter,
         SeeThroughPerson,
         Photographer,
-=======
         Stefinder,
         Stefinder1,
->>>>>>> develop
+        Tactician,
         //RoleId
     }
 
@@ -236,6 +234,8 @@ namespace SuperNewRoles.CustomRPC
         PainterSetTarget,
         SharePhotograph,
         StefinderIsKilled,
+        TacticianAllianceSet,
+        TacticianFakeAllianceSet
     }
     public static class RPCProcedure
     {
@@ -313,6 +313,15 @@ namespace SuperNewRoles.CustomRPC
         public static void StefinderIsKilled(byte PlayerId)
         {
             RoleClass.Stefinder.IsKillPlayer.Add(PlayerId);
+        }
+
+        public static void TacticianAllianceSet(byte sourceid, byte targetid)
+        {
+            RoleClass.Tactician.AlliancePlayer.Add(sourceid, targetid);
+        }
+        public static void TacticianFakeAllianceSet(byte sourceid, byte targetid)
+        {
+            RoleClass.Tactician.FakeAlliancePlayer.Add(sourceid, targetid);
         }
         public static void StartRevolutionMeeting(byte sourceid)
         {
@@ -1395,7 +1404,6 @@ namespace SuperNewRoles.CustomRPC
                         case CustomRPC.PartTimerSet:
                             PartTimerSet(reader.ReadByte(), reader.ReadByte());
                             break;
-<<<<<<< HEAD
                         case CustomRPC.PainterPaintSet:
                             PainterPaintSet(reader.ReadByte(), reader.ReadByte(), reader.ReadBytesAndSize());
                             break;
@@ -1404,10 +1412,12 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.SharePhotograph:
                             SharePhotograph();
-=======
+                            break;
                         case CustomRPC.StefinderIsKilled:
                             StefinderIsKilled(reader.ReadByte());
->>>>>>> develop
+                            break;
+                        case CustomRPC.TacticianAllianceSet:
+                            TacticianAllianceSet(reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }

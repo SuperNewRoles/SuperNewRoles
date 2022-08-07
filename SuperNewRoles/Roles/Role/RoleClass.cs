@@ -168,14 +168,12 @@ namespace SuperNewRoles.Roles
             Nun.ClearAndReload();
             Psychometrist.ClearAndReload();
             PartTimer.ClearAndReload();
-<<<<<<< HEAD
             Hitman.ClearAndReload();
             Painter.ClearAndReload();
             SeeThroughPerson.ClearAndReload();
             Photographer.ClearAndReload();
-=======
             Stefinder.ClearAndReload();
->>>>>>> develop
+            Tactician.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2783,7 +2781,6 @@ namespace SuperNewRoles.Roles
                 //2=マッド
             }
         }
-<<<<<<< HEAD
         public static class Psychometrist
         {
             public static List<PlayerControl> PsychometristPlayer;
@@ -2932,34 +2929,34 @@ namespace SuperNewRoles.Roles
                 Objects = new();
             }
         }
-            public static class Photographer
+        public static class Photographer
+        {
+            public static List<PlayerControl> PhotographerPlayer;
+            public static Color32 color = new(0, 255, 255, byte.MaxValue);
+            public static float CoolTime;
+            public static float BonusCoolTime;
+            public static int BonusCount;
+            public static List<byte> PhotedPlayerIds;
+            public static bool IsPhotographerShared;
+            public static bool IsImpostorVision;
+            public static bool IsNotification;
+            public static List<PlayerControl> PhotedPlayer
             {
-                public static List<PlayerControl> PhotographerPlayer;
-                public static Color32 color = new(0, 255, 255, byte.MaxValue);
-                public static float CoolTime;
-                public static float BonusCoolTime;
-                public static int BonusCount;
-                public static List<byte> PhotedPlayerIds;
-                public static bool IsPhotographerShared;
-                public static bool IsImpostorVision;
-                public static bool IsNotification;
-                public static List<PlayerControl> PhotedPlayer
+                get
                 {
-                    get
+                    if (PhotedPlayerIds.Count != _photedPlayer.Count)
                     {
-                        if (PhotedPlayerIds.Count != _photedPlayer.Count)
+                        List<PlayerControl> NewList = new();
+                        foreach (byte playerid in PhotedPlayerIds)
                         {
-                            List<PlayerControl> NewList = new();
-                            foreach (byte playerid in PhotedPlayerIds)
-                            {
-                                PlayerControl player = ModHelpers.PlayerById(playerid);
-                                if (player) NewList.Add(player);
-                            }
-                            _photedPlayer = NewList;
+                            PlayerControl player = ModHelpers.PlayerById(playerid);
+                            if (player) NewList.Add(player);
                         }
-                        return _photedPlayer;
+                        _photedPlayer = NewList;
                     }
+                    return _photedPlayer;
                 }
+            }
             public static List<PlayerControl> _photedPlayer;
             public static Sprite buttonSprite;
             public static Sprite GetButtonSprite()
@@ -2980,7 +2977,9 @@ namespace SuperNewRoles.Roles
                 BonusCoolTime = CustomOptions.PhotographerBonusCoolTime.GetFloat();
                 IsImpostorVision = CustomOptions.PhotographerIsImpostorVision.GetBool();
                 IsNotification = CustomOptions.PhotographerIsNotification.GetBool();
-=======
+
+            }
+        }
         public static class Stefinder
         {
             public static List<PlayerControl> StefinderPlayer;
@@ -3002,7 +3001,26 @@ namespace SuperNewRoles.Roles
                 SoloWin = CustomOptions.StefinderSoloWin.GetBool();
                 IsKill = false;
                 IsKillPlayer = new();
->>>>>>> develop
+            }
+        }
+        public static class Tactician
+        {
+            public static List<PlayerControl> TacticianPlayer;
+            public static Dictionary<byte, byte> AlliancePlayer;
+            public static Dictionary<byte, byte> FakeAlliancePlayer;
+            public static Color32 color = new(128, 0, 0, byte.MaxValue);
+            public static PlayerControl target;
+            public static bool Alliance;
+            public static int FakeAlliance;
+            public static bool CanUseVent;
+            public static void ClearAndReload()
+            {
+                TacticianPlayer = new();
+                AlliancePlayer = new Dictionary<byte, byte>();
+                FakeAlliancePlayer = new Dictionary<byte, byte>();
+                Alliance = false;
+                FakeAlliance = CustomOptions.TacticianFakeAllianceCount.GetInt();
+                CanUseVent = CustomOptions.TacticianCanUseVent.GetBool();
             }
         }
         //新ロールクラス

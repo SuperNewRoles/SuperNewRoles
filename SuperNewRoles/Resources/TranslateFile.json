@@ -2554,16 +2554,6 @@
         "11": "\u30d0\u30a4\u30bf\u30eb\u3092\u30c1\u30a7\u30c3\u30af\u3057\u3088\u3046",
         "13": "\u968f\u65f6\u67e5\u770b\u751f\u547d\u76d1\u6d4b\u88c5\u7f6e\u6765\u786e\u8ba4\u8239\u5458\u7684\u751f\u6b7b"
     },
-    "DoctorChargeTime": {
-        "0": "Charging time",
-        "11": "\u5145\u96fb\u6642\u9593",
-        "13": "\u5145\u7535\u65f6\u95f4"
-    },
-    "DoctorUseTime": {
-        "0": "Time until charge runs out",
-        "11": "\u5145\u96fb\u304c\u5207\u308c\u308b\u307e\u3067\u306e\u6642\u9593",
-        "13": "\u76f4\u5230\u5145\u7535\u8017\u5c3d\u7684\u65f6\u95f4"
-    },
     "DoctorVitalName": {
         "0": "Vital",
         "11": "\u30d0\u30a4\u30bf\u30eb",

@@ -317,6 +317,88 @@ namespace SuperNewRoles.Patch
                 }
             }
         }
+        public static void AllianceSet()
+        {
+            if (RoleClass.Tactician.AlliancePlayer.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && !PlayerControl.LocalPlayer.IsDead())
+            {
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                {
+                    if (player == PlayerControl.LocalPlayer || player.PlayerId == RoleClass.Tactician.AlliancePlayer[PlayerControl.LocalPlayer.PlayerId])
+                    {
+                        if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Tactician.color, " ★")))
+                            SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.Tactician.color, " ★"));
+                    }
+                }
+            }
+            if (RoleClass.Tactician.AlliancePlayer.ContainsValue(PlayerControl.LocalPlayer.PlayerId) && !PlayerControl.LocalPlayer.IsDead())
+            {
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                {
+                    try
+                    {
+                        var PlayerId = RoleClass.Tactician.AlliancePlayer.FirstOrDefault(x => x.Value == player.PlayerId);
+                        if (player == PlayerControl.LocalPlayer || PlayerId.Value == PlayerControl.LocalPlayer.PlayerId)
+                        {
+                            if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Tactician.color, " ★")))
+                                SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.Tactician.color, " ★"));
+                        }
+                    }
+                    catch { }
+                }
+            }
+            if (PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+            {
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                {
+                    if (RoleClass.Tactician.AlliancePlayer.ContainsKey(player.PlayerId) || RoleClass.Tactician.AlliancePlayer.ContainsValue(player.PlayerId))
+                    {
+                        if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Tactician.color, " ★")))
+                            SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.Tactician.color, " ★"));
+                    }
+                }
+            }
+        }
+        public static void FakeAllianceSet()
+        {
+            if (RoleClass.Tactician.FakeAlliancePlayer.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && !PlayerControl.LocalPlayer.IsDead())
+            {
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                {
+                    if (player.PlayerId == RoleClass.Tactician.FakeAlliancePlayer[PlayerControl.LocalPlayer.PlayerId])
+                    {
+                        if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Tactician.color, " ☆")))
+                            SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.Tactician.color, " ☆"));
+                    }
+                }
+            }
+            if (RoleClass.Tactician.FakeAlliancePlayer.ContainsValue(PlayerControl.LocalPlayer.PlayerId) && !PlayerControl.LocalPlayer.IsDead())
+            {
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                {
+                    try
+                    {
+                        var PlayerId = RoleClass.Tactician.FakeAlliancePlayer.FirstOrDefault(x => x.Value == player.PlayerId);
+                        if (player == PlayerControl.LocalPlayer || PlayerId.Value == PlayerControl.LocalPlayer.PlayerId)
+                        {
+                            if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Tactician.color, " ★")))
+                                SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.Tactician.color, " ★"));
+                        }
+                    }
+                    catch { }
+                }
+            }
+            if (PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+            {
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                {
+                    if (RoleClass.Tactician.AlliancePlayer.ContainsValue(player.PlayerId))
+                    {
+                        if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Tactician.color, " ☆")))
+                            SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.Tactician.color, " ☆"));
+                    }
+                }
+            }
+        }
     }
     public class SetNameUpdate
     {
@@ -412,6 +494,65 @@ namespace SuperNewRoles.Patch
                         } else
                         {
                             SetNamesClass.SetPlayerNameText(RoleClass.PartTimer.CurrentTarget, RoleClass.PartTimer.CurrentTarget.NameText().text + ModHelpers.Cs(RoleClass.PartTimer.color, "◀"));
+
+                        }
+                    }
+                }
+                if (RoleClass.Tactician.AlliancePlayer.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && !PlayerControl.LocalPlayer.IsDead())
+                {
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                    {
+                        if (player == PlayerControl.LocalPlayer || player.PlayerId == RoleClass.Tactician.AlliancePlayer[PlayerControl.LocalPlayer.PlayerId])
+                        {
+                            SetNamesClass.SetPlayerNameColors(player);
+                            SetNamesClass.SetPlayerRoleNames(player);
+                        }
+                    }
+                }
+                if (RoleClass.Tactician.AlliancePlayer.ContainsValue(PlayerControl.LocalPlayer.PlayerId) && !PlayerControl.LocalPlayer.IsDead())
+                {
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                    {
+                        try
+                        {
+                            var PlayerId = RoleClass.Tactician.AlliancePlayer.FirstOrDefault(x => x.Value == player.PlayerId);
+                            if (player == PlayerControl.LocalPlayer || PlayerId.Value == PlayerControl.LocalPlayer.PlayerId)
+                            {
+                                SetNamesClass.SetPlayerNameColors(player);
+                                SetNamesClass.SetPlayerRoleNames(player);
+                            }
+                        }
+                        catch { }
+                    }
+                }
+                if (RoleClass.Tactician.FakeAlliancePlayer.ContainsValue(PlayerControl.LocalPlayer.PlayerId) && !PlayerControl.LocalPlayer.IsDead())
+                {
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                    {
+                        try
+                        {
+                            var PlayerId = RoleClass.Tactician.FakeAlliancePlayer.FirstOrDefault(x => x.Value == player.PlayerId);
+                            if (player == PlayerControl.LocalPlayer || PlayerId.Value == PlayerControl.LocalPlayer.PlayerId)
+                            {
+                                SetNamesClass.SetPlayerNameColors(player);
+                                SetNamesClass.SetPlayerRoleNames(player);
+                            }
+                        }
+                        catch { }
+                    }
+                }
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                {
+                    if (Tactician.CanSeeRoles(player))
+                    {
+                        var PlayerId = RoleClass.Tactician.AlliancePlayer.FirstOrDefault(x => x.Value == player.PlayerId);
+                        if (player.PlayerId == PlayerId.Key || player.PlayerId == PlayerId.Value)
+                        {
+                            if (RoleClass.IsMeeting || player.IsAlive())
+                            {
+                                SetNamesClass.SetPlayerNameColors(player);
+                                SetNamesClass.SetPlayerRoleNames(player);
+                            }
                         }
                     }
                 }
@@ -434,6 +575,8 @@ namespace SuperNewRoles.Patch
             {
                 SetNamesClass.SetPlayerNameColor(PlayerControl.LocalPlayer, Color.red);
             }
+            SetNamesClass.AllianceSet();
+            SetNamesClass.FakeAllianceSet();
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (Sabotage.SabotageManager.thisSabotage == Sabotage.SabotageManager.CustomSabotage.CognitiveDeficit)

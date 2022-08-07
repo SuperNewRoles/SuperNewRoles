@@ -38,12 +38,9 @@ namespace SuperNewRoles.EndGame
         RevolutionistWin,
         SpelunkerWin,
         SuicidalIdeationWin,
-<<<<<<< HEAD
         HitmanWin,
         PhotographerWin,
-=======
         StefinderWin,
->>>>>>> develop
         BugEnd
     }
     enum WinCondition
@@ -68,12 +65,9 @@ namespace SuperNewRoles.EndGame
         RevolutionistWin,
         SpelunkerWin,
         SuicidalIdeationWin,
-<<<<<<< HEAD
         HitmanWin,
         PhotographerWin,
-=======
         StefinderWin,
->>>>>>> develop
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -270,7 +264,6 @@ namespace SuperNewRoles.EndGame
                     text = RoleClass.SuicidalIdeation.SuicidalIdeationWinText ? "SuicidalIdeationWinText" : "SuicidalIdeationName";
                     RoleColor = RoleClass.SuicidalIdeation.color;
                     break;
-<<<<<<< HEAD
                 case WinCondition.HitmanWin:
                     text = "HitmanName";
                     RoleColor = RoleClass.Hitman.color;
@@ -278,11 +271,10 @@ namespace SuperNewRoles.EndGame
                 case WinCondition.PhotographerWin:
                     text = "PhotographerName";
                     RoleColor = RoleClass.Photographer.color;
-=======
+                    break;
                 case WinCondition.StefinderWin:
                     text = "StefinderName";
                     RoleColor = RoleClass.Stefinder.color;
->>>>>>> develop
                     break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
@@ -538,13 +530,11 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
             notWinners.AddRange(RoleClass.SuicidalIdeation.SuicidalIdeationPlayer);
             notWinners.AddRange(RoleClass.PartTimer.PartTimerPlayer);
-<<<<<<< HEAD
             notWinners.AddRange(RoleClass.Spelunker.SpelunkerPlayer);
             notWinners.AddRange(RoleClass.Hitman.HitmanPlayer);
             notWinners.AddRange(RoleClass.Photographer.PhotographerPlayer);
-=======
             notWinners.AddRange(RoleClass.Stefinder.StefinderPlayer);
->>>>>>> develop
+            notWinners.AddRange(RoleClass.Tactician.TacticianPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -867,7 +857,15 @@ namespace SuperNewRoles.EndGame
             {
                 notWinners.AddRange(players);
             }
-
+            //戦術家の勝利処理のコード　一番下になるようにしてください
+            foreach (PlayerControl player in RoleClass.Tactician.TacticianPlayer)
+            {
+                var AllianceTargetPlayer = RoleClass.Tactician.AlliancePlayer[player.PlayerId];
+                if (TempData.winners.Contains(new WinningPlayerData(ModHelpers.PlayerById(AllianceTargetPlayer).Data)))
+                {
+                    TempData.winners.Add(new WinningPlayerData(player.Data));
+                }
+            }
             notWinners = new();
             winnersToRemove = new();
             foreach (WinningPlayerData winner in TempData.winners)

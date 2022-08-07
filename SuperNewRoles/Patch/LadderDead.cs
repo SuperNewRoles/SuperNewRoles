@@ -58,11 +58,7 @@ namespace SuperNewRoles.Patch
                 //降りている
                 if (sourcepos.y > targetpos.y)
                 {
-<<<<<<< HEAD
-                    if (!(CustomOptions.LadderDead.GetBool() && ModHelpers.IsSucsessChance(CustomOptions.LadderDeadChance.GetSelection() + 1) ||
-=======
                     if (!((ModHelpers.IsSucsessChance(CustomOptions.LadderDeadChance.GetSelection() + 1) && CustomOptions.LadderDead.GetBool()) ||
->>>>>>> develop
                         (__instance.myPlayer.IsRole(RoleId.SuicidalIdeation) && ModHelpers.IsSucsessChance(CustomOptions.SuicidalIdeationFallProbability.GetSelection() + 1)) ||
                         (__instance.myPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSucsessChance(RoleClass.Spelunker.LadderDeathChance))
                         ))
