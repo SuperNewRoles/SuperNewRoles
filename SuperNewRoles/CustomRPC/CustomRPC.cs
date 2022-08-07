@@ -270,7 +270,7 @@ namespace SuperNewRoles.CustomRPC
         {
             if (!RoleClass.Photographer.IsPhotographerShared)
             {
-                Modules.ProctedMessager.ScheduleProctedMessage("写真屋が写真を撮影しました");
+                Modules.ProctedMessager.ScheduleProctedMessage(ModTranslation.GetString("PhotographerPhotograph"));
             }
             RoleClass.Photographer.IsPhotographerShared = true;
         }
