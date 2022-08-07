@@ -145,6 +145,8 @@ namespace SuperNewRoles.CustomRPC
         Matryoshka,
         Nun,
         PartTimer,
+        Stefinder,
+        Stefinder1,
         //RoleId
     }
 
@@ -219,7 +221,8 @@ namespace SuperNewRoles.CustomRPC
         StartRevolutionMeeting,
         UncheckedUsePlatform,
         PartTimerSet,
-        SetMatryoshkaDeadbody
+        SetMatryoshkaDeadbody,
+        StefinderIsKilled
     }
     public static class RPCProcedure
     {
@@ -252,6 +255,10 @@ namespace SuperNewRoles.CustomRPC
                     airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));
                 }
             }
+        }
+        public static void StefinderIsKilled(byte PlayerId)
+        {
+            RoleClass.Stefinder.IsKillPlayer.Add(PlayerId);
         }
         public static void StartRevolutionMeeting(byte sourceid)
         {
@@ -1330,6 +1337,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.PartTimerSet:
                             PartTimerSet(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.StefinderIsKilled:
+                            StefinderIsKilled(reader.ReadByte());
                             break;
                     }
                 }

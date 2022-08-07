@@ -38,6 +38,7 @@ namespace SuperNewRoles.EndGame
         RevolutionistWin,
         SpelunkerWin,
         SuicidalIdeationWin,
+        StefinderWin,
         BugEnd
     }
     enum WinCondition
@@ -62,6 +63,7 @@ namespace SuperNewRoles.EndGame
         RevolutionistWin,
         SpelunkerWin,
         SuicidalIdeationWin,
+        StefinderWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -258,6 +260,10 @@ namespace SuperNewRoles.EndGame
                     text = RoleClass.SuicidalIdeation.SuicidalIdeationWinText ? "SuicidalIdeationWinText" : "SuicidalIdeationName";
                     RoleColor = RoleClass.SuicidalIdeation.color;
                     break;
+                case WinCondition.StefinderWin:
+                    text = "StefinderName";
+                    RoleColor = RoleClass.Stefinder.color;
+                    break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
                     {
@@ -438,6 +444,10 @@ namespace SuperNewRoles.EndGame
                 {
                     //var p = pc.Data;
                     var roles = Intro.IntroDate.GetIntroDate(p.Object.GetRole(), p.Object);
+                    if (RoleClass.Stefinder.IsKillPlayer.Contains(p.PlayerId))
+                    {
+                        roles = Intro.IntroDate.StefinderIntro1;
+                    }
                     var ghostRoles = Intro.IntroDate.GetIntroDate(p.Object.GetGhostRole(), p.Object);
                     var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
                     if (p.Object.IsImpostor())
@@ -509,6 +519,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
             notWinners.AddRange(RoleClass.SuicidalIdeation.SuicidalIdeationPlayer);
             notWinners.AddRange(RoleClass.PartTimer.PartTimerPlayer);
+            notWinners.AddRange(RoleClass.Stefinder.StefinderPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -806,6 +817,44 @@ namespace SuperNewRoles.EndGame
                 if (player.IsAlive())
                 {
                     TempData.winners.Add(new WinningPlayerData(player.Data));
+                }
+            }
+            foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
+            {
+                if (player.IsAlive() && !RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
+                   (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask ||
+                    AdditionalTempData.gameOverReason == GameOverReason.HumansByVote ||
+                    AdditionalTempData.gameOverReason == GameOverReason.HumansDisconnect))
+                {
+                    if (RoleClass.Stefinder.SoloWin)
+                    {
+                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        WinningPlayerData wpd = new(player.Data);
+                        TempData.winners.Add(wpd);
+                        AdditionalTempData.winCondition = WinCondition.StefinderWin;
+                    }
+                    else
+                    {
+                        TempData.winners.Add(new WinningPlayerData(player.Data));
+                    }
+                }
+                if (player.IsAlive() && RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
+                   (AdditionalTempData.gameOverReason == GameOverReason.ImpostorByKill ||
+                    AdditionalTempData.gameOverReason == GameOverReason.ImpostorBySabotage ||
+                    AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote ||
+                    AdditionalTempData.gameOverReason == GameOverReason.ImpostorDisconnect))
+                {
+                    if (RoleClass.Stefinder.SoloWin)
+                    {
+                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        WinningPlayerData wpd = new(player.Data) ;
+                        TempData.winners.Add(wpd);
+                        AdditionalTempData.winCondition = WinCondition.StefinderWin;
+                    }
+                    else
+                    {
+                        TempData.winners.Add(new WinningPlayerData(player.Data));
+                    }
                 }
             }
             foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)

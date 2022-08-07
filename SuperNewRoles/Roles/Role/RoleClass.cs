@@ -165,6 +165,7 @@ namespace SuperNewRoles.Roles
             Matryoshka.ClearAndReload();
             Nun.ClearAndReload();
             PartTimer.ClearAndReload();
+            Stefinder.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2756,6 +2757,29 @@ namespace SuperNewRoles.Roles
                 TeamNumber = 1;
                 //1=クルー
                 //2=マッド
+            }
+        }
+        public static class Stefinder
+        {
+            public static List<PlayerControl> StefinderPlayer;
+            public static Color32 color = new(0, 255, 0, byte.MaxValue);
+            public static int KillCoolDown;
+            public static bool UseVent;
+            public static bool UseSabo;
+            public static bool IsKill;
+            public static bool SoloWin;
+            public static List<byte> IsKillPlayer;
+            public static PlayerControl target;
+            public static DateTime ButtonTimer;
+            public static void ClearAndReload()
+            {
+                StefinderPlayer = new();
+                KillCoolDown = CustomOptions.StefinderKillCoolDown.GetInt();
+                UseVent = CustomOptions.StefinderVent.GetBool();
+                UseSabo = CustomOptions.StefinderSabo.GetBool();
+                SoloWin = CustomOptions.StefinderSoloWin.GetBool();
+                IsKill = false;
+                IsKillPlayer = new();
             }
         }
         //新ロールクラス
