@@ -168,10 +168,14 @@ namespace SuperNewRoles.Roles
             Nun.ClearAndReload();
             Psychometrist.ClearAndReload();
             PartTimer.ClearAndReload();
+<<<<<<< HEAD
             Hitman.ClearAndReload();
             Painter.ClearAndReload();
             SeeThroughPerson.ClearAndReload();
             Photographer.ClearAndReload();
+=======
+            Stefinder.ClearAndReload();
+>>>>>>> develop
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2765,6 +2769,7 @@ namespace SuperNewRoles.Roles
                 //2=マッド
             }
         }
+<<<<<<< HEAD
         public static class Psychometrist
         {
             public static List<PlayerControl> PsychometristPlayer;
@@ -2961,6 +2966,29 @@ namespace SuperNewRoles.Roles
                 BonusCoolTime = CustomOptions.PhotographerBonusCoolTime.GetFloat();
                 IsImpostorVision = CustomOptions.PhotographerIsImpostorVision.GetBool();
                 IsNotification = CustomOptions.PhotographerIsNotification.GetBool();
+=======
+        public static class Stefinder
+        {
+            public static List<PlayerControl> StefinderPlayer;
+            public static Color32 color = new(0, 255, 0, byte.MaxValue);
+            public static int KillCoolDown;
+            public static bool UseVent;
+            public static bool UseSabo;
+            public static bool IsKill;
+            public static bool SoloWin;
+            public static List<byte> IsKillPlayer;
+            public static PlayerControl target;
+            public static DateTime ButtonTimer;
+            public static void ClearAndReload()
+            {
+                StefinderPlayer = new();
+                KillCoolDown = CustomOptions.StefinderKillCoolDown.GetInt();
+                UseVent = CustomOptions.StefinderVent.GetBool();
+                UseSabo = CustomOptions.StefinderSabo.GetBool();
+                SoloWin = CustomOptions.StefinderSoloWin.GetBool();
+                IsKill = false;
+                IsKillPlayer = new();
+>>>>>>> develop
             }
         }
         //新ロールクラス

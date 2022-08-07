@@ -115,6 +115,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SheriffCanKillTuna;
         public static CustomOption SheriffCanKillNeet;
         public static CustomOption SheriffCanKillRevolutionist;
+        public static CustomOption SheriffCanKillStefinder;
         //シェリフ第三キル
         //=============================================
         public static CustomOption SheriffLoversKill;
@@ -817,6 +818,16 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption PhotographerBonusCoolTime;
         public static CustomOption PhotographerIsImpostorVision;
         public static CustomOption PhotographerIsNotification;
+=======
+
+        
+        public static CustomRoleOption StefinderOption;
+        public static CustomOption StefinderPlayerCount;
+        public static CustomOption StefinderKillCoolDown;
+        public static CustomOption StefinderVent;
+        public static CustomOption StefinderSabo;
+        public static CustomOption StefinderSoloWin;
+>>>>>>> develop
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -981,9 +992,10 @@ namespace SuperNewRoles.CustomOption
             SheriffCanKillTuna = CustomOption.Create(728, true, CustomOptionType.Crewmate, "TunaName" + "CanKillSetting", true, SheriffNeutralKill);
             SheriffCanKillNeet = CustomOption.Create(729, true, CustomOptionType.Crewmate, "SideKickName" + "CanKillSetting", true, SheriffNeutralKill);
             SheriffCanKillRevolutionist = CustomOption.Create(732, true, CustomOptionType.Crewmate, "RevolutionistName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillStefinder = CustomOption.Create(733, true, CustomOptionType.Crewmate, "StefinderName" + "CanKillSetting", true, SheriffNeutralKill);
             //シェリフ、第三陣営キル表示設定
             //シェリフ役職別キル設定のidは700番台を使用してください
-            //[ 220731 ]現在シェリフ最大id [ 732 ]
+            //[ 220731 ]現在シェリフ最大id [ 733 ]
 
             SheriffLoversKill = CustomOption.Create(41, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, SheriffOption);
             SheriffQuarreledKill = CustomOption.Create(730, true, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, SheriffOption);
@@ -1641,6 +1653,7 @@ namespace SuperNewRoles.CustomOption
             PartTimerDeathTurn = CustomOption.Create(852, false, CustomOptionType.Neutral, "PartTimerDeathTurn", 3f, 0f, 15f, 1f, PartTimerOption);
             PartTimerCoolTime = CustomOption.Create(853, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PartTimerOption);
             PartTimerIsCheckTargetRole = CustomOption.Create(854, false, CustomOptionType.Neutral, "PartTimerIsCheckTargetRole", true, PartTimerOption);
+<<<<<<< HEAD
 
             HitmanOption = new CustomRoleOption(930, false, CustomOptionType.Neutral, "HitmanName",RoleClass.Hitman.color, 1);
             HitmanPlayerCount = CustomOption.Create(931, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HitmanOption);
@@ -1676,6 +1689,15 @@ namespace SuperNewRoles.CustomOption
             PhotographerBonusCoolTime = CustomOption.Create(978, false, CustomOptionType.Neutral, "PhotographerBonusCoolTime", 20f, 2.5f, 60f, 2.5f, PhotographerIsBonus);
             PhotographerIsImpostorVision = CustomOption.Create(979, false, CustomOptionType.Neutral, "PhotographerIsImpostorVision", false, PhotographerOption);
             PhotographerIsNotification = CustomOption.Create(980, false, CustomOptionType.Neutral, "PhotographerIsNotification", true, PhotographerOption);
+=======
+            
+            StefinderOption = new CustomRoleOption(855, false, CustomOptionType.Neutral, "StefinderName",RoleClass.Stefinder.color, 1);
+            StefinderPlayerCount = CustomOption.Create(856, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StefinderOption);
+            StefinderKillCoolDown = CustomOption.Create(857, false, CustomOptionType.Neutral, "StefinderKillCoolDownSetting", 30f, 0f, 120f, 2.5f, StefinderOption, format: "unitSeconds");
+            StefinderVent = CustomOption.Create(858, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
+            StefinderSabo = CustomOption.Create(859, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
+            StefinderSoloWin = CustomOption.Create(860, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
+>>>>>>> develop
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

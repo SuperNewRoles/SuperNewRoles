@@ -72,9 +72,13 @@ namespace SuperNewRoles.Buttons
         public static CustomButton NunButton;
         public static CustomButton PsychometristButton;
         public static CustomButton PartTimerButton;
+<<<<<<< HEAD
         public static CustomButton HitmanKillButton;
         public static CustomButton PainterButton;
         public static CustomButton PhotographerButton;
+=======
+        public static CustomButton StefinderKillButton;
+>>>>>>> develop
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2347,6 +2351,7 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
 
+<<<<<<< HEAD
             HitmanKillButton = new(
                 () =>
                 {
@@ -2373,6 +2378,29 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     Roles.Neutral.Hitman.EndMeeting();
+=======
+            StefinderKillButton = new(
+                () =>
+                {
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.StefinderIsKilled, SendOption.Reliable, -1);
+                    Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+
+                    RPCProcedure.StefinderIsKilled(PlayerControl.LocalPlayer.PlayerId);
+                    RoleClass.Stefinder.IsKill = true;
+                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.Stefinder.target);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Stefinder && !RoleClass.Stefinder.IsKill; },
+                () =>
+                {
+                    RoleClass.Stefinder.target = SetTarget();
+                    return RoleClass.Stefinder.target != null && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    StefinderKillButton.MaxTimer = RoleClass.Stefinder.KillCoolDown;
+                    StefinderKillButton.Timer = RoleClass.Stefinder.KillCoolDown;
+>>>>>>> develop
                 },
                 __instance.KillButton.graphic.sprite,
                 new Vector3(0, 1, 0),
@@ -2380,6 +2408,7 @@ namespace SuperNewRoles.Buttons
                 __instance.KillButton,
                 KeyCode.Q,
                 8,
+<<<<<<< HEAD
                 () => { return false; }
             )
             {
@@ -2415,6 +2444,15 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("PainterButtonName"),
+=======
+                () =>
+                {
+                    return !PlayerControl.LocalPlayer.CanMove;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("FinalStatusKill"),
+>>>>>>> develop
                 showButtonText = true
             };
 

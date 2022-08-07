@@ -935,11 +935,15 @@ namespace SuperNewRoles
                 RoleId.Nun => CustomOptions.NunPlayerCount.GetFloat(),
                 RoleId.PartTimer => CustomOptions.PartTimerPlayerCount.GetFloat(),
                 RoleId.SatsumaAndImo => CustomOptions.SatsumaAndImoPlayerCount.GetFloat(),
+<<<<<<< HEAD
                 RoleId.Psychometrist => CustomOptions.PsychometristPlayerCount.GetFloat(),
                 RoleId.Hitman => CustomOptions.HitmanPlayerCount.GetFloat(),
                 RoleId.Painter => CustomOptions.PainterPlayerCount.GetFloat(),
                 RoleId.SeeThroughPerson => CustomOptions.SeeThroughPersonPlayerCount.GetFloat(),
                 RoleId.Photographer => CustomOptions.PhotographerPlayerCount.GetFloat(),
+=======
+                RoleId.Stefinder => CustomOptions.StefinderPlayerCount.GetFloat(),
+>>>>>>> develop
                 //プレイヤーカウント
                 _ => 1,
             };

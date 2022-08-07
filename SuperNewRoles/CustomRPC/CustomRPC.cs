@@ -147,10 +147,15 @@ namespace SuperNewRoles.CustomRPC
         Nun,
         Psychometrist,
         PartTimer,
+<<<<<<< HEAD
         Hitman,
         Painter,
         SeeThroughPerson,
         Photographer,
+=======
+        Stefinder,
+        Stefinder1,
+>>>>>>> develop
         //RoleId
     }
 
@@ -229,7 +234,8 @@ namespace SuperNewRoles.CustomRPC
         SetMatryoshkaDeadbody,
         PainterPaintSet,
         PainterSetTarget,
-        SharePhotograph
+        SharePhotograph,
+        StefinderIsKilled,
     }
     public static class RPCProcedure
     {
@@ -303,6 +309,10 @@ namespace SuperNewRoles.CustomRPC
                     airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));
                 }
             }
+        }
+        public static void StefinderIsKilled(byte PlayerId)
+        {
+            RoleClass.Stefinder.IsKillPlayer.Add(PlayerId);
         }
         public static void StartRevolutionMeeting(byte sourceid)
         {
@@ -1385,6 +1395,7 @@ namespace SuperNewRoles.CustomRPC
                         case CustomRPC.PartTimerSet:
                             PartTimerSet(reader.ReadByte(), reader.ReadByte());
                             break;
+<<<<<<< HEAD
                         case CustomRPC.PainterPaintSet:
                             PainterPaintSet(reader.ReadByte(), reader.ReadByte(), reader.ReadBytesAndSize());
                             break;
@@ -1393,6 +1404,10 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.SharePhotograph:
                             SharePhotograph();
+=======
+                        case CustomRPC.StefinderIsKilled:
+                            StefinderIsKilled(reader.ReadByte());
+>>>>>>> develop
                             break;
                     }
                 }
