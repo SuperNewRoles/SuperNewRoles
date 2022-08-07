@@ -2405,6 +2405,116 @@ namespace SuperNewRoles.Buttons
                 buttonText = ModTranslation.GetString("TacticianAllianceButtonName"),
                 showButtonText = true
             };
+            StefinderKillButton = new(
+                () =>
+                {
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.StefinderIsKilled, SendOption.Reliable, -1);
+                    Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+
+                    RPCProcedure.StefinderIsKilled(PlayerControl.LocalPlayer.PlayerId);
+                    RoleClass.Stefinder.IsKill = true;
+                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.Stefinder.target);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Stefinder && !RoleClass.Stefinder.IsKill; },
+                () =>
+                {
+                    RoleClass.Stefinder.target = SetTarget();
+                    return RoleClass.Stefinder.target != null && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    StefinderKillButton.MaxTimer = RoleClass.Stefinder.KillCoolDown;
+                    StefinderKillButton.Timer = RoleClass.Stefinder.KillCoolDown;
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.Q,
+                8,
+                () =>
+                {
+                    return !PlayerControl.LocalPlayer.CanMove;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("FinalStatusKill"),
+                showButtonText = true
+            };
+
+            HitmanKillButton = new(
+                () =>
+                {
+                    PlayerControl target = SetTarget();
+                    if (ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, target) == ModHelpers.MurderAttemptResult.PerformKill)
+                    {
+                    }
+                    if (RoleClass.Hitman.Target.PlayerId != target.PlayerId)
+                    {
+                        Roles.Neutral.Hitman.LimitDown();
+                    }
+                    else
+                    {
+                        Roles.Neutral.Hitman.KillSuc();
+                    }
+                    RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
+                    RoleClass.Hitman.ArrowUpdateTime = 0;
+                    Roles.Neutral.Hitman.SetTarget();
+                    HitmanKillButton.Timer = HitmanKillButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Hitman; },
+                () =>
+                {
+                    return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    Roles.Neutral.Hitman.EndMeeting();
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
+                showButtonText = true
+            };
+
+            PainterButton = new(
+                () => {
+                    Roles.CrewMate.Painter.SetTarget(SetTarget());
+                    PainterButton.Timer = PainterButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Painter && RoleClass.Painter.CurrentTarget == null; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                },
+                () =>
+                {
+                    PainterButton.MaxTimer = RoleClass.Painter.CoolTime;
+                    PainterButton.Timer = PainterButton.MaxTimer;
+                },
+                RoleClass.Painter.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return false;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("PainterButtonName"),
+                showButtonText = true
+            };
 
 
             SetCustomButtonCooldowns();
