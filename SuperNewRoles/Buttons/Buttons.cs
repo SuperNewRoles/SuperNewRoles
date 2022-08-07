@@ -414,11 +414,30 @@ namespace SuperNewRoles.Buttons
                     RoleClass.Doctor.Vital.transform.SetParent(Camera.main.transform, false);
                     RoleClass.Doctor.Vital.transform.localPosition = new Vector3(0.0f, 0.0f, -50f);
                     RoleClass.Doctor.Vital.Begin(null);
+                    RoleClass.Doctor.MyPanelFlag = true;
                 },
                 (bool isAlive, RoleId role) => { return role == RoleId.Doctor && isAlive; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    if (RoleClass.Doctor.IsChargingNow)
+                    {
+                        DoctorVitalsButton.MaxTimer = 10f;
+                        Logger.Info(RoleClass.Doctor.Battery.ToString());
+                        if (RoleClass.Doctor.Battery <= 0)
+                        {
+                            DoctorVitalsButton.Timer = 10f;
+                        }
+                        else
+                        {
+                            DoctorVitalsButton.Timer =(RoleClass.Doctor.Battery / 10f);
+                        }
+                    }
+                     else if (RoleClass.Doctor.Battery > 0)
+                    {
+                        DoctorVitalsButton.MaxTimer = 0f;
+                        DoctorVitalsButton.Timer = 0f;
+                    }
+                    return (PlayerControl.LocalPlayer.CanMove && RoleClass.Doctor.Battery > 0) || (RoleClass.Doctor.IsChargingNow);
                 },
                 () =>
                 {

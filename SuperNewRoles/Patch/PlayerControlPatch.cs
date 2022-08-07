@@ -830,7 +830,7 @@ namespace SuperNewRoles.Patches
             // SuperNewRolesPlugin.Logger.LogInfo("MurderPlayer発生！元:" + __instance.GetDefaultName() + "、ターゲット:" + target.GetDefaultName());
             // Collect dead player info
             Logger.Info("追加");
-            DeadPlayer deadPlayer = new(target, DateTime.UtcNow, DeathReason.Kill, __instance);
+            DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
@@ -921,7 +921,7 @@ namespace SuperNewRoles.Patches
         public static void Postfix(PlayerControl __instance)
         {
             // Collect dead player info
-            DeadPlayer deadPlayer = new(__instance, DateTime.UtcNow, DeathReason.Exile, null);
+            DeadPlayer deadPlayer = new(__instance, __instance.PlayerId, DateTime.UtcNow, DeathReason.Exile, null);
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Exiled;
             if (ModeHandler.IsMode(ModeId.Default))
