@@ -178,6 +178,7 @@ namespace SuperNewRoles.Patch
                             case RoleId.SuicidalIdeation:
                                 SuicidalIdeation.Postfix();
                                 break;
+<<<<<<< HEAD
                             case RoleId.Psychometrist:
                                 Roles.CrewMate.Psychometrist.PsychometristFixedUpdate();
                                 break;
@@ -189,6 +190,10 @@ namespace SuperNewRoles.Patch
                                 break;
                             case RoleId.Photographer:
                                 Roles.Neutral.Photographer.FixedUpdate();
+=======
+                            case RoleId.Doctor:
+                                Doctor.FixedUpdate();
+>>>>>>> NewRole/Doctor
                                 break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)

@@ -957,6 +957,14 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> DoctorPlayer;
             public static Color32 color = new(102, 102, 255, byte.MaxValue);
             public static bool MyPanelFlag;
+            //100%から減っていく
+            //0%だと使用できない
+            //100%までチャージされると再度使えるようになる
+            public static int Battery;
+            public static float BatteryZeroTime;
+            public static float ChargeTime;
+            public static float UseTime;
+            public static bool IsChargingNow;
             public static Minigame Vital;
             private static Sprite VitalSprite;
             public static Sprite GetVitalsSprite()
@@ -970,6 +978,12 @@ namespace SuperNewRoles.Roles
                 DoctorPlayer = new();
                 MyPanelFlag = false;
                 Vital = null;
+                Battery = 100;
+                ChargeTime = CustomOptions.DoctorChargeTime.GetFloat();
+                UseTime = CustomOptions.DoctorUseTime.GetFloat();
+                BatteryZeroTime = UseTime;
+                IsChargingNow = false;
+                Roles.Doctor.VitalsPatch.ResetData();
             }
         }
         public static class CountChanger
