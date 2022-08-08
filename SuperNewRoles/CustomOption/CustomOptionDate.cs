@@ -1194,8 +1194,8 @@ namespace SuperNewRoles.CustomOption
 
             DoctorOption = new CustomRoleOption(190, false, CustomOptionType.Crewmate, "DoctorName", RoleClass.Doctor.color, 1);
             DoctorPlayerCount = CustomOption.Create(191, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
-            DoctorChargeTime = CustomOption.Create(855, false, CustomOptionType.Crewmate, "DoctorChargeTime", 10f, 0f, 60f, 2.5f, DoctorOption);
-            DoctorUseTime = CustomOption.Create(856, false, CustomOptionType.Crewmate, "DoctorUseTime", 5f, 0f, 60f, 2.5f, DoctorOption);
+            DoctorChargeTime = CustomOption.Create(981, false, CustomOptionType.Crewmate, "DoctorChargeTime", 10f, 0f, 60f, 2.5f, DoctorOption);
+            DoctorUseTime = CustomOption.Create(982, false, CustomOptionType.Crewmate, "DoctorUseTime", 5f, 0f, 60f, 2.5f, DoctorOption);
 
             CountChangerOption = new CustomRoleOption(192, false, CustomOptionType.Impostor, "CountChangerName", RoleClass.CountChanger.color, 1);
             CountChangerPlayerCount = CustomOption.Create(193, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CountChangerOption);
@@ -1703,9 +1703,9 @@ namespace SuperNewRoles.CustomOption
             StefinderSoloWin = CustomOption.Create(860, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
 
             TacticianOption = new CustomRoleOption(929, false, CustomOptionType.Neutral, "TacticianName",RoleClass.Tactician.color, 1);
-            TacticianPlayerCount = CustomOption.Create(930, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TacticianOption);
-            TacticianCanUseVent = CustomOption.Create(931, false, CustomOptionType.Neutral, "TacticianCanUseVentSetting", false, TacticianOption);
-            TacticianFakeAllianceCount = CustomOption.Create(932, false, CustomOptionType.Neutral, "TacticianFakeAllianceCountSetting", 1f, 1f, 15f, 1f, TacticianOption, format: "unitSeconds");
+            TacticianPlayerCount = CustomOption.Create(983, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TacticianOption);
+            TacticianCanUseVent = CustomOption.Create(984, false, CustomOptionType.Neutral, "TacticianCanUseVentSetting", false, TacticianOption);
+            TacticianFakeAllianceCount = CustomOption.Create(985, false, CustomOptionType.Neutral, "TacticianFakeAllianceCountSetting", 1f, 1f, 15f, 1f, TacticianOption, format: "unitSeconds");
 
             //表示設定
 
