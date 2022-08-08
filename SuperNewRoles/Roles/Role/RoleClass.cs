@@ -1275,10 +1275,9 @@ namespace SuperNewRoles.Roles
             {
                 try
                 {
-                    if (name == CustomOptions.LevelingerTexts[0]) { return LevelPowerTypes.None; }
-                    else
-                    {
-                        return name == CustomOptions.LevelingerTexts[1]
+                    return name == CustomOptions.LevelingerTexts[0]
+                        ? LevelPowerTypes.None
+                        : name == CustomOptions.LevelingerTexts[1]
                         ? LevelPowerTypes.Keep
                         : name == CustomOptions.LevelingerTexts[2]
                         ? LevelPowerTypes.Pursuer
@@ -1289,7 +1288,6 @@ namespace SuperNewRoles.Roles
                         : name == CustomOptions.LevelingerTexts[5]
                             ? LevelPowerTypes.SpeedBooster
                             : name == CustomOptions.LevelingerTexts[6] ? LevelPowerTypes.Moving : LevelPowerTypes.None;
-                    }
                 }
                 catch
                 {
@@ -2560,8 +2558,7 @@ namespace SuperNewRoles.Roles
             {
                 DictatorPlayer = new();
                 VoteCount = CustomOptions.DictatorVoteCount.GetInt();
-                if (CustomOptions.DictatorSubstituteExile.GetBool()) SubExileLimit = CustomOptions.DictatorSubstituteExileLimit.GetInt();
-                else SubExileLimit = 0;
+                SubExileLimit = CustomOptions.DictatorSubstituteExile.GetBool() ? CustomOptions.DictatorSubstituteExileLimit.GetInt() : 0;
                 SubExileLimitData = new();
             }
         }
@@ -2583,10 +2580,7 @@ namespace SuperNewRoles.Roles
                 IsVentChecked = false;
                 VentDeathChance = CustomOptions.SpelunkerVentDeathChance.GetSelection();
                 LadderDeathChance = CustomOptions.SpelunkerLadderDeadChance.GetSelection();
-                if (CustomOptions.SpelunkerIsDeathCommsOrPowerdown.GetBool())
-                    CommsOrLightdownDeathTime = CustomOptions.SpelunkerDeathCommsOrPowerdownTime.GetFloat();
-                else
-                    CommsOrLightdownDeathTime = -1f;
+                CommsOrLightdownDeathTime = CustomOptions.SpelunkerIsDeathCommsOrPowerdown.GetBool() ? CustomOptions.SpelunkerDeathCommsOrPowerdownTime.GetFloat() : -1f;
                 CommsOrLightdownTime = 0f;
                 LiftDeathChance = CustomOptions.SpelunkerLiftDeathChance.GetSelection();
                 Neutral.Spelunker.DeathPosition = null;

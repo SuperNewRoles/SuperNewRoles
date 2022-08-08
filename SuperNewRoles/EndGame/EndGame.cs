@@ -131,11 +131,7 @@ namespace SuperNewRoles.EndGame
             int num = Mathf.CeilToInt(7.5f);
             List<WinningPlayerData> list = TempData.winners.ToArray().ToList().OrderBy(delegate (WinningPlayerData b)
             {
-                if (!b.IsYou)
-                {
-                    return 0;
-                }
-                return -1;
+                return !b.IsYou ? 0 : -1;
             }).ToList<WinningPlayerData>();
             for (int i = 0; i < list.Count; i++)
             {
@@ -795,7 +791,7 @@ namespace SuperNewRoles.EndGame
             {
                 foreach (PlayerControl player in RoleClass.Revolutionist.RevolutionistPlayer)
                 {
-                    if (!RoleClass.Revolutionist.IsAddWinAlive || player.IsAlive() && !TempData.winners.Contains(new(player.Data)))
+                    if ((!RoleClass.Revolutionist.IsAddWinAlive || player.IsAlive()) && !TempData.winners.Contains(new(player.Data)))
                     {
                         TempData.winners.Add(new WinningPlayerData(player.Data));
                     }
