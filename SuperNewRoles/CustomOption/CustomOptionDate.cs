@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -36,6 +36,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MouseZoom;
         public static CustomOption ZoomCoolTime;
         public static CustomOption ZoomDurationTime;
+
+        public static CustomOption IsAlwaysReduceCooldown;
+        public static CustomOption IsAlwaysReduceCooldownExceptInVent;
+        public static CustomOption IsAlwaysReduceCooldownExceptOnTask;
 
         public static CustomOption DetectiveRate;
         public static CustomOption DetectivePlayerCount;
@@ -866,6 +870,10 @@ namespace SuperNewRoles.CustomOption
             MapCustoms.MapCustom.CreateOption();
 
             Sabotage.Options.Load();
+
+            IsAlwaysReduceCooldown = CustomOption.Create(682, false, CustomOptionType.Generic, "IsAlwaysReduceCooldown", false, null);
+            IsAlwaysReduceCooldownExceptInVent = CustomOption.Create(683, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
+            IsAlwaysReduceCooldownExceptOnTask = CustomOption.Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
 
             SoothSayerOption = new CustomRoleOption(12, false, CustomOptionType.Crewmate, "SoothSayerName", RoleClass.SoothSayer.color, 1);
             SoothSayerPlayerCount = CustomOption.Create(13, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);

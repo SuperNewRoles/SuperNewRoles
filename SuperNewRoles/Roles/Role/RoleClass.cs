@@ -35,6 +35,7 @@ namespace SuperNewRoles.Roles
             IsStart = false;
             LadderDead.Reset();
             //Map.Data.ClearAndReloads();
+            ElectricPatch.Reset();
             SabotageManager.ClearAndReloads();
             Madmate.CheckedImpostor = new();
             Roles.MadMayor.CheckedImpostor = new();

@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
@@ -68,20 +68,26 @@ namespace SuperNewRoles.Patch
             }
         }
 
+        static void reduceKillCooldown(PlayerControl __instance)
+        {
+            if (CustomOptions.IsAlwaysReduceCooldown.GetBool())
+            {
+                // オプションがONの場合はベント内はクールダウン減少を止める
+                bool exceptInVent = CustomOptions.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
+                // 配電盤タスク中はクールダウン減少を止める
+                bool exceptOnTask = CustomOptions.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
+
+                if (!__instance.Data.IsDead && !__instance.CanMove && !exceptInVent && !exceptOnTask)
+                    __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
+            }
+
+        }
         private static bool ProDown = false;
         public static bool IsProDown;
 
         public static void Postfix(PlayerControl __instance)
         {
             if (__instance != PlayerControl.LocalPlayer) return;
-            if (IsProDown)
-            {
-                ProDown = !ProDown;
-                if (ProDown)
-                {
-                    return;
-                }
-            }
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
                 var MyRole = PlayerControl.LocalPlayer.GetRole();
