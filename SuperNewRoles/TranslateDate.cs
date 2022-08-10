@@ -75,7 +75,7 @@ namespace SuperNewRoles
             }
         }
 
-        public static Sprite getImage(string key, float pixelsPerUnit)
+        public static Sprite GetImage(string key, float pixelsPerUnit)
         {
             key = key.Replace("/", ".");
             key = key.Replace("\\", ".");

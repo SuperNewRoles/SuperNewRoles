@@ -1,16 +1,27 @@
-using HarmonyLib;
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using HarmonyLib;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Events;
 using static UnityEngine.UI.Button;
 using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Patch
 {
     [HarmonyPatch]
-    public static class VanillaOptionsPatch
+    public static class ClientOptionsPatch
     {
+        private static SelectionBehaviour[] AllOptions = {
+            new SelectionBehaviour("CustomStremerMode", () => ConfigRoles.StreamerMode.Value = !ConfigRoles.StreamerMode.Value, ConfigRoles.StreamerMode.Value),
+            new SelectionBehaviour("CustomAutoUpdate", () => ConfigRoles.AutoUpdate.Value = !ConfigRoles.AutoUpdate.Value, ConfigRoles.AutoUpdate.Value),
+            new SelectionBehaviour("CustomAutoCopyGameCode", () => ConfigRoles.AutoCopyGameCode.Value = !ConfigRoles.AutoCopyGameCode.Value, ConfigRoles.AutoCopyGameCode.Value),
+            new SelectionBehaviour("CustomProcessDown", () => ConfigRoles.CustomProcessDown.Value = !ConfigRoles.CustomProcessDown.Value, ConfigRoles.CustomProcessDown.Value),
+            new SelectionBehaviour("CustomIsVersionErrorView", () => ConfigRoles.IsVersionErrorView.Value = !ConfigRoles.IsVersionErrorView.Value, ConfigRoles.IsVersionErrorView.Value),
+            new SelectionBehaviour("CustomHideTaskArrows", () => TasksArrowsOption.hideTaskArrows = ConfigRoles.HideTaskArrows.Value = !ConfigRoles.HideTaskArrows.Value, ConfigRoles.HideTaskArrows.Value),
+            new SelectionBehaviour("CustomDownloadSuperNewNamePlates", () => ConfigRoles.DownloadSuperNewNamePlates.Value = !ConfigRoles.DownloadSuperNewNamePlates.Value, ConfigRoles.DownloadSuperNewNamePlates.Value),
+        };
+
         private static GameObject popUp;
         private static TextMeshPro titleText;
 
@@ -18,8 +29,8 @@ namespace SuperNewRoles.Patch
         private static List<ToggleButtonBehaviour> modButtons;
         private static TextMeshPro titleTextTitle;
 
-        public static ToggleButtonBehaviour buttonPrefab;
-        public static Vector3? _origin;
+        private static ToggleButtonBehaviour buttonPrefab;
+        private static Vector3? _origin;
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
@@ -34,7 +45,6 @@ namespace SuperNewRoles.Patch
             titleText.gameObject.SetActive(false);
             Object.DontDestroyOnLoad(titleText);
         }
-        public static Vector3? origin;
         public static float xOffset = 1.75f;
         [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Update))]
         class OptionsUpdate
@@ -47,7 +57,6 @@ namespace SuperNewRoles.Patch
                 if (__instance.ColorBlindButton != null) __instance.ColorBlindButton.gameObject.SetActive(false);
             }
         }
-
         [HarmonyPostfix]
         [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Start))]
         public static void OptionsMenuBehaviour_StartPostfix(OptionsMenuBehaviour __instance)
@@ -65,7 +74,6 @@ namespace SuperNewRoles.Patch
                 buttonPrefab.name = "CensorChatPrefab";
                 buttonPrefab.gameObject.SetActive(false);
             }
-
             SetUpOptions(__instance);
             InitializeMoreButton(__instance);
         }
@@ -82,7 +90,7 @@ namespace SuperNewRoles.Patch
             Object.Destroy(popUp.GetComponent<OptionsMenuBehaviour>());
             foreach (var gObj in popUp.gameObject.GetAllChilds())
             {
-                if (gObj.name != "Background" && gObj.name != "CloseButton")
+                if (gObj.name is not "Background" and not "CloseButton")
                     Object.Destroy(gObj);
             }
             popUp.SetActive(false);
@@ -93,17 +101,23 @@ namespace SuperNewRoles.Patch
             moreOptions = Object.Instantiate(buttonPrefab, __instance.CensorChatButton.transform.parent);
             var transform = __instance.CensorChatButton.transform;
             _origin ??= transform.localPosition;
-            transform.localPosition = _origin.Value + Vector3.left * 2.6f;
-            moreOptions.transform.localPosition = _origin.Value + Vector3.right * 2.6f;
+
+            transform.localPosition = _origin.Value + Vector3.left * 1.3f;
+            moreOptions.transform.localPosition = _origin.Value + Vector3.right * 1.3f;
+            var pos = moreOptions.transform.localPosition;
+            moreOptions.transform.localScale *= 1.1f;
+            float count = 1.55f;
+            moreOptions.transform.localPosition = new Vector3(pos.x * 1.5f, pos.y * count, pos.z);
             var trans = moreOptions.transform.localPosition;
             moreOptions.gameObject.SetActive(true);
             trans = moreOptions.transform.position;
-            moreOptions.Text.text = ModTranslation.GetString("vanillaOptionsText");
+            moreOptions.Text.text = ModTranslation.GetString("modOptionsText");
             var moreOptionsButton = moreOptions.GetComponent<PassiveButton>();
             moreOptionsButton.OnClick = new ButtonClickedEvent();
             moreOptionsButton.OnClick.AddListener((Action)(() =>
             {
                 if (!popUp) return;
+
                 if (__instance.transform.parent && __instance.transform.parent == FastDestroyableSingleton<HudManager>.Instance.transform)
                 {
                     popUp.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
@@ -133,7 +147,7 @@ namespace SuperNewRoles.Patch
             var title = titleTextTitle = Object.Instantiate(titleText, popUp.transform);
             title.GetComponent<RectTransform>().localPosition = Vector3.up * 2.3f;
             title.gameObject.SetActive(true);
-            title.text = ModTranslation.GetString("vanillaOptionsText");
+            title.text = ModTranslation.GetString("moreOptionsText");
             title.name = "TitleText";
         }
 
@@ -142,6 +156,46 @@ namespace SuperNewRoles.Patch
             if (popUp.transform.GetComponentInChildren<ToggleButtonBehaviour>()) return;
 
             modButtons = new List<ToggleButtonBehaviour>();
+            /*
+            for (var i = 0; i < 2; i++)
+            {
+                ToggleButtonBehaviour button = null;
+
+                if (i == 0)
+                {
+                    button = __instance.CensorChatButton;
+                } else
+                {
+                    button = __instance.EnableFriendInvitesButton;
+                }
+                SuperNewRolesPlugin.Logger.LogInfo("�{�^��:"+button.name);
+                var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
+
+                button.transform.position = new Vector3(0,0,0);
+                var transform = button.transform;
+                transform.localPosition = pos;
+                button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
+
+                button.Text.fontSizeMin = button.Text.fontSizeMax = 2.2f;
+                button.Text.font = Object.Instantiate(titleText.font);
+                button.Text.GetComponent<RectTransform>().sizeDelta = new Vector2(2, 2);
+                button.gameObject.SetActive(true);
+
+                var passiveButton = button.GetComponent<PassiveButton>();
+                var colliderButton = button.GetComponent<BoxCollider2D>();
+
+                colliderButton.size = new Vector2(2.2f, .7f);
+
+                passiveButton.OnMouseOut = new UnityEvent();
+                passiveButton.OnMouseOver = new UnityEvent();
+
+                passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = new Color32(34, 139, 34, byte.MaxValue)));
+                passiveButton.OnMouseOut.AddListener((Action)(() => button.Background.color = button.onState ? Color.green : Palette.ImpostorRed));
+
+                foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
+                    spr.size = new Vector2(2.2f, .7f);
+                modButtons.Add(button);
+            }*/
             for (var i = 0; i < 4; i++)
             {
                 ToggleButtonBehaviour mainbutton = null;
@@ -232,7 +286,52 @@ namespace SuperNewRoles.Patch
                     spr.size = new Vector2(2.2f, .7f);
                 modButtons.Add(button);
             }
+            for (var i = 4; i < AllOptions.Length + 4; i++)
+            {
+                var info = AllOptions[i - 4];
+
+                var button = Object.Instantiate(buttonPrefab, popUp.transform);
+                var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
+
+                var transform = button.transform;
+                transform.localPosition = pos;
+
+                button.onState = info.DefaultValue;
+                button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
+
+                button.Text.text = ModTranslation.GetString(info.Title);
+                button.Text.fontSizeMin = button.Text.fontSizeMax = 2.2f;
+                button.Text.font = Object.Instantiate(titleText.font);
+                button.Text.GetComponent<RectTransform>().sizeDelta = new Vector2(2, 2);
+
+                button.name = info.Title.Replace(" ", "") + "Toggle";
+                button.gameObject.SetActive(true);
+
+                var passiveButton = button.GetComponent<PassiveButton>();
+                var colliderButton = button.GetComponent<BoxCollider2D>();
+
+                colliderButton.size = new Vector2(2.2f, .7f);
+
+                passiveButton.OnClick = new ButtonClickedEvent();
+                passiveButton.OnMouseOut = new UnityEvent();
+                passiveButton.OnMouseOver = new UnityEvent();
+
+                passiveButton.OnClick.AddListener((Action)(() =>
+                {
+                    button.onState = info.OnClick();
+                    button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
+                }));
+
+                passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = new Color32(34, 139, 34, byte.MaxValue)));
+                passiveButton.OnMouseOut.AddListener((Action)(() => button.Background.color = button.onState ? Color.green : Palette.ImpostorRed));
+
+                foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
+                    spr.size = new Vector2(2.2f, .7f);
+                var trans = transform.position;
+                modButtons.Add(button);
+            }
         }
+
         private static IEnumerable<GameObject> GetAllChilds(this GameObject Go)
         {
             for (var i = 0; i < Go.transform.childCount; i++)
@@ -244,16 +343,35 @@ namespace SuperNewRoles.Patch
         public static void UpdateTranslations()
         {
             if (titleTextTitle)
-                titleTextTitle.text = ModTranslation.GetString("vanillaOptionsText");
+                titleTextTitle.text = ModTranslation.GetString("moreOptionsText");
 
             if (moreOptions)
-                moreOptions.Text.text = ModTranslation.GetString("vanillaOptionsText");
+                moreOptions.Text.text = ModTranslation.GetString("modOptionsText");
             try
             {
                 modButtons[0].Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsCensorChat);
                 modButtons[1].Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsEnableFriendInvites);
             }
             catch { }
+            for (int i = 0; i < AllOptions.Length; i++)
+            {
+                if (i >= modButtons.Count) break;
+                modButtons[i + 2].Text.text = ModTranslation.GetString(AllOptions[i].Title);
+            }
+        }
+
+        public class SelectionBehaviour
+        {
+            public string Title;
+            public Func<bool> OnClick;
+            public bool DefaultValue;
+
+            public SelectionBehaviour(string title, Func<bool> onClick, bool defaultValue)
+            {
+                Title = title;
+                OnClick = onClick;
+                DefaultValue = defaultValue;
+            }
         }
     }
 }
