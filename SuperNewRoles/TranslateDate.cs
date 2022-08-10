@@ -1,6 +1,4 @@
-// 旧式翻訳システム
-
-/*using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using HarmonyLib;
@@ -94,4 +92,4 @@ namespace SuperNewRoles
             }
         }
     }
-}*/
+}
