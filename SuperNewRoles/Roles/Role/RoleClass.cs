@@ -2324,12 +2324,20 @@ namespace SuperNewRoles.Roles
             public static float HideTime;
             public static bool IsWaitAndPressTheButtonToHide;
             public static bool IsHideButton;
+            public static float ButtonTimer;
             private static Sprite buttonSprite;
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
                 buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunaiButton.png", 115f);
                 return buttonSprite;
+            }
+            private static Sprite HidebuttonSprite;
+            public static Sprite GetHideButtonSprite()
+            {
+                if (buttonSprite) return HidebuttonSprite;
+                HidebuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunaiButton.png", 115f);
+                return HidebuttonSprite;
             }
             public static void ClearAndReload()
             {

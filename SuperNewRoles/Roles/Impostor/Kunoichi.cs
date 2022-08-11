@@ -148,7 +148,6 @@ namespace SuperNewRoles.Roles
                         if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)
                         {
                             HideOff();
-                            RoleClass.Kunoichi.IsHideButton = false;
                         }
                         RoleClass.Kunoichi.StopTime = 0;
                     }
@@ -181,11 +180,18 @@ namespace SuperNewRoles.Roles
         }
         public static void HideOff()
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
-            writer.Write(false);
-            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
+
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
+                writer.Write(false);
+                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
+            }
+            if(RoleClass.Kunoichi.IsHideButton)
+            {
+                RoleClass.Kunoichi.IsHideButton = false;
+            }
         }
 
         public static void SetOpacity(PlayerControl player, float opacity, bool cansee)

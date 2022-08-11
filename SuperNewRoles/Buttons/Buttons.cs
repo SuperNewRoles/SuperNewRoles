@@ -57,6 +57,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton EvilHackerMadmateSetting;
         public static CustomButton PositionSwapperButton;
         public static CustomButton KunoichiKunaiButton;
+        public static CustomButton KunoichiHideButton;
         public static CustomButton SecretlyKillerMainButton;
         public static CustomButton SecretlyKillerSecretlyKillButton;
         public static CustomButton ClairvoyantButton;
@@ -126,6 +127,31 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("KunoichiKunai"),
+                showButtonText = true
+            };
+            KunoichiHideButton = new CustomButton(
+                () =>
+                {
+                    RoleClass.Kunoichi.ButtonTimer = RoleClass.Kunoichi.HideTime;
+                    KunoichiHideButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    RoleClass.Kunoichi.IsHideButton = true;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Kunoichi && RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { Kunoichi.HideOff(); },
+                RoleClass.NiceScientist.GetButtonSprite(),
+                new Vector3(-2.7f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.L,
+                50,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("ScientistButtonName"),
                 showButtonText = true
             };
             FalseChargesFalseChargeButton = new(
