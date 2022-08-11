@@ -29,6 +29,11 @@ namespace SuperNewRoles.Roles.Impostor
                     RoleClass.Matryoshka.Datas[Data.Key] = (Data.Value.Item1, Data.Value.Item2 - Time.fixedDeltaTime);
                     if (RoleClass.Matryoshka.Datas[Data.Key].Item2 <= 0)
                     {
+                        if (Data.Key == CachedPlayer.LocalPlayer.PlayerId)
+                        {
+                            Buttons.HudManagerStartPatch.MatryoshkaButton.MaxTimer = RoleClass.Matryoshka.CoolTime;
+                            Buttons.HudManagerStartPatch.MatryoshkaButton.Timer = RoleClass.Matryoshka.CoolTime;
+                        }
                         Set(ModHelpers.PlayerById(Data.Key), null, false);
                     }
                 }

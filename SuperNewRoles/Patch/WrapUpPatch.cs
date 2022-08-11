@@ -89,6 +89,9 @@ namespace SuperNewRoles.Patch
             Roles.Neutral.Spelunker.WrapUp();
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
+            Roles.Neutral.Hitman.WrapUp();
+            Roles.Neutral.Photographer.WrapUp();
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Roles.CrewMate.Painter.WrapUp();
             if (exiled == null) return;
 
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();

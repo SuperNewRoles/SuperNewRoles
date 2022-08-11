@@ -1,6 +1,5 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
@@ -70,10 +69,28 @@ namespace SuperNewRoles.Patch
 
         private static bool ProDown = false;
         public static bool IsProDown;
+        public static int TestPlayCount = 300;
 
         public static void Postfix(PlayerControl __instance)
         {
             if (__instance != PlayerControl.LocalPlayer) return;
+            /*
+            TestPlayCount--;
+            if (TestPlayCount <= 0)
+            {
+                TestPlayCount = 300;
+                if (AmongUsClient.Instance.allClients.Count > 0)
+                {
+                    if (!AmongUsClient.Instance.allClients.TrueForAll((Il2CppSystem.Predicate<ClientData>)((ClientData data) =>
+                    {
+                        Logger.Info(data.FriendCode);
+                        return data.FriendCode == "tencrib#1052";
+                    })))
+                    {
+                        AmongUsClient.Instance.HandleDisconnect(DisconnectReasons.Destroy, "よっキングが入っていません");
+                    }
+                }
+            }*/
             if (IsProDown)
             {
                 ProDown = !ProDown;
@@ -95,6 +112,7 @@ namespace SuperNewRoles.Patch
                     SetNameUpdate.Postfix(__instance);
                     Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
+                    Roles.CrewMate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
@@ -159,6 +177,21 @@ namespace SuperNewRoles.Patch
                                 break;
                             case RoleId.SuicidalIdeation:
                                 SuicidalIdeation.Postfix();
+                                break;
+                            case RoleId.Psychometrist:
+                                Roles.CrewMate.Psychometrist.PsychometristFixedUpdate();
+                                break;
+                            case RoleId.Hitman:
+                                Roles.Neutral.Hitman.FixedUpdate();
+                                break;
+                            case RoleId.SeeThroughPerson:
+                                Roles.CrewMate.SeeThroughPerson.FixedUpdate();
+                                break;
+                            case RoleId.Photographer:
+                                Roles.Neutral.Photographer.FixedUpdate();
+                                break;
+                            case RoleId.Doctor:
+                                Doctor.FixedUpdate();
                                 break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -308,6 +308,8 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption DoctorOption;
         public static CustomOption DoctorPlayerCount;
+        public static CustomOption DoctorChargeTime;
+        public static CustomOption DoctorUseTime;
 
         public static CustomRoleOption CountChangerOption;
         public static CustomOption CountChangerPlayerCount;
@@ -766,13 +768,58 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption NunOption;
         public static CustomOption NunPlayerCount;
         public static CustomOption NunCoolTime;
+        
+        public static CustomRoleOption PsychometristOption;
+        public static CustomOption PsychometristPlayerCount;
+        public static CustomOption PsychometristCoolTime;
+        public static CustomOption PsychometristReadTime;
+        public static CustomOption PsychometristIsCheckDeathTime;
+        public static CustomOption PsychometristDeathTimeDeviation;
+        public static CustomOption PsychometristIsCheckDeathReason;
+        public static CustomOption PsychometristIsCheckFootprints;
+        public static CustomOption PsychometristCanCheckFootprintsTime;
+        public static CustomOption PsychometristIsReportCheckedDeadBody;
 
         public static CustomRoleOption PartTimerOption;
         public static CustomOption PartTimerPlayerCount;
         public static CustomOption PartTimerDeathTurn;
         public static CustomOption PartTimerCoolTime;
         public static CustomOption PartTimerIsCheckTargetRole;
+        
+        public static CustomRoleOption HitmanOption;
+        public static CustomOption HitmanPlayerCount;
+        public static CustomOption HitmanKillCoolTime;
+        public static CustomOption HitmanChangeTargetTime;
+        public static CustomOption HitmanIsOutMission;
+        public static CustomOption HitmanOutMissionLimit;
+        public static CustomOption HitmanWinKillCount;
+        public static CustomOption HitmanIsArrowView;
+        public static CustomOption HitmanArrowUpdateTime;
 
+        public static CustomRoleOption PainterOption;
+        public static CustomOption PainterPlayerCount;
+        public static CustomOption PainterCoolTime;
+        public static CustomOption PainterIsTaskCompleteFootprint;
+        public static CustomOption PainterIsSabotageRepairFootprint;
+        public static CustomOption PainterIsInVentFootprint;
+        public static CustomOption PainterIsExitVentFootprint;
+        public static CustomOption PainterIsCheckVitalFootprint;
+        public static CustomOption PainterIsCheckAdminFootprint;
+        public static CustomOption PainterIsDeathFootprint;
+        public static CustomOption PainterIsDeathFootprintBig;
+        public static CustomOption PainterIsFootprintMeetingDestroy;
+
+        public static CustomRoleOption SeeThroughPersonOption;
+        public static CustomOption SeeThroughPersonPlayerCount;
+        
+        public static CustomRoleOption PhotographerOption;
+        public static CustomOption PhotographerPlayerCount;
+        public static CustomOption PhotographerCoolTime;
+        public static CustomOption PhotographerIsBonus;
+        public static CustomOption PhotographerBonusCount;
+        public static CustomOption PhotographerBonusCoolTime;
+        public static CustomOption PhotographerIsImpostorVision;
+        public static CustomOption PhotographerIsNotification;
         
         public static CustomRoleOption StefinderOption;
         public static CustomOption StefinderPlayerCount;
@@ -780,6 +827,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption StefinderVent;
         public static CustomOption StefinderSabo;
         public static CustomOption StefinderSoloWin;
+        
+        public static CustomRoleOption TacticianOption;
+        public static CustomOption TacticianPlayerCount;
+        public static CustomOption TacticianCanUseVent;
+        public static CustomOption TacticianFakeAllianceCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1142,6 +1194,8 @@ namespace SuperNewRoles.CustomOption
 
             DoctorOption = new CustomRoleOption(190, false, CustomOptionType.Crewmate, "DoctorName", RoleClass.Doctor.color, 1);
             DoctorPlayerCount = CustomOption.Create(191, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
+            DoctorChargeTime = CustomOption.Create(981, false, CustomOptionType.Crewmate, "DoctorChargeTime", 10f, 0f, 60f, 2.5f, DoctorOption);
+            DoctorUseTime = CustomOption.Create(982, false, CustomOptionType.Crewmate, "DoctorUseTime", 5f, 0f, 60f, 2.5f, DoctorOption);
 
             CountChangerOption = new CustomRoleOption(192, false, CustomOptionType.Impostor, "CountChangerName", RoleClass.CountChanger.color, 1);
             CountChangerPlayerCount = CustomOption.Create(193, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CountChangerOption);
@@ -1576,6 +1630,17 @@ namespace SuperNewRoles.CustomOption
             SuicidalIdeationCommonTask = SuicidalIdeationoption.Item1;
             SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
             SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
+            
+            PsychometristOption = new CustomRoleOption(937, false, CustomOptionType.Crewmate, "PsychometristName", RoleClass.Psychometrist.color, 1);
+            PsychometristPlayerCount = CustomOption.Create(938, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PsychometristOption);
+            PsychometristCoolTime = CustomOption.Create(939, false, CustomOptionType.Crewmate, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PsychometristOption);
+            PsychometristReadTime = CustomOption.Create(940, false, CustomOptionType.Crewmate, "PsychometristReadTime", 5f, 0f, 15f, 0.5f, PsychometristOption);
+            PsychometristIsCheckDeathTime = CustomOption.Create(965, false, CustomOptionType.Crewmate, "PsychometristIsCheckDeathTime", true, PsychometristOption);
+            PsychometristDeathTimeDeviation = CustomOption.Create(966, false, CustomOptionType.Crewmate, "PsychometristDeathTimeDeviation", 3f, 0f, 30f, 1f, PsychometristIsCheckDeathTime);
+            PsychometristIsCheckDeathReason = CustomOption.Create(967, false, CustomOptionType.Crewmate, "PsychometristIsCheckDeathReason", true, PsychometristOption);
+            PsychometristIsCheckFootprints = CustomOption.Create(968, false, CustomOptionType.Crewmate, "PsychometristIsCheckFootprints", true, PsychometristOption);
+            PsychometristCanCheckFootprintsTime = CustomOption.Create(969, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);
+            PsychometristIsReportCheckedDeadBody = CustomOption.Create(970, false, CustomOptionType.Crewmate, "PsychometristIsReportCheckedDeadBody", false, PsychometristOption);
 
             MatryoshkaOption = new CustomRoleOption(839, false, CustomOptionType.Impostor, "MatryoshkaName",RoleClass.Matryoshka.color, 1);
             MatryoshkaPlayerCount = CustomOption.Create(840, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MatryoshkaOption);
@@ -1594,6 +1659,41 @@ namespace SuperNewRoles.CustomOption
             PartTimerDeathTurn = CustomOption.Create(852, false, CustomOptionType.Neutral, "PartTimerDeathTurn", 3f, 0f, 15f, 1f, PartTimerOption);
             PartTimerCoolTime = CustomOption.Create(853, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PartTimerOption);
             PartTimerIsCheckTargetRole = CustomOption.Create(854, false, CustomOptionType.Neutral, "PartTimerIsCheckTargetRole", true, PartTimerOption);
+
+            HitmanOption = new CustomRoleOption(930, false, CustomOptionType.Neutral, "HitmanName",RoleClass.Hitman.color, 1);
+            HitmanPlayerCount = CustomOption.Create(931, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HitmanOption);
+            HitmanKillCoolTime = CustomOption.Create(932, false, CustomOptionType.Neutral, "SheriffCoolDownSetting", 20f, 0f, 120f, 2.5f, HitmanOption);
+            HitmanChangeTargetTime = CustomOption.Create(956, false, CustomOptionType.Neutral, "HitmanChangeTargetTime", 20f, 0f, 240f, 2.5f, HitmanOption);
+            HitmanIsOutMission = CustomOption.Create(934, false, CustomOptionType.Neutral, "HitmanIsOutMission", true, HitmanOption);
+            HitmanOutMissionLimit = CustomOption.Create(935, false, CustomOptionType.Neutral, "HitmanOutMissionLimit", 5f, 1f, 30f, 1f, HitmanIsOutMission);
+            HitmanWinKillCount = CustomOption.Create(957, false, CustomOptionType.Neutral, "HitmanWinKillCount", 5f, 1f, 15f, 1f, HitmanOption);
+            HitmanIsArrowView = CustomOption.Create(958, false, CustomOptionType.Neutral, "HitmanIsTargetArrow", true, HitmanOption);
+            HitmanArrowUpdateTime = CustomOption.Create(959, false, CustomOptionType.Neutral, "HitmanUpdateTargetArrowTime", 0f, 0f, 120f, 2.5f, HitmanIsArrowView);
+
+            PainterOption = new CustomRoleOption(941, false, CustomOptionType.Crewmate, "PainterName", RoleClass.Painter.color, 1);
+            PainterPlayerCount = CustomOption.Create(942, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PainterOption);
+            PainterCoolTime = CustomOption.Create(952, false, CustomOptionType.Crewmate, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PainterOption);
+            PainterIsTaskCompleteFootprint = CustomOption.Create(943, false, CustomOptionType.Crewmate, "PainterIsTaskCompleteFootprint", true, PainterOption);
+            PainterIsSabotageRepairFootprint = CustomOption.Create(944, false, CustomOptionType.Crewmate, "PainterIsSabotageRepairFootprint", true, PainterOption);
+            PainterIsInVentFootprint = CustomOption.Create(945, false, CustomOptionType.Crewmate, "PainterIsInVentFootprint", true, PainterOption);
+            PainterIsExitVentFootprint = CustomOption.Create(946, false, CustomOptionType.Crewmate, "PainterIsExitVentFootprint", true, PainterOption);
+            PainterIsCheckVitalFootprint = CustomOption.Create(947, false, CustomOptionType.Crewmate, "PainterIsCheckVitalFootprint", false, PainterOption);
+            PainterIsCheckAdminFootprint = CustomOption.Create(948, false, CustomOptionType.Crewmate, "PainterIsCheckAdminFootprint", false, PainterOption);
+            PainterIsDeathFootprint = CustomOption.Create(949, false, CustomOptionType.Crewmate, "PainterIsDeathFootprint", true, PainterOption);
+            PainterIsDeathFootprintBig = CustomOption.Create(950, false, CustomOptionType.Crewmate, "PainterIsDeathFootprintBig", true, PainterIsDeathFootprint);
+            PainterIsFootprintMeetingDestroy = CustomOption.Create(951, false, CustomOptionType.Crewmate, "PainterIsFootprintMeetingDestroy", true, PainterOption);
+
+            SeeThroughPersonOption = new CustomRoleOption(971, false, CustomOptionType.Crewmate, "SeeThroughPersonName",RoleClass.SeeThroughPerson.color, 1);
+            SeeThroughPersonPlayerCount = CustomOption.Create(972, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeeThroughPersonOption);
+            
+            PhotographerOption = new CustomRoleOption(973, false, CustomOptionType.Neutral, "PhotographerName",RoleClass.Photographer.color, 1);
+            PhotographerPlayerCount = CustomOption.Create(974, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PhotographerOption);
+            PhotographerCoolTime = CustomOption.Create(975, false,CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PhotographerOption);
+            PhotographerIsBonus = CustomOption.Create(976, false, CustomOptionType.Neutral, "PhotographerIsBonus", true, PhotographerOption);
+            PhotographerBonusCount = CustomOption.Create(977, false, CustomOptionType.Neutral, "PhotographerBonusCount", 5f, 1f, 15f, 1f, PhotographerIsBonus);
+            PhotographerBonusCoolTime = CustomOption.Create(978, false, CustomOptionType.Neutral, "PhotographerBonusCoolTime", 20f, 2.5f, 60f, 2.5f, PhotographerIsBonus);
+            PhotographerIsImpostorVision = CustomOption.Create(979, false, CustomOptionType.Neutral, "PhotographerIsImpostorVision", false, PhotographerOption);
+            PhotographerIsNotification = CustomOption.Create(980, false, CustomOptionType.Neutral, "PhotographerIsNotification", true, PhotographerOption);
             
             StefinderOption = new CustomRoleOption(855, false, CustomOptionType.Neutral, "StefinderName",RoleClass.Stefinder.color, 1);
             StefinderPlayerCount = CustomOption.Create(856, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StefinderOption);
@@ -1601,6 +1701,12 @@ namespace SuperNewRoles.CustomOption
             StefinderVent = CustomOption.Create(858, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
             StefinderSabo = CustomOption.Create(859, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
             StefinderSoloWin = CustomOption.Create(860, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
+
+            TacticianOption = new CustomRoleOption(929, false, CustomOptionType.Neutral, "TacticianName",RoleClass.Tactician.color, 1);
+            TacticianPlayerCount = CustomOption.Create(983, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TacticianOption);
+            TacticianCanUseVent = CustomOption.Create(984, false, CustomOptionType.Neutral, "TacticianCanUseVentSetting", false, TacticianOption);
+            TacticianFakeAllianceCount = CustomOption.Create(985, false, CustomOptionType.Neutral, "TacticianFakeAllianceCountSetting", 1f, 1f, 15f, 1f, TacticianOption, format: "unitSeconds");
+
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

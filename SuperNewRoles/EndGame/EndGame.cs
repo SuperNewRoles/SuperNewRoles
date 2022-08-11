@@ -38,6 +38,8 @@ namespace SuperNewRoles.EndGame
         RevolutionistWin,
         SpelunkerWin,
         SuicidalIdeationWin,
+        HitmanWin,
+        PhotographerWin,
         StefinderWin,
         BugEnd
     }
@@ -63,6 +65,8 @@ namespace SuperNewRoles.EndGame
         RevolutionistWin,
         SpelunkerWin,
         SuicidalIdeationWin,
+        HitmanWin,
+        PhotographerWin,
         StefinderWin,
         BugEnd
     }
@@ -260,6 +264,14 @@ namespace SuperNewRoles.EndGame
                     text = RoleClass.SuicidalIdeation.SuicidalIdeationWinText ? "SuicidalIdeationWinText" : "SuicidalIdeationName";
                     RoleColor = RoleClass.SuicidalIdeation.color;
                     break;
+                case WinCondition.HitmanWin:
+                    text = "HitmanName";
+                    RoleColor = RoleClass.Hitman.color;
+                    break;
+                case WinCondition.PhotographerWin:
+                    text = "PhotographerName";
+                    RoleColor = RoleClass.Photographer.color;
+                    break;
                 case WinCondition.StefinderWin:
                     text = "StefinderName";
                     RoleColor = RoleClass.Stefinder.color;
@@ -376,7 +388,7 @@ namespace SuperNewRoles.EndGame
                     {
                         roleText += $" → {CustomOptions.Cs(datas.GhostIntroDate.color, datas.GhostIntroDate.NameKey + "Name")}";
                     }
-                    string result = $"{ModHelpers.Cs(Palette.PlayerColors[datas.ColorId], datas.PlayerName)}{datas.NameSuffix}{taskInfo} - {GetStatusText(datas.Status)} - {roleText}";
+                    string result = $"{ModHelpers.Cs(Palette.PlayerColors[datas.ColorId], datas.PlayerName)}{datas.NameSuffix}{taskInfo} - {FinalStatusPatch.GetStatusText(datas.Status)} - {roleText}";
                     if (ModeHandler.IsMode(ModeId.Zombie))
                     {
                         roleText = datas.ColorId == 1 ? CustomOptions.Cs(Mode.Zombie.Main.Policecolor, "ZombiePoliceName") : CustomOptions.Cs(Mode.Zombie.Main.Zombiecolor, "ZombieZombieName");
@@ -406,7 +418,6 @@ namespace SuperNewRoles.EndGame
 
             IsHaison = false;
         }
-        static string GetStatusText(FinalStatus status) => ModTranslation.GetString("FinalStatus" + status.ToString()); //ローカル関数
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
@@ -519,7 +530,11 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
             notWinners.AddRange(RoleClass.SuicidalIdeation.SuicidalIdeationPlayer);
             notWinners.AddRange(RoleClass.PartTimer.PartTimerPlayer);
+            notWinners.AddRange(RoleClass.Spelunker.SpelunkerPlayer);
+            notWinners.AddRange(RoleClass.Hitman.HitmanPlayer);
+            notWinners.AddRange(RoleClass.Photographer.PhotographerPlayer);
             notWinners.AddRange(RoleClass.Stefinder.StefinderPlayer);
+            notWinners.AddRange(RoleClass.Tactician.TacticianPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -553,6 +568,8 @@ namespace SuperNewRoles.EndGame
             bool NeetWin = gameOverReason == (GameOverReason)CustomGameOverReason.NeetWin;
             bool RevolutionistWin = gameOverReason == (GameOverReason)CustomGameOverReason.RevolutionistWin;
             bool SuicidalIdeationWin = gameOverReason == (GameOverReason)CustomGameOverReason.SuicidalIdeationWin;
+            bool HitmanWin = gameOverReason == (GameOverReason)CustomGameOverReason.HitmanWin;
+            bool PhotographerWin = gameOverReason == (GameOverReason)CustomGameOverReason.PhotographerWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles) && EndData != null)
             {
@@ -571,18 +588,14 @@ namespace SuperNewRoles.EndGame
             }
             if (JesterWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 WinnerPlayer.Data.IsDead = false;
-                WinningPlayerData wpd = new(WinnerPlayer.Data);
-                TempData.winners.Add(wpd);
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.JesterWin;
             }
             else if (MadJesterWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 WinnerPlayer.Data.IsDead = false;
-                WinningPlayerData wpd = new(WinnerPlayer.Data);
-                TempData.winners.Add(wpd);
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.MadJesterWin;
             }
             else if (JackalWin)
@@ -613,16 +626,12 @@ namespace SuperNewRoles.EndGame
             }
             else if (WorkpersonWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                WinningPlayerData wpd = new(WinnerPlayer.Data);
-                TempData.winners.Add(wpd);
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
             }
             else if (FalseChargesWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                WinningPlayerData wpd = new(WinnerPlayer.Data);
-                TempData.winners.Add(wpd);
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.FalseChargesWin;
             }
             else if (DemonWin)
@@ -640,7 +649,7 @@ namespace SuperNewRoles.EndGame
             }
             else if (ArsonistWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                TempData.winners = new();
                 foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
                 {
                     if (Arsonist.IsArsonistWinFlag())
@@ -654,66 +663,54 @@ namespace SuperNewRoles.EndGame
             }
             else if (VultureWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                WinningPlayerData wpd = new(WinnerPlayer.Data);
-                TempData.winners.Add(wpd);
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.VultureWin;
             }
             else if (RevolutionistWin)
             {
-                TempData.winners = new();
-                WinningPlayerData wpd = new(WinnerPlayer.Data);
-                TempData.winners.Add(wpd);
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.RevolutionistWin;
             }
             else if (SuicidalIdeationWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                WinningPlayerData wpd = new(WinnerPlayer.Data);
-                TempData.winners.Add(wpd);
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.SuicidalIdeationWin;
             }
+            else if (HitmanWin)
+            {
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
+                AdditionalTempData.winCondition = WinCondition.HitmanWin;
+            }
+            else if (PhotographerWin)
+            {
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
+                AdditionalTempData.winCondition = WinCondition.PhotographerWin;
+            }
 
-            if (TempData.winners.GetFastEnumerator().ToArray().Any(x => x.IsImpostor))
+            if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
                 foreach (var cp in CachedPlayer.AllPlayers)
-                {
-                    if (cp.PlayerControl.IsMadRoles())
-                    {
-                        WinningPlayerData wpd = new(cp.Data);
-                        TempData.winners.Add(wpd);
-                    }
-                }
-                foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
-                {
-                    WinningPlayerData wpd = new(smp.Data);
-                    if (RoleClass.SatsumaAndImo.TeamNumber == 2)//マッドなら
-                    {
-                        TempData.winners.Add(wpd);//さつまいもも勝ち
-                    }
-                }
+                    if (cp.PlayerControl.IsMadRoles()) TempData.winners.Add(new(cp.Data));
+
+                if (RoleClass.SatsumaAndImo.TeamNumber == 2)//マッドなら
+                    foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
+                        TempData.winners.Add(new(smp.Data));//さつまいもも勝ち
             }
 
             if (ModeHandler.IsMode(ModeId.BattleRoyal))
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                TempData.winners = new();
                 if (Mode.BattleRoyal.Main.IsTeamBattle)
                 {
                     foreach (PlayerControl p in Mode.BattleRoyal.Main.Winners)
-                    {
-                        WinningPlayerData wpd = new(p.Data);
-                        TempData.winners.Add(wpd);
-                    }
+                        TempData.winners.Add(new(p.Data));
                 }
                 else
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.IsAlive())
-                        {
-                            WinningPlayerData wpd = new(p.Data);
-                            TempData.winners.Add(wpd);
-                        }
+                            TempData.winners.Add(new(p.Data));
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.Default;
@@ -722,25 +719,20 @@ namespace SuperNewRoles.EndGame
             {
                 if (p.IsAlive())
                 {
-                    var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
-                    if (!RoleClass.God.IsTaskEndWin || complate >= all)
+                    var (Complete, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                    if (!RoleClass.God.IsTaskEndWin || Complete >= all)
                     {
-                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                        WinningPlayerData wpd = new(p.Data);
-                        TempData.winners.Add(wpd);
+                        (TempData.winners = new()).Add(new(p.Data));
                         AdditionalTempData.winCondition = WinCondition.GodWin;
                     }
                 }
             }
+
             foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
             {
                 if (p.IsAlive())
-                {
-                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                    AdditionalTempData.winCondition = WinCondition.FoxWin;
-                }
+                    TempData.winners.Add(new(p.Data));
+                AdditionalTempData.winCondition = WinCondition.FoxWin;
             }
             foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
             {
@@ -865,7 +857,15 @@ namespace SuperNewRoles.EndGame
             {
                 notWinners.AddRange(players);
             }
-
+            //戦術家の勝利処理のコード　一番下になるようにしてください
+            foreach (PlayerControl player in RoleClass.Tactician.TacticianPlayer)
+            {
+                var AllianceTargetPlayer = RoleClass.Tactician.AlliancePlayer[player.PlayerId];
+                if (TempData.winners.Contains(new WinningPlayerData(ModHelpers.PlayerById(AllianceTargetPlayer).Data)))
+                {
+                    TempData.winners.Add(new WinningPlayerData(player.Data));
+                }
+            }
             notWinners = new();
             winnersToRemove = new();
             foreach (WinningPlayerData winner in TempData.winners)

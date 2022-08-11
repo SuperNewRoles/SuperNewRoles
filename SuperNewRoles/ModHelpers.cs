@@ -339,6 +339,15 @@ namespace SuperNewRoles
             return tasks.ToArray().ToList();
         }
         static float tien;
+
+        public static void SetSemiTransparent(this PoolablePlayer player, bool value)
+        {
+            float alpha = value ? 0.25f : 1f;
+            foreach (SpriteRenderer r in player.gameObject.GetComponentsInChildren<SpriteRenderer>())
+                r.color = new Color(r.color.r, r.color.g, r.color.b, alpha);
+            player.cosmetics.nameText.color = new Color(player.cosmetics.nameText.color.r, player.cosmetics.nameText.color.g, player.cosmetics.nameText.color.b, alpha);
+        }
+
         public static MurderAttemptResult CheckMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
             // The local player checks for the validity of the kill and performs it afterwards (different to vanilla, where the host performs all the checks)
@@ -393,7 +402,7 @@ namespace SuperNewRoles
         }
         public static InnerNet.ClientData GetClient(this PlayerControl player)
         {
-            var client = AmongUsClient.Instance.allClients.GetFastEnumerator().ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
+            var client = AmongUsClient.Instance.allClients?.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
             return client;
         }
         public static int GetClientId(this PlayerControl player)
