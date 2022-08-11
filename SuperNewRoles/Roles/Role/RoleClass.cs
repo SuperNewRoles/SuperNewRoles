@@ -2322,6 +2322,8 @@ namespace SuperNewRoles.Roles
             public static Vector2 OldPosition;
             public static float StopTime;
             public static float HideTime;
+            public static bool IsWaitAndPressTheButtonToHide;
+            public static bool IsHideButton;
             private static Sprite buttonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -2335,6 +2337,8 @@ namespace SuperNewRoles.Roles
                 OldPosition = new();
                 StopTime = 0;
                 HideTime = CustomOptions.KunoichiIsHide.GetBool() ? CustomOptions.KunoichiHideTime.GetFloat() : -1;
+                IsWaitAndPressTheButtonToHide = CustomOptions.KunoichiIsWaitAndPressTheButtonToHide.GetBool();
+                IsHideButton = false;
                 KunoichiPlayer = new();
                 KillCoolTime = CustomOptions.KunoichiCoolTime.GetFloat();
                 KillKunai = CustomOptions.KunoichiKillKunai.GetInt();
@@ -2745,7 +2749,7 @@ namespace SuperNewRoles.Roles
                 _playerDatas = new();
             }
         }
-        
+
         public static class SatsumaAndImo
         {
             public static List<PlayerControl> SatsumaAndImoPlayer;

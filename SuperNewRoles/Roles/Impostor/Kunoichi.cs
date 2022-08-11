@@ -108,7 +108,7 @@ namespace SuperNewRoles.Roles
                     }
                 }
             }
-            if (RoleClass.Kunoichi.HideTime != -1)
+            if (!RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide && RoleClass.Kunoichi.HideTime != -1)
             {
                 if (!HudManager.Instance.IsIntroDisplayed)
                 {
@@ -117,22 +117,38 @@ namespace SuperNewRoles.Roles
                         RoleClass.Kunoichi.StopTime += Time.fixedDeltaTime;
                         if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
-                            writer.Write(true);
-                            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                            AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
+                            HideOn();
                         }
                     }
                     else
                     {
                         if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
-                            writer.Write(false);
-                            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                            AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
+                            HideOff();
+                        }
+                        RoleClass.Kunoichi.StopTime = 0;
+                    }
+                    RoleClass.Kunoichi.OldPosition = CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition();
+                }
+            }
+            if (RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide && RoleClass.Kunoichi.HideTime != -1)
+            {
+                if (!HudManager.Instance.IsIntroDisplayed)
+                {
+                    if (RoleClass.Kunoichi.OldPosition == CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition())
+                    {
+                        RoleClass.Kunoichi.StopTime += Time.fixedDeltaTime;
+                        if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime && RoleClass.Kunoichi.IsHideButton)
+                        {
+                            HideOn();
+                        }
+                    }
+                    else
+                    {
+                        if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)
+                        {
+                            HideOff();
+                            RoleClass.Kunoichi.IsHideButton = false;
                         }
                         RoleClass.Kunoichi.StopTime = 0;
                     }
@@ -154,6 +170,22 @@ namespace SuperNewRoles.Roles
                 RoleClass.Kunoichi.SendKunai = null;
                 RoleClass.Kunoichi.KunaiSend = false;
             }*/
+        }
+        public static void HideOn()
+        {
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
+            writer.Write(true);
+            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
+        }
+        public static void HideOff()
+        {
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
+            writer.Write(false);
+            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
         }
 
         public static void SetOpacity(PlayerControl player, float opacity, bool cansee)
