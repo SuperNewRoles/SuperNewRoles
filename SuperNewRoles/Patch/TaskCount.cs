@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.MapOptions;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Patch
@@ -12,15 +13,14 @@ namespace SuperNewRoles.Patch
         [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.PickRandomConsoles))]
         class NormalPlayerTaskPickRandomConsolesPatch
         {
-            private static int numWireTask => CustomOptions.WireTaskNum.GetInt();
             static void Postfix(NormalPlayerTask __instance, TaskTypes taskType, byte[] consoleIds)
             {
-                if (taskType != TaskTypes.FixWiring || !CustomOptions.WireTaskIsRandom.getBool()) return;
+                if (taskType != TaskTypes.FixWiring || !MapOption.WireTaskIsRandom) return;
                 List<Console> orgList = ShipStatus.Instance.AllConsoles.Where((global::Console t) => t.TaskTypes.Contains(taskType)).ToList<global::Console>();
                 List<Console> list = new(orgList);
 
-                __instance.MaxStep = numWireTask;
-                __instance.Data = new byte[numWireTask];
+                __instance.MaxStep = MapOption.WireTaskNum;
+                __instance.Data = new byte[MapOption.WireTaskNum];
                 for (int i = 0; i < __instance.Data.Length; i++)
                 {
                     if (list.Count == 0)
