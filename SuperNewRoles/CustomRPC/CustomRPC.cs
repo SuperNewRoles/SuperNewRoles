@@ -147,6 +147,7 @@ namespace SuperNewRoles.CustomRPC
         PartTimer,
         Stefinder,
         Stefinder1,
+        Slugger,
         //RoleId
     }
 

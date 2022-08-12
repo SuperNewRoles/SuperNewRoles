@@ -780,6 +780,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption StefinderVent;
         public static CustomOption StefinderSabo;
         public static CustomOption StefinderSoloWin;
+        
+        public static CustomRoleOption SluggerOption;
+        public static CustomOption SluggerPlayerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1601,6 +1604,9 @@ namespace SuperNewRoles.CustomOption
             StefinderVent = CustomOption.Create(858, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
             StefinderSabo = CustomOption.Create(859, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
             StefinderSoloWin = CustomOption.Create(860, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
+            
+            SluggerOption = new CustomRoleOption(901, false, CustomOptionType.Impostor, "SluggerName",RoleClass.Slugger.color, 1);
+            SluggerPlayerCount = CustomOption.Create(9012, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SluggerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

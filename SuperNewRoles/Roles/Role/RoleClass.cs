@@ -166,6 +166,7 @@ namespace SuperNewRoles.Roles
             Nun.ClearAndReload();
             PartTimer.ClearAndReload();
             Stefinder.ClearAndReload();
+            Slugger.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2780,6 +2781,16 @@ namespace SuperNewRoles.Roles
                 SoloWin = CustomOptions.StefinderSoloWin.GetBool();
                 IsKill = false;
                 IsKillPlayer = new();
+            }
+        }
+        public static class Slugger
+        {
+            public static List<PlayerControl> SluggerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                SluggerPlayer = new();
+                
             }
         }
         //新ロールクラス
