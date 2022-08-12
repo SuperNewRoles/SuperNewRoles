@@ -132,6 +132,8 @@ namespace SuperNewRoles.Buttons
             KunoichiHideButton = new CustomButton(
                 () =>
                 {
+                    /*  Kunoichi.cs Update() にある、
+                        「透明化に必要な待機時間の取得と処理 (ボタン動作の時)」コメント以降のif文の中で透明化の処理を行っている。*/
                     RoleClass.Kunoichi.IsHideButton = true;
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Kunoichi && RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide; },
