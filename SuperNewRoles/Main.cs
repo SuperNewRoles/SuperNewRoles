@@ -74,6 +74,7 @@ namespace SuperNewRoles
             StringDATE = new Dictionary<string, Dictionary<int, string>>();
             Harmony.PatchAll();
             SubmergedCompatibility.Initialize();
+            Emote.EmoteData.Start();
         }
         /*
         [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]

@@ -93,7 +93,7 @@ namespace SuperNewRoles.Patch
                 //ここにデバッグ用のものを書いてね
                 if (Input.GetKeyDown(KeyCode.I))
                 {
-                    SuperNewRoles.CustomRPC.RPCProcedure.UncheckedUsePlatform(0, false);
+                    EmoteObject.SetEmote(CachedPlayer.LocalPlayer.PlayerId, 0);
                 }
                 /*
                     if (Input.GetKeyDown(KeyCode.C))
