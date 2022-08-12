@@ -1,6 +1,7 @@
 using System;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
@@ -145,6 +146,7 @@ namespace SuperNewRoles.Roles
                     }
                     else
                     {
+                        ResetCoolDown();
                         if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)
                         {
                             HideOff();
@@ -188,10 +190,16 @@ namespace SuperNewRoles.Roles
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
             }
-            if(RoleClass.Kunoichi.IsHideButton)
+            if (RoleClass.Kunoichi.IsHideButton)
             {
-                RoleClass.Kunoichi.IsHideButton = false;
+                ResetCoolDown();
             }
+        }
+        public static void ResetCoolDown()
+        {
+            RoleClass.Kunoichi.IsHideButton = false;
+            HudManagerStartPatch.KunoichiHideButton.MaxTimer = RoleClass.Kunoichi.HideTime;
+            HudManagerStartPatch.KunoichiHideButton.Timer = RoleClass.Kunoichi.HideTime;
         }
 
         public static void SetOpacity(PlayerControl player, float opacity, bool cansee)

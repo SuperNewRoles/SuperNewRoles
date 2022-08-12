@@ -132,8 +132,6 @@ namespace SuperNewRoles.Buttons
             KunoichiHideButton = new CustomButton(
                 () =>
                 {
-                    RoleClass.Kunoichi.ButtonTimer = RoleClass.Kunoichi.HideTime;
-                    KunoichiHideButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     RoleClass.Kunoichi.IsHideButton = true;
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Kunoichi && RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide; },
@@ -142,7 +140,7 @@ namespace SuperNewRoles.Buttons
                     return PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { Kunoichi.HideOff(); },
-                RoleClass.NiceScientist.GetButtonSprite(),
+                RoleClass.Kunoichi.GetHideButtonSprite(),
                 new Vector3(-2.7f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -2185,7 +2183,8 @@ namespace SuperNewRoles.Buttons
             };
 
             NunButton = new(
-                () => {
+                () =>
+                {
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedUsePlatform);
                     writer.Write((byte)255);
                     writer.Write(false);
@@ -2220,7 +2219,8 @@ namespace SuperNewRoles.Buttons
             };
 
             PartTimerButton = new(
-                () => {
+                () =>
+                {
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.PartTimerSet);
                     writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(SetTarget().PlayerId);

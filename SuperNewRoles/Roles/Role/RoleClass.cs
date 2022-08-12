@@ -2335,8 +2335,8 @@ namespace SuperNewRoles.Roles
             private static Sprite HidebuttonSprite;
             public static Sprite GetHideButtonSprite()
             {
-                if (buttonSprite) return HidebuttonSprite;
-                HidebuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunaiButton.png", 115f);
+                if (HidebuttonSprite) return HidebuttonSprite;
+                HidebuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiHideButton.png", 115f);
                 return HidebuttonSprite;
             }
             public static void ClearAndReload()
@@ -2646,7 +2646,8 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static bool IsLocalOn => !Datas.Keys.All(data => data != CachedPlayer.LocalPlayer.PlayerId || Datas[data].Item1 == null);
             public static Dictionary<byte, (DeadBody, float)> Datas;
-            public static Sprite PutOnButtonSprite {
+            public static Sprite PutOnButtonSprite
+            {
                 get
                 {
                     if (_PutOnButtonSprite == null)
