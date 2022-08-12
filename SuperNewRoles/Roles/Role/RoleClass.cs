@@ -2324,7 +2324,6 @@ namespace SuperNewRoles.Roles
             public static float HideTime;
             public static bool IsWaitAndPressTheButtonToHide;
             public static bool IsHideButton;
-            public static float ButtonTimer;
             private static Sprite buttonSprite;
             public static Sprite GetButtonSprite()
             {
