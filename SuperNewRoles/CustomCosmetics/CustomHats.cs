@@ -493,6 +493,7 @@ namespace SuperNewRoles.CustomCosmetics
             {
                 Repos.Add(repo);
             }
+            if (!ConfigRoles.DownloadSuperNewNamePlates.Value) return;
             string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
             foreach (string repo in repos)
             {
