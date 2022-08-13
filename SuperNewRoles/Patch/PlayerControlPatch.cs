@@ -606,9 +606,16 @@ namespace SuperNewRoles.Patches
                             }
                             else
                             {
-                                //作ってたら普通のキル
-                                SuperNewRolesPlugin.Logger.LogInfo("作ったので普通のキル");
-                                __instance.RpcMurderPlayer(target);
+                                if (target.IsRole(RoleId.Fox)) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 狐の為 キル処理をスキップ");
+                                else //ターゲットが狐ではなく 且つ フレンズを作ってた・フレンズを作る設定では無い場合 普通のキルを行う
+                                {
+                                    // キルができた理由のログを表示する
+                                    if (!RoleClass.Jackal.CanCreateFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] フレンズを作る設定ではない為 普通のキル");
+                                    else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.IsCreatedFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 作ったので 普通のキル");
+                                    else SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 不正なキル");
+
+                                    __instance.RpcMurderPlayer(target); // キルを行う
+                                }
                             }
                             return false;
                     }
