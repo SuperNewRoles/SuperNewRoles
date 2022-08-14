@@ -598,26 +598,26 @@ namespace SuperNewRoles.Patches
                             {
                                 SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
                                 if (target == null || RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                                RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
-                                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
-                                target.SetRoleRPC(RoleId.JackalFriends);//フレンズにする
-                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
-                                RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
+                                target.RpcProtectPlayer(target, 0);//キルを無効にする為守護をかける
+                                //守護がかかるのを待つためのLateTask
+                                new LateTask(() =>
+                                    {
+                                        RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
+                                        target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
+                                        target.SetRoleRPC(RoleId.JackalFriends);//フレンズにする
+                                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
+                                        RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
+                                        SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
+                                    }, 0.5f);
                             }
                             else
                             {
-                                if (target.IsRole(RoleId.Fox)) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 狐の為 キル処理をスキップ");
-                                else //ターゲットが狐ではなく 且つ フレンズを作ってた・フレンズを作る設定では無い場合 普通のキルを行う
-                                {
-                                    // キルができた理由のログを表示する
-                                    if (!RoleClass.Jackal.CanCreateFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] フレンズを作る設定ではない為 普通のキル");
-                                    else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.IsCreatedFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 作ったので 普通のキル");
-                                    else SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 不正なキル");
-
-                                    __instance.RpcMurderPlayer(target); // キルを行う
-                                }
+                                // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
+                                if (!RoleClass.Jackal.CanCreateFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] フレンズを作る設定ではない為 普通のキル");
+                                else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.IsCreatedFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 作ったので 普通のキル");
+                                else SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 不正なキル");
                             }
-                            return false;
+                            break;
                     }
                     break;
                 case ModeId.Detective:
