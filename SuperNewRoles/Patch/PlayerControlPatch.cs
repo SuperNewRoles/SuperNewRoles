@@ -603,7 +603,7 @@ namespace SuperNewRoles.Patches
                                 new LateTask(() =>
                                     {
                                         RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
-                                        target.RpcSetRole(RoleTypes.GuardianAngel);//守護天使にして
+                                        target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
                                         target.SetRoleRPC(RoleId.JackalFriends);//フレンズにする
                                         Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                                         RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
