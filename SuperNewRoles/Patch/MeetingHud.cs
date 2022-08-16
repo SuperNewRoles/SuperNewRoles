@@ -306,7 +306,7 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (var ps in __instance.playerStates)
                     {
-                        if (!(ps.AmDead || ps.DidVote) && ModHelpers.PlayerById(ps.TargetPlayerId).IsPlayer())//死んでいないプレイヤーが投票していない
+                        if (!(ps.AmDead || ps.DidVote) && ModHelpers.PlayerById(ps.TargetPlayerId) != null && ModHelpers.PlayerById(ps.TargetPlayerId).IsPlayer())//死んでいないプレイヤーが投票していない
                             return false;
                     }
                 }
@@ -480,7 +480,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
 
-                if (exiledPlayer.Object.IsRole(RoleId.Dictator))
+                if (exiledPlayer != null && exiledPlayer.Object.IsRole(RoleId.Dictator))
                 {
                     bool Flag = false;
                     if (!RoleClass.Dictator.SubExileLimitData.ContainsKey(exiledPlayer.Object.PlayerId))
