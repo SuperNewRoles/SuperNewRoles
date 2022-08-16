@@ -1,7 +1,7 @@
 using Hazel;
 using SuperNewRoles.Buttons;
-using UnityEngine;
 using SuperNewRoles.CustomRPC;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
@@ -17,37 +17,30 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.SelfBomberButton.MaxTimer = PlayerControl.GameOptions.KillCooldown;
             HudManagerStartPatch.SelfBomberButton.Timer = PlayerControl.GameOptions.KillCooldown;
         }
-        public static bool isSelfBomber(PlayerControl Player)
+        public static bool IsSelfBomber(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.SelfBomber))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Player.IsRole(RoleId.SelfBomber);
         }
         public static void SelfBomb()
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                if (p.IsAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {
                     if (GetIsBomb(PlayerControl.LocalPlayer, p))
                     {
 
-                        CustomRPC.RPCProcedure.ByBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
+                        RPCProcedure.ByBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
 
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByBomKillRPC, Hazel.SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByBomKillRPC, SendOption.Reliable, -1);
                         Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         Writer.Write(p.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                     }
                 }
             }
-            CustomRPC.RPCProcedure.BomKillRPC(CachedPlayer.LocalPlayer.PlayerId);
-            MessageWriter Writer2 = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.BomKillRPC, Hazel.SendOption.Reliable, -1);
+            RPCProcedure.BomKillRPC(CachedPlayer.LocalPlayer.PlayerId);
+            MessageWriter Writer2 = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.BomKillRPC, SendOption.Reliable, -1);
             Writer2.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer2);
         }
@@ -55,7 +48,7 @@ namespace SuperNewRoles.Roles
         {
             Vector3 position = source.transform.position;
             Vector3 playerposition = player.transform.position;
-            var r = CustomOption.CustomOptions.SelfBomberScope.getFloat();
+            var r = CustomOption.CustomOptions.SelfBomberScope.GetFloat();
             if ((position.x + r >= playerposition.x) && (playerposition.x >= position.x - r))
             {
                 if ((position.y + r >= playerposition.y) && (playerposition.y >= position.y - r))

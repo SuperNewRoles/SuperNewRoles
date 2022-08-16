@@ -18,28 +18,21 @@ namespace SuperNewRoles.Roles
             List<PlayerControl> aliveplayers = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isAlive() && p.CanMove)
+                if (p.IsAlive() && p.CanMove)
                 {
                     aliveplayers.Add(p);
                 }
             }
-            var player = ModHelpers.GetRandom<PlayerControl>(aliveplayers);
-            CustomRPC.RPCProcedure.TeleporterTP(player.PlayerId);
+            var player = ModHelpers.GetRandom(aliveplayers);
+            RPCProcedure.TeleporterTP(player.PlayerId);
 
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, SendOption.Reliable, -1);
             Writer.Write(player.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
         }
         public static bool IsTeleporter(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.Teleporter))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Player.IsRole(RoleId.Teleporter);
         }
         public static void EndMeeting()
         {

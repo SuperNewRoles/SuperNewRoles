@@ -36,13 +36,13 @@ namespace SuperNewRoles.MapOptions
         public static float CameraDefault;
         public static void ClearAndReload()
         {
-            if (MapOptionSetting.getBool())
+            if (MapOptionSetting.GetBool())
             {
-                if (DeviceOptions.getBool())
+                if (DeviceOptions.GetBool())
                 {
-                    UseAdmin = DeviceUseAdmin.getBool();
-                    UseVitalOrDoorLog = DeviceUseVitalOrDoorLog.getBool();
-                    UseCamera = DeviceUseCamera.getBool();
+                    UseAdmin = DeviceUseAdmin.GetBool();
+                    UseVitalOrDoorLog = DeviceUseVitalOrDoorLog.GetBool();
+                    UseCamera = DeviceUseCamera.GetBool();
                 }
                 else
                 {
@@ -50,14 +50,14 @@ namespace SuperNewRoles.MapOptions
                     UseVitalOrDoorLog = true;
                     UseCamera = true;
                 }
-                if (RandomMapOption.getBool())
+                if (RandomMapOption.GetBool())
                 {
                     IsRandomMap = true;
-                    ValidationSkeld = RandomMapSkeld.getBool();
-                    ValidationMira = RandomMapMira.getBool();
-                    ValidationPolus = RandomMapPolus.getBool();
-                    ValidationAirship = RandomMapAirship.getBool();
-                    ValidationSubmerged = RandomMapSubmerged.getBool();
+                    ValidationSkeld = RandomMapSkeld.GetBool();
+                    ValidationMira = RandomMapMira.GetBool();
+                    ValidationPolus = RandomMapPolus.GetBool();
+                    ValidationAirship = RandomMapAirship.GetBool();
+                    ValidationSubmerged = RandomMapSubmerged.GetBool();
                 }
                 else
                 {
@@ -68,8 +68,8 @@ namespace SuperNewRoles.MapOptions
                     ValidationAirship = false;
                     ValidationSubmerged = false;
                 }
-                UseDeadBodyReport = !NotUseReportDeadBody.getBool();
-                UseMeetingButton = !NotUseMeetingButton.getBool();
+                UseDeadBodyReport = !NotUseReportDeadBody.GetBool();
+                UseMeetingButton = !NotUseMeetingButton.GetBool();
                 //SuperNewRoles.Patch.AdminPatch.ClearAndReload();
                 //SuperNewRoles.Patch.CameraPatch.ClearAndReload();
                 //SuperNewRoles.Patch.VitalsPatch.ClearAndReload();
@@ -93,38 +93,38 @@ namespace SuperNewRoles.MapOptions
             //BlockTool.VitalPlayers = new();
             //BlockTool.AdminPlayers = new();
             /*
-            if (DeviceUseCameraTime.getFloat() == 0 || !UseCamera)
+            if (DeviceUseCameraTime.GetFloat() == 0 || !UseCamera)
             {
                 BlockTool.CameraTime = -10;
             } else
             {
-                BlockTool.CameraTime = DeviceUseCameraTime.getFloat();
+                BlockTool.CameraTime = DeviceUseCameraTime.GetFloat();
             }
-            if (DeviceUseVitalOrDoorLogTime.getFloat() == 0 || !UseVitalOrDoorLog)
+            if (DeviceUseVitalOrDoorLogTime.GetFloat() == 0 || !UseVitalOrDoorLog)
             {
                 BlockTool.VitalTime = -10;
             }
             else
             {
-                BlockTool.VitalTime = DeviceUseVitalOrDoorLogTime.getFloat();
+                BlockTool.VitalTime = DeviceUseVitalOrDoorLogTime.GetFloat();
             }
-            if (DeviceUseAdminTime.getFloat() == 0 || !UseAdmin)
+            if (DeviceUseAdminTime.GetFloat() == 0 || !UseAdmin)
             {
                 BlockTool.AdminTime = -10;
             }
             else
             {
-                BlockTool.AdminTime = DeviceUseAdminTime.getFloat();
+                BlockTool.AdminTime = DeviceUseAdminTime.GetFloat();
             }*/
-            PolusReactorTimeLimit.getFloat();
-            MiraReactorTimeLimit.getFloat();
-            AirshipReactorTimeLimit.getFloat();
+            PolusReactorTimeLimit.GetFloat();
+            MiraReactorTimeLimit.GetFloat();
+            AirshipReactorTimeLimit.GetFloat();
 
             //千里眼・ズーム関連
-            ClairvoyantZoom = CustomOptions.ClairvoyantZoom.getBool();
-            MouseZoom = CustomOptions.MouseZoom.getBool();
-            CoolTime = CustomOptions.ZoomCoolTime.getFloat();
-            DurationTime = CustomOptions.ZoomDurationTime.getFloat();
+            ClairvoyantZoom = CustomOptions.ClairvoyantZoom.GetBool();
+            MouseZoom = CustomOptions.MouseZoom.GetBool();
+            CoolTime = ZoomCoolTime.GetFloat();
+            DurationTime = ZoomDurationTime.GetFloat();
             IsZoomOn = false;
             Timer = 0;
             ButtonTimer = DateTime.Now;
@@ -174,11 +174,11 @@ namespace SuperNewRoles.MapOptions
             MapOptionSetting = CustomOption.CustomOption.Create(527, true, CustomOptionType.Generic, "MapOptionSetting", false, null, isHeader: true);
             DeviceOptions = CustomOption.CustomOption.Create(528, true, CustomOptionType.Generic, "DeviceOptionsSetting", false, MapOptionSetting);
             DeviceUseAdmin = CustomOption.CustomOption.Create(446, true, CustomOptionType.Generic, "DeviceUseAdminSetting", true, DeviceOptions);
-            //DeviceUseAdminTime = CustomOption.CustomOption.Create(447, cs(Color.white, "DeviceTimeSetting"), 10f, 0f, 60f, 1f, DeviceUseAdmin);
+            //DeviceUseAdminTime = CustomOption.CustomOption.Create(447, Cs(Color.white, "DeviceTimeSetting"), 10f, 0f, 60f, 1f, DeviceUseAdmin);
             DeviceUseVitalOrDoorLog = CustomOption.CustomOption.Create(448, true, CustomOptionType.Generic, "DeviceUseVitalOrDoorLogSetting", true, DeviceOptions);
-            //DeviceUseVitalOrDoorLogTime = CustomOption.CustomOption.Create(449, cs(Color.white, "DeviceTimeSetting"), 10f, 0f, 60f, 1f, DeviceUseVitalOrDoorLog);
+            //DeviceUseVitalOrDoorLogTime = CustomOption.CustomOption.Create(449, Cs(Color.white, "DeviceTimeSetting"), 10f, 0f, 60f, 1f, DeviceUseVitalOrDoorLog);
             DeviceUseCamera = CustomOption.CustomOption.Create(450, true, CustomOptionType.Generic, "DeviceUseCameraSetting", true, DeviceOptions);
-            //DeviceUseCameraTime = CustomOption.CustomOption.Create(451, cs(Color.white, "DeviceTimeSetting"), 10f,0f,60f,1f, DeviceUseCamera);
+            //DeviceUseCameraTime = CustomOption.CustomOption.Create(451, Cs(Color.white, "DeviceTimeSetting"), 10f,0f,60f,1f, DeviceUseCamera);
             NotUseReportDeadBody = CustomOption.CustomOption.Create(452, true, CustomOptionType.Generic, "NotUseReportSetting", false, MapOptionSetting);
             NotUseMeetingButton = CustomOption.CustomOption.Create(453, true, CustomOptionType.Generic, "NotUseMeetingSetting", false, MapOptionSetting);
 

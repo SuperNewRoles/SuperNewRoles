@@ -1,8 +1,8 @@
 using System;
 using HarmonyLib;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles
         [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
         class HandleDisconnectPatch
         {
-            public static void Postfix(GameData __instance, PlayerControl player, DisconnectReasons reason)
+            public static void Postfix(PlayerControl player)
             {
                 if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                 {
@@ -20,16 +20,16 @@ namespace SuperNewRoles.Roles
                         RoleClass.Lovers.LoversPlayer.RemoveAll(x => x.TrueForAll(x2 => x2.PlayerId == player.PlayerId));
                         ChacheManager.ResetLoversChache();
                     }
-                    if (player.IsQuarreled() && player.isAlive())
+                    if (player.IsQuarreled() && player.IsAlive())
                     {
                         RoleClass.Quarreled.QuarreledPlayer.RemoveAll(x => x.TrueForAll(x2 => x2.PlayerId == player.PlayerId));
                         ChacheManager.ResetQuarreledChache();
                     }
-                    if (ModeHandler.isMode(ModeId.Default))
+                    if (ModeHandler.IsMode(ModeId.Default))
                     {
-                        if (player.isRole(RoleId.SideKiller))
+                        if (player.IsRole(RoleId.SideKiller))
                         {
-                            var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
+                            var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
                             if (sideplayer != null)
                             {
                                 if (!RoleClass.SideKiller.IsUpMadKiller)
@@ -39,9 +39,9 @@ namespace SuperNewRoles.Roles
                                 }
                             }
                         }
-                        else if (player.isRole(RoleId.MadKiller))
+                        else if (player.IsRole(RoleId.MadKiller))
                         {
-                            var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
+                            var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
                             if (sideplayer != null)
                             {
                                 player.RPCSetRoleUnchecked(RoleTypes.Impostor);

@@ -13,7 +13,7 @@ namespace SuperNewRoles.Mode.PlusMode
             PlusModeSetting = CustomOption.CustomOption.Create(508, true, CustomOptionType.Generic, "PlusModeSetting", false, null, isHeader: true);
             NoSabotageModeSetting = CustomOption.CustomOption.Create(509, true, CustomOptionType.Generic, "SettingNoSabotageMode", false, PlusModeSetting);
             NoTaskWinModeSetting = CustomOption.CustomOption.Create(510, true, CustomOptionType.Generic, "SettingNoTaskWinMode", false, PlusModeSetting);
-            //FixedSpawnSetting = CustomOption.CustomOption.Create(511, ModTranslation.getString("SettingFixedSpawnMode"), false, PlusModeSetting);
+            //FixedSpawnSetting = CustomOption.CustomOption.Create(511, ModTranslation.GetString("SettingFixedSpawnMode"), false, PlusModeSetting);
         }
     }
 }

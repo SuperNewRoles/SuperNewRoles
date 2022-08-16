@@ -15,7 +15,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
     {
         public static void Postfix()
         {
-            if (!ModeHandler.isMode(ModeId.BattleRoyal)) return;
+            if (!ModeHandler.IsMode(ModeId.BattleRoyal)) return;
             HudManagerStartPatch.resetCoolDown();
         }
     }
@@ -34,19 +34,19 @@ namespace SuperNewRoles.Mode.BattleRoyal
 
         public static void Postfix(HudManager __instance)
         {
-            BattleRoyalKillButton = new CustomButton(
+            BattleRoyalKillButton = new(
                 () =>
                 {
-                    if (PlayerControlFixedUpdatePatch.setTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && ModeHandler.isMode(ModeId.BattleRoyal) && PlayerControl.LocalPlayer.CanMove)
+                    if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && ModeHandler.IsMode(ModeId.BattleRoyal) && PlayerControl.LocalPlayer.CanMove)
                     {
-                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.setTarget());
+                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
                         resetCoolDown();
                     }
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && ModeHandler.isMode(ModeId.BattleRoyal); },
+                () => { return RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && ModeHandler.IsMode(ModeId.BattleRoyal); },
                 () =>
                 {
-                    return PlayerControlFixedUpdatePatch.setTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => {  },
                 __instance.KillButton.graphic.sprite,

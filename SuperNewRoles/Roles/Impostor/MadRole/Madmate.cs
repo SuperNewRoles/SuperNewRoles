@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles
         {
             if (CheckedImpostor.Contains(p.PlayerId)) return true;
             int CheckTask = 0;
-            switch (p.getRole())
+            switch (p.GetRole())
             {
                 case RoleId.MadMate:
                     if (!RoleClass.MadMate.IsImpostorCheck) return false;

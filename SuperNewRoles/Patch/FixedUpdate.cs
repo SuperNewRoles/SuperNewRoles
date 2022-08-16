@@ -1,4 +1,4 @@
-using HarmonyLib;
+﻿using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
@@ -14,7 +14,7 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
     public class StartGame
     {
-        public static void Postfix(PlayerControl __instance)
+        public static void Postfix()
         {
             MapOptions.RandomMap.Prefix();
             FixedUpdate.IsProDown = ConfigRoles.CustomProcessDown.Value;
@@ -35,7 +35,7 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
     class DebugManager
     {
-        public static void Postfix(ControllerManager __instance)
+        public static void Postfix()
         {
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
@@ -57,7 +57,7 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     public class FixedUpdate
     {
-        static void setBasePlayerOutlines()
+        static void SetBasePlayerOutlines()
         {
             foreach (PlayerControl target in CachedPlayer.AllPlayers)
             {
@@ -84,11 +84,10 @@ namespace SuperNewRoles.Patch
             }
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
-                var MyRole = PlayerControl.LocalPlayer.getRole();
-                setBasePlayerOutlines();
+                var MyRole = PlayerControl.LocalPlayer.GetRole();
+                SetBasePlayerOutlines();
                 VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
-                if (CustomOptions.LadderDead.getBool())
-                    LadderDead.FixedUpdate();
+                LadderDead.FixedUpdate();
                 var ThisMode = ModeHandler.GetMode();
                 if (ThisMode == ModeId.Default)
                 {
@@ -96,13 +95,14 @@ namespace SuperNewRoles.Patch
                     SetNameUpdate.Postfix(__instance);
                     Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
-                    if (PlayerControl.LocalPlayer.isAlive())
+                    Roles.Impostor.Matryoshka.FixedUpdate();
+                    if (PlayerControl.LocalPlayer.IsAlive())
                     {
-                        if (PlayerControl.LocalPlayer.isImpostor()) { SetTarget.ImpostorSetTarget(); }
+                        if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
                         switch (MyRole)
                         {
                             case RoleId.Researcher:
-                                Researcher.ReseUseButtonSetTargetPatch.Postfix(PlayerControl.LocalPlayer);
+                                Researcher.ReseUseButtonSetTargetPatch.Postfix();
                                 break;
                             case RoleId.Pursuer:
                                 Pursuer.PursureUpdate.Postfix();
@@ -151,8 +151,18 @@ namespace SuperNewRoles.Patch
                             case RoleId.Kunoichi:
                                 Kunoichi.Update();
                                 break;
+                            case RoleId.Revolutionist:
+                                Roles.Neutral.Revolutionist.FixedUpdate();
+                                break;
+                            case RoleId.Spelunker:
+                                Roles.Neutral.Spelunker.FixedUpdate();
+                                break;
+                            case RoleId.SuicidalIdeation:
+                                SuicidalIdeation.Postfix();
+                                break;
                             default:
-                                Minimalist.FixedUpdate.Postfix(MyRole);
+                                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                                    NormalButtonDestroy.Postfix(p);
                                 break;
                         }
                     }
@@ -167,18 +177,17 @@ namespace SuperNewRoles.Patch
                             case RoleId.Bait:
                                 if (!RoleClass.Bait.Reported)
                                 {
-                                    Bait.BaitUpdate.Postfix(__instance);
+                                    Bait.BaitUpdate.Postfix();
                                 }
                                 break;
                             case RoleId.SideKiller:
                                 if (!RoleClass.SideKiller.IsUpMadKiller)
                                 {
-                                    var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
+                                    var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
                                     if (sideplayer != null)
                                     {
                                         sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
                                         RoleClass.SideKiller.IsUpMadKiller = true;
-
                                     }
                                 }
                                 break;

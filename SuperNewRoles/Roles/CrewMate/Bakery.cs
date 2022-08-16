@@ -1,6 +1,6 @@
 using HarmonyLib;
-using SuperNewRoles.Mode;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
 {
@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles
         public static bool Prefix(
             ExileController __instance,
             [HarmonyArgument(0)] GameData.PlayerInfo exiled,
-            [HarmonyArgument(1)] bool tie)
+            bool tie)
         {
             if (RoleClass.Assassin.TriggerPlayer == null) { if (!Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha)) return true; }
             if (Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha)) {
@@ -21,32 +21,62 @@ namespace SuperNewRoles.Roles
                     return false;
                 }
             };
+            string printStr = "";
 
-            if (__instance.specialInputHandler != null)
+            if (RoleClass.Assassin.TriggerPlayer != null)
             {
-                __instance.specialInputHandler.disableVirtualCursor = true;
-            }
-            ExileController.Instance = __instance;
-            ControllerManager.Instance.CloseAndResetAll();
+                if (__instance.specialInputHandler != null) __instance.specialInputHandler.disableVirtualCursor = true;
+                ExileController.Instance = __instance;
+                ControllerManager.Instance.CloseAndResetAll();
 
-            __instance.Text.gameObject.SetActive(false);
-            __instance.Text.text = string.Empty;
+                __instance.Text.gameObject.SetActive(false);
+                __instance.Text.text = string.Empty;
 
-            PlayerControl player = RoleClass.Assassin.TriggerPlayer;
+                PlayerControl player = RoleClass.Assassin.TriggerPlayer;
 
-            string printStr;
-
-            var exile = ModeHandler.isMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.main.RealExiled : exiled.Object;
-            if (exile != null && exile.isRole(RoleId.Marine))
+                var exile = ModeHandler.IsMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.Main.RealExiled : exiled.Object;
+                if (exile != null && exile.IsRole(RoleId.Marine))
+                {
+                    printStr = player.Data.PlayerName + ModTranslation.GetString("AssassinSucsess");
+                    RoleClass.Assassin.IsImpostorWin = true;
+                }
+                else
+                {
+                    printStr = player.Data.PlayerName + ModTranslation.GetString(
+                        "AssassinFail");
+                    RoleClass.Assassin.DeadPlayer = RoleClass.Assassin.TriggerPlayer;
+                }
+                RoleClass.Assassin.TriggerPlayer = null;
+                __instance.exiled = null;
+                __instance.Player.gameObject.SetActive(false);
+                __instance.completeString = printStr;
+                __instance.ImpostorText.text = string.Empty;
+                __instance.StartCoroutine(__instance.Animate());
+            } else if (RoleClass.Revolutionist.MeetingTrigger != null)
             {
-                printStr = player.Data.PlayerName + ModTranslation.getString("AssassinSucsess");
-                RoleClass.Assassin.IsImpostorWin = true;
-            }
-            else
-            {
-                printStr = player.Data.PlayerName + ModTranslation.getString(
-                    "AssassinFail");
-                RoleClass.Assassin.DeadPlayer = RoleClass.Assassin.TriggerPlayer;
+                if (__instance.specialInputHandler != null) __instance.specialInputHandler.disableVirtualCursor = true;
+                ExileController.Instance = __instance;
+                ControllerManager.Instance.CloseAndResetAll();
+
+                __instance.Text.gameObject.SetActive(false);
+                __instance.Text.text = string.Empty;
+
+
+                var exile = exiled.Object;
+                if (exile != null && exile.IsRole(RoleId.Dictator))
+                {
+                    printStr = exiled.PlayerName + ModTranslation.GetString("RevolutionistSucsess");
+                }
+                else
+                {
+                    printStr = exiled.PlayerName + ModTranslation.GetString(
+                        "RevolutionistFail");
+                }
+                __instance.exiled = null;
+                __instance.Player.gameObject.SetActive(false);
+                __instance.completeString = printStr;
+                __instance.ImpostorText.text = string.Empty;
+                __instance.StartCoroutine(__instance.Animate());
             }
             RoleClass.Assassin.TriggerPlayer = null;
             __instance.exiled = null;
@@ -65,7 +95,7 @@ namespace SuperNewRoles.Roles
         {
             foreach (PlayerControl p in RoleClass.Bakery.BakeryPlayer)
             {
-                if (p.isAlive())
+                if (p.IsAlive())
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("パン屋が生きていると判定されました");
                     return true;
@@ -78,14 +108,7 @@ namespace SuperNewRoles.Roles
         {
             //翻訳
             var rand = new System.Random();
-            if (rand.Next(1, 10) == 1)
-            {
-                return ModTranslation.getString("BakeryExileText2");
-            }
-            else
-            {
-                return ModTranslation.getString("BakeryExileText");
-            }
+            return rand.Next(1, 10) == 1 ? ModTranslation.GetString("BakeryExileText2") : ModTranslation.GetString("BakeryExileText");
         }
 
         static void Postfix(ExileController __instance)
@@ -98,14 +121,8 @@ namespace SuperNewRoles.Roles
             if (isBakeryAlive)                                                                      //if文(Bakeryが生きていたら実行)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("パン屋がパンを焼きました");                     //ログ
-                if (PlayerControl.GameOptions.ConfirmImpostor)
-                {
-                    breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.4f, 0f);    //位置がエ
-                }
-                else
-                {
-                    breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.2f, 0f);
-                }
+                if (PlayerControl.GameOptions.ConfirmImpostor) breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.4f, 0f);    //位置がエ
+                else breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.2f, 0f);
                 breadText.gameObject.SetActive(true);                                               //文字の表示
             }
         }
@@ -114,7 +131,7 @@ namespace SuperNewRoles.Roles
         [HarmonyPatch(typeof(ExileController), nameof(ExileController.ReEnableGameplay))]
         public class BakeryChatDisable
         {
-            static void Postfix(ExileController __instance)
+            static void Postfix()
             {
                 breadText.gameObject.SetActive(false);
             }

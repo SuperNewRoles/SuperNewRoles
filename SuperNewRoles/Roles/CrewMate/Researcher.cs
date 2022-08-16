@@ -51,7 +51,7 @@ namespace SuperNewRoles.Roles
         }
         public class ReseUseButtonSetTargetPatch
         {
-            public static void Postfix(PlayerControl __instance)
+            public static void Postfix()
             {
                 if (IsTarget())
                 {

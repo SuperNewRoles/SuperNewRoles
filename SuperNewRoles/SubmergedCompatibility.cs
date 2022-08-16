@@ -32,30 +32,15 @@ namespace SuperNewRoles
         {
             get
             {
-                if (!Loaded) return null;
-
-                if (_submarineStatus is null || _submarineStatus.WasCollected || !_submarineStatus || _submarineStatus == null)
-                {
-                    if (MapUtilities.CachedShipStatus is null || MapUtilities.CachedShipStatus.WasCollected || !MapUtilities.CachedShipStatus || MapUtilities.CachedShipStatus == null)
-                    {
-                        return _submarineStatus = null;
-                    }
-                    else
-                    {
-                        if (MapUtilities.CachedShipStatus.Type == SUBMERGED_MAP_TYPE)
-                        {
-                            return _submarineStatus = MapUtilities.CachedShipStatus.GetComponent(Il2CppType.From(SubmarineStatusType))?.TryCast(SubmarineStatusType) as MonoBehaviour;
-                        }
-                        else
-                        {
-                            return _submarineStatus = null;
-                        }
-                    }
-                }
-                else
-                {
-                    return _submarineStatus;
-                }
+                return !Loaded
+                    ? null
+                    : _submarineStatus is null || _submarineStatus.WasCollected || !_submarineStatus || _submarineStatus == null
+                    ? MapUtilities.CachedShipStatus is null || MapUtilities.CachedShipStatus.WasCollected || !MapUtilities.CachedShipStatus || MapUtilities.CachedShipStatus == null
+                        ? (_submarineStatus = null)
+                        : MapUtilities.CachedShipStatus.Type == SUBMERGED_MAP_TYPE
+                            ? (_submarineStatus = MapUtilities.CachedShipStatus.GetComponent(Il2CppType.From(SubmarineStatusType))?.TryCast(SubmarineStatusType) as MonoBehaviour)
+                            : (_submarineStatus = null)
+                    : _submarineStatus;
             }
         }
 
@@ -156,8 +141,7 @@ namespace SuperNewRoles
 
         public static float GetSubmergedNeutralLightRadius(bool isImpostor)
         {
-            if (!Loaded) return 0;
-            return (float)CalculateLightRadiusMethod.Invoke(SubmarineStatus, new object[] { null, true, isImpostor });
+            return !Loaded ? 0 : (float)CalculateLightRadiusMethod.Invoke(SubmarineStatus, new object[] { null, true, isImpostor });
         }
 
         public static void ChangeFloor(bool toUpper)
@@ -190,8 +174,7 @@ namespace SuperNewRoles
 
         public static bool getInTransition()
         {
-            if (!Loaded) return false;
-            return (bool)InTransitionField.GetValue(null);
+            return Loaded && (bool)InTransitionField.GetValue(null);
         }
 
         public static void RepairOxygen()

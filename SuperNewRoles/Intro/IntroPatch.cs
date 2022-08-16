@@ -11,14 +11,14 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch]
     class IntroPatch
     {
-        public static void setupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+        public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 var newTeam2 = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                 newTeam2.Add(PlayerControl.LocalPlayer);
                 yourTeam = newTeam2;
-                if (PlayerControl.LocalPlayer.isCrew())
+                if (PlayerControl.LocalPlayer.IsCrew())
                 {
                     var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     newTeam.Add(PlayerControl.LocalPlayer);
@@ -33,7 +33,7 @@ namespace SuperNewRoles.Patches
                 }
                 else
                 {
-                    switch (PlayerControl.LocalPlayer.getRole())
+                    switch (PlayerControl.LocalPlayer.GetRole())
                     {
                         case RoleId.MadMate:
                         case RoleId.MadMayor:
@@ -46,7 +46,7 @@ namespace SuperNewRoles.Patches
                             ImpostorTeams.Add(PlayerControl.LocalPlayer);
                             foreach (PlayerControl player in CachedPlayer.AllPlayers)
                             {
-                                if ((player.isImpostor() || player.isRole(RoleId.Spy)) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                                if ((player.IsImpostor() || player.IsRole(RoleId.Spy)) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                                 {
                                     ImpostorTeams.Add(player);
                                 }
@@ -74,7 +74,7 @@ namespace SuperNewRoles.Patches
                             int FoxNum = 0;
                             foreach (PlayerControl player in CachedPlayer.AllPlayers)
                             {
-                                if (player.isRole(RoleId.Fox))
+                                if (player.IsRole(RoleId.Fox))
                                 {
                                     FoxNum++;
                                     FoxTeams.Add(player);
@@ -83,7 +83,7 @@ namespace SuperNewRoles.Patches
                             yourTeam = FoxTeams;
                             break;
                         default:
-                            if (PlayerControl.LocalPlayer.isImpostor())
+                            if (PlayerControl.LocalPlayer.IsImpostor())
                             {
                                 goto ImpostorIntroTeam;
                             }
@@ -111,23 +111,23 @@ namespace SuperNewRoles.Patches
             }
         }
 
-        public static void setupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+        public static void SetupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
             IntroHandler.Handler();
             Color32 color = new(127, 127, 127, byte.MaxValue);
-            if (ModeHandler.isMode(ModeId.Default, ModeId.SuperHostRoles))
+            if (ModeHandler.IsMode(ModeId.Default, ModeId.SuperHostRoles))
             {
-                if (PlayerControl.LocalPlayer.isNeutral())
+                if (PlayerControl.LocalPlayer.IsNeutral())
                 {
-                    IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole());
+                    IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
                     __instance.BackgroundBar.material.color = color;
-                    __instance.TeamTitle.text = ModTranslation.getString("Neutral");
+                    __instance.TeamTitle.text = ModTranslation.GetString("Neutral");
                     __instance.TeamTitle.color = color;
-                    __instance.ImpostorText.text = ModTranslation.getString("NeutralSubIntro");
+                    __instance.ImpostorText.text = ModTranslation.GetString("NeutralSubIntro");
                 }
                 else
                 {
-                    switch (PlayerControl.LocalPlayer.getRole())
+                    switch (PlayerControl.LocalPlayer.GetRole())
                     {
                         case RoleId.MadMate:
                         case RoleId.MadJester:
@@ -140,9 +140,10 @@ namespace SuperNewRoles.Patches
                         case RoleId.JackalFriends:
                         case RoleId.SeerFriends:
                         case RoleId.MayorFriends:
-                            IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole());
+                        case RoleId.SatsumaAndImo:
+                            IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
                             __instance.BackgroundBar.material.color = Intro.color;
-                            __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
+                            __instance.TeamTitle.text = ModTranslation.GetString(Intro.NameKey + "Name");
                             __instance.TeamTitle.color = Intro.color;
                             __instance.ImpostorText.text = "";
                             break;
@@ -159,11 +160,11 @@ namespace SuperNewRoles.Patches
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
         class IntroCutsceneDestroyPatch
         {
-            public static void Prefix(IntroCutscene __instance)
+            public static void Prefix()
             {
                 float SetTime = 0;
                 bool Flag = true;
-                switch (PlayerControl.LocalPlayer.getRole())
+                switch (PlayerControl.LocalPlayer.GetRole())
                 {
                     case RoleId.DarkKiller:
                         SetTime = RoleClass.DarkKiller.KillCoolTime;
@@ -189,7 +190,7 @@ namespace SuperNewRoles.Patches
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(SetTime);
                 }
-                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
         }
 
@@ -206,28 +207,28 @@ namespace SuperNewRoles.Patches
                 new LateTask(() =>
                 {
                     CustomButton.MeetingEndedUpdate();
-                    if (ModeHandler.isMode(ModeId.Default))
+                    if (ModeHandler.IsMode(ModeId.Default))
                     {
-                        var myrole = PlayerControl.LocalPlayer.getRole();
+                        var myrole = PlayerControl.LocalPlayer.GetRole();
                         if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                         {
-                            var date = Intro.IntroDate.GetIntroDate(myrole);
+                            var date = IntroDate.GetIntroDate(myrole);
                             __instance.YouAreText.color = date.color;
-                            __instance.RoleText.text = ModTranslation.getString(date.NameKey + "Name");
+                            __instance.RoleText.text = ModTranslation.GetString(date.NameKey + "Name");
                             __instance.RoleText.color = date.color;
                             __instance.RoleBlurbText.text = date.TitleDesc;
                             __instance.RoleBlurbText.color = date.color;
                         }
                         if (PlayerControl.LocalPlayer.IsLovers())
                         {
-                            __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                            __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
                         }
                         if (PlayerControl.LocalPlayer.IsQuarreled())
                         {
-                            __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
+                            __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
                         }
                     }
-                    else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
                         Mode.SuperHostRoles.Intro.RoleTextHandler(__instance);
                     }
@@ -240,12 +241,12 @@ namespace SuperNewRoles.Patches
         {
             public static void Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
             {
-                setupIntroTeamIcons(__instance, ref teamToDisplay);
+                SetupIntroTeamIcons(__instance, ref teamToDisplay);
             }
 
             public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
             {
-                setupIntroTeam(__instance, ref teamToDisplay);
+                SetupIntroTeam(__instance, ref teamToDisplay);
             }
         }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
@@ -253,12 +254,12 @@ namespace SuperNewRoles.Patches
         {
             public static void Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
             {
-                setupIntroTeamIcons(__instance, ref yourTeam);
+                SetupIntroTeamIcons(__instance, ref yourTeam);
             }
 
             public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
             {
-                setupIntroTeam(__instance, ref yourTeam);
+                SetupIntroTeam(__instance, ref yourTeam);
             }
         }
 

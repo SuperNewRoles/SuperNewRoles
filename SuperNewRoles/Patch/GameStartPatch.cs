@@ -1,7 +1,7 @@
 using HarmonyLib;
-using UnityEngine;
-using SuperNewRoles.Mode;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.Mode;
+using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
@@ -23,7 +23,7 @@ namespace SuperNewRoles.Patch
                     PlayerControl.LocalPlayer.RpcSendChat(string.Format("Modが名前に含まれている状態では公開部屋にすることはできません。"));
                     return false;
                 }
-                else if (ModeHandler.isMode(ModeId.SuperHostRoles, false) && NameIncludeSNR && !NameIncludeSHR || ModeHandler.isMode(ModeId.SuperHostRoles, false) && NameIncludeMod && !NameIncludeSHR)
+                else if ((ModeHandler.IsMode(ModeId.SuperHostRoles, false) && NameIncludeSNR && !NameIncludeSHR) || (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && NameIncludeMod && !NameIncludeSHR))
                 {
                     SuperNewRolesPlugin.Logger.LogWarning("SHRモードで\"SNR\"が名前に含まれている状態では公開部屋にすることはできません。");
                     PlayerControl.LocalPlayer.RpcSendChat(string.Format("SHRモードでSNRが名前に含まれている状態では公開部屋にすることはできません。"));
@@ -43,13 +43,13 @@ namespace SuperNewRoles.Patch
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
         public static class LobbyCountDownTimer
         {
-            public static void Postfix(GameStartManager __instance)
+            public static void Postfix()
             {
                 if (Input.GetKeyDown(KeyCode.F8) && GameStartManager._instance && AmongUsClient.Instance.AmHost)
                 {
                     GameStartManager.Instance.countDownTimer = 0;
                 }
-                if (CustomOptions.DebugModeFastStart.getBool() && CustomOptions.IsDebugMode.getBool())//デバッグモードでデバッグ即開始が有効
+                if (CustomOptions.DebugModeFastStart != null && CustomOptions.DebugModeFastStart.GetBool() && CustomOptions.IsDebugMode.GetBool())//デバッグモードでデバッグ即開始が有効
                 {//カウントダウン中
                     if (GameStartManager.InstanceExists && GameStartManager.Instance.startState == GameStartManager.StartingStates.Countdown)
                     {//カウント0
