@@ -1,10 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-namespace SuperNewRoles.RolesImpostor
+using UnityEngine;
+
+namespace SuperNewRoles.Roles.Impostor
 {
     public static class Slugger
     {
-        //‚±‚±‚ÉƒR[ƒh‚ğ‘‚«‚±‚ñ‚Å‚­‚¾‚³‚¢
+        //ã“ã“ã«ã‚³ãƒ¼ãƒ‰ã‚’æ›¸ãã“ã‚“ã§ãã ã•ã„
+        public static List<PlayerControl> SetTarget()
+        {
+            List<PlayerControl> Targets = new();
+            foreach (CachedPlayer player in CachedPlayer.AllPlayers)
+            {
+                if (player.IsDead()) continue;
+                if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
+                if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, player.transform.position) > 5f) continue;
+                Targets.Add(player);
+            }
+            return Targets;
+        }
     }
 }

@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Mode;
@@ -223,10 +225,34 @@ namespace SuperNewRoles.CustomRPC
         UncheckedUsePlatform,
         PartTimerSet,
         SetMatryoshkaDeadbody,
-        StefinderIsKilled
+        StefinderIsKilled,
+        PlayPlayerAnimation,
+        SluggerExile
     }
     public static class RPCProcedure
     {
+        public static void SluggerExile(byte SourceId, List<byte> Targets)
+        {
+            Logger.Info("～SluggerExile～");
+            PlayerControl Source = SourceId.GetPlayerControl();
+            if (Source == null) return;
+            Logger.Info("Source突破");
+            foreach (byte target in Targets)
+            {
+                PlayerControl Player = target.GetPlayerControl();
+                Logger.Info($"{target}はnullか:{Player == null}");
+                if (Player == null) continue;
+                Player.Exiled();
+                new SluggerDeadbody().Start(Source.PlayerId, Player.PlayerId, Source.transform.position - Player.transform.position);
+            }
+        }
+        public static void PlayPlayerAnimation(byte playerid, byte type)
+        {
+            RpcAnimationType AnimType = (RpcAnimationType)type;
+            PlayerAnimation PlayerAnim = PlayerAnimation.GetPlayerAnimation(playerid);
+            if (PlayerAnim == null) return;
+            PlayerAnim.HandleAnim(AnimType);
+        }
         public static void SetMatryoshkaDeadBody(byte sourceid, byte targetid, bool Is)
         {
             PlayerControl source = ModHelpers.PlayerById(sourceid);
@@ -1341,6 +1367,19 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.StefinderIsKilled:
                             StefinderIsKilled(reader.ReadByte());
+                            break;
+                        case CustomRPC.PlayPlayerAnimation:
+                            PlayPlayerAnimation(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SluggerExile:
+                            source = reader.ReadByte();
+                            byte count = reader.ReadByte();
+                            List<byte> Targets = new();
+                            for (int i = 0; i < count; i++)
+                            {
+                                Targets.Add(reader.ReadByte());
+                            }
+                            SluggerExile(source, Targets);
                             break;
                     }
                 }

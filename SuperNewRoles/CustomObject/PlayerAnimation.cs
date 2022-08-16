@@ -2,12 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
+using Hazel;
+using SuperNewRoles.Helpers;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomObject
 {
+    public enum RpcAnimationType
+    {
+        Stop,
+        SluggerCharge,
+        SluggerMurder
+    }
     public class PlayerAnimation
     {
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnDestroy))]
+        public static class PlayerControlOnDestroyPatch
+        {
+            public static void Postfix(PlayerControl __instance)
+            {
+                PlayerAnimation.GetPlayerAnimation(__instance.PlayerId)?.OnDestroy();
+            }
+        }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
         public static class PlayerControlFixedUpdatePatch
         {
@@ -18,17 +34,11 @@ namespace SuperNewRoles.CustomObject
                 {
                     PlayerAnimation.FixedAllUpdate();
                 }
-                if (Input.GetKeyDown(KeyCode.M) && __instance == PlayerControl.LocalPlayer)
-                {
-                    var anim = PlayerAnimation.GetPlayerAnimation(__instance.PlayerId);
-                    anim.Init(GetSprites("SuperNewRoles.Resources.harisen.harisen_", 11), false, 15);
-                    anim.transform.localPosition = new(0.75f, 0, -1);
-                    anim.transform.localScale = new(-1, 1, 1);
-                }
             }
         }
         public static List<PlayerAnimation> PlayerAnimations = new();
         public PlayerControl Player;
+        public PlayerPhysics Physics;
         public byte PlayerId;
         public GameObject gameObject;
         public Transform transform;
@@ -46,12 +56,22 @@ namespace SuperNewRoles.CustomObject
                 Logger.Error($"Playerがnullでした","PlayerAnimation");
                 return;
             }
+            Physics = Player.MyPhysics;
             PlayerId = Player.PlayerId;
             gameObject = new("PlayerAnimation");
             transform = gameObject.transform;
             transform.SetParent(Player.transform.FindChild("Sprite"));
             SpriteRender = gameObject.AddComponent<SpriteRenderer>();
             PlayerAnimations.Add(this);
+        }
+        public void OnDestroy()
+        {
+            if (CachedPlayer.LocalPlayer == null || PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                PlayerAnimations = new();
+                return;
+            }
+            PlayerAnimations.RemoveAll(x => x.PlayerId == CachedPlayer.LocalPlayer.PlayerId);
         }
         public bool Playing = false;
         public bool IsLoop;
@@ -60,16 +80,18 @@ namespace SuperNewRoles.CustomObject
         private float updatedefaulttime;
         private int index;
         public Sprite[] Sprites;
+        public Action OnAnimationEnd;
+        public Action OnFixedUpdate;
         /// <summary>
         /// 指定したパスの連番のファイルを取得できます。
         /// </summary>
         /// <param name="path">そこまでのパス</param>
         /// <param name="num">連番数です。1～6だと5です。</param>
         /// <returns></returns>
-        public static Sprite[] GetSprites(string path, int num, float pixelsPerUnit = 115f)
+        public static Sprite[] GetSprites(string path, int num, float pixelsPerUnit = 115f, int start = 1)
         {
             List<Sprite> Sprites = new();
-            for (int i = 1; i < num + 1; i++)
+            for (int i = start; i < num + start; i++)
             {
                 string countdata = "000" + i.ToString();
                 if (i >= 10)
@@ -83,11 +105,12 @@ namespace SuperNewRoles.CustomObject
                         countdata = "00" + i.ToString();
                     }
                 }
+                Logger.Info(path + countdata + ".png");
                 Sprites.Add(ModHelpers.LoadSpriteFromResources(path + countdata + ".png", pixelsPerUnit));
             }
             return Sprites.ToArray();
         }
-        public void Init(Sprite[] sprites, bool isLoop, float framerate)
+        public void Init(Sprite[] sprites, bool isLoop, float framerate, Action onAnimationEnd = null, Action onFixedUpdate = null)
         {
             Logger.Info("いにっと");
             Sprites = sprites;
@@ -97,6 +120,9 @@ namespace SuperNewRoles.CustomObject
             updatedefaulttime = 1 / framerate;
             updatetime = updatedefaulttime;
             index = 0;
+            OnAnimationEnd = onAnimationEnd;
+            OnFixedUpdate = onFixedUpdate;
+            SpriteRender.sprite = sprites[0];
         }
         public static void FixedAllUpdate()
         {
@@ -107,8 +133,12 @@ namespace SuperNewRoles.CustomObject
         }
         public void FixedUpdate()
         {
-            if (!Playing) return;
+            if (!Playing) {
+                    SpriteRender.sprite = null;
+                return;
+            }
             updatetime -= Time.fixedDeltaTime;
+            if (OnFixedUpdate != null) OnFixedUpdate();
             if (updatetime <= 0)
             {
                 index++;
@@ -121,12 +151,74 @@ namespace SuperNewRoles.CustomObject
                     else
                     {
                         Playing = false;
-                        SpriteRender.sprite = null;
+                        Logger.Info($"チェック:{OnAnimationEnd != null}");
+                        if (OnAnimationEnd != null)
+                        {
+                            OnAnimationEnd();
+                        }
                         return;
                     }
                 }
                 SpriteRender.sprite = Sprites[index];
                 updatetime = updatedefaulttime;
+            }
+        }
+        public void RpcAnimation(RpcAnimationType AnimType)
+        {
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.PlayPlayerAnimation);
+            writer.Write(PlayerId);
+            writer.Write((byte)AnimType);
+            writer.EndRPC();
+            HandleAnim(AnimType);
+        }
+        public void HandleAnim(RpcAnimationType AnimType)
+        {
+            switch (AnimType)
+            {
+                case RpcAnimationType.Stop:
+                    Playing = false;
+                    SpriteRender.sprite = null;
+                    break;
+                case RpcAnimationType.SluggerCharge:
+                    SluggerChargeCreateAnimation();
+                    void SluggerChargeCreateAnimation()
+                    {
+                        Init(GetSprites("SuperNewRoles.Resources.harisen.tame_", 4), false, 12, new(() =>
+                        {
+                            SluggerChargeCreateAnimation();
+                        }), new(() =>
+                        {
+                            transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
+                            transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
+                        }));
+                    }
+                    break;
+                case RpcAnimationType.SluggerMurder:
+                    Init(PlayerAnimation.GetSprites("SuperNewRoles.Resources.harisen.harisen_", 8), false, 20);
+                    OnAnimationEnd = new(() =>
+                    {
+                        Init(PlayerAnimation.GetSprites("SuperNewRoles.Resources.harisen.harisen_", 1, start: 9), false, 4);
+                        OnAnimationEnd = new(() =>
+                        {
+                            Init(PlayerAnimation.GetSprites("SuperNewRoles.Resources.harisen.harisen_", 2, start: 10), false, 20);
+                            OnFixedUpdate = new(() =>
+                            {
+                                transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
+                                transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
+                            });
+                        });
+                        OnFixedUpdate = new(() =>
+                        {
+                            transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
+                            transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
+                        });
+                    });
+                    OnFixedUpdate = new(() =>
+                    {
+                        transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
+                        transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
+                    });
+                    break;
             }
         }
     }

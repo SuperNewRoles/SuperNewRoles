@@ -1512,5 +1512,13 @@ namespace SuperNewRoles
         {
             return !IsDead(player);
         }
+        public static bool IsDead(this CachedPlayer player)
+        {
+            return player == null || player.Data.Disconnected || player.Data.IsDead;
+        }
+        public static bool IsAlive(this CachedPlayer player)
+        {
+            return !IsDead(player);
+        }
     }
 }

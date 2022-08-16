@@ -23,16 +23,8 @@ namespace SuperNewRoles.Roles
                     RoleClass.Bestfalsecharge.IsOnMeeting = true;
                 }
 
-
                 //===========以下さつまいも===========//
-                if (RoleClass.SatsumaAndImo.TeamNumber == 1)//クルーなら
-                {
-                    RoleClass.SatsumaAndImo.TeamNumber = 2;//マッドに
-                }
-                else if (RoleClass.SatsumaAndImo.TeamNumber == 2)//マッドなら
-                {
-                    RoleClass.SatsumaAndImo.TeamNumber = 1;//ジャカフレに
-                }
+                RoleClass.SatsumaAndImo.TeamNumber = RoleClass.SatsumaAndImo.TeamNumber == 1 ? 2 : 1;
             }
         }
     }

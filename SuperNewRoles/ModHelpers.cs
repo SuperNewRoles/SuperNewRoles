@@ -407,7 +407,17 @@ namespace SuperNewRoles
             if (SucsessChance == 0) return false;
             //成功確率が最大と一緒かそれ以上ならtrueを返す
             if (SucsessChance >= MaxChance) return true;
-            return UnityEngine.Random.Range(1, MaxChance) <= SucsessChance;
+            return UnityEngine.Random.Range(0, MaxChance) <= SucsessChance;
+        }
+        /// <summary>
+        /// ランダムを取得します。max = 10だと0～10まで取得できます
+        /// </summary>
+        /// <param name="max"></param>
+        /// <param name="min"></param>
+        /// <returns></returns>
+        public static int GetRandomInt(int max, int min = 0)
+        {
+            return UnityEngine.Random.Range(min, max+1);
         }
         public static bool HidePlayerName(PlayerControl source, PlayerControl target)
         {
@@ -640,6 +650,10 @@ namespace SuperNewRoles
             return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
         }
 
+        public static PlayerControl GetPlayerControl(this byte id)
+        {
+            return PlayerById(id);
+        }
         public static PlayerControl PlayerById(byte id)
         {
             foreach (CachedPlayer player in CachedPlayer.AllPlayers)

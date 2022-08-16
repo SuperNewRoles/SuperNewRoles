@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -1627,6 +1627,7 @@ namespace SuperNewRoles.CustomOption
             LoversLongTask = loversoption.Item3;
 
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:" + CustomOption.Max);
+            SuperNewRolesPlugin.Logger.LogInfo("設定数:" + CustomOption.options.Count);
         }
     }
 }

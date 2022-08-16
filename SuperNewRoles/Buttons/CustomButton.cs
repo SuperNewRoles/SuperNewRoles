@@ -76,6 +76,12 @@ namespace SuperNewRoles.Buttons
             {
                 actionButton.graphic.color = new(1f, 1f, 1f, 0.3f);
                 OnClick();
+                if (HasEffect && !isEffectActive)
+                {
+                    Timer = EffectDuration;
+                    actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    isEffectActive = true;
+                }
             }
         }
 
