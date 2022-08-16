@@ -86,7 +86,6 @@ SHRモードでは、シェリフはインポスターを置き換えている�
 
 ## 開発者
 [よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
-[さつまいも](https://github.com/satsumaimoamo) ([Twitter](https://twitter.com/satsumaimo_SNR))<br>
 [漢方薬の人](https://github.com/UKON256)<br>
 [じゅきまぐろ](https://github.com/jukimaguro1) ([Twitter](https://twitter.com/jukimaguro))<br>
 [くらと](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
