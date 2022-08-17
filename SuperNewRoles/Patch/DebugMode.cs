@@ -24,7 +24,7 @@ namespace SuperNewRoles.Patch
         }
         [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
         public static class DebugManager
-        {GetFastEnuma
+        {
             private static readonly System.Random random = new((int)DateTime.Now.Ticks);
             private static readonly List<PlayerControl> bots = new();
             public class LateTask
