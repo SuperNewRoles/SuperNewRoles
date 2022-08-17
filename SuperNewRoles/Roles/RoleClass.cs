@@ -2544,7 +2544,7 @@ namespace SuperNewRoles.Roles
             }
         }
         public static class Lovers
-            {
+        {
             public static List<List<PlayerControl>> LoversPlayer;
             public static Color32 color = new(255, 105, 180, byte.MaxValue);
             public static bool SameDie;

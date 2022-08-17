@@ -22,7 +22,6 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
     class RpcShapesihftPatch
     {
-        //シェイプシフトをした時に実行！
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target, [HarmonyArgument(1)] bool shouldAnimate)
         {
             SyncSetting.CustomSyncSettings();

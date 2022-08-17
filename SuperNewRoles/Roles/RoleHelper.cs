@@ -964,7 +964,7 @@ namespace SuperNewRoles
                 case (RoleId.Doppelganger):
                     RoleClass.Doppelganger.DoppelgangerPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
