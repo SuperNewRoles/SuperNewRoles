@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -153,6 +153,7 @@ namespace SuperNewRoles.Roles
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
             ToiletFan.ClearAndReload();
+            Doppelganger.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2498,6 +2499,39 @@ namespace SuperNewRoles.Roles
                 ToiletCool = CustomOptions.ToiletFanCoolTime.getFloat();
             }
         }
+        public static class Doppelganger
+        {
+            public static List<PlayerControl> DoppelgangerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float DurationTime;
+            public static float CoolTime;
+            public static float SucTime;
+            public static float NotSucTime;
+            public static Sprite ShapeButtonSprite;
+            public static DateTime ShapeButton;
+            public static bool IsShapeShift;
+            public static TextMeshPro DoppelgangerDurationText = null;
+            public static float Duration;
+            public static PlayerControl Target;
+            public static Sprite getShapeButtonSprite()
+            {
+                if (ShapeButtonSprite) return ShapeButtonSprite;
+                ShapeButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.DoppelgangerButton.png", 115f);
+                return ShapeButtonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                DoppelgangerPlayer = new();
+                DurationTime = CustomOptions.DoppelgangerShapeDuration.getFloat();
+                CoolTime = CustomOptions.DoppelgangerShapeCool.getFloat();
+                SucTime = CustomOptions.DoppelgangerSucTime.getFloat();
+                NotSucTime = CustomOptions.DoppelgangerNotSucTime.getFloat();
+                ShapeButton = DateTime.Now;
+                IsShapeShift = false;
+                Duration = DurationTime + 1.1f;
+                Target = PlayerControl.LocalPlayer;
+            }
+        }
         //新ロールクラス
         public static class Quarreled
         {
@@ -2510,7 +2544,7 @@ namespace SuperNewRoles.Roles
             }
         }
         public static class Lovers
-        {
+            {
             public static List<List<PlayerControl>> LoversPlayer;
             public static Color32 color = new(255, 105, 180, byte.MaxValue);
             public static bool SameDie;

@@ -853,6 +853,7 @@ namespace SuperNewRoles
                 RoleId.SuicideWisher => CustomOptions.SuicideWisherPlayerCount.getFloat(),
                 RoleId.Neet => CustomOptions.NeetPlayerCount.getFloat(),
                 RoleId.ToiletFan => CustomOptions.ToiletFanPlayerCount.getFloat(),
+                RoleId.Doppelganger => CustomOptions.DoppelgangerPlayerCount.getFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

@@ -151,6 +151,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.Kunoichi:
                                 Kunoichi.Update();
                                 break;
+                            case RoleId.Doppelganger:
+                                Doppelganger.DoppelgangerShapeDuration();
+                                break;
                             default:
                                 Minimalist.FixedUpdate.Postfix(MyRole);
                                 break;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -22,12 +22,24 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
     class RpcShapesihftPatch
     {
+        //シェイプシフトをした時に実行！
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target, [HarmonyArgument(1)] bool shouldAnimate)
         {
             SyncSetting.CustomSyncSettings();
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             if (target.IsBot()) return true;
-            if (__instance.PlayerId == target.PlayerId)
+            if (__instance.PlayerId != target.PlayerId)//一回目の処理
+            {
+                if (ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.AmHost)
+                {
+                    if (__instance.isRole(RoleId.Doppelganger))
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo($"[PlayerControlPatch]Doppelganger ShapeShift : {__instance.Data.PlayerName} => {target.Data.PlayerName}");//プレイヤー1がプレイヤー2へシェイプシフト
+                        RoleClass.Doppelganger.Target = target;
+                    }
+                }
+            }
+            if (__instance.PlayerId == target.PlayerId)//二回目の処理
             {
                 if (ModeHandler.isMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
                 {
@@ -38,6 +50,13 @@ namespace SuperNewRoles.Patches
                         {
                             __instance.RpcMurderPlayer(__instance);
                         }, 0.5f);
+                    }
+                }
+                if (ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.AmHost) //モードがデフォルトか
+                {
+                    if (__instance.isRole(RoleId.Doppelganger)) //ロールがドッペルゲンガーか
+                    {
+                        RoleClass.Doppelganger.IsShapeShift = false;
                     }
                 }
                 return true;
@@ -167,6 +186,31 @@ namespace SuperNewRoles.Patches
             }
             return true;
         }
+
+        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target, [HarmonyArgument(1)] bool shouldAnimate)
+        {
+            if (__instance.PlayerId != target.PlayerId)//一回目
+            {
+                if (ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.AmHost)
+                {
+                    if (__instance.isRole(RoleId.Doppelganger))
+                    {
+                        RoleClass.Doppelganger.IsShapeShift = true;
+                    }
+                }
+            }
+            if (__instance.PlayerId == target.PlayerId)//2回目
+            {
+                if (ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.AmHost) //モードがデフォルトか
+                {
+                    if (__instance.isRole(RoleId.Doppelganger)) //ロールがドッペルゲンガーか
+                    {
+                        Doppelganger.DoppelgangerResetCoolDown();
+                        RoleClass.Doppelganger.Target = PlayerControl.LocalPlayer;
+                    }
+                }
+            }
+        }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
     class CheckProtectPatch
@@ -281,6 +325,19 @@ namespace SuperNewRoles.Patches
                     RoleClass.Vampire.target = __instance.currentTarget;
                     RoleClass.Vampire.KillTimer = DateTime.Now;
                     RoleClass.Vampire.Timer = RoleClass.Vampire.KillDelay;
+                    return false;
+                }
+                if (PlayerControl.LocalPlayer.isRole(RoleId.Doppelganger))
+                {
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(__instance.currentTarget);
+                    if(RoleClass.Doppelganger.Target.PlayerId == __instance.currentTarget.PlayerId)
+                    {
+                        PlayerControl.LocalPlayer.SetKillTimer(RoleClass.Doppelganger.SucTime);
+                    }
+                    else
+                    {
+                        PlayerControl.LocalPlayer.SetKillTimer(RoleClass.Doppelganger.NotSucTime);
+                    }
                     return false;
                 }
                 bool showAnimation = true;

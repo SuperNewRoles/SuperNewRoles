@@ -65,6 +65,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SuicideWisherSuicideButton;
         public static CustomButton FastMakerButton;
         public static CustomButton ToiletFanButton;
+        public static CustomButton DoppelgangerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -1985,6 +1986,43 @@ namespace SuperNewRoles.Buttons
                 buttonText = ModTranslation.getString("ToiletName"),
                 showButtonText = true
             };
+
+            DoppelgangerButton = new CustomButton(
+                () =>
+                {
+                    Doppelganger.DoppelgangerShape();
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Doppelganger; },
+                () =>
+                {
+                    if (DoppelgangerButton.Timer <= 0 && PlayerControl.LocalPlayer.CanMove)
+                    {
+                        return true;
+                    }
+                    return false;
+                },
+                () =>
+                {
+                    DoppelgangerButton.MaxTimer = RoleClass.Doppelganger.CoolTime;
+                    DoppelgangerButton.Timer = RoleClass.Doppelganger.CoolTime;
+                },
+                RoleClass.Doppelganger.getShapeButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AdminButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.getString("ShapeShiftName"),
+                showButtonText = true
+            };
+            RoleClass.Doppelganger.DoppelgangerDurationText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent);
+            RoleClass.Doppelganger.DoppelgangerDurationText.text = "";
+            RoleClass.Doppelganger.DoppelgangerDurationText.enableWordWrapping = false;
+            RoleClass.Doppelganger.DoppelgangerDurationText.transform.localScale = Vector3.one * 0.5f;
+            RoleClass.Doppelganger.DoppelgangerDurationText.transform.localPosition += new Vector3(-2.575f, -0.95f, 0);
 
             setCustomButtonCooldowns();
         }

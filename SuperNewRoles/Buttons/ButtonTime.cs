@@ -236,5 +236,16 @@ namespace SuperNewRoles.Buttons
                 if (Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer <= 0f) Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = 0f; return;
             }
         }
+        public static void DoppelgangerButton()
+        {
+            HudManagerStartPatch.DoppelgangerButton.actionButton.cooldownTimerText.color = Color.white;
+            if (RoleClass.Doppelganger.ShapeButton == null)
+            {
+                RoleClass.Doppelganger.ShapeButton = DateTime.Now;
+            }
+            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Doppelganger.CoolTime);
+            HudManagerStartPatch.DoppelgangerButton.Timer = (float)(RoleClass.Doppelganger.ShapeButton + TimeSpanDate - DateTime.Now).TotalSeconds;
+            if (HudManagerStartPatch.DoppelgangerButton.Timer <= 0f) HudManagerStartPatch.DoppelgangerButton.Timer = 0f; return;
+        }
     }
 }
