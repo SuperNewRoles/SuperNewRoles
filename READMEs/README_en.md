@@ -217,16 +217,16 @@ Note that another Impostor will also be selected as a target.
 ## EvilNekomata 
 
 ### Team Impostor
-When I am expelled from a meeting, <br>. 
+When I am expelled from a meeting, .<br> 
 We will take one of them on the road, regardless of their position. <br> 
 Whether or not Nekomata are chained together can be changed by the Nice Nekomata. <br> 
 
 ----------------------- 
 ## CountChanger
 ### Team Impostor
-You can change the decision of the opponent and the position. <br>. 
+You can change the decision of the opponent and the position. .<br> 
 If the opponent exchanges with a crewmate, he will not die even if the sheriff suicide attacks 
-him, etc.<br><br>. 
+him, etc..<br><br> 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
@@ -241,7 +241,7 @@ Arrows will be displayed to the location of nearby non-Team Impostorplayers.
 ----------------------- 
 ## EvilScientist
 ### Team Impostor
-By pressing the transparency button, <br>. 
+By pressing the transparency button, .<br> 
 You become invisible for a certain period of time. 
 ### Game Settings 
 | Name | Description 
@@ -316,7 +316,7 @@ The number of times it can be used is reduced each time it is defended.
 ### Team Impostor
 A set number (default: 30) of corpses will be generated (not additional)<br> when you are 
 killed. 
-A separate kill cool time can be set for this position<br>. 
+A separate kill cool time can be set for this position.<br> 
 It is recommended to use about 10 corpses because of the possibility of falling off on the 
 Switch, etc. <br> 
 SuperHostRoles support. 
@@ -331,7 +331,7 @@ SuperHostRoles support.
 ### Team Impostor
 First, a location set button appears. <br> 
 Press that button to set the move location. <br> 
-After that, there is a cool time<br>. 
+After that, there is a cool time.<br> 
 A button appears that allows you to teleport to the move location. 
 ### Game Settings 
 | Name | Description 
@@ -341,7 +341,7 @@ A button appears that allows you to teleport to the move location.
 ----------------------- 
 ## Levelinger
 ### Team Impostor
-When you make a kill, you gain 1 experience. <br>. 
+When you make a kill, you gain 1 experience. .<br> 
 When the experience level reaches a certain number, the level increases. <br> 
 As the level increases, each Impostor's special abilities become available. <br> 
 In addition, the killcools accumulate while the levelers are doing their tasks. <br> 
@@ -367,7 +367,7 @@ Impostor. <br>
 Before being promoted to Impostor, the crewmate decision was made and visibility is also 
 crewmate,<br> but 
 If you are promoted to Impostor, you will be in the Impostor's field of view in the Impostor's 
-decision<br>. 
+decision.<br> 
 Impostor can't kill mad killer 
 ### Game Settings 
 | Name | Description 
@@ -378,7 +378,7 @@ Impostor can't kill mad killer
 ----------------------- 
 ## Survivor
 ### Team Impostor
-You must survive to win. <br>. 
+You must survive to win. .<br> 
 Survivors can kill with n times faster than normal kill cool. 
 ### Game Settings 
 | Name | Description 
@@ -424,7 +424,7 @@ Can commit suicide.
 ----------------------- 
 ## FastMaker
 ### Team Impostor
-The first kill can make a mad mate<br>. 
+The first kill can make a mad mate.<br> 
 The second and subsequent kills are normal kills. 
 ### Game Settings 
 | Name | Description 
@@ -433,9 +433,9 @@ The second and subsequent kills are normal kills.
 ----------------------- 
 ## Kunoichi
 ### Team Impostor
-Use your ninjutsu to deceive the village<br>. 
+Use your ninjutsu to deceive the village.<br> 
 You can throw kunai. A kunai can be used to kill a player after the number of hits set in the 
-"Number of kunai required for a kill" section<br>. 
+"Number of kunai required for a kill" section.<br> 
 If you stand still for a certain period of time (the number of seconds set in the "Time required 
 for transparency" section), you can make it transparent. It will be released when you do 
 something. 
@@ -451,9 +451,9 @@ The F key can be used to equip a kunai. <br>
 ----------------------- 
 ## SecretlyKiller
 ### Team Impostor
-Please be quiet during the power outage<br>. 
-Normal kill button and <br>. 
-Ability to kill targets remotely with no sound and no kill warp<br>. 
+Please be quiet during the power outage.<br> 
+Normal kill button and .<br> 
+Ability to kill targets remotely with no sound and no kill warp.<br> 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
@@ -464,7 +464,7 @@ Ability to kill targets remotely with no sound and no kill warp<br>.
 ----------------------- 
 ## Smasher 
 ### Team Impostor
-Let's do a series of kills<br>. 
+Let's do a series of kills.<br> 
 You have two kill buttons, but the second one can only be used once during the match, instead 
 of having a kill kill cooler. <br> 
 To prevent kills without a first kill, the sub's kill button requires a 10 second kill cooldown 
@@ -477,8 +477,8 @@ only at the beginning of the match. <br>
 ----------------------- 
 ## DoubleKiller
 ### Team Impostor
-Use the independent kill button<br>. 
-It has two kill buttons, each with its own cooldown. <br>. 
+Use the independent kill button.<br> 
+It has two kill buttons, each with its own cooldown. .<br> 
 You can change in the settings whether you can use sabotage or not. <br> 
 ### Game Settings 
 | Name | Description 
@@ -491,7 +491,7 @@ key.
 ----------------------- 
 ## Lighter
 ### Team Crew
-By pressing the light button, <br>. 
+By pressing the light button, .<br> 
 Changes to a set field of view for a set period of time 
 ### Game Settings 
 | Name | Description 
@@ -575,7 +575,7 @@ SuperHostRoles support
 ## Bait
 ### Team Crew
 If killed,<br> the 
-The person you kill will be made to report you. <br>. 
+The person you kill will be made to report you. .<br> 
 SuperHostRoles support 
 ### Game Settings 
 | Name | Description 
@@ -605,7 +605,7 @@ SuperHostRoles support
 ### Team Crew
 First, a location set button appears. <br> 
 Press that button to set the move location. <br> 
-After that, there is a cool time<br>. 
+After that, there is a cool time.<br> 
 A button appears that allows you to teleport to the move location. 
 ### Game Settings 
 | Name | Description 
@@ -616,13 +616,13 @@ A button appears that allows you to teleport to the move location.
 ## Best False Charge
 
 ### Team Crew
-Death at the end of the first meeting<br>. 
+Death at the end of the first meeting.<br> 
 SuperHostRoles support 
 
 ----------------------- 
 ## NiceNekomata
 ### Team Crew
-When I am expelled from a meeting, <br>. 
+When I am expelled from a meeting, .<br> 
 We will take one of them on the road, regardless of their position. <br> 
 SuperHostRoles support 
 ### Game Settings 
@@ -654,7 +654,7 @@ The sheriff himself dies.
 ----------------------- 
 ## NiceScientist
 ### Team Crew
-By pressing the transparency button, <br>. 
+By pressing the transparency button, .<br> 
 You become invisible for a certain period of time. 
 ### Game Settings 
 | Name | Description 
@@ -688,7 +688,7 @@ result in the normal vote count.
 ## Technician
 
 ### Team Crew
-Only during sabotage can you enter the vent<br>. 
+Only during sabotage can you enter the vent.<br> 
 After the saboteur is finished, he is forced to leave. <br> 
 SuperHostRoles support 
 
@@ -717,7 +717,7 @@ When you press that button, the position of the person you pressed will appear i
 ----------------------- 
 ## MadMayor
 ### Team Impostor
-The decision is crewmate, but<br>. 
+The decision is crewmate, but.<br> 
 This is a roll of the Impostor camp. <br> 
 As with Mayer, you can increase the number of your votes. <br> 
 Help the Impostor. <br> 
@@ -751,7 +751,7 @@ However, if Hawkeye is used, it will not be able to move for 10 seconds afterwar
 ## MadHawk
 ### Team Impostor
 Clicking the Hawkeye button widens the visible area for a certain period of time. <br> 
-The decision is crewmate, but<br>. 
+The decision is crewmate, but.<br> 
 This is a roll of the Impostor camp. <br> 
 Help the Impostor. 
 ### Game Settings 
@@ -767,15 +767,15 @@ Help the Impostor.
 ### Team Crew
 If the baker is alive at the end of the meeting, the chat will say "Bread has been distributed". 
 <br> 
-SHR compatible<br>. 
+SHR compatible.<br> 
 
 ----------------------- 
 ## Spy 
 ### Team Crew
-Deceive the Impostor and lead the Cluemate camp to victory<br>. 
+Deceive the Impostor and lead the Cluemate camp to victory.<br> 
 The spy is a crewmate, but appears to be a peer from the Impostor. <br> 
 Spies are crewmates and have no special abilities. <br> 
-In normal mode, an Impostor cannot cut fellow Impostors and spies<br>. 
+In normal mode, an Impostor cannot cut fellow Impostors and spies.<br> 
 SuperHostRoles support 
 ### Game Settings 
 | Name | Description 
@@ -813,14 +813,14 @@ SuperHostRoles support
 
 ### Team Third
 If the player survives until the end of the game, he or she wins an additional victory. <br> 
-You can win with any camp. <br>. 
+You can win with any camp. .<br> 
 SuperHostRoles support 
 
 ----------------------- 
 ## Jackal 
 ### Team Third
 Can kill and vent. <br> 
-Press the side kick button<br>. 
+Press the side kick button.<br> 
 Target can be [Sidekick](#SideKick). <br> 
 The ability to sabotage can be changed in the settings. <br> 
 It is also possible to change in the settings whether a side kick can be made. <br> 
@@ -839,8 +839,8 @@ It is also possible to change in the settings whether a side kick can be made. <
 ## Sidekick 
 
 ### Team Third
-You will not be the first to be selected. <br>. 
-Being side-kicked by a [jackal](#Jackal)<br>. 
+You will not be the first to be selected. .<br> 
+Being side-kicked by a [jackal](#Jackal).<br> 
 This position. <br> 
 When all jackals die, they are promoted to a side kick. 
 
@@ -849,7 +849,7 @@ When all jackals die, they are promoted to a side kick.
 ### Team Third
 Jackals are not known from Jackal Friends (can be changed in settings),<br> and 
 Jackals do not tell us who the Jackal Friends are. <br> 
-Jackal Friends will be put in the vent. (Can be changed in settings)<br>. 
+Jackal Friends will be put in the vent. (Can be changed in settings).<br> 
 Impostor, Jackal can kill Jackal Friends. 
 ### Game Settings 
 | Name | Description 
@@ -873,7 +873,7 @@ SuperHostRoles support
 ## Egoist
 ### Team Third
 A Team Thirdposition that counts as an Impostor but has different win conditions. <br> 
-You will not be killed by your allies. but will be affected by sabotage. <br>. 
+You will not be killed by your allies. but will be affected by sabotage. .<br> 
 If you achieve an Impostor Victory after all the Impostors visible to you are gone, you override 
 the Impostor Victory and achieve an Egoist Victory. <br> 
 SuperHostRoles support 
@@ -909,11 +909,11 @@ corpse of an amputee, it will not change.)
 ### Team Crew
 Seer has two abilities [Show Death Flash] and [Show Souls]. <br> 
 <br> 
-Ability 1 [Show Death Flash]:<br>. 
+Ability 1 [Show Death Flash]:.<br> 
 You can tell that someone's presence has disappeared. <br> 
 When someone dies somewhere, the screen glows blue. <br> 
 <br> 
-Ability 2 [Show Souls]<br>. 
+Ability 2 [Show Souls].<br> 
 After the end of a meeting in which someone dies, a spirit appears at the death location. <br> 
 If the setting "Limit Soul Duration" is turned off, the spirits are still bound there after 
 the meeting again. <br> 
@@ -934,18 +934,18 @@ report meeting.
 ----------------------- 
 ## MadSeer 
 ### Team Impostor
-The decision is crewmate, but<br>. 
+The decision is crewmate, but.<br> 
 This is a roll of the Impostor camp. <br> 
 Help the Impostor. <br> 
-It also has a fanatic setting<br>. 
+It also has a fanatic setting.<br> 
 <br> 
 Mad Seer, like [Seer](#Seer), has two abilities [see flashes of death] and [see ghosts]. <br> 
 <br> 
-Ability 1 [Show Death Flash]:<br>. 
+Ability 1 [Show Death Flash]:.<br> 
 You can tell that someone's presence has disappeared. <br> 
 When someone dies somewhere, the screen glows blue. <br> 
 <br> 
-Ability 2 [Show Souls]<br>. 
+Ability 2 [Show Souls].<br> 
 After the end of a meeting in which someone dies, a spirit appears at the death location. <br> 
 If the setting "Limit Soul Duration" is turned off, the spirits are still bound there after 
 the meeting again. <br> 
@@ -975,11 +975,11 @@ report meeting.
 ### Team Impostor
 Evil Seer, like [Seer](#Seer), has two abilities [see flashes of death] and [see ghosts]. <br>  <br> 
 <br> 
-Ability 1 [Show Death Flash]:<br>. 
+Ability 1 [Show Death Flash]:.<br> 
 You can tell that someone's presence has disappeared. <br> 
 When someone dies somewhere, the screen glows blue. <br> 
 <br> 
-Ability 2 [Show Souls]<br>. 
+Ability 2 [Show Souls].<br> 
 After the end of a meeting in which someone dies, a spirit appears at the death location. <br> 
 If the setting "Limit Soul Duration" is turned off, the spirits are still bound there after 
 the meeting again. <br> 
@@ -1000,19 +1000,19 @@ report meeting.
 ----------------------- 
 ## SeerFriends 
 ### Team Third
-The decision is crewmate, but<br>. 
+The decision is crewmate, but.<br> 
 The Team Third(jackal camp) rolls. <br> 
 Let's help the jackals. <br> 
-It also has a fanatic setting<br>. 
+It also has a fanatic setting.<br> 
 <br> 
 SeerFriends, like [Seer](#Seer), has two abilities [see flashes of death] and [see ghosts]. <br> . 
 <br> 
 <br> 
-Ability 1 [Show Death Flash]:<br>. 
+Ability 1 [Show Death Flash]:.<br> 
 You can tell that someone's presence has disappeared. <br> 
 When someone dies somewhere, the screen glows blue. <br> 
 <br> 
-Ability 2 [Show Souls]<br>. 
+Ability 2 [Show Souls].<br> 
 After the end of a meeting in which someone dies, a spirit appears at the death location. <br> 
 If the setting "Limit Soul Duration" is turned off, the spirits are still bound there after 
 the meeting again. <br> 
@@ -1041,7 +1041,7 @@ report meeting.
 ## JackalSeer 
 ### Team Third
 Can kill and vent. <br> 
-Press the side kick button<br>. 
+Press the side kick button.<br> 
 You can [Sidekick(Seer)](#SidekickSeer) the target. <br> 
 <br>
 The ability to sabotage can be changed in the settings. <br> 
@@ -1049,11 +1049,11 @@ It is also possible to change in the settings whether a side kick (seer) can be 
 <br> 
 Also, Jackal Seer, like [Seer](#Seer), has two abilities [see flashes of death] and [see ghosts].. 
 <br> 
-Ability 1 [Show Death Flash]:<br>. 
+Ability 1 [Show Death Flash]:.<br> 
 You can tell that someone's presence has disappeared. <br> 
 When someone dies somewhere, the screen glows blue. <br> 
 <br> 
-Ability 2 [Show Souls]<br>. 
+Ability 2 [Show Souls].<br> 
 After the end of a meeting in which someone dies, a spirit appears at the death location. <br> 
 If the setting "Limit Soul Duration" is turned off, the spirits are still bound there after 
 the meeting again. <br> 
@@ -1080,8 +1080,8 @@ report meeting.
 ----------------------- 
 ## SidekickSeer 
 ### Team Third
-You will not be the first to be selected. <br>. 
-Being side-kicked by a [jackalSeer](#JackalSeer)<br>. 
+You will not be the first to be selected. .<br> 
+Being side-kicked by a [jackalSeer](#JackalSeer).<br> 
 This position. <br> 
 When all jackals die, they are promoted to jackal seers. 
 
@@ -1098,10 +1098,10 @@ Instead, the killcool is short. <br>
 ----------------------- 
 ## Fox
 ### Team Third
-Team Third(fox camp)<br>. 
-Like God, if you survive to the end, you win alone<br>. 
-Also, you will not be killed<br>. 
-SHR compatible<br>. 
+Team Third(fox camp).<br> 
+Like God, if you survive to the end, you win alone.<br> 
+Also, you will not be killed.<br> 
+SHR compatible.<br> 
 SHR Support 
 ### Game Settings 
 | Name | Description 
@@ -1124,7 +1124,7 @@ Crew camp<br>
 He knows who the Assassins are from the beginning. He cannot tell who the Impostor is 
 because if he reveals his true identity, he will lose the Assassin's Conference. <br> 
 <br> 
-Both are SHR compatible<br>. 
+Both are SHR compatible.<br> 
 
 ### Game Settings 
 | Name | Description 
@@ -1176,9 +1176,9 @@ A pair of vents can be made.<br>
 ----------------------- 
 ## EvilHacker 
 ### Team Impostor
-Impostor to see Admin anytime<br>. 
-When looking at the admins, they cannot move and do not accumulate any kill cool time<br>. 
-Possible to make side kick mad mate in settings<br>. 
+Impostor to see Admin anytime.<br> 
+When looking at the admins, they cannot move and do not accumulate any kill cool time.<br> 
+Possible to make side kick mad mate in settings.<br> 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
@@ -1187,7 +1187,7 @@ Possible to make side kick mad mate in settings<br>.
 ----------------------- 
 ## Mad stuntman 
 ### Team Impostor
-Madmate version of [Stuntman](#Stuntman)<br>. 
+Madmate version of [Stuntman](#Stuntman).<br> 
 It cannot see the Impostor, but it can unconditionally prevent kills. <br> 
 ### Game Settings 
 | Name | Description 
@@ -1241,8 +1241,8 @@ SHR compatible. <br>
 ----------------------- 
 ## Mudmaker 
 ### Team Impostor
-Mud Mate that can make mad mate<br>. 
-SHR compatible<br>. 
+Mud Mate that can make mad mate.<br> 
+SHR compatible.<br> 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
@@ -1253,7 +1253,7 @@ SHR compatible<br>.
 ## Chief
 ### Team Crew
 A sheriff may be appointed. <br> 
-Trying to make an Impostor a sheriff is self-destructive<br>. 
+Trying to make an Impostor a sheriff is self-destructive.<br> 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
@@ -1266,7 +1266,7 @@ Trying to make an Impostor a sheriff is self-destructive<br>.
 ----------------------- 
 ## Mud Cleaner 
 ### Team Impostor
-Cleaner - Madmate version of cleaner. <br>. 
+Cleaner - Madmate version of cleaner. .<br> 
 Instead of being able to make corpses disappear, it does not have the fanatic ability. <br> 
 ### Game Settings 
 | Name | Description 
@@ -1278,10 +1278,10 @@ Instead of being able to make corpses disappear, it does not have the fanatic ab
 ----------------------- 
 ## Mayer Friends 
 ### Team Third
-The decision is crewmate, but<br>. 
+The decision is crewmate, but.<br> 
 The Team Third(jackal camp) rolls. <br> 
 Let's help the jackals. <br> 
-It also has a fanatic setting<br>. 
+It also has a fanatic setting.<br> 
 <br> 
 As with Mayer, you can increase the number of your votes. <br> 
 Note: The vote count setting will also include the normal vote count; setting it to 1 vote will 
@@ -1315,7 +1315,7 @@ SuperHostRoles support
 ### Team Third
 Jackal version of [Teleporter](#Teleporter). <br> 
 Can kill and vent. <br> 
-Press the side kick button<br>. 
+Press the side kick button.<br> 
 The ability to sabotage can be changed in the settings. <br> 
 ### Game Settings 
 | Name | Description 
@@ -1333,7 +1333,7 @@ The ability to sabotage can be changed in the settings. <br>
 ----------------------- 
 ## Demon
 ### Team Third
-SHR compatible<br>. 
+SHR compatible.<br> 
 If the Impostor wins with all survivors cursed, he will sidestep the Impostor victory and win 
 alone. <br> 
 ### Game Settings 
@@ -1351,7 +1351,7 @@ a fraction, it will be rounded down.
 If you oil and burn them all, you win alone. <br> 
 Due to a glitch, we are currently only able to support one person. <br> 
 <br> 
-SHR compatible<br>. 
+SHR compatible.<br> 
 <br> 
 With SHR, the kill button is used to paint,<br> and the 
 Shape-shifting with everyone painted is the winner. <br> 
@@ -1377,7 +1377,7 @@ If it survives to the end, it is the Team Thirdthat wins alone, just like [God](
 ### Team Crew
 It is judged as an Impostor to fortune tellers, sheriffs, etc. <br> 
 Tasks, etc. are the same as regular crews. <br> 
-SHR compatible<br>. 
+SHR compatible.<br> 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
@@ -1434,7 +1434,7 @@ SuperHostRoles support
 ----------------------- 
 ## BlackCat 
 ### Team Impostor
-A [Mad Mate](#Mad Mate) version of [Nice Nekomata](#Nice Nekomata)<br>. 
+A [Mad Mate](#Mad Mate) version of [Nice Nekomata](#Nice Nekomata).<br> 
 SuperHostRoles support 
 ### Game Settings 
 | Name | Description 
