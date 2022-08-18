@@ -1,4 +1,3 @@
-using System;
 using HarmonyLib;
 using TMPro;
 
@@ -28,7 +27,7 @@ namespace SuperNewRoles.Modules
 			}
 
             //誰か守ってたら音声あり
-            if (AnythingPlayerProcted || ProctedMessages != String.Empty)
+            if (AnythingPlayerProcted || ProctedMessages != null)
             {
                 __instance.ProtectedRecently.SetActive(true);
                 SoundManager.Instance.PlaySound(__instance.ProtectedRecentlySound, false, 1f);
@@ -48,7 +47,7 @@ namespace SuperNewRoles.Modules
         //初期化
         public static void Init()
         {
-            ProctedMessages = String.Empty;
+            ProctedMessages = "";
         }
 
         //スケジュール
