@@ -2509,10 +2509,11 @@ namespace SuperNewRoles.Roles
             public static float NotSucTime;
             public static Sprite ShapeButtonSprite;
             public static DateTime ShapeButton;
-            public static bool IsShapeShift;
             public static TextMeshPro DoppelgangerDurationText = null;
             public static float Duration;
             public static PlayerControl Target;
+            public static PlayerControl[] SHRPlayer;
+            public static PlayerControl[] SHRTarget;
             public static Sprite getShapeButtonSprite()
             {
                 if (ShapeButtonSprite) return ShapeButtonSprite;
@@ -2527,9 +2528,18 @@ namespace SuperNewRoles.Roles
                 SucTime = CustomOptions.DoppelgangerSucTime.getFloat();
                 NotSucTime = CustomOptions.DoppelgangerNotSucTime.getFloat();
                 ShapeButton = DateTime.Now;
-                IsShapeShift = false;
                 Duration = DurationTime + 1.1f;
                 Target = PlayerControl.LocalPlayer;
+                if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
+                {
+                    foreach (PlayerControl p in DoppelgangerPlayer)
+                    {
+                        Array.Resize(ref SHRPlayer, SHRPlayer.Length + 1);
+                        SHRPlayer[SHRPlayer.Length - 1] = p;
+                        Array.Resize(ref SHRTarget, SHRTarget.Length + 1);
+                        SHRTarget[SHRTarget.Length - 1] = p;
+                    }
+                }
             }
         }
         //新ロールクラス

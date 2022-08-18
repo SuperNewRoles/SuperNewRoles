@@ -26,7 +26,7 @@ namespace SuperNewRoles.Roles
         {
             if (!RoleClass.IsMeeting)
             {
-                if (RoleClass.Doppelganger.IsShapeShift)
+                if (RoleClass.Doppelganger.Target != PlayerControl.LocalPlayer)
                 {
                     RoleClass.Doppelganger.Duration -= Time.fixedDeltaTime;
                     if (RoleClass.Doppelganger.Duration <= 0)
@@ -36,7 +36,7 @@ namespace SuperNewRoles.Roles
                     }
                 }
             }
-            if(!RoleClass.IsMeeting && RoleClass.Doppelganger.IsShapeShift)
+            if(!RoleClass.IsMeeting && RoleClass.Doppelganger.Target != PlayerControl.LocalPlayer)
             {
                 if(RoleClass.Doppelganger.Duration > RoleClass.Doppelganger.DurationTime)
                 {

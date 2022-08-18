@@ -29,6 +29,26 @@ namespace SuperNewRoles.Patches
             if (target.IsBot()) return true;
             if (__instance.PlayerId != target.PlayerId)//一回目の処理
             {
+                if (ModeHandler.isMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
+                {
+                    if (__instance.isRole(RoleId.Doppelganger))
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo($"[PlayerControlPatch]Doppelganger ShapeShift : {__instance.Data.PlayerName} => {target.Data.PlayerName}");
+                        int i = 0;
+                        for ( ; __instance == RoleClass.Doppelganger.SHRPlayer[i]; i++)
+                        {
+                            if (i >= RoleClass.Doppelganger.SHRPlayer.Length)
+                            {
+                                SuperNewRolesPlugin.Logger.LogInfo("[PlayerControlPatch]Doppelganger ShapeShift Error : ドッペルゲンガーがシェイプシフトしましたが、シェイプシフトしたドッペルゲンガーが発見できませんでした。何回繰り返したか:" + i);
+                                break;
+                            }
+                        }
+                        if (i <= RoleClass.Doppelganger.SHRPlayer.Length)
+                        {
+                            RoleClass.Doppelganger.SHRTarget[i] = target;
+                        }
+                    }
+                }
                 if (ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.AmHost)
                 {
                     if (__instance.isRole(RoleId.Doppelganger))
@@ -50,12 +70,25 @@ namespace SuperNewRoles.Patches
                             __instance.RpcMurderPlayer(__instance);
                         }, 0.5f);
                     }
+                    if (__instance.isRole(RoleId.Doppelganger))
+                    {
+                        int i = 0;
+                        for (; __instance == RoleClass.Doppelganger.SHRPlayer[i]; i++)
+                        {
+                            if (i >= RoleClass.Doppelganger.SHRPlayer.Length) break;
+                        }
+                        if (i <= RoleClass.Doppelganger.SHRPlayer.Length)
+                        {
+                            RoleClass.Doppelganger.SHRTarget[i] = RoleClass.Doppelganger.SHRPlayer[i];
+                        }
+                    }
                 }
                 if (ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.AmHost) //モードがデフォルトか
                 {
                     if (__instance.isRole(RoleId.Doppelganger)) //ロールがドッペルゲンガーか
                     {
-                        RoleClass.Doppelganger.IsShapeShift = false;
+                        RoleClass.Doppelganger.Target = PlayerControl.LocalPlayer;
+                        Doppelganger.DoppelgangerResetCoolDown();
                     }
                 }
                 return true;
@@ -184,31 +217,6 @@ namespace SuperNewRoles.Patches
                 }
             }
             return true;
-        }
-
-        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target, [HarmonyArgument(1)] bool shouldAnimate)
-        {
-            if (__instance.PlayerId != target.PlayerId)//一回目
-            {
-                if (ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.AmHost)
-                {
-                    if (__instance.isRole(RoleId.Doppelganger))
-                    {
-                        RoleClass.Doppelganger.IsShapeShift = true;
-                    }
-                }
-            }
-            if (__instance.PlayerId == target.PlayerId)//2回目
-            {
-                if (ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.AmHost) //モードがデフォルトか
-                {
-                    if (__instance.isRole(RoleId.Doppelganger)) //ロールがドッペルゲンガーか
-                    {
-                        Doppelganger.DoppelgangerResetCoolDown();
-                        RoleClass.Doppelganger.Target = PlayerControl.LocalPlayer;
-                    }
-                }
-            }
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
@@ -632,6 +640,25 @@ namespace SuperNewRoles.Patches
                                 //作ってたら普通のキル
                                 SuperNewRolesPlugin.Logger.LogInfo("作ったので普通のキル");
                                 __instance.RpcMurderPlayer(target);
+                            }
+                            return false;
+                        case RoleId.Doppelganger:
+                            __instance.RpcMurderPlayer(target);
+                            int j = 0;
+                            for ( ; __instance == RoleClass.Doppelganger.SHRPlayer[j]; j++)
+                            {
+                                if (j >= RoleClass.Doppelganger.SHRPlayer.Length) return false;
+                            }
+                            if(j <= RoleClass.Doppelganger.SHRPlayer.Length)
+                            {
+                                if (target == RoleClass.Doppelganger.SHRTarget[j])
+                                {
+                                    RoleClass.Doppelganger.SHRPlayer[j].SetKillTimer(RoleClass.Doppelganger.SucTime);
+                                }
+                                else
+                                {
+                                    RoleClass.Doppelganger.SHRPlayer[j].SetKillTimer(RoleClass.Doppelganger.NotSucTime);
+                                }
                             }
                             return false;
                     }

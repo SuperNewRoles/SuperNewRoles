@@ -1992,7 +1992,7 @@ namespace SuperNewRoles.Buttons
                 {
                     Doppelganger.DoppelgangerShape();
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Doppelganger; },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Doppelganger && ModeHandler.isMode(ModeId.Default); },
                 () =>
                 {
                     if (DoppelgangerButton.Timer <= 0 && PlayerControl.LocalPlayer.CanMove)
