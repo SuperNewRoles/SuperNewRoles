@@ -15,7 +15,7 @@ namespace SuperNewRoles.Roles.Impostor
             {
                 if (player.IsDead()) continue;
                 if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
-                if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, player.transform.position) > 5f) continue;
+                if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, player.transform.position) > 7.5f) continue;
                 Targets.Add(player);
             }
             return Targets;

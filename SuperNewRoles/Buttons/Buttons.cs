@@ -115,8 +115,8 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
-                    SluggerButton.MaxTimer = 0f;
-                    SluggerButton.Timer = 0f;
+                    SluggerButton.MaxTimer = PlayerControl.GameOptions.killCooldown;
+                    SluggerButton.Timer = SluggerButton.MaxTimer;
                     SluggerButton.effectCancellable = false;
                     SluggerButton.EffectDuration = 5f;
                     SluggerButton.HasEffect = true;
@@ -155,6 +155,8 @@ namespace SuperNewRoles.Buttons
                         TargetsId.Add(Target.PlayerId);
                     }
                     RPCProcedure.SluggerExile(CachedPlayer.LocalPlayer.PlayerId, TargetsId);
+                    SluggerButton.MaxTimer = PlayerControl.GameOptions.killCooldown;
+                    SluggerButton.Timer = SluggerButton.MaxTimer;
                 }
             )
             {

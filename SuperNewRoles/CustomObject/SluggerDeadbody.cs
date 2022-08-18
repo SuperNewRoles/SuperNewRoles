@@ -65,18 +65,21 @@ namespace SuperNewRoles.CustomObject
         public Sprite[] Sprites;
         public int Index;
         public const float DefaultUpdateTime = 0.03f;
-        public static Sprite[] GetSprites()
+        public int SpriteType;
+        public Sprite[] GetSprites()
         {
             //0～2はアニメーションあり(index:8)
             //3～4はシンプル
             var type = ModHelpers.GetRandomInt(4);
+            type = 4;
+            SpriteType = type;
             switch (type)
             {
                 case 0:
                 case 1:
                 case 2:
                     List<Sprite> sprites = new();
-                    for (int i = 0; i < 8; i++)
+                    for (int i = 1; i <= 8; i++)
                     {
                         sprites.Add(ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.harisen.deadbody_{type}_{i}.PNG", 115f));
                     }
@@ -96,12 +99,21 @@ namespace SuperNewRoles.CustomObject
             Renderer = gameObject.AddComponent<SpriteRenderer>();
             var body = gameObject.AddComponent<Rigidbody2D>();
             body.gravityScale = 0f;
-            body.velocity = (Source.transform.position - Player.transform.position) * -1f;
+            Vector3 kakeru = Source.transform.position - Player.transform.position;
+            kakeru /= 1.75f;
+            Logger.Info(kakeru.ToString(), "ｼﾞｮｼﾞｮｼﾞｮ");
+            body.velocity = kakeru * -6f;
+            Logger.Info(kakeru.ToString(),"ﾊﾊﾊﾊ");
             Index = 0;
             Sprites = GetSprites();
             DeadBodys.Add(this);
             transform.position = Player.transform.position;
             transform.localScale = new(0.1f,0.1f,0);
+            transform.Rotate((Source.transform.position - Player.transform.position));
+            if (SpriteType == 3)
+            {
+                transform.Rotate((Source.transform.position - Player.transform.position) * -1f);
+            }
             Renderer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.PlayerMaterial;
             Renderer.maskInteraction = SpriteMaskInteraction.None;
             PlayerMaterial.SetColors(Player.Data.DefaultOutfit.ColorId, Renderer);
@@ -123,6 +135,11 @@ namespace SuperNewRoles.CustomObject
         public void FixedUpdate()
         {
             //transform.position += new Vector3(Force.x,Force.y,0);
+            if (gameObject == null)
+            {
+                DeadBodys.Remove(this);
+                return;
+            }
             UpdateTime -= Time.fixedDeltaTime;
             if (UpdateTime <= 0)
             {
