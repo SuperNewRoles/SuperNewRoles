@@ -55,7 +55,7 @@ SHRモードでは、シェリフはインポスターを置き換えている�
 
 ## クレジット
 
-[TheOtherRoles](https://github.com/Eisbison/TheOtherRoles) modの作り方の参考にさせていただきました。**Eisbision**さんありがとうございます！
+[TheOtherRoles](https://github.com/Eisbison/TheOtherRoles) modの作り方の参考にさせていただきました。**Eisbison**さんありがとうございます！
 
 [TheOtherRolesGM](https://github.com/yukinogatari/TheOtherRoles-GM) オプションやボタンなどのソースコードを参考にさせていただきました。**yukinogatari**さんありがとうございます！
 
