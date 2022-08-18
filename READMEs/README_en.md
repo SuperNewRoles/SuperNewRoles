@@ -29,6 +29,21 @@ In normal mode, time settings are also available.<br>
 The [ykundesuBeplnEx] setting is also included!<br>
 Currently, in SHR mode, you can only use the available/unavailable settings.<br>
 
+## Multiple people can be set up in one position.
+All crewmates can also be Sheriffs, etc.!<br>
+
+- Note: SHR mode
+  - Due to the specification of Sheriff replacing Impostor, "Sheriff for all" is not supported with [Task Win] in the Crew win condition.
+    - After the match starts, the Crew is immediately judged to have won the task. (No one with a task = 0 task remaining for Crew)
+    - Please include one person in the Crew team position who has a task. (Adding a Mad Mate, Jackal Friends, or Home Guard will not help).
+- However, if "Duplicate Mode/No Task Wins Mode" is turned on, it is possible to set "All Crew Mates are Sheriffs" in SHR mode.
+  - Crew win conditions in this setting
+    - Eradication of Impostor, Jackal, or other single victorious third team with a Sheriff kill.
+    - Hang up the Impostor, Jackal, or other single victorious third camp.
+    - The Impostor-Jackal is defeated by the Impostor-Jackal, and the single victorious third camp is killed by the Impostor-Jackal.
+
+Translated with www.DeepL.com/Translator (free version)
+
 ## Map Modification
 There is a setting to modify the map.<br>
 <br>
