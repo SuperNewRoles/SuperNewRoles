@@ -595,6 +595,9 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                     RoleClass.Stefinder.StefinderPlayer.Add(player);
                     break;
+                case RoleId.Slugger:
+                    RoleClass.Slugger.SluggerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -987,6 +990,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.Stefinder:
                     RoleClass.Stefinder.StefinderPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Slugger:
+                    RoleClass.Slugger.SluggerPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1488,6 +1494,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
                 else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
                 else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
+                else if (RoleClass.Slugger.SluggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Slugger;
                 //ロールチェック
             }
             catch (Exception e)
@@ -1502,6 +1509,14 @@ namespace SuperNewRoles
             return player == null || player.Data.Disconnected || player.Data.IsDead;
         }
         public static bool IsAlive(this PlayerControl player)
+        {
+            return !IsDead(player);
+        }
+        public static bool IsDead(this CachedPlayer player)
+        {
+            return player == null || player.Data.Disconnected || player.Data.IsDead;
+        }
+        public static bool IsAlive(this CachedPlayer player)
         {
             return !IsDead(player);
         }

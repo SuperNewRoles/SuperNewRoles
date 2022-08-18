@@ -936,6 +936,7 @@ namespace SuperNewRoles
                 RoleId.PartTimer => CustomOptions.PartTimerPlayerCount.GetFloat(),
                 RoleId.SatsumaAndImo => CustomOptions.SatsumaAndImoPlayerCount.GetFloat(),
                 RoleId.Stefinder => CustomOptions.StefinderPlayerCount.GetFloat(),
+                RoleId.Slugger => CustomOptions.SluggerPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
@@ -72,6 +73,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton NunButton;
         public static CustomButton PartTimerButton;
         public static CustomButton StefinderKillButton;
+        public static CustomButton SluggerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -94,6 +96,73 @@ namespace SuperNewRoles.Buttons
 
         public static void Postfix(HudManager __instance)
         {
+            SluggerButton = new(
+                () =>
+                {
+                    var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
+                    anim.RpcAnimation(RpcAnimationType.SluggerCharge);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Slugger; },
+                () =>
+                {
+                    if (SluggerButton.isEffectActive && !PlayerControl.LocalPlayer.CanMove)
+                    {
+                        var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
+                        SluggerButton.isEffectActive = false;
+                        anim.RpcAnimation(RpcAnimationType.Stop);
+                    }
+                    return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                },
+                () =>
+                {
+                    SluggerButton.MaxTimer = PlayerControl.GameOptions.killCooldown;
+                    SluggerButton.Timer = SluggerButton.MaxTimer;
+                    SluggerButton.effectCancellable = false;
+                    SluggerButton.EffectDuration = 5f;
+                    SluggerButton.HasEffect = true;
+                },
+                RoleClass.Kunoichi.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; },
+                true,
+                5f,
+                () =>
+                {
+                    List<PlayerControl> Targets = Roles.Impostor.Slugger.SetTarget();
+                    RpcAnimationType AnimationType = RpcAnimationType.SluggerMurder;
+                    //空振り判定
+                    if (Targets.Count <= 0)
+                    {
+                        AnimationType = RpcAnimationType.SluggerMurder;
+                    }
+                    var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
+                    anim.RpcAnimation(AnimationType);
+                    MessageWriter RPCWriter = RPCHelper.StartRPC(CustomRPC.CustomRPC.SluggerExile);
+                    RPCWriter.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    RPCWriter.Write((byte)Targets.Count);
+                    foreach (PlayerControl Target in Targets)
+                    {
+                        RPCWriter.Write(Target.PlayerId);
+                    }
+                    RPCWriter.EndRPC();
+                    List<byte> TargetsId = new();
+                    foreach (PlayerControl Target in Targets)
+                    {
+                        TargetsId.Add(Target.PlayerId);
+                    }
+                    RPCProcedure.SluggerExile(CachedPlayer.LocalPlayer.PlayerId, TargetsId);
+                    SluggerButton.MaxTimer = PlayerControl.GameOptions.killCooldown;
+                    SluggerButton.Timer = SluggerButton.MaxTimer;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("KunoichiKunai"),
+                showButtonText = true
+            };
             KunoichiKunaiButton = new(
                 () =>
                 {

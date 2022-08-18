@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using SuperNewRoles.CustomOption;
 using UnityEngine;
