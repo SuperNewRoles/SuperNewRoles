@@ -51,7 +51,7 @@ namespace SuperNewRoles
             AddTasks = new List<LateTask>();
         }
     }
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    [HarmonyPatch(typeof(ModManager), nameof(ModManager.LateUpdate))]
     class LateUpdate
     {
         public static void Postfix()

@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
                 if (RoleClass.Vulture.Arrow == null)
                 {
                     Arrow arrow = new(RoleClass.Vulture.color);
-                    arrow.arrow.SetActive(true);
+                    arrow.arrow.SetActive(false);
                     RoleClass.Vulture.Arrow = arrow;
                 }
                 float min_target_distance = float.MaxValue;
