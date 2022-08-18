@@ -55,7 +55,7 @@ If the host includes this mod, the position will be available to all!<br>
 
 ## Credits.
 
-[TheOtherRoles](https://github.com/Eisbison/TheOtherRoles) Thanks for the help in making the mod. **Thanks to Eisbision**!
+[TheOtherRoles](https://github.com/Eisbison/TheOtherRoles) Thanks for the help in making the mod. **Thanks to Eisbison**!
 
 [TheOtherRolesGM](https://github.com/yukinogatari/TheOtherRoles-GM) For the source code of the options and buttons. **Thanks to **yukinogatari**!
 
