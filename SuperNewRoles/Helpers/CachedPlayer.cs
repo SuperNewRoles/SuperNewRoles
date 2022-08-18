@@ -78,15 +78,14 @@ namespace SuperNewRoles
             CachedPlayer.AllPlayers.Add(player);
             CachedPlayer.PlayerPtrs[__instance.Pointer] = player;
 
-#if DEBUG
-            foreach (var cachedPlayer in CachedPlayer.AllPlayers)
+            foreach (var cachedPlayer in CachedPlayer.AllPlayers.ToArray())
             {
                 if (!cachedPlayer.PlayerControl || !cachedPlayer.PlayerPhysics || !cachedPlayer.NetTransform || !cachedPlayer.transform)
                 {
-                    SuperNewRolesPlugin.Logger.LogError("CachedPlayer {cachedPlayer.PlayerControl.name} has null fields");
+                    SuperNewRolesPlugin.Logger.LogError($"CachedPlayer {cachedPlayer.PlayerControl?.name} has null fields");
+                    CachedPlayer.AllPlayers.Remove(cachedPlayer);
                 }
             }
-#endif
         }
 
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnDestroy))]

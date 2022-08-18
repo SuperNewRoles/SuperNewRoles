@@ -133,6 +133,11 @@ namespace SuperNewRoles.CustomObject
         }
         public void FixedUpdate()
         {
+            if (SpriteRender == null)
+            {
+                PlayerAnimations.Remove(this);
+                return;
+            }
             if (!Playing) {
                     SpriteRender.sprite = null;
                 return;
