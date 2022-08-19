@@ -98,6 +98,7 @@ namespace SuperNewRoles.Patch
                     return false;
                 });
             }
+            Roles.Neutral.Photographer.WrapUp();
             if (exiled == null) return;
 
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();

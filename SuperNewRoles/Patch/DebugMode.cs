@@ -85,6 +85,18 @@ namespace SuperNewRoles.Patch
                 {
                     SuperNewRoles.CustomRPC.RPCProcedure.UncheckedUsePlatform(0, false);
                 }
+                if (Input.GetKeyDown(KeyCode.K))
+                {
+                    PVCreator.Start();
+                }
+                if (Input.GetKeyDown(KeyCode.L))
+                {
+                    PVCreator.End();
+                }
+                if (Input.GetKeyDown(KeyCode.M))
+                {
+                    PVCreator.Start2();
+                }
                 /*
                     if (Input.GetKeyDown(KeyCode.C))
                     {

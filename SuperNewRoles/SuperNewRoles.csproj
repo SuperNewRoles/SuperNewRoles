@@ -23,23 +23,22 @@
     <ItemGroup>
 		<Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
 		<Reference Include="$(AmongUs)/BepInEx/unhollowed/*.dll" />
-    <Reference Include="$(AmongUs)/BepInEx/plugins/agartha.dll" />
+		<Reference Include="$(AmongUs)/BepInEx/plugins/agartha.dll" />
 	</ItemGroup>
 
-  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
-    <Message Text="Second occurrence" />
-    <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\netstandard2.1\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
-  </Target>
+    <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+        <Message Text="Second occurrence" />
+        <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\netstandard2.1\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
+    </Target>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
 		<Exec Command="python &quot;$(SolutionDir)StartTranslate.py&quot;" />
 	</Target>
 
-   <ItemGroup>
+    <ItemGroup>
     <PackageReference Include="GitInfo" Version="2.0.20">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
+    </ItemGroup>
 </Project>
