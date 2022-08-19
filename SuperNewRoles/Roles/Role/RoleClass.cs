@@ -162,8 +162,11 @@ namespace SuperNewRoles.Roles
             Dictator.ClearAndReload();
             Spelunker.ClearAndReload();
             SuicidalIdeation.ClearAndReload();
+            Matryoshka.ClearAndReload();
             Nun.ClearAndReload();
             SeeThroughPerson.ClearAndReload();
+            PartTimer.ClearAndReload();
+            Stefinder.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2619,6 +2622,55 @@ namespace SuperNewRoles.Roles
                 CompletedTask = 0;
             }
         }
+        public static class Matryoshka
+        {
+            public static List<PlayerControl> MatryoshkaPlayer;
+            public static Color32 color = ImpostorRed;
+            public static int WearLimit;
+            public static bool WearReport;
+            public static float WearDefaultTime;
+            public static float WearTime;
+            public static float AddKillCoolTime;
+            public static float MyKillCoolTime;
+            public static float CoolTime;
+            public static bool IsLocalOn => !Datas.Keys.All(data => data != CachedPlayer.LocalPlayer.PlayerId || Datas[data].Item1 == null);
+            public static Dictionary<byte, (DeadBody, float)> Datas;
+            public static Sprite PutOnButtonSprite {
+                get
+                {
+                    if (_PutOnButtonSprite == null)
+                    {
+                        _PutOnButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaPutOnButton.png", 115f);
+                    }
+                    return _PutOnButtonSprite;
+                }
+            }
+            public static Sprite _PutOnButtonSprite;
+            public static Sprite TakeOffButtonSprite
+            {
+                get
+                {
+                    if (_TakeOffButtonSprite == null)
+                    {
+                        _TakeOffButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaTakeOffButton.png", 115f);
+                    }
+                    return _TakeOffButtonSprite;
+                }
+            }
+            public static Sprite _TakeOffButtonSprite;
+            public static void ClearAndReload()
+            {
+                MatryoshkaPlayer = new();
+                WearLimit = CustomOptions.MatryoshkaWearLimit.GetInt();
+                WearReport = CustomOptions.MatryoshkaWearReport.GetBool();
+                WearDefaultTime = CustomOptions.MatryoshkaWearTime.GetFloat();
+                AddKillCoolTime = CustomOptions.MatryoshkaAddKillCoolTime.GetFloat();
+                WearTime = 0;
+                Datas = new();
+                CoolTime = CustomOptions.MatryoshkaCoolTime.GetFloat();
+                MyKillCoolTime = PlayerControl.GameOptions.killCooldown;
+            }
+        }
         public static class Nun
         {
             public static List<PlayerControl> NunPlayer;
@@ -2637,6 +2689,64 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.NunCoolTime.GetFloat();
             }
         }
+        public static class PartTimer
+        {
+            public static List<PlayerControl> PartTimerPlayer;
+            public static Color32 color = new(0, 255, 0, byte.MaxValue);
+            public static int DeathDefaultTurn;
+            public static int DeathTurn;
+            public static float CoolTime;
+            public static bool IsCheckTargetRole;
+            public static Dictionary<byte, byte> Datas;
+            public static bool IsLocalOn
+            {
+                get
+                {
+                    return Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
+                }
+            }
+            public static PlayerControl CurrentTarget
+            {
+                get
+                {
+                    return IsLocalOn ? ModHelpers.PlayerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
+                }
+            }
+            public static Dictionary<PlayerControl, PlayerControl> PlayerDatas
+            {
+                get
+                {
+                    if (_playerDatas.Count != Datas.Count)
+                    {
+                        Dictionary<PlayerControl, PlayerControl> newdic = new();
+                        foreach (var data in Datas)
+                        {
+                            newdic.Add(ModHelpers.PlayerById(data.Key), ModHelpers.PlayerById(data.Value));
+                        }
+                        _playerDatas = newdic;
+                    }
+                    return _playerDatas;
+                }
+            }
+            private static Dictionary<PlayerControl, PlayerControl> _playerDatas;
+            public static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PartTimerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                PartTimerPlayer = new();
+                DeathTurn = DeathDefaultTurn = CustomOptions.PartTimerDeathTurn.GetInt();
+                CoolTime = CustomOptions.PartTimerCoolTime.GetFloat();
+                IsCheckTargetRole = CustomOptions.PartTimerIsCheckTargetRole.GetBool();
+                Datas = new();
+                _playerDatas = new();
+            }
+        }
+        
         public static class SatsumaAndImo
         {
             public static List<PlayerControl> SatsumaAndImoPlayer;
@@ -2659,6 +2769,29 @@ namespace SuperNewRoles.Roles
             {
                 SeeThroughPersonPlayer = new();
                 Objects = new();
+            }
+        }
+        public static class Stefinder
+        {
+            public static List<PlayerControl> StefinderPlayer;
+            public static Color32 color = new(0, 255, 0, byte.MaxValue);
+            public static int KillCoolDown;
+            public static bool UseVent;
+            public static bool UseSabo;
+            public static bool IsKill;
+            public static bool SoloWin;
+            public static List<byte> IsKillPlayer;
+            public static PlayerControl target;
+            public static DateTime ButtonTimer;
+            public static void ClearAndReload()
+            {
+                StefinderPlayer = new();
+                KillCoolDown = CustomOptions.StefinderKillCoolDown.GetInt();
+                UseVent = CustomOptions.StefinderVent.GetBool();
+                UseSabo = CustomOptions.StefinderSabo.GetBool();
+                SoloWin = CustomOptions.StefinderSoloWin.GetBool();
+                IsKill = false;
+                IsKillPlayer = new();
             }
         }
         //新ロールクラス

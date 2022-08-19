@@ -583,11 +583,20 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.Add(player);
                     break;
+                case RoleId.Matryoshka:
+                    RoleClass.Matryoshka.MatryoshkaPlayer.Add(player);
+                    break;
                 case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.Add(player);
                     break;
                 case RoleId.SeeThroughPerson:
                     RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.Add(player);
+                    break;
+                case RoleId.PartTimer:
+                    RoleClass.PartTimer.PartTimerPlayer.Add(player);
+                    break;
+                case RoleId.Stefinder:
+                    RoleClass.Stefinder.StefinderPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -970,11 +979,20 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Matryoshka:
+                    RoleClass.Matryoshka.MatryoshkaPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.SeeThroughPerson:
                     RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.PartTimer:
+                    RoleClass.PartTimer.PartTimerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Stefinder:
+                    RoleClass.Stefinder.StefinderPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1029,9 +1047,11 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
-                    //タスククリアか
+                case RoleId.Stefinder:
+                case RoleId.PartTimer:
                     IsTaskClear = true;
                     break;
+                //タスククリアか
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
@@ -1077,6 +1097,7 @@ namespace SuperNewRoles
                 RoleId.Tuna => RoleClass.Tuna.IsUseVent,
                 RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
+                RoleId.Stefinder => RoleClass.Stefinder.UseVent,
                 _ => false,
             };
         }
@@ -1126,6 +1147,7 @@ namespace SuperNewRoles
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
                 RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
                 RoleId.Egoist => RoleClass.Egoist.UseSabo,
+                RoleId.Stefinder => RoleClass.Stefinder.UseSabo,
                 _ => false,
             };
         }
@@ -1185,9 +1207,12 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
-                    //第三か
+                case RoleId.Stefinder:
+                case RoleId.PartTimer:
+                //第三か
                     IsNeutral = true;
                     break;
+                //第三か
             }
             return IsNeutral;
         }
@@ -1265,6 +1290,9 @@ namespace SuperNewRoles
                         break;
                     case RoleId.Kunoichi:
                         addition = RoleClass.Kunoichi.KillCoolTime;
+                        break;
+                    case RoleId.Matryoshka:
+                        addition = RoleClass.Matryoshka.MyKillCoolTime;
                         break;
                 }
             }
@@ -1462,8 +1490,11 @@ namespace SuperNewRoles
                 else if (RoleClass.Dictator.DictatorPlayer.IsCheckListPlayerControl(player)) return RoleId.Dictator;
                 else if (RoleClass.Spelunker.SpelunkerPlayer.IsCheckListPlayerControl(player)) return RoleId.Spelunker;
                 else if (RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicidalIdeation;
+                else if (RoleClass.Matryoshka.MatryoshkaPlayer.IsCheckListPlayerControl(player)) return RoleId.Matryoshka;
                 else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
                 else if (RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.IsCheckListPlayerControl(player)) return RoleId.SeeThroughPerson;
+                else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
+                else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
                 //ロールチェック
             }
             catch (Exception e)

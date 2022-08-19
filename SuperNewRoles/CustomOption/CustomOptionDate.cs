@@ -115,6 +115,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SheriffCanKillTuna;
         public static CustomOption SheriffCanKillNeet;
         public static CustomOption SheriffCanKillRevolutionist;
+        public static CustomOption SheriffCanKillStefinder;
         //シェリフ第三キル
         //=============================================
         public static CustomOption SheriffLoversKill;
@@ -753,13 +754,35 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SuicidalIdeationCommonTask;
         public static CustomOption SuicidalIdeationShortTask;
         public static CustomOption SuicidalIdeationLongTask;
-        
+
+        public static CustomRoleOption MatryoshkaOption;
+        public static CustomOption MatryoshkaPlayerCount;
+        public static CustomOption MatryoshkaWearLimit;
+        public static CustomOption MatryoshkaAddKillCoolTime;
+        public static CustomOption MatryoshkaWearReport;
+        public static CustomOption MatryoshkaWearTime;
+        public static CustomOption MatryoshkaCoolTime;
+
         public static CustomRoleOption NunOption;
         public static CustomOption NunPlayerCount;
         public static CustomOption NunCoolTime;
         
         public static CustomRoleOption SeeThroughPersonOption;
         public static CustomOption SeeThroughPersonPlayerCount;
+
+        public static CustomRoleOption PartTimerOption;
+        public static CustomOption PartTimerPlayerCount;
+        public static CustomOption PartTimerDeathTurn;
+        public static CustomOption PartTimerCoolTime;
+        public static CustomOption PartTimerIsCheckTargetRole;
+
+        
+        public static CustomRoleOption StefinderOption;
+        public static CustomOption StefinderPlayerCount;
+        public static CustomOption StefinderKillCoolDown;
+        public static CustomOption StefinderVent;
+        public static CustomOption StefinderSabo;
+        public static CustomOption StefinderSoloWin;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -885,49 +908,52 @@ namespace SuperNewRoles.CustomOption
             SheriffCoolTime = CustomOption.Create(39, true, CustomOptionType.Crewmate, "SheriffCoolDownSetting", 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
             SheriffKillMaxCount = CustomOption.Create(43, true, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, SheriffOption, format: "unitSeconds");
 
-            SheriffCanKillImpostor = CustomOption.Create(889, true, CustomOptionType.Crewmate, "Impostor" + "CanKillSetting", true, SheriffOption);
+            SheriffCanKillImpostor = CustomOption.Create(731, true, CustomOptionType.Crewmate, "Impostor" + "CanKillSetting", true, SheriffOption);
 
             SheriffMadRoleKill = CustomOption.Create(42, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, SheriffOption);
-            SheriffCanKillMadMate = CustomOption.Create(918, true, CustomOptionType.Crewmate, "MadMateName" + "CanKillSetting", true, SheriffMadRoleKill);
-            SheriffCanKillMadMayor = CustomOption.Create(919, true, CustomOptionType.Crewmate, "MadMayorName" + "CanKillSetting", true, SheriffMadRoleKill);
-            SheriffCanKillMadStuntMan = CustomOption.Create(920, true, CustomOptionType.Crewmate, "MadStuntManName" + "CanKillSetting", true, SheriffMadRoleKill);
-            SheriffCanKillMadHawk = CustomOption.Create(915, true, CustomOptionType.Crewmate, "MadHawkName" + "CanKillSetting", true, SheriffMadRoleKill);
-            SheriffCanKillMadJester = CustomOption.Create(916, true, CustomOptionType.Crewmate, "MadJesterName" + "CanKillSetting", true, SheriffMadRoleKill);
-            SheriffCanKillMadSeer = CustomOption.Create(917, true, CustomOptionType.Crewmate, "MadSeerName" + "CanKillSetting", true, SheriffMadRoleKill);
-            SheriffCanKillBlackCat = CustomOption.Create(887, true, CustomOptionType.Crewmate, "BlackCatName" + "CanKillSetting", true, SheriffMadRoleKill);
-            SheriffCanKillMadMaker = CustomOption.Create(888, true, CustomOptionType.Crewmate, "MadMakerName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillMadMate = CustomOption.Create(700, true, CustomOptionType.Crewmate, "MadMateName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillMadMayor = CustomOption.Create(701, true, CustomOptionType.Crewmate, "MadMayorName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillMadStuntMan = CustomOption.Create(702, true, CustomOptionType.Crewmate, "MadStuntManName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillMadHawk = CustomOption.Create(703, true, CustomOptionType.Crewmate, "MadHawkName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillMadJester = CustomOption.Create(704, true, CustomOptionType.Crewmate, "MadJesterName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillMadSeer = CustomOption.Create(705, true, CustomOptionType.Crewmate, "MadSeerName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillBlackCat = CustomOption.Create(706, true, CustomOptionType.Crewmate, "BlackCatName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillMadMaker = CustomOption.Create(707, true, CustomOptionType.Crewmate, "MadMakerName" + "CanKillSetting", true, SheriffMadRoleKill);
             //シェリフ、マッドキル表示設定
 
-            SheriffFriendsRoleKill = CustomOption.Create(911, true, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, SheriffOption);
-            SheriffCanKillJackalFriends = CustomOption.Create(912, true, CustomOptionType.Crewmate, "JackalFriendsName" + "CanKillSetting", true, SheriffFriendsRoleKill);
-            SheriffCanKillSeerFriends = CustomOption.Create(913, true, CustomOptionType.Crewmate, "SeerFriendsName" + "CanKillSetting", true, SheriffFriendsRoleKill);
-            SheriffCanKillMayorFriends = CustomOption.Create(914, true, CustomOptionType.Crewmate, "MayorFriendsName" + "CanKillSetting", true, SheriffFriendsRoleKill);
+            SheriffFriendsRoleKill = CustomOption.Create(708, true, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, SheriffOption);
+            SheriffCanKillJackalFriends = CustomOption.Create(709, true, CustomOptionType.Crewmate, "JackalFriendsName" + "CanKillSetting", true, SheriffFriendsRoleKill);
+            SheriffCanKillSeerFriends = CustomOption.Create(710, true, CustomOptionType.Crewmate, "SeerFriendsName" + "CanKillSetting", true, SheriffFriendsRoleKill);
+            SheriffCanKillMayorFriends = CustomOption.Create(711, true, CustomOptionType.Crewmate, "MayorFriendsName" + "CanKillSetting", true, SheriffFriendsRoleKill);
 
             SheriffNeutralKill = CustomOption.Create(40, true, CustomOptionType.Crewmate, "SheriffIsKillNewtralSetting", false, SheriffOption);
-            SheriffCanKillJester = CustomOption.Create(890, true, CustomOptionType.Crewmate, "JesterName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillJackal = CustomOption.Create(891, true, CustomOptionType.Crewmate, "JackalName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillVulture = CustomOption.Create(893, true, CustomOptionType.Crewmate, "VultureName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillOpportunist = CustomOption.Create(894, true, CustomOptionType.Crewmate, "OpportunistName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillJester = CustomOption.Create(712, true, CustomOptionType.Crewmate, "JesterName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillJackal = CustomOption.Create(713, true, CustomOptionType.Crewmate, "JackalName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillVulture = CustomOption.Create(714, true, CustomOptionType.Crewmate, "VultureName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillOpportunist = CustomOption.Create(715, true, CustomOptionType.Crewmate, "OpportunistName" + "CanKillSetting", true, SheriffNeutralKill);
             //SheriffCanKillResearcher = CustomOption.Create(895, true, CustomOptionType.Crewmate, "ReseacherName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillGod = CustomOption.Create(896, true, CustomOptionType.Crewmate, "GodName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillEgoist = CustomOption.Create(897, true, CustomOptionType.Crewmate, "EgoistName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillWorkperson = CustomOption.Create(898, true, CustomOptionType.Crewmate, "WorkpersonName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKilltruelover = CustomOption.Create(899, true, CustomOptionType.Crewmate, "trueloverName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillAmnesiac = CustomOption.Create(900, true, CustomOptionType.Crewmate, "AmnesiacName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillFalseCharges = CustomOption.Create(901, true, CustomOptionType.Crewmate, "FalseChargesName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillFox = CustomOption.Create(902, true, CustomOptionType.Crewmate, "FoxName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillTeleportingJackal = CustomOption.Create(903, true, CustomOptionType.Crewmate, "TeleportingJackalName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillDemon = CustomOption.Create(904, true, CustomOptionType.Crewmate, "DemonName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillJackalSeer = CustomOption.Create(905, true, CustomOptionType.Crewmate, "JackalSeerName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillSidekickSeer = CustomOption.Create(906, true, CustomOptionType.Crewmate, "SideKickSeerName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillArsonist = CustomOption.Create(907, true, CustomOptionType.Crewmate, "ArsonistName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillTuna = CustomOption.Create(908, true, CustomOptionType.Crewmate, "TunaName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillNeet = CustomOption.Create(909, true, CustomOptionType.Crewmate, "SideKickName" + "CanKillSetting", true, SheriffNeutralKill);
-            SheriffCanKillRevolutionist = CustomOption.Create(910, true, CustomOptionType.Crewmate, "RevolutionistName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillGod = CustomOption.Create(716, true, CustomOptionType.Crewmate, "GodName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillEgoist = CustomOption.Create(717, true, CustomOptionType.Crewmate, "EgoistName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillWorkperson = CustomOption.Create(718, true, CustomOptionType.Crewmate, "WorkpersonName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKilltruelover = CustomOption.Create(719, true, CustomOptionType.Crewmate, "trueloverName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillAmnesiac = CustomOption.Create(720, true, CustomOptionType.Crewmate, "AmnesiacName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillFalseCharges = CustomOption.Create(721, true, CustomOptionType.Crewmate, "FalseChargesName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillFox = CustomOption.Create(722, true, CustomOptionType.Crewmate, "FoxName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillTeleportingJackal = CustomOption.Create(723, true, CustomOptionType.Crewmate, "TeleportingJackalName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillDemon = CustomOption.Create(724, true, CustomOptionType.Crewmate, "DemonName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillJackalSeer = CustomOption.Create(725, true, CustomOptionType.Crewmate, "JackalSeerName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillSidekickSeer = CustomOption.Create(726, true, CustomOptionType.Crewmate, "SideKickSeerName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillArsonist = CustomOption.Create(727, true, CustomOptionType.Crewmate, "ArsonistName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillTuna = CustomOption.Create(728, true, CustomOptionType.Crewmate, "TunaName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillNeet = CustomOption.Create(729, true, CustomOptionType.Crewmate, "SideKickName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillRevolutionist = CustomOption.Create(732, true, CustomOptionType.Crewmate, "RevolutionistName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillStefinder = CustomOption.Create(733, true, CustomOptionType.Crewmate, "StefinderName" + "CanKillSetting", true, SheriffNeutralKill);
             //シェリフ、第三陣営キル表示設定
+            //シェリフ役職別キル設定のidは700番台を使用してください
+            //[ 220731 ]現在シェリフ最大id [ 733 ]
 
             SheriffLoversKill = CustomOption.Create(41, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, SheriffOption);
-            SheriffQuarreledKill = CustomOption.Create(921, true, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, SheriffOption);
+            SheriffQuarreledKill = CustomOption.Create(730, true, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, SheriffOption);
 
             RemoteSheriffOption = new CustomRoleOption(44, true, CustomOptionType.Crewmate, "RemoteSheriffName", RoleClass.RemoteSheriff.color, 1);
             RemoteSheriffPlayerCount = CustomOption.Create(45, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RemoteSheriffOption);
@@ -1507,52 +1533,70 @@ namespace SuperNewRoles.CustomOption
             ToiletFanCoolTime = CustomOption.Create(658, true, CustomOptionType.Crewmate, "ToiletCoolDownSetting", 30f, 0f, 60f, 2.5f, ToiletFanOption);
 
             SatsumaAndImoOption = new CustomRoleOption(682 , true, CustomOptionType.Crewmate, "SatsumaAndImoName", RoleClass.SatsumaAndImo.color, 1);
-            SatsumaAndImoPlayerCount= CustomOption.Create(683   , true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SatsumaAndImoOption);
+            SatsumaAndImoPlayerCount= CustomOption.Create(800 , true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SatsumaAndImoOption);
 
-            EvilButtonerOption = new CustomRoleOption(864, true, CustomOptionType.Impostor, "EvilButtonerName", RoleClass.EvilButtoner.color, 1);
-            EvilButtonerPlayerCount = CustomOption.Create(865, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilButtonerOption);
-            EvilButtonerCoolTime = CustomOption.Create(866, false, CustomOptionType.Impostor, "ButtonerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, EvilButtonerOption, format: "unitSeconds");//クールタイムはSHR未対応の為false
-            EvilButtonerCount = CustomOption.Create(867, true, CustomOptionType.Impostor, "ButtonerCountSetting", 1f, 1f, 10f, 1f, EvilButtonerOption);
+            EvilButtonerOption = new CustomRoleOption(801, true, CustomOptionType.Impostor, "EvilButtonerName", RoleClass.EvilButtoner.color, 1);
+            EvilButtonerPlayerCount = CustomOption.Create(802, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilButtonerOption);
+            EvilButtonerCoolTime = CustomOption.Create(803, false, CustomOptionType.Impostor, "ButtonerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, EvilButtonerOption, format: "unitSeconds");//クールタイムはSHR未対応の為false
+            EvilButtonerCount = CustomOption.Create(804, true, CustomOptionType.Impostor, "ButtonerCountSetting", 1f, 1f, 10f, 1f, EvilButtonerOption);
 
-            NiceButtonerOption = new CustomRoleOption(868, true, CustomOptionType.Crewmate, "NiceButtonerName", RoleClass.NiceButtoner.color, 1);
-            NiceButtonerPlayerCount = CustomOption.Create(869, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceButtonerOption);
-            NiceButtonerCoolTime = CustomOption.Create(870, false, CustomOptionType.Crewmate, "ButtonerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NiceButtonerOption, format: "unitSeconds");//クールタイムはSHR未対応の為false
-            NiceButtonerCount = CustomOption.Create(871, true, CustomOptionType.Crewmate, "ButtonerCountSetting", 1f, 1f, 10f, 1f, NiceButtonerOption);
+            NiceButtonerOption = new CustomRoleOption(805, true, CustomOptionType.Crewmate, "NiceButtonerName", RoleClass.NiceButtoner.color, 1);
+            NiceButtonerPlayerCount = CustomOption.Create(806, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceButtonerOption);
+            NiceButtonerCoolTime = CustomOption.Create(807, false, CustomOptionType.Crewmate, "ButtonerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NiceButtonerOption, format: "unitSeconds");//クールタイムはSHR未対応の為false
+            NiceButtonerCount = CustomOption.Create(808, true, CustomOptionType.Crewmate, "ButtonerCountSetting", 1f, 1f, 10f, 1f, NiceButtonerOption);
 
-            SpelunkerOption = new CustomRoleOption(885, false, CustomOptionType.Neutral, "SpelunkerName",RoleClass.Spelunker.color, 1);
-            SpelunkerPlayerCount = CustomOption.Create(886, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpelunkerOption);
-            SpelunkerVentDeathChance = CustomOption.Create(922, false, CustomOptionType.Neutral, "SpelunkerVentDeathChance", rates, SpelunkerOption);
-            SpelunkerLadderDeadChance = CustomOption.Create(923, false, CustomOptionType.Neutral, "LadderDeadChance", rates, SpelunkerOption);
-            SpelunkerIsDeathCommsOrPowerdown = CustomOption.Create(924, false, CustomOptionType.Neutral, "SpelunkerIsDeathCommsOrPowerdown", true, SpelunkerOption);
-            SpelunkerDeathCommsOrPowerdownTime = CustomOption.Create(925, false, CustomOptionType.Neutral, "SpelunkerDeathCommsOrPowerdownTime", 20f, 0f, 120f, 2.5f, SpelunkerIsDeathCommsOrPowerdown);
-            SpelunkerLiftDeathChance = CustomOption.Create(926, false, CustomOptionType.Neutral, "SpelunkerLiftDeathChance", rates, SpelunkerOption);
-            SpelunkerDoorOpenChance = CustomOption.Create(927, false, CustomOptionType.Neutral, "SpelunkerDoorOpenChance", rates, SpelunkerOption);
+            SpelunkerOption = new CustomRoleOption(809, false, CustomOptionType.Neutral, "SpelunkerName",RoleClass.Spelunker.color, 1);
+            SpelunkerPlayerCount = CustomOption.Create(810, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpelunkerOption);
+            SpelunkerVentDeathChance = CustomOption.Create(811, false, CustomOptionType.Neutral, "SpelunkerVentDeathChance", rates, SpelunkerOption);
+            SpelunkerLadderDeadChance = CustomOption.Create(812, false, CustomOptionType.Neutral, "LadderDeadChance", rates, SpelunkerOption);
+            SpelunkerIsDeathCommsOrPowerdown = CustomOption.Create(813, false, CustomOptionType.Neutral, "SpelunkerIsDeathCommsOrPowerdown", true, SpelunkerOption);
+            SpelunkerDeathCommsOrPowerdownTime = CustomOption.Create(814, false, CustomOptionType.Neutral, "SpelunkerDeathCommsOrPowerdownTime", 20f, 0f, 120f, 2.5f, SpelunkerIsDeathCommsOrPowerdown);
+            SpelunkerLiftDeathChance = CustomOption.Create(815, false, CustomOptionType.Neutral, "SpelunkerLiftDeathChance", rates, SpelunkerOption);
+            SpelunkerDoorOpenChance = CustomOption.Create(816, false, CustomOptionType.Neutral, "SpelunkerDoorOpenChance", rates, SpelunkerOption);
 
-            FinderOption = new CustomRoleOption(872, false, CustomOptionType.Impostor, "FinderName", RoleClass.Finder.color, 1);
-            FinderPlayerCount = CustomOption.Create(873, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FinderOption);
-            FinderCheckMadmateSetting = CustomOption.Create(874, false, CustomOptionType.Impostor, "FinderCheckMadmateSetting", 3f, 1f, 15f, 1f, FinderOption);
+            FinderOption = new CustomRoleOption(817, false, CustomOptionType.Impostor, "FinderName", RoleClass.Finder.color, 1);
+            FinderPlayerCount = CustomOption.Create(818, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FinderOption);
+            FinderCheckMadmateSetting = CustomOption.Create(819, false, CustomOptionType.Impostor, "FinderCheckMadmateSetting", 3f, 1f, 15f, 1f, FinderOption);
 
-            RevolutionistAndDictatorOption = new CustomRoleOption(875, false, CustomOptionType.Neutral, "RevolutionistAndDictatorName", Color.white, 1);
-            RevolutionistPlayerCount = CustomOption.Create(876, false, CustomOptionType.Neutral, "SettingRevolutionistPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
-            DictatorPlayerCount = CustomOption.Create(877, false, CustomOptionType.Neutral, "SettingDictatorPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
-            DictatorVoteCount = CustomOption.Create(878, false, CustomOptionType.Neutral, "DictatorVoteCount", 2f, 1f, 100f, 1f, RevolutionistAndDictatorOption);
-            DictatorSubstituteExile = CustomOption.Create(879, false, CustomOptionType.Neutral, "DictatorSubExile", false, RevolutionistAndDictatorOption);
-            DictatorSubstituteExileLimit = CustomOption.Create(880, false, CustomOptionType.Neutral, "DictatorSubExileLimit", 1f, 1f, 15f, 1f, DictatorSubstituteExile);
-            RevolutionistCoolTime = CustomOption.Create(881, false, CustomOptionType.Neutral, "RevolutionCoolTime", 10f, 2.5f, 60f, 2.5f, RevolutionistAndDictatorOption);
-            RevolutionistTouchTime = CustomOption.Create(882, false, CustomOptionType.Neutral, "RevolutionTouchTime", 1f, 0f, 10f, 0.5f, RevolutionistAndDictatorOption);
-            RevolutionistAddWin = CustomOption.Create(883, false, CustomOptionType.Neutral, "RevolutionistAddWin", false, RevolutionistAndDictatorOption);
-            RevolutionistAddWinIsAlive = CustomOption.Create(884, false, CustomOptionType.Neutral, "RevolutionistAddWinIsAlive", true, RevolutionistAddWin);
+            RevolutionistAndDictatorOption = new CustomRoleOption(820, false, CustomOptionType.Neutral, "RevolutionistAndDictatorName", Color.white, 1);
+            RevolutionistPlayerCount = CustomOption.Create(821, false, CustomOptionType.Neutral, "SettingRevolutionistPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
+            DictatorPlayerCount = CustomOption.Create(822, false, CustomOptionType.Neutral, "SettingDictatorPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
+            DictatorVoteCount = CustomOption.Create(823, false, CustomOptionType.Neutral, "DictatorVoteCount", 2f, 1f, 100f, 1f, RevolutionistAndDictatorOption);
+            DictatorSubstituteExile = CustomOption.Create(824, false, CustomOptionType.Neutral, "DictatorSubExile", false, RevolutionistAndDictatorOption);
+            DictatorSubstituteExileLimit = CustomOption.Create(825, false, CustomOptionType.Neutral, "DictatorSubExileLimit", 1f, 1f, 15f, 1f, DictatorSubstituteExile);
+            RevolutionistCoolTime = CustomOption.Create(826, false, CustomOptionType.Neutral, "RevolutionCoolTime", 10f, 2.5f, 60f, 2.5f, RevolutionistAndDictatorOption);
+            RevolutionistTouchTime = CustomOption.Create(827, false, CustomOptionType.Neutral, "RevolutionTouchTime", 1f, 0f, 10f, 0.5f, RevolutionistAndDictatorOption);
+            RevolutionistAddWin = CustomOption.Create(828, false, CustomOptionType.Neutral, "RevolutionistAddWin", false, RevolutionistAndDictatorOption);
+            RevolutionistAddWinIsAlive = CustomOption.Create(829, false, CustomOptionType.Neutral, "RevolutionistAddWinIsAlive", true, RevolutionistAddWin);
 
-            SuicidalIdeationOption = new CustomRoleOption(928, false, CustomOptionType.Neutral, "SuicidalIdeationName", RoleClass.SuicidalIdeation.color, 1);
-            SuicidalIdeationPlayerCount = CustomOption.Create(929, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SuicidalIdeationOption);
-            SuicidalIdeationWinText = CustomOption.Create(930, false, CustomOptionType.Neutral, "SuicidalIdeationWinTextSetting", false, SuicidalIdeationOption);
-            SuicidalIdeationTimeLeft = CustomOption.Create(931, false, CustomOptionType.Neutral, "SuicidalIdeationTimeLeftSetting", 90f, 30f, 600f, 5f, SuicidalIdeationOption, format: "unitSeconds");
-            SuicidalIdeationAddTimeLeft = CustomOption.Create(932, false, CustomOptionType.Neutral, "SuicidalIdeationAddTimeLeftSetting", 20f, 0f, 300f, 5f, SuicidalIdeationOption, format: "unitSeconds");
-            SuicidalIdeationFallProbability = CustomOption.Create(933, false, CustomOptionType.Neutral, "SuicidalIdeationFallProbabilitySetting", rates, SuicidalIdeationOption);
-            var SuicidalIdeationoption = SelectTask.TaskSetting(934, 935, 936, SuicidalIdeationOption, CustomOptionType.Neutral, false);
+            SuicidalIdeationOption = new CustomRoleOption(830, false, CustomOptionType.Neutral, "SuicidalIdeationName", RoleClass.SuicidalIdeation.color, 1);
+            SuicidalIdeationPlayerCount = CustomOption.Create(831, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SuicidalIdeationOption);
+            SuicidalIdeationWinText = CustomOption.Create(832, false, CustomOptionType.Neutral, "SuicidalIdeationWinTextSetting", false, SuicidalIdeationOption);
+            SuicidalIdeationTimeLeft = CustomOption.Create(833, false, CustomOptionType.Neutral, "SuicidalIdeationTimeLeftSetting", 90f, 30f, 600f, 5f, SuicidalIdeationOption, format: "unitSeconds");
+            SuicidalIdeationAddTimeLeft = CustomOption.Create(834, false, CustomOptionType.Neutral, "SuicidalIdeationAddTimeLeftSetting", 20f, 0f, 300f, 5f, SuicidalIdeationOption, format: "unitSeconds");
+            SuicidalIdeationFallProbability = CustomOption.Create(835, false, CustomOptionType.Neutral, "SuicidalIdeationFallProbabilitySetting", rates, SuicidalIdeationOption);
+            var SuicidalIdeationoption = SelectTask.TaskSetting(836, 837, 838, SuicidalIdeationOption, CustomOptionType.Neutral, false);
             SuicidalIdeationCommonTask = SuicidalIdeationoption.Item1;
             SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
             SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
+
+            MatryoshkaOption = new CustomRoleOption(839, false, CustomOptionType.Impostor, "MatryoshkaName",RoleClass.Matryoshka.color, 1);
+            MatryoshkaPlayerCount = CustomOption.Create(840, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MatryoshkaOption);
+            MatryoshkaWearLimit = CustomOption.Create(841, false, CustomOptionType.Impostor, "MatryoshkaWearLimit", 3f, 1f, 15f, 1f, MatryoshkaOption);
+            MatryoshkaWearReport = CustomOption.Create(842, false, CustomOptionType.Impostor, "MatryoshkaWearReport", true, MatryoshkaOption);
+            MatryoshkaWearTime = CustomOption.Create(843, false, CustomOptionType.Impostor, "MatryoshkaWearTime", 7.5f, 0.5f, 60f, 0.5f, MatryoshkaOption);
+            MatryoshkaAddKillCoolTime = CustomOption.Create(845, false, CustomOptionType.Impostor, "MatryoshkaAddKillCoolTime", 2.5f, 0f, 30f, 0.5f, MatryoshkaOption);
+            MatryoshkaCoolTime = CustomOption.Create(846, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 30f, 0f, 180f, 2.5f, MatryoshkaOption);
+
+            NunOption = new CustomRoleOption(847, false, CustomOptionType.Impostor, "NunName",RoleClass.Nun.color, 1);
+            NunPlayerCount = CustomOption.Create(848, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NunOption);
+            NunCoolTime = CustomOption.Create(849, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NunOption);
+
+            PartTimerOption = new CustomRoleOption(850, false, CustomOptionType.Neutral, "PartTimerName",RoleClass.PartTimer.color, 1);
+            PartTimerPlayerCount = CustomOption.Create(851, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PartTimerOption);
+            PartTimerDeathTurn = CustomOption.Create(852, false, CustomOptionType.Neutral, "PartTimerDeathTurn", 3f, 0f, 15f, 1f, PartTimerOption);
+            PartTimerCoolTime = CustomOption.Create(853, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PartTimerOption);
+            PartTimerIsCheckTargetRole = CustomOption.Create(854, false, CustomOptionType.Neutral, "PartTimerIsCheckTargetRole", true, PartTimerOption);
             
             NunOption = new CustomRoleOption(929, false, CustomOptionType.Impostor, "NunName",RoleClass.Nun.color, 1);
             NunPlayerCount = CustomOption.Create(930, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NunOption);
@@ -1560,6 +1604,13 @@ namespace SuperNewRoles.CustomOption
             
             SeeThroughPersonOption = new CustomRoleOption(937, false, CustomOptionType.Crewmate, "SeeThroughPersonName",RoleClass.SeeThroughPerson.color, 1);
             SeeThroughPersonPlayerCount = CustomOption.Create(9372, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeeThroughPersonOption);
+
+            StefinderOption = new CustomRoleOption(855, false, CustomOptionType.Neutral, "StefinderName",RoleClass.Stefinder.color, 1);
+            StefinderPlayerCount = CustomOption.Create(856, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StefinderOption);
+            StefinderKillCoolDown = CustomOption.Create(857, false, CustomOptionType.Neutral, "StefinderKillCoolDownSetting", 30f, 0f, 120f, 2.5f, StefinderOption, format: "unitSeconds");
+            StefinderVent = CustomOption.Create(858, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
+            StefinderSabo = CustomOption.Create(859, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
+            StefinderSoloWin = CustomOption.Create(860, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

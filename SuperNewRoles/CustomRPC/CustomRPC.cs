@@ -142,8 +142,12 @@ namespace SuperNewRoles.CustomRPC
         Dictator,
         Spelunker,
         SuicidalIdeation,
+        Matryoshka,
         Nun,
         SeeThroughPerson,
+        PartTimer,
+        Stefinder,
+        Stefinder1,
         //RoleId
     }
 
@@ -216,10 +220,26 @@ namespace SuperNewRoles.CustomRPC
         SetSecretRoomTeleportStatus,
         ChiefSidekick,
         StartRevolutionMeeting,
-        UncheckedUsePlatform
+        UncheckedUsePlatform,
+        PartTimerSet,
+        SetMatryoshkaDeadbody,
+        StefinderIsKilled
     }
     public static class RPCProcedure
     {
+        public static void SetMatryoshkaDeadBody(byte sourceid, byte targetid, bool Is)
+        {
+            PlayerControl source = ModHelpers.PlayerById(sourceid);
+            PlayerControl target = ModHelpers.PlayerById(targetid);
+            if (source == null) return;
+            Roles.Impostor.Matryoshka.Set(source, target, Is);
+        }
+        public static void PartTimerSet(byte playerid, byte targetid)
+        {
+            PlayerControl source = ModHelpers.PlayerById(playerid);
+            if (source == null) return;
+            RoleClass.PartTimer.Datas[source.PlayerId] = targetid;
+        }
         public static void UncheckedUsePlatform(byte playerid, bool IsMove)
         {
             PlayerControl source = ModHelpers.PlayerById(playerid);
@@ -236,6 +256,10 @@ namespace SuperNewRoles.CustomRPC
                     airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));
                 }
             }
+        }
+        public static void StefinderIsKilled(byte PlayerId)
+        {
+            RoleClass.Stefinder.IsKillPlayer.Add(PlayerId);
         }
         public static void StartRevolutionMeeting(byte sourceid)
         {
@@ -1306,8 +1330,17 @@ namespace SuperNewRoles.CustomRPC
                         case CustomRPC.StartRevolutionMeeting:
                             StartRevolutionMeeting(reader.ReadByte());
                             break;
+                        case CustomRPC.SetMatryoshkaDeadbody:
+                            SetMatryoshkaDeadBody(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                            break;
                         case CustomRPC.UncheckedUsePlatform:
                             UncheckedUsePlatform(reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.PartTimerSet:
+                            PartTimerSet(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.StefinderIsKilled:
+                            StefinderIsKilled(reader.ReadByte());
                             break;
                     }
                 }
