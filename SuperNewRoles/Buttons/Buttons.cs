@@ -111,7 +111,7 @@ namespace SuperNewRoles.Buttons
                         SluggerButton.isEffectActive = false;
                         anim.RpcAnimation(RpcAnimationType.Stop);
                     }
-                    return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                    return PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
@@ -132,7 +132,15 @@ namespace SuperNewRoles.Buttons
                 5f,
                 () =>
                 {
-                    List<PlayerControl> Targets = Roles.Impostor.Slugger.SetTarget();
+                    List<PlayerControl> Targets = new();
+                    //一気にキルできるか。後に設定で変更可に
+                    if (false)
+                    {
+                        Targets = Roles.Impostor.Slugger.SetTarget();
+                    } else
+                    {
+                        if (FastDestroyableSingleton<HudManager>.Instance.KillButton.currentTarget != null) Targets.Add(FastDestroyableSingleton<HudManager>.Instance.KillButton.currentTarget);
+                    }
                     RpcAnimationType AnimationType = RpcAnimationType.SluggerMurder;
                     //空振り判定
                     if (Targets.Count <= 0)
