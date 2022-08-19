@@ -165,6 +165,7 @@ namespace SuperNewRoles.Roles
             Matryoshka.ClearAndReload();
             Nun.ClearAndReload();
             PartTimer.ClearAndReload();
+            Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -2757,6 +2758,54 @@ namespace SuperNewRoles.Roles
                 TeamNumber = 1;
                 //1=クルー
                 //2=マッド
+            }
+        }
+        public static class Photographer
+        {
+            public static List<PlayerControl> PhotographerPlayer;
+            public static Color32 color = new(0, 255, 255, byte.MaxValue);
+            public static float CoolTime;
+            public static float BonusCoolTime;
+            public static int BonusCount;
+            public static List<byte> PhotedPlayerIds;
+            public static bool IsPhotographerShared;
+            public static bool IsImpostorVision;
+            public static bool IsNotification;
+            public static List<PlayerControl> PhotedPlayer {
+                get
+                {
+                    if (PhotedPlayerIds.Count != _photedPlayer.Count)
+                    {
+                        List<PlayerControl> NewList = new();
+                        foreach (byte playerid in PhotedPlayerIds)
+                        {
+                            PlayerControl player = ModHelpers.PlayerById(playerid);
+                            if (player) NewList.Add(player);
+                        }
+                        _photedPlayer = NewList;
+                    }
+                    return _photedPlayer;
+                }
+            }
+            public static List<PlayerControl> _photedPlayer;
+            public static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PhotographerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                PhotographerPlayer = new();
+                PhotedPlayerIds = new();
+                _photedPlayer = new();
+                IsPhotographerShared = false;
+                CoolTime = CustomOptions.PhotographerCoolTime.GetFloat();
+                BonusCount = (CustomOptions.PhotographerIsBonus.GetBool() ? CustomOptions.PhotographerBonusCount.GetInt() : -1);
+                BonusCoolTime = CustomOptions.PhotographerBonusCoolTime.GetFloat();
+                IsImpostorVision = CustomOptions.PhotographerIsImpostorVision.GetBool();
+                IsNotification = CustomOptions.PhotographerIsNotification.GetBool();
             }
         }
         public static class Stefinder
