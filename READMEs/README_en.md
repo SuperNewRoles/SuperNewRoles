@@ -165,6 +165,7 @@ It is already on the Discord server.
 | |[BlackCat](#BlackCat)
 | |[Spy](#Spy)
 | |[GhostMechanic](#GhostMechanic)
+| |[ToiletFan](#ToiletFan)
 
 # Position Details 
 ## Attention. 
@@ -236,6 +237,10 @@ When I am expelled from a meeting, .<br>
 We will take one of them on the road, regardless of their position. <br> 
 Whether or not Nekomata are chained together can be changed by the Nice Nekomata. <br> 
 
+### Game Settings 
+| Name | Description 
+|----------|:-------------:| 
+| Not taking the Imposter off the road | Excludes the Impostor from being taken as a companion when he/she is hung.
 ----------------------- 
 ## CountChanger
 ### Team Impostor
@@ -1387,6 +1392,9 @@ Voting rights.<br>
 There is no. <br>
 If it survives to the end, it is the Team Thirdthat wins alone, just like [God](#God). 
 
+| Name | Description 
+|----------|:-------------:| 
+| Add Win | Change the win condition for NEET. If it is off, it is a single win; if it is on, it is an additional win.
 ----------------------- 
 ## HauntedWolf
 ### Team Crew
@@ -1435,7 +1443,7 @@ SuperHostRoles support
 |----------|:-------------:| 
 | Stopping Time | 
 | Use Vent | You can set whether Maguro can use the vent. 
-
+| Add Win | Change the win condition for Tuna. If it is off, it is a single win; if it is on, it is an additional win.
 ----------------------- 
 ## Mafia 
 ### Team Impostor
@@ -1461,7 +1469,19 @@ SuperHostRoles support
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent. 
 | Impostor Light | You can set whether the view will be the same as the Impostor's view. 
-
+| Not taking the Imposter off the road | Excludes the Impostor from being taken as a companion when he/she is hung.
+----------------------- 
+## ToiletFan
+### Team Crew
+[A little faster...]<br>
+Airship-only positions (casting is not limited, but the ability is not activated outside of the airship). <br>
+By pressing the open/close button. Allows you to open all lounge restroom doors.<br>
+SuperHostRoles support.<br>
+in SHR mode, the door is opened and closed by shape-shifting. <br>
+### Game Settings 
+| Name | Description 
+|----------|:-------------:| 
+| Toilet Cool Time | Cool time for open/close button
 ----------------------- 
 ## Quarreled
 ### overlapping camps 
