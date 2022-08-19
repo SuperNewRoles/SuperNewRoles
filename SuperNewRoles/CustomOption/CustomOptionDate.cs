@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -883,7 +883,7 @@ namespace SuperNewRoles.CustomOption
             JesterOption = new CustomRoleOption(16, true, CustomOptionType.Neutral, "JesterName", RoleClass.Jester.color, 1);
             JesterPlayerCount = CustomOption.Create(17, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JesterOption);
             JesterIsVent = CustomOption.Create(18, true, CustomOptionType.Neutral, "JesterIsVentSetting", false, JesterOption);
-            JesterIsSabotage = CustomOption.Create(19, true, CustomOptionType.Neutral, "JesterIsSabotageSetting", false, JesterOption);
+            JesterIsSabotage = CustomOption.Create(19, false, CustomOptionType.Neutral, "JesterIsSabotageSetting", false, JesterOption);
             JesterIsWinCleartask = CustomOption.Create(20, true, CustomOptionType.Neutral, "JesterIsWinClearTaskSetting", false, JesterOption);
             var jesteroption = SelectTask.TaskSetting(21, 22, 23, JesterIsWinCleartask, CustomOptionType.Neutral, true);
             JesterCommonTask = jesteroption.Item1;
@@ -1602,7 +1602,7 @@ namespace SuperNewRoles.CustomOption
             PartTimerDeathTurn = CustomOption.Create(852, false, CustomOptionType.Neutral, "PartTimerDeathTurn", 3f, 0f, 15f, 1f, PartTimerOption);
             PartTimerCoolTime = CustomOption.Create(853, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PartTimerOption);
             PartTimerIsCheckTargetRole = CustomOption.Create(854, false, CustomOptionType.Neutral, "PartTimerIsCheckTargetRole", true, PartTimerOption);
-            
+
             PhotographerOption = new CustomRoleOption(855, false, CustomOptionType.Neutral, "PhotographerName",RoleClass.Photographer.color, 1);
             PhotographerPlayerCount = CustomOption.Create(856, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PhotographerOption);
             PhotographerCoolTime = CustomOption.Create(857,false,CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PhotographerOption);

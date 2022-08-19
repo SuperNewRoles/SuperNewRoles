@@ -771,7 +771,7 @@ namespace SuperNewRoles.Buttons
                             var misfire = !Sheriff.IsSheriffKill(Target);
                             if (RoleClass.Chief.SheriffPlayer.Contains(LocalID))
                             {
-                                misfire = Sheriff.IsChiefSheriffKill(Target);
+                                misfire = !Sheriff.IsChiefSheriffKill(Target);
                             }
                             var TargetID = Target.PlayerId;
 

@@ -1144,7 +1144,7 @@ namespace SuperNewRoles
             else if (player.IsImpostor()) return true;
             return role switch
             {
-                RoleId.Jester => RoleClass.Jester.IsUseSabo,
+                RoleId.Jester => RoleClass.Jester.IsUseSabo && ModeHandler.IsMode(ModeId.Default),
                 RoleId.Sidekick or RoleId.Jackal => RoleClass.Jackal.IsUseSabo,
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
                 RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
