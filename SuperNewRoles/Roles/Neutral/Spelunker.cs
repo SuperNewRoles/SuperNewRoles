@@ -53,10 +53,13 @@ namespace SuperNewRoles.Roles.Neutral
             if (RoleClass.Spelunker.CommsOrLightdownDeathTime != -1)
             {
                 if (RoleHelpers.IsComms() || RoleHelpers.IsLightdown()) {
-                    RoleClass.Spelunker.CommsOrLightdownTime -= Time.fixedDeltaTime;
-                    if (RoleClass.Spelunker.CommsOrLightdownTime <= 0)
+                    if (!RoleClass.IsMeeting)
                     {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        RoleClass.Spelunker.CommsOrLightdownTime -= Time.fixedDeltaTime;
+                        if (RoleClass.Spelunker.CommsOrLightdownTime <= 0)
+                        {
+                            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        }
                     }
                 } else
                 {

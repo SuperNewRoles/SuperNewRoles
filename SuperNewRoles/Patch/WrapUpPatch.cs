@@ -1,6 +1,8 @@
+using System.Linq;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
@@ -89,6 +91,13 @@ namespace SuperNewRoles.Patch
             Roles.Neutral.Spelunker.WrapUp();
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
+            if (AmongUsClient.Instance.AmHost) {
+                PlayerAnimation.PlayerAnimations.All(x =>
+                {
+                    x.RpcAnimation(RpcAnimationType.Stop);    
+                    return false;
+                });
+            }
             if (exiled == null) return;
 
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();

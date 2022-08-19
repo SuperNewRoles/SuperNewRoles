@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using SuperNewRoles.CustomObject;
 using UnityEngine;
 
 namespace SuperNewRoles
@@ -95,6 +96,7 @@ namespace SuperNewRoles
             if (__instance.notRealPlayer) return;
             CachedPlayer.AllPlayers.RemoveAll(p => p.PlayerControl.Pointer == __instance.Pointer);
             CachedPlayer.PlayerPtrs.Remove(__instance.Pointer);
+            PlayerAnimation.GetPlayerAnimation(__instance.PlayerId).OnDestroy();
         }
 
         [HarmonyPatch(typeof(GameData), nameof(GameData.Deserialize))]
