@@ -595,6 +595,9 @@ namespace SuperNewRoles
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.Add(player);
                     break;
+                case RoleId.Photographer:
+                    RoleClass.Photographer.PhotographerPlayer.Add(player);
+                    break;
                 case RoleId.Stefinder:
                     RoleClass.Stefinder.StefinderPlayer.Add(player);
                     break;
@@ -991,6 +994,9 @@ namespace SuperNewRoles
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Photographer:
+                    RoleClass.Photographer.PhotographerPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.Stefinder:
                     RoleClass.Stefinder.StefinderPlayer.RemoveAll(ClearRemove);
                     break;
@@ -1049,6 +1055,8 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
+                case RoleId.Photographer:
+                //タスククリアか
                     IsTaskClear = true;
                     break;
                 //タスククリアか
@@ -1175,6 +1183,7 @@ namespace SuperNewRoles
                     RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
                     RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
                     RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
+                    RoleId.Photographer => RoleClass.Photographer.IsImpostorVision,
                     _ => false,
                 };
         }
@@ -1209,6 +1218,7 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
+                case RoleId.Photographer:
                 //第三か
                     IsNeutral = true;
                     break;
@@ -1494,6 +1504,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
                 else if (RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.IsCheckListPlayerControl(player)) return RoleId.SeeThroughPerson;
                 else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
+                else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
                 else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
                 //ロールチェック
             }

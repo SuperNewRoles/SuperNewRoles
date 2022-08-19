@@ -18,12 +18,11 @@ namespace SuperNewRoles.Roles.CrewMate
                 {
                     var newcollider = new GameObject("Door-SeeThroughPersonCollider-" + door.transform.position.x + "." + door.transform.position.y + "." + door.Id);
                     newcollider.transform.position = door.transform.position;
-                    var kari = door.gameObject.AddComponent<PolygonCollider2D>();
-                    newcollider.AddComponent<EdgeCollider2D>().points = kari.points;
-                    GameObject.Destroy(kari);
+                    var TempCollider = door.gameObject.AddComponent<PolygonCollider2D>();
+                    newcollider.AddComponent<EdgeCollider2D>().points = TempCollider.points;
+                    GameObject.Destroy(TempCollider);
                     door.myCollider.isTrigger = true;
                     RoleClass.SeeThroughPerson.Objects.Add(newcollider.GetComponent<EdgeCollider2D>());
-                    SuperNewRolesPlugin.Logger.LogInfo("HAHAHA:  " + newcollider.GetComponent<EdgeCollider2D>().points.ToString());
                     door.animator.Play(door.OpenDoorAnim);
                 }, 0.5f);
             }

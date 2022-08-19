@@ -1,7 +1,6 @@
 using System.Collections;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
-using SuperNewRoles.CustomRPC;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Object = UnityEngine.Object;
