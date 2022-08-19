@@ -2746,7 +2746,7 @@ namespace SuperNewRoles.Roles
                 _playerDatas = new();
             }
         }
-        
+
         public static class SatsumaAndImo
         {
             public static List<PlayerControl> SatsumaAndImoPlayer;
