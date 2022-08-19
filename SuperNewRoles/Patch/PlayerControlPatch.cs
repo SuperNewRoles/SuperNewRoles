@@ -27,138 +27,35 @@ namespace SuperNewRoles.Patches
             SyncSetting.CustomSyncSettings();
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             if (target.IsBot()) return true;
-            if (__instance.PlayerId != target.PlayerId)//一回目の処理
-            {
-                if (ModeHandler.isMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
-                {
-                    if (__instance.isRole(RoleId.Doppelganger))
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo($"[PlayerControlPatch]Doppelganger ShapeShift : {__instance.Data.PlayerName} => {target.Data.PlayerName}");
-                        int i = 0;
-                        for ( ; __instance == RoleClass.Doppelganger.SHRPlayer[i]; i++)
-                        {
-                            if (i >= RoleClass.Doppelganger.SHRPlayer.Length)
-                            {
-                                SuperNewRolesPlugin.Logger.LogInfo("[PlayerControlPatch]Doppelganger ShapeShift Error : ドッペルゲンガーがシェイプシフトしましたが、シェイプシフトしたドッペルゲンガーが発見できませんでした。何回繰り返したか:" + i);
-                                break;
-                            }
-                        }
-                        if (i <= RoleClass.Doppelganger.SHRPlayer.Length)
-                        {
-                            RoleClass.Doppelganger.SHRTarget[i] = target;
-                        }
-                    }
-                }
-                if (ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.AmHost)
-                {
-                    if (__instance.isRole(RoleId.Doppelganger))
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo($"[PlayerControlPatch]Doppelganger ShapeShift : {__instance.Data.PlayerName} => {target.Data.PlayerName}");//プレイヤー1がプレイヤー2へシェイプシフト
-                        RoleClass.Doppelganger.Target = target;
-                    }
-                }
-            }
-            if (__instance.PlayerId == target.PlayerId)//二回目の処理
-            {
-                if (ModeHandler.isMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
-                {
-                    if (__instance.isRole(RoleId.RemoteSheriff))
-                    {
-                        __instance.RpcProtectPlayer(__instance, 0);
-                        new LateTask(() =>
-                        {
-                            __instance.RpcMurderPlayer(__instance);
-                        }, 0.5f);
-                    }
-                    if (__instance.isRole(RoleId.Doppelganger))
-                    {
-                        int i = 0;
-                        for (; __instance == RoleClass.Doppelganger.SHRPlayer[i]; i++)
-                        {
-                            if (i >= RoleClass.Doppelganger.SHRPlayer.Length) break;
-                        }
-                        if (i <= RoleClass.Doppelganger.SHRPlayer.Length)
-                        {
-                            RoleClass.Doppelganger.SHRTarget[i] = RoleClass.Doppelganger.SHRPlayer[i];
-                        }
-                    }
-                }
-                if (ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.AmHost) //モードがデフォルトか
-                {
-                    if (__instance.isRole(RoleId.Doppelganger)) //ロールがドッペルゲンガーか
-                    {
-                        RoleClass.Doppelganger.Target = PlayerControl.LocalPlayer;
-                        Doppelganger.DoppelgangerResetCoolDown();
-                    }
-                }
-                return true;
-            }
-            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            bool isShape = __instance.PlayerId != target.PlayerId;
+
+            SuperNewRolesPlugin.Logger.LogInfo($"[RpcShapesihftPatch]ShapeShift : {__instance.Data.PlayerName} => {target.Data.PlayerName}");
+            if (RoleClass.ShapeStates.ContainsKey(__instance)) RoleClass.ShapeStates[__instance] = target;
+            if (!RoleClass.ShapeStates.ContainsKey(__instance)) RoleClass.ShapeStates.Add(__instance, target);
+
+            if (ModeHandler.isMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
             {
                 switch (__instance.getRole())
                 {
-                    case RoleId.RemoteSheriff:
-                        if (AmongUsClient.Instance.AmHost)
-                        {
-                            if (target.isDead()) return true;
-                            if (!RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] >= 1)
-                            {
-                                if (!Sheriff.IsRemoteSheriffKill(target) || target.isRole(RoleId.RemoteSheriff))
-                                {
-                                    FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
-                                    __instance.RpcMurderPlayer(__instance);
-                                    return true;
-                                }
-                                else
-                                {
-                                    FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
-                                    if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
-                                    {
-                                        RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
-                                    }
-                                    else
-                                    {
-                                        RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.RemoteSheriffKillMaxCount.getFloat() - 1;
-                                    }
-                                    if (RoleClass.RemoteSheriff.IsKillTeleport)
-                                    {
-                                        __instance.RpcMurderPlayerCheck(target);
-                                    }
-                                    else
-                                    {
-                                        target.RpcMurderPlayer(target);
-                                        __instance.RpcProtectPlayer(__instance, 0);
-                                    }
-                                    Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
-                                    return true;
-                                }
-                            }
-                            else
-                            {
-                                return true;
-                            }
-                        }
-                        return true;
+                    //変身しない役職
                     case RoleId.SelfBomber:
-                        if (AmongUsClient.Instance.AmHost)
+                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
-                            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                            if (p.isAlive() && p.PlayerId != __instance.PlayerId)
                             {
-                                if (p.isAlive() && p.PlayerId != __instance.PlayerId)
+                                if (SelfBomber.GetIsBomb(__instance, p))
                                 {
-                                    if (SelfBomber.GetIsBomb(__instance, p))
-                                    {
-                                        __instance.RpcMurderPlayerCheck(p);
-                                    }
+                                    __instance.RpcMurderPlayerCheck(p);
                                 }
                             }
-                            __instance.RpcMurderPlayer(__instance);
                         }
+                        __instance.RpcMurderPlayer(__instance);
                         return false;
+
                     case RoleId.Samurai:
                         if (!RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId))
                         {
-                            if (AmongUsClient.Instance.AmHost || !RoleClass.Samurai.Sword)
+                            if (!RoleClass.Samurai.Sword)
                             {
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                                 {
@@ -175,46 +72,110 @@ namespace SuperNewRoles.Patches
                             RoleClass.Samurai.SwordedPlayer.Add(__instance.PlayerId);
                         }
                         return false;
+
                     case RoleId.Arsonist:
-                        if (AmongUsClient.Instance.AmHost)
+                        foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
                         {
-                            foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
+                            if (Arsonist.IsWin(p))
                             {
-                                if (Arsonist.IsWin(p))
-                                {
-                                    RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
-                                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
-                                    Writer.Write(p.PlayerId);
-                                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                                RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
+                                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                                Writer.Write(p.PlayerId);
+                                AmongUsClient.Instance.FinishRpcImmediately(Writer);
 
-                                    Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
-                                    Writer.Write((byte)CustomGameOverReason.ArsonistWin);
-                                    Writer.EndRPC();
-                                    RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
+                                Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                                Writer.Write((byte)CustomGameOverReason.ArsonistWin);
+                                Writer.EndRPC();
+                                RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
 
-                                    RoleClass.Arsonist.TriggerArsonistWin = true;
-                                    EndGame.AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
-                                    // SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
-                                    __instance.enabled = false;
-                                    ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.ArsonistWin, false);
-                                    return true;
-                                }
+                                RoleClass.Arsonist.TriggerArsonistWin = true;
+                                EndGame.AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
+                                // SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                                __instance.enabled = false;
+                                ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.ArsonistWin, false);
+                                return true;
                             }
                         }
                         return false;
+
                     case RoleId.SuicideWisher:
-                        if (AmongUsClient.Instance.AmHost)
-                        {
-                            __instance.RpcMurderPlayer(__instance);
-                        }
+                        __instance.RpcMurderPlayer(__instance);
                         return false;
+
                     case RoleId.ToiletFan:
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 79);
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 80);
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
                         return false;
+
+                    //変身する役職
+                    case RoleId.RemoteSheriff:
+                        if (!isShape)//変身解除したら
+                        {
+                            __instance.RpcProtectPlayer(__instance, 0);
+                            new LateTask(() =>
+                            {
+                                __instance.RpcMurderPlayer(__instance);
+                            }, 0.5f);
+                            return true;
+                        }
+                        if (target.isDead()) return true;
+                        if (!RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] >= 1)
+                        {
+                            if (!Sheriff.IsRemoteSheriffKill(target) || target.isRole(RoleId.RemoteSheriff))
+                            {
+                                FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
+                                __instance.RpcMurderPlayer(__instance);
+                                return true;
+                            }
+                            else
+                            {
+                                FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
+                                if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
+                                {
+                                    RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
+                                }
+                                else
+                                {
+                                    RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.RemoteSheriffKillMaxCount.getFloat() - 1;
+                                }
+                                if (RoleClass.RemoteSheriff.IsKillTeleport)
+                                {
+                                    __instance.RpcMurderPlayerCheck(target);
+                                }
+                                else
+                                {
+                                    target.RpcMurderPlayer(target);
+                                    __instance.RpcProtectPlayer(__instance, 0);
+                                }
+                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+
+                            }
+                        }
+                        return true;
+
+                    case RoleId.Doppelganger:
+                        RoleClass.Doppelganger.Target = target;
+                        //変身を解除したらクールダウンをリセットする。
+                        if (isShape) Doppelganger.DoppelgangerResetCoolDown();
+                        return true;
                 }
+            }
+
+            //処理はしないが、変身するかどうかを返す
+            switch (__instance.getRole())
+            {
+                case RoleId.SelfBomber:
+                case RoleId.Samurai:
+                case RoleId.Arsonist:
+                case RoleId.SuicideWisher:
+                case RoleId.ToiletFan:
+                    return false;
+
+                case RoleId.RemoteSheriff:
+                case RoleId.Doppelganger:
+                    return true;
             }
             return true;
         }
@@ -337,7 +298,7 @@ namespace SuperNewRoles.Patches
                 if (PlayerControl.LocalPlayer.isRole(RoleId.Doppelganger))
                 {
                     PlayerControl.LocalPlayer.RpcMurderPlayer(__instance.currentTarget);
-                    if(RoleClass.Doppelganger.Target.PlayerId == __instance.currentTarget.PlayerId)
+                    if (RoleClass.Doppelganger.Target.PlayerId == __instance.currentTarget.PlayerId)
                     {
                         PlayerControl.LocalPlayer.SetKillTimer(RoleClass.Doppelganger.SucTime);
                     }
@@ -644,22 +605,13 @@ namespace SuperNewRoles.Patches
                             return false;
                         case RoleId.Doppelganger:
                             __instance.RpcMurderPlayer(target);
-                            int j = 0;
-                            for ( ; __instance == RoleClass.Doppelganger.SHRPlayer[j]; j++)
-                            {
-                                if (j >= RoleClass.Doppelganger.SHRPlayer.Length) return false;
-                            }
-                            if(j <= RoleClass.Doppelganger.SHRPlayer.Length)
-                            {
-                                if (target == RoleClass.Doppelganger.SHRTarget[j])
-                                {
-                                    RoleClass.Doppelganger.SHRPlayer[j].SetKillTimer(RoleClass.Doppelganger.SucTime);
-                                }
-                                else
-                                {
-                                    RoleClass.Doppelganger.SHRPlayer[j].SetKillTimer(RoleClass.Doppelganger.NotSucTime);
-                                }
-                            }
+                            __instance.SetKillTimer(RoleClass.ShapeStates.ContainsKey(__instance) == true
+                            ? RoleClass.ShapeStates[__instance] == target
+                            ? RoleClass.Doppelganger.SucTime    //ﾀｰｹﾞｯﾄだったら
+                            : RoleClass.Doppelganger.NotSucTime //ﾀｰｹﾞｯﾄ以外だったら
+                            : RoleClass.Doppelganger.NotSucTime);   //変身を一回もしていなかったら
+                            SuperNewRolesPlugin.Logger.LogInfo("ドッペルゲンガーがキルしたことを感知");
+                            SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName},{__instance.PlayerId},{__instance.getRole()} => {target.Data.PlayerName},{target.PlayerId},{target.getRole()}");
                             return false;
                     }
                     break;

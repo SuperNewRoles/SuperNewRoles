@@ -1,5 +1,6 @@
 using System;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -21,7 +22,6 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.DoppelgangerButton.MaxTimer = RoleClass.Doppelganger.CoolTime + 1;
             HudManagerStartPatch.DoppelgangerButton.Timer = RoleClass.Doppelganger.CoolTime + 1;
         }
-
         public static void DoppelgangerShapeDuration()
         {
             if (!RoleClass.IsMeeting)
@@ -55,6 +55,14 @@ namespace SuperNewRoles.Roles
                 {
                     RoleClass.Doppelganger.DoppelgangerDurationText.text = "";
                 }
+            }
+        }
+
+        public static void DoppelgangerSHR()
+        {
+            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            {
+
             }
         }
     }

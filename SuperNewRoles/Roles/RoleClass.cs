@@ -21,6 +21,7 @@ namespace SuperNewRoles.Roles
         public static Color CrewmateWhite = Color.white;
         public static Color FoxPurple = Palette.Purple;
         public static bool IsStart;
+        public static Dictionary<PlayerControl, PlayerControl> ShapeStates;//Key:変身元 Value:変身先
 
         public static void ClearAndReloadRoles()
         {
@@ -32,6 +33,7 @@ namespace SuperNewRoles.Roles
             IsMeeting = false;
             IsCoolTimeSetted = false;
             IsStart = false;
+            ShapeStates = new Dictionary<PlayerControl, PlayerControl>();
             LadderDead.Reset();
             Map.Data.ClearAndReloads();
             SabotageManager.ClearAndReloads();
@@ -2512,8 +2514,6 @@ namespace SuperNewRoles.Roles
             public static TextMeshPro DoppelgangerDurationText = null;
             public static float Duration;
             public static PlayerControl Target;
-            public static PlayerControl[] SHRPlayer;
-            public static PlayerControl[] SHRTarget;
             public static Sprite getShapeButtonSprite()
             {
                 if (ShapeButtonSprite) return ShapeButtonSprite;
@@ -2529,16 +2529,9 @@ namespace SuperNewRoles.Roles
                 NotSucTime = CustomOptions.DoppelgangerNotSucTime.getFloat();
                 ShapeButton = DateTime.Now;
                 Duration = DurationTime + 1.1f;
-                Target = PlayerControl.LocalPlayer;
-                if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
+                if (Mode.ModeHandler.isMode(Mode.ModeId.Default))
                 {
-                    foreach (PlayerControl p in DoppelgangerPlayer)
-                    {
-                        Array.Resize(ref SHRPlayer, SHRPlayer.Length + 1);
-                        SHRPlayer[SHRPlayer.Length - 1] = p;
-                        Array.Resize(ref SHRTarget, SHRTarget.Length + 1);
-                        SHRTarget[SHRTarget.Length - 1] = p;
-                    }
+                    Target = PlayerControl.LocalPlayer;
                 }
             }
         }
