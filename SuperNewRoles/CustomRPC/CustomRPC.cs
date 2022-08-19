@@ -223,7 +223,7 @@ namespace SuperNewRoles.CustomRPC
         UncheckedUsePlatform,
         PartTimerSet,
         SetMatryoshkaDeadbody,
-        SharePhotograph
+        SharePhotograph,
         StefinderIsKilled
     }
     public static class RPCProcedure

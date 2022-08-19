@@ -82,6 +82,7 @@ namespace SuperNewRoles.Patch
                     return;
                 }
             }
+            PVCreator.FixedUpdate();
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
                 var MyRole = PlayerControl.LocalPlayer.GetRole();
