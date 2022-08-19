@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Agartha;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomObject;
@@ -478,7 +479,12 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.Doctor.Vital == null)
                     {
                         var e = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("panel_vitals"));
-                        if (e == null || Camera.main == null) return;
+                        if (Camera.main == null) return;
+                        if (e == null)
+                        {
+                            e = MapLoader.Airship.AllConsoles.FirstOrDefault(x => x.gameObject.name.Contains("panel_vitals"))?.TryCast<SystemConsole>();
+                            if (e == null) return;
+                        }
                         RoleClass.Doctor.Vital = UnityEngine.Object.Instantiate(e.MinigamePrefab, Camera.main.transform, false);
                     }
                     RoleClass.Doctor.Vital.transform.SetParent(Camera.main.transform, false);
