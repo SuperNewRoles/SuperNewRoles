@@ -214,8 +214,8 @@ namespace SuperNewRoles.MapOptions
 
             VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
 
-            WireTaskIsRandomOption = CustomOption.CustomOption.Create(682, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
-            WireTaskNumOption = CustomOption.CustomOption.Create(683, false, CustomOptionType.Generic, "WireTaskNum", 5f,1f,8f,1f, WireTaskIsRandomOption);
+            WireTaskIsRandomOption = CustomOption.CustomOption.Create(882, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
+            WireTaskNumOption = CustomOption.CustomOption.Create(883, false, CustomOptionType.Generic, "WireTaskNum", 5f,1f,8f,1f, WireTaskIsRandomOption);
 
             LadderDead = CustomOption.CustomOption.Create(637, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
             LadderDeadChance = CustomOption.CustomOption.Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], LadderDead);
