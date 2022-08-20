@@ -2050,20 +2050,20 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.CanMove && PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount != 0)
                     {
                         EvilButtoner.EvilButtonerStartMeeting(PlayerControl.LocalPlayer);
-                        RoleClass.EvilButtoner.SkillCount = RoleClass.EvilButtoner.SkillCount - 1;
+                        RoleClass.EvilButtoner.SkillCount --;
                     }
                     else if (PlayerControl.LocalPlayer.CanMove && PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount != 0)
                     {
                         EvilButtoner.EvilButtonerStartMeeting(PlayerControl.LocalPlayer);
-                        RoleClass.NiceButtoner.SkillCount = RoleClass.NiceButtoner.SkillCount - 1;
+                        RoleClass.NiceButtoner.SkillCount --;
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.EvilButtoner || role == RoleId.NiceButtoner) && ModeHandler.IsMode(ModeId.Default); },
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount == 0) return false;
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount == 0) return false;
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return ((PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount != 0) ||
+                            (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount != 0)) &&
+                             PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
