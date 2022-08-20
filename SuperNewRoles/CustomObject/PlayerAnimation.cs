@@ -82,6 +82,7 @@ namespace SuperNewRoles.CustomObject
         public Sprite[] Sprites;
         public Action OnAnimationEnd;
         public Action OnFixedUpdate;
+        public AudioSource SoundManagerSource;
         /// <summary>
         /// 指定したパスの連番のファイルを取得できます。
         /// </summary>
@@ -126,13 +127,18 @@ namespace SuperNewRoles.CustomObject
         }
         public static void FixedAllUpdate()
         {
-            foreach (PlayerAnimation Anim in PlayerAnimations)
+            foreach (PlayerAnimation Anim in PlayerAnimations.ToArray())
             {
                 Anim.FixedUpdate();
             }
         }
         public void FixedUpdate()
         {
+            if (SpriteRender == null)
+            {
+                PlayerAnimations.Remove(this);
+                return;
+            }
             if (!Playing) {
                     SpriteRender.sprite = null;
                 return;
@@ -190,6 +196,24 @@ namespace SuperNewRoles.CustomObject
                         {
                             transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
                             transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
+                            if (SoundManagerSource == null)
+                            {
+                                if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) <= 5f)
+                                {
+                                    SoundManagerSource = SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Charge.raw"), false);
+                                }
+                            }
+                            else
+                            {
+                                if (!SoundManagerSource.isPlaying)
+                                {
+                                    if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) <= 5f)
+                                    {
+                                        SoundManagerSource = SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Charge.raw"), false);
+                                    }
+                                }
+                            }
+
                         }));
                     }
                     break;
@@ -220,7 +244,7 @@ namespace SuperNewRoles.CustomObject
                     });
                     if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) <= 5f)
                     {
-                        SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Hit.raw"), false);
+                        SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Hit.raw"), false, 1.5f);
                     }
                     break;
             }

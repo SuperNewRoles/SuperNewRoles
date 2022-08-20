@@ -144,6 +144,7 @@ namespace SuperNewRoles.CustomRPC
         Dictator,
         Spelunker,
         SuicidalIdeation,
+        Hitman,
         Matryoshka,
         Nun,
         PartTimer,

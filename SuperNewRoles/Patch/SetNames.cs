@@ -288,7 +288,7 @@ namespace SuperNewRoles.Patch
         {
             if (PlayerControl.LocalPlayer.IsRole(RoleId.SatsumaAndImo) || PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
             {
-                foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                foreach (PlayerControl player in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
                 {//クルーなら
                     if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
                     {//名前に(C)をつける

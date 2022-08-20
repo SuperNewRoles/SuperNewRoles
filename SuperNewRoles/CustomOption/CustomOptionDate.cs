@@ -756,6 +756,16 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SuicidalIdeationShortTask;
         public static CustomOption SuicidalIdeationLongTask;
 
+        public static CustomRoleOption HitmanOption;
+        public static CustomOption HitmanPlayerCount;
+        public static CustomOption HitmanKillCoolTime;
+        public static CustomOption HitmanChangeTargetTime;
+        public static CustomOption HitmanIsOutMission;
+        public static CustomOption HitmanOutMissionLimit;
+        public static CustomOption HitmanWinKillCount;
+        public static CustomOption HitmanIsArrowView;
+        public static CustomOption HitmanArrowUpdateTime;
+
         public static CustomRoleOption MatryoshkaOption;
         public static CustomOption MatryoshkaPlayerCount;
         public static CustomOption MatryoshkaWearLimit;
@@ -1593,6 +1603,16 @@ namespace SuperNewRoles.CustomOption
             SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
             SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
 
+            HitmanOption = new CustomRoleOption(930, false, CustomOptionType.Neutral, "HitmanName",RoleClass.Hitman.color, 1);
+            HitmanPlayerCount = CustomOption.Create(931, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HitmanOption);
+            HitmanKillCoolTime = CustomOption.Create(932, false, CustomOptionType.Neutral, "SheriffCoolDownSetting", 20f, 0f, 120f, 2.5f, HitmanOption);
+            HitmanChangeTargetTime = CustomOption.Create(933, false, CustomOptionType.Neutral, "HitmanChangeTargetTime", 20f, 0f, 240f, 2.5f, HitmanOption);
+            HitmanIsOutMission = CustomOption.Create(934, false, CustomOptionType.Neutral, "HitmanIsOutMission", true, HitmanOption);
+            HitmanOutMissionLimit = CustomOption.Create(935, false, CustomOptionType.Neutral, "HitmanOutMissionLimit", 5f, 1f, 30f, 1f, HitmanIsOutMission);
+            HitmanWinKillCount = CustomOption.Create(936, false, CustomOptionType.Neutral, "HitmanWinKillCount", 5f, 1f, 15f, 1f, HitmanOption);
+            HitmanIsArrowView = CustomOption.Create(937, false, CustomOptionType.Neutral, "HitmanIsTargetArrow", true, HitmanOption);
+            HitmanArrowUpdateTime = CustomOption.Create(938, false, CustomOptionType.Neutral, "HitmanUpdateTargetArrowTime", 0f, 0f, 120f, 2.5f, HitmanIsArrowView);
+
             MatryoshkaOption = new CustomRoleOption(839, false, CustomOptionType.Impostor, "MatryoshkaName",RoleClass.Matryoshka.color, 1);
             MatryoshkaPlayerCount = CustomOption.Create(840, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MatryoshkaOption);
             MatryoshkaWearLimit = CustomOption.Create(841, false, CustomOptionType.Impostor, "MatryoshkaWearLimit", 3f, 1f, 15f, 1f, MatryoshkaOption);
@@ -1616,16 +1636,16 @@ namespace SuperNewRoles.CustomOption
             PhotographerCoolTime = CustomOption.Create(857,false,CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PhotographerOption);
             PhotographerIsBonus = CustomOption.Create(858, false, CustomOptionType.Neutral, "PhotographerIsBonus", true, PhotographerOption);
             PhotographerBonusCount = CustomOption.Create(859, false, CustomOptionType.Neutral, "PhotographerBonusCount", 5f, 1f, 15f, 1f, PhotographerIsBonus);
-            PhotographerBonusCoolTime = CustomOption.Create(860, false, CustomOptionType.Neutral, "PhotographerBonusCoolTime", 20f, 2.5f, 60f, 2.5f, PhotographerIsBonus);
+            PhotographerBonusCoolTime = CustomOption.Create(947, false, CustomOptionType.Neutral, "PhotographerBonusCoolTime", 20f, 2.5f, 60f, 2.5f, PhotographerIsBonus);
             PhotographerIsImpostorVision = CustomOption.Create(861, false, CustomOptionType.Neutral, "PhotographerIsImpostorVision", false, PhotographerOption);
             PhotographerIsNotification = CustomOption.Create(862, false, CustomOptionType.Neutral, "PhotographerIsNotification", true, PhotographerOption);
 
-            StefinderOption = new CustomRoleOption(855, false, CustomOptionType.Neutral, "StefinderName",RoleClass.Stefinder.color, 1);
-            StefinderPlayerCount = CustomOption.Create(856, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StefinderOption);
-            StefinderKillCoolDown = CustomOption.Create(857, false, CustomOptionType.Neutral, "StefinderKillCoolDownSetting", 30f, 0f, 120f, 2.5f, StefinderOption, format: "unitSeconds");
-            StefinderVent = CustomOption.Create(858, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
-            StefinderSabo = CustomOption.Create(859, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
-            StefinderSoloWin = CustomOption.Create(860, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
+            StefinderOption = new CustomRoleOption(939, false, CustomOptionType.Neutral, "StefinderName",RoleClass.Stefinder.color, 1);
+            StefinderPlayerCount = CustomOption.Create(940, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StefinderOption);
+            StefinderKillCoolDown = CustomOption.Create(941, false, CustomOptionType.Neutral, "StefinderKillCoolDownSetting", 30f, 0f, 120f, 2.5f, StefinderOption, format: "unitSeconds");
+            StefinderVent = CustomOption.Create(942, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
+            StefinderSabo = CustomOption.Create(943, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
+            StefinderSoloWin = CustomOption.Create(944, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
             
             SluggerOption = new CustomRoleOption(901, false, CustomOptionType.Impostor, "SluggerName",RoleClass.Slugger.color, 1);
             SluggerPlayerCount = CustomOption.Create(902, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SluggerOption);

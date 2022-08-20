@@ -11,6 +11,59 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch]
     class IntroPatch
     {
+        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
+        class IntroCutsceneOnDestroyPatch
+        {
+            public static PoolablePlayer playerPrefab;
+            public static void Prefix(IntroCutscene __instance)
+            {
+                // プレイヤーのアイコンを生成
+                if (CachedPlayer.LocalPlayer != null && FastDestroyableSingleton<HudManager>.Instance != null)
+                {
+                    Vector3 bottomLeft = new(-FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.x, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.y, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.z);
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                    {
+                        GameData.PlayerInfo data = p.Data;
+                        PoolablePlayer player = Object.Instantiate(__instance.PlayerPrefab, FastDestroyableSingleton<HudManager>.Instance.transform);
+                        playerPrefab = __instance.PlayerPrefab;
+                        p.SetPlayerMaterialColors(player.cosmetics.currentBodySprite.BodySprite);
+                        player.SetSkin(data.DefaultOutfit.SkinId, data.DefaultOutfit.ColorId);
+                        player.cosmetics.SetHat(data.DefaultOutfit.HatId, data.DefaultOutfit.ColorId);
+                        // PlayerControl.SetPetImage(data.DefaultOutfit.PetId, data.DefaultOutfit.ColorId, player.PetSlot);
+                        player.cosmetics.nameText.text = data.PlayerName;
+                        player.SetFlipX(true);
+                        MapOptions.MapOption.playerIcons[p.PlayerId] = player;
+                        if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hitman))
+                        {
+                            player.transform.localPosition = bottomLeft + new Vector3(-0.25f, 0f, 0);
+                            player.transform.localScale = Vector3.one * 0.4f;
+                            player.gameObject.SetActive(false);
+                        }
+                        else
+                        {
+                            player.gameObject.SetActive(false);
+                        }
+                    }
+                }
+
+                // Force Bounty Hunter to load a new Bounty when the Intro is over
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hitman))
+                {
+                    RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
+                    Roles.Neutral.Hitman.SetTarget();
+                    Roles.Neutral.Hitman.DestroyIntroHandle(__instance);
+                    if (FastDestroyableSingleton<HudManager>.Instance != null)
+                    {
+                        Vector3 bottomLeft = new Vector3(-FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.x, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.y, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.z) + new Vector3(-0.25f, 1f, 0);
+                        RoleClass.Hitman.cooldownText = Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.transform);
+                        RoleClass.Hitman.cooldownText.alignment = TMPro.TextAlignmentOptions.Center;
+                        RoleClass.Hitman.cooldownText.transform.localPosition = bottomLeft + new Vector3(0f, -1f, -1f);
+                        RoleClass.Hitman.cooldownText.gameObject.SetActive(true);
+                    }
+                }
+            }
+        }
+
         public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
             if (ModeHandler.IsMode(ModeId.Default))

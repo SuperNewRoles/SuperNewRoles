@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -137,6 +138,7 @@ namespace SuperNewRoles.MapOptions
             ButtonTimer = DateTime.Now;
             CameraDefault = Camera.main.orthographicSize;
             Default = FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize;
+            playerIcons = new();
         }
         public static CustomOption.CustomOption MapOptionSetting;
         public static CustomOption.CustomOption DeviceOptions;
@@ -169,7 +171,7 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption PolusReactorTimeLimit;
         public static CustomOption.CustomOption MiraReactorTimeLimit;
         public static CustomOption.CustomOption AirshipReactorTimeLimit;
-
+        public static Dictionary<byte, PoolablePlayer> playerIcons = new();
         public static CustomOption.CustomOption WireTaskIsRandomOption;
         public static CustomOption.CustomOption WireTaskNumOption;
 
@@ -212,8 +214,8 @@ namespace SuperNewRoles.MapOptions
 
             VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
 
-            WireTaskIsRandomOption = CustomOption.CustomOption.Create(682, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
-            WireTaskNumOption = CustomOption.CustomOption.Create(683, false, CustomOptionType.Generic, "WireTaskNum", 5f,1f,8f,1f, WireTaskIsRandomOption);
+            WireTaskIsRandomOption = CustomOption.CustomOption.Create(945, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
+            WireTaskNumOption = CustomOption.CustomOption.Create(946, false, CustomOptionType.Generic, "WireTaskNum", 5f,1f,8f,1f, WireTaskIsRandomOption);
 
             LadderDead = CustomOption.CustomOption.Create(637, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
             LadderDeadChance = CustomOption.CustomOption.Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], LadderDead);
