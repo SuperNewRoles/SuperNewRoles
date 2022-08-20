@@ -150,13 +150,14 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                     List<PlayerControl> target = new();
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (!p.Data.Disconnected && p.IsAlive())
+                        if (p.IsAlive())
                         {
                             target.Add(p);
                         }
                     }
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
+                        if (p.IsDead()) continue;
                         if (target.Count > 0)
                         {
                             var index = ModHelpers.GetRandomIndex(target);
