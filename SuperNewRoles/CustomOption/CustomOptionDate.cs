@@ -1338,7 +1338,7 @@ namespace SuperNewRoles.CustomOption
             VampireKillDelay = CustomOption.Create(309, false, CustomOptionType.Impostor, "VampireKillDelay", 0f, 1f, 60f, 0.5f, VampireOption, format: "unitSeconds");
 
             FoxOption = new CustomRoleOption(310, true, CustomOptionType.Neutral, "FoxName", RoleClass.Fox.color, 1);
-            FoxPlayerCount = CustomOption.Create(311, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2,], CrewPlayers[3], FoxOption);
+            FoxPlayerCount = CustomOption.Create(311, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FoxOption);
             FoxIsUseVent = CustomOption.Create(312, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, FoxOption);
             FoxIsImpostorLight = CustomOption.Create(313, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, FoxOption);
             FoxReport = CustomOption.Create(314, true, CustomOptionType.Neutral, "MinimalistReportSetting", true, FoxOption);
