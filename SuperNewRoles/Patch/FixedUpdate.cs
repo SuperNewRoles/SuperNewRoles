@@ -160,6 +160,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.SuicidalIdeation:
                                 SuicidalIdeation.Postfix();
                                 break;
+                            case RoleId.SeeThroughPerson:
+                                Roles.CrewMate.SeeThroughPerson.FixedUpdate();
+                                break;
                             case RoleId.Hitman:
                                 Roles.Neutral.Hitman.FixedUpdate();
                                 break;

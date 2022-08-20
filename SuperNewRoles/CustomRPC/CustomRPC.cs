@@ -145,6 +145,7 @@ namespace SuperNewRoles.CustomRPC
         Hitman,
         Matryoshka,
         Nun,
+        SeeThroughPerson,
         PartTimer,
         Photographer,
         Stefinder,

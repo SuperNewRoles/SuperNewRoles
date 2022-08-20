@@ -165,6 +165,7 @@ namespace SuperNewRoles.Roles
             Hitman.ClearAndReload();
             Matryoshka.ClearAndReload();
             Nun.ClearAndReload();
+            SeeThroughPerson.ClearAndReload();
             PartTimer.ClearAndReload();
             Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
@@ -2812,6 +2813,17 @@ namespace SuperNewRoles.Roles
                 TeamNumber = 1;
                 //1=クルー
                 //2=マッド
+            }
+        }
+        public static class SeeThroughPerson
+        {
+            public static List<PlayerControl> SeeThroughPersonPlayer;
+            public static Color32 color = new(157, 204, 224, byte.MaxValue);
+            public static List<EdgeCollider2D> Objects;
+            public static void ClearAndReload()
+            {
+                SeeThroughPersonPlayer = new();
+                Objects = new();
             }
         }
         public static class Photographer
