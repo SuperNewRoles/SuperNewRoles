@@ -136,7 +136,7 @@ namespace SuperNewRoles
             RoleClass.Lovers.LoversPlayer.Add(sets);
             if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
-                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
             ChacheManager.ResetLoversChache();
         }
@@ -559,6 +559,9 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
                     break;
+                case (RoleId.SatsumaAndImo):
+                    RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.Add(player);
+                    break;
                 case RoleId.EvilButtoner:
                     RoleClass.EvilButtoner.EvilButtonerPlayer.Add(player);
                     break;
@@ -577,11 +580,26 @@ namespace SuperNewRoles
                 case RoleId.Spelunker:
                     RoleClass.Spelunker.SpelunkerPlayer.Add(player);
                     break;
-                case (RoleId.SuicidalIdeation):
+                case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.Add(player);
                     break;
                 case RoleId.Hitman:
                     RoleClass.Hitman.HitmanPlayer.Add(player);
+                    break;
+                case RoleId.Matryoshka:
+                    RoleClass.Matryoshka.MatryoshkaPlayer.Add(player);
+                    break;
+                case RoleId.Nun:
+                    RoleClass.Nun.NunPlayer.Add(player);
+                    break;
+                case RoleId.PartTimer:
+                    RoleClass.PartTimer.PartTimerPlayer.Add(player);
+                    break;
+                case RoleId.Photographer:
+                    RoleClass.Photographer.PhotographerPlayer.Add(player);
+                    break;
+                case RoleId.Stefinder:
+                    RoleClass.Stefinder.StefinderPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -599,7 +617,7 @@ namespace SuperNewRoles
             }
             if (flag)
             {
-                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
             SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
         }
@@ -940,6 +958,9 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
+                case (RoleId.SatsumaAndImo):
+                    RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.EvilButtoner:
                     RoleClass.EvilButtoner.EvilButtonerPlayer.RemoveAll(ClearRemove);
                     break;
@@ -958,11 +979,26 @@ namespace SuperNewRoles
                 case RoleId.Spelunker:
                     RoleClass.Spelunker.SpelunkerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (RoleId.SuicidalIdeation):
+                case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
                     break;
-                    case RoleId.Hitman:
+                case RoleId.Hitman:
                     RoleClass.Hitman.HitmanPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Matryoshka:
+                    RoleClass.Matryoshka.MatryoshkaPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Nun:
+                    RoleClass.Nun.NunPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.PartTimer:
+                    RoleClass.PartTimer.PartTimerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Photographer:
+                    RoleClass.Photographer.PhotographerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Stefinder:
+                    RoleClass.Stefinder.StefinderPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1017,10 +1053,13 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
-                    case RoleId.Hitman:
+                case RoleId.Hitman:
+                case RoleId.Stefinder:
+                case RoleId.PartTimer:
+                case RoleId.Photographer:
                 //タスククリアか
                     IsTaskClear = true;
-                    break; 
+                    break;
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
@@ -1066,6 +1105,7 @@ namespace SuperNewRoles
                 RoleId.Tuna => RoleClass.Tuna.IsUseVent,
                 RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
+                RoleId.Stefinder => RoleClass.Stefinder.UseVent,
                 _ => false,
             };
         }
@@ -1110,11 +1150,12 @@ namespace SuperNewRoles
             else if (player.IsImpostor()) return true;
             return role switch
             {
-                RoleId.Jester => RoleClass.Jester.IsUseSabo,
+                RoleId.Jester => RoleClass.Jester.IsUseSabo && ModeHandler.IsMode(ModeId.Default),
                 RoleId.Sidekick or RoleId.Jackal => RoleClass.Jackal.IsUseSabo,
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
                 RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
                 RoleId.Egoist => RoleClass.Egoist.UseSabo,
+                RoleId.Stefinder => RoleClass.Stefinder.UseSabo,
                 _ => false,
             };
         }
@@ -1142,6 +1183,7 @@ namespace SuperNewRoles
                     RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
                     RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
                     RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
+                    RoleId.Photographer => RoleClass.Photographer.IsImpostorVision,
                     _ => false,
                 };
         }
@@ -1174,7 +1216,10 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
-                    case RoleId.Hitman:
+                case RoleId.Hitman:
+                case RoleId.Stefinder:
+                case RoleId.PartTimer:
+                case RoleId.Photographer:
                 //第三か
                     IsNeutral = true;
                     break;
@@ -1255,6 +1300,9 @@ namespace SuperNewRoles
                         break;
                     case RoleId.Kunoichi:
                         addition = RoleClass.Kunoichi.KillCoolTime;
+                        break;
+                    case RoleId.Matryoshka:
+                        addition = RoleClass.Matryoshka.MyKillCoolTime;
                         break;
                 }
             }
@@ -1444,6 +1492,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player)) return RoleId.Neet;
                 else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
+                else if (RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.IsCheckListPlayerControl(player)) return RoleId.SatsumaAndImo;
                 else if (RoleClass.EvilButtoner.EvilButtonerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilButtoner;
                 else if (RoleClass.NiceButtoner.NiceButtonerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceButtoner;
                 else if (RoleClass.Finder.FinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Finder;
@@ -1452,6 +1501,11 @@ namespace SuperNewRoles
                 else if (RoleClass.Spelunker.SpelunkerPlayer.IsCheckListPlayerControl(player)) return RoleId.Spelunker;
                 else if (RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicidalIdeation;
                 else if (RoleClass.Hitman.HitmanPlayer.IsCheckListPlayerControl(player)) return RoleId.Hitman;
+                else if (RoleClass.Matryoshka.MatryoshkaPlayer.IsCheckListPlayerControl(player)) return RoleId.Matryoshka;
+                else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
+                else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
+                else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
+                else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
                 //ロールチェック
             }
             catch (Exception e)

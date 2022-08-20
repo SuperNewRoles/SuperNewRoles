@@ -160,6 +160,12 @@ namespace SuperNewRoles.Patch
                     roleColors = RoleClass.CrewmateWhite;
                 }
             }
+            else if (PlayerControl.LocalPlayer.IsRole(RoleId.Stefinder) && RoleClass.Stefinder.IsKill)
+            {
+                var introdate = IntroDate.GetIntroDate(role);
+                roleNames = introdate.Name;
+                roleColors = RoleClass.ImpostorRed;
+            }
             else
             {
                 var introdate = IntroDate.GetIntroDate(role);
@@ -278,6 +284,23 @@ namespace SuperNewRoles.Patch
                 }
             }
         }
+        public static void SatsumaimoSet()
+        {
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.SatsumaAndImo) || PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+            {
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                {//クルーなら
+                    if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
+                    {//名前に(C)をつける
+                        SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
+                    }
+                    if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
+                    {
+                        SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
+                    }
+                }
+            }
+        }
     }
     public class SetNameUpdate
     {
@@ -362,6 +385,20 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
+                if (LocalRole == RoleId.PartTimer)
+                {
+                    if (RoleClass.PartTimer.IsLocalOn)
+                    {
+                        if (RoleClass.PartTimer.IsCheckTargetRole)
+                        {
+                            SetNamesClass.SetPlayerRoleNames(RoleClass.PartTimer.CurrentTarget);
+                            SetNamesClass.SetPlayerNameColors(RoleClass.PartTimer.CurrentTarget);
+                        } else
+                        {
+                            SetNamesClass.SetPlayerNameText(RoleClass.PartTimer.CurrentTarget, RoleClass.PartTimer.CurrentTarget.NameText().text + ModHelpers.Cs(RoleClass.PartTimer.color, "◀"));
+                        }
+                    }
+                }
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
             }
@@ -370,6 +407,17 @@ namespace SuperNewRoles.Patch
             SetNamesClass.CelebritySet();
             SetNamesClass.QuarreledSet();
             SetNamesClass.LoversSet();
+            SetNamesClass.SatsumaimoSet();
+            if (RoleClass.PartTimer.Datas.ContainsValue(CachedPlayer.LocalPlayer.PlayerId))
+            {
+                PlayerControl PartTimerTarget = ModHelpers.PlayerById((byte)RoleClass.PartTimer.Datas.GetKey(CachedPlayer.LocalPlayer.PlayerId));
+                SetNamesClass.SetPlayerRoleNames(PartTimerTarget);
+                SetNamesClass.SetPlayerNameColors(PartTimerTarget);
+            }
+            if (RoleClass.Stefinder.IsKill)
+            {
+                SetNamesClass.SetPlayerNameColor(PlayerControl.LocalPlayer, Color.red);
+            }
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (Sabotage.SabotageManager.thisSabotage == Sabotage.SabotageManager.CustomSabotage.CognitiveDeficit)

@@ -24,7 +24,7 @@ namespace SuperNewRoles
             return (player == AmongUsClient.Instance.HostId && AmongUsClient.Instance.AmHost)
 || GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(player);
         }
-        public static void clearAllTasks(this PlayerControl player)
+        public static void ClearAllTasks(this PlayerControl player)
         {
             if (player == null) return;
             for (int i = 0; i < player.myTasks.Count; i++)
@@ -38,7 +38,7 @@ namespace SuperNewRoles
             if (player.Data != null && player.Data.Tasks != null)
                 player.Data.Tasks.Clear();
         }
-        public static void refreshRoleDescription(PlayerControl player)
+        public static void RefreshRoleDescription(PlayerControl player)
         {
             if (player == null) return;
 

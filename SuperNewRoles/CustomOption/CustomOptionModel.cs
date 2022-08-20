@@ -11,6 +11,7 @@ using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using UnityEngine;
 using UnityEngine.Events;
+using static SuperNewRoles.CustomOption.CustomRegulation;
 
 namespace SuperNewRoles.CustomOption
 {
@@ -36,7 +37,33 @@ namespace SuperNewRoles.CustomOption
 
         public int defaultSelection;
         public ConfigEntry<int> entry;
-        public int selection;
+        public int HostSelection;
+        public int ClientSelection;
+        public int ClientSelectedSelection;
+        public int selection
+        {
+            get
+            {
+                return AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost ? RegulationData.Selected == 0 ? ClientSelection : ClientSelectedSelection : HostSelection;
+            }
+            set
+            {
+                if (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost)
+                {
+                    if (RegulationData.Selected == 0)
+                    {
+                        ClientSelection = value;
+                    } else
+                    {
+                        ClientSelectedSelection = value;
+                    }
+                }
+                else
+                {
+                    HostSelection = value;
+                }
+            }
+        }
         public OptionBehaviour optionBehaviour;
         public CustomOption parent;
         public List<CustomOption> children;
@@ -192,7 +219,9 @@ namespace SuperNewRoles.CustomOption
                 if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
                 {
                     if (id == 0) SwitchPreset(selection); // Switch presets
-                    else if (entry != null) entry.Value = selection; // Save selection to config
+                    else if (entry != null && AmongUsClient.Instance.AmHost && RegulationData.Selected == 0) {
+                        entry.Value = selection;
+                    } // Save selection to config
 
                     ShareOptionSelections();// Share all selections
                 }
@@ -345,6 +374,11 @@ namespace SuperNewRoles.CustomOption
                 GameObject.Find("CrewmateSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingCrewmate"));
                 return;
             }
+            if (GameObject.Find("RegulationSettings") != null)
+            {
+                GameObject.Find("RegulationSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingRegulation"));
+                return;
+            }
             // Setup TOR tab
             var template = UnityEngine.Object.FindObjectsOfType<StringOption>().FirstOrDefault();
             if (template == null) return;
@@ -371,6 +405,11 @@ namespace SuperNewRoles.CustomOption
             crewmateSettings.name = "CrewmateSettings";
             crewmateSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "CrewmateSetting";
 
+            var RegulationSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
+            var RegulationMenu = RegulationSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
+            RegulationSettings.name = "RegulationSettings";
+            RegulationSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "RegulationSetting";
+
             var roleTab = GameObject.Find("RoleTab");
             var gameTab = GameObject.Find("GameTab");
 
@@ -393,6 +432,11 @@ namespace SuperNewRoles.CustomOption
             crewmateTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
             crewmateTab.name = "CrewmateTab";
 
+            var RegulationTab = UnityEngine.Object.Instantiate(roleTab, neutralTab.transform);
+            var RegulationTabHighlight = RegulationTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
+            RegulationTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
+            RegulationTab.name = "RegulationTab";
+
             // Position of Tab Icons
             gameTab.transform.position += Vector3.left * 3f;
             roleTab.transform.position += Vector3.left * 3f;
@@ -400,8 +444,9 @@ namespace SuperNewRoles.CustomOption
             impostorTab.transform.localPosition = Vector3.right * 1f;
             neutralTab.transform.localPosition = Vector3.right * 1f;
             crewmateTab.transform.localPosition = Vector3.right * 0.95f;
+            RegulationTab.transform.localPosition = Vector3.right * 1.85f;
 
-            var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab };
+            var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab, RegulationTab };
             for (int i = 0; i < tabs.Length; i++)
             {
                 var button = tabs[i].GetComponentInChildren<PassiveButton>();
@@ -415,12 +460,14 @@ namespace SuperNewRoles.CustomOption
                     impostorSettings.gameObject.SetActive(false);
                     neutralSettings.gameObject.SetActive(false);
                     crewmateSettings.gameObject.SetActive(false);
+                    RegulationSettings.gameObject.SetActive(false);
                     gameSettingMenu.GameSettingsHightlight.enabled = false;
                     gameSettingMenu.RolesSettingsHightlight.enabled = false;
                     snrTabHighlight.enabled = false;
                     impostorTabHighlight.enabled = false;
                     neutralTabHighlight.enabled = false;
                     crewmateTabHighlight.enabled = false;
+                    RegulationTabHighlight.enabled = false;
                     if (copiedIndex == 0)
                     {
                         gameSettingMenu.RegularGameSettings.SetActive(true);
@@ -451,13 +498,12 @@ namespace SuperNewRoles.CustomOption
                         crewmateSettings.gameObject.SetActive(true);
                         crewmateTabHighlight.enabled = true;
                     }
-                    /*
                     else if (copiedIndex == 6)
                     {
-                        modifierSettings.gameObject.SetActive(true);
-                        modifierTabHighlight.enabled = true;
+                        RegulationSettings.gameObject.SetActive(true);
+                        RegulationTabHighlight.enabled = true;
                     }
-                    */
+                    
                 }));
             }
 
@@ -469,12 +515,14 @@ namespace SuperNewRoles.CustomOption
                 UnityEngine.Object.Destroy(option.gameObject);
             foreach (OptionBehaviour option in crewmateMenu.GetComponentsInChildren<OptionBehaviour>())
                 UnityEngine.Object.Destroy(option.gameObject);
+            foreach (OptionBehaviour option in RegulationMenu.GetComponentsInChildren<OptionBehaviour>())
+                UnityEngine.Object.Destroy(option.gameObject);
             List<OptionBehaviour> snrOptions = new();
             List<OptionBehaviour> impostorOptions = new();
             List<OptionBehaviour> neutralOptions = new();
             List<OptionBehaviour> crewmateOptions = new();
 
-            List<Transform> menus = new() { snrMenu.transform, impostorMenu.transform, neutralMenu.transform, crewmateMenu.transform };
+            List<Transform> menus = new() { snrMenu.transform, impostorMenu.transform, neutralMenu.transform, crewmateMenu.transform, RegulationMenu.transform };
             List<List<OptionBehaviour>> optionBehaviours = new() { snrOptions, impostorOptions, neutralOptions, crewmateOptions };
 
             for (int i = 0; i < CustomOption.options.Count; i++)
@@ -493,6 +541,21 @@ namespace SuperNewRoles.CustomOption
                 }
                 option.optionBehaviour.gameObject.SetActive(true);
             }
+            Logger.Info("通過やでええええええええええええええええ");
+            foreach (var Regulation in CustomRegulation.RegulationData.Regulations)
+            {
+                if (Regulation.optionBehaviour == null)
+                {
+                    StringOption stringOption = UnityEngine.Object.Instantiate(template, RegulationMenu.transform);
+                    stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
+                    stringOption.TitleText.text = Regulation.title;
+                    stringOption.Value = stringOption.oldValue = 0;
+                    stringOption.ValueText.text = ModTranslation.GetString("optionOff");
+
+                    Regulation.optionBehaviour = stringOption;
+                }
+                Regulation.optionBehaviour.gameObject.SetActive(true);
+            }
 
             snrMenu.Children = snrOptions.ToArray();
             snrSettings.gameObject.SetActive(false);
@@ -505,6 +568,8 @@ namespace SuperNewRoles.CustomOption
 
             crewmateMenu.Children = crewmateOptions.ToArray();
             crewmateSettings.gameObject.SetActive(false);
+
+            RegulationSettings.gameObject.SetActive(false);
 
             var numImpostorsOption = __instance.Children.FirstOrDefault(x => x.name == "NumImpostors").TryCast<NumberOption>();
             if (numImpostorsOption != null) numImpostorsOption.ValidRange = new FloatRange(0f, 15f);
@@ -550,7 +615,26 @@ namespace SuperNewRoles.CustomOption
         public static bool Prefix(StringOption __instance)
         {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
-            if (option == null) return true;
+            if (option == null) {
+                RegulationData Regulation = RegulationData.Regulations.FirstOrDefault(regulation => regulation.optionBehaviour == __instance);
+                if (Regulation != null)
+                {
+                    __instance.OnValueChanged = new Action<OptionBehaviour>((o) => { });
+                    __instance.TitleText.text = Regulation.title;
+                    __instance.Value = __instance.oldValue = 0;
+                    if (RegulationData.Selected == Regulation.id)
+                    {
+                        __instance.ValueText.text = ModTranslation.GetString("optionOn");
+                    }
+                    else
+                    {
+                        __instance.ValueText.text = ModTranslation.GetString("optionOff");
+
+                    }
+                    return false;
+                }
+                return true;
+            }
 
             __instance.OnValueChanged = new Action<OptionBehaviour>((o) => { });
             __instance.TitleText.text = option.GetName();
@@ -567,7 +651,28 @@ namespace SuperNewRoles.CustomOption
         public static bool Prefix(StringOption __instance)
         {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
-            if (option == null) return true;
+            if (option == null)
+            {
+                RegulationData Regulation = RegulationData.Regulations.FirstOrDefault(regulation => regulation.optionBehaviour == __instance);
+                if (Regulation != null)
+                {
+                    foreach (var regulation in RegulationData.Regulations)
+                    {
+                        if (regulation.optionBehaviour is not null and StringOption stringOption)
+                        {
+                            stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
+                            stringOption.TitleText.text = regulation.title;
+                            stringOption.oldValue = __instance.Value = 0;
+                            stringOption.ValueText.text = ModTranslation.GetString("optionOff");
+                        }
+                    }
+                    Select(Regulation.id);
+                    __instance.oldValue = __instance.Value = 1;
+                    __instance.ValueText.text = ModTranslation.GetString("optionOn");
+                    return false;
+                }
+                return true;
+            }
             option.UpdateSelection(option.selection + 1);
             return false;
         }
@@ -579,7 +684,45 @@ namespace SuperNewRoles.CustomOption
         public static bool Prefix(StringOption __instance)
         {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
-            if (option == null) return true;
+            if (option == null)
+            {
+                RegulationData Regulation = RegulationData.Regulations.FirstOrDefault(regulation => regulation.optionBehaviour == __instance);
+                if (Regulation != null)
+                {
+                    bool isReset = true;
+                    bool IsFirst = true;
+                    if (Regulation.optionBehaviour is not null and StringOption stringOptiona)
+                    {
+                        if (stringOptiona.Value == 0) return false;
+                    }
+                    foreach (var regulation in RegulationData.Regulations)
+                    {
+                        if (regulation.optionBehaviour is not null and StringOption stringOption)
+                        {
+                            if (stringOption.ValueText.text == ModTranslation.GetString("optionOn"))
+                            {
+                                if (!IsFirst)
+                                {
+                                    isReset = false;
+                                }
+                                IsFirst = false;
+                            }
+                        }
+                    }
+                    __instance.oldValue = __instance.Value = 0;
+                    __instance.ValueText.text = ModTranslation.GetString("optionOff");
+                    if (isReset) {
+                        Select(0);
+                        if (RegulationData.Regulations.FirstOrDefault(d => d.id == 0).optionBehaviour is not null and StringOption stringOption0){
+                            stringOption0.oldValue = __instance.Value = 1;
+                            stringOption0.ValueText.text = ModTranslation.GetString("optionOn");
+                        }
+                    }
+                    Logger.Info(isReset.ToString());
+                    return false;
+                }
+                return true;
+            }
             option.UpdateSelection(option.selection - 1);
             return false;
         }
@@ -625,7 +768,37 @@ namespace SuperNewRoles.CustomOption
             float numItems = __instance.Children.Length;
 
             float offset = 2.75f;
+            if (__instance.name == "RegulationSetting")
+            {
+                foreach (var Regulation in RegulationData.Regulations)
+                {
+                    if (Regulation?.optionBehaviour != null && Regulation.optionBehaviour.gameObject != null)
+                    {
+                        if (Regulation.optionBehaviour is not null and StringOption stringOption)
+                        {
+                            stringOption.ValueText.text = Regulation.id == RegulationData.Selected ? ModTranslation.GetString("optionOn") : ModTranslation.GetString("optionOff");
+                        }
+
+                        bool enabled = true;
+
+                        Regulation.optionBehaviour.gameObject.SetActive(enabled);
+                        if (enabled)
+                        {
+                            offset -= false ? 0.75f : 0.5f;
+                            Regulation.optionBehaviour.transform.localPosition = new Vector3(Regulation.optionBehaviour.transform.localPosition.x, offset, Regulation.optionBehaviour.transform.localPosition.z);
+                        }
+                        else
+                        {
+                            numItems--;
+                        }
+                    }
+                }
+                __instance.GetComponentInParent<Scroller>().ContentYBounds.max = -4.0f + numItems * 0.5f;
+                return;
+            }
+
             CustomOptionType type = GetCustomOptionType(__instance.name);
+
             foreach (CustomOption option in CustomOption.options)
             {
                 if (option.type != type) continue;

@@ -24,6 +24,10 @@ namespace SuperNewRoles.MapOptions
         public static bool ValidationSubmerged;
         public static bool IsRestrict;
 
+        //タスク関連
+        public static bool WireTaskIsRandom;
+        public static int WireTaskNum;
+
         //千里眼・ズーム関連
         public static bool MouseZoom;
         public static bool ClairvoyantZoom;
@@ -69,6 +73,8 @@ namespace SuperNewRoles.MapOptions
                     ValidationAirship = false;
                     ValidationSubmerged = false;
                 }
+                WireTaskIsRandom = WireTaskIsRandomOption.GetBool();
+                WireTaskNum = WireTaskNumOption.GetInt();
                 UseDeadBodyReport = !NotUseReportDeadBody.GetBool();
                 UseMeetingButton = !NotUseMeetingButton.GetBool();
                 //SuperNewRoles.Patch.AdminPatch.ClearAndReload();
@@ -88,6 +94,7 @@ namespace SuperNewRoles.MapOptions
                 ValidationPolus = false;
                 ValidationAirship = false;
                 ValidationSubmerged = false;
+                WireTaskIsRandom = false;
             }
             BlockTool.OldDesyncCommsPlayers = new();
             BlockTool.CameraPlayers = new();
@@ -164,8 +171,9 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption PolusReactorTimeLimit;
         public static CustomOption.CustomOption MiraReactorTimeLimit;
         public static CustomOption.CustomOption AirshipReactorTimeLimit;
-
         public static Dictionary<byte, PoolablePlayer> playerIcons = new();
+        public static CustomOption.CustomOption WireTaskIsRandomOption;
+        public static CustomOption.CustomOption WireTaskNumOption;
 
         public static CustomOption.CustomOption VentAnimation;
 
@@ -205,6 +213,9 @@ namespace SuperNewRoles.MapOptions
             AirshipReactorTimeLimit = CustomOption.CustomOption.Create(471, true, CustomOptionType.Generic, "AirshipReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
 
             VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
+
+            WireTaskIsRandomOption = CustomOption.CustomOption.Create(682, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
+            WireTaskNumOption = CustomOption.CustomOption.Create(683, false, CustomOptionType.Generic, "WireTaskNum", 5f,1f,8f,1f, WireTaskIsRandomOption);
 
             LadderDead = CustomOption.CustomOption.Create(637, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
             LadderDeadChance = CustomOption.CustomOption.Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], LadderDead);

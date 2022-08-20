@@ -107,7 +107,7 @@ namespace SuperNewRoles.Mode.Zombie
                 {
                     foreach (int pint in Main.ZombiePlayers)
                     {
-                        var p1 = ModHelpers.playerById((byte)pint);
+                        var p1 = ModHelpers.PlayerById((byte)pint);
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
                             if (!p.IsZombie())
