@@ -57,6 +57,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton EvilHackerMadmateSetting;
         public static CustomButton PositionSwapperButton;
         public static CustomButton KunoichiKunaiButton;
+        public static CustomButton KunoichiHideButton;
         public static CustomButton SecretlyKillerMainButton;
         public static CustomButton SecretlyKillerSecretlyKillButton;
         public static CustomButton ClairvoyantButton;
@@ -170,6 +171,31 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("KunoichiKunai"),
+                showButtonText = true
+            };
+            KunoichiHideButton = new CustomButton(
+                () =>
+                {
+                    /*  Kunoichi.cs Update() にある、
+                        「透明化に必要な待機時間の取得と処理 (ボタン動作の時)」コメント以降のif文の中で透明化の処理を行っている。*/
+                    RoleClass.Kunoichi.IsHideButton = true;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Kunoichi && RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { Kunoichi.HideOff(); },
+                RoleClass.Kunoichi.GetHideButtonSprite(),
+                new Vector3(-2.7f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.L,
+                50,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("ScientistButtonName"),
                 showButtonText = true
             };
             FalseChargesFalseChargeButton = new(
@@ -2203,7 +2229,8 @@ namespace SuperNewRoles.Buttons
             };
 
             NunButton = new(
-                () => {
+                () =>
+                {
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedUsePlatform);
                     writer.Write((byte)255);
                     writer.Write(false);
@@ -2238,7 +2265,8 @@ namespace SuperNewRoles.Buttons
             };
 
             PartTimerButton = new(
-                () => {
+                () =>
+                {
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.PartTimerSet);
                     writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(SetTarget().PlayerId);

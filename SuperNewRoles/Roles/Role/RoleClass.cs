@@ -2323,6 +2323,8 @@ namespace SuperNewRoles.Roles
             public static Vector2 OldPosition;
             public static float StopTime;
             public static float HideTime;
+            public static bool IsWaitAndPressTheButtonToHide;
+            public static bool IsHideButton;
             private static Sprite buttonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -2330,12 +2332,21 @@ namespace SuperNewRoles.Roles
                 buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunaiButton.png", 115f);
                 return buttonSprite;
             }
+            private static Sprite HidebuttonSprite;
+            public static Sprite GetHideButtonSprite()
+            {
+                if (HidebuttonSprite) return HidebuttonSprite;
+                HidebuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiHideButton.png", 115f);
+                return HidebuttonSprite;
+            }
             public static void ClearAndReload()
             {
                 HideKunai = CustomOptions.KunoichiHideKunai.GetBool();
                 OldPosition = new();
                 StopTime = 0;
                 HideTime = CustomOptions.KunoichiIsHide.GetBool() ? CustomOptions.KunoichiHideTime.GetFloat() : -1;
+                IsWaitAndPressTheButtonToHide = CustomOptions.KunoichiIsWaitAndPressTheButtonToHide.GetBool();
+                IsHideButton = false;
                 KunoichiPlayer = new();
                 KillCoolTime = CustomOptions.KunoichiCoolTime.GetFloat();
                 KillKunai = CustomOptions.KunoichiKillKunai.GetInt();
@@ -2635,7 +2646,8 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static bool IsLocalOn => !Datas.Keys.All(data => data != CachedPlayer.LocalPlayer.PlayerId || Datas[data].Item1 == null);
             public static Dictionary<byte, (DeadBody, float)> Datas;
-            public static Sprite PutOnButtonSprite {
+            public static Sprite PutOnButtonSprite
+            {
                 get
                 {
                     if (_PutOnButtonSprite == null)
