@@ -22,10 +22,10 @@ namespace SuperNewRoles.Roles
         }
         public static void SetPlayerOutline(PlayerControl target, Color color)
         {
-            if (target == null || target.MyRend() == null) return;
-
-            target.MyRend().material.SetFloat("_Outline", 1f);
-            target.MyRend().material.SetColor("_OutlineColor", color);
+            SpriteRenderer rend = target.MyRend();
+            if (target == null || rend == null) return;
+            rend.material.SetFloat("_Outline", 1f);
+            rend.material.SetColor("_OutlineColor", color);
         }
         public class JackalFixedPatch
         {

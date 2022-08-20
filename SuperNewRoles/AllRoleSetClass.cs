@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -49,7 +49,7 @@ namespace SuperNewRoles
         }
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
-    class startgamepatch
+    class Startgamepatch
     {
         public static void Postfix()
         {
@@ -931,6 +931,12 @@ namespace SuperNewRoles
                 RoleId.Dictator => CustomOptions.DictatorPlayerCount.GetFloat(),
                 RoleId.Spelunker => CustomOptions.SpelunkerPlayerCount.GetFloat(),
                 RoleId.SuicidalIdeation => CustomOptions.SuicidalIdeationPlayerCount.GetFloat(),
+                RoleId.Matryoshka => CustomOptions.MatryoshkaPlayerCount.GetFloat(),
+                RoleId.Nun => CustomOptions.NunPlayerCount.GetFloat(),
+                RoleId.PartTimer => CustomOptions.PartTimerPlayerCount.GetFloat(),
+                RoleId.SatsumaAndImo => CustomOptions.SatsumaAndImoPlayerCount.GetFloat(),
+                RoleId.Photographer => CustomOptions.PhotographerPlayerCount.GetFloat(),
+                RoleId.Stefinder => CustomOptions.StefinderPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

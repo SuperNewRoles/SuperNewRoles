@@ -102,7 +102,7 @@ namespace SuperNewRoles.Roles
         }
         static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
         {
-            var Target = ModHelpers.playerById(__instance.playerStates[Index].TargetPlayerId);
+            var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
             var misfire = !IsMeetingSheriffKill(Target);
             var TargetID = Target.PlayerId;
             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
@@ -128,7 +128,7 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                    var player = ModHelpers.playerById(__instance.playerStates[i].TargetPlayerId);
+                    var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
                     if (player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
@@ -164,7 +164,7 @@ namespace SuperNewRoles.Roles
                 List<PlayerVoteArea> deadareas = new();
                 foreach (PlayerVoteArea area in __instance.playerStates)
                 {
-                    if (ModHelpers.playerById(area.TargetPlayerId).IsAlive())
+                    if (ModHelpers.PlayerById(area.TargetPlayerId).IsAlive())
                     {
                         Meetingsheriff_updatepatch.PlayerVoteAreas.Add(area);
                     }
@@ -186,9 +186,9 @@ namespace SuperNewRoles.Roles
                 List<PlayerVoteArea> deadareas = new();
                 foreach (PlayerVoteArea area in __instance.playerStates)
                 {
-                    if (ModHelpers.playerById(area.TargetPlayerId).IsPlayer())
+                    if (ModHelpers.PlayerById(area.TargetPlayerId).IsPlayer())
                     {
-                        if (ModHelpers.playerById(area.TargetPlayerId).IsAlive())
+                        if (ModHelpers.PlayerById(area.TargetPlayerId).IsAlive())
                             newareas.Add(area);
                         else
                             deadareas.Add(area);

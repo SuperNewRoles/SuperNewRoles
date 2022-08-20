@@ -99,6 +99,10 @@ namespace SuperNewRoles.Patches
                     __instance.text.text = $"{baseCredentials}\n{ModTranslation.GetString("creditsFull")}\n{__instance.text.text}";
                     __instance.transform.localPosition = new Vector3(4f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
                 }
+                if (CustomHats.HatManagerPatch.IsLoadingnow)
+                {
+                    __instance.text.text += $"\n{ModTranslation.GetString("LoadHat")}";
+                }
             }
         }
         public static GenericPopup popup;
@@ -287,8 +291,6 @@ namespace SuperNewRoles.Patches
                 SuperNewRolesPlugin.Logger.LogInfo("[Submerged]Passage ahhhhhh!:" + Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"));
                 //サブマージド追加ボタン
 
-                /*サブマージドのダウンロードボタン隠しSTART 今日の日はさようならまた逢う日まで・・・
-
                 var template = GameObject.Find("ExitGameButton");
                 if (template == null) return;
 
@@ -313,12 +315,10 @@ namespace SuperNewRoles.Patches
                 async void onClick()
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[Submerged]Downloading Submerged!");
-                    showPopup(ModTranslation.GetString("ダウンロード中です。\nサブマージドのファイルは大きいため、時間がかかります。"));
+                    ShowPopup(ModTranslation.GetString("ダウンロード中です。\nサブマージドのファイルは大きいため、時間がかかります。"));
                     await DownloadSubmarged();
                     button.SetActive(false);
                 }
-
-                サブマージドのダウンロードボタン隠し End　復活する際はSTARTとENDのコメント行を削除してください*/
             }
 
             private static IEnumerator Download()

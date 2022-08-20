@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -47,7 +49,7 @@ namespace SuperNewRoles.CustomCosmetics
             public bool behind { get; set; }
         }
 
-        private static List<CustomHat> createCustomHatDetails(string[] hats, bool fromDisk = false)
+        private static List<CustomHat> CreateCustomHatDetails(string[] hats, bool fromDisk = false)
         {
             Dictionary<string, CustomHat> fronts = new();
             Dictionary<string, string> backs = new();
@@ -113,7 +115,7 @@ namespace SuperNewRoles.CustomCosmetics
 
         private static Sprite CreateHatSprite(string path, bool fromDisk = false)
         {
-            Texture2D texture = fromDisk ? ModHelpers.loadTextureFromDisk(path) : ModHelpers.LoadTextureFromResources(path);
+            Texture2D texture = fromDisk ? ModHelpers.LoadTextureFromDisk(path) : ModHelpers.LoadTextureFromResources(path);
             if (texture == null)
                 return null;
             Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
@@ -193,45 +195,49 @@ namespace SuperNewRoles.CustomCosmetics
         }
 
         [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetHatById))]
-        private static class HatManagerPatch
+        public static class HatManagerPatch
         {
             private static bool LOADED;
             private static bool RUNNING = false;
+            public static bool IsLoadingnow = false;
 
             static void Prefix(HatManager __instance)
             {
                 if (!IsEnd) return;
                 if (RUNNING) return;
                 RUNNING = true; // prevent simultanious execution
+                AmongUsClient.Instance.StartCoroutine(LoadHat(__instance));
+            }
 
-                try
+            static IEnumerator LoadHat(HatManager __instance)
+            {
+                IsLoadingnow = true;
+                if (!LOADED)
                 {
-                    if (!LOADED)
-                    {
-                        Assembly assembly = Assembly.GetExecutingAssembly();
-                        string hatres = $"{assembly.GetName().Name}.Resources.CustomHats";
-                        string[] hats = (from r in assembly.GetManifestResourceNames()
-                                         where r.StartsWith(hatres) && r.EndsWith(".png")
-                                         select r).ToArray<string>();
+                    Assembly assembly = Assembly.GetExecutingAssembly();
+                    string hatres = $"{assembly.GetName().Name}.Resources.CustomHats";
+                    string[] hats = (from r in assembly.GetManifestResourceNames()
+                                     where r.StartsWith(hatres) && r.EndsWith(".png")
+                                     select r).ToArray<string>();
 
-                        List<CustomHat> customhats = createCustomHatDetails(hats);
-                        foreach (CustomHat ch in customhats)
-                            __instance.allHats.Add(CreateHatData(ch));
-                    }
-                    while (CustomHatLoader.hatDetails.Count > 0)
+                    List<CustomHat> customhats = CreateCustomHatDetails(hats);
+                    foreach (CustomHat ch in customhats)
                     {
-                        __instance.allHats.Add(CreateHatData(CustomHatLoader.hatDetails[0]));
-                        CustomHatLoader.hatDetails.RemoveAt(0);
+                        __instance.allHats.Add(CreateHatData(ch));
+                        yield return new WaitForSeconds(0.05f);
                     }
                 }
-                catch (System.Exception e)
+                while (CustomHatLoader.hatDetails.Count > 0)
                 {
-                    if (!LOADED)
-                        System.Console.WriteLine("Unable to add Custom Hats\n" + e);
+                    __instance.allHats.Add(CreateHatData(CustomHatLoader.hatDetails[0]));
+                    CustomHatLoader.hatDetails.RemoveAt(0);
+                    yield return new WaitForSeconds(0.05f);
                 }
                 LOADED = true;
+                IsLoadingnow = false;
             }
         }
+
 
         [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.HandleAnimation))]
         private static class PlayerPhysicsHandleAnimationPatch
@@ -242,15 +248,15 @@ namespace SuperNewRoles.CustomCosmetics
                 if (currentAnimation == __instance.CurrentAnimationGroup.ClimbAnim || currentAnimation == __instance.CurrentAnimationGroup.ClimbDownAnim) return;
                 HatParent hp = __instance.myPlayer.HatRenderer();
                 if (hp.Hat == null) return;
-                HatExtension extend = hp.Hat.getHatExtension();
+                HatExtension extend = hp.Hat.GetHatExtension();
                 if (extend == null) return;
                 if (extend.FlipImage != null)
                 {
-                    hp.FrontLayer.sprite = __instance.rend().flipX ? extend.FlipImage : hp.Hat.hatViewData.viewData.MainImage;
+                    hp.FrontLayer.sprite = __instance.Rend().flipX ? extend.FlipImage : hp.Hat.hatViewData.viewData.MainImage;
                 }
                 if (extend.BackFlipImage != null)
                 {
-                    hp.BackLayer.sprite = __instance.rend().flipX ? extend.BackFlipImage : hp.Hat.hatViewData.viewData.BackImage;
+                    hp.BackLayer.sprite = __instance.Rend().flipX ? extend.BackFlipImage : hp.Hat.hatViewData.viewData.BackImage;
                 }
             }
         }
@@ -265,7 +271,7 @@ namespace SuperNewRoles.CustomCosmetics
                     string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\Test";
                     DirectoryInfo d = new(filePath);
                     string[] filePaths = d.GetFiles("*.png").Select(x => x.FullName).ToArray(); // Getting Text files
-                    List<CustomHat> hats = createCustomHatDetails(filePaths, true);
+                    List<CustomHat> hats = CreateCustomHatDetails(filePaths, true);
                     if (hats.Count > 0)
                     {
                         foreach (PlayerControl pc in CachedPlayer.AllPlayers)
@@ -288,7 +294,7 @@ namespace SuperNewRoles.CustomCosmetics
         private static float inventoryBot = -2.5f;
         private static readonly float inventoryZ = -2f;
 
-        public static void calcItemBounds(HatsTab __instance)
+        public static void CalcItemBounds(HatsTab __instance)
         {
             inventoryTop = __instance.scroller.Inner.position.y - 0.5f;
             inventoryBot = __instance.scroller.Inner.position.y - 4.5f;
@@ -299,7 +305,7 @@ namespace SuperNewRoles.CustomCosmetics
         {
             public static TMPro.TMP_Text textTemplate;
 
-            public static float createHatPackage(List<System.Tuple<HatData, HatExtension>> hats, string packageName, float YStart, HatsTab __instance)
+            public static float CreateHatPackage(List<System.Tuple<HatData, HatExtension>> hats, string packageName, float YStart, HatsTab __instance)
             {
                 float offset = YStart;
                 if (textTemplate != null)
@@ -371,7 +377,7 @@ namespace SuperNewRoles.CustomCosmetics
             public static List<ColorChip> Chips;
             public static bool Prefix(HatsTab __instance)
             {
-                calcItemBounds(__instance);
+                CalcItemBounds(__instance);
 
                 HatData[] unlockedHats = DestroyableSingleton<HatManager>.Instance.GetUnlockedHats();
                 Dictionary<string, List<System.Tuple<HatData, HatExtension>>> packages = new();
@@ -386,7 +392,7 @@ namespace SuperNewRoles.CustomCosmetics
 
                 foreach (HatData hatData in unlockedHats)
                 {
-                    HatExtension ext = hatData.getHatExtension();
+                    HatExtension ext = hatData.GetHatExtension();
 
                     if (ext != null)
                     {
@@ -416,7 +422,7 @@ namespace SuperNewRoles.CustomCosmetics
                 foreach (string key in orderedKeys)
                 {
                     List<System.Tuple<HatData, HatExtension>> value = packages[key];
-                    YOffset = createHatPackage(value, key, YOffset, __instance);
+                    YOffset = CreateHatPackage(value, key, YOffset, __instance);
                 }
 
                 __instance.scroller.ContentYBounds.max = -(YOffset + 3.0f + headerSize);
@@ -452,18 +458,20 @@ namespace SuperNewRoles.CustomCosmetics
     {
         public static bool running = false;
 
-        public static string[] hatRepos = new string[]
+        //レポURL、レポ
+        public static Dictionary<string, string> hatRepos = new()
         {
-            "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master",
+            { "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master", "SuperNewNamePlates" },
 
-            "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master",
-            "https://raw.githubusercontent.com/Ujet222/TOPHats/main",
+            { "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master", "mememurahat" },
+            { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },
 
-            "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master",
-            "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master",
-            "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master"
+            { "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master", "TheOtherRolesGMHaoming"},
+            { "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master", "TheOtherRolesGM"},
+            { "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master", "TheOtherHats"},
         };
 
+        public static List<string> CachedRepos = new();
         public static List<CustomHatOnline> hatDetails = new();
         private static Task hatFetchTask = null;
         public static void LaunchHatFetcher()
@@ -479,11 +487,83 @@ namespace SuperNewRoles.CustomCosmetics
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\");
             hatDetails = new List<CustomHatOnline>();
-            List<string> repos = new(hatRepos);
+            List<string> repos = new(hatRepos.Keys);
             SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] フェチ");
             foreach (string repo in repos)
             {
                 Repos.Add(repo);
+            }
+            if (!ConfigRoles.DownloadSuperNewNamePlates.Value) return;
+            string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
+            foreach (string repo in repos)
+            {
+                if (File.Exists($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json"))
+                {
+                    StreamReader sr = new($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json");
+
+                    string text = sr.ReadToEnd();
+
+                    sr.Close();
+
+                    JToken jobj = JObject.Parse(text)["hats"];
+                    if (jobj.HasValues)
+                    {
+
+                        List<CustomHatOnline> hatdatas = new();
+
+                        for (JToken current = jobj.First; current != null; current = current.Next)
+                        {
+                            if (current.HasValues)
+                            {
+                                CustomHatOnline info = new()
+                                {
+                                    name = current["name"]?.ToString(),
+                                    author = current["author"]?.ToString(),
+                                    resource = SanitizeResourcePath(current["resource"]?.ToString())
+                                };
+                                if (info.resource == null || info.name == null) // required
+                                    continue;
+                                info.reshasha = info.resource + info.name + info.author;
+                                info.backresource = SanitizeResourcePath(current["backresource"]?.ToString());
+                                info.reshashb = current["reshashb"]?.ToString();
+                                info.climbresource = SanitizeResourcePath(current["climbresource"]?.ToString());
+                                info.reshashc = current["reshashc"]?.ToString();
+                                info.flipresource = SanitizeResourcePath(current["flipresource"]?.ToString());
+                                info.reshashf = current["reshashf"]?.ToString();
+                                info.backflipresource = SanitizeResourcePath(current["backflipresource"]?.ToString());
+                                info.reshashbf = current["reshashbf"]?.ToString();
+
+                                info.package = current["package"]?.ToString();
+                                SuperNewRolesPlugin.Logger.LogInfo(info.package);
+                                if (info.package != null && !CustomHats.Keys.Contains(info.package))
+                                {
+                                    CustomHats.Keys.Add(info.package);
+                                }
+                                info.condition = current["condition"]?.ToString();
+                                info.bounce = current["bounce"] != null;
+                                info.adaptive = current["adaptive"] != null;
+                                info.behind = current["behind"] != null;
+
+                                if (info.package == "Developer Hats")
+                                    info.package = "developerHats";
+
+                                if (info.package == "Community Hats")
+                                    info.package = "communityHats";
+
+                                hatdatas.Add(info);
+                            }
+                        }
+                        CustomHats.Keys.Add("InnerSloth");
+
+                        hatDetails.AddRange(hatdatas);
+                        CachedRepos.Add(repo);
+                        Repos.Remove(repo);
+                        if (Repos.Count < 1)
+                        {
+                            CustomHats.IsEnd = true;
+                        }
+                    }
+                }
             }
             foreach (string repo in repos)
             {
@@ -511,7 +591,7 @@ namespace SuperNewRoles.CustomCosmetics
             running = false;
         }
 
-        private static string sanitizeResourcePath(string res)
+        private static string SanitizeResourcePath(string res)
         {
             if (res == null || !res.EndsWith(".png"))
                 return null;
@@ -538,6 +618,9 @@ namespace SuperNewRoles.CustomCosmetics
                     return HttpStatusCode.ExpectationFailed;
                 }
                 string json = await response.Content.ReadAsStringAsync();
+                var responsestream = await response.Content.ReadAsStreamAsync();
+                string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
+                responsestream.CopyTo(File.Create($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json"));
                 JToken jobj = JObject.Parse(json)["hats"];
                 if (!jobj.HasValues) return HttpStatusCode.ExpectationFailed;
 
@@ -551,18 +634,18 @@ namespace SuperNewRoles.CustomCosmetics
                         {
                             name = current["name"]?.ToString(),
                             author = current["author"]?.ToString(),
-                            resource = sanitizeResourcePath(current["resource"]?.ToString())
+                            resource = SanitizeResourcePath(current["resource"]?.ToString())
                         };
                         if (info.resource == null || info.name == null) // required
                             continue;
                         info.reshasha = info.resource + info.name + info.author;
-                        info.backresource = sanitizeResourcePath(current["backresource"]?.ToString());
+                        info.backresource = SanitizeResourcePath(current["backresource"]?.ToString());
                         info.reshashb = current["reshashb"]?.ToString();
-                        info.climbresource = sanitizeResourcePath(current["climbresource"]?.ToString());
+                        info.climbresource = SanitizeResourcePath(current["climbresource"]?.ToString());
                         info.reshashc = current["reshashc"]?.ToString();
-                        info.flipresource = sanitizeResourcePath(current["flipresource"]?.ToString());
+                        info.flipresource = SanitizeResourcePath(current["flipresource"]?.ToString());
                         info.reshashf = current["reshashf"]?.ToString();
-                        info.backflipresource = sanitizeResourcePath(current["backflipresource"]?.ToString());
+                        info.backflipresource = SanitizeResourcePath(current["backflipresource"]?.ToString());
                         info.reshashbf = current["reshashbf"]?.ToString();
 
                         info.package = current["package"]?.ToString();
@@ -589,19 +672,18 @@ namespace SuperNewRoles.CustomCosmetics
 
                 List<string> markedfordownload = new();
 
-                string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
                 MD5 md5 = MD5.Create();
                 foreach (CustomHatOnline data in hatdatas)
                 {
-                    if (doesResourceRequireDownload(filePath + data.resource, data.reshasha, md5))
+                    if (DoesResourceRequireDownload(filePath + data.resource, data.reshasha, md5))
                         markedfordownload.Add(data.resource);
-                    if (data.backresource != null && doesResourceRequireDownload(filePath + data.backresource, data.reshashb, md5))
+                    if (data.backresource != null && DoesResourceRequireDownload(filePath + data.backresource, data.reshashb, md5))
                         markedfordownload.Add(data.backresource);
-                    if (data.climbresource != null && doesResourceRequireDownload(filePath + data.climbresource, data.reshashc, md5))
+                    if (data.climbresource != null && DoesResourceRequireDownload(filePath + data.climbresource, data.reshashc, md5))
                         markedfordownload.Add(data.climbresource);
-                    if (data.flipresource != null && doesResourceRequireDownload(filePath + data.flipresource, data.reshashf, md5))
+                    if (data.flipresource != null && DoesResourceRequireDownload(filePath + data.flipresource, data.reshashf, md5))
                         markedfordownload.Add(data.flipresource);
-                    if (data.backflipresource != null && doesResourceRequireDownload(filePath + data.backflipresource, data.reshashbf, md5))
+                    if (data.backflipresource != null && DoesResourceRequireDownload(filePath + data.backflipresource, data.reshashbf, md5))
                         markedfordownload.Add(data.backflipresource);
                 }
 
@@ -614,12 +696,14 @@ namespace SuperNewRoles.CustomCosmetics
                     using var fileStream = File.Create($"{filePath}\\{file}");
                     responseStream.CopyTo(fileStream);
                 }
-
-                hatDetails.AddRange(hatdatas);
-                Repos.Remove(repo);
-                if (Repos.Count < 1)
+                if (!CachedRepos.Contains(repo))
                 {
-                    CustomHats.IsEnd = true;
+                    hatDetails.AddRange(hatdatas);
+                    Repos.Remove(repo);
+                    if (Repos.Count < 1)
+                    {
+                        CustomHats.IsEnd = true;
+                    }
                 }
             }
             catch (System.Exception ex)
@@ -630,7 +714,7 @@ namespace SuperNewRoles.CustomCosmetics
             return HttpStatusCode.OK;
         }
 
-        private static bool doesResourceRequireDownload(string respath, string reshash, MD5 md5)
+        private static bool DoesResourceRequireDownload(string respath, string reshash, MD5 md5)
         {
             if (reshash == null || !File.Exists(respath))
                 return true;
@@ -651,7 +735,7 @@ namespace SuperNewRoles.CustomCosmetics
     }
     public static class CustomHatExtensions
     {
-        public static CustomHats.HatExtension getHatExtension(this HatData hat)
+        public static CustomHats.HatExtension GetHatExtension(this HatData hat)
         {
             if (CustomHats.TestExt != null && CustomHats.TestExt.condition.Equals(hat.name))
             {
