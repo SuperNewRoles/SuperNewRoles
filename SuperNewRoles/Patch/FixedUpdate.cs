@@ -160,6 +160,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.SuicidalIdeation:
                                 SuicidalIdeation.Postfix();
                                 break;
+                            case RoleId.Hitman:
+                                Roles.Neutral.Hitman.FixedUpdate();
+                                break;
                             case RoleId.Photographer:
                                 Roles.Neutral.Photographer.FixedUpdate();
                                 break;

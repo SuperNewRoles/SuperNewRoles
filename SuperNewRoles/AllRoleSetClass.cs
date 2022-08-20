@@ -931,6 +931,7 @@ namespace SuperNewRoles
                 RoleId.Dictator => CustomOptions.DictatorPlayerCount.GetFloat(),
                 RoleId.Spelunker => CustomOptions.SpelunkerPlayerCount.GetFloat(),
                 RoleId.SuicidalIdeation => CustomOptions.SuicidalIdeationPlayerCount.GetFloat(),
+                RoleId.Hitman => CustomOptions.HitmanPlayerCount.GetFloat(),
                 RoleId.Matryoshka => CustomOptions.MatryoshkaPlayerCount.GetFloat(),
                 RoleId.Nun => CustomOptions.NunPlayerCount.GetFloat(),
                 RoleId.PartTimer => CustomOptions.PartTimerPlayerCount.GetFloat(),

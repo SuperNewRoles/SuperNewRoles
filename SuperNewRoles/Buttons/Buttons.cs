@@ -69,12 +69,12 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ButtonerButton;
         public static CustomButton RevolutionistButton;
         public static CustomButton SuicidalIdeationButton;
+        public static CustomButton HitmanKillButton;
         public static CustomButton MatryoshkaButton;
         public static CustomButton NunButton;
         public static CustomButton PartTimerButton;
         public static CustomButton PhotographerButton;
         public static CustomButton StefinderKillButton;
-
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
         public static TMPro.TMP_Text PositionSwapperNumText;
@@ -2050,12 +2050,12 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.CanMove && PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount != 0)
                     {
                         EvilButtoner.EvilButtonerStartMeeting(PlayerControl.LocalPlayer);
-                        RoleClass.EvilButtoner.SkillCount --;
+                        RoleClass.EvilButtoner.SkillCount--;
                     }
                     else if (PlayerControl.LocalPlayer.CanMove && PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount != 0)
                     {
                         EvilButtoner.EvilButtonerStartMeeting(PlayerControl.LocalPlayer);
-                        RoleClass.NiceButtoner.SkillCount --;
+                        RoleClass.NiceButtoner.SkillCount--;
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.EvilButtoner || role == RoleId.NiceButtoner) && ModeHandler.IsMode(ModeId.Default); },
@@ -2149,6 +2149,48 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("SuicidalIdeationButtonName"),
+                showButtonText = true
+            };
+
+            HitmanKillButton = new(
+                () =>
+                {
+                    PlayerControl target = SetTarget();
+                    if (ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, target) == ModHelpers.MurderAttemptResult.PerformKill)
+                    {
+                    }
+                    if (RoleClass.Hitman.Target.PlayerId != target.PlayerId)
+                    {
+                        Roles.Neutral.Hitman.LimitDown();
+                    }
+                    else
+                    {
+                        Roles.Neutral.Hitman.KillSuc();
+                    }
+                    RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
+                    RoleClass.Hitman.ArrowUpdateTime = 0;
+                    Roles.Neutral.Hitman.SetTarget();
+                    HitmanKillButton.Timer = HitmanKillButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Hitman; },
+                () =>
+                {
+                    return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    Roles.Neutral.Hitman.EndMeeting();
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
                 showButtonText = true
             };
 

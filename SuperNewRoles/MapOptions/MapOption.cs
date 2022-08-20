@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -137,6 +138,7 @@ namespace SuperNewRoles.MapOptions
             ButtonTimer = DateTime.Now;
             CameraDefault = Camera.main.orthographicSize;
             Default = FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize;
+            playerIcons = new();
         }
         public static CustomOption.CustomOption MapOptionSetting;
         public static CustomOption.CustomOption DeviceOptions;
@@ -169,7 +171,7 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption PolusReactorTimeLimit;
         public static CustomOption.CustomOption MiraReactorTimeLimit;
         public static CustomOption.CustomOption AirshipReactorTimeLimit;
-
+        public static Dictionary<byte, PoolablePlayer> playerIcons = new();
         public static CustomOption.CustomOption WireTaskIsRandomOption;
         public static CustomOption.CustomOption WireTaskNumOption;
 

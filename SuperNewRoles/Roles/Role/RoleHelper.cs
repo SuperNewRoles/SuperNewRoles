@@ -583,6 +583,9 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.Add(player);
                     break;
+                case RoleId.Hitman:
+                    RoleClass.Hitman.HitmanPlayer.Add(player);
+                    break;
                 case RoleId.Matryoshka:
                     RoleClass.Matryoshka.MatryoshkaPlayer.Add(player);
                     break;
@@ -979,6 +982,9 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Hitman:
+                    RoleClass.Hitman.HitmanPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.Matryoshka:
                     RoleClass.Matryoshka.MatryoshkaPlayer.RemoveAll(ClearRemove);
                     break;
@@ -1047,13 +1053,13 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
+                case RoleId.Hitman:
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
                 //タスククリアか
                     IsTaskClear = true;
                     break;
-                //タスククリアか
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
@@ -1210,13 +1216,13 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
+                case RoleId.Hitman:
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
                 //第三か
                     IsNeutral = true;
                     break;
-                //第三か
             }
             return IsNeutral;
         }
@@ -1494,6 +1500,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Dictator.DictatorPlayer.IsCheckListPlayerControl(player)) return RoleId.Dictator;
                 else if (RoleClass.Spelunker.SpelunkerPlayer.IsCheckListPlayerControl(player)) return RoleId.Spelunker;
                 else if (RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicidalIdeation;
+                else if (RoleClass.Hitman.HitmanPlayer.IsCheckListPlayerControl(player)) return RoleId.Hitman;
                 else if (RoleClass.Matryoshka.MatryoshkaPlayer.IsCheckListPlayerControl(player)) return RoleId.Matryoshka;
                 else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
                 else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
