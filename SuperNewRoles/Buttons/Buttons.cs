@@ -2358,11 +2358,18 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     return false;
+                },
+                true,
+                RoleClass.Psychometrist.ReadTime,
+                () =>
+                {
+                    if (RoleClass.IsMeeting) return;
+                    Roles.CrewMate.Psychometrist.ClickButton();
                 }
-                )
+            )
             {
                 buttonText = ModTranslation.GetString("PsychometristButtonName"),
-                showButtonText = true,
+                showButtonText = true
             };
 
             PartTimerButton = new(
@@ -2394,13 +2401,6 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     return false;
-                },
-                true,
-                RoleClass.Psychometrist.ReadTime,
-                () =>
-                {
-                    if (RoleClass.IsMeeting) return;
-                    Roles.CrewMate.Psychometrist.ClickButton();
                 }
             )
             {
