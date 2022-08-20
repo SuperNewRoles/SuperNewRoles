@@ -10,6 +10,7 @@ using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.CustomCosmetics;
+using SuperNewRoles.CustomOption;
 using SuperNewRoles.Patch;
 using TMPro;
 using Twitch;
@@ -253,6 +254,7 @@ namespace SuperNewRoles.Patches
             }
             public static void Postfix(MainMenuManager __instance)
             {
+                AmongUsClient.Instance.StartCoroutine(CustomRegulation.FetchRegulation());
                 if (ConfigRoles.IsUpdated)
                 {
                     __instance.StartCoroutine(ShowAnnouncementPopUp(__instance));

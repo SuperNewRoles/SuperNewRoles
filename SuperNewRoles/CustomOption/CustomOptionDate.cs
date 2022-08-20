@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -680,6 +680,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption KunoichiCoolTime;
         public static CustomOption KunoichiKillKunai;
         public static CustomOption KunoichiIsHide;
+        public static CustomOption KunoichiIsWaitAndPressTheButtonToHide;
         public static CustomOption KunoichiHideTime;
         public static CustomOption KunoichiHideKunai;
 
@@ -755,6 +756,16 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SuicidalIdeationShortTask;
         public static CustomOption SuicidalIdeationLongTask;
 
+        public static CustomRoleOption HitmanOption;
+        public static CustomOption HitmanPlayerCount;
+        public static CustomOption HitmanKillCoolTime;
+        public static CustomOption HitmanChangeTargetTime;
+        public static CustomOption HitmanIsOutMission;
+        public static CustomOption HitmanOutMissionLimit;
+        public static CustomOption HitmanWinKillCount;
+        public static CustomOption HitmanIsArrowView;
+        public static CustomOption HitmanArrowUpdateTime;
+
         public static CustomRoleOption MatryoshkaOption;
         public static CustomOption MatryoshkaPlayerCount;
         public static CustomOption MatryoshkaWearLimit;
@@ -766,7 +777,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption NunOption;
         public static CustomOption NunPlayerCount;
         public static CustomOption NunCoolTime;
-        
+
         public static CustomRoleOption SeeThroughPersonOption;
         public static CustomOption SeeThroughPersonPlayerCount;
 
@@ -886,7 +897,7 @@ namespace SuperNewRoles.CustomOption
             JesterOption = new CustomRoleOption(16, true, CustomOptionType.Neutral, "JesterName", RoleClass.Jester.color, 1);
             JesterPlayerCount = CustomOption.Create(17, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JesterOption);
             JesterIsVent = CustomOption.Create(18, true, CustomOptionType.Neutral, "JesterIsVentSetting", false, JesterOption);
-            JesterIsSabotage = CustomOption.Create(19, true, CustomOptionType.Neutral, "JesterIsSabotageSetting", false, JesterOption);
+            JesterIsSabotage = CustomOption.Create(19, false, CustomOptionType.Neutral, "JesterIsSabotageSetting", false, JesterOption);
             JesterIsWinCleartask = CustomOption.Create(20, true, CustomOptionType.Neutral, "JesterIsWinClearTaskSetting", false, JesterOption);
             var jesteroption = SelectTask.TaskSetting(21, 22, 23, JesterIsWinCleartask, CustomOptionType.Neutral, true);
             JesterCommonTask = jesteroption.Item1;
@@ -1512,6 +1523,7 @@ namespace SuperNewRoles.CustomOption
             KunoichiCoolTime = CustomOption.Create(640, false, CustomOptionType.Impostor, "KunoichiCoolTime", 2.5f, 0f, 15f, 0.5f, KunoichiOption);
             KunoichiKillKunai = CustomOption.Create(641, false, CustomOptionType.Impostor, "KunoichiKillKunai", 10f, 1f, 20f, 1f, KunoichiOption);
             KunoichiIsHide = CustomOption.Create(642, false, CustomOptionType.Impostor, "KunoichiIsHide", true, KunoichiOption);
+            KunoichiIsWaitAndPressTheButtonToHide = CustomOption.Create(860, false, CustomOptionType.Impostor, "ScientistButtonName", true, KunoichiIsHide);
             KunoichiHideTime = CustomOption.Create(643, false, CustomOptionType.Impostor, "KunoichiHideTime", 3f, 0.5f, 10f, 0.5f, KunoichiIsHide);
             KunoichiHideKunai = CustomOption.Create(644, false, CustomOptionType.Impostor, "KunoichiHideKunai", false, KunoichiIsHide);
 
@@ -1588,6 +1600,16 @@ namespace SuperNewRoles.CustomOption
             SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
             SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
 
+            HitmanOption = new CustomRoleOption(930, false, CustomOptionType.Neutral, "HitmanName",RoleClass.Hitman.color, 1);
+            HitmanPlayerCount = CustomOption.Create(931, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HitmanOption);
+            HitmanKillCoolTime = CustomOption.Create(932, false, CustomOptionType.Neutral, "SheriffCoolDownSetting", 20f, 0f, 120f, 2.5f, HitmanOption);
+            HitmanChangeTargetTime = CustomOption.Create(933, false, CustomOptionType.Neutral, "HitmanChangeTargetTime", 20f, 0f, 240f, 2.5f, HitmanOption);
+            HitmanIsOutMission = CustomOption.Create(934, false, CustomOptionType.Neutral, "HitmanIsOutMission", true, HitmanOption);
+            HitmanOutMissionLimit = CustomOption.Create(935, false, CustomOptionType.Neutral, "HitmanOutMissionLimit", 5f, 1f, 30f, 1f, HitmanIsOutMission);
+            HitmanWinKillCount = CustomOption.Create(936, false, CustomOptionType.Neutral, "HitmanWinKillCount", 5f, 1f, 15f, 1f, HitmanOption);
+            HitmanIsArrowView = CustomOption.Create(937, false, CustomOptionType.Neutral, "HitmanIsTargetArrow", true, HitmanOption);
+            HitmanArrowUpdateTime = CustomOption.Create(938, false, CustomOptionType.Neutral, "HitmanUpdateTargetArrowTime", 0f, 0f, 120f, 2.5f, HitmanIsArrowView);
+
             MatryoshkaOption = new CustomRoleOption(839, false, CustomOptionType.Impostor, "MatryoshkaName",RoleClass.Matryoshka.color, 1);
             MatryoshkaPlayerCount = CustomOption.Create(840, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MatryoshkaOption);
             MatryoshkaWearLimit = CustomOption.Create(841, false, CustomOptionType.Impostor, "MatryoshkaWearLimit", 3f, 1f, 15f, 1f, MatryoshkaOption);
@@ -1605,11 +1627,11 @@ namespace SuperNewRoles.CustomOption
             PartTimerDeathTurn = CustomOption.Create(852, false, CustomOptionType.Neutral, "PartTimerDeathTurn", 3f, 0f, 15f, 1f, PartTimerOption);
             PartTimerCoolTime = CustomOption.Create(853, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PartTimerOption);
             PartTimerIsCheckTargetRole = CustomOption.Create(854, false, CustomOptionType.Neutral, "PartTimerIsCheckTargetRole", true, PartTimerOption);
-            
+
             NunOption = new CustomRoleOption(929, false, CustomOptionType.Impostor, "NunName",RoleClass.Nun.color, 1);
             NunPlayerCount = CustomOption.Create(930, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NunOption);
             NunCoolTime = CustomOption.Create(931, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NunOption);
-            
+
             SeeThroughPersonOption = new CustomRoleOption(937, false, CustomOptionType.Crewmate, "SeeThroughPersonName",RoleClass.SeeThroughPerson.color, 1);
             SeeThroughPersonPlayerCount = CustomOption.Create(938, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeeThroughPersonOption);
 
@@ -1628,7 +1650,6 @@ namespace SuperNewRoles.CustomOption
             StefinderVent = CustomOption.Create(858, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
             StefinderSabo = CustomOption.Create(859, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
             StefinderSoloWin = CustomOption.Create(860, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
-
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

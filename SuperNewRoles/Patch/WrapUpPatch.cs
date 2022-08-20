@@ -87,6 +87,7 @@ namespace SuperNewRoles.Patch
             RedRidingHood.WrapUp(exiled);
             Roles.Neutral.Revolutionist.WrapUp();
             Roles.Neutral.Spelunker.WrapUp();
+            Roles.Neutral.Hitman.WrapUp();
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
             Roles.Neutral.Photographer.WrapUp();

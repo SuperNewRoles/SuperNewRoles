@@ -142,6 +142,7 @@ namespace SuperNewRoles.CustomRPC
         Dictator,
         Spelunker,
         SuicidalIdeation,
+        Hitman,
         Matryoshka,
         Nun,
         SeeThroughPerson,
@@ -225,7 +226,7 @@ namespace SuperNewRoles.CustomRPC
         PartTimerSet,
         SetMatryoshkaDeadbody,
         SharePhotograph,
-        StefinderIsKilled,
+        StefinderIsKilled
     }
     public static class RPCProcedure
     {
