@@ -95,6 +95,7 @@ namespace SuperNewRoles.Patch
                     SetNameUpdate.Postfix(__instance);
                     Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
+                    Roles.CrewMate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
@@ -159,6 +160,9 @@ namespace SuperNewRoles.Patch
                                 break;
                             case RoleId.SuicidalIdeation:
                                 SuicidalIdeation.Postfix();
+                                break;
+                            case RoleId.Psychometrist:
+                                Roles.CrewMate.Psychometrist.PsychometristFixedUpdate();
                                 break;
                             case RoleId.SeeThroughPerson:
                                 Roles.CrewMate.SeeThroughPerson.FixedUpdate();

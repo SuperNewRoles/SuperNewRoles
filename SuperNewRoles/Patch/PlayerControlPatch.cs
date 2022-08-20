@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -878,6 +878,10 @@ namespace SuperNewRoles.Patches
                     }, 0.5f);
                     RoleClass.Assassin.TriggerPlayer = target;
                     return;
+                }
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Psychometrist))
+                {
+                    Roles.CrewMate.Psychometrist.MurderPlayer(__instance, target);
                 }
                 if (target.IsDead())
                 {

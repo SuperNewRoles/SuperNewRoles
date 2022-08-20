@@ -72,6 +72,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton HitmanKillButton;
         public static CustomButton MatryoshkaButton;
         public static CustomButton NunButton;
+        public static CustomButton PsychometristButton;
         public static CustomButton PartTimerButton;
         public static CustomButton PhotographerButton;
         public static CustomButton StefinderKillButton;
@@ -2303,6 +2304,71 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("NunButtonName"),
+                showButtonText = true
+            };
+
+            PsychometristButton = new(
+                () =>
+                {
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    {
+                        if (collider2D.tag == "DeadBody")
+                        {
+                            DeadBody component = collider2D.GetComponent<DeadBody>();
+                            if (component && !component.Reported)
+                            {
+                                Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                                Vector2 truePosition2 = component.TruePosition;
+                                if (Vector2.Distance(truePosition2 - new Vector2(0.15f, 0.2f), truePosition) <= RoleClass.Psychometrist.Distance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                                {
+                                    RoleClass.Psychometrist.CurrentTarget = component;
+                                }
+                            }
+                        }
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Psychometrist; },
+                () =>
+                {
+                    if (PsychometristButton.isEffectActive)
+                    {
+                        if (RoleClass.Psychometrist.CurrentTarget == null || __instance.ReportButton.graphic.color != Palette.EnabledColor || Vector2.Distance(RoleClass.Psychometrist.CurrentTarget.TruePosition - new Vector2(0.15f, 0.2f), CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition()) > RoleClass.Psychometrist.Distance)
+                        {
+                            RoleClass.Psychometrist.CurrentTarget = null;
+                            PsychometristButton.Timer = 0f;
+                            PsychometristButton.isEffectActive = false;
+                        }
+                    }
+                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    PsychometristButton.MaxTimer = RoleClass.Psychometrist.CoolTime;
+                    PsychometristButton.Timer = PsychometristButton.MaxTimer;
+                    PsychometristButton.effectCancellable = false;
+                    PsychometristButton.EffectDuration = RoleClass.Psychometrist.ReadTime;
+                    PsychometristButton.isEffectActive = false;
+                },
+                RoleClass.Psychometrist.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return false;
+                },
+                true,
+                RoleClass.Psychometrist.ReadTime,
+                () =>
+                {
+                    if (RoleClass.IsMeeting) return;
+                    Roles.CrewMate.Psychometrist.ClickButton();
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("PsychometristButtonName"),
                 showButtonText = true
             };
 

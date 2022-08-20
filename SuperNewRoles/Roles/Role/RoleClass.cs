@@ -22,9 +22,11 @@ namespace SuperNewRoles.Roles
         public static Color CrewmateWhite = Color.white;
         public static Color FoxPurple = Palette.Purple;
         public static bool IsStart;
+        public static List<byte> BlockPlayers;
 
         public static void ClearAndReloadRoles()
         {
+            BlockPlayers = new();
             DeadPlayer.deadPlayers = new();
             AllRoleSetClass.Assigned = false;
             LateTask.Tasks = new();
@@ -165,6 +167,7 @@ namespace SuperNewRoles.Roles
             Hitman.ClearAndReload();
             Matryoshka.ClearAndReload();
             Nun.ClearAndReload();
+            Psychometrist.ClearAndReload();
             SeeThroughPerson.ClearAndReload();
             PartTimer.ClearAndReload();
             Photographer.ClearAndReload();
@@ -2815,6 +2818,53 @@ namespace SuperNewRoles.Roles
                 //2=マッド
             }
         }
+        public static class Psychometrist
+        {
+            public static List<PlayerControl> PsychometristPlayer;
+            public static Color32 color = new(238, 130, 238, byte.MaxValue);
+            public static float CoolTime;
+            public static float ReadTime;
+            public static bool IsCheckDeathTime;
+            public static int DeathTimeDeviation;
+            public static bool IsCheckDeathReason;
+            public static bool IsCheckFootprints;
+            public static float CanCheckFootprintsTime;
+            public static bool IsReportCheckedReportDeadbody;
+            //(source, target) : Vector2
+            public static Dictionary<(byte, byte), (List<Vector2>, bool)> FootprintsPosition;
+            public static Dictionary<(byte, byte), float> FootprintsDeathTime;
+            public static Dictionary<(byte, byte), List<Footprint>> FootprintObjects;
+            public static float UpdateTime;
+            public static float Distance = 0.5f;
+            //(死体, テキスト, 誤差)
+            public static List<(DeadBody, TextMeshPro, int)> DeathTimeTexts;
+            public static DeadBody CurrentTarget;
+            private static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PsychometristButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                PsychometristPlayer = new();
+                UpdateTime = 0.1f;
+                CurrentTarget = null;
+                DeathTimeTexts = new();
+                FootprintsPosition = new();
+                FootprintObjects = new();
+                FootprintsDeathTime = new();
+                CoolTime = CustomOptions.PsychometristCoolTime.GetFloat();
+                ReadTime = CustomOptions.PsychometristReadTime.GetFloat();
+                IsCheckDeathTime = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
+                DeathTimeDeviation = CustomOptions.PsychometristDeathTimeDeviation.GetInt();
+                IsCheckDeathReason = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
+                IsCheckFootprints = CustomOptions.PsychometristIsCheckFootprints.GetBool();
+                CanCheckFootprintsTime = CustomOptions.PsychometristCanCheckFootprintsTime.GetFloat();
+                IsReportCheckedReportDeadbody = CustomOptions.PsychometristIsReportCheckedDeadBody.GetBool();
+            }
+        }
         public static class SeeThroughPerson
         {
             public static List<PlayerControl> SeeThroughPersonPlayer;
@@ -2837,7 +2887,8 @@ namespace SuperNewRoles.Roles
             public static bool IsPhotographerShared;
             public static bool IsImpostorVision;
             public static bool IsNotification;
-            public static List<PlayerControl> PhotedPlayer {
+            public static List<PlayerControl> PhotedPlayer
+            {
                 get
                 {
                     if (PhotedPlayerIds.Count != _photedPlayer.Count)
@@ -2863,6 +2914,7 @@ namespace SuperNewRoles.Roles
             }
             public static void ClearAndReload()
             {
+
                 PhotographerPlayer = new();
                 PhotedPlayerIds = new();
                 _photedPlayer = new();

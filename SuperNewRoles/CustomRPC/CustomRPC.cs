@@ -145,6 +145,7 @@ namespace SuperNewRoles.CustomRPC
         Hitman,
         Matryoshka,
         Nun,
+        Psychometrist,
         SeeThroughPerson,
         PartTimer,
         Photographer,
@@ -223,6 +224,7 @@ namespace SuperNewRoles.CustomRPC
         ChiefSidekick,
         StartRevolutionMeeting,
         UncheckedUsePlatform,
+        BlockReportDeadBody,
         PartTimerSet,
         SetMatryoshkaDeadbody,
         SharePhotograph,
@@ -230,6 +232,24 @@ namespace SuperNewRoles.CustomRPC
     }
     public static class RPCProcedure
     {
+        public static void BlockReportDeadBody(byte TargetId, bool IsChangeReported)
+        {
+            if (IsChangeReported)
+            {
+                DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == TargetId)
+                    {
+                        array[i].Reported = true;
+                        return;
+                    }
+                }
+            } else
+            {
+                RoleClass.BlockPlayers.Add(TargetId);
+            }
+        }
         public static void SharePhotograph()
         {
             if (!RoleClass.Photographer.IsPhotographerShared)
@@ -1346,6 +1366,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.UncheckedUsePlatform:
                             UncheckedUsePlatform(reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.BlockReportDeadBody:
+                            BlockReportDeadBody(reader.ReadByte(), reader.ReadBoolean());
                             break;
                         case CustomRPC.PartTimerSet:
                             PartTimerSet(reader.ReadByte(), reader.ReadByte());
