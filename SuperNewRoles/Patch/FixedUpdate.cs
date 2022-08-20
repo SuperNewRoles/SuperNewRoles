@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
@@ -159,6 +159,9 @@ namespace SuperNewRoles.Patch
                                 break;
                             case RoleId.SuicidalIdeation:
                                 SuicidalIdeation.Postfix();
+                                break;
+                            case RoleId.Photographer:
+                                Roles.Neutral.Photographer.FixedUpdate();
                                 break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)

@@ -147,6 +147,7 @@ namespace SuperNewRoles.CustomRPC
         Matryoshka,
         Nun,
         PartTimer,
+        Photographer,
         Stefinder,
         Stefinder1,
         Slugger,
@@ -227,7 +228,8 @@ namespace SuperNewRoles.CustomRPC
         SetMatryoshkaDeadbody,
         StefinderIsKilled,
         PlayPlayerAnimation,
-        SluggerExile
+        SluggerExile,
+        SharePhotograph,
     }
     public static class RPCProcedure
     {
@@ -252,6 +254,15 @@ namespace SuperNewRoles.CustomRPC
             PlayerAnimation PlayerAnim = PlayerAnimation.GetPlayerAnimation(playerid);
             if (PlayerAnim == null) return;
             PlayerAnim.HandleAnim(AnimType);
+        }
+
+        public static void SharePhotograph()
+        {
+            if (!RoleClass.Photographer.IsPhotographerShared)
+            {
+                Modules.ProctedMessager.ScheduleProctedMessage(ModTranslation.GetString("PhotographerPhotograph"));
+            }
+            RoleClass.Photographer.IsPhotographerShared = true;
         }
         public static void SetMatryoshkaDeadBody(byte sourceid, byte targetid, bool Is)
         {
@@ -1364,6 +1375,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.PartTimerSet:
                             PartTimerSet(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SharePhotograph:
+                            SharePhotograph();
                             break;
                         case CustomRPC.StefinderIsKilled:
                             StefinderIsKilled(reader.ReadByte());

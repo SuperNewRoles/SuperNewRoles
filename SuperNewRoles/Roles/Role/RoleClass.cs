@@ -165,6 +165,7 @@ namespace SuperNewRoles.Roles
             Matryoshka.ClearAndReload();
             Nun.ClearAndReload();
             PartTimer.ClearAndReload();
+            Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
             Slugger.ClearAndReload();
             //ロールクリア
@@ -1277,10 +1278,9 @@ namespace SuperNewRoles.Roles
             {
                 try
                 {
-                    if (name == CustomOptions.LevelingerTexts[0]) { return LevelPowerTypes.None; }
-                    else
-                    {
-                        return name == CustomOptions.LevelingerTexts[1]
+                    return name == CustomOptions.LevelingerTexts[0]
+                        ? LevelPowerTypes.None
+                        : name == CustomOptions.LevelingerTexts[1]
                         ? LevelPowerTypes.Keep
                         : name == CustomOptions.LevelingerTexts[2]
                         ? LevelPowerTypes.Pursuer
@@ -1291,7 +1291,6 @@ namespace SuperNewRoles.Roles
                         : name == CustomOptions.LevelingerTexts[5]
                             ? LevelPowerTypes.SpeedBooster
                             : name == CustomOptions.LevelingerTexts[6] ? LevelPowerTypes.Moving : LevelPowerTypes.None;
-                    }
                 }
                 catch
                 {
@@ -2323,6 +2322,8 @@ namespace SuperNewRoles.Roles
             public static Vector2 OldPosition;
             public static float StopTime;
             public static float HideTime;
+            public static bool IsWaitAndPressTheButtonToHide;
+            public static bool IsHideButton;
             private static Sprite buttonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -2330,12 +2331,21 @@ namespace SuperNewRoles.Roles
                 buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunaiButton.png", 115f);
                 return buttonSprite;
             }
+            private static Sprite HidebuttonSprite;
+            public static Sprite GetHideButtonSprite()
+            {
+                if (HidebuttonSprite) return HidebuttonSprite;
+                HidebuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiHideButton.png", 115f);
+                return HidebuttonSprite;
+            }
             public static void ClearAndReload()
             {
                 HideKunai = CustomOptions.KunoichiHideKunai.GetBool();
                 OldPosition = new();
                 StopTime = 0;
                 HideTime = CustomOptions.KunoichiIsHide.GetBool() ? CustomOptions.KunoichiHideTime.GetFloat() : -1;
+                IsWaitAndPressTheButtonToHide = CustomOptions.KunoichiIsWaitAndPressTheButtonToHide.GetBool();
+                IsHideButton = false;
                 KunoichiPlayer = new();
                 KillCoolTime = CustomOptions.KunoichiCoolTime.GetFloat();
                 KillKunai = CustomOptions.KunoichiKillKunai.GetInt();
@@ -2562,8 +2572,7 @@ namespace SuperNewRoles.Roles
             {
                 DictatorPlayer = new();
                 VoteCount = CustomOptions.DictatorVoteCount.GetInt();
-                if (CustomOptions.DictatorSubstituteExile.GetBool()) SubExileLimit = CustomOptions.DictatorSubstituteExileLimit.GetInt();
-                else SubExileLimit = 0;
+                SubExileLimit = CustomOptions.DictatorSubstituteExile.GetBool() ? CustomOptions.DictatorSubstituteExileLimit.GetInt() : 0;
                 SubExileLimitData = new();
             }
         }
@@ -2585,10 +2594,7 @@ namespace SuperNewRoles.Roles
                 IsVentChecked = false;
                 VentDeathChance = CustomOptions.SpelunkerVentDeathChance.GetSelection();
                 LadderDeathChance = CustomOptions.SpelunkerLadderDeadChance.GetSelection();
-                if (CustomOptions.SpelunkerIsDeathCommsOrPowerdown.GetBool())
-                    CommsOrLightdownDeathTime = CustomOptions.SpelunkerDeathCommsOrPowerdownTime.GetFloat();
-                else
-                    CommsOrLightdownDeathTime = -1f;
+                CommsOrLightdownDeathTime = CustomOptions.SpelunkerIsDeathCommsOrPowerdown.GetBool() ? CustomOptions.SpelunkerDeathCommsOrPowerdownTime.GetFloat() : -1f;
                 CommsOrLightdownTime = 0f;
                 LiftDeathChance = CustomOptions.SpelunkerLiftDeathChance.GetSelection();
                 Neutral.Spelunker.DeathPosition = null;
@@ -2635,7 +2641,8 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static bool IsLocalOn => !Datas.Keys.All(data => data != CachedPlayer.LocalPlayer.PlayerId || Datas[data].Item1 == null);
             public static Dictionary<byte, (DeadBody, float)> Datas;
-            public static Sprite PutOnButtonSprite {
+            public static Sprite PutOnButtonSprite
+            {
                 get
                 {
                     if (_PutOnButtonSprite == null)
@@ -2746,7 +2753,7 @@ namespace SuperNewRoles.Roles
                 _playerDatas = new();
             }
         }
-        
+
         public static class SatsumaAndImo
         {
             public static List<PlayerControl> SatsumaAndImoPlayer;
@@ -2758,6 +2765,54 @@ namespace SuperNewRoles.Roles
                 TeamNumber = 1;
                 //1=クルー
                 //2=マッド
+            }
+        }
+        public static class Photographer
+        {
+            public static List<PlayerControl> PhotographerPlayer;
+            public static Color32 color = new(0, 255, 255, byte.MaxValue);
+            public static float CoolTime;
+            public static float BonusCoolTime;
+            public static int BonusCount;
+            public static List<byte> PhotedPlayerIds;
+            public static bool IsPhotographerShared;
+            public static bool IsImpostorVision;
+            public static bool IsNotification;
+            public static List<PlayerControl> PhotedPlayer {
+                get
+                {
+                    if (PhotedPlayerIds.Count != _photedPlayer.Count)
+                    {
+                        List<PlayerControl> NewList = new();
+                        foreach (byte playerid in PhotedPlayerIds)
+                        {
+                            PlayerControl player = ModHelpers.PlayerById(playerid);
+                            if (player) NewList.Add(player);
+                        }
+                        _photedPlayer = NewList;
+                    }
+                    return _photedPlayer;
+                }
+            }
+            public static List<PlayerControl> _photedPlayer;
+            public static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PhotographerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                PhotographerPlayer = new();
+                PhotedPlayerIds = new();
+                _photedPlayer = new();
+                IsPhotographerShared = false;
+                CoolTime = CustomOptions.PhotographerCoolTime.GetFloat();
+                BonusCount = (CustomOptions.PhotographerIsBonus.GetBool() ? CustomOptions.PhotographerBonusCount.GetInt() : -1);
+                BonusCoolTime = CustomOptions.PhotographerBonusCoolTime.GetFloat();
+                IsImpostorVision = CustomOptions.PhotographerIsImpostorVision.GetBool();
+                IsNotification = CustomOptions.PhotographerIsNotification.GetBool();
             }
         }
         public static class Stefinder

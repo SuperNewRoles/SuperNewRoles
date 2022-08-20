@@ -58,6 +58,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton EvilHackerMadmateSetting;
         public static CustomButton PositionSwapperButton;
         public static CustomButton KunoichiKunaiButton;
+        public static CustomButton KunoichiHideButton;
         public static CustomButton SecretlyKillerMainButton;
         public static CustomButton SecretlyKillerSecretlyKillButton;
         public static CustomButton ClairvoyantButton;
@@ -72,6 +73,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton MatryoshkaButton;
         public static CustomButton NunButton;
         public static CustomButton PartTimerButton;
+        public static CustomButton PhotographerButton;
         public static CustomButton StefinderKillButton;
         public static CustomButton SluggerButton;
 
@@ -137,7 +139,8 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.Slugger.IsMultiKill)
                     {
                         Targets = Roles.Impostor.Slugger.SetTarget();
-                    } else
+                    }
+                    else
                     {
                         if (FastDestroyableSingleton<HudManager>.Instance.KillButton.currentTarget != null) Targets.Add(FastDestroyableSingleton<HudManager>.Instance.KillButton.currentTarget);
                     }
@@ -169,6 +172,48 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("SluggerButtonName"),
+                showButtonText = true
+            };
+
+            PhotographerButton = new(
+                () =>
+                {
+                    List<byte> Targets = Roles.Neutral.Photographer.SetTarget();
+                    RoleClass.Photographer.PhotedPlayerIds.AddRange(Targets);
+                    if (RoleClass.Photographer.BonusCount > 0 && Targets.Count >= RoleClass.Photographer.BonusCount)
+                    {
+                        PhotographerButton.Timer = RoleClass.Photographer.BonusCoolTime;
+                    }
+                    else
+                    {
+                        PhotographerButton.Timer = PhotographerButton.MaxTimer;
+                    }
+                    if (RoleClass.Photographer.IsNotification)
+                    {
+                        RPCHelper.StartRPC(CustomRPC.CustomRPC.SharePhotograph).EndRPC();
+                        RPCProcedure.SharePhotograph();
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Photographer; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove && Roles.Neutral.Photographer.SetTarget().Count > 0;
+                },
+                () =>
+                {
+                    PhotographerButton.MaxTimer = RoleClass.Photographer.CoolTime;
+                    PhotographerButton.Timer = PhotographerButton.MaxTimer;
+                },
+                RoleClass.Photographer.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("PhotographerButtonName"),
                 showButtonText = true
             };
 
@@ -204,6 +249,31 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("KunoichiKunai"),
+                showButtonText = true
+            };
+            KunoichiHideButton = new CustomButton(
+                () =>
+                {
+                    /*  Kunoichi.cs Update() にある、
+                        「透明化に必要な待機時間の取得と処理 (ボタン動作の時)」コメント以降のif文の中で透明化の処理を行っている。*/
+                    RoleClass.Kunoichi.IsHideButton = true;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Kunoichi && RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { Kunoichi.HideOff(); },
+                RoleClass.Kunoichi.GetHideButtonSprite(),
+                new Vector3(-2.7f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.L,
+                50,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("ScientistButtonName"),
                 showButtonText = true
             };
             FalseChargesFalseChargeButton = new(
@@ -2058,20 +2128,20 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.CanMove && PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount != 0)
                     {
                         EvilButtoner.EvilButtonerStartMeeting(PlayerControl.LocalPlayer);
-                        RoleClass.EvilButtoner.SkillCount = RoleClass.EvilButtoner.SkillCount - 1;
+                        RoleClass.EvilButtoner.SkillCount --;
                     }
                     else if (PlayerControl.LocalPlayer.CanMove && PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount != 0)
                     {
                         EvilButtoner.EvilButtonerStartMeeting(PlayerControl.LocalPlayer);
-                        RoleClass.NiceButtoner.SkillCount = RoleClass.NiceButtoner.SkillCount - 1;
+                        RoleClass.NiceButtoner.SkillCount --;
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.EvilButtoner || role == RoleId.NiceButtoner) && ModeHandler.IsMode(ModeId.Default); },
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount == 0) return false;
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount == 0) return false;
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return ((PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount != 0) ||
+                            (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount != 0)) &&
+                             PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
@@ -2237,7 +2307,8 @@ namespace SuperNewRoles.Buttons
             };
 
             NunButton = new(
-                () => {
+                () =>
+                {
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedUsePlatform);
                     writer.Write((byte)255);
                     writer.Write(false);
@@ -2272,7 +2343,8 @@ namespace SuperNewRoles.Buttons
             };
 
             PartTimerButton = new(
-                () => {
+                () =>
+                {
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.PartTimerSet);
                     writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(SetTarget().PlayerId);

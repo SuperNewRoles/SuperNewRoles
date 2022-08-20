@@ -91,6 +91,7 @@ namespace SuperNewRoles.Patch
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
             SecretRoom.Reset();
+            Roles.Neutral.Photographer.WrapUp();
             if (exiled == null) return;
 
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();
