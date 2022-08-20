@@ -164,6 +164,12 @@ namespace SuperNewRoles.Patch
                             case RoleId.Psychometrist:
                                 Roles.CrewMate.Psychometrist.PsychometristFixedUpdate();
                                 break;
+                            case RoleId.SeeThroughPerson:
+                                Roles.CrewMate.SeeThroughPerson.FixedUpdate();
+                                break;
+                            case RoleId.Hitman:
+                                Roles.Neutral.Hitman.FixedUpdate();
+                                break;
                             case RoleId.Photographer:
                                 Roles.Neutral.Photographer.FixedUpdate();
                                 break;
