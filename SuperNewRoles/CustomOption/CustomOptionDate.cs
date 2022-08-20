@@ -1550,8 +1550,8 @@ namespace SuperNewRoles.CustomOption
             ToiletFanPlayerCount = CustomOption.Create(657, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ToiletFanOption);
             ToiletFanCoolTime = CustomOption.Create(658, true, CustomOptionType.Crewmate, "ToiletCoolDownSetting", 30f, 0f, 60f, 2.5f, ToiletFanOption);
 
-            SatsumaAndImoOption = new CustomRoleOption(682 , true, CustomOptionType.Crewmate, "SatsumaAndImoName", RoleClass.SatsumaAndImo.color, 1);
-            SatsumaAndImoPlayerCount= CustomOption.Create(800 , true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SatsumaAndImoOption);
+            SatsumaAndImoOption = new CustomRoleOption(682, true, CustomOptionType.Crewmate, "SatsumaAndImoName", RoleClass.SatsumaAndImo.color, 1);
+            SatsumaAndImoPlayerCount = CustomOption.Create(800, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SatsumaAndImoOption);
 
             EvilButtonerOption = new CustomRoleOption(801, true, CustomOptionType.Impostor, "EvilButtonerName", RoleClass.EvilButtoner.color, 1);
             EvilButtonerPlayerCount = CustomOption.Create(802, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilButtonerOption);
@@ -1563,7 +1563,7 @@ namespace SuperNewRoles.CustomOption
             NiceButtonerCoolTime = CustomOption.Create(807, false, CustomOptionType.Crewmate, "ButtonerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NiceButtonerOption, format: "unitSeconds");//クールタイムはSHR未対応の為false
             NiceButtonerCount = CustomOption.Create(808, true, CustomOptionType.Crewmate, "ButtonerCountSetting", 1f, 1f, 10f, 1f, NiceButtonerOption);
 
-            SpelunkerOption = new CustomRoleOption(809, false, CustomOptionType.Neutral, "SpelunkerName",RoleClass.Spelunker.color, 1);
+            SpelunkerOption = new CustomRoleOption(809, false, CustomOptionType.Neutral, "SpelunkerName", RoleClass.Spelunker.color, 1);
             SpelunkerPlayerCount = CustomOption.Create(810, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpelunkerOption);
             SpelunkerVentDeathChance = CustomOption.Create(811, false, CustomOptionType.Neutral, "SpelunkerVentDeathChance", rates, SpelunkerOption);
             SpelunkerLadderDeadChance = CustomOption.Create(812, false, CustomOptionType.Neutral, "LadderDeadChance", rates, SpelunkerOption);
@@ -1598,10 +1598,6 @@ namespace SuperNewRoles.CustomOption
             SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
             SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
 
-            NunOption = new CustomRoleOption(929, false, CustomOptionType.Impostor, "NunName",RoleClass.Nun.color, 1);
-            NunPlayerCount = CustomOption.Create(930, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NunOption);
-            NunCoolTime = CustomOption.Create(931, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NunOption);
-
             PsychometristOption = new CustomRoleOption(937, false, CustomOptionType.Crewmate, "PsychometristName", RoleClass.Psychometrist.color, 1);
             PsychometristPlayerCount = CustomOption.Create(938, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PsychometristOption);
             PsychometristCoolTime = CustomOption.Create(939, false, CustomOptionType.Crewmate, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PsychometristOption);
@@ -1613,7 +1609,7 @@ namespace SuperNewRoles.CustomOption
             PsychometristCanCheckFootprintsTime = CustomOption.Create(945, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);
             PsychometristIsReportCheckedDeadBody = CustomOption.Create(946, false, CustomOptionType.Crewmate, "PsychometristIsReportCheckedDeadBody", false, PsychometristOption);
 
-            MatryoshkaOption = new CustomRoleOption(839, false, CustomOptionType.Impostor, "MatryoshkaName",RoleClass.Matryoshka.color, 1);
+            MatryoshkaOption = new CustomRoleOption(839, false, CustomOptionType.Impostor, "MatryoshkaName", RoleClass.Matryoshka.color, 1);
             MatryoshkaPlayerCount = CustomOption.Create(840, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MatryoshkaOption);
             MatryoshkaWearLimit = CustomOption.Create(841, false, CustomOptionType.Impostor, "MatryoshkaWearLimit", 3f, 1f, 15f, 1f, MatryoshkaOption);
             MatryoshkaWearReport = CustomOption.Create(842, false, CustomOptionType.Impostor, "MatryoshkaWearReport", true, MatryoshkaOption);
@@ -1621,26 +1617,26 @@ namespace SuperNewRoles.CustomOption
             MatryoshkaAddKillCoolTime = CustomOption.Create(845, false, CustomOptionType.Impostor, "MatryoshkaAddKillCoolTime", 2.5f, 0f, 30f, 0.5f, MatryoshkaOption);
             MatryoshkaCoolTime = CustomOption.Create(846, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 30f, 0f, 180f, 2.5f, MatryoshkaOption);
 
-            NunOption = new CustomRoleOption(847, false, CustomOptionType.Impostor, "NunName",RoleClass.Nun.color, 1);
+            NunOption = new CustomRoleOption(847, false, CustomOptionType.Impostor, "NunName", RoleClass.Nun.color, 1);
             NunPlayerCount = CustomOption.Create(848, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NunOption);
             NunCoolTime = CustomOption.Create(849, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NunOption);
 
-            PartTimerOption = new CustomRoleOption(850, false, CustomOptionType.Neutral, "PartTimerName",RoleClass.PartTimer.color, 1);
+            PartTimerOption = new CustomRoleOption(850, false, CustomOptionType.Neutral, "PartTimerName", RoleClass.PartTimer.color, 1);
             PartTimerPlayerCount = CustomOption.Create(851, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PartTimerOption);
             PartTimerDeathTurn = CustomOption.Create(852, false, CustomOptionType.Neutral, "PartTimerDeathTurn", 3f, 0f, 15f, 1f, PartTimerOption);
             PartTimerCoolTime = CustomOption.Create(853, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PartTimerOption);
             PartTimerIsCheckTargetRole = CustomOption.Create(854, false, CustomOptionType.Neutral, "PartTimerIsCheckTargetRole", true, PartTimerOption);
 
-            PhotographerOption = new CustomRoleOption(855, false, CustomOptionType.Neutral, "PhotographerName",RoleClass.Photographer.color, 1);
+            PhotographerOption = new CustomRoleOption(855, false, CustomOptionType.Neutral, "PhotographerName", RoleClass.Photographer.color, 1);
             PhotographerPlayerCount = CustomOption.Create(856, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PhotographerOption);
-            PhotographerCoolTime = CustomOption.Create(857,false,CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PhotographerOption);
+            PhotographerCoolTime = CustomOption.Create(857, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PhotographerOption);
             PhotographerIsBonus = CustomOption.Create(858, false, CustomOptionType.Neutral, "PhotographerIsBonus", true, PhotographerOption);
             PhotographerBonusCount = CustomOption.Create(859, false, CustomOptionType.Neutral, "PhotographerBonusCount", 5f, 1f, 15f, 1f, PhotographerIsBonus);
             PhotographerBonusCoolTime = CustomOption.Create(860, false, CustomOptionType.Neutral, "PhotographerBonusCoolTime", 20f, 2.5f, 60f, 2.5f, PhotographerIsBonus);
             PhotographerIsImpostorVision = CustomOption.Create(861, false, CustomOptionType.Neutral, "PhotographerIsImpostorVision", false, PhotographerOption);
             PhotographerIsNotification = CustomOption.Create(862, false, CustomOptionType.Neutral, "PhotographerIsNotification", true, PhotographerOption);
 
-            StefinderOption = new CustomRoleOption(855, false, CustomOptionType.Neutral, "StefinderName",RoleClass.Stefinder.color, 1);
+            StefinderOption = new CustomRoleOption(855, false, CustomOptionType.Neutral, "StefinderName", RoleClass.Stefinder.color, 1);
             StefinderPlayerCount = CustomOption.Create(856, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StefinderOption);
             StefinderKillCoolDown = CustomOption.Create(857, false, CustomOptionType.Neutral, "StefinderKillCoolDownSetting", 30f, 0f, 120f, 2.5f, StefinderOption, format: "unitSeconds");
             StefinderVent = CustomOption.Create(858, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
