@@ -145,6 +145,9 @@ namespace SuperNewRoles.CustomRPC
         Matryoshka,
         Nun,
         PartTimer,
+        Photographer,
+        Stefinder,
+        Stefinder1,
         //RoleId
     }
 
@@ -219,10 +222,20 @@ namespace SuperNewRoles.CustomRPC
         StartRevolutionMeeting,
         UncheckedUsePlatform,
         PartTimerSet,
-        SetMatryoshkaDeadbody
+        SetMatryoshkaDeadbody,
+        SharePhotograph,
+        StefinderIsKilled
     }
     public static class RPCProcedure
     {
+        public static void SharePhotograph()
+        {
+            if (!RoleClass.Photographer.IsPhotographerShared)
+            {
+                Modules.ProctedMessager.ScheduleProctedMessage(ModTranslation.GetString("PhotographerPhotograph"));
+            }
+            RoleClass.Photographer.IsPhotographerShared = true;
+        }
         public static void SetMatryoshkaDeadBody(byte sourceid, byte targetid, bool Is)
         {
             PlayerControl source = ModHelpers.PlayerById(sourceid);
@@ -252,6 +265,10 @@ namespace SuperNewRoles.CustomRPC
                     airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));
                 }
             }
+        }
+        public static void StefinderIsKilled(byte PlayerId)
+        {
+            RoleClass.Stefinder.IsKillPlayer.Add(PlayerId);
         }
         public static void StartRevolutionMeeting(byte sourceid)
         {
@@ -1330,6 +1347,12 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.PartTimerSet:
                             PartTimerSet(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SharePhotograph:
+                            SharePhotograph();
+                            break;
+                        case CustomRPC.StefinderIsKilled:
+                            StefinderIsKilled(reader.ReadByte());
                             break;
                     }
                 }

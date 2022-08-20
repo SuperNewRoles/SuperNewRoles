@@ -89,6 +89,7 @@ namespace SuperNewRoles.Patch
             Roles.Neutral.Spelunker.WrapUp();
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
+            Roles.Neutral.Photographer.WrapUp();
             if (exiled == null) return;
 
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();

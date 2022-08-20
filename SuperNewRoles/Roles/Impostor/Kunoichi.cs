@@ -1,6 +1,7 @@
 using System;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
@@ -108,35 +109,55 @@ namespace SuperNewRoles.Roles
                     }
                 }
             }
-            if (RoleClass.Kunoichi.HideTime != -1)
+            // 透明化に必要な待機時間の取得と処理 (ボタン動作ではない時)
+            if (!RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide && RoleClass.Kunoichi.HideTime != -1)
             {
                 if (!HudManager.Instance.IsIntroDisplayed)
                 {
-                    if (RoleClass.Kunoichi.OldPosition == CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition())
+                    if (RoleClass.Kunoichi.OldPosition == CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition()) //止まっている時 ((*1)で取得した位置情報と現在の位置情報が同じ時)
                     {
                         RoleClass.Kunoichi.StopTime += Time.fixedDeltaTime;
+                        // 止まっている時間が、透明化に必要な時間を越えた時
                         if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
-                            writer.Write(true);
-                            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                            AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
+                            HideOn(); // 透明化する
                         }
                     }
-                    else
+                    else // 動き始めた時 & 動き続けている時は
                     {
-                        if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)
+                        if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)//透明化していた場合
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
-                            writer.Write(false);
-                            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                            AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
+                            HideOff();; // 透明化を解除する
                         }
-                        RoleClass.Kunoichi.StopTime = 0;
+                        RoleClass.Kunoichi.StopTime = 0;//止まっている時間を 0 にする
                     }
-                    RoleClass.Kunoichi.OldPosition = CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition();
+                    RoleClass.Kunoichi.OldPosition = CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(); // 現在の位置を記録する(*1)
+                }
+            }
+            // 透明化に必要な待機時間の取得と処理 (ボタン動作の時)
+            if (RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide && RoleClass.Kunoichi.HideTime != -1)
+            {
+                if (!HudManager.Instance.IsIntroDisplayed)
+                {
+                    if (RoleClass.Kunoichi.OldPosition == CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition()) //止まっている時 ((*2)で取得した位置情報と現在の位置情報が同じ時)
+                    {
+                        RoleClass.Kunoichi.StopTime += Time.fixedDeltaTime;
+                        // 止まっている時間が、透明化に必要な時間を越えた時 且つ ボタンが押された時
+                        if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime && RoleClass.Kunoichi.IsHideButton)
+                        {
+                            HideOn(); // 透明化する
+                        }
+                    }
+                    else // 動き始めた時 & 動き続けている時は
+                    {
+                        ResetCoolDown(); // 動いている時は「隠れる」ボタンのクールダウンを常にリセットする
+                        if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)//透明化していた場合
+                        {
+                            HideOff(); // 透明化を解除する
+                        }
+                        RoleClass.Kunoichi.StopTime = 0;//止まっている時間を 0 にする
+                    }
+                    RoleClass.Kunoichi.OldPosition = CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(); // 現在の位置を記録する(*2)
                 }
             }
             /*
@@ -154,6 +175,40 @@ namespace SuperNewRoles.Roles
                 RoleClass.Kunoichi.SendKunai = null;
                 RoleClass.Kunoichi.KunaiSend = false;
             }*/
+        }
+        public static void HideOn()
+        {
+            // 透明化するコード
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
+                writer.Write(true);
+                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
+            }
+        }
+        public static void HideOff()
+        {
+            // 透明化を解除するコード
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
+                writer.Write(false);
+                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
+            }
+            //ボタン動作で行っている場合はクールダウンのリセットも行う
+            if (RoleClass.Kunoichi.IsHideButton)
+            {
+                ResetCoolDown();
+            }
+        }
+        public static void ResetCoolDown()
+        {
+            // [隠れる]ボタンのクールダウンをリセットする
+            RoleClass.Kunoichi.IsHideButton = false;
+            HudManagerStartPatch.KunoichiHideButton.MaxTimer = RoleClass.Kunoichi.HideTime;
+            HudManagerStartPatch.KunoichiHideButton.Timer = RoleClass.Kunoichi.HideTime;
         }
 
         public static void SetOpacity(PlayerControl player, float opacity, bool cansee)

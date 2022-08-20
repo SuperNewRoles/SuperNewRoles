@@ -160,6 +160,12 @@ namespace SuperNewRoles.Patch
                     roleColors = RoleClass.CrewmateWhite;
                 }
             }
+            else if (PlayerControl.LocalPlayer.IsRole(RoleId.Stefinder) && RoleClass.Stefinder.IsKill)
+            {
+                var introdate = IntroDate.GetIntroDate(role);
+                roleNames = introdate.Name;
+                roleColors = RoleClass.ImpostorRed;
+            }
             else
             {
                 var introdate = IntroDate.GetIntroDate(role);
@@ -407,6 +413,10 @@ namespace SuperNewRoles.Patch
                 PlayerControl PartTimerTarget = ModHelpers.PlayerById((byte)RoleClass.PartTimer.Datas.GetKey(CachedPlayer.LocalPlayer.PlayerId));
                 SetNamesClass.SetPlayerRoleNames(PartTimerTarget);
                 SetNamesClass.SetPlayerNameColors(PartTimerTarget);
+            }
+            if (RoleClass.Stefinder.IsKill)
+            {
+                SetNamesClass.SetPlayerNameColor(PlayerControl.LocalPlayer, Color.red);
             }
             if (ModeHandler.IsMode(ModeId.Default))
             {

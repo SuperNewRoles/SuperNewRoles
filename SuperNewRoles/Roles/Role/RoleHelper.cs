@@ -592,6 +592,12 @@ namespace SuperNewRoles
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.Add(player);
                     break;
+                case RoleId.Photographer:
+                    RoleClass.Photographer.PhotographerPlayer.Add(player);
+                    break;
+                case RoleId.Stefinder:
+                    RoleClass.Stefinder.StefinderPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -982,6 +988,12 @@ namespace SuperNewRoles
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Photographer:
+                    RoleClass.Photographer.PhotographerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Stefinder:
+                    RoleClass.Stefinder.StefinderPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -1035,10 +1047,13 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
+                case RoleId.Stefinder:
                 case RoleId.PartTimer:
+                case RoleId.Photographer:
                 //タスククリアか
                     IsTaskClear = true;
                     break;
+                //タスククリアか
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
@@ -1084,6 +1099,7 @@ namespace SuperNewRoles
                 RoleId.Tuna => RoleClass.Tuna.IsUseVent,
                 RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
+                RoleId.Stefinder => RoleClass.Stefinder.UseVent,
                 _ => false,
             };
         }
@@ -1128,11 +1144,12 @@ namespace SuperNewRoles
             else if (player.IsImpostor()) return true;
             return role switch
             {
-                RoleId.Jester => RoleClass.Jester.IsUseSabo,
+                RoleId.Jester => RoleClass.Jester.IsUseSabo && ModeHandler.IsMode(ModeId.Default),
                 RoleId.Sidekick or RoleId.Jackal => RoleClass.Jackal.IsUseSabo,
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
                 RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
                 RoleId.Egoist => RoleClass.Egoist.UseSabo,
+                RoleId.Stefinder => RoleClass.Stefinder.UseSabo,
                 _ => false,
             };
         }
@@ -1160,6 +1177,7 @@ namespace SuperNewRoles
                     RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
                     RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
                     RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
+                    RoleId.Photographer => RoleClass.Photographer.IsImpostorVision,
                     _ => false,
                 };
         }
@@ -1192,10 +1210,13 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
+                case RoleId.Stefinder:
                 case RoleId.PartTimer:
+                case RoleId.Photographer:
                 //第三か
                     IsNeutral = true;
                     break;
+                //第三か
             }
             return IsNeutral;
         }
@@ -1476,6 +1497,8 @@ namespace SuperNewRoles
                 else if (RoleClass.Matryoshka.MatryoshkaPlayer.IsCheckListPlayerControl(player)) return RoleId.Matryoshka;
                 else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
                 else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
+                else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
+                else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
                 //ロールチェック
             }
             catch (Exception e)
