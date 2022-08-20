@@ -396,6 +396,41 @@ namespace SuperNewRoles
             var client = AmongUsClient.Instance.allClients.GetFastEnumerator().ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
             return client;
         }
+        public static Dictionary<string, AudioClip> CachedAudioClips = new();
+        public static AudioClip loadAudioClipFromResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")
+        {
+            // must be "raw (headerless) 2-channel signed 32 bit pcm (le)" (can e.g. use Audacity® to export)
+            try
+            {
+                if (CachedAudioClips.TryGetValue(path, out var audio)) return audio;
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                Stream stream = assembly.GetManifestResourceStream(path);
+                var byteAudio = new byte[stream.Length];
+                _ = stream.Read(byteAudio, 0, (int)stream.Length);
+                float[] samples = new float[byteAudio.Length / 4]; // 4 bytes per sample
+                int offset;
+                for (int i = 0; i < samples.Length; i++)
+                {
+                    offset = i * 4;
+                    samples[i] = (float)BitConverter.ToInt32(byteAudio, offset) / int.MaxValue;
+                }
+                int channels = 2;
+                int sampleRate = 48000;
+                AudioClip audioClip = AudioClip.Create(clipName, samples.Length, channels, sampleRate, false);
+                audioClip.SetData(samples, 0);
+                return CachedAudioClips[path] = audioClip;
+            }
+            catch
+            {
+                System.Console.WriteLine("Error loading AudioClip from resources: " + path);
+            }
+            return null;
+
+            /* Usage example:
+            AudioClip exampleClip = Helpers.loadAudioClipFromResources("TheOtherRoles.Resources.exampleClip.raw");
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(exampleClip, false, 0.8f);
+            */
+        }
         public static int GetClientId(this PlayerControl player)
         {
             var client = player.GetClient();
@@ -463,17 +498,21 @@ namespace SuperNewRoles
             throw new NotImplementedException();
         }
 
+        public static Dictionary<string, Texture2D> CachedTexture = new();
+
         public static Texture2D LoadTextureFromResources(string path)
         {
             try
             {
-                Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
+                if (CachedTexture.TryGetValue(path, out Texture2D texture)) return texture;
+                texture = new(2, 2, TextureFormat.ARGB32, true);
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 Stream stream = assembly.GetManifestResourceStream(path);
                 var byteTexture = new byte[stream.Length];
                 var read = stream.Read(byteTexture, 0, (int)stream.Length);
                 LoadImage(texture, byteTexture, false);
-                return texture;
+                texture.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
+                return CachedTexture[path] = texture;
             }
             catch
             {

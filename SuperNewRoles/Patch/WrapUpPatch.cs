@@ -4,6 +4,7 @@ using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
@@ -89,6 +90,7 @@ namespace SuperNewRoles.Patch
             Roles.Neutral.Spelunker.WrapUp();
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
+            SecretRoom.Reset();
             if (exiled == null) return;
 
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();

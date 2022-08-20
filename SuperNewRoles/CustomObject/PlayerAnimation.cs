@@ -53,7 +53,7 @@ namespace SuperNewRoles.CustomObject
             this.Player = Player;
             if (Player == null)
             {
-                Logger.Error($"Playerがnullでした","PlayerAnimation");
+                Logger.Error($"Playerがnullでした", "PlayerAnimation");
                 return;
             }
             Physics = Player.MyPhysics;
@@ -218,6 +218,10 @@ namespace SuperNewRoles.CustomObject
                         transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
                         transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
                     });
+                    if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) <= 5f)
+                    {
+                        SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Hit.raw"), false);
+                    }
                     break;
             }
         }

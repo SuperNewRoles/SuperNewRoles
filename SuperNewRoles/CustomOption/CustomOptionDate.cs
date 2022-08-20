@@ -783,6 +783,9 @@ namespace SuperNewRoles.CustomOption
         
         public static CustomRoleOption SluggerOption;
         public static CustomOption SluggerPlayerCount;
+        public static CustomOption SluggerChargeTime;
+        public static CustomOption SluggerCoolTime;
+        public static CustomOption SluggerIsMultiKill;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1606,7 +1609,10 @@ namespace SuperNewRoles.CustomOption
             StefinderSoloWin = CustomOption.Create(860, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
             
             SluggerOption = new CustomRoleOption(901, false, CustomOptionType.Impostor, "SluggerName",RoleClass.Slugger.color, 1);
-            SluggerPlayerCount = CustomOption.Create(9012, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SluggerOption);
+            SluggerPlayerCount = CustomOption.Create(902, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SluggerOption);
+            SluggerChargeTime = CustomOption.Create(903, false, CustomOptionType.Impostor, "SluggerChargeTime", 3f, 0f, 30f, 0.5f, SluggerOption);
+            SluggerCoolTime = CustomOption.Create(904, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, SluggerOption);
+            SluggerIsMultiKill = CustomOption.Create(905, false, CustomOptionType.Impostor, "SluggerIsMultiKill", false, SluggerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

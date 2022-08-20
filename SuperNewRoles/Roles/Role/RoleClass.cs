@@ -2787,10 +2787,22 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SluggerPlayer;
             public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static float ChargeTime;
+            public static bool IsMultiKill;
+            private static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SluggerButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 SluggerPlayer = new();
-                
+                CoolTime = CustomOptions.SluggerCoolTime.GetFloat();
+                ChargeTime = CustomOptions.SluggerChargeTime.GetFloat();
+                IsMultiKill = CustomOptions.SluggerIsMultiKill.GetBool();
             }
         }
         //新ロールクラス

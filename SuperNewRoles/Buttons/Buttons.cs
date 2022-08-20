@@ -115,13 +115,13 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
-                    SluggerButton.MaxTimer = PlayerControl.GameOptions.killCooldown;
+                    SluggerButton.MaxTimer = RoleClass.Slugger.CoolTime;
                     SluggerButton.Timer = SluggerButton.MaxTimer;
                     SluggerButton.effectCancellable = false;
-                    SluggerButton.EffectDuration = 5f;
+                    SluggerButton.EffectDuration = RoleClass.Slugger.ChargeTime;
                     SluggerButton.HasEffect = true;
                 },
-                RoleClass.Kunoichi.GetButtonSprite(),
+                RoleClass.Slugger.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -134,7 +134,7 @@ namespace SuperNewRoles.Buttons
                 {
                     List<PlayerControl> Targets = new();
                     //一気にキルできるか。後に設定で変更可に
-                    if (false)
+                    if (RoleClass.Slugger.IsMultiKill)
                     {
                         Targets = Roles.Impostor.Slugger.SetTarget();
                     } else
@@ -163,14 +163,15 @@ namespace SuperNewRoles.Buttons
                         TargetsId.Add(Target.PlayerId);
                     }
                     RPCProcedure.SluggerExile(CachedPlayer.LocalPlayer.PlayerId, TargetsId);
-                    SluggerButton.MaxTimer = PlayerControl.GameOptions.killCooldown;
+                    SluggerButton.MaxTimer = RoleClass.Slugger.CoolTime;
                     SluggerButton.Timer = SluggerButton.MaxTimer;
                 }
             )
             {
-                buttonText = ModTranslation.GetString("KunoichiKunai"),
+                buttonText = ModTranslation.GetString("SluggerButtonName"),
                 showButtonText = true
             };
+
             KunoichiKunaiButton = new(
                 () =>
                 {
@@ -804,7 +805,7 @@ namespace SuperNewRoles.Buttons
                             var misfire = !Sheriff.IsSheriffKill(Target);
                             if (RoleClass.Chief.SheriffPlayer.Contains(LocalID))
                             {
-                                misfire = Sheriff.IsChiefSheriffKill(Target);
+                                misfire = !Sheriff.IsChiefSheriffKill(Target);
                             }
                             var TargetID = Target.PlayerId;
 
