@@ -164,6 +164,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.Psychometrist:
                                 Roles.CrewMate.Psychometrist.PsychometristFixedUpdate();
                                 break;
+                            case RoleId.Photographer:
+                                Roles.Neutral.Photographer.FixedUpdate();
+                                break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                                     NormalButtonDestroy.Postfix(p);
