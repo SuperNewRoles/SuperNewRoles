@@ -1523,7 +1523,7 @@ namespace SuperNewRoles.CustomOption
             KunoichiCoolTime = CustomOption.Create(640, false, CustomOptionType.Impostor, "KunoichiCoolTime", 2.5f, 0f, 15f, 0.5f, KunoichiOption);
             KunoichiKillKunai = CustomOption.Create(641, false, CustomOptionType.Impostor, "KunoichiKillKunai", 10f, 1f, 20f, 1f, KunoichiOption);
             KunoichiIsHide = CustomOption.Create(642, false, CustomOptionType.Impostor, "KunoichiIsHide", true, KunoichiOption);
-            KunoichiIsWaitAndPressTheButtonToHide = CustomOption.Create(884, false, CustomOptionType.Impostor, "ScientistButtonName", true, KunoichiIsHide);
+            KunoichiIsWaitAndPressTheButtonToHide = CustomOption.Create(884, false, CustomOptionType.Impostor, "KunoichiIsWaitAndPressTheButtonToHide", true, KunoichiIsHide);
             KunoichiHideTime = CustomOption.Create(643, false, CustomOptionType.Impostor, "KunoichiHideTime", 3f, 0.5f, 10f, 0.5f, KunoichiIsHide);
             KunoichiHideKunai = CustomOption.Create(644, false, CustomOptionType.Impostor, "KunoichiHideKunai", false, KunoichiIsHide);
 
@@ -1628,28 +1628,24 @@ namespace SuperNewRoles.CustomOption
             PartTimerCoolTime = CustomOption.Create(862, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PartTimerOption);
             PartTimerIsCheckTargetRole = CustomOption.Create(863, false, CustomOptionType.Neutral, "PartTimerIsCheckTargetRole", true, PartTimerOption);
 
-            NunOption = new CustomRoleOption(864, false, CustomOptionType.Impostor, "NunName",RoleClass.Nun.color, 1);
-            NunPlayerCount = CustomOption.Create(865, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NunOption);
-            NunCoolTime = CustomOption.Create(866, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NunOption);
+            SeeThroughPersonOption = new CustomRoleOption(864, false, CustomOptionType.Crewmate, "SeeThroughPersonName",RoleClass.SeeThroughPerson.color, 1);
+            SeeThroughPersonPlayerCount = CustomOption.Create(865, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeeThroughPersonOption);
 
-            SeeThroughPersonOption = new CustomRoleOption(867, false, CustomOptionType.Crewmate, "SeeThroughPersonName",RoleClass.SeeThroughPerson.color, 1);
-            SeeThroughPersonPlayerCount = CustomOption.Create(868, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeeThroughPersonOption);
+            PhotographerOption = new CustomRoleOption(866, false, CustomOptionType.Neutral, "PhotographerName",RoleClass.Photographer.color, 1);
+            PhotographerPlayerCount = CustomOption.Create(867, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PhotographerOption);
+            PhotographerCoolTime = CustomOption.Create(868,false,CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PhotographerOption);
+            PhotographerIsBonus = CustomOption.Create(869, false, CustomOptionType.Neutral, "PhotographerIsBonus", true, PhotographerOption);
+            PhotographerBonusCount = CustomOption.Create(870, false, CustomOptionType.Neutral, "PhotographerBonusCount", 5f, 1f, 15f, 1f, PhotographerIsBonus);
+            PhotographerBonusCoolTime = CustomOption.Create(871, false, CustomOptionType.Neutral, "PhotographerBonusCoolTime", 20f, 2.5f, 60f, 2.5f, PhotographerIsBonus);
+            PhotographerIsImpostorVision = CustomOption.Create(872, false, CustomOptionType.Neutral, "PhotographerIsImpostorVision", false, PhotographerOption);
+            PhotographerIsNotification = CustomOption.Create(873, false, CustomOptionType.Neutral, "PhotographerIsNotification", true, PhotographerOption);
 
-            PhotographerOption = new CustomRoleOption(869, false, CustomOptionType.Neutral, "PhotographerName",RoleClass.Photographer.color, 1);
-            PhotographerPlayerCount = CustomOption.Create(870, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PhotographerOption);
-            PhotographerCoolTime = CustomOption.Create(871,false,CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PhotographerOption);
-            PhotographerIsBonus = CustomOption.Create(872, false, CustomOptionType.Neutral, "PhotographerIsBonus", true, PhotographerOption);
-            PhotographerBonusCount = CustomOption.Create(873, false, CustomOptionType.Neutral, "PhotographerBonusCount", 5f, 1f, 15f, 1f, PhotographerIsBonus);
-            PhotographerBonusCoolTime = CustomOption.Create(874, false, CustomOptionType.Neutral, "PhotographerBonusCoolTime", 20f, 2.5f, 60f, 2.5f, PhotographerIsBonus);
-            PhotographerIsImpostorVision = CustomOption.Create(875, false, CustomOptionType.Neutral, "PhotographerIsImpostorVision", false, PhotographerOption);
-            PhotographerIsNotification = CustomOption.Create(876, false, CustomOptionType.Neutral, "PhotographerIsNotification", true, PhotographerOption);
-
-            StefinderOption = new CustomRoleOption(877, false, CustomOptionType.Neutral, "StefinderName",RoleClass.Stefinder.color, 1);
-            StefinderPlayerCount = CustomOption.Create(878, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StefinderOption);
-            StefinderKillCoolDown = CustomOption.Create(879, false, CustomOptionType.Neutral, "StefinderKillCoolDownSetting", 30f, 0f, 120f, 2.5f, StefinderOption, format: "unitSeconds");
-            StefinderVent = CustomOption.Create(880, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
-            StefinderSabo = CustomOption.Create(881, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
-            StefinderSoloWin = CustomOption.Create(885, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
+            StefinderOption = new CustomRoleOption(876, false, CustomOptionType.Neutral, "StefinderName",RoleClass.Stefinder.color, 1);
+            StefinderPlayerCount = CustomOption.Create(877, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StefinderOption);
+            StefinderKillCoolDown = CustomOption.Create(878, false, CustomOptionType.Neutral, "StefinderKillCoolDownSetting", 30f, 0f, 120f, 2.5f, StefinderOption, format: "unitSeconds");
+            StefinderVent = CustomOption.Create(879, false, CustomOptionType.Neutral, "StefinderVentSetting", false, StefinderOption);
+            StefinderSabo = CustomOption.Create(880, false, CustomOptionType.Neutral, "StefinderSaboSetting", false, StefinderOption);
+            StefinderSoloWin = CustomOption.Create(881, false, CustomOptionType.Neutral, "StefinderSoloWinSetting", false, StefinderOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
