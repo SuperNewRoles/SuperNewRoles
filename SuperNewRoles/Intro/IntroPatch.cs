@@ -1,3 +1,4 @@
+using Agartha;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
@@ -162,6 +163,16 @@ namespace SuperNewRoles.Patches
         {
             public static void Prefix()
             {
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    if (MapData.IsMap(CustomMapNames.Agartha))
+                    {
+                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        {
+                            p.GenerateAndAssignTasks(PlayerControl.GameOptions.NumCommonTasks, PlayerControl.GameOptions.NumShortTasks, PlayerControl.GameOptions.NumLongTasks);
+                        }
+                    }
+                }
                 float SetTime = 0;
                 bool Flag = true;
                 switch (PlayerControl.LocalPlayer.GetRole())

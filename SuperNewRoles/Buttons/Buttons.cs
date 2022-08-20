@@ -113,7 +113,7 @@ namespace SuperNewRoles.Buttons
                         SluggerButton.isEffectActive = false;
                         anim.RpcAnimation(RpcAnimationType.Stop);
                     }
-                    return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                    return PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
@@ -129,10 +129,49 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49,
-                () => { return false; }
+                () => { return false; },
+                true,
+                5f,
+                () =>
+                {
+                    List<PlayerControl> Targets = new();
+                    //一気にキルできるか。後に設定で変更可に
+                    if (false)
+                    {
+                        Targets = Roles.Impostor.Slugger.SetTarget();
+                    }
+                    else
+                    {
+                        if (FastDestroyableSingleton<HudManager>.Instance.KillButton.currentTarget != null) Targets.Add(FastDestroyableSingleton<HudManager>.Instance.KillButton.currentTarget);
+                    }
+                    RpcAnimationType AnimationType = RpcAnimationType.SluggerMurder;
+                    //空振り判定
+                    if (Targets.Count <= 0)
+                    {
+                        AnimationType = RpcAnimationType.SluggerMurder;
+                    }
+                    var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
+                    anim.RpcAnimation(AnimationType);
+                    MessageWriter RPCWriter = RPCHelper.StartRPC(CustomRPC.CustomRPC.SluggerExile);
+                    RPCWriter.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    RPCWriter.Write((byte)Targets.Count);
+                    foreach (PlayerControl Target in Targets)
+                    {
+                        RPCWriter.Write(Target.PlayerId);
+                    }
+                    RPCWriter.EndRPC();
+                    List<byte> TargetsId = new();
+                    foreach (PlayerControl Target in Targets)
+                    {
+                        TargetsId.Add(Target.PlayerId);
+                    }
+                    RPCProcedure.SluggerExile(CachedPlayer.LocalPlayer.PlayerId, TargetsId);
+                    SluggerButton.MaxTimer = PlayerControl.GameOptions.killCooldown;
+                    SluggerButton.Timer = SluggerButton.MaxTimer;
+                }
             )
             {
-                buttonText = ModTranslation.GetString("PhotographerButtonName"),
+                buttonText = ModTranslation.GetString("KunoichiKunai"),
                 showButtonText = true
             };
 
@@ -171,40 +210,10 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49,
-                () => { return false; },
-                true,
-                5f,
-                () =>
-                {
-                    List<PlayerControl> Targets = Roles.Impostor.Slugger.SetTarget();
-                    RpcAnimationType AnimationType = RpcAnimationType.SluggerMurder;
-                    //空振り判定
-                    if (Targets.Count <= 0)
-                    {
-                        AnimationType = RpcAnimationType.SluggerMurder;
-                    }
-                    var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
-                    anim.RpcAnimation(AnimationType);
-                    MessageWriter RPCWriter = RPCHelper.StartRPC(CustomRPC.CustomRPC.SluggerExile);
-                    RPCWriter.Write(CachedPlayer.LocalPlayer.PlayerId);
-                    RPCWriter.Write((byte)Targets.Count);
-                    foreach (PlayerControl Target in Targets)
-                    {
-                        RPCWriter.Write(Target.PlayerId);
-                    }
-                    RPCWriter.EndRPC();
-                    List<byte> TargetsId = new();
-                    foreach (PlayerControl Target in Targets)
-                    {
-                        TargetsId.Add(Target.PlayerId);
-                    }
-                    RPCProcedure.SluggerExile(CachedPlayer.LocalPlayer.PlayerId, TargetsId);
-                    SluggerButton.MaxTimer = PlayerControl.GameOptions.killCooldown;
-                    SluggerButton.Timer = SluggerButton.MaxTimer;
-                }
-            )
+                () => { return false; }
+                )
             {
-                buttonText = ModTranslation.GetString("KunoichiKunai"),
+                buttonText = ModTranslation.GetString("PhotographerButtonName"),
                 showButtonText = true
             };
 
@@ -242,6 +251,7 @@ namespace SuperNewRoles.Buttons
                 buttonText = ModTranslation.GetString("KunoichiKunai"),
                 showButtonText = true
             };
+
             FalseChargesFalseChargeButton = new(
                 () =>
                 {

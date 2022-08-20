@@ -191,13 +191,13 @@ namespace SuperNewRoles.CustomObject
                     }
                     break;
                 case RpcAnimationType.SluggerMurder:
-                    Init(PlayerAnimation.GetSprites("SuperNewRoles.Resources.harisen.harisen_", 8), false, 20);
+                    Init(PlayerAnimation.GetSprites("SuperNewRoles.Resources.harisen.harisen_", 8), false, 40);
                     OnAnimationEnd = new(() =>
                     {
-                        Init(PlayerAnimation.GetSprites("SuperNewRoles.Resources.harisen.harisen_", 1, start: 9), false, 4);
+                        Init(PlayerAnimation.GetSprites("SuperNewRoles.Resources.harisen.harisen_", 1, start: 9), false, 8);
                         OnAnimationEnd = new(() =>
                         {
-                            Init(PlayerAnimation.GetSprites("SuperNewRoles.Resources.harisen.harisen_", 2, start: 10), false, 20);
+                            Init(PlayerAnimation.GetSprites("SuperNewRoles.Resources.harisen.harisen_", 2, start: 10), false, 40);
                             OnFixedUpdate = new(() =>
                             {
                                 transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
