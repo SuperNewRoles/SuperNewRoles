@@ -991,7 +991,7 @@ namespace SuperNewRoles.CustomOption
             //シェリフ、フレンズキル表示設定
 
             SheriffNeutralKill = CustomOption.Create(40, true, CustomOptionType.Crewmate, "SheriffIsKillNewtralSetting", false, SheriffOption);
-            SheriffNeutralKillIndividualSettings = CustomOption.Create(736, true, CustomOptionType.Crewmate, "SheriffNeutralKillIndividualSettings", false, SheriffNeutralKillIndividualSettings);
+            SheriffNeutralKillIndividualSettings = CustomOption.Create(736, true, CustomOptionType.Crewmate, "SheriffNeutralKillIndividualSettings", false, SheriffNeutralKill);
             SheriffCanKillJester = CustomOption.Create(712, true, CustomOptionType.Crewmate, "JesterName" + "CanKillSetting", true, SheriffNeutralKillIndividualSettings);
             SheriffCanKillJackal = CustomOption.Create(713, true, CustomOptionType.Crewmate, "JackalName" + "CanKillSetting", true, SheriffNeutralKillIndividualSettings);
             SheriffCanKillVulture = CustomOption.Create(714, true, CustomOptionType.Crewmate, "VultureName" + "CanKillSetting", true, SheriffNeutralKillIndividualSettings);

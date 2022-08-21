@@ -31,7 +31,8 @@ namespace SuperNewRoles.Roles
             if ((roledata == TeamRoleType.Impostor) || Target.IsRole(RoleId.HauntedWolf)) return CustomOptions.SheriffCanKillImpostor.GetBool();//インポスター、狼付きは設定がimp設定が有効な時切れる
             if (RoleClass.Sheriff.IsLoversKill && Target.IsLovers()) return true;//ラバーズ
             if (CustomOptions.SheriffQuarreledKill.GetBool() && Target.IsQuarreled()) return true;//クラード
-            if (CustomOptions.SheriffMadRoleKill.GetBool())//マッドを切れるが有効
+            if (Target.IsMadRoles() && RoleClass.Sheriff.IsMadRoleKill && !CustomOptions.SheriffMadRoleKillIndividualSettings.GetBool()) return true;//マッドを切れるが有効 かつ 個別設定が無効
+            if (RoleClass.Sheriff.IsMadRoleKill && CustomOptions.SheriffMadRoleKillIndividualSettings.GetBool())//マッドを切れるが有効 かつ 個別設定が有効
             {
                 return role switch
                 {
@@ -47,7 +48,8 @@ namespace SuperNewRoles.Roles
                     _ => false,
                 };
             }
-            if (CustomOptions.SheriffFriendsRoleKill.GetBool())
+            if (Target.IsFriendRoles() && RoleClass.Sheriff.IsFriendsRoleKill && !CustomOptions.SheriffFriendsRoleKillIndividualSettings.GetBool()) return true;//フレンズを切れるが有効 かつ 個別設定が無効
+            if (RoleClass.Sheriff.IsFriendsRoleKill && CustomOptions.SheriffFriendsRoleKillIndividualSettings.GetBool())//フレンズを切れるが有効 かつ 個別設定が有効
             {
                 return role switch
                 {
@@ -58,7 +60,8 @@ namespace SuperNewRoles.Roles
                     _ => false,
                 };
             }
-            if (CustomOptions.SheriffNeutralKill.GetBool())
+            if (Target.IsNeutral() && RoleClass.Sheriff.IsNeutralKill && !CustomOptions.SheriffFriendsRoleKillIndividualSettings.GetBool()) return true;//第三陣営を切れるが有効 かつ 個別設定が無効
+            if (RoleClass.Sheriff.IsNeutralKill && CustomOptions.SheriffNeutralKillIndividualSettings.GetBool())//第三陣営を切れるが有効 かつ 個別設定が有効
             {
                 return role switch
                 {
