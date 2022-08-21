@@ -90,6 +90,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             public static bool Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
             {
                 VentData[__instance.myPlayer.PlayerId] = null;
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.ExitVent);
                 return true;
             }
         }
@@ -125,6 +126,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         return data;
                     }
                 }
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.InVent);
                 VentData[__instance.myPlayer.PlayerId] = id;
                 return true;
             }
@@ -141,6 +143,13 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 if (PlusModeHandler.IsMode(PlusModeId.NotSabotage))
                 {
                     return false;
+                }
+                if (ModeHandler.IsMode(ModeId.Default))
+                {
+                    if (systemType == SystemTypes.Comms || systemType == SystemTypes.Sabotage || systemType == SystemTypes.Electrical)
+                    {
+                        if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == player.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.SabotageRepair);
+                    }
                 }
                 if ((ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.HideAndSeek) || ModeHandler.IsMode(ModeId.CopsRobbers)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
                 if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.IsRole(RoleId.MadMate))

@@ -44,8 +44,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (p.IsAlive())
                 {
-                    var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
-                    if (!RoleClass.God.IsTaskEndWin || complate >= all)
+                    var (Complete, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                    if (!RoleClass.God.IsTaskEndWin || Complete >= all)
                     {
                         if (WinGods == null)
                         {

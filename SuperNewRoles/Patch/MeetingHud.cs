@@ -480,7 +480,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
 
-                if (exiledPlayer.Object.IsRole(RoleId.Dictator))
+                if (exiledPlayer != null && exiledPlayer.Object.IsRole(RoleId.Dictator))
                 {
                     bool Flag = false;
                     if (!RoleClass.Dictator.SubExileLimitData.ContainsKey(exiledPlayer.Object.PlayerId))

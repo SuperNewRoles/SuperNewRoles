@@ -9,7 +9,6 @@ namespace SuperNewRoles.Roles
         {
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                //RPCProcedure.UncheckedMeeting(sourceId);
                 MeetingRoomManager.Instance.AssignSelf(sourceId, null);
                 FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(sourceId);
                 sourceId.RpcStartMeeting(null);
