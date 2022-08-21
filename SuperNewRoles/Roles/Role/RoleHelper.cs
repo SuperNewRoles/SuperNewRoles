@@ -593,8 +593,17 @@ namespace SuperNewRoles
                 case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.Add(player);
                     break;
+                case RoleId.Psychometrist:
+                    RoleClass.Psychometrist.PsychometristPlayer.Add(player);
+                    break;
+                case RoleId.SeeThroughPerson:
+                    RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.Add(player);
+                    break;
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.Add(player);
+                    break;
+                case RoleId.Painter:
+                    RoleClass.Painter.PainterPlayer.Add(player);
                     break;
                 case RoleId.Photographer:
                     RoleClass.Photographer.PhotographerPlayer.Add(player);
@@ -997,8 +1006,17 @@ namespace SuperNewRoles
                 case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Psychometrist:
+                    RoleClass.Psychometrist.PsychometristPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.SeeThroughPerson:
+                    RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Painter:
+                    RoleClass.Painter.PainterPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.Photographer:
                     RoleClass.Photographer.PhotographerPlayer.RemoveAll(ClearRemove);
@@ -1512,7 +1530,10 @@ namespace SuperNewRoles
                 else if (RoleClass.Hitman.HitmanPlayer.IsCheckListPlayerControl(player)) return RoleId.Hitman;
                 else if (RoleClass.Matryoshka.MatryoshkaPlayer.IsCheckListPlayerControl(player)) return RoleId.Matryoshka;
                 else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
+                else if (RoleClass.Psychometrist.PsychometristPlayer.IsCheckListPlayerControl(player)) return RoleId.Psychometrist;
+                else if (RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.IsCheckListPlayerControl(player)) return RoleId.SeeThroughPerson;
                 else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
+                else if (RoleClass.Painter.PainterPlayer.IsCheckListPlayerControl(player)) return RoleId.Painter;
                 else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
                 else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
                 else if (RoleClass.Slugger.SluggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Slugger;

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -838,7 +838,7 @@ namespace SuperNewRoles.Patches
             // SuperNewRolesPlugin.Logger.LogInfo("MurderPlayer発生！元:" + __instance.GetDefaultName() + "、ターゲット:" + target.GetDefaultName());
             // Collect dead player info
             Logger.Info("追加");
-            DeadPlayer deadPlayer = new(target, DateTime.UtcNow, DeathReason.Kill, __instance);
+            DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
@@ -862,6 +862,7 @@ namespace SuperNewRoles.Patches
                 {
                     RoleClass.Finder.KillCount++;
                 }
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.Death);
                 if (target.IsRole(RoleId.Assassin))
                 {
                     target.Revive();
@@ -878,6 +879,10 @@ namespace SuperNewRoles.Patches
                     }, 0.5f);
                     RoleClass.Assassin.TriggerPlayer = target;
                     return;
+                }
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Psychometrist))
+                {
+                    Roles.CrewMate.Psychometrist.MurderPlayer(__instance, target);
                 }
                 if (target.IsDead())
                 {
@@ -930,13 +935,21 @@ namespace SuperNewRoles.Patches
             }
         }
     }
+    [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CompleteTask))]
+    class CompleteTask
+    {
+        public static void Postfix(PlayerControl __instance, uint idx)
+        {
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.TaskComplete);
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Exiled))]
     public static class ExilePlayerPatch
     {
         public static void Postfix(PlayerControl __instance)
         {
             // Collect dead player info
-            DeadPlayer deadPlayer = new(__instance, DateTime.UtcNow, DeathReason.Exile, null);
+            DeadPlayer deadPlayer = new(__instance, __instance.PlayerId, DateTime.UtcNow, DeathReason.Exile, null);
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Exiled;
             if (ModeHandler.IsMode(ModeId.Default))

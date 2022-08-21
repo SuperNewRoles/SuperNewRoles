@@ -73,7 +73,9 @@ namespace SuperNewRoles.Buttons
         public static CustomButton HitmanKillButton;
         public static CustomButton MatryoshkaButton;
         public static CustomButton NunButton;
+        public static CustomButton PsychometristButton;
         public static CustomButton PartTimerButton;
+        public static CustomButton PainterButton;
         public static CustomButton PhotographerButton;
         public static CustomButton StefinderKillButton;
         public static CustomButton SluggerButton;
@@ -564,11 +566,30 @@ namespace SuperNewRoles.Buttons
                     RoleClass.Doctor.Vital.transform.SetParent(Camera.main.transform, false);
                     RoleClass.Doctor.Vital.transform.localPosition = new Vector3(0.0f, 0.0f, -50f);
                     RoleClass.Doctor.Vital.Begin(null);
+                    RoleClass.Doctor.MyPanelFlag = true;
                 },
                 (bool isAlive, RoleId role) => { return role == RoleId.Doctor && isAlive; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    if (RoleClass.Doctor.IsChargingNow)
+                    {
+                        DoctorVitalsButton.MaxTimer = 10f;
+                        Logger.Info(RoleClass.Doctor.Battery.ToString());
+                        if (RoleClass.Doctor.Battery <= 0)
+                        {
+                            DoctorVitalsButton.Timer = 10f;
+                        }
+                        else
+                        {
+                            DoctorVitalsButton.Timer =(RoleClass.Doctor.Battery / 10f);
+                        }
+                    }
+                     else if (RoleClass.Doctor.Battery > 0)
+                    {
+                        DoctorVitalsButton.MaxTimer = 0f;
+                        DoctorVitalsButton.Timer = 0f;
+                    }
+                    return (PlayerControl.LocalPlayer.CanMove && RoleClass.Doctor.Battery > 0) || (RoleClass.Doctor.IsChargingNow);
                 },
                 () =>
                 {
@@ -2385,6 +2406,71 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
 
+            PsychometristButton = new(
+                () =>
+                {
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    {
+                        if (collider2D.tag == "DeadBody")
+                        {
+                            DeadBody component = collider2D.GetComponent<DeadBody>();
+                            if (component && !component.Reported)
+                            {
+                                Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                                Vector2 truePosition2 = component.TruePosition;
+                                if (Vector2.Distance(truePosition2 - new Vector2(0.15f, 0.2f), truePosition) <= RoleClass.Psychometrist.Distance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                                {
+                                    RoleClass.Psychometrist.CurrentTarget = component;
+                                }
+                            }
+                        }
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Psychometrist; },
+                () =>
+                {
+                    if (PsychometristButton.isEffectActive)
+                    {
+                        if (RoleClass.Psychometrist.CurrentTarget == null || __instance.ReportButton.graphic.color != Palette.EnabledColor || Vector2.Distance(RoleClass.Psychometrist.CurrentTarget.TruePosition - new Vector2(0.15f, 0.2f), CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition()) > RoleClass.Psychometrist.Distance)
+                        {
+                            RoleClass.Psychometrist.CurrentTarget = null;
+                            PsychometristButton.Timer = 0f;
+                            PsychometristButton.isEffectActive = false;
+                        }
+                    }
+                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    PsychometristButton.MaxTimer = RoleClass.Psychometrist.CoolTime;
+                    PsychometristButton.Timer = PsychometristButton.MaxTimer;
+                    PsychometristButton.effectCancellable = false;
+                    PsychometristButton.EffectDuration = RoleClass.Psychometrist.ReadTime;
+                    PsychometristButton.isEffectActive = false;
+                },
+                RoleClass.Psychometrist.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return false;
+                },
+                true,
+                RoleClass.Psychometrist.ReadTime,
+                () =>
+                {
+                    if (RoleClass.IsMeeting) return;
+                    Roles.CrewMate.Psychometrist.ClickButton();
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("PsychometristButtonName"),
+                showButtonText = true
+            };
+
             PartTimerButton = new(
                 () =>
                 {
@@ -2418,6 +2504,38 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("PartTimerButtonName"),
+                showButtonText = true
+            };
+
+            PainterButton = new(
+                () =>
+                {
+                    Roles.CrewMate.Painter.SetTarget(SetTarget());
+                    PainterButton.Timer = PainterButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Painter && RoleClass.Painter.CurrentTarget == null; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                },
+                () =>
+                {
+                    PainterButton.MaxTimer = RoleClass.Painter.CoolTime;
+                    PainterButton.Timer = PainterButton.MaxTimer;
+                },
+                RoleClass.Painter.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return false;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("PainterButtonName"),
                 showButtonText = true
             };
 

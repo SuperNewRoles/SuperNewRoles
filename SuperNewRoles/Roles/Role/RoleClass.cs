@@ -22,9 +22,11 @@ namespace SuperNewRoles.Roles
         public static Color CrewmateWhite = Color.white;
         public static Color FoxPurple = Palette.Purple;
         public static bool IsStart;
+        public static List<byte> BlockPlayers;
 
         public static void ClearAndReloadRoles()
         {
+            BlockPlayers = new();
             DeadPlayer.deadPlayers = new();
             AllRoleSetClass.Assigned = false;
             LateTask.Tasks = new();
@@ -35,6 +37,7 @@ namespace SuperNewRoles.Roles
             IsStart = false;
             LadderDead.Reset();
             //Map.Data.ClearAndReloads();
+            ElectricPatch.Reset();
             SabotageManager.ClearAndReloads();
             Madmate.CheckedImpostor = new();
             Roles.MadMayor.CheckedImpostor = new();
@@ -165,7 +168,10 @@ namespace SuperNewRoles.Roles
             Hitman.ClearAndReload();
             Matryoshka.ClearAndReload();
             Nun.ClearAndReload();
+            Psychometrist.ClearAndReload();
+            SeeThroughPerson.ClearAndReload();
             PartTimer.ClearAndReload();
+            Painter.ClearAndReload();
             Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
             Slugger.ClearAndReload();
@@ -950,6 +956,14 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> DoctorPlayer;
             public static Color32 color = new(102, 102, 255, byte.MaxValue);
             public static bool MyPanelFlag;
+            //100%から減っていく
+            //0%だと使用できない
+            //100%までチャージされると再度使えるようになる
+            public static int Battery;
+            public static float BatteryZeroTime;
+            public static float ChargeTime;
+            public static float UseTime;
+            public static bool IsChargingNow;
             public static Minigame Vital;
             private static Sprite VitalSprite;
             public static Sprite GetVitalsSprite()
@@ -963,6 +977,12 @@ namespace SuperNewRoles.Roles
                 DoctorPlayer = new();
                 MyPanelFlag = false;
                 Vital = null;
+                Battery = 100;
+                ChargeTime = CustomOptions.DoctorChargeTime.GetFloat();
+                UseTime = CustomOptions.DoctorUseTime.GetFloat();
+                BatteryZeroTime = UseTime;
+                IsChargingNow = false;
+                Roles.Doctor.VitalsPatch.ResetData();
             }
         }
         public static class CountChanger
@@ -2815,6 +2835,108 @@ namespace SuperNewRoles.Roles
                 //2=マッド
             }
         }
+        public static class Painter
+        {
+            public static List<PlayerControl> PainterPlayer;
+            public static Color32 color = new(170, 255, 0, byte.MaxValue);
+            public static Dictionary<CrewMate.Painter.ActionType, List<Vector2>> ActionDatas;
+            public static List<Footprint> Prints;
+            public static Dictionary<CrewMate.Painter.ActionType, bool> IsEnables;
+            public static bool IsLocalActionSend;
+            public static bool IsDeathFootpointBig;
+            public static bool IsFootprintMeetingDestroy;
+            public static float CoolTime;
+            public static PlayerControl CurrentTarget;
+            public static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PainterButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                PainterPlayer = new();
+                CoolTime = CustomOptions.PainterCoolTime.GetFloat();
+                ActionDatas = new();
+                IsEnables = new();
+                foreach (CrewMate.Painter.ActionType type in Enum.GetValues(typeof(CrewMate.Painter.ActionType)))
+                {
+                    ActionDatas[type] = new();
+                }
+                Prints = new();
+                CurrentTarget = null;
+                IsLocalActionSend = false;
+                IsEnables[CrewMate.Painter.ActionType.TaskComplete] = CustomOptions.PainterIsTaskCompleteFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.SabotageRepair] = CustomOptions.PainterIsSabotageRepairFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.InVent] = CustomOptions.PainterIsInVentFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.ExitVent] = CustomOptions.PainterIsExitVentFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.CheckVital] = CustomOptions.PainterIsCheckVitalFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.CheckAdmin] = CustomOptions.PainterIsCheckAdminFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.Death] = CustomOptions.PainterIsDeathFootprint.GetBool();
+                IsDeathFootpointBig = CustomOptions.PainterIsDeathFootprintBig.GetBool();
+                IsFootprintMeetingDestroy = CustomOptions.PainterIsFootprintMeetingDestroy.GetBool();
+            }
+        }
+        public static class Psychometrist
+        {
+            public static List<PlayerControl> PsychometristPlayer;
+            public static Color32 color = new(238, 130, 238, byte.MaxValue);
+            public static float CoolTime;
+            public static float ReadTime;
+            public static bool IsCheckDeathTime;
+            public static int DeathTimeDeviation;
+            public static bool IsCheckDeathReason;
+            public static bool IsCheckFootprints;
+            public static float CanCheckFootprintsTime;
+            public static bool IsReportCheckedReportDeadbody;
+            //(source, target) : Vector2
+            public static Dictionary<(byte, byte), (List<Vector2>, bool)> FootprintsPosition;
+            public static Dictionary<(byte, byte), float> FootprintsDeathTime;
+            public static Dictionary<(byte, byte), List<Footprint>> FootprintObjects;
+            public static float UpdateTime;
+            public static float Distance = 0.5f;
+            //(死体, テキスト, 誤差)
+            public static List<(DeadBody, TextMeshPro, int)> DeathTimeTexts;
+            public static DeadBody CurrentTarget;
+            private static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PsychometristButton.png", 115f);
+                return buttonSprite;
+            }
+
+            public static void ClearAndReload()
+            {
+                PsychometristPlayer = new();
+                UpdateTime = 0.1f;
+                CurrentTarget = null;
+                DeathTimeTexts = new();
+                FootprintsPosition = new();
+                FootprintObjects = new();
+                FootprintsDeathTime = new();
+                CoolTime = CustomOptions.PsychometristCoolTime.GetFloat();
+                ReadTime = CustomOptions.PsychometristReadTime.GetFloat();
+                IsCheckDeathTime = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
+                DeathTimeDeviation = CustomOptions.PsychometristDeathTimeDeviation.GetInt();
+                IsCheckDeathReason = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
+                IsCheckFootprints = CustomOptions.PsychometristIsCheckFootprints.GetBool();
+                CanCheckFootprintsTime = CustomOptions.PsychometristCanCheckFootprintsTime.GetFloat();
+                IsReportCheckedReportDeadbody = CustomOptions.PsychometristIsReportCheckedDeadBody.GetBool();
+            }
+        }
+        public static class SeeThroughPerson
+        {
+            public static List<PlayerControl> SeeThroughPersonPlayer;
+            public static Color32 color = new(157, 204, 224, byte.MaxValue);
+            public static List<EdgeCollider2D> Objects;
+            public static void ClearAndReload()
+            {
+                SeeThroughPersonPlayer = new();
+                Objects = new();
+            }
+        }
         public static class Photographer
         {
             public static List<PlayerControl> PhotographerPlayer;
@@ -2826,7 +2948,8 @@ namespace SuperNewRoles.Roles
             public static bool IsPhotographerShared;
             public static bool IsImpostorVision;
             public static bool IsNotification;
-            public static List<PlayerControl> PhotedPlayer {
+            public static List<PlayerControl> PhotedPlayer
+            {
                 get
                 {
                     if (PhotedPlayerIds.Count != _photedPlayer.Count)
@@ -2852,6 +2975,7 @@ namespace SuperNewRoles.Roles
             }
             public static void ClearAndReload()
             {
+
                 PhotographerPlayer = new();
                 PhotedPlayerIds = new();
                 _photedPlayer = new();

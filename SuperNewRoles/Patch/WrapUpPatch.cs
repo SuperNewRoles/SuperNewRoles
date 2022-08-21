@@ -94,6 +94,7 @@ namespace SuperNewRoles.Patch
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
             SecretRoom.Reset();
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Roles.CrewMate.Painter.WrapUp();
             Roles.Neutral.Photographer.WrapUp();
             if (exiled == null) return;
 
