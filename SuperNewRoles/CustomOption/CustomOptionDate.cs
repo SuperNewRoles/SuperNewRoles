@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -797,6 +797,19 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption PartTimerDeathTurn;
         public static CustomOption PartTimerCoolTime;
         public static CustomOption PartTimerIsCheckTargetRole;
+
+        public static CustomRoleOption PainterOption;
+        public static CustomOption PainterPlayerCount;
+        public static CustomOption PainterCoolTime;
+        public static CustomOption PainterIsTaskCompleteFootprint;
+        public static CustomOption PainterIsSabotageRepairFootprint;
+        public static CustomOption PainterIsInVentFootprint;
+        public static CustomOption PainterIsExitVentFootprint;
+        public static CustomOption PainterIsCheckVitalFootprint;
+        public static CustomOption PainterIsCheckAdminFootprint;
+        public static CustomOption PainterIsDeathFootprint;
+        public static CustomOption PainterIsDeathFootprintBig;
+        public static CustomOption PainterIsFootprintMeetingDestroy;
 
         public static CustomRoleOption PhotographerOption;
         public static CustomOption PhotographerPlayerCount;
@@ -1610,6 +1623,29 @@ namespace SuperNewRoles.CustomOption
             SuicidalIdeationCommonTask = SuicidalIdeationoption.Item1;
             SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
             SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
+            
+            NunOption = new CustomRoleOption(847, false, CustomOptionType.Impostor, "NunName",RoleClass.Nun.color, 1);
+            NunPlayerCount = CustomOption.Create(848, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NunOption);
+            NunCoolTime = CustomOption.Create(849, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NunOption);
+
+            PartTimerOption = new CustomRoleOption(850, false, CustomOptionType.Neutral, "PartTimerName",RoleClass.PartTimer.color, 1);
+            PartTimerPlayerCount = CustomOption.Create(851, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PartTimerOption);
+            PartTimerDeathTurn = CustomOption.Create(852, false, CustomOptionType.Neutral, "PartTimerDeathTurn", 3f, 0f, 15f, 1f, PartTimerOption);
+            PartTimerCoolTime = CustomOption.Create(853, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PartTimerOption);
+            PartTimerIsCheckTargetRole = CustomOption.Create(854, false, CustomOptionType.Neutral, "PartTimerIsCheckTargetRole", true, PartTimerOption);
+
+            PainterOption = new CustomRoleOption(941, false, CustomOptionType.Crewmate, "PainterName", RoleClass.Painter.color, 1);
+            PainterPlayerCount = CustomOption.Create(942, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PainterOption);
+            PainterCoolTime = CustomOption.Create(952, false, CustomOptionType.Crewmate, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PainterOption);
+            PainterIsTaskCompleteFootprint = CustomOption.Create(943, false, CustomOptionType.Crewmate, "PainterIsTaskCompleteFootprint", true, PainterOption);
+            PainterIsSabotageRepairFootprint = CustomOption.Create(944, false, CustomOptionType.Crewmate, "PainterIsSabotageRepairFootprint", true, PainterOption);
+            PainterIsInVentFootprint = CustomOption.Create(945, false, CustomOptionType.Crewmate, "PainterIsInVentFootprint", true, PainterOption);
+            PainterIsExitVentFootprint = CustomOption.Create(946, false, CustomOptionType.Crewmate, "PainterIsExitVentFootprint", true, PainterOption);
+            PainterIsCheckVitalFootprint = CustomOption.Create(947, false, CustomOptionType.Crewmate, "PainterIsCheckVitalFootprint", false, PainterOption);
+            PainterIsCheckAdminFootprint = CustomOption.Create(948, false, CustomOptionType.Crewmate, "PainterIsCheckAdminFootprint", false, PainterOption);
+            PainterIsDeathFootprint = CustomOption.Create(949, false, CustomOptionType.Crewmate, "PainterIsDeathFootprint", true, PainterOption);
+            PainterIsDeathFootprintBig = CustomOption.Create(950, false, CustomOptionType.Crewmate, "PainterIsDeathFootprintBig", true, PainterIsDeathFootprint);
+            PainterIsFootprintMeetingDestroy = CustomOption.Create(951, false, CustomOptionType.Crewmate, "PainterIsFootprintMeetingDestroy", true, PainterOption);
 
             HitmanOption = new CustomRoleOption(839, false, CustomOptionType.Neutral, "HitmanName",RoleClass.Hitman.color, 1);
             HitmanPlayerCount = CustomOption.Create(840, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HitmanOption);
@@ -1632,12 +1668,6 @@ namespace SuperNewRoles.CustomOption
             NunOption = new CustomRoleOption(856, false, CustomOptionType.Impostor, "NunName",RoleClass.Nun.color, 1);
             NunPlayerCount = CustomOption.Create(857, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NunOption);
             NunCoolTime = CustomOption.Create(858, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NunOption);
-
-            PartTimerOption = new CustomRoleOption(859, false, CustomOptionType.Neutral, "PartTimerName",RoleClass.PartTimer.color, 1);
-            PartTimerPlayerCount = CustomOption.Create(860, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PartTimerOption);
-            PartTimerDeathTurn = CustomOption.Create(861, false, CustomOptionType.Neutral, "PartTimerDeathTurn", 3f, 0f, 15f, 1f, PartTimerOption);
-            PartTimerCoolTime = CustomOption.Create(862, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PartTimerOption);
-            PartTimerIsCheckTargetRole = CustomOption.Create(863, false, CustomOptionType.Neutral, "PartTimerIsCheckTargetRole", true, PartTimerOption);
 
             SeeThroughPersonOption = new CustomRoleOption(864, false, CustomOptionType.Crewmate, "SeeThroughPersonName",RoleClass.SeeThroughPerson.color, 1);
             SeeThroughPersonPlayerCount = CustomOption.Create(865, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeeThroughPersonOption);

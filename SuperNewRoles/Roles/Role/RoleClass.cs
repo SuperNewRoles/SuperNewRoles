@@ -170,6 +170,7 @@ namespace SuperNewRoles.Roles
             Psychometrist.ClearAndReload();
             SeeThroughPerson.ClearAndReload();
             PartTimer.ClearAndReload();
+            Painter.ClearAndReload();
             Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
             //ロールクリア
@@ -2818,6 +2819,49 @@ namespace SuperNewRoles.Roles
                 //2=マッド
             }
         }
+        public static class Painter
+        {
+            public static List<PlayerControl> PainterPlayer;
+            public static Color32 color = new(170, 255, 0, byte.MaxValue);
+            public static Dictionary<CrewMate.Painter.ActionType, List<Vector2>> ActionDatas;
+            public static List<Footprint> Prints;
+            public static Dictionary<CrewMate.Painter.ActionType, bool> IsEnables;
+            public static bool IsLocalActionSend;
+            public static bool IsDeathFootpointBig;
+            public static bool IsFootprintMeetingDestroy;
+            public static float CoolTime;
+            public static PlayerControl CurrentTarget;
+            public static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PainterButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                PainterPlayer = new();
+                CoolTime = CustomOptions.PainterCoolTime.GetFloat();
+                ActionDatas = new();
+                IsEnables = new();
+                foreach (CrewMate.Painter.ActionType type in Enum.GetValues(typeof(CrewMate.Painter.ActionType)))
+                {
+                    ActionDatas[type] = new();
+                }
+                Prints = new();
+                CurrentTarget = null;
+                IsLocalActionSend = false;
+                IsEnables[CrewMate.Painter.ActionType.TaskComplete] = CustomOptions.PainterIsTaskCompleteFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.SabotageRepair] = CustomOptions.PainterIsSabotageRepairFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.InVent] = CustomOptions.PainterIsInVentFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.ExitVent] = CustomOptions.PainterIsExitVentFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.CheckVital] = CustomOptions.PainterIsCheckVitalFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.CheckAdmin] = CustomOptions.PainterIsCheckAdminFootprint.GetBool();
+                IsEnables[CrewMate.Painter.ActionType.Death] = CustomOptions.PainterIsDeathFootprint.GetBool();
+                IsDeathFootpointBig = CustomOptions.PainterIsDeathFootprintBig.GetBool();
+                IsFootprintMeetingDestroy = CustomOptions.PainterIsFootprintMeetingDestroy.GetBool();
+            }
+        }
         public static class Psychometrist
         {
             public static List<PlayerControl> PsychometristPlayer;
@@ -2846,6 +2890,7 @@ namespace SuperNewRoles.Roles
                 buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PsychometristButton.png", 115f);
                 return buttonSprite;
             }
+
             public static void ClearAndReload()
             {
                 PsychometristPlayer = new();

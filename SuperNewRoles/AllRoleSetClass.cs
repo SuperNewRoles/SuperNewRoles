@@ -936,6 +936,7 @@ namespace SuperNewRoles
                 RoleId.Nun => CustomOptions.NunPlayerCount.GetFloat(),
                 RoleId.PartTimer => CustomOptions.PartTimerPlayerCount.GetFloat(),
                 RoleId.SatsumaAndImo => CustomOptions.SatsumaAndImoPlayerCount.GetFloat(),
+                RoleId.Painter => CustomOptions.PainterPlayerCount.GetFloat(),
                 RoleId.Psychometrist => CustomOptions.PsychometristPlayerCount.GetFloat(),
                 RoleId.SeeThroughPerson => CustomOptions.SeeThroughPersonPlayerCount.GetFloat(),
                 RoleId.Photographer => CustomOptions.PhotographerPlayerCount.GetFloat(),

@@ -12,6 +12,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 using static SuperNewRoles.EndGame.FinalStatusPatch;
@@ -148,6 +149,7 @@ namespace SuperNewRoles.CustomRPC
         Psychometrist,
         SeeThroughPerson,
         PartTimer,
+        Painter,
         Photographer,
         Stefinder,
         Stefinder1,
@@ -227,11 +229,29 @@ namespace SuperNewRoles.CustomRPC
         BlockReportDeadBody,
         PartTimerSet,
         SetMatryoshkaDeadbody,
+        PainterPaintSet,
+        PainterSetTarget,
         SharePhotograph,
         StefinderIsKilled
     }
     public static class RPCProcedure
     {
+        public static void PainterSetTarget(byte target, bool Is)
+        {
+            if (target == CachedPlayer.LocalPlayer.PlayerId) RoleClass.Painter.IsLocalActionSend = Is;
+        }
+        public static void PainterPaintSet(byte target, byte ActionTypeId, byte[] buff)
+        {
+            Painter.ActionType type = (Painter.ActionType)ActionTypeId;
+            if (!RoleClass.Painter.ActionDatas.ContainsKey(type)) return;
+            if (!PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) return;
+            if (RoleClass.Painter.CurrentTarget == null || RoleClass.Painter.CurrentTarget.PlayerId != target) return;
+            Vector2 position = Vector2.zero;
+            position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
+            position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
+            RoleClass.Painter.ActionDatas[type].Add(position);
+        }
+
         public static void BlockReportDeadBody(byte TargetId, bool IsChangeReported)
         {
             if (IsChangeReported)
@@ -1372,6 +1392,12 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.PartTimerSet:
                             PartTimerSet(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.PainterPaintSet:
+                            PainterPaintSet(reader.ReadByte(), reader.ReadByte(), reader.ReadBytesAndSize());
+                            break;
+                        case CustomRPC.PainterSetTarget:
+                            PainterSetTarget(reader.ReadByte(), reader.ReadBoolean());
                             break;
                         case CustomRPC.SharePhotograph:
                             SharePhotograph();

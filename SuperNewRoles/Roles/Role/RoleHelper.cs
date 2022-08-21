@@ -601,6 +601,9 @@ namespace SuperNewRoles
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.Add(player);
                     break;
+                case RoleId.Painter:
+                    RoleClass.Painter.PainterPlayer.Add(player);
+                    break;
                 case RoleId.Photographer:
                     RoleClass.Photographer.PhotographerPlayer.Add(player);
                     break;
@@ -1005,6 +1008,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Painter:
+                    RoleClass.Painter.PainterPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.Photographer:
                     RoleClass.Photographer.PhotographerPlayer.RemoveAll(ClearRemove);
@@ -1518,6 +1524,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Psychometrist.PsychometristPlayer.IsCheckListPlayerControl(player)) return RoleId.Psychometrist;
                 else if (RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.IsCheckListPlayerControl(player)) return RoleId.SeeThroughPerson;
                 else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
+                else if (RoleClass.Painter.PainterPlayer.IsCheckListPlayerControl(player)) return RoleId.Painter;
                 else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
                 else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
                 //ロールチェック
