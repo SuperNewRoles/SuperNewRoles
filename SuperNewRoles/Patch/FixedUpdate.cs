@@ -88,6 +88,7 @@ namespace SuperNewRoles.Patch
         public static void Postfix(PlayerControl __instance)
         {
             if (__instance != PlayerControl.LocalPlayer) return;
+            PVCreator.FixedUpdate();
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
                 var MyRole = PlayerControl.LocalPlayer.GetRole();

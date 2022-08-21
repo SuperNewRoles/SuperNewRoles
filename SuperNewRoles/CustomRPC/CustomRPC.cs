@@ -9,6 +9,7 @@ using InnerNet;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.EndGame;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
@@ -227,6 +228,7 @@ namespace SuperNewRoles.CustomRPC
         KunaiKill,
         SetSecretRoomTeleportStatus,
         ChiefSidekick,
+        RpcSetDoorway,
         StartRevolutionMeeting,
         UncheckedUsePlatform,
         BlockReportDeadBody,
@@ -1404,6 +1406,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.ChiefSidekick:
                             ChiefSidekick(reader.ReadByte());
+                            break;
+                        case CustomRPC.RpcSetDoorway:
+                            RPCHelper.RpcSetDoorway(reader.ReadByte(), reader.ReadBoolean());
                             break;
                         case CustomRPC.StartRevolutionMeeting:
                             StartRevolutionMeeting(reader.ReadByte());

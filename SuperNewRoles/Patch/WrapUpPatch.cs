@@ -93,6 +93,13 @@ namespace SuperNewRoles.Patch
             Roles.Neutral.Hitman.WrapUp();
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
+            if (AmongUsClient.Instance.AmHost) {
+                PlayerAnimation.PlayerAnimations.All(x =>
+                {
+                    x.RpcAnimation(RpcAnimationType.Stop);    
+                    return false;
+                });
+            }
             SecretRoom.Reset();
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Roles.CrewMate.Painter.WrapUp();
             Roles.Neutral.Photographer.WrapUp();

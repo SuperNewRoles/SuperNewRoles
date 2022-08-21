@@ -10,9 +10,18 @@ namespace SuperNewRoles.Roles
         private static TMPro.TextMeshPro breadText;
         public static bool Prefix(
             ExileController __instance,
-            [HarmonyArgument(0)] GameData.PlayerInfo exiled)
+            [HarmonyArgument(0)] GameData.PlayerInfo exiled,
+            bool tie)
         {
-            if (RoleClass.Assassin.TriggerPlayer == null && RoleClass.Revolutionist.MeetingTrigger == null) { return true; }
+            if (RoleClass.Assassin.TriggerPlayer == null) { if (!Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha)) return true; }
+            if (Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha)) {
+                Agartha.ExileCutscenePatch.ExileControllerBeginePatch.Prefix(__instance, exiled, tie);
+                if (RoleClass.Assassin.TriggerPlayer == null)
+                {
+                    return false;
+                }
+            };
+            string printStr = "";
 
             if (RoleClass.Assassin.TriggerPlayer != null)
             {
@@ -24,8 +33,6 @@ namespace SuperNewRoles.Roles
                 __instance.Text.text = string.Empty;
 
                 PlayerControl player = RoleClass.Assassin.TriggerPlayer;
-
-                string printStr;
 
                 var exile = ModeHandler.IsMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.Main.RealExiled : exiled.Object;
                 if (exile != null && exile.IsRole(RoleId.Marine))
@@ -54,7 +61,6 @@ namespace SuperNewRoles.Roles
                 __instance.Text.gameObject.SetActive(false);
                 __instance.Text.text = string.Empty;
 
-                string printStr;
 
                 var exile = exiled.Object;
                 if (exile != null && exile.IsRole(RoleId.Dictator))
@@ -72,6 +78,16 @@ namespace SuperNewRoles.Roles
                 __instance.ImpostorText.text = string.Empty;
                 __instance.StartCoroutine(__instance.Animate());
             }
+            RoleClass.Assassin.TriggerPlayer = null;
+            __instance.exiled = null;
+            __instance.Player.gameObject.SetActive(false);
+            __instance.completeString = printStr;
+            __instance.ImpostorText.text = string.Empty;
+            if (Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
+            {
+                return false;
+            }
+            __instance.StartCoroutine(__instance.Animate());
             return false;
         }
         //生存判定

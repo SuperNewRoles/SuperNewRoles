@@ -28,7 +28,7 @@ namespace SuperNewRoles
         }
 
         public static Version Version = Version.Parse(VersionString);
-        internal static BepInEx.Logging.ManualLogSource Logger;
+        public static BepInEx.Logging.ManualLogSource Logger;
         public static Sprite ModStamp;
         public static int optionsPage = 1;
         public Harmony Harmony { get; } = new Harmony(Id);

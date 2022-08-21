@@ -9,18 +9,6 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
-    [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Update))]
-    class SplashLogoAnimatorPatch
-    {
-        public static void Prefix(SplashManager __instance)
-        {
-            if (ConfigRoles.DebugMode.Value)
-            {
-                __instance.sceneChanger.AllowFinishLoadingScene();
-                __instance.startedSceneLoad = true;
-            }
-        }
-    }
     class DebugMode
     {
         [HarmonyPatch(typeof(MapConsole), nameof(MapConsole.Use))]
@@ -97,6 +85,22 @@ namespace SuperNewRoles.Patch
                 {
                     SuperNewRoles.CustomRPC.RPCProcedure.UncheckedUsePlatform(0, false);
                 }
+                if (Input.GetKeyDown(KeyCode.K))
+                {
+                    PVCreator.Start();
+                }
+                if (Input.GetKeyDown(KeyCode.L))
+                {
+                    PVCreator.End();
+                }
+                if (Input.GetKeyDown(KeyCode.M))
+                {
+                    PVCreator.Start2();
+                }
+                if (Input.GetKeyDown(KeyCode.N))
+                {
+                    ModHelpers.PlayerById(1).RpcMurderPlayer(ModHelpers.PlayerById(2));
+                }
                 /*
                     if (Input.GetKeyDown(KeyCode.C))
                     {
@@ -117,6 +121,10 @@ namespace SuperNewRoles.Patch
                 if (Input.GetKeyDown(KeyCode.F11))
                 {
                     BotManager.AllBotDespawn();
+                }
+                if (Input.GetKeyDown(KeyCode.F1))
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("new Vector2("+(PlayerControl.LocalPlayer.transform.position.x - 12.63f) +"f, "+ (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
                 }
             }
 

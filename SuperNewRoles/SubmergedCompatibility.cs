@@ -53,6 +53,10 @@ namespace SuperNewRoles
             }
         }
 
+        private static Type MapLoaderType;
+        private static FieldInfo SkeldField;
+        private static FieldInfo AirshipField;
+
         private static Type SubmarineStatusType;
         private static MethodInfo CalculateLightRadiusMethod;
 
@@ -89,6 +93,8 @@ namespace SuperNewRoles
             InjectedTypes = (Dictionary<string, Type>)AccessTools.PropertyGetter(Types.FirstOrDefault(t => t.Name == "RegisterInIl2CppAttribute"), "RegisteredTypes")
                 .Invoke(null, Array.Empty<object>());
 
+            MapLoaderType = Types.First(t => t.Name == "MapLoader");
+
             SubmarineStatusType = Types.First(t => t.Name == "SubmarineStatus");
             CalculateLightRadiusMethod = AccessTools.Method(SubmarineStatusType, "CalculateLightRadius");
 
@@ -110,6 +116,20 @@ namespace SuperNewRoles
             SubmarineOxygenSystemType = Types.First(t => t.Name == "SubmarineOxygenSystem");
             SubmarineOxygenSystemInstanceField = AccessTools.Field(SubmarineOxygenSystemType, "Instance");
             RepairDamageMethod = AccessTools.Method(SubmarineOxygenSystemType, "RepairDamage");
+        }
+
+        public static ShipStatus GetSkeld()
+        {
+            if (!Loaded) return null;
+            if (SkeldField == null) SkeldField = AccessTools.Field(MapLoaderType, "Skeld");
+            return (ShipStatus)SkeldField.GetValue(null);
+        }
+
+        public static ShipStatus GetAirship()
+        {
+            if (!Loaded) return null;
+            if (AirshipField == null) AirshipField = AccessTools.Field(MapLoaderType, "Airship");
+            return (ShipStatus)AirshipField.GetValue(null);
         }
 
         public static MonoBehaviour AddSubmergedComponent(this GameObject obj, string typeName)

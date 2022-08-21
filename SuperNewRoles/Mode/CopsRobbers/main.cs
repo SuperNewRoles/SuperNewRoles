@@ -243,7 +243,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 if (LastCount != players.Count)
                 {
                     LastCount = players.Count;
-                    string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>全プレイヤーのスポーンを待っています...\nロドー中:残り" + NotLoadedCount + "人</color></size>";
+                    string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>"+string.Format(ModTranslation.GetString("CopsSpawnLoading"), NotLoadedCount);
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.RpcSetNamePrivate(name);

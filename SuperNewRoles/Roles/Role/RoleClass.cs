@@ -35,6 +35,7 @@ namespace SuperNewRoles.Roles
             IsMeeting = false;
             IsCoolTimeSetted = false;
             IsStart = false;
+            Agartha.MapData.ClearAndReloads();
             LadderDead.Reset();
             //Map.Data.ClearAndReloads();
             ElectricPatch.Reset();

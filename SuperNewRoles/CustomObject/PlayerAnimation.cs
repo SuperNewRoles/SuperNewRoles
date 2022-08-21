@@ -16,20 +16,12 @@ namespace SuperNewRoles.CustomObject
     }
     public class PlayerAnimation
     {
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnDestroy))]
-        public static class PlayerControlOnDestroyPatch
-        {
-            public static void Postfix(PlayerControl __instance)
-            {
-                PlayerAnimation.GetPlayerAnimation(__instance.PlayerId)?.OnDestroy();
-            }
-        }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
         public static class PlayerControlFixedUpdatePatch
         {
             public static void Postfix(PlayerControl __instance)
             {
-                if (PlayerAnimation.GetPlayerAnimation(__instance.PlayerId) == null) new PlayerAnimation(__instance);
+                if (GetPlayerAnimation(__instance.PlayerId) == null) new PlayerAnimation(__instance);
                 if (__instance == PlayerControl.LocalPlayer)
                 {
                     PlayerAnimation.FixedAllUpdate();
@@ -71,7 +63,7 @@ namespace SuperNewRoles.CustomObject
                 PlayerAnimations = new();
                 return;
             }
-            PlayerAnimations.RemoveAll(x => x.PlayerId == CachedPlayer.LocalPlayer.PlayerId);
+            PlayerAnimations.Remove(this);
         }
         public bool Playing = false;
         public bool IsLoop;
@@ -136,7 +128,7 @@ namespace SuperNewRoles.CustomObject
         {
             if (SpriteRender == null)
             {
-                PlayerAnimations.Remove(this);
+                OnDestroy();
                 return;
             }
             if (!Playing) {
