@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -23,6 +24,7 @@ namespace SuperNewRoles.MapOptions
         public static bool ValidationSubmerged;
         public static bool IsRestrict;
 
+        public static bool RandomSpawn;
         //タスク関連
         public static bool WireTaskIsRandom;
         public static int WireTaskNum;
@@ -72,6 +74,7 @@ namespace SuperNewRoles.MapOptions
                     ValidationAirship = false;
                     ValidationSubmerged = false;
                 }
+                RandomSpawn = (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship && RandomSpawnOption.GetBool();
                 WireTaskIsRandom = WireTaskIsRandomOption.GetBool();
                 WireTaskNum = WireTaskNumOption.GetInt();
                 UseDeadBodyReport = !NotUseReportDeadBody.GetBool();
@@ -82,6 +85,7 @@ namespace SuperNewRoles.MapOptions
             }
             else
             {
+                RandomSpawn = false;
                 UseAdmin = true;
                 UseVitalOrDoorLog = true;
                 UseCamera = true;
@@ -137,6 +141,7 @@ namespace SuperNewRoles.MapOptions
             ButtonTimer = DateTime.Now;
             CameraDefault = Camera.main.orthographicSize;
             Default = FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize;
+            playerIcons = new();
         }
         public static CustomOption.CustomOption MapOptionSetting;
         public static CustomOption.CustomOption DeviceOptions;
@@ -165,11 +170,13 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption RestrictVital;
         public static CustomOption.CustomOption CanUseVitalTime;
 
+        public static CustomOption.CustomOption RandomSpawnOption;
+
         public static CustomOption.CustomOption ReactorDurationOption;
         public static CustomOption.CustomOption PolusReactorTimeLimit;
         public static CustomOption.CustomOption MiraReactorTimeLimit;
         public static CustomOption.CustomOption AirshipReactorTimeLimit;
-
+        public static Dictionary<byte, PoolablePlayer> playerIcons = new();
         public static CustomOption.CustomOption WireTaskIsRandomOption;
         public static CustomOption.CustomOption WireTaskNumOption;
 
@@ -205,6 +212,9 @@ namespace SuperNewRoles.MapOptions
                         RestrictVital = CustomOption.CustomOption.Create(466, false, CustomOptionType.Generic, "RestrictVitalSetting", false, RestrictDevicesOption);
                         CanUseVitalTime = CustomOption.CustomOption.Create(467, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 300f, 2.5f, RestrictVital);
             */
+
+            RandomSpawnOption = CustomOption.CustomOption.Create(682, false, CustomOptionType.Generic, "RandomSpawnOption", false, null);
+
             ReactorDurationOption = CustomOption.CustomOption.Create(468, true, CustomOptionType.Generic, "ReactorDurationSetting", false, MapOptionSetting);
             PolusReactorTimeLimit = CustomOption.CustomOption.Create(469, true, CustomOptionType.Generic, "PolusReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
             MiraReactorTimeLimit = CustomOption.CustomOption.Create(470, true, CustomOptionType.Generic, "MiraReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
@@ -212,8 +222,8 @@ namespace SuperNewRoles.MapOptions
 
             VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
 
-            WireTaskIsRandomOption = CustomOption.CustomOption.Create(682, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
-            WireTaskNumOption = CustomOption.CustomOption.Create(683, false, CustomOptionType.Generic, "WireTaskNum", 5f,1f,8f,1f, WireTaskIsRandomOption);
+            WireTaskIsRandomOption = CustomOption.CustomOption.Create(945, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
+            WireTaskNumOption = CustomOption.CustomOption.Create(946, false, CustomOptionType.Generic, "WireTaskNum", 5f,1f,8f,1f, WireTaskIsRandomOption);
 
             LadderDead = CustomOption.CustomOption.Create(637, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
             LadderDeadChance = CustomOption.CustomOption.Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], LadderDead);

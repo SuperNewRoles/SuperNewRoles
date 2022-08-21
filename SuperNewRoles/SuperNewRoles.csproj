@@ -20,10 +20,10 @@
         <EmbeddedResource Include="Resources\**" />
     </ItemGroup>
 
-    <ItemGroup>
+  <ItemGroup>
 		<Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
 		<Reference Include="$(AmongUs)/BepInEx/unhollowed/*.dll" />
-		<Reference Include="$(AmongUs)/BepInEx/plugins/agartha.dll" />
+		<Reference Include="$(AmongUs)/BepInEx/plugins/Agartha.dll" />
 	</ItemGroup>
 
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild">

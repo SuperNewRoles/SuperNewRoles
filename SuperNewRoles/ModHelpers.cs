@@ -53,6 +53,28 @@ namespace SuperNewRoles
             sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
             return sprite;
         }
+        public static void Shuffle<T>(this IList<T> self, int startAt = 0)
+        {
+            for (int i = startAt; i < self.Count - 1; i++)
+            {
+                T value = self[i];
+                int index = UnityEngine.Random.Range(i, self.Count);
+                self[i] = self[index];
+                self[index] = value;
+            }
+        }
+
+        // Token: 0x060002F4 RID: 756 RVA: 0x00013308 File Offset: 0x00011508
+        public static void Shuffle<T>(this System.Random r, IList<T> self)
+        {
+            for (int i = 0; i < self.Count; i++)
+            {
+                T value = self[i];
+                int index = r.Next(self.Count);
+                self[i] = self[index];
+                self[index] = value;
+            }
+        }
         public static byte? GetKey(this Dictionary<byte, byte> dec, byte Value)
         {
             foreach (var data in dec)
@@ -339,6 +361,15 @@ namespace SuperNewRoles
             return tasks.ToArray().ToList();
         }
         static float tien;
+
+        public static void SetSemiTransparent(this PoolablePlayer player, bool value)
+        {
+            float alpha = value ? 0.25f : 1f;
+            foreach (SpriteRenderer r in player.gameObject.GetComponentsInChildren<SpriteRenderer>())
+                r.color = new Color(r.color.r, r.color.g, r.color.b, alpha);
+            player.cosmetics.nameText.color = new Color(player.cosmetics.nameText.color.r, player.cosmetics.nameText.color.g, player.cosmetics.nameText.color.b, alpha);
+        }
+
         public static MurderAttemptResult CheckMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
             // The local player checks for the validity of the kill and performs it afterwards (different to vanilla, where the host performs all the checks)
@@ -395,6 +426,42 @@ namespace SuperNewRoles
         {
             var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
             return client;
+        }
+        public static Dictionary<string, AudioClip> CachedAudioClips = new();
+        public static AudioClip loadAudioClipFromResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")
+        {
+            // must be "raw (headerless) 2-channel signed 32 bit pcm (le)" (can e.g. use Audacity® to export)
+            try
+            {
+                if (CachedAudioClips.TryGetValue(path, out var audio)) return audio;
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                Stream stream = assembly.GetManifestResourceStream(path);
+                var byteAudio = new byte[stream.Length];
+                _ = stream.Read(byteAudio, 0, (int)stream.Length);
+                float[] samples = new float[byteAudio.Length / 4]; // 4 bytes per sample
+                int offset;
+                for (int i = 0; i < samples.Length; i++)
+                {
+                    offset = i * 4;
+                    samples[i] = (float)BitConverter.ToInt32(byteAudio, offset) / int.MaxValue;
+                }
+                int channels = 2;
+                int sampleRate = 48000;
+                AudioClip audioClip = AudioClip.Create(clipName, samples.Length, channels, sampleRate, false);
+                audioClip.SetData(samples, 0);
+                audioClip.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
+                return CachedAudioClips[path] = audioClip;
+            }
+            catch
+            {
+                System.Console.WriteLine("Error loading AudioClip from resources: " + path);
+            }
+            return null;
+
+            /* Usage example:
+            AudioClip exampleClip = Helpers.loadAudioClipFromResources("TheOtherRoles.Resources.exampleClip.raw");
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(exampleClip, false, 0.8f);
+            */
         }
         public static int GetClientId(this PlayerControl player)
         {
@@ -463,17 +530,21 @@ namespace SuperNewRoles
             throw new NotImplementedException();
         }
 
+        public static Dictionary<string, Texture2D> CachedTexture = new();
+
         public static Texture2D LoadTextureFromResources(string path)
         {
             try
             {
-                Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
+                if (CachedTexture.TryGetValue(path, out Texture2D texture)) return texture;
+                texture = new(2, 2, TextureFormat.ARGB32, true);
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 Stream stream = assembly.GetManifestResourceStream(path);
                 var byteTexture = new byte[stream.Length];
                 var read = stream.Read(byteTexture, 0, (int)stream.Length);
                 LoadImage(texture, byteTexture, false);
-                return texture;
+                texture.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
+                return CachedTexture[path] = texture;
             }
             catch
             {

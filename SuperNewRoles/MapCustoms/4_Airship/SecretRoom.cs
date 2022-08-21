@@ -121,6 +121,7 @@ namespace SuperNewRoles.MapCustoms.Airship
             leftplayer = null;
             rightplayer = null;
             UsePlayer = null;
+            if (LowerInfoText != null) LowerInfoText.text = "";
         }
         public static void ShipStatusAwake(ShipStatus __instance)
         {
@@ -333,6 +334,7 @@ namespace SuperNewRoles.MapCustoms.Airship
         {
             public static bool Prefix(Console __instance)
             {
+                if (CachedPlayer.LocalPlayer.IsDead()) return true;
                 if (__instance.name is "secretroom_teleport-on" or "secretroom_teleport-on2")
                 {
                     if (LowerInfoText == null)

@@ -15,8 +15,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             if (!AmongUsClient.Instance.AmHost) return;
             if (exiled.Object.IsRole(RoleId.Jester))
             {
-                var (complate, all) = TaskCount.TaskDateNoClearCheck(exiled);
-                if (!RoleClass.Jester.IsJesterTaskClearWin || complate >= all)
+                var (Complete, all) = TaskCount.TaskDateNoClearCheck(exiled);
+                if (!RoleClass.Jester.IsJesterTaskClearWin || Complete >= all)
                 {
                     try
                     {
@@ -48,8 +48,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             }
             else if (exiled.Object.IsRole(RoleId.MadJester))
             {
-                var (complate, all) = TaskCount.TaskDateNoClearCheck(exiled);
-                if (!RoleClass.MadJester.IsMadJesterTaskClearWin || complate >= all)
+                var (Complete, all) = TaskCount.TaskDateNoClearCheck(exiled);
+                if (!RoleClass.MadJester.IsMadJesterTaskClearWin || Complete >= all)
                 {
                     try
                     {

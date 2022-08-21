@@ -45,7 +45,7 @@ namespace SuperNewRoles.CustomObject
             this.Player = Player;
             if (Player == null)
             {
-                Logger.Error($"Playerがnullでした","PlayerAnimation");
+                Logger.Error($"Playerがnullでした", "PlayerAnimation");
                 return;
             }
             Physics = Player.MyPhysics;
@@ -63,7 +63,7 @@ namespace SuperNewRoles.CustomObject
                 PlayerAnimations = new();
                 return;
             }
-            PlayerAnimations.RemoveAll(x => x.PlayerId == PlayerId);
+            PlayerAnimations.Remove(this);
         }
         public bool Playing = false;
         public bool IsLoop;
@@ -74,6 +74,7 @@ namespace SuperNewRoles.CustomObject
         public Sprite[] Sprites;
         public Action OnAnimationEnd;
         public Action OnFixedUpdate;
+        public AudioSource SoundManagerSource;
         /// <summary>
         /// 指定したパスの連番のファイルを取得できます。
         /// </summary>
@@ -118,7 +119,7 @@ namespace SuperNewRoles.CustomObject
         }
         public static void FixedAllUpdate()
         {
-            foreach (PlayerAnimation Anim in PlayerAnimations)
+            foreach (PlayerAnimation Anim in PlayerAnimations.ToArray())
             {
                 Anim.FixedUpdate();
             }
@@ -175,11 +176,13 @@ namespace SuperNewRoles.CustomObject
                 case RpcAnimationType.Stop:
                     Playing = false;
                     SpriteRender.sprite = null;
+                    if (SoundManagerSource != null) SoundManagerSource.Stop();
                     break;
                 case RpcAnimationType.SluggerCharge:
                     SluggerChargeCreateAnimation();
                     void SluggerChargeCreateAnimation()
                     {
+                        if (Player.IsDead()) return;
                         Init(GetSprites("SuperNewRoles.Resources.harisen.tame_", 4), false, 12, new(() =>
                         {
                             SluggerChargeCreateAnimation();
@@ -187,6 +190,24 @@ namespace SuperNewRoles.CustomObject
                         {
                             transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
                             transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
+                            if (SoundManagerSource == null)
+                            {
+                                if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) <= 5f)
+                                {
+                                    SoundManagerSource = SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Charge.raw"), false);
+                                }
+                            }
+                            else
+                            {
+                                if (!SoundManagerSource.isPlaying)
+                                {
+                                    if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) <= 5f)
+                                    {
+                                        SoundManagerSource = SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Charge.raw"), false);
+                                    }
+                                }
+                            }
+
                         }));
                     }
                     break;
@@ -215,6 +236,10 @@ namespace SuperNewRoles.CustomObject
                         transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
                         transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
                     });
+                    if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) <= 5f)
+                    {
+                        SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Hit.raw"), false, 1.5f);
+                    }
                     break;
             }
         }

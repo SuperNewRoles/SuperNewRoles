@@ -9,6 +9,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static bool Prefix(MapConsole __instance)
             {
+                Roles.CrewMate.Painter.HandleRpc(Roles.CrewMate.Painter.ActionType.CheckAdmin);
                 bool IsUse = MapOption.UseAdmin;/*
                 if (MapOption.UseAdmin)
                 {
@@ -44,6 +45,14 @@ namespace SuperNewRoles.MapOptions
                     }
                 }*/
                 return IsUse;
+            }
+        }
+        [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
+        class CoVitalsOpen
+        {
+            static void Postfix(VitalsMinigame __instance)
+            {
+                Roles.CrewMate.Painter.HandleRpc(Roles.CrewMate.Painter.ActionType.CheckVital);
             }
         }
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Update))]

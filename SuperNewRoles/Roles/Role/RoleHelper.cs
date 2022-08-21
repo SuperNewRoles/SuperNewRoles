@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Hazel;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
@@ -583,14 +584,26 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.Add(player);
                     break;
+                case RoleId.Hitman:
+                    RoleClass.Hitman.HitmanPlayer.Add(player);
+                    break;
                 case RoleId.Matryoshka:
                     RoleClass.Matryoshka.MatryoshkaPlayer.Add(player);
                     break;
                 case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.Add(player);
                     break;
+                case RoleId.Psychometrist:
+                    RoleClass.Psychometrist.PsychometristPlayer.Add(player);
+                    break;
+                case RoleId.SeeThroughPerson:
+                    RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.Add(player);
+                    break;
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.Add(player);
+                    break;
+                case RoleId.Painter:
+                    RoleClass.Painter.PainterPlayer.Add(player);
                     break;
                 case RoleId.Photographer:
                     RoleClass.Photographer.PhotographerPlayer.Add(player);
@@ -620,6 +633,8 @@ namespace SuperNewRoles
                 PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
             SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
+            PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(player.PlayerId);
+            if (anim != null) anim.HandleAnim(RpcAnimationType.Stop);
         }
         private static PlayerControl ClearTarget;
         public static void ClearRole(this PlayerControl player)
@@ -982,14 +997,26 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Hitman:
+                    RoleClass.Hitman.HitmanPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.Matryoshka:
                     RoleClass.Matryoshka.MatryoshkaPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Psychometrist:
+                    RoleClass.Psychometrist.PsychometristPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.SeeThroughPerson:
+                    RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Painter:
+                    RoleClass.Painter.PainterPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.Photographer:
                     RoleClass.Photographer.PhotographerPlayer.RemoveAll(ClearRemove);
@@ -1053,13 +1080,13 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
+                case RoleId.Hitman:
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
                 //タスククリアか
                     IsTaskClear = true;
                     break;
-                //タスククリアか
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
@@ -1150,7 +1177,7 @@ namespace SuperNewRoles
             else if (player.IsImpostor()) return true;
             return role switch
             {
-                RoleId.Jester => RoleClass.Jester.IsUseSabo,
+                RoleId.Jester => RoleClass.Jester.IsUseSabo && ModeHandler.IsMode(ModeId.Default),
                 RoleId.Sidekick or RoleId.Jackal => RoleClass.Jackal.IsUseSabo,
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
                 RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
@@ -1216,13 +1243,13 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
+                case RoleId.Hitman:
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
                 //第三か
                     IsNeutral = true;
                     break;
-                //第三か
             }
             return IsNeutral;
         }
@@ -1500,9 +1527,13 @@ namespace SuperNewRoles
                 else if (RoleClass.Dictator.DictatorPlayer.IsCheckListPlayerControl(player)) return RoleId.Dictator;
                 else if (RoleClass.Spelunker.SpelunkerPlayer.IsCheckListPlayerControl(player)) return RoleId.Spelunker;
                 else if (RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicidalIdeation;
+                else if (RoleClass.Hitman.HitmanPlayer.IsCheckListPlayerControl(player)) return RoleId.Hitman;
                 else if (RoleClass.Matryoshka.MatryoshkaPlayer.IsCheckListPlayerControl(player)) return RoleId.Matryoshka;
                 else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
+                else if (RoleClass.Psychometrist.PsychometristPlayer.IsCheckListPlayerControl(player)) return RoleId.Psychometrist;
+                else if (RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.IsCheckListPlayerControl(player)) return RoleId.SeeThroughPerson;
                 else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
+                else if (RoleClass.Painter.PainterPlayer.IsCheckListPlayerControl(player)) return RoleId.Painter;
                 else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
                 else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
                 else if (RoleClass.Slugger.SluggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Slugger;

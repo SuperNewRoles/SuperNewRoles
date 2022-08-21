@@ -100,7 +100,7 @@ namespace SuperNewRoles.CustomObject
             var body = gameObject.AddComponent<Rigidbody2D>();
             body.gravityScale = 0f;
             Vector3 kakeru = Source.transform.position - Player.transform.position;
-            body.velocity = kakeru * -6f;
+            body.velocity = kakeru * -10f;
             Index = 0;
             Sprites = GetSprites();
             DeadBodys.Add(this);

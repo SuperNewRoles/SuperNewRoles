@@ -6,6 +6,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
@@ -89,6 +90,7 @@ namespace SuperNewRoles.Patch
             RedRidingHood.WrapUp(exiled);
             Roles.Neutral.Revolutionist.WrapUp();
             Roles.Neutral.Spelunker.WrapUp();
+            Roles.Neutral.Hitman.WrapUp();
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
             if (AmongUsClient.Instance.AmHost) {
@@ -98,6 +100,8 @@ namespace SuperNewRoles.Patch
                     return false;
                 });
             }
+            SecretRoom.Reset();
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Roles.CrewMate.Painter.WrapUp();
             Roles.Neutral.Photographer.WrapUp();
             if (exiled == null) return;
 

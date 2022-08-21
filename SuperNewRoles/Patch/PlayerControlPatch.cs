@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -598,19 +598,27 @@ namespace SuperNewRoles.Patches
                             {
                                 SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
                                 if (target == null || RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                                RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
-                                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
-                                target.SetRoleRPC(RoleId.JackalFriends);//フレンズにする
-                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
-                                RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
+                                target.RpcProtectPlayer(target, 0);//キルを無効にする為守護をかける
+                                //守護がかかるのを待つためのLateTask
+                                new LateTask(() =>
+                                    {
+                                        RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
+                                        target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
+                                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//クルーにして
+                                        target.SetRoleRPC(RoleId.JackalFriends);//フレンズにする
+                                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
+                                        RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
+                                        SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
+                                    }, 0.5f);
                             }
                             else
                             {
-                                //作ってたら普通のキル
-                                SuperNewRolesPlugin.Logger.LogInfo("作ったので普通のキル");
-                                __instance.RpcMurderPlayer(target);
+                                // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
+                                if (!RoleClass.Jackal.CanCreateFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] フレンズを作る設定ではない為 普通のキル");
+                                else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.IsCreatedFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 作ったので 普通のキル");
+                                else SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 不正なキル");
                             }
-                            return false;
+                            break;
                     }
                     break;
                 case ModeId.Detective:
@@ -830,7 +838,7 @@ namespace SuperNewRoles.Patches
             // SuperNewRolesPlugin.Logger.LogInfo("MurderPlayer発生！元:" + __instance.GetDefaultName() + "、ターゲット:" + target.GetDefaultName());
             // Collect dead player info
             Logger.Info("追加");
-            DeadPlayer deadPlayer = new(target, DateTime.UtcNow, DeathReason.Kill, __instance);
+            DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
@@ -854,6 +862,7 @@ namespace SuperNewRoles.Patches
                 {
                     RoleClass.Finder.KillCount++;
                 }
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.Death);
                 if (target.IsRole(RoleId.Assassin))
                 {
                     target.Revive();
@@ -870,6 +879,17 @@ namespace SuperNewRoles.Patches
                     }, 0.5f);
                     RoleClass.Assassin.TriggerPlayer = target;
                     return;
+                }
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Psychometrist))
+                {
+                    Roles.CrewMate.Psychometrist.MurderPlayer(__instance, target);
+                }
+                if (target.IsDead())
+                {
+                    if (target.IsRole(RoleId.Hitman))
+                    {
+                        Roles.Neutral.Hitman.Death();
+                    }
                 }
                 Levelinger.MurderPlayer(__instance, target);
                 if (RoleClass.Lovers.SameDie && target.IsLovers())
@@ -915,13 +935,21 @@ namespace SuperNewRoles.Patches
             }
         }
     }
+    [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CompleteTask))]
+    class CompleteTask
+    {
+        public static void Postfix(PlayerControl __instance, uint idx)
+        {
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.TaskComplete);
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Exiled))]
     public static class ExilePlayerPatch
     {
         public static void Postfix(PlayerControl __instance)
         {
             // Collect dead player info
-            DeadPlayer deadPlayer = new(__instance, DateTime.UtcNow, DeathReason.Exile, null);
+            DeadPlayer deadPlayer = new(__instance, __instance.PlayerId, DateTime.UtcNow, DeathReason.Exile, null);
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Exiled;
             if (ModeHandler.IsMode(ModeId.Default))
@@ -942,6 +970,9 @@ namespace SuperNewRoles.Patches
                     }, 0.5f);
                     RoleClass.Assassin.TriggerPlayer = __instance;
                     return;
+                }
+                if (__instance.IsRole(RoleId.Hitman)) {
+                    Roles.Neutral.Hitman.Death();
                 }
                 if (RoleClass.Lovers.SameDie && __instance.IsLovers())
                 {
