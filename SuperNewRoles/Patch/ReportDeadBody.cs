@@ -14,6 +14,7 @@ namespace SuperNewRoles.Patch
             public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
             {
                 if (!AmongUsClient.Instance.AmHost) return true;
+                if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
                 if (ModeHandler.IsMode(ModeId.Default))
                 {
                     if (__instance.IsRole(RoleId.Amnesiac))

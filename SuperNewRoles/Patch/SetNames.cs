@@ -160,6 +160,12 @@ namespace SuperNewRoles.Patch
                     roleColors = RoleClass.CrewmateWhite;
                 }
             }
+            else if (PlayerControl.LocalPlayer.IsRole(RoleId.Stefinder) && RoleClass.Stefinder.IsKill)
+            {
+                var introdate = IntroDate.GetIntroDate(role);
+                roleNames = introdate.Name;
+                roleColors = RoleClass.ImpostorRed;
+            }
             else
             {
                 var introdate = IntroDate.GetIntroDate(role);
@@ -280,18 +286,34 @@ namespace SuperNewRoles.Patch
         }
         public static void SatsumaimoSet()
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.SatsumaAndImo) || PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+            if (PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
             {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
-                {//クルーなら
-                    if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
-                    {//名前に(C)をつける
-                        SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
-                    }
-                    if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
+                {
+                    if (player.IsRole(RoleId.SatsumaAndImo))
                     {
-                        SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
+                        //クルーなら
+                        if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
+                        {//名前に(C)をつける
+                            SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
+                        }
+                        if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
+                        {
+                            SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
+                        }
                     }
+                }
+            }
+            else if (PlayerControl.LocalPlayer.IsRole(RoleId.SatsumaAndImo))
+            {
+                PlayerControl player = PlayerControl.LocalPlayer;
+                if (!player.NameText().text.Contains(ModHelpers.Cs(Palette.White, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
+                {//名前に(C)をつける
+                    SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
+                }
+                else if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.ImpostorRed, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
+                {
+                    SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
                 }
             }
         }
@@ -407,6 +429,10 @@ namespace SuperNewRoles.Patch
                 PlayerControl PartTimerTarget = ModHelpers.PlayerById((byte)RoleClass.PartTimer.Datas.GetKey(CachedPlayer.LocalPlayer.PlayerId));
                 SetNamesClass.SetPlayerRoleNames(PartTimerTarget);
                 SetNamesClass.SetPlayerNameColors(PartTimerTarget);
+            }
+            if (RoleClass.Stefinder.IsKill)
+            {
+                SetNamesClass.SetPlayerNameColor(PlayerControl.LocalPlayer, Color.red);
             }
             if (ModeHandler.IsMode(ModeId.Default))
             {

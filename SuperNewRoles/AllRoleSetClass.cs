@@ -931,11 +931,16 @@ namespace SuperNewRoles
                 RoleId.Dictator => CustomOptions.DictatorPlayerCount.GetFloat(),
                 RoleId.Spelunker => CustomOptions.SpelunkerPlayerCount.GetFloat(),
                 RoleId.SuicidalIdeation => CustomOptions.SuicidalIdeationPlayerCount.GetFloat(),
+                RoleId.Hitman => CustomOptions.HitmanPlayerCount.GetFloat(),
                 RoleId.Matryoshka => CustomOptions.MatryoshkaPlayerCount.GetFloat(),
                 RoleId.Nun => CustomOptions.NunPlayerCount.GetFloat(),
                 RoleId.PartTimer => CustomOptions.PartTimerPlayerCount.GetFloat(),
                 RoleId.SatsumaAndImo => CustomOptions.SatsumaAndImoPlayerCount.GetFloat(),
                 RoleId.Painter => CustomOptions.PainterPlayerCount.GetFloat(),
+                RoleId.Psychometrist => CustomOptions.PsychometristPlayerCount.GetFloat(),
+                RoleId.SeeThroughPerson => CustomOptions.SeeThroughPersonPlayerCount.GetFloat(),
+                RoleId.Photographer => CustomOptions.PhotographerPlayerCount.GetFloat(),
+                RoleId.Stefinder => CustomOptions.StefinderPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };
@@ -969,7 +974,7 @@ namespace SuperNewRoles
             Crewnotonepar = new();
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {
-                if (intro.RoleId != RoleId.DefaultRole && !intro.IsGhostRole)
+                if (intro.RoleId != RoleId.DefaultRole && (intro.RoleId != RoleId.Nun || (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship) && !intro.IsGhostRole)
                 {
                     var option = IntroDate.GetOption(intro.RoleId);
                     if (option == null) continue;
