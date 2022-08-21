@@ -97,6 +97,10 @@ namespace SuperNewRoles.Patch
                 {
                     PVCreator.Start2();
                 }
+                if (Input.GetKeyDown(KeyCode.N))
+                {
+                    ModHelpers.PlayerById(1).RpcMurderPlayer(ModHelpers.PlayerById(2));
+                }
                 /*
                     if (Input.GetKeyDown(KeyCode.C))
                     {

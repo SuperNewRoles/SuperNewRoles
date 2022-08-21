@@ -1,9 +1,12 @@
+using System.Collections;
 using Agartha;
+using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
@@ -163,16 +166,6 @@ namespace SuperNewRoles.Patches
         {
             public static void Prefix()
             {
-                if (AmongUsClient.Instance.AmHost)
-                {
-                    if (MapData.IsMap(CustomMapNames.Agartha))
-                    {
-                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                        {
-                            p.GenerateAndAssignTasks(PlayerControl.GameOptions.NumCommonTasks, PlayerControl.GameOptions.NumShortTasks, PlayerControl.GameOptions.NumLongTasks);
-                        }
-                    }
-                }
                 float SetTime = 0;
                 bool Flag = true;
                 switch (PlayerControl.LocalPlayer.GetRole())
@@ -213,8 +206,25 @@ namespace SuperNewRoles.Patches
                 f = Mathf.Clamp01(f);
                 return (byte)(f * 255);
             }
+            static IEnumerator settask()
+            {
+                while (true)
+                {
+                    if (PlayerControl.LocalPlayer == null) yield break;
+                    if (PlayerControl.LocalPlayer.myTasks.Count == (PlayerControl.GameOptions.NumCommonTasks + PlayerControl.GameOptions.NumShortTasks + PlayerControl.GameOptions.NumLongTasks)) yield break;
+                       
+                    yield return null;
+                }
+            }
             public static void Prefix(IntroCutscene __instance)
             {
+                if (MapData.IsMap(CustomMapNames.Agartha))
+                {
+                    var (commont, shortt, longt) = PlayerControl.LocalPlayer.GetTaskCount();
+                    PlayerControl.LocalPlayer.GenerateAndAssignTasks(commont, shortt, longt);
+                }
+
+                //AmongUsClient.Instance.StartCoroutine(settask());
                 new LateTask(() =>
                 {
                     CustomButton.MeetingEndedUpdate();
