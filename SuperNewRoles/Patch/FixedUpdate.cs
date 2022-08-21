@@ -102,6 +102,7 @@ namespace SuperNewRoles.Patch
                     Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
                     Roles.Impostor.Matryoshka.FixedUpdate();
+                    reduceKillCooldown();
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
