@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
@@ -95,6 +95,7 @@ namespace SuperNewRoles.Patch
                     SetNameUpdate.Postfix(__instance);
                     Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
+                    Roles.CrewMate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
@@ -162,6 +163,18 @@ namespace SuperNewRoles.Patch
                                 break;
                             case RoleId.Doctor:
                                 Doctor.FixedUpdate();
+                                break;
+                            case RoleId.Psychometrist:
+                                Roles.CrewMate.Psychometrist.PsychometristFixedUpdate();
+                                break;
+                            case RoleId.SeeThroughPerson:
+                                Roles.CrewMate.SeeThroughPerson.FixedUpdate();
+                                break;
+                            case RoleId.Hitman:
+                                Roles.Neutral.Hitman.FixedUpdate();
+                                break;
+                            case RoleId.Photographer:
+                                Roles.Neutral.Photographer.FixedUpdate();
                                 break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)

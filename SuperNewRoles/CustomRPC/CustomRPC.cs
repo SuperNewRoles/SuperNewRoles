@@ -12,6 +12,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 using static SuperNewRoles.EndGame.FinalStatusPatch;
@@ -142,9 +143,16 @@ namespace SuperNewRoles.CustomRPC
         Dictator,
         Spelunker,
         SuicidalIdeation,
+        Hitman,
         Matryoshka,
         Nun,
+        Psychometrist,
+        SeeThroughPerson,
         PartTimer,
+        Painter,
+        Photographer,
+        Stefinder,
+        Stefinder1,
         //RoleId
     }
 
@@ -218,11 +226,58 @@ namespace SuperNewRoles.CustomRPC
         ChiefSidekick,
         StartRevolutionMeeting,
         UncheckedUsePlatform,
+        BlockReportDeadBody,
         PartTimerSet,
-        SetMatryoshkaDeadbody
+        SetMatryoshkaDeadbody,
+        PainterPaintSet,
+        PainterSetTarget,
+        SharePhotograph,
+        StefinderIsKilled
     }
     public static class RPCProcedure
     {
+        public static void PainterSetTarget(byte target, bool Is)
+        {
+            if (target == CachedPlayer.LocalPlayer.PlayerId) RoleClass.Painter.IsLocalActionSend = Is;
+        }
+        public static void PainterPaintSet(byte target, byte ActionTypeId, byte[] buff)
+        {
+            Painter.ActionType type = (Painter.ActionType)ActionTypeId;
+            if (!RoleClass.Painter.ActionDatas.ContainsKey(type)) return;
+            if (!PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) return;
+            if (RoleClass.Painter.CurrentTarget == null || RoleClass.Painter.CurrentTarget.PlayerId != target) return;
+            Vector2 position = Vector2.zero;
+            position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
+            position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
+            RoleClass.Painter.ActionDatas[type].Add(position);
+        }
+
+        public static void BlockReportDeadBody(byte TargetId, bool IsChangeReported)
+        {
+            if (IsChangeReported)
+            {
+                DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == TargetId)
+                    {
+                        array[i].Reported = true;
+                        return;
+                    }
+                }
+            } else
+            {
+                RoleClass.BlockPlayers.Add(TargetId);
+            }
+        }
+        public static void SharePhotograph()
+        {
+            if (!RoleClass.Photographer.IsPhotographerShared)
+            {
+                Modules.ProctedMessager.ScheduleProctedMessage(ModTranslation.GetString("PhotographerPhotograph"));
+            }
+            RoleClass.Photographer.IsPhotographerShared = true;
+        }
         public static void SetMatryoshkaDeadBody(byte sourceid, byte targetid, bool Is)
         {
             PlayerControl source = ModHelpers.PlayerById(sourceid);
@@ -252,6 +307,10 @@ namespace SuperNewRoles.CustomRPC
                     airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));
                 }
             }
+        }
+        public static void StefinderIsKilled(byte PlayerId)
+        {
+            RoleClass.Stefinder.IsKillPlayer.Add(PlayerId);
         }
         public static void StartRevolutionMeeting(byte sourceid)
         {
@@ -1328,8 +1387,23 @@ namespace SuperNewRoles.CustomRPC
                         case CustomRPC.UncheckedUsePlatform:
                             UncheckedUsePlatform(reader.ReadByte(), reader.ReadBoolean());
                             break;
+                        case CustomRPC.BlockReportDeadBody:
+                            BlockReportDeadBody(reader.ReadByte(), reader.ReadBoolean());
+                            break;
                         case CustomRPC.PartTimerSet:
                             PartTimerSet(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.PainterPaintSet:
+                            PainterPaintSet(reader.ReadByte(), reader.ReadByte(), reader.ReadBytesAndSize());
+                            break;
+                        case CustomRPC.PainterSetTarget:
+                            PainterSetTarget(reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.SharePhotograph:
+                            SharePhotograph();
+                            break;
+                        case CustomRPC.StefinderIsKilled:
+                            StefinderIsKilled(reader.ReadByte());
                             break;
                     }
                 }

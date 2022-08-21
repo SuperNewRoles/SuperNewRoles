@@ -583,14 +583,32 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.Add(player);
                     break;
+                case RoleId.Hitman:
+                    RoleClass.Hitman.HitmanPlayer.Add(player);
+                    break;
                 case RoleId.Matryoshka:
                     RoleClass.Matryoshka.MatryoshkaPlayer.Add(player);
                     break;
                 case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.Add(player);
                     break;
+                case RoleId.Psychometrist:
+                    RoleClass.Psychometrist.PsychometristPlayer.Add(player);
+                    break;
+                case RoleId.SeeThroughPerson:
+                    RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.Add(player);
+                    break;
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.Add(player);
+                    break;
+                case RoleId.Painter:
+                    RoleClass.Painter.PainterPlayer.Add(player);
+                    break;
+                case RoleId.Photographer:
+                    RoleClass.Photographer.PhotographerPlayer.Add(player);
+                    break;
+                case RoleId.Stefinder:
+                    RoleClass.Stefinder.StefinderPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -973,14 +991,32 @@ namespace SuperNewRoles
                 case RoleId.SuicidalIdeation:
                     RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Hitman:
+                    RoleClass.Hitman.HitmanPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.Matryoshka:
                     RoleClass.Matryoshka.MatryoshkaPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.Nun:
                     RoleClass.Nun.NunPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Psychometrist:
+                    RoleClass.Psychometrist.PsychometristPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.SeeThroughPerson:
+                    RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.PartTimer:
                     RoleClass.PartTimer.PartTimerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Painter:
+                    RoleClass.Painter.PainterPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Photographer:
+                    RoleClass.Photographer.PhotographerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Stefinder:
+                    RoleClass.Stefinder.StefinderPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1035,7 +1071,10 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
+                case RoleId.Hitman:
+                case RoleId.Stefinder:
                 case RoleId.PartTimer:
+                case RoleId.Photographer:
                 //タスククリアか
                     IsTaskClear = true;
                     break;
@@ -1084,6 +1123,7 @@ namespace SuperNewRoles
                 RoleId.Tuna => RoleClass.Tuna.IsUseVent,
                 RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
+                RoleId.Stefinder => RoleClass.Stefinder.UseVent,
                 _ => false,
             };
         }
@@ -1128,11 +1168,12 @@ namespace SuperNewRoles
             else if (player.IsImpostor()) return true;
             return role switch
             {
-                RoleId.Jester => RoleClass.Jester.IsUseSabo,
+                RoleId.Jester => RoleClass.Jester.IsUseSabo && ModeHandler.IsMode(ModeId.Default),
                 RoleId.Sidekick or RoleId.Jackal => RoleClass.Jackal.IsUseSabo,
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
                 RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
                 RoleId.Egoist => RoleClass.Egoist.UseSabo,
+                RoleId.Stefinder => RoleClass.Stefinder.UseSabo,
                 _ => false,
             };
         }
@@ -1160,6 +1201,7 @@ namespace SuperNewRoles
                     RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
                     RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
                     RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
+                    RoleId.Photographer => RoleClass.Photographer.IsImpostorVision,
                     _ => false,
                 };
         }
@@ -1192,7 +1234,10 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                 case RoleId.Spelunker:
                 case RoleId.SuicidalIdeation:
+                case RoleId.Hitman:
+                case RoleId.Stefinder:
                 case RoleId.PartTimer:
+                case RoleId.Photographer:
                 //第三か
                     IsNeutral = true;
                     break;
@@ -1473,9 +1518,15 @@ namespace SuperNewRoles
                 else if (RoleClass.Dictator.DictatorPlayer.IsCheckListPlayerControl(player)) return RoleId.Dictator;
                 else if (RoleClass.Spelunker.SpelunkerPlayer.IsCheckListPlayerControl(player)) return RoleId.Spelunker;
                 else if (RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicidalIdeation;
+                else if (RoleClass.Hitman.HitmanPlayer.IsCheckListPlayerControl(player)) return RoleId.Hitman;
                 else if (RoleClass.Matryoshka.MatryoshkaPlayer.IsCheckListPlayerControl(player)) return RoleId.Matryoshka;
                 else if (RoleClass.Nun.NunPlayer.IsCheckListPlayerControl(player)) return RoleId.Nun;
+                else if (RoleClass.Psychometrist.PsychometristPlayer.IsCheckListPlayerControl(player)) return RoleId.Psychometrist;
+                else if (RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.IsCheckListPlayerControl(player)) return RoleId.SeeThroughPerson;
                 else if (RoleClass.PartTimer.PartTimerPlayer.IsCheckListPlayerControl(player)) return RoleId.PartTimer;
+                else if (RoleClass.Painter.PainterPlayer.IsCheckListPlayerControl(player)) return RoleId.Painter;
+                else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
+                else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
                 //ロールチェック
             }
             catch (Exception e)

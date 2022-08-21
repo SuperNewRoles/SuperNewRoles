@@ -57,6 +57,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton EvilHackerMadmateSetting;
         public static CustomButton PositionSwapperButton;
         public static CustomButton KunoichiKunaiButton;
+        public static CustomButton KunoichiHideButton;
         public static CustomButton SecretlyKillerMainButton;
         public static CustomButton SecretlyKillerSecretlyKillButton;
         public static CustomButton ClairvoyantButton;
@@ -68,9 +69,14 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ButtonerButton;
         public static CustomButton RevolutionistButton;
         public static CustomButton SuicidalIdeationButton;
+        public static CustomButton HitmanKillButton;
         public static CustomButton MatryoshkaButton;
         public static CustomButton NunButton;
+        public static CustomButton PsychometristButton;
         public static CustomButton PartTimerButton;
+        public static CustomButton PainterButton;
+        public static CustomButton PhotographerButton;
+        public static CustomButton StefinderKillButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -93,6 +99,49 @@ namespace SuperNewRoles.Buttons
 
         public static void Postfix(HudManager __instance)
         {
+
+            PhotographerButton = new(
+                () =>
+                {
+                    List<byte> Targets = Roles.Neutral.Photographer.SetTarget();
+                    RoleClass.Photographer.PhotedPlayerIds.AddRange(Targets);
+                    if (RoleClass.Photographer.BonusCount > 0 && Targets.Count >= RoleClass.Photographer.BonusCount)
+                    {
+                        PhotographerButton.Timer = RoleClass.Photographer.BonusCoolTime;
+                    }
+                    else
+                    {
+                        PhotographerButton.Timer = PhotographerButton.MaxTimer;
+                    }
+                    if (RoleClass.Photographer.IsNotification)
+                    {
+                        RPCHelper.StartRPC(CustomRPC.CustomRPC.SharePhotograph).EndRPC();
+                        RPCProcedure.SharePhotograph();
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Photographer; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove && Roles.Neutral.Photographer.SetTarget().Count > 0;
+                },
+                () =>
+                {
+                    PhotographerButton.MaxTimer = RoleClass.Photographer.CoolTime;
+                    PhotographerButton.Timer = PhotographerButton.MaxTimer;
+                },
+                RoleClass.Photographer.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("PhotographerButtonName"),
+                showButtonText = true
+            };
+
             KunoichiKunaiButton = new(
                 () =>
                 {
@@ -125,6 +174,31 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("KunoichiKunai"),
+                showButtonText = true
+            };
+            KunoichiHideButton = new CustomButton(
+                () =>
+                {
+                    /*  Kunoichi.cs Update() にある、
+                        「透明化に必要な待機時間の取得と処理 (ボタン動作の時)」コメント以降のif文の中で透明化の処理を行っている。*/
+                    RoleClass.Kunoichi.IsHideButton = true;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Kunoichi && RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { Kunoichi.HideOff(); },
+                RoleClass.Kunoichi.GetHideButtonSprite(),
+                new Vector3(-2.7f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.L,
+                50,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("ScientistButtonName"),
                 showButtonText = true
             };
             FalseChargesFalseChargeButton = new(
@@ -745,7 +819,7 @@ namespace SuperNewRoles.Buttons
                             var misfire = !Sheriff.IsSheriffKill(Target);
                             if (RoleClass.Chief.SheriffPlayer.Contains(LocalID))
                             {
-                                misfire = Sheriff.IsChiefSheriffKill(Target);
+                                misfire = !Sheriff.IsChiefSheriffKill(Target);
                             }
                             var TargetID = Target.PlayerId;
 
@@ -1998,20 +2072,20 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.CanMove && PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount != 0)
                     {
                         EvilButtoner.EvilButtonerStartMeeting(PlayerControl.LocalPlayer);
-                        RoleClass.EvilButtoner.SkillCount = RoleClass.EvilButtoner.SkillCount - 1;
+                        RoleClass.EvilButtoner.SkillCount--;
                     }
                     else if (PlayerControl.LocalPlayer.CanMove && PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount != 0)
                     {
                         EvilButtoner.EvilButtonerStartMeeting(PlayerControl.LocalPlayer);
-                        RoleClass.NiceButtoner.SkillCount = RoleClass.NiceButtoner.SkillCount - 1;
+                        RoleClass.NiceButtoner.SkillCount--;
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.EvilButtoner || role == RoleId.NiceButtoner) && ModeHandler.IsMode(ModeId.Default); },
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount == 0) return false;
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount == 0) return false;
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return ((PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount != 0) ||
+                            (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount != 0)) &&
+                             PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
@@ -2100,6 +2174,48 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
 
+            HitmanKillButton = new(
+                () =>
+                {
+                    PlayerControl target = SetTarget();
+                    if (ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, target) == ModHelpers.MurderAttemptResult.PerformKill)
+                    {
+                    }
+                    if (RoleClass.Hitman.Target.PlayerId != target.PlayerId)
+                    {
+                        Roles.Neutral.Hitman.LimitDown();
+                    }
+                    else
+                    {
+                        Roles.Neutral.Hitman.KillSuc();
+                    }
+                    RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
+                    RoleClass.Hitman.ArrowUpdateTime = 0;
+                    Roles.Neutral.Hitman.SetTarget();
+                    HitmanKillButton.Timer = HitmanKillButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Hitman; },
+                () =>
+                {
+                    return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    Roles.Neutral.Hitman.EndMeeting();
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
+                showButtonText = true
+            };
+
             MatryoshkaButton = new(
                 () =>
                 {
@@ -2177,7 +2293,8 @@ namespace SuperNewRoles.Buttons
             };
 
             NunButton = new(
-                () => {
+                () =>
+                {
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedUsePlatform);
                     writer.Write((byte)255);
                     writer.Write(false);
@@ -2211,8 +2328,74 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
 
+            PsychometristButton = new(
+                () =>
+                {
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    {
+                        if (collider2D.tag == "DeadBody")
+                        {
+                            DeadBody component = collider2D.GetComponent<DeadBody>();
+                            if (component && !component.Reported)
+                            {
+                                Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                                Vector2 truePosition2 = component.TruePosition;
+                                if (Vector2.Distance(truePosition2 - new Vector2(0.15f, 0.2f), truePosition) <= RoleClass.Psychometrist.Distance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                                {
+                                    RoleClass.Psychometrist.CurrentTarget = component;
+                                }
+                            }
+                        }
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Psychometrist; },
+                () =>
+                {
+                    if (PsychometristButton.isEffectActive)
+                    {
+                        if (RoleClass.Psychometrist.CurrentTarget == null || __instance.ReportButton.graphic.color != Palette.EnabledColor || Vector2.Distance(RoleClass.Psychometrist.CurrentTarget.TruePosition - new Vector2(0.15f, 0.2f), CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition()) > RoleClass.Psychometrist.Distance)
+                        {
+                            RoleClass.Psychometrist.CurrentTarget = null;
+                            PsychometristButton.Timer = 0f;
+                            PsychometristButton.isEffectActive = false;
+                        }
+                    }
+                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    PsychometristButton.MaxTimer = RoleClass.Psychometrist.CoolTime;
+                    PsychometristButton.Timer = PsychometristButton.MaxTimer;
+                    PsychometristButton.effectCancellable = false;
+                    PsychometristButton.EffectDuration = RoleClass.Psychometrist.ReadTime;
+                    PsychometristButton.isEffectActive = false;
+                },
+                RoleClass.Psychometrist.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return false;
+                },
+                true,
+                RoleClass.Psychometrist.ReadTime,
+                () =>
+                {
+                    if (RoleClass.IsMeeting) return;
+                    Roles.CrewMate.Psychometrist.ClickButton();
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("PsychometristButtonName"),
+                showButtonText = true
+            };
+
             PartTimerButton = new(
-                () => {
+                () =>
+                {
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.PartTimerSet);
                     writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(SetTarget().PlayerId);
@@ -2243,6 +2426,76 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("PartTimerButtonName"),
+                showButtonText = true
+            };
+
+            PainterButton = new(
+                () =>
+                {
+                    Roles.CrewMate.Painter.SetTarget(SetTarget());
+                    PainterButton.Timer = PainterButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Painter && RoleClass.Painter.CurrentTarget == null; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                },
+                () =>
+                {
+                    PainterButton.MaxTimer = RoleClass.Painter.CoolTime;
+                    PainterButton.Timer = PainterButton.MaxTimer;
+                },
+                RoleClass.Painter.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return false;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("PainterButtonName"),
+                showButtonText = true
+            };
+
+            StefinderKillButton = new(
+                () =>
+                {
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.StefinderIsKilled, SendOption.Reliable, -1);
+                    Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+
+                    RPCProcedure.StefinderIsKilled(PlayerControl.LocalPlayer.PlayerId);
+                    RoleClass.Stefinder.IsKill = true;
+                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.Stefinder.target);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Stefinder && !RoleClass.Stefinder.IsKill; },
+                () =>
+                {
+                    RoleClass.Stefinder.target = SetTarget();
+                    return RoleClass.Stefinder.target != null && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    StefinderKillButton.MaxTimer = RoleClass.Stefinder.KillCoolDown;
+                    StefinderKillButton.Timer = RoleClass.Stefinder.KillCoolDown;
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.Q,
+                8,
+                () =>
+                {
+                    return !PlayerControl.LocalPlayer.CanMove;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("FinalStatusKill"),
                 showButtonText = true
             };
 

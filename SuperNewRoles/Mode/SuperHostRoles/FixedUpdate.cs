@@ -249,8 +249,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (commsActive) TaskText = ModHelpers.Cs(Color.yellow, "(?/" + TaskCount.TaskDateNoClearCheck(player.Data).Item2 + ")");
                     else
                     {
-                        var (complate, all) = TaskCount.TaskDateNoClearCheck(player.Data);
-                        TaskText = ModHelpers.Cs(Color.yellow, "(" + complate + "/" + all + ")");
+                        var (Complete, all) = TaskCount.TaskDateNoClearCheck(player.Data);
+                        TaskText = ModHelpers.Cs(Color.yellow, "(" + Complete + "/" + all + ")");
                     }
                 }
                 catch { }
