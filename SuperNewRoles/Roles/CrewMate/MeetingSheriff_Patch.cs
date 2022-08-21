@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patch;
@@ -148,6 +149,10 @@ namespace SuperNewRoles.Roles
 
         static void Postfix(MeetingHud __instance)
         {
+            if (AmongUsClient.Instance.AmHost)
+            {
+                PlayerAnimation.PlayerAnimations.All(x => { x.RpcAnimation(RpcAnimationType.Stop); return false; });
+            }
             LadderDead.Reset();
             RoleClass.IsMeeting = true;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))

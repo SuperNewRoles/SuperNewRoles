@@ -1,9 +1,12 @@
+using System.Linq;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
@@ -90,6 +93,7 @@ namespace SuperNewRoles.Patch
             Roles.Neutral.Hitman.WrapUp();
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
+            SecretRoom.Reset();
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Roles.CrewMate.Painter.WrapUp();
             Roles.Neutral.Photographer.WrapUp();
             if (exiled == null) return;

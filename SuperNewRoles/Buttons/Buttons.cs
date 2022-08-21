@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
@@ -77,6 +78,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton PainterButton;
         public static CustomButton PhotographerButton;
         public static CustomButton StefinderKillButton;
+        public static CustomButton SluggerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -99,6 +101,82 @@ namespace SuperNewRoles.Buttons
 
         public static void Postfix(HudManager __instance)
         {
+            SluggerButton = new(
+                () =>
+                {
+                    var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
+                    anim.RpcAnimation(RpcAnimationType.SluggerCharge);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Slugger; },
+                () =>
+                {
+                    if (SluggerButton.isEffectActive && !PlayerControl.LocalPlayer.CanMove)
+                    {
+                        var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
+                        SluggerButton.isEffectActive = false;
+                        anim.RpcAnimation(RpcAnimationType.Stop);
+                    }
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    SluggerButton.MaxTimer = RoleClass.Slugger.CoolTime;
+                    SluggerButton.Timer = SluggerButton.MaxTimer;
+                    SluggerButton.effectCancellable = false;
+                    SluggerButton.EffectDuration = RoleClass.Slugger.ChargeTime;
+                    SluggerButton.HasEffect = true;
+                },
+                RoleClass.Slugger.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; },
+                true,
+                5f,
+                () =>
+                {
+                    List<PlayerControl> Targets = new();
+                    //一気にキルできるか。後に設定で変更可に
+                    if (RoleClass.Slugger.IsMultiKill)
+                    {
+                        Targets = Roles.Impostor.Slugger.SetTarget();
+                    }
+                    else
+                    {
+                        if (FastDestroyableSingleton<HudManager>.Instance.KillButton.currentTarget != null) Targets.Add(FastDestroyableSingleton<HudManager>.Instance.KillButton.currentTarget);
+                    }
+                    RpcAnimationType AnimationType = RpcAnimationType.SluggerMurder;
+                    //空振り判定
+                    if (Targets.Count <= 0)
+                    {
+                        AnimationType = RpcAnimationType.SluggerMurder;
+                    }
+                    var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
+                    anim.RpcAnimation(AnimationType);
+                    MessageWriter RPCWriter = RPCHelper.StartRPC(CustomRPC.CustomRPC.SluggerExile);
+                    RPCWriter.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    RPCWriter.Write((byte)Targets.Count);
+                    foreach (PlayerControl Target in Targets)
+                    {
+                        RPCWriter.Write(Target.PlayerId);
+                    }
+                    RPCWriter.EndRPC();
+                    List<byte> TargetsId = new();
+                    foreach (PlayerControl Target in Targets)
+                    {
+                        TargetsId.Add(Target.PlayerId);
+                    }
+                    RPCProcedure.SluggerExile(CachedPlayer.LocalPlayer.PlayerId, TargetsId);
+                    SluggerButton.MaxTimer = RoleClass.Slugger.CoolTime;
+                    SluggerButton.Timer = SluggerButton.MaxTimer;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("SluggerButtonName"),
+                showButtonText = true
+            };
 
             PhotographerButton = new(
                 () =>
@@ -1596,7 +1674,7 @@ namespace SuperNewRoles.Buttons
                 {
                     RoleClass.GhostMechanic.LimitCount--;
 
-                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks.GetFastEnumerator())
+                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                     {
                         if (task.TaskType == TaskTypes.FixLights)
                         {
@@ -1636,7 +1714,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     bool sabotageActive = false;
-                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks.GetFastEnumerator())
+                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                         if (task.TaskType == TaskTypes.FixLights || task.TaskType == TaskTypes.RestoreOxy || task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic || task.TaskType == TaskTypes.FixComms || task.TaskType == TaskTypes.StopCharles
                             || (SubmergedCompatibility.isSubmerged() && task.TaskType == SubmergedCompatibility.RetrieveOxygenMask))
                         {

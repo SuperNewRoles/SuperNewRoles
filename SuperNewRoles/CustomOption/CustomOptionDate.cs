@@ -832,6 +832,12 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption StefinderVent;
         public static CustomOption StefinderSabo;
         public static CustomOption StefinderSoloWin;
+        
+        public static CustomRoleOption SluggerOption;
+        public static CustomOption SluggerPlayerCount;
+        public static CustomOption SluggerChargeTime;
+        public static CustomOption SluggerCoolTime;
+        public static CustomOption SluggerIsMultiKill;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1646,6 +1652,12 @@ namespace SuperNewRoles.CustomOption
             PartTimerCoolTime = CustomOption.Create(853, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PartTimerOption);
             PartTimerIsCheckTargetRole = CustomOption.Create(854, false, CustomOptionType.Neutral, "PartTimerIsCheckTargetRole", true, PartTimerOption);
 
+            SluggerOption = new CustomRoleOption(901, false, CustomOptionType.Impostor, "SluggerName",RoleClass.Slugger.color, 1);
+            SluggerPlayerCount = CustomOption.Create(902, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SluggerOption);
+            SluggerChargeTime = CustomOption.Create(903, false, CustomOptionType.Impostor, "SluggerChargeTime", 3f, 0f, 30f, 0.5f, SluggerOption);
+            SluggerCoolTime = CustomOption.Create(904, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, SluggerOption);
+            SluggerIsMultiKill = CustomOption.Create(905, false, CustomOptionType.Impostor, "SluggerIsMultiKill", false, SluggerOption);
+
             PainterOption = new CustomRoleOption(941, false, CustomOptionType.Crewmate, "PainterName", RoleClass.Painter.color, 1);
             PainterPlayerCount = CustomOption.Create(942, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PainterOption);
             PainterCoolTime = CustomOption.Create(952, false, CustomOptionType.Crewmate, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PainterOption);
@@ -1730,6 +1742,7 @@ namespace SuperNewRoles.CustomOption
             LoversLongTask = loversoption.Item3;
 
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:" + CustomOption.Max);
+            SuperNewRolesPlugin.Logger.LogInfo("設定数:" + CustomOption.options.Count);
         }
     }
 }

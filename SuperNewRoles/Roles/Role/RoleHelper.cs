@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Hazel;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
@@ -610,6 +611,9 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                     RoleClass.Stefinder.StefinderPlayer.Add(player);
                     break;
+                case RoleId.Slugger:
+                    RoleClass.Slugger.SluggerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -629,6 +633,8 @@ namespace SuperNewRoles
                 PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
             SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
+            PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(player.PlayerId);
+            if (anim != null) anim.HandleAnim(RpcAnimationType.Stop);
         }
         private static PlayerControl ClearTarget;
         public static void ClearRole(this PlayerControl player)
@@ -1018,6 +1024,9 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                     RoleClass.Stefinder.StefinderPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Slugger:
+                    RoleClass.Slugger.SluggerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -1131,7 +1140,7 @@ namespace SuperNewRoles
         {
             try
             {
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks.GetFastEnumerator())
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                     if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
                         return true;
             }
@@ -1527,6 +1536,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Painter.PainterPlayer.IsCheckListPlayerControl(player)) return RoleId.Painter;
                 else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
                 else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
+                else if (RoleClass.Slugger.SluggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Slugger;
                 //ロールチェック
             }
             catch (Exception e)
@@ -1541,6 +1551,14 @@ namespace SuperNewRoles
             return player == null || player.Data.Disconnected || player.Data.IsDead;
         }
         public static bool IsAlive(this PlayerControl player)
+        {
+            return !IsDead(player);
+        }
+        public static bool IsDead(this CachedPlayer player)
+        {
+            return player == null || player.Data.Disconnected || player.Data.IsDead;
+        }
+        public static bool IsAlive(this CachedPlayer player)
         {
             return !IsDead(player);
         }

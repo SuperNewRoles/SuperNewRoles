@@ -685,10 +685,10 @@ namespace SuperNewRoles.EndGame
                 AdditionalTempData.winCondition = WinCondition.PhotographerWin;
             }
 
-            if (TempData.winners.GetFastEnumerator().ToArray().Any(x => x.IsImpostor))
+            if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
                 foreach (var cp in CachedPlayer.AllPlayers)
-                    if (cp.PlayerControl.IsMadRoles()) TempData.winners.Add(new(cp.Data));
+                    if (cp.PlayerControl.IsMadRoles() || cp.PlayerControl.IsRole(RoleId.MadKiller)) TempData.winners.Add(new(cp.Data));
 
                 if (RoleClass.SatsumaAndImo.TeamNumber == 2)//マッドなら
                     foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
