@@ -53,6 +53,28 @@ namespace SuperNewRoles
             sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
             return sprite;
         }
+        public static void Shuffle<T>(this IList<T> self, int startAt = 0)
+        {
+            for (int i = startAt; i < self.Count - 1; i++)
+            {
+                T value = self[i];
+                int index = UnityEngine.Random.Range(i, self.Count);
+                self[i] = self[index];
+                self[index] = value;
+            }
+        }
+
+        // Token: 0x060002F4 RID: 756 RVA: 0x00013308 File Offset: 0x00011508
+        public static void Shuffle<T>(this System.Random r, IList<T> self)
+        {
+            for (int i = 0; i < self.Count; i++)
+            {
+                T value = self[i];
+                int index = r.Next(self.Count);
+                self[i] = self[index];
+                self[index] = value;
+            }
+        }
         public static byte? GetKey(this Dictionary<byte, byte> dec, byte Value)
         {
             foreach (var data in dec)
