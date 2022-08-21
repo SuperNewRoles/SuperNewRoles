@@ -312,6 +312,8 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption DoctorOption;
         public static CustomOption DoctorPlayerCount;
+        public static CustomOption DoctorChargeTime;
+        public static CustomOption DoctorUseTime;
 
         public static CustomRoleOption CountChangerOption;
         public static CustomOption CountChangerPlayerCount;
@@ -1196,6 +1198,8 @@ namespace SuperNewRoles.CustomOption
 
             DoctorOption = new CustomRoleOption(190, false, CustomOptionType.Crewmate, "DoctorName", RoleClass.Doctor.color, 1);
             DoctorPlayerCount = CustomOption.Create(191, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
+            DoctorChargeTime = CustomOption.Create(855, false, CustomOptionType.Crewmate, "DoctorChargeTime", 10f, 0f, 60f, 2.5f, DoctorOption);
+            DoctorUseTime = CustomOption.Create(856, false, CustomOptionType.Crewmate, "DoctorUseTime", 5f, 0f, 60f, 2.5f, DoctorOption);
 
             CountChangerOption = new CustomRoleOption(192, false, CustomOptionType.Impostor, "CountChangerName", RoleClass.CountChanger.color, 1);
             CountChangerPlayerCount = CustomOption.Create(193, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CountChangerOption);

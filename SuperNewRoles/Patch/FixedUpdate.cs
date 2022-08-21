@@ -168,6 +168,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.SuicidalIdeation:
                                 SuicidalIdeation.Postfix();
                                 break;
+                            case RoleId.Doctor:
+                                Doctor.FixedUpdate();
+                                break;
                             case RoleId.Psychometrist:
                                 Roles.CrewMate.Psychometrist.PsychometristFixedUpdate();
                                 break;
