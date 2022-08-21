@@ -69,7 +69,7 @@ namespace SuperNewRoles.Roles
                 {
                     if (GameObject.FindObjectOfType<VitalsMinigame>() && PlayerControl.LocalPlayer.IsRole(RoleId.Doctor))
                     {
-                        RoleClass.Doctor.MyPanelFlag = false;
+                        new LateTask(() => RoleClass.Doctor.MyPanelFlag = false,0.5f);
                     }
                 }
             }
