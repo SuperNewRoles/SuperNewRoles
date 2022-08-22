@@ -14,30 +14,32 @@ namespace SuperNewRoles.Patch
             public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
             {
                 if (!AmongUsClient.Instance.AmHost) return true;
-                if (ModeHandler.isMode(ModeId.Default))
+                if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
+                if (ModeHandler.IsMode(ModeId.Default))
                 {
-                    if (__instance.isRole(RoleId.Amnesiac))
+                    if (__instance.IsRole(RoleId.Amnesiac))
                     {
                         if (!target.Disconnected)
                         {
                             __instance.RPCSetRoleUnchecked(target.Role.Role);
                             if (target.Role.IsSimpleRole)
                             {
-                                __instance.setRoleRPC(target.Object.getRole());
+                                __instance.SetRoleRPC(target.Object.GetRole());
                             }
                         }
                     }
                 }
-                if (RoleClass.Assassin.TriggerPlayer != null) return false;
-                if (!MapOptions.MapOption.UseDeadBodyReport && target != null) return false;
-                if (!MapOptions.MapOption.UseMeetingButton && target == null) return false;
-                if (ModeHandler.isMode(ModeId.HideAndSeek)) return false;
-                if (ModeHandler.isMode(ModeId.BattleRoyal)) return false;
-                if (ModeHandler.isMode(ModeId.CopsRobbers)) return false;
-                if (ModeHandler.isMode(ModeId.SuperHostRoles)) return Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target);
-                if (ModeHandler.isMode(ModeId.Zombie)) return false;
-                if (ModeHandler.isMode(ModeId.Detective) && target == null && Mode.Detective.main.IsNotDetectiveMeetingButton && __instance.PlayerId != Mode.Detective.main.DetectivePlayer.PlayerId) return false;
-                return true;
+                return (RoleClass.Assassin.TriggerPlayer != null)
+                || (!MapOptions.MapOption.UseDeadBodyReport && target != null)
+                || (!MapOptions.MapOption.UseMeetingButton && target == null)
+                || ModeHandler.IsMode(ModeId.HideAndSeek)
+                || ModeHandler.IsMode(ModeId.BattleRoyal)
+                || ModeHandler.IsMode(ModeId.CopsRobbers)
+                    ? false
+                    : ModeHandler.IsMode(ModeId.SuperHostRoles)
+                    ? Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target)
+                    : !ModeHandler.IsMode(ModeId.Zombie)
+&& (!ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId);
             }
         }
     }

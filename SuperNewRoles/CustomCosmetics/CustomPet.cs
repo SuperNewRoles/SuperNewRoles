@@ -1,4 +1,3 @@
-
 namespace SuperNewRoles.CustomCosmetics
 {
     public static class CustomPet

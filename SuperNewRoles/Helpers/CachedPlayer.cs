@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using SuperNewRoles.CustomObject;
 using UnityEngine;
 
 namespace SuperNewRoles
@@ -78,15 +79,14 @@ namespace SuperNewRoles
             CachedPlayer.AllPlayers.Add(player);
             CachedPlayer.PlayerPtrs[__instance.Pointer] = player;
 
-#if DEBUG
-            foreach (var cachedPlayer in CachedPlayer.AllPlayers)
+            foreach (var cachedPlayer in CachedPlayer.AllPlayers.ToArray())
             {
                 if (!cachedPlayer.PlayerControl || !cachedPlayer.PlayerPhysics || !cachedPlayer.NetTransform || !cachedPlayer.transform)
                 {
-                    SuperNewRolesPlugin.Logger.LogError("CachedPlayer {cachedPlayer.PlayerControl.name} has null fields");
+                    SuperNewRolesPlugin.Logger.LogError($"CachedPlayer {cachedPlayer.PlayerControl?.name} has null fields");
+                    CachedPlayer.AllPlayers.Remove(cachedPlayer);
                 }
             }
-#endif
         }
 
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnDestroy))]
@@ -96,6 +96,7 @@ namespace SuperNewRoles
             if (__instance.notRealPlayer) return;
             CachedPlayer.AllPlayers.RemoveAll(p => p.PlayerControl.Pointer == __instance.Pointer);
             CachedPlayer.PlayerPtrs.Remove(__instance.Pointer);
+            PlayerAnimation.GetPlayerAnimation(__instance.PlayerId).OnDestroy();
         }
 
         [HarmonyPatch(typeof(GameData), nameof(GameData.Deserialize))]

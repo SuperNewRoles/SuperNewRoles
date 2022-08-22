@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using HarmonyLib;
-using SuperNewRoles.Mode;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Roles;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Patch
 {
@@ -14,9 +16,9 @@ namespace SuperNewRoles.Patch
         }
         public static void FixedUpdate()
         {
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
-                if (PlayerControl.LocalPlayer.isDead()) return;
+                if (PlayerControl.LocalPlayer.IsDead()) return;
                 if (TargetLadderData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))
                 {
                     if (Vector2.Distance(TargetLadderData[CachedPlayer.LocalPlayer.PlayerId], CachedPlayer.LocalPlayer.transform.position) < 0.5f)
@@ -34,8 +36,8 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (var data in TargetLadderData)
                     {
-                        PlayerControl player = ModHelpers.playerById(data.Key);
-                        if (player.isDead()) continue;
+                        PlayerControl player = ModHelpers.PlayerById(data.Key);
+                        if (player.IsDead()) continue;
                         if (Vector2.Distance(data.Value, player.transform.position) < 0.5f)
                         {
                             player.Data.IsDead = true;
@@ -47,7 +49,7 @@ namespace SuperNewRoles.Patch
         }
         public static Dictionary<byte, Vector3> TargetLadderData;
         [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.ClimbLadder))]
-        class ladder
+        class Ladders
         {
             public static void Postfix(PlayerPhysics __instance, Ladder source, byte climbLadderSid)
             {
@@ -56,14 +58,14 @@ namespace SuperNewRoles.Patch
                 //降りている
                 if (sourcepos.y > targetpos.y)
                 {
-                    //SuperNewRolesPlugin.Logger.LogInfo("降りています");
-                    int Chance = UnityEngine.Random.Range(1, 10);
-                    //SuperNewRolesPlugin.Logger.LogInfo(aaa);
-                    //SuperNewRolesPlugin.Logger.LogInfo(100 - kakuritu);
-                    if (Chance <= (CustomOptions.LadderDeadChance.getSelection() + 1))
+                    if (!((ModHelpers.IsSucsessChance(CustomOptions.LadderDeadChance.GetSelection() + 1) && CustomOptions.LadderDead.GetBool()) ||
+                        (__instance.myPlayer.IsRole(RoleId.SuicidalIdeation) && ModHelpers.IsSucsessChance(CustomOptions.SuicidalIdeationFallProbability.GetSelection() + 1)) ||
+                        (__instance.myPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSucsessChance(RoleClass.Spelunker.LadderDeathChance))
+                        ))
                     {
-                        TargetLadderData[__instance.myPlayer.PlayerId] = targetpos;
+                        return;
                     }
+                    TargetLadderData[__instance.myPlayer.PlayerId] = targetpos;
                 }
             }
         }

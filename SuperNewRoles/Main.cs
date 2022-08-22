@@ -19,12 +19,16 @@ namespace SuperNewRoles
 
         //バージョンと同時にIsBetaも変える
         public const string VersionString = "1.4.1.8";
-        public static bool IsBeta { get {
+        public static bool IsBeta
+        {
+            get
+            {
                 return ThisAssembly.Git.Branch != "master";
-            } }
+            }
+        }
 
-        public static System.Version Version = System.Version.Parse(VersionString);
-        internal static BepInEx.Logging.ManualLogSource Logger;
+        public static Version Version = Version.Parse(VersionString);
+        public static BepInEx.Logging.ManualLogSource Logger;
         public static Sprite ModStamp;
         public static int optionsPage = 1;
         public Harmony Harmony { get; } = new Harmony(Id);
@@ -63,13 +67,23 @@ namespace SuperNewRoles
 
             // Old Delete End
 
-            Logger.LogInfo(ModTranslation.getString("StartLogText"));
+            Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
 
             var assembly = Assembly.GetExecutingAssembly();
 
             StringDATE = new Dictionary<string, Dictionary<int, string>>();
             Harmony.PatchAll();
             SubmergedCompatibility.Initialize();
+
+            assembly = Assembly.GetExecutingAssembly();
+            string[] resourceNames = assembly.GetManifestResourceNames();
+            foreach (string resourceName in resourceNames)
+            {
+                if (resourceName.EndsWith(".png"))
+                {
+                    ModHelpers.LoadSpriteFromResources(resourceName, 115f);
+                }
+            }
         }
         /*
         [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
@@ -116,14 +130,7 @@ namespace SuperNewRoles
                 }
                 if (__instance.IsOpen)
                 {
-                    if (__instance.animating)
-                    {
-                        __instance.BanButton.MenuButton.enabled = false;
-                    }
-                    else
-                    {
-                        __instance.BanButton.MenuButton.enabled = true;
-                    }
+                    __instance.BanButton.MenuButton.enabled = !__instance.animating;
                 }
             }
         }

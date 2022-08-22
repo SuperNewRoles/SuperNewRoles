@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.CopsRobbers
 {
-    public static class main
+    public static class Main
     {
         public static void ClearAndReloads()
         {
@@ -33,8 +33,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
         public static Dictionary<int, SystemTypes?> SpawnPosition;
         public static bool IsArrest(this PlayerControl player)
         {
-            if (Arrest.Contains(player.PlayerId)) return true;
-            return false;
+            return Arrest.Contains(player.PlayerId);
         }
         public static Dictionary<MapNames, List<SystemTypes>> Rooms = new()
         {
@@ -55,7 +54,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             {
                 if (!p.Data.Disconnected)
                 {
-                    if (!p.isImpostor() && !p.IsArrest())
+                    if (!p.IsImpostor() && !p.IsArrest())
                     {
                         impostorwin = false;
                     }
@@ -84,7 +83,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             {
                 p.RpcSetPet("");
                 p.RpcSetVisor("");
-                if (p.isImpostor())
+                if (p.IsImpostor())
                 {
                     p.RpcSetColor(1);
                     p.RpcSetHat("");
@@ -131,7 +130,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             player.RpcSetVisor("");
 
         }
-        public static Vector2 getPosition(SystemTypes type)
+        public static Vector2 GetPosition(SystemTypes type)
         {
             //return new Vector2(-13.4818f, -5.3336f);
             var MAP = GetMap();
@@ -244,7 +243,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 if (LastCount != players.Count)
                 {
                     LastCount = players.Count;
-                    string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>全プレイヤーのスポーンを待っています...\nロドー中:残り" + NotLoadedCount + "人</color></size>";
+                    string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>"+string.Format(ModTranslation.GetString("CopsSpawnLoading"), NotLoadedCount);
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.RpcSetNamePrivate(name);
@@ -279,9 +278,9 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     LastUpdate = 6;
                     foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                     {
-                        if (!p.PlayerControl.isImpostor())
+                        if (!p.PlayerControl.IsImpostor())
                         {
-                            p.PlayerControl.RpcSnapTo(getPosition(GetRandomSpawnPosition(p)));
+                            p.PlayerControl.RpcSnapTo(GetPosition(GetRandomSpawnPosition(p)));
                         }
                     }
                 }
@@ -297,7 +296,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     //string name = "\n\n\n\n\n<size=300%><color=white>" + SuperNewRoles.Mode.ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>インポスターが来るまで残り5秒</size>";
                     //PlayerControl.LocalPlayer.RpcSetName(name);
                     LastUpdate = ImpostorMoveTime;
-                    string name = "\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>" + ModTranslation.getString("CopsImpostorCome") + ((int)(LastUpdate + 1)).ToString() + ModTranslation.getString("second") + "</size>";
+                    string name = "\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>" + ModTranslation.GetString("CopsImpostorCome") + ((int)(LastUpdate + 1)).ToString() + ModTranslation.GetString("second") + "</size>";
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (!p.AmOwner)
@@ -313,7 +312,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 int i = 0;
                 foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                 {
-                    if (p.PlayerControl.isImpostor())
+                    if (p.PlayerControl.IsImpostor())
                     {
                         p.PlayerControl.RpcSnapTo(new Vector2(-30, 30));
                         i++;
@@ -324,9 +323,9 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.RpcSetName("　");
-                        if (p.isImpostor())
+                        if (p.IsImpostor())
                         {
-                            p.RpcSnapTo(getPosition(GetRandomSpawnPosition(p)));
+                            p.RpcSnapTo(GetPosition(GetRandomSpawnPosition(p)));
                         }
                     }
                 }
@@ -334,12 +333,12 @@ namespace SuperNewRoles.Mode.CopsRobbers
             }
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
-                if (player.isImpostor())
+                if (player.IsImpostor())
                 {
                     foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                     {
                         PlayerControl pc = p.PlayerControl;
-                        if (!pc.isImpostor() && pc.IsPlayer())
+                        if (!pc.IsImpostor() && pc.IsPlayer())
                         {
                             if (p != null && !p.Data.Disconnected)
                             {
@@ -348,12 +347,12 @@ namespace SuperNewRoles.Mode.CopsRobbers
                                     var DistanceData = Vector2.Distance(player.transform.position, p.transform.position);
                                     if (DistanceData <= 0.5f)
                                     {
-                                        Teleport(p, getPosition(SetRandomArrestPosition(p)));
+                                        Teleport(p, GetPosition(SetRandomArrestPosition(p)));
                                     }
                                 }
                                 else
                                 {
-                                    Vector2 getpos = getPosition((SystemTypes)ArrestPositions[p.PlayerId]);
+                                    Vector2 getpos = GetPosition((SystemTypes)ArrestPositions[p.PlayerId]);
                                     var DistanceData = Vector2.Distance(p.transform.position, getpos);
                                     bool flag = false;
                                     flag = DistanceData >= 1f;

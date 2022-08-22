@@ -7,9 +7,9 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
-using static SuperNewRoles.MapCustoms.MapCustom;
 using TMPro;
 using UnityEngine;
+using static SuperNewRoles.MapCustoms.MapCustom;
 
 namespace SuperNewRoles.MapCustoms.Airship
 {
@@ -23,7 +23,7 @@ namespace SuperNewRoles.MapCustoms.Airship
         public static PlayerControl UsePlayer;
         public static bool IsWait = false;
         public static TextMeshPro LowerInfoText;
-        static List<Vector2> TeleportPositions = new List<Vector2>
+        static readonly List<Vector2> TeleportPositions = new()
         {
             new Vector2(-0.78f, -1f), new Vector2(-13, -1), new Vector2(-13, 1.5f), new Vector2(-21, -1.2f), new Vector2(-10, -7), new Vector2(-6.2f, -11),
             new Vector2(-13.4f, -12.2f), new Vector2(2.2f, -12), new Vector2(7.2f, -11.4f), new Vector2(16.3f, -8.6f), new Vector2(24.9f, -5.7f), new Vector2(33.6f, -0.6f), new Vector2(31.5f, 5.6f),
@@ -45,7 +45,7 @@ namespace SuperNewRoles.MapCustoms.Airship
             switch (status)
             {
                 case Status.UseConsole:
-                    PlayerControl useplayer = ModHelpers.playerById(data1);
+                    PlayerControl useplayer = ModHelpers.PlayerById(data1);
                     if (UsePlayer != null)
                     {
                         if (data1 == CachedPlayer.LocalPlayer.PlayerId)
@@ -71,7 +71,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                     }
                     break;
                 case Status.Join:
-                    PlayerControl player = ModHelpers.playerById(data1);
+                    PlayerControl player = ModHelpers.PlayerById(data1);
                     if (player == null) return;
                     if (data2 == 0)
                     {
@@ -106,7 +106,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         (rightplayer != null && rightplayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId))
                     {
                         PlayerControl.LocalPlayer.moveable = true;
-                        PlayerControl.LocalPlayer.transform.position = ModHelpers.GetRandom<Vector2>(TeleportPositions);
+                        PlayerControl.LocalPlayer.transform.position = ModHelpers.GetRandom(TeleportPositions);
                     }
                     IsWait = false;
                     rightplayer = null;
@@ -121,11 +121,12 @@ namespace SuperNewRoles.MapCustoms.Airship
             leftplayer = null;
             rightplayer = null;
             UsePlayer = null;
+            if (LowerInfoText != null) LowerInfoText.text = "";
         }
         public static void ShipStatusAwake(ShipStatus __instance)
         {
             if (PlayerControl.GameOptions.MapId != (int)MapNames.Airship) return;
-            if (__instance.Type == ShipStatus.MapType.Ship && MapCustom.MapCustomOption.getBool() && MapCustom.AirshipSetting.getBool() && SecretRoomOption.getBool())
+            if (__instance.Type == ShipStatus.MapType.Ship && MapCustomOption.GetBool() && AirshipSetting.GetBool() && SecretRoomOption.GetBool())
             {
                 Transform room = __instance.transform.FindChild("HallwayPortrait");
                 Transform Walls = room.FindChild("Walls");
@@ -174,33 +175,35 @@ namespace SuperNewRoles.MapCustoms.Airship
                 shadow_new.Add(new Vector2(7.05f, 6f));
                 shadow_new.Add(new Vector2(3.15f, 6f));
 
-                List<Vector2> newshadow_new = new();
-                newshadow_new.Add(new Vector2(3.15f, 6f));
-                newshadow_new.Add(new Vector2(3.15f, 0.8332f));
+                List<Vector2> newshadow_new = new()
+                {
+                    new Vector2(3.15f, 6f),
+                    new Vector2(3.15f, 0.8332f)
+                };
                 newshadow_new.AddRange(shadow.points.ToArray()[16..].ToList());
                 newshadow.points = newshadow_new.ToArray();
                 shadow.points = shadow_new.ToArray();
 
                 Transform entranse = GameObject.Instantiate(__instance.transform.FindChild("Cockpit/cockpit_chair"), room);
-                entranse.GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_entrance.png", 115f);
+                entranse.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_entrance.png", 115f);
                 entranse.localPosition = new Vector3(2.45f, 1.23f, -0.0007f);
                 entranse.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                 entranse.name = "secretroom_entranse";
 
                 Transform Aisle = GameObject.Instantiate(entranse, room);
-                Aisle.GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Aisle.png", 115f);
+                Aisle.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Aisle.png", 115f);
                 Aisle.localPosition = new Vector3(2.45f, 4.35f, -0.1f);
                 Aisle.localScale = new Vector3(1.5f, 200f, 1.5f);
                 Aisle.name = "secretroom_aisle";
 
                 Transform Room = GameObject.Instantiate(entranse, room);
-                Room.GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Room.png", 115f);
+                Room.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Room.png", 115f);
                 Room.localPosition = new Vector3(2.5326f, 7.9f, -0.09f);
                 Room.localScale = new Vector3(1.44f, 1.44f, 1.44f);
                 Room.name = "secretroom_room";
 
                 Transform Grass = GameObject.Instantiate(entranse, room);
-                Grass.GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Grass.png", 115f);
+                Grass.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Grass.png", 115f);
                 Grass.gameObject.AddComponent<EdgeCollider2D>().points = new Vector2[] {
                     new Vector2(-0.2f, -0.4f), new Vector2(0.175f, -0.4f), new Vector2(0.175f, -0.5f), new Vector2(-0.2f, -0.5f)
                 };
@@ -224,13 +227,13 @@ namespace SuperNewRoles.MapCustoms.Airship
                 Grass4.name = "secretroom_grass4";
 
                 Transform Dustbin = GameObject.Instantiate(Grass, room);
-                Dustbin.GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Dustbin.png", 115f);
+                Dustbin.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Dustbin.png", 115f);
                 Dustbin.localPosition = new Vector3(-0.9f, 6.8f, -8f);
                 Dustbin.localScale = new Vector3(1.4f, 1.4f, 1.4f);
                 Dustbin.name = "secretroom_dustbin";
 
                 Transform Teleport_on = GameObject.Instantiate(Grass, room);
-                Teleport_on.GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Teleport_on.png", 115f);
+                Teleport_on.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Teleport_on.png", 115f);
                 Teleport_on.localPosition = new Vector3(5.7f, 8.92f, -0.1f);
                 Teleport_on.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                 Teleport_on.name = "secretroom_teleport-on";
@@ -243,7 +246,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                 ActivateConsole(Teleport_on2.gameObject);
 
                 Transform Teleport_console = GameObject.Instantiate(Teleport_on, room);
-                Teleport_console.GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Teleport_Console.png", 115f);
+                Teleport_console.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Teleport_Console.png", 115f);
                 Teleport_console.localPosition = new Vector3(2.55f, 9.75f, -0.1f);
                 Teleport_console.localScale = new Vector3(1.35f, 1.35f, 1.35f);
                 Teleport_console.name = "secretroom_teleport-console";
@@ -280,7 +283,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                 if (left == null || right == null) return;
                 if (leftplayer != null)
                 {
-                    if (leftplayer.isDead())
+                    if (leftplayer.IsDead())
                     {
                         leftplayer = null;
                         return;
@@ -290,7 +293,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         left.gameObject.SetActive(true);
                     }
                     left.UpdateFromPlayerOutfit(leftplayer.CurrentOutfit, PlayerMaterial.MaskType.ComplexUI, false, true);
-                    left.nameText().text = leftplayer.CurrentOutfit.PlayerName;
+                    left.NameText().text = leftplayer.CurrentOutfit.PlayerName;
                 }
                 else
                 {
@@ -298,7 +301,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                 }
                 if (rightplayer != null)
                 {
-                    if (rightplayer.isDead())
+                    if (rightplayer.IsDead())
                     {
                         rightplayer = null;
                         return;
@@ -308,7 +311,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         right.gameObject.SetActive(true);
                     }
                     right.UpdateFromPlayerOutfit(rightplayer.CurrentOutfit, PlayerMaterial.MaskType.ComplexUI, false, true);
-                    right.nameText().text = rightplayer.CurrentOutfit.PlayerName;
+                    right.NameText().text = rightplayer.CurrentOutfit.PlayerName;
                 }
                 else
                 {
@@ -321,7 +324,7 @@ namespace SuperNewRoles.MapCustoms.Airship
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
         class VitalsMinigameStartPatch
         {
-            static void Postfix(VitalsMinigame __instance)
+            static void Postfix()
             {
                 onTask = true;
             }
@@ -331,11 +334,12 @@ namespace SuperNewRoles.MapCustoms.Airship
         {
             public static bool Prefix(Console __instance)
             {
-                if (__instance.name == "secretroom_teleport-on" || __instance.name == "secretroom_teleport-on2")
+                if (CachedPlayer.LocalPlayer.IsDead()) return true;
+                if (__instance.name is "secretroom_teleport-on" or "secretroom_teleport-on2")
                 {
                     if (LowerInfoText == null)
                     {
-                        LowerInfoText = UnityEngine.Object.Instantiate(PlayerControl.LocalPlayer.nameText());
+                        LowerInfoText = UnityEngine.Object.Instantiate(PlayerControl.LocalPlayer.NameText());
                         LowerInfoText.transform.parent = HudManager.Instance.transform;
                         LowerInfoText.transform.localPosition = new Vector3(0, -1.5f, 0);
                         LowerInfoText.transform.localScale = new Vector3(2, 2f, 2);
@@ -400,7 +404,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         leftpool.transform.localScale = new Vector3(1, 1, 1);
                         //leftpool.UpdateFromLocalPlayer(PlayerMaterial.MaskType.ComplexUI);
                         leftpool.cosmetics.colorBlindText.transform.localPosition = new Vector3(0.3f, -0.251f, -0.5f);
-                        var lefttext = leftpool.nameText();
+                        var lefttext = leftpool.NameText();
                         lefttext.gameObject.SetActive(true);
                         lefttext.text = CachedPlayer.LocalPlayer.Data.PlayerName;
                         lefttext.transform.localPosition = new Vector3(0, 1, -0.5f);
@@ -415,7 +419,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         //rightpool.UpdateFromLocalPlayer(PlayerMaterial.MaskType.ComplexUI);
                         rightpool.cosmetics.colorBlindText.transform.localPosition = new Vector3(-0.3f, -0.251f, -0.5f);
                         rightpool.cosmetics.colorBlindText.transform.localScale = new Vector3(-3, 3, 3);
-                        var righttext = rightpool.nameText();
+                        var righttext = rightpool.NameText();
                         righttext.gameObject.SetActive(true);
                         righttext.text = CachedPlayer.LocalPlayer.Data.PlayerName;
                         righttext.transform.localPosition = new Vector3(0, 1, -0.5f);
@@ -423,7 +427,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         rightpool.name = "right";
                         right = rightpool;
 
-                        var timetext = GameObject.Instantiate(rightpool.nameText(), minigame.transform);
+                        var timetext = GameObject.Instantiate(rightpool.NameText(), minigame.transform);
                         timetext.gameObject.SetActive(true);
                         timetext.GetComponent<TextMeshPro>().characterWidthAdjustment = 10f;
                         timetext.text = "";
@@ -431,7 +435,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         timetext.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
                         var startbutton = GameObject.Instantiate(minigame.transform.FindChild("CloseButton"), minigame.transform);
-                        startbutton.GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Aislehjhrtjh.png", 115f);
+                        startbutton.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Aislehjhrtjh.png", 115f);
                         var button = startbutton.GetComponent<PassiveButton>();
                         startbutton.transform.localScale = new Vector3(1, 20, 1);
                         button.OnClick = new();
@@ -558,7 +562,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                 couldUse = true;
                 __result = byte.MaxValue;
 
-                if (__instance.name != "secretroom_teleport-on2" && __instance.name != "secretroom_teleport-on" && __instance.name != "secretroom_teleport-console") return true;
+                if (__instance.name is not "secretroom_teleport-on2" and not "secretroom_teleport-on" and not "secretroom_teleport-console") return true;
 
                 if (__instance.name == "secretroom_teleport-console")
                 {
@@ -581,7 +585,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                 PlayerControl @object = pc.Object;
                 Vector2 truePosition = @object.GetTruePosition();
                 Vector3 position = __instance.transform.position;
-                couldUse = (!pc.IsDead || @object.CanMove && pc.Role.CanUse(__instance.TryCast<IUsable>()) && (!__instance.onlyFromBelow || truePosition.y < position.y));
+                couldUse = !pc.IsDead || (@object.CanMove && pc.Role.CanUse(__instance.TryCast<IUsable>()) && (!__instance.onlyFromBelow || truePosition.y < position.y));
                 canUse = couldUse;
                 if (canUse)
                 {

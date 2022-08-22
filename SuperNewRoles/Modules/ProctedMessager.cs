@@ -15,20 +15,20 @@ namespace SuperNewRoles.Modules
             SoundManager.Instance.StopSound(__instance.ProtectedRecentlySound);
             //このターンで誰か守った？
             bool AnythingPlayerProcted = false;
-			foreach(PlayerControl player in CachedPlayer.AllPlayers)
-			{
-				if (player.protectedByGuardianThisRound)
-				{
-					player.protectedByGuardianThisRound = false;
-					if (player.Data != null && player.isAlive())
-					{
-						AnythingPlayerProcted = true;
-					}
-				}
-			}
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            {
+                if (player.protectedByGuardianThisRound)
+                {
+                    player.protectedByGuardianThisRound = false;
+                    if (player.Data != null && player.IsAlive())
+                    {
+                        AnythingPlayerProcted = true;
+                    }
+                }
+            }
 
             //誰か守ってたら音声あり
-            if (AnythingPlayerProcted || ProctedMessages != String.Empty)
+            if (AnythingPlayerProcted || ProctedMessages != "")
             {
                 __instance.ProtectedRecently.SetActive(true);
                 SoundManager.Instance.PlaySound(__instance.ProtectedRecentlySound, false, 1f);
@@ -48,15 +48,15 @@ namespace SuperNewRoles.Modules
         //初期化
         public static void Init()
         {
-            ProctedMessages = String.Empty;
+            ProctedMessages = "";
         }
 
         //スケジュール
         public static void ScheduleProctedMessage(string Text)
         {
-            SuperNewRolesPlugin.Logger.LogDebug("守護メッセージがスケジュールされました。:"+Text);
+            SuperNewRolesPlugin.Logger.LogDebug("守護メッセージがスケジュールされました。:" + Text);
             //もしProctedMessagesが空なら行替えなしに、空じゃなきゃ行替えありに
-            ProctedMessages = ProctedMessages==string.Empty ? Text : string.Concat(ProctedMessages, "\n", Text);
+            ProctedMessages = ProctedMessages == "" ? Text : string.Concat(ProctedMessages, "\n", Text);
         }
     }
 }

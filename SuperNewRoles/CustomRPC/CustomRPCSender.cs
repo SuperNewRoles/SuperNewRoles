@@ -6,7 +6,6 @@ using UnhollowerBaseLib;
 
 namespace SuperNewRoles
 {
-
     public class CustomRpcSender
     {
         public MessageWriter stream;
@@ -18,7 +17,7 @@ namespace SuperNewRoles
 
         private State currentState = State.Ready;
 
-        //0~: targetClientId (GameDataTo)
+        //0~: tarGetClientId (GameDataTo)
         //-1: 全プレイヤー (GameData)
         //-2: 未設定
         private int currentRpcTarget;
@@ -31,7 +30,7 @@ namespace SuperNewRoles
             this.name = name;
             this.sendOption = sendOption;
             this.isUnsafe = isUnsafe;
-            this.currentRpcTarget = -2;
+            currentRpcTarget = -2;
             onSendDelegate = () => Logger.Info($"{this.name}'s onSendDelegate =>", "CustomRpcSender");
 
             currentState = State.Ready;
@@ -43,7 +42,7 @@ namespace SuperNewRoles
         }
 
         #region Start/End Message
-        public CustomRpcSender StartMessage(int targetClientId = -1)
+        public CustomRpcSender StartMessage(int tarGetClientId = -1)
         {
             if (currentState != State.Ready)
             {
@@ -58,7 +57,7 @@ namespace SuperNewRoles
                 }
             }
 
-            if (targetClientId < 0)
+            if (tarGetClientId < 0)
             {
                 // 全員に対するRPC
                 stream.StartMessage(5);
@@ -69,14 +68,14 @@ namespace SuperNewRoles
                 // 特定のクライアントに対するRPC (Desync)
                 stream.StartMessage(6);
                 stream.Write(AmongUsClient.Instance.GameId);
-                stream.WritePacked(targetClientId);
+                stream.WritePacked(tarGetClientId);
             }
 
-            currentRpcTarget = targetClientId;
+            currentRpcTarget = tarGetClientId;
             currentState = State.InRootMessage;
             return this;
         }
-        public CustomRpcSender EndMessage(int targetClientId = -1)
+        public CustomRpcSender EndMessage()
         {
             if (currentState != State.InRootMessage)
             {
@@ -147,10 +146,10 @@ namespace SuperNewRoles
         public CustomRpcSender AutoStartRpc(
           uint targetNetId,
           byte callId,
-          int targetClientId = -1)
+          int tarGetClientId = -1)
         {
-            if (targetClientId == -2) targetClientId = -1;
-            if (currentState != State.Ready && currentState != State.InRootMessage)
+            if (tarGetClientId == -2) tarGetClientId = -1;
+            if (currentState is not State.Ready and not State.InRootMessage)
             {
                 string errorMsg = $"RPCを自動で開始しようとしましたが、StateがReadyまたはInRootMessageではありません (in: \"{name}\")";
                 if (isUnsafe)
@@ -162,19 +161,19 @@ namespace SuperNewRoles
                     throw new InvalidOperationException(errorMsg);
                 }
             }
-            if (currentRpcTarget != targetClientId)
+            if (currentRpcTarget != tarGetClientId)
             {
                 //StartMessage処理
-                if (currentState == State.InRootMessage) this.EndMessage();
-                this.StartMessage(targetClientId);
+                if (currentState == State.InRootMessage) EndMessage();
+                StartMessage(tarGetClientId);
             }
-            this.StartRpc(targetNetId, callId);
+            StartRpc(targetNetId, callId);
 
             return this;
         }
         public void SendMessage()
         {
-            if (currentState == State.InRootMessage) this.EndMessage();
+            if (currentState == State.InRootMessage) EndMessage();
             if (currentState != State.Ready)
             {
                 string errorMsg = $"RPCを送信しようとしましたが、StateがReadyではありません (in: \"{name}\")";
@@ -245,19 +244,19 @@ namespace SuperNewRoles
 
     public static class CustomRpcSenderExtensions
     {
-        public static void RpcSetRole(this CustomRpcSender sender, PlayerControl player, RoleTypes role, int targetClientId = -1)
+        public static void RpcSetRole(this CustomRpcSender sender, PlayerControl player, RoleTypes role, int tarGetClientId = -1)
         {
-            sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetRole, targetClientId)
+            sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetRole, tarGetClientId)
               .Write((ushort)role)
               .EndRpc();
-            if (targetClientId == -1)
+            if (tarGetClientId == -1)
             {
                 player.SetRole(role);
             }
         }
-        public static void RpcMurderPlayer(this CustomRpcSender sender, PlayerControl player, PlayerControl target, int targetClientId = -1)
+        public static void RpcMurderPlayer(this CustomRpcSender sender, PlayerControl player, PlayerControl target, int tarGetClientId = -1)
         {
-            sender.AutoStartRpc(player.NetId, (byte)RpcCalls.MurderPlayer, targetClientId)
+            sender.AutoStartRpc(player.NetId, (byte)RpcCalls.MurderPlayer, tarGetClientId)
               .WriteNetObject(target)
               .EndRpc();
         }

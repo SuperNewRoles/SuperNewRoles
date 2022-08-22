@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles
 {
@@ -13,21 +13,21 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         public static void WrapUp(GameData.PlayerInfo exiled)
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            if (exiled.Object.isRole(RoleId.Jester))
+            if (exiled.Object.IsRole(RoleId.Jester))
             {
-                var (complate, all) = TaskCount.TaskDateNoClearCheck(exiled);
-                if (!RoleClass.Jester.IsJesterTaskClearWin || complate >= all)
+                var (Complete, all) = TaskCount.TaskDateNoClearCheck(exiled);
+                if (!RoleClass.Jester.IsJesterTaskClearWin || Complete >= all)
                 {
                     try
                     {
                         var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
                         Writer.Write(exiled.Object.PlayerId);
                         Writer.EndRPC();
-                        CustomRPC.RPCProcedure.ShareWinner(exiled.Object.PlayerId);
+                        RPCProcedure.ShareWinner(exiled.Object.PlayerId);
                         Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                         Writer.Write((byte)CustomGameOverReason.JesterWin);
                         Writer.EndRPC();
-                        CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.JesterWin);
+                        RPCProcedure.SetWinCond((byte)CustomGameOverReason.JesterWin);
                         var winplayers = new List<PlayerControl>
                         {
                             exiled.Object
@@ -46,21 +46,21 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                     EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByVote, false);
                 }
             }
-            else if (exiled.Object.isRole(RoleId.MadJester))
+            else if (exiled.Object.IsRole(RoleId.MadJester))
             {
-                var (complate, all) = TaskCount.TaskDateNoClearCheck(exiled);
-                if (!RoleClass.MadJester.IsMadJesterTaskClearWin || complate >= all)
+                var (Complete, all) = TaskCount.TaskDateNoClearCheck(exiled);
+                if (!RoleClass.MadJester.IsMadJesterTaskClearWin || Complete >= all)
                 {
                     try
                     {
                         var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
                         Writer.Write(exiled.Object.PlayerId);
                         Writer.EndRPC();
-                        CustomRPC.RPCProcedure.ShareWinner(exiled.Object.PlayerId);
+                        RPCProcedure.ShareWinner(exiled.Object.PlayerId);
                         Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                         Writer.Write((byte)CustomGameOverReason.ImpostorWin);
                         Writer.EndRPC();
-                        CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.ImpostorWin);
+                        RPCProcedure.SetWinCond((byte)CustomGameOverReason.ImpostorWin);
                         var winplayers = new List<PlayerControl>
                         {
                             exiled.Object
