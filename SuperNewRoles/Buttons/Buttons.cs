@@ -2445,7 +2445,27 @@ namespace SuperNewRoles.Buttons
                             PsychometristButton.isEffectActive = false;
                         }
                     }
-                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
+                    bool Is = __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
+                    if (!Is) return false;
+                    Is = false;
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    {
+                        if (collider2D.tag == "DeadBody")
+                        {
+                            DeadBody component = collider2D.GetComponent<DeadBody>();
+                            if (component && !component.Reported)
+                            {
+                                Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                                Vector2 truePosition2 = component.TruePosition;
+                                if (Vector2.Distance(truePosition2 - new Vector2(0.15f, 0.2f), truePosition) <= RoleClass.Psychometrist.Distance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                                {
+                                    Is = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    return Is;
                 },
                 () =>
                 {

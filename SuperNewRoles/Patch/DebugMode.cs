@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
+using Hazel;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Helpers;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
@@ -83,7 +86,11 @@ namespace SuperNewRoles.Patch
                 //ここにデバッグ用のものを書いてね
                 if (Input.GetKeyDown(KeyCode.I))
                 {
-                    SuperNewRoles.CustomRPC.RPCProcedure.UncheckedUsePlatform(0, false);
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedUsePlatform);
+                    writer.Write((byte)4);
+                    writer.Write(false);
+                    writer.EndRPC();
+                    RPCProcedure.UncheckedUsePlatform((byte)4, true);
                 }
                 if (Input.GetKeyDown(KeyCode.K))
                 {
@@ -99,7 +106,7 @@ namespace SuperNewRoles.Patch
                 }
                 if (Input.GetKeyDown(KeyCode.N))
                 {
-                    ModHelpers.PlayerById(1).RpcMurderPlayer(ModHelpers.PlayerById(2));
+                    ModHelpers.PlayerById(1).RpcMurderPlayer(PlayerControl.LocalPlayer);//ModHelpers.PlayerById(2));
                 }
                 /*
                     if (Input.GetKeyDown(KeyCode.C))

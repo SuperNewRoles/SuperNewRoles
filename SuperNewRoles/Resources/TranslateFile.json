@@ -54,6 +54,10 @@
         "11": "SuperNewRoles v{0}",
         "13": "SuperNewRoles v{0}"
     },
+    "vanilaOptionsText": {
+        "0": "VanilaOptions",
+        "11": "\u30d0\u30cb\u30e9\u306e\u8a2d\u5b9a"
+    },
     "creditsUpdateOk": {
         "0": "There is updated data. Please reboot. Latest Version:v{0}",
         "11": "\u66f4\u65b0\u30c7\u30fc\u30bf\u304c\u3042\u308a\u307e\u3059\u3002\u518d\u8d77\u52d5\u3057\u3066\u304f\u3060\u3055\u3044\u3002\u6700\u65b0\u30d0\u30fc\u30b8\u30e7\u30f3:v{0}",
@@ -4474,10 +4478,32 @@
         "11": "\u6226\u8853\u5bb6"
     },
     "SluggerName": {
+        "0": "Slugger",
         "11": "\u30b9\u30e9\u30c3\u30ac\u30fc"
     },
     "SluggerTitle1": {
+        "0": "Lets\u2019 Harisen Kill!",
         "11": "\u30cf\u30ea\u30bb\u30f3\u3067\u30ad\u30eb\u3057\u3088\u3046"
+    },
+    "SluggerChargeTime": {
+        "0": "Charge Time",
+        "11": "\u30c1\u30e3\u30fc\u30b8\u6642\u9593"
+    },
+    "SluggerIsMultiKill": {
+        "0": "Range kill possible",
+        "11": "\u7bc4\u56f2\u30ad\u30eb\u53ef\u80fd"
+    },
+    "SluggerButtonName": {
+        "0": "Harisen",
+        "11": "\u30cf\u30ea\u30bb\u30f3"
+    },
+    "SatsumaAndImoName": {
+        "0": "SatsumaAndImo",
+        "11": "\u3055\u3064\u3068\u307e\u3044\u3082"
+    },
+    "SatsumaAndImoTitle1": {
+        "0": "Madmate And Crewmate",
+        "11": "\u30de\u30c3\u30c9\u30e1\u30a4\u30c8 & \u30af\u30eb\u30fc\u30e1\u30a4\u30c8"
     },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",

@@ -233,7 +233,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             var optByte = opt.ToBytes(5);
             return GameOptionsData.FromBytes(optByte);
         }
-        [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
+        [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
         public class StartGame
         {
             public static void Prefix()
@@ -242,7 +242,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             public static void Postfix()
             {
-                if (!AmongUsClient.Instance.AmHost) return;
                 OptionData = PlayerControl.GameOptions.DeepCopy();
             }
         }
