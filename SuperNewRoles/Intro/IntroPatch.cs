@@ -12,6 +12,21 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches
 {
+    [HarmonyPatch(typeof(Constants), nameof(Constants.ShouldHorseAround))]
+    public static class ShouldAlwaysHorseAround
+    {
+        public static bool isHorseMode;
+        public static bool Prefix(ref bool __result)
+        {
+            if (isHorseMode != HorseModeOption.enableHorseMode && LobbyBehaviour.Instance != null) __result = isHorseMode;
+            else
+            {
+                __result = HorseModeOption.enableHorseMode;
+                isHorseMode = HorseModeOption.enableHorseMode;
+            }
+            return false;
+        }
+    }
     [HarmonyPatch]
     public class IntroPatch
     {
@@ -345,20 +360,5 @@ namespace SuperNewRoles.Patches
             }
         }
 
-        [HarmonyPatch(typeof(Constants), nameof(Constants.ShouldHorseAround))]
-        public static class ShouldAlwaysHorseAround
-        {
-            public static bool isHorseMode;
-            public static bool Prefix(ref bool __result)
-            {
-                if (isHorseMode != HorseModeOption.enableHorseMode && LobbyBehaviour.Instance != null) __result = isHorseMode;
-                else
-                {
-                    __result = HorseModeOption.enableHorseMode;
-                    isHorseMode = HorseModeOption.enableHorseMode;
-                }
-                return false;
-            }
-        }
     }
 }
