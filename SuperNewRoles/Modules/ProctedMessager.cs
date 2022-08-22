@@ -48,7 +48,7 @@ namespace SuperNewRoles.Modules
         //初期化
         public static void Init()
         {
-            ProctedMessages = String.Empty;
+            ProctedMessages = "";
         }
 
         //スケジュール
