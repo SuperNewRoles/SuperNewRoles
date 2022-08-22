@@ -1,7 +1,12 @@
 using System;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.Mode;
+using SuperNewRoles.CustomRPC;
+using System.Collections.Generic;
 using UnityEngine;
+using HarmonyLib;
+using SuperNewRoles.Mode;
+using Hazel;
+using SuperNewRoles.Mode.SuperHostRoles;
 
 namespace SuperNewRoles.Roles
 {
@@ -22,11 +27,63 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.DoppelgangerButton.MaxTimer = RoleClass.Doppelganger.CoolTime + 1;
             HudManagerStartPatch.DoppelgangerButton.Timer = RoleClass.Doppelganger.CoolTime + 1;
         }
+
+        public class DoppelgangerMurderPlayerPatch
+        {
+            public static void DoppelgangerPrefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+            {
+                if(__instance.isRole(RoleId.Doppelganger))
+                {
+                    bool TargetKill = false;
+                    foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.ShapeStates)
+                    {
+                        if (p.Key == __instance.PlayerId && p.Value == target)
+                        {
+                            TargetKill = true;
+                            break;
+                        }
+                    }
+
+                    if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    {
+                        if (!AmongUsClient.Instance.AmHost) return;
+                        var role = __instance.getRole();
+                        var optdata = SyncSetting.OptionData.DeepCopy();
+                        optdata.KillCooldown = SyncSetting.KillCoolSet(TargetKill ? RoleClass.Doppelganger.SucTime     //ﾀｰｹﾞｯﾄだったら
+                                                                                  : RoleClass.Doppelganger.NotSucTime);//ﾀｰｹﾞｯﾄ以外だったら
+                        if (__instance.AmOwner) PlayerControl.GameOptions = optdata;
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, __instance.getClientId());
+                        writer.WriteBytesAndSize(optdata.ToBytes(5));
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    }
+                    else if (ModeHandler.isMode(ModeId.Default) && __instance == PlayerControl.LocalPlayer)
+                    {
+                        float KillCool = TargetKill ? RoleClass.Doppelganger.SucTime    //ﾀｰｹﾞｯﾄだったら
+                                                    : RoleClass.Doppelganger.NotSucTime;//ﾀｰｹﾞｯﾄ以外だったら
+                        PlayerControl.LocalPlayer.SetKillTimer(KillCool);
+                    }
+
+                    SuperNewRolesPlugin.Logger.LogInfo("ドッペルゲンガーがキルしたことを感知");
+                    SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName},{__instance.PlayerId} => {target.Data.PlayerName},{target.PlayerId}");
+                    SuperNewRolesPlugin.Logger.LogInfo($"ドッペルゲンガーの結果がtrueかどうか : {TargetKill.ToString()}");
+                    SuperNewRolesPlugin.Logger.LogInfo($"ドッペルゲンガーの{__instance.Data.PlayerName}のキルクールを{(TargetKill ? RoleClass.Doppelganger.SucTime : RoleClass.Doppelganger.NotSucTime)}秒に変更しました, プレイヤーのキルクール : {__instance.killTimer}");
+                }
+            }
+        }
         public static void DoppelgangerShapeDuration()
         {
+            bool Shape = false;
+            foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.ShapeStates)
+            {
+                if(p.Key == PlayerControl.LocalPlayer.PlayerId && p.Value != PlayerControl.LocalPlayer)
+                {
+                    Shape = true;
+                    break;
+                }
+            }
             if (!RoleClass.IsMeeting)
             {
-                if (RoleClass.Doppelganger.Target != PlayerControl.LocalPlayer)
+                if (Shape)
                 {
                     RoleClass.Doppelganger.Duration -= Time.fixedDeltaTime;
                     if (RoleClass.Doppelganger.Duration <= 0)
@@ -36,7 +93,7 @@ namespace SuperNewRoles.Roles
                     }
                 }
             }
-            if(!RoleClass.IsMeeting && RoleClass.Doppelganger.Target != PlayerControl.LocalPlayer)
+            if(!RoleClass.IsMeeting && Shape)
             {
                 if(RoleClass.Doppelganger.Duration > RoleClass.Doppelganger.DurationTime)
                 {
@@ -55,14 +112,6 @@ namespace SuperNewRoles.Roles
                 {
                     RoleClass.Doppelganger.DoppelgangerDurationText.text = "";
                 }
-            }
-        }
-
-        public static void DoppelgangerSHR()
-        {
-            if (ModeHandler.isMode(ModeId.SuperHostRoles))
-            {
-
             }
         }
     }

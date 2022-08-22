@@ -26,12 +26,51 @@ namespace SuperNewRoles.Patches
         {
             SyncSetting.CustomSyncSettings();
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
+            if (!AmongUsClient.Instance.AmHost) return false;
             if (target.IsBot()) return true;
             bool isShape = __instance.PlayerId != target.PlayerId;
+            if(isShape) SuperNewRolesPlugin.Logger.LogInfo($"[RpcShapesihftPatch]ShapeShift : {__instance.Data.PlayerName} => {target.Data.PlayerName}");
+            else        SuperNewRolesPlugin.Logger.LogInfo($"[RpcShapesihftPatch]ShapeShift : {__instance.Data.PlayerName} <= {target.Data.PlayerName}");
 
-            SuperNewRolesPlugin.Logger.LogInfo($"[RpcShapesihftPatch]ShapeShift : {__instance.Data.PlayerName} => {target.Data.PlayerName}");
-            if (RoleClass.ShapeStates.ContainsKey(__instance)) RoleClass.ShapeStates[__instance] = target;
-            if (!RoleClass.ShapeStates.ContainsKey(__instance)) RoleClass.ShapeStates.Add(__instance, target);
+            if (ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.AmHost)
+            {
+                switch (__instance.getRole())
+                {
+                    case RoleId.Doppelganger:
+                        if (!isShape)
+                        {
+                            //変身を解除したらクールダウンをリセットする。
+                            Doppelganger.DoppelgangerResetCoolDown();
+
+                            //ターゲットを削除
+                            RoleClass.Doppelganger.ShapeStates.Remove(__instance.PlayerId);
+
+                            string Shapeshift = "シェイプシフトが実行されました\n";
+                            foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.ShapeStates)
+                            {
+                                Shapeshift += $"{__instance.Data.PlayerName},{__instance.PlayerId} : {p.Value.Data.PlayerName},{p.Value.PlayerId}\n";
+                            }
+                            Shapeshift += "[Info   :SuperNewRoles] シェイプシフト一覧終了";
+                            SuperNewRolesPlugin.Logger.LogInfo(Shapeshift);
+                        }
+                        else
+                        {
+                            //ターゲットにを追加
+                            if (!RoleClass.Doppelganger.ShapeStates.ContainsKey(__instance.PlayerId)) RoleClass.Doppelganger.ShapeStates.Add(__instance.PlayerId, target);
+                            if (RoleClass.Doppelganger.ShapeStates.ContainsKey(__instance.PlayerId)) RoleClass.Doppelganger.ShapeStates[__instance.PlayerId] = target;
+
+                            //ターゲットをログに出力
+                            string Shapeshift = "シェイプシフトが実行されました\n";
+                            foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.ShapeStates)
+                            {
+                                Shapeshift += $"{__instance.Data.PlayerName},{__instance.PlayerId} : {p.Value.Data.PlayerName},{p.Value.PlayerId}\n";
+                            }
+                            Shapeshift += "[Info   :SuperNewRoles] シェイプシフト一覧終了";
+                            SuperNewRolesPlugin.Logger.LogInfo(Shapeshift);
+                        }
+                        return true;
+                }
+            }
 
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
             {
@@ -154,11 +193,27 @@ namespace SuperNewRoles.Patches
                             }
                         }
                         return true;
-
                     case RoleId.Doppelganger:
-                        RoleClass.Doppelganger.Target = target;
-                        //変身を解除したらクールダウンをリセットする。
-                        if (isShape) Doppelganger.DoppelgangerResetCoolDown();
+                        if (!isShape)
+                        {
+                            //ターゲットを削除
+                            RoleClass.Doppelganger.ShapeStates.Remove(__instance.PlayerId);
+                        }
+                        else
+                        {
+                            //ターゲットにを追加
+                            if (!RoleClass.Doppelganger.ShapeStates.ContainsKey(__instance.PlayerId)) RoleClass.Doppelganger.ShapeStates.Add(__instance.PlayerId, target);
+                            if (RoleClass.Doppelganger.ShapeStates.ContainsKey(__instance.PlayerId)) RoleClass.Doppelganger.ShapeStates[__instance.PlayerId] = target;
+
+                            //ターゲットをログに出力
+                            string Shapeshift = "シェイプシフトが実行されました\n";
+                            foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.ShapeStates)
+                            {
+                                Shapeshift += $"{__instance.Data.PlayerName},{__instance.PlayerId} : {p.Value.Data.PlayerName},{p.Value.PlayerId}\n";
+                            }
+                            Shapeshift += "[Info   :SuperNewRoles] シェイプシフト一覧終了";
+                            SuperNewRolesPlugin.Logger.LogInfo(Shapeshift);
+                        }
                         return true;
                 }
             }
@@ -293,19 +348,6 @@ namespace SuperNewRoles.Patches
                     RoleClass.Vampire.target = __instance.currentTarget;
                     RoleClass.Vampire.KillTimer = DateTime.Now;
                     RoleClass.Vampire.Timer = RoleClass.Vampire.KillDelay;
-                    return false;
-                }
-                if (PlayerControl.LocalPlayer.isRole(RoleId.Doppelganger))
-                {
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(__instance.currentTarget);
-                    if (RoleClass.Doppelganger.Target.PlayerId == __instance.currentTarget.PlayerId)
-                    {
-                        PlayerControl.LocalPlayer.SetKillTimer(RoleClass.Doppelganger.SucTime);
-                    }
-                    else
-                    {
-                        PlayerControl.LocalPlayer.SetKillTimer(RoleClass.Doppelganger.NotSucTime);
-                    }
                     return false;
                 }
                 bool showAnimation = true;
@@ -605,11 +647,13 @@ namespace SuperNewRoles.Patches
                             return false;
                         case RoleId.Doppelganger:
                             __instance.RpcMurderPlayer(target);
-                            __instance.SetKillTimer(RoleClass.ShapeStates.ContainsKey(__instance) == true
-                            ? RoleClass.ShapeStates[__instance] == target
+                            /*
+                            __instance.SetKillTimer(RoleClass.Doppelganger.ShapeStates.ContainsKey(__instance) == true
+                            ? RoleClass.Doppelganger.ShapeStates[__instance] == target
                             ? RoleClass.Doppelganger.SucTime    //ﾀｰｹﾞｯﾄだったら
                             : RoleClass.Doppelganger.NotSucTime //ﾀｰｹﾞｯﾄ以外だったら
                             : RoleClass.Doppelganger.NotSucTime);   //変身を一回もしていなかったら
+                            */
                             SuperNewRolesPlugin.Logger.LogInfo("ドッペルゲンガーがキルしたことを感知");
                             SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName},{__instance.PlayerId},{__instance.getRole()} => {target.Data.PlayerName},{target.PlayerId},{target.getRole()}");
                             return false;
@@ -624,72 +668,72 @@ namespace SuperNewRoles.Patches
             {
                 SyncSetting.CustomSyncSettings(__instance);
                 SyncSetting.CustomSyncSettings(target);
-                if (target.isRole(RoleId.StuntMan))
+                switch (__instance.getRole())
                 {
-                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
-                    {
-                        if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
+                    case RoleId.StuntMan:
+                        if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
                         {
-                            RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
-                            target.RpcProtectPlayer(target, 0);
-                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
-                            return false;
-                        }
-                        else
-                        {
-                            if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
+                            if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
                             {
-                                RoleClass.StuntMan.GuardCount[target.PlayerId]--;
+                                RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
                                 target.RpcProtectPlayer(target, 0);
                                 new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
                                 return false;
                             }
-                        }
-                    }
-                }
-                else if (target.isRole(RoleId.MadStuntMan))
-                {
-                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, __instance))
-                    {
-                        if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
-                        {
-                            target.RpcProtectPlayer(target, 0);
-                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
-                            return false;
-                        }
-                        else
-                        {
-                            if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
+                            else
                             {
-                                RoleClass.MadStuntMan.GuardCount[target.PlayerId]--;
+                                if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
+                                {
+                                    RoleClass.StuntMan.GuardCount[target.PlayerId]--;
+                                    target.RpcProtectPlayer(target, 0);
+                                    new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                                    return false;
+                                }
+                            }
+                        }
+                        break;
+                    case RoleId.MadStuntMan:
+                        if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, __instance))
+                        {
+                            if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
+                            {
                                 target.RpcProtectPlayer(target, 0);
                                 new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
                                 return false;
                             }
-                        }
-                    }
-                }
-                else if (target.isRole(RoleId.Fox))
-                {
-                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, __instance))
-                    {
-                        if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId))
-                        {
-                            target.RpcProtectPlayer(target, 0);
-                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
-                            return false;
-                        }
-                        else
-                        {
-                            if (!(RoleClass.Fox.KillGuard[target.PlayerId] <= 0))
+                            else
                             {
-                                RoleClass.Fox.KillGuard[target.PlayerId]--;
+                                if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
+                                {
+                                    RoleClass.MadStuntMan.GuardCount[target.PlayerId]--;
+                                    target.RpcProtectPlayer(target, 0);
+                                    new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                                    return false;
+                                }
+                            }
+                        }
+                        break;
+                    case RoleId.Fox:
+                        if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, __instance))
+                        {
+                            if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId))
+                            {
                                 target.RpcProtectPlayer(target, 0);
                                 new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
                                 return false;
                             }
+                            else
+                            {
+                                if (!(RoleClass.Fox.KillGuard[target.PlayerId] <= 0))
+                                {
+                                    RoleClass.Fox.KillGuard[target.PlayerId]--;
+                                    target.RpcProtectPlayer(target, 0);
+                                    new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                                    return false;
+                                }
+                            }
                         }
-                    }
+                        break;
                 }
             }
             SuperNewRolesPlugin.Logger.LogInfo("g(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
@@ -782,6 +826,7 @@ namespace SuperNewRoles.Patches
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
             EvilGambler.EvilGamblerMurder.Prefix(__instance, target);
+            Doppelganger.DoppelgangerMurderPlayerPatch.DoppelgangerPrefix(__instance, target);
             if (ModeHandler.isMode(ModeId.Default))
             {
                 target.resetChange();
