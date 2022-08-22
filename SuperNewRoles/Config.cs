@@ -44,7 +44,7 @@ namespace SuperNewRoles
                 IsUpdated = true;
             }
             IsUpdate.Value = false;
-            IntroPatch.ShouldAlwaysHorseAround.isHorseMode = EnableHorseMode.Value;
+            Patches.ShouldAlwaysHorseAround.isHorseMode = EnableHorseMode.Value;
             Patch.RegionMenuOpenPatch.defaultRegions = ServerManager.DefaultRegions;
             Patch.RegionMenuOpenPatch.UpdateRegions();
         }

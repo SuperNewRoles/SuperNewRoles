@@ -24,7 +24,7 @@ namespace SuperNewRoles.Modules
             }
 
             //誰か守ってたら音声あり
-            if (AnythingPlayerProcted || ProctedMessages != null)
+            if (AnythingPlayerProcted || ProctedMessages != "")
             {
                 __instance.ProtectedRecently.SetActive(true);
                 SoundManager.Instance.PlaySound(__instance.ProtectedRecentlySound, false, 1f);
@@ -52,7 +52,7 @@ namespace SuperNewRoles.Modules
         {
             SuperNewRolesPlugin.Logger.LogDebug("守護メッセージがスケジュールされました。:" + Text);
             //もしProctedMessagesが空なら行替えなしに、空じゃなきゃ行替えありに
-            ProctedMessages = ProctedMessages == string.Empty ? Text : string.Concat(ProctedMessages, "\n", Text);
+            ProctedMessages = ProctedMessages == "" ? Text : string.Concat(ProctedMessages, "\n", Text);
         }
     }
 }

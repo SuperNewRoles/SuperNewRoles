@@ -435,12 +435,6 @@ namespace SuperNewRoles.CustomCosmetics
         {
             public static bool Prefix()
             {
-                return true;
-            }
-
-            public static void Postfix(HatsTab __instance)
-            {
-                // Manually hide all custom TMPro.TMP_Text objects that are outside the ScrollRect
                 foreach (TMPro.TMP_Text customText in hatsTabCustomTexts)
                 {
                     if (customText != null && customText.transform != null && customText.gameObject != null)
@@ -450,6 +444,11 @@ namespace SuperNewRoles.CustomCosmetics
                         if (active != customText.gameObject.active && epsilon > 0.1f) customText.gameObject.SetActive(active);
                     }
                 }
+                return true;
+            }
+
+            public static void Postfix(HatsTab __instance)
+            {
             }
         }
     }

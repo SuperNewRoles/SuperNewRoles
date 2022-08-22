@@ -559,7 +559,6 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.PlayerById(playerId);
             player.ClearAllTasks();
-
             GameData.Instance.SetTasks(playerId, taskTypeIds);
         }
         public static void StartGameRPC()

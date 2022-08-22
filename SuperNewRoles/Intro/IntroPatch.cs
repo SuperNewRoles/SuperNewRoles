@@ -12,8 +12,23 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches
 {
+    [HarmonyPatch(typeof(Constants), nameof(Constants.ShouldHorseAround))]
+    public static class ShouldAlwaysHorseAround
+    {
+        public static bool isHorseMode;
+        public static bool Prefix(ref bool __result)
+        {
+            if (isHorseMode != HorseModeOption.enableHorseMode && LobbyBehaviour.Instance != null) __result = isHorseMode;
+            else
+            {
+                __result = HorseModeOption.enableHorseMode;
+                isHorseMode = HorseModeOption.enableHorseMode;
+            }
+            return false;
+        }
+    }
     [HarmonyPatch]
-    class IntroPatch
+    public class IntroPatch
     {
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
         class IntroCutsceneOnDestroyPatch
@@ -278,12 +293,12 @@ namespace SuperNewRoles.Patches
                 }
             }
             public static void Prefix(IntroCutscene __instance)
-            {
+            {/*
                 if (MapData.IsMap(CustomMapNames.Agartha))
                 {
                     var (commont, shortt, longt) = PlayerControl.LocalPlayer.GetTaskCount();
                     PlayerControl.LocalPlayer.GenerateAndAssignTasks(commont, shortt, longt);
-                }
+                }*/
 
                 //AmongUsClient.Instance.StartCoroutine(settask());
                 new LateTask(() =>
@@ -345,20 +360,5 @@ namespace SuperNewRoles.Patches
             }
         }
 
-        [HarmonyPatch(typeof(Constants), nameof(Constants.ShouldHorseAround))]
-        public static class ShouldAlwaysHorseAround
-        {
-            public static bool isHorseMode;
-            public static bool Prefix(ref bool __result)
-            {
-                if (isHorseMode != HorseModeOption.enableHorseMode && LobbyBehaviour.Instance != null) __result = isHorseMode;
-                else
-                {
-                    __result = HorseModeOption.enableHorseMode;
-                    isHorseMode = HorseModeOption.enableHorseMode;
-                }
-                return false;
-            }
-        }
     }
 }
