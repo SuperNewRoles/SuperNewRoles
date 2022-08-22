@@ -292,7 +292,7 @@ namespace SuperNewRoles.Roles
             public static bool IsNeutralKill;
             public static bool IsLoversKill;
             public static bool IsMadRoleKill;
-            public static bool MadRoleKill;
+            public static bool IsFriendsRoleKill;
             public static float KillMaxCount;
             public static Dictionary<int, int> KillCount;
             public static DateTime ButtonTimer;
@@ -313,7 +313,7 @@ namespace SuperNewRoles.Roles
                 IsNeutralKill = CustomOptions.SheriffNeutralKill.GetBool();
                 IsLoversKill = CustomOptions.SheriffLoversKill.GetBool();
                 IsMadRoleKill = CustomOptions.SheriffMadRoleKill.GetBool();
-                MadRoleKill = CustomOptions.SheriffMadRoleKill.GetBool();
+                IsFriendsRoleKill = CustomOptions.SheriffFriendsRoleKill.GetBool();
                 KillMaxCount = CustomOptions.SheriffKillMaxCount.GetFloat();
                 KillCount = new();
             }
