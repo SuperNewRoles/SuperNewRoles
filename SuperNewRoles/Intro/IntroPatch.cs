@@ -13,7 +13,7 @@ using UnityEngine;
 namespace SuperNewRoles.Patches
 {
     [HarmonyPatch]
-    class IntroPatch
+    public class IntroPatch
     {
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
         class IntroCutsceneOnDestroyPatch

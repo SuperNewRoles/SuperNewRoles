@@ -213,7 +213,11 @@ namespace SuperNewRoles.MapOptions
                         CanUseVitalTime = CustomOption.CustomOption.Create(467, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 300f, 2.5f, RestrictVital);
             */
 
+<<<<<<< HEAD
             RandomSpawnOption = CustomOption.CustomOption.Create(955, false, CustomOptionType.Generic, "RandomSpawnOption", false, null);
+=======
+            RandomSpawnOption = CustomOption.CustomOption.Create(904, false, CustomOptionType.Generic, "RandomSpawnOption", false, null);
+>>>>>>> develop
 
             ReactorDurationOption = CustomOption.CustomOption.Create(468, true, CustomOptionType.Generic, "ReactorDurationSetting", false, MapOptionSetting);
             PolusReactorTimeLimit = CustomOption.CustomOption.Create(469, true, CustomOptionType.Generic, "PolusReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
@@ -222,8 +226,13 @@ namespace SuperNewRoles.MapOptions
 
             VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
 
+<<<<<<< HEAD
             WireTaskIsRandomOption = CustomOption.CustomOption.Create(956, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
             WireTaskNumOption = CustomOption.CustomOption.Create(957, false, CustomOptionType.Generic, "WireTaskNum", 5f,1f,8f,1f, WireTaskIsRandomOption);
+=======
+            WireTaskIsRandomOption = CustomOption.CustomOption.Create(908, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
+            WireTaskNumOption = CustomOption.CustomOption.Create(909, false, CustomOptionType.Generic, "WireTaskNum", 5f,1f,8f,1f, WireTaskIsRandomOption);
+>>>>>>> develop
 
             LadderDead = CustomOption.CustomOption.Create(637, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
             LadderDeadChance = CustomOption.CustomOption.Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], LadderDead);
