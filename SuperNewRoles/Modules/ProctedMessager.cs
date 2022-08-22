@@ -1,3 +1,5 @@
+using System;
+using HarmonyLib;
 using TMPro;
 
 namespace SuperNewRoles.Modules
@@ -9,6 +11,8 @@ namespace SuperNewRoles.Modules
 
         public static void StartMeeting(MeetingIntroAnimation __instance)
         {
+            __instance.ProtectedRecently.SetActive(false);
+            SoundManager.Instance.StopSound(__instance.ProtectedRecentlySound);
             //このターンで誰か守った？
             bool AnythingPlayerProcted = false;
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
