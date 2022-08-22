@@ -60,7 +60,7 @@ namespace SuperNewRoles.Roles
                     _ => false,
                 };
             }
-            if (Target.IsNeutral() && RoleClass.Sheriff.IsNeutralKill && !CustomOptions.SheriffFriendsRoleKillIndividualSettings.GetBool()) return true;//第三陣営を切れるが有効 かつ 個別設定が無効
+            if (Target.IsNeutral() && RoleClass.Sheriff.IsNeutralKill && !CustomOptions.SheriffNeutralKillIndividualSettings.GetBool()) return true;//第三陣営を切れるが有効 かつ 個別設定が無効
             if (RoleClass.Sheriff.IsNeutralKill && CustomOptions.SheriffNeutralKillIndividualSettings.GetBool())//第三陣営を切れるが有効 かつ 個別設定が有効
             {
                 return role switch
