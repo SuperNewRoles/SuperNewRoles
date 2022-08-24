@@ -48,10 +48,11 @@ namespace SuperNewRoles.Helpers
             {
                 if (AmongUsClient.Instance.AmClient)
                 {
-                    __instance.SetVisor(visorId);
+                    __instance.SetVisor(visorId, __instance.Data.DefaultOutfit.ColorId);
                 }
                 MessageWriter obj = AmongUsClient.Instance.StartRpc(__instance.NetId, 42, SendOption.None);
                 obj.Write(visorId);
+                obj.Write(__instance.Data.DefaultOutfit.ColorId);
                 obj.EndMessage();
                 return false;
             }
