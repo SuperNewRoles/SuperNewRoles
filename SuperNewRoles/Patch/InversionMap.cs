@@ -38,13 +38,6 @@ namespace SuperNewRoles.Patch
                     ShipStatus.Instance.MeetingSpawnCenter = new Vector2(-19.5f, -17f);
                     ShipStatus.Instance.MeetingSpawnCenter2 = new Vector2(-19.5f, -17f);
                 }
-                else if (SubmergedCompatibility.isSubmerged())
-                {
-                    ShipStatus.Instance.InitialSpawnCenter = new Vector2(-3.4f, -28.35f);
-                    ShipStatus.Instance.MeetingSpawnCenter = new Vector2(-3.4f, -28.35f);
-                    ShipStatus.Instance.MeetingSpawnCenter2 = new Vector2(-3.4f, -28.35f);
-                    ShipStatus.Instance.transform.localScale = new Vector3(-0.8f, 0.8f, 0.9412f);
-                }
                 /*else if(PlayerControl.GameOptions.MapId == 4 && CustomOptionHolder.InversionAShip.GetBool())
                 {
                     airship = GameObject.Find("Airship(Clone)");
