@@ -855,14 +855,9 @@ namespace SuperNewRoles.CustomOption
         public static void Postfix(GameSettingMenu __instance)
         {
             // Setup mapNameTransform
-            var mapNameTransform = __instance.AllItems.FirstOrDefault(x => x.name.Equals("MapName", StringComparison.OrdinalIgnoreCase));
-            if (mapNameTransform == null) return;
-            mapNameTransform.gameObject.active = true;
-
             foreach (Transform i in __instance.AllItems.ToList())
             {
                 float num = -0.5f;
-                if (i.name.Equals("MapName", StringComparison.OrdinalIgnoreCase)) num = 0.25f;
                 if (i.name.Equals("NumImpostors", StringComparison.OrdinalIgnoreCase)) num = -0.5f;
                 if (i.name.Equals("ResetToDefault", StringComparison.OrdinalIgnoreCase)) num = 0f;
                 i.position += new Vector3(0, num, 0);
