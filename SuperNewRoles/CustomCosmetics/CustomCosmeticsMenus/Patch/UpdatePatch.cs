@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using UnityEngine;
 
@@ -60,7 +56,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     ObjectData.ColorText.transform.localPosition = new Vector3(0.4223f, 2.2f, -55f);
                     __instance.PreviewArea.transform.localPosition = new Vector3(3.5f, -0.5f, -3);
                     //__instance.PreviewArea.transform.localScale = new Vector3(-1, 1, 1);
-                    if (!__instance.cubesTab.gameObject.active) {
+                    if (!__instance.cubesTab.gameObject.active)
+                    {
                         __instance.itemName.gameObject.SetActive(true);
                     }
                     __instance.itemName.transform.localPosition = new Vector3(3.5f, -1.74f, -5);
@@ -96,10 +93,11 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     ObjectData.SkinButton_Skin.SetSkin(SaveManager.lastSkin, SaveManager.BodyColor, false);
                     ObjectData.SkinButton_Skin.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
 
-                    ObjectData.VisorButton_Visor.SetVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(SaveManager.LastVisor));
+                    ObjectData.VisorButton_Visor.SetVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(SaveManager.LastVisor), SaveManager.BodyColor);
                     ObjectData.VisorButton_Visor.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 }
-            } else
+            }
+            else
             {
                 __instance.PreviewArea.transform.localPosition = new Vector3(4.25f, 0f, -3f);
                 __instance.itemName.gameObject.SetActive(true);

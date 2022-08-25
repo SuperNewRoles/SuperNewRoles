@@ -48,10 +48,11 @@ namespace SuperNewRoles.Helpers
             {
                 if (AmongUsClient.Instance.AmClient)
                 {
-                    __instance.SetVisor(visorId);
+                    __instance.SetVisor(visorId, __instance.Data.DefaultOutfit.ColorId);
                 }
                 MessageWriter obj = AmongUsClient.Instance.StartRpc(__instance.NetId, 42, SendOption.None);
                 obj.Write(visorId);
+                obj.Write(__instance.Data.DefaultOutfit.ColorId);
                 obj.EndMessage();
                 return false;
             }
@@ -94,7 +95,7 @@ namespace SuperNewRoles.Helpers
             {
                 if (!AmongUsClient.Instance.AmHost)
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
                     writer.Write(__instance.PlayerId);
                     writer.Write(target.PlayerId);
                     writer.Write(byte.MaxValue);

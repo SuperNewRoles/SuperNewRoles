@@ -402,7 +402,7 @@ namespace SuperNewRoles.CustomCosmetics
                         string text = CustomColors.ColorStrings[(int)name];
                         if (text != null)
                         {
-                            __result = ModTranslation.getString(text) + " (MOD)";
+                            __result = ModTranslation.GetString(text) + " (MOD)";
                             return false;
                         }
                     }
@@ -455,9 +455,12 @@ namespace SuperNewRoles.CustomCosmetics
             {
                 private static bool isTaken(PlayerControl player, uint color)
                 {
-                    foreach (GameData.PlayerInfo p in GameData.Instance.AllPlayers.GetFastEnumerator())
+                    foreach (GameData.PlayerInfo p in GameData.Instance.AllPlayers)
+                    {
+                        //Logger.Info($"{!p.Disconnected} は {p.PlayerId != player.PlayerId} は {p.DefaultOutfit.ColorId == color}", "isTaken");
                         if (!p.Disconnected && p.PlayerId != player.PlayerId && p.DefaultOutfit.ColorId == color)
                             return true;
+                    }
                     return false;
                 }
                 public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte bodyColor)
@@ -471,6 +474,7 @@ namespace SuperNewRoles.CustomCosmetics
                             color = (color + 1) % CustomColors.pickableColors;
                         }
                     }
+                    //Logger.Info(color.ToString() + "をセット:" + isTaken(__instance, color).ToString()+":"+ (color >= Palette.PlayerColors.Length));
                     __instance.RpcSetColor((byte)color);
                     return false;
                 }

@@ -25,23 +25,16 @@ namespace SuperNewRoles.Mode.Zombie
             ZombieCommingLightOption = CustomOption.CustomOption.Create(495, true, CustomOptionType.Generic, "ZombieCommingLightSetting", 1.5f, 0f, 5f, 0.25f, ZombieMode);
             ZombieCommingSpeedOption = CustomOption.CustomOption.Create(496, true, CustomOptionType.Generic, "ZombieCommingSpeedSetting", 1.5f, 0f, 5f, 0.25f, ZombieMode);
         }
-        static float GetSpeed(float speed)
-        {
-            if (speed <= 0)
-            {
-                return 0.001f;
-            }
-            return speed;
-        }
+        static float GetSpeed(float speed) { return speed <= 0 ? 0.001f : speed; }
         public static void FirstChangeSettings()
         {
             var optdata = SyncSetting.OptionData.DeepCopy();
-            optdata.CrewLightMod = GetSpeed(ZombieCommingLightOption.getFloat());
-            optdata.ImpostorLightMod = GetSpeed(ZombieCommingSpeedOption.getFloat());
+            optdata.CrewLightMod = GetSpeed(ZombieCommingLightOption.GetFloat());
+            optdata.ImpostorLightMod = GetSpeed(ZombieCommingSpeedOption.GetFloat());
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (player.AmOwner) PlayerControl.GameOptions = optdata;
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.getClientId());
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
                 writer.WriteBytesAndSize(optdata.ToBytes(5));
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
             }
@@ -63,7 +56,7 @@ namespace SuperNewRoles.Mode.Zombie
                 optdata.PlayerSpeedMod = GetSpeed(PoliceSpeed);
             }
             if (player.AmOwner) PlayerControl.GameOptions = optdata;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.getClientId());
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
             writer.WriteBytesAndSize(optdata.ToBytes(5));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }

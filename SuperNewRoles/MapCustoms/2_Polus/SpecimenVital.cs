@@ -11,17 +11,17 @@ namespace SuperNewRoles.MapCustoms
             flag = false;
         }
 
-        public static void moveVital()
+        public static void MoveVital()
         {
-            if (SpecimenVital.flag) return;
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustoms.MapCustom.SpecimenVital.getBool())
+            if (flag) return;
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustom.SpecimenVital.GetBool())
             {
                 var panel = GameObject.Find("panel_vitals");
                 if (panel != null)
                 {
                     var transform = panel.GetComponent<Transform>();
-                    transform.SetPositionAndRotation(SpecimenVital.pos, transform.rotation);
-                    SpecimenVital.flag = true;
+                    transform.SetPositionAndRotation(pos, transform.rotation);
+                    flag = true;
                 }
             }
         }

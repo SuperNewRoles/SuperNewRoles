@@ -1,10 +1,9 @@
 using HarmonyLib;
-using UnityEngine;
 using SuperNewRoles.Mode;
-
-namespace SuperNewRoles
+using UnityEngine;
 
 //TOHより!
+namespace SuperNewRoles
 {
     [HarmonyPatch(typeof(GameOptionsData), nameof(GameOptionsData.SetRecommendations))]
     public static class ChangeRecommendedSettingPatch
@@ -64,7 +63,6 @@ namespace SuperNewRoles
                     break;
                 //ゾンビモード
                 case ModeId.Zombie:
-
                     __instance.PlayerSpeedMod = 1.5f;
                     __instance.CrewLightMod = 1.5f;
                     __instance.ImpostorLightMod = 0.25f;

@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
-using Hazel;
 using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
-{   
-    [HarmonyPatch(typeof(PlayerCustomizationMenu),nameof(PlayerCustomizationMenu.Start))]
+{
+    [HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.Start))]
     class AwakePatch
     {
         public static void Prefix()
@@ -27,7 +23,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             var PresetTabButton = __instance.Tabs[1].Button.transform.parent;
             var ClosetTab = __instance.Tabs[0].Tab.transform;
             var PresetTab = __instance.Tabs[1].Tab.transform;
-            SuperNewRolesPlugin.Logger.LogInfo(ClosetTabButton.name+":"+PresetTabButton.name);
+            SuperNewRolesPlugin.Logger.LogInfo(ClosetTabButton.name + ":" + PresetTabButton.name);
             int i = 0;
             foreach (TabButton button in __instance.Tabs)
             {
@@ -124,8 +120,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             Transform ClosetIcon = ClosetTabButton.FindChild("Icon");
             Transform PresetIcon = PresetTabButton.FindChild("Icon");
 
-            ClosetIcon.GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Cosmetics.ClosetButton.png", 115f);
-            PresetIcon.GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Cosmetics.PresetButton.png", 115f);
+            ClosetIcon.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Cosmetics.ClosetButton.png", 115f);
+            PresetIcon.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Cosmetics.PresetButton.png", 115f);
 
             ClosetIcon.localScale *= 2;
             PresetIcon.localScale *= 2;
@@ -152,7 +148,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static bool IsFirst = false;
         public static bool Prefix(PlayerCustomizationMenu __instance, InventoryTab tab)
         {
-            if (IsFirst) {
+            if (IsFirst)
+            {
                 ObjectData.IsShow = false;
                 return true;
             }
@@ -160,7 +157,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             if (tab.name == "ColorGroup")
             {
                 ObjectData.ClosetShow();
-            } else if(tab.name == "HatsGroup")
+            }
+            else if (tab.name == "HatsGroup")
             {
                 ObjectData.PresetShow();
             }

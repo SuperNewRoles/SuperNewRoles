@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
 using static UnityEngine.UI.Button;
 
 namespace SuperNewRoles.Sabotage.CognitiveDeficit
 {
-    public static class main
+    public static class Main
     {
         public static void StartSabotage()
         {
@@ -40,7 +40,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
         public static float DefaultDistanceTime = 5;
         private static bool IsYellow;
         private static List<Arrow> ArrowDatas = new();
-        private static Vector2[] Datas = new Vector2[] { new Vector2(-13.9f, -15.5f), new Vector2(-24.7f, -1f), new Vector2(10.6f, -15.5f) };
+        private static readonly Vector2[] Datas = new Vector2[] { new Vector2(-13.9f, -15.5f), new Vector2(-24.7f, -1f), new Vector2(10.6f, -15.5f) };
         public static List<PlayerControl> OKPlayers;
         public static bool IsLocalEnd;
         public static bool IsAllEndSabotage;
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
             {
                 ButtonBehavior button = InfectedOverlay.Instantiate(__instance.allButtons[0], __instance.allButtons[0].transform.parent);
                 button.transform.localPosition += new Vector3(0.2f, -1.7f, 0);
-                button.spriteRenderer.sprite = IconManager.CognitiveDeficitgetButtonSprite();
+                button.spriteRenderer.sprite = IconManager.CognitiveDeficitGetButtonSprite();
                 button.OnClick = new ButtonClickedEvent();
 
                 button.OnClick.AddListener((Action)(() =>
@@ -80,12 +80,12 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
             bool IsOK = true;
             foreach (PlayerControl p3 in CachedPlayer.AllPlayers)
             {
-                if (p3.isAlive() && !OKPlayers.IsCheckListPlayerControl(p3))
+                if (p3.IsAlive() && !OKPlayers.IsCheckListPlayerControl(p3))
                 {
                     IsOK = false;
-                    if (PlayerControl.LocalPlayer.isImpostor())
+                    if (PlayerControl.LocalPlayer.IsImpostor())
                     {
-                        if (!(p3.isImpostor() || p3.isRole(RoleId.MadKiller)))
+                        if (!(p3.IsImpostor() || p3.IsRole(RoleId.MadKiller)))
                         {
                             SetNamesClass.SetPlayerNameColor(p3, new Color32(18, 112, 214, byte.MaxValue));
                         }
@@ -150,13 +150,14 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                     List<PlayerControl> target = new();
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (!p.Data.Disconnected && p.isAlive())
+                        if (p.IsAlive())
                         {
                             target.Add(p);
                         }
                     }
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
+                        if (p.IsDead()) continue;
                         if (target.Count > 0)
                         {
                             var index = ModHelpers.GetRandomIndex(target);
