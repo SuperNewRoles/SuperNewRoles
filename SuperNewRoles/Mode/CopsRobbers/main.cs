@@ -325,7 +325,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.RpcSetName(p.GetDefaultName());
-                        SetPlayerNameColor(p, Color.clear);
+                        if (CopsRobbersOptions.CRHideName.GetBool()) SetPlayerNameColor(p, Color.clear);
                         if (p.IsImpostor())
                         {
                             p.RpcSnapTo(GetPosition(GetRandomSpawnPosition(p)));
