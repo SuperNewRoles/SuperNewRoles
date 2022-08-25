@@ -288,17 +288,17 @@ namespace SuperNewRoles.Roles"""+namedata+"""
             }
         }\n        //新ロールクラス""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("COLORS", MainClass.GetRoleColor()))
 
-        # Intro/IntroDate.cs
+        # Intro/IntroData.cs
         if (MainClass.GetBool("Impo")):
-            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Impostor);
+            MainClass.WriteCodes("Intro/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Impostor);
         //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         elif (MainClass.GetBool("Crew")):
-            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate);
+            MainClass.WriteCodes("Intro/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate);
         //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         elif (MainClass.GetBool("Neut")):
-            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Neutral);
+            MainClass.WriteCodes("Intro/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Neutral);
         //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-            '''MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロ検知","""case (RoleId.ROLENAME):
+            '''MainClass.WriteCodes("Intro/IntroData.cs", "//イントロ検知","""case (RoleId.ROLENAME):
                     return ROLENAMEIntro;
                 //イントロ検知""".replace("ROLENAME",MainClass.GetInput("RoleName")))'''  # ⇐なにこれ？
         elif (MainClass.GetBool("TeamOne")):
@@ -306,7 +306,7 @@ namespace SuperNewRoles.Roles"""+namedata+"""
         elif (MainClass.GetBool("TeamTwo")):
             print()
         elif (MainClass.GetBool("TeamGhost")):
-            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate, true);
+            MainClass.WriteCodes("Intro/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new IntroData("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate, true);
         //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # CustomOption/CustomOptionDate.cs

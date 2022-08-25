@@ -162,20 +162,20 @@ namespace SuperNewRoles.Patch
             }
             else if (PlayerControl.LocalPlayer.IsRole(RoleId.Stefinder) && RoleClass.Stefinder.IsKill)
             {
-                var introdate = IntroDate.GetIntroDate(role);
+                var introdate = IntroData.GetIntroDate(role);
                 roleNames = introdate.Name;
                 roleColors = RoleClass.ImpostorRed;
             }
             else
             {
-                var introdate = IntroDate.GetIntroDate(role);
+                var introdate = IntroData.GetIntroDate(role);
                 roleNames = introdate.Name;
                 roleColors = introdate.color;
             }
             var GhostRole = p.GetGhostRole();
             if (GhostRole != RoleId.DefaultRole)
             {
-                var GhostIntro = IntroDate.GetIntroDate(GhostRole);
+                var GhostIntro = IntroData.GetIntroDate(GhostRole);
                 GhostroleNames = GhostIntro.Name;
                 GhostroleColors = GhostIntro.color;
             }
@@ -185,7 +185,7 @@ namespace SuperNewRoles.Patch
         {
             var role = player.GetRole();
             if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && player.IsAlive())) return;
-            SetPlayerNameColor(player, IntroDate.GetIntroDate(role).color);
+            SetPlayerNameColor(player, IntroData.GetIntroDate(role).color);
         }
         public static void SetPlayerRoleNames(PlayerControl player)
         {
@@ -289,7 +289,7 @@ namespace SuperNewRoles.Patch
             if (PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
             {
                 foreach (PlayerControl player in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
-                { 
+                {
                     //クルーなら
                     if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
                     {//名前に(C)をつける
@@ -406,7 +406,8 @@ namespace SuperNewRoles.Patch
                         {
                             SetNamesClass.SetPlayerRoleNames(RoleClass.PartTimer.CurrentTarget);
                             SetNamesClass.SetPlayerNameColors(RoleClass.PartTimer.CurrentTarget);
-                        } else
+                        }
+                        else
                         {
                             SetNamesClass.SetPlayerNameText(RoleClass.PartTimer.CurrentTarget, RoleClass.PartTimer.CurrentTarget.NameText().text + ModHelpers.Cs(RoleClass.PartTimer.color, "◀"));
                         }

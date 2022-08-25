@@ -53,7 +53,8 @@ namespace SuperNewRoles.CustomOption
                     if (RegulationData.Selected == 0)
                     {
                         ClientSelection = value;
-                    } else
+                    }
+                    else
                     {
                         ClientSelectedSelection = value;
                     }
@@ -219,7 +220,8 @@ namespace SuperNewRoles.CustomOption
                 if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
                 {
                     if (id == 0) SwitchPreset(selection); // Switch presets
-                    else if (entry != null && AmongUsClient.Instance.AmHost && RegulationData.Selected == 0) {
+                    else if (entry != null && AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
+                    {
                         entry.Value = selection;
                     } // Save selection to config
 
@@ -252,11 +254,11 @@ namespace SuperNewRoles.CustomOption
             }
         }
 
-        public IntroDate Intro
+        public IntroData Intro
         {
             get
             {
-                return IntroDate.GetIntroDate(RoleId);
+                return IntroData.GetIntroDate(RoleId);
             }
         }
 
@@ -281,7 +283,7 @@ namespace SuperNewRoles.CustomOption
         {
             try
             {
-                this.RoleId = IntroDate.IntroDatas.FirstOrDefault((_) =>
+                this.RoleId = IntroData.IntroDatas.FirstOrDefault((_) =>
                 {
                     return _.NameKey + "Name" == name;
                 }).RoleId;
@@ -615,7 +617,8 @@ namespace SuperNewRoles.CustomOption
         public static bool Prefix(StringOption __instance)
         {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
-            if (option == null) {
+            if (option == null)
+            {
                 RegulationData Regulation = RegulationData.Regulations.FirstOrDefault(regulation => regulation.optionBehaviour == __instance);
                 if (Regulation != null)
                 {
@@ -711,9 +714,11 @@ namespace SuperNewRoles.CustomOption
                     }
                     __instance.oldValue = __instance.Value = 0;
                     __instance.ValueText.text = ModTranslation.GetString("optionOff");
-                    if (isReset) {
+                    if (isReset)
+                    {
                         Select(0);
-                        if (RegulationData.Regulations.FirstOrDefault(d => d.id == 0).optionBehaviour is not null and StringOption stringOption0){
+                        if (RegulationData.Regulations.FirstOrDefault(d => d.id == 0).optionBehaviour is not null and StringOption stringOption0)
+                        {
                             stringOption0.oldValue = __instance.Value = 1;
                             stringOption0.ValueText.text = ModTranslation.GetString("optionOn");
                         }

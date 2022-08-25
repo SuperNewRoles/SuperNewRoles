@@ -718,7 +718,7 @@ namespace SuperNewRoles.Patches
                 }, 0.5f);
                 new LateTask(() =>
                 {
-                    __instance.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}は誰だ？</size>");
+                    __instance.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroData.MarineIntro.NameKey + "Name")}は誰だ？</size>");
                 }, 2f);
                 new LateTask(() =>
                 {
@@ -749,7 +749,7 @@ namespace SuperNewRoles.Patches
                 }, 0.5f);
                 new LateTask(() =>
                 {
-                    target.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}は誰だ？</size>");
+                    target.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroData.MarineIntro.NameKey + "Name")}は誰だ？</size>");
                 }, 2f);
                 new LateTask(() =>
                 {
@@ -935,7 +935,7 @@ namespace SuperNewRoles.Patches
             }
         }
     }
-    [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CompleteTask))]
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CompleteTask))]
     class CompleteTask
     {
         public static void Postfix(PlayerControl __instance, uint idx)
@@ -971,7 +971,8 @@ namespace SuperNewRoles.Patches
                     RoleClass.Assassin.TriggerPlayer = __instance;
                     return;
                 }
-                if (__instance.IsRole(RoleId.Hitman)) {
+                if (__instance.IsRole(RoleId.Hitman))
+                {
                     Roles.Neutral.Hitman.Death();
                 }
                 if (RoleClass.Lovers.SameDie && __instance.IsLovers())

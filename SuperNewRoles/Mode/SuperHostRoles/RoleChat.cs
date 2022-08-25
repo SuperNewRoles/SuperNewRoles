@@ -41,7 +41,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             string IntroDesc;
             string Desc;
-            IntroDate data = IntroDate.CrewmateIntro;
+            IntroData data = IntroData.CrewmateIntro;
             if (rolename == ModTranslation.GetString("LoversName")) { }
             else
             {
@@ -49,7 +49,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 IntroDesc = data.TitleDesc;
                 Desc = data.Description;
             }
-            if (data == IntroDate.CrewmateIntro) return "";
+            if (data == IntroData.CrewmateIntro) return "";
 
             string team = "重複";
             if (data.Team == TeamRoleType.Crewmate) team = ModTranslation.GetString("CrewMateName");
@@ -64,28 +64,28 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             returndata += data.Description;
             return "";
         }
-        public static IntroDate GetNameIntroDate(string role)
+        public static IntroData GetNameIntroDate(string role)
         {
-            Dictionary<string, IntroDate> NameData = new()
+            Dictionary<string, IntroData> NameData = new()
             {
-                { ModTranslation.GetString("JesterName"), IntroDate.JesterIntro },
-                { ModTranslation.GetString("SheriffName"), IntroDate.SheriffIntro },
-                { ModTranslation.GetString("MadMateName"), IntroDate.MadMateIntro },
-                { ModTranslation.GetString("BaitName"), IntroDate.BaitIntro },
-                { ModTranslation.GetString("HomeSecurityGuardName"), IntroDate.HomeSecurityGuardIntro },
-                { ModTranslation.GetString("StuntmanName"), IntroDate.StuntManIntro },
-                { ModTranslation.GetString("HomeSecurityGuardName"), IntroDate.HomeSecurityGuardIntro },
-                { ModTranslation.GetString("StuntmanName"), IntroDate.StuntManIntro },
-                { ModTranslation.GetString("EvilGamblerdName"), IntroDate.EvilGamblerIntro },
-                { ModTranslation.GetString("GodName"), IntroDate.GodIntro },
-                { ModTranslation.GetString("MinimalistName"), IntroDate.MinimalistIntro },
-                { ModTranslation.GetString("EgoistName"), IntroDate.EgoistIntro },
-                { ModTranslation.GetString("MayorName"), IntroDate.MayorIntro },
-                { ModTranslation.GetString("trueloverName"), IntroDate.trueloverIntro },
-                { ModTranslation.GetString("TechnicianName"), IntroDate.TechnicianIntro },
-                { ModTranslation.GetString("MadStuntmanName"), IntroDate.MadStuntManIntro },
-                { ModTranslation.GetString("SamuraiName"), IntroDate.SamuraiIntro },
-                { ModTranslation.GetString("BlackCatName"), IntroDate.BlackCatIntro },
+                { ModTranslation.GetString("JesterName"), IntroData.JesterIntro },
+                { ModTranslation.GetString("SheriffName"), IntroData.SheriffIntro },
+                { ModTranslation.GetString("MadMateName"), IntroData.MadMateIntro },
+                { ModTranslation.GetString("BaitName"), IntroData.BaitIntro },
+                { ModTranslation.GetString("HomeSecurityGuardName"), IntroData.HomeSecurityGuardIntro },
+                { ModTranslation.GetString("StuntmanName"), IntroData.StuntManIntro },
+                { ModTranslation.GetString("HomeSecurityGuardName"), IntroData.HomeSecurityGuardIntro },
+                { ModTranslation.GetString("StuntmanName"), IntroData.StuntManIntro },
+                { ModTranslation.GetString("EvilGamblerdName"), IntroData.EvilGamblerIntro },
+                { ModTranslation.GetString("GodName"), IntroData.GodIntro },
+                { ModTranslation.GetString("MinimalistName"), IntroData.MinimalistIntro },
+                { ModTranslation.GetString("EgoistName"), IntroData.EgoistIntro },
+                { ModTranslation.GetString("MayorName"), IntroData.MayorIntro },
+                { ModTranslation.GetString("trueloverName"), IntroData.trueloverIntro },
+                { ModTranslation.GetString("TechnicianName"), IntroData.TechnicianIntro },
+                { ModTranslation.GetString("MadStuntmanName"), IntroData.MadStuntManIntro },
+                { ModTranslation.GetString("SamuraiName"), IntroData.SamuraiIntro },
+                { ModTranslation.GetString("BlackCatName"), IntroData.BlackCatIntro },
             };
             foreach (var data in NameData)
             {
@@ -94,7 +94,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     return data.Value;
                 }
             }
-            return IntroDate.CrewmateIntro;
+            return IntroData.CrewmateIntro;
         }
     }
 }

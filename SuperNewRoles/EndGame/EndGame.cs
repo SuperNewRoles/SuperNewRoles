@@ -101,15 +101,15 @@ namespace SuperNewRoles.EndGame
         {
             public string PlayerName { get; set; }
             public string NameSuffix { get; set; }
-            public List<Intro.IntroDate> Roles { get; set; }
+            public List<Intro.IntroData> Roles { get; set; }
             public string RoleString { get; set; }
             public int TasksCompleted { get; set; }
             public int TasksTotal { get; set; }
             public int PlayerId { get; set; }
             public int ColorId { get; set; }
             public FinalStatus Status { get; internal set; }
-            public Intro.IntroDate IntroDate { get; set; }
-            public Intro.IntroDate GhostIntroDate { get; set; }
+            public Intro.IntroData IntroData { get; set; }
+            public Intro.IntroData GhostIntroDate { get; set; }
         }
     }
     [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
@@ -172,7 +172,7 @@ namespace SuperNewRoles.EndGame
                 {
                     Logger.Info(data.PlayerName + ":" + winningPlayerData2.PlayerName);
                     if (data.PlayerName != winningPlayerData2.PlayerName) continue;
-                    poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", ModHelpers.Cs(data.IntroDate.color, data.IntroDate.Name))}";
+                    poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", ModHelpers.Cs(data.IntroData.color, data.IntroData.Name))}";
                 }
             }
 
@@ -379,7 +379,7 @@ namespace SuperNewRoles.EndGame
                 foreach (var datas in AdditionalTempData.playerRoles)
                 {
                     var taskInfo = datas.TasksTotal > 0 ? $"<color=#FAD934FF>({datas.TasksCompleted}/{datas.TasksTotal})</color>" : "";
-                    string roleText = CustomOptions.Cs(datas.IntroDate.color, datas.IntroDate.NameKey + "Name");
+                    string roleText = CustomOptions.Cs(datas.IntroData.color, datas.IntroData.NameKey + "Name");
                     if (datas.GhostIntroDate.RoleId != RoleId.DefaultRole)
                     {
                         roleText += $" → {CustomOptions.Cs(datas.GhostIntroDate.color, datas.GhostIntroDate.NameKey + "Name")}";
@@ -450,12 +450,12 @@ namespace SuperNewRoles.EndGame
                 if (p.Object.IsPlayer())
                 {
                     //var p = pc.Data;
-                    var roles = Intro.IntroDate.GetIntroDate(p.Object.GetRole(), p.Object);
+                    var roles = Intro.IntroData.GetIntroDate(p.Object.GetRole(), p.Object);
                     if (RoleClass.Stefinder.IsKillPlayer.Contains(p.PlayerId))
                     {
-                        roles = Intro.IntroDate.StefinderIntro1;
+                        roles = Intro.IntroData.StefinderIntro1;
                     }
-                    var ghostRoles = Intro.IntroDate.GetIntroDate(p.Object.GetGhostRole(), p.Object);
+                    var ghostRoles = Intro.IntroData.GetIntroDate(p.Object.GetGhostRole(), p.Object);
                     var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
                     if (p.Object.IsImpostor())
                     {
@@ -482,7 +482,7 @@ namespace SuperNewRoles.EndGame
                         TasksTotal = tasksTotal,
                         TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
                         Status = finalStatus,
-                        IntroDate = roles,
+                        IntroData = roles,
                         GhostIntroDate = ghostRoles
                     });
                 }
@@ -837,7 +837,7 @@ namespace SuperNewRoles.EndGame
                     if (RoleClass.Stefinder.SoloWin)
                     {
                         TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                        WinningPlayerData wpd = new(player.Data) ;
+                        WinningPlayerData wpd = new(player.Data);
                         TempData.winners.Add(wpd);
                         AdditionalTempData.winCondition = WinCondition.StefinderWin;
                     }
@@ -986,7 +986,7 @@ namespace SuperNewRoles.EndGame
                     // Exile role text
                     if (id is StringNames.ExileTextPN or StringNames.ExileTextSN or StringNames.ExileTextPP or StringNames.ExileTextSP)
                     {
-                        __result = player.Data.PlayerName + " は " + ModTranslation.GetString(Intro.IntroDate.GetIntroDate(player.GetRole(), player).NameKey + "Name") + " だった！";
+                        __result = player.Data.PlayerName + " は " + ModTranslation.GetString(Intro.IntroData.GetIntroDate(player.GetRole(), player).NameKey + "Name") + " だった！";
                     }
                 }
             }

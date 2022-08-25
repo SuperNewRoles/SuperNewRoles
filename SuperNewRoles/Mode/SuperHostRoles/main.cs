@@ -22,7 +22,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     if (!p.Data.Disconnected && p.PlayerId != 0)
                     {
-                        IntroDate RoleIntroDate = IntroDate.GetIntroDate(p.GetRole(), p);
+                        IntroData RoleIntroDate = IntroData.GetIntroDate(p.GetRole(), p);
                         string Chat = "";
                         if (p.IsDead())
                         {
@@ -31,7 +31,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         SuperNewRolesPlugin.Logger.LogInfo("テスト");
                         string RoleName = ModTranslation.GetString(RoleIntroDate.NameKey + "Name");
                         Chat += "あなたの役職は「" + RoleName + "」です！\n";
-                        Chat += IntroDate.GetTitle(RoleIntroDate.NameKey, RoleIntroDate.TitleNum) + "\n";
+                        Chat += IntroData.GetTitle(RoleIntroDate.NameKey, RoleIntroDate.TitleNum) + "\n";
                         Chat += RoleIntroDate.Description + "\n";
                         Chat += "設定:\n" + RoleHelpers.GetOptionsText(RoleIntroDate.RoleId);
                         SuperNewRolesPlugin.Logger.LogInfo("ChatLen:" + (Chat.Length / 100));
@@ -68,11 +68,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Time += 3;
                     }
                 }
-                IntroDate RoleIntroDate2 = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
+                IntroData RoleIntroDate2 = IntroData.GetIntroDate(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
                 string Chat2 = "";
                 string RoleName2 = ModTranslation.GetString(RoleIntroDate2.NameKey + "Name");
                 Chat2 = Chat2 + "あなたの役職は「" + RoleName2 + "」です！\n";
-                Chat2 += IntroDate.GetTitle(RoleIntroDate2.NameKey, RoleIntroDate2.TitleNum) + "\n";
+                Chat2 += IntroData.GetTitle(RoleIntroDate2.NameKey, RoleIntroDate2.TitleNum) + "\n";
                 Chat2 += RoleIntroDate2.Description + "\n";
                 Chat2 += "設定:\n" + RoleHelpers.GetOptionsText(RoleIntroDate2.RoleId);
                 FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, Chat2);
