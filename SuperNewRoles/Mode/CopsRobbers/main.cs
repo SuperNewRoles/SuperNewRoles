@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using SuperNewRoles.Helpers;
+using static SuperNewRoles.Patch.SetNamesClass;
 using UnityEngine;
+using SuperNewRoles.Mode.SuperHostRoles;
 
 namespace SuperNewRoles.Mode.CopsRobbers
 {
@@ -322,7 +324,8 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        p.RpcSetName("　");
+                        p.RpcSetName(p.GetDefaultName());
+                        SetPlayerNameColor(p, Color.clear);
                         if (p.IsImpostor())
                         {
                             p.RpcSnapTo(GetPosition(GetRandomSpawnPosition(p)));
