@@ -503,7 +503,7 @@ namespace SuperNewRoles.CustomOption
                         RegulationSettings.gameObject.SetActive(true);
                         RegulationTabHighlight.enabled = true;
                     }
-                    
+
                 }));
             }
 
@@ -855,14 +855,9 @@ namespace SuperNewRoles.CustomOption
         public static void Postfix(GameSettingMenu __instance)
         {
             // Setup mapNameTransform
-            var mapNameTransform = __instance.AllItems.FirstOrDefault(x => x.name.Equals("MapName", StringComparison.OrdinalIgnoreCase));
-            if (mapNameTransform == null) return;
-            mapNameTransform.gameObject.active = true;
-
             foreach (Transform i in __instance.AllItems.ToList())
             {
                 float num = -0.5f;
-                if (i.name.Equals("MapName", StringComparison.OrdinalIgnoreCase)) num = 0.25f;
                 if (i.name.Equals("NumImpostors", StringComparison.OrdinalIgnoreCase)) num = -0.5f;
                 if (i.name.Equals("ResetToDefault", StringComparison.OrdinalIgnoreCase)) num = 0f;
                 i.position += new Vector3(0, num, 0);
@@ -871,7 +866,7 @@ namespace SuperNewRoles.CustomOption
         }
     }
 
-    [HarmonyPatch(typeof(Constants), nameof(Constants.ShouldFlipSkeld))]
+    /*[HarmonyPatch(typeof(Constants), nameof(Constants.ShouldFlipSkeld))]
     class ConstantsShouldFlipSkeldPatch
     {
         public static bool Prefix(ref bool __result)
@@ -901,16 +896,16 @@ namespace SuperNewRoles.CustomOption
                 return false;
             }
         }
-    }
+    }*/
 
-    [HarmonyPatch(typeof(FreeWeekendShower), nameof(FreeWeekendShower.Start))]
+    /*[HarmonyPatch(typeof(FreeWeekendShower), nameof(FreeWeekendShower.Start))]
     class FreeWeekendShowerPatch
     {
         public static bool Prefix()
         {
             return ConstantsShouldFlipSkeldPatch.AprilFools;
         }
-    }
+    }*/
 
     [HarmonyPatch(typeof(GameOptionsData), nameof(GameOptionsData.ToHudString))]
     class Tohudstring
