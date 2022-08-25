@@ -29,7 +29,7 @@ namespace SuperNewRoles.Patch
             {
                 PassiveButton passiveButton = __instance.LocationButtons[i];
                 SpawnInMinigame.SpawnLocation pt = array[i];
-                passiveButton.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SpawnAt(pt.Location)));
+                passiveButton.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SpawnAt(pt)));
                 passiveButton.GetComponent<SpriteAnim>().Stop();
                 passiveButton.GetComponent<SpriteRenderer>().sprite = pt.Image;
                 // passiveButton.GetComponentInChildren<TextMeshPro>().text = DestroyableSingleton<TranslationController>.Instance.GetString(pt.Name, Array.Empty<object>());

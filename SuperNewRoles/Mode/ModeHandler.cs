@@ -154,7 +154,7 @@ namespace SuperNewRoles.Mode
             Zombie.ZombieOptions.Load();
             RandomColor.RandomColorOptions.Load();
             Detective.DetectiveOptions.Load();
-            Werewolf.WerewolfOptions.Load();
+            //Werewolf.WerewolfOptions.Load();
             //LevelUp.main.Load();
 
             PlusMode.Options.Load();

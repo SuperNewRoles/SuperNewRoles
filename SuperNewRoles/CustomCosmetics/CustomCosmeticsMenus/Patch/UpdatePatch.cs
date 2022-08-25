@@ -93,7 +93,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     ObjectData.SkinButton_Skin.SetSkin(SaveManager.lastSkin, SaveManager.BodyColor, false);
                     ObjectData.SkinButton_Skin.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
 
-                    ObjectData.VisorButton_Visor.SetVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(SaveManager.LastVisor));
+                    ObjectData.VisorButton_Visor.SetVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(SaveManager.LastVisor), SaveManager.BodyColor);
                     ObjectData.VisorButton_Visor.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 }
             }

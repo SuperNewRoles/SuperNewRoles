@@ -63,7 +63,6 @@ namespace SuperNewRoles.MapOptions
                     ValidationMira = RandomMapMira.GetBool();
                     ValidationPolus = RandomMapPolus.GetBool();
                     ValidationAirship = RandomMapAirship.GetBool();
-                    ValidationSubmerged = RandomMapSubmerged.GetBool();
                 }
                 else
                 {
@@ -159,7 +158,6 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption RandomMapMira;
         public static CustomOption.CustomOption RandomMapPolus;
         public static CustomOption.CustomOption RandomMapAirship;
-        public static CustomOption.CustomOption RandomMapSubmerged;
 
         public static CustomOption.CustomOption RestrictDevicesOption;
         public static CustomOption.CustomOption RestrictAdmin;
@@ -201,7 +199,6 @@ namespace SuperNewRoles.MapOptions
             RandomMapMira = CustomOption.CustomOption.Create(456, true, CustomOptionType.Generic, "RMMiraSetting", true, RandomMapOption);
             RandomMapPolus = CustomOption.CustomOption.Create(457, true, CustomOptionType.Generic, "RMPolusSetting", true, RandomMapOption);
             RandomMapAirship = CustomOption.CustomOption.Create(458, true, CustomOptionType.Generic, "RMAirshipSetting", true, RandomMapOption);
-            RandomMapSubmerged = CustomOption.CustomOption.Create(459, true, CustomOptionType.Generic, "RMSubmergedSetting", true, RandomMapOption);
             /*
                         RestrictDevicesOption = CustomOption.CustomOption.Create(460, false, CustomOptionType.Generic, "RestrictDevicesSetting", true, MapOptionSetting);
                         RestrictAdmin = CustomOption.CustomOption.Create(461, false, CustomOptionType.Generic, "RestrictAdminSetting", false, RestrictDevicesOption);

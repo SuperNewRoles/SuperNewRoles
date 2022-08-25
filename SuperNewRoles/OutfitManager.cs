@@ -9,7 +9,7 @@ namespace SuperNewRoles
             SuperNewRolesPlugin.Logger.LogInfo("チェンジ");
             pc.RawSetName(outfit.PlayerName);
             pc.RawSetHat(outfit.HatId, outfit.ColorId);
-            pc.RawSetVisor(outfit.VisorId);
+            pc.RawSetVisor(outfit.VisorId, outfit.ColorId);
             pc.RawSetColor(outfit.ColorId);
             ModHelpers.SetSkinWithAnim(pc.MyPhysics, outfit.SkinId);
 
