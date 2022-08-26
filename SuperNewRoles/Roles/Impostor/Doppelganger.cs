@@ -80,8 +80,14 @@ namespace SuperNewRoles.Roles.Impostor
                     }
                     else if (ModeHandler.IsMode(ModeId.Default) && __instance == PlayerControl.LocalPlayer)
                     {
-                        PlayerControl.LocalPlayer.SetKillTimer(TargetKill ? RoleClass.Doppelganger.SucTime     //ﾀｰｹﾞｯﾄだったら
-                                                                          : RoleClass.Doppelganger.NotSucTime);//ﾀｰｹﾞｯﾄ以外だったら
+                        var role = PlayerControl.LocalPlayer.GetRole();
+                        var optdata = SyncSetting.OptionData.DeepCopy();
+                        optdata.KillCooldown = SyncSetting.KillCoolSet(TargetKill ? RoleClass.Doppelganger.SucTime     //ﾀｰｹﾞｯﾄだったら
+                                                                                  : RoleClass.Doppelganger.NotSucTime);//ﾀｰｹﾞｯﾄ以外だったら
+                        if (PlayerControl.LocalPlayer.AmOwner) PlayerControl.GameOptions = optdata;
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, PlayerControl.LocalPlayer.GetClientId());
+                        writer.WriteBytesAndSize(optdata.ToBytes(5));
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
                     }
 
                     SuperNewRolesPlugin.Logger.LogInfo("ドッペルゲンガーがキルしたことを感知");

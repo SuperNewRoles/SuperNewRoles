@@ -168,6 +168,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.EvilButtoner:
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
+                case RoleId.Doppelganger:
+                    optdata.RoleOptions.ShapeshifterDuration = RoleClass.Doppelganger.DurationTime;
+                    optdata.RoleOptions.ScientistCooldown = RoleClass.Doppelganger.CoolTime;
+                    break;
             }
             if (player.IsDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;

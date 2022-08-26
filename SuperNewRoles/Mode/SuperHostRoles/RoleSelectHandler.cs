@@ -141,6 +141,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetRoleShapeshifters.AddRange(RoleClass.Samurai.SamuraiPlayer);
             SetRoleShapeshifters.AddRange(RoleClass.EvilButtoner.EvilButtonerPlayer);
             SetRoleShapeshifters.AddRange(RoleClass.SuicideWisher.SuicideWisherPlayer);
+            SetRoleShapeshifters.AddRange(RoleClass.Doppelganger.DoppelggerPlayer);
             /*============シェイプシフター役職設定============*/
 
             foreach (PlayerControl Player in DesyncImpostors)
