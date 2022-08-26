@@ -176,6 +176,7 @@ namespace SuperNewRoles.Roles
             Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
             Slugger.ClearAndReload();
+            Doppelganger.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -3031,6 +3032,35 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.SluggerCoolTime.GetFloat();
                 ChargeTime = CustomOptions.SluggerChargeTime.GetFloat();
                 IsMultiKill = CustomOptions.SluggerIsMultiKill.GetBool();
+            }
+        }
+        public static class Doppelganger
+        {
+            public static List<PlayerControl> DoppelggerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float DurationTime;
+            public static float CoolTime;
+            public static float SucTime;
+            public static float NotSucTime;
+            public static Sprite buttonSprite;
+            public static DateTime ShapeButton;
+            public static TextMeshPro DoppelgangerDurationText = null;
+            public static float Duration;
+            public static Dictionary<byte, PlayerControl> DoppelgangerTargets = new();
+            public static Sprite getShapeButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoppelgangerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                DoppelggerPlayer = new();
+                DurationTime = CustomOptions.DoppelgangerDurationTime.GetFloat();
+                CoolTime = CustomOptions.DoppelgangerCoolTime.GetFloat();
+                SucTime = CustomOptions.DoppelgangerSucTime.GetFloat();
+                NotSucTime = CustomOptions.DoppelgangerNotSucTime.GetFloat();
+                Duration = DurationTime + 1.1f;
             }
         }
         //新ロールクラス

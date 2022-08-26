@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -48,8 +48,22 @@ namespace SuperNewRoles.Patches
             SyncSetting.CustomSyncSettings();
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             if (target.IsBot()) return true;
+            if (__instance.PlayerId != target.PlayerId)
+            {
+                if (ModeHandler.IsMode(ModeId.Default))
+                {
+                    RoleClass.Doppelganger.DoppelgangerTargets.Add(__instance.PlayerId, target);
+                    SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
+                }
+            }
             if (__instance.PlayerId == target.PlayerId)
             {
+                if (ModeHandler.IsMode(ModeId.Default))
+                {
+                    RoleClass.Doppelganger.DoppelgangerTargets.Remove(__instance.PlayerId);
+                    SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲット、{target.Data.PlayerName}を削除");
+                    Roles.Impostor.Doppelganger.DoppelgangerResetCoolDown();
+                }
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
                 {
                     if (__instance.IsRole(RoleId.RemoteSheriff))

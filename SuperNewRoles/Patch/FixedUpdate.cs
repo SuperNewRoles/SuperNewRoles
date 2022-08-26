@@ -184,6 +184,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.Photographer:
                                 Roles.Neutral.Photographer.FixedUpdate();
                                 break;
+                            case RoleId.Doppelganger:
+                                Roles.Impostor.Doppelganger.FixedUpdate();
+                                break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                                     NormalButtonDestroy.Postfix(p);
