@@ -1027,7 +1027,7 @@ namespace SuperNewRoles
                 case RoleId.Slugger:
                     RoleClass.Slugger.SluggerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1085,7 +1085,7 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
-                //タスククリアか
+                    //タスククリアか
                     IsTaskClear = true;
                     break;
             }
@@ -1248,7 +1248,7 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
-                //第三か
+                    //第三か
                     IsNeutral = true;
                     break;
             }
@@ -1364,7 +1364,7 @@ namespace SuperNewRoles
         }
         public static bool IsGhostRole(this RoleId role)
         {
-            return IntroDate.GetIntroDate(role).IsGhostRole;
+            return IntroData.GetIntroDate(role).IsGhostRole;
         }
         public static bool IsGhostRole(this PlayerControl p, RoleId role, bool IsChache = true)
         {

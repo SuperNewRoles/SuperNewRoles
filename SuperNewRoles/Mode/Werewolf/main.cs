@@ -88,7 +88,7 @@ namespace SuperNewRoles.Mode.Werewolf
                     PlayerControl target = ModHelpers.PlayerById((byte)players.Value);
                     if (source == null || target == null || source.Data.Disconnected) break;
                     string Chat = "";
-                    var RoleDate = IntroDate.GetIntroDate(target.GetRole(), target);
+                    var RoleDate = IntroData.GetIntroDate(target.GetRole(), target);
                     var RoleName = ModTranslation.GetString("Werewolf" + RoleDate.NameKey + "Name");
                     Chat += string.Format(ModTranslation.GetString("WereWolfMediumAbilityText"), target.GetDefaultName(), RoleName);
                     new LateTask(() =>
@@ -103,7 +103,7 @@ namespace SuperNewRoles.Mode.Werewolf
                     {
                         string Chat = "";
                         PlayerControl target = exiled.Object;
-                        var RoleDate = IntroDate.GetIntroDate(target.GetRole(), target);
+                        var RoleDate = IntroData.GetIntroDate(target.GetRole(), target);
                         var RoleName = ModTranslation.GetString("Werewolf" + RoleDate.NameKey + "Name");
                         Chat += string.Format(ModTranslation.GetString("WereWolfMediumAbilityText"), target.GetDefaultName(), RoleName);
                         new LateTask(() =>

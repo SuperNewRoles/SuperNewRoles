@@ -973,11 +973,11 @@ namespace SuperNewRoles
             Neutnotonepar = new();
             Crewonepar = new();
             Crewnotonepar = new();
-            foreach (IntroDate intro in IntroDate.IntroDatas)
+            foreach (IntroData intro in IntroData.IntroDatas)
             {
                 if (intro.RoleId != RoleId.DefaultRole && (intro.RoleId != RoleId.Nun || (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship) && !intro.IsGhostRole)
                 {
-                    var option = IntroDate.GetOption(intro.RoleId);
+                    var option = IntroData.GetOption(intro.RoleId);
                     if (option == null) continue;
                     var selection = option.GetSelection();
                     if (selection != 0)

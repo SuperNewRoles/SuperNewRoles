@@ -191,7 +191,7 @@ namespace SuperNewRoles.Patches
             {
                 if (PlayerControl.LocalPlayer.IsNeutral())
                 {
-                    IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
+                    IntroData Intro = IntroData.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
                     __instance.BackgroundBar.material.color = color;
                     __instance.TeamTitle.text = ModTranslation.GetString("Neutral");
                     __instance.TeamTitle.color = color;
@@ -213,7 +213,7 @@ namespace SuperNewRoles.Patches
                         case RoleId.SeerFriends:
                         case RoleId.MayorFriends:
                         case RoleId.SatsumaAndImo:
-                            IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
+                            IntroData Intro = IntroData.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
                             __instance.BackgroundBar.material.color = Intro.color;
                             __instance.TeamTitle.text = ModTranslation.GetString(Intro.NameKey + "Name");
                             __instance.TeamTitle.color = Intro.color;
@@ -229,7 +229,7 @@ namespace SuperNewRoles.Patches
             //SetUpRoleTextPatch.Postfix(__instance);
         }
 
-        [HarmonyPatch(typeof(IntroCutscene),nameof(IntroCutscene.ShowTeam))]
+        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowTeam))]
         class ShowTeam
         {
             public static void Postfix()
@@ -288,7 +288,7 @@ namespace SuperNewRoles.Patches
                 {
                     if (PlayerControl.LocalPlayer == null) yield break;
                     if (PlayerControl.LocalPlayer.myTasks.Count == (PlayerControl.GameOptions.NumCommonTasks + PlayerControl.GameOptions.NumShortTasks + PlayerControl.GameOptions.NumLongTasks)) yield break;
-                       
+
                     yield return null;
                 }
             }
@@ -309,12 +309,12 @@ namespace SuperNewRoles.Patches
                         var myrole = PlayerControl.LocalPlayer.GetRole();
                         if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                         {
-                            var date = IntroDate.GetIntroDate(myrole);
-                            __instance.YouAreText.color = date.color;
-                            __instance.RoleText.text = ModTranslation.GetString(date.NameKey + "Name");
-                            __instance.RoleText.color = date.color;
-                            __instance.RoleBlurbText.text = date.TitleDesc;
-                            __instance.RoleBlurbText.color = date.color;
+                            var data = IntroData.GetIntroDate(myrole);
+                            __instance.YouAreText.color = data.color;
+                            __instance.RoleText.text = ModTranslation.GetString(data.NameKey + "Name");
+                            __instance.RoleText.color = data.color;
+                            __instance.RoleBlurbText.text = data.TitleDesc;
+                            __instance.RoleBlurbText.color = data.color;
                         }
                         if (PlayerControl.LocalPlayer.IsLovers())
                         {

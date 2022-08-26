@@ -33,7 +33,7 @@ namespace SuperNewRoles.Roles
             }
             else
             {
-                namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
+                namedate = Intro.IntroData.GetIntroDate(introdate, Target).NameKey;
             }
             var name = ModTranslation.GetString(namedate + "Name");
             FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.GetString("SoothSayerGetChat"), Target.NameText().text, name));
@@ -78,7 +78,7 @@ namespace SuperNewRoles.Roles
         {
             var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
             var introdate = Target.GetRole();
-            namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
+            namedate = Intro.IntroData.GetIntroDate(introdate, Target).NameKey;
             if (RoleClass.SpiritMedium.DisplayMode)
             {
                 if (Target.IsImpostor()) namedate = "Impostor";
@@ -88,7 +88,7 @@ namespace SuperNewRoles.Roles
             }
             else
             {
-                namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
+                namedate = Intro.IntroData.GetIntroDate(introdate, Target).NameKey;
             }
             var name = ModTranslation.GetString(namedate + "Name");
             FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.GetString("SoothSayerGetChat"), Target.NameText().text, name));

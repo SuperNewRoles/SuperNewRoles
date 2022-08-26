@@ -182,7 +182,7 @@ namespace SuperNewRoles.Patch
             }
             return text;
         }
-        static string GetOptionText(CustomRoleOption RoleOption, IntroDate intro)
+        static string GetOptionText(CustomRoleOption RoleOption, IntroData intro)
         {
             string text = "";
             text += GetChildText(RoleOption.children, "  ");
@@ -201,9 +201,9 @@ namespace SuperNewRoles.Patch
         static string GetText(CustomRoleOption option)
         {
             string text = "\n";
-            IntroDate intro = option.Intro;
+            IntroData intro = option.Intro;
             text += GetTeamText(intro.Team) + ModTranslation.GetString("Team") + "\n";
-            text += "「" + IntroDate.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
+            text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
             text += intro.Description + "\n";
             text += ModTranslation.GetString("MessageSettings") + ":\n";
             text += GetOptionText(option, intro);
