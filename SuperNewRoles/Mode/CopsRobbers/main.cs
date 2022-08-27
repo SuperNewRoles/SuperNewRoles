@@ -245,7 +245,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 if (LastCount != players.Count)
                 {
                     LastCount = players.Count;
-                    string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>"+string.Format(ModTranslation.GetString("CopsSpawnLoading"), NotLoadedCount);
+                    string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>" + string.Format(ModTranslation.GetString("CopsSpawnLoading"), NotLoadedCount);
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.RpcSetNamePrivate(name);
@@ -325,7 +325,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.RpcSetName(p.GetDefaultName());
-                        if (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool()) SetPlayerNameColor(p, Color.clear);
+                        if (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool()) HideName();
                         if (p.IsImpostor())
                         {
                             p.RpcSnapTo(GetPosition(GetRandomSpawnPosition(p)));
@@ -395,6 +395,20 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     }
                 }
             }
+        }
+        public static void HideName()
+        {
+            if (AmongUsClient.Instance.AmHost)
+            {
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    string name = "<color=#00000000>" + p.GetDefaultName();
+
+                    p.RpcSetName(name);
+                    SuperNewRolesPlugin.Logger.LogInfo("[Mode.CopsRobbers : HideName()]" + p.GetDefaultName() + "の名前を透明に変更しました");
+                }
+            }
+            else SuperNewRolesPlugin.Logger.LogInfo("[Mode.CopsRobbers : HideName()]" + PlayerControl.LocalPlayer.GetDefaultName() + "ホストでない為、名前を透明化する処理を飛ばしました。");
         }
     }
 }
