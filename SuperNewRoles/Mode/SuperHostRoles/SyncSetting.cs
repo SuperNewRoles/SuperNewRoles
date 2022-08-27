@@ -170,7 +170,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.Doppelganger:
                     optdata.RoleOptions.ShapeshifterDuration = RoleClass.Doppelganger.DurationTime;
-                    optdata.RoleOptions.ScientistCooldown = RoleClass.Doppelganger.CoolTime;
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Doppelganger.CoolTime;
                     break;
             }
             if (player.IsDead()) optdata.AnonymousVotes = false;
