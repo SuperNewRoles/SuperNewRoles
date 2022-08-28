@@ -215,6 +215,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             foreach (PlayerControl Player in player)
             {
+                Logger.Info($"{Player.name}({Player.GetRole()})=>{roleTypes}を実行", "SetRoleDesync");
                 if (!Player.IsMod())
                 {
                     int PlayerCID = Player.GetClientId();
@@ -250,7 +251,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             foreach (PlayerControl p in player)
             {
-                if (!p.IsMod() && isNotModOnly) return;// Mod導入者ではないかつ、非導入者のみなら破棄
+                if (!p.IsMod() && isNotModOnly)
+                {
+                    Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}Mod導入者ではないかつ、非導入者のみなので破棄", "SetVanillaRole");
+                    return;// Mod導入者ではないかつ、非導入者のみなら破棄
+                }
+                Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}を実行", "SetVanillaRole");
                 sender.RpcSetRole(p, roleTypes);
             }
         }
