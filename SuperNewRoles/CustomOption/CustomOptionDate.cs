@@ -869,7 +869,7 @@ namespace SuperNewRoles.CustomOption
             impostorGhostRolesCountMax = CustomOption.Create(8, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
 
             enableMirroMap = CustomOption.Create(9, false, CustomOptionType.Generic, "enableMirroMap", false);
-            enableAgartha = CustomOption.Create(968, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader:true);
+            enableAgartha = CustomOption.Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader:true);
 
             if (ConfigRoles.DebugMode.Value)
             {

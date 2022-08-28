@@ -161,7 +161,6 @@ namespace SuperNewRoles
                             }
                         }
                         updateURL = updateURL.Replace("SuperNewRoles.dll", "Agartha.dll");
-                        Logger.Info(updateURL);
                         response = await http.GetAsync(new System.Uri(updateURL), HttpCompletionOption.ResponseContentRead);
                         if (response.StatusCode == HttpStatusCode.OK && response.Content != null)
                         {
@@ -170,7 +169,6 @@ namespace SuperNewRoles
                             var fullname = System.Uri.UnescapeDataString(uri.Path);
                             if (File.Exists(fullname + ".old")) // Clear old file in case it wasnt;
                                 File.Delete(fullname + ".old");
-                            Logger.Info(fullname,"FULLNAME");
 
                             File.Move(fullname, fullname + ".old"); // rename current executable to old
 
@@ -180,8 +178,6 @@ namespace SuperNewRoles
                                 // probably want to have proper name here
                                 responseStream.CopyTo(fileStream);
                             }
-
-                            Logger.Info(updateURL);
                         }
                         else
                         {
