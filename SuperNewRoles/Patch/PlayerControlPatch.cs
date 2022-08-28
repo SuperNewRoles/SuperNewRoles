@@ -50,7 +50,7 @@ namespace SuperNewRoles.Patches
             if (target.IsBot()) return true;
             if (__instance.PlayerId != target.PlayerId)
             {
-                if(__instance.GetRole() == RoleId.Doppelganger)
+                if(__instance.IsRole(RoleId.Doppelganger))
                 {
                     RoleClass.Doppelganger.DoppelgangerTargets.Add(__instance.PlayerId, target);
                     SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
@@ -58,7 +58,7 @@ namespace SuperNewRoles.Patches
             }
             if (__instance.PlayerId == target.PlayerId)
             {
-                if (__instance.GetRole() == RoleId.Doppelganger)
+                if (__instance.IsRole(RoleId.Doppelganger))
                 {
                     RoleClass.Doppelganger.DoppelgangerTargets.Remove(__instance.PlayerId);
                     SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲット、{target.Data.PlayerName}を削除");
@@ -67,7 +67,7 @@ namespace SuperNewRoles.Patches
                 {
                     if (__instance.GetRole() == RoleId.Doppelganger)
                     {
-                        Roles.Impostor.Doppelganger.DoppelgangerResetCoolDown();
+                        Roles.Impostor.Doppelganger.ResetCoolDown();
                     }
                 }
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)

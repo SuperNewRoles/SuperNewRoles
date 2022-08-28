@@ -2613,7 +2613,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Doppelganger && ModeHandler.IsMode(ModeId.Default); },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove && DoppelgangerButton.Timer <= 0;
+                    return PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {

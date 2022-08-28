@@ -1,4 +1,3 @@
-using System;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
@@ -7,7 +6,6 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Mode;
 using UnityEngine;
 using System.Collections.Generic;
-using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Roles.Impostor
 {
@@ -42,9 +40,8 @@ namespace SuperNewRoles.Roles.Impostor
                 PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
             }
         }
-        public static void DoppelgangerResetCoolDown()
+        public static void ResetCoolDown()
         {
-            RoleClass.Doppelganger.ShapeButton = DateTime.Now;
             RoleClass.Doppelganger.Duration = RoleClass.Doppelganger.DurationTime + 1.1f;
             HudManagerStartPatch.DoppelgangerButton.MaxTimer = RoleClass.Doppelganger.CoolTime;
             HudManagerStartPatch.DoppelgangerButton.Timer = RoleClass.Doppelganger.CoolTime;
@@ -108,17 +105,10 @@ namespace SuperNewRoles.Roles.Impostor
                     break;
                 }
             }
-            if (!RoleClass.IsMeeting)
+            if (!RoleClass.IsMeeting && Shape)
             {
-                if (Shape)
-                {
-                    RoleClass.Doppelganger.Duration -= Time.fixedDeltaTime;
-                    if (RoleClass.Doppelganger.Duration <= 0)
-                    {
-                        DoppelgangerShape();
-                        if (RoleClass.Doppelganger.Duration <= 0) RoleClass.Doppelganger.Duration = -1;
-                    }
-                }
+                RoleClass.Doppelganger.Duration -= Time.fixedDeltaTime;
+                if (RoleClass.Doppelganger.Duration <= 0) DoppelgangerShape();
             }
             if (!RoleClass.IsMeeting && Shape)
             {

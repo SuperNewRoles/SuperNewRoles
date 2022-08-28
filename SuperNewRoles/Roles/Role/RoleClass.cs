@@ -3043,9 +3043,8 @@ namespace SuperNewRoles.Roles
             public static float SucTime;
             public static float NotSucTime;
             public static Sprite buttonSprite;
-            public static DateTime ShapeButton;
-            public static TextMeshPro DoppelgangerDurationText = null;
             public static float Duration;
+            public static TextMeshPro DoppelgangerDurationText = null;
             public static Dictionary<byte, PlayerControl> DoppelgangerTargets = new();
             public static Sprite getShapeButtonSprite()
             {
