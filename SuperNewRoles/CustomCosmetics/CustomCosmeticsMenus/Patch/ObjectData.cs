@@ -54,6 +54,10 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             PlayerCustomizationMenu.Instance.cubesTab.gameObject.SetActive(true);
             PlayerCustomizationMenu.Instance.transform.FindChild("Background/RightPanel/CubeView").gameObject.SetActive(true);
         }
+        /// <summary>
+        /// GameObjectのSetActiveをtrueにする
+        /// </summary>
+        /// <param name="obj">trueにしたいGameObject</param>
         public static void CosmicShow(string obj){
             ResetShow();
             IsShow = true;
