@@ -15,7 +15,7 @@ namespace SuperNewRoles.Mode
                     !ModeHandler.IsMode(ModeId.CopsRobbers);
         }
     }
-    enum ModeId
+    public enum ModeId
     {
         No,
         Default,
@@ -30,7 +30,7 @@ namespace SuperNewRoles.Mode
         CopsRobbers,
         LevelUp
     }
-    class ModeHandler
+    public class ModeHandler
     {
         public static ModeId thisMode;
         public static void ClearAndReload()

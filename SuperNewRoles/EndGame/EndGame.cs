@@ -1016,7 +1016,7 @@ namespace SuperNewRoles.EndGame
     }
 
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CheckEndCriteria))]
-    class CheckGameEndPatch
+    public class CheckGameEndPatch
     {
         public static bool Prefix(ShipStatus __instance)
         {
@@ -1222,7 +1222,7 @@ namespace SuperNewRoles.EndGame
             CustomEndGame(GameOverReason.ImpostorBySabotage, false);
             return;
         }
-        internal class PlayerStatistics
+        public class PlayerStatistics
         {
             public int TeamImpostorsAlive { get; set; }
             public int CrewAlive { get; set; }
