@@ -25,6 +25,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption neutralGhostRolesCountMax;
 
         public static CustomOption enableMirroMap;
+        public static CustomOption enableAgartha;
 
         public static CustomOption IsDebugMode;
         public static CustomOption DebugModeFastStart;
@@ -868,6 +869,7 @@ namespace SuperNewRoles.CustomOption
             impostorGhostRolesCountMax = CustomOption.Create(8, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
 
             enableMirroMap = CustomOption.Create(9, false, CustomOptionType.Generic, "enableMirroMap", false);
+            enableAgartha = CustomOption.Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader:true);
 
             if (ConfigRoles.DebugMode.Value)
             {
@@ -875,7 +877,7 @@ namespace SuperNewRoles.CustomOption
                 DebugModeFastStart = CustomOption.Create(681, true, CustomOptionType.Generic, "即開始", false, IsDebugMode);
             }
 
-            DisconnectNotPCOption = CustomOption.Create(11, true, CustomOptionType.Generic, Cs(Color.white, "PC以外はキックする"), true, null, isHeader: true);
+            DisconnectNotPCOption = CustomOption.Create(11, true, CustomOptionType.Generic, Cs(Color.white, "DisconnectNotPC"), true, null, isHeader: true);
 
             ZoomOption = CustomOption.Create(618, false, CustomOptionType.Generic, Cs(Color.white, "Zoomafterdeath"), true, null, isHeader: true);
             MouseZoom = CustomOption.Create(619, false, CustomOptionType.Generic, "mousemode", false, ZoomOption);

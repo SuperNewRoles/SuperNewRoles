@@ -44,13 +44,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             IsShow = true;
             HideDefaultTabButton();
             PlayerCustomizationMenu.Instance.transform.FindChild("HatsGroup").gameObject.SetActive(true);
-            ShowHatTabsButton();
-        }
-        public static void SkinShow()
-        {
-            ResetShow();
-            IsShow = true;
-            PlayerCustomizationMenu.Instance.transform.FindChild("SkinGroup").gameObject.SetActive(true);
+            ShowDefaultTabButton();
         }
         public static void CubeShow()
         {
@@ -60,23 +54,14 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             PlayerCustomizationMenu.Instance.cubesTab.gameObject.SetActive(true);
             PlayerCustomizationMenu.Instance.transform.FindChild("Background/RightPanel/CubeView").gameObject.SetActive(true);
         }
-        public static void PetShow()
-        {
+        /// <summary>
+        /// GameObjectのSetActiveをtrueにする
+        /// </summary>
+        /// <param name="obj">trueにしたいGameObject</param>
+        public static void CosmicShow(string obj){
             ResetShow();
             IsShow = true;
-            PlayerCustomizationMenu.Instance.transform.FindChild("PetsGroup").gameObject.SetActive(true);
-        }
-        public static void VisorShow()
-        {
-            ResetShow();
-            IsShow = true;
-            PlayerCustomizationMenu.Instance.transform.FindChild("VisorGroup").gameObject.SetActive(true);
-        }
-        public static void NamePlateShow()
-        {
-            ResetShow();
-            IsShow = true;
-            PlayerCustomizationMenu.Instance.transform.FindChild("NameplateGroup").gameObject.SetActive(true);
+            PlayerCustomizationMenu.Instance.transform.FindChild(obj).gameObject.SetActive(true);
         }
         public static void ColorShow()
         {
@@ -88,46 +73,6 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 chip.gameObject.SetActive(true);
             }
             ColorText.gameObject.SetActive(true);
-        }
-        public static void HideHatTabsButton()
-        {
-        }
-        public static void ShowHatTabsButton()
-        {
-            //SuperNewRolesPlugin.Logger.LogInfo(CustomHats.IsEnd);
-            //if (!CustomHats.IsEnd)
-            {
-                ShowDefaultTabButton();
-                return;
-            }
-            SuperNewRolesPlugin.Logger.LogInfo(HatTabButtons.Length);
-            if (HatTabButtons.Length > 0)
-            {
-                foreach (Transform obj in HatTabButtons)
-                {
-                    obj.gameObject.SetActive(true);
-                }
-                return;
-            }
-            Transform parent = PlayerCustomizationMenu.Instance.Tabs[0].Button.transform.parent.parent.parent;
-            List<Transform> Tabs = new();
-            SuperNewRolesPlugin.Logger.LogInfo(CustomHats.Keys.Count);
-            int i = 1;
-            foreach (string key in CustomHats.Keys)
-            {
-                var obj = GameObject.Instantiate(PlayerCustomizationMenu.Instance.Tabs[0].Button.transform.parent.parent, parent);
-                obj.GetChild(0).gameObject.SetActive(true);
-                PassiveButton button = obj.GetChild(0).FindChild("Tab Background").GetComponent<PassiveButton>();
-                button.OnClick = new();
-                button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ClickHatTab(key)));
-                obj.transform.localPosition = new Vector3(-3.75f + (i * 0.75f), 0, -5);
-                obj.name = key;
-                Tabs.Add(obj);
-                i++;
-                SuperNewRolesPlugin.Logger.LogInfo("追加:" + key);
-            }
-            HatTabButtons = Tabs.ToArray();
-            ClickHatTab(CustomHats.Keys[0]);
         }
         public static void ClickHatTab(string package)
         {
@@ -172,7 +117,6 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ClosetHide();
             PresetHide();
             ShowDefaultTabButton();
-            HideHatTabsButton();
             foreach (TabButton button in PlayerCustomizationMenu.Instance.Tabs)
             {
                 GameObject btn = button.Tab.gameObject;

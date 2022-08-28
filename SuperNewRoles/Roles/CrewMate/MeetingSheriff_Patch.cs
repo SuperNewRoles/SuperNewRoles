@@ -30,8 +30,8 @@ namespace SuperNewRoles.Roles
             }
             Meetingsheriff_updatepatch.Change();
         }
-        public static PassiveButton RightButton;
-        public static PassiveButton LeftButton;
+        public static PassiveButton RightButton = null;
+        public static PassiveButton LeftButton = null;
         public static bool IsFlag;
         public static bool IsSHRFlag;
         private static Sprite m_Meeting_AreaTabChange;
