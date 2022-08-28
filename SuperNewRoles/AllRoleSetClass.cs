@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -17,16 +17,9 @@ namespace SuperNewRoles
         public static bool doReplace = false;
         public static CustomRpcSender sender;
         public static List<(PlayerControl, RoleTypes)> StoragedData = new();
-        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
+        public static bool Prefix()
         {
             return true;
-            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
-            if (doReplace && sender != null)
-            {
-                StoragedData.Add((__instance, roleType));
-                return false;
-            }
-            else return true;
         }
         public static void Release()
         {

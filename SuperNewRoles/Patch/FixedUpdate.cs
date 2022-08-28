@@ -1,4 +1,4 @@
-using HarmonyLib;
+﻿using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
@@ -82,7 +82,6 @@ namespace SuperNewRoles.Patch
             }
 
         }
-        private static bool ProDown = false;
         public static bool IsProDown;
 
         public static void Postfix(PlayerControl __instance)

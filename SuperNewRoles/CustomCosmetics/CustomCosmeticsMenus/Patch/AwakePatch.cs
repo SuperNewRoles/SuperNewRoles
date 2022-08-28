@@ -56,28 +56,28 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             var SkinButton = GameObject.Instantiate(HatButton, ClosetTab);
             var SkinButton_Passive = SkinButton.Button;
             SkinButton_Passive.OnClick = new();
-            SkinButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.SkinShow()));
+            SkinButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CosmicShow("SkinGroup")));
             ObjectData.SkinButton = SkinButton;
             SkinButton.name = "SkinButton";
 
             var PetButton = GameObject.Instantiate(HatButton, ClosetTab);
             var PetButton_Passive = PetButton.Button;
             PetButton_Passive.OnClick = new();
-            PetButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.PetShow()));
+            PetButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CosmicShow("PetsGroup")));
             ObjectData.PetButton = PetButton;
             PetButton.name = "PetButton";
 
             var VisorButton = GameObject.Instantiate(HatButton, ClosetTab);
             var VisorButton_Passive = VisorButton.Button;
             VisorButton_Passive.OnClick = new();
-            VisorButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.VisorShow()));
+            VisorButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CosmicShow("VisorGroup")));
             ObjectData.VisorButton = VisorButton;
             VisorButton.name = "VisorButton";
 
             var NamePlateButton = GameObject.Instantiate(HatButton, ClosetTab);
             var NamePlateButton_Passive = NamePlateButton.Button;
             NamePlateButton_Passive.OnClick = new();
-            NamePlateButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.NamePlateShow()));
+            NamePlateButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CosmicShow("NameplateGroup")));
             ObjectData.NamePlateButton = NamePlateButton;
             NamePlateButton.name = "NamePlateButton";
 
