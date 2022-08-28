@@ -251,10 +251,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             foreach (PlayerControl p in player)
             {
-                if (!p.IsMod() && isNotModOnly)
+                if (p.IsMod() && isNotModOnly)
                 {
-                    Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}Mod導入者ではないかつ、非導入者のみなので破棄", "SetVanillaRole");
-                    return;// Mod導入者ではないかつ、非導入者のみなら破棄
+                    Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}Mod導入者かつ、非導入者のみなので破棄", "SetVanillaRole");
+                    return;
                 }
                 Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}を実行", "SetVanillaRole");
                 sender.RpcSetRole(p, roleTypes);
