@@ -18,7 +18,7 @@ namespace SuperNewRoles
         public const string Id = "jp.ykundesu.supernewroles";
 
         //バージョンと同時にIsBetaも変える
-        public const string VersionString = "1.4.2.0";
+        public const string VersionString = "1.4.2.1";
         public static bool IsBeta
         {
             get
