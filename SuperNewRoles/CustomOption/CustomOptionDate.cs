@@ -805,6 +805,13 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SluggerChargeTime;
         public static CustomOption SluggerCoolTime;
         public static CustomOption SluggerIsMultiKill;
+
+        public static CustomRoleOption DoppelgangerOption;
+        public static CustomOption DoppelgangerPlayerCount;
+        public static CustomOption DoppelgangerDurationTime;
+        public static CustomOption DoppelgangerCoolTime;
+        public static CustomOption DoppelgangerSucTime;
+        public static CustomOption DoppelgangerNotSucTime;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1651,6 +1658,13 @@ namespace SuperNewRoles.CustomOption
             PsychometristIsCheckFootprints = CustomOption.Create(890, false, CustomOptionType.Crewmate, "PsychometristIsCheckFootprints", true, PsychometristOption);
             PsychometristCanCheckFootprintsTime = CustomOption.Create(891, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);
             PsychometristIsReportCheckedDeadBody = CustomOption.Create(892, false, CustomOptionType.Crewmate, "PsychometristIsReportCheckedDeadBody", false, PsychometristOption);
+
+            DoppelgangerOption = new CustomRoleOption(893, true, CustomOptionType.Impostor, "DoppelgangerName", RoleClass.Doppelganger.color, 1);
+            DoppelgangerPlayerCount = CustomOption.Create(894, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
+            DoppelgangerDurationTime = CustomOption.Create(895, true, CustomOptionType.Impostor, "DoppelgangerDurationTimeSetting", 90f, 0f, 250f, 5f, DoppelgangerOption);
+            DoppelgangerCoolTime = CustomOption.Create(896, true, CustomOptionType.Impostor, "DoppelgangerCoolDownSetting", 5f, 5f, 250f, 2.5f, DoppelgangerOption);
+            DoppelgangerSucTime = CustomOption.Create(897, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
+            DoppelgangerNotSucTime = CustomOption.Create(898, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 50f, 0f, 120f, 2.5f, DoppelgangerOption);
 
             //表示設定
 

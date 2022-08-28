@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -48,8 +48,28 @@ namespace SuperNewRoles.Patches
             SyncSetting.CustomSyncSettings();
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             if (target.IsBot()) return true;
+            if (__instance.PlayerId != target.PlayerId)
+            {
+                if(__instance.IsRole(RoleId.Doppelganger))
+                {
+                    RoleClass.Doppelganger.DoppelgangerTargets.Add(__instance.PlayerId, target);
+                    SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
+                }
+            }
             if (__instance.PlayerId == target.PlayerId)
             {
+                if (__instance.IsRole(RoleId.Doppelganger))
+                {
+                    RoleClass.Doppelganger.DoppelgangerTargets.Remove(__instance.PlayerId);
+                    SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲット、{target.Data.PlayerName}を削除");
+                }
+                if (ModeHandler.IsMode(ModeId.Default))
+                {
+                    if (__instance.GetRole() == RoleId.Doppelganger)
+                    {
+                        Roles.Impostor.Doppelganger.ResetCoolDown();
+                    }
+                }
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
                 {
                     if (__instance.IsRole(RoleId.RemoteSheriff))
@@ -788,6 +808,7 @@ namespace SuperNewRoles.Patches
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
             EvilGambler.EvilGamblerMurder.Prefix(__instance, target);
+            Roles.Impostor.Doppelganger.DoppelgangerMurderPlayerPatch.DoppelgangerPrefix(__instance, target);
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 target.resetChange();

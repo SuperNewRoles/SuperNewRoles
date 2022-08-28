@@ -157,6 +157,7 @@ namespace SuperNewRoles.CustomRPC
         Stefinder,
         Stefinder1,
         Slugger,
+        Doppelganger,
         //RoleId
     }
 
