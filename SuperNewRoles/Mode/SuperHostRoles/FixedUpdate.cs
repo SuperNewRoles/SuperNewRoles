@@ -257,7 +257,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             bool IsDemonVIew = false;
             bool IsArsonistVIew = false;
-            bool IsSatsumaAndImoView = false;
             if ((player.IsDead() || player.IsRole(RoleId.God)) && !IsUnchecked)
             {
                 if (Demon.IsViewIcon(player))
@@ -274,7 +273,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     if (RoleClass.SatsumaAndImo.TeamNumber == 1) { MySuffix += ModHelpers.Cs(Palette.White, " (C)"); }
                     else { MySuffix += ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"); }
-                    IsSatsumaAndImoView = true;
                 }
                 NewName = "(<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.Cs(introdate.color, Name + MySuffix);
             }

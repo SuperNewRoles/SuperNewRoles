@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<Role> allRoles = new();
             public PlayerControl player;
-            public RoleId roleId;
+            public RoleId? roleId = null;
 
             public abstract void OnMeetingStart();
             public abstract void OnMeetingEnd();
@@ -31,7 +31,7 @@ namespace SuperNewRoles.Roles
         public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
         {
             public static List<T> players = new();
-            public static RoleId RoleType;
+            public static RoleId? RoleType = null;
 
             public void Init(PlayerControl player)
             {
