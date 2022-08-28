@@ -72,7 +72,7 @@ namespace SuperNewRoles
                     System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
                     return false;
                 }
-                codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                codeBase = Assembly.GetExecutingAssembly().CodeBase.Replace("SuperNewRoles.dll", "Agartha.dll");
                 uri = new(codeBase);
                 fullname = System.Uri.UnescapeDataString(uri.Path);
                 if (File.Exists(fullname + ".old")) // Clear old file in case it wasnt;
