@@ -46,12 +46,6 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             PlayerCustomizationMenu.Instance.transform.FindChild("HatsGroup").gameObject.SetActive(true);
             ShowDefaultTabButton();
         }
-        public static void SkinShow()
-        {
-            ResetShow();
-            IsShow = true;
-            PlayerCustomizationMenu.Instance.transform.FindChild("SkinGroup").gameObject.SetActive(true);
-        }
         public static void CubeShow()
         {
             ResetShow();
