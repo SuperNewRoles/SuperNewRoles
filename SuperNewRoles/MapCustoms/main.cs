@@ -42,12 +42,15 @@ namespace SuperNewRoles.MapCustoms
             //配電盤を移動させる
             MoveElecPad.MoveElecPads();
 
-            GameObject gapRoom = DestroyableSingleton<ShipStatus>.Instance.FastRooms[SystemTypes.GapRoom].gameObject;
-            // ぬ～んを消す
-            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AirshipDisableMovingPlatform.GetBool())
+            if (ShipStatus.Instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
             {
-                gapRoom.GetComponentInChildren<MovingPlatformBehaviour>().gameObject.SetActive(false);
-                gapRoom.GetComponentsInChildren<PlatformConsole>().ForEach(x => x.gameObject.SetActive(false));
+                GameObject gapRoom = DestroyableSingleton<ShipStatus>.Instance.FastRooms[SystemTypes.GapRoom].gameObject;
+                // ぬ～んを消す
+                if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AirshipDisableMovingPlatform.GetBool())
+                {
+                    gapRoom.GetComponentInChildren<MovingPlatformBehaviour>().gameObject.SetActive(false);
+                    gapRoom.GetComponentsInChildren<PlatformConsole>().ForEach(x => x.gameObject.SetActive(false));
+                }
             }
         }
     }

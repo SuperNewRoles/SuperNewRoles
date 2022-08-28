@@ -15,7 +15,7 @@ namespace SuperNewRoles.Mode
                     !ModeHandler.IsMode(ModeId.CopsRobbers);
         }
     }
-    enum ModeId
+    public enum ModeId
     {
         No,
         Default,
@@ -30,7 +30,7 @@ namespace SuperNewRoles.Mode
         CopsRobbers,
         LevelUp
     }
-    class ModeHandler
+    public class ModeHandler
     {
         public static ModeId thisMode;
         public static void ClearAndReload()
@@ -149,11 +149,12 @@ namespace SuperNewRoles.Mode
             Mode = new CustomOptionBlank(null);
             ModeSetting = CustomOption.CustomOption.Create(484, true, CustomOptionType.Generic, "ModeSetting", false, Mode, isHeader: true);
             ThisModeSetting = CustomOption.CustomOption.Create(485, true, CustomOptionType.Generic, "SettingMode", modes, ModeSetting);
-            HideAndSeek.ZombieOptions.Load();
+            HideAndSeek.HideAndSeekOptions.Load();
             BattleRoyal.BROption.Load();
             Zombie.ZombieOptions.Load();
             RandomColor.RandomColorOptions.Load();
             Detective.DetectiveOptions.Load();
+            CopsRobbers.CopsRobbersOptions.Load();
             //Werewolf.WerewolfOptions.Load();
             //LevelUp.main.Load();
 
