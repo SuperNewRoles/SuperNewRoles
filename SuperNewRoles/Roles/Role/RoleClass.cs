@@ -176,6 +176,7 @@ namespace SuperNewRoles.Roles
             Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
             Slugger.ClearAndReload();
+            Doppelganger.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -3031,6 +3032,37 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.SluggerCoolTime.GetFloat();
                 ChargeTime = CustomOptions.SluggerChargeTime.GetFloat();
                 IsMultiKill = CustomOptions.SluggerIsMultiKill.GetBool();
+            }
+        }
+        public static class Doppelganger
+        {
+            public static List<PlayerControl> DoppelggerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float DurationTime;
+            public static float CoolTime;
+            public static float SucTime;
+            public static float NotSucTime;
+            private static Sprite buttonSprite;
+            public static float Duration;
+            public static TextMeshPro DoppelgangerDurationText = null;
+            public static Dictionary<byte, PlayerControl> DoppelgangerTargets;
+            public static float DefaultKillCool;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoppelgangerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                DoppelggerPlayer = new();
+                DurationTime = CustomOptions.DoppelgangerDurationTime.GetFloat();
+                CoolTime = CustomOptions.DoppelgangerCoolTome.GetFloat();
+                SucTime = CustomOptions.DoppelgangerSucTime.GetFloat();
+                NotSucTime = CustomOptions.DoppelgangerNotSucTime.GetFloat();
+                Duration = DurationTime + 1.1f;
+                DoppelgangerTargets = new Dictionary<byte, PlayerControl>();
+                DefaultKillCool = PlayerControl.GameOptions.KillCooldown;
             }
         }
         //新ロールクラス

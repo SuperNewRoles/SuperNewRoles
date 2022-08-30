@@ -80,6 +80,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton PhotographerButton;
         public static CustomButton StefinderKillButton;
         public static CustomButton SluggerButton;
+        public static CustomButton DoppelgangerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2603,6 +2604,39 @@ namespace SuperNewRoles.Buttons
                 buttonText = ModTranslation.GetString("FinalStatusKill"),
                 showButtonText = true
             };
+
+            DoppelgangerButton = new(
+                () =>
+                {
+                    Roles.Impostor.Doppelganger.DoppelgangerShape();
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Doppelganger; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    DoppelgangerButton.MaxTimer = RoleClass.Doppelganger.CoolTime;
+                    DoppelgangerButton.Timer = RoleClass.Doppelganger.CoolTime;
+                },
+                RoleClass.Doppelganger.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("DoppelgangerButtonName"),
+                showButtonText = true
+            };
+            RoleClass.Doppelganger.DoppelgangerDurationText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent);
+            RoleClass.Doppelganger.DoppelgangerDurationText.text = "";
+            RoleClass.Doppelganger.DoppelgangerDurationText.enableWordWrapping = false;
+            RoleClass.Doppelganger.DoppelgangerDurationText.transform.localScale = Vector3.one * 0.5f;
+            RoleClass.Doppelganger.DoppelgangerDurationText.transform.localPosition += new Vector3(-2.575f, -0.95f, 0);
 
             SetCustomButtonCooldowns();
         }
