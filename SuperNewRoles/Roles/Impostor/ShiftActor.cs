@@ -14,7 +14,6 @@ namespace SuperNewRoles.Roles.Impostor
         public static CustomRoleOption ShiftActorOption;
         public static CustomOption.CustomOption ShiftActorPlayerCount;
         public static CustomOption.CustomOption ShiftActorKillCool;
-        public static CustomOption.CustomOption ShiftActorShiftCool;
         public static CustomOption.CustomOption ShiftActorShiftLimit;
         public static CustomOption.CustomOption ShiftActorCanWatchAttribute;
         public static void SetupCustomOptions()
@@ -22,16 +21,14 @@ namespace SuperNewRoles.Roles.Impostor
             ShiftActorOption = new(OptionId, false, CustomOptionType.Impostor, "ShiftActorName", color, 1);
             ShiftActorPlayerCount = CustomOption.CustomOption.Create(OptionId + 1, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ShiftActorOption);
             ShiftActorKillCool = CustomOption.CustomOption.Create(OptionId + 2, false, CustomOptionType.Impostor, "KillCoolDown", 30f, 2.5f, 60f, 2.5f, ShiftActorOption, format: "unitSeconds");
-            ShiftActorShiftCool = CustomOption.CustomOption.Create(OptionId + 3, false, CustomOptionType.Impostor, "ShiftCoolDownSetting", 30f, 2.5f, 60f, 2.5f, ShiftActorOption, format: "unitSeconds");
-            ShiftActorShiftLimit = CustomOption.CustomOption.Create(OptionId + 4, false, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 99f, 1f, ShiftActorOption);
-            ShiftActorCanWatchAttribute = CustomOption.CustomOption.Create(OptionId + 5, false, CustomOptionType.Impostor, "CanWatchAttribute", false, ShiftActorOption);
+            ShiftActorShiftLimit = CustomOption.CustomOption.Create(OptionId + 3, false, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 99f, 1f, ShiftActorOption);
+            ShiftActorCanWatchAttribute = CustomOption.CustomOption.Create(OptionId + 4, false, CustomOptionType.Impostor, "CanWatchAttribute", false, ShiftActorOption);
         }
 
         // RoleClass
         public static List<PlayerControl> Player;
         public static Color32 color = ImpostorRed;
         public static float KillCool;
-        public static float ShiftCool;
         public static int Limit;
         public static int Count;
         public static bool IsWatchAttribute;
@@ -39,7 +36,6 @@ namespace SuperNewRoles.Roles.Impostor
         {
             Player = new();
             KillCool = ShiftActorKillCool.GetFloat();
-            ShiftCool = ShiftActorShiftCool.GetFloat();
             Limit = ShiftActorShiftLimit.GetInt();
             Count = 0;
             IsWatchAttribute = ShiftActorCanWatchAttribute.GetBool(); // 重複を見れるか
