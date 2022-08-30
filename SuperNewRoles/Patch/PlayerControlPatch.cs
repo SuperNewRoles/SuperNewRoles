@@ -63,6 +63,11 @@ namespace SuperNewRoles.Patches
                 }
                 return true;
             }
+            if (__instance.IsRole(RoleId.ShiftActor))
+            {
+                Roles.Impostor.ShiftActor.Shapeshift(__instance, target);
+                return true;
+            }
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 switch (__instance.GetRole())
@@ -935,7 +940,7 @@ namespace SuperNewRoles.Patches
             }
         }
     }
-    [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CompleteTask))]
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CompleteTask))]
     class CompleteTask
     {
         public static void Postfix(PlayerControl __instance, uint idx)
@@ -971,7 +976,8 @@ namespace SuperNewRoles.Patches
                     RoleClass.Assassin.TriggerPlayer = __instance;
                     return;
                 }
-                if (__instance.IsRole(RoleId.Hitman)) {
+                if (__instance.IsRole(RoleId.Hitman))
+                {
                     Roles.Neutral.Hitman.Death();
                 }
                 if (RoleClass.Lovers.SameDie && __instance.IsLovers())
