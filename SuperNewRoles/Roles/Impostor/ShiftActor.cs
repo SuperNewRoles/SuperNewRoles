@@ -48,6 +48,7 @@ namespace SuperNewRoles.Roles.Impostor
 
         public static void Shapeshift(PlayerControl shapeshifter, PlayerControl target)
         {
+            Logger.Info($"現在のカウント{Count}","ShiftActor");
             if (!CanShow) return;
             var TargetRoleText = "";
 
@@ -71,7 +72,6 @@ namespace SuperNewRoles.Roles.Impostor
             { // それ以外はGetRoleして各役職を表示
                 TargetRoleText = ModTranslation.GetString($"{target.GetRole()}Name");
             }
-            Logger.Info(TargetRoleText, "ShiftActor");
 
             // 重複役職
             if (IsWatchAttribute)
@@ -85,6 +85,7 @@ namespace SuperNewRoles.Roles.Impostor
                     TargetRoleText += ModHelpers.Cs(RoleClass.Quarreled.color, "○"); //　クラード
                 }
             }
+            Logger.Info($"テキスト名は{TargetRoleText}", "ShiftActor");
 
             // ここからが表示関連
             var text1 = ModTranslation.GetString("ShiftActorText1"); // の役職は
