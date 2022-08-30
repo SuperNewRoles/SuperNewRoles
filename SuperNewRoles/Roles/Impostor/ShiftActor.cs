@@ -1,14 +1,9 @@
-using System.ComponentModel;
-using System;
-using System.Reflection;
-using UnityEngine;
-using System.Collections.Generic;
-using static SuperNewRoles.CustomOption.CustomOptions;
 using SuperNewRoles.CustomOption;
-using static SuperNewRoles.Roles.RoleClass;
-using static SuperNewRoles.Patch.SetNamesClass;
+using static SuperNewRoles.CustomOption.CustomOptions;
 using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Mode;
+using static SuperNewRoles.Roles.RoleClass;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor
 {
@@ -61,16 +56,16 @@ namespace SuperNewRoles.Roles.Impostor
             { // デフォルトロール(通常インポスターと、通常クルーメイト)
                 if (target.IsImpostor())
                 {
-                    TargetRoleText = ModTranslation.GetString("Impostor");
+                    TargetRoleText = ModTranslation.GetString("ImpostorName");
                 }
                 else
                 {
-                    TargetRoleText = ModTranslation.GetString("Crewmate");
+                    TargetRoleText = ModTranslation.GetString("CrewMateName");
                 }
             }
             else if (target.IsRole(RoleId.Marine))
             { // マーリン
-                TargetRoleText = ModTranslation.GetString("Crewmate");
+                TargetRoleText = ModTranslation.GetString("CrewMateName");
             }
             else
             { // それ以外はGetRoleして各役職を表示
