@@ -2610,7 +2610,7 @@ namespace SuperNewRoles.Buttons
                 {
                     Roles.Impostor.Doppelganger.DoppelgangerShape();
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Doppelganger; },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Doppelganger && ModeHandler.IsMode(ModeId.Default); },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
