@@ -1,9 +1,7 @@
 using HarmonyLib;
-using Hazel;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Patch
