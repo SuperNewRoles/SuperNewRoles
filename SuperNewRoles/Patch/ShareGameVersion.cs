@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
+using Agartha;
 
 namespace SuperNewRoles.Patch
 {
@@ -105,6 +106,15 @@ namespace SuperNewRoles.Patch
                                 AmongUsClient.Instance.KickPlayer(p.Id, false);
                             }
                         }
+                    }
+                    //モードがSHRではない特殊モードで,「PC以外キック」とDebugモードがオフ, アガルタが有効でなおかつMiraが選択されている場合
+                    if (!ModeHandler.IsMode(ModeId.Default, false) && !ModeHandler.IsMode(ModeId.SuperHostRoles, false)
+                        && !CustomOptions.DisconnectNotPCOption.GetBool() && !CustomOptions.IsDebugMode.GetBool()
+                        && CustomOptions.enableAgartha.GetBool() && (CustomMapNames)PlayerControl.GameOptions.MapId == CustomMapNames.Mira)
+                    {
+                        // 警告を表示する
+                        message += "\n" + ModTranslation.GetString("IsSpecialModeOnAndVanillaKickOff") + "\n";
+                        blockStart = true;
                     }
                 }
                 if (ConfigRoles.IsVersionErrorView.Value)
