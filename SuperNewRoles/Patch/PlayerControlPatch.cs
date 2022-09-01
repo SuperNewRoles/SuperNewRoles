@@ -336,16 +336,22 @@ namespace SuperNewRoles.Patches
         public static bool isKill = false;
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("a(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
-            if (__instance.IsBot() || target.IsBot()
-                || __instance.IsDead()
-                || target.IsDead()
-                || (!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay)) return false;
-            if (__instance.PlayerId == target.PlayerId) { __instance.RpcMurderPlayer(target); return false; }
-            SuperNewRolesPlugin.Logger.LogInfo("b(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
-            if (!AmongUsClient.Instance.AmHost)
-                return true;
-            SuperNewRolesPlugin.Logger.LogInfo("c(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
+            Logger.Info($"{__instance.Data.PlayerName}=>{target.Data.PlayerName}", "CheckMurder");
+            if (__instance.IsBot() || target.IsBot()) return false;
+            Logger.Info("Bot通過", "CheckMurder");
+            if (__instance.IsDead() || target.IsDead()) return false;
+            Logger.Info("死亡通過", "CheckMurder");
+            if (!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay) return false;
+            Logger.Info("非スタート通過", "CheckMurder");
+            if (__instance.PlayerId == target.PlayerId)
+            {
+                Logger.Info($"自爆:{target.name}", "CheckMurder");
+                __instance.RpcMurderPlayer(target);
+                return false;
+            }
+            Logger.Info("自爆通過", "CheckMurder");
+            if (!AmongUsClient.Instance.AmHost) return true;
+            Logger.Info("非ホスト通過", "CheckMurder");
             switch (ModeHandler.GetMode())
             {
                 case ModeId.Zombie:
@@ -419,9 +425,9 @@ namespace SuperNewRoles.Patches
                     }
                     break;
                 case ModeId.SuperHostRoles:
-                    SuperNewRolesPlugin.Logger.LogInfo("d(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
+                    Logger.Info("SHR", "CheckMurder");
                     if (RoleClass.Assassin.TriggerPlayer != null) return false;
-                    SuperNewRolesPlugin.Logger.LogInfo("e(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
+                    Logger.Info("SHR-Assassin.TriggerPlayerを通過", "CheckMurder");
                     switch (__instance.GetRole())
                     {
                         case RoleId.RemoteSheriff:
@@ -625,7 +631,7 @@ namespace SuperNewRoles.Patches
                     if (target.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId) return false;
                     break;
             }
-            SuperNewRolesPlugin.Logger.LogInfo("f(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
+            Logger.Info("全モード通過", "CheckMurder");
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 SyncSetting.CustomSyncSettings(__instance);
@@ -698,9 +704,9 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
-            SuperNewRolesPlugin.Logger.LogInfo("g(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
+            Logger.Info("全スタントマン系通過", "CheckMurder");
             __instance.RpcMurderPlayerCheck(target);
-            SuperNewRolesPlugin.Logger.LogInfo("h(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
+            Logger.Info("RpcMurderPlayerCheck(一番下)を通過", "CheckMurder");
             return false;
         }
         public static void RpcCheckExile(this PlayerControl __instance)
