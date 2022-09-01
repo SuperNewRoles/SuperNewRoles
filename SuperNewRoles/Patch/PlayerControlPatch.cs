@@ -397,33 +397,6 @@ namespace SuperNewRoles.Patches
                         }
                     }
                     return false;
-                case ModeId.Default://通常モード
-                    switch (__instance.GetRole())
-                    {
-                        case RoleId.FastMaker:
-                            if (!RoleClass.FastMaker.IsCreatedMadMate)//まだ作ってなくて、設定が有効の時
-                            {
-                                if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                                target.RpcProtectPlayer(target, 0);//キルを無効にする為守護をかける
-                                                                   //守護がかかるのを待つためのLateTask
-                                new LateTask(() =>
-                                    {
-                                        RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
-                                        target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
-                                        target.SetRoleRPC(RoleId.MadMate);//マッドにする
-                                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
-                                        RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことにする
-                                        SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSNR]マッドを作ったよ");
-                                    }, 0.5f);
-                            }
-                            else
-                            {
-                                //作ってたら普通のキル(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                                SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSNR]作ったので普通のキル");
-                            }
-                            return false;
-                    }
-                    break;
                 case ModeId.SuperHostRoles:
                     Logger.Info("SHR", "CheckMurder");
                     if (RoleClass.Assassin.TriggerPlayer != null) return false;
