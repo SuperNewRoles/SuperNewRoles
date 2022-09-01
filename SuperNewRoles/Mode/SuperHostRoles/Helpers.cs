@@ -48,6 +48,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             player.SetRole(role);
         }
 
+        /// <summary>
+        /// 守護ガードのエフェクトを表示する
+        /// </summary>
+        /// <param name="shower">エフェクトを見れる人</param>
+        /// <param name="target">エフェクトをかける人</param>
         public static void RpcShowGuardEffect(this PlayerControl shower, PlayerControl target)
         {
             if (shower.IsMod())
