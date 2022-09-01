@@ -15,14 +15,16 @@ namespace SuperNewRoles.Roles.Impostor
         public static CustomOption.CustomOption ShiftActorPlayerCount;
         public static CustomOption.CustomOption ShiftActorKillCool;
         public static CustomOption.CustomOption ShiftActorShiftLimit;
+        public static CustomOption.CustomOption ShiftActorRightChance;
         public static CustomOption.CustomOption ShiftActorCanWatchAttribute;
         public static void SetupCustomOptions()
         {
             ShiftActorOption = new(OptionId, false, CustomOptionType.Impostor, "ShiftActorName", color, 1);
             ShiftActorPlayerCount = CustomOption.CustomOption.Create(OptionId + 1, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ShiftActorOption);
             ShiftActorKillCool = CustomOption.CustomOption.Create(OptionId + 2, false, CustomOptionType.Impostor, "SheriffCoolDownSetting", 30f, 2.5f, 60f, 2.5f, ShiftActorOption, format: "unitSeconds");
-            ShiftActorShiftLimit = CustomOption.CustomOption.Create(OptionId + 3, false, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 99f, 1f, ShiftActorOption);
-            ShiftActorCanWatchAttribute = CustomOption.CustomOption.Create(OptionId + 4, false, CustomOptionType.Impostor, "CanWatchAttribute", false, ShiftActorOption);
+            ShiftActorShiftLimit = CustomOption.CustomOption.Create(OptionId + 3, false, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 5f, 1f, ShiftActorOption);
+            ShiftActorRightChance = CustomOption.CustomOption.Create(OptionId + 4, false, CustomOptionType.Impostor, "RightChance", rates[1..], ShiftActorOption);
+            ShiftActorCanWatchAttribute = CustomOption.CustomOption.Create(OptionId + 5, false, CustomOptionType.Impostor, "CanWatchAttribute", false, ShiftActorOption);
         }
 
         // RoleClass
@@ -44,41 +46,49 @@ namespace SuperNewRoles.Roles.Impostor
 
         public static void Shapeshift(PlayerControl shapeshifter, PlayerControl target)
         {
-            Logger.Info($"現在のカウント{Count}","ShiftActor");
+            Logger.Info($"現在のカウント{Count}", "ShiftActor");
             if (!CanShow) return;
             var TargetRoleText = "";
 
             // 役職名
-            if (target.IsRole(RoleId.DefaultRole))
-            { // デフォルトロール(通常インポスターと、通常クルーメイト)
-                if (target.IsImpostor())
-                {
-                    TargetRoleText = ModTranslation.GetString("ImpostorName");
-                }
-                else
-                {
-                    TargetRoleText = ModTranslation.GetString("CrewMateName");
-                }
-            }
-            else if (target.IsRole(RoleId.Marine))
-            { // マーリン
+            if (!ModHelpers.IsSucsessChance(ShiftActorRightChance.GetSelection() + 1))
+            { // 確率を判定し、失敗なら「クルーメイト」のみ表示。
+                Logger.Info("失敗", "ShiftActor");
                 TargetRoleText = ModTranslation.GetString("CrewMateName");
             }
             else
-            { // それ以外はGetRoleして各役職を表示
-                TargetRoleText = ModTranslation.GetString($"{target.GetRole()}Name");
-            }
-
-            // 重複役職
-            if (IsWatchAttribute)
             {
-                if (target.IsLovers())
-                {
-                    TargetRoleText += ModHelpers.Cs(RoleClass.Lovers.color, " ♥"); // ラバーズ
+                if (target.IsRole(RoleId.DefaultRole))
+                { // デフォルトロール(通常インポスターと、通常クルーメイト)
+                    if (target.IsImpostor())
+                    {
+                        TargetRoleText = ModTranslation.GetString("ImpostorName");
+                    }
+                    else
+                    {
+                        TargetRoleText = ModTranslation.GetString("CrewMateName");
+                    }
                 }
-                else if (target.IsQuarreled())
+                else if (target.IsRole(RoleId.Marine))
+                { // マーリンはクルーに
+                    TargetRoleText = ModTranslation.GetString("CrewMateName");
+                }
+                else
+                { // それ以外はGetRoleして各役職を表示
+                    TargetRoleText = ModTranslation.GetString($"{target.GetRole()}Name");
+                }
+
+                // 重複役職
+                if (IsWatchAttribute)
                 {
-                    TargetRoleText += ModHelpers.Cs(RoleClass.Quarreled.color, "○"); //　クラード
+                    if (target.IsLovers())
+                    {
+                        TargetRoleText += ModHelpers.Cs(RoleClass.Lovers.color, " ♥"); // ラバーズ
+                    }
+                    else if (target.IsQuarreled())
+                    {
+                        TargetRoleText += ModHelpers.Cs(RoleClass.Quarreled.color, "○"); //　クラード
+                    }
                 }
             }
             Logger.Info($"テキスト名は{TargetRoleText}", "ShiftActor");
