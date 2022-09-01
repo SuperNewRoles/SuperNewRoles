@@ -376,7 +376,7 @@ namespace SuperNewRoles.Patches
                                 }
                             }
                         }
-                        SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]RateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
+                        SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]LateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
                         isKill = true;
                         if (__instance.PlayerId != 0)
                         {
