@@ -419,6 +419,7 @@ namespace SuperNewRoles.Patches
                             if (!__instance.IsLovers())
                             {
                                 if (target == null || target.IsLovers() || RoleClass.Truelover.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                                __instance.RpcShowGuardEffect(target);
                                 RoleClass.Truelover.CreatePlayers.Add(__instance.PlayerId);
                                 RoleHelpers.SetLovers(__instance, target);
                                 RoleHelpers.SetLoversRPC(__instance, target);
@@ -455,6 +456,7 @@ namespace SuperNewRoles.Patches
                             if (!target.IsImpostor())
                             {
                                 if (target == null || RoleClass.MadMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                                __instance.RpcShowGuardEffect(target);
                                 RoleClass.MadMaker.CreatePlayers.Add(__instance.PlayerId);
                                 target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
                                 target.SetRoleRPC(RoleId.MadMate);
@@ -476,12 +478,7 @@ namespace SuperNewRoles.Patches
                             if (!__instance.IsCursed(target))
                             {
                                 Demon.DemonCurse(target, __instance);
-                                target.RpcProtectPlayerPrivate(target, 0, __instance);
-                                new LateTask(() =>
-                                {
-                                    SyncSetting.MurderSyncSetting(__instance);
-                                    __instance.RPCMurderPlayerPrivate(target);
-                                }, 0.5f);
+                                __instance.RpcShowGuardEffect(target);
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
                             }
                             return false;
@@ -518,12 +515,7 @@ namespace SuperNewRoles.Patches
                                     if (!__instance.IsDoused(target))
                                     {
                                         Arsonist.ArsonistDouse(target, __instance);
-                                        target.RpcProtectPlayerPrivate(target, 0, __instance);
-                                        new LateTask(() =>
-                                        {
-                                            SyncSetting.MurderSyncSetting(__instance);
-                                            __instance.RPCMurderPlayerPrivate(target);
-                                        }, 0.5f);
+                                        __instance.RpcShowGuardEffect(target);
                                         Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
                                     }
                                 }
@@ -554,17 +546,13 @@ namespace SuperNewRoles.Patches
                             if (!RoleClass.FastMaker.IsCreatedMadMate)//まだ作ってなくて、設定が有効の時
                             {
                                 if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                                target.RpcProtectPlayer(target, 0);//キルを無効にする為守護をかける
-                                //守護がかかるのを待つためのLateTask
-                                new LateTask(() =>
-                                    {
-                                        RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
-                                        target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
-                                        target.SetRoleRPC(RoleId.MadMate);//マッドにする
-                                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
-                                        RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことにする
-                                        SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSHR]マッドを作ったよ");
-                                    }, 0.5f);
+                                __instance.RpcShowGuardEffect(target);
+                                RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
+                                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
+                                target.SetRoleRPC(RoleId.MadMate);//マッドにする
+                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
+                                RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことにする
+                                SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSHR]マッドを作ったよ");
                             }
                             else
                             {
@@ -577,18 +565,15 @@ namespace SuperNewRoles.Patches
                             {
                                 SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
                                 if (target == null || RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                                target.RpcProtectPlayer(target, 0);//キルを無効にする為守護をかける
-                                //守護がかかるのを待つためのLateTask
-                                new LateTask(() =>
-                                    {
-                                        RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
-                                        target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
-                                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//クルーにして
-                                        target.SetRoleRPC(RoleId.JackalFriends);//フレンズにする
-                                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
-                                        RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
-                                        SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
-                                    }, 0.5f);
+                                __instance.RpcShowGuardEffect(target);
+                                RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
+                                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
+                                target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//クルーにして
+                                target.SetRoleRPC(RoleId.JackalFriends);//フレンズにする
+                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
+                                RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
+                                SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
+
                             }
                             else
                             {
@@ -616,8 +601,7 @@ namespace SuperNewRoles.Patches
                         if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
                         {
                             RoleClass.StuntMan.GuardCount[target.PlayerId] = CustomOptions.StuntManMaxGuardCount.GetInt() - 1;
-                            target.RpcProtectPlayer(target, 0);
-                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                            __instance.RpcShowGuardEffect(target);
                             return false;
                         }
                         else
@@ -625,8 +609,7 @@ namespace SuperNewRoles.Patches
                             if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
                             {
                                 RoleClass.StuntMan.GuardCount[target.PlayerId]--;
-                                target.RpcProtectPlayer(target, 0);
-                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                                __instance.RpcShowGuardEffect(target);
                                 return false;
                             }
                         }
@@ -638,8 +621,7 @@ namespace SuperNewRoles.Patches
                     {
                         if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
                         {
-                            target.RpcProtectPlayer(target, 0);
-                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                            __instance.RpcShowGuardEffect(target);
                             return false;
                         }
                         else
@@ -647,8 +629,7 @@ namespace SuperNewRoles.Patches
                             if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
                             {
                                 RoleClass.MadStuntMan.GuardCount[target.PlayerId]--;
-                                target.RpcProtectPlayer(target, 0);
-                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                                __instance.RpcShowGuardEffect(target);
                                 return false;
                             }
                         }
@@ -660,8 +641,7 @@ namespace SuperNewRoles.Patches
                     {
                         if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId))
                         {
-                            target.RpcProtectPlayer(target, 0);
-                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                            __instance.RpcShowGuardEffect(target);
                             return false;
                         }
                         else
@@ -669,8 +649,7 @@ namespace SuperNewRoles.Patches
                             if (!(RoleClass.Fox.KillGuard[target.PlayerId] <= 0))
                             {
                                 RoleClass.Fox.KillGuard[target.PlayerId]--;
-                                target.RpcProtectPlayer(target, 0);
-                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                                __instance.RpcShowGuardEffect(target);
                                 return false;
                             }
                         }
