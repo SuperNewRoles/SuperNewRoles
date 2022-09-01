@@ -107,10 +107,12 @@ namespace SuperNewRoles.Patch
                             }
                         }
                     }
-                    //モードがSHRではない特殊モードで,「PC以外キック」とDebugモードがオフ, アガルタが有効でなおかつMiraが選択されている場合
-                    if (!ModeHandler.IsMode(ModeId.Default, false) && !ModeHandler.IsMode(ModeId.SuperHostRoles, false)
-                        && !CustomOptions.DisconnectNotPCOption.GetBool() && !CustomOptions.IsDebugMode.GetBool()
-                        && CustomOptions.enableAgartha.GetBool() && (CustomMapNames)PlayerControl.GameOptions.MapId == CustomMapNames.Mira)
+                    // アガルタ反映関係の警告文を制御するコード
+                    if ((CustomMapNames)PlayerControl.GameOptions.MapId == CustomMapNames.Mira && //マップ設定がMiraである かつ
+                        CustomOptions.enableAgartha.GetBool() && //「アガルタ」が有効である かつ
+                        !ModeHandler.IsMode(ModeId.Default, false) && //モードがデフォルトでない(特殊モードである) かつ
+                        !CustomOptions.DisconnectNotPCOption.GetBool() && //「PC以外キック」が無効(バニラをキックする状態)である かつ
+                        !CustomOptions.IsDebugMode.GetBool()) //Debugモードでない時
                     {
                         // 警告を表示する
                         message += "\n" + ModTranslation.GetString("IsSpecialModeOnAndVanillaKickOff") + "\n";
