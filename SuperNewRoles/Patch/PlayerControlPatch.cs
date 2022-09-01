@@ -865,7 +865,7 @@ namespace SuperNewRoles.Patches
 
             SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
-            Roles.Impostor.Doppelganger.KillCoolSetting.DoppelgangerResetKillCool();
+            Roles.Impostor.Doppelganger.KillCoolSetting.DoppelgangerResetKillCool(__instance);
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {

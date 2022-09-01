@@ -89,39 +89,28 @@ namespace SuperNewRoles.Roles.Impostor
                             break;
                         }
                     }
-
-                    if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-                    {
-                        if (!AmongUsClient.Instance.AmHost) return;
-                        var role = __instance.GetRole();
-                        var optdata = SyncSetting.OptionData.DeepCopy();
-                        optdata.KillCooldown = SyncSetting.KillCoolSet(TargetKill ? RoleClass.Doppelganger.SucTime     //ﾀｰｹﾞｯﾄだったら
-                                                                                  : RoleClass.Doppelganger.NotSucTime);//ﾀｰｹﾞｯﾄ以外だったら
-                        if (__instance.AmOwner) PlayerControl.GameOptions = optdata;
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, __instance.GetClientId());
-                        writer.WriteBytesAndSize(optdata.ToBytes(5));
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    }
-                    else if (ModeHandler.IsMode(ModeId.Default) && __instance == PlayerControl.LocalPlayer)
-                    {
-                        var role = PlayerControl.LocalPlayer.GetRole();
-                        var optdata = SyncSetting.OptionData.DeepCopy();
-                        optdata.KillCooldown = SyncSetting.KillCoolSet(TargetKill ? RoleClass.Doppelganger.SucTime     //ﾀｰｹﾞｯﾄだったら
-                                                                                  : RoleClass.Doppelganger.NotSucTime);//ﾀｰｹﾞｯﾄ以外だったら
-                        if (PlayerControl.LocalPlayer.AmOwner) PlayerControl.GameOptions = optdata;
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, PlayerControl.LocalPlayer.GetClientId());
-                        writer.WriteBytesAndSize(optdata.ToBytes(5));
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    }
-
                     SuperNewRolesPlugin.Logger.LogInfo("ドッペルゲンガーがキルしたことを感知");
                     SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName},{__instance.PlayerId} => {target.Data.PlayerName},{target.PlayerId}");
-                    SuperNewRolesPlugin.Logger.LogInfo($"ドッペルゲンガーの結果がtrueかどうか : {TargetKill.ToString()}");
-                    SuperNewRolesPlugin.Logger.LogInfo($"ドッペルゲンガーの{__instance.Data.PlayerName}のキルクールを{(TargetKill ? RoleClass.Doppelganger.SucTime : RoleClass.Doppelganger.NotSucTime)}秒に変更しました, プレイヤーのキルクール : {__instance.killTimer}");
+                    SuperNewRolesPlugin.Logger.LogInfo($"ドッペルゲンガーの{__instance.Data.PlayerName}のキルクールを{(TargetKill ? RoleClass.Doppelganger.SucTime : RoleClass.Doppelganger.NotSucTime)}秒に変更しました");
+                    if ((ModeHandler.IsMode(ModeId.Default) && __instance != PlayerControl.LocalPlayer) || (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost))
+                    {
+                        return;
+                    }
+                    var optdata = SyncSetting.OptionData.DeepCopy();
+                    optdata.KillCooldown = SyncSetting.KillCoolSet(TargetKill ? RoleClass.Doppelganger.SucTime     //ﾀｰｹﾞｯﾄだったら
+                                                                              : RoleClass.Doppelganger.NotSucTime);//ﾀｰｹﾞｯﾄ以外だったら
+                    if (PlayerControl.LocalPlayer.AmOwner) PlayerControl.GameOptions = optdata;
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, __instance.GetClientId());
+                    writer.WriteBytesAndSize(optdata.ToBytes(5));
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
                 }
             }
-            public static void DoppelgangerResetKillCool()
+            public static void DoppelgangerResetKillCool(PlayerControl __instance)
             {
+                if ((ModeHandler.IsMode(ModeId.Default) && __instance != PlayerControl.LocalPlayer) || (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost))
+                {
+                    return;
+                }
                 var role = PlayerControl.LocalPlayer.GetRole();
                 var optdata = SyncSetting.OptionData.DeepCopy();
                 optdata.KillCooldown = SyncSetting.KillCoolSet(RoleClass.Doppelganger.DefaultKillCool);
