@@ -131,5 +131,6 @@ namespace SuperNewRoles
                 }
             }
         }
+        public static void AgarthaLoad() => Agartha.AgarthaPlugin.Instance.Log.LogInfo("アガルタやで");
     }
 }
