@@ -9,10 +9,6 @@ namespace SuperNewRoles.Buttons
     {
         public static void Prefix()
         {
-            Patch();
-        }
-        public static void Patch()
-        {
             SpeedBooster.ResetSpeed();
             EvilSpeedBooster.ResetSpeed();
             Lighter.LightOutEnd();
