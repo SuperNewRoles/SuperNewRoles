@@ -18,7 +18,7 @@ namespace SuperNewRoles.Roles
             try
             {
                 if (source == null) source = PlayerControl.LocalPlayer;
-                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ArsonistDouse);
+                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.ArsonistDouse);
                 Writer.Write(source.PlayerId);
                 Writer.Write(target.PlayerId);
                 Writer.EndRPC();

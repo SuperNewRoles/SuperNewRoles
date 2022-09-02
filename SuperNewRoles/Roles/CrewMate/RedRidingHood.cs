@@ -25,11 +25,11 @@ namespace SuperNewRoles.Roles
                         Logger.Info($"お:{!EvilEraser.IsBlock(EvilEraser.BlockTypes.RedRidingHoodRevive, killer)}");
                         if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.RedRidingHoodRevive, killer))
                         {
-                            var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ReviveRPC);
+                            var Writer = RPCHelper.StartRPC(CustomRPC.ReviveRPC);
                             Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             Writer.EndRPC();
                             RPCProcedure.ReviveRPC(CachedPlayer.LocalPlayer.PlayerId);
-                            Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.CleanBody);
+                            Writer = RPCHelper.StartRPC(CustomRPC.CleanBody);
                             Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             Writer.EndRPC();
                             RoleClass.NiceRedRidingHood.deadbodypos = null;

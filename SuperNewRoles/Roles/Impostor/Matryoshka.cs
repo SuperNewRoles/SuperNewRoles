@@ -20,7 +20,8 @@ namespace SuperNewRoles.Roles.Impostor
                     if (RoleClass.Matryoshka.WearReport)
                     {
                         Data.Value.Item1.Reported = false;
-                    } else
+                    }
+                    else
                     {
                         Data.Value.Item1.Reported = true;
                     }
@@ -48,7 +49,8 @@ namespace SuperNewRoles.Roles.Impostor
             if (Is)
             {
                 source.setOutfit(target.Data.DefaultOutfit);
-            } else
+            }
+            else
             {
                 source.setOutfit(source.Data.DefaultOutfit);
             }
@@ -59,8 +61,9 @@ namespace SuperNewRoles.Roles.Impostor
                     RoleClass.Matryoshka.Datas[source.PlayerId].Item1.Reported = false;
                     RoleClass.Matryoshka.Datas[source.PlayerId].Item1.bodyRenderer.enabled = true;
                 }
-                RoleClass.Matryoshka.Datas[source.PlayerId] = (null,0);
-            } else
+                RoleClass.Matryoshka.Datas[source.PlayerId] = (null, 0);
+            }
+            else
             {
                 DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
                 for (int i = 0; i < array.Length; i++)
@@ -74,7 +77,7 @@ namespace SuperNewRoles.Roles.Impostor
         }
         public static void RpcSet(PlayerControl target, bool Is)
         {
-            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetMatryoshkaDeadbody);
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetMatryoshkaDeadbody);
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             writer.Write(target == null ? (byte)255 : target.PlayerId);
             writer.Write(Is);

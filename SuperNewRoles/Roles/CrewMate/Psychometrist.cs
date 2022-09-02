@@ -89,7 +89,7 @@ namespace SuperNewRoles.Roles.CrewMate
             DeathTimeText.color = Color.white;
             if (!RoleClass.Psychometrist.IsReportCheckedReportDeadbody)
             {
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.BlockReportDeadBody);
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.BlockReportDeadBody);
                 writer.Write(targetbody.ParentId);
                 writer.EndRPC();
                 CustomRPC.RPCProcedure.BlockReportDeadBody(targetbody.ParentId, false);

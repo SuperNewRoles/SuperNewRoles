@@ -16,7 +16,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
-using static SuperNewRoles.EndGame.FinalStatusPatch;
+using static SuperNewRoles.Patch.FinalStatusPatch;
 
 namespace SuperNewRoles.Modules
 {
@@ -1224,7 +1224,7 @@ namespace SuperNewRoles.Modules
                         case CustomRPC.MeetingSheriffKill:
                             MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                             break;
-                        case CustomRPC.CustomRPCKill:
+                        case CustomRPCKill:
                             CustomRPCKill(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.RPCClergymanLightOut:

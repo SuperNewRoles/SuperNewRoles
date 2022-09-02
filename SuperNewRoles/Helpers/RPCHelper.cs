@@ -17,11 +17,11 @@ namespace SuperNewRoles.Helpers
         {
             return StartRPC(NetId, (byte)RPCId, SendTarget);
         }
-        public static MessageWriter StartRPC(CustomRPC.CustomRPC RPCId, PlayerControl SendTarget = null)
+        public static MessageWriter StartRPC(CustomRPC RPCId, PlayerControl SendTarget = null)
         {
             return StartRPC(PlayerControl.LocalPlayer.NetId, (byte)RPCId, SendTarget);
         }
-        public static MessageWriter StartRPC(uint NetId, CustomRPC.CustomRPC RPCId, PlayerControl SendTarget = null)
+        public static MessageWriter StartRPC(uint NetId, CustomRPC RPCId, PlayerControl SendTarget = null)
         {
             return StartRPC(NetId, (byte)RPCId, SendTarget);
         }
@@ -45,7 +45,7 @@ namespace SuperNewRoles.Helpers
         public static void RpcSetDoorway(this PlainDoor door, bool Open)
         {
             door.SetDoorway(Open);
-            MessageWriter writer = StartRPC(CustomRPC.CustomRPC.RpcSetDoorway);
+            MessageWriter writer = StartRPC(CustomRPC.RpcSetDoorway);
             writer.Write((byte)door.Id);
             writer.Write(Open);
             writer.EndRPC();
@@ -149,14 +149,14 @@ namespace SuperNewRoles.Helpers
         }
         public static void RPCSetColorModOnly(this PlayerControl player, byte color)
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)CustomRPC.CustomRPC.UncheckedSetColor, SendOption.Reliable);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)CustomRPC.UncheckedSetColor, SendOption.Reliable);
             writer.Write(color);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             player.SetColor(color);
         }
         public static void RPCSetRoleUnchecked(this PlayerControl player, RoleTypes roletype)
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UncheckedSetVanilaRole, SendOption.Reliable);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetVanilaRole, SendOption.Reliable);
             writer.Write(player.PlayerId);
             writer.Write((byte)roletype);
             AmongUsClient.Instance.FinishRpcImmediately(writer);

@@ -20,11 +20,11 @@ namespace SuperNewRoles.Roles.Neutral
             if (RoleClass.Hitman.WinKillCount <= 0)
             {
                 RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
-                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                 Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(Writer);
 
-                Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                 Writer.Write((byte)CustomGameOverReason.HitmanWin);
                 Writer.EndRPC();
                 RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
@@ -36,7 +36,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
                 else
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
                     writer.Write((byte)reason);
                     writer.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);

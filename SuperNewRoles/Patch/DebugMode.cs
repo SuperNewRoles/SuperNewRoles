@@ -86,7 +86,7 @@ namespace SuperNewRoles.Patch
                 //ここにデバッグ用のものを書いてね
                 if (Input.GetKeyDown(KeyCode.I))
                 {
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedUsePlatform);
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedUsePlatform);
                     writer.Write((byte)4);
                     writer.Write(false);
                     writer.EndRPC();

@@ -46,7 +46,7 @@ namespace SuperNewRoles
     {
         public static void Postfix()
         {
-            RPCHelper.StartRPC(CustomRPC.CustomRPC.StartGameRPC).EndRPC();
+            RPCHelper.StartRPC(CustomRPC.StartGameRPC).EndRPC();
             RPCProcedure.StartGameRPC();
 
             RoleSelectHandler.SpawnBots();
