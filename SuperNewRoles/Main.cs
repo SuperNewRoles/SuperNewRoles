@@ -23,9 +23,10 @@ namespace SuperNewRoles
         {
             get
             {
-                return ThisAssembly.Git.Branch != "master";
+                return ThisAssembly.Git.Branch != MasterBranch;
             }
         }
+        public const string MasterBranch = "master";
 
         public static Version Version = Version.Parse(VersionString);
         public static BepInEx.Logging.ManualLogSource Logger;
