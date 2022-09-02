@@ -6,12 +6,11 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnhollowerBaseLib;
 using UnityEngine;
 
-namespace SuperNewRoles.EndGame
+namespace SuperNewRoles.Patch
 {
     public enum CustomGameOverReason
     {
@@ -67,6 +66,41 @@ namespace SuperNewRoles.EndGame
         PhotographerWin,
         StefinderWin,
         BugEnd
+    }
+    class FinalStatusPatch
+    {
+        public static class FinalStatusData
+        {
+            public static List<Tuple<Vector3, bool>> localPlayerPositions = new();
+            public static List<DeadPlayer> deadPlayers = new();
+            public static Dictionary<int, FinalStatus> FinalStatuses = new();
+
+            public static void ClearFinalStatusData()
+            {
+                localPlayerPositions = new List<Tuple<Vector3, bool>>();
+                deadPlayers = new List<DeadPlayer>();
+                FinalStatuses = new Dictionary<int, FinalStatus>();
+            }
+        }
+        public static string GetStatusText(FinalStatus status) => ModTranslation.GetString("FinalStatus" + status.ToString()); //ローカル関数
+
+    }
+    public enum FinalStatus
+    {
+        Alive,
+        Kill,
+        Exiled,
+        NekomataExiled,
+        SheriffKill,
+        SheriffMisFire,
+        MeetingSheriffKill,
+        MeetingSheriffMisFire,
+        SelfBomb,
+        BySelfBomb,
+        Ignite,
+        Disconnected,
+        Dead,
+        Sabotage
     }
     [HarmonyPatch(typeof(ShipStatus))]
     public class ShipStatusPatch
@@ -835,7 +869,7 @@ namespace SuperNewRoles.EndGame
                     if (RoleClass.Stefinder.SoloWin)
                     {
                         TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                        WinningPlayerData wpd = new(player.Data) ;
+                        WinningPlayerData wpd = new(player.Data);
                         TempData.winners.Add(wpd);
                         AdditionalTempData.winCondition = WinCondition.StefinderWin;
                     }
