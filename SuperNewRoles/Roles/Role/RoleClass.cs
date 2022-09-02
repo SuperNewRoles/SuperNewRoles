@@ -45,7 +45,7 @@ namespace SuperNewRoles.Roles
             Roles.MadSeer.CheckedImpostor = new();
             Roles.JackalFriends.CheckedJackal = new();
             Mode.BattleRoyal.Main.VentData = new();
-            Patch.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
+            FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
             MapCustoms.AdditionalVents.ClearAndReload();
             MapCustoms.SpecimenVital.ClearAndReload();

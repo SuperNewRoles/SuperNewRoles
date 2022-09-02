@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Hazel;
-
+using SuperNewRoles.Patch;
 
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
@@ -75,8 +75,8 @@ namespace SuperNewRoles.Roles
                                         player
                                     };
                                     //EndGameCheck.WinNeutral(winplayers);
-                                    Chat.WinCond = CustomGameOverReason.FalseChargesWin;
-                                    Chat.Winner = new List<PlayerControl>
+                                    Mode.SuperHostRoles.Chat.WinCond = CustomGameOverReason.FalseChargesWin;
+                                    Mode.SuperHostRoles.Chat.Winner = new List<PlayerControl>
                                     {
                                         player
                                     };

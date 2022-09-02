@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Hazel;
-
-
-using SuperNewRoles.Helpers;
+using SuperNewRoles.Patch;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral

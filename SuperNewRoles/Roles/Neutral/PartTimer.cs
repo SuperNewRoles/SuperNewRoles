@@ -22,7 +22,7 @@ namespace SuperNewRoles.Roles.Neutral
         }
         public static void WrapUp()
         {
-            if (!PlayerControl.LocalPlayer.IsRole(CustomRPC.RoleId.PartTimer)) return;
+            if (!PlayerControl.LocalPlayer.IsRole(RoleId.PartTimer)) return;
             if (RoleClass.PartTimer.DeathTurn <= 0)
             {
                 PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);

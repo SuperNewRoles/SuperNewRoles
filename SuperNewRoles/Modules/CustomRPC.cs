@@ -1224,7 +1224,7 @@ namespace SuperNewRoles.Modules
                         case CustomRPC.MeetingSheriffKill:
                             MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                             break;
-                        case CustomRPCKill:
+                        case CustomRPC.CustomRPCKill:
                             CustomRPCKill(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.RPCClergymanLightOut:

@@ -4,7 +4,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 
-
+using SuperNewRoles.Patch;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using UnityEngine;

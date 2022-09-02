@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using UnityEngine;
-
+using SuperNewRoles.Patch;
 using SuperNewRoles.CustomObject;
 using Hazel;
 using SuperNewRoles.Helpers;
