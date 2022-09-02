@@ -16,16 +16,11 @@ namespace SuperNewRoles
     public class SuperNewRolesPlugin : BasePlugin
     {
         public const string Id = "jp.ykundesu.supernewroles";
-
         //バージョンと同時にIsBetaも変える
         public const string VersionString = "1.4.2.1";
-        public static bool IsBeta
-        {
-            get
-            {
-                return ThisAssembly.Git.Branch != MasterBranch;
-            }
-        }
+        public static bool IsBeta { get { return ThisAssembly.Git.Branch != "master"; } }
+
+        public const string ModUrl = "ykundesu/SuperNewRoles";
         public const string MasterBranch = "master";
 
         public static Version Version = Version.Parse(VersionString);

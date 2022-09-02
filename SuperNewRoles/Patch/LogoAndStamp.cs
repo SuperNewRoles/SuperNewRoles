@@ -139,7 +139,7 @@ namespace SuperNewRoles.Patches
                     Downloaded = true;
                     HttpClient http = new();
                     http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, OnlyIfCached = false };
-                    var response = await http.GetAsync(new Uri("https://raw.githubusercontent.com/ykundesu/SuperNewRoles/master/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
+                    var response = await http.GetAsync(new Uri($"https://raw.githubusercontent.com/{SuperNewRolesPlugin.ModUrl}/master/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
                     try
                     {
                         if (response.StatusCode != HttpStatusCode.OK)
