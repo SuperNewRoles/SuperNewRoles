@@ -27,20 +27,20 @@ namespace SuperNewRoles.Roles
             return RoleClass.Clergyman.OldButtonTime <= 0
                 ? false
                 : (CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer,RoleId.MadMate)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer,RoleId.MadMayor)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer,RoleId.MadJester)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer,RoleId.MadJester)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer,RoleId.MadHawk)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer,RoleId.MadSeer)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer,RoleId.MadMaker)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer,RoleId.Jackal)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer,RoleId.Sidekick)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer,RoleId.JackalFriends)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer,RoleId.SeerFriends)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer,RoleId.JackalSeer)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadMate)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadMayor)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadJester)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadJester)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadHawk)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadSeer)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadMaker)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.Jackal)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.Sidekick)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.JackalFriends)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.SeerFriends)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.JackalSeer)
                 ? true
-                : CountChanger.IsChange(PlayerControl.LocalPlayer,RoleId.SidekickSeer) || CountChanger.IsChange(PlayerControl.LocalPlayer,RoleId.BlackCat);
+                : CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.SidekickSeer) || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.BlackCat);
         }
         public static bool IsLightOutVisionNoTime()
         {

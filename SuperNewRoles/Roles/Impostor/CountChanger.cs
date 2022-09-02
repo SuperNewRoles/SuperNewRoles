@@ -38,7 +38,8 @@ namespace SuperNewRoles.Roles
                     : Get(p);
             }
         }
-        public static bool IsChange(PlayerControl p,RoleId role){
+        public static bool IsChange(PlayerControl p, RoleId role)
+        {
             if (GetRoleType(p) == TeamRoleType.Crewmate)
             {
                 if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
