@@ -82,7 +82,7 @@ namespace SuperNewRoles.Roles.Impostor
             writer.Write(target == null ? (byte)255 : target.PlayerId);
             writer.Write(Is);
             writer.EndRPC();
-            CustomRPC.RPCProcedure.SetMatryoshkaDeadBody(CachedPlayer.LocalPlayer.PlayerId, target == null ? (byte)255 : target.PlayerId, Is);
+            RPCProcedure.SetMatryoshkaDeadBody(CachedPlayer.LocalPlayer.PlayerId, target == null ? (byte)255 : target.PlayerId, Is);
         }
     }
 }

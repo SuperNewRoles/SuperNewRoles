@@ -40,7 +40,7 @@ namespace SuperNewRoles.Roles.CrewMate
             writer.Write(Target.PlayerId);
             writer.Write(Is);
             writer.EndRPC();
-            CustomRPC.RPCProcedure.PainterSetTarget(Target.PlayerId, Is);
+            RPCProcedure.PainterSetTarget(Target.PlayerId, Is);
         }
         public static void WrapUp()
         {
@@ -105,7 +105,7 @@ namespace SuperNewRoles.Roles.CrewMate
                 writer.Write((byte)type);
                 writer.WriteBytesAndSize(buff);
                 writer.EndRPC();
-                CustomRPC.RPCProcedure.PainterPaintSet(CachedPlayer.LocalPlayer.PlayerId, (byte)type, buff);
+                RPCProcedure.PainterPaintSet(CachedPlayer.LocalPlayer.PlayerId, (byte)type, buff);
             }
         }
     }

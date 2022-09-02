@@ -92,7 +92,7 @@ namespace SuperNewRoles.Roles.CrewMate
                 MessageWriter writer = RPCHelper.StartRPC(CustomRPC.BlockReportDeadBody);
                 writer.Write(targetbody.ParentId);
                 writer.EndRPC();
-                CustomRPC.RPCProcedure.BlockReportDeadBody(targetbody.ParentId, false);
+                RPCProcedure.BlockReportDeadBody(targetbody.ParentId, false);
             }
             if (RoleClass.Psychometrist.IsCheckFootprints)
             {
