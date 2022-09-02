@@ -7,7 +7,7 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.EndGame;
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -292,7 +292,8 @@ namespace SuperNewRoles.Modules
                         return;
                     }
                 }
-            } else
+            }
+            else
             {
                 RoleClass.BlockPlayers.Add(TargetId);
             }
@@ -328,7 +329,8 @@ namespace SuperNewRoles.Modules
                 {
                     if (source == null) return;
                     airshipStatus.GapPlatform.Use(source);
-                } else
+                }
+                else
                 {
                     airshipStatus.GapPlatform.StopAllCoroutines();
                     airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));

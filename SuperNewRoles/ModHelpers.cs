@@ -5,8 +5,8 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
+
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using TMPro;
@@ -484,7 +484,7 @@ namespace SuperNewRoles
         /// <returns></returns>
         public static int GetRandomInt(int max, int min = 0)
         {
-            return UnityEngine.Random.Range(min, max+1);
+            return UnityEngine.Random.Range(min, max + 1);
         }
         public static bool HidePlayerName(PlayerControl source, PlayerControl target)
         {

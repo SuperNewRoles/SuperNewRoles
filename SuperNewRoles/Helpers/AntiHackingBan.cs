@@ -3,7 +3,7 @@ using Assets.CoreScripts;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
-using SuperNewRoles.CustomRPC;
+
 
 namespace SuperNewRoles.Helpers
 {

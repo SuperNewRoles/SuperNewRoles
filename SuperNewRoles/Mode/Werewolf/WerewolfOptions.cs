@@ -1,4 +1,4 @@
-using SuperNewRoles.CustomOption;
+
 
 namespace SuperNewRoles.Mode.Werewolf
 {
@@ -11,5 +11,6 @@ namespace SuperNewRoles.Mode.Werewolf
             WerewolfMode = CustomOption.CustomOption.Create(506, true, CustomOptionType.Generic, "SettingWerewolfMode", false, ModeHandler.ModeSetting);
             WerewolfHunterOption = CustomOption.CustomOption.Create(507, true, CustomOptionType.Generic, "HunterName", CustomOptions.rates, WerewolfMode);
         }
-    */}
+    */
+    }
 }

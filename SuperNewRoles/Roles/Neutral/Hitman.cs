@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.CustomObject;
 using Hazel;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.EndGame;
+
 
 namespace SuperNewRoles.Roles.Neutral
 {
@@ -65,7 +65,8 @@ namespace SuperNewRoles.Roles.Neutral
                     UnityEngine.Object.Destroy(RoleClass.Hitman.cooldownText.gameObject);
                     RoleClass.Hitman.cooldownText = null;
                 }
-            } else
+            }
+            else
             {
                 if (RoleClass.Hitman.cooldownText != null)
                 {
@@ -114,7 +115,8 @@ namespace SuperNewRoles.Roles.Neutral
         public static void SetTarget()
         {
             List<PlayerControl> targets = PlayerControl.AllPlayerControls.ToArray().ToList();
-            targets.RemoveAll(player => {
+            targets.RemoveAll(player =>
+            {
                 return player.IsDead() || player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
             });
             if (targets.Count > 0)
@@ -136,7 +138,8 @@ namespace SuperNewRoles.Roles.Neutral
             if (RoleClass.Hitman.ArrowUpdateTimeDefault != -1)
             {
                 RoleClass.Hitman.TargetArrow = new Arrow(RoleClass.Hitman.color);
-                if (RoleClass.Hitman.Target != null) {
+                if (RoleClass.Hitman.Target != null)
+                {
                     RoleClass.Hitman.ArrowPosition = RoleClass.Hitman.Target.transform.position;
                     RoleClass.Hitman.TargetArrow.Update(RoleClass.Hitman.Target.transform.position);
                 }

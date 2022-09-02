@@ -3,7 +3,7 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patch;
 using UnityEngine;

@@ -6,7 +6,7 @@ using System.Text;
 using BepInEx.Configuration;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using UnityEngine;
@@ -53,7 +53,8 @@ namespace SuperNewRoles.Patch
                     if (RegulationData.Selected == 0)
                     {
                         ClientSelection = value;
-                    } else
+                    }
+                    else
                     {
                         ClientSelectedSelection = value;
                     }
@@ -219,7 +220,8 @@ namespace SuperNewRoles.Patch
                 if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
                 {
                     if (id == 0) SwitchPreset(selection); // Switch presets
-                    else if (entry != null && AmongUsClient.Instance.AmHost && RegulationData.Selected == 0) {
+                    else if (entry != null && AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
+                    {
                         entry.Value = selection;
                     } // Save selection to config
 
@@ -615,7 +617,8 @@ namespace SuperNewRoles.Patch
         public static bool Prefix(StringOption __instance)
         {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
-            if (option == null) {
+            if (option == null)
+            {
                 RegulationData Regulation = RegulationData.Regulations.FirstOrDefault(regulation => regulation.optionBehaviour == __instance);
                 if (Regulation != null)
                 {
@@ -711,9 +714,11 @@ namespace SuperNewRoles.Patch
                     }
                     __instance.oldValue = __instance.Value = 0;
                     __instance.ValueText.text = ModTranslation.GetString("optionOff");
-                    if (isReset) {
+                    if (isReset)
+                    {
                         Select(0);
-                        if (RegulationData.Regulations.FirstOrDefault(d => d.id == 0).optionBehaviour is not null and StringOption stringOption0){
+                        if (RegulationData.Regulations.FirstOrDefault(d => d.id == 0).optionBehaviour is not null and StringOption stringOption0)
+                        {
                             stringOption0.oldValue = __instance.Value = 1;
                             stringOption0.ValueText.text = ModTranslation.GetString("optionOn");
                         }

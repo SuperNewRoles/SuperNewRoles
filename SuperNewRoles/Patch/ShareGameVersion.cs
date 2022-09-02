@@ -4,8 +4,8 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
+
+
 using SuperNewRoles.Roles;
 using UnityEngine;
 

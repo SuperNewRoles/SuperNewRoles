@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;

@@ -1,7 +1,7 @@
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
+
 using UnityEngine;
 
 namespace SuperNewRoles.Roles

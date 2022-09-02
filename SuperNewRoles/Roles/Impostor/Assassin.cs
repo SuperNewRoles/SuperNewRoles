@@ -1,8 +1,8 @@
 //元:https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/AirShipStatusPatch.cs
 using System.Linq;
 using HarmonyLib;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
+
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;

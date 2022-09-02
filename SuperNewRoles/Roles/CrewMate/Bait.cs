@@ -1,6 +1,6 @@
 using System.Linq;
 using Hazel;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Patch;
 using UnityEngine;
 

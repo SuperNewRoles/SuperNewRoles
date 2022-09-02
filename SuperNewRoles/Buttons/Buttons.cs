@@ -5,8 +5,8 @@ using Agartha;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
+
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
@@ -588,10 +588,10 @@ namespace SuperNewRoles.Buttons
                         }
                         else
                         {
-                            DoctorVitalsButton.Timer =(RoleClass.Doctor.Battery / 10f);
+                            DoctorVitalsButton.Timer = (RoleClass.Doctor.Battery / 10f);
                         }
                     }
-                     else if (RoleClass.Doctor.Battery > 0)
+                    else if (RoleClass.Doctor.Battery > 0)
                     {
                         DoctorVitalsButton.MaxTimer = 0f;
                         DoctorVitalsButton.Timer = 0f;

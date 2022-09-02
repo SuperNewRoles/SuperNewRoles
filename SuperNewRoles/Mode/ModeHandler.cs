@@ -1,5 +1,5 @@
 using HarmonyLib;
-using SuperNewRoles.CustomOption;
+
 using SuperNewRoles.Patch;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 

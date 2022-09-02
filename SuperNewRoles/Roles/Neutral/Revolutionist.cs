@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
+
+
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral
@@ -28,7 +28,8 @@ namespace SuperNewRoles.Roles.Neutral
                     Buttons.HudManagerStartPatch.RevolutionistButton.actionButton.cooldownTimerText.color = new(1f, 1f, 1f, 1f);
                     Buttons.HudManagerStartPatch.RevolutionistButton.Timer = 0;
                     Buttons.HudManagerStartPatch.RevolutionistButton.MaxTimer = RoleClass.Revolutionist.CoolTime;
-                } else
+                }
+                else
                 {
                     if (Buttons.HudManagerStartPatch.RevolutionistButton.Timer <= 0)
                     {
@@ -55,7 +56,8 @@ namespace SuperNewRoles.Roles.Neutral
                         }
                     }
                 }
-            } else
+            }
+            else
             {
                 PlayerControl target = Buttons.HudManagerStartPatch.SetTarget(untarget: RoleClass.Revolutionist.RevolutionedPlayer);
                 SetPlayerOutline(target, RoleClass.Revolutionist.color);

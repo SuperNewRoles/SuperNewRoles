@@ -5,7 +5,7 @@ using System.Text;
 using SuperNewRoles.Patch;
 using UnityEngine;
 using TMPro;
-using SuperNewRoles.EndGame;
+
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Buttons;

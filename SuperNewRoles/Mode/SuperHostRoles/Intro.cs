@@ -1,5 +1,5 @@
 using System;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles

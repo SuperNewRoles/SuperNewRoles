@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
+
 using UnityEngine;
 
 namespace SuperNewRoles.Roles

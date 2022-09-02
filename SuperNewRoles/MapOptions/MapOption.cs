@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
-using SuperNewRoles.CustomOption;
+
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 using static SuperNewRoles.CustomOption.CustomOptions;
@@ -220,7 +220,7 @@ namespace SuperNewRoles.MapOptions
             VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
 
             WireTaskIsRandomOption = CustomOption.CustomOption.Create(956, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
-            WireTaskNumOption = CustomOption.CustomOption.Create(957, false, CustomOptionType.Generic, "WireTaskNum", 5f,1f,8f,1f, WireTaskIsRandomOption);
+            WireTaskNumOption = CustomOption.CustomOption.Create(957, false, CustomOptionType.Generic, "WireTaskNum", 5f, 1f, 8f, 1f, WireTaskIsRandomOption);
 
             LadderDead = CustomOption.CustomOption.Create(637, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
             LadderDeadChance = CustomOption.CustomOption.Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], LadderDead);

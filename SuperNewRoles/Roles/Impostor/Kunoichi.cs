@@ -3,7 +3,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Mode;
 using UnityEngine;
 
@@ -127,7 +127,7 @@ namespace SuperNewRoles.Roles
                     {
                         if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)//透明化していた場合
                         {
-                            HideOff();; // 透明化を解除する
+                            HideOff(); ; // 透明化を解除する
                         }
                         RoleClass.Kunoichi.StopTime = 0;//止まっている時間を 0 にする
                     }

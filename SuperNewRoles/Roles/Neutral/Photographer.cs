@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
+
+
 using SuperNewRoles.Helpers;
 using UnityEngine;
 
@@ -61,7 +61,7 @@ namespace SuperNewRoles.Roles.Neutral
         }
         public static void CheckWin()
         {
-            foreach(CachedPlayer player in CachedPlayer.AllPlayers)
+            foreach (CachedPlayer player in CachedPlayer.AllPlayers)
             {
                 if (player.Data.IsDead) continue;
                 if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;

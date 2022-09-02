@@ -3,8 +3,8 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
+
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
@@ -93,10 +93,11 @@ namespace SuperNewRoles.Patch
             Roles.Neutral.Hitman.WrapUp();
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
-            if (AmongUsClient.Instance.AmHost) {
+            if (AmongUsClient.Instance.AmHost)
+            {
                 PlayerAnimation.PlayerAnimations.All(x =>
                 {
-                    x.RpcAnimation(RpcAnimationType.Stop);    
+                    x.RpcAnimation(RpcAnimationType.Stop);
                     return false;
                 });
             }

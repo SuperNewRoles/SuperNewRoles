@@ -3,7 +3,7 @@ using Agartha;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patch;
@@ -229,7 +229,7 @@ namespace SuperNewRoles.Patches
             //SetUpRoleTextPatch.Postfix(__instance);
         }
 
-        [HarmonyPatch(typeof(IntroCutscene),nameof(IntroCutscene.ShowTeam))]
+        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowTeam))]
         class ShowTeam
         {
             public static void Postfix()
@@ -288,7 +288,7 @@ namespace SuperNewRoles.Patches
                 {
                     if (PlayerControl.LocalPlayer == null) yield break;
                     if (PlayerControl.LocalPlayer.myTasks.Count == (PlayerControl.GameOptions.NumCommonTasks + PlayerControl.GameOptions.NumShortTasks + PlayerControl.GameOptions.NumLongTasks)) yield break;
-                       
+
                     yield return null;
                 }
             }

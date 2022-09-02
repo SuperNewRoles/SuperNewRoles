@@ -5,8 +5,8 @@ using System.Linq;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
+
+
 using SuperNewRoles.Helpers;
 using UnityEngine;
 
@@ -131,7 +131,7 @@ namespace SuperNewRoles.Patch
                 }
                 if (Input.GetKeyDown(KeyCode.F1))
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("new Vector2("+(PlayerControl.LocalPlayer.transform.position.x - 12.63f) +"f, "+ (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
+                    SuperNewRolesPlugin.Logger.LogInfo("new Vector2(" + (PlayerControl.LocalPlayer.transform.position.x - 12.63f) + "f, " + (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
                 }
             }
 
