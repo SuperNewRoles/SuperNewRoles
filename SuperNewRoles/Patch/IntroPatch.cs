@@ -4,13 +4,13 @@ using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 
-using SuperNewRoles.Intro;
+;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
-namespace SuperNewRoles.Patches
+namespace SuperNewRoles.Patch
 {
     [HarmonyPatch(typeof(Constants), nameof(Constants.ShouldHorseAround))]
     public static class ShouldAlwaysHorseAround
