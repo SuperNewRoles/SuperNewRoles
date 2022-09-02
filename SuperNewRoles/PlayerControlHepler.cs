@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using InnerNet;
-
-;
 using SuperNewRoles.Roles;
 using UnityEngine;
+
 using static SuperNewRoles.Patch.ShareGameVersion;
 
 namespace SuperNewRoles
@@ -42,7 +41,7 @@ namespace SuperNewRoles
         {
             if (player == null) return;
 
-            List<Intro.IntroDate> infos = new() { Intro.IntroDate.GetIntroDate(player.GetRole(), player) };
+            List<IntroDate> infos = new() { IntroDate.GetIntroDate(player.GetRole(), player) };
 
             var toRemove = new List<PlayerTask>();
             var aaa = false;
@@ -72,7 +71,7 @@ namespace SuperNewRoles
             }
 
             // Add TextTask for remaining RoleInfos
-            foreach (Intro.IntroDate roleInfo in infos)
+            foreach (IntroDate roleInfo in infos)
             {
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);

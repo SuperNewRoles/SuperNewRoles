@@ -240,7 +240,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
 
-            var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(player.GetRole(), player);
+            var introdate = IntroDate.GetIntroDate(player.GetRole(), player);
             string TaskText = "";
             if (!player.IsClearTask())
             {

@@ -1,5 +1,6 @@
 using BepInEx.Configuration;
-using SuperNewRoles.Patches;
+using SuperNewRoles.Patch;
+
 namespace SuperNewRoles
 {
     public static class ConfigRoles
@@ -44,9 +45,9 @@ namespace SuperNewRoles
                 IsUpdated = true;
             }
             IsUpdate.Value = false;
-            Patches.ShouldAlwaysHorseAround.isHorseMode = EnableHorseMode.Value;
-            Patch.RegionMenuOpenPatch.defaultRegions = ServerManager.DefaultRegions;
-            Patch.RegionMenuOpenPatch.UpdateRegions();
+            ShouldAlwaysHorseAround.isHorseMode = EnableHorseMode.Value;
+            RegionMenuOpenPatch.defaultRegions = ServerManager.DefaultRegions;
+            RegionMenuOpenPatch.UpdateRegions();
         }
     }
 }

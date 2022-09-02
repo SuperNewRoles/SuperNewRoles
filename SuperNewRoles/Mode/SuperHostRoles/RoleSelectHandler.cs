@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-
-
-;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using SuperNewRoles.Helpers;
-;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 

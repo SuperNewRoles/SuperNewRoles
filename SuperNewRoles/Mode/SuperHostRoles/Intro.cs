@@ -50,7 +50,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             var myrole = PlayerControl.LocalPlayer.GetRole();
             if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
             {
-                var date = SuperNewRoles.Intro.IntroDate.GetIntroDate(myrole);
+                var date = IntroDate.GetIntroDate(myrole);
                 __instance.YouAreText.color = date.color;
                 __instance.RoleText.text = ModTranslation.GetString(date.NameKey + "Name");
                 __instance.RoleText.color = date.color;

@@ -4,11 +4,7 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
-
-
-
 using SuperNewRoles.Helpers;
-;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;

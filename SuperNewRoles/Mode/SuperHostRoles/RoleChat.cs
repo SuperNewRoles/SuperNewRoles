@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using InnerNet;
-;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {

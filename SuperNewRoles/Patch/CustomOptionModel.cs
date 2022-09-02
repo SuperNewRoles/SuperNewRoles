@@ -6,8 +6,6 @@ using System.Text;
 using BepInEx.Configuration;
 using HarmonyLib;
 using Hazel;
-
-;
 using SuperNewRoles.Mode;
 using UnityEngine;
 using UnityEngine.Events;

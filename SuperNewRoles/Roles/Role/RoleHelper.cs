@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.CustomObject;
-
-;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 
