@@ -2237,7 +2237,7 @@ namespace SuperNewRoles.Roles
                 TunaPlayer = new();
                 Position = new Dictionary<byte, Vector3>();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers) Position[p.PlayerId] = new Vector3(9999f, 9999f, 9999f);
-                StoppingTime = CustomOption.CustomOptions.TunaStoppingTime.GetFloat();
+                StoppingTime = CustomOptions.TunaStoppingTime.GetFloat();
                 if (Mode.ModeHandler.IsMode(Mode.ModeId.Default)) Timer = StoppingTime;
                 IsUseVent = CustomOptions.TunaIsUseVent.GetBool();
                 IsTunaAddWin = CustomOptions.TunaIsAddWin.GetBool();

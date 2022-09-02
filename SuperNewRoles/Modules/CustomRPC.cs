@@ -648,7 +648,7 @@ namespace SuperNewRoles.Modules
                 {
                     uint optionId = reader.ReadPackedUInt32();
                     uint selection = reader.ReadPackedUInt32();
-                    CustomOption.CustomOption option = CustomOption.CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
+                    CustomOption option = CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
                     option.UpdateSelection((int)selection);
                 }
             }

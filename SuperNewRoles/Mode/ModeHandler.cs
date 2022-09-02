@@ -104,8 +104,8 @@ namespace SuperNewRoles.Mode
         public const string PlayingOnSuperNewRoles = "Playing on <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
 
         public static CustomOptionBlank Mode;
-        public static CustomOption.CustomOption ModeSetting;
-        public static CustomOption.CustomOption ThisModeSetting;
+        public static CustomOption ModeSetting;
+        public static CustomOption ThisModeSetting;
         public static Il2CppSystem.Collections.Generic.List<PlayerControl> TeamHandler(IntroCutscene __instance)
         {
             if (IsMode(ModeId.HideAndSeek)) return HideAndSeek.Intro.ModeHandler();
@@ -147,8 +147,8 @@ namespace SuperNewRoles.Mode
         public static void OptionLoad()
         {
             Mode = new CustomOptionBlank(null);
-            ModeSetting = CustomOption.CustomOption.Create(484, true, CustomOptionType.Generic, "ModeSetting", false, Mode, isHeader: true);
-            ThisModeSetting = CustomOption.CustomOption.Create(485, true, CustomOptionType.Generic, "SettingMode", modes, ModeSetting);
+            ModeSetting = CustomOption.Create(484, true, CustomOptionType.Generic, "ModeSetting", false, Mode, isHeader: true);
+            ThisModeSetting = CustomOption.Create(485, true, CustomOptionType.Generic, "SettingMode", modes, ModeSetting);
             HideAndSeek.HideAndSeekOptions.Load();
             BattleRoyal.BROption.Load();
             Zombie.ZombieOptions.Load();

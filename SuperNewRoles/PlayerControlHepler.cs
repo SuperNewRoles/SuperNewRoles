@@ -77,7 +77,7 @@ namespace SuperNewRoles
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
 
-                task.Text = CustomOption.CustomOptions.Cs(roleInfo.color, $"{ModTranslation.GetString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
+                task.Text = CustomOptions.Cs(roleInfo.color, $"{ModTranslation.GetString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
                 if (player.IsLovers())
                 {
                     task.Text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, ModTranslation.GetString("LoversName") + ": " + string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
@@ -85,7 +85,7 @@ namespace SuperNewRoles
                 if (!player.IsGhostRole(RoleId.DefaultRole))
                 {
                     var GhostRoleInfo = IntroDate.GetIntroDate(player.GetGhostRole(), player);
-                    task.Text += "\n" + CustomOption.CustomOptions.Cs(GhostRoleInfo.color, $"{ModTranslation.GetString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
+                    task.Text += "\n" + CustomOptions.Cs(GhostRoleInfo.color, $"{ModTranslation.GetString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
                 }
                 /**
                 if (player.IsQuarreled())

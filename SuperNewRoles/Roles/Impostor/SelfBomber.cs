@@ -48,7 +48,7 @@ namespace SuperNewRoles.Roles
         {
             Vector3 position = source.transform.position;
             Vector3 playerposition = player.transform.position;
-            var r = CustomOption.CustomOptions.SelfBomberScope.GetFloat();
+            var r = CustomOptions.SelfBomberScope.GetFloat();
             if ((position.x + r >= playerposition.x) && (playerposition.x >= position.x - r))
             {
                 if ((position.y + r >= playerposition.y) && (playerposition.y >= position.y - r))

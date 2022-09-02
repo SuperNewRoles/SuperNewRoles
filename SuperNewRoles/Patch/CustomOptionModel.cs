@@ -11,7 +11,7 @@ using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using UnityEngine;
 using UnityEngine.Events;
-using static SuperNewRoles.CustomOption.CustomRegulation;
+using static SuperNewRoles.Modules.CustomRegulation;
 
 namespace SuperNewRoles.Patch
 {

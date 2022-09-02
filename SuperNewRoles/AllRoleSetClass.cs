@@ -280,10 +280,10 @@ namespace SuperNewRoles
         }
         public static void QuarreledRandomSelect()
         {
-            if (!CustomOption.CustomOptions.QuarreledOption.GetBool()) return;
+            if (!CustomOptions.QuarreledOption.GetBool()) return;
             SuperNewRolesPlugin.Logger.LogInfo("クラードセレクト");
             List<PlayerControl> SelectPlayers = new();
-            if (CustomOption.CustomOptions.QuarreledOnlyCrewMate.GetBool())
+            if (CustomOptions.QuarreledOnlyCrewMate.GetBool())
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
