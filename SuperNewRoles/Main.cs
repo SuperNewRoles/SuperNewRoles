@@ -19,13 +19,8 @@ namespace SuperNewRoles
 
         //バージョンと同時にIsBetaも変える
         public const string VersionString = "1.4.2.1";
-        public static bool IsBeta
-        {
-            get
-            {
-                return ThisAssembly.Git.Branch != "master";
-            }
-        }
+        public static bool IsBeta { get { return ThisAssembly.Git.Branch != "master"; } }
+        public const string ModUrl = "ykundesu/SuperNewRoles";
 
         public static Version Version = Version.Parse(VersionString);
         public static BepInEx.Logging.ManualLogSource Logger;
