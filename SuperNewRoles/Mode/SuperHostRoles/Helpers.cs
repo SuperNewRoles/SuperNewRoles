@@ -49,7 +49,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
 
         /// <summary>
-        /// 守護ガードのエフェクトを表示する
+        /// 守護ガードのエフェクトを表示する(キルクールもリセット)
         /// </summary>
         /// <param name="shower">エフェクトを見れる人</param>
         /// <param name="target">エフェクトをかける人</param>
