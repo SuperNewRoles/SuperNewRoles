@@ -13,7 +13,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static SuperNewRoles.CustomOption.CustomRegulation;
 
-namespace SuperNewRoles.CustomOption
+namespace SuperNewRoles.Patch
 {
     public enum CustomOptionType
     {
