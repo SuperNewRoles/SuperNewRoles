@@ -1,0 +1,3 @@
+moto,0,11,13
+TestName,Test,テスト,試験
+Baka,Uma Shika,バカ,馬鹿

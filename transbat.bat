@@ -1,0 +1,2 @@
+py "Translate.py"
+pause

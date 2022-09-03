@@ -6,21 +6,13 @@
         <Authors>ykundesu</Authors>
         <AmongUs Condition=" '$(AmongUs)' == '' ">C:/Program Files/Epic Games/AmongUs_mymod</AmongUs>
         <langVersion>preview</langVersion>
-    </PropertyGroup>
-
-    <PropertyGroup>
         <DefineConstants>$(DefineConstants);STEAM</DefineConstants>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <ApplicationIcon />
-        <Win32Resource />
         <AssemblyName>SuperNewRoles</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>
         <EmbeddedResource Include="Resources\**" />
-    </ItemGroup>
-
-    <ItemGroup>
         <Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
         <Reference Include="$(AmongUs)/BepInEx/unhollowed/*.dll" />
         <Reference Include="$(AmongUs)/BepInEx/plugins/Agartha.dll" />
@@ -29,10 +21,6 @@
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
         <Message Text="Second occurrence" />
         <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\netstandard2.1\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
-    </Target>
-
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="python &quot;$(SolutionDir)StartTranslate.py&quot;" />
     </Target>
 
     <ItemGroup>
