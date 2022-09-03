@@ -59,6 +59,11 @@ namespace SuperNewRoles.Patches
                 }
                 return true;
             }
+            if (__instance.IsRole(RoleId.ShiftActor))
+            {
+                Roles.Impostor.ShiftActor.Shapeshift(__instance, target);
+                return true;
+            }
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 switch (__instance.GetRole())
