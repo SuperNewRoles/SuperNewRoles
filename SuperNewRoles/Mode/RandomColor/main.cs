@@ -1,4 +1,4 @@
-using static SuperNewRoles.EndGame.CheckGameEndPatch;
+using static SuperNewRoles.Patch.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.RandomColor
 {

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using SuperNewRoles.CustomRPC;
+
 
 //TODO:さつまいも、いつかリファクタします
 namespace SuperNewRoles.Roles

@@ -1,3 +1,4 @@
+global using SuperNewRoles.Modules;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,7 +46,7 @@ namespace SuperNewRoles
             ChacheManager.Load();
             CustomCosmetics.CustomColors.Load();
             ConfigRoles.Load();
-            CustomOption.CustomOptions.Load();
+            CustomOptions.Load();
             Patches.FreeNamePatch.Initialize();
             // All Load() End
 
@@ -121,5 +122,6 @@ namespace SuperNewRoles
                 }
             }
         }
+        public static void AgarthaLoad() => Agartha.AgarthaPlugin.Instance.Log.LogInfo("アガルタやで");
     }
 }

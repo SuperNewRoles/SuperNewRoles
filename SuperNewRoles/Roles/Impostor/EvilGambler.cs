@@ -1,5 +1,5 @@
 using HarmonyLib;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 

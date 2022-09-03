@@ -4,7 +4,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using UnityEngine;
-using static SuperNewRoles.EndGame.CheckGameEndPatch;
+using static SuperNewRoles.Patch.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.Zombie
 {

@@ -1,7 +1,7 @@
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
+
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -15,7 +15,7 @@ namespace SuperNewRoles.Roles
             {
                 if (HudManagerStartPatch.ShielderButton.Timer <= 0.1f && RoleClass.Shielder.IsShield[CachedPlayer.LocalPlayer.PlayerId] && PlayerControl.LocalPlayer.IsRole(RoleId.Shielder))
                 {
-                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetShielder, SendOption.Reliable, -1);
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetShielder, SendOption.Reliable, -1);
                     Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     Writer.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);

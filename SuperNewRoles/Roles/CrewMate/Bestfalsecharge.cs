@@ -1,6 +1,6 @@
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomRPC;
+
 
 namespace SuperNewRoles.Roles
 {
@@ -15,7 +15,7 @@ namespace SuperNewRoles.Roles
                 {
                     foreach (PlayerControl p in RoleClass.Bestfalsecharge.BestfalsechargePlayer)
                     {
-                        MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ExiledRPC, SendOption.Reliable, -1);
+                        MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ExiledRPC, SendOption.Reliable, -1);
                         RPCWriter.Write(p.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
                         RPCProcedure.ExiledRPC(p.PlayerId);

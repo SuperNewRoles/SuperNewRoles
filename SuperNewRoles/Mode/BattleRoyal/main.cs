@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
@@ -240,7 +240,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                 {
                                     p.Data.IsDead = false;
                                     Winners.Add(p);
-                                    var writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
+                                    var writer = RPCHelper.StartRPC(CustomRPC.ShareWinner);
                                     writer.Write(p.PlayerId);
                                     writer.EndRPC();
                                 }

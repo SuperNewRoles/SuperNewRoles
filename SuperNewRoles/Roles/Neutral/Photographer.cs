@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
-using SuperNewRoles.Helpers;
+using SuperNewRoles.Patch;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral
@@ -61,7 +57,7 @@ namespace SuperNewRoles.Roles.Neutral
         }
         public static void CheckWin()
         {
-            foreach(CachedPlayer player in CachedPlayer.AllPlayers)
+            foreach (CachedPlayer player in CachedPlayer.AllPlayers)
             {
                 if (player.Data.IsDead) continue;
                 if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
@@ -70,7 +66,7 @@ namespace SuperNewRoles.Roles.Neutral
             }
 
             RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
             Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
 
@@ -82,7 +78,7 @@ namespace SuperNewRoles.Roles.Neutral
             }
             else
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
                 writer.Write((byte)reason);
                 writer.Write(false);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);

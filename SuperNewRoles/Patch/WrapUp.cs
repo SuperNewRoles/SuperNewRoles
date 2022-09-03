@@ -3,8 +3,8 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
+
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
@@ -93,10 +93,11 @@ namespace SuperNewRoles.Patch
             Roles.Neutral.Hitman.WrapUp();
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
-            if (AmongUsClient.Instance.AmHost) {
+            if (AmongUsClient.Instance.AmHost)
+            {
                 PlayerAnimation.PlayerAnimations.All(x =>
                 {
-                    x.RpcAnimation(RpcAnimationType.Stop);    
+                    x.RpcAnimation(RpcAnimationType.Stop);
                     return false;
                 });
             }
@@ -121,7 +122,7 @@ namespace SuperNewRoles.Patch
                         PlayerControl SideLoverPlayer = Player.GetOneSideLovers();
                         if (SideLoverPlayer.IsAlive())
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
                             writer.Write(SideLoverPlayer.PlayerId);
                             writer.Write(SideLoverPlayer.PlayerId);
                             writer.Write(byte.MaxValue);
@@ -137,7 +138,7 @@ namespace SuperNewRoles.Patch
                     var Side = RoleHelpers.GetOneSideQuarreled(Player);
                     if (Side.IsDead())
                     {
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(Player.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RPCProcedure.ShareWinner(Player.PlayerId);
@@ -152,7 +153,7 @@ namespace SuperNewRoles.Patch
                     if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
                     {
                         RPCProcedure.ShareWinner(Player.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(Player.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RoleClass.Jester.IsJesterWin = true;
@@ -165,7 +166,7 @@ namespace SuperNewRoles.Patch
                     if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
                     {
                         RPCProcedure.ShareWinner(Player.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(Player.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RoleClass.MadJester.IsMadJesterWin = true;

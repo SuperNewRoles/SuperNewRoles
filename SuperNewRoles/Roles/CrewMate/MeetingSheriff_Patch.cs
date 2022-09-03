@@ -3,7 +3,7 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patch;
 using UnityEngine;
@@ -110,7 +110,7 @@ namespace SuperNewRoles.Roles
 
             RPCProcedure.MeetingSheriffKill(LocalID, TargetID, misfire);
 
-            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.MeetingSheriffKill, SendOption.Reliable, -1);
+            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.MeetingSheriffKill, SendOption.Reliable, -1);
             killWriter.Write(LocalID);
             killWriter.Write(TargetID);
             killWriter.Write(misfire);

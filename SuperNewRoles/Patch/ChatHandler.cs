@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.Intro;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -168,10 +166,10 @@ namespace SuperNewRoles.Patch
                 return true;
             }
         }
-        static string GetChildText(List<CustomOption.CustomOption> options, string indent)
+        static string GetChildText(List<CustomOption> options, string indent)
         {
             string text = "";
-            foreach (CustomOption.CustomOption option in options)
+            foreach (CustomOption option in options)
             {
                 text += indent + option.GetName() + ":" + option.GetString() + "\n";
                 if (option.children.Count > 0)
@@ -230,7 +228,7 @@ namespace SuperNewRoles.Patch
                     text += "\n" + Format(ModTranslation.GetString("TeamMessage"), GetTeamText(type)) + "\n\n";
                 }
                 int PlayerCount = 0;
-                foreach (CustomOption.CustomOption opt in option.children)
+                foreach (CustomOption opt in option.children)
                 {
                     if (opt.GetName() == CustomOptions.SheriffPlayerCount.GetName())
                     {

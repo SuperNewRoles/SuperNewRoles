@@ -5,8 +5,8 @@ using System.Linq;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
+
+
 using SuperNewRoles.Helpers;
 using UnityEngine;
 
@@ -86,7 +86,7 @@ namespace SuperNewRoles.Patch
                 //ここにデバッグ用のものを書いてね
                 if (Input.GetKeyDown(KeyCode.I))
                 {
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedUsePlatform);
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedUsePlatform);
                     writer.Write((byte)4);
                     writer.Write(false);
                     writer.EndRPC();
@@ -131,7 +131,7 @@ namespace SuperNewRoles.Patch
                 }
                 if (Input.GetKeyDown(KeyCode.F1))
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("new Vector2("+(PlayerControl.LocalPlayer.transform.position.x - 12.63f) +"f, "+ (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
+                    SuperNewRolesPlugin.Logger.LogInfo("new Vector2(" + (PlayerControl.LocalPlayer.transform.position.x - 12.63f) + "f, " + (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
                 }
             }
 

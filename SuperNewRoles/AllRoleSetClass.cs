@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 
@@ -46,7 +43,7 @@ namespace SuperNewRoles
     {
         public static void Postfix()
         {
-            RPCHelper.StartRPC(CustomRPC.CustomRPC.StartGameRPC).EndRPC();
+            RPCHelper.StartRPC(CustomRPC.StartGameRPC).EndRPC();
             RPCProcedure.StartGameRPC();
 
             RoleSelectHandler.SpawnBots();
@@ -280,10 +277,10 @@ namespace SuperNewRoles
         }
         public static void QuarreledRandomSelect()
         {
-            if (!CustomOption.CustomOptions.QuarreledOption.GetBool()) return;
+            if (!CustomOptions.QuarreledOption.GetBool()) return;
             SuperNewRolesPlugin.Logger.LogInfo("クラードセレクト");
             List<PlayerControl> SelectPlayers = new();
-            if (CustomOption.CustomOptions.QuarreledOnlyCrewMate.GetBool())
+            if (CustomOptions.QuarreledOnlyCrewMate.GetBool())
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {

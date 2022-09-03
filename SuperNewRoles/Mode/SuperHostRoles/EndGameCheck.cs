@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
+
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
-using static SuperNewRoles.EndGame.CheckGameEndPatch;
+using static SuperNewRoles.Patch.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -145,7 +145,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive && statistics.TeamImpostorsAlive == 0)
             {
-                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                 Writer.Write((byte)CustomGameOverReason.JackalWin);
                 Writer.EndRPC();
                 RPCProcedure.SetWinCond((byte)CustomGameOverReason.JackalWin);
@@ -207,14 +207,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     if (impostorplayer <= 0 && egoistplayer >= 1)
                     {
-                        MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                        MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                         Writer.Write((byte)CustomGameOverReason.EgoistWin);
                         Writer.EndRPC();
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.EgoistWin);
                     }
                     if (Demon.IsDemonWinFlag())
                     {
-                        MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                        MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                         Writer.Write((byte)CustomGameOverReason.DemonWin);
                         Writer.EndRPC();
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.DemonWin);
@@ -256,11 +256,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             RPCProcedure.ShareWinner(p.PlayerId);
-                            Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                            Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                             Writer.Write((byte)CustomGameOverReason.WorkpersonWin);
                             Writer.EndRPC();
                             RPCProcedure.SetWinCond((byte)CustomGameOverReason.WorkpersonWin);

@@ -3,7 +3,7 @@ using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
-namespace SuperNewRoles.CustomOption
+namespace SuperNewRoles.Modules
 {
     public class CustomOptions
     {

@@ -10,7 +10,7 @@ using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.CustomCosmetics;
-using SuperNewRoles.CustomOption;
+
 using SuperNewRoles.Patch;
 using TMPro;
 using Twitch;

@@ -6,14 +6,12 @@ using System.Text;
 using BepInEx.Configuration;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using UnityEngine;
 using UnityEngine.Events;
-using static SuperNewRoles.CustomOption.CustomRegulation;
+using static SuperNewRoles.Modules.CustomRegulation;
 
-namespace SuperNewRoles.CustomOption
+namespace SuperNewRoles.Patch
 {
     public enum CustomOptionType
     {
@@ -53,7 +51,8 @@ namespace SuperNewRoles.CustomOption
                     if (RegulationData.Selected == 0)
                     {
                         ClientSelection = value;
-                    } else
+                    }
+                    else
                     {
                         ClientSelectedSelection = value;
                     }
@@ -163,7 +162,7 @@ namespace SuperNewRoles.CustomOption
         {
             if (CachedPlayer.AllPlayers.Count <= 1 || (AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null)) return;
 
-            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareOptions, SendOption.Reliable);
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareOptions, SendOption.Reliable);
             messageWriter.WritePacked((uint)CustomOption.options.Count);
             foreach (CustomOption option in CustomOption.options)
             {
@@ -219,7 +218,8 @@ namespace SuperNewRoles.CustomOption
                 if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
                 {
                     if (id == 0) SwitchPreset(selection); // Switch presets
-                    else if (entry != null && AmongUsClient.Instance.AmHost && RegulationData.Selected == 0) {
+                    else if (entry != null && AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
+                    {
                         entry.Value = selection;
                     } // Save selection to config
 
@@ -615,7 +615,8 @@ namespace SuperNewRoles.CustomOption
         public static bool Prefix(StringOption __instance)
         {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
-            if (option == null) {
+            if (option == null)
+            {
                 RegulationData Regulation = RegulationData.Regulations.FirstOrDefault(regulation => regulation.optionBehaviour == __instance);
                 if (Regulation != null)
                 {
@@ -711,9 +712,11 @@ namespace SuperNewRoles.CustomOption
                     }
                     __instance.oldValue = __instance.Value = 0;
                     __instance.ValueText.text = ModTranslation.GetString("optionOff");
-                    if (isReset) {
+                    if (isReset)
+                    {
                         Select(0);
-                        if (RegulationData.Regulations.FirstOrDefault(d => d.id == 0).optionBehaviour is not null and StringOption stringOption0){
+                        if (RegulationData.Regulations.FirstOrDefault(d => d.id == 0).optionBehaviour is not null and StringOption stringOption0)
+                        {
                             stringOption0.oldValue = __instance.Value = 1;
                             stringOption0.ValueText.text = ModTranslation.GetString("optionOn");
                         }
