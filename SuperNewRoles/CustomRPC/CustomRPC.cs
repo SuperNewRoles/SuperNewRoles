@@ -157,6 +157,7 @@ namespace SuperNewRoles.CustomRPC
         Stefinder,
         Stefinder1,
         Slugger,
+        NiceGuesser,
         //RoleId
     }
 
@@ -240,9 +241,36 @@ namespace SuperNewRoles.CustomRPC
         PainterPaintSet,
         PainterSetTarget,
         SharePhotograph,
+        GuesserShoot,
     }
     public static class RPCProcedure
     {
+        public static void guesserShoot(byte killerId, byte dyingTargetId, byte guessedTargetId, byte guessedRoleType)
+        {
+            PlayerControl killer = ModHelpers.PlayerById(killerId);
+            PlayerControl dyingTarget = ModHelpers.PlayerById(dyingTargetId);
+            if (dyingTarget == null) return;
+            dyingTarget.Exiled();
+
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.KillSfx, false, 0.8f);
+
+            PlayerControl guesser = ModHelpers.PlayerById(killerId);
+            if (HudManager.Instance != null && guesser != null)
+                if (PlayerControl.LocalPlayer == dyingTarget)
+                    HudManager.Instance.KillOverlay.ShowKillAnimation(guesser.Data, dyingTarget.Data);
+
+            PlayerControl guessedTarget = ModHelpers.PlayerById(guessedTargetId);
+            /*
+            if (Guesser.showInfoInGhostChat && PlayerControl.LocalPlayer.Data.IsDead && guessedTarget != null)
+            {
+                RoleInfo roleInfo = RoleInfo.allRoleInfos.FirstOrDefault(x => (byte)x.roleType == guessedRoleType);
+                string msg = string.Format(ModTranslation.getString("guesserGuessChat"), roleInfo.name, guessedTarget.Data.PlayerName);
+                if (AmongUsClient.Instance.AmClient && DestroyableSingleton<HudManager>.Instance)
+                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(guesser, msg);
+                if (msg.IndexOf("who", StringComparison.OrdinalIgnoreCase) >= 0)
+                    DestroyableSingleton<Assets.CoreScripts.Telemetry>.Instance.SendWho();
+            }*/
+        }
         public static void SluggerExile(byte SourceId, List<byte> Targets)
         {
             Logger.Info("～SluggerExile～");

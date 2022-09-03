@@ -806,6 +806,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SluggerChargeTime;
         public static CustomOption SluggerCoolTime;
         public static CustomOption SluggerIsMultiKill;
+        
+        public static CustomRoleOption NiceGuesserOption;
+        public static CustomOption NiceGuesserPlayerCount;
+        public static CustomOption NiceGuesserShortOneMeetingCount;
+        public static CustomOption NiceGuesserShortMaxCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1028,11 +1033,6 @@ namespace SuperNewRoles.CustomOption
             GuesserPlayerCount = CustomOption.Create(108, Cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GuesserOption);
             GuesserShortMaxCount = CustomOption.Create(109, ModTranslation.GetString("GuesserShortMaxCountSetting"), 30f, 2.5f, 60f, 2.5f, GuesserOption);
             GuesserShortOneMeetingCount = CustomOption.Create(110, Cs(Color.white, "GuesserOneMeetingShortSetting"), GuesserCount, GuesserOption);
-
-            EvilGuesserOption = new CustomRoleOption(111, "EvilGuesserName", RoleClass.ImpostorRed, 1);
-            EvilGuesserPlayerCount = CustomOption.Create(112, Cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
-            EvilGuesserShortMaxCount = CustomOption.Create(113, ModTranslation.GetString("EvilGuesserShortMaxCountSetting"), 30f, 2.5f, 60f, 2.5f, EvilGuesserOption);
-            EvilGuesserShortOneMeetingCount = CustomOption.Create(114, Cs(Color.white, "EvilGuesserOneMeetingShortSetting"), GuesserCount, EvilGuesserOption);
             */
             VultureOption = new CustomRoleOption(115, false, CustomOptionType.Neutral, "VultureName", RoleClass.Vulture.color, 1);
             VulturePlayerCount = CustomOption.Create(116, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], VultureOption);
@@ -1654,6 +1654,16 @@ namespace SuperNewRoles.CustomOption
             PsychometristCanCheckFootprintsTime = CustomOption.Create(891, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);
             PsychometristIsReportCheckedDeadBody = CustomOption.Create(892, false, CustomOptionType.Crewmate, "PsychometristIsReportCheckedDeadBody", false, PsychometristOption);
 
+            
+            NiceGuesserOption = new CustomRoleOption(971, false, CustomOptionType.Crewmate, "NiceGuesserName",RoleClass.NiceGuesser.color, 1);
+            NiceGuesserPlayerCount = CustomOption.Create(972, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGuesserOption);
+            NiceGuesserShortMaxCount = CustomOption.Create(977, false, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, NiceGuesserOption);
+            NiceGuesserShortOneMeetingCount = CustomOption.Create(978, false, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, NiceGuesserOption);
+
+            EvilGuesserOption = new CustomRoleOption(973, false, CustomOptionType.Impostor, "EvilGuesserName", RoleClass.EvilGuesser.color, 1);
+            EvilGuesserPlayerCount = CustomOption.Create(974, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
+            EvilGuesserShortMaxCount = CustomOption.Create(975, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
+            EvilGuesserShortOneMeetingCount = CustomOption.Create(976, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

@@ -176,6 +176,7 @@ namespace SuperNewRoles.Roles
             Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
             Slugger.ClearAndReload();
+            NiceGuesser.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -3031,6 +3032,17 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.SluggerCoolTime.GetFloat();
                 ChargeTime = CustomOptions.SluggerChargeTime.GetFloat();
                 IsMultiKill = CustomOptions.SluggerIsMultiKill.GetBool();
+            }
+        }
+        public static class NiceGuesser
+        {
+            public static List<PlayerControl> NiceGuesserPlayer;
+            public static Color32 color = Color.yellow;
+            public static int Count;
+            public static void ClearAndReload()
+            {
+                NiceGuesserPlayer = new();
+                Count = -1;                
             }
         }
         //新ロールクラス

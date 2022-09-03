@@ -935,6 +935,7 @@ namespace SuperNewRoles
                 RoleId.Photographer => CustomOptions.PhotographerPlayerCount.GetFloat(),
                 RoleId.Stefinder => CustomOptions.StefinderPlayerCount.GetFloat(),
                 RoleId.Slugger => CustomOptions.SluggerPlayerCount.GetFloat(),
+                RoleId.NiceGuesser => CustomOptions.NiceGuesserPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };
