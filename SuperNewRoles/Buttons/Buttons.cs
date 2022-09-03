@@ -588,10 +588,10 @@ namespace SuperNewRoles.Buttons
                         }
                         else
                         {
-                            DoctorVitalsButton.Timer =(RoleClass.Doctor.Battery / 10f);
+                            DoctorVitalsButton.Timer = (RoleClass.Doctor.Battery / 10f);
                         }
                     }
-                     else if (RoleClass.Doctor.Battery > 0)
+                    else if (RoleClass.Doctor.Battery > 0)
                     {
                         DoctorVitalsButton.MaxTimer = 0f;
                         DoctorVitalsButton.Timer = 0f;
@@ -884,10 +884,9 @@ namespace SuperNewRoles.Buttons
                         foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                         {
                             p.Data.Role.NameColor = Color.white;
-                        }
-                        CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-                        foreach (CachedPlayer p in CachedPlayer.AllPlayers)
-                        {
+
+                            CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+
                             if (p.PlayerControl.IsImpostor())
                             {
                                 p.Data.Role.NameColor = RoleClass.ImpostorRed;
