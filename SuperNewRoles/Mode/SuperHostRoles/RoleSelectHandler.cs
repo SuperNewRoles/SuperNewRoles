@@ -235,8 +235,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 else
                 {
-                    //ホストは代わりに普通のクルーにする
-                    Player.SetRole(RoleTypes.Crewmate); //ホスト視点用
+                    //Modクライアントは代わりに普通のクルーにする
+                    Player.SetRole(RoleTypes.Crewmate); //Modクライアント視点用
                     sender.RpcSetRole(Player, RoleTypes.Crewmate);
                 }
             }
