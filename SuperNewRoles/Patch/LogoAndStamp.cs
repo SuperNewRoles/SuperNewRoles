@@ -22,7 +22,7 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch]
     public static class CredentialsPatch
     {
-        public static string baseCredentials = $@"<size=130%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color></size> v{SuperNewRolesPlugin.Version}";
+        public static string baseCredentials = $@"<size=130%>{SuperNewRolesPlugin.ColorModName}</size> v{SuperNewRolesPlugin.Version}";
 
         [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
         private static class VersionShowerPatch
@@ -55,7 +55,7 @@ namespace SuperNewRoles.Patches
 
                 var version = UnityEngine.Object.Instantiate(credentials);
                 version.transform.position = new Vector3(0, -0.35f, 0);
-                version.SetText(string.Format(ModTranslation.GetString("creditsVersion"), SuperNewRolesPlugin.Version.ToString()));
+                version.SetText($"{SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}");
 
                 credentials.transform.SetParent(amongUsLogo.transform);
                 version.transform.SetParent(amongUsLogo.transform);

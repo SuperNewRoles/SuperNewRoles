@@ -18,10 +18,12 @@ namespace SuperNewRoles
         public const string Id = "jp.ykundesu.supernewroles";
         //バージョンと同時にIsBetaも変える
         public const string VersionString = "1.4.2.1";
-        public static bool IsBeta { get { return ThisAssembly.Git.Branch != "master"; } }
+        public static bool IsBeta { get { return ThisAssembly.Git.Branch != MasterBranch; } }
 
         public const string ModUrl = "ykundesu/SuperNewRoles";
         public const string MasterBranch = "master";
+        public const string ModName = "SuperNewRoles";
+        public const string ColorModName = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
 
         public static Version Version = Version.Parse(VersionString);
         public static BepInEx.Logging.ManualLogSource Logger;

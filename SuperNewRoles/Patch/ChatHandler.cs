@@ -45,9 +45,8 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
     class AddChatPatch
     {
-        static readonly string SNR = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
-        static readonly string SNRCommander = "<size=200%>" + SNR + "</size>";
-        public static string WelcomeToSuperNewRoles = "<size=150%>Welcome To " + SNR + "</size>";
+        static readonly string SNRCommander = $"<size=200%>{SuperNewRolesPlugin.ColorModName}</size>";
+        public static string WelcomeToSuperNewRoles = $"<size=150%>Welcome To {SuperNewRolesPlugin.ColorModName}</size>";
 
         public static bool Prefix(PlayerControl sourcePlayer, string chatText)
         {
@@ -68,7 +67,7 @@ namespace SuperNewRoles.Patch
                 {
                     betatext = "\nベータ版です！バグには注意してください！";
                 }
-                SendCommand(sourcePlayer, " SuperNewRoles v" + SuperNewRolesPlugin.VersionString + "\nCreate by ykundesu" + betatext);
+                SendCommand(sourcePlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
                 return false;
             }
             else if (

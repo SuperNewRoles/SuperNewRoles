@@ -101,7 +101,7 @@ namespace SuperNewRoles.Mode
         }
         public static string[] modes = new string[] { ModTranslation.GetString("HideAndSeekModeName"), ModTranslation.GetString("SuperHostRolesModeName"), ModTranslation.GetString("BattleRoyalModeName"), ModTranslation.GetString("ZombieModeName"), ModTranslation.GetString("RandomColorModeName"), ModTranslation.GetString("NotImpostorCheckModeName"), ModTranslation.GetString("DetectiveModeName"), ModTranslation.GetString("CopsRobbersModeName") };//ModTranslation.GetString("WerewolfModeName") };
 
-        public const string PlayingOnSuperNewRoles = "Playing on <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
+        public const string PlayingOnSuperNewRoles = $"Playing on {SuperNewRolesPlugin.ColorModName}";
 
         public static CustomOptionBlank Mode;
         public static CustomOption.CustomOption ModeSetting;
