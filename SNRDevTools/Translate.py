@@ -14,7 +14,7 @@ for data in readdata[1:]:
     writedata = writedata[:-3]+"\n    } ,"
 writedata = writedata[:-1]+"\n\n}"
 
-with open(r"..\SuperNewRoles\SuperNewRoles\Resources\TransData.json", mode="w", encoding="utf-8") as f:
+with open(r"..\SuperNewRoles\Resources\TransData.json", mode="w", encoding="utf-8") as f:
     f.write(writedata)
 print("完了")
 time.sleep(2)
