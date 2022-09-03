@@ -5,7 +5,7 @@ using System.Text;
 using SuperNewRoles.Patch;
 using UnityEngine;
 using TMPro;
-using SuperNewRoles.EndGame;
+
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Buttons;
@@ -89,10 +89,10 @@ namespace SuperNewRoles.Roles.CrewMate
             DeathTimeText.color = Color.white;
             if (!RoleClass.Psychometrist.IsReportCheckedReportDeadbody)
             {
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.BlockReportDeadBody);
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.BlockReportDeadBody);
                 writer.Write(targetbody.ParentId);
                 writer.EndRPC();
-                CustomRPC.RPCProcedure.BlockReportDeadBody(targetbody.ParentId, false);
+                RPCProcedure.BlockReportDeadBody(targetbody.ParentId, false);
             }
             if (RoleClass.Psychometrist.IsCheckFootprints)
             {

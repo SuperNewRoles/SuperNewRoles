@@ -34,7 +34,7 @@ namespace SuperNewRoles.Patch
             // Don't waste network traffic if we're out of time.
             if (MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.RestrictCamera.GetBool() && PlayerControl.LocalPlayer.IsAlive() && MapOptions.MapOption.MapOptionSetting.GetBool())
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseCameraTime, SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UseCameraTime, SendOption.Reliable, -1);
                 writer.Write(cameraTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 RPCProcedure.UseCameraTime(cameraTimer);

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
+
+
 using SuperNewRoles.Patch;
 using SuperNewRoles.Sabotage;
 using TMPro;
@@ -45,7 +45,7 @@ namespace SuperNewRoles.Roles
             Roles.MadSeer.CheckedImpostor = new();
             Roles.JackalFriends.CheckedJackal = new();
             Mode.BattleRoyal.Main.VentData = new();
-            EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
+            FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
             MapCustoms.AdditionalVents.ClearAndReload();
             MapCustoms.SpecimenVital.ClearAndReload();
@@ -176,6 +176,7 @@ namespace SuperNewRoles.Roles
             Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
             Slugger.ClearAndReload();
+            Impostor.ShiftActor.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2237,7 +2238,7 @@ namespace SuperNewRoles.Roles
                 TunaPlayer = new();
                 Position = new Dictionary<byte, Vector3>();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers) Position[p.PlayerId] = new Vector3(9999f, 9999f, 9999f);
-                StoppingTime = CustomOption.CustomOptions.TunaStoppingTime.GetFloat();
+                StoppingTime = CustomOptions.TunaStoppingTime.GetFloat();
                 if (Mode.ModeHandler.IsMode(Mode.ModeId.Default)) Timer = StoppingTime;
                 IsUseVent = CustomOptions.TunaIsUseVent.GetBool();
                 IsTunaAddWin = CustomOptions.TunaIsAddWin.GetBool();

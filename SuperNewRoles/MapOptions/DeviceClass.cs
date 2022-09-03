@@ -33,7 +33,7 @@ namespace SuperNewRoles.MapOptions
                     if (BlockTool.AdminTime > 0)
                     {
                         BlockTool.AdminTime -= Time.fixedDeltaTime;
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetDeviceTime);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
                         writer.Write(BlockTool.AdminTime);
                         writer.Write((byte)SystemTypes.Admin);
                         writer.EndRPC();
@@ -70,7 +70,7 @@ namespace SuperNewRoles.MapOptions
                     if (BlockTool.VitalTime > 0)
                     {
                         BlockTool.VitalTime -= Time.fixedDeltaTime;
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetDeviceTime);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
                         writer.Write(BlockTool.VitalTime);
                         writer.Write((byte)SystemTypes.Medical);
                         writer.EndRPC();
@@ -98,7 +98,7 @@ namespace SuperNewRoles.MapOptions
                     if (BlockTool.CameraTime > 0)
                     {
                         BlockTool.CameraTime -= Time.fixedDeltaTime;
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetDeviceTime);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
                         writer.Write(BlockTool.CameraTime);
                         writer.Write((byte)SystemTypes.Security);
                         writer.EndRPC();
@@ -125,7 +125,7 @@ namespace SuperNewRoles.MapOptions
                     if (BlockTool.CameraTime > 0)
                     {
                         BlockTool.CameraTime -= Time.fixedDeltaTime;
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetDeviceTime);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
                         writer.Write(BlockTool.CameraTime);
                         writer.Write((byte)SystemTypes.Security);
                         writer.EndRPC();
@@ -152,7 +152,7 @@ namespace SuperNewRoles.MapOptions
                     if (BlockTool.VitalTime > 0)
                     {
                         BlockTool.VitalTime -= Time.fixedDeltaTime;
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetDeviceTime);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
                         writer.Write(BlockTool.VitalTime);
                         writer.Write((byte)SystemTypes.Medical);
                         writer.EndRPC();

@@ -7,20 +7,18 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.EndGame;
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
-using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
-using static SuperNewRoles.EndGame.FinalStatusPatch;
+using static SuperNewRoles.Patch.FinalStatusPatch;
 
-namespace SuperNewRoles.CustomRPC
+namespace SuperNewRoles.Modules
 {
     public enum RoleId
     {
@@ -157,6 +155,7 @@ namespace SuperNewRoles.CustomRPC
         Stefinder,
         Stefinder1,
         Slugger,
+        ShiftActor,
         //RoleId
     }
 
@@ -294,7 +293,8 @@ namespace SuperNewRoles.CustomRPC
                         return;
                     }
                 }
-            } else
+            }
+            else
             {
                 RoleClass.BlockPlayers.Add(TargetId);
             }
@@ -330,7 +330,8 @@ namespace SuperNewRoles.CustomRPC
                 {
                     if (source == null) return;
                     airshipStatus.GapPlatform.Use(source);
-                } else
+                }
+                else
                 {
                     airshipStatus.GapPlatform.StopAllCoroutines();
                     airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));
@@ -648,7 +649,7 @@ namespace SuperNewRoles.CustomRPC
                 {
                     uint optionId = reader.ReadPackedUInt32();
                     uint selection = reader.ReadPackedUInt32();
-                    CustomOption.CustomOption option = CustomOption.CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
+                    CustomOption option = CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
                     option.UpdateSelection((int)selection);
                 }
             }

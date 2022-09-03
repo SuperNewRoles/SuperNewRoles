@@ -4,16 +4,13 @@ using System.Linq;
 using System.Text;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnhollowerBaseLib;
 using UnityEngine;
 
-namespace SuperNewRoles.EndGame
+namespace SuperNewRoles.Patch
 {
     public enum CustomGameOverReason
     {
@@ -70,6 +67,41 @@ namespace SuperNewRoles.EndGame
         StefinderWin,
         BugEnd
     }
+    class FinalStatusPatch
+    {
+        public static class FinalStatusData
+        {
+            public static List<Tuple<Vector3, bool>> localPlayerPositions = new();
+            public static List<DeadPlayer> deadPlayers = new();
+            public static Dictionary<int, FinalStatus> FinalStatuses = new();
+
+            public static void ClearFinalStatusData()
+            {
+                localPlayerPositions = new List<Tuple<Vector3, bool>>();
+                deadPlayers = new List<DeadPlayer>();
+                FinalStatuses = new Dictionary<int, FinalStatus>();
+            }
+        }
+        public static string GetStatusText(FinalStatus status) => ModTranslation.GetString("FinalStatus" + status.ToString()); //ローカル関数
+
+    }
+    public enum FinalStatus
+    {
+        Alive,
+        Kill,
+        Exiled,
+        NekomataExiled,
+        SheriffKill,
+        SheriffMisFire,
+        MeetingSheriffKill,
+        MeetingSheriffMisFire,
+        SelfBomb,
+        BySelfBomb,
+        Ignite,
+        Disconnected,
+        Dead,
+        Sabotage
+    }
     [HarmonyPatch(typeof(ShipStatus))]
     public class ShipStatusPatch
     {
@@ -101,15 +133,15 @@ namespace SuperNewRoles.EndGame
         {
             public string PlayerName { get; set; }
             public string NameSuffix { get; set; }
-            public List<Intro.IntroDate> Roles { get; set; }
+            public List<IntroDate> Roles { get; set; }
             public string RoleString { get; set; }
             public int TasksCompleted { get; set; }
             public int TasksTotal { get; set; }
             public int PlayerId { get; set; }
             public int ColorId { get; set; }
             public FinalStatus Status { get; internal set; }
-            public Intro.IntroDate IntroDate { get; set; }
-            public Intro.IntroDate GhostIntroDate { get; set; }
+            public IntroDate IntroDate { get; set; }
+            public IntroDate GhostIntroDate { get; set; }
         }
     }
     [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
@@ -450,12 +482,12 @@ namespace SuperNewRoles.EndGame
                 if (p.Object.IsPlayer())
                 {
                     //var p = pc.Data;
-                    var roles = Intro.IntroDate.GetIntroDate(p.Object.GetRole(), p.Object);
+                    var roles = IntroDate.GetIntroDate(p.Object.GetRole(), p.Object);
                     if (RoleClass.Stefinder.IsKillPlayer.Contains(p.PlayerId))
                     {
-                        roles = Intro.IntroDate.StefinderIntro1;
+                        roles = IntroDate.StefinderIntro1;
                     }
-                    var ghostRoles = Intro.IntroDate.GetIntroDate(p.Object.GetGhostRole(), p.Object);
+                    var ghostRoles = IntroDate.GetIntroDate(p.Object.GetGhostRole(), p.Object);
                     var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
                     if (p.Object.IsImpostor())
                     {
@@ -837,7 +869,7 @@ namespace SuperNewRoles.EndGame
                     if (RoleClass.Stefinder.SoloWin)
                     {
                         TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                        WinningPlayerData wpd = new(player.Data) ;
+                        WinningPlayerData wpd = new(player.Data);
                         TempData.winners.Add(wpd);
                         AdditionalTempData.winCondition = WinCondition.StefinderWin;
                     }
@@ -986,7 +1018,7 @@ namespace SuperNewRoles.EndGame
                     // Exile role text
                     if (id is StringNames.ExileTextPN or StringNames.ExileTextSN or StringNames.ExileTextPP or StringNames.ExileTextSP)
                     {
-                        __result = player.Data.PlayerName + " は " + ModTranslation.GetString(Intro.IntroDate.GetIntroDate(player.GetRole(), player).NameKey + "Name") + " だった！";
+                        __result = player.Data.PlayerName + " は " + ModTranslation.GetString(IntroDate.GetIntroDate(player.GetRole(), player).NameKey + "Name") + " だった！";
                     }
                 }
             }
@@ -1179,7 +1211,7 @@ namespace SuperNewRoles.EndGame
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             RPCProcedure.ShareWinner(p.PlayerId);
@@ -1203,7 +1235,7 @@ namespace SuperNewRoles.EndGame
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             RPCProcedure.ShareWinner(p.PlayerId);

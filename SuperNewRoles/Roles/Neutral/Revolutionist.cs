@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+using SuperNewRoles.Patch;
 using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral
@@ -28,7 +24,8 @@ namespace SuperNewRoles.Roles.Neutral
                     Buttons.HudManagerStartPatch.RevolutionistButton.actionButton.cooldownTimerText.color = new(1f, 1f, 1f, 1f);
                     Buttons.HudManagerStartPatch.RevolutionistButton.Timer = 0;
                     Buttons.HudManagerStartPatch.RevolutionistButton.MaxTimer = RoleClass.Revolutionist.CoolTime;
-                } else
+                }
+                else
                 {
                     if (Buttons.HudManagerStartPatch.RevolutionistButton.Timer <= 0)
                     {
@@ -47,7 +44,7 @@ namespace SuperNewRoles.Roles.Neutral
                         }
                         if (IsFlag)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.StartRevolutionMeeting, SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.StartRevolutionMeeting, SendOption.Reliable, -1);
                             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                             RPCProcedure.StartRevolutionMeeting(CachedPlayer.LocalPlayer.PlayerId);
@@ -55,7 +52,8 @@ namespace SuperNewRoles.Roles.Neutral
                         }
                     }
                 }
-            } else
+            }
+            else
             {
                 PlayerControl target = Buttons.HudManagerStartPatch.SetTarget(untarget: RoleClass.Revolutionist.RevolutionedPlayer);
                 SetPlayerOutline(target, RoleClass.Revolutionist.color);
@@ -81,7 +79,7 @@ namespace SuperNewRoles.Roles.Neutral
                 {
                     if (RoleClass.Revolutionist.WinPlayer != null)
                     {
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(RoleClass.Revolutionist.WinPlayer.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RPCProcedure.ShareWinner(RoleClass.Revolutionist.WinPlayer.PlayerId);

@@ -229,9 +229,9 @@ namespace SuperNewRoles.Roles"""+namedata+"""
 
         # AllRoleSetClass.cs
         '''MainClass.WriteCodes("AllRoleSetClass.cs", "//セットクラス",
-                                """if (!(CustomOption.CustomOptions.ROLEID!!Option.GetString().Replace("0%", "") == ""))
+                                """if (!(CustomOptions.ROLEID!!Option.GetString().Replace("0%", "") == ""))
             {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.ROLEID!!Option.GetString().Replace("0%", ""));
+                int OptionDate = int.Parse(CustomOptions.ROLEID!!Option.GetString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.ROLEID!!;
                 if (OptionDate == 10)
                 {

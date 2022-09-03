@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.Intro;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -45,9 +43,8 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
     class AddChatPatch
     {
-        static readonly string SNR = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
-        static readonly string SNRCommander = "<size=200%>" + SNR + "</size>";
-        public static string WelcomeToSuperNewRoles = "<size=150%>Welcome To " + SNR + "</size>";
+        static readonly string SNRCommander = $"<size=200%>{SuperNewRolesPlugin.ColorModName}</size>";
+        public static string WelcomeToSuperNewRoles = $"<size=150%>Welcome To {SuperNewRolesPlugin.ColorModName}</size>";
 
         public static bool Prefix(PlayerControl sourcePlayer, string chatText)
         {
@@ -68,7 +65,7 @@ namespace SuperNewRoles.Patch
                 {
                     betatext = "\nベータ版です！バグには注意してください！";
                 }
-                SendCommand(sourcePlayer, " SuperNewRoles v" + SuperNewRolesPlugin.VersionString + "\nCreate by ykundesu" + betatext);
+                SendCommand(sourcePlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
                 return false;
             }
             else if (
@@ -169,10 +166,10 @@ namespace SuperNewRoles.Patch
                 return true;
             }
         }
-        static string GetChildText(List<CustomOption.CustomOption> options, string indent)
+        static string GetChildText(List<CustomOption> options, string indent)
         {
             string text = "";
-            foreach (CustomOption.CustomOption option in options)
+            foreach (CustomOption option in options)
             {
                 text += indent + option.GetName() + ":" + option.GetString() + "\n";
                 if (option.children.Count > 0)
@@ -231,7 +228,7 @@ namespace SuperNewRoles.Patch
                     text += "\n" + Format(ModTranslation.GetString("TeamMessage"), GetTeamText(type)) + "\n\n";
                 }
                 int PlayerCount = 0;
-                foreach (CustomOption.CustomOption opt in option.children)
+                foreach (CustomOption opt in option.children)
                 {
                     if (opt.GetName() == CustomOptions.SheriffPlayerCount.GetName())
                     {

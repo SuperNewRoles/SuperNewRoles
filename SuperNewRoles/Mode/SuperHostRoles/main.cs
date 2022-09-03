@@ -9,7 +9,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             RealExiled = null;
             Chat.WinCond = null;
             // FixedUpdate.UpdateTime = new Dictionary<byte, float>();
-            EndGame.OnGameEndPatch.EndData = null;
+            Patch.OnGameEndPatch.EndData = null;
             FixedUpdate.DefaultName = new Dictionary<int, string>();
         }
         public static PlayerControl RealExiled;

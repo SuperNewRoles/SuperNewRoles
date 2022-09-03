@@ -46,9 +46,9 @@ while True:
         temp = r.read()
         with open(baseurl+"AllRoleSetClass.cs", mode="w", encoding="utf-8") as f:
             temp = temp.replace("//セットクラス",
-                                """if (!(CustomOption.CustomOptions.ROLEID!!Option.GetString().Replace("0%", "") == ""))
+                                """if (!(CustomOptions.ROLEID!!Option.GetString().Replace("0%", "") == ""))
             {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.ROLEID!!Option.GetString().Replace("0%", ""));
+                int OptionDate = int.Parse(CustomOptions.ROLEID!!Option.GetString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.ROLEID!!;
                 if (OptionDate == 10)
                 {

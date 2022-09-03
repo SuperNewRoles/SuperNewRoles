@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Patches;
@@ -240,7 +240,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
 
-            var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(player.GetRole(), player);
+            var introdate = IntroDate.GetIntroDate(player.GetRole(), player);
             string TaskText = "";
             if (!player.IsClearTask())
             {

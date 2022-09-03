@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
+
+using SuperNewRoles.Patch;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
@@ -90,10 +90,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (Side.IsDead())
                     {
                         RPCProcedure.ShareWinner(exiled.Object.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(exiled.Object.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                        Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                         Writer.Write((byte)CustomGameOverReason.QuarreledWin);
                         Writer.EndRPC();
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);

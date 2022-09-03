@@ -64,7 +64,7 @@ namespace SuperNewRoles
             GameData.Instance.RpcSetTasks(Bot.PlayerId, new byte[0]);
             SuperNewRolesPlugin.Logger.LogInfo("botスポーン!\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
             AllBots.Add(Bot);
-            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetBot);
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetBot);
             writer.Write(Bot.PlayerId);
             new LateTask(() => writer.EndRPC(), 0.5f);
             return Bot;

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using HarmonyLib;
-using SuperNewRoles.CustomOption;
+
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
+
 
 namespace SuperNewRoles.Patch
 {

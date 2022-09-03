@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
+
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -91,7 +91,7 @@ namespace SuperNewRoles.Roles
                         }
                         if (upflag)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SidekickSeerPromotes, SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SidekickSeerPromotes, SendOption.Reliable, -1);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                             RPCProcedure.SidekickSeerPromotes();
                         }
