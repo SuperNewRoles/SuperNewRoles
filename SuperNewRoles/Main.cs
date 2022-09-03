@@ -79,20 +79,13 @@ namespace SuperNewRoles
             assembly = Assembly.GetExecutingAssembly();
             string[] resourceNames = assembly.GetManifestResourceNames();
             foreach (string resourceName in resourceNames)
-            {
                 if (resourceName.EndsWith(".png"))
-                {
                     ModHelpers.LoadSpriteFromResources(resourceName, 115f);
-                }
-            }
         }
         [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.AmBanned), MethodType.Getter)]
         public static class AmBannedPatch
         {
-            public static void Postfix(out bool __result)
-            {
-                __result = false;
-            }
+            public static void Postfix(out bool __result) => __result = false;
         }
         [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
         public static class ChatControllerAwakePatch
