@@ -22,6 +22,7 @@ namespace SuperNewRoles
 
         public const string ModUrl = "ykundesu/SuperNewRoles";
         public const string MasterBranch = "master";
+        public const string ModName = "SuperNewRoles";
         public const string ColorModName = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
 
         public static Version Version = Version.Parse(VersionString);

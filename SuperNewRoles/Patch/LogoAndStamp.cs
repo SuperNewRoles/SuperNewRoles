@@ -55,7 +55,7 @@ namespace SuperNewRoles.Patches
 
                 var version = UnityEngine.Object.Instantiate(credentials);
                 version.transform.position = new Vector3(0, -0.35f, 0);
-                version.SetText(string.Format(ModTranslation.GetString("creditsVersion"), SuperNewRolesPlugin.Version.ToString()));
+                version.SetText($"{SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}");
 
                 credentials.transform.SetParent(amongUsLogo.transform);
                 version.transform.SetParent(amongUsLogo.transform);

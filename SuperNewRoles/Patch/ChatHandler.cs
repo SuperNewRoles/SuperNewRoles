@@ -67,7 +67,7 @@ namespace SuperNewRoles.Patch
                 {
                     betatext = "\nベータ版です！バグには注意してください！";
                 }
-                SendCommand(sourcePlayer, " SuperNewRoles v" + SuperNewRolesPlugin.VersionString + "\nCreate by ykundesu" + betatext);
+                SendCommand(sourcePlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
                 return false;
             }
             else if (
