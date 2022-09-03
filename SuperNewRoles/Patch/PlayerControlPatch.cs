@@ -65,7 +65,7 @@ namespace SuperNewRoles.Patches
                 }
                 if (ModeHandler.IsMode(ModeId.Default))
                 {
-                    if (__instance.GetRole() == RoleId.Doppelganger)
+                    if (__instance.IsRole(RoleId.Doppelganger))
                     {
                         Roles.Impostor.Doppelganger.ResetShapeCool();
                     }

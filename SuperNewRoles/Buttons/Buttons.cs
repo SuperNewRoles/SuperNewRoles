@@ -2606,15 +2606,9 @@ namespace SuperNewRoles.Buttons
             };
 
             DoppelgangerButton = new(
-                () =>
-                {
-                    Roles.Impostor.Doppelganger.DoppelgangerShape();
-                },
+                () => { Roles.Impostor.Doppelganger.DoppelgangerShape(); },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Doppelganger && ModeHandler.IsMode(ModeId.Default); },
-                () =>
-                {
-                    return PlayerControl.LocalPlayer.CanMove;
-                },
+                () => { return PlayerControl.LocalPlayer.CanMove; },
                 () =>
                 {
                     DoppelgangerButton.MaxTimer = RoleClass.Doppelganger.CoolTime;
