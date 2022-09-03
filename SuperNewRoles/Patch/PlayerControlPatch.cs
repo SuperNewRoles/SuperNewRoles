@@ -54,11 +54,7 @@ namespace SuperNewRoles.Patches
                 {
                     if (__instance.IsRole(RoleId.RemoteSheriff))
                     {
-                        __instance.RpcProtectPlayer(__instance, 0);
-                        new LateTask(() =>
-                        {
-                            __instance.RpcMurderPlayer(__instance);
-                        }, 0.5f);
+                        __instance.RpcShowGuardEffect(target);
                     }
                 }
                 return true;
