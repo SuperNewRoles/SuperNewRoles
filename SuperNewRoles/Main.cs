@@ -19,10 +19,12 @@ namespace SuperNewRoles
         public const string Id = "jp.ykundesu.supernewroles";
         //バージョンと同時にIsBetaも変える
         public const string VersionString = "1.4.2.1";
-        public static bool IsBeta { get { return ThisAssembly.Git.Branch != "master"; } }
+        public static bool IsBeta { get { return ThisAssembly.Git.Branch != MasterBranch; } }
 
         public const string ModUrl = "ykundesu/SuperNewRoles";
         public const string MasterBranch = "master";
+        public const string ModName = "SuperNewRoles";
+        public const string ColorModName = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
 
         public static Version Version = Version.Parse(VersionString);
         public static BepInEx.Logging.ManualLogSource Logger;
@@ -64,6 +66,11 @@ namespace SuperNewRoles
 
             // Old Delete End
 
+            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.Branch}", "ブランチ");
+            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.Commit}", "コミットId");
+            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.Commits}", "コミット数");
+            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.BaseTag}", "タグ");
+            SuperNewRoles.Logger.Info($"{VersionString}", "バージョン");
             Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
 
             var assembly = Assembly.GetExecutingAssembly();
@@ -75,29 +82,13 @@ namespace SuperNewRoles
             assembly = Assembly.GetExecutingAssembly();
             string[] resourceNames = assembly.GetManifestResourceNames();
             foreach (string resourceName in resourceNames)
-            {
                 if (resourceName.EndsWith(".png"))
-                {
                     ModHelpers.LoadSpriteFromResources(resourceName, 115f);
-                }
-            }
         }
-        /*
-        [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
-        class TranslateControllerMessagePatch
-        {
-            static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo(id+":"+__result);
-            }
-        }*/
         [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.AmBanned), MethodType.Getter)]
         public static class AmBannedPatch
         {
-            public static void Postfix(out bool __result)
-            {
-                __result = false;
-            }
+            public static void Postfix(out bool __result) => __result = false;
         }
         [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
         public static class ChatControllerAwakePatch

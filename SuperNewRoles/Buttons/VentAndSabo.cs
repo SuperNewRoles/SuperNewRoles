@@ -7,7 +7,6 @@ namespace SuperNewRoles.Buttons
 {
     public static class VentAndSabo
     {
-
         [HarmonyPatch(typeof(MapTaskOverlay), nameof(MapTaskOverlay.SetIconLocation))]
         public static class MapTaskOverlaySetIconLocationPatch
         {

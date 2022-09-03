@@ -4,6 +4,7 @@ using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
 
 namespace SuperNewRoles
 {
@@ -612,6 +613,9 @@ namespace SuperNewRoles
                 case RoleId.Slugger:
                     RoleClass.Slugger.SluggerPlayer.Add(player);
                     break;
+                case RoleId.ShiftActor:
+                    ShiftActor.Player.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -631,6 +635,7 @@ namespace SuperNewRoles
                 PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
             SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
+            ShiftActor.ShapeshifterSet();
             PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(player.PlayerId);
             if (anim != null) anim.HandleAnim(RpcAnimationType.Stop);
         }
@@ -1025,7 +1030,10 @@ namespace SuperNewRoles
                 case RoleId.Slugger:
                     RoleClass.Slugger.SluggerPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                case RoleId.ShiftActor:
+                    ShiftActor.Player.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1083,7 +1091,7 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
-                    //タスククリアか
+                //タスククリアか
                     IsTaskClear = true;
                     break;
             }
@@ -1246,7 +1254,7 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
-                    //第三か
+                //第三か
                     IsNeutral = true;
                     break;
             }
@@ -1329,6 +1337,9 @@ namespace SuperNewRoles
                         break;
                     case RoleId.Matryoshka:
                         addition = RoleClass.Matryoshka.MyKillCoolTime;
+                        break;
+                    case RoleId.ShiftActor:
+                        addition = ShiftActor.KillCool;
                         break;
                 }
             }
@@ -1536,6 +1547,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
                 else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
                 else if (RoleClass.Slugger.SluggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Slugger;
+                else if (ShiftActor.Player.IsCheckListPlayerControl(player)) return RoleId.ShiftActor;
                 //ロールチェック
             }
             catch (Exception e)

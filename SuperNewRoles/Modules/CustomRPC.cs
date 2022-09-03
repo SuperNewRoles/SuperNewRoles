@@ -155,6 +155,7 @@ namespace SuperNewRoles.Modules
         Stefinder,
         Stefinder1,
         Slugger,
+        ShiftActor,
         //RoleId
     }
 
