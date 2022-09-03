@@ -506,37 +506,21 @@ namespace SuperNewRoles.Patches
                             }
                             return false;
                         case RoleId.Arsonist:
-                            try
+                            if (!__instance.IsDoused(target))
                             {
-                                Arsonist.ArsonistTimer[__instance.PlayerId] =
-                                        Arsonist.ArsonistTimer[__instance.PlayerId] = RoleClass.Arsonist.DurationTime;
-                                if (Arsonist.ArsonistTimer[__instance.PlayerId] <= RoleClass.Arsonist.DurationTime)//時間以上一緒にいて塗れた時
+                                __instance.RpcShowGuardEffect(target);// 守護エフェクト
+                                SyncSetting.OptionData.DeepCopy().RoleOptions.ShapeshifterCooldown = RoleClass.Arsonist.DurationTime;// シェイプクールダウンを塗り時間に
+                                new LateTask(() =>
                                 {
-                                    if (!__instance.IsDoused(target))
+                                    if (Vector2.Distance(__instance.transform.position, target.transform.position) <= 1.75f)//1.75f以内にターゲットがいるなら
                                     {
                                         Arsonist.ArsonistDouse(target, __instance);
-                                        __instance.RpcShowGuardEffect(target);
+                                        __instance.RpcShowGuardEffect(target);// もう一度エフェクト
                                         Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                                    }else{//塗れなかったらキルクールリセット
+                                        SyncSetting.OptionData.DeepCopy().KillCooldown = SyncSetting.KillCoolSet(0f);
                                     }
-                                }
-                                else
-                                {
-                                    float dis;
-                                    dis = Vector2.Distance(__instance.transform.position, target.transform.position);//距離を出す
-                                    if (dis <= 1.75f)//一定の距離にターゲットがいるならば時間をカウント
-                                    {
-                                        Arsonist.ArsonistTimer[__instance.PlayerId] =
-                                        Arsonist.ArsonistTimer[__instance.PlayerId] - Time.fixedDeltaTime;
-                                    }
-                                    else//それ以外は削除
-                                    {
-                                        Arsonist.ArsonistTimer.Remove(__instance.PlayerId);
-                                    }
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                SuperNewRolesPlugin.Logger.LogError(e);
+                                }, RoleClass.Arsonist.DurationTime);
                             }
                             return false;
                         case RoleId.Mafia:
