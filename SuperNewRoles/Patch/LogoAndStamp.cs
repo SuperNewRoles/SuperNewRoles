@@ -22,7 +22,7 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch]
     public static class CredentialsPatch
     {
-        public static string baseCredentials = $@"<size=130%>{SuperNewRolesPlugin.ModName}</size> v{SuperNewRolesPlugin.Version}";
+        public static string baseCredentials = $@"<size=130%>{SuperNewRolesPlugin.ColorModName}</size> v{SuperNewRolesPlugin.Version}";
 
         [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
         private static class VersionShowerPatch

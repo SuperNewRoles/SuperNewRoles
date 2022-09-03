@@ -45,9 +45,8 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
     class AddChatPatch
     {
-        static readonly string SNR = SuperNewRolesPlugin.ModName;
-        static readonly string SNRCommander = $"<size=200%>{SuperNewRolesPlugin.ModName}</size>";
-        public static string WelcomeToSuperNewRoles = $"<size=150%>Welcome To {SuperNewRolesPlugin.ModName}</size>";
+        static readonly string SNRCommander = $"<size=200%>{SuperNewRolesPlugin.ColorModName}</size>";
+        public static string WelcomeToSuperNewRoles = $"<size=150%>Welcome To {SuperNewRolesPlugin.ColorModName}</size>";
 
         public static bool Prefix(PlayerControl sourcePlayer, string chatText)
         {
