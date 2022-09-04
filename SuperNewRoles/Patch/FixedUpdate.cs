@@ -109,9 +109,6 @@ namespace SuperNewRoles.Patch
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
                         switch (MyRole)
                         {
-                            case RoleId.Researcher:
-                                Researcher.ReseUseButtonSetTargetPatch.Postfix();
-                                break;
                             case RoleId.Pursuer:
                                 Pursuer.PursureUpdate.Postfix();
                                 break;

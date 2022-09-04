@@ -72,7 +72,7 @@ namespace SuperNewRoles.Buttons
             {
                 TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.NiceHawk.DurationTime);
                 RoleClass.NiceHawk.Timer = (float)(RoleClass.NiceHawk.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
-                if (RoleClass.NiceHawk.Timer <= 0f) RoleClass.NiceHawk.Timer = 0f; NiceHawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
+                if (RoleClass.NiceHawk.Timer <= 0f) RoleClass.NiceHawk.Timer = 0f; RoleClass.Hawk.IsHawkOn = false; return;
             }
             if (PlayerControl.LocalPlayer.IsRole(RoleId.MadHawk))
             {
@@ -90,7 +90,7 @@ namespace SuperNewRoles.Buttons
             var TimeSpanDate = new TimeSpan(0, 0, 0, (int)MapOption.DurationTime);
             TimeSpanDate = new TimeSpan(0, 0, 0, (int)MapOption.DurationTime);
             MapOption.Timer = (float)(MapOption.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
-            if (MapOption.Timer <= 0f) MapOption.Timer = 0f; Patch.Clairvoyant.TimerEnd(); MapOption.IsZoomOn = false; return;
+            if (MapOption.Timer <= 0f) MapOption.Timer = 0f;  MapOption.IsZoomOn = false; return;
         }
         public static void TeleporterButton()
         {
