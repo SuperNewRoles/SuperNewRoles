@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -379,6 +379,7 @@ namespace SuperNewRoles.Patches
                         {
                             target.Data.IsDead = true;
                             __instance.RpcMurderPlayer(target);
+                            Mode.BattleRoyal.Main.MurderPlayer(__instance, target);
                             isKill = false;
                         }
                         else
@@ -388,6 +389,7 @@ namespace SuperNewRoles.Patches
                                 if (__instance.IsAlive() && target.IsAlive())
                                 {
                                     __instance.RpcMurderPlayer(target);
+                                    Mode.BattleRoyal.Main.MurderPlayer(__instance, target);
                                 }
                                 isKill = false;
                             }, AmongUsClient.Instance.Ping / 1000f * 1.1f);
