@@ -156,30 +156,6 @@ namespace SuperNewRoles.Mode.CopsRobbers
         {
             player.RpcSnapTo(position);
             return;
-            /*
-            PlayerControl bot = GetBot();
-            if (bot != null && !TeleportIDs.Contains(player.PlayerId))
-            {
-                IsTeleport = true;
-                TeleportIDs.Add(player.PlayerId);
-                bot.NetTransform.RpcSnapTo(position);
-                IsTeleport = false;
-                new LateTask(() =>
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("BOTX:"+ bot.transform.position.x);
-                    if (bot.transform.position.x != 99999) {
-                        player.RPCMurderPlayerPrivate(bot);
-                    }
-                    if (!IsTeleport)
-                    {
-                        bot.NetTransform.RpcSnapTo(new Vector2(99999, 99999));
-                    }
-                }, 0.5f);
-                new LateTask(() => {
-                    TeleportIDs.Remove(player.PlayerId);
-                }, 0.6f);
-            }
-            */
         }
         public static void HudUpdate()
         {
