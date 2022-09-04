@@ -20,7 +20,7 @@ namespace SuperNewRoles.Patch
                     taskTypeIds = new byte[0];
                     return;
                 }
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Default) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Default, ModeId.CopsRobbers) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 {
                     var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
                     var TasksList = ModHelpers.GenerateTasks(commont, shortt, longt);

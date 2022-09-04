@@ -599,7 +599,7 @@ namespace SuperNewRoles.Patch
             bool HitmanWin = gameOverReason == (GameOverReason)CustomGameOverReason.HitmanWin;
             bool PhotographerWin = gameOverReason == (GameOverReason)CustomGameOverReason.PhotographerWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && EndData != null)
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers) && EndData != null)
             {
                 JesterWin = EndData == CustomGameOverReason.JesterWin;
                 MadJesterWin = EndData == CustomGameOverReason.MadJesterWin;

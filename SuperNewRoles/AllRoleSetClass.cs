@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -223,7 +223,7 @@ namespace SuperNewRoles
         public static void AllRoleSet()
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers))
             {
                 CrewOrImpostorSet();
                 OneOrNotListSet();

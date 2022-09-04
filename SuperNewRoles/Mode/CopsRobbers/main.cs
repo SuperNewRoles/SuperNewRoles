@@ -3,6 +3,7 @@ using SuperNewRoles.Helpers;
 using static SuperNewRoles.Patch.SetNamesClass;
 using UnityEngine;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Mode.CopsRobbers
 {
@@ -48,36 +49,6 @@ namespace SuperNewRoles.Mode.CopsRobbers
         {
             int mapid = PlayerControl.GameOptions.MapId;
             return (MapNames)mapid;
-        }
-        public static bool EndGameCheck(ShipStatus __instance)
-        {
-            bool impostorwin = true;
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
-            {
-                if (!p.Data.Disconnected)
-                {
-                    if (!p.IsImpostor() && !p.IsArrest())
-                    {
-                        impostorwin = false;
-                    }
-                }
-            }
-            if (impostorwin)
-            {
-                __instance.enabled = false;
-                ShipStatus.RpcEndGame(GameOverReason.ImpostorByKill, false);
-                return true;
-            }
-            else if (GameData.Instance.TotalTasks > 0 && GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
-            {
-                __instance.enabled = false;
-                ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
         public static void ChangeCosmetics()
         {
@@ -331,11 +302,13 @@ namespace SuperNewRoles.Mode.CopsRobbers
                             p.RpcSnapTo(GetPosition(GetRandomSpawnPosition(p)));
                         }
                     }
+                    RoleSystem.RoleSetName();
                 }
                 return;
             }
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
+                SetNameUpdate.Postfix(CachedPlayer.LocalPlayer);
                 if (player.IsImpostor())
                 {
                     foreach (CachedPlayer p in CachedPlayer.AllPlayers)
