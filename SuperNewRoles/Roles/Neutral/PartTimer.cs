@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 namespace SuperNewRoles.Roles.Neutral
 {
     public static class PartTimer
     {
-        //ここにコードを書きこんでください
         public static void FixedUpdate()
         {
             foreach (var data in RoleClass.PartTimer.PlayerDatas)

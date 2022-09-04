@@ -85,11 +85,6 @@ namespace SuperNewRoles.Mode
                 thisMode = ModeId.CopsRobbers;
                 CopsRobbers.Main.ClearAndReloads();
             }
-            /* else if (IsMode(ModeId.LevelUp, false))
-            {
-                thisMode = ModeId.LevelUp;
-                LevelUp.main.ClearAndReloads();
-            }*/
             else
             {
                 thisMode = ModeId.Default;

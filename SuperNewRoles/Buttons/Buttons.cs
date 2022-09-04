@@ -1816,13 +1816,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     RoleClass.PositionSwapper.SwapCount--;
-                    /*if (RoleClass.PositionSwapper.SwapCount >= 1){
-                        PositionSwapperNumText.text = String.Format(ModTranslation.GetString("SheriffNumTextName"), RoleClass.PositionSwapper.SwapCount);
-                    }
-                    else{
-                        PositionSwapperNumText.text = "";
-                    }*/
-                    //RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
+
                     PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(255F, 255F, 255F);
                     PositionSwapper.SwapStart();
                     PositionSwapper.ResetCoolDown();
@@ -1908,7 +1902,7 @@ namespace SuperNewRoles.Buttons
                         ? String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), SecretKillLimit)
                         : String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), "0");
 
-                    if (RoleClass.SecretlyKiller.MainCool > 0f/* || RoleClass.SecretlyKiller.SecretlyCool>0f */&& RoleClass.SecretlyKiller.IsKillCoolChange) return false;
+                    if (RoleClass.SecretlyKiller.MainCool > 0f && RoleClass.SecretlyKiller.IsKillCoolChange) return false;
                     if (RoleClass.SecretlyKiller.SecretlyKillLimit < 1 || RoleClass.SecretlyKiller.SecretlyCool > 0f) return false;
                     //メイン
                     RoleClass.SecretlyKiller.target = SetTarget();

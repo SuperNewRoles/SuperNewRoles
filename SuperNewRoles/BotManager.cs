@@ -42,11 +42,7 @@ namespace SuperNewRoles
             var Bot = Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
 
             id++;
-            /*
-            if (id < 14) {
-                id = 15;
-            }
-            */
+
             Bot.PlayerId = id;
             // Bot.PlayerId = BotPlayerId;
             GameData.Instance.AddPlayer(Bot);
