@@ -66,11 +66,14 @@ namespace SuperNewRoles
 
             // Old Delete End
 
-            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.Branch}", "ブランチ");
-            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.Commit}", "コミットId");
-            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.Commits}", "コミット数");
-            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.BaseTag}", "タグ");
-            SuperNewRoles.Logger.Info($"{VersionString}", "バージョン");
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Branch, "Branch");
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Commit, "Commit");
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Commits, "Commits");
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.BaseTag, "BaseTag");
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Tag, "Tag");
+            SuperNewRoles.Logger.Info(VersionString, "VersionString");
+            SuperNewRoles.Logger.Info(Application.version, "AmongUsVersion"); // アモングアス本体のバージョン
+
             Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
 
             var assembly = Assembly.GetExecutingAssembly();
