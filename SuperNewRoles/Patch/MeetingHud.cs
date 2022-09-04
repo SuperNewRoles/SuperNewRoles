@@ -259,9 +259,9 @@ namespace SuperNewRoles.Patch
                                     exile.RpcSetNamePlate("nameplate_NoPlate");
                                     exile.RpcSetSkin("skin_None");
                                 }
-                            }, 5f);
+                            }, 5f, "Assassin Skin Set");
                         }
-                        new LateTask(() => __instance.RpcVotingComplete(array, exileplayer, true), 0.2f);
+                        new LateTask(() => __instance.RpcVotingComplete(array, exileplayer, true), 0.2f, "Assassin Rpc Voting Comp");
                     }
                     return false;
                 }
@@ -298,7 +298,7 @@ namespace SuperNewRoles.Patch
                             if (target.Object.IsRole(RoleId.Dictator))
                                 RoleClass.Revolutionist.WinPlayer = RoleClass.Revolutionist.MeetingTrigger;
                         }
-                        new LateTask(() => __instance.RpcVotingComplete(array, exileplayer, true), 0.2f);
+                        new LateTask(() => __instance.RpcVotingComplete(array, exileplayer, true), 0.2f, "Revolutionist Rpc Voting Comp");
                     }
                     return false;
                 }
@@ -442,7 +442,7 @@ namespace SuperNewRoles.Patch
                                 exile.RpcSetNamePlate("nameplate_NoPlate");
                                 exile.RpcSetSkin("skin_None");
                             }
-                        }, 5f);
+                        }, 5f, "Assissn Set Skin SHR");
                     }
                     if (Bakery.BakeryAlive())
                     {
@@ -460,7 +460,7 @@ namespace SuperNewRoles.Patch
                                             p.RpcSetNamePrivate("<size=300%>" + ModTranslation.GetString("BakeryExileText") + "\n" + FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
                                         }
                                     }
-                                    new LateTask(() => p.RpcSetName(p.GetDefaultName()), 5f);
+                                    new LateTask(() => p.RpcSetName(p.GetDefaultName()), 5f, "Remove Bakery Bot Name(ex==null)");
                                     break;
                                 }
                             }
@@ -475,7 +475,7 @@ namespace SuperNewRoles.Patch
                                     exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.GetString("BakeryExileText") + "\n" + exiledPlayer.Object.GetDefaultName(), p2);
                                 }
                             }
-                            new LateTask(() => exiledPlayer.Object.RpcSetName(exiledPlayer.Object.GetDefaultName()), 5f);
+                            new LateTask(() => exiledPlayer.Object.RpcSetName(exiledPlayer.Object.GetDefaultName()), 5f, "Remove Bakery Bot Name(ex!=null)");
                         }
                     }
                 }
@@ -643,7 +643,7 @@ namespace SuperNewRoles.Patch
                 new LateTask(() =>
                 {
                     SyncSetting.CustomSyncSettings();
-                }, 3f, "StartMeeting_CustomSyncSetting");
+                }, 3f, "StartMeeting CustomSyncSetting");
             }
         }
     }

@@ -279,7 +279,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         SetSecretRoomTeleportStatus(Status.CloseConsole, 0, 0);
                         onTask = false;
                     }
-                }, 0.03f);
+                }, 0.03f, "SecretRoom-VitalsMinigameUpdate");
                 if (left == null || right == null) return;
                 if (leftplayer != null)
                 {
@@ -464,9 +464,9 @@ namespace SuperNewRoles.MapCustoms.Airship
                                             GameObject.FindObjectOfType<VitalsMinigame>().Close();
                                             leftplayer = null;
                                             rightplayer = null;
-                                        }, 0.1f);
+                                        }, 0.1f,"VitalText Close");
                                     }
-                                }, 1f);
+                                }, 1f,"実験成功");
                             }
                         }));
                         foreach (VitalsPanel panel in minigame.vitals) GameObject.Destroy(panel.gameObject);

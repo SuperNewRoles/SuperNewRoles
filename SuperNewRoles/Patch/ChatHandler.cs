@@ -34,9 +34,7 @@ namespace SuperNewRoles.Patch
                     {
                         AddChatPatch.SendCommand(__instance.myPlayer, text, AddChatPatch.WelcomeToSuperNewRoles);
                     }
-                }
-                , 1f);
-                return;
+                }, 1f, "Welcome Message");
             }
         }
     }
@@ -317,7 +315,7 @@ namespace SuperNewRoles.Patch
                         PlayerControl.LocalPlayer.SetName(SNRCommander + rolename);
                         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
                         PlayerControl.LocalPlayer.SetName(name);
-                    }, time);
+                    }, time, "Set SNR Name");
                 }
                 return;
             }
