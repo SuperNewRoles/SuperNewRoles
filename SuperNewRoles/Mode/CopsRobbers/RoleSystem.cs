@@ -26,7 +26,6 @@ namespace SuperNewRoles.Mode.CopsRobbers
         }
         public static void SetRoleName(PlayerControl player, bool commsActive)
         {
-            Logger.Info($"{!ModeHandler.IsMode(ModeId.CopsRobbers)} : {!AmongUsClient.Instance.AmHost} : {player.IsMod()}");
             if (!ModeHandler.IsMode(ModeId.CopsRobbers)) return;
             if (!AmongUsClient.Instance.AmHost) return;
 
