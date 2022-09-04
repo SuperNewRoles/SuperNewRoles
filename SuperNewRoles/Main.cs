@@ -73,7 +73,6 @@ namespace SuperNewRoles
             SuperNewRoles.Logger.Info($"{VersionString}", "バージョン");
             Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
 
-            new LateTask(() => { SuperNewRoles.Logger.Info("TEST", "LateTask");}, 0.1f, "TESTTASK");
             var assembly = Assembly.GetExecutingAssembly();
 
             StringDATE = new Dictionary<string, Dictionary<int, string>>();
