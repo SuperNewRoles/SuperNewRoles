@@ -177,6 +177,7 @@ namespace SuperNewRoles.Roles
             Stefinder.ClearAndReload();
             Slugger.ClearAndReload();
             Impostor.ShiftActor.ClearAndReload();
+            ConnectKiller.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -3032,6 +3033,16 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.SluggerCoolTime.GetFloat();
                 ChargeTime = CustomOptions.SluggerChargeTime.GetFloat();
                 IsMultiKill = CustomOptions.SluggerIsMultiKill.GetBool();
+            }
+        }
+        public static class ConnectKiller
+        {
+            public static List<PlayerControl> ConnectKillerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                ConnectKillerPlayer = new();
+                //くりあぁあんどりろぉどぉ
             }
         }
         //新ロールクラス
