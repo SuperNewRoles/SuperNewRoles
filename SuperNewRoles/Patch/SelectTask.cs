@@ -49,7 +49,7 @@ namespace SuperNewRoles.Patch
             taskData.Add(RoleId.TaskManager, (TaskManagerCommonTask.GetInt(), TaskManagerShortTask.GetInt(), TaskManagerLongTask.GetInt()));
             taskData.Add(RoleId.SuicidalIdeation, (SuicidalIdeationCommonTask.GetInt(), SuicidalIdeationLongTask.GetInt(), SuicidalIdeationShortTask.GetInt()));
 
-            if (taskData.ContainsKey(p.GetRole())) // pの役職がDictionaryあるか
+            if (taskData.ContainsKey(p.GetRole())) // pの役職がDictionaryにあるか
             {
                 if (taskData[p.GetRole()] != (0, 0, 0)) // pの役職をKeyでValueを取得。が(0,0,0)ではない
                     return taskData[p.GetRole()];
