@@ -225,7 +225,7 @@ namespace SuperNewRoles.Patches
                             {
                                 PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
                             }
-                        }, 1.5f);
+                        }, 1.5f, "SHR RemoteSheriff Shape Revert");
                         PlayerControl.LocalPlayer.RpcShapeshift(player, true);
                     }
                     else if (ModeHandler.IsMode(ModeId.Default))
@@ -390,7 +390,7 @@ namespace SuperNewRoles.Patches
                                     __instance.RpcMurderPlayer(target);
                                 }
                                 isKill = false;
-                            }, AmongUsClient.Instance.Ping / 1000f * 1.1f);
+                            }, AmongUsClient.Instance.Ping / 1000f * 1.1f, "BattleRoyal Murder");
                         }
                     }
                     return false;
@@ -514,10 +514,12 @@ namespace SuperNewRoles.Patches
                                         Arsonist.ArsonistDouse(target, __instance);
                                         __instance.RpcShowGuardEffect(target);// もう一度エフェクト
                                         Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
-                                    }else{//塗れなかったらキルクールリセット
+                                    }
+                                    else
+                                    {//塗れなかったらキルクールリセット
                                         SyncSetting.OptionData.DeepCopy().KillCooldown = SyncSetting.KillCoolSet(0f);
                                     }
-                                }, RoleClass.Arsonist.DurationTime);
+                                }, RoleClass.Arsonist.DurationTime, "SHR Arsonist Douse");
                             }
                             return false;
                         case RoleId.Mafia:
@@ -654,19 +656,19 @@ namespace SuperNewRoles.Patches
                         FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
                         __instance.RpcStartMeeting(null);
                     }
-                }, 0.5f);
+                }, 0.5f, "RpcCheckExile Assassin Start Meeting");
                 new LateTask(() =>
                 {
                     __instance.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}は誰だ？</size>");
-                }, 2f);
+                }, 2f, "RpcCheckExile Who Marine Name");
                 new LateTask(() =>
                 {
                     __instance.RpcSendChat($"\n{ModTranslation.GetString("MarineWhois")}");
-                }, 2.5f);
+                }, 2.5f, "RpcCheckExile Who Marine Chat");
                 new LateTask(() =>
                 {
                     __instance.RpcSetName(__instance.GetDefaultName());
-                }, 2f);
+                }, 2f, "RpcCheckExile Default Name");
                 RoleClass.Assassin.TriggerPlayer = __instance;
                 return;
             }
@@ -685,19 +687,19 @@ namespace SuperNewRoles.Patches
                         target.RpcStartMeeting(null);
                     }
                     RoleClass.Assassin.TriggerPlayer = target;
-                }, 0.5f);
+                }, 0.5f, "RpcMurderPlayerCheck Assassin Meeting");
                 new LateTask(() =>
                 {
                     target.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}は誰だ？</size>");
-                }, 2f);
+                }, 2f, "RpcMurderPlayerCheck Who Marine Name");
                 new LateTask(() =>
                 {
                     target.RpcSendChat($"\n{ModTranslation.GetString("MarineWhois")}");
-                }, 2.5f);
+                }, 2.5f, "RpcMurderPlayerCheck Who Marine Chat");
                 new LateTask(() =>
                 {
                     target.RpcSetName(target.GetDefaultName());
-                }, 2f);
+                }, 2f, "RpcMurderPlayerCheck Default Name");
                 return;
             }
             SuperNewRolesPlugin.Logger.LogInfo("i(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
@@ -815,7 +817,7 @@ namespace SuperNewRoles.Patches
                             FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(target);
                             target.RpcStartMeeting(null);
                         }
-                    }, 0.5f);
+                    }, 0.5f, "MurderPlayer Assassin Meeting");
                     RoleClass.Assassin.TriggerPlayer = target;
                     return;
                 }
@@ -906,7 +908,7 @@ namespace SuperNewRoles.Patches
                             FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
                             __instance.RpcStartMeeting(null);
                         }
-                    }, 0.5f);
+                    }, 0.5f, "Exiled Assassin Meeting");
                     RoleClass.Assassin.TriggerPlayer = __instance;
                     return;
                 }

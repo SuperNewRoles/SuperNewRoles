@@ -32,42 +32,7 @@ namespace SuperNewRoles.Patch
         {
             private static readonly System.Random random = new((int)DateTime.Now.Ticks);
             private static readonly List<PlayerControl> bots = new();
-            public class LateTask
-            {
-                public string name;
-                public float timer;
-                public Action action;
-                public static List<LateTask> Tasks = new();
-                public bool Run(float deltaTime)
-                {
-                    timer -= deltaTime;
-                    if (timer <= 0)
-                    {
-                        action();
-                        return true;
-                    }
-                    return false;
-                }
-                public LateTask(Action action, float time, string name = "No Name Task")
-                {
-                    this.action = action;
-                    this.timer = time;
-                    this.name = name;
-                    Tasks.Add(this);
-                }
-                public static void Update(float deltaTime)
-                {
-                    var TasksToRemove = new List<LateTask>();
-                    Tasks.ForEach((task) =>
-                    {
-                        if (task.Run(deltaTime))
-                        {
-                            TasksToRemove.Add(task);
-                        }
-                    });
-                    TasksToRemove.ForEach(task => Tasks.Remove(task));
-                }
-            }
+
             public static void Postfix(KeyboardJoystick __instance)
             {
                 if (!ConfigRoles.DebugMode.Value) return;

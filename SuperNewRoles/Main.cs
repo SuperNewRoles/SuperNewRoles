@@ -117,7 +117,7 @@ namespace SuperNewRoles
                     new LateTask(() =>
                     {
                         __instance.SetVisible(true);
-                    }, 0f, "AntiChatBag");
+                    }, 0f, "AntiChatBug");
                 }
                 if (__instance.IsOpen)
                 {
