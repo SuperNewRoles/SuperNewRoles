@@ -351,7 +351,7 @@ namespace SuperNewRoles.Patch
             {
                 yield return new WaitForSeconds(time);
             }
-            var crs = CustomRpcSender.Create();
+            var crs = CustomRpcSender.Create("AllSend");
             crs.AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetName)
                 .Write(SendName)
                 .EndRpc()
@@ -372,7 +372,7 @@ namespace SuperNewRoles.Patch
             {
                 yield return new WaitForSeconds(time);
             }
-            var crs = CustomRpcSender.Create();
+            var crs = CustomRpcSender.Create("PrivateSend");
             crs.AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.GetClientId())
                 .Write(SendName)
                 .EndRpc()
