@@ -103,7 +103,7 @@ namespace SuperNewRoles.Patch
         Sabotage
     }
     [HarmonyPatch(typeof(ShipStatus))]
-    public class ShipStatusPatch
+    public static class ShipStatusPatch
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.IsGameOverDueToDeath))]
@@ -289,7 +289,7 @@ namespace SuperNewRoles.Patch
                     RoleColor = RoleClass.Spelunker.color;
                     break;
                 case WinCondition.SuicidalIdeationWin:
-                    text = RoleClass.SuicidalIdeation.SuicidalIdeationWinText ? "SuicidalIdeationWinText" : "SuicidalIdeationName";
+                    text = CustomOptions.SuicidalIdeationWinText.GetBool() ? "SuicidalIdeationWinText" : "SuicidalIdeationName";
                     RoleColor = RoleClass.SuicidalIdeation.color;
                     break;
                 case WinCondition.HitmanWin:
@@ -848,9 +848,9 @@ namespace SuperNewRoles.Patch
                     AdditionalTempData.gameOverReason == GameOverReason.HumansByVote ||
                     AdditionalTempData.gameOverReason == GameOverReason.HumansDisconnect))
                 {
-                    if (RoleClass.Stefinder.SoloWin)
+                    if (CustomOptions.StefinderSoloWin.GetBool())
                     {
-                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        TempData.winners = new();
                         WinningPlayerData wpd = new(player.Data);
                         TempData.winners.Add(wpd);
                         AdditionalTempData.winCondition = WinCondition.StefinderWin;
@@ -866,9 +866,9 @@ namespace SuperNewRoles.Patch
                     AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote ||
                     AdditionalTempData.gameOverReason == GameOverReason.ImpostorDisconnect))
                 {
-                    if (RoleClass.Stefinder.SoloWin)
+                    if (CustomOptions.StefinderSoloWin.GetBool())
                     {
-                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        TempData.winners = new();
                         WinningPlayerData wpd = new(player.Data);
                         TempData.winners.Add(wpd);
                         AdditionalTempData.winCondition = WinCondition.StefinderWin;
@@ -1048,7 +1048,7 @@ namespace SuperNewRoles.Patch
     }
 
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CheckEndCriteria))]
-    public class CheckGameEndPatch
+    public static class CheckGameEndPatch
     {
         public static bool Prefix(ShipStatus __instance)
         {

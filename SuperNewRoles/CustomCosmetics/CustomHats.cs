@@ -21,16 +21,17 @@ namespace SuperNewRoles.CustomCosmetics
         public static Material hatShader;
 
         public static Dictionary<string, HatExtension> CustomHatRegistry = new();
-        public static HatExtension TestExt = null;
+        public static HatExtension TestExt = new() { IsNull = true };
         public static bool IsEnd = false;
 
-        public class HatExtension
+        public struct HatExtension
         {
-            public string author { get; set; }
-            public string package { get; set; }
-            public string condition { get; set; }
-            public Sprite FlipImage { get; set; }
-            public Sprite BackFlipImage { get; set; }
+            public bool IsNull;
+            public string author;
+            public string package;
+            public string condition;
+            public Sprite FlipImage;
+            public Sprite BackFlipImage;
         }
 
         public class CustomHat
@@ -249,7 +250,7 @@ namespace SuperNewRoles.CustomCosmetics
                 HatParent hp = __instance.myPlayer.HatRenderer();
                 if (hp.Hat == null) return;
                 HatExtension extend = hp.Hat.GetHatExtension();
-                if (extend == null) return;
+                if (extend.IsNull) return;
                 if (extend.FlipImage != null)
                 {
                     hp.FrontLayer.sprite = __instance.Rend().flipX ? extend.FlipImage : hp.Hat.hatViewData.viewData.MainImage;
@@ -394,7 +395,7 @@ namespace SuperNewRoles.CustomCosmetics
                 {
                     HatExtension ext = hatData.GetHatExtension();
 
-                    if (ext != null)
+                    if (!ext.IsNull)
                     {
                         if (!packages.ContainsKey(ext.package))
                             packages[ext.package] = new List<System.Tuple<HatData, HatExtension>>();
@@ -404,7 +405,7 @@ namespace SuperNewRoles.CustomCosmetics
                     {
                         if (!packages.ContainsKey(innerslothPackageName))
                             packages[innerslothPackageName] = new List<System.Tuple<HatData, HatExtension>>();
-                        packages[innerslothPackageName].Add(new System.Tuple<HatData, HatExtension>(hatData, null));
+                        packages[innerslothPackageName].Add(new System.Tuple<HatData, HatExtension>(hatData, new() { IsNull = true}));
                     }
                 }
 
@@ -736,9 +737,9 @@ namespace SuperNewRoles.CustomCosmetics
     {
         public static CustomHats.HatExtension GetHatExtension(this HatData hat)
         {
-            if (CustomHats.TestExt != null && CustomHats.TestExt.condition.Equals(hat.name))
+            if (!CustomHats.TestExt.IsNull && CustomHats.TestExt.condition.Equals(hat.name))
             {
-                return CustomHats.TestExt;
+                return (CustomHats.HatExtension)CustomHats.TestExt;
             }
             CustomHats.CustomHatRegistry.TryGetValue(hat.name, out CustomHats.HatExtension ret);
             return ret;

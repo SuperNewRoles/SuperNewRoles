@@ -43,7 +43,7 @@ namespace SuperNewRoles.Roles.Neutral
         }
         public static void EndMeeting()
         {
-            Buttons.HudManagerStartPatch.HitmanKillButton.MaxTimer = RoleClass.Hitman.KillCoolTime;
+            Buttons.HudManagerStartPatch.HitmanKillButton.MaxTimer = CustomOptions.HitmanKillCoolTime.GetFloat();
             Buttons.HudManagerStartPatch.HitmanKillButton.Timer = Buttons.HudManagerStartPatch.HitmanKillButton.MaxTimer;
         }
         public static void FixedUpdate()
@@ -54,7 +54,7 @@ namespace SuperNewRoles.Roles.Neutral
             {
                 SetTarget();
                 LimitDown();
-                RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
+                RoleClass.Hitman.UpdateTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
             }
             if (PlayerControl.LocalPlayer.IsDead())
             {
@@ -68,7 +68,7 @@ namespace SuperNewRoles.Roles.Neutral
             {
                 if (RoleClass.Hitman.cooldownText != null)
                 {
-                    RoleClass.Hitman.cooldownText.text = Mathf.CeilToInt(Mathf.Clamp(RoleClass.Hitman.UpdateTime, 0, RoleClass.Hitman.ChangeTargetTime)).ToString();
+                    RoleClass.Hitman.cooldownText.text = Mathf.CeilToInt(Mathf.Clamp(RoleClass.Hitman.UpdateTime, 0, CustomOptions.HitmanChangeTargetTime.GetFloat())).ToString();
                 }
                 if (RoleClass.Hitman.Target != null)
                 {
@@ -108,7 +108,7 @@ namespace SuperNewRoles.Roles.Neutral
         {
             if (!PlayerControl.LocalPlayer.IsRole(RoleId.Hitman)) return;
             SetTarget();
-            RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
+            RoleClass.Hitman.UpdateTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
         }
         public static void SetTarget()
         {

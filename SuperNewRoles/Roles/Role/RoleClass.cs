@@ -2629,24 +2629,13 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SuicidalIdeationPlayer;
             public static Color32 color = new(71, 71, 71, byte.MaxValue);
-            public static bool SuicidalIdeationWinText;
-            public static float TimeLeft;
             public static DateTime ButtonTimer;
             public static int CompletedTask;
-            public static float AddTimeLeft;
             public static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuicidalIdeationButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuicidalIdeationButton.png", 115f);
             public static void ClearAndReload()
             {
                 SuicidalIdeationPlayer = new();
-                SuicidalIdeationWinText = CustomOptions.SuicidalIdeationWinText.GetBool();
-                TimeLeft = CustomOptions.SuicidalIdeationTimeLeft.GetFloat();
-                AddTimeLeft = CustomOptions.SuicidalIdeationAddTimeLeft.GetFloat();
                 ButtonTimer = DateTime.Now;
                 CompletedTask = 0;
             }
@@ -2655,10 +2644,8 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> HitmanPlayer;
             public static Color32 color = new(86, 41, 18, byte.MaxValue);
-            public static float KillCoolTime;
             public static int OutMissionLimit;
             public static PlayerControl Target;
-            public static float ChangeTargetTime;
             public static float UpdateTime;
             public static Arrow TargetArrow;
             public static float ArrowUpdateTimeDefault;
@@ -2669,17 +2656,8 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 HitmanPlayer = new();
-                KillCoolTime = CustomOptions.HitmanKillCoolTime.GetFloat();
-                if (CustomOptions.HitmanIsOutMission.GetBool())
-                {
-                    OutMissionLimit = CustomOptions.HitmanOutMissionLimit.GetInt();
-                }
-                else
-                {
-                    OutMissionLimit = -1;
-                }
-                ChangeTargetTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
-                UpdateTime = ChangeTargetTime;
+                OutMissionLimit = CustomOptions.HitmanIsOutMission.GetBool() ? CustomOptions.HitmanOutMissionLimit.GetInt() : -1;
+                UpdateTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
                 cooldownText = null;
                 WinKillCount = CustomOptions.HitmanWinKillCount.GetInt();
                 if (TargetArrow != null && TargetArrow.arrow != null)
@@ -2687,14 +2665,7 @@ namespace SuperNewRoles.Roles
                     UnityEngine.Object.Destroy(TargetArrow.arrow);
                 }
                 TargetArrow = null;
-                if (CustomOptions.HitmanIsArrowView.GetBool())
-                {
-                    ArrowUpdateTimeDefault = CustomOptions.HitmanArrowUpdateTime.GetFloat();
-                }
-                else
-                {
-                    ArrowUpdateTimeDefault = -1f;
-                }
+                ArrowUpdateTimeDefault = CustomOptions.HitmanIsArrowView.GetBool() ? CustomOptions.HitmanArrowUpdateTime.GetFloat() : -1;
                 ArrowUpdateTime = ArrowUpdateTimeDefault;
             }
         }
@@ -2703,48 +2674,19 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> MatryoshkaPlayer;
             public static Color32 color = ImpostorRed;
             public static int WearLimit;
-            public static bool WearReport;
             public static float WearDefaultTime;
             public static float WearTime;
-            public static float AddKillCoolTime;
             public static float MyKillCoolTime;
-            public static float CoolTime;
             public static bool IsLocalOn => !Datas.Keys.All(data => data != CachedPlayer.LocalPlayer.PlayerId || Datas[data].Item1 == null);
             public static Dictionary<byte, (DeadBody, float)> Datas;
-            public static Sprite PutOnButtonSprite
-            {
-                get
-                {
-                    if (_PutOnButtonSprite == null)
-                    {
-                        _PutOnButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaPutOnButton.png", 115f);
-                    }
-                    return _PutOnButtonSprite;
-                }
-            }
-            public static Sprite _PutOnButtonSprite;
-            public static Sprite TakeOffButtonSprite
-            {
-                get
-                {
-                    if (_TakeOffButtonSprite == null)
-                    {
-                        _TakeOffButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaTakeOffButton.png", 115f);
-                    }
-                    return _TakeOffButtonSprite;
-                }
-            }
-            public static Sprite _TakeOffButtonSprite;
+            public static Sprite PutOnButtonSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaPutOnButton.png", 115f);
+           public static Sprite TakeOffButtonSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaTakeOffButton.png", 115f);
             public static void ClearAndReload()
             {
                 MatryoshkaPlayer = new();
                 WearLimit = CustomOptions.MatryoshkaWearLimit.GetInt();
-                WearReport = CustomOptions.MatryoshkaWearReport.GetBool();
-                WearDefaultTime = CustomOptions.MatryoshkaWearTime.GetFloat();
-                AddKillCoolTime = CustomOptions.MatryoshkaAddKillCoolTime.GetFloat();
                 WearTime = 0;
                 Datas = new();
-                CoolTime = CustomOptions.MatryoshkaCoolTime.GetFloat();
                 MyKillCoolTime = PlayerControl.GameOptions.killCooldown;
             }
         }
@@ -2752,18 +2694,10 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> NunPlayer;
             public static Color32 color = ImpostorRed;
-            public static float CoolTime;
-            public static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.NunButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.NunButton.png", 115f);
             public static void ClearAndReload()
             {
                 NunPlayer = new();
-                CoolTime = CustomOptions.NunCoolTime.GetFloat();
             }
         }
         public static class PartTimer
@@ -2772,27 +2706,12 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new(0, 255, 0, byte.MaxValue);
             public static int DeathDefaultTurn;
             public static int DeathTurn;
-            public static float CoolTime;
-            public static bool IsCheckTargetRole;
             public static Dictionary<byte, byte> Datas;
-            public static bool IsLocalOn
-            {
-                get
-                {
-                    return Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
-                }
-            }
-            public static PlayerControl CurrentTarget
-            {
-                get
-                {
-                    return IsLocalOn ? ModHelpers.PlayerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
-                }
-            }
+            public static bool IsLocalOn => Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
+            public static PlayerControl CurrentTarget => IsLocalOn ? ModHelpers.PlayerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
             public static Dictionary<PlayerControl, PlayerControl> PlayerDatas
-            {
-                get
-                {
+            { get{
+                    //キャッシュ済みのプレイヤーリストとplayerByIdのリストの数が違ったらキャッシュを更新する
                     if (_playerDatas.Count != Datas.Count)
                     {
                         Dictionary<PlayerControl, PlayerControl> newdic = new();
@@ -2806,19 +2725,11 @@ namespace SuperNewRoles.Roles
                 }
             }
             private static Dictionary<PlayerControl, PlayerControl> _playerDatas;
-            public static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PartTimerButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PartTimerButton.png", 115f);
             public static void ClearAndReload()
             {
                 PartTimerPlayer = new();
                 DeathTurn = DeathDefaultTurn = CustomOptions.PartTimerDeathTurn.GetInt();
-                CoolTime = CustomOptions.PartTimerCoolTime.GetFloat();
-                IsCheckTargetRole = CustomOptions.PartTimerIsCheckTargetRole.GetBool();
                 Datas = new();
                 _playerDatas = new();
             }
@@ -2847,19 +2758,12 @@ namespace SuperNewRoles.Roles
             public static bool IsLocalActionSend;
             public static bool IsDeathFootpointBig;
             public static bool IsFootprintMeetingDestroy;
-            public static float CoolTime;
             public static PlayerControl CurrentTarget;
             public static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PainterButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PainterButton.png", 115f);
             public static void ClearAndReload()
             {
                 PainterPlayer = new();
-                CoolTime = CustomOptions.PainterCoolTime.GetFloat();
                 ActionDatas = new();
                 IsEnables = new();
                 foreach (CrewMate.Painter.ActionType type in Enum.GetValues(typeof(CrewMate.Painter.ActionType)))
@@ -2884,14 +2788,6 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> PsychometristPlayer;
             public static Color32 color = new(238, 130, 238, byte.MaxValue);
-            public static float CoolTime;
-            public static float ReadTime;
-            public static bool IsCheckDeathTime;
-            public static int DeathTimeDeviation;
-            public static bool IsCheckDeathReason;
-            public static bool IsCheckFootprints;
-            public static float CanCheckFootprintsTime;
-            public static bool IsReportCheckedReportDeadbody;
             //(source, target) : Vector2
             public static Dictionary<(byte, byte), (List<Vector2>, bool)> FootprintsPosition;
             public static Dictionary<(byte, byte), float> FootprintsDeathTime;
@@ -2901,13 +2797,7 @@ namespace SuperNewRoles.Roles
             //(死体, テキスト, 誤差)
             public static List<(DeadBody, TextMeshPro, int)> DeathTimeTexts;
             public static DeadBody CurrentTarget;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PsychometristButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PsychometristButton.png", 115f);
 
             public static void ClearAndReload()
             {
@@ -2918,14 +2808,6 @@ namespace SuperNewRoles.Roles
                 FootprintsPosition = new();
                 FootprintObjects = new();
                 FootprintsDeathTime = new();
-                CoolTime = CustomOptions.PsychometristCoolTime.GetFloat();
-                ReadTime = CustomOptions.PsychometristReadTime.GetFloat();
-                IsCheckDeathTime = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
-                DeathTimeDeviation = CustomOptions.PsychometristDeathTimeDeviation.GetInt();
-                IsCheckDeathReason = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
-                IsCheckFootprints = CustomOptions.PsychometristIsCheckFootprints.GetBool();
-                CanCheckFootprintsTime = CustomOptions.PsychometristCanCheckFootprintsTime.GetFloat();
-                IsReportCheckedReportDeadbody = CustomOptions.PsychometristIsReportCheckedDeadBody.GetBool();
             }
         }
         public static class SeeThroughPerson
@@ -2943,13 +2825,9 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> PhotographerPlayer;
             public static Color32 color = new(0, 255, 255, byte.MaxValue);
-            public static float CoolTime;
-            public static float BonusCoolTime;
             public static int BonusCount;
             public static List<byte> PhotedPlayerIds;
             public static bool IsPhotographerShared;
-            public static bool IsImpostorVision;
-            public static bool IsNotification;
             public static List<PlayerControl> PhotedPlayer
             {
                 get
@@ -2968,46 +2846,27 @@ namespace SuperNewRoles.Roles
                 }
             }
             public static List<PlayerControl> _photedPlayer;
-            public static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PhotographerButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PhotographerButton.png", 115f);
             public static void ClearAndReload()
             {
-
                 PhotographerPlayer = new();
                 PhotedPlayerIds = new();
                 _photedPlayer = new();
                 IsPhotographerShared = false;
-                CoolTime = CustomOptions.PhotographerCoolTime.GetFloat();
-                BonusCount = (CustomOptions.PhotographerIsBonus.GetBool() ? CustomOptions.PhotographerBonusCount.GetInt() : -1);
-                BonusCoolTime = CustomOptions.PhotographerBonusCoolTime.GetFloat();
-                IsImpostorVision = CustomOptions.PhotographerIsImpostorVision.GetBool();
-                IsNotification = CustomOptions.PhotographerIsNotification.GetBool();
+                BonusCount = CustomOptions.PhotographerIsBonus.GetBool() ? CustomOptions.PhotographerBonusCount.GetInt() : -1;
             }
         }
         public static class Stefinder
         {
             public static List<PlayerControl> StefinderPlayer;
             public static Color32 color = new(0, 255, 0, byte.MaxValue);
-            public static int KillCoolDown;
-            public static bool UseVent;
-            public static bool UseSabo;
-            public static bool IsKill;
-            public static bool SoloWin;
             public static List<byte> IsKillPlayer;
+            public static bool IsKill;
             public static PlayerControl target;
             public static DateTime ButtonTimer;
             public static void ClearAndReload()
             {
                 StefinderPlayer = new();
-                KillCoolDown = CustomOptions.StefinderKillCoolDown.GetInt();
-                UseVent = CustomOptions.StefinderVent.GetBool();
-                UseSabo = CustomOptions.StefinderSabo.GetBool();
-                SoloWin = CustomOptions.StefinderSoloWin.GetBool();
                 IsKill = false;
                 IsKillPlayer = new();
             }
@@ -3016,22 +2875,10 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SluggerPlayer;
             public static Color32 color = ImpostorRed;
-            public static float CoolTime;
-            public static float ChargeTime;
-            public static bool IsMultiKill;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SluggerButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SluggerButton.png", 115f);
             public static void ClearAndReload()
             {
                 SluggerPlayer = new();
-                CoolTime = CustomOptions.SluggerCoolTime.GetFloat();
-                ChargeTime = CustomOptions.SluggerChargeTime.GetFloat();
-                IsMultiKill = CustomOptions.SluggerIsMultiKill.GetBool();
             }
         }
         //新ロールクラス
