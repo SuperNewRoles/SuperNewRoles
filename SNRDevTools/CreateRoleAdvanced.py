@@ -212,9 +212,9 @@ namespace SuperNewRoles.Roles"""+namedata+"""
     }
 }""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         # CustomRPC/CustomRPC.cs
-        MainClass.WriteCodes("Modules/CustomRPC.cs", "//RoleId",
+        MainClass.WriteCodes("CustomRPC/CustomRPC.cs", "//RoleId",
                              MainClass.GetInput("RoleName")+",\n        //RoleId")
-        MainClass.WriteCodes("Modules/CustomRPC.cs", "//新ロールクラス",
+        MainClass.WriteCodes("CustomRPC/CustomRPC.cs", "//新ロールクラス",
                              """public static class ROLENAME
         {
             public static List<PlayerControl> ROLENAMEPlayer;
@@ -290,15 +290,15 @@ namespace SuperNewRoles.Roles"""+namedata+"""
 
         # Intro/IntroDate.cs
         if (MainClass.GetBool("Impo")):
-            MainClass.WriteCodes("Modules/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Impostor);
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Impostor);
         //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         elif (MainClass.GetBool("Crew")):
-            MainClass.WriteCodes("Modules/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate);
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate);
         //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         elif (MainClass.GetBool("Neut")):
-            MainClass.WriteCodes("Modules/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Neutral);
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Neutral);
         //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-            '''MainClass.WriteCodes("Modules/IntroDate.cs", "//イントロ検知","""case (RoleId.ROLENAME):
+            '''MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロ検知","""case (RoleId.ROLENAME):
                     return ROLENAMEIntro;
                 //イントロ検知""".replace("ROLENAME",MainClass.GetInput("RoleName")))'''  # ⇐なにこれ？
         elif (MainClass.GetBool("TeamOne")):

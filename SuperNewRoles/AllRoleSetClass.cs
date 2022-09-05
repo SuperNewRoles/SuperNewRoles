@@ -933,7 +933,6 @@ namespace SuperNewRoles
                 RoleId.Stefinder => CustomOptions.StefinderPlayerCount.GetFloat(),
                 RoleId.Slugger => CustomOptions.SluggerPlayerCount.GetFloat(),
                 RoleId.ShiftActor => Roles.Impostor.ShiftActor.ShiftActorPlayerCount.GetFloat(),
-                RoleId.ConnectKiller => CustomOptions.ConnectKillerPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };
