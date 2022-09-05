@@ -630,7 +630,7 @@ namespace SuperNewRoles.Buttons
                         Jackal.ResetCoolDown();
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.IsCreateSidekick; },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.IsCreateSidekick && CustomOptions.JackalCreateSidekick.GetBool(); },
                 () =>
                 {
                     return Jackal.JackalFixedPatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -668,7 +668,7 @@ namespace SuperNewRoles.Buttons
                         JackalSeer.ResetCoolDown();
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.IsCreateSidekick; },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.IsCreateSidekick && CustomOptions.JackalSeerCreateSidekick.GetBool(); },
                 () =>
                 {
                     return JackalSeer.JackalSeerFixedPatch.JackalSeerSetTarget() && PlayerControl.LocalPlayer.CanMove;
