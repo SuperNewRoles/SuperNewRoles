@@ -11,24 +11,20 @@ using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics
 {
-    [HarmonyPatch]
-    public class CustomVisors
+    public struct CustomVisors
     {
-        public class CustomVisor
-        {
-            public string author { get; set; }
-            public string name { get; set; }
-            public string resource { get; set; }
-            public string reshasha { get; set; }
-            public bool IsTOP { get; set; }
-        }
+        public string author { get; set; }
+        public string name { get; set; }
+        public string resource { get; set; }
+        public string reshasha { get; set; }
+        public bool IsTOP { get; set; }
     }
     public static class DownLoadClassVisor
     {
         public static bool IsEndDownload = false;
         public static bool running = false;
         public static List<string> fetchs = new();
-        public static List<CustomVisors.CustomVisor> Visordetails = new();
+        public static List<CustomVisors> Visordetails = new();
         public static void Load()
         {
             if (running)
@@ -97,13 +93,13 @@ namespace SuperNewRoles.CustomCosmetics
                     }
                 };
 
-                List<CustomVisors.CustomVisor> Visordatas = new();
+                List<CustomVisors> Visordatas = new();
 
                 for (JToken current = jobj.First; current != null; current = current.Next)
                 {
                     if (current != null && current.HasValues)
                     {
-                        CustomVisors.CustomVisor info = new()
+                        CustomVisors info = new()
                         {
                             name = current["name"]?.ToString(),
                             resource = SanitizeResourcePath(current["resource"]?.ToString())
@@ -121,7 +117,7 @@ namespace SuperNewRoles.CustomCosmetics
 
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomVisorsChache\";
                 MD5 md5 = MD5.Create();
-                foreach (CustomVisors.CustomVisor data in Visordatas)
+                foreach (CustomVisors data in Visordatas)
                 {
                     if (DoesResourceRequireDownload(filePath + data.resource, data.reshasha, md5))
                         markedfordownload.Add(data.resource);

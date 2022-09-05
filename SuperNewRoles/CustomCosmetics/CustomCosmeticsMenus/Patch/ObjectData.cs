@@ -240,7 +240,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         }
         public static Dictionary<int, ClosetPresetData> ClosetPresetDatas = new();
         public static ConfigEntry<int> SelectedPreset;
-        public class ClosetPresetData
+        public struct ClosetPresetData
         {
             public ConfigEntry<byte> BodyColor;
             public ConfigEntry<string> Hat;

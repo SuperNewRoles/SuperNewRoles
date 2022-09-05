@@ -739,7 +739,7 @@ namespace SuperNewRoles.CustomCosmetics
         {
             if (!CustomHats.TestExt.IsNull && CustomHats.TestExt.condition.Equals(hat.name))
             {
-                return (CustomHats.HatExtension)CustomHats.TestExt;
+                return CustomHats.TestExt;
             }
             CustomHats.CustomHatRegistry.TryGetValue(hat.name, out CustomHats.HatExtension ret);
             return ret;
