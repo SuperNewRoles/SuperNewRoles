@@ -3042,7 +3042,6 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 ConnectKillerPlayer = new();
-                
             }
         }
         //新ロールクラス
