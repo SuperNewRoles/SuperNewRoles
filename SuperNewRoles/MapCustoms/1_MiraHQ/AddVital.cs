@@ -1,16 +1,10 @@
-using System.Collections;
-using BepInEx.IL2CPP.Utils;
-using HarmonyLib;
 using UnityEngine;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.MapCustoms
 {
-    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Awake))]
     public class AddVitals
     {
-        public static void Postfix()
+        public static void AddVital()
         {
             if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Mira) && MapCustom.AddVitalsMira.GetBool())
             {
