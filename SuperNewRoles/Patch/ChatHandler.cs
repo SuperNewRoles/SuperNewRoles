@@ -183,7 +183,7 @@ namespace SuperNewRoles.Patch
         {
             Logger.Info("GetOptionText", "ChatHandler");
             string text = "";
-            text += GetChildText(RoleOption.children, "  ").Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", ""); ;
+            text += GetChildText(RoleOption.children, "  ").Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", "");
             return text;
         }
         static string GetTeamText(TeamRoleType type)
