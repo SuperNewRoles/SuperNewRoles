@@ -32,8 +32,9 @@ namespace SuperNewRoles.Roles
             if (RoleClass.Sheriff.IsLoversKill && Target.IsLovers()) return true;//ラバーズ
             if (CustomOptions.SheriffQuarreledKill.GetBool() && Target.IsQuarreled()) return true;//クラード
             if (RoleClass.Sheriff.IsMadRoleKill && Target.IsMadRoles()) return true;
-            if (CustomOptions.SheriffFriendsRoleKill.GetBool() && Target.IsFriendRoles()) return true;
-            return RoleClass.Sheriff.IsNeutralKill && Target.IsNeutral();
+            return CustomOptions.SheriffFriendsRoleKill.GetBool() && Target.IsFriendRoles()
+                ? true
+                : RoleClass.Sheriff.IsNeutralKill && Target.IsNeutral();
         }
         public static bool IsChiefSheriffKill(PlayerControl Target)
         {

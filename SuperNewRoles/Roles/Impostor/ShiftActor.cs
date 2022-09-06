@@ -57,14 +57,9 @@ namespace SuperNewRoles.Roles.Impostor
             }
             else
             {
-                if (target.IsRole(RoleId.DefaultRole))
-                { // デフォルトロール(通常インポスターと、通常クルーメイト)
-                    TargetRoleText = target.IsImpostor() ? ModTranslation.GetString("ImpostorName") : ModTranslation.GetString("CrewMateName");
-                }
-                else
-                { // マーリンはクルーに
-                    TargetRoleText = target.IsRole(RoleId.Marine) ? ModTranslation.GetString("CrewMateName") : ModTranslation.GetString($"{target.GetRole()}Name");
-                }
+                TargetRoleText = target.IsRole(RoleId.DefaultRole)
+                    ? target.IsImpostor() ? ModTranslation.GetString("ImpostorName") : ModTranslation.GetString("CrewMateName")
+                    : target.IsRole(RoleId.Marine) ? ModTranslation.GetString("CrewMateName") : ModTranslation.GetString($"{target.GetRole()}Name");
 
                 // 重複役職
                 if (IsWatchAttribute)
