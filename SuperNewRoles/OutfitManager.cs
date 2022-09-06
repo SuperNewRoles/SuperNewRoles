@@ -12,17 +12,6 @@ namespace SuperNewRoles
             pc.RawSetVisor(outfit.VisorId, outfit.ColorId);
             pc.RawSetColor(outfit.ColorId);
             ModHelpers.SetSkinWithAnim(pc.MyPhysics, outfit.SkinId);
-
-            // idk how to handle pets right now, so just not doing it
-            // TODO: FIX PETS
-            /*            if (!pc.Data.IsDead)
-                        {
-                            pc.CurrentPet.Data = HatManager.Instance.GetPetById(outfit.PetId);
-                            pc.CurrentPet.transform.position = pc.transform.position;
-                            pc.CurrentPet.Source = pc;
-                            pc.CurrentPet.Visible = visible;
-                            PlayerControl.SetPlayerMaterialColors(outfit.ColorId, pc.CurrentPet.rend);
-                        }*/
         }
         public static void changeToPlayer(this PlayerControl pc, PlayerControl target)
         {

@@ -42,16 +42,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 return DefaultName[playerid];
             }
         }
-        public static void RoleFixedUpdate() { }/*
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
-        public class KilltimerSheriff
-        {
-            public void Prefix()
-            {
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles) && PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff)) { }
-            }
-        }*/
-        //public static Dictionary<byte, float> UpdateTime;
+        public static void RoleFixedUpdate() { }
         public static void SetRoleName(PlayerControl player, bool IsUnchecked = false)
         {
             var caller = new System.Diagnostics.StackFrame(1, false);
@@ -376,14 +367,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 UpdateDate--;
                 RoleFixedUpdate();
-                /*
-                if (UpdateTime != null)
-                {
-                    foreach (var UpdateTimeData in UpdateTime){
-                        UpdateTime[UpdateTimeData.Key] -= Time.fixedDeltaTime;
-                    }
-                }
-                */
+
                 if (AmongUsClient.Instance.AmHost)
                 {
                     BlockTool.FixedUpdate();

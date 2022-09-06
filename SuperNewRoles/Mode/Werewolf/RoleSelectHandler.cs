@@ -65,23 +65,6 @@ namespace SuperNewRoles.Mode.Werewolf
                     }
                 }
             }
-            /*if (WerewolfOptions.WerewolfHunterOption.GetString().Replace("0%", "") != "")
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("[WereWolf] ADDWOLF@ame");
-                int OptionDate = int.Parse(WerewolfOptions.WerewolfHunterOption.GetString().Replace("0%", ""));
-                RoleId ThisRoleId = RoleId.Hunter;
-                if (OptionDate == 10)
-                {
-                    Crewonepar.Add(ThisRoleId);
-                }
-                else
-                {
-                    for (int i = 1; i <= OptionDate; i++)
-                    {
-                        Crewnotonepar.Add(ThisRoleId);
-                    }
-                }
-            }*/
             AllRoleSetClass.Impoonepar = Impoonepar;
             AllRoleSetClass.Imponotonepar = Imponotonepar;
             AllRoleSetClass.Neutonepar = Neutonepar;

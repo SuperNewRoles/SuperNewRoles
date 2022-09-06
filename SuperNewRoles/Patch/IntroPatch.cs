@@ -289,14 +289,7 @@ namespace SuperNewRoles.Patch
                 }
             }
             public static void Prefix(IntroCutscene __instance)
-            {/*
-                if (MapData.IsMap(CustomMapNames.Agartha))
-                {
-                    var (commont, shortt, longt) = PlayerControl.LocalPlayer.GetTaskCount();
-                    PlayerControl.LocalPlayer.GenerateAndAssignTasks(commont, shortt, longt);
-                }*/
-
-                //AmongUsClient.Instance.StartCoroutine(settask());
+            {
                 new LateTask(() =>
                 {
                     CustomButton.MeetingEndedUpdate();

@@ -40,15 +40,5 @@ namespace SuperNewRoles.Roles
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
             //SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:"+RandomPlayer.PlayerId+"\n生存:"+!RandomPlayer.IsDead());
         }
-        /*public static Vector3 GetSwapPosition(byte SwapPlayerID, byte SwapperID){
-            var SwapPlayer = ModHelpers.PlayerById(SwapPlayerID);
-            var SwapperPlayer = ModHelpers.PlayerById(SwapperID);
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.PositionSwapper)){
-                return SwapPlayer.transform.position;
-            }
-            else{
-                return SwapperPlayer.transform.position;
-            }
-        }*/
     }
 }

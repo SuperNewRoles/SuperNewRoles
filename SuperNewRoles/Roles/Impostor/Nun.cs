@@ -9,7 +9,6 @@ namespace SuperNewRoles.Roles.Impostor
 {
     public static class Nun
     {
-        //ここにコードを書きこんでください
         [HarmonyPatch(typeof(Console), nameof(Console.Use))]
         public static class MapConsoleCanUsePatch
         {

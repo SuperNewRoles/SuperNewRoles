@@ -308,12 +308,6 @@ namespace SuperNewRoles.Patches
                     return false;
                 }
                 bool showAnimation = true;
-                /*
-                if (PlayerControl.LocalPlayer.IsRole(RoleType.Ninja) && Ninja.isStealthed(PlayerControl.LocalPlayer))
-                {
-                    showAnimation = false;
-                }
-                */
 
                 // Use an unchecked kill command, to allow shorter kill cooldowns etc. without getting kicked
                 MurderAttemptResult res = CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, __instance.currentTarget, showAnimation: showAnimation);
@@ -792,10 +786,6 @@ namespace SuperNewRoles.Patches
                 {
                     MurderPlayer.Postfix(__instance, target);
                 }
-            }
-            else if (ModeHandler.IsMode(ModeId.Detective))
-            {
-                Mode.Detective.Main.MurderPatch(target);
             }
             else if (ModeHandler.IsMode(ModeId.Default))
             {

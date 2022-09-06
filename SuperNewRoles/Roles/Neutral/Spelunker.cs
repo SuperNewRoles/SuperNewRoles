@@ -1,14 +1,11 @@
 using System.Linq;
 using UnityEngine;
-
 using HarmonyLib;
-using System.Collections.Generic;
 
 namespace SuperNewRoles.Roles.Neutral
 {
     public static class Spelunker
     {
-        //ここにコードを書きこんでください
         public static bool CheckSetRole(PlayerControl player, RoleId role)
         {
             if (player.IsRole(RoleId.Spelunker))

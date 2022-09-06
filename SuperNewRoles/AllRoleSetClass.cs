@@ -69,12 +69,6 @@ namespace SuperNewRoles
             {
                 IsNotDesync = false;
             }
-            /*
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-            {
-                IsNotDesync = false;
-            }
-            */
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 CustomRpcSender sender = CustomRpcSender.Create("SelectRoles Sender", SendOption.Reliable);
@@ -181,7 +175,6 @@ namespace SuperNewRoles
                 {
                     p.RpcSetRole(p.Data.Role.Role);
                 }
-                /*AmongUsClient.Instance.StartCoroutine(nameof(SetServerRole));*/
             }
             if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
