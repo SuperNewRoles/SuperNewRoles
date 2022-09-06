@@ -146,7 +146,8 @@ namespace SuperNewRoles.Patch
                     }
                 }
                 else
-                {Logger.Info("Length!=1", "/ar");
+                {
+                    Logger.Info("Length!=1", "/ar");
                     PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
                     if (Commands.Length >= 3 && (Commands[2].Equals("mp", StringComparison.OrdinalIgnoreCase) || Commands[2].Equals("myplayer", StringComparison.OrdinalIgnoreCase) || Commands[2].Equals("myp", StringComparison.OrdinalIgnoreCase)))
                     {
@@ -180,9 +181,9 @@ namespace SuperNewRoles.Patch
         }
         static string GetOptionText(CustomRoleOption RoleOption, IntroDate intro)
         {
-            Logger.Info("GetOptionText","ChatHandler");
+            Logger.Info("GetOptionText", "ChatHandler");
             string text = "";
-            text += GetChildText(RoleOption.children, "  ").Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", "");;
+            text += GetChildText(RoleOption.children, "  ").Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", ""); ;
             return text;
         }
         static string GetTeamText(TeamRoleType type)
