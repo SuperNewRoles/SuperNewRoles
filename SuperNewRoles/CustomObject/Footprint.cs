@@ -10,9 +10,9 @@ namespace SuperNewRoles.CustomObject
         private static Sprite sprite;
         private Color color;
         public GameObject footprint;
-        private SpriteRenderer spriteRenderer;
-        private PlayerControl owner;
-        private bool anonymousFootprints;
+        private readonly SpriteRenderer spriteRenderer;
+        private readonly PlayerControl owner;
+        private readonly bool anonymousFootprints;
 
         public static Sprite getFootprintSprite()
         {
@@ -24,10 +24,7 @@ namespace SuperNewRoles.CustomObject
         {
             this.owner = player;
             this.anonymousFootprints = anonymousFootprints;
-            if (anonymousFootprints)
-                this.color = Palette.PlayerColors[6];
-            else
-                this.color = Palette.PlayerColors[(int)player.Data.DefaultOutfit.ColorId];
+            this.color = anonymousFootprints ? (Color)Palette.PlayerColors[6] : (Color)Palette.PlayerColors[(int)player.Data.DefaultOutfit.ColorId];
 
             Vector3 posdata = pos != null ? (Vector3)pos : player.transform.position;
             footprint = new GameObject("Footprint");
@@ -64,10 +61,7 @@ namespace SuperNewRoles.CustomObject
         public Footprint(float footprintDuration, bool anonymousFootprints, Vector2 pos, Color? color = null)
         {
             this.anonymousFootprints = anonymousFootprints;
-            if (anonymousFootprints || color == null)
-                this.color = Palette.PlayerColors[6];
-            else
-                this.color = (Color)color;
+            this.color = anonymousFootprints || color == null ? (Color)Palette.PlayerColors[6] : (Color)color;
 
             footprint = new GameObject("Footprint");
             Vector3 position = new(pos.x, pos.y, 1f);

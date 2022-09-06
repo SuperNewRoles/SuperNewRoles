@@ -33,10 +33,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     var (Complete, all) = TaskCount.TaskDateNoClearCheck(p.Data);
                     if (!RoleClass.God.IsTaskEndWin || Complete >= all)
                     {
-                        if (WinGods == null)
-                        {
-                            WinGods = new();
-                        }
+                        WinGods ??= new();
                         WinGods.Add(p);
                         Chat.WinCond = CustomGameOverReason.GodWin;
                     }
@@ -99,10 +96,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
             ISystemType systemType2 = __instance.Systems.ContainsKey(SystemTypes.Reactor) ? __instance.Systems[SystemTypes.Reactor] : null;
-            if (systemType2 == null)
-            {
-                systemType2 = __instance.Systems.ContainsKey(SystemTypes.Laboratory) ? __instance.Systems[SystemTypes.Laboratory] : null;
-            }
+            systemType2 ??= __instance.Systems.ContainsKey(SystemTypes.Laboratory) ? __instance.Systems[SystemTypes.Laboratory] : null;
             if (systemType2 != null)
             {
                 ICriticalSabotage criticalSystem = systemType2.TryCast<ICriticalSabotage>();

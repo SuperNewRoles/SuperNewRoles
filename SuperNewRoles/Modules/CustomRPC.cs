@@ -408,7 +408,7 @@ namespace SuperNewRoles.Modules
                 return;
             }
             SuperNewRolesPlugin.Logger.LogInfo("通過:" + player.name);
-            if (BotManager.AllBots == null) BotManager.AllBots = new();
+            BotManager.AllBots ??= new();
             BotManager.AllBots.Add(player);
 
         }

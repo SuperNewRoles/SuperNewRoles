@@ -13,8 +13,7 @@ namespace SuperNewRoles.CustomCosmetics
         public static Sprite loadSprite(string path)
         {
             //画像サイズは150*150
-            if (LoadImage == null)
-                LoadImage = IL2CPP.ResolveICall<LoadImageDelegate>("UnityEngine.ImageConversion::LoadImage");
+            LoadImage ??= IL2CPP.ResolveICall<LoadImageDelegate>("UnityEngine.ImageConversion::LoadImage");
             if (LoadImage == null) return null;
             try
             {

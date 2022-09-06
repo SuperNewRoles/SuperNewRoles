@@ -559,7 +559,7 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
                     break;
-                case (RoleId.SatsumaAndImo):
+                case RoleId.SatsumaAndImo:
                     RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.Add(player);
                     break;
                 case RoleId.EvilButtoner:
@@ -979,7 +979,7 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
-                case (RoleId.SatsumaAndImo):
+                case RoleId.SatsumaAndImo:
                     RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.EvilButtoner:

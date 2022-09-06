@@ -189,8 +189,9 @@ namespace SuperNewRoles.Mode
             if (IsMode(ModeId.HideAndSeek, false)) return ModeId.HideAndSeek;
             if (IsMode(ModeId.SuperHostRoles, false)) return ModeId.SuperHostRoles;
             if (IsMode(ModeId.BattleRoyal, false)) return ModeId.BattleRoyal;
-            if (IsMode(ModeId.Zombie, false)) return ModeId.Zombie;
-            return IsMode(ModeId.RandomColor, false)
+            return IsMode(ModeId.Zombie, false)
+                ? ModeId.Zombie
+                : IsMode(ModeId.RandomColor, false)
                 ? ModeId.RandomColor
                 : IsMode(ModeId.NotImpostorCheck, false)
                 ? ModeId.NotImpostorCheck

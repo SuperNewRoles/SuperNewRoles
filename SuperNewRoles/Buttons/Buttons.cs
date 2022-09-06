@@ -185,14 +185,9 @@ namespace SuperNewRoles.Buttons
                 {
                     List<byte> Targets = Roles.Neutral.Photographer.SetTarget();
                     RoleClass.Photographer.PhotedPlayerIds.AddRange(Targets);
-                    if (RoleClass.Photographer.BonusCount > 0 && Targets.Count >= RoleClass.Photographer.BonusCount)
-                    {
-                        PhotographerButton.Timer = RoleClass.Photographer.BonusCoolTime;
-                    }
-                    else
-                    {
-                        PhotographerButton.Timer = PhotographerButton.MaxTimer;
-                    }
+                    PhotographerButton.Timer = RoleClass.Photographer.BonusCount > 0 && Targets.Count >= RoleClass.Photographer.BonusCount
+                        ? RoleClass.Photographer.BonusCoolTime
+                        : PhotographerButton.MaxTimer;
                     if (RoleClass.Photographer.IsNotification)
                     {
                         RPCHelper.StartRPC(CustomRPC.SharePhotograph).EndRPC();
@@ -582,21 +577,14 @@ namespace SuperNewRoles.Buttons
                     {
                         DoctorVitalsButton.MaxTimer = 10f;
                         Logger.Info(RoleClass.Doctor.Battery.ToString());
-                        if (RoleClass.Doctor.Battery <= 0)
-                        {
-                            DoctorVitalsButton.Timer = 10f;
-                        }
-                        else
-                        {
-                            DoctorVitalsButton.Timer = (RoleClass.Doctor.Battery / 10f);
-                        }
+                        DoctorVitalsButton.Timer = RoleClass.Doctor.Battery <= 0 ? 10f : RoleClass.Doctor.Battery / 10f;
                     }
                     else if (RoleClass.Doctor.Battery > 0)
                     {
                         DoctorVitalsButton.MaxTimer = 0f;
                         DoctorVitalsButton.Timer = 0f;
                     }
-                    return (PlayerControl.LocalPlayer.CanMove && RoleClass.Doctor.Battery > 0) || (RoleClass.Doctor.IsChargingNow);
+                    return (PlayerControl.LocalPlayer.CanMove && RoleClass.Doctor.Battery > 0) || RoleClass.Doctor.IsChargingNow;
                 },
                 () =>
                 {

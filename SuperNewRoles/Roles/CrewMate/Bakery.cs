@@ -65,15 +65,10 @@ namespace SuperNewRoles.Roles
 
 
                 var exile = exiled.Object;
-                if (exile != null && exile.IsRole(RoleId.Dictator))
-                {
-                    printStr = exiled.PlayerName + ModTranslation.GetString("RevolutionistSucsess");
-                }
-                else
-                {
-                    printStr = exiled.PlayerName + ModTranslation.GetString(
+                printStr = exile != null && exile.IsRole(RoleId.Dictator)
+                    ? exiled.PlayerName + ModTranslation.GetString("RevolutionistSucsess")
+                    : exiled.PlayerName + ModTranslation.GetString(
                         "RevolutionistFail");
-                }
                 __instance.exiled = null;
                 __instance.Player.gameObject.SetActive(false);
                 __instance.completeString = printStr;

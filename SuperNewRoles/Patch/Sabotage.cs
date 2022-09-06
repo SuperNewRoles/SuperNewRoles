@@ -34,7 +34,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (p == 1f)
                     {
-                        float diff = (float)((DateTime.UtcNow - lastUpdate).TotalMilliseconds);
+                        float diff = (float)(DateTime.UtcNow - lastUpdate).TotalMilliseconds;
                         if (diff > 100 && !done)
                         {
                             done = true;

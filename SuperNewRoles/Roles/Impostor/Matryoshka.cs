@@ -16,14 +16,7 @@ namespace SuperNewRoles.Roles.Impostor
             {
                 if (Data.Value.Item1 != null)
                 {
-                    if (RoleClass.Matryoshka.WearReport)
-                    {
-                        Data.Value.Item1.Reported = false;
-                    }
-                    else
-                    {
-                        Data.Value.Item1.Reported = true;
-                    }
+                    Data.Value.Item1.Reported = !RoleClass.Matryoshka.WearReport;
                     Data.Value.Item1.bodyRenderer.enabled = false;
                     Data.Value.Item1.transform.position = ModHelpers.PlayerById(Data.Key).transform.position;
                     RoleClass.Matryoshka.Datas[Data.Key] = (Data.Value.Item1, Data.Value.Item2 - Time.fixedDeltaTime);

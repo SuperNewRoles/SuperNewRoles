@@ -43,8 +43,7 @@ namespace SuperNewRoles
 
                         if (text != null && text.Length > 0)
                         {
-                            if (text == blankText) strings[j] = "";
-                            else strings[j] = text;
+                            strings[j] = text == blankText ? "" : text;
                         }
                     }
                     stringData[stringName] = strings;
@@ -58,7 +57,7 @@ namespace SuperNewRoles
             keyClean = Regex.Replace(keyClean, "^-\\s*", "");
             keyClean = keyClean.Trim();
 
-            def = def ?? key;
+            def ??= key;
             if (!stringData.ContainsKey(keyClean))
             {
                 return def;

@@ -416,7 +416,7 @@ namespace SuperNewRoles
         public static void SetPrivateRole(this CachedPlayer player, RoleTypes role, CachedPlayer seer = null)
         {
             if (player == null) return;
-            if (seer == null) seer = player;
+            seer ??= player;
             var clientId = seer.PlayerControl.GetClientId();
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.Reliable, clientId);
             writer.Write((ushort)role);
@@ -473,8 +473,7 @@ namespace SuperNewRoles
             //成功確率が0%ならfalseを返す
             if (SucsessChance == 0) return false;
             //成功確率が最大と一緒かそれ以上ならtrueを返す
-            if (SucsessChance >= MaxChance) return true;
-            return UnityEngine.Random.Range(0, MaxChance) <= SucsessChance;
+            return SucsessChance >= MaxChance ? true : UnityEngine.Random.Range(0, MaxChance) <= SucsessChance;
         }
         /// <summary>
         /// ランダムを取得します。max = 10だと0～10まで取得できます
@@ -715,8 +714,7 @@ namespace SuperNewRoles
         internal static d_LoadImage iCall_LoadImage;
         private static bool LoadImage(Texture2D tex, byte[] data, bool markNonReadable)
         {
-            if (iCall_LoadImage == null)
-                iCall_LoadImage = IL2CPP.ResolveICall<d_LoadImage>("UnityEngine.ImageConversion::LoadImage");
+            iCall_LoadImage ??= IL2CPP.ResolveICall<d_LoadImage>("UnityEngine.ImageConversion::LoadImage");
             var il2cppArray = (Il2CppStructArray<byte>)data;
             return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
         }

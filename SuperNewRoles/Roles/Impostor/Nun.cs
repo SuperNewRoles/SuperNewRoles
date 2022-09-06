@@ -27,10 +27,10 @@ namespace SuperNewRoles.Roles.Impostor
                 __instance.Target = PlayerControl.LocalPlayer;
                 Is = true;
             }
-            Vector3 val = (__instance.IsLeft ? __instance.LeftUsePosition : __instance.RightUsePosition);
-            Vector3 val2 = ((!__instance.IsLeft) ? __instance.LeftUsePosition : __instance.RightUsePosition);
-            Vector3 sourcePos = (__instance.IsLeft ? __instance.LeftPosition : __instance.RightPosition);
-            Vector3 targetPos = ((!__instance.IsLeft) ? __instance.LeftPosition : __instance.RightPosition);
+            Vector3 val = __instance.IsLeft ? __instance.LeftUsePosition : __instance.RightUsePosition;
+            Vector3 val2 = (!__instance.IsLeft) ? __instance.LeftUsePosition : __instance.RightUsePosition;
+            Vector3 sourcePos = __instance.IsLeft ? __instance.LeftPosition : __instance.RightPosition;
+            Vector3 targetPos = (!__instance.IsLeft) ? __instance.LeftPosition : __instance.RightPosition;
             Vector3 val3 = __instance.transform.parent.TransformPoint(val);
             Vector3 worldUseTargetPos = __instance.transform.parent.TransformPoint(val2);
             Vector3 worldSourcePos2 = __instance.transform.parent.TransformPoint(sourcePos);
@@ -41,14 +41,9 @@ namespace SuperNewRoles.Roles.Impostor
                 SoundManager.Instance.PlayDynamicSound("PlatformMoving", __instance.MovingSound, loop: true, (DynamicSound.GetDynamicsFunction)__instance.SoundDynamics, playAsSfx: true);
             }
             __instance.IsLeft = !__instance.IsLeft;
-            if (IsTargetOn)
-            {
-                yield return Effects.All(Effects.Slide2D(__instance.transform, __instance.transform.localPosition, targetPos, __instance.Target.MyPhysics.Speed), Effects.Slide2DWorld(__instance.Target.transform, __instance.transform.position + new Vector3(0, 0.3f), worldTargetPos2 + new Vector3(0, 0.3f), __instance.Target.MyPhysics.Speed));
-            }
-            else
-            {
-                yield return Effects.All(Effects.Slide2D(__instance.transform, __instance.transform.localPosition, targetPos, CachedPlayer.LocalPlayer.PlayerPhysics.Speed));
-            }
+            yield return IsTargetOn
+                ? Effects.All(Effects.Slide2D(__instance.transform, __instance.transform.localPosition, targetPos, __instance.Target.MyPhysics.Speed), Effects.Slide2DWorld(__instance.Target.transform, __instance.transform.position + new Vector3(0, 0.3f), worldTargetPos2 + new Vector3(0, 0.3f), __instance.Target.MyPhysics.Speed))
+                : (object)Effects.All(Effects.Slide2D(__instance.transform, __instance.transform.localPosition, targetPos, CachedPlayer.LocalPlayer.PlayerPhysics.Speed));
             if (Constants.ShouldPlaySfx())
             {
                 SoundManager.Instance.StopNamedSound("PlatformMoving");

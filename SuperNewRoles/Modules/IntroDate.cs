@@ -69,7 +69,7 @@ namespace SuperNewRoles.Modules
             catch
             {
                 var data = IntroDatas.FirstOrDefault((_) => _.RoleId == RoleId);
-                if (data == null) data = CrewmateIntro;
+                data ??= CrewmateIntro;
                 IntroDatasCache[RoleId] = data;
                 return data;
             }

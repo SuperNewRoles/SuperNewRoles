@@ -967,10 +967,7 @@ namespace SuperNewRoles.Patches
             if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
             if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
 
-            if (untargetablePlayers == null)
-            {
-                untargetablePlayers = new();
-            }
+            untargetablePlayers ??= new();
 
             Vector2 truePosition = targetingPlayer.GetTruePosition();
             Il2CppSystem.Collections.Generic.List<GameData.PlayerInfo> allPlayers = GameData.Instance.AllPlayers;

@@ -13,7 +13,7 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch]
     public static class ClientModOptionsPatch
     {
-        private static SelectionBehaviour[] AllOptions = {
+        private static readonly SelectionBehaviour[] AllOptions = {
             new SelectionBehaviour("CustomStremerMode", () => ConfigRoles.StreamerMode.Value = !ConfigRoles.StreamerMode.Value, ConfigRoles.StreamerMode.Value),
             new SelectionBehaviour("CustomAutoUpdate", () => ConfigRoles.AutoUpdate.Value = !ConfigRoles.AutoUpdate.Value, ConfigRoles.AutoUpdate.Value),
             new SelectionBehaviour("CustomAutoCopyGameCode", () => ConfigRoles.AutoCopyGameCode.Value = !ConfigRoles.AutoCopyGameCode.Value, ConfigRoles.AutoCopyGameCode.Value),
@@ -82,7 +82,7 @@ namespace SuperNewRoles.Patch
             Object.Destroy(popUp.GetComponent<OptionsMenuBehaviour>());
             foreach (var gObj in popUp.gameObject.GetAllChilds())
             {
-                if (gObj.name != "Background" && gObj.name != "CloseButton")
+                if (gObj.name is not "Background" and not "CloseButton")
                     Object.Destroy(gObj);
             }
             popUp.SetActive(false);

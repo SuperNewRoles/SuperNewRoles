@@ -32,10 +32,7 @@ namespace SuperNewRoles.Mode.Detective
                 }
             }
             ISystemType systemType2 = __instance.Systems.ContainsKey(SystemTypes.Reactor) ? __instance.Systems[SystemTypes.Reactor] : null;
-            if (systemType2 == null)
-            {
-                systemType2 = __instance.Systems.ContainsKey(SystemTypes.Laboratory) ? __instance.Systems[SystemTypes.Laboratory] : null;
-            }
+            systemType2 ??= __instance.Systems.ContainsKey(SystemTypes.Laboratory) ? __instance.Systems[SystemTypes.Laboratory] : null;
             if (systemType2 != null)
             {
                 ICriticalSabotage criticalSystem = systemType2.TryCast<ICriticalSabotage>();

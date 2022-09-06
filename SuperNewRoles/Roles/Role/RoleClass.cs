@@ -2671,14 +2671,7 @@ namespace SuperNewRoles.Roles
             {
                 HitmanPlayer = new();
                 KillCoolTime = CustomOptions.HitmanKillCoolTime.GetFloat();
-                if (CustomOptions.HitmanIsOutMission.GetBool())
-                {
-                    OutMissionLimit = CustomOptions.HitmanOutMissionLimit.GetInt();
-                }
-                else
-                {
-                    OutMissionLimit = -1;
-                }
+                OutMissionLimit = CustomOptions.HitmanIsOutMission.GetBool() ? CustomOptions.HitmanOutMissionLimit.GetInt() : -1;
                 ChangeTargetTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
                 UpdateTime = ChangeTargetTime;
                 cooldownText = null;
@@ -2688,14 +2681,7 @@ namespace SuperNewRoles.Roles
                     UnityEngine.Object.Destroy(TargetArrow.arrow);
                 }
                 TargetArrow = null;
-                if (CustomOptions.HitmanIsArrowView.GetBool())
-                {
-                    ArrowUpdateTimeDefault = CustomOptions.HitmanArrowUpdateTime.GetFloat();
-                }
-                else
-                {
-                    ArrowUpdateTimeDefault = -1f;
-                }
+                ArrowUpdateTimeDefault = CustomOptions.HitmanIsArrowView.GetBool() ? CustomOptions.HitmanArrowUpdateTime.GetFloat() : -1f;
                 ArrowUpdateTime = ArrowUpdateTimeDefault;
             }
         }
@@ -2984,7 +2970,7 @@ namespace SuperNewRoles.Roles
                 _photedPlayer = new();
                 IsPhotographerShared = false;
                 CoolTime = CustomOptions.PhotographerCoolTime.GetFloat();
-                BonusCount = (CustomOptions.PhotographerIsBonus.GetBool() ? CustomOptions.PhotographerBonusCount.GetInt() : -1);
+                BonusCount = CustomOptions.PhotographerIsBonus.GetBool() ? CustomOptions.PhotographerBonusCount.GetInt() : -1;
                 BonusCoolTime = CustomOptions.PhotographerBonusCoolTime.GetFloat();
                 IsImpostorVision = CustomOptions.PhotographerIsImpostorVision.GetBool();
                 IsNotification = CustomOptions.PhotographerIsNotification.GetBool();

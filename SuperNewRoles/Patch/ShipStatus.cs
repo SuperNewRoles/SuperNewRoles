@@ -40,7 +40,7 @@ namespace SuperNewRoles.Patch
             }
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                if (systemType == SystemTypes.Comms || systemType == SystemTypes.Sabotage || systemType == SystemTypes.Electrical)
+                if (systemType is SystemTypes.Comms or SystemTypes.Sabotage or SystemTypes.Electrical)
                 {
                     Roles.Impostor.ConnectKiller.OnRepairSystem(systemType);
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == player.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.SabotageRepair);
