@@ -23,14 +23,18 @@ namespace SuperNewRoles.Modules
             }
             Logger.Info("通過");
             var json = JObject.Parse(request.downloadHandler.text);
-            RegulationData CustomData = new();
-            CustomData.id = 0;
-            CustomData.title = "カスタム";
+            RegulationData CustomData = new()
+            {
+                id = 0,
+                title = "カスタム"
+            };
             RegulationData.Regulations.Add(CustomData);
             for (var regulation = json["regulations"].First; regulation != null; regulation = regulation.Next)
             {
-                RegulationData data = new();
-                data.title = regulation["title"]?.ToString();
+                RegulationData data = new()
+                {
+                    title = regulation["title"]?.ToString()
+                };
                 RegulationData.MaxId++;
                 data.id = RegulationData.MaxId;
                 data.MeetingButtonNum = int.Parse(regulation["MeetingButtonNum"]?.ToString());
