@@ -163,12 +163,12 @@ namespace SuperNewRoles.CustomRPC
     public enum CustomRPC
     {
         //TORVersionShare = 65,
-        ShareOptions = 144,
+        ShareOptions = 145,
         ShareSNRVersion,
         SetRole,
         SetQuarreled,
         RPCClergymanLightOut,
-        SheriffKill,
+        SheriffKill = 150,
         MeetingSheriffKill,
         CustomRPCKill,
         ReportDeadBody,
@@ -178,7 +178,7 @@ namespace SuperNewRoles.CustomRPC
         RPCMurderPlayer,
         ShareWinner,
         TeleporterTP,
-        SidekickPromotes,
+        SidekickPromotes = 160,
         SidekickSeerPromotes,
         CreateSidekick,
         CreateSidekickSeer,
@@ -188,7 +188,7 @@ namespace SuperNewRoles.CustomRPC
         AutoCreateRoom,
         BomKillRPC,
         ByBomKillRPC,
-        NekomataExiledRPC,
+        NekomataExiledRPC = 170,
         CountChangerSetRPC,
         SetRoomTimerRPC,
         SetScientistRPC,
@@ -198,7 +198,7 @@ namespace SuperNewRoles.CustomRPC
         SetDetective,
         UseEraserCount,
         StartGameRPC,
-        UncheckedSetTasks,
+        UncheckedSetTasks = 180,
         SetLovers,
         SetUseDevice,
         SetDeviceTime,
@@ -208,7 +208,7 @@ namespace SuperNewRoles.CustomRPC
         SetCustomSabotage,
         UseStuntmanCount,
         UseMadStuntmanCount,
-        CustomEndGame,
+        CustomEndGame = 190,
         UncheckedProtect,
         SetBot,
         DemonCurse,
@@ -218,7 +218,7 @@ namespace SuperNewRoles.CustomRPC
         SetShielder,
         SetSpeedFreeze,
         BySamuraiKillRPC,
-        MakeVent,
+        MakeVent = 200,
         PositionSwapperTP,
         UseAdminTime,
         UseCameraTime,
@@ -227,13 +227,14 @@ namespace SuperNewRoles.CustomRPC
         RandomSpawn,
         KunaiKill,
         SetSecretRoomTeleportStatus,
-        ChiefSidekick,
-        RpcSetDoorway,
+        ChiefSidekick = 209,
+        /* 210~214 is used Submerged Mod */
+        RpcSetDoorway = 215,
         StartRevolutionMeeting,
         UncheckedUsePlatform,
         BlockReportDeadBody,
         PartTimerSet,
-        SetMatryoshkaDeadbody,
+        SetMatryoshkaDeadbody = 220,
         StefinderIsKilled,
         PlayPlayerAnimation,
         SluggerExile,
@@ -294,7 +295,8 @@ namespace SuperNewRoles.CustomRPC
                         return;
                     }
                 }
-            } else
+            }
+            else
             {
                 RoleClass.BlockPlayers.Add(TargetId);
             }
@@ -330,7 +332,8 @@ namespace SuperNewRoles.CustomRPC
                 {
                     if (source == null) return;
                     airshipStatus.GapPlatform.Use(source);
-                } else
+                }
+                else
                 {
                     airshipStatus.GapPlatform.StopAllCoroutines();
                     airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));
