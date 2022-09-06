@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.Patch;
-
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles

@@ -1,8 +1,8 @@
-using HarmonyLib;
 using System.Collections.Generic;
-using static SuperNewRoles.Modules.CustomOptions;
+using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using static SuperNewRoles.Modules.CustomOptions;
 
 namespace SuperNewRoles.Patch
 {

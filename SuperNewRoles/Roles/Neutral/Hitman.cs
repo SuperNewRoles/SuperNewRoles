@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using SuperNewRoles.Patch;
-using SuperNewRoles.CustomObject;
 using Hazel;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Patch;
+using UnityEngine;
 
 
 namespace SuperNewRoles.Roles.Neutral

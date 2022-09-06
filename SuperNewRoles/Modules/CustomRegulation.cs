@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using UnityEngine.Networking;
 using SuperNewRoles.Patch;
+using UnityEngine.Networking;
 
 namespace SuperNewRoles.Modules
 {
@@ -67,7 +67,7 @@ namespace SuperNewRoles.Modules
                 + data.ShortTask + "\n");
                 foreach (var datas in data.ChangeOptions)
                 {
-                    Logger.Info(CustomOption.options.FirstOrDefault((CustomOption option) => option.id == datas.Key).GetName() +" => "+datas.Value);
+                    Logger.Info(CustomOption.options.FirstOrDefault((CustomOption option) => option.id == datas.Key).GetName() + " => " + datas.Value);
                 }
             }
             Loaded = true;

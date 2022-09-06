@@ -1,5 +1,5 @@
-using SuperNewRoles.Patch;
 using Hazel;
+using SuperNewRoles.Patch;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral

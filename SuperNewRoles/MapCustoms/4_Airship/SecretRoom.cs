@@ -464,9 +464,9 @@ namespace SuperNewRoles.MapCustoms.Airship
                                             GameObject.FindObjectOfType<VitalsMinigame>().Close();
                                             leftplayer = null;
                                             rightplayer = null;
-                                        }, 0.1f,"VitalText Close");
+                                        }, 0.1f, "VitalText Close");
                                     }
-                                }, 1f,"実験成功");
+                                }, 1f, "実験成功");
                             }
                         }));
                         foreach (VitalsPanel panel in minigame.vitals) GameObject.Destroy(panel.gameObject);

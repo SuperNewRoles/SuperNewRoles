@@ -58,7 +58,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         /// GameObjectのSetActiveをtrueにする
         /// </summary>
         /// <param name="obj">trueにしたいGameObject</param>
-        public static void CosmicShow(string obj){
+        public static void CosmicShow(string obj)
+        {
             ResetShow();
             IsShow = true;
             PlayerCustomizationMenu.Instance.transform.FindChild(obj).gameObject.SetActive(true);

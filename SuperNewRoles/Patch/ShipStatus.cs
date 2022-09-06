@@ -1,8 +1,8 @@
 using HarmonyLib;
 using SuperNewRoles.MapCustoms;
-using SuperNewRoles.Roles;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Patch
 {

@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.Patch;
-
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Roles
 {
