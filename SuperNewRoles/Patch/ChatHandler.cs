@@ -135,6 +135,7 @@ namespace SuperNewRoles.Patch
             {
                 if (Commands.Length == 1)
                 {
+                    Logger.Info("Length==1", "/ar");
                     if (sourcePlayer.AmOwner)
                     {
                         RoleCommand(null);
@@ -146,6 +147,7 @@ namespace SuperNewRoles.Patch
                 }
                 else
                 {
+                    Logger.Info("Length!=1", "/ar");
                     PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
                     if (Commands.Length >= 3 && (Commands[2].Equals("mp", StringComparison.OrdinalIgnoreCase) || Commands[2].Equals("myplayer", StringComparison.OrdinalIgnoreCase) || Commands[2].Equals("myp", StringComparison.OrdinalIgnoreCase)))
                     {
@@ -179,8 +181,9 @@ namespace SuperNewRoles.Patch
         }
         static string GetOptionText(CustomRoleOption RoleOption, IntroDate intro)
         {
+            Logger.Info("GetOptionText", "ChatHandler");
             string text = "";
-            text += GetChildText(RoleOption.children, "  ");
+            text += GetChildText(RoleOption.children, "  ").Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", "");
             return text;
         }
         static string GetTeamText(TeamRoleType type)
@@ -195,6 +198,7 @@ namespace SuperNewRoles.Patch
         }
         static string GetText(CustomRoleOption option)
         {
+            Logger.Info("GetText", "Chathandler");
             string text = "\n";
             IntroDate intro = option.Intro;
             text += GetTeamText(intro.Team) + ModTranslation.GetString("Team") + "\n";
