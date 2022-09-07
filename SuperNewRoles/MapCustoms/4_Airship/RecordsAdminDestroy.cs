@@ -4,10 +4,9 @@ using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.MapCustoms
 {
-    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Awake))]
     public class RecordsAdminDestroy
     {
-        public static void Postfix()
+        public static void AdminDestroy()
         {
             if (MapCustom.RecordsAdminDestroy.GetBool() && MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship))
             {

@@ -527,20 +527,6 @@ namespace SuperNewRoles.MapCustoms.Airship
                     yield return null;
                 }
             }
-            /*
-            static IEnumerator Move(Console __instance)
-            {
-                float num = 24f;
-                PlayerPhysics myPhysics = PlayerControl.LocalPlayer.MyPhysics;
-                Vector2 val = __instance.name.Contains("2") ? new Vector2(0.14f, -5.025f) : __instance.transform.position;
-                Vector2 val2 = Vector2.left.Rotate(PlayerControl.LocalPlayer.PlayerId * num);
-                val += val2 / 2f;
-                Camera.main.GetComponent<FollowerCamera>().Locked = false;
-                yield return myPhysics.WalkPlayerTo(val, 0.001f);
-                yield return (object)new WaitForSeconds(0.1f);
-                Camera.main.GetComponent<FollowerCamera>().Locked = true;
-            }
-            */
 
             static IEnumerator Move2(Console __instance)
             {

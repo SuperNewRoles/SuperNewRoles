@@ -12,26 +12,6 @@ using static MeetingHud;
 
 namespace SuperNewRoles.Patch
 {
-    /*
-    [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.SetCosmetics))]
-    class PlayerVoteAreaCosmetics
-    {
-        private static Sprite blankNameplate = null;
-        public static void updateNameplate(PlayerVoteArea pva, byte playerId = Byte.MaxValue)
-        {
-            blankNameplate = blankNameplate ?? HatManager.Instance.AllNamePlates[0].viewData.viewData.Image;
-
-            var nameplate = blankNameplate;
-            var p = ModHelpers.PlayerById(playerId != byte.MaxValue ? playerId : pva.TargetPlayerId);
-            var nameplateId = p?.CurrentOutfit?.NamePlateId;
-            nameplate = HatManager.Instance.GetNamePlateById(nameplateId)?.viewData.viewData.Image;
-            pva.Background.sprite = nameplate;
-        }
-        static void Postfix(PlayerVoteArea __instance, GameData.PlayerInfo playerInfo)
-        {
-            updateNameplate(__instance, playerInfo.PlayerId);
-        }
-    }*/
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
     class VotingComplete
     {
@@ -505,21 +485,7 @@ namespace SuperNewRoles.Patch
 
                 __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
 
-                /*
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-                {
-                    if (PlayerControl.GameOptions.MapId == 4)
-                    {
-                        foreach (var pc in CachedPlayer.AllPlayers)
-                            if (NotBlackOut.IsAntiBlackOut(pc) && (pc.IsDead() || pc.PlayerId == exiledPlayer?.PlayerId)) pc.ResetPlayerCam(19f);
-                    }
-                    else
-                    {
-                        foreach (var pc in CachedPlayer.AllPlayers)
-                            if (NotBlackOut.IsAntiBlackOut(pc) && (pc.IsDead() || pc.PlayerId == exiledPlayer?.PlayerId)) pc.ResetPlayerCam(15f);
-                    }
-                }
-                */
+
                 return false;
             }
             catch (Exception ex)
@@ -528,13 +494,7 @@ namespace SuperNewRoles.Patch
                 throw;
             }
         }
-        public static bool IsMayor()
-        {/*
-            var player = CachedPlayer.AllPlayers.ToArray().Where(pc => pc.PlayerId == id).FirstOrDefault();
-            if (player == null) return false;
-            */
-            return false;
-        }
+
         private static Tuple<bool, byte, PlayerVoteArea> AssassinVoteState(MeetingHud __instance)
         {
             bool isVoteEnd = false;

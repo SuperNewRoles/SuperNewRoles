@@ -216,26 +216,9 @@ namespace SuperNewRoles.Patch
                 __instance.PlayerCounter.autoSizeTextContainer = true;
                 if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value)
                 {
-                    //MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.AutoCreateRoom, SendOption.Reliable, -1);
-                    //AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    //var roomid = InnerNet.GameCode.IntToGameName(AmongUsClient.Instance.GameId);
-                    //AmongUsClient.Instance.StartCoroutine(CREATEROOMANDJOIN(roomid, AmongUsClient.Instance.GameId));
                     notcreateroom = true;
                 }
             }
-            /**
-                if (!AmongUsClient.Instance.AmHost)
-                {
-                    if (!playerVersions.ContainsKey(AmongUsClient.Instance.HostId) || SuperNewRolesPlugin.Version.CompareTo(playerVersions[AmongUsClient.Instance.HostId].version) != 0)
-                    {
-                        __instance.GameStartText.text = ModTranslation.GetString("ErrorHostNoVersion");
-                        __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
-                    }
-                    else
-                    {
-                        __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
-                    }
-                }**/
         }
     }
     public class PlayerVersion

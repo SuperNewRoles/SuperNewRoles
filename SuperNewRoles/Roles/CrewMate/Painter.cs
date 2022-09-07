@@ -11,7 +11,6 @@ namespace SuperNewRoles.Roles.CrewMate
 {
     public static class Painter
     {
-        //ここにコードを書きこんでください
         public enum ActionType
         {
             TaskComplete,

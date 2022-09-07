@@ -439,14 +439,14 @@
         "13": "\u5176\u4ed6\u8bbe\u7f6e"
     },
     "optionOn": {
-        "0": "On",
-        "11": "\u30aa\u30f3",
-        "13": "\u5f00\u542f"
+        "0": "<color=#03ff0c>On</color>",
+        "11": "<color=#03ff0c>\u30aa\u30f3</color>",
+        "13": "<color=#03ff0c>\u5f00\u542f</color>"
     },
     "optionOff": {
-        "0": "Off",
-        "11": "\u30aa\u30d5",
-        "13": "\u5173\u95ed"
+        "0": "<color=#f22f21>Off</color>",
+        "11": "<color=#f22f21>\u30aa\u30d5</color>",
+        "13": "<color=#f22f21>\u5173\u95ed</color>"
     },
     "preset1": {
         "0": "Preset 1",

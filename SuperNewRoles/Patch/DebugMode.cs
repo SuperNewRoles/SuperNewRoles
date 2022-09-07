@@ -73,18 +73,6 @@ namespace SuperNewRoles.Patch
                 {
                     ModHelpers.PlayerById(1).RpcMurderPlayer(PlayerControl.LocalPlayer);//ModHelpers.PlayerById(2));
                 }
-                /*
-                    if (Input.GetKeyDown(KeyCode.C))
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo("CHANGE!!!");
-                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                        {
-                            RoleManager.Instance.SetRole(p, RoleTypes.Engineer);
-                            AmongUsClient.Instance.Spawn(GameData.Instance, -2, SpawnFlags.IsClientCharacter);
-                            AmongUsClient.Instance.Spawn(p, p.OwnerId, SpawnFlags.IsClientCharacter);
-                        }
-                    }
-                    */
 
                 if (Input.GetKeyDown(KeyCode.F10))
                 {
