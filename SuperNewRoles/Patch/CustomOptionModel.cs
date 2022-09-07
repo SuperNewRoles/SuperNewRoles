@@ -869,47 +869,6 @@ namespace SuperNewRoles.Patch
         }
     }
 
-    /*[HarmonyPatch(typeof(Constants), nameof(Constants.ShouldFlipSkeld))]
-    class ConstantsShouldFlipSkeldPatch
-    {
-        public static bool Prefix(ref bool __result)
-        {
-            if (PlayerControl.GameOptions == null) return true;
-            __result = PlayerControl.GameOptions.MapId == 3;
-            return false;
-        }
-
-        public static bool AprilFools
-        {
-            get
-            {
-                try
-                {
-                    DateTime utcNow = DateTime.UtcNow;
-                    DateTime t = new(utcNow.Year, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                    DateTime t2 = t.AddDays(1.0);
-                    if (utcNow >= t && utcNow <= t2)
-                    {
-                        return true;
-                    }
-                }
-                catch
-                {
-                }
-                return false;
-            }
-        }
-    }*/
-
-    /*[HarmonyPatch(typeof(FreeWeekendShower), nameof(FreeWeekendShower.Start))]
-    class FreeWeekendShowerPatch
-    {
-        public static bool Prefix()
-        {
-            return ConstantsShouldFlipSkeldPatch.AprilFools;
-        }
-    }*/
-
     [HarmonyPatch(typeof(GameOptionsData), nameof(GameOptionsData.ToHudString))]
     class Tohudstring
     {
@@ -1213,15 +1172,5 @@ namespace SuperNewRoles.Patch
         {
             if (__instance.GameSettings != null) __instance.GameSettings.fontSize = 1.2f;
         }
-    }/*
-
-    [HarmonyPatch(typeof(CreateOptionsPicker), nameof(CreateOptionsPicker.))]
-    public class CreateOptionsPickerPatch
-    {
-        public static void Postfix(CreateOptionsPicker __instance)
-        {
-            int numImpostors = Math.Clamp(__instance.GetTargetOptions().NumImpostors, 1, 3);
-            __instance.SetImpostorButtons(numImpostors);
-        }
-    }*/
+    }
 }

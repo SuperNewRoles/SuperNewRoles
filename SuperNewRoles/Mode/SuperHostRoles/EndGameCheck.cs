@@ -21,21 +21,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 : (PlusModeHandler.IsMode(PlusModeId.NotTaskWin) || !CheckAndEndGameForTaskWin(__instance))
 && CheckAndEndGameForWorkpersonWin(__instance) && false;
         }
-        public static void WinNeutral(List<PlayerControl> players)
-        {
-            /**
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
-            {
-                if (players.IsCheckListPlayerControl(p))
-                {
-                    p.UnCheckedRpcSetRole(RoleTypes.Impostor);
-                } else
-                {
-                    p.UnCheckedRpcSetRole(RoleTypes.Crewmate);
-                }
-            }
-            **/
-        }
+
         public static void CustomEndGame(ShipStatus __instance, GameOverReason reason, bool showAd)
         {
             Chat.IsOldSHR = true;
@@ -58,7 +44,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             if (Chat.WinCond == CustomGameOverReason.GodWin)
             {
-                WinNeutral(WinGods);
                 Chat.Winner = WinGods;
             }
 

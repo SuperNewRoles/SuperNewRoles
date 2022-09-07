@@ -36,15 +36,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             catch (Exception e) { SuperNewRolesPlugin.Logger.LogInfo("[SHR:Intro] Intro Error:" + e); }
             return Teams;
         }
-        public static void IntroHandler()
-        {
-            /*
-            __instance.BackgroundBar.material.color = Color.white;
-            __instance.TeamTitle.text = ModTranslation.GetString("BattleRoyalModeName");
-            __instance.TeamTitle.color = new Color32(116,80,48,byte.MaxValue);
-            __instance.ImpostorText.text = "";
-            */
-        }
+
         public static void RoleTextHandler(IntroCutscene __instance)
         {
             var myrole = PlayerControl.LocalPlayer.GetRole();

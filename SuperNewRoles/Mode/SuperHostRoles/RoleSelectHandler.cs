@@ -18,7 +18,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetCustomRoles();
             SyncSetting.CustomSyncSettings();
             ChacheManager.ResetChache();
-            Main.SendAllRoleChat();
             return sender;
         }
         public static void SpawnBots()

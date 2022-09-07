@@ -11,7 +11,6 @@ namespace SuperNewRoles.Roles.Neutral
 {
     public static class Hitman
     {
-        //ここにコードを書きこんでください
         public static void KillSuc()
         {
             RoleClass.Hitman.WinKillCount--;

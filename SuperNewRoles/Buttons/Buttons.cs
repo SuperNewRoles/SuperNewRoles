@@ -5,10 +5,9 @@ using Agartha;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomObject;
-
-
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
@@ -1816,13 +1815,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     RoleClass.PositionSwapper.SwapCount--;
-                    /*if (RoleClass.PositionSwapper.SwapCount >= 1){
-                        PositionSwapperNumText.text = String.Format(ModTranslation.GetString("SheriffNumTextName"), RoleClass.PositionSwapper.SwapCount);
-                    }
-                    else{
-                        PositionSwapperNumText.text = "";
-                    }*/
-                    //RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
+
                     PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(255F, 255F, 255F);
                     PositionSwapper.SwapStart();
                     PositionSwapper.ResetCoolDown();
@@ -1908,7 +1901,7 @@ namespace SuperNewRoles.Buttons
                         ? String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), SecretKillLimit)
                         : String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), "0");
 
-                    if (RoleClass.SecretlyKiller.MainCool > 0f/* || RoleClass.SecretlyKiller.SecretlyCool>0f */&& RoleClass.SecretlyKiller.IsKillCoolChange) return false;
+                    if (RoleClass.SecretlyKiller.MainCool > 0f && RoleClass.SecretlyKiller.IsKillCoolChange) return false;
                     if (RoleClass.SecretlyKiller.SecretlyKillLimit < 1 || RoleClass.SecretlyKiller.SecretlyCool > 0f) return false;
                     //メイン
                     RoleClass.SecretlyKiller.target = SetTarget();
@@ -2087,16 +2080,11 @@ namespace SuperNewRoles.Buttons
                     //マッド作ってないなら
                     if (target && PlayerControl.LocalPlayer.CanMove && !RoleClass.FastMaker.IsCreatedMadMate)
                     {
-                        target.RpcProtectPlayer(target, 0);//マッドにできたことを示すモーションとしての守護をかける
-                        //キルする前に守護を発動させるためのLateTask
-                        new LateTask(() =>
-                            {
-                                PlayerControl.LocalPlayer.RpcMurderPlayer(target);//キルをして守護モーションの発動(守護解除)
-                                target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
-                                target.SetRoleRPC(RoleId.MadMate);//マッドにする
-                                RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことに
-                                SuperNewRolesPlugin.Logger.LogInfo("[FastMakerButton]マッドを作ったから普通のキルボタンに戻すよ!");
-                            }, 0.1f);
+                        PlayerControl.LocalPlayer.RpcShowGuardEffect(target); // 守護エフェクトの表示
+                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
+                        target.SetRoleRPC(RoleId.MadMate);//マッドにする
+                        RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことに
+                        SuperNewRolesPlugin.Logger.LogInfo("[FastMakerButton]マッドを作ったから普通のキルボタンに戻すよ!");
                     }
                 },
                 //マッドを作った後はカスタムキルボタンを消去する

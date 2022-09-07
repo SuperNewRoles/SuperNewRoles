@@ -399,7 +399,7 @@ namespace SuperNewRoles
                         writer.Write(showAnimation ? byte.MaxValue : 0);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
-                    }, tien);
+                    }, tien, "CheckMuderAttemptAndKill");
                 }
             }
             return murder;

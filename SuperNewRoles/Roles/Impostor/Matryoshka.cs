@@ -10,7 +10,6 @@ namespace SuperNewRoles.Roles.Impostor
 {
     public static class Matryoshka
     {
-        //ここにコードを書きこんでください
         public static void FixedUpdate()
         {
             foreach (var Data in RoleClass.Matryoshka.Datas.ToArray())
