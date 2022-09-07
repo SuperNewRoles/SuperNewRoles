@@ -756,6 +756,11 @@ namespace SuperNewRoles
             return dis <= distance;
         }
 
+        /// <summary>
+        /// UnityObjectのnullから.NETのnullへの型変換
+        /// </summary>
+        public static T NullCast<T>(this T obj) where T : UnityEngine.Object
+            => (obj != null) ? obj : null;
     }
     public static class CreateFlag
     {
