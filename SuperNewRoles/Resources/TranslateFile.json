@@ -439,14 +439,14 @@
         "13": "\u5176\u4ed6\u8bbe\u7f6e"
     },
     "optionOn": {
-        "0": "On",
-        "11": "\u30aa\u30f3",
-        "13": "\u5f00\u542f"
+        "0": "<color=#03ff0c>On</color>",
+        "11": "<color=#03ff0c>\u30aa\u30f3</color>",
+        "13": "<color=#03ff0c>\u5f00\u542f</color>"
     },
     "optionOff": {
-        "0": "Off",
-        "11": "\u30aa\u30d5",
-        "13": "\u5173\u95ed"
+        "0": "<color=#f22f21>Off</color>",
+        "11": "<color=#f22f21>\u30aa\u30d5</color>",
+        "13": "<color=#f22f21>\u5173\u95ed</color>"
     },
     "preset1": {
         "0": "Preset 1",
@@ -1348,6 +1348,11 @@
         "0": "Waiting for all players to spawn...\nLoading: {0} people remaining</color></size>",
         "11": "\u5168\u30d7\u30ec\u30a4\u30e4\u30fc\u306e\u30b9\u30dd\u30fc\u30f3\u3092\u5f85\u3063\u3066\u3044\u307e\u3059...\n\u30ed\u30c9\u30fc\u4e2d:\u6b8b\u308a{0}\u4eba</color></size>",
         "13": "\u7b49\u5f85\u6240\u6709\u73a9\u5bb6\u8fdb\u5165\u884c\u52a8\u9636\u6bb5...\n\u8f7d\u5165\u4e2d:\u8fd8\u5269{0}\u4eba</color></size>"
+    },
+    "CRHideNameSetting": {
+        "0": "Hide Name",
+        "11": "\u540d\u524d\u3092\u96a0\u3059",
+        "13": "\u9690\u59d3\u57cb\u540d"
     },
     "CrewMateName": {
         "0": "Crewmate",
@@ -4551,13 +4556,33 @@
     },
     "SatsumaAndImoName": {
         "0": "SatsumaAndImo",
-        "11": "\u3055\u3064\u3068\u307e\u3044\u3082",
+        "11": "\u3055\u3064\u307e\u3068\u3044\u3082",
         "13": "\u4eba\u683c\u5206\u88c2\u8005"
     },
     "SatsumaAndImoTitle1": {
         "0": "Madmate And Crewmate",
         "11": "\u30de\u30c3\u30c9\u30e1\u30a4\u30c8 & \u30af\u30eb\u30fc\u30e1\u30a4\u30c8",
         "13": "\u662f\u6211\u75af\u4e86\uff0c\u8fd8\u662f\u5927\u5bb6\u90fd\u75af\u4e86\uff1f"
+    },
+    "ShiftActorName": {
+        "0": "Shift Actor",
+        "11": "\u30b7\u30d5\u30c8\u30a2\u30af\u30bf\u30fc"
+    },
+    "ShiftActorTitle1": {
+        "0": "Let's play it out perfectly",
+        "11": "\u5b8c\u74a7\u306b\u6f14\u3058\u5207\u308d\u3046"
+    },
+    "CanWatchAttribute": {
+        "0": "Can watch attribute",
+        "11": "\u91cd\u8907\u5f79\u8077\u3092\u898b\u308c\u308b"
+    },
+    "ShiftActorText1": {
+        "0": "'s role is",
+        "11": "\u306e\u5f79\u8077\u306f"
+    },
+    "ShiftActorText2": {
+        "0": ".",
+        "11": "\u3067\u3059"
     },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",

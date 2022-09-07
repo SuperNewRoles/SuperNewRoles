@@ -1,5 +1,5 @@
 using HarmonyLib;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
@@ -14,7 +14,8 @@ namespace SuperNewRoles.Roles
             bool tie)
         {
             if (RoleClass.Assassin.TriggerPlayer == null) { if (!Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha)) return true; }
-            if (Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha)) {
+            if (Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
+            {
                 Agartha.ExileCutscenePatch.ExileControllerBeginePatch.Prefix(__instance, exiled, tie);
                 if (RoleClass.Assassin.TriggerPlayer == null)
                 {
@@ -52,7 +53,8 @@ namespace SuperNewRoles.Roles
                 __instance.completeString = printStr;
                 __instance.ImpostorText.text = string.Empty;
                 __instance.StartCoroutine(__instance.Animate());
-            } else if (RoleClass.Revolutionist.MeetingTrigger != null)
+            }
+            else if (RoleClass.Revolutionist.MeetingTrigger != null)
             {
                 if (__instance.specialInputHandler != null) __instance.specialInputHandler.disableVirtualCursor = true;
                 ExileController.Instance = __instance;

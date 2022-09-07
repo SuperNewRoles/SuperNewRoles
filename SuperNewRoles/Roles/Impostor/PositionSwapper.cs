@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
+
 
 namespace SuperNewRoles.Roles
 {
@@ -34,21 +34,11 @@ namespace SuperNewRoles.Roles
             var PushSwapper = PlayerControl.LocalPlayer;
             RPCProcedure.PositionSwapperTP(RandomPlayer.PlayerId, PushSwapper.PlayerId);
 
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.PositionSwapperTP, SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.PositionSwapperTP, SendOption.Reliable, -1);
             Writer.Write(RandomPlayer.PlayerId);
             Writer.Write(PushSwapper.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
             //SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:"+RandomPlayer.PlayerId+"\n生存:"+!RandomPlayer.IsDead());
         }
-        /*public static Vector3 GetSwapPosition(byte SwapPlayerID, byte SwapperID){
-            var SwapPlayer = ModHelpers.PlayerById(SwapPlayerID);
-            var SwapperPlayer = ModHelpers.PlayerById(SwapperID);
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.PositionSwapper)){
-                return SwapPlayer.transform.position;
-            }
-            else{
-                return SwapperPlayer.transform.position;
-            }
-        }*/
     }
 }

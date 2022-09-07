@@ -1,13 +1,29 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
+
+using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
-namespace SuperNewRoles.Intro
+namespace SuperNewRoles.Modules
 {
+    public class TeamDate
+    {
+        public string NameKey;
+        public Color color;
+        public Color BackGround;
+        public List<RoleId> RoleIds;
+
+        TeamDate(string NameKey, Color color, Color BackGround, List<RoleId> RoleId)
+        {
+            this.color = color;
+            this.BackGround = BackGround;
+            this.NameKey = NameKey;
+            RoleIds = RoleId;
+        }
+        public static TeamDate VultureTeam = new("Test", Color.black, Color.yellow, new List<RoleId> { RoleId.Sheriff });
+    }
     public class IntroDate
     {
         public static List<IntroDate> IntroDatas = new();
@@ -201,6 +217,8 @@ namespace SuperNewRoles.Intro
         public static IntroDate StefinderIntro = new("Stefinder", RoleClass.Stefinder.color, 1, RoleId.Stefinder, TeamRoleType.Neutral);
         public static IntroDate StefinderIntro1 = new("Stefinder", RoleClass.ImpostorRed, 1, RoleId.Stefinder1, TeamRoleType.Neutral);
         public static IntroDate SluggerIntro = new("Slugger", RoleClass.Slugger.color, 1, RoleId.Slugger, TeamRoleType.Impostor);
+        public static IntroDate ShiftActorIntro = new("ShiftActor", Roles.Impostor.ShiftActor.color, 1, RoleId.ShiftActor, TeamRoleType.Impostor);
+        public static IntroDate ConnectKillerIntro = new("ConnectKiller", RoleClass.ConnectKiller.color, 1, RoleId.ConnectKiller, TeamRoleType.Impostor);
         //イントロオブジェ
     }
 }

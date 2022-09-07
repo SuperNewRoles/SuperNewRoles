@@ -65,7 +65,7 @@ namespace SuperNewRoles
                 }
 
                 //アガルタ
-                updateURL = updateURL.Replace("SuperNewRoles.dll","Agartha.dll");
+                updateURL = updateURL.Replace("SuperNewRoles.dll", "Agartha.dll");
                 response = await http.GetAsync(new System.Uri(updateURL), HttpCompletionOption.ResponseContentRead);
                 if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
                 {
@@ -103,7 +103,8 @@ namespace SuperNewRoles
             {
                 HttpClient http = new();
                 http.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Updater");
-                var response = await http.GetAsync(new System.Uri("https://api.github.com/repos/ykundesu/SuperNewRoles/releases/latest"), HttpCompletionOption.ResponseContentRead);
+                var response = await http.GetAsync(new System.Uri($"https://api.github.com/repos/{SuperNewRolesPlugin.ModUrl}/releases/latest"), HttpCompletionOption.ResponseContentRead);
+                Logger.Info($"https://api.github.com/repos/{SuperNewRolesPlugin.ModUrl}/releases/latest", "リリース情報のURL");
                 if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
                 {
                     System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
@@ -164,7 +165,7 @@ namespace SuperNewRoles
                         response = await http.GetAsync(new System.Uri(updateURL), HttpCompletionOption.ResponseContentRead);
                         if (response.StatusCode == HttpStatusCode.OK && response.Content != null)
                         {
-                            var codeBase = Assembly.GetExecutingAssembly().CodeBase.Replace("SuperNewRoles.dll","Agartha.dll");
+                            var codeBase = Assembly.GetExecutingAssembly().CodeBase.Replace("SuperNewRoles.dll", "Agartha.dll");
                             System.UriBuilder uri = new(codeBase);
                             var fullname = System.Uri.UnescapeDataString(uri.Path);
                             if (File.Exists(fullname + ".old")) // Clear old file in case it wasnt;

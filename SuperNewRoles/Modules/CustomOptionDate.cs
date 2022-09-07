@@ -3,7 +3,7 @@ using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
-namespace SuperNewRoles.CustomOption
+namespace SuperNewRoles.Modules
 {
     public class CustomOptions
     {
@@ -806,6 +806,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SluggerChargeTime;
         public static CustomOption SluggerCoolTime;
         public static CustomOption SluggerIsMultiKill;
+        
+        public static CustomRoleOption ConnectKillerOption;
+        public static CustomOption ConnectKillerPlayerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -920,13 +923,6 @@ namespace SuperNewRoles.CustomOption
             LighterDurationTime = CustomOption.Create(27, false, CustomOptionType.Crewmate, "LigtherDurationSetting", 10f, 1f, 20f, 0.5f, LighterOption, format: "unitSeconds");
             LighterUpVision = CustomOption.Create(28, false, CustomOptionType.Crewmate, "LighterUpVisionSetting", 0.25f, 0f, 5f, 0.25f, LighterOption);
 
-            /**
-            EvilLighterOption = new CustomRoleOption(29, "EvilLighterName", RoleClass.ImpostorRed, 1);
-            EvilLighterPlayerCount = CustomOption.Create(30, Cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilLighterOption);
-            EvilLighterCoolTime = CustomOption.Create(31, ModTranslation.GetString("EvilLigtherCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, EvilLighterOption, format: "unitSeconds");
-            EvilLighterDurationTime = CustomOption.Create(32, ModTranslation.GetString("EvilLigtherDurationSetting"), 10f, 1f, 20f, 0.5f, EvilLighterOption, format: "unitSeconds");
-
-            **/
             EvilScientistOption = new CustomRoleOption(33, false, CustomOptionType.Impostor, "EvilScientistName", RoleClass.ImpostorRed, 1);
             EvilScientistPlayerCount = CustomOption.Create(34, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilScientistOption);
             EvilScientistCoolTime = CustomOption.Create(35, false, CustomOptionType.Impostor, "EvilScientistCoolDownSetting", 30f, 2.5f, 60f, 2.5f, EvilScientistOption, format: "unitSeconds");
@@ -943,7 +939,7 @@ namespace SuperNewRoles.CustomOption
             SheriffFriendsRoleKill = CustomOption.Create(708, true, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, SheriffOption);
 
             SheriffNeutralKill = CustomOption.Create(40, true, CustomOptionType.Crewmate, "SheriffIsKillNewtralSetting", false, SheriffOption);
-           
+
             SheriffLoversKill = CustomOption.Create(41, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, SheriffOption);
             SheriffQuarreledKill = CustomOption.Create(730, true, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, SheriffOption);
 
@@ -995,12 +991,7 @@ namespace SuperNewRoles.CustomOption
             EvilSpeedBoosterDurationTime = CustomOption.Create(82, false, CustomOptionType.Impostor, "EvilSpeedBoosterDurationSetting", 15f, 2.5f, 60f, 2.5f, EvilSpeedBoosterOption, format: "unitSeconds");
             EvilSpeedBoosterSpeed = CustomOption.Create(83, false, CustomOptionType.Impostor, "EvilSpeedBoosterPlusSpeedSetting", 0.5f, 0.0f, 5f, 0.25f, EvilSpeedBoosterOption, format: "unitSeconds");
             EvilSpeedBoosterIsNotSpeedBooster = CustomOption.Create(84, false, CustomOptionType.Impostor, "EvilSpeedBoosterIsNotSpeedBooster", false, EvilSpeedBoosterOption);
-            /**
-            TaskerOption = new CustomRoleOption(85, "TaskerName", RoleClass.ImpostorRed, 1);
-            TaskerPlayerCount = CustomOption.Create(86, Cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], TaskerOption);
-            TaskerAmount = CustomOption.Create(87, ModTranslation.GetString("TaskerTaskSetting"), 30f, 2.5f, 60f, 2.5f, TaskerOption);
-            TaskerIsKill = CustomOption.Create(88, ModTranslation.GetString("TaskerIsKillSetting"), false, TaskerOption);
-            **/
+
             DoorrOption = new CustomRoleOption(89, false, CustomOptionType.Crewmate, "DoorrName", RoleClass.Doorr.color, 1);
             DoorrPlayerCount = CustomOption.Create(90, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoorrOption);
             DoorrCoolTime = CustomOption.Create(91, false, CustomOptionType.Crewmate, "DoorrCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, DoorrOption);
@@ -1023,17 +1014,7 @@ namespace SuperNewRoles.CustomOption
             SpeederPlayerCount = CustomOption.Create(104, false, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpeederOption);
             SpeederCoolTime = CustomOption.Create(105, false, CustomOptionType.Impostor, "SpeederCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, SpeederOption, format: "unitSeconds");
             SpeederDurationTime = CustomOption.Create(106, false, CustomOptionType.Impostor, "SpeederDurationTimeSetting", 10f, 2.5f, 20f, 2.5f, SpeederOption, format: "unitSeconds");
-            /*
-            GuesserOption = new CustomRoleOption(107, "GuesserName", RoleClass.Guesser.color, 1);
-            GuesserPlayerCount = CustomOption.Create(108, Cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GuesserOption);
-            GuesserShortMaxCount = CustomOption.Create(109, ModTranslation.GetString("GuesserShortMaxCountSetting"), 30f, 2.5f, 60f, 2.5f, GuesserOption);
-            GuesserShortOneMeetingCount = CustomOption.Create(110, Cs(Color.white, "GuesserOneMeetingShortSetting"), GuesserCount, GuesserOption);
 
-            EvilGuesserOption = new CustomRoleOption(111, "EvilGuesserName", RoleClass.ImpostorRed, 1);
-            EvilGuesserPlayerCount = CustomOption.Create(112, Cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
-            EvilGuesserShortMaxCount = CustomOption.Create(113, ModTranslation.GetString("EvilGuesserShortMaxCountSetting"), 30f, 2.5f, 60f, 2.5f, EvilGuesserOption);
-            EvilGuesserShortOneMeetingCount = CustomOption.Create(114, Cs(Color.white, "EvilGuesserOneMeetingShortSetting"), GuesserCount, EvilGuesserOption);
-            */
             VultureOption = new CustomRoleOption(115, false, CustomOptionType.Neutral, "VultureName", RoleClass.Vulture.color, 1);
             VulturePlayerCount = CustomOption.Create(116, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], VultureOption);
             VultureCoolDown = CustomOption.Create(117, false, CustomOptionType.Neutral, "VultureCoolDownSetting", 30f, 2.5f, 60f, 2.5f, VultureOption, format: "unitSeconds");
@@ -1082,11 +1063,6 @@ namespace SuperNewRoles.CustomOption
             OpportunistOption = new CustomRoleOption(147, true, CustomOptionType.Neutral, "OpportunistName", RoleClass.Opportunist.color, 1);
             OpportunistPlayerCount = CustomOption.Create(148, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], OpportunistOption);
 
-            /**
-            NiceGamblerOption = new CustomRoleOption(149, "NiceGamblerName", RoleClass.NiceGambler.color, 1);
-            NiceGamblerPlayerCount = CustomOption.Create(150, Cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGamblerOption);
-            NiceGamblerUseCount = CustomOption.Create(151, Cs(Color.white, "NiceGamblerUseCountSetting"), 1f, 1f,15f, 1f, NiceGamblerOption);
-            **/
             EvilGamblerOption = new CustomRoleOption(152, true, CustomOptionType.Impostor, "EvilGamblerName", RoleClass.EvilGambler.color, 1);
             EvilGamblerPlayerCount = CustomOption.Create(153, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGamblerOption);
             EvilGamblerSucTime = CustomOption.Create(154, true, CustomOptionType.Impostor, "EvilGamblerSucTimeSetting", 15f, 0f, 60f, 2.5f, EvilGamblerOption);
@@ -1095,10 +1071,7 @@ namespace SuperNewRoles.CustomOption
 
             BestfalsechargeOption = new CustomRoleOption(157, true, CustomOptionType.Crewmate, "BestfalsechargeName", RoleClass.Bestfalsecharge.color, 1);
             BestfalsechargePlayerCount = CustomOption.Create(158, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BestfalsechargeOption);
-            /*
-            ResearcherOption = new CustomRoleOption(159, "ResearcherName", RoleClass.Researcher.color, 1);
-            ResearcherPlayerCount = CustomOption.Create(160, Cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ResearcherOption);
-            **/
+
             SelfBomberOption = new CustomRoleOption(161, true, CustomOptionType.Impostor, "SelfBomberName", RoleClass.SelfBomber.color, 1);
             SelfBomberPlayerCount = CustomOption.Create(162, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SelfBomberOption);
             SelfBomberScope = CustomOption.Create(163, true, CustomOptionType.Impostor, "SelfBomberScopeSetting", 1f, 0.5f, 3f, 0.5f, SelfBomberOption);
@@ -1111,11 +1084,7 @@ namespace SuperNewRoles.CustomOption
             GodCommonTask = godoption.Item1;
             GodShortTask = godoption.Item2;
             GodLongTask = godoption.Item3;
-            /*
-            AllCleanerOption = new CustomRoleOption(172, "AllCleanerName", RoleClass.AllCleaner.color, 1);
-            AllCleanerPlayerCount = CustomOption.Create(173, Cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], AllCleanerOption);
-            AllCleanerCount = CustomOption.Create(174, Cs(Color.white, "AllCleanerCountSetting"), 1f, 1f, 15f, 1f, AllCleanerOption);
-            */
+
             NiceNekomataOption = new CustomRoleOption(175, true, CustomOptionType.Crewmate, "NiceNekomataName", RoleClass.NiceNekomata.color, 1);
             NiceNekomataPlayerCount = CustomOption.Create(176, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceNekomataOption);
             NiceNekomataIsChain = CustomOption.Create(177, true, CustomOptionType.Crewmate, "NiceNekomataIsChainSetting", true, NiceNekomataOption);
@@ -1575,7 +1544,7 @@ namespace SuperNewRoles.CustomOption
             SuicidalIdeationCommonTask = SuicidalIdeationoption.Item1;
             SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
             SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
-            
+
             NunOption = new CustomRoleOption(958, false, CustomOptionType.Impostor, "NunName",RoleClass.Nun.color, 1);
             NunPlayerCount = CustomOption.Create(959, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NunOption);
             NunCoolTime = CustomOption.Create(960, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NunOption);
@@ -1654,6 +1623,10 @@ namespace SuperNewRoles.CustomOption
             PsychometristCanCheckFootprintsTime = CustomOption.Create(891, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);
             PsychometristIsReportCheckedDeadBody = CustomOption.Create(892, false, CustomOptionType.Crewmate, "PsychometristIsReportCheckedDeadBody", false, PsychometristOption);
 
+            Roles.Impostor.ShiftActor.SetupCustomOptions();
+            
+            ConnectKillerOption = new CustomRoleOption(982, false, CustomOptionType.Impostor, "ConnectKillerName",RoleClass.ConnectKiller.color, 1);
+            ConnectKillerPlayerCount = CustomOption.Create(9822, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConnectKillerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

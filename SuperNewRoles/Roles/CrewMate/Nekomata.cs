@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
+using SuperNewRoles.Patch;
+
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
@@ -20,20 +20,20 @@ namespace SuperNewRoles.Roles
                     List<PlayerControl> p = new();//道連れにするプレイヤーの抽選リスト
                     foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
                     {
-                        //もし 黒猫・イビル猫又が追放Impostorを道連れしないがオンるにゃら
-                        if ((__instance.Object.IsRole(RoleId.NiceNekomata) && RoleClass.EvilNekomata.NotImpostorExiled) || (__instance.Object.IsRole(RoleId.BlackCat) && RoleClass.BlackCat.NotImpostorExiled))
+                        //もし 黒猫・イビル猫又が追放Impostorを道連れしないがオンにゃら
+                        if ((__instance.Object.IsRole(RoleId.EvilNekomata) && RoleClass.EvilNekomata.NotImpostorExiled) || (__instance.Object.IsRole(RoleId.BlackCat) && RoleClass.BlackCat.NotImpostorExiled))
                         {
-                            //もし 抜き出されたプレイヤーが　追放されたプレイヤーではない  生きている  インポスターでないにゃら
+                            //もし 抜き出されたプレイヤーが　追放されたプレイヤーではなく  生きていて  且つ　インポスターでないにゃら
                             if (p1.Data != __instance && p1.IsAlive() && !p1.IsImpostor())
                             {
                                 p.Add(p1);//道連れにするプレイヤーの抽選リストに追加する
                                 //Logへの記載
                                 if (__instance.Object.IsRole(RoleId.BlackCat))
                                     SuperNewRolesPlugin.Logger.LogInfo("[SNR:黒猫Info]Impostorを道連れ対象から除外しました");
-                                else if (__instance.Object.IsRole(RoleId.NiceNekomata))
+                                else if (__instance.Object.IsRole(RoleId.EvilNekomata))
                                     SuperNewRolesPlugin.Logger.LogInfo("[SNR:イビル猫又Info]Impostorを道連れ対象から除外しました");
                                 else
-                                    SuperNewRolesPlugin.Logger.LogError("[SNR:猫又Error][NotImpostorExiled == true] 異常な抽選リストです");
+                                    SuperNewRolesPlugin.Logger.LogError("[SNR:猫又Error]&[SNR:イビル猫又Error][NotImpostorExiled == true] 異常な抽選リストです");
                             }
                         }
                         //ナイス・設定オフ
@@ -46,14 +46,14 @@ namespace SuperNewRoles.Roles
                                 //Logへの記載
                                 if (__instance.Object.IsRole(RoleId.BlackCat))
                                     SuperNewRolesPlugin.Logger.LogInfo("[SNR:黒猫Info]Impostorを道連れ対象から除外しませんでした");
-                                else if (__instance.Object.IsRole(RoleId.NiceNekomata))
+                                else if (__instance.Object.IsRole(RoleId.EvilNekomata))
                                     SuperNewRolesPlugin.Logger.LogInfo("[SNR:イビル猫又Info]Impostorを道連れ対象から除外しませんでした");
                                 else
-                                    SuperNewRolesPlugin.Logger.LogError("[SNR:猫又Error][NotImpostorExiled != true] 異常な抽選リストです");
+                                    SuperNewRolesPlugin.Logger.LogError("[SNR:猫又Error]&[SNR:イビル猫又Error][NotImpostorExiled != true] 異常な抽選リストです");
                             }
                         }
                     }
-                    MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ExiledRPC, SendOption.Reliable, -1);
+                    MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ExiledRPC, SendOption.Reliable, -1);
                     RPCWriter.Write(__instance.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
                     RPCProcedure.ExiledRPC(__instance.PlayerId);
@@ -69,7 +69,7 @@ namespace SuperNewRoles.Roles
             SuperNewRolesPlugin.Logger.LogInfo(random.NameText().text);
             if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.NekomataExiled, random))
             {
-                MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.NekomataExiledRPC, SendOption.Reliable, -1);
+                MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.NekomataExiledRPC, SendOption.Reliable, -1);
                 RPCWriter.Write(random.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
                 RPCProcedure.ExiledRPC(random.PlayerId);
@@ -83,7 +83,7 @@ namespace SuperNewRoles.Roles
                     if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
                     {
                         RPCProcedure.ShareWinner(random.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(random.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RoleClass.Jester.IsJesterWin = true;
@@ -92,7 +92,7 @@ namespace SuperNewRoles.Roles
                     if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
                     {
                         RPCProcedure.ShareWinner(random.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(random.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RoleClass.MadJester.IsMadJesterWin = true;

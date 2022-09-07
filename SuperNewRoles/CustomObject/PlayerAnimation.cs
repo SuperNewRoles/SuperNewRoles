@@ -131,8 +131,9 @@ namespace SuperNewRoles.CustomObject
                 OnDestroy();
                 return;
             }
-            if (!Playing) {
-                    SpriteRender.sprite = null;
+            if (!Playing)
+            {
+                SpriteRender.sprite = null;
                 return;
             }
             updatetime -= Time.fixedDeltaTime;
@@ -163,7 +164,7 @@ namespace SuperNewRoles.CustomObject
         }
         public void RpcAnimation(RpcAnimationType AnimType)
         {
-            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.PlayPlayerAnimation);
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PlayPlayerAnimation);
             writer.Write(PlayerId);
             writer.Write((byte)AnimType);
             writer.EndRPC();

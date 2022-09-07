@@ -28,16 +28,16 @@ namespace SuperNewRoles.CustomCosmetics
         public static bool running = false;
         public static List<string> fetchs = new();
         public static List<CustomPlates.CustomPlate> platedetails = new();
-        public static async void Load()
+        public static void Load()
         {
-            await Patches.CredentialsPatch.LogoPatch.FetchBoosters();
+            Patches.CredentialsPatch.LogoPatch.FetchBoosters();
             if (running)
                 return;
             IsEndDownload = false;
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\");
             SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate:Download] ダウンロード開始");
-            await FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
+            FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
             running = true;
         }
         private static string SanitizeResourcePath(string res)

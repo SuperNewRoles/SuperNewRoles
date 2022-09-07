@@ -47,5 +47,38 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             sender.EndRpc();
             player.SetRole(role);
         }
+
+        /// <summary>
+        /// 守護ガードのエフェクトを表示する(キルクールもリセット)
+        /// </summary>
+        /// <param name="shower">エフェクトを見れる人</param>
+        /// <param name="target">エフェクトをかける人</param>
+        public static void RpcShowGuardEffect(this PlayerControl shower, PlayerControl target)
+        {
+            if (shower.IsMod())
+            {// mod導入者ならCustomRpcSenderを使用しなくても正しくRpcを送れる。
+                Logger.Info($"Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
+                shower.ProtectPlayer(target, 0);
+                shower.RpcMurderPlayer(target);
+            }
+            else
+            {
+                var crs = CustomRpcSender.Create("RpcShowGuardEffect", SendOption.Reliable);
+                var clientId = shower.GetClientId();
+                Logger.Info($"非Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
+                crs.StartMessage(clientId);
+                crs.StartRpc(shower.NetId, (byte)RpcCalls.ProtectPlayer)// 守護を始める
+                    .WriteNetObject(target) // targetを対象に
+                    .Write(0) // ProtectPlayerの引数2の、coloridを0で実行
+                    .EndRpc(); // 守護終わり
+
+                crs.StartRpc(shower.NetId, (byte)RpcCalls.MurderPlayer) // キルを始める
+                    .WriteNetObject(target) // targetを対象に
+                    .EndRpc(); // キル終わり
+
+                crs.EndMessage(); // RpcShowGuardEffect終わり
+                crs.SendMessage(); // ログへ出力(のはず)
+            }
+        }
     }
 }
