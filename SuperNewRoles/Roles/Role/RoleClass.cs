@@ -3061,7 +3061,7 @@ namespace SuperNewRoles.Roles
                 SucTime = CustomOptions.DoppelgangerSucTime.GetFloat();
                 NotSucTime = CustomOptions.DoppelgangerNotSucTime.GetFloat();
                 Duration = DurationTime + 1.1f;
-                DoppelgangerTargets = new Dictionary<byte, PlayerControl>();
+                DoppelgangerTargets = new();
                 DefaultKillCool = PlayerControl.GameOptions.KillCooldown;
             }
         }

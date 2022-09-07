@@ -1667,7 +1667,6 @@ namespace SuperNewRoles.CustomOption
             DoppelgangerCoolTome = CustomOption.Create(896, true, CustomOptionType.Impostor, "DoppelgangerCoolDownSetting", 5f, 5f, 60f, 2.5f, DoppelgangerOption);
             DoppelgangerSucTime = CustomOption.Create(897, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
             DoppelgangerNotSucTime = CustomOption.Create(898, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
-
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
