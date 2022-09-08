@@ -957,7 +957,7 @@ namespace SuperNewRoles.Patches
             }
         }
     }
-    [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.CompleteTask))]
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CompleteTask))]
     class CompleteTask
     {
         public static void Postfix(PlayerControl __instance, uint idx)
@@ -993,7 +993,8 @@ namespace SuperNewRoles.Patches
                     RoleClass.Assassin.TriggerPlayer = __instance;
                     return;
                 }
-                if (__instance.IsRole(RoleId.Hitman)) {
+                if (__instance.IsRole(RoleId.Hitman))
+                {
                     Roles.Neutral.Hitman.Death();
                 }
                 if (RoleClass.Lovers.SameDie && __instance.IsLovers())
@@ -1011,6 +1012,40 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
+        }
+    }
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody))]
+    class ReportDeadBodyPatch
+    {
+        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
+        {
+            if (!AmongUsClient.Instance.AmHost) return true;
+            if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
+            if (ModeHandler.IsMode(ModeId.Default))
+            {
+                if (__instance.IsRole(RoleId.Amnesiac))
+                {
+                    if (!target.Disconnected)
+                    {
+                        __instance.RPCSetRoleUnchecked(target.Role.Role);
+                        if (target.Role.IsSimpleRole)
+                        {
+                            __instance.SetRoleRPC(target.Object.GetRole());
+                        }
+                    }
+                }
+            }
+            return (RoleClass.Assassin.TriggerPlayer != null)
+            || (!MapOptions.MapOption.UseDeadBodyReport && target != null)
+            || (!MapOptions.MapOption.UseMeetingButton && target == null)
+            || ModeHandler.IsMode(ModeId.HideAndSeek)
+            || ModeHandler.IsMode(ModeId.BattleRoyal)
+            || ModeHandler.IsMode(ModeId.CopsRobbers)
+                ? false
+                : ModeHandler.IsMode(ModeId.SuperHostRoles)
+                ? Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target)
+                : !ModeHandler.IsMode(ModeId.Zombie)
+                && (!ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId);
         }
     }
     public static class PlayerControlFixedUpdatePatch
