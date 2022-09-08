@@ -56,6 +56,7 @@ namespace SuperNewRoles.Buttons
             actionButton = UnityEngine.Object.Instantiate(textTemplate, textTemplate.transform.parent);
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();
+            button.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
 
             button.OnClick.AddListener((UnityEngine.Events.UnityAction)OnClickEvent);
 
@@ -165,6 +166,7 @@ namespace SuperNewRoles.Buttons
                 Vector3 pos = hudManager.UseButton.transform.localPosition;
                 if (mirror) pos = new Vector3(-pos.x, pos.y, pos.z);
                 actionButton.transform.localPosition = pos + PositionOffset;
+                //actionButton.transform.localScale = LocalScale;
             }
             if (CouldUse())
             {

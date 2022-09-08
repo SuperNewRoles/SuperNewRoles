@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.Helpers;
+
 namespace SuperNewRoles.Roles.Neutral
 {
     public static class PartTimer
@@ -23,9 +25,9 @@ namespace SuperNewRoles.Roles.Neutral
         public static void WrapUp()
         {
             if (!PlayerControl.LocalPlayer.IsRole(RoleId.PartTimer)) return;
-            if (RoleClass.PartTimer.DeathTurn <= 0)
+            if (RoleClass.PartTimer.DeathTurn <= 0 && !RoleClass.PartTimer.IsLocalOn && CachedPlayer.LocalPlayer.IsAlive())
             {
-                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                PlayerControl.LocalPlayer.CustomRpcExiled();
             }
             RoleClass.PartTimer.DeathTurn--;
         }

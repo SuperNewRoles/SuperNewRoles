@@ -178,6 +178,7 @@ namespace SuperNewRoles.Roles
             Slugger.ClearAndReload();
             Impostor.ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
+            GM.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2776,13 +2777,7 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static bool IsCheckTargetRole;
             public static Dictionary<byte, byte> Datas;
-            public static bool IsLocalOn
-            {
-                get
-                {
-                    return Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
-                }
-            }
+            public static bool IsLocalOn => Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
             public static PlayerControl CurrentTarget
             {
                 get
@@ -3042,6 +3037,15 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 ConnectKillerPlayer = new();
+            }
+        }
+        public static class GM
+        {
+            public static PlayerControl gm;
+            public static Color32 color = new(255, 91, 112, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                gm = null;
             }
         }
         //新ロールクラス

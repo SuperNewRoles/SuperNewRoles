@@ -9,6 +9,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
+using TMPro;
 using UnityEngine;
 using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
@@ -202,6 +203,37 @@ namespace SuperNewRoles.Patches
         }
     }
 
+    [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Begin))]
+    class ShapeshifterMinigameBeginPatch
+    {
+        public static void Postfix(ShapeshifterMinigame __instance, PlayerTask task)
+        {
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
+            {
+                foreach (ShapeshifterPanel panel in GameObject.FindObjectsOfType<ShapeshifterPanel>()) GameObject.Destroy(panel.gameObject);
+                int index = 0;
+                foreach (var Data in Roles.Neutral.GM.ActionDatas)
+                {
+                    int num = index % 3;
+                    int num2 = index / 3;
+                    ShapeshifterPanel panel = GameObject.Instantiate(__instance.PanelPrefab, __instance.transform);
+                    panel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
+                    static void Create(ShapeshifterPanel panel, int index, Action action)
+                    {
+                        panel.SetPlayer(index, CachedPlayer.LocalPlayer.Data, action);
+                    }
+                    Create(panel, index, Data.Value);
+                    panel.PlayerIcon.gameObject.SetActive(false);
+                    panel.LevelNumberText.transform.parent.gameObject.SetActive(false);
+                    panel.transform.FindChild("Nameplate").GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+                    panel.transform.FindChild("Nameplate/Highlight/ShapeshifterIcon").gameObject.SetActive(false);
+                    panel.NameText.text = ModTranslation.GetString(Data.Key);
+                    panel.NameText.transform.localPosition = new(0, 0, -0.1f);
+                    index++;
+                }
+            }
+        }
+    }
     [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Shapeshift))]
     class ShapeshifterMinigameShapeshiftPatch
     {
@@ -938,6 +970,16 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
         {
+            if (__instance.IsRole(RoleId.GM))
+            {
+                MeetingRoomManager.Instance.AssignSelf(__instance, target);
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
+                    __instance.RpcStartMeeting(target);
+                }
+                return false;
+            }
             if (!AmongUsClient.Instance.AmHost) return true;
             if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
             if (ModeHandler.IsMode(ModeId.Default))

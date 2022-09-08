@@ -619,6 +619,9 @@ namespace SuperNewRoles
                 case RoleId.ConnectKiller:
                     RoleClass.ConnectKiller.ConnectKillerPlayer.Add(player);
                     break;
+                case RoleId.GM:
+                    RoleClass.GM.gm = player;
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1039,6 +1042,9 @@ namespace SuperNewRoles
                 case RoleId.ConnectKiller:
                     RoleClass.ConnectKiller.ConnectKillerPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.GM:
+                    if (RoleClass.GM.gm != null && player.PlayerId == RoleClass.GM.gm.PlayerId) RoleClass.GM.gm = null;
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -1097,6 +1103,7 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
+                case RoleId.GM:
                 //タスククリアか
                     IsTaskClear = true;
                     break;
@@ -1260,6 +1267,7 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
+                case RoleId.GM:
                 //第三か
                     IsNeutral = true;
                     break;
@@ -1555,6 +1563,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Slugger.SluggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Slugger;
                 else if (ShiftActor.Player.IsCheckListPlayerControl(player)) return RoleId.ShiftActor;
                 else if (RoleClass.ConnectKiller.ConnectKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.ConnectKiller;
+                else if (RoleClass.GM.gm != null && RoleClass.GM.gm.PlayerId == player.PlayerId) return RoleId.GM;
                 //ロールチェック
             }
             catch (Exception e)

@@ -809,7 +809,12 @@ namespace SuperNewRoles.Modules
         
         public static CustomRoleOption ConnectKillerOption;
         public static CustomOption ConnectKillerPlayerCount;
+
         //CustomOption
+
+        public static CustomOption GMOption;
+        public static CustomOption GMCanKill;
+        public static CustomOption GMCanWarp;
 
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
@@ -1660,8 +1665,13 @@ namespace SuperNewRoles.Modules
             Roles.Impostor.ShiftActor.SetupCustomOptions();
             
             ConnectKillerOption = new CustomRoleOption(982, false, CustomOptionType.Impostor, "ConnectKillerName",RoleClass.ConnectKiller.color, 1);
-            ConnectKillerPlayerCount = CustomOption.Create(9822, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConnectKillerOption);
+            ConnectKillerPlayerCount = CustomOption.Create(983, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConnectKillerOption);
+
             //表示設定
+
+            GMOption = CustomOption.Create(984, false, CustomOptionType.Neutral, Cs(RoleClass.GM.color, "GMName"), false, isHeader:true);
+            GMCanWarp = CustomOption.Create(985, false, CustomOptionType.Neutral, "GMCanWarp", true, GMOption);
+            GMCanKill = CustomOption.Create(985, false, CustomOptionType.Neutral, "GMCanKill", true, GMOption);
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(433, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

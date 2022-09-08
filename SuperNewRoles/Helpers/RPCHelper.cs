@@ -72,6 +72,14 @@ namespace SuperNewRoles.Helpers
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
 
+        public static void CustomRpcExiled(this PlayerControl player)
+        {
+            MessageWriter writer = StartRPC(CustomRPC.ExiledRPC);
+            writer.Write(player.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            RPCProcedure.ExiledRPC(player.PlayerId);
+        }
+
         public static void RpcSnapTo(this PlayerControl __instance, Vector2 position)
         {
             Logger.Info("CustomRpcSnapToが呼び出されました");

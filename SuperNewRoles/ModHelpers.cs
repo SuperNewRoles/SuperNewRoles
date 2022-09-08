@@ -427,6 +427,24 @@ namespace SuperNewRoles
             var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
             return client;
         }
+        public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
+        {
+            List<T> newList = new();
+            foreach (T item in list)
+            {
+                newList.Add(item);
+            }
+            return newList;
+        }
+        public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this List<T> list)
+        {
+            Il2CppSystem.Collections.Generic.List<T> newList = new();
+            foreach (T item in list)
+            {
+                newList.Add(item);
+            }
+            return newList;
+        }
         public static Dictionary<string, AudioClip> CachedAudioClips = new();
         public static AudioClip loadAudioClipFromResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")
         {

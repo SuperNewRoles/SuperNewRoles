@@ -157,6 +157,7 @@ namespace SuperNewRoles.Modules
         Slugger,
         ShiftActor,
         ConnectKiller,
+        GM,
         //RoleId
     }
 
@@ -939,6 +940,7 @@ namespace SuperNewRoles.Modules
             var player = ModHelpers.PlayerById(playerid);
             if (player != null)
             {
+                player.Data.IsDead = true;
                 player.Exiled();
             }
         }

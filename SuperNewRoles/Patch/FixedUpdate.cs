@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using SuperNewRoles.Buttons;
 
 
@@ -103,6 +103,7 @@ namespace SuperNewRoles.Patch
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
                     Roles.CrewMate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
+                    Roles.Neutral.PartTimer.FixedUpdate();
                     reduceKillCooldown(__instance);
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {

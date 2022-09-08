@@ -2598,6 +2598,8 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
 
+            Roles.Neutral.GM.CreateButton(__instance);
+
             SetCustomButtonCooldowns();
         }
     }
