@@ -7,7 +7,6 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomObject;
-
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -235,6 +234,7 @@ namespace SuperNewRoles.Modules
         PainterPaintSet,
         PainterSetTarget,
         SharePhotograph,
+        UseAdminTime,
     }
     public static class RPCProcedure
     {
@@ -1042,13 +1042,7 @@ namespace SuperNewRoles.Modules
                 }
             })));
         }
-        [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
-        class STARTENDGAME
-        {
-            static void Postfix()
-            {
-            }
-        }
+        public static void UseAdminTime(float time) => AdminPatch.RestrictAdminTime -= time;
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
         class RPCHandlerPatch
         {
@@ -1317,6 +1311,9 @@ namespace SuperNewRoles.Modules
                                 Targets.Add(reader.ReadByte());
                             }
                             SluggerExile(source, Targets);
+                            break;
+                        case CustomRPC.UseAdminTime:
+                            UseAdminTime(reader.ReadSingle());
                             break;
                     }
                 }
