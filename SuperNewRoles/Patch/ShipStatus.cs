@@ -47,9 +47,18 @@ namespace SuperNewRoles.Patch
                 }
             }
             if ((ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.HideAndSeek) || ModeHandler.IsMode(ModeId.CopsRobbers)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
-            if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.IsRole(RoleId.MadMate))
+
+            if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4) // 停電を直そうとした
             {
-                return false;
+                if (player.IsMadRoles() && !CustomOptions.MadRolesCanFixElectrical.GetBool()){
+                    return false;
+                }
+            }
+            if (systemType == SystemTypes.Comms && amount is 0 or 16 or 17) // コミュサボを直そうとした
+            {
+                if (player.IsMadRoles() && !CustomOptions.MadRolesCanFixComms.GetBool()){
+                    return false;
+                }
             }
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
