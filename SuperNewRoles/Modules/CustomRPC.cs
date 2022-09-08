@@ -157,6 +157,7 @@ namespace SuperNewRoles.Modules
         Slugger,
         ShiftActor,
         ConnectKiller,
+        SchrodingersCat,
         //RoleId
     }
 

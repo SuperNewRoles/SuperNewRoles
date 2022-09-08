@@ -178,6 +178,7 @@ namespace SuperNewRoles.Roles
             Slugger.ClearAndReload();
             Impostor.ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
+            Neutral.SchrodingersCat.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();

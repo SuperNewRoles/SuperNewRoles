@@ -397,6 +397,7 @@ namespace SuperNewRoles.Patches
                         case RoleId.RemoteSheriff:
                         case RoleId.ToiletFan:
                         case RoleId.NiceButtoner:
+                        case RoleId.SchrodingersCat:
                             return false;
                         case RoleId.Egoist:
                             if (!RoleClass.Egoist.UseKill) return false;
@@ -632,6 +633,11 @@ namespace SuperNewRoles.Patches
                         }
                     }
                 }
+                else if (target.IsRole(RoleId.SchrodingersCat))
+                {
+                    Roles.Neutral.SchrodingersCat.CatRoleChange(target, __instance);
+                    return false;
+                }
             }
             Logger.Info("全スタントマン系通過", "CheckMurder");
             __instance.RpcMurderPlayerCheck(target);
@@ -763,6 +769,9 @@ namespace SuperNewRoles.Patches
                         case RoleId.Fox:
                             Fox.FoxMurderPatch.Prefix(__instance, target);
                             break;
+                        case RoleId.SchrodingersCat:
+                            Roles.Neutral.SchrodingersCat.CatRoleChange(target, __instance);
+                            return false;
                     }
                 }
             }
