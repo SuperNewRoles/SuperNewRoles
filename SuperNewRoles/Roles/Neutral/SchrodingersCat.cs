@@ -60,6 +60,9 @@ namespace SuperNewRoles.Roles.Neutral
                         cat.RPCSetRoleUnchecked(RoleTypes.Crewmate);
                         cat.SetRole(RoleId.DefaultRole);
                         SetNamesClass.SetPlayerNameColor(cat,Palette.White);
+                        if (!cat.IsMod()){
+                            cat.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+                        }
                         break;
                     case RoleId.Egoist:
                         cat.SetRole(RoleId.Egoist);
