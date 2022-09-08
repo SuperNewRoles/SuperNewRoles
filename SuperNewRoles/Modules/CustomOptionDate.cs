@@ -812,6 +812,9 @@ namespace SuperNewRoles.Modules
 
         public static CustomRoleOption ConnectKillerOption;
         public static CustomOption ConnectKillerPlayerCount;
+        
+        public static CustomRoleOption WaveCannonOption;
+        public static CustomOption WaveCannonPlayerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1632,6 +1635,9 @@ namespace SuperNewRoles.Modules
 
             ConnectKillerOption = new CustomRoleOption(982, false, CustomOptionType.Impostor, "ConnectKillerName", RoleClass.ConnectKiller.color, 1);
             ConnectKillerPlayerCount = CustomOption.Create(983, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConnectKillerOption);
+            
+            WaveCannonOption = new CustomRoleOption(987, false, CustomOptionType.Impostor, "WaveCannonName",RoleClass.WaveCannon.color, 1);
+            WaveCannonPlayerCount = CustomOption.Create(9872, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WaveCannonOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

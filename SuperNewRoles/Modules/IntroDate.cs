@@ -219,6 +219,7 @@ namespace SuperNewRoles.Modules
         public static IntroDate SluggerIntro = new("Slugger", RoleClass.Slugger.color, 1, RoleId.Slugger, TeamRoleType.Impostor);
         public static IntroDate ShiftActorIntro = new("ShiftActor", Roles.Impostor.ShiftActor.color, 1, RoleId.ShiftActor, TeamRoleType.Impostor);
         public static IntroDate ConnectKillerIntro = new("ConnectKiller", RoleClass.ConnectKiller.color, 1, RoleId.ConnectKiller, TeamRoleType.Impostor);
+        public static IntroDate WaveCannonIntro = new("WaveCannon", RoleClass.WaveCannon.color, 1, RoleId.WaveCannon, TeamRoleType.Impostor);
         //イントロオブジェ
     }
 }

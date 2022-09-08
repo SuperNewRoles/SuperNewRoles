@@ -4584,14 +4584,6 @@
         "0": ".",
         "11": "\u3067\u3059"
     },
-    "MadRolesCanFixComms": {
-        "0": "Mad roles can fix comms sabotage",
-        "11": "\u30de\u30c3\u30c9\u5f79\u8077\u304c\u30b3\u30df\u30e5\u30b5\u30dc\u3092\u6cbb\u305b\u308b"
-    },
-    "MadRolesCanFixElectrical": {
-        "0": "Mad roles can fix electrical sabotage",
-        "11": "\u30de\u30c3\u30c9\u5f79\u8077\u304c\u505c\u96fb\u3092\u6cbb\u305b\u308b"
-    },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
         "11": "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01",

@@ -80,6 +80,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton PhotographerButton;
         public static CustomButton StefinderKillButton;
         public static CustomButton SluggerButton;
+        public static CustomButton WaveCannonButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -102,6 +103,42 @@ namespace SuperNewRoles.Buttons
 
         public static void Postfix(HudManager __instance)
         {
+            WaveCannonButton = new(
+                () =>
+                {
+                    new WaveCannonObject(CachedPlayer.LocalPlayer.transform.position);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.WaveCannon; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    WaveCannonButton.MaxTimer = RoleClass.Slugger.CoolTime;
+                    WaveCannonButton.Timer = WaveCannonButton.MaxTimer;
+                    WaveCannonButton.effectCancellable = false;
+                    WaveCannonButton.EffectDuration = RoleClass.Slugger.ChargeTime;
+                    WaveCannonButton.HasEffect = true;
+                },
+                RoleClass.Slugger.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; },
+                true,
+                5f,
+                () =>
+                {
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("SluggerButtonName"),
+                showButtonText = true
+            };
+
             SluggerButton = new(
                 () =>
                 {
@@ -178,7 +215,6 @@ namespace SuperNewRoles.Buttons
                 buttonText = ModTranslation.GetString("SluggerButtonName"),
                 showButtonText = true
             };
-
 
             PhotographerButton = new(
                 () =>

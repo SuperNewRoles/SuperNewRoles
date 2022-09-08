@@ -178,6 +178,7 @@ namespace SuperNewRoles.Roles
             Slugger.ClearAndReload();
             Impostor.ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
+            WaveCannon.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -3042,6 +3043,16 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 ConnectKillerPlayer = new();
+            }
+        }
+        public static class WaveCannon
+        {
+            public static List<PlayerControl> WaveCannonPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                WaveCannonPlayer = new();
+                
             }
         }
         //新ロールクラス
