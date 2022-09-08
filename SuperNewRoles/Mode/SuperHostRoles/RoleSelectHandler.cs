@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -29,18 +30,38 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 //ジャッカルがいるなら
                 if (CustomOptions.JackalOption.GetSelection() != 0)
                 {
-                    for (int i = 0; i < (PlayerControl.GameOptions.NumImpostors + 2); i++)
+                    if (SchrodingersCat.Option.GetSelection() != 0)
                     {
-                        PlayerControl bot = BotManager.Spawn("[SHR] 暗転対策BOT" + (i + 1));
-                        if (i == 0)
+                        for (int i = 0; i < (PlayerControl.GameOptions.NumImpostors + 4); i++)
                         {
-                            impostor++;
-                            bot.RpcSetRole(RoleTypes.Impostor);
+                            PlayerControl bot = BotManager.Spawn("[SHR] 暗転くん" + (i + 1));
+                            if (i == 0||i==1)
+                            {
+                                impostor++;
+                                bot.RpcSetRole(RoleTypes.Impostor);
+                            }
+                            if (i > 0)
+                            {
+                                crewmate++;
+                                bot.RpcSetRole(RoleTypes.Crewmate);
+                            }
                         }
-                        if (i > 0)
+                    }
+                    else
+                    {
+                        for (int i = 0; i < (PlayerControl.GameOptions.NumImpostors + 2); i++)
                         {
-                            crewmate++;
-                            bot.RpcSetRole(RoleTypes.Crewmate);
+                            PlayerControl bot = BotManager.Spawn("[SHR] 暗転対策BOT" + (i + 1));
+                            if (i == 0)
+                            {
+                                impostor++;
+                                bot.RpcSetRole(RoleTypes.Impostor);
+                            }
+                            if (i > 0)
+                            {
+                                crewmate++;
+                                bot.RpcSetRole(RoleTypes.Crewmate);
+                            }
                         }
                     }
                 }
@@ -102,6 +123,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetRoleDesync(RoleClass.Truelover.trueloverPlayer, RoleTypes.Impostor);
             SetRoleDesync(RoleClass.FalseCharges.FalseChargesPlayer, RoleTypes.Impostor);
             SetRoleDesync(RoleClass.MadMaker.MadMakerPlayer, RoleTypes.Impostor);
+            SetRoleDesync(SchrodingersCat.Player, RoleTypes.Impostor);
             /*============インポスターにDesync============*/
 
 
