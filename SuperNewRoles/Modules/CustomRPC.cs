@@ -235,6 +235,7 @@ namespace SuperNewRoles.Modules
         PainterSetTarget,
         SharePhotograph,
         UseAdminTime,
+        UseCameraTime,
     }
     public static class RPCProcedure
     {
@@ -1043,6 +1044,7 @@ namespace SuperNewRoles.Modules
             })));
         }
         public static void UseAdminTime(float time) => AdminPatch.RestrictAdminTime -= time;
+        public static void UseCameraTime(float time) => CameraPatch.RestrictCameraTime -= time;
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
         class RPCHandlerPatch
         {
@@ -1314,6 +1316,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.UseAdminTime:
                             UseAdminTime(reader.ReadSingle());
+                            break;
+                        case CustomRPC.UseCameraTime:
+                            UseCameraTime(reader.ReadSingle());
                             break;
                     }
                 }
