@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
@@ -132,66 +132,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
             }
         }
         public static Dictionary<byte, int?> VentData;
-        [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.RepairSystem))]
-        class RepairSystemPatch
-        {
-            public static bool Prefix(ShipStatus __instance,
-                [HarmonyArgument(0)] SystemTypes systemType,
-                [HarmonyArgument(1)] PlayerControl player,
-                [HarmonyArgument(2)] byte amount)
-            {
-                if (PlusModeHandler.IsMode(PlusModeId.NotSabotage))
-                {
-                    return false;
-                }
-                if (ModeHandler.IsMode(ModeId.Default))
-                {
-                    if (systemType == SystemTypes.Comms || systemType == SystemTypes.Sabotage || systemType == SystemTypes.Electrical)
-                    {
-                        if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == player.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.SabotageRepair);
-                    }
-                }
-                if ((ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.HideAndSeek) || ModeHandler.IsMode(ModeId.CopsRobbers)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
-                if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.IsRole(RoleId.MadMate))
-                {
-                    return false;
-                }
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-                {
-                    bool returndata = MorePatch.RepairSystem(__instance, systemType, player, amount);
-                    return returndata;
-                }
-                return true;
-            }
-            public static void Postfix(
-                [HarmonyArgument(0)] SystemTypes systemType,
-                [HarmonyArgument(1)] PlayerControl player,
-                [HarmonyArgument(2)] byte amount)
-            {
-                if (!RoleHelpers.IsSabotage())
-                {
-                    new LateTask(() =>
-                    {
-                        foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
-                        {
-                            if (p.inVent && p.IsAlive() && VentData.ContainsKey(p.PlayerId) && VentData[p.PlayerId] != null)
-                            {
-                                p.MyPhysics.RpcBootFromVent((int)VentData[p.PlayerId]);
-                            }
-                        }
-                    }, 0.1f, "TecExitVent");
-                }
-                SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " => " + systemType + " : " + amount);
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-                {
-                    SyncSetting.CustomSyncSettings();
-                    if (systemType == SystemTypes.Comms)
-                    {
-                        SuperHostRoles.FixedUpdate.SetRoleNames();
-                    }
-                }
-            }
-        }
         public static List<PlayerControl> Winners;
         public static bool IsViewAlivePlayer;
         public static bool EndGameCheck(ShipStatus __instance)
@@ -240,7 +180,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                 {
                                     p.Data.IsDead = false;
                                     Winners.Add(p);
-                                    var writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
+                                    var writer = RPCHelper.StartRPC(CustomRPC.ShareWinner);
                                     writer.Write(p.PlayerId);
                                     writer.EndRPC();
                                 }

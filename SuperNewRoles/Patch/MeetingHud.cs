@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -12,26 +12,6 @@ using static MeetingHud;
 
 namespace SuperNewRoles.Patch
 {
-    /*
-    [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.SetCosmetics))]
-    class PlayerVoteAreaCosmetics
-    {
-        private static Sprite blankNameplate = null;
-        public static void updateNameplate(PlayerVoteArea pva, byte playerId = Byte.MaxValue)
-        {
-            blankNameplate = blankNameplate ?? HatManager.Instance.AllNamePlates[0].viewData.viewData.Image;
-
-            var nameplate = blankNameplate;
-            var p = ModHelpers.PlayerById(playerId != byte.MaxValue ? playerId : pva.TargetPlayerId);
-            var nameplateId = p?.CurrentOutfit?.NamePlateId;
-            nameplate = HatManager.Instance.GetNamePlateById(nameplateId)?.viewData.viewData.Image;
-            pva.Background.sprite = nameplate;
-        }
-        static void Postfix(PlayerVoteArea __instance, GameData.PlayerInfo playerInfo)
-        {
-            updateNameplate(__instance, playerInfo.PlayerId);
-        }
-    }*/
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
     class VotingComplete
     {
@@ -259,9 +239,9 @@ namespace SuperNewRoles.Patch
                                     exile.RpcSetNamePlate("nameplate_NoPlate");
                                     exile.RpcSetSkin("skin_None");
                                 }
-                            }, 5f);
+                            }, 5f, "Assassin Skin Set");
                         }
-                        new LateTask(() => __instance.RpcVotingComplete(array, exileplayer, true), 0.2f);
+                        new LateTask(() => __instance.RpcVotingComplete(array, exileplayer, true), 0.2f, "Assassin Rpc Voting Comp");
                     }
                     return false;
                 }
@@ -298,7 +278,7 @@ namespace SuperNewRoles.Patch
                             if (target.Object.IsRole(RoleId.Dictator))
                                 RoleClass.Revolutionist.WinPlayer = RoleClass.Revolutionist.MeetingTrigger;
                         }
-                        new LateTask(() => __instance.RpcVotingComplete(array, exileplayer, true), 0.2f);
+                        new LateTask(() => __instance.RpcVotingComplete(array, exileplayer, true), 0.2f, "Revolutionist Rpc Voting Comp");
                     }
                     return false;
                 }
@@ -442,7 +422,7 @@ namespace SuperNewRoles.Patch
                                 exile.RpcSetNamePlate("nameplate_NoPlate");
                                 exile.RpcSetSkin("skin_None");
                             }
-                        }, 5f);
+                        }, 5f, "Assissn Set Skin SHR");
                     }
                     if (Bakery.BakeryAlive())
                     {
@@ -460,7 +440,7 @@ namespace SuperNewRoles.Patch
                                             p.RpcSetNamePrivate("<size=300%>" + ModTranslation.GetString("BakeryExileText") + "\n" + FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
                                         }
                                     }
-                                    new LateTask(() => p.RpcSetName(p.GetDefaultName()), 5f);
+                                    new LateTask(() => p.RpcSetName(p.GetDefaultName()), 5f, "Remove Bakery Bot Name(ex==null)");
                                     break;
                                 }
                             }
@@ -475,7 +455,7 @@ namespace SuperNewRoles.Patch
                                     exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.GetString("BakeryExileText") + "\n" + exiledPlayer.Object.GetDefaultName(), p2);
                                 }
                             }
-                            new LateTask(() => exiledPlayer.Object.RpcSetName(exiledPlayer.Object.GetDefaultName()), 5f);
+                            new LateTask(() => exiledPlayer.Object.RpcSetName(exiledPlayer.Object.GetDefaultName()), 5f, "Remove Bakery Bot Name(ex!=null)");
                         }
                     }
                 }
@@ -505,21 +485,7 @@ namespace SuperNewRoles.Patch
 
                 __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
 
-                /*
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-                {
-                    if (PlayerControl.GameOptions.MapId == 4)
-                    {
-                        foreach (var pc in CachedPlayer.AllPlayers)
-                            if (NotBlackOut.IsAntiBlackOut(pc) && (pc.IsDead() || pc.PlayerId == exiledPlayer?.PlayerId)) pc.ResetPlayerCam(19f);
-                    }
-                    else
-                    {
-                        foreach (var pc in CachedPlayer.AllPlayers)
-                            if (NotBlackOut.IsAntiBlackOut(pc) && (pc.IsDead() || pc.PlayerId == exiledPlayer?.PlayerId)) pc.ResetPlayerCam(15f);
-                    }
-                }
-                */
+
                 return false;
             }
             catch (Exception ex)
@@ -528,13 +494,7 @@ namespace SuperNewRoles.Patch
                 throw;
             }
         }
-        public static bool IsMayor()
-        {/*
-            var player = CachedPlayer.AllPlayers.ToArray().Where(pc => pc.PlayerId == id).FirstOrDefault();
-            if (player == null) return false;
-            */
-            return false;
-        }
+
         private static Tuple<bool, byte, PlayerVoteArea> AssassinVoteState(MeetingHud __instance)
         {
             bool isVoteEnd = false;
@@ -643,7 +603,7 @@ namespace SuperNewRoles.Patch
                 new LateTask(() =>
                 {
                     SyncSetting.CustomSyncSettings();
-                }, 3f, "StartMeeting_CustomSyncSetting");
+                }, 3f, "StartMeeting CustomSyncSetting");
             }
         }
     }

@@ -10,7 +10,7 @@ using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.CustomCosmetics;
-using SuperNewRoles.CustomOption;
+
 using SuperNewRoles.Patch;
 using TMPro;
 using Twitch;
@@ -22,7 +22,7 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch]
     public static class CredentialsPatch
     {
-        public static string baseCredentials = $@"<size=130%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color></size> v{SuperNewRolesPlugin.Version}";
+        public static string baseCredentials = $@"<size=130%>{SuperNewRolesPlugin.ColorModName}</size> v{SuperNewRolesPlugin.Version}";
 
         [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
         private static class VersionShowerPatch
@@ -41,7 +41,7 @@ namespace SuperNewRoles.Patches
                 credentials.transform.position = new Vector3(0, 0f, 0);
                 //ブランチ名表示
                 string credentialsText = "";
-                if (ThisAssembly.Git.Branch != "master")//masterビルド以外の時
+                if (ThisAssembly.Git.Branch != SuperNewRolesPlugin.MasterBranch)//masterビルド以外の時
                 {
                     //色+ブランチ名+コミット番号
                     credentialsText = $"\r\n<color={modColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>";
@@ -55,7 +55,7 @@ namespace SuperNewRoles.Patches
 
                 var version = UnityEngine.Object.Instantiate(credentials);
                 version.transform.position = new Vector3(0, -0.35f, 0);
-                version.SetText(string.Format(ModTranslation.GetString("creditsVersion"), SuperNewRolesPlugin.Version.ToString()));
+                version.SetText($"{SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}");
 
                 credentials.transform.SetParent(amongUsLogo.transform);
                 version.transform.SetParent(amongUsLogo.transform);
@@ -84,7 +84,7 @@ namespace SuperNewRoles.Patches
                     }
                     catch { }
                     //ブランチ名表示
-                    if (ThisAssembly.Git.Branch != "master")//masterビルド以外の時
+                    if (ThisAssembly.Git.Branch != SuperNewRolesPlugin.MasterBranch)//masterビルド以外の時
                     {
                         //改行+Branch名+コミット番号
                         __instance.text.text += "\n" + $"{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})";
@@ -139,7 +139,7 @@ namespace SuperNewRoles.Patches
                     Downloaded = true;
                     HttpClient http = new();
                     http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, OnlyIfCached = false };
-                    var response = await http.GetAsync(new Uri("https://raw.githubusercontent.com/ykundesu/SuperNewRoles/master/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
+                    var response = await http.GetAsync(new Uri($"https://raw.githubusercontent.com/{SuperNewRolesPlugin.ModUrl}/master/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
                     try
                     {
                         if (response.StatusCode != HttpStatusCode.OK)
