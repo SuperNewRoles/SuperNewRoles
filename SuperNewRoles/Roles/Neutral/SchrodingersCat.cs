@@ -17,10 +17,10 @@ namespace SuperNewRoles.Roles.Neutral
         private static CustomOption BecomeRoleByJackal;
         public static void SetupCustomOptions()
         {
-            Option = new(985, false, CustomOptionType.Neutral, "SchrodingersCatName", Color, 1);
-            PlayerCount = CustomOption.Create(986, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option);
-            BecomeRoleByImpostor = CustomOption.Create(987, false, CustomOptionType.Neutral, "BecomeRolesByImpostor", new string[] { "ImpostorName", "MadmateName" }, Option);
-            BecomeRoleByJackal = CustomOption.Create(988, false, CustomOptionType.Neutral, "BecomeRolesByJackal", new string[] { "JackalName", "JackalFriendsName" }, Option);
+            Option = new(985, true, CustomOptionType.Neutral, "SchrodingersCatName", Color, 1);
+            PlayerCount = CustomOption.Create(986, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option);
+            BecomeRoleByImpostor = CustomOption.Create(987, true, CustomOptionType.Neutral, "BecomeRolesByImpostor", new string[] { "ImpostorName", "MadmateName" }, Option);
+            BecomeRoleByJackal = CustomOption.Create(988, true, CustomOptionType.Neutral, "BecomeRolesByJackal", new string[] { "JackalName", "JackalFriendsName" }, Option);
         }
 
         public static List<PlayerControl> Player;
@@ -66,7 +66,7 @@ namespace SuperNewRoles.Roles.Neutral
                         SetNamesClass.SetPlayerNameColor(cat,RoleClass.Egoist.color);
                         break;
                     case RoleId.SchrodingersCat:
-                        Logger.SendInGame("自爆");
+                        Logger.Info("自爆", "Change SchrodingersCat Role");
                         break;
                     default:
                         Logger.Info($"だれですか({killer.GetRole()})", "Change SchrodingersCat Role");
