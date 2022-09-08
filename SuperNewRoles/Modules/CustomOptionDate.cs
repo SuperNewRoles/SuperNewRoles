@@ -904,8 +904,8 @@ namespace SuperNewRoles.Modules
             IsAlwaysReduceCooldownExceptInVent = CustomOption.Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
             IsAlwaysReduceCooldownExceptOnTask = CustomOption.Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
 
-            MadRolesCanFixComms = CustomOption.Create(1, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
-            MadRolesCanFixElectrical = CustomOption.Create(2, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
+            MadRolesCanFixComms = CustomOption.Create(984, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
+            MadRolesCanFixElectrical = CustomOption.Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
 
             SoothSayerOption = new CustomRoleOption(12, false, CustomOptionType.Crewmate, "SoothSayerName", RoleClass.SoothSayer.color, 1);
             SoothSayerPlayerCount = CustomOption.Create(13, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
@@ -1665,7 +1665,7 @@ namespace SuperNewRoles.Modules
             Roles.Impostor.ShiftActor.SetupCustomOptions();
 
             ConnectKillerOption = new CustomRoleOption(982, false, CustomOptionType.Impostor, "ConnectKillerName", RoleClass.ConnectKiller.color, 1);
-            ConnectKillerPlayerCount = CustomOption.Create(9822, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConnectKillerOption);
+            ConnectKillerPlayerCount = CustomOption.Create(983, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConnectKillerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
