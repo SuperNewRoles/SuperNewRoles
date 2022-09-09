@@ -45,7 +45,7 @@ namespace SuperNewRoles.Roles.Impostor
             CanRevengeExile = CanRevengeExiled.GetBool();
         }
 
-        public static void OnKill(PlayerControl killer, PlayerControl kabocha)
+        public static void OnKill(PlayerControl killer)
         {
             if ((killer.IsCrew() && CanRevengeCrew) ||
                 (killer.IsNeutral() && CanRevengeNeut) ||
