@@ -392,6 +392,11 @@ namespace SuperNewRoles.Patches
                     Logger.Info("SHR", "CheckMurder");
                     if (RoleClass.Assassin.TriggerPlayer != null) return false;
                     Logger.Info("SHR-Assassin.TriggerPlayerを通過", "CheckMurder");
+                    if (target.IsRole(RoleId.NekoKabocha))
+                    {
+                        Roles.Impostor.NekoKabocha.OnKill(__instance, target);
+                        return true;
+                    }
                     switch (__instance.GetRole())
                     {
                         case RoleId.RemoteSheriff:
@@ -550,7 +555,6 @@ namespace SuperNewRoles.Patches
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                                 RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
                                 SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
-
                             }
                             else
                             {
@@ -762,6 +766,9 @@ namespace SuperNewRoles.Patches
                     {
                         case RoleId.Fox:
                             Fox.FoxMurderPatch.Prefix(__instance, target);
+                            break;
+                        case RoleId.NekoKabocha:
+                            Roles.Impostor.NekoKabocha.OnKill(__instance, target);
                             break;
                     }
                 }
