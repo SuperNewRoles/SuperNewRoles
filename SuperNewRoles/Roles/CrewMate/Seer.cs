@@ -36,6 +36,15 @@ namespace SuperNewRoles.Roles
                         renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
                 }
                 if (p == 1f && renderer != null) renderer.enabled = false;
+
+                new LateTask(() =>
+                {
+                    // [enabled = false]のままにすると移行リアクターのFlashが動かなくなる為、処理終了後trueに戻す為のLateTask
+                    // haomingさん　ありがとうございます!!
+                    FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
+                    FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(false);
+
+                }, 0.5f, "ShowFlashReset");
             })));
         }
         private static Sprite SoulSprite;
@@ -113,7 +122,7 @@ namespace SuperNewRoles.Roles
                                     tmp.a = Mathf.Clamp01(1 - p);
                                     rend.color = tmp;
                                 }
-                                if (p == 1f && rend != null && rend.gameObject != null) UnityEngine.Object.Destroy(rend.gameObject);
+                                //if (p == 1f && rend != null && rend.gameObject != null) UnityEngine.Object.Destroy(rend.gameObject);
                             })));
                         }
                     }
