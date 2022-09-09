@@ -61,7 +61,7 @@ namespace SuperNewRoles.Patches
                 }
                 if (ModeHandler.IsMode(ModeId.Default))
                 {
-                    if (__instance.GetRole() == RoleId.Doppelganger)
+                    if (__instance.IsRole(RoleId.Doppelganger))
                     {
                         Roles.Impostor.Doppelganger.ResetShapeCool();
                     }
@@ -743,7 +743,7 @@ namespace SuperNewRoles.Patches
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
             EvilGambler.EvilGamblerMurder.Prefix(__instance, target);
-            Roles.Impostor.Doppelganger.KillCoolSetting.DoppelgangerMurderPrefix(__instance, target);
+            Roles.Impostor.Doppelganger.KillCoolSetting.MurderPrefix(__instance, target);
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 target.resetChange();
@@ -800,7 +800,7 @@ namespace SuperNewRoles.Patches
 
             SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
-            Roles.Impostor.Doppelganger.KillCoolSetting.DoppelgangerResetKillCool();
+            Roles.Impostor.Doppelganger.KillCoolSetting.ResetKillCool(__instance);
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
