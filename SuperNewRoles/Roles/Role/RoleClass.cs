@@ -358,7 +358,7 @@ namespace SuperNewRoles.Roles
             public static bool IsImpostorLight;
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
-            public static bool IsCreateSidekick;
+            public static bool CanCreateSidekick;
             public static List<int> CreatePlayers;
             public static bool IsCreatedFriend;
             public static bool CanCreateFriend;
@@ -379,7 +379,7 @@ namespace SuperNewRoles.Roles
                 IsUseSabo = CustomOptions.JackalUseSabo.GetBool();
                 IsImpostorLight = CustomOptions.JackalIsImpostorLight.GetBool();
                 CreateSidekick = CustomOptions.JackalCreateSidekick.GetBool();
-                IsCreateSidekick = CustomOptions.JackalCreateSidekick.GetBool();
+                CanCreateSidekick = CustomOptions.JackalCreateSidekick.GetBool();
                 NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.GetBool();
                 IsCreatedFriend = false;
                 CreatePlayers = new();
@@ -1905,7 +1905,7 @@ namespace SuperNewRoles.Roles
             public static bool IsImpostorLight;
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
-            public static bool IsCreateSidekick;
+            public static bool CanCreateSidekick;
             private static Sprite buttonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -1929,7 +1929,7 @@ namespace SuperNewRoles.Roles
                 IsUseSabo = CustomOptions.JackalSeerUseSabo.GetBool();
                 IsImpostorLight = CustomOptions.JackalSeerIsImpostorLight.GetBool();
                 CreateSidekick = CustomOptions.JackalSeerCreateSidekick.GetBool();
-                IsCreateSidekick = CustomOptions.JackalSeerCreateSidekick.GetBool();
+                CanCreateSidekick = CustomOptions.JackalSeerCreateSidekick.GetBool();
                 NewJackalCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.GetBool();
             }
         }
