@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 
@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
             try
             {
                 if (source == null) source = PlayerControl.LocalPlayer;
-                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.DemonCurse);
+                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.DemonCurse);
                 Writer.Write(source.PlayerId);
                 Writer.Write(target.PlayerId);
                 Writer.EndRPC();

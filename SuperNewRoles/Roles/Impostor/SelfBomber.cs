@@ -1,6 +1,6 @@
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
+
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -32,7 +32,7 @@ namespace SuperNewRoles.Roles
 
                         RPCProcedure.ByBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
 
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByBomKillRPC, SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ByBomKillRPC, SendOption.Reliable, -1);
                         Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         Writer.Write(p.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -40,7 +40,7 @@ namespace SuperNewRoles.Roles
                 }
             }
             RPCProcedure.BomKillRPC(CachedPlayer.LocalPlayer.PlayerId);
-            MessageWriter Writer2 = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.BomKillRPC, SendOption.Reliable, -1);
+            MessageWriter Writer2 = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.BomKillRPC, SendOption.Reliable, -1);
             Writer2.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer2);
         }
@@ -48,7 +48,7 @@ namespace SuperNewRoles.Roles
         {
             Vector3 position = source.transform.position;
             Vector3 playerposition = player.transform.position;
-            var r = CustomOption.CustomOptions.SelfBomberScope.GetFloat();
+            var r = CustomOptions.SelfBomberScope.GetFloat();
             if ((position.x + r >= playerposition.x) && (playerposition.x >= position.x - r))
             {
                 if ((position.y + r >= playerposition.y) && (playerposition.y >= position.y - r))

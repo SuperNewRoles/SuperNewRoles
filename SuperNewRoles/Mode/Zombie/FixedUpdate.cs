@@ -6,40 +6,6 @@ namespace SuperNewRoles.Mode.Zombie
 {
     class FixedUpdate
     {
-        /*
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetSkin))]
-        class Setcolorskin
-        {
-            public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref string skinid)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo(__instance.NameText().text + ":" + skinid);
-            }
-        }
-        [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.SetColor))]
-        class Setcolor
-        {
-            public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref int colorid)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo(__instance.NameText().text+":"+colorid);
-            }
-        }
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetHat))]
-        class Sethat
-        {
-            public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref string colorid)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("[SetHat]"+__instance.NameText().text + ":" + colorid);
-            }
-        }
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetVisor))]
-        class Setvisor
-        {
-            public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref string colorid)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("[SetVisor]" + __instance.NameText().text + ":" + colorid);
-            }
-        }
-        */
         public static float NameChangeTimer;
         public static bool IsStart;
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
@@ -71,15 +37,6 @@ namespace SuperNewRoles.Mode.Zombie
                             {
                                 if (!p.IsZombie())
                                 {
-                                    /*
-                                    p.UncheckSetVisor("visor_EmptyVisor");
-                                    */
-                                    p.RpcSetColor(BlueIndex);
-                                    /*
-                                    p.RpcSetHat("hat_police");
-
-                                    p.RpcSetSkin("skin_Police");
-                                    */
                                     ZombieOptions.ChengeSetting(p);
                                 }
                             }
