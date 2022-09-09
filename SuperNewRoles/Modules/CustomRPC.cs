@@ -5,7 +5,6 @@ using System.Linq;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
-using InnerNet;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
@@ -236,6 +235,7 @@ namespace SuperNewRoles.Modules
         SharePhotograph,
         UseAdminTime,
         UseCameraTime,
+        UseVitalsTime,
     }
     public static class RPCProcedure
     {
@@ -1045,6 +1045,8 @@ namespace SuperNewRoles.Modules
         }
         public static void UseAdminTime(float time) => AdminPatch.RestrictAdminTime -= time;
         public static void UseCameraTime(float time) => CameraPatch.RestrictCameraTime -= time;
+        public static void UseVitalTime(float time) => VitalsPatch.RestrictVitalsTime -= time;
+
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
         class RPCHandlerPatch
         {
@@ -1319,6 +1321,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.UseCameraTime:
                             UseCameraTime(reader.ReadSingle());
+                            break;
+                        case CustomRPC.UseVitalsTime:
+                            UseVitalTime(reader.ReadSingle());
                             break;
                     }
                 }

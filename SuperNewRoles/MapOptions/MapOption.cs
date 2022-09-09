@@ -80,7 +80,7 @@ namespace SuperNewRoles.MapOptions
                 UseMeetingButton = !NotUseMeetingButton.GetBool();
                 AdminPatch.ClearAndReload();
                 CameraPatch.ClearAndReload();
-                //SuperNewRoles.Patch.VitalsPatch.ClearAndReload();
+                VitalsPatch.ClearAndReload();
             }
             else
             {
@@ -146,7 +146,8 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption CanUseAdminTime;
         public static CustomOption RestrictCamera;
         public static CustomOption CanUseCameraTime;
-
+        public static CustomOption RestrictVital;
+        public static CustomOption CanUseVitalTime;
 
         public static Dictionary<byte, PoolablePlayer> playerIcons = new();
         public static CustomOption WireTaskIsRandomOption;
@@ -173,6 +174,8 @@ namespace SuperNewRoles.MapOptions
             CanUseAdminTime = CustomOption.Create(515, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictAdmin);
             RestrictCamera = CustomOption.Create(516, false, CustomOptionType.Generic, "RestrictCameraSetting", true, RestrictDevicesOption);
             CanUseCameraTime = CustomOption.Create(517, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictCamera);
+            RestrictVital = CustomOption.Create(518, false, CustomOptionType.Generic, "RestrictVitalSetting", true, RestrictDevicesOption);
+            CanUseVitalTime = CustomOption.Create(519, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictVital);
 
             RandomMapOption = CustomOption.Create(454, true, CustomOptionType.Generic, "RamdomMapSetting", true, MapOptionSetting);
             RandomMapSkeld = CustomOption.Create(455, true, CustomOptionType.Generic, "RMSkeldSetting", true, RandomMapOption);
