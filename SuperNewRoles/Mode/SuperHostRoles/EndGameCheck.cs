@@ -261,8 +261,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void EndGameForSabotage(ShipStatus __instance)
         {
-                Chat.WinCond = CustomGameOverReason.ImpostorWin;
-                CustomEndGame(__instance, GameOverReason.ImpostorBySabotage, false);
+            Chat.WinCond = CustomGameOverReason.ImpostorWin;
+            CustomEndGame(__instance, GameOverReason.ImpostorBySabotage, false);
         }
     }
 }
