@@ -98,6 +98,7 @@ namespace SuperNewRoles.Patch
         SelfBomb,
         BySelfBomb,
         Ignite,
+        Revenge,
         Disconnected,
         Dead,
         Sabotage

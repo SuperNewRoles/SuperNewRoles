@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
-
-
 using SuperNewRoles.Patch;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
@@ -176,8 +175,9 @@ namespace SuperNewRoles.Roles
             Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
             Slugger.ClearAndReload();
-            Impostor.ShiftActor.ClearAndReload();
+            ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
+            NekoKabocha.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
