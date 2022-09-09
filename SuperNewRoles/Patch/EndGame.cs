@@ -1058,7 +1058,7 @@ namespace SuperNewRoles.Patch
             if (DebugMode.IsDebugMode()) return false;
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             if (RoleClass.Revolutionist.MeetingTrigger != null) return false;
-            var statistics = new PlayerStatistics(__instance);
+            PlayerStatistics statistics = new(__instance);
             if (!ModeHandler.IsMode(ModeId.Default))
             {
                 ModeHandler.EndGameChecks(__instance, statistics);
@@ -1072,6 +1072,7 @@ namespace SuperNewRoles.Patch
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
                 if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
+                if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
                 if (!PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             }
             return false;
@@ -1123,9 +1124,20 @@ namespace SuperNewRoles.Patch
             return false;
         }
 
+        public static bool CheckAndEndGameForHitmanWin(ShipStatus __instance, PlayerStatistics statistics)
+        {
+            if (statistics.TotalAlive == 1 && statistics.HitmanAlive == 1)
+            {
+                __instance.enabled = false;
+                var endReason = (GameOverReason)CustomGameOverReason.HitmanWin;
+                CustomEndGame(endReason, false);
+                return true;
+            }
+            return false;
+        }
         public static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard() && !EvilEraser.IsNeetWinGuard())
+            if (statistics.CanImpostorWin)
             {
                 __instance.enabled = false;
                 var endReason = TempData.LastDeathReason switch
@@ -1261,6 +1273,9 @@ namespace SuperNewRoles.Patch
             public int TotalAlive { get; set; }
             public int TeamJackalAlive { get; set; }
             public int EgoistAlive { get; set; }
+            public int HitmanAlive { get; set; }
+            public bool CanImpostorWin { get; set; }
+            public bool CanJackalWin { get; set; }
             public PlayerStatistics(ShipStatus __instance)
             {
                 GetPlayerCounts();
@@ -1272,6 +1287,7 @@ namespace SuperNewRoles.Patch
                 int numTotalAlive = 0;
                 int numTotalJackalTeam = 0;
                 int numTotalEgoist = 0;
+                int numHitmanAlive= 0;
 
                 for (int i = 0; i < GameData.Instance.PlayerCount; i++)
                 {
@@ -1284,6 +1300,10 @@ namespace SuperNewRoles.Patch
                             if (playerInfo.Object.IsRole(RoleId.Jackal, RoleId.Sidekick, RoleId.TeleportingJackal, RoleId.JackalSeer, RoleId.SidekickSeer))
                             {
                                 numTotalJackalTeam++;
+                            }
+                            else if (playerInfo.Object.IsRole(RoleId.Hitman))
+                            {
+                                numHitmanAlive++;
                             }
                             else if (playerInfo.Object.IsImpostor())
                             {
@@ -1309,6 +1329,8 @@ namespace SuperNewRoles.Patch
                 CrewAlive = numCrewAlive;
                 TeamJackalAlive = numTotalJackalTeam;
                 EgoistAlive = numTotalEgoist;
+                HitmanAlive = numHitmanAlive;
+                CanImpostorWin =  this.TeamImpostorsAlive >= this.TotalAlive - this.TeamImpostorsAlive && this.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard() && !EvilEraser.IsNeetWinGuard() && HitmanAlive == 0;
             }
         }
     }
