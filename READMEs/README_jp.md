@@ -80,7 +80,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [Among-Us-Love-Couple-Mod](https://github.com/Woodi-dev/Among-Us-Love-Couple-Mod) - Lovers(ラバーズ)のアイデアは、**Woodi-dev**から来ています。(TheOtherRolesから引用)<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Sheriffのアイデアは **Woodi-dev** から来ています。(TheOtherRolesから引用)<br>
 [au.libhalt.net](https://au.libhalt.net) - ナイス猫又/イビル猫又のアイデアは **au.libhalt.net** から来ています。<br>
-[TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - ベント追加、バイタル移動、昇降機のリフト削除、配線タスク追加、ランダムスポーンのコードを参考にさせていただきました！**Haoming37**さんありがとうございます！<br>
+[TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - シュレディンガーの猫のアイデア元であり、ベント追加、バイタル移動、昇降機のリフト削除、配線タスク追加、ランダムスポーンのコードを参考にさせていただきました！**Haoming37**さんありがとうございます！<br>
 [ExtremeRoles](https://github.com/yukieiji/ExtremeRoles) - マップのタスクが正常に動作しない問題の修正、アサシン&マーリンなどのアイデア元となりました！**yukieiji**さんありがとうございます！<br>
 [Nebula On The Ship](https://github.com/Dolly1016/Nebula) - 全ベントに接続する処理などを参考にさせていただきました。**Dolly1016**さんありがとうございます！<br>
 
@@ -132,7 +132,7 @@ Discordサーバーには全てすでに乗っています。
 | [レベリンガー](#レベリンガー) | [メイヤー](#メイヤー) | [アーソニスト](#アーソニスト)
 | [サイドキラー](#サイドキラー) | [技術者](#技術者) | [マグロ](#マグロ)
 | [サバイバー](#サバイバー) | [占い師](#占い師) | [ニート](#ニート)
-| [イビルシーア](#イビルシーア)|[霊媒師](#霊媒師)
+| [イビルシーア](#イビルシーア)|[霊媒師](#霊媒師)|[シュレディンガーの猫](#シュレディンガーの猫)
 | [ダークキラー](#ダークキラー)|[マッドメイヤー](#マッドメイヤー)
 | [ヴァンパイア](#ヴァンパイア)|[ナイスホーク](#ナイスホーク)
 | [アサシン&マーリン](#アサシン&マーリン)|[マッドスタントマン](#マッドスタントマン)
@@ -1603,6 +1603,17 @@ SuperHostRoles対応。SHRではシェイプシフトによりドアを開閉し
 | 名前 | 説明 |
 |----------|:-------------:|
 | トイレクールタイム | 開閉ボタンのクールタイム
+-----------------------
+
+## シュレディンガーの猫
+###第三陣営
+
+キルされるとキルした相手の陣営の役職に変化する。<br>
+SuperHostRoles対応<br>
+
+### ゲーム設定
+| 名前 | 説明 |
+|----------|:-------------:|
 -----------------------
 
 ## クラード
