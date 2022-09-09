@@ -4,10 +4,10 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using Hazel;
-
-
+using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
+using Agartha;
 
 namespace SuperNewRoles.Patch
 {
@@ -106,6 +106,17 @@ namespace SuperNewRoles.Patch
                             }
                         }
                     }
+                    // アガルタ反映関係の警告文制御
+                    if ((CustomMapNames)PlayerControl.GameOptions.MapId == CustomMapNames.Mira && //マップ設定がMiraである かつ
+                        CustomOptions.enableAgartha.GetBool() && //「アガルタ」が有効である かつ
+                        !ModeHandler.IsMode(ModeId.Default, false) && //モードがデフォルトでない(特殊モードである) かつ
+                        !CustomOptions.DisconnectNotPCOption.GetBool() && //「PC以外キック」が無効(バニラをキックする状態)である かつ
+                        !CustomOptions.IsDebugMode.GetBool()) //Debugモードでない時
+                    {
+                        // 警告を表示する
+                        message += $"\n{ModTranslation.GetString("IsSpecialModeOnAndVanillaKickOff")}\n";
+                        blockStart = true;
+                    }
                 }
                 if (ConfigRoles.IsVersionErrorView.Value)
                 {
@@ -113,7 +124,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
                         {
-                            message += "\n" + ModTranslation.GetString("ErrorHostNoVersion") + "\n";
+                            message += $"\n{ModTranslation.GetString("ErrorHostNoVersion")}\n";
                             blockStart = true;
                         }
                         else
