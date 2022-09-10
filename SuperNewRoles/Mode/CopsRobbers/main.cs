@@ -342,6 +342,9 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 }
             }
         }
+        ///<summary>
+        ///名前を透明にして表示する(ブランクは「プレイヤー」に変換される為使用不可)
+        ///</summary>
         public static void HideName()
         {
             if (AmongUsClient.Instance.AmHost)
@@ -351,10 +354,10 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     string name = "<color=#00000000>" + p.GetDefaultName();
 
                     p.RpcSetName(name);
-                    SuperNewRolesPlugin.Logger.LogInfo("[Mode.CopsRobbers : HideName()]" + p.GetDefaultName() + "の名前を透明に変更しました");
+                    SuperNewRolesPlugin.Logger.LogInfo($"[HideName()] {p.GetDefaultName()} の名前を透明に変更しました");
                 }
             }
-            else SuperNewRolesPlugin.Logger.LogInfo("[Mode.CopsRobbers : HideName()]" + PlayerControl.LocalPlayer.GetDefaultName() + "ホストでない為、名前を透明化する処理を飛ばしました。");
+            else SuperNewRolesPlugin.Logger.LogInfo($"[HideName()] {PlayerControl.LocalPlayer.GetDefaultName()} ホストでない為、名前を透明化する処理を飛ばしました。");
         }
     }
 }
