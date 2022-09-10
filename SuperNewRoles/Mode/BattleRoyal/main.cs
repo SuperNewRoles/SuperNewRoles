@@ -11,6 +11,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
 {
     class Main
     {
+        private static string HostName;
         public static void FixedUpdate()
         {
             if (!AmongUsClient.Instance.AmHost) return;
@@ -57,6 +58,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     {
                         if (!p.Data.Disconnected)
                         {
+                            if (AmongUsClient.Instance.AmHost) HostName = p.GetDefaultName();
                             p.RpcSetNamePrivate($"{ModTranslation.GetString("BattleRoyalRemaining")}{(int)StartSeconds + 1}{ModTranslation.GetString("second")}");
                         }
                     }
@@ -357,7 +359,8 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     }
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        p.RpcSetName(p.GetDefaultName());
+                        if (AmongUsClient.Instance.AmHost) p.RpcSetName($"<color=#fc0000>{HostName}");
+                        else p.RpcSetName(p.GetDefaultName());
                         if (BROption.BRHideName.GetBool() && BROption.BattleRoyalMode.GetBool()) HideName();
                     }
                     new LateTask(() =>
