@@ -41,13 +41,9 @@ namespace SuperNewRoles.Mode.BattleRoyal
                             string EndText = " ";
                             if (BROption.IsKillCountView.GetBool())
                             {
-                                if (KillCount.ContainsKey(p.PlayerId))
-                                {
-                                    EndText += KillCount[p.PlayerId];
-                                } else
-                                {
-                                    EndText += "0";
-                                }
+                                if (KillCount.ContainsKey(p.PlayerId)) EndText += KillCount[p.PlayerId];
+                                else EndText += "0";
+
                                 if (!BROption.IsKillCountViewSelfOnly.GetBool())
                                 {
                                     foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
@@ -106,10 +102,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static bool IsStart;
         public static void MurderPlayer(PlayerControl source, PlayerControl target)
         {
-            if (!KillCount.ContainsKey(source.PlayerId))
-            {
-                KillCount[source.PlayerId] = 0;
-            }
+            if (!KillCount.ContainsKey(source.PlayerId)) KillCount[source.PlayerId] = 0;
             KillCount[source.PlayerId]++;
         }
         [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoExitVent))]
