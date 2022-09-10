@@ -157,6 +157,9 @@ namespace SuperNewRoles.CustomRPC
         Stefinder,
         Stefinder1,
         Slugger,
+        TheFirstLittlePig,
+        TheSecondLittlePig,
+        TheThirdLittlePig,
         //RoleId
     }
 

@@ -614,6 +614,15 @@ namespace SuperNewRoles
                 case RoleId.Slugger:
                     RoleClass.Slugger.SluggerPlayer.Add(player);
                     break;
+                case RoleId.TheFirstLittlePig:
+                    Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.TheFirstLittlePigPlayer.Add(player);
+                    break;
+                case RoleId.TheSecondLittlePig:
+                    Roles.Neutral.TheThreeLittlePigs.TheSecondLittlePig.TheSecondLittlePigPlayer.Add(player);
+                    break;
+                case RoleId.TheThirdLittlePig:
+                    Roles.Neutral.TheThreeLittlePigs.TheThirdLittlePig.TheThirdLittlePigPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1027,7 +1036,16 @@ namespace SuperNewRoles
                 case RoleId.Slugger:
                     RoleClass.Slugger.SluggerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                case RoleId.TheFirstLittlePig:
+                    Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.TheFirstLittlePigPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.TheSecondLittlePig:
+                    Roles.Neutral.TheThreeLittlePigs.TheSecondLittlePig.TheSecondLittlePigPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.TheThirdLittlePig:
+                    Roles.Neutral.TheThreeLittlePigs.TheThirdLittlePig.TheThirdLittlePigPlayer.RemoveAll(ClearRemove);
+                    break;
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1085,6 +1103,9 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
+                case RoleId.TheFirstLittlePig:
+                case RoleId.TheSecondLittlePig:
+                case RoleId.TheThirdLittlePig:
                 //タスククリアか
                     IsTaskClear = true;
                     break;
@@ -1248,6 +1269,9 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
+                case RoleId.TheFirstLittlePig:
+                case RoleId.TheSecondLittlePig:
+                case RoleId.TheThirdLittlePig:
                 //第三か
                     IsNeutral = true;
                     break;
@@ -1538,6 +1562,9 @@ namespace SuperNewRoles
                 else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
                 else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
                 else if (RoleClass.Slugger.SluggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Slugger;
+                else if (Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.TheFirstLittlePigPlayer.IsCheckListPlayerControl(player)) return RoleId.TheFirstLittlePig;
+                else if (Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.TheFirstLittlePigPlayer.IsCheckListPlayerControl(player)) return RoleId.TheFirstLittlePig;
+                else if (Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.TheFirstLittlePigPlayer.IsCheckListPlayerControl(player)) return RoleId.TheFirstLittlePig;
                 //ロールチェック
             }
             catch (Exception e)

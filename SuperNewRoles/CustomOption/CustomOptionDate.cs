@@ -806,6 +806,21 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SluggerChargeTime;
         public static CustomOption SluggerCoolTime;
         public static CustomOption SluggerIsMultiKill;
+
+        public static CustomRoleOption TheThreeLittlePigsOption;
+        public static CustomOption TheThreeLittlePigsTeamCount;
+        public static CustomOption TheFirstLittlePigClearTask;
+        public static CustomOption TheSecondLittlePigClearTask;
+        public static CustomOption TheThirdLittlePigClearTask;
+        public static CustomOption TheThreeLittlePigsTask;
+        public static CustomOption TheThreeLittlePigsCommonTask;
+        public static CustomOption TheThreeLittlePigsShortTask;
+        public static CustomOption TheThreeLittlePigsLongTask;
+        public static CustomOption TheFirstLittlePigAlwaysTimerAdvances;
+        public static CustomOption TheFirstLittlePigFlush;
+        public static CustomOption TheSecondLittlePigMaxGuardCount;
+        public static CustomOption TheThirdLittlePigCounterKillCount;
+        public static CustomOption TheThreeLittlePigsIsAddWin;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1653,6 +1668,22 @@ namespace SuperNewRoles.CustomOption
             PsychometristIsCheckFootprints = CustomOption.Create(890, false, CustomOptionType.Crewmate, "PsychometristIsCheckFootprints", true, PsychometristOption);
             PsychometristCanCheckFootprintsTime = CustomOption.Create(891, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);
             PsychometristIsReportCheckedDeadBody = CustomOption.Create(892, false, CustomOptionType.Crewmate, "PsychometristIsReportCheckedDeadBody", false, PsychometristOption);
+
+            TheThreeLittlePigsOption = new CustomRoleOption(893, false, CustomOptionType.Neutral, "TheThreeLittlePigsName", Roles.Neutral.TheThreeLittlePigs.color, 1);
+            TheThreeLittlePigsTeamCount = CustomOption.Create(894, false, CustomOptionType.Neutral, "TheThreeLittlePigsTeamCountSetting", 1f, 1f, 4f, 1f, TheThreeLittlePigsOption);
+            TheFirstLittlePigClearTask = CustomOption.Create(895, false, CustomOptionType.Neutral, "TheFirstLittlePigClearTaskSetting", rates, TheThreeLittlePigsOption);
+            TheSecondLittlePigClearTask = CustomOption.Create(896, false, CustomOptionType.Neutral, "TheSecondLittlePigClearTaskSetting", rates, TheThreeLittlePigsOption);
+            TheThirdLittlePigClearTask = CustomOption.Create(897, false, CustomOptionType.Neutral, "TheThirdLittlePigClearTaskSetting", rates, TheThreeLittlePigsOption);
+            TheThreeLittlePigsTask = CustomOption.Create(898, false, CustomOptionType.Neutral, "TheThreeLittlePigsTaskSetting", false, TheThreeLittlePigsOption);
+            var TheThreeLittlePigsoption = SelectTask.TaskSetting(899, 900, 971, TheThreeLittlePigsTask, CustomOptionType.Neutral, false);
+            TheThreeLittlePigsCommonTask = TheThreeLittlePigsoption.Item1;
+            TheThreeLittlePigsShortTask = TheThreeLittlePigsoption.Item2;
+            TheThreeLittlePigsLongTask = TheThreeLittlePigsoption.Item3;
+            TheFirstLittlePigAlwaysTimerAdvances = CustomOption.Create(972, false, CustomOptionType.Neutral, "TheFirstLittlePigAlwaysTimerAdvancesSetting", false, TheThreeLittlePigsOption);
+            TheFirstLittlePigFlush = CustomOption.Create(973, false, CustomOptionType.Neutral, "TheFirstLittlePigFlushSetting", true, TheThreeLittlePigsOption);
+            TheSecondLittlePigMaxGuardCount = CustomOption.Create(874, false, CustomOptionType.Neutral, "TheSecondLittlePigMaxGuardCountSetting", 1f, 1f, 15f, 1f, TheThreeLittlePigsOption);
+            TheThirdLittlePigCounterKillCount = CustomOption.Create(875, false, CustomOptionType.Neutral, "TheThirdLittlePigCounterKillCountSetting", 1f, 1f, 15f, 1f, TheThreeLittlePigsOption);
+            TheThreeLittlePigsIsAddWin = CustomOption.Create(976, false, CustomOptionType.Neutral, "TheThreeLittlePigsIsAddWinSetting", false, TheThreeLittlePigsOption);
 
             //表示設定
 

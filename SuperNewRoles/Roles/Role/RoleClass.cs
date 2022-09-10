@@ -176,6 +176,7 @@ namespace SuperNewRoles.Roles
             Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
             Slugger.ClearAndReload();
+            Neutral.TheThreeLittlePigs.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();

@@ -155,6 +155,13 @@ namespace SuperNewRoles.Patch
                 int shortt = CustomOptions.SuicidalIdeationShortTask.GetInt();
                 if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
             }
+            else if (p.IsRole(RoleId.TheFirstLittlePig, RoleId.TheSecondLittlePig, RoleId.TheThirdLittlePig))
+            {
+                int commont = CustomOptions.TheThreeLittlePigsCommonTask.GetInt();
+                int shortt = CustomOptions.TheThreeLittlePigsShortTask.GetInt();
+                int longt = CustomOptions.TheThreeLittlePigsLongTask.GetInt();
+                if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
+            }
             else if (p.IsLovers() && !p.IsImpostor())
             {
                 int commont = CustomOptions.LoversCommonTask.GetInt();
