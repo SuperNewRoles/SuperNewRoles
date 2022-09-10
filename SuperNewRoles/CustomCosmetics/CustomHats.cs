@@ -466,8 +466,6 @@ namespace SuperNewRoles.CustomCosmetics
             { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },
 
             { "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master", "TheOtherRolesGMHaoming"},
-            { "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master", "TheOtherRolesGM"},
-            { "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master", "TheOtherHats"},
         };
 
         public static List<string> CachedRepos = new();
