@@ -619,6 +619,9 @@ namespace SuperNewRoles
                 case RoleId.ConnectKiller:
                     RoleClass.ConnectKiller.ConnectKillerPlayer.Add(player);
                     break;
+                case RoleId.Doppelganger:
+                    RoleClass.Doppelganger.DoppelggerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1038,6 +1041,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.ConnectKiller:
                     RoleClass.ConnectKiller.ConnectKillerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Doppelganger:
+                    RoleClass.Doppelganger.DoppelggerPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1555,6 +1561,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Slugger.SluggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Slugger;
                 else if (ShiftActor.Player.IsCheckListPlayerControl(player)) return RoleId.ShiftActor;
                 else if (RoleClass.ConnectKiller.ConnectKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.ConnectKiller;
+                else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
                 //ロールチェック
             }
             catch (Exception e)
