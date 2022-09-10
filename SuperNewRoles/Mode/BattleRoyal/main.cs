@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
-
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
+using static SuperNewRoles.Mode.CopsRobbers.Main;
 
 namespace SuperNewRoles.Mode.BattleRoyal
 {
@@ -357,8 +357,8 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     }
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        p.GetDefaultName();
-                        p.RpcSetName("");//Playing on SuperNewRoles!");
+                        p.RpcSetName(p.GetDefaultName());
+                        if (BROption.BRHideName.GetBool() && BROption.BattleRoyalMode.GetBool()) HideName();
                     }
                     new LateTask(() =>
                     {
