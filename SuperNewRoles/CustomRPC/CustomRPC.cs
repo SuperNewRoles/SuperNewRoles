@@ -7,20 +7,18 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.EndGame;
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
-using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
-using static SuperNewRoles.EndGame.FinalStatusPatch;
+using static SuperNewRoles.Patch.FinalStatusPatch;
 
-namespace SuperNewRoles.CustomRPC
+namespace SuperNewRoles.Modules
 {
     public enum RoleId
     {
@@ -157,6 +155,8 @@ namespace SuperNewRoles.CustomRPC
         Stefinder,
         Stefinder1,
         Slugger,
+        ShiftActor,
+        ConnectKiller,
         //RoleId
     }
 
@@ -183,7 +183,6 @@ namespace SuperNewRoles.CustomRPC
         CreateSidekick,
         CreateSidekickSeer,
         SetSpeedBoost,
-        ShareCosmetics,
         SetShareNamePlate,
         AutoCreateRoom,
         BomKillRPC,
@@ -200,7 +199,6 @@ namespace SuperNewRoles.CustomRPC
         StartGameRPC,
         UncheckedSetTasks = 180,
         SetLovers,
-        SetUseDevice,
         SetDeviceTime,
         UncheckedSetColor,
         UncheckedSetVanilaRole,
@@ -220,9 +218,6 @@ namespace SuperNewRoles.CustomRPC
         BySamuraiKillRPC,
         MakeVent = 200,
         PositionSwapperTP,
-        UseAdminTime,
-        UseCameraTime,
-        UseVitalsTime,
         FixLights,
         RandomSpawn,
         KunaiKill,
@@ -234,7 +229,7 @@ namespace SuperNewRoles.CustomRPC
         UncheckedUsePlatform,
         BlockReportDeadBody,
         PartTimerSet,
-        SetMatryoshkaDeadbody = 220,
+        SetMatryoshkaDeadbody= 220,
         StefinderIsKilled,
         PlayPlayerAnimation,
         SluggerExile,
@@ -475,19 +470,7 @@ namespace SuperNewRoles.CustomRPC
             DestroyableSingleton<RoleManager>.Instance.SetRole(player, (RoleTypes)roletype);
             player.Data.Role.Role = (RoleTypes)roletype;
         }
-        public static void TORVersionShare(int major, int minor, int build, int revision, byte[] guid, int clientId)
-        {
-            /*
-            SuperNewRolesPlugin.Logger.LogInfo("TORGMシェアあああ！");
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, SendOption.Reliable, clientId);
-            writer.WritePacked(major);
-            writer.WritePacked(minor);
-            writer.WritePacked(build);
-            writer.WritePacked(AmongUsClient.Instance.ClientId);
-            writer.Write(revision);
-            writer.Write(guid);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);*/
-        }
+
         public static void SetDeviceTime(float time, byte systemtype)
         {
             var stype = (SystemTypes)systemtype;
@@ -503,60 +486,6 @@ namespace SuperNewRoles.CustomRPC
             {
                 BlockTool.VitalTime = time;
             }
-        }
-        public static void SetUseDevice(byte playerid, byte systemtype, bool Is)
-        {/*
-            var stype = (SystemTypes)systemtype;
-            var player = ModHelpers.PlayerById(playerid);
-            if (stype == SystemTypes.Security)
-            {
-                if (Is)
-                {
-                    if (!BlockTool.CameraPlayers.Contains(player.PlayerId))
-                    {
-                        BlockTool.CameraPlayers.Add(player.PlayerId);
-                    }
-                }
-                else
-                {
-                    if (BlockTool.CameraPlayers.Contains(player.PlayerId))
-                    {
-                        BlockTool.CameraPlayers.Remove(player.PlayerId);
-                    }
-                }
-            } else if (stype == SystemTypes.Admin)
-            {
-                if (Is)
-                {
-                    if (!BlockTool.AdminPlayers.Contains(player.PlayerId))
-                    {
-                        BlockTool.AdminPlayers.Add(player.PlayerId);
-                    }
-                }
-                else
-                {
-                    if (BlockTool.AdminPlayers.Contains(player.PlayerId))
-                    {
-                        BlockTool.AdminPlayers.Remove(player.PlayerId);
-                    }
-                }
-            } else if (stype == SystemTypes.Medical)
-            {
-                if (Is)
-                {
-                    if (!BlockTool.VitalPlayers.Contains(player.PlayerId))
-                    {
-                        BlockTool.VitalPlayers.Add(player.PlayerId);
-                    }
-                }
-                else
-                {
-                    if (BlockTool.VitalPlayers.Contains(player.PlayerId))
-                    {
-                        BlockTool.VitalPlayers.Remove(player.PlayerId);
-                    }
-                }
-            }*/
         }
         public static void UncheckedSetTasks(byte playerId, byte[] taskTypeIds)
         {
@@ -605,17 +534,7 @@ namespace SuperNewRoles.CustomRPC
         {
             EndGameManagerSetUpPatch.IsHaison = true;
         }
-        public static void ShareCosmetics(byte id, string url)
-        {/**
 
-            if (ModHelpers.PlayerById(id) == null) return;
-            if (!SharePatch.PlayerUrl.ContainsKey(id))
-            {
-                SharePatch.PlayerUrl[id] = url;
-                HttpConnect.ShareCosmeticDateDownload(id,url);
-            }
-            **/
-        }
         public static void SetRoomTimerRPC(byte min, byte seconds)
         {
             Patch.ShareGameVersion.timer = (min * 60) + seconds;
@@ -651,7 +570,7 @@ namespace SuperNewRoles.CustomRPC
                 {
                     uint optionId = reader.ReadPackedUInt32();
                     uint selection = reader.ReadPackedUInt32();
-                    CustomOption.CustomOption option = CustomOption.CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
+                    CustomOption option = CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
                     option.UpdateSelection((int)selection);
                 }
             }
@@ -857,6 +776,8 @@ namespace SuperNewRoles.CustomRPC
             {
                 p.ClearRole();
                 p.SetRole(RoleId.Jackal);
+                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
+                RoleClass.Jackal.CanCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.GetBool();
             }
             PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
@@ -867,6 +788,8 @@ namespace SuperNewRoles.CustomRPC
             {
                 p.ClearRole();
                 p.SetRole(RoleId.JackalSeer);
+                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
+                RoleClass.JackalSeer.CanCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.GetBool();
             }
             PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
@@ -1053,15 +976,6 @@ namespace SuperNewRoles.CustomRPC
         public static void PositionSwapperTP(byte SwapPlayerID, byte SwapperID)
         {
             SuperNewRolesPlugin.Logger.LogInfo("スワップ開始！");
-            /*if (SubmergedCompatibility.isSubmerged())
-            {
-                if (PlayerControl.LocalPlayer.PlayerId == SwapPlayerID){
-                    SubmergedCompatibility.ChangeFloor(SwapperPlayerFloor);
-                }
-                else{
-                    SubmergedCompatibility.ChangeFloor(SwapPlayerFloor);
-                }
-            }*/
 
             var SwapPlayer = ModHelpers.PlayerById(SwapPlayerID);
             var SwapperPlayer = ModHelpers.PlayerById(SwapperID);
@@ -1069,7 +983,7 @@ namespace SuperNewRoles.CustomRPC
             var SwapperPosition = SwapperPlayer.transform.position;
             //Text
             var rand = new System.Random();
-            if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.IsRole(RoleId.PositionSwapper)*/)
+            if (SwapperID == PlayerControl.LocalPlayer.PlayerId)
             {
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;
                 SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
@@ -1089,19 +1003,7 @@ namespace SuperNewRoles.CustomRPC
                 }
             }
         }
-        /*
-        public static void UseAdminTime(float time)
-        {
-            Patch.AdminPatch.RestrictAdminTime -= time;
-        }
-        public static void UseCameraTime(float time)
-        {
-            Patch.CameraPatch.RestrictCameraTime -= time;
-        }
-        public static void UseVitalTime(float time)
-        {
-            Patch.VitalsPatch.RestrictVitalsTime -= time;
-        }*/
+
         public static void RandomSpawn(byte playerId, byte locId)
         {
             HudManager.Instance.StartCoroutine(Effects.Lerp(3f, new Action<float>((p) =>
@@ -1181,20 +1083,6 @@ namespace SuperNewRoles.CustomRPC
                     byte packetId = callId;
                     switch ((CustomRPC)packetId)
                     {
-
-                        // Main Controls
-                        /*
-                            case CustomRPC.TORVersionShare:
-                             int majorTOR = reader.ReadPackedInt32();
-                             int minorTOR = reader.ReadPackedInt32();
-                             int patchTOR = reader.ReadPackedInt32();
-                             int versionOwnerIdTOR = reader.ReadPackedInt32();
-                             byte revisionTOR = 0xFF;
-                             byte[] guidTOR;
-                             revisionTOR = reader.ReadByte();
-                             guidTOR = reader.ReadBytes(16);
-                             CustomRPC.TORVersionShare(majorTOR, minorTOR, patchTOR, revisionTOR == 0xFF ? -1 : revisionTOR, guidTOR, versionOwnerIdTOR);
-                            break;*/
                         case CustomRPC.ShareOptions:
                             ShareOptions((int)reader.ReadPackedUInt32(), reader);
                             break;
@@ -1269,9 +1157,6 @@ namespace SuperNewRoles.CustomRPC
                         case CustomRPC.SetSpeedBoost:
                             SetSpeedBoost(reader.ReadBoolean(), reader.ReadByte());
                             break;
-                        case CustomRPC.ShareCosmetics:
-                            ShareCosmetics(reader.ReadByte(), reader.ReadString());
-                            break;
                         case CustomRPC.SetShareNamePlate:
                             SetShareNamePlate(reader.ReadByte(), reader.ReadByte());
                             break;
@@ -1319,9 +1204,6 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.SetLovers:
                             SetLovers(reader.ReadByte(), reader.ReadByte());
-                            break;
-                        case CustomRPC.SetUseDevice:
-                            SetUseDevice(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                             break;
                         case CustomRPC.SetDeviceTime:
                             SetDeviceTime(reader.ReadSingle(), reader.ReadByte());
@@ -1381,17 +1263,6 @@ namespace SuperNewRoles.CustomRPC
                         case CustomRPC.PositionSwapperTP:
                             PositionSwapperTP(reader.ReadByte(), reader.ReadByte());
                             break;
-                        /*
-                    case CustomRPC.UseAdminTime:
-                        UseAdminTime(reader.ReadSingle());
-                        break;
-                    case CustomRPC.UseCameraTime:
-                        UseCameraTime(reader.ReadSingle());
-                        break;
-                    case CustomRPC.UseVitalsTime:
-                        UseVitalTime(reader.ReadSingle());
-                        break;
-                        */
                         case CustomRPC.FixLights:
                             FixLights();
                             break;
