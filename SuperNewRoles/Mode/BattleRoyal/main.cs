@@ -57,7 +57,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                     }
                                 }
                             }
-                            p.RpcSetNamePrivate("(" + alives + "/" + allplayer + ")"+EndText);
+                            p.RpcSetNamePrivate($"({alives}/{allplayer}){EndText}");
                         }
                     }
                     AlivePlayer = alives;
