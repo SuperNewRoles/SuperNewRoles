@@ -19,7 +19,10 @@ namespace SuperNewRoles
         public const string Id = "jp.ykundesu.supernewroles";
         //バージョンと同時にIsBetaも変える
         public const string VersionString = "1.4.2.1";
-        public static bool IsBeta { get { return ThisAssembly.Git.Branch != MasterBranch; } }
+        public static bool IsBeta { get { return IsViewBetaText && ThisAssembly.Git.Branch != MasterBranch; } }
+
+        //プルリク時にfalseだと指摘してください
+        public const bool IsViewBetaText = false;
 
         public const string ModUrl = "ykundesu/SuperNewRoles";
         public const string MasterBranch = "master";
