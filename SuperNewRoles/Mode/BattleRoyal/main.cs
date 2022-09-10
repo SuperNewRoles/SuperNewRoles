@@ -37,7 +37,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     {
                         if (!p.Data.Disconnected)
                         {
-                            p.RpcSetNamePrivate("(" + alives + "/" + allplayer + ")");
+                            p.RpcSetNamePrivate($"({alives}/{allplayer})");
                         }
                     }
                     AlivePlayer = alives;
@@ -57,7 +57,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     {
                         if (!p.Data.Disconnected)
                         {
-                            p.RpcSetNamePrivate(ModTranslation.GetString("BattleRoyalRemaining") + ((int)StartSeconds + 1) + ModTranslation.GetString("second"));
+                            p.RpcSetNamePrivate($"{ModTranslation.GetString("BattleRoyalRemaining")}{(int)StartSeconds + 1}{ModTranslation.GetString("second")}");
                         }
                     }
                     UpdateTime += 1f;
