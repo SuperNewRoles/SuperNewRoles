@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using SuperNewRoles.CustomOption;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral
