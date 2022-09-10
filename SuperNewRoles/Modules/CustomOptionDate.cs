@@ -812,6 +812,15 @@ namespace SuperNewRoles.Modules
 
         public static CustomRoleOption ConnectKillerOption;
         public static CustomOption ConnectKillerPlayerCount;
+        
+        public static CustomRoleOption CrackerOption;
+        public static CustomOption CrackerPlayerCount;
+        public static CustomOption CrackerCoolTime;
+        public static CustomOption CrackerIsAdminView;
+        public static CustomOption CrackerIsVitalsView;
+        public static CustomOption CrackerOneTurnSelectCount;
+        public static CustomOption CrackerAllTurnSelectCount;
+        public static CustomOption CrackerIsSelfNone;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1632,6 +1641,15 @@ namespace SuperNewRoles.Modules
 
             ConnectKillerOption = new CustomRoleOption(982, false, CustomOptionType.Impostor, "ConnectKillerName", RoleClass.ConnectKiller.color, 1);
             ConnectKillerPlayerCount = CustomOption.Create(983, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConnectKillerOption);
+            
+            CrackerOption = new CustomRoleOption(991, false, CustomOptionType.Impostor, "CrackerName",RoleClass.Cracker.color, 1);
+            CrackerPlayerCount = CustomOption.Create(992, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CrackerOption);
+            CrackerCoolTime = CustomOption.Create(986, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, CrackerOption);
+            CrackerIsAdminView = CustomOption.Create(987, false, CustomOptionType.Impostor, "CrackerIsAdminView", false, CrackerOption);
+            CrackerIsVitalsView = CustomOption.Create(988, false, CustomOptionType.Impostor, "CrackerIsVitalsView", false, CrackerOption);
+            CrackerOneTurnSelectCount = CustomOption.Create(989, false, CustomOptionType.Impostor, "CrackerOneTurnSelectCount", 1f, 1f, 15f, 1f, CrackerOption);
+            CrackerAllTurnSelectCount = CustomOption.Create(990, false, CustomOptionType.Impostor, "CrackerAllTurnSelectCount", 3f, 1f, 100f, 1f, CrackerOption);
+            CrackerIsSelfNone = CustomOption.Create(993, false, CustomOptionType.Impostor, "CrackerIsSelfNone", true, CrackerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

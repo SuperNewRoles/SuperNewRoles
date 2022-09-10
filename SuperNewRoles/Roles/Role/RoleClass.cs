@@ -178,6 +178,7 @@ namespace SuperNewRoles.Roles
             Slugger.ClearAndReload();
             Impostor.ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
+            Cracker.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -3042,6 +3043,39 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 ConnectKillerPlayer = new();
+            }
+        }
+        public static class Cracker
+        {
+            public static List<PlayerControl> CrackerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static List<byte> CrackedPlayers;
+            public static List<byte> currentCrackedPlayers;
+            public static int DefaultCount;
+            public static int TurnCount;
+            public static int MaxTurnCount;
+            public static List<PlayerControl> CurrentCrackedPlayerControls {
+                get
+                {
+                    if (currentCrackedPlayerControls.Count != currentCrackedPlayers.Count)
+                    {
+                        List<PlayerControl> newList = new();
+                        foreach (byte p in currentCrackedPlayers) newList.Add(ModHelpers.PlayerById(p));
+                        currentCrackedPlayerControls = newList;
+                    }
+                    return currentCrackedPlayerControls;
+                }
+            }
+            private static List<PlayerControl> currentCrackedPlayerControls;
+            public static void ClearAndReload()
+            {
+                CrackerPlayer = new();
+                CrackedPlayers = new();
+                currentCrackedPlayers = new();
+                MaxTurnCount = CustomOptions.CrackerAllTurnSelectCount.GetInt();
+                DefaultCount = CustomOptions.CrackerOneTurnSelectCount.GetInt();
+                TurnCount = DefaultCount;
+                currentCrackedPlayerControls = new();
             }
         }
         //新ロールクラス

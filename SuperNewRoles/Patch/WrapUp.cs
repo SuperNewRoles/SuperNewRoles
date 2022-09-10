@@ -104,6 +104,7 @@ namespace SuperNewRoles.Patch
             SecretRoom.Reset();
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Roles.CrewMate.Painter.WrapUp();
             Roles.Neutral.Photographer.WrapUp();
+            Roles.Impostor.Cracker.WrapUp();
             if (exiled == null) return;
 
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();

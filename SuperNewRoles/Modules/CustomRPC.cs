@@ -157,6 +157,7 @@ namespace SuperNewRoles.Modules
         Slugger,
         ShiftActor,
         ConnectKiller,
+        Cracker,
         //RoleId
     }
 
@@ -235,9 +236,14 @@ namespace SuperNewRoles.Modules
         PainterPaintSet,
         PainterSetTarget,
         SharePhotograph,
+        CrackerCrack
     }
     public static class RPCProcedure
     {
+        public static void CrackerCrack(byte Target)
+        {
+            if (!RoleClass.Cracker.CrackedPlayers.Contains(Target)) RoleClass.Cracker.CrackedPlayers.Add(Target);
+        }
         public static void SluggerExile(byte SourceId, List<byte> Targets)
         {
             Logger.Info("～SluggerExile～");
@@ -1321,6 +1327,9 @@ namespace SuperNewRoles.Modules
                                 Targets.Add(reader.ReadByte());
                             }
                             SluggerExile(source, Targets);
+                            break;
+                        case CustomRPC.CrackerCrack:
+                            CrackerCrack(reader.ReadByte());
                             break;
                     }
                 }

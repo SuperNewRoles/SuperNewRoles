@@ -57,7 +57,7 @@ namespace SuperNewRoles.Buttons
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();
 
-            button.OnClick.AddListener((UnityEngine.Events.UnityAction)OnClickEvent);
+            button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClickEvent()));
 
             LocalScale = actionButton.transform.localScale;
             if (textTemplate)
@@ -72,7 +72,7 @@ namespace SuperNewRoles.Buttons
 
         void OnClickEvent()
         {
-            if ((this.Timer < 0f) || (this.HasEffect && this.isEffectActive && this.effectCancellable))
+            if ((this.Timer < 0f && this.CouldUse()) || (this.HasEffect && this.isEffectActive && this.effectCancellable))
             {
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
                 this.OnClick();

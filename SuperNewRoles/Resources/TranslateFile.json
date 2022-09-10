@@ -4584,13 +4584,37 @@
         "0": ".",
         "11": "\u3067\u3059"
     },
-    "MadRolesCanFixComms": {
-        "0": "Mad roles can fix comms sabotage",
-        "11": "\u30de\u30c3\u30c9\u5f79\u8077\u304c\u30b3\u30df\u30e5\u30b5\u30dc\u3092\u6cbb\u305b\u308b"
+    "CrackerName": {
+        "0": "Cracker",
+        "11": "\u30af\u30e9\u30c3\u30ab\u30fc"
     },
-    "MadRolesCanFixElectrical": {
-        "0": "Mad roles can fix electrical sabotage",
-        "11": "\u30de\u30c3\u30c9\u5f79\u8077\u304c\u505c\u96fb\u3092\u6cbb\u305b\u308b"
+    "CrackerTitle1": {
+        "0": "Let's crack on and play God!",
+        "11": "\u30af\u30e9\u30c3\u30af\u3057\u3066\u795e\u96a0\u3057\u3092\u3057\u3088\u3046"
+    },
+    "CrackerIsAdminView": {
+        "0": "Counted by Admins",
+        "11": "\u30a2\u30c9\u30df\u30f3\u306b\u30ab\u30a6\u30f3\u30c8\u3055\u308c\u308b"
+    },
+    "CrackerIsVitalsView": {
+        "0": "Counted in Vitals",
+        "11": "\u30d0\u30a4\u30bf\u30eb\u306b\u30ab\u30a6\u30f3\u30c8\u3055\u308c\u308b"
+    },
+    "CrackerOneTurnSelectCount": {
+        "0": "Number of times you can crack in one turn",
+        "11": "1\u30bf\u30fc\u30f3\u5185\u306b\u30af\u30e9\u30c3\u30af\u3067\u304d\u308b\u56de\u6570"
+    },
+    "CrackerAllTurnSelectCount": {
+        "0": "Number of times you can crack during a match",
+        "11": "\u8a66\u5408\u4e2d\u306b\u30af\u30e9\u30c3\u30af\u3067\u304d\u308b\u56de\u6570"
+    },
+    "CrackerIsSelfNone": {
+        "0": "Cracks are unrecognizable to the cracker",
+        "11": "\u30af\u30e9\u30c3\u30af\u8005\u306f\u30af\u30e9\u30c3\u30af\u3092\u8a8d\u8b58\u3067\u304d\u306a\u3044"
+    },
+    "CrackerButtonName": {
+        "0": "Crack!!!",
+        "11": "\u30af\u30e9\u30c3\u30af"
     },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
