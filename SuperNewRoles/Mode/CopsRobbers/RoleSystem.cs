@@ -77,7 +77,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 }
                 catch { }
             }
-            NewName = "<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.Cs(introdate.color, Name);
+            NewName = "<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool() ? " " :  ModHelpers.Cs(introdate.color, Name));
             player.RpcSetNamePrivate(NewName);
         }
         public static void AssignRole()
