@@ -1165,6 +1165,7 @@ namespace SuperNewRoles
                 RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
                 RoleId.Stefinder => RoleClass.Stefinder.UseVent,
+                RoleId.Pavlovsdogs => CustomOptions.PavlovsdogCanVent.GetBool(),
                 _ => false,
             };
         }
@@ -1243,6 +1244,7 @@ namespace SuperNewRoles
                     RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
                     RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
                     RoleId.Photographer => RoleClass.Photographer.IsImpostorVision,
+                    RoleId.Pavlovsdogs => CustomOptions.PavlovsdogIsImpostorView.GetBool(),
                     _ => false,
                 };
         }
