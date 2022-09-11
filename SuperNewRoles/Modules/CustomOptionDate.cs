@@ -913,10 +913,10 @@ namespace SuperNewRoles.Modules
             IsAlwaysReduceCooldownExceptInVent = CustomOption.Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
             IsAlwaysReduceCooldownExceptOnTask = CustomOption.Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
 
-            MeetingOption = CustomOption.Create(992, true, CustomOptionType.Generic, "MeetingOptions", false, null);
-            MaxNumberOfMeetings = CustomOption.Create(993, true, CustomOptionType.Generic, "MaxNumberOfMeetings", 10, 0, 15, 1, MeetingOption);
-            NoVoteMySelf = CustomOption.Create(994, true, CustomOptionType.Generic, "NoVoteMySelf", false, MeetingOption);
-            NoVoteSkip = CustomOption.Create(995, true, CustomOptionType.Generic, "NoVoteSkip", false, MeetingOption);
+            MeetingOption = CustomOption.Create(992, false, CustomOptionType.Generic, "MeetingOptions", false, null);
+            MaxNumberOfMeetings = CustomOption.Create(993, false, CustomOptionType.Generic, "MaxNumberOfMeetings", 10, 0, 15, 1, MeetingOption);
+            NoVoteMySelf = CustomOption.Create(994, false, CustomOptionType.Generic, "NoVoteMySelf", false, MeetingOption);
+            NoVoteSkip = CustomOption.Create(995, false, CustomOptionType.Generic, "NoVoteSkip", false, MeetingOption);
 
             MadRolesCanFixComms = CustomOption.Create(984, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
             MadRolesCanFixElectrical = CustomOption.Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
