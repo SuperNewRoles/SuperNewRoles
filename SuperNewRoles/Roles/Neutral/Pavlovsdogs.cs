@@ -9,7 +9,15 @@ namespace SuperNewRoles.Roles.Neutral
     public static class Pavlovsdogs
     {
         //ここにコードを書きこんでください
-        public static PlayerControl SetTarget()
+        public static void OwnerFixedUpdate()
+        {
+            if (RoleClass.Pavlovsowner.CurrentChildPlayer)
+            {
+                RoleClass.Pavlovsowner.DogArrow.Update(RoleClass.Pavlovsowner.CurrentChildPlayer.transform.position);
+            }
+            RoleClass.Pavlovsowner.DogArrow.arrow.gameObject.SetActive(RoleClass.Pavlovsowner.CurrentChildPlayer);
+        }
+        public static PlayerControl SetTarget(bool IsPavlovsTeamTarget = false)
         {
             PlayerControl result = null;
             float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
@@ -22,7 +30,7 @@ namespace SuperNewRoles.Roles.Neutral
             for (int i = 0; i < allPlayers.Count; i++)
             {
                 GameData.PlayerInfo playerInfo = allPlayers[i];
-                if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.IsDead && playerInfo.Object.IsPavlovsTeam())
+                if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.IsDead && ((IsPavlovsTeamTarget && playerInfo.Object.IsPavlovsTeam()) || (!IsPavlovsTeamTarget && !playerInfo.Object.IsPavlovsTeam())))
                 {
                     PlayerControl @object = playerInfo.Object;
                     if (@object && !@object.inVent)

@@ -823,6 +823,14 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption PavlovsownerOption;
         public static CustomOption PavlovsownerPlayerCount;
         public static CustomOption PavlovsownerCreateCoolTime;
+        public static CustomOption PavlovsownerCreateDogLimit;
+        public static CustomOption PavlovsownerIsTargetImpostorDeath;
+        public static CustomOption PavlovsdogIsImpostorView;
+        public static CustomOption PavlovsdogKillCoolTime;
+        public static CustomOption PavlovsdogCanVent;
+        public static CustomOption PavlovsdogRunAwayKillCoolTime;
+        public static CustomOption PavlovsdogRunAwayDeathTime;
+        public static CustomOption PavlovsdogRunAwayDeathTimeIsMeetingReset;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1654,7 +1662,15 @@ namespace SuperNewRoles.Modules
             (PavlovsownerOption = new CustomRoleOption(992, false, CustomOptionType.Neutral, "PavlovsdogsName",RoleClass.Pavlovsdogs.color, 1))
             .RoleId = RoleId.Pavlovsowner;
             PavlovsownerPlayerCount = CustomOption.Create(993, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PavlovsownerOption);
-            PavlovsownerCreateCoolTime = CustomOption.Create(868, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PavlovsownerOption);
+            PavlovsownerCreateCoolTime = CustomOption.Create(994, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 30f, 2.5f, 60f, 2.5f, PavlovsownerOption);
+            PavlovsownerCreateDogLimit = CustomOption.Create(995, false, CustomOptionType.Neutral, "PavlovsownerCreateDogLimit", 1f, 1f, 15f, 1f, PavlovsownerOption);
+            PavlovsownerIsTargetImpostorDeath = CustomOption.Create(996, false, CustomOptionType.Neutral, "PavlovsownerIsTargetImpostorDeath", true, PavlovsownerOption);
+            PavlovsdogIsImpostorView = CustomOption.Create(997, false, CustomOptionType.Neutral, "PavlovsdogIsImpostorView", true, PavlovsownerOption);
+            PavlovsdogKillCoolTime = CustomOption.Create(998, false, CustomOptionType.Neutral, "SheriffCoolDownSetting", 30f, 2.5f, 120f, 2.5f, PavlovsownerOption);
+            PavlovsdogCanVent = CustomOption.Create(999, false, CustomOptionType.Neutral, "MadMateUseVentSetting", true, PavlovsownerOption);
+            PavlovsdogRunAwayKillCoolTime = CustomOption.Create(1000, false, CustomOptionType.Neutral, "SheriffCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PavlovsownerOption);
+            PavlovsdogRunAwayDeathTime = CustomOption.Create(1001, false, CustomOptionType.Neutral, "PavlovsdogRunAwayDeathTime", 60f, 2.5f, 180f, 2.5f, PavlovsownerOption);
+            PavlovsdogRunAwayDeathTimeIsMeetingReset = CustomOption.Create(1002, false, CustomOptionType.Neutral, "PavlovsdogRunAwayDeathTimeIsMeetingReset", true, PavlovsownerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

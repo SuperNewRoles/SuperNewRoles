@@ -3082,6 +3082,13 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> PavlovsdogsPlayer;
             public static Color32 color = new(244, 169, 106, byte.MaxValue);
+            public static bool IsOwnerDead
+            {
+                get
+                {
+                    return Pavlovsowner.PavlovsownerPlayer.All(x => x.IsDead());
+                }
+            }
             public static void ClearAndReload()
             {
                 PavlovsdogsPlayer = new();
@@ -3092,11 +3099,23 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> PavlovsownerPlayer;
             public static Color32 color = Pavlovsdogs.color;
-            public static bool CanCreateDog => true;
+            public static bool CanCreateDog
+            {
+                get
+                {
+                    Logger.Info($"{CurrentChildPlayer == null} : "+(CurrentChildPlayer == null ? true : CurrentChildPlayer.IsDead()).ToString());
+                    return CurrentChildPlayer == null || CurrentChildPlayer.IsDead();
+                }
+            }
+            public static PlayerControl CurrentChildPlayer;
+            public static Arrow DogArrow;
             public static void ClearAndReload()
             {
                 PavlovsownerPlayer = new();
-                
+                CurrentChildPlayer = null;
+                if (DogArrow != null) GameObject.Destroy(DogArrow.arrow);
+                DogArrow = new(color);
+                DogArrow.arrow.SetActive(false);
             }
         }
         //新ロールクラス

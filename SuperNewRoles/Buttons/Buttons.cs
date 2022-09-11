@@ -107,6 +107,9 @@ namespace SuperNewRoles.Buttons
             PavlovsownerCreatedogButton = new(
                 () =>
                 {
+                    PlayerControl target = Roles.Neutral.Pavlovsdogs.SetTarget();
+                    target.SetRoleRPC(RoleId.Pavlovsdogs);
+                    RoleClass.Pavlovsowner.CurrentChildPlayer = target;
                     PavlovsownerCreatedogButton.Timer = PavlovsownerCreatedogButton.MaxTimer;
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsowner && RoleClass.Pavlovsowner.CanCreateDog; },
