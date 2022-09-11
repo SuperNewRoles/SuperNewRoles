@@ -208,6 +208,32 @@ namespace SuperNewRoles.Patches
                             RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptions.EvilButtonerCount.GetInt() - 1;
                         if (AmongUsClient.Instance.AmHost && RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1) EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
                         return false;
+                    case RoleId.Moving:
+                        if (!RoleClass.Moving.IsSet)
+                        {
+                            RoleClass.Moving.setpostion = PlayerControl.LocalPlayer.GetTruePosition();
+                            RoleClass.Moving.IsSet = true;
+                        }
+                        else
+                        {
+                            foreach (PlayerControl p in RoleClass.Moving.MovingPlayer)
+                                p.RpcSnapTo(RoleClass.Moving.setpostion);
+                            SyncSetting.OptionData.DeepCopy().RoleOptions.ShapeshifterCooldown = RoleClass.Moving.CoolTime;
+                        }
+                        break;
+                    case RoleId.EvilMoving:
+                        if (!RoleClass.Moving.IsSet)
+                        {
+                            RoleClass.EvilMoving.SetPosition = PlayerControl.LocalPlayer.GetTruePosition();
+                            RoleClass.EvilMoving.IsSet = true;
+                        }
+                        else
+                        {
+                            foreach (PlayerControl p in RoleClass.EvilMoving.EvilMovingPlayer)
+                                p.RpcSnapTo(RoleClass.EvilMoving.SetPosition);
+                            SyncSetting.OptionData.DeepCopy().RoleOptions.ShapeshifterCooldown = RoleClass.EvilMoving.CoolTime;
+                        }
+                        break;
                 }
             }
             return true;
@@ -417,6 +443,7 @@ namespace SuperNewRoles.Patches
                         case RoleId.RemoteSheriff:
                         case RoleId.ToiletFan:
                         case RoleId.NiceButtoner:
+                        case RoleId.Moving:
                             return false;
                         case RoleId.Egoist:
                             if (!RoleClass.Egoist.UseKill) return false;

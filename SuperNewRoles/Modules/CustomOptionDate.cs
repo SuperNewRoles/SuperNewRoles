@@ -1068,9 +1068,9 @@ namespace SuperNewRoles.Modules
             StuntManPlayerCount = CustomOption.Create(142, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StuntManOption);
             StuntManMaxGuardCount = CustomOption.Create(143, true, CustomOptionType.Crewmate, "StuntManGuardMaxCountSetting", 1f, 1f, 15f, 1f, StuntManOption);
 
-            MovingOption = new CustomRoleOption(144, false, CustomOptionType.Crewmate, "MovingName", RoleClass.Moving.color, 1);
-            MovingPlayerCount = CustomOption.Create(145, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MovingOption);
-            MovingCoolTime = CustomOption.Create(146, false, CustomOptionType.Crewmate, "MovingCoolDownSetting", 30f, 0f, 60f, 2.5f, MovingOption);
+            MovingOption = new CustomRoleOption(144, true, CustomOptionType.Crewmate, "MovingName", RoleClass.Moving.color, 1);
+            MovingPlayerCount = CustomOption.Create(145, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MovingOption);
+            MovingCoolTime = CustomOption.Create(146, true, CustomOptionType.Crewmate, "MovingCoolDownSetting", 30f, 0f, 60f, 2.5f, MovingOption);
 
             OpportunistOption = new CustomRoleOption(147, true, CustomOptionType.Neutral, "OpportunistName", RoleClass.Opportunist.color, 1);
             OpportunistPlayerCount = CustomOption.Create(148, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], OpportunistOption);
@@ -1201,9 +1201,9 @@ namespace SuperNewRoles.Modules
             LevelingerReviveXP = CustomOption.Create(255, false, CustomOptionType.Impostor, "LevelingerReviveXPSetting", false, LevelingerOption);
             LevelingerUseXPRevive = CustomOption.Create(256, false, CustomOptionType.Impostor, "LevelingerUseXPReviveSetting", 5f, 0f, 20f, 1f, LevelingerReviveXP);
 
-            EvilMovingOption = new CustomRoleOption(257, false, CustomOptionType.Impostor, "EvilMovingName", RoleClass.EvilMoving.color, 1);
-            EvilMovingPlayerCount = CustomOption.Create(258, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilMovingOption);
-            EvilMovingCoolTime = CustomOption.Create(259, false, CustomOptionType.Impostor, "MovingCoolDownSetting", 30f, 0f, 60f, 2.5f, EvilMovingOption);
+            EvilMovingOption = new CustomRoleOption(257, true, CustomOptionType.Impostor, "EvilMovingName", RoleClass.EvilMoving.color, 1);
+            EvilMovingPlayerCount = CustomOption.Create(258, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilMovingOption);
+            EvilMovingCoolTime = CustomOption.Create(259, true, CustomOptionType.Impostor, "MovingCoolDownSetting", 30f, 0f, 60f, 2.5f, EvilMovingOption);
 
             AmnesiacOption = new CustomRoleOption(260, false, CustomOptionType.Neutral, "AmnesiacName", RoleClass.Amnesiac.color, 1);
             AmnesiacPlayerCount = CustomOption.Create(261, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AmnesiacOption);

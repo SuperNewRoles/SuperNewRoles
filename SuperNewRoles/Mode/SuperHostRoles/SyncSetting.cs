@@ -172,6 +172,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.ShapeshifterDuration = RoleClass.Doppelganger.DurationTime;
                     optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Doppelganger.CoolTime;
                     break;
+                case RoleId.Moving:
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Moving.CoolTime;
+                    break;
+                case RoleId.EvilMoving:
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.EvilMoving.CoolTime;
+                    break;
             }
             if (player.IsDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;
@@ -240,14 +246,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
         public class StartGame
         {
-            public static void Prefix()
-            {
-                //   BotHandler.CreateBot();
-            }
-            public static void Postfix()
-            {
-                OptionData = PlayerControl.GameOptions.DeepCopy();
-            }
+            public static void Postfix() => OptionData = PlayerControl.GameOptions.DeepCopy();
         }
     }
 }
