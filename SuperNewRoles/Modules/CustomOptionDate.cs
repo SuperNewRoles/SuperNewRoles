@@ -1279,9 +1279,9 @@ namespace SuperNewRoles.Modules
             ObserverOption = new CustomRoleOption(305, true, CustomOptionType.Crewmate, "ObserverName", RoleClass.Observer.color, 1);
             ObserverPlayerCount = CustomOption.Create(306, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ObserverOption);
 
-            VampireOption = new CustomRoleOption(307, false, CustomOptionType.Impostor, "VampireName", RoleClass.Vampire.color, 1);
-            VampirePlayerCount = CustomOption.Create(308, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VampireOption);
-            VampireKillDelay = CustomOption.Create(309, false, CustomOptionType.Impostor, "VampireKillDelay", 0f, 1f, 60f, 0.5f, VampireOption, format: "unitSeconds");
+            VampireOption = new CustomRoleOption(307, true, CustomOptionType.Impostor, "VampireName", RoleClass.Vampire.color, 1);
+            VampirePlayerCount = CustomOption.Create(308, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VampireOption);
+            VampireKillDelay = CustomOption.Create(309, true, CustomOptionType.Impostor, "VampireKillDelay", 0f, 1f, 60f, 0.5f, VampireOption, format: "unitSeconds");
 
             FoxOption = new CustomRoleOption(310, true, CustomOptionType.Neutral, "FoxName", RoleClass.Fox.color, 1);
             FoxPlayerCount = CustomOption.Create(311, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FoxOption);

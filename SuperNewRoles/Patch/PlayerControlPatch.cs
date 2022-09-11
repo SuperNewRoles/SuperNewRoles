@@ -570,7 +570,6 @@ namespace SuperNewRoles.Patches
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                                 RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
                                 SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
-
                             }
                             else
                             {
@@ -580,6 +579,13 @@ namespace SuperNewRoles.Patches
                                 else SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 不正なキル");
                             }
                             break;
+                        case RoleId.Vampire:
+                            __instance.RpcShowGuardEffect(target);
+                            new LateTask(()=>{
+                                __instance.RpcShowGuardEffect(__instance);
+                                target.RpcMurderPlayer(target);
+                            }, RoleClass.Vampire.KillDelay, "Vampire SHR Kill");
+                            return false;
                     }
                     break;
                 case ModeId.Detective:
