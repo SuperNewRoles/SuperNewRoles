@@ -593,9 +593,6 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
     class MeetingHudStartPatch
     {
-        public static void Prefix()
-        {
-        }
         public static void Postfix()
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
@@ -605,6 +602,15 @@ namespace SuperNewRoles.Patch
                     SyncSetting.CustomSyncSettings();
                 }, 3f, "StartMeeting CustomSyncSetting");
             }
+        }
+    }
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Select))]
+    class MeetingHudSelectPatch
+    {
+        public static bool Prefix(ref bool __result, MeetingHud __instance, [HarmonyArgument(0)] int suspectStateIdx)
+        {
+            if (CustomOptions.NoVoteMySelf.GetBool() && CachedPlayer.LocalPlayer.PlayerControl.PlayerId == suspectStateIdx) return false;
+            return true;
         }
     }
 }

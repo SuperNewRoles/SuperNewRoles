@@ -44,6 +44,7 @@ namespace SuperNewRoles.Modules
 
         public static CustomOption MeetingOption;
         public static CustomOption MaxNumberOfMeetings;
+        public static CustomOption NoVoteMySelf;
 
         public static CustomOption DetectiveRate;
         public static CustomOption DetectivePlayerCount;
@@ -912,7 +913,8 @@ namespace SuperNewRoles.Modules
             IsAlwaysReduceCooldownExceptOnTask = CustomOption.Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
 
             MeetingOption = CustomOption.Create(992, true, CustomOptionType.Generic, "MeetingOptions", false, null);
-            MaxNumberOfMeetings = CustomOption.Create(993, true, CustomOptionType.Generic, "MeetingOptions", 10, 0, 15, 1, MeetingOption);
+            MaxNumberOfMeetings = CustomOption.Create(993, true, CustomOptionType.Generic, "MaxNumberOfMeetings", 10, 0, 15, 1, MeetingOption);
+            NoVoteMySelf = CustomOption.Create(994, true, CustomOptionType.Generic, "NoVoteMySelf", false, MeetingOption);
 
             MadRolesCanFixComms = CustomOption.Create(984, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
             MadRolesCanFixElectrical = CustomOption.Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
