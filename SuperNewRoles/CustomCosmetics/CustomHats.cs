@@ -460,12 +460,14 @@ namespace SuperNewRoles.CustomCosmetics
         //レポURL、レポ
         public static Dictionary<string, string> hatRepos = new()
         {
+
             { "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master", "SuperNewNamePlates" },
 
             { "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master", "mememurahat" },
-            { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },
 
             { "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master", "TheOtherRolesGMHaoming"},
+
+            { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },
         };
 
         public static List<string> CachedRepos = new();
@@ -494,8 +496,10 @@ namespace SuperNewRoles.CustomCosmetics
             string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
             foreach (string repo in repos)
             {
-                if (File.Exists($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json"))
+                if (File.Exists($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json") && hatRepos.FirstOrDefault(data => data.Key == repo).Value is not ("TheOtherHats" or "TheOtherRolesGM"))
                 {
+                    Logger.Info("a");
+                    CustomHats.IsEnd = true;
                     StreamReader sr = new($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json");
 
                     string text = sr.ReadToEnd();
@@ -503,13 +507,15 @@ namespace SuperNewRoles.CustomCosmetics
                     sr.Close();
 
                     JToken jobj = JObject.Parse(text)["hats"];
-                    if (jobj.HasValues)
+                    Logger.Info("b");
+                    if (jobj != null && jobj.HasValues)
                     {
 
                         List<CustomHatOnline> hatdatas = new();
 
                         for (JToken current = jobj.First; current != null; current = current.Next)
                         {
+                            Logger.Info("c");
                             if (current.HasValues)
                             {
                                 CustomHatOnline info = new()
@@ -550,38 +556,38 @@ namespace SuperNewRoles.CustomCosmetics
                                 hatdatas.Add(info);
                             }
                         }
-                        CustomHats.Keys.Add("InnerSloth");
+                        if (!CustomHats.Keys.Contains("InnerSloth"))
+                            CustomHats.Keys.Add("InnerSloth");
+                        Logger.Info("d");
 
                         hatDetails.AddRange(hatdatas);
                         CachedRepos.Add(repo);
                         Repos.Remove(repo);
-                        if (Repos.Count < 1)
-                        {
-                            CustomHats.IsEnd = true;
-                        }
                     }
                 }
             }
-            foreach (string repo in repos)
+            CustomHats.IsEnd = true;
+            Logger.Info(repos.Count.ToString());
+            foreach (var repo in hatRepos)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] ハットスタート:" + repo);
+                SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] ハットスタート:" + repo.Key);
                 if (!ConfigRoles.DownloadSuperNewNamePlates.Value)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("ダウンロードをスキップしました:" + repo);
+                    SuperNewRolesPlugin.Logger.LogInfo("ダウンロードをスキップしました:" + repo.Key);
                 }
                 else
                 {
                     try
                     {
-                        HttpStatusCode status = await FetchHats(repo);
+                        HttpStatusCode status = await FetchHats(repo.Key);
                         if (status != HttpStatusCode.OK)
-                            System.Console.WriteLine($"Custom hats could not be loaded from repo: {repo}\n");
+                            System.Console.WriteLine($"Custom hats could not be loaded from repo: {repo.Key}\n");
                         else
-                            SuperNewRolesPlugin.Logger.LogInfo("ハット終了:" + repo);
+                            SuperNewRolesPlugin.Logger.LogInfo("ハット終了:" + repo.Key);
                     }
                     catch (System.Exception e)
                     {
-                        System.Console.WriteLine($"Unable to fetch hats from repo: {repo}\n" + e.Message);
+                        System.Console.WriteLine($"Unable to fetch hats from repo: {repo.Key}\n" + e.Message);
                     }
                 }
             }
@@ -647,7 +653,8 @@ namespace SuperNewRoles.CustomCosmetics
 
                         info.package = current["package"]?.ToString();
                         SuperNewRolesPlugin.Logger.LogInfo(info.package);
-                        if (info.package != null && !CustomHats.Keys.Contains(info.package))
+                        if (info.package == null) info.package = "YJ*白桜クローゼット";
+                        if (!CustomHats.Keys.Contains(info.package))
                         {
                             CustomHats.Keys.Add(info.package);
                         }
@@ -705,8 +712,7 @@ namespace SuperNewRoles.CustomCosmetics
             }
             catch (System.Exception ex)
             {
-                SuperNewRolesPlugin.Instance.Log.LogError(ex.ToString());
-                System.Console.WriteLine(ex);
+                SuperNewRolesPlugin.Instance.Log.LogError("HatsError: "+ex.ToString());
             }
             return HttpStatusCode.OK;
         }
