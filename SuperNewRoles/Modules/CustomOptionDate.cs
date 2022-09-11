@@ -42,6 +42,9 @@ namespace SuperNewRoles.Modules
         public static CustomOption IsAlwaysReduceCooldownExceptInVent;
         public static CustomOption IsAlwaysReduceCooldownExceptOnTask;
 
+        public static CustomOption MeetingOption;
+        public static CustomOption MaxNumberOfMeetings;
+
         public static CustomOption DetectiveRate;
         public static CustomOption DetectivePlayerCount;
 
@@ -892,6 +895,8 @@ namespace SuperNewRoles.Modules
 
             DisconnectNotPCOption = CustomOption.Create(11, true, CustomOptionType.Generic, Cs(Color.white, "DisconnectNotPC"), true, null, isHeader: true);
 
+            Mode.ModeHandler.OptionLoad();
+
             ZoomOption = CustomOption.Create(618, false, CustomOptionType.Generic, Cs(Color.white, "Zoomafterdeath"), true, null, isHeader: true);
             MouseZoom = CustomOption.Create(619, false, CustomOptionType.Generic, "mousemode", false, ZoomOption);
             ClairvoyantZoom = CustomOption.Create(620, false, CustomOptionType.Generic, "clairvoyantmode", false, ZoomOption);
@@ -899,17 +904,15 @@ namespace SuperNewRoles.Modules
             ZoomDurationTime = CustomOption.Create(622, false, CustomOptionType.Generic, "clairvoyantDurationTime", 5f, 1f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
 
             MapOptions.MapOption.LoadOption();
-
-            //SoothSayerRate = CustomOption.Create(2, Cs(SoothSayer.color,"soothName"),rates, null, true);
-            Mode.ModeHandler.OptionLoad();
-
             MapCustoms.MapCustom.CreateOption();
-
             Sabotage.Options.Load();
 
             IsAlwaysReduceCooldown = CustomOption.Create(682, false, CustomOptionType.Generic, "IsAlwaysReduceCooldown", false, null);
             IsAlwaysReduceCooldownExceptInVent = CustomOption.Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
             IsAlwaysReduceCooldownExceptOnTask = CustomOption.Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
+
+            MeetingOption = CustomOption.Create(992, true, CustomOptionType.Generic, "MeetingOptions", false, null);
+            MaxNumberOfMeetings = CustomOption.Create(993, true, CustomOptionType.Generic, "MeetingOptions", 10, 0, 15, 1, MeetingOption);
 
             MadRolesCanFixComms = CustomOption.Create(984, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
             MadRolesCanFixElectrical = CustomOption.Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
