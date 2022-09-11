@@ -209,29 +209,40 @@ namespace SuperNewRoles.Patches
                         if (AmongUsClient.Instance.AmHost && RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1) EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
                         return false;
                     case RoleId.Moving:
-                        if (!RoleClass.Moving.IsSet)
-                        {
-                            RoleClass.Moving.setpostion = PlayerControl.LocalPlayer.GetTruePosition();
-                            RoleClass.Moving.IsSet = true;
-                        }
-                        else
+                        if (AmongUsClient.Instance.AmHost)
                         {
                             foreach (PlayerControl p in RoleClass.Moving.MovingPlayer)
-                                p.RpcSnapTo(RoleClass.Moving.setpostion);
+                            {
+                                Logger.Info(RoleClass.Moving.SetPositionSHR.ToString());
+                                if (!RoleClass.Moving.IsSet)
+                                {
+                                    RoleClass.Moving.SetPositionSHR = new(p.transform.position.x, p.transform.position.y);
+                                    RoleClass.Moving.IsSet = true;
+                                }
+                                else
+                                {
+                                    p.NetTransform.RpcSnapTo(RoleClass.Moving.SetPositionSHR);
+                                }
+                            }
                             SyncSetting.OptionData.DeepCopy().RoleOptions.ShapeshifterCooldown = RoleClass.Moving.CoolTime;
                         }
                         return false;
                     case RoleId.EvilMoving:
-                    Logger.Info(RoleClass.EvilMoving.SetPosition.ToString());
-                        if (!RoleClass.Moving.IsSet)
-                        {
-                            RoleClass.EvilMoving.SetPosition = PlayerControl.LocalPlayer.GetTruePosition();
-                            RoleClass.EvilMoving.IsSet = true;
-                        }
-                        else
+                        if (AmongUsClient.Instance.AmHost)
                         {
                             foreach (PlayerControl p in RoleClass.EvilMoving.EvilMovingPlayer)
-                                p.RpcSnapTo(RoleClass.EvilMoving.SetPosition);
+                            {
+                                Logger.Info(RoleClass.EvilMoving.SetPositionSHR.ToString());
+                                if (!RoleClass.EvilMoving.IsSet)
+                                {
+                                    RoleClass.EvilMoving.SetPositionSHR = new(p.transform.position.x, p.transform.position.y);
+                                    RoleClass.EvilMoving.IsSet = true;
+                                }
+                                else
+                                {
+                                    p.NetTransform.RpcSnapTo(RoleClass.EvilMoving.SetPositionSHR);
+                                }
+                            }
                             SyncSetting.OptionData.DeepCopy().RoleOptions.ShapeshifterCooldown = RoleClass.EvilMoving.CoolTime;
                         }
                         return false;

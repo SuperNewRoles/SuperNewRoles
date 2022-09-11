@@ -758,6 +758,7 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static DateTime ButtonTimer;
             public static Vector3 setpostion;
+            public static Vector2 SetPositionSHR;
             public static bool IsSet;
             private static Sprite nosetbuttonSprite;
             private static Sprite setbuttonSprite;
@@ -779,6 +780,7 @@ namespace SuperNewRoles.Roles
                 setpostion = new Vector3(0, 0, 0);
                 CoolTime = CustomOptions.MovingCoolTime.GetFloat();
                 IsSet = false;
+                SetPositionSHR =new();
             }
         }
         public static class Opportunist
@@ -1330,13 +1332,13 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> EvilMovingPlayer;
             public static Color32 color = ImpostorRed;
             public static float CoolTime;
-            public static Vector3 SetPosition;
+            public static Vector2 SetPositionSHR;
             public static bool IsSet;
             public static void ClearAndReload()
             {
                 EvilMovingPlayer = new();
                 CoolTime = CustomOptions.EvilMovingCoolTime.GetFloat();
-                SetPosition = new();
+                SetPositionSHR = new();
                 IsSet = false;
             }
         }
