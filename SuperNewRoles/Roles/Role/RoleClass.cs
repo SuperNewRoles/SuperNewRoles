@@ -179,6 +179,8 @@ namespace SuperNewRoles.Roles
             Impostor.ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
             Doppelganger.ClearAndReload();
+            Pavlovsdogs.ClearAndReload();
+            Pavlovsowner.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -3074,6 +3076,27 @@ namespace SuperNewRoles.Roles
                 Duration = DurationTime + 1.1f;
                 DoppelgangerTargets = new();
                 DefaultKillCool = PlayerControl.GameOptions.KillCooldown;
+            }
+        }
+        public static class Pavlovsdogs
+        {
+            public static List<PlayerControl> PavlovsdogsPlayer;
+            public static Color32 color = new(244, 169, 106, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                PavlovsdogsPlayer = new();
+                
+            }
+        }
+        public static class Pavlovsowner
+        {
+            public static List<PlayerControl> PavlovsownerPlayer;
+            public static Color32 color = Pavlovsdogs.color;
+            public static bool CanCreateDog => true;
+            public static void ClearAndReload()
+            {
+                PavlovsownerPlayer = new();
+                
             }
         }
         //新ロールクラス

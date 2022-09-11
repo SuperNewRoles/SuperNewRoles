@@ -197,9 +197,10 @@ namespace SuperNewRoles
             }
             return null;
         }
-        public static bool IsJackalTeam(this PlayerControl player)
-        {
-            return player.GetRole() is
+        public static bool IsPavlovsTeam(this PlayerControl player) => player.GetRole() is
+                RoleId.Pavlovsdogs or
+                RoleId.Pavlovsowner;
+        public static bool IsJackalTeam(this PlayerControl player) => player.GetRole() is
                 RoleId.Jackal or
                 RoleId.Sidekick or
                 RoleId.JackalFriends or
@@ -208,11 +209,9 @@ namespace SuperNewRoles
                 RoleId.JackalSeer or
                 RoleId.SidekickSeer or
                 RoleId.MayorFriends;
-        }
         public static bool IsJackalTeamJackal(this PlayerControl player)
         {
-            RoleId role = player.GetRole();
-            return role is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal;
+            return player.GetRole() is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal;
         }
         public static bool IsJackalTeamSidekick(this PlayerControl player)
         {
@@ -621,6 +620,12 @@ namespace SuperNewRoles
                     break;
                 case RoleId.Doppelganger:
                     RoleClass.Doppelganger.DoppelggerPlayer.Add(player);
+                    break;
+                case RoleId.Pavlovsdogs:
+                    RoleClass.Pavlovsdogs.PavlovsdogsPlayer.Add(player);
+                    break;
+                case RoleId.Pavlovsowner:
+                    RoleClass.Pavlovsowner.PavlovsownerPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -1045,6 +1050,12 @@ namespace SuperNewRoles
                 case RoleId.Doppelganger:
                     RoleClass.Doppelganger.DoppelggerPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Pavlovsdogs:
+                    RoleClass.Pavlovsdogs.PavlovsdogsPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Pavlovsowner:
+                    RoleClass.Pavlovsowner.PavlovsownerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -1103,6 +1114,8 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
+                case RoleId.Pavlovsdogs:
+                case RoleId.Pavlovsowner:
                 //タスククリアか
                     IsTaskClear = true;
                     break;
@@ -1266,6 +1279,8 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
+                case RoleId.Pavlovsdogs:
+                case RoleId.Pavlovsowner:
                 //第三か
                     IsNeutral = true;
                     break;
@@ -1562,6 +1577,8 @@ namespace SuperNewRoles
                 else if (ShiftActor.Player.IsCheckListPlayerControl(player)) return RoleId.ShiftActor;
                 else if (RoleClass.ConnectKiller.ConnectKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.ConnectKiller;
                 else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
+                else if (RoleClass.Pavlovsdogs.PavlovsdogsPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsdogs;
+                else if (RoleClass.Pavlovsowner.PavlovsownerPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsowner;
                 //ロールチェック
             }
             catch (Exception e)

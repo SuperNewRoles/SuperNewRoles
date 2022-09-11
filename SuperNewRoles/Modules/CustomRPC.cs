@@ -158,6 +158,8 @@ namespace SuperNewRoles.Modules
         ShiftActor,
         ConnectKiller,
         Doppelganger,
+        Pavlovsdogs,
+        Pavlovsowner,
         //RoleId
     }
 

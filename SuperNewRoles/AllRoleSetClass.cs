@@ -928,6 +928,7 @@ namespace SuperNewRoles
                 RoleId.ShiftActor => Roles.Impostor.ShiftActor.ShiftActorPlayerCount.GetFloat(),
                 RoleId.ConnectKiller => CustomOptions.ConnectKillerPlayerCount.GetFloat(),
                 RoleId.Doppelganger => CustomOptions.DoppelgangerPlayerCount.GetFloat(),
+                RoleId.Pavlovsowner => CustomOptions.PavlovsownerPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };
@@ -961,7 +962,11 @@ namespace SuperNewRoles
             Crewnotonepar = new();
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {
-                if (intro.RoleId != RoleId.DefaultRole && (intro.RoleId != RoleId.Nun || (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship) && !intro.IsGhostRole)
+                if (intro.RoleId != RoleId.DefaultRole &&
+                    (intro.RoleId != RoleId.Nun || (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship)
+                    && !intro.IsGhostRole
+                    && intro.RoleId != RoleId.Pavlovsdogs
+                    )
                 {
                     var option = IntroDate.GetOption(intro.RoleId);
                     if (option == null) continue;

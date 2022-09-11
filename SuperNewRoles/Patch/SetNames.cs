@@ -157,11 +157,17 @@ namespace SuperNewRoles.Patch
                     roleColors = RoleClass.CrewmateWhite;
                 }
             }
-            else if (PlayerControl.LocalPlayer.IsRole(RoleId.Stefinder) && RoleClass.Stefinder.IsKill)
+            else if (role == RoleId.Stefinder && RoleClass.Stefinder.IsKill)
             {
                 var introdate = IntroDate.GetIntroDate(role);
                 roleNames = introdate.Name;
                 roleColors = RoleClass.ImpostorRed;
+            }
+            else if (p.IsPavlovsTeam())
+            {
+                var introdate = IntroDate.PavlovsdogsIntro;
+                roleNames = introdate.Name + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
+                roleColors = RoleClass.Pavlovsdogs.color;
             }
             else
             {
@@ -413,6 +419,7 @@ namespace SuperNewRoles.Patch
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
             }
+            Roles.Neutral.Pavlovsdogs.SetNameUpdate();
             SetNamesClass.ArsonistSet();
             SetNamesClass.DemonSet();
             SetNamesClass.CelebritySet();

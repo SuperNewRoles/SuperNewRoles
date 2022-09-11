@@ -819,6 +819,10 @@ namespace SuperNewRoles.Modules
         public static CustomOption DoppelgangerCoolTome;
         public static CustomOption DoppelgangerSucTime;
         public static CustomOption DoppelgangerNotSucTime;
+        
+        public static CustomRoleOption PavlovsownerOption;
+        public static CustomOption PavlovsownerPlayerCount;
+        public static CustomOption PavlovsownerCreateCoolTime;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1647,6 +1651,10 @@ namespace SuperNewRoles.Modules
             DoppelgangerSucTime = CustomOption.Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
             DoppelgangerNotSucTime = CustomOption.Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
 
+            (PavlovsownerOption = new CustomRoleOption(992, false, CustomOptionType.Neutral, "PavlovsdogsName",RoleClass.Pavlovsdogs.color, 1))
+            .RoleId = RoleId.Pavlovsowner;
+            PavlovsownerPlayerCount = CustomOption.Create(993, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PavlovsownerOption);
+            PavlovsownerCreateCoolTime = CustomOption.Create(868, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, PavlovsownerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
