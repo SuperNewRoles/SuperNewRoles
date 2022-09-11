@@ -32,7 +32,6 @@ namespace SuperNewRoles.Roles
             RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
             SpeedBooster.ResetCoolDown();
         }
-        public static void ResetScientist() { }
         public static void ScientistEnd()
         {
             RoleClass.NiceScientist.IsScientist = false;
