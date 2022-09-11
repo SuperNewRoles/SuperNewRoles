@@ -211,37 +211,31 @@ namespace SuperNewRoles.Patches
                     case RoleId.Moving:
                         if (AmongUsClient.Instance.AmHost)
                         {
-                            foreach (PlayerControl p in RoleClass.Moving.MovingPlayer)
-                            {
                                 Logger.Info(RoleClass.Moving.SetPositionSHR.ToString());
                                 if (!RoleClass.Moving.IsSet)
                                 {
-                                    RoleClass.Moving.SetPositionSHR = new(p.transform.position.x, p.transform.position.y);
+                                    RoleClass.Moving.SetPositionSHR = new(__instance.transform.position.x, __instance.transform.position.y);
                                     RoleClass.Moving.IsSet = true;
                                 }
                                 else
                                 {
-                                    p.NetTransform.RpcSnapTo(RoleClass.Moving.SetPositionSHR);
+                                    __instance.NetTransform.RpcSnapTo(RoleClass.Moving.SetPositionSHR);
                                 }
-                            }
                             SyncSetting.OptionData.DeepCopy().RoleOptions.ShapeshifterCooldown = RoleClass.Moving.CoolTime;
                         }
                         return false;
                     case RoleId.EvilMoving:
                         if (AmongUsClient.Instance.AmHost)
                         {
-                            foreach (PlayerControl p in RoleClass.EvilMoving.EvilMovingPlayer)
+                            Logger.Info(RoleClass.EvilMoving.SetPositionSHR.ToString());
+                            if (!RoleClass.EvilMoving.IsSet)
                             {
-                                Logger.Info(RoleClass.EvilMoving.SetPositionSHR.ToString());
-                                if (!RoleClass.EvilMoving.IsSet)
-                                {
-                                    RoleClass.EvilMoving.SetPositionSHR = new(p.transform.position.x, p.transform.position.y);
-                                    RoleClass.EvilMoving.IsSet = true;
-                                }
-                                else
-                                {
-                                    p.NetTransform.RpcSnapTo(RoleClass.EvilMoving.SetPositionSHR);
-                                }
+                                RoleClass.EvilMoving.SetPositionSHR = new(__instance.transform.position.x, __instance.transform.position.y);
+                                RoleClass.EvilMoving.IsSet = true;
+                            }
+                            else
+                            {
+                                __instance.NetTransform.RpcSnapTo(RoleClass.EvilMoving.SetPositionSHR);
                             }
                             SyncSetting.OptionData.DeepCopy().RoleOptions.ShapeshifterCooldown = RoleClass.EvilMoving.CoolTime;
                         }
