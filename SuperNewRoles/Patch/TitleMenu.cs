@@ -9,7 +9,6 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
     public class MainMenuPatch
     {
-        public const string snrdiscordserver = "https://discord.gg/6DjxfaDsAj";
         private static void Prefix(MainMenuManager __instance)
         {
             var template = GameObject.Find("ExitGameButton");
@@ -30,7 +29,7 @@ namespace SuperNewRoles.Patch
             SpriteRenderer buttonSpriteDiscord = buttonDiscord.GetComponent<SpriteRenderer>();
 
             passiveButtonDiscord.OnClick = new Button.ButtonClickedEvent();
-            passiveButtonDiscord.OnClick.AddListener((System.Action)(() => Application.OpenURL(snrdiscordserver)));
+            passiveButtonDiscord.OnClick.AddListener((System.Action)(() => Application.OpenURL(SuperNewRolesPlugin.DiscordServer)));
 
             Color discordColor = new Color32(88, 101, 242, byte.MaxValue);
             buttonSpriteDiscord.color = textDiscord.color = discordColor;
