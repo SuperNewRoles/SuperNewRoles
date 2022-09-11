@@ -79,7 +79,7 @@ namespace SuperNewRoles.Patch
                 PassiveButton passivebuttonTwitterSNRDevs = buttonTwitterSNRDevs.GetComponent<PassiveButton>();
                 SpriteRenderer buttonSpriteTwitterSNRDevs = buttonTwitterSNRDevs.GetComponent<SpriteRenderer>();
                 passivebuttonTwitterSNRDevs.OnClick = new Button.ButtonClickedEvent();
-                passivebuttonTwitterSNRDevs.OnClick.AddListener((System.Action)(() => Application.OpenURL("https://twitter.com/SNRDevs")));
+                passivebuttonTwitterSNRDevs.OnClick.AddListener((System.Action)(() => Application.OpenURL(SuperNewRolesPlugin.Twitter1)));
 
                 buttonTwitterSuperNewRoles.SetActive(true);
                 var textTwitterSuperNewRoles = buttonTwitterSuperNewRoles.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
@@ -91,7 +91,7 @@ namespace SuperNewRoles.Patch
                 PassiveButton passivebuttonTwitterSuperNewRoles = buttonTwitterSuperNewRoles.GetComponent<PassiveButton>();
                 SpriteRenderer buttonSpriteTwitterSuperNewRoles = buttonTwitterSuperNewRoles.GetComponent<SpriteRenderer>();
                 passivebuttonTwitterSuperNewRoles.OnClick = new Button.ButtonClickedEvent();
-                passivebuttonTwitterSuperNewRoles.OnClick.AddListener((System.Action)(() => Application.OpenURL("https://twitter.com/SuperNewRoles")));
+                passivebuttonTwitterSuperNewRoles.OnClick.AddListener((System.Action)(() => Application.OpenURL(SuperNewRolesPlugin.Twitter2)));
             }));
         }
     }
