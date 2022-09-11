@@ -608,7 +608,7 @@ namespace SuperNewRoles.Patch
     class MeetingHudSelectPatch
     {
         public static bool Prefix(ref bool __result, MeetingHud __instance, [HarmonyArgument(0)] int suspectStateIdx)
-        {
+        {  // falseにすると投票の可否ポップアップが出現しない
             if (CustomOptions.NoVoteMySelf.GetBool() && CachedPlayer.LocalPlayer.PlayerControl.PlayerId == suspectStateIdx) return false;
             if (CustomOptions.NoVoteSkip.GetBool() && suspectStateIdx == -1) return false;
             return true;
