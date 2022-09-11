@@ -230,7 +230,7 @@ namespace SuperNewRoles.Modules
         UncheckedUsePlatform,
         BlockReportDeadBody,
         PartTimerSet,
-        SetMatryoshkaDeadbody= 220,
+        SetMatryoshkaDeadbody = 220,
         StefinderIsKilled,
         PlayPlayerAnimation,
         SluggerExile,
