@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Hazel;
-
-
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
@@ -261,12 +259,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void EndGameForSabotage(ShipStatus __instance)
         {
-            if (true)//Chat.WinCond == null)
-            {
-                Chat.WinCond = CustomGameOverReason.ImpostorWin;
-                CustomEndGame(__instance, GameOverReason.ImpostorBySabotage, false);
-                return;
-            }
+            Chat.WinCond = CustomGameOverReason.ImpostorWin;
+            CustomEndGame(__instance, GameOverReason.ImpostorBySabotage, false);
         }
     }
 }

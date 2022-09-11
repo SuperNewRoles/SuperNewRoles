@@ -4584,6 +4584,59 @@
         "0": ".",
         "11": "\u3067\u3059"
     },
+    "MadRolesCanFixComms": {
+        "0": "Mad roles can fix comms sabotage",
+        "11": "\u30de\u30c3\u30c9\u5f79\u8077\u304c\u30b3\u30df\u30e5\u30b5\u30dc\u3092\u6cbb\u305b\u308b"
+    },
+    "MadRolesCanFixElectrical": {
+        "0": "Mad roles can fix electrical sabotage",
+        "11": "\u30de\u30c3\u30c9\u5f79\u8077\u304c\u505c\u96fb\u3092\u6cbb\u305b\u308b"
+    },
+    "DoppelgangerName": {
+        "0": "Doppelganger",
+        "11": "\u30c9\u30c3\u30da\u30eb\u30b2\u30f3\u30ac\u30fc",
+        "13": "\u591a\u4f69\u5c14\u6839\u683c"
+    },
+    "DoppelgangerTitle1": {
+        "0": "\"It seems that if you'll meet myself, you're dead\"",
+        "11": "\u540c\u3058\u9854\u306e\u4eba\u306b\u51fa\u4f1a\u3046\u3068\u6b7b\u3093\u3058\u3083\u3046\u3093\u3060\u3063\u3066",
+        "13": "\u4ed6\u4eec\u8bf4\uff0c\u5982\u679c\u4f60\u9047\u5230\u76f8\u540c\u9762\u5b54\u7684\u4eba\uff0c\u4f60\u5c31\u4f1a\u6b7b"
+    },
+    "DoppelgangerDescription": {
+        "0": "Doppelgangers can ShapeShift.\nIf a ShapeShifted target is killed during ShapeShift, the Kill Cool  is shorter.\nIf, instead, a non-shapeShifted target is killed or a non-shapeShifted target is killed, the Kill Cool will be longer.",
+        "11": "\u30c9\u30c3\u30da\u30eb\u30b2\u30f3\u30ac\u30fc\u306f\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u304c\u3067\u304d\u307e\u3059\n\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u3092\u3057\u305f\u72b6\u614b\u3067\u3001\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u306e\u5909\u8eab\u5148\u3092\u30ad\u30eb\u3059\u308b\u3068\u30ad\u30eb\u30af\u30fc\u30eb\u304c\u77ed\u304f\u306a\u308a\u307e\u3059\u3002\n\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u306e\u5909\u8eab\u5148\u4ee5\u5916\u3092\u30ad\u30eb\u3057\u305f\u308a\u3001\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u3092\u3057\u306a\u3044\u72b6\u614b\u3067\u30ad\u30eb\u3059\u308b\u3068\u3001\u30ad\u30eb\u30af\u30fc\u30eb\u304c\u9577\u304f\u306a\u3063\u3066\u3057\u307e\u3059\u3002",
+        "13": "\u4e8c\u91cd\u8eab\u53ef\u4ee5\u53d8\u8eab\u3002\n\u5982\u679c\u4f60\u5728\u79fb\u5f62\u6362\u5f71\u65f6\u6740\u6b7b\u4e00\u4e2a\u79fb\u5f62\u6362\u5f71\u7684\u76ee\u6807\uff0c\u6740\u622e\u51b7\u5374\u65f6\u95f4\u4f1a\u7f29\u77ed\u3002\n\u76f8\u53cd\uff0c\u5982\u679c\u4f60\u6740\u4e86\u4e00\u4e2a\u975e\u79fb\u5f62\u6362\u5f71\u6216\u975e\u79fb\u5f62\u6362\u5f71\u7684\u76ee\u6807\uff0c\u6740\u622e\u51b7\u5374\u4f1a\u66f4\u957f\u3002"
+    },
+    "DoppelgangerDurationTimeSetting": {
+        "0": "Shapeshift Duration",
+        "11": "\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u306e\u6301\u7d9a\u6642\u9593",
+        "13": "\u79fb\u5f62\u6362\u5f71\u6301\u7eed\u65f6\u95f4"
+    },
+    "DoppelgangerCoolDownSetting": {
+        "0": "Shapeshift Cooldown",
+        "11": "\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0",
+        "13": "\u79fb\u5f62\u6362\u5f71\u7684\u51b7\u5374\u65f6\u95f4"
+    },
+    "DoppelgangerSucTimeSetting": {
+        "0": "Kill Cool Time on Success",
+        "11": "\u6210\u529f\u6642\u306e\u30ad\u30eb\u30af\u30fc\u30eb",
+        "13": "\u8d4c\u5f92\u8d4c\u535a\u6210\u529f\u7684\u51fb\u6740\u51b7\u5374"
+    },
+    "DoppelgangerNotSucTimeSetting": {
+        "0": "Kill Cool Time on Failur",
+        "11": "\u5931\u6557\u6642\u306e\u30ad\u30eb\u30af\u30fc\u30eb",
+        "13": "\u8d4c\u5f92\u8d4c\u535a\u5931\u8d25\u7684\u51fb\u6740\u51b7\u5374"
+    },
+    "DoppelgangerButtonName": {
+        "0": "ShapeShift",
+        "11": "\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8",
+        "13": "\u79fb\u5f62\u6362\u5f71"
+    },
+    "DoppelgangerDurationTimerText": {
+        "0": "{0} seconds left to deactivate.",
+        "11": "\u89e3\u9664\u307e\u3067{0}\u79d2",
+        "13": "\u8fd8\u6709{0}\u79d2\u89e3\u9664\u6b66\u88c5"
+    },
     "CrackerName": {
         "0": "Cracker",
         "11": "\u30af\u30e9\u30c3\u30ab\u30fc"

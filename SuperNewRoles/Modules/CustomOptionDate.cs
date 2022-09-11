@@ -821,6 +821,13 @@ namespace SuperNewRoles.Modules
         public static CustomOption CrackerOneTurnSelectCount;
         public static CustomOption CrackerAllTurnSelectCount;
         public static CustomOption CrackerIsSelfNone;
+
+        public static CustomRoleOption DoppelgangerOption;
+        public static CustomOption DoppelgangerPlayerCount;
+        public static CustomOption DoppelgangerDurationTime;
+        public static CustomOption DoppelgangerCoolTome;
+        public static CustomOption DoppelgangerSucTime;
+        public static CustomOption DoppelgangerNotSucTime;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1641,7 +1648,7 @@ namespace SuperNewRoles.Modules
 
             ConnectKillerOption = new CustomRoleOption(982, false, CustomOptionType.Impostor, "ConnectKillerName", RoleClass.ConnectKiller.color, 1);
             ConnectKillerPlayerCount = CustomOption.Create(983, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConnectKillerOption);
-            
+
             CrackerOption = new CustomRoleOption(991, false, CustomOptionType.Impostor, "CrackerName",RoleClass.Cracker.color, 1);
             CrackerPlayerCount = CustomOption.Create(992, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CrackerOption);
             CrackerCoolTime = CustomOption.Create(986, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, CrackerOption);
@@ -1650,6 +1657,13 @@ namespace SuperNewRoles.Modules
             CrackerOneTurnSelectCount = CustomOption.Create(989, false, CustomOptionType.Impostor, "CrackerOneTurnSelectCount", 1f, 1f, 15f, 1f, CrackerOption);
             CrackerAllTurnSelectCount = CustomOption.Create(990, false, CustomOptionType.Impostor, "CrackerAllTurnSelectCount", 3f, 1f, 100f, 1f, CrackerOption);
             CrackerIsSelfNone = CustomOption.Create(993, false, CustomOptionType.Impostor, "CrackerIsSelfNone", true, CrackerOption);
+
+            DoppelgangerOption = new CustomRoleOption(986, true, CustomOptionType.Impostor, "DoppelgangerName", RoleClass.Doppelganger.color, 1);
+            DoppelgangerPlayerCount = CustomOption.Create(987, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
+            DoppelgangerDurationTime = CustomOption.Create(988, true, CustomOptionType.Impostor, "DoppelgangerDurationTimeSetting", 90f, 0f, 250f, 5f, DoppelgangerOption);
+            DoppelgangerCoolTome = CustomOption.Create(989, true, CustomOptionType.Impostor, "DoppelgangerCoolDownSetting", 5f, 5f, 60f, 2.5f, DoppelgangerOption);
+            DoppelgangerSucTime = CustomOption.Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
+            DoppelgangerNotSucTime = CustomOption.Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
