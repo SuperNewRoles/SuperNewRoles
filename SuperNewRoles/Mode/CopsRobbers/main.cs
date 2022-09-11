@@ -9,6 +9,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
 {
     public static class Main
     {
+        static float NameUpdateTime = 0.1f;
         public static void ClearAndReloads()
         {
             IsStart = false;
@@ -282,9 +283,14 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 }
                 return;
             }
+            NameUpdateTime -= Time.deltaTime;
+            if (NameUpdateTime <= 0)
+            {
+                NameUpdateTime = 0.1f;
+                SetNameUpdate.Postfix(CachedPlayer.LocalPlayer);
+            }
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
-                SetNameUpdate.Postfix(CachedPlayer.LocalPlayer);
                 if (player.IsImpostor())
                 {
                     foreach (CachedPlayer p in CachedPlayer.AllPlayers)
