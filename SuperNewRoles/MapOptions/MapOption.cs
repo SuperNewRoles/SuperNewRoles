@@ -25,6 +25,8 @@ namespace SuperNewRoles.MapOptions
         public static bool IsRestrict;
 
         public static bool RandomSpawn;
+
+        public static bool WaitSpawn;
         //タスク関連
         public static bool WireTaskIsRandom;
         public static int WireTaskNum;
@@ -73,7 +75,6 @@ namespace SuperNewRoles.MapOptions
                     ValidationAirship = false;
                     ValidationSubmerged = false;
                 }
-                RandomSpawn = (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship && RandomSpawnOption.GetBool();
                 WireTaskIsRandom = WireTaskIsRandomOption.GetBool();
                 WireTaskNum = WireTaskNumOption.GetInt();
                 UseDeadBodyReport = !NotUseReportDeadBody.GetBool();
@@ -84,7 +85,6 @@ namespace SuperNewRoles.MapOptions
             }
             else
             {
-                RandomSpawn = false;
                 UseAdmin = true;
                 UseVitalOrDoorLog = true;
                 UseCamera = true;
@@ -98,6 +98,8 @@ namespace SuperNewRoles.MapOptions
                 ValidationSubmerged = false;
                 WireTaskIsRandom = false;
             }
+            RandomSpawn = (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship && RandomSpawnOption.GetBool();
+            WaitSpawn = (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship && WaitSpawnOption.GetBool();
             BlockTool.OldDesyncCommsPlayers = new();
             BlockTool.CameraPlayers = new();
 
@@ -145,6 +147,9 @@ namespace SuperNewRoles.MapOptions
 
         public static CustomOption RandomSpawnOption;
 
+        public static CustomOption WaitSpawnOption;
+
+
         public static CustomOption ReactorDurationOption;
         public static CustomOption PolusReactorTimeLimit;
         public static CustomOption MiraReactorTimeLimit;
@@ -176,6 +181,8 @@ namespace SuperNewRoles.MapOptions
             RandomMapAirship = CustomOption.Create(458, true, CustomOptionType.Generic, "RMAirshipSetting", true, RandomMapOption);
 
             RandomSpawnOption = CustomOption.Create(955, false, CustomOptionType.Generic, "RandomSpawnOption", false, null);
+
+            WaitSpawnOption = CustomOption.Create(983, false, CustomOptionType.Generic, "WaitSpawnOption", false, null);
 
             ReactorDurationOption = CustomOption.Create(468, true, CustomOptionType.Generic, "ReactorDurationSetting", false, MapOptionSetting);
             PolusReactorTimeLimit = CustomOption.Create(469, true, CustomOptionType.Generic, "PolusReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
