@@ -25,7 +25,7 @@ namespace SuperNewRoles.Roles.Neutral
 
         public static List<PlayerControl> Player;
         public static Color32 Color = new(128, 128, 128, byte.MaxValue);
-        private static int BeImpRole; // 1ならインポスター、2ならマッドメイト
+        private static int BeImpRole; // 0ならインポスター、1ならマッドメイト
         private static int BeJacRole;
         public static void ClearAndReload()
         {
@@ -36,37 +36,35 @@ namespace SuperNewRoles.Roles.Neutral
 
         public static void CatRoleChange(PlayerControl cat,PlayerControl killer){
             killer.RpcShowGuardEffect(cat);
-            cat.RpcShowGuardEffect(killer);
+            SetNamesClass.SetPlayerNameColor(cat,killer.NameText().color);
             if (killer.IsImpostor()){
-                SetNamesClass.SetPlayerNameColor(cat,RoleClass.ImpostorRed);
-                if (BeImpRole == 1){
-                    cat.RPCSetRoleUnchecked(RoleTypes.Impostor);
-                    cat.SetRole(RoleId.DefaultRole);
+                if (BeImpRole == 0){
+                    DestroyableSingleton<RoleManager>.Instance.SetRole(cat, RoleTypes.Impostor);
                 } else {
-                    cat.SetRole(RoleId.MadMate);
+                    cat.SetRoleRPC(RoleId.MadMate);
+                    if (!cat.IsMod())
+                        cat.RpcSetRoleDesync(RoleTypes.GuardianAngel);
                 }
             } else if (killer.IsJackalTeam()) {
-                SetNamesClass.SetPlayerNameColor(cat,RoleClass.Jackal.color);
-                if (BeJacRole == 1) {
-                    cat.SetRole(RoleId.Jackal);
+                if (BeJacRole == 0) {
+                    cat.SetRoleRPC(RoleId.Jackal);
                 } else {
-                    cat.SetRole(RoleId.JackalFriends);
+                    cat.SetRoleRPC(RoleId.JackalFriends);
+                    if (!cat.IsMod())
+                        cat.RpcSetRoleDesync(RoleTypes.GuardianAngel);
                 }
             } else {
                 switch (killer.GetRole()){
                     case RoleId.Sheriff:
                     case RoleId.RemoteSheriff:
                     case RoleId.MeetingSheriff:
-                        cat.RPCSetRoleUnchecked(RoleTypes.Crewmate);
-                        cat.SetRole(RoleId.DefaultRole);
-                        SetNamesClass.SetPlayerNameColor(cat,Palette.White);
-                        if (!cat.IsMod()){
-                            cat.RpcSetRoleDesync(RoleTypes.GuardianAngel);
-                        }
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(cat, RoleTypes.Crewmate);
+                        cat.SetRoleRPC(RoleId.DefaultRole);
+                        if (!cat.IsMod())
+                            cat.SetRole(RoleTypes.GuardianAngel);
                         break;
                     case RoleId.Egoist:
-                        cat.SetRole(RoleId.Egoist);
-                        SetNamesClass.SetPlayerNameColor(cat,RoleClass.Egoist.color);
+                        cat.SetRoleRPC(RoleId.Egoist);
                         break;
                     case RoleId.SchrodingersCat:
                         Logger.Info("自爆", "Change SchrodingersCat Role");
@@ -76,6 +74,7 @@ namespace SuperNewRoles.Roles.Neutral
                         break;
                 }
             }
+            Mode.SuperHostRoles.FixedUpdate.SetRoleName(cat);
         }
     }
 }

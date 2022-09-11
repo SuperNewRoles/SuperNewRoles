@@ -392,6 +392,11 @@ namespace SuperNewRoles.Patches
                     Logger.Info("SHR", "CheckMurder");
                     if (RoleClass.Assassin.TriggerPlayer != null) return false;
                     Logger.Info("SHR-Assassin.TriggerPlayerを通過", "CheckMurder");
+                    if (target.IsRole(RoleId.SchrodingersCat))
+                    {
+                        Roles.Neutral.SchrodingersCat.CatRoleChange(target, __instance);
+                        return false;
+                    }
                     switch (__instance.GetRole())
                     {
                         case RoleId.RemoteSheriff:
@@ -632,11 +637,6 @@ namespace SuperNewRoles.Patches
                             }
                         }
                     }
-                }
-                else if (target.IsRole(RoleId.SchrodingersCat))
-                {
-                    Roles.Neutral.SchrodingersCat.CatRoleChange(target, __instance);
-                    return false;
                 }
             }
             Logger.Info("全スタントマン系通過", "CheckMurder");
