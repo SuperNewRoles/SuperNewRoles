@@ -220,8 +220,9 @@ namespace SuperNewRoles.Patches
                                 p.RpcSnapTo(RoleClass.Moving.setpostion);
                             SyncSetting.OptionData.DeepCopy().RoleOptions.ShapeshifterCooldown = RoleClass.Moving.CoolTime;
                         }
-                        break;
+                        return false;
                     case RoleId.EvilMoving:
+                    Logger.Info(RoleClass.EvilMoving.SetPosition.ToString());
                         if (!RoleClass.Moving.IsSet)
                         {
                             RoleClass.EvilMoving.SetPosition = PlayerControl.LocalPlayer.GetTruePosition();
@@ -233,7 +234,7 @@ namespace SuperNewRoles.Patches
                                 p.RpcSnapTo(RoleClass.EvilMoving.SetPosition);
                             SyncSetting.OptionData.DeepCopy().RoleOptions.ShapeshifterCooldown = RoleClass.EvilMoving.CoolTime;
                         }
-                        break;
+                        return false;
                 }
             }
             return true;
