@@ -610,7 +610,18 @@ namespace SuperNewRoles.Patch
         public static bool Prefix(ref bool __result, MeetingHud __instance, [HarmonyArgument(0)] int suspectStateIdx)
         {
             if (CustomOptions.NoVoteMySelf.GetBool() && CachedPlayer.LocalPlayer.PlayerControl.PlayerId == suspectStateIdx) return false;
+            if (CustomOptions.NoVoteSkip.GetBool() && suspectStateIdx == -1) return false;
             return true;
+        }
+    }
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
+    class MeetingHudUpdatePatch
+    {
+        static void Postfix(MeetingHud __instance)
+        {
+            // スキップボタンを非表示に
+            if (CustomOptions.NoVoteSkip.GetBool())
+                __instance.SkipVoteButton?.gameObject?.SetActive(false);
         }
     }
 }
