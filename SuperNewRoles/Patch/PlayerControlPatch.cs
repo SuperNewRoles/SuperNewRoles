@@ -211,16 +211,16 @@ namespace SuperNewRoles.Patches
                     case RoleId.Moving:
                         if (AmongUsClient.Instance.AmHost)
                         {
-                                Logger.Info(RoleClass.Moving.SetPositionSHR.ToString());
-                                if (!RoleClass.Moving.IsSet)
-                                {
-                                    RoleClass.Moving.SetPositionSHR = new(__instance.transform.position.x, __instance.transform.position.y);
-                                    RoleClass.Moving.IsSet = true;
-                                }
-                                else
-                                {
-                                    __instance.NetTransform.RpcSnapTo(RoleClass.Moving.SetPositionSHR);
-                                }
+                            Logger.Info(RoleClass.Moving.SetPositionSHR.ToString());
+                            if (!RoleClass.Moving.IsSet)
+                            {
+                                RoleClass.Moving.SetPositionSHR = new(__instance.transform.position.x, __instance.transform.position.y);
+                                RoleClass.Moving.IsSet = true;
+                            }
+                            else
+                            {
+                                __instance.NetTransform.RpcSnapTo(RoleClass.Moving.SetPositionSHR);
+                            }
                             SyncSetting.OptionData.DeepCopy().RoleOptions.ShapeshifterCooldown = RoleClass.Moving.CoolTime;
                         }
                         return false;
