@@ -1,7 +1,7 @@
 using HarmonyLib;
-using SuperNewRoles.CustomOption;
+
 using SuperNewRoles.Patch;
-using static SuperNewRoles.EndGame.CheckGameEndPatch;
+using static SuperNewRoles.Patch.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode
 {
@@ -85,11 +85,6 @@ namespace SuperNewRoles.Mode
                 thisMode = ModeId.CopsRobbers;
                 CopsRobbers.Main.ClearAndReloads();
             }
-            /* else if (IsMode(ModeId.LevelUp, false))
-            {
-                thisMode = ModeId.LevelUp;
-                LevelUp.main.ClearAndReloads();
-            }*/
             else
             {
                 thisMode = ModeId.Default;
@@ -101,11 +96,11 @@ namespace SuperNewRoles.Mode
         }
         public static string[] modes = new string[] { ModTranslation.GetString("HideAndSeekModeName"), ModTranslation.GetString("SuperHostRolesModeName"), ModTranslation.GetString("BattleRoyalModeName"), ModTranslation.GetString("ZombieModeName"), ModTranslation.GetString("RandomColorModeName"), ModTranslation.GetString("NotImpostorCheckModeName"), ModTranslation.GetString("DetectiveModeName"), ModTranslation.GetString("CopsRobbersModeName") };//ModTranslation.GetString("WerewolfModeName") };
 
-        public const string PlayingOnSuperNewRoles = "Playing on <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
+        public const string PlayingOnSuperNewRoles = $"Playing on {SuperNewRolesPlugin.ColorModName}";
 
         public static CustomOptionBlank Mode;
-        public static CustomOption.CustomOption ModeSetting;
-        public static CustomOption.CustomOption ThisModeSetting;
+        public static CustomOption ModeSetting;
+        public static CustomOption ThisModeSetting;
         public static Il2CppSystem.Collections.Generic.List<PlayerControl> TeamHandler(IntroCutscene __instance)
         {
             if (IsMode(ModeId.HideAndSeek)) return HideAndSeek.Intro.ModeHandler();
@@ -133,10 +128,7 @@ namespace SuperNewRoles.Mode
         {
             if (IsMode(ModeId.HideAndSeek)) HideAndSeek.Intro.IntroHandler(__instance);
             else if (IsMode(ModeId.BattleRoyal)) BattleRoyal.Intro.IntroHandler(__instance);
-            else if (IsMode(ModeId.SuperHostRoles)) SuperHostRoles.Intro.IntroHandler();
             else if (IsMode(ModeId.Zombie)) Zombie.Intro.IntroHandler(__instance);
-            else if (IsMode(ModeId.Detective)) SuperHostRoles.Intro.IntroHandler();
-            else if (IsMode(ModeId.Werewolf)) SuperHostRoles.Intro.IntroHandler();
         }
         public static void YouAreIntroHandler(IntroCutscene __instance)
         {
@@ -147,8 +139,8 @@ namespace SuperNewRoles.Mode
         public static void OptionLoad()
         {
             Mode = new CustomOptionBlank(null);
-            ModeSetting = CustomOption.CustomOption.Create(484, true, CustomOptionType.Generic, "ModeSetting", false, Mode, isHeader: true);
-            ThisModeSetting = CustomOption.CustomOption.Create(485, true, CustomOptionType.Generic, "SettingMode", modes, ModeSetting);
+            ModeSetting = CustomOption.Create(484, true, CustomOptionType.Generic, "ModeSetting", false, Mode, isHeader: true);
+            ThisModeSetting = CustomOption.Create(485, true, CustomOptionType.Generic, "SettingMode", modes, ModeSetting);
             HideAndSeek.HideAndSeekOptions.Load();
             BattleRoyal.BROption.Load();
             Zombie.ZombieOptions.Load();

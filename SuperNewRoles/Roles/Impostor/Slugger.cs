@@ -7,7 +7,6 @@ namespace SuperNewRoles.Roles.Impostor
 {
     public static class Slugger
     {
-        //ここにコードを書きこんでください
         public static List<PlayerControl> SetTarget()
         {
             List<PlayerControl> Targets = new();

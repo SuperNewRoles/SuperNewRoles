@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
+
+using SuperNewRoles.Patch;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using UnityEngine;
@@ -18,7 +18,7 @@ namespace SuperNewRoles.Roles
             try
             {
                 if (source == null) source = PlayerControl.LocalPlayer;
-                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ArsonistDouse);
+                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.ArsonistDouse);
                 Writer.Write(source.PlayerId);
                 Writer.Write(target.PlayerId);
                 Writer.EndRPC();

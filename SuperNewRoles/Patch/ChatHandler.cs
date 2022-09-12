@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.Intro;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -36,18 +34,15 @@ namespace SuperNewRoles.Patch
                     {
                         AddChatPatch.SendCommand(__instance.myPlayer, text, AddChatPatch.WelcomeToSuperNewRoles);
                     }
-                }
-                , 1f);
-                return;
+                }, 1f, "Welcome Message");
             }
         }
     }
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
     class AddChatPatch
     {
-        static readonly string SNR = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
-        static readonly string SNRCommander = "<size=200%>" + SNR + "</size>";
-        public static string WelcomeToSuperNewRoles = "<size=150%>Welcome To " + SNR + "</size>";
+        static readonly string SNRCommander = $"<size=200%>{SuperNewRolesPlugin.ColorModName}</size>";
+        public static string WelcomeToSuperNewRoles = $"<size=150%>Welcome To {SuperNewRolesPlugin.ColorModName}</size>";
 
         public static bool Prefix(PlayerControl sourcePlayer, string chatText)
         {
@@ -68,7 +63,7 @@ namespace SuperNewRoles.Patch
                 {
                     betatext = "\nベータ版です！バグには注意してください！";
                 }
-                SendCommand(sourcePlayer, " SuperNewRoles v" + SuperNewRolesPlugin.VersionString + "\nCreate by ykundesu" + betatext);
+                SendCommand(sourcePlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
                 return false;
             }
             else if (
@@ -95,7 +90,7 @@ namespace SuperNewRoles.Patch
                 Commands[0].Equals("/dc", StringComparison.OrdinalIgnoreCase)
                 )
             {
-                SendCommand(sourcePlayer, ModTranslation.GetString("SNROfficialDiscordMessage") + "\n" + MainMenuPatch.snrdiscordserver);
+                SendCommand(sourcePlayer, ModTranslation.GetString("SNROfficialDiscordMessage") + "\n" + SuperNewRolesPlugin.DiscordServer);
                 return false;
             }
             else if (
@@ -140,6 +135,7 @@ namespace SuperNewRoles.Patch
             {
                 if (Commands.Length == 1)
                 {
+                    Logger.Info("Length==1", "/ar");
                     if (sourcePlayer.AmOwner)
                     {
                         RoleCommand(null);
@@ -151,6 +147,7 @@ namespace SuperNewRoles.Patch
                 }
                 else
                 {
+                    Logger.Info("Length!=1", "/ar");
                     PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
                     if (Commands.Length >= 3 && (Commands[2].Equals("mp", StringComparison.OrdinalIgnoreCase) || Commands[2].Equals("myplayer", StringComparison.OrdinalIgnoreCase) || Commands[2].Equals("myp", StringComparison.OrdinalIgnoreCase)))
                     {
@@ -169,10 +166,10 @@ namespace SuperNewRoles.Patch
                 return true;
             }
         }
-        static string GetChildText(List<CustomOption.CustomOption> options, string indent)
+        static string GetChildText(List<CustomOption> options, string indent)
         {
             string text = "";
-            foreach (CustomOption.CustomOption option in options)
+            foreach (CustomOption option in options)
             {
                 text += indent + option.GetName() + ":" + option.GetString() + "\n";
                 if (option.children.Count > 0)
@@ -184,8 +181,9 @@ namespace SuperNewRoles.Patch
         }
         static string GetOptionText(CustomRoleOption RoleOption, IntroDate intro)
         {
+            Logger.Info("GetOptionText", "ChatHandler");
             string text = "";
-            text += GetChildText(RoleOption.children, "  ");
+            text += GetChildText(RoleOption.children, "  ").Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", "");
             return text;
         }
         static string GetTeamText(TeamRoleType type)
@@ -200,6 +198,7 @@ namespace SuperNewRoles.Patch
         }
         static string GetText(CustomRoleOption option)
         {
+            Logger.Info("GetText", "Chathandler");
             string text = "\n";
             IntroDate intro = option.Intro;
             text += GetTeamText(intro.Team) + ModTranslation.GetString("Team") + "\n";
@@ -231,7 +230,7 @@ namespace SuperNewRoles.Patch
                     text += "\n" + Format(ModTranslation.GetString("TeamMessage"), GetTeamText(type)) + "\n\n";
                 }
                 int PlayerCount = 0;
-                foreach (CustomOption.CustomOption opt in option.children)
+                foreach (CustomOption opt in option.children)
                 {
                     if (opt.GetName() == CustomOptions.SheriffPlayerCount.GetName())
                     {
@@ -320,7 +319,7 @@ namespace SuperNewRoles.Patch
                         PlayerControl.LocalPlayer.SetName(SNRCommander + rolename);
                         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
                         PlayerControl.LocalPlayer.SetName(name);
-                    }, time);
+                    }, time, "Set SNR Name");
                 }
                 return;
             }
@@ -356,7 +355,7 @@ namespace SuperNewRoles.Patch
             {
                 yield return new WaitForSeconds(time);
             }
-            var crs = CustomRpcSender.Create();
+            var crs = CustomRpcSender.Create("AllSend");
             crs.AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetName)
                 .Write(SendName)
                 .EndRpc()
@@ -377,7 +376,7 @@ namespace SuperNewRoles.Patch
             {
                 yield return new WaitForSeconds(time);
             }
-            var crs = CustomRpcSender.Create();
+            var crs = CustomRpcSender.Create("PrivateSend");
             crs.AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.GetClientId())
                 .Write(SendName)
                 .EndRpc()
@@ -389,53 +388,5 @@ namespace SuperNewRoles.Patch
                 .EndRpc()
                 .SendMessage();
         }
-    }/*
-    [HarmonyPatch(typeof(ChatController),nameof(ChatController.AddChat))]
-    class ChatHandler
-    {
-        public static bool Prefix(ChatController __instance, [HarmonyArgument(0)] ref PlayerControl sourcePlayer, [HarmonyArgument(1)] ref string chatText)
-        {
-
-            if (!(bool)(UnityEngine.Object)sourcePlayer || !(bool)(UnityEngine.Object)PlayerControl.LocalPlayer)
-                return false;
-            GameData.PlayerInfo data1 = CachedPlayer.LocalPlayer.Data;
-            GameData.PlayerInfo data2 = sourcePlayer.Data;
-            if (data2 == null || data1 == null || data2.IsDead && (!PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.NiceRedRidingHood)))
-                return false;
-            if (__instance.chatBubPool.NotInUse == 0)
-                __instance.chatBubPool.ReclaimOldest();
-            ChatBubble bubble = FastDestroyableSingleton<HudManager>.Instance.Chat.chatBubPool.Get<ChatBubble>();
-            try
-            {
-                bubble.transform.SetParent(__instance.scroller.Inner);
-                bubble.transform.localScale = Vector3.one;
-                int num = (UnityEngine.Object)sourcePlayer == (UnityEngine.Object)PlayerControl.LocalPlayer ? 1 : 0;
-                if (num != 0)
-                    bubble.SetRight();
-                else
-                    bubble.SetLeft();
-                bool flag = (bool)(UnityEngine.Object)data1.Role && (bool)(UnityEngine.Object)data2.Role && data1.Role.NameColor == data2.Role.NameColor;
-                bool didVote = (bool)(UnityEngine.Object)MeetingHud.Instance && MeetingHud.Instance.DidVote(sourcePlayer.PlayerId);
-                https://media.discordapp.net/attachments/965644999578513450/967642315541856286/2022-04-24_3.png?width=875&height=492           bubble.SetCosmetics(data2);
-                __instance.SetChatBubbleName(bubble, data2, data2.IsDead, didVote, flag ? data2.Role.NameColor : Color.white);
-                if (SaveManager.CensorChat)
-                    chatText = BlockedWords.CensorWords(chatText);
-                bubble.SetText(chatText);
-                bubble.AlignChildren();
-                __instance.AlignAllBubbles();
-                if (!FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && FastDestroyableSingleton<HudManager>.Instance.Chat.notificationRoutine == null)
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.notificationRoutine = __instance.StartCoroutine(__instance.BounceDot());
-                if (num != 0)
-                    return false;
-                SoundManager.Instance.PlaySound(__instance.MessageSound, false).pitch = (float)(0.5 + (double)sourcePlayer.PlayerId / 15.0);
-            }
-            catch (Exception ex)
-            {
-                SuperNewRolesPlugin.Logger.LogError((object)ex);
-                FastDestroyableSingleton<HudManager>.Instance.Chat.chatBubPool.Reclaim((PoolableBehavior)bubble);
-            }
-            return false;
-        }
     }
-    **/
 }

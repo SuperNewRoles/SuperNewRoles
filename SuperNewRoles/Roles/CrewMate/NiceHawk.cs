@@ -5,18 +5,6 @@ namespace SuperNewRoles.Roles
 {
     public class NiceHawk
     {
-        public static void TimerEnd()
-        {
-            /**
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Hawk))
-            {
-                MapBehaviour.Instance.Close();
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
-                FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.SetActive(true);
-                FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(true);
-            }
-            **/
-        }
         public class FixedUpdate
         {
             public static void Postfix()
