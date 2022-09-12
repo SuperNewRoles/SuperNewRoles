@@ -185,7 +185,6 @@ namespace SuperNewRoles.Roles
             MapOptions.MapOption.ClearAndReload();
             ChacheManager.Load();
         }
-        public static void NotRole() { }
         public static class SoothSayer
         {
             public static List<PlayerControl> SoothSayerPlayer;
