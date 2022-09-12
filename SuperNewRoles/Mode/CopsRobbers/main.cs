@@ -84,10 +84,10 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                 return true;
             }
-            else
-            {
+            else if (SuperHostRoles.EndGameCheck.CheckAndEndGameForWorkpersonWin(__instance))
                 return false;
-            }
+            else
+                return false;
         }
         public static void ChangeCosmetics()
         {

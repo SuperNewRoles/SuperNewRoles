@@ -97,6 +97,7 @@ namespace SuperNewRoles.Patch
                 {
                     case ModeId.SuperHostRoles:
                     case ModeId.Default:
+                    case ModeId.CopsRobbers:
                         CountDefaultTask(__instance);
                         return;
                     case ModeId.Zombie:
@@ -108,6 +109,7 @@ namespace SuperNewRoles.Patch
                     case ModeId.HideAndSeek:
                         Mode.HideAndSeek.Task.TaskCountHideAndSeek(__instance);
                         return;
+
                 }
             }
         }
