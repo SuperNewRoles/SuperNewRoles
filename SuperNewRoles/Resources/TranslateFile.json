@@ -439,14 +439,14 @@
         "13": "\u5176\u4ed6\u8bbe\u7f6e"
     },
     "optionOn": {
-        "0": "On",
-        "11": "\u30aa\u30f3",
-        "13": "\u5f00\u542f"
+        "0": "<color=#03ff0c>On</color>",
+        "11": "<color=#03ff0c>\u30aa\u30f3</color>",
+        "13": "<color=#03ff0c>\u5f00\u542f</color>"
     },
     "optionOff": {
-        "0": "Off",
-        "11": "\u30aa\u30d5",
-        "13": "\u5173\u95ed"
+        "0": "<color=#f22f21>Off</color>",
+        "11": "<color=#f22f21>\u30aa\u30d5</color>",
+        "13": "<color=#f22f21>\u5173\u95ed</color>"
     },
     "preset1": {
         "0": "Preset 1",
@@ -602,6 +602,11 @@
         "0": "The version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0} is wrong.",
         "11": "{0}\u306e<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u30d0\u30fc\u30b8\u30e7\u30f3\u304c\u9055\u3044\u307e\u3059\u3002",
         "13": "{0}\u5b89\u88c5\u7684<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u6a21\u7ec4\u7248\u672c\u4e0d\u540c"
+    },
+    "IsSpecialModeOnAndVanillaKickOff": {
+        "0": "If <color=#2792c3>[Kick non-PCs]</color> is disabled, the\nmap will be selected for <color=#cd5c5c>MiraHQ</color>.\nIf you want to use<color=#a67646>Agartha</color>\nEnable <color=#2792c3>[Kick non-PCs]</color>.",
+        "11": "<color=#2792c3>\u300cPC\u4ee5\u5916\u3092\u30ad\u30c3\u30af\u3059\u308b\u300d</color>\u304c\u7121\u52b9\u3067\u3042\u308b\u5834\u5408\u3001\n\u30de\u30c3\u30d7\u306f<color=#cd5c5c>MiraHQ</color>\u306b\u9078\u629e\u3055\u308c\u307e\u3059\u3002\n<color=#a67646>Agartha</color>\u3092\u4f7f\u7528\u3057\u305f\u3044\u5834\u5408\u306f\u3001\n<color=#2792c3>\u300cPC\u4ee5\u5916\u3092\u30ad\u30c3\u30af\u3059\u308b\u300d</color>\u3092\u6709\u52b9\u306b\u3057\u3066\u304f\u3060\u3055\u3044\u3002",
+        "13": "\u5982\u679c <color=#2792c3>\"\u8e22\u6389\u975ePC\u7684\u4eba\"</color>\u88ab\u7981\u7528\uff0c\u90a3\u4e48\n\u5c06\u4e3a<color=#cd5c5c>MiraHQ</color>\u9009\u62e9\u5730\u56fe\u3002\n<color=#a67646>Agartha</color>\n\u542f\u7528 <color=#2792c3>\"\u8e22\u6389\u975ePC\u7684\u4eba\"</color>\u3002"
     },
     "RamdomMapSetting": {
         "0": "RandomMap",
@@ -813,6 +818,11 @@
         "0": "Reduce Cooldown Except OnTask",
         "11": "\u505c\u96fb\u4fee\u7406\u4e2d\u3067\u3082\u9032\u3080",
         "13": "\u51fb\u6740\u51b7\u5374\u4f1a\u5728\u4fee\u7406\u7d27\u6025\u4efb\u52a1\u65f6\u505c\u6b62\u8ba1\u7b97"
+    },
+    "IsChangeTheWinCondition": {
+        "0": "Change the win condition",
+        "11": "\u52dd\u5229\u6761\u4ef6\u3092\u5909\u66f4\u3059\u308b",
+        "13": "\u6539\u53d8\u80dc\u5229\u6761\u4ef6"
     },
     "DisconnectNotPC": {
         "0": "Kick non-PCs.",
@@ -1343,6 +1353,11 @@
         "0": "Waiting for all players to spawn...\nLoading: {0} people remaining</color></size>",
         "11": "\u5168\u30d7\u30ec\u30a4\u30e4\u30fc\u306e\u30b9\u30dd\u30fc\u30f3\u3092\u5f85\u3063\u3066\u3044\u307e\u3059...\n\u30ed\u30c9\u30fc\u4e2d:\u6b8b\u308a{0}\u4eba</color></size>",
         "13": "\u7b49\u5f85\u6240\u6709\u73a9\u5bb6\u8fdb\u5165\u884c\u52a8\u9636\u6bb5...\n\u8f7d\u5165\u4e2d:\u8fd8\u5269{0}\u4eba</color></size>"
+    },
+    "CRHideNameSetting": {
+        "0": "Hide Name",
+        "11": "\u540d\u524d\u3092\u96a0\u3059",
+        "13": "\u9690\u59d3\u57cb\u540d"
     },
     "CrewMateName": {
         "0": "Crewmate",
@@ -4546,13 +4561,86 @@
     },
     "SatsumaAndImoName": {
         "0": "SatsumaAndImo",
-        "11": "\u3055\u3064\u3068\u307e\u3044\u3082",
+        "11": "\u3055\u3064\u307e\u3068\u3044\u3082",
         "13": "\u4eba\u683c\u5206\u88c2\u8005"
     },
     "SatsumaAndImoTitle1": {
         "0": "Madmate And Crewmate",
         "11": "\u30de\u30c3\u30c9\u30e1\u30a4\u30c8 & \u30af\u30eb\u30fc\u30e1\u30a4\u30c8",
         "13": "\u662f\u6211\u75af\u4e86\uff0c\u8fd8\u662f\u5927\u5bb6\u90fd\u75af\u4e86\uff1f"
+    },
+    "ShiftActorName": {
+        "0": "Shift Actor",
+        "11": "\u30b7\u30d5\u30c8\u30a2\u30af\u30bf\u30fc"
+    },
+    "ShiftActorTitle1": {
+        "0": "Let's play it out perfectly",
+        "11": "\u5b8c\u74a7\u306b\u6f14\u3058\u5207\u308d\u3046"
+    },
+    "CanWatchAttribute": {
+        "0": "Can watch attribute",
+        "11": "\u91cd\u8907\u5f79\u8077\u3092\u898b\u308c\u308b"
+    },
+    "ShiftActorText1": {
+        "0": "'s role is",
+        "11": "\u306e\u5f79\u8077\u306f"
+    },
+    "ShiftActorText2": {
+        "0": ".",
+        "11": "\u3067\u3059"
+    },
+    "MadRolesCanFixComms": {
+        "0": "Mad roles can fix comms sabotage",
+        "11": "\u30de\u30c3\u30c9\u5f79\u8077\u304c\u30b3\u30df\u30e5\u30b5\u30dc\u3092\u6cbb\u305b\u308b"
+    },
+    "MadRolesCanFixElectrical": {
+        "0": "Mad roles can fix electrical sabotage",
+        "11": "\u30de\u30c3\u30c9\u5f79\u8077\u304c\u505c\u96fb\u3092\u6cbb\u305b\u308b"
+    },
+    "DoppelgangerName": {
+        "0": "Doppelganger",
+        "11": "\u30c9\u30c3\u30da\u30eb\u30b2\u30f3\u30ac\u30fc",
+        "13": "\u591a\u4f69\u5c14\u6839\u683c"
+    },
+    "DoppelgangerTitle1": {
+        "0": "\"It seems that if you'll meet myself, you're dead\"",
+        "11": "\u540c\u3058\u9854\u306e\u4eba\u306b\u51fa\u4f1a\u3046\u3068\u6b7b\u3093\u3058\u3083\u3046\u3093\u3060\u3063\u3066",
+        "13": "\u4ed6\u4eec\u8bf4\uff0c\u5982\u679c\u4f60\u9047\u5230\u76f8\u540c\u9762\u5b54\u7684\u4eba\uff0c\u4f60\u5c31\u4f1a\u6b7b"
+    },
+    "DoppelgangerDescription": {
+        "0": "Doppelgangers can ShapeShift.\nIf a ShapeShifted target is killed during ShapeShift, the Kill Cool  is shorter.\nIf, instead, a non-shapeShifted target is killed or a non-shapeShifted target is killed, the Kill Cool will be longer.",
+        "11": "\u30c9\u30c3\u30da\u30eb\u30b2\u30f3\u30ac\u30fc\u306f\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u304c\u3067\u304d\u307e\u3059\n\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u3092\u3057\u305f\u72b6\u614b\u3067\u3001\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u306e\u5909\u8eab\u5148\u3092\u30ad\u30eb\u3059\u308b\u3068\u30ad\u30eb\u30af\u30fc\u30eb\u304c\u77ed\u304f\u306a\u308a\u307e\u3059\u3002\n\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u306e\u5909\u8eab\u5148\u4ee5\u5916\u3092\u30ad\u30eb\u3057\u305f\u308a\u3001\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u3092\u3057\u306a\u3044\u72b6\u614b\u3067\u30ad\u30eb\u3059\u308b\u3068\u3001\u30ad\u30eb\u30af\u30fc\u30eb\u304c\u9577\u304f\u306a\u3063\u3066\u3057\u307e\u3059\u3002",
+        "13": "\u4e8c\u91cd\u8eab\u53ef\u4ee5\u53d8\u8eab\u3002\n\u5982\u679c\u4f60\u5728\u79fb\u5f62\u6362\u5f71\u65f6\u6740\u6b7b\u4e00\u4e2a\u79fb\u5f62\u6362\u5f71\u7684\u76ee\u6807\uff0c\u6740\u622e\u51b7\u5374\u65f6\u95f4\u4f1a\u7f29\u77ed\u3002\n\u76f8\u53cd\uff0c\u5982\u679c\u4f60\u6740\u4e86\u4e00\u4e2a\u975e\u79fb\u5f62\u6362\u5f71\u6216\u975e\u79fb\u5f62\u6362\u5f71\u7684\u76ee\u6807\uff0c\u6740\u622e\u51b7\u5374\u4f1a\u66f4\u957f\u3002"
+    },
+    "DoppelgangerDurationTimeSetting": {
+        "0": "Shapeshift Duration",
+        "11": "\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u306e\u6301\u7d9a\u6642\u9593",
+        "13": "\u79fb\u5f62\u6362\u5f71\u6301\u7eed\u65f6\u95f4"
+    },
+    "DoppelgangerCoolDownSetting": {
+        "0": "Shapeshift Cooldown",
+        "11": "\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0",
+        "13": "\u79fb\u5f62\u6362\u5f71\u7684\u51b7\u5374\u65f6\u95f4"
+    },
+    "DoppelgangerSucTimeSetting": {
+        "0": "Kill Cool Time on Success",
+        "11": "\u6210\u529f\u6642\u306e\u30ad\u30eb\u30af\u30fc\u30eb",
+        "13": "\u8d4c\u5f92\u8d4c\u535a\u6210\u529f\u7684\u51fb\u6740\u51b7\u5374"
+    },
+    "DoppelgangerNotSucTimeSetting": {
+        "0": "Kill Cool Time on Failur",
+        "11": "\u5931\u6557\u6642\u306e\u30ad\u30eb\u30af\u30fc\u30eb",
+        "13": "\u8d4c\u5f92\u8d4c\u535a\u5931\u8d25\u7684\u51fb\u6740\u51b7\u5374"
+    },
+    "DoppelgangerButtonName": {
+        "0": "ShapeShift",
+        "11": "\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8",
+        "13": "\u79fb\u5f62\u6362\u5f71"
+    },
+    "DoppelgangerDurationTimerText": {
+        "0": "{0} seconds left to deactivate.",
+        "11": "\u89e3\u9664\u307e\u3067{0}\u79d2",
+        "13": "\u8fd8\u6709{0}\u79d2\u89e3\u9664\u6b66\u88c5"
     },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
@@ -4688,6 +4776,11 @@
         "0": "You cannot make a room public contains mod in your name.",
         "11": "mod\u304c\u540d\u524d\u306b\u542b\u307e\u308c\u3066\u3044\u308b\u72b6\u614b\u3067\u306f\u516c\u958b\u90e8\u5c4b\u306b\u3059\u308b\u3053\u3068\u306f\u3067\u304d\u307e\u305b\u3093\u3002",
         "13": "\u4f60\u4e0d\u80fd\u5728\u6635\u79f0\u91cc\u6709\u201cmod\u201d\u65f6\u5c06\u623f\u95f4\u72b6\u6001\u8bbe\u7f6e\u4e3a\u516c\u5f00\u3002"
+    },
+    "CannotUseRenameMessage": {
+        "0": "Cannot rename.\nThe /rename command can only be used on\navailable only when hosted.",
+        "11": "\u540d\u524d\u3092\u5909\u66f4\u3059\u308b\u3053\u3068\u304c\u3067\u304d\u307e\u305b\u3093\u3002\n/rename\u30b3\u30de\u30f3\u30c9\u306f\n\u30db\u30b9\u30c8\u6642\u306e\u307f\u4f7f\u7528\u53ef\u80fd\u3067\u3059\u3002",
+        "13": "\u5b83\u4e0d\u80fd\u88ab\u91cd\u65b0\u547d\u540d\u3002\n/rename\u547d\u4ee4\u662f\n\u4ec5\u5728\u6258\u7ba1\u65f6\u53ef\u7528\u3002"
     },
     "Agartha_WareHouse": {
         "0": "WareHouse",
