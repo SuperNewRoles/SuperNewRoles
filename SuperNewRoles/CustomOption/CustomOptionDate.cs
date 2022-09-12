@@ -42,6 +42,8 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption IsAlwaysReduceCooldownExceptInVent;
         public static CustomOption IsAlwaysReduceCooldownExceptOnTask;
 
+        public static CustomOption IsChangeTheWinCondition;
+
         public static CustomOption DetectiveRate;
         public static CustomOption DetectivePlayerCount;
 
@@ -897,6 +899,8 @@ namespace SuperNewRoles.CustomOption
             IsAlwaysReduceCooldown = CustomOption.Create(682, false, CustomOptionType.Generic, "IsAlwaysReduceCooldown", false, null);
             IsAlwaysReduceCooldownExceptInVent = CustomOption.Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
             IsAlwaysReduceCooldownExceptOnTask = CustomOption.Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
+
+            IsChangeTheWinCondition = CustomOption.Create(893, false, CustomOptionType.Generic, "IsChangeTheWinCondition", true, null, isHeader: true);
 
 
             SoothSayerOption = new CustomRoleOption(12, false, CustomOptionType.Crewmate, "SoothSayerName", RoleClass.SoothSayer.color, 1);
