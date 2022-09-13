@@ -179,6 +179,7 @@ namespace SuperNewRoles.Roles
             Impostor.ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
             Doppelganger.ClearAndReload();
+            CrewMate.Knight.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();

@@ -5,6 +5,9 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.CrewMate;
+using SuperNewRoles.Roles.Neutral;
+
 
 namespace SuperNewRoles
 {
@@ -622,6 +625,9 @@ namespace SuperNewRoles
                 case RoleId.Doppelganger:
                     RoleClass.Doppelganger.DoppelggerPlayer.Add(player);
                     break;
+                case RoleId.Knight:
+                    Knight.Player.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1044,6 +1050,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.Doppelganger:
                     RoleClass.Doppelganger.DoppelggerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Knight:
+                    Knight.Player.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1562,6 +1571,7 @@ namespace SuperNewRoles
                 else if (ShiftActor.Player.IsCheckListPlayerControl(player)) return RoleId.ShiftActor;
                 else if (RoleClass.ConnectKiller.ConnectKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.ConnectKiller;
                 else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
+                else if (Knight.Player.IsCheckListPlayerControl(player)) return RoleId.Knight;
                 //ロールチェック
             }
             catch (Exception e)

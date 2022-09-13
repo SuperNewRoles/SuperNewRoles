@@ -157,6 +157,7 @@ namespace SuperNewRoles.Modules
         ShiftActor,
         ConnectKiller,
         Doppelganger,
+        Knight,
         //RoleId
     }
 
