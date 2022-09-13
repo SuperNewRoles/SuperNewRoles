@@ -784,6 +784,12 @@ namespace SuperNewRoles.Patches
                         case RoleId.Fox:
                             Fox.FoxMurderPatch.Prefix(__instance, target);
                             break;
+                        case RoleId.TheSecondLittlePig:
+                            Roles.Neutral.TheThreeLittlePigs.TheSecondLittlePig.KillGuard(target);
+                            break;
+                        case RoleId.TheThirdLittlePig:
+                            Roles.Neutral.TheThreeLittlePigs.TheThirdLittlePig.CounterKill(__instance, target);
+                            break;
                     }
                 }
             }

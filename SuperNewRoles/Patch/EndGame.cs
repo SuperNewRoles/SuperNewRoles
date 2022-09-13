@@ -38,6 +38,7 @@ namespace SuperNewRoles.Patch
         HitmanWin,
         PhotographerWin,
         StefinderWin,
+        TheThreeLittlePigsWin,
         BugEnd
     }
     enum WinCondition
@@ -65,6 +66,7 @@ namespace SuperNewRoles.Patch
         HitmanWin,
         PhotographerWin,
         StefinderWin,
+        TheThreeLittlePigsWin,
         BugEnd
     }
     class FinalStatusPatch
@@ -303,6 +305,10 @@ namespace SuperNewRoles.Patch
                 case WinCondition.StefinderWin:
                     text = "StefinderName";
                     RoleColor = RoleClass.Stefinder.color;
+                    break;
+                case WinCondition.TheThreeLittlePigsWin:
+                    text = "TheThreeLittlePigsName";
+                    RoleColor = Roles.Neutral.TheThreeLittlePigs.color;
                     break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
@@ -564,6 +570,10 @@ namespace SuperNewRoles.Patch
             notWinners.AddRange(RoleClass.Photographer.PhotographerPlayer);
             notWinners.AddRange(RoleClass.Stefinder.StefinderPlayer);
 
+            notWinners.AddRange(Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.TheFirstLittlePigPlayer);
+            notWinners.AddRange(Roles.Neutral.TheThreeLittlePigs.TheSecondLittlePig.TheSecondLittlePigPlayer);
+            notWinners.AddRange(Roles.Neutral.TheThreeLittlePigs.TheThirdLittlePig.TheThirdLittlePigPlayer);
+
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
                 if (p.IsDead())
@@ -744,6 +754,73 @@ namespace SuperNewRoles.Patch
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.Default;
+            }
+            foreach (PlayerControl p in Roles.Neutral.TheThreeLittlePigs.TheThreeLittlePigsPlayer)
+            {
+                if (Roles.Neutral.TheThreeLittlePigs.WinCheck())
+                {
+                    bool theyAllAlive = true;
+                    foreach (PlayerControl player in Roles.Neutral.TheThreeLittlePigs.TheThreeLittlePigsPlayer)
+                    {
+                        if (p.IsDead())
+                        {
+                            theyAllAlive = false;
+                            break;
+                        }
+                    }
+                    if (theyAllAlive)
+                    {
+                        if (!Roles.Neutral.TheThreeLittlePigs.AddWin)
+                        {
+                            /*
+                            if (AdditionalTempData.winCondition != WinCondition.GodWin ||
+                                AdditionalTempData.winCondition != WinCondition.EgoistWin ||
+                                (AdditionalTempData.winCondition != WinCondition.LoversWin && !CustomOptions.LoversSingleTeam.GetBool()) ||
+                                AdditionalTempData.winCondition != WinCondition.FoxWin ||
+                                AdditionalTempData.winCondition != WinCondition.DemonWin ||
+                                (AdditionalTempData.winCondition != WinCondition.TunaWin && !RoleClass.Tuna.IsTunaAddWin) ||
+                                (AdditionalTempData.winCondition != WinCondition.NeetWin && !RoleClass.Neet.IsAddWin) ||
+                                AdditionalTempData.winCondition != WinCondition.SpelunkerWin ||
+                                (AdditionalTempData.winCondition != WinCondition.StefinderWin && RoleClass.Stefinder.SoloWin))
+                            {
+                                //神勝利
+                                //エゴイスト勝利
+                                //ラバーズ勝利
+                                //妖狐勝利
+                                //悪魔勝利
+                                //マグロ勝利
+                                //ニート勝利
+                                //スペランカー勝利
+                                //ステファインダー勝利
+                            }
+                            */
+                            TempData.winners.Add(new(p.Data));
+                            AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
+                        }
+                        else
+                        {
+                            TempData.winners.Add(new WinningPlayerData(p.Data));
+                        }
+                    }
+                    if (!theyAllAlive)
+                    {
+                        if (AdditionalTempData.gameOverReason == GameOverReason.HumansDisconnect ||
+                            AdditionalTempData.gameOverReason == GameOverReason.HumansByVote)
+                        {
+                            //クルーの切断勝利
+                            //クルーの投票勝利
+                            if (!Roles.Neutral.TheThreeLittlePigs.AddWin)
+                            {
+                                TempData.winners.Add(new(p.Data));
+                                AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
+                            }
+                            else
+                            {
+                                TempData.winners.Add(new WinningPlayerData(p.Data));
+                            }
+                        }
+                    }
+                }
             }
             foreach (PlayerControl p in RoleClass.God.GodPlayer)
             {
