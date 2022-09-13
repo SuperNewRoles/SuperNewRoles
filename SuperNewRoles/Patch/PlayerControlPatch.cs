@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -202,7 +202,6 @@ namespace SuperNewRoles.Patches
             return !ModeHandler.IsMode(ModeId.SuperHostRoles);
         }
     }
-
     [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Begin))]
     class ShapeshifterMinigameBeginPatch
     {
@@ -210,6 +209,16 @@ namespace SuperNewRoles.Patches
         {
             if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
             {
+                static void NewTask(ShapeshifterMinigame __instance)
+                {
+                    new LateTask(() =>
+                    {
+                        if (__instance == null) return;
+                        __instance.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.transform.localScale;
+                        NewTask(__instance);
+                    },0.1f);
+                }
+                NewTask(__instance);
                 foreach (ShapeshifterPanel panel in GameObject.FindObjectsOfType<ShapeshifterPanel>()) GameObject.Destroy(panel.gameObject);
                 int index = 0;
                 foreach (var Data in Roles.Neutral.GM.ActionDatas)
@@ -220,7 +229,9 @@ namespace SuperNewRoles.Patches
                     panel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
                     static void Create(ShapeshifterPanel panel, int index, Action action)
                     {
-                        panel.SetPlayer(index, CachedPlayer.LocalPlayer.Data, action);
+                        panel.SetPlayer(index, CachedPlayer.LocalPlayer.Data, (Action)(() => {
+                            if (MeetingHud.Instance != null) MeetingHud.Instance.transform.FindChild("ButtonStuff").gameObject.SetActive(true);
+                            action(); }));
                     }
                     Create(panel, index, Data.Value);
                     panel.PlayerIcon.gameObject.SetActive(false);
@@ -230,6 +241,14 @@ namespace SuperNewRoles.Patches
                     panel.NameText.text = ModTranslation.GetString(Data.Key);
                     panel.NameText.transform.localPosition = new(0, 0, -0.1f);
                     index++;
+                }
+                if (MeetingHud.Instance != null)
+                {
+                    MeetingHud.Instance.transform.FindChild("ButtonStuff").gameObject.SetActive(false);
+                    __instance.transform.FindChild("CloseButton").GetComponent<PassiveButton>().OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
+                    {
+                        MeetingHud.Instance.transform.FindChild("ButtonStuff").gameObject.SetActive(true);
+                    }));
                 }
             }
         }

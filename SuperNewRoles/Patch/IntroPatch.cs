@@ -62,7 +62,7 @@ namespace SuperNewRoles.Patch
                             player.gameObject.SetActive(false);
                             if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
                             index++;
-                            player.transform.localPosition = new(-4.75f + (index * 0.425f), -2.45f, 0);
+                            player.transform.localPosition = new(-5.05f + (index * 0.425f), -2.7f, 0);
                             player.transform.localScale = new(0.25f, 0.25f, 0.25f);
                             PassiveButton button = player.gameObject.AddComponent<PassiveButton>();
                             button.OnMouseOut = new();

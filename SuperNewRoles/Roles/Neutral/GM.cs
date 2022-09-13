@@ -18,7 +18,7 @@ namespace SuperNewRoles.Roles.Neutral
         public static Dictionary<string, Action> ActionDatas = new()
         {
             {
-                "テレポート",
+                "GMTeleport",
                 () =>
                 {
                     if (RoleClass.GM.gm.transform.position != target.transform.position)
@@ -29,7 +29,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             },
             {
-                "キル",
+                "GMKill",
                 () =>
         {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
@@ -42,7 +42,7 @@ namespace SuperNewRoles.Roles.Neutral
         }
             },
             {
-                "復活",
+                "GMRevive",
                 () =>
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ReviveRPC, SendOption.Reliable, -1);
@@ -53,7 +53,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             },
             {
-                "追放(死体なしキル)",
+                "GMExile",//"追放(死体なしキル)",
                 () =>
                 {
                     target.CustomRpcExiled();
@@ -61,7 +61,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             },
             {
-                "死体削除",
+                "GMCleanDeadbody",//"死体削除",
                 () =>
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CleanBody, SendOption.Reliable, -1);
@@ -72,7 +72,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             },
             {
-                "会議開始",
+                "GMStartMeeting",//"会議開始",
                 () =>
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedMeeting, SendOption.Reliable, -1);
@@ -83,7 +83,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             },
             {
-                "死体を削除して復活",
+                "GMCleanDeadbodyAndRevive",//"死体を削除して復活",
                 () =>
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ReviveRPC, SendOption.Reliable, -1);
@@ -98,7 +98,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             },
             {
-                "死体のみ発生",
+                "GMSpawnDeadBody",//"死体のみ発生",
                 () =>
                 {
                     bool IsAlive = target.IsAlive();
@@ -119,13 +119,14 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             },
             {
-                "会議を終了",
+                "GMEndMeeting",//"会議を終了",
                 () =>
                 {
                     if (MeetingHud.Instance != null)
                     {
                         MeetingHud.Instance.RpcClose();
-                    } else
+                    }
+                    else
                     {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedMeeting, SendOption.Reliable, -1);
                         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
