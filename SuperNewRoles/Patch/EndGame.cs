@@ -755,8 +755,78 @@ namespace SuperNewRoles.Patch
                 }
                 AdditionalTempData.winCondition = WinCondition.Default;
             }
-            foreach (PlayerControl p in Roles.Neutral.TheThreeLittlePigs.TheThreeLittlePigsPlayer)
+            bool isDleted = false;
+            foreach (List<PlayerControl> team in Roles.Neutral.TheThreeLittlePigs.TheThreeLittlePigsPlayer)
             {
+                bool win = false;
+                foreach(PlayerControl player in team)
+                {
+                    if (!Roles.Neutral.TheThreeLittlePigs.TaskCheck(player))
+                    {
+                        win = false;
+                        break;
+                    }
+                    if (player.IsAlive())
+                    {
+                        win = true;
+                    }
+                }
+                if (win)
+                {
+                    bool theyAllAlive = true;
+                    foreach (PlayerControl player in team)
+                    {
+                        if (player.IsDead())
+                        {
+                            theyAllAlive = false;
+                            break;
+                        }
+                    }
+                    foreach(PlayerControl player in team)
+                    {
+                        if (theyAllAlive)
+                        {
+                            if (!Roles.Neutral.TheThreeLittlePigs.AddWin)
+                            {
+                                if (!isDleted)
+                                {
+                                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                                    isDleted = true;
+                                }
+                                TempData.winners.Add(new(player.Data));
+                                AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
+                            }
+                            else
+                            {
+                                TempData.winners.Add(new WinningPlayerData(player.Data));
+                            }
+                        }
+                        else if (!theyAllAlive)
+                        {
+                            if(AdditionalTempData.gameOverReason == GameOverReason.HumansDisconnect ||
+                               AdditionalTempData.gameOverReason == GameOverReason.HumansByVote)
+                            {
+                                if (!Roles.Neutral.TheThreeLittlePigs.AddWin)
+                                {
+                                    if (!isDleted)
+                                    {
+                                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                                        isDleted = true;
+                                    }
+                                    TempData.winners.Add(new(player.Data));
+                                    AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
+                                }
+                                else
+                                {
+                                    TempData.winners.Add(new WinningPlayerData(player.Data));
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                /*
                 if (Roles.Neutral.TheThreeLittlePigs.WinCheck())
                 {
                     bool theyAllAlive = true;
@@ -772,28 +842,6 @@ namespace SuperNewRoles.Patch
                     {
                         if (!Roles.Neutral.TheThreeLittlePigs.AddWin)
                         {
-                            /*
-                            if (AdditionalTempData.winCondition != WinCondition.GodWin ||
-                                AdditionalTempData.winCondition != WinCondition.EgoistWin ||
-                                (AdditionalTempData.winCondition != WinCondition.LoversWin && !CustomOptions.LoversSingleTeam.GetBool()) ||
-                                AdditionalTempData.winCondition != WinCondition.FoxWin ||
-                                AdditionalTempData.winCondition != WinCondition.DemonWin ||
-                                (AdditionalTempData.winCondition != WinCondition.TunaWin && !RoleClass.Tuna.IsTunaAddWin) ||
-                                (AdditionalTempData.winCondition != WinCondition.NeetWin && !RoleClass.Neet.IsAddWin) ||
-                                AdditionalTempData.winCondition != WinCondition.SpelunkerWin ||
-                                (AdditionalTempData.winCondition != WinCondition.StefinderWin && RoleClass.Stefinder.SoloWin))
-                            {
-                                //神勝利
-                                //エゴイスト勝利
-                                //ラバーズ勝利
-                                //妖狐勝利
-                                //悪魔勝利
-                                //マグロ勝利
-                                //ニート勝利
-                                //スペランカー勝利
-                                //ステファインダー勝利
-                            }
-                            */
                             TempData.winners.Add(new(p.Data));
                             AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
                         }
@@ -820,7 +868,7 @@ namespace SuperNewRoles.Patch
                             }
                         }
                     }
-                }
+                }//*/
             }
             foreach (PlayerControl p in RoleClass.God.GodPlayer)
             {

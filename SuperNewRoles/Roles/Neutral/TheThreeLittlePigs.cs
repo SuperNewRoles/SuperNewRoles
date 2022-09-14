@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using SuperNewRoles.Patch;
 using UnityEngine;
@@ -84,15 +85,12 @@ namespace SuperNewRoles.Roles.Neutral
         }
         //RoleClass
         public static Color32 color = new(255, 99, 123, byte.MaxValue);
-        public static List<PlayerControl> TheThreeLittlePigsPlayer;
+        public static List<List<PlayerControl>> TheThreeLittlePigsPlayer;
         public static bool AddWin;
         public static void ClearAndReload()
         {
             //全員に関係
             TheThreeLittlePigsPlayer = new();
-            TheThreeLittlePigsPlayer.AddRange(TheFirstLittlePig.TheFirstLittlePigPlayer);
-            TheThreeLittlePigsPlayer.AddRange(TheSecondLittlePig.TheSecondLittlePigPlayer);
-            TheThreeLittlePigsPlayer.AddRange(TheThirdLittlePig.TheThirdLittlePigPlayer);
             AddWin = CustomOptions.TheThreeLittlePigsIsAddWin.GetBool();
             //1番目の子豚
             TheFirstLittlePig.TheFirstLittlePigPlayer = new();
@@ -153,23 +151,27 @@ namespace SuperNewRoles.Roles.Neutral
             }
             return false;
         }
-        public static bool WinCheck()
+        public static bool[] WinCheck()
         {
-            foreach(PlayerControl player in TheThreeLittlePigsPlayer)
+            bool[] bools = new bool[0];
+            foreach (List<PlayerControl> team in TheThreeLittlePigsPlayer)
             {
-                if (!TaskCheck(player))
+                Array.Resize(ref bools, bools.Length + 1);
+                bools[^1] = false;
+                foreach(PlayerControl player in team)
                 {
-                    return false;
+                    if (!TaskCheck(player))
+                    {
+                        bools[^1] = false;
+                        break;
+                    }
+                    else if (player.IsAlive())
+                    {
+                        bools[^1] = true;
+                    }
                 }
             }
-            foreach(PlayerControl player in TheThreeLittlePigsPlayer)
-            {
-                if (player.IsAlive())
-                {
-                    return true;
-                }
-            }
-            return false;
+            return bools;
         }
     }
 }

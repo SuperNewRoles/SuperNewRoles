@@ -1054,7 +1054,6 @@ namespace SuperNewRoles
                 case RoleId.Doppelganger:
                     RoleClass.Doppelganger.DoppelggerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
                 case RoleId.TheFirstLittlePig:
                     Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.TheFirstLittlePigPlayer.RemoveAll(ClearRemove);
                     break;
@@ -1064,7 +1063,7 @@ namespace SuperNewRoles
                 case RoleId.TheThirdLittlePig:
                     Roles.Neutral.TheThreeLittlePigs.TheThirdLittlePig.TheThirdLittlePigPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
