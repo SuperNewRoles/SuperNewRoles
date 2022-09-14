@@ -706,7 +706,7 @@ namespace SuperNewRoles.Buttons
                                 JackalSeer.ResetCoolDown();
                                 break;
                             case RoleId.TeleportingJackal:
-                                TeleportingJackal.ResetCoolDown();
+                                TeleportingJackal.ResetCoolDowns();
                                 break;
                         }
                     }
