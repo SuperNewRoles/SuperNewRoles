@@ -412,11 +412,23 @@ namespace SuperNewRoles.Patches
                     Logger.Info("SHR", "CheckMurder");
                     if (RoleClass.Assassin.TriggerPlayer != null) return false;
                     Logger.Info("SHR-Assassin.TriggerPlayerを通過", "CheckMurder");
-                    foreach (List<PlayerControl> p in Seer.Seers)
+                    foreach (PlayerControl p in RoleClass.Seer.SeerPlayer)
                     {
-                        foreach (PlayerControl p2 in p)
-                            if (!p2.IsMod())
-                                p2.ShowReactorFlash();
+                        Logger.Info("SEEEEEEEEEEEEEEEEEEEER", "CheckMurder");
+                        if (!p.IsMod())
+                            p.ShowReactorFlash(1.5f);
+                    }
+                    foreach (PlayerControl p in RoleClass.EvilSeer.EvilSeerPlayer)
+                    {
+                        Logger.Info("EVILSEEEEEEEEEEEEEEEEEEEER", "CheckMurder");
+                        if (!p.IsMod())
+                            p.ShowReactorFlash(1.5f);
+                    }
+                    foreach (PlayerControl p in RoleClass.MadSeer.MadSeerPlayer)
+                    {
+                        Logger.Info("MADSEEEEEEEEEEEEEEEEEEEER", "CheckMurder");
+                        if (!p.IsMod())
+                            p.ShowReactorFlash(1.5f);
                     }
                     switch (__instance.GetRole())
                     {
