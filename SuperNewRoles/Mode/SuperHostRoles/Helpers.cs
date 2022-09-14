@@ -58,8 +58,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (shower.IsMod())
             {// mod導入者ならCustomRpcSenderを使用しなくても正しくRpcを送れる。
                 Logger.Info($"Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
-                shower.ProtectPlayer(target, 0);
-                shower.RpcMurderPlayer(target);
+                if (shower.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                {
+                    shower.ProtectPlayer(target, 0);
+                    shower.MurderPlayer(target);
+                }
+                else
+                {
+                    shower.RpcProtectPlayer(target, 0);
+                    shower.RpcMurderPlayer(target);
+                }
             }
             else
             {

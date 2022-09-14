@@ -18,7 +18,6 @@ namespace SuperNewRoles.Patch
         [HarmonyPatch(typeof(SpawnInMinigame), nameof(SpawnInMinigame.Begin))]
         public static bool Prefix(SpawnInMinigame __instance, PlayerTask task)
         {
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) WaitSpawn.Reset();
             if (!MapOption.RandomSpawn) return true;
             SpawnInMinigame.SpawnLocation[] array = __instance.Locations;
             array.Shuffle(0);

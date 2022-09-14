@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapOptions;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
@@ -13,7 +15,7 @@ namespace SuperNewRoles.Patch
         private static Dictionary<PlayerControl, Vector3> SpawnPosition;
         private static int LastCount;
         private static bool IsWaitSpawnNow;
-        public static bool CanChangeName() => IsWaitSpawnNow;
+        public static bool CanChangeName => !IsWaitSpawnNow;
         public static void Reset()
         {
             SpawnPosition = new();
@@ -31,51 +33,65 @@ namespace SuperNewRoles.Patch
         }
         public static void AllSpawn()
         {
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls) if (p.IsPlayer()) p.RpcShowGuardEffect(p);
             foreach (var data in SpawnPosition)
             {
                 if (data.Key == null) continue;
                 if (data.Key.Data.Disconnected) continue;
                 data.Key.RpcSnapTo(data.Value);
+                data.Key.RpcSnapTo(data.Value);
+                data.Key.RpcSnapTo(data.Value);
+                data.Key.RpcSnapTo(data.Value);
             }
             SetNull();
+            PlayerControl.LocalPlayer.SetName(PlayerControl.LocalPlayer.GetDefaultName());
+            Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
         }
-        public static void Update()
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+        class Update
         {
-            Logger.Info($"{!MapOption.WaitSpawn} || {MapOption.RandomSpawn} || {!IsWaitSpawnNow}");
-            if (!MapOption.WaitSpawn || MapOption.RandomSpawn || !IsWaitSpawnNow) return;
-            int NotLoadedCount = 0;
-            List<PlayerControl> players = new();
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            public static void Postfix()
             {
-                Logger.Info($"{player.Data.PlayerName} : {player.transform.position.x},{player.transform.position.z}");
-                if (player.IsDead()) continue;
-                //未ロード者
-                if (ModHelpers.IsPositionDistance(player.transform.position, new Vector2(3, 6), 0.5f) ||
-                            ModHelpers.IsPositionDistance(player.transform.position, new Vector2(-25, 40), 0.5f) ||
-                            ModHelpers.IsPositionDistance(player.transform.position, new Vector2(-1.4f, 2.3f), 0.5f)
-                            )
+                //Logger.Info($"{!MapOption.WaitSpawn} || {MapOption.RandomSpawn} || {!IsWaitSpawnNow}");
+                if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+                if (!MapOption.WaitSpawn || MapOption.RandomSpawn || !IsWaitSpawnNow) return;
+                int NotLoadedCount = 0;
+                List<PlayerControl> players = new();
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                    NotLoadedCount++;
-                } else if (!ModHelpers.IsPositionDistance(player.transform.position, new Vector2(-30, 30), 0.5f))
-                {
-                    SetSpawn(player, player.transform.position);
-                    player.RpcSnapTo(new Vector2(-30, 30));
-                } else
-                {
-                    players.Add(player);
-                    player.RpcSnapTo(new Vector2(-30, 30));
+                    if (player.IsBot()) continue;
+                    Logger.Info($"{player.Data.PlayerName} : {player.transform.position.x},{player.transform.position.z}");
+                    if (player.IsDead()) continue;
+                    //未ロード者
+                    if (ModHelpers.IsPositionDistance(player.transform.position, new Vector2(3, 6), 0.5f) ||
+                                ModHelpers.IsPositionDistance(player.transform.position, new Vector2(-25, 40), 0.5f) ||
+                                ModHelpers.IsPositionDistance(player.transform.position, new Vector2(-1.4f, 2.3f), 0.5f)
+                                )
+                    {
+                        NotLoadedCount++;
+                    }
+                    else if (!ModHelpers.IsPositionDistance(player.transform.position, new Vector2(-30, 30), 0.5f))
+                    {
+                        SetSpawn(player, player.transform.position);
+                        player.RpcSnapTo(new Vector2(-30, 30));
+                    }
+                    else
+                    {
+                        players.Add(player);
+                        player.RpcSnapTo(new Vector2(-30, 30));
+                    }
                 }
-            }
-            if (LastCount != players.Count)
-            {
-                LastCount = players.Count;
-                string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>" + string.Format(ModTranslation.GetString("CopsSpawnLoading"), NotLoadedCount);
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                if (LastCount != players.Count)
                 {
-                    p.RpcSetNamePrivate(name);
+                    LastCount = players.Count;
+                    string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>" + string.Format(ModTranslation.GetString("CopsSpawnLoading"), NotLoadedCount);
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                    {
+                        p.RpcSetNamePrivate(name);
+                    }
                 }
+                if (NotLoadedCount <= 0) AllSpawn();
             }
-            if (NotLoadedCount <= 0) AllSpawn();
         }
     }
 }

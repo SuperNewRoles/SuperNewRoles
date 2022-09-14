@@ -60,7 +60,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
             if (player.IsBot() || !AmongUsClient.Instance.AmHost) return;
-            if (Patch.WaitSpawn.CanChangeName()) return;
+            Logger.Info(WaitSpawn.CanChangeName.ToString(),"CanChangeName");
+            if (!WaitSpawn.CanChangeName) return;
 
             var caller = new System.Diagnostics.StackFrame(1, false);
             var callerMethod = caller.GetMethod();
@@ -360,7 +361,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             if (!AmongUsClient.Instance.AmHost) return;
-            WaitSpawn.Update();
             foreach (PlayerControl p in BotManager.AllBots)
             {
                 p.NetTransform.RpcSnapTo(new Vector2(99999, 99999));

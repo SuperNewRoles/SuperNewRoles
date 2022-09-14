@@ -81,6 +81,7 @@ namespace SuperNewRoles.Patch
 
         public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) WaitSpawn.Reset();
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 var newTeam2 = new Il2CppSystem.Collections.Generic.List<PlayerControl>();

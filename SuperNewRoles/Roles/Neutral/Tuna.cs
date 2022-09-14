@@ -1,6 +1,7 @@
 using HarmonyLib;
 
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patch;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -58,6 +59,7 @@ namespace SuperNewRoles.Roles
         static void Prefix()
         {
             RoleClass.Tuna.IsMeetingEnd = true;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) WaitSpawn.Reset();
         }
     }
 }
