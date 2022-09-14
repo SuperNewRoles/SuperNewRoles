@@ -117,10 +117,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (RoleClass.Tuna.IsUseVent) SetVanillaRole(RoleClass.Tuna.TunaPlayer, RoleTypes.Engineer);
             SetVanillaRole(RoleClass.Technician.TechnicianPlayer, RoleTypes.Engineer);
             if (RoleClass.BlackCat.IsUseVent) SetVanillaRole(RoleClass.BlackCat.BlackCatPlayer, RoleTypes.Engineer);
+            if (RoleClass.MadSeer.IsUseVent) SetVanillaRole(RoleClass.MadSeer.MadSeerPlayer, RoleTypes.Engineer)
             /*============エンジニアに役職設定============*/
 
 
-            /*============シェイプシフターDesync============*/
+                /*============シェイプシフターDesync============*/
             SetRoleDesync(RoleClass.Arsonist.ArsonistPlayer, RoleTypes.Shapeshifter);
             SetRoleDesync(RoleClass.RemoteSheriff.RemoteSheriffPlayer, RoleTypes.Shapeshifter);
             SetRoleDesync(RoleClass.ToiletFan.ToiletFanPlayer, RoleTypes.Shapeshifter);
