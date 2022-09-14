@@ -412,6 +412,12 @@ namespace SuperNewRoles.Patches
                     Logger.Info("SHR", "CheckMurder");
                     if (RoleClass.Assassin.TriggerPlayer != null) return false;
                     Logger.Info("SHR-Assassin.TriggerPlayerを通過", "CheckMurder");
+                    foreach (List<PlayerControl> p in Seer.Seers)
+                    {
+                        foreach (PlayerControl p2 in p)
+                            if (!p2.IsMod())
+                                p2.ShowReactorFlash();
+                    }
                     switch (__instance.GetRole())
                     {
                         case RoleId.RemoteSheriff:
