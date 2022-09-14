@@ -1,9 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
 using Hazel;
 using SuperNewRoles.Buttons;
-
-using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;;
+using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles
 {
