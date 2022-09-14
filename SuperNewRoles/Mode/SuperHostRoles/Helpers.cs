@@ -80,5 +80,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 crs.SendMessage(); // ログへ出力(のはず)
             }
         }
+        public static void ShowReactorFlash(this PlayerControl shower){
+
+        }
     }
 }
