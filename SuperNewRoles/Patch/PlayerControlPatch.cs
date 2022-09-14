@@ -782,7 +782,7 @@ namespace SuperNewRoles.Patches
                     switch (target.GetRole())
                     {
                         case RoleId.Fox:
-                            Fox.FoxMurderPatch.Prefix(__instance, target);
+                            Fox.FoxMurderPatch.Guard(__instance, target);
                             break;
                     }
                 }
