@@ -582,8 +582,8 @@ namespace SuperNewRoles.Patches
                             break;
                         case RoleId.DarkKiller:
                             var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                            if (ma != null && !ma.IsActive) return true;
-                            return false;
+                            if (ma != null && !ma.IsActive) return false;
+                            return true;
                     }
                     break;
                 case ModeId.Detective:
