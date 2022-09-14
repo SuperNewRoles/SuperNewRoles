@@ -824,51 +824,6 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
-
-
-                /*
-                if (Roles.Neutral.TheThreeLittlePigs.WinCheck())
-                {
-                    bool theyAllAlive = true;
-                    foreach (PlayerControl player in Roles.Neutral.TheThreeLittlePigs.TheThreeLittlePigsPlayer)
-                    {
-                        if (p.IsDead())
-                        {
-                            theyAllAlive = false;
-                            break;
-                        }
-                    }
-                    if (theyAllAlive)
-                    {
-                        if (!Roles.Neutral.TheThreeLittlePigs.AddWin)
-                        {
-                            TempData.winners.Add(new(p.Data));
-                            AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
-                        }
-                        else
-                        {
-                            TempData.winners.Add(new WinningPlayerData(p.Data));
-                        }
-                    }
-                    if (!theyAllAlive)
-                    {
-                        if (AdditionalTempData.gameOverReason == GameOverReason.HumansDisconnect ||
-                            AdditionalTempData.gameOverReason == GameOverReason.HumansByVote)
-                        {
-                            //クルーの切断勝利
-                            //クルーの投票勝利
-                            if (!Roles.Neutral.TheThreeLittlePigs.AddWin)
-                            {
-                                TempData.winners.Add(new(p.Data));
-                                AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
-                            }
-                            else
-                            {
-                                TempData.winners.Add(new WinningPlayerData(p.Data));
-                            }
-                        }
-                    }
-                }//*/
             }
             foreach (PlayerControl p in RoleClass.God.GodPlayer)
             {
