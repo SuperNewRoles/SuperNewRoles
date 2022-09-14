@@ -41,8 +41,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             string IntroDesc;
             string Desc;
             IntroDate data = IntroDate.CrewmateIntro;
-            if (rolename == ModTranslation.GetString("LoversName")) { }
-            else
+            if (rolename != ModTranslation.GetString("LoversName"))
             {
                 data = GetNameIntroDate(rolename);
                 IntroDesc = data.TitleDesc;

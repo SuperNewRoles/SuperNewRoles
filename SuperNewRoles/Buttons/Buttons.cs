@@ -80,6 +80,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton PhotographerButton;
         public static CustomButton StefinderKillButton;
         public static CustomButton SluggerButton;
+        public static CustomButton DoppelgangerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -933,7 +934,7 @@ namespace SuperNewRoles.Buttons
                         killcount = RoleClass.Sheriff.KillMaxCount;
                         flag = PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
                     }
-                    sheriffNumShotsText.text = killcount > 0 ? String.Format(ModTranslation.GetString("SheriffNumTextName"), killcount) : "";
+                    sheriffNumShotsText.text = killcount > 0 ? string.Format(ModTranslation.GetString("SheriffNumTextName"), killcount) : "";
                     return flag;
                 },
                 () => { Sheriff.EndMeeting(); },
@@ -1727,7 +1728,7 @@ namespace SuperNewRoles.Buttons
                             sabotageActive = true;
                             break;
                         }
-                    GhostMechanicNumRepairText.text = String.Format(ModTranslation.GetString("GhostMechanicCountText"), RoleClass.GhostMechanic.LimitCount);
+                    GhostMechanicNumRepairText.text = string.Format(ModTranslation.GetString("GhostMechanicCountText"), RoleClass.GhostMechanic.LimitCount);
                     return sabotageActive && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { GhostMechanicRepairButton.MaxTimer = 0f; GhostMechanicRepairButton.Timer = 0f; },
@@ -1825,8 +1826,8 @@ namespace SuperNewRoles.Buttons
                 {
                     float swapcount = RoleClass.PositionSwapper.SwapCount;
                     PositionSwapperNumText.text = swapcount > 0
-                        ? String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), swapcount)
-                        : String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), "0");
+                        ? string.Format(ModTranslation.GetString("PositionSwapperNumTextName"), swapcount)
+                        : string.Format(ModTranslation.GetString("PositionSwapperNumTextName"), "0");
                     return PlayerControl.LocalPlayer.CanMove
 && RoleClass.PositionSwapper.SwapCount > 0 && true && PlayerControl.LocalPlayer.CanMove;
                 },
@@ -1898,8 +1899,8 @@ namespace SuperNewRoles.Buttons
                     //テキストぉ
                     float SecretKillLimit = RoleClass.SecretlyKiller.SecretlyKillLimit;
                     SecretlyKillNumText.text = SecretKillLimit > 0
-                        ? String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), SecretKillLimit)
-                        : String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), "0");
+                        ? string.Format(ModTranslation.GetString("PositionSwapperNumTextName"), SecretKillLimit)
+                        : string.Format(ModTranslation.GetString("PositionSwapperNumTextName"), "0");
 
                     if (RoleClass.SecretlyKiller.MainCool > 0f && RoleClass.SecretlyKiller.IsKillCoolChange) return false;
                     if (RoleClass.SecretlyKiller.SecretlyKillLimit < 1 || RoleClass.SecretlyKiller.SecretlyCool > 0f) return false;
@@ -2591,6 +2592,33 @@ namespace SuperNewRoles.Buttons
                 buttonText = ModTranslation.GetString("FinalStatusKill"),
                 showButtonText = true
             };
+
+            DoppelgangerButton = new(
+                () => { Roles.Impostor.Doppelganger.DoppelgangerShape(); },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Doppelganger && ModeHandler.IsMode(ModeId.Default); },
+                () => { return PlayerControl.LocalPlayer.CanMove; },
+                () =>
+                {
+                    DoppelgangerButton.MaxTimer = RoleClass.Doppelganger.CoolTime;
+                    DoppelgangerButton.Timer = RoleClass.Doppelganger.CoolTime;
+                },
+                RoleClass.Doppelganger.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("DoppelgangerButtonName"),
+                showButtonText = true
+            };
+            RoleClass.Doppelganger.DoppelgangerDurationText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent);
+            RoleClass.Doppelganger.DoppelgangerDurationText.text = "";
+            RoleClass.Doppelganger.DoppelgangerDurationText.enableWordWrapping = false;
+            RoleClass.Doppelganger.DoppelgangerDurationText.transform.localScale = Vector3.one * 0.5f;
+            RoleClass.Doppelganger.DoppelgangerDurationText.transform.localPosition += new Vector3(-2.575f, -0.95f, 0);
 
             SetCustomButtonCooldowns();
         }

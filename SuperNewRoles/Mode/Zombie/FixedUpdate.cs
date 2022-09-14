@@ -32,7 +32,6 @@ namespace SuperNewRoles.Mode.Zombie
                                     Main.SetZombie(p);
                                 }
                             }
-                            byte BlueIndex = 1;
                             foreach (PlayerControl p in CachedPlayer.AllPlayers)
                             {
                                 if (!p.IsZombie())
