@@ -112,23 +112,7 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
     class LightPatch
     {
-        public static float GetNeutralLightRadius(ShipStatus shipStatus, bool isImpostor)
-        {
-            if (SubmergedCompatibility.isSubmerged()) return SubmergedCompatibility.GetSubmergedNeutralLightRadius(isImpostor);
-            if (Clergyman.IsLightOutVision() && isImpostor) return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision;
-            if (isImpostor) return shipStatus.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
-
-            SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
-            float lerpValue = switchSystem.Value / 255f;
-
-            var LocalPlayer = PlayerControl.LocalPlayer;
-            if (LocalPlayer.IsRole(RoleId.Nocturnality))
-            {
-                lerpValue = 1 - lerpValue >= 0 ? 1f - lerpValue : 1f + (1f - lerpValue);
-            }
-            return Mathf.Lerp(shipStatus.MinLightRadius, shipStatus.MaxLightRadius, lerpValue) * PlayerControl.GameOptions.CrewLightMod;
-        }
-        public static bool Prefix(ref float __result, ShipStatus __instance, [HarmonyArgument(0)] GameData.PlayerInfo player)
+        public static bool Prefix(ShipStatus __instance, ref float __result, [HarmonyArgument(0)] GameData.PlayerInfo player)
         {
             ISystemType systemType = __instance.Systems.ContainsKey(SystemTypes.Electrical) ? __instance.Systems[SystemTypes.Electrical] : null;
             if (systemType == null) return true;
@@ -147,6 +131,22 @@ namespace SuperNewRoles.Patch
                 ? Mathf.Lerp(__instance.MaxLightRadius * RoleClass.Lighter.UpVision, __instance.MaxLightRadius * RoleClass.Lighter.UpVision, num)
                 : GetNeutralLightRadius(__instance, false);
             return false;
+        }
+        public static float GetNeutralLightRadius(ShipStatus shipStatus, bool isImpostor)
+        {
+            if (SubmergedCompatibility.isSubmerged()) return SubmergedCompatibility.GetSubmergedNeutralLightRadius(isImpostor);
+            if (Clergyman.IsLightOutVision() && isImpostor) return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision;
+            if (isImpostor) return shipStatus.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
+
+            SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
+            float lerpValue = switchSystem.Value / 255f;
+
+            var LocalPlayer = PlayerControl.LocalPlayer;
+            if (LocalPlayer.IsRole(RoleId.Nocturnality))
+            {
+                lerpValue = 1 - lerpValue >= 0 ? 1f - lerpValue : 1f + (1f - lerpValue);
+            }
+            return Mathf.Lerp(shipStatus.MinLightRadius, shipStatus.MaxLightRadius, lerpValue) * PlayerControl.GameOptions.CrewLightMod;
         }
     }
     [HarmonyPatch(typeof(ShipStatus), nameof(GameStartManager.Start))]
