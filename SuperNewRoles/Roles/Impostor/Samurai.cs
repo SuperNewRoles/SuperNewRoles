@@ -48,9 +48,5 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
-        public static void IsSword()
-        {
-            RoleClass.Samurai.Sword = true;
-        }
     }
 }
