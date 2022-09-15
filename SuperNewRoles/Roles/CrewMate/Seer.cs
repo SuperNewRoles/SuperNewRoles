@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles
     class Seer
     //マッド・イビル・フレンズ・ジャッカル・サイドキック　シーア
     {
-        public static List<List<PlayerControl>> Seers =new() {
+        public static List<List<PlayerControl>> Seers = new() {
             RoleClass.Seer.SeerPlayer,
             RoleClass.EvilSeer.EvilSeerPlayer,
             RoleClass.MadSeer.MadSeerPlayer,
