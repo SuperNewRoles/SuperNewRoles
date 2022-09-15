@@ -4572,6 +4572,9 @@
     "CamouflagerDurationTimeSetting": {
         "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u306e\u6301\u7d9a\u6642\u9593"
     },
+    "CamouflagerButtonName": {
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5"
+    },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
         "11": "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01",

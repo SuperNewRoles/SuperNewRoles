@@ -2633,7 +2633,7 @@ namespace SuperNewRoles.Buttons
                 }
             )
             {
-                buttonText = ModTranslation.GetString(""),
+                buttonText = ModTranslation.GetString("CamouflagerButtonName"),
                 showButtonText = true
             };
 
