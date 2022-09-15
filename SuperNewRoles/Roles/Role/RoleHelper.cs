@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
 
 namespace SuperNewRoles
 {
@@ -126,7 +125,7 @@ namespace SuperNewRoles
         }
         public static void SetQuarreledRPC(PlayerControl player1, PlayerControl player2)
         {
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetQuarreled, SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetQuarreled, SendOption.Reliable, -1);
             Writer.Write(player1.PlayerId);
             Writer.Write(player2.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -143,7 +142,7 @@ namespace SuperNewRoles
         }
         public static void SetLoversRPC(PlayerControl player1, PlayerControl player2)
         {
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetLovers, SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetLovers, SendOption.Reliable, -1);
             Writer.Write(player1.PlayerId);
             Writer.Write(player2.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -614,6 +613,15 @@ namespace SuperNewRoles
                 case RoleId.Slugger:
                     RoleClass.Slugger.SluggerPlayer.Add(player);
                     break;
+                case RoleId.ShiftActor:
+                    ShiftActor.Player.Add(player);
+                    break;
+                case RoleId.ConnectKiller:
+                    RoleClass.ConnectKiller.ConnectKillerPlayer.Add(player);
+                    break;
+                case RoleId.Doppelganger:
+                    RoleClass.Doppelganger.DoppelggerPlayer.Add(player);
+                    break;
                 case RoleId.Camouflager:
                     RoleClass.Camouflager.CamouflagerPlayer.Add(player);
                     break;
@@ -636,6 +644,7 @@ namespace SuperNewRoles
                 PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
             SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
+            ShiftActor.ShapeshifterSet();
             PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(player.PlayerId);
             if (anim != null) anim.HandleAnim(RpcAnimationType.Stop);
         }
@@ -1030,6 +1039,15 @@ namespace SuperNewRoles
                 case RoleId.Slugger:
                     RoleClass.Slugger.SluggerPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.ShiftActor:
+                    ShiftActor.Player.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.ConnectKiller:
+                    RoleClass.ConnectKiller.ConnectKillerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Doppelganger:
+                    RoleClass.Doppelganger.DoppelggerPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.Camouflager:
                     RoleClass.Camouflager.CamouflagerPlayer.RemoveAll(ClearRemove);
                     break;
@@ -1039,7 +1057,7 @@ namespace SuperNewRoles
         }
         public static void SetRoleRPC(this PlayerControl Player, RoleId SelectRoleDate)
         {
-            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetRole, SendOption.Reliable, -1);
+            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetRole, SendOption.Reliable, -1);
             killWriter.Write(Player.PlayerId);
             killWriter.Write((byte)SelectRoleDate);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
@@ -1338,6 +1356,9 @@ namespace SuperNewRoles
                     case RoleId.Matryoshka:
                         addition = RoleClass.Matryoshka.MyKillCoolTime;
                         break;
+                    case RoleId.ShiftActor:
+                        addition = ShiftActor.KillCool;
+                        break;
                 }
             }
             return addition;
@@ -1544,6 +1565,9 @@ namespace SuperNewRoles
                 else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
                 else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
                 else if (RoleClass.Slugger.SluggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Slugger;
+                else if (ShiftActor.Player.IsCheckListPlayerControl(player)) return RoleId.ShiftActor;
+                else if (RoleClass.ConnectKiller.ConnectKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.ConnectKiller;
+                else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
                 else if (RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player)) return RoleId.Camouflager;
                 //ロールチェック
             }

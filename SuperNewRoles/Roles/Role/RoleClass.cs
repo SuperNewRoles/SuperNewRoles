@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
+
+
 using SuperNewRoles.Patch;
 using SuperNewRoles.Sabotage;
 using TMPro;
@@ -45,7 +45,7 @@ namespace SuperNewRoles.Roles
             Roles.MadSeer.CheckedImpostor = new();
             Roles.JackalFriends.CheckedJackal = new();
             Mode.BattleRoyal.Main.VentData = new();
-            EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
+            FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
             MapCustoms.AdditionalVents.ClearAndReload();
             MapCustoms.SpecimenVital.ClearAndReload();
@@ -176,6 +176,9 @@ namespace SuperNewRoles.Roles
             Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
             Slugger.ClearAndReload();
+            Impostor.ShiftActor.ClearAndReload();
+            ConnectKiller.ClearAndReload();
+            Doppelganger.ClearAndReload();
             Camouflager.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -183,7 +186,6 @@ namespace SuperNewRoles.Roles
             MapOptions.MapOption.ClearAndReload();
             ChacheManager.Load();
         }
-        public static void NotRole() { }
         public static class SoothSayer
         {
             public static List<PlayerControl> SoothSayerPlayer;
@@ -357,7 +359,7 @@ namespace SuperNewRoles.Roles
             public static bool IsImpostorLight;
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
-            public static bool IsCreateSidekick;
+            public static bool CanCreateSidekick;
             public static List<int> CreatePlayers;
             public static bool IsCreatedFriend;
             public static bool CanCreateFriend;
@@ -378,7 +380,7 @@ namespace SuperNewRoles.Roles
                 IsUseSabo = CustomOptions.JackalUseSabo.GetBool();
                 IsImpostorLight = CustomOptions.JackalIsImpostorLight.GetBool();
                 CreateSidekick = CustomOptions.JackalCreateSidekick.GetBool();
-                IsCreateSidekick = CustomOptions.JackalCreateSidekick.GetBool();
+                CanCreateSidekick = CustomOptions.JackalCreateSidekick.GetBool();
                 NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.GetBool();
                 IsCreatedFriend = false;
                 CreatePlayers = new();
@@ -1904,7 +1906,7 @@ namespace SuperNewRoles.Roles
             public static bool IsImpostorLight;
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
-            public static bool IsCreateSidekick;
+            public static bool CanCreateSidekick;
             private static Sprite buttonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -1928,7 +1930,7 @@ namespace SuperNewRoles.Roles
                 IsUseSabo = CustomOptions.JackalSeerUseSabo.GetBool();
                 IsImpostorLight = CustomOptions.JackalSeerIsImpostorLight.GetBool();
                 CreateSidekick = CustomOptions.JackalSeerCreateSidekick.GetBool();
-                IsCreateSidekick = CustomOptions.JackalSeerCreateSidekick.GetBool();
+                CanCreateSidekick = CustomOptions.JackalSeerCreateSidekick.GetBool();
                 NewJackalCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.GetBool();
             }
         }
@@ -2238,7 +2240,7 @@ namespace SuperNewRoles.Roles
                 TunaPlayer = new();
                 Position = new Dictionary<byte, Vector3>();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers) Position[p.PlayerId] = new Vector3(9999f, 9999f, 9999f);
-                StoppingTime = CustomOption.CustomOptions.TunaStoppingTime.GetFloat();
+                StoppingTime = CustomOptions.TunaStoppingTime.GetFloat();
                 if (Mode.ModeHandler.IsMode(Mode.ModeId.Default)) Timer = StoppingTime;
                 IsUseVent = CustomOptions.TunaIsUseVent.GetBool();
                 IsTunaAddWin = CustomOptions.TunaIsAddWin.GetBool();
@@ -3032,6 +3034,46 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.SluggerCoolTime.GetFloat();
                 ChargeTime = CustomOptions.SluggerChargeTime.GetFloat();
                 IsMultiKill = CustomOptions.SluggerIsMultiKill.GetBool();
+            }
+        }
+        public static class ConnectKiller
+        {
+            public static List<PlayerControl> ConnectKillerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                ConnectKillerPlayer = new();
+            }
+        }
+        public static class Doppelganger
+        {
+            public static List<PlayerControl> DoppelggerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float DurationTime;
+            public static float CoolTime;
+            public static float SucTime;
+            public static float NotSucTime;
+            private static Sprite buttonSprite;
+            public static float Duration;
+            public static TextMeshPro DoppelgangerDurationText = null;
+            public static Dictionary<byte, PlayerControl> DoppelgangerTargets;
+            public static float DefaultKillCool;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoppelgangerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                DoppelggerPlayer = new();
+                DurationTime = CustomOptions.DoppelgangerDurationTime.GetFloat();
+                CoolTime = CustomOptions.DoppelgangerCoolTome.GetFloat();
+                SucTime = CustomOptions.DoppelgangerSucTime.GetFloat();
+                NotSucTime = CustomOptions.DoppelgangerNotSucTime.GetFloat();
+                Duration = DurationTime + 1.1f;
+                DoppelgangerTargets = new();
+                DefaultKillCool = PlayerControl.GameOptions.KillCooldown;
             }
         }
         public static class Camouflager

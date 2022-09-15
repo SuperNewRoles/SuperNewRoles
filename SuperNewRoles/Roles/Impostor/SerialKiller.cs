@@ -1,5 +1,5 @@
 using Hazel;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Mode;
 using UnityEngine;
 
@@ -52,7 +52,7 @@ namespace SuperNewRoles.Roles
                     RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
                     if (RoleClass.SerialKiller.SuicideTime <= 0)
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
                         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         writer.Write(byte.MaxValue);

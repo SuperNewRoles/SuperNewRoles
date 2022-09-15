@@ -38,24 +38,4 @@ namespace SuperNewRoles
             }
         }
     }
-
-    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Awake))]
-    public static class ShipStatus_Awake_Patch
-    {
-        [HarmonyPostfix, HarmonyPriority(Priority.Last)]
-        public static void Postfix(ShipStatus __instance)
-        {
-            MapUtilities.CachedShipStatus = __instance;
-        }
-    }
-    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.OnDestroy))]
-    public static class ShipStatus_OnDestroy_Patch
-    {
-        [HarmonyPostfix, HarmonyPriority(Priority.Last)]
-        public static void Postfix()
-        {
-            MapUtilities.CachedShipStatus = null;
-            MapUtilities.MapDestroyed();
-        }
-    }
 }

@@ -1,5 +1,5 @@
 using HarmonyLib;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.MapOptions;
 using UnityEngine;
 
@@ -7,7 +7,6 @@ namespace SuperNewRoles.Buttons
 {
     public static class VentAndSabo
     {
-
         [HarmonyPatch(typeof(MapTaskOverlay), nameof(MapTaskOverlay.SetIconLocation))]
         public static class MapTaskOverlaySetIconLocationPatch
         {

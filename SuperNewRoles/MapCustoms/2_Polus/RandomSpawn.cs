@@ -1,6 +1,6 @@
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomRPC;
+
 
 namespace SuperNewRoles.MapCustoms
 {
@@ -16,7 +16,7 @@ namespace SuperNewRoles.MapCustoms
             {
                 System.Random rand = new();
                 int randVal = rand.Next(0, 11);
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RandomSpawn, SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RandomSpawn, SendOption.Reliable, -1);
                 writer.Write(player.Data.PlayerId);
                 writer.Write((byte)randVal);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -37,7 +37,7 @@ namespace SuperNewRoles.MapCustoms
                     {
                         System.Random rand = new();
                         int randVal = rand.Next(0, 11);
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RandomSpawn, SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RandomSpawn, SendOption.Reliable, -1);
                         writer.Write(player.Data.PlayerId);
                         writer.Write((byte)randVal);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);

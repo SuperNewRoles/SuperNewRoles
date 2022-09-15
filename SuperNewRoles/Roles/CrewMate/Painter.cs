@@ -11,7 +11,6 @@ namespace SuperNewRoles.Roles.CrewMate
 {
     public static class Painter
     {
-        //ここにコードを書きこんでください
         public enum ActionType
         {
             TaskComplete,
@@ -31,15 +30,16 @@ namespace SuperNewRoles.Roles.CrewMate
                 Target = RoleClass.Painter.CurrentTarget;
                 RoleClass.Painter.CurrentTarget = null;
                 Is = false;
-            } else
+            }
+            else
             {
                 RoleClass.Painter.CurrentTarget = Target;
             }
-            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.PainterSetTarget);
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PainterSetTarget);
             writer.Write(Target.PlayerId);
             writer.Write(Is);
             writer.EndRPC();
-            CustomRPC.RPCProcedure.PainterSetTarget(Target.PlayerId, Is);
+            RPCProcedure.PainterSetTarget(Target.PlayerId, Is);
         }
         public static void WrapUp()
         {
@@ -58,8 +58,10 @@ namespace SuperNewRoles.Roles.CrewMate
         }
         public static void DestroyPrints()
         {
-            RoleClass.Painter.Prints.RemoveAll(print => {
-                if (print != null && print.footprint != null) {
+            RoleClass.Painter.Prints.RemoveAll(print =>
+            {
+                if (print != null && print.footprint != null)
+                {
                     GameObject.Destroy(print.footprint);
                 }
                 return true;
@@ -97,12 +99,12 @@ namespace SuperNewRoles.Roles.CrewMate
                 Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
                 Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.PainterPaintSet);
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PainterPaintSet);
                 writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 writer.Write((byte)type);
                 writer.WriteBytesAndSize(buff);
                 writer.EndRPC();
-                CustomRPC.RPCProcedure.PainterPaintSet(CachedPlayer.LocalPlayer.PlayerId, (byte)type, buff);
+                RPCProcedure.PainterPaintSet(CachedPlayer.LocalPlayer.PlayerId, (byte)type, buff);
             }
         }
     }

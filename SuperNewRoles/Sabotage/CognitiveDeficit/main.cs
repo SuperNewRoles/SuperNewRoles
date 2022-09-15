@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Patch;
 using UnityEngine;
 using static UnityEngine.UI.Button;

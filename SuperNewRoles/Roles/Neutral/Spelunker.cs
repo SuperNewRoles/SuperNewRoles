@@ -1,17 +1,15 @@
 using System.Linq;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
 using HarmonyLib;
-using System.Collections.Generic;
 
 namespace SuperNewRoles.Roles.Neutral
 {
     public static class Spelunker
     {
-        //ここにコードを書きこんでください
         public static bool CheckSetRole(PlayerControl player, RoleId role)
         {
-            if (player.IsRole(RoleId.Spelunker)) {
+            if (player.IsRole(RoleId.Spelunker))
+            {
                 if (role != RoleId.Spelunker)
                 {
                     player.RpcMurderPlayer(player);
@@ -52,7 +50,8 @@ namespace SuperNewRoles.Roles.Neutral
             //コミュと停電の不安死
             if (RoleClass.Spelunker.CommsOrLightdownDeathTime != -1)
             {
-                if (RoleHelpers.IsComms() || RoleHelpers.IsLightdown()) {
+                if (RoleHelpers.IsComms() || RoleHelpers.IsLightdown())
+                {
                     if (!RoleClass.IsMeeting)
                     {
                         RoleClass.Spelunker.CommsOrLightdownTime -= Time.fixedDeltaTime;
@@ -61,7 +60,8 @@ namespace SuperNewRoles.Roles.Neutral
                             PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
                         }
                     }
-                } else
+                }
+                else
                 {
                     RoleClass.Spelunker.CommsOrLightdownTime = RoleClass.Spelunker.CommsOrLightdownDeathTime;
                 }
@@ -75,8 +75,8 @@ namespace SuperNewRoles.Roles.Neutral
         {
             DeathPosition = null;
         }
-        public static Vector2?DeathPosition;
-        [HarmonyPatch(typeof(MovingPlatformBehaviour),nameof(MovingPlatformBehaviour.UsePlatform))]
+        public static Vector2? DeathPosition;
+        [HarmonyPatch(typeof(MovingPlatformBehaviour), nameof(MovingPlatformBehaviour.UsePlatform))]
         class MovingPlatformUsePlatformPatch
         {
             public static void Postfix(MovingPlatformBehaviour __instance, PlayerControl target)
