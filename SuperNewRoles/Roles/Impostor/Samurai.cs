@@ -19,7 +19,7 @@ namespace SuperNewRoles.Roles
             {
                 if (p.IsAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {
-                    if (Getsword(PlayerControl.LocalPlayer, p))
+                    if (SelfBomber.GetIsBomb(PlayerControl.LocalPlayer, p, CustomOptions.SamuraiScope.GetFloat()))
                     {
                         RPCProcedure.BySamuraiKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.BySamuraiKillRPC, SendOption.Reliable, -1);
@@ -30,23 +30,6 @@ namespace SuperNewRoles.Roles
                     }
                 }
             }
-        }
-        public static bool Getsword(PlayerControl source, PlayerControl player)
-        {
-            Vector3 position = source.transform.position;
-            Vector3 playerposition = player.transform.position;
-            var r = CustomOptions.SamuraiScope.GetFloat();
-            if ((position.x + r >= playerposition.x) && (playerposition.x >= position.x - r))
-            {
-                if ((position.y + r >= playerposition.y) && (playerposition.y >= position.y - r))
-                {
-                    if ((position.z + r >= playerposition.z) && (playerposition.z >= position.z - r))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
     }
 }

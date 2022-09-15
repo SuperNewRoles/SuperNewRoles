@@ -127,7 +127,7 @@ namespace SuperNewRoles.Patches
                             {
                                 if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
                                 {
-                                    if (SelfBomber.GetIsBomb(__instance, p))
+                                    if (SelfBomber.GetIsBomb(__instance, p, CustomOptions.SelfBomberScope.GetFloat()))
                                     {
                                         __instance.RpcMurderPlayerCheck(p);
                                     }
