@@ -806,6 +806,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SluggerChargeTime;
         public static CustomOption SluggerCoolTime;
         public static CustomOption SluggerIsMultiKill;
+
+        public static CustomRoleOption CamouflagerOption;
+        public static CustomOption CamouflagerPlayerCount;
+        public static CustomOption CamouflagerCoolTime;
+        public static CustomOption CamouflagerDurationTime;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1653,6 +1658,11 @@ namespace SuperNewRoles.CustomOption
             PsychometristIsCheckFootprints = CustomOption.Create(890, false, CustomOptionType.Crewmate, "PsychometristIsCheckFootprints", true, PsychometristOption);
             PsychometristCanCheckFootprintsTime = CustomOption.Create(891, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);
             PsychometristIsReportCheckedDeadBody = CustomOption.Create(892, false, CustomOptionType.Crewmate, "PsychometristIsReportCheckedDeadBody", false, PsychometristOption);
+
+            CamouflagerOption = new CustomRoleOption(893, false, CustomOptionType.Impostor, "CamouflagerName", RoleClass.Camouflager.color, 1);
+            CamouflagerPlayerCount = CustomOption.Create(894, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CamouflagerOption);
+            CamouflagerCoolTime = CustomOption.Create(895, false, CustomOptionType.Impostor, "CamouflagerCoolTimeSetting", 30f, 0f, 60f, 2.5f, CamouflagerOption);
+            CamouflagerDurationTime = CustomOption.Create(896, false, CustomOptionType.Impostor, "CamouflagerDurationTimeSetting", 10f, 0f, 60f, 2.5f, CamouflagerOption);
 
             //表示設定
 

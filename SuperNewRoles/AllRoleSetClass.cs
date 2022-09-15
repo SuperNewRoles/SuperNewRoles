@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -935,6 +935,7 @@ namespace SuperNewRoles
                 RoleId.Photographer => CustomOptions.PhotographerPlayerCount.GetFloat(),
                 RoleId.Stefinder => CustomOptions.StefinderPlayerCount.GetFloat(),
                 RoleId.Slugger => CustomOptions.SluggerPlayerCount.GetFloat(),
+                RoleId.Camouflager => CustomOptions.CamouflagerPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

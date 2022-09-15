@@ -80,6 +80,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton PhotographerButton;
         public static CustomButton StefinderKillButton;
         public static CustomButton SluggerButton;
+        public static CustomButton CamouflagerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2601,6 +2602,38 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("FinalStatusKill"),
+                showButtonText = true
+            };
+
+
+            CamouflagerButton = new(
+                () =>
+                {
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Camouflager; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
+                    CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
+                },
+                RoleClass.Camouflager.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                46,
+                () =>
+                {
+                    return false;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString(""),
                 showButtonText = true
             };
 

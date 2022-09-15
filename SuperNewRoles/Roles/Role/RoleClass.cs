@@ -176,6 +176,7 @@ namespace SuperNewRoles.Roles
             Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
             Slugger.ClearAndReload();
+            Camouflager.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -3031,6 +3032,26 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.SluggerCoolTime.GetFloat();
                 ChargeTime = CustomOptions.SluggerChargeTime.GetFloat();
                 IsMultiKill = CustomOptions.SluggerIsMultiKill.GetBool();
+            }
+        }
+        public static class Camouflager
+        {
+            public static List<PlayerControl> CamouflagerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static float DurationTime;
+            private static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                CamouflagerPlayer = new();
+                CoolTime = CustomOptions.CamouflagerCoolTime.GetFloat();
+                DurationTime = CustomOptions.CamouflagerDurationTime.GetFloat();
             }
         }
         //新ロールクラス
