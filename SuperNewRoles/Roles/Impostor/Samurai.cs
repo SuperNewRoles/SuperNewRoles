@@ -1,8 +1,6 @@
 using Hazel;
 using SuperNewRoles.Buttons;
 
-using UnityEngine;
-
 namespace SuperNewRoles.Roles
 {
     public class Samurai
