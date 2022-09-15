@@ -7,27 +7,6 @@ namespace SuperNewRoles.Roles
 {
     public class Samurai
     {
-        public static void SetSamuraiButton()
-        {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Samurai))
-            {
-                if (!RoleClass.Samurai.UseVent)
-                {
-                    FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
-                }
-                if (!RoleClass.Samurai.UseSabo)
-                {
-                    FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(false);
-                }
-            }
-        }
-        public class FixedUpdate
-        {
-            public static void Postfix()
-            {
-                SetSamuraiButton();
-            }
-        }
         //自爆魔関連
         public static void ResetCoolDown()
         {
