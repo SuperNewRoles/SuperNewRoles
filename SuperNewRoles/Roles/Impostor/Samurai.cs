@@ -7,16 +7,6 @@ namespace SuperNewRoles.Roles
 {
     public class Samurai
     {
-        public class MurderPatch
-        {
-            public static void Postfix(PlayerControl __instance)
-            {
-                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Samurai))
-                {
-                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Samurai.KillCoolTime);
-                }
-            }
-        }
         public static void SetSamuraiButton()
         {
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Samurai))
