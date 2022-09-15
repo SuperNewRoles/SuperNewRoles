@@ -39,19 +39,10 @@ namespace SuperNewRoles.Roles
             }
         }
         //自爆魔関連
-        public static void EndMeeting()
-        {
-            HudManagerStartPatch.SamuraiButton.MaxTimer = RoleClass.Samurai.SwordCoolTime;
-            HudManagerStartPatch.SamuraiButton.Timer = RoleClass.Samurai.SwordCoolTime;
-        }
         public static void ResetCoolDown()
         {
             HudManagerStartPatch.SamuraiButton.MaxTimer = RoleClass.Samurai.SwordCoolTime;
             HudManagerStartPatch.SamuraiButton.Timer = RoleClass.Samurai.SwordCoolTime;
-        }
-        public static bool IsSamurai(PlayerControl Player)
-        {
-            return Player.IsRole(RoleId.Samurai);
         }
         public static void SamuraiKill()
         {
