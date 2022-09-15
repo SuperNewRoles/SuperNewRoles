@@ -758,6 +758,13 @@ namespace SuperNewRoles
             return dis <= distance;
         }
 
+        public static PlayerControl ToPlayerControl(this List<PlayerControl> list){
+            foreach (PlayerControl p in list){
+                return p;
+            }
+            return null;
+        }
+
     }
     public static class CreateFlag
     {

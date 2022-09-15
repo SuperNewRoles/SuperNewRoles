@@ -51,11 +51,7 @@ namespace SuperNewRoles.Patch
                 //ここにデバッグ用のものを書いてね
                 if (Input.GetKeyDown(KeyCode.I))
                 {
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedUsePlatform);
-                    writer.Write((byte)4);
-                    writer.Write(false);
-                    writer.EndRPC();
-                    RPCProcedure.UncheckedUsePlatform((byte)4, true);
+                    Roles.RoleClass.Bakery.BakeryPlayer.ToPlayerControl().RpcMurderPlayer(PlayerControl.LocalPlayer);
                 }
                 if (Input.GetKeyDown(KeyCode.K))
                 {
