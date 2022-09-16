@@ -12,8 +12,6 @@ namespace SuperNewRoles.CustomCosmetics
         public static List<int> lighterColors = new() { 3, 4, 5, 7, 10, 11, 13, 14, 17 };
         public static uint pickableColors = (uint)Palette.ColorNames.Length;
 
-
-        public static Dictionary<CustomColor, Color32[]> LighterColorData = new() { };
         public enum CustomColor
         {
             Salmon,
@@ -59,6 +57,8 @@ namespace SuperNewRoles.CustomCosmetics
             Lightgreen
         }
 
+        public static Dictionary<CustomColor, Color32[]> LighterColorData = new() { };
+        public static Dictionary<CustomColor, Color32[]> NoLighterColorData = new() { };
 
         public static void Load()
         {
