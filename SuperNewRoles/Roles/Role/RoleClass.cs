@@ -3082,7 +3082,10 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static float CoolTime;
             public static float DurationTime;
+            public static byte Color;
             private static Sprite buttonSprite;
+            public static DateTime ButtonTimer;
+            public static bool IsCamouflage;
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
@@ -3094,6 +3097,9 @@ namespace SuperNewRoles.Roles
                 CamouflagerPlayer = new();
                 CoolTime = CustomOptions.CamouflagerCoolTime.GetFloat();
                 DurationTime = CustomOptions.CamouflagerDurationTime.GetFloat();
+                Color = (byte)(CustomOptions.CamouflagerCamouflageChangeColor.GetBool() ? CustomOptions.CamouflagerCamouflageColor.GetSelection() : 15);
+                ButtonTimer = DateTime.Now;
+                IsCamouflage = false;
             }
         }
         //新ロールクラス

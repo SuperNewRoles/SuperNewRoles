@@ -2621,17 +2621,15 @@ namespace SuperNewRoles.Buttons
             RoleClass.Doppelganger.DoppelgangerDurationText.transform.localScale = Vector3.one * 0.5f;
             RoleClass.Doppelganger.DoppelgangerDurationText.transform.localPosition += new Vector3(-2.575f, -0.95f, 0);
 
-
             CamouflagerButton = new(
                 () =>
                 {
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    Roles.Impostor.Camouflager.Camouflage();
+                    RoleClass.Camouflager.ButtonTimer = DateTime.Now;
+                    RoleClass.Camouflager.IsCamouflage = true;
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Camouflager; },
-                () =>
-                {
-                    return PlayerControl.LocalPlayer.CanMove;
-                },
+                () => { return PlayerControl.LocalPlayer.CanMove; },
                 () =>
                 {
                     CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
@@ -2642,11 +2640,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                46,
-                () =>
-                {
-                    return false;
-                }
+                49,
+                () => { return false; }
             )
             {
                 buttonText = ModTranslation.GetString("CamouflagerButtonName"),

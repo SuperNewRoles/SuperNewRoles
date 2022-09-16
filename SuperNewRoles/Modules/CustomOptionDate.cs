@@ -825,6 +825,8 @@ namespace SuperNewRoles.Modules
         public static CustomOption CamouflagerPlayerCount;
         public static CustomOption CamouflagerCoolTime;
         public static CustomOption CamouflagerDurationTime;
+        public static CustomOption CamouflagerCamouflageChangeColor;
+        public static CustomOption CamouflagerCamouflageColor;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1657,6 +1659,8 @@ namespace SuperNewRoles.Modules
             CamouflagerPlayerCount = Create(993, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CamouflagerOption);
             CamouflagerCoolTime = Create(994, false, CustomOptionType.Impostor, "CamouflagerCoolTimeSetting", 30f, 0f, 60f, 2.5f, CamouflagerOption);
             CamouflagerDurationTime = Create(995, false, CustomOptionType.Impostor, "CamouflagerDurationTimeSetting", 10f, 0f, 60f, 2.5f, CamouflagerOption);
+            CamouflagerCamouflageChangeColor = Create(996, false, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
+            CamouflagerCamouflageColor = Create(997, false, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Roles.Impostor.Camouflager.ColorOption1, CamouflagerCamouflageChangeColor);
 
             //表示設定
 
