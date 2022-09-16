@@ -179,6 +179,7 @@ namespace SuperNewRoles.Roles
             Impostor.ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
             Doppelganger.ClearAndReload();
+            Werewolf.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -3073,6 +3074,16 @@ namespace SuperNewRoles.Roles
                 Duration = DurationTime + 1.1f;
                 DoppelgangerTargets = new();
                 DefaultKillCool = PlayerControl.GameOptions.KillCooldown;
+            }
+        }
+        public static class Werewolf
+        {
+            public static List<PlayerControl> WerewolfPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                WerewolfPlayer = new();
+                
             }
         }
         //新ロールクラス
