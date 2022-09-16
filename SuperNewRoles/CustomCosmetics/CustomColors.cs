@@ -57,10 +57,9 @@ namespace SuperNewRoles.CustomCosmetics
             Lightgreen
         }
 
-        public static Dictionary<ColorType, Color32[]> LighterColorData = new() {
-            {ColorType.Salmon,(new(239, 191, 192, byte.MaxValue),new(182, 119, 114, byte.MaxValue))},
-        };
-        public static Dictionary<ColorType, Color32[]> NoLighterColorData = new() { };
+
+        public static Dictionary<ColorType, Color32[]> LighterColorData = new();
+        public static Dictionary<ColorType, Color32[]> NoLighterColorData = new();
 
         public static void Load()
         {
@@ -68,10 +67,33 @@ namespace SuperNewRoles.CustomCosmetics
             List<Color32> colorlist = Enumerable.ToList<Color32>(Palette.PlayerColors);
             List<Color32> shadowlist = Enumerable.ToList<Color32>(Palette.ShadowColors);
 
-            List<CustomColor> colors = new()
-            {
 
-                /* Custom Colors */
+            Color32[] salmon = { new(239, 191, 192, byte.MaxValue), new Color32(182, 119, 114, byte.MaxValue) };
+            LighterColorData.Add(ColorType.Salmon, salmon);
+
+            Color32[] mint = { new Color32(111, 192, 156, byte.MaxValue), new Color32(65, 148, 111, byte.MaxValue) };
+            LighterColorData.Add(ColorType.Mint,mint);
+
+            foreach (KeyValuePair<ColorType, Color32[]> dicItem in LighterColorData)
+            {
+                Logger.Info($"Key:{dicItem.Key}  Value0:{dicItem.Value[0]}  Value1:{dicItem.Value[1]}","CC");
+                List<CustomColor> colors = new()
+            {
+/* Custom Colors */
+
+                new CustomColor{
+                    longname = $"color{dicItem.Key}",
+                    color = dicItem.Value[0],
+                    shadow = dicItem.Value[1], // shadow = new Color32(0xA5, 0x63, 0x65, byte.MaxValue),
+                    isLighterColor = true
+                },/*
+                new CustomColor{
+                    longname = "colorSalmon",
+                    color = new Color32(239, 191, 192, byte.MaxValue), // color = new Color32(0xD8, 0x82, 0x83, byte.MaxValue),
+                    shadow = new Color32(182, 119, 114, byte.MaxValue), // shadow = new Color32(0xA5, 0x63, 0x65, byte.MaxValue),
+                    isLighterColor = true
+                },
+
                 new CustomColor
                 {
                     longname = "colorSalmon",
@@ -397,26 +419,27 @@ namespace SuperNewRoles.CustomCosmetics
                     color = new Color32(226, 255, 5, byte.MaxValue),
                     shadow = new Color32(192, 201, 10, byte.MaxValue),
                     isLighterColor = true
-                }
+                }*/
             };
-            pickableColors += (uint)colors.Count; // Colors to show in Tab
-            /** Hidden Colors **/
+                pickableColors += (uint)colors.Count; // Colors to show in Tab
+                /** Hidden Colors **/
 
-            /** Add Colors **/
-            int id = 50000;
-            foreach (CustomColor cc in colors)
-            {
-                longlist.Add((StringNames)id);
-                ColorStrings[id++] = cc.longname;
-                colorlist.Add(cc.color);
-                shadowlist.Add(cc.shadow);
-                if (cc.isLighterColor)
-                    lighterColors.Add(colorlist.Count - 1);
+                /** Add Colors **/
+                int id = 50000;
+                foreach (CustomColor cc in colors)
+                {
+                    longlist.Add((StringNames)id);
+                    ColorStrings[id++] = cc.longname;
+                    colorlist.Add(cc.color);
+                    shadowlist.Add(cc.shadow);
+                    if (cc.isLighterColor)
+                        lighterColors.Add(colorlist.Count - 1);
+                }
+
+                Palette.ColorNames = longlist.ToArray();
+                Palette.PlayerColors = colorlist.ToArray();
+                Palette.ShadowColors = shadowlist.ToArray();
             }
-
-            Palette.ColorNames = longlist.ToArray();
-            Palette.PlayerColors = colorlist.ToArray();
-            Palette.ShadowColors = shadowlist.ToArray();
         }
 
         protected internal struct CustomColor
