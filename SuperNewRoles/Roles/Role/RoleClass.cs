@@ -3089,7 +3089,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Black.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
