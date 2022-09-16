@@ -12,17 +12,65 @@ namespace SuperNewRoles.CustomCosmetics
         public static List<int> lighterColors = new() { 3, 4, 5, 7, 10, 11, 13, 14, 17 };
         public static uint pickableColors = (uint)Palette.ColorNames.Length;
 
+
+        public static Dictionary<CustomColor, Color32[]> LighterColorData = new() { };
+        public enum CustomColor
+        {
+            Salmon,
+            Bordeaux,
+            Olive,
+            Turqoise,
+            Mint,
+            Lavender,
+            Nougat,
+            Peach,
+            Wasabi,
+            HotPink,
+            Petrol,
+            Lemon,
+            SignalOrange,
+            Teal,
+            Blurple,
+            Sunrise,
+            Ice,
+            PitchBlack,
+            Darkmagenta,
+            Mintcream,
+            Leaf,
+            Emerald,
+            Brightyellow,
+            Darkaqua,
+            Matcha,
+            Pitchwhite,
+            Darksky,
+            Intenseblue,
+            Blueclosertoblack,
+            Sunkengreenishblue,
+            Azi,
+            Pitchred,
+            Pitchblue,
+            Pitchgreen,
+            Pitchyellow,
+            Backblue,
+            Mildpurple,
+            Ashishreddishpurplecolor,
+            Melon,
+            Crasyublue,
+            Lightgreen
+        }
+
+
         public static void Load()
         {
             List<StringNames> longlist = Enumerable.ToList<StringNames>(Palette.ColorNames);
             List<Color32> colorlist = Enumerable.ToList<Color32>(Palette.PlayerColors);
             List<Color32> shadowlist = Enumerable.ToList<Color32>(Palette.ShadowColors);
 
-            List<CustomColor> colors = new()
+            List<ColorCustom> colors = new()
             {
 
                 /* Custom Colors */
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorSalmon",
                     color = new Color32(239, 191, 192, byte.MaxValue), // color = new Color32(0xD8, 0x82, 0x83, byte.MaxValue),
@@ -30,7 +78,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorBordeaux",
                     color = new Color32(109, 7, 26, byte.MaxValue),
@@ -38,7 +86,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorOlive",
                     color = new Color32(154, 140, 61, byte.MaxValue),
@@ -46,15 +94,14 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorTurqoise",
                     color = new Color32(22, 132, 176, byte.MaxValue),
                     shadow = new Color32(15, 89, 117, byte.MaxValue),
                     isLighterColor = false
                 },
-
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorMint",
                     color = new Color32(111, 192, 156, byte.MaxValue),
@@ -62,7 +109,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorLavender",
                     color = new Color32(173, 126, 201, byte.MaxValue),
@@ -70,7 +117,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorNougat",
                     color = new Color32(160, 101, 56, byte.MaxValue),
@@ -78,7 +125,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorPeach",
                     color = new Color32(255, 164, 119, byte.MaxValue),
@@ -86,7 +133,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorWasabi",
                     color = new Color32(112, 143, 46, byte.MaxValue),
@@ -94,15 +141,14 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorHotPink",
                     color = new Color32(255, 51, 102, byte.MaxValue),
                     shadow = new Color32(232, 0, 58, byte.MaxValue),
                     isLighterColor = true
                 },
-
-                new CustomColor
+                                new ColorCustom
                 {
                     longname = "colorPetrol",
                     color = new Color32(0, 99, 105, byte.MaxValue),
@@ -110,7 +156,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorLemon",
                     color = new Color32(0xDB, 0xFD, 0x2F, byte.MaxValue),
@@ -118,7 +164,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorSignalOrange",
                     color = new Color32(0xF7, 0x44, 0x17, byte.MaxValue),
@@ -126,7 +172,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorTeal",
                     color = new Color32(0x25, 0xB8, 0xBF, byte.MaxValue),
@@ -134,7 +180,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorBlurple",
                     color = new Color32(0x59, 0x3C, 0xD6, byte.MaxValue),
@@ -142,7 +188,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorSunrise",
                     color = new Color32(0xFF, 0xCA, 0x19, byte.MaxValue),
@@ -150,7 +196,8 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+
+                new ColorCustom
                 {
                     longname = "colorIce",
                     color = new Color32(0xA8, 0xDF, 0xFF, byte.MaxValue),
@@ -158,7 +205,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorPitchBlack",
                     color = new Color32(0, 0, 0, byte.MaxValue),
@@ -166,7 +213,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorDarkmagenta",
                     color = new Color32(139, 0, 139, byte.MaxValue),
@@ -174,7 +221,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorMintcream",
                     color = new Color32(245, 255, 250, byte.MaxValue),
@@ -182,7 +229,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorLeaf",
                     color = new Color32(62, 90, 11, byte.MaxValue),
@@ -190,7 +237,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorEmerald",
                     color = new Color32(98, 214, 133, byte.MaxValue),
@@ -198,7 +245,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorBrightyellow",
                     color = new Color32(248, 181, 0, byte.MaxValue),
@@ -206,7 +253,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorDarkaqua",
                     color = new Color32(14, 104, 188, byte.MaxValue),
@@ -214,7 +261,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorMatcha",
                     color = new Color32(52, 99, 23, byte.MaxValue),
@@ -222,7 +269,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorPitchwhite",
                     color = new Color32(255, 255, 255, byte.MaxValue),
@@ -230,15 +277,14 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorDarksky",
                     color = new Color32(64, 128, 192, byte.MaxValue),
                     shadow = new Color32(32, 96, 128, byte.MaxValue),
                     isLighterColor = true
                 },
-
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorIntenseblue",
                     color = new Color32(83, 136, 255, byte.MaxValue),
@@ -246,7 +292,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorBlueclosertoblack",
                     color = new Color32(0, 0, 50, byte.MaxValue),
@@ -254,7 +300,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorSunkengreenishblue",
                     color = new Color32(128, 156, 166, byte.MaxValue),
@@ -262,7 +308,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorAzi",
                     color = new Color32(100, 48, 0, byte.MaxValue),
@@ -270,7 +316,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorPitchred",
                     color = new Color32(255, 0, 0, byte.MaxValue),
@@ -278,7 +324,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorPitchblue",
                     color = new Color32(0, 0, 128, byte.MaxValue),
@@ -286,7 +332,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorPitchgreen",
                     color = new Color32(0, 128, 0, byte.MaxValue),
@@ -294,7 +340,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorPitchyellow",
                     color = new Color32(255, 255, 0, byte.MaxValue),
@@ -302,7 +348,8 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+
+                new ColorCustom
                 {
                     longname = "colorBackblue",
                     color = new Color32(0, 128, 255, byte.MaxValue),
@@ -310,7 +357,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorMildpurple",
                     color = new Color32(109, 83, 131, byte.MaxValue),
@@ -318,7 +365,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorAshishreddishpurplecolor",
                     color = new Color32(139, 102, 118, byte.MaxValue),
@@ -326,7 +373,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorMelon",
                     color = new Color32(0, 225, 129, byte.MaxValue),
@@ -334,7 +381,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = true
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorCrasyublue",
                     color = new Color32(2, 38, 106, byte.MaxValue),
@@ -342,7 +389,7 @@ namespace SuperNewRoles.CustomCosmetics
                     isLighterColor = false
                 },
 
-                new CustomColor
+                new ColorCustom
                 {
                     longname = "colorLightgreen",
                     color = new Color32(226, 255, 5, byte.MaxValue),
@@ -355,7 +402,7 @@ namespace SuperNewRoles.CustomCosmetics
 
             /** Add Colors **/
             int id = 50000;
-            foreach (CustomColor cc in colors)
+            foreach (ColorCustom cc in colors)
             {
                 longlist.Add((StringNames)id);
                 ColorStrings[id++] = cc.longname;
@@ -370,7 +417,7 @@ namespace SuperNewRoles.CustomCosmetics
             Palette.ShadowColors = shadowlist.ToArray();
         }
 
-        protected internal struct CustomColor
+        protected internal struct ColorCustom
         {
             public string longname;
             public Color32 color;
