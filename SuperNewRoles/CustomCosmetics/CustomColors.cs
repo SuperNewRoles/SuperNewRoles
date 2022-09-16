@@ -186,10 +186,10 @@ namespace SuperNewRoles.CustomCosmetics
             LighterColorData.Add(ColorType.Melon, melon);
 
             Color32[] crasyublue = { new(2, 38, 106, byte.MaxValue), new(64, 0, 111, byte.MaxValue) };
-            NoLighterColorData.Add(ColorType.Crasyublue,crasyublue);
+            NoLighterColorData.Add(ColorType.Crasyublue, crasyublue);
 
-            Color32[]lightgreen={new(226, 255, 5, byte.MaxValue),new(192, 201, 10, byte.MaxValue)  };
-            LighterColorData.Add(ColorType.Lightgreen,lightgreen);
+            Color32[] lightgreen = { new(226, 255, 5, byte.MaxValue), new(192, 201, 10, byte.MaxValue) };
+            LighterColorData.Add(ColorType.Lightgreen, lightgreen);
 
 
             List<CustomColor> colors = new();
