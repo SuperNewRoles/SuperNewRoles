@@ -58,8 +58,8 @@ namespace SuperNewRoles.CustomCosmetics
         }
 
 
-        public static Dictionary<ColorType, Color32[]> LighterColorData = new();
-        public static Dictionary<ColorType, Color32[]> NoLighterColorData = new();
+        public static Dictionary<ColorType, Color32[]> LighterColorData = new(); // isLighterColorがtrue
+        public static Dictionary<ColorType, Color32[]> NoLighterColorData = new(); // isLighterColorがfalse
 
         public static void Load()
         {
