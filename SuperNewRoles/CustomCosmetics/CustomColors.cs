@@ -195,7 +195,6 @@ namespace SuperNewRoles.CustomCosmetics
             List<CustomColor> colors = new();
             foreach (KeyValuePair<ColorType, Color32[]> dicItem in LighterColorData)
             {
-                Logger.Info($"Key:{dicItem.Key}  Value0:{dicItem.Value[0]}  Value1:{dicItem.Value[1]}", "CC1");
                 colors.Add(new CustomColor
                 {
                     longname = $"color{dicItem.Key}",
@@ -206,7 +205,6 @@ namespace SuperNewRoles.CustomCosmetics
             }
             foreach (KeyValuePair<ColorType, Color32[]> dicItem in NoLighterColorData)
             {
-                Logger.Info($"Key:{dicItem.Key}  Value0:{dicItem.Value[0]}  Value1:{dicItem.Value[1]}", "CC2");
                 colors.Add(new CustomColor
                 {
                     longname = $"color{dicItem.Key}",
