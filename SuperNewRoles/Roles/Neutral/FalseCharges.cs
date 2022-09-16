@@ -17,7 +17,7 @@ namespace SuperNewRoles.Roles
             {
                 if (exiled != null)
                 {
-                    if (PlayerControl.LocalPlayer.IsDead() && !CachedPlayer.LocalPlayer.Data.Disconnected && RoleClass.FalseCharges.Turns != 255)
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.FalseCharges) && PlayerControl.LocalPlayer.IsDead() && !CachedPlayer.LocalPlayer.Data.Disconnected && RoleClass.FalseCharges.Turns != 255)
                     {
                         if (RoleClass.FalseCharges.Turns <= 0) return;
                         if (exiled.PlayerId == RoleClass.FalseCharges.FalseChargePlayer)
