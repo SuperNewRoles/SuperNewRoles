@@ -71,45 +71,39 @@ namespace SuperNewRoles.CustomCosmetics
             Color32[] salmon = { new(239, 191, 192, byte.MaxValue), new Color32(182, 119, 114, byte.MaxValue) };
             LighterColorData.Add(ColorType.Salmon, salmon);
 
-            Color32[] mint = { new Color32(111, 192, 156, byte.MaxValue), new Color32(65, 148, 111, byte.MaxValue) };
-            LighterColorData.Add(ColorType.Mint,mint);
+            Color32[] bordeaux = { new(109, 7, 26, byte.MaxValue), new Color32(54, 2, 11, byte.MaxValue) };
+            NoLighterColorData.Add(ColorType.Bordeaux, bordeaux);
 
+            Color32[] olive ={}
+
+            Color32[] mint = { new Color32(111, 192, 156, byte.MaxValue), new Color32(65, 148, 111, byte.MaxValue) };
+            LighterColorData.Add(ColorType.Mint, mint);
+
+
+
+            List<CustomColor> colors = new();
             foreach (KeyValuePair<ColorType, Color32[]> dicItem in LighterColorData)
             {
-                Logger.Info($"Key:{dicItem.Key}  Value0:{dicItem.Value[0]}  Value1:{dicItem.Value[1]}","CC");
-                List<CustomColor> colors = new()
-            {
-/* Custom Colors */
-
-                new CustomColor{
+                Logger.Info($"Key:{dicItem.Key}  Value0:{dicItem.Value[0]}  Value1:{dicItem.Value[1]}", "CC1");
+                colors.Add(new CustomColor
+                {
                     longname = $"color{dicItem.Key}",
                     color = dicItem.Value[0],
-                    shadow = dicItem.Value[1], // shadow = new Color32(0xA5, 0x63, 0x65, byte.MaxValue),
+                    shadow = dicItem.Value[1],
                     isLighterColor = true
-                },/*
-                new CustomColor{
-                    longname = "colorSalmon",
-                    color = new Color32(239, 191, 192, byte.MaxValue), // color = new Color32(0xD8, 0x82, 0x83, byte.MaxValue),
-                    shadow = new Color32(182, 119, 114, byte.MaxValue), // shadow = new Color32(0xA5, 0x63, 0x65, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
+                });
+            }
+            foreach (KeyValuePair<ColorType, Color32[]> dicItem in NoLighterColorData)
+            {
+                Logger.Info($"Key:{dicItem.Key}  Value0:{dicItem.Value[0]}  Value1:{dicItem.Value[1]}", "CC2");
+                colors.Add(new CustomColor
                 {
-                    longname = "colorSalmon",
-                    color = new Color32(239, 191, 192, byte.MaxValue), // color = new Color32(0xD8, 0x82, 0x83, byte.MaxValue),
-                    shadow = new Color32(182, 119, 114, byte.MaxValue), // shadow = new Color32(0xA5, 0x63, 0x65, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorBordeaux",
-                    color = new Color32(109, 7, 26, byte.MaxValue),
-                    shadow = new Color32(54, 2, 11, byte.MaxValue),
+                    longname = $"color{dicItem.Key}",
+                    color = dicItem.Value[0],
+                    shadow = dicItem.Value[1],
                     isLighterColor = false
-                },
-
+                });
+            }/*
                 new CustomColor
                 {
                     longname = "colorOlive",
@@ -420,27 +414,26 @@ namespace SuperNewRoles.CustomCosmetics
                     shadow = new Color32(192, 201, 10, byte.MaxValue),
                     isLighterColor = true
                 }*/
-            };
-                pickableColors += (uint)colors.Count; // Colors to show in Tab
-                /** Hidden Colors **/
+            pickableColors += (uint)colors.Count; // Colors to show in Tab
+            /** Hidden Colors **/
 
-                /** Add Colors **/
-                int id = 50000;
-                foreach (CustomColor cc in colors)
-                {
-                    longlist.Add((StringNames)id);
-                    ColorStrings[id++] = cc.longname;
-                    colorlist.Add(cc.color);
-                    shadowlist.Add(cc.shadow);
-                    if (cc.isLighterColor)
-                        lighterColors.Add(colorlist.Count - 1);
-                }
-
-                Palette.ColorNames = longlist.ToArray();
-                Palette.PlayerColors = colorlist.ToArray();
-                Palette.ShadowColors = shadowlist.ToArray();
+            /** Add Colors **/
+            int id = 50000;
+            foreach (CustomColor cc in colors)
+            {
+                longlist.Add((StringNames)id);
+                ColorStrings[id++] = cc.longname;
+                colorlist.Add(cc.color);
+                shadowlist.Add(cc.shadow);
+                if (cc.isLighterColor)
+                    lighterColors.Add(colorlist.Count - 1);
             }
+
+            Palette.ColorNames = longlist.ToArray();
+            Palette.PlayerColors = colorlist.ToArray();
+            Palette.ShadowColors = shadowlist.ToArray();
         }
+
 
         protected internal struct CustomColor
         {
