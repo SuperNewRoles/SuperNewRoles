@@ -71,16 +71,7 @@ while True:
             temp = temp.replace("//ロールデータ",
                                 """{RoleId.ROLENAME,RoleClass.ROLENAME.ROLENAMEPlayer},
             //ロールデータ""".replace("ROLENAME",rolename))
-            temp = temp.replace("//ロールチェック",
-                                """else if (RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player)) return RoleId.ROLENAME;\n                //ロールチェック""".replace("ROLENAME", rolename))
-            temp = temp.replace("//ロールアド",
-                                """case (RoleId.ROLENAME):
-                    RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
-                    break;\n                //ロールアド""".replace("ROLENAME", rolename))
-            temp = temp.replace("//ロールリモベ",
-                                """case (RoleId.ROLENAME):
-                    RoleClass.ROLENAME.ROLENAMEPlayer.RemoveAll(ClearRemove);
-                    break;\n                //ロールリモベ""".replace("ROLENAME", rolename))
+
             if isneut:
                 temp = temp.replace("//第三か",
                                     """case (RoleId.ROLENAME):
