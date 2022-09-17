@@ -628,7 +628,7 @@ namespace SuperNewRoles.Patch
                     renderer.sprite = sprite;
                     PassiveButton button = targetBox.GetComponent<PassiveButton>();
                     button.OnClick.RemoveAllListeners();
-                    int copiedIndex = i;
+                    int copiedIndex = player.PlayerId;
                     button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClick(copiedIndex, __instance)));
                 }
             }
