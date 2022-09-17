@@ -86,6 +86,10 @@ namespace SuperNewRoles.Patch
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("new Vector2(" + (PlayerControl.LocalPlayer.transform.position.x - 12.63f) + "f, " + (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
                 }
+                if (Input.GetKeyDown(KeyCode.P)){
+                    Logger.Info($"{PlayerControl.LocalPlayer.GetRole()}");
+                    PlayerControl.LocalPlayer.SetRole(RoleId.Jackal);
+                }
             }
 
             public static string RandomString(int length)
