@@ -124,22 +124,26 @@ namespace SuperNewRoles.Roles.Impostor
         }
         public static void SHRFixedUpdate()
         {
-            if (!RoleClass.IsMeeting && AmongUsClient.Instance.AmHost)
+            if (AmongUsClient.Instance.AmHost)
             {
-                if (RoleClass.Camouflager.IsCamouflage)
+                if (!RoleClass.IsMeeting)
                 {
-                    RoleClass.Camouflager.Duration -= Time.fixedDeltaTime;
-                    if (RoleClass.Camouflager.Duration <= 0)
+                    if (RoleClass.Camouflager.IsCamouflage)
                     {
-                        RoleClass.Camouflager.Duration = 0f;
-                        RoleClass.Camouflager.IsCamouflage = false;
-                        ResetCamouflage();
+                        RoleClass.Camouflager.Duration -= Time.fixedDeltaTime;
+                        if (RoleClass.Camouflager.Duration <= 0)
+                        {
+                            RoleClass.Camouflager.Duration = 0f;
+                            RoleClass.Camouflager.IsCamouflage = false;
+                            ResetCamouflage();
+                        }
                     }
                 }
-            }
-            else if (RoleClass.IsMeeting && AmongUsClient.Instance.AmHost)
-            {
-                ResetCamouflage();
+                else
+                {
+                    ResetCamouflage();
+                    RoleClass.Camouflager.IsCamouflage = false;
+                }
             }
         }
     }
