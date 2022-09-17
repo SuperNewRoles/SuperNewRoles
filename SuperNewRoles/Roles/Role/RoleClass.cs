@@ -3086,6 +3086,7 @@ namespace SuperNewRoles.Roles
             private static Sprite buttonSprite;
             public static DateTime ButtonTimer;
             public static bool IsCamouflage;
+            public static float Duration;
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
@@ -3100,6 +3101,7 @@ namespace SuperNewRoles.Roles
                 Color = (byte)(CustomOptions.CamouflagerCamouflageChangeColor.GetBool() ? CustomOptions.CamouflagerCamouflageColor.GetSelection() : 15);
                 ButtonTimer = DateTime.Now;
                 IsCamouflage = false;
+                Duration = DurationTime;
             }
         }
         //新ロールクラス

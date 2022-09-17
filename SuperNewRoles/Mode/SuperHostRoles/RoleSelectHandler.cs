@@ -134,6 +134,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetVanillaRole(RoleClass.EvilButtoner.EvilButtonerPlayer, RoleTypes.Shapeshifter, false);
             SetVanillaRole(RoleClass.SuicideWisher.SuicideWisherPlayer, RoleTypes.Shapeshifter, false);
             SetVanillaRole(RoleClass.Doppelganger.DoppelggerPlayer, RoleTypes.Shapeshifter, false);
+            SetVanillaRole(RoleClass.Camouflager.CamouflagerPlayer, RoleTypes.Shapeshifter, false);
             /*============シェイプシフター役職設定============*/
 
             foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer)

@@ -172,6 +172,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.ShapeshifterDuration = RoleClass.Doppelganger.DurationTime;
                     optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Doppelganger.CoolTime;
                     break;
+                case RoleId.Camouflager:
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Camouflager.CoolTime;
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
+                    break;
             }
             if (player.IsDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;

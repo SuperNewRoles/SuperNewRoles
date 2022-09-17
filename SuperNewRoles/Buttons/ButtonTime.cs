@@ -247,31 +247,34 @@ namespace SuperNewRoles.Buttons
         }
         public static void CamouflagerButton()
         {
-            if (RoleClass.Camouflager.IsCamouflage)
+            if (Mode.ModeHandler.IsMode(Mode.ModeId.Default))
             {
-                var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Camouflager.DurationTime);
-                HudManagerStartPatch.CamouflagerButton.actionButton.cooldownTimerText.color = Color.green;
-                HudManagerStartPatch.CamouflagerButton.MaxTimer = RoleClass.Camouflager.DurationTime;
-                HudManagerStartPatch.CamouflagerButton.Timer = (float)((RoleClass.Camouflager.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
-                if (HudManagerStartPatch.CamouflagerButton.Timer <= 0f)
+                if (RoleClass.Camouflager.IsCamouflage)
                 {
-                    Roles.Impostor.Camouflager.ResetCamouflage();
-                    Roles.Impostor.Camouflager.ResetCoolTime();
-                    HudManagerStartPatch.CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
-                    RoleClass.Camouflager.IsCamouflage = false;
-                    HudManagerStartPatch.CamouflagerButton.actionButton.cooldownTimerText.color = Color.white;
-                    RoleClass.Camouflager.ButtonTimer = DateTime.Now;
+                    var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Camouflager.DurationTime);
+                    HudManagerStartPatch.CamouflagerButton.actionButton.cooldownTimerText.color = Color.green;
+                    HudManagerStartPatch.CamouflagerButton.MaxTimer = RoleClass.Camouflager.DurationTime;
+                    HudManagerStartPatch.CamouflagerButton.Timer = (float)((RoleClass.Camouflager.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+                    if (HudManagerStartPatch.CamouflagerButton.Timer <= 0f)
+                    {
+                        Roles.Impostor.Camouflager.ResetCamouflage();
+                        Roles.Impostor.Camouflager.ResetCoolTime();
+                        HudManagerStartPatch.CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
+                        RoleClass.Camouflager.IsCamouflage = false;
+                        HudManagerStartPatch.CamouflagerButton.actionButton.cooldownTimerText.color = Color.white;
+                        RoleClass.Camouflager.ButtonTimer = DateTime.Now;
+                    }
                 }
-            }
-            else
-            {
-                if (RoleClass.Camouflager.ButtonTimer == null)
+                else
                 {
-                    RoleClass.Camouflager.ButtonTimer = DateTime.Now;
+                    if (RoleClass.Camouflager.ButtonTimer == null)
+                    {
+                        RoleClass.Camouflager.ButtonTimer = DateTime.Now;
+                    }
+                    var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Camouflager.CoolTime);
+                    HudManagerStartPatch.CamouflagerButton.Timer = (float)(RoleClass.Camouflager.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
+                    if (HudManagerStartPatch.CamouflagerButton.Timer <= 0f) HudManagerStartPatch.CamouflagerButton.Timer = 0f; return;
                 }
-                var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Camouflager.CoolTime);
-                HudManagerStartPatch.CamouflagerButton.Timer = (float)(RoleClass.Camouflager.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
-                if (HudManagerStartPatch.CamouflagerButton.Timer <= 0f) HudManagerStartPatch.CamouflagerButton.Timer = 0f; return;
             }
         }
     }

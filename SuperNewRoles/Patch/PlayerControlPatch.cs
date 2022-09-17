@@ -208,6 +208,14 @@ namespace SuperNewRoles.Patches
                             RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptions.EvilButtonerCount.GetInt() - 1;
                         if (AmongUsClient.Instance.AmHost && RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1) EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
                         return false;
+                    case RoleId.Camouflager:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            RoleClass.Camouflager.Duration = RoleClass.Camouflager.DurationTime;
+                            Roles.Impostor.Camouflager.Camouflage();
+                            RoleClass.Camouflager.IsCamouflage = true;
+                        }
+                        return true;
                 }
             }
             return true;

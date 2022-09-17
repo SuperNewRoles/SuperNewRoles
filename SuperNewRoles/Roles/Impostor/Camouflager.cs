@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
+using UnityEngine;
 using static SuperNewRoles.Buttons.HudManagerStartPatch;
 
 namespace SuperNewRoles.Roles.Impostor
@@ -76,16 +79,29 @@ namespace SuperNewRoles.Roles.Impostor
 
                 Attire.Add(player.PlayerId, data);
             }
-
             //全プレイヤーのスキンを変更する部分
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
-                player.RpcSetName(" ");//名前を変更
-                player.RpcSetColor(RoleClass.Camouflager.Color);//カラーをグレーに変更
-                player.RpcSetSkin(""); //スキンを変更
-                player.RpcSetHat("");  //ハットを変更
-                player.RpcSetVisor("");//バイザーを変更
-                player.RpcSetPet("");  //ペットを変更
+                if (ModeHandler.IsMode(ModeId.Default))
+                {
+                    player.RpcSetName(" ");//名前を変更
+                    player.RpcSetColor(RoleClass.Camouflager.Color);//カラーをグレーに変更
+                    player.RpcSetSkin(""); //スキンを変更
+                    player.RpcSetHat("");  //ハットを変更
+                    player.RpcSetVisor("");//バイザーを変更
+                    player.RpcSetPet("");  //ペットを変更
+                }
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                {
+                    string name = "<color=#00000000>" + player.GetDefaultName();
+                    player.RpcSetName(name);
+                    player.RpcSetColor(RoleClass.Camouflager.Color);//カラーをグレーに変更
+                    player.RpcSetSkin(""); //スキンを変更
+                    player.RpcSetHat("");  //ハットを変更
+                    player.RpcSetVisor("");//バイザーを変更
+                    player.RpcSetPet("");  //ペットを変更
+                }
+
             }
         }
         public static void ResetCamouflage()
@@ -106,67 +122,25 @@ namespace SuperNewRoles.Roles.Impostor
             CamouflagerButton.Timer = RoleClass.Camouflager.CoolTime;
             RoleClass.Camouflager.ButtonTimer = DateTime.Now;
         }
-        public enum Color
+        public static void SHRFixedUpdate()
         {
-            Red,
-            Blue,
-            Green,
-            Pink,
-            Orange,
-            Yellow,
-            Black,
-            White,
-            Purple,
-            Brown,
-            Cyan,
-            Lime,
-            Maroon,
-            Rose,
-            Banana,
-            Gray,
-            Tan,
-            Coral,
-            Salmon,
-            Bordeaux,
-            Olive,
-            Turquoise,
-            Mint,
-            Lavender,
-            Nougat,
-            Peach,
-            Wasabi,
-            HotPink,
-            PetrolBlue,
-            Limon,
-            SignalOrange,
-            Teal,
-            Blurple,
-            Sunrise,
-            Ice,
-            PitchBlack,
-            DarkMagenta,
-            MintCream,
-            Leaf,
-            Emerald,
-            BrightYellow,
-            DarkAqua,
-            Matcha,
-            PitchWhite,
-            DarkSky,
-            IntenseBlue,
-            BlueCloserToBlack,
-            SunkenGreenishBlue,
-            Azi,
-            PitchRed,
-            PitchBlue,
-            PitchGreen,
-            PitchYellow,
-            BackBlue,
-            MildPurple,
-            AshishReddishPurpleColor,
-            Melon,
-            CrasyuBlue,
-            LightGreen,
+            if (!RoleClass.IsMeeting && AmongUsClient.Instance.AmHost)
+            {
+                if (RoleClass.Camouflager.IsCamouflage)
+                {
+                    RoleClass.Camouflager.Duration -= Time.fixedDeltaTime;
+                    if (RoleClass.Camouflager.Duration <= 0)
+                    {
+                        RoleClass.Camouflager.Duration = 0f;
+                        RoleClass.Camouflager.IsCamouflage = false;
+                        ResetCamouflage();
+                    }
+                }
+            }
+            else if (RoleClass.IsMeeting && AmongUsClient.Instance.AmHost)
+            {
+                ResetCamouflage();
+            }
         }
     }
 }

@@ -2628,7 +2628,7 @@ namespace SuperNewRoles.Buttons
                     RoleClass.Camouflager.ButtonTimer = DateTime.Now;
                     RoleClass.Camouflager.IsCamouflage = true;
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Camouflager; },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Camouflager && ModeHandler.IsMode(ModeId.Default); },
                 () => { return PlayerControl.LocalPlayer.CanMove; },
                 () =>
                 {

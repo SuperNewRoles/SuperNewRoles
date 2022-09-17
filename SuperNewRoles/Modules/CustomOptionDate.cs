@@ -1655,12 +1655,12 @@ namespace SuperNewRoles.Modules
             DoppelgangerSucTime = Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
             DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
 
-            CamouflagerOption = new(992, false, CustomOptionType.Impostor, "CamouflagerName", RoleClass.Camouflager.color, 1);
-            CamouflagerPlayerCount = Create(993, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CamouflagerOption);
-            CamouflagerCoolTime = Create(994, false, CustomOptionType.Impostor, "CamouflagerCoolTimeSetting", 30f, 0f, 60f, 2.5f, CamouflagerOption);
-            CamouflagerDurationTime = Create(995, false, CustomOptionType.Impostor, "CamouflagerDurationTimeSetting", 10f, 0f, 60f, 2.5f, CamouflagerOption);
-            CamouflagerCamouflageChangeColor = Create(996, false, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
-            CamouflagerCamouflageColor = Create(997, false, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Roles.Impostor.Camouflager.ColorOption1, CamouflagerCamouflageChangeColor);
+            CamouflagerOption = new(992, true, CustomOptionType.Impostor, "CamouflagerName", RoleClass.Camouflager.color, 1);
+            CamouflagerPlayerCount = Create(993, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CamouflagerOption);
+            CamouflagerCoolTime = Create(994, true, CustomOptionType.Impostor, "CamouflagerCoolTimeSetting", 30f, 0f, 60f, 2.5f, CamouflagerOption);
+            CamouflagerDurationTime = Create(995, true, CustomOptionType.Impostor, "CamouflagerDurationTimeSetting", 10f, 0f, 60f, 2.5f, CamouflagerOption);
+            CamouflagerCamouflageChangeColor = Create(996, true, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
+            CamouflagerCamouflageColor = Create(997, true, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Roles.Impostor.Camouflager.ColorOption1, CamouflagerCamouflageChangeColor);
 
             //表示設定
 
