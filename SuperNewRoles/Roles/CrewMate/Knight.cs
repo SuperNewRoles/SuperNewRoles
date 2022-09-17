@@ -47,8 +47,8 @@ namespace SuperNewRoles.Roles.CrewMate
         public static void ClearAndReload()
         {
             Player = new();
-            Times = KnightMaximumNumberOfTimes.GetFloat(); //最大守護回数の取得
-            CanProtect = true; //守護を使用可能に変更
+            Times = KnightMaximumNumberOfTimes.GetFloat(); //最大護衛回数の取得
+            CanProtect = true; //護衛を使用可能に変更
 
             //CustomOptionからのGetBool()は判定が必要な場所でその都度行う為、ここに入れない。
         }
@@ -58,7 +58,7 @@ namespace SuperNewRoles.Roles.CrewMate
         public static void WrapUp()
         {
             CanProtect = true;
-            SuperNewRolesPlugin.Logger.LogInfo($"[Knight] CanProtect = {CanProtect} : 守護可能な状態に戻しました。");
+            SuperNewRolesPlugin.Logger.LogInfo($"[Knight] CanProtect = {CanProtect} : 護衛可能な状態に戻しました。");
         }
     }
 
@@ -86,9 +86,9 @@ namespace SuperNewRoles.Roles.CrewMate
             var TargetID = Target.PlayerId;
             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
-            RPCProcedure.KnightProtected(LocalID, TargetID);
+            RPCProcedure.RPCKnightProtected(LocalID, TargetID);
 
-            MessageWriter ProtectWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.KnightProtected, SendOption.Reliable, -1);
+            MessageWriter ProtectWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCKnightProtected, SendOption.Reliable, -1);
             ProtectWriter.Write(LocalID);
             ProtectWriter.Write(TargetID);
             AmongUsClient.Instance.FinishRpcImmediately(ProtectWriter);
@@ -98,8 +98,8 @@ namespace SuperNewRoles.Roles.CrewMate
                 SuperNewRolesPlugin.Logger.LogInfo($"護衛残り回数は{Times}回です");
             }
             CanProtect = false;
-            SuperNewRolesPlugin.Logger.LogInfo($"[Knight] CanProtect = {CanProtect} : 守護を使用済みに変更しました。");
-            //もし 守護可能な上限回数に達している時　または　守護不可能な状態の場合
+            SuperNewRolesPlugin.Logger.LogInfo($"[Knight] CanProtect = {CanProtect} : 護衛を使用済みに変更しました。");
+            //もし 護衛可能な上限回数に達している時　または　護衛不可能な状態の場合
             if ((KnightSetTheUpperLimitOfTheGuarding.GetBool() && Times <= 0) || !CanProtect)
             {
                 KnightProtectButtonDestroy(__instance);
@@ -107,15 +107,15 @@ namespace SuperNewRoles.Roles.CrewMate
         }
         static void Event(MeetingHud __instance)
         {
-            //もし　プレーヤーが守護可能な状態の生きている[騎士]であり　且つ　
-            //守護可能回数に上限がない状態　又は　守護可能回数に条件があるが上限に達していない場合なら
+            //もし　プレーヤーが護衛可能な状態の生きている[騎士]であり　且つ
+            //護衛可能回数に上限がない状態　又は　護衛可能回数に条件があるが上限に達していない場合なら
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Knight) && PlayerControl.LocalPlayer.IsAlive() && CanProtect && (!KnightSetTheUpperLimitOfTheGuarding.GetBool() || (KnightSetTheUpperLimitOfTheGuarding.GetBool() && Times >= 1)))
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
                     var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
-                    // もし　プレイヤーが生きていて　守護可能な状態で　そのネームプレートがプレイヤー本人でないなら
+                    // もし　プレイヤーが生きていて　護衛可能な状態で　そのネームプレートがプレイヤー本人でないなら
                     if (player.IsAlive() && CanProtect && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;

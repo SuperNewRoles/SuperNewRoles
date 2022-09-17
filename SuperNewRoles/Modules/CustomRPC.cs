@@ -235,7 +235,7 @@ namespace SuperNewRoles.Modules
         PainterPaintSet,
         PainterSetTarget,
         SharePhotograph,
-        KnightProtected,
+        RPCKnightProtected,
     }
     public static class RPCProcedure
     {
@@ -679,9 +679,12 @@ namespace SuperNewRoles.Modules
 
         }
 
-        public static void KnightProtected(byte SheriffId, byte TargetId)
+        public static void RPCKnightProtected(byte KnightId, byte TargetId)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("騎士ボタンテスト");
+            PlayerControl Knight = ModHelpers.PlayerById(KnightId);
+            PlayerControl Target = ModHelpers.PlayerById(TargetId);
+            Knight.ProtectPlayer(Target, 0);
+            SuperNewRolesPlugin.Logger.LogInfo($"[RPCKnightProtected]{Knight.GetDefaultName()}が{Target.GetDefaultName()}に護衛を使用しました。");
         }
         public static void CustomRPCKill(byte notTargetId, byte targetId)
         {
@@ -1283,8 +1286,8 @@ namespace SuperNewRoles.Modules
                             }
                             SluggerExile(source, Targets);
                             break;
-                        case CustomRPC.KnightProtected:
-                            KnightProtected(reader.ReadByte(), reader.ReadByte());
+                        case CustomRPC.RPCKnightProtected:
+                            RPCKnightProtected(reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }
