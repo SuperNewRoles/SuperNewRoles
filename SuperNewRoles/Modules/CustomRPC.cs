@@ -235,6 +235,7 @@ namespace SuperNewRoles.Modules
         PainterPaintSet,
         PainterSetTarget,
         SharePhotograph,
+        KnightProtected,
     }
     public static class RPCProcedure
     {
@@ -676,6 +677,11 @@ namespace SuperNewRoles.Modules
                     MeetingHud.Instance.CheckForEndVoting();
             }
 
+        }
+
+        public static void KnightProtected(byte SheriffId, byte TargetId)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo("騎士ボタンテスト");
         }
         public static void CustomRPCKill(byte notTargetId, byte targetId)
         {
@@ -1276,6 +1282,9 @@ namespace SuperNewRoles.Modules
                                 Targets.Add(reader.ReadByte());
                             }
                             SluggerExile(source, Targets);
+                            break;
+                        case CustomRPC.KnightProtected:
+                            KnightProtected(reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }
