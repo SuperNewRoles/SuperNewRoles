@@ -53,6 +53,7 @@ namespace SuperNewRoles.Modules
         public static CustomOption SoothSayerPlayerCount;
         public static CustomOption SoothSayerDisplayMode;
         public static CustomOption SoothSayerMaxCount;
+        public static CustomOption SoothSayerFirstWhiteOption;
 
         public static CustomRoleOption JesterOption;
         public static CustomOption JesterPlayerCount;
@@ -131,6 +132,7 @@ namespace SuperNewRoles.Modules
 
         public static CustomRoleOption SpiritMediumOption;
         public static CustomOption SpiritMediumPlayerCount;
+        public static CustomOption SpiritMediumIsAutoMode;
         public static CustomOption SpiritMediumDisplayMode;
         public static CustomOption SpiritMediumMaxCount;
 
@@ -918,7 +920,8 @@ namespace SuperNewRoles.Modules
             SoothSayerOption = new(12, false, CustomOptionType.Crewmate, "SoothSayerName", RoleClass.SoothSayer.color, 1);
             SoothSayerPlayerCount = Create(13, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
             SoothSayerDisplayMode = Create(14, false, CustomOptionType.Crewmate, "SoothSayerDisplaySetting", false, SoothSayerOption);
-            SoothSayerMaxCount = Create(15, false, CustomOptionType.Crewmate, "SoothSayerMaxCountSetting", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
+            SoothSayerMaxCount = Create(15, false, CustomOptionType.Crewmate, "SoothSayerMaxCountSetting", CrewPlayers[0] - 1, CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
+            SoothSayerFirstWhiteOption = Create(992, false, CustomOptionType.Crewmate, "SoothSayerFirstWhiteOption", false, SoothSayerOption);
 
             JesterOption = new(16, true, CustomOptionType.Neutral, "JesterName", RoleClass.Jester.color, 1);
             JesterPlayerCount = Create(17, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JesterOption);
@@ -989,6 +992,7 @@ namespace SuperNewRoles.Modules
 
             SpiritMediumOption = new(70, false, CustomOptionType.Crewmate, "SpiritMediumName", RoleClass.SpiritMedium.color, 1);
             SpiritMediumPlayerCount = Create(71, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpiritMediumOption);
+            SpiritMediumIsAutoMode = Create(993, false, CustomOptionType.Crewmate, "SpiritMediumIsAutoMode", false, SpiritMediumOption);
             SpiritMediumDisplayMode = Create(72, false, CustomOptionType.Crewmate, "SpiritMediumDisplaySetting", false, SpiritMediumOption);
             SpiritMediumMaxCount = Create(73, false, CustomOptionType.Crewmate, "SpiritMediumMaxCountSetting", 2f, 1f, 15f, 1f, SpiritMediumOption);
 

@@ -192,6 +192,7 @@ namespace SuperNewRoles.Roles
             public static bool DisplayMode;
             public static int Count;
             public static Color32 color = new(190, 86, 235, byte.MaxValue);
+            public static bool CanFirstWhite;
             private static Sprite buttonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -205,6 +206,7 @@ namespace SuperNewRoles.Roles
                 DisplayedPlayer = new();
                 DisplayMode = CustomOptions.SoothSayerDisplayMode.GetBool();
                 Count = CustomOptions.SoothSayerMaxCount.GetInt();
+                CanFirstWhite = CustomOptions.SoothSayerFirstWhiteOption.GetBool();
             }
         }
         public static class Jester
@@ -413,12 +415,14 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new(0, 191, 255, byte.MaxValue);
             public static bool DisplayMode;
             public static float MaxCount;
+            public static PlayerControl ExilePlayer;
 
             public static void ClearAndReload()
             {
                 SpiritMediumPlayer = new();
                 DisplayMode = CustomOptions.SpiritMediumDisplayMode.GetBool();
                 MaxCount = CustomOptions.SpiritMediumMaxCount.GetFloat();
+                ExilePlayer = null;
             }
         }
         public static class SpeedBooster

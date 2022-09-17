@@ -105,7 +105,7 @@ namespace SuperNewRoles.Patch
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Roles.CrewMate.Painter.WrapUp();
             Roles.Neutral.Photographer.WrapUp();
             if (exiled == null) return;
-
+            Roles.SoothSayer_Patch.WrapUp(exiled.Object);
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();
             Nekomata.NekomataEnd(exiled);
 

@@ -1434,6 +1434,18 @@
         "11": "{0}\u306e\u5f79\u8077\u306f{1}\u3067\u3059\u3002",
         "13": "{0}\u7684\u804c\u4e1a\u662f{1}"
     },
+    "SoothSayerNoneTarget": {
+        "0": "There were no Target.",
+        "11": "\u5bfe\u8c61\u8005\u304c\u3044\u307e\u305b\u3093\u3067\u3057\u305f"
+    },
+    "SoothSayerCrewmateText": {
+        "0": " was Crewmate.",
+        "11": "\u306f\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3067\u3059"
+    },
+    "SoothSayerNotCrewmateText": {
+        "0": " was not Crewmate.",
+        "11": "\u306f\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3067\u306f\u306a\u304b\u3063\u305f"
+    },
     "JesterName": {
         "0": "Jester",
         "11": "\u3066\u308b\u3066\u308b",
