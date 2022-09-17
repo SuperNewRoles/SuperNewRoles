@@ -68,6 +68,9 @@ while True:
     with open(baseurl+"Roles\Role\RoleHelper.cs", mode="r", encoding="utf-8") as r:
         temp = r.read()
         with open(baseurl+"Roles\Role\RoleHelper.cs", mode="w", encoding="utf-8") as f:
+            temp = temp.replace("//ロールデータ",
+                                """{RoleId.ROLENAME,RoleClass.ROLENAME.ROLENAMEPlayer},
+            //ロールデータ""".replace("ROLENAME",rolename))
             temp = temp.replace("//ロールチェック",
                                 """else if (RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player)) return RoleId.ROLENAME;\n                //ロールチェック""".replace("ROLENAME", rolename))
             temp = temp.replace("//ロールアド",
