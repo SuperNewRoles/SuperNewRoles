@@ -220,6 +220,7 @@ namespace SuperNewRoles.Modules
         public static IntroDate ShiftActorIntro = new("ShiftActor", Roles.Impostor.ShiftActor.color, 1, RoleId.ShiftActor, TeamRoleType.Impostor);
         public static IntroDate ConnectKillerIntro = new("ConnectKiller", RoleClass.ConnectKiller.color, 1, RoleId.ConnectKiller, TeamRoleType.Impostor);
         public static IntroDate DoppelgangerIntro = new("Doppelganger", RoleClass.Doppelganger.color, 1, RoleId.Doppelganger, TeamRoleType.Impostor);
+        public static IntroDate WerewolfIntro = new("Werewolf", RoleClass.Werewolf.color, 1, RoleId.Werewolf, TeamRoleType.Impostor);
         //イントロオブジェ
     }
 }

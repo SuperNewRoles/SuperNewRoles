@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-
+using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnhollowerBaseLib;
+using UnityEngine;
 using static MeetingHud;
 
 namespace SuperNewRoles.Patch
@@ -587,7 +588,7 @@ namespace SuperNewRoles.Patch
         public static void Prefix()
         {
         }
-        public static void Postfix()
+        public static void Postfix(MeetingHud __instance)
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
@@ -595,6 +596,41 @@ namespace SuperNewRoles.Patch
                 {
                     SyncSetting.CustomSyncSettings();
                 }, 3f, "StartMeeting CustomSyncSetting");
+            }
+
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
+            {
+                CreateMeetingButton(__instance, "WerewolfKillButton", (int i, MeetingHud __instance) => {
+                    if (RoleClass.Werewolf.IsShooted || CachedPlayer.LocalPlayer.IsDead()) return;
+                    RoleClass.Werewolf.IsShooted = true;
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.MeetingKill);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write((byte)i);
+                    writer.EndRPC();
+                    RPCProcedure.MeetingKill(CachedPlayer.LocalPlayer.PlayerId, (byte)i);
+                    __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
+                }, RoleClass.Cleaner.GetButtonSprite(), (PlayerControl player) => player.IsAlive() && !player.IsImpostor());
+            }
+        }
+        public static void CreateMeetingButton(MeetingHud __instance, string ButtonName, Action<int, MeetingHud> OnClick, Sprite sprite, Func<PlayerControl, bool> CheckCanButton)
+        {
+            for (int i = 0; i < __instance.playerStates.Length; i++)
+            {
+                PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+                var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
+                if (CheckCanButton(player))
+                {
+                    GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
+                    GameObject targetBox = GameObject.Instantiate(template, playerVoteArea.transform);
+                    targetBox.name = ButtonName;
+                    targetBox.transform.localPosition = new(1, 0.03f, -1);
+                    SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
+                    renderer.sprite = sprite;
+                    PassiveButton button = targetBox.GetComponent<PassiveButton>();
+                    button.OnClick.RemoveAllListeners();
+                    int copiedIndex = i;
+                    button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClick(copiedIndex, __instance)));
+                }
             }
         }
     }
