@@ -63,9 +63,9 @@ namespace SuperNewRoles.CustomCosmetics
 
         public static void Load()
         {
-            List<StringNames> longlist = Enumerable.ToList<StringNames>(Palette.ColorNames);
-            List<Color32> colorlist = Enumerable.ToList<Color32>(Palette.PlayerColors);
-            List<Color32> shadowlist = Enumerable.ToList<Color32>(Palette.ShadowColors);
+            List<StringNames> longlist = Enumerable.ToList(Palette.ColorNames);
+            List<Color32> colorlist = Enumerable.ToList(Palette.PlayerColors);
+            List<Color32> shadowlist = Enumerable.ToList(Palette.ShadowColors);
 
 
             LighterColorData.Add(ColorType.Salmon, new Color32[] { new(239, 191, 192, byte.MaxValue), new(182, 119, 114, byte.MaxValue) });
