@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Modules
 {
-    public class Animation
+    public class CustomAnimation
     {
         public static Sprite[] GetSprites(string path, int Count)
         {
@@ -35,7 +35,7 @@ namespace SuperNewRoles.Modules
         public SpriteRenderer render;
         public float Updatetime;
         public float UpdateDefaultTime;
-        public static List<Animation> Animations = new();
+        public static List<CustomAnimation> Animations = new();
         public void Start(float freamlate, Transform obj)
         {
             UpdateDefaultTime = 1f / freamlate;
@@ -52,7 +52,7 @@ namespace SuperNewRoles.Modules
         public static void Update()
         {
             var deltatime = Time.deltaTime;
-            foreach (Animation anim in Animations)
+            foreach (CustomAnimation anim in Animations)
             {
                 anim.AnimationUpdate(deltatime);
             }
@@ -76,6 +76,6 @@ namespace SuperNewRoles.Modules
     class AnimationUpdatePatch
     {
         static void Postfix()
-            => Animation.Update();
+            => CustomAnimation.Update();
     }
 }
