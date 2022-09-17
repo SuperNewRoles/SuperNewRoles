@@ -251,18 +251,10 @@ namespace SuperNewRoles.Roles."""+namedata+"""
 
         # Roles/Role/RoleHelper.cs
         if (not MainClass.GetBool("TeamGhost")):
-            MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ロールチェック",
-                                 """else if (RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player)) return RoleId.ROLENAME;
-                //ロールチェック""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+            MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ロールデータ",
+                                 """{RoleId.ROLENAME,RoleClass.ROLENAME.ROLENAMEPlayer},
+            //ロールデータ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
-        MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ロールアド",
-                             """case RoleId.ROLENAME:
-                    RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
-                    break;\n                //ロールアド""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-        MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ロールリモベ",
-                             """case RoleId.ROLENAME:
-                    RoleClass.ROLENAME.ROLENAMEPlayer.RemoveAll(ClearRemove);
-                    break;\n                //ロールリモベ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("Neut")):
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//第三か",
                                  """case RoleId.ROLENAME:\n                //第三か""".replace("ROLENAME", MainClass.GetInput("RoleName")))

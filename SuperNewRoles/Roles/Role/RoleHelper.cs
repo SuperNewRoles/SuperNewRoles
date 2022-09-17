@@ -353,6 +353,7 @@ namespace SuperNewRoles
             {RoleId.ShiftActor,ShiftActor.Player},
             {RoleId.ConnectKiller,RoleClass.ConnectKiller.ConnectKillerPlayer},
             {RoleId.Doppelganger,RoleClass.Doppelganger.DoppelggerPlayer},
+            //ロールデータ
         };
 
         public static void SetRole(this PlayerControl player, RoleId role)
