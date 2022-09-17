@@ -401,6 +401,7 @@ namespace SuperNewRoles
                 if (player.GetRole() == dicItem.Key)
                 {
                     dicItem.Value.RemoveAll(ClearRemove);
+                    break;
                 }
             }
             ChacheManager.ResetMyRoleChache();
