@@ -1652,8 +1652,8 @@ namespace SuperNewRoles.Modules
             DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
 
             
-            WerewolfOption = new CustomRoleOption(991, false, CustomOptionType.Impostor, "WerewolfName",RoleClass.Werewolf.color, 1);
-            WerewolfPlayerCount = CustomOption.Create(9912, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
+            WerewolfOption = new(991, false, CustomOptionType.Impostor, "WerewolfName",RoleClass.Werewolf.color, 1);
+            WerewolfPlayerCount = Create(992, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

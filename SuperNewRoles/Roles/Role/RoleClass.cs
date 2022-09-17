@@ -3080,10 +3080,11 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> WerewolfPlayer;
             public static Color32 color = ImpostorRed;
+            public static bool IsShooted;
             public static void ClearAndReload()
             {
                 WerewolfPlayer = new();
-                
+                IsShooted = false;
             }
         }
         //新ロールクラス

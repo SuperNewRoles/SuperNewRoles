@@ -233,11 +233,39 @@ namespace SuperNewRoles.Modules
         PlayPlayerAnimation,
         SluggerExile,
         PainterPaintSet,
-        PainterSetTarget,
+        PainterSetTarget = 225,
         SharePhotograph,
+        MeetingKill
     }
     public static class RPCProcedure
     {
+        public static void MeetingKill(byte SourceId, byte TargetId)
+        {
+            PlayerControl source = ModHelpers.PlayerById(SourceId);
+            PlayerControl target = ModHelpers.PlayerById(TargetId);
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
+            if (source == null || target == null) return;
+            target.Exiled();
+            FinalStatusData.FinalStatuses[source.PlayerId] = FinalStatus.Kill;
+            if (CachedPlayer.LocalPlayer.PlayerId == target.PlayerId)
+            {
+                FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, source.Data);
+            }
+            if (MeetingHud.Instance)
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == TargetId)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                }
+                if (AmongUsClient.Instance.AmHost)
+                    MeetingHud.Instance.CheckForEndVoting();
+            }
+
+        }
         public static void SluggerExile(byte SourceId, List<byte> Targets)
         {
             Logger.Info("～SluggerExile～");
@@ -1276,6 +1304,9 @@ namespace SuperNewRoles.Modules
                                 Targets.Add(reader.ReadByte());
                             }
                             SluggerExile(source, Targets);
+                            break;
+                        case CustomRPC.MeetingKill:
+                            MeetingKill(reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }
