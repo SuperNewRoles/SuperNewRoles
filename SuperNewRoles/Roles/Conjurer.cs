@@ -16,9 +16,11 @@ namespace SuperNewRoles.Roles.Impostor{
         }
         public static List<PlayerControl> Player;
         public static Color32 color = RoleClass.ImpostorRed;
+        public static int Count;
         public static void ClearAndReload()
         {
             Player = new();
+            Count = 0;
         }
 
 
