@@ -49,6 +49,7 @@ namespace SuperNewRoles.Roles
             MapCustoms.AdditionalVents.ClearAndReload();
             MapCustoms.SpecimenVital.ClearAndReload();
             MapCustoms.MoveElecPad.ClearAndReload();
+            Beacon.ClearBeacons();
             SoothSayer.ClearAndReload();
             Jester.ClearAndReload();
             Lighter.ClearAndReload();
