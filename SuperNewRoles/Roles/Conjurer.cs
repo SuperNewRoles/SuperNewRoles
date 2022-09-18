@@ -30,8 +30,8 @@ namespace SuperNewRoles.Roles.Impostor
 
         public static List<PlayerControl> Player;
         public static Color32 color = RoleClass.ImpostorRed;
-        public static int Count;
-        public static int Round;
+        public static int Count; // 何回設置したか
+        public static int Round; // 何週目か
         public static Vector2[] Positions;
         public static void ClearAndReload()
         {
@@ -118,6 +118,7 @@ namespace SuperNewRoles.Roles.Impostor
 
                 AddBeacon(buff);
 
+                // PositionsのCount番目に現在の座標を保存する
                 Positions[Count] = PlayerControl.LocalPlayer.transform.position;
 
                 Count++;
@@ -147,6 +148,7 @@ namespace SuperNewRoles.Roles.Impostor
                 Logger.Info($"Beacon{Round}{Count}", "Beacons");
                 foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                 {
+                    // プレイヤーがPositionsで形成された三角形の中にいる
                     if (PointInPolygon(pc.transform.position, Positions))
                     {
                         if (pc.IsAlive())
@@ -165,14 +167,14 @@ namespace SuperNewRoles.Roles.Impostor
                     }
                 }
                 if (ShowFlash.GetBool())
-                {
+                { // Rpcにして、全視点光らせる
                     RPCHelper.StartRPC(CustomRPC.ShowFlash).EndRPC();
                     RPCProcedure.ShowFlash();
                 }
                 Beacon.ClearBeacons();
                 ResetCoolDown();
                 Count = 0;
-                Round++;
+                Round++; // 何週目かを増やす
                 Logger.Info($"Beacon{Round}{Count}", "Beacons");
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
