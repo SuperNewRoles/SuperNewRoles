@@ -27,11 +27,13 @@ namespace SuperNewRoles.Roles.Impostor
         public static List<PlayerControl> Player;
         public static Color32 color = RoleClass.ImpostorRed;
         public static int Count;
+        public static int Round;
         public static Vector2[] Positions;
         public static void ClearAndReload()
         {
             Player = new();
             Count = 0;
+            Round = 0;
             Positions = new Vector2[] { new(), new(), new() };
         }
 
@@ -61,6 +63,25 @@ namespace SuperNewRoles.Roles.Impostor
             return false;
         }
 
+        static bool PointInPolygon(Vector2 p, Vector2[] poly)
+        {
+            Vector2 p1, p2;
+            bool inside = false;
+            Vector2 oldPoint = poly[poly.Length - 1];
+            for (int i = 0; i < poly.Length; i++)
+            {
+                Vector2 newPoint = poly[i];
+                if (newPoint.x > oldPoint.x) { p1 = oldPoint; p2 = newPoint; }
+                else { p1 = newPoint; p2 = oldPoint; }
+                if ((p1.x < p.x) == (p.x <= p2.x) && (p.y - p1.y) * (p2.x - p1.x) < (p2.y - p1.y) * (p.x - p1.x))
+                {
+                    inside = !inside;
+                }
+                oldPoint = newPoint;
+            }
+            return inside;
+        }
+
         public static CustomButton BeaconButton;
         public static CustomButton StartButton;
         public static void SetupCustomButtons(HudManager hm)
@@ -68,26 +89,37 @@ namespace SuperNewRoles.Roles.Impostor
             BeaconButton = new(
             () =>
             {
-                Logger.Info($"Now:{Count}", "Conjurer Add");
-                byte[] buff = new byte[sizeof(float) * 2];
-                Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.y), 0, buff, 1 * sizeof(float), sizeof(float));
-
-                MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.AddBeacon, SendOption.Reliable);
-                writer.WriteBytesAndSize(buff);
-                writer.EndMessage();
-                RPCProcedure.AddBeacon(buff);
-
-                Positions[Count] = PlayerControl.LocalPlayer.transform.position;
-
-                Count++;
-                Logger.Info($"Now:{Count}", "Conjurer Added");
-                foreach (var pos in Positions)
+                try
                 {
-                    Logger.Info($"{pos}", "PosData");
-                }
+                    Logger.Info($"Now:{Count}", "Conjurer Add");
+                    byte[] buff = new byte[sizeof(float) * 2];
+                    Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
-                ResetCoolDown();
+                    MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.AddBeacon, SendOption.Reliable);
+                    writer.WriteBytesAndSize(buff);
+                    writer.EndMessage();
+                    RPCProcedure.AddBeacon(buff);
+
+                    Positions[Count] = PlayerControl.LocalPlayer.transform.position;
+
+                    Count++;
+                    Logger.Info($"Now:{Count}", "Conjurer Added");
+                    foreach (var pos in Positions)
+                    {
+                        Logger.Info($"{pos}", "PosData");
+                    }
+
+                    ResetCoolDown();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Warn($"エラー:{ex}", "Conjurer add");
+                }
+                finally
+                {
+                    Logger.Info("最後まで通過", "Conjurer add");
+                }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () => { return CanAddBeacon(); },
@@ -108,9 +140,22 @@ namespace SuperNewRoles.Roles.Impostor
             StartButton = new(
             () =>
             {
+                Logger.Info($"Beacon{Round}{Count}", "Beacons");
+                foreach (var pc in CachedPlayer.AllPlayers)
+                {
+                    if (PointInPolygon(pc.transform.position, Positions))
+                    {
+                        Logger.Info("TRUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                    }
+                    else
+                    {
+                        Logger.Info("FALSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                    }
+                }
                 Beacon.ClearBeacons();
                 ResetCoolDown();
                 Count = 0;
+                Round++;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () => { return PlayerControl.LocalPlayer.CanMove && Count == 3; },

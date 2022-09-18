@@ -21,7 +21,7 @@ namespace SuperNewRoles.CustomObject
                 {
                     Sprites = CustomAnimation.GetSprites("SuperNewRoles.Resources.ConjurerAnimation.Conjurer_Beacon", 60)
                 };
-                Transform Conjurer_Beacon1 = GameObject.Instantiate(GameObject.Find($"Beacon{Conjurer.Count}").transform);
+                Transform Conjurer_Beacon1 = GameObject.Instantiate(GameObject.Find($"Beacon{Conjurer.Round}{Conjurer.Count}").transform);
                 Conjurer_Beacon_Animation.Start(30, Conjurer_Beacon1);
             }
             return beaconAnimationSprites[index];
@@ -46,7 +46,7 @@ namespace SuperNewRoles.CustomObject
 
         public Beacon(Vector2 p)
         {
-            GameObject = new GameObject($"Beacon{Conjurer.Count}") { layer = 11 };
+            GameObject = new GameObject($"Beacon{Conjurer.Round}{Conjurer.Count}") { layer = 11 };
             GameObject.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
             Vector3 position = new(p.x, p.y, p.y / 1000f + 0.01f);
             position += (Vector3)PlayerControl.LocalPlayer.Collider.offset; // Add collider offset that DoMove moves the player up at a valid position
@@ -61,13 +61,16 @@ namespace SuperNewRoles.CustomObject
             AllBeacons.Add(this);
         }
 
+
         public static void ClearBeacons()
         {
-            foreach (var beacon in AllBeacons)
-            {
-                GameObject.Destroy(beacon.GameObject);
-            }
-            AllBeacons = new List<Beacon>();
+            Logger.Info($"Beacon{Conjurer.Round}{Conjurer.Count-1}をClearします", "ClearBeacons");
+            GameObject.Find($"Beacon{Conjurer.Round}{Conjurer.Count - 1}")?.SetActive(false);
+            GameObject.Find($"Beacon{Conjurer.Round}{Conjurer.Count - 1}(Clone)")?.SetActive(false);
+            GameObject.Find($"Beacon{Conjurer.Round}{Conjurer.Count - 2}")?.SetActive(false);
+            GameObject.Find($"Beacon{Conjurer.Round}{Conjurer.Count - 2}(Clone)")?.SetActive(false);
+            GameObject.Find($"Beacon{Conjurer.Round}{Conjurer.Count - 3}")?.SetActive(false);
+            GameObject.Find($"Beacon{Conjurer.Round}{Conjurer.Count - 3}(Clone)")?.SetActive(false);
         }
     }
 }
