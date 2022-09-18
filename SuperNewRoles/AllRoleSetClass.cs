@@ -928,7 +928,7 @@ namespace SuperNewRoles
                 RoleId.ShiftActor => Roles.Impostor.ShiftActor.ShiftActorPlayerCount.GetFloat(),
                 RoleId.ConnectKiller => CustomOptions.ConnectKillerPlayerCount.GetFloat(),
                 RoleId.Doppelganger => CustomOptions.DoppelgangerPlayerCount.GetFloat(),
-                RoleId.Conjurer => CustomOptions.ConjurerPlayerCount.GetFloat(),
+                RoleId.Conjurer => Roles.Impostor.Conjurer.PlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };
