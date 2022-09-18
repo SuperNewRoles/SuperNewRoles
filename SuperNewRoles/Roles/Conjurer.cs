@@ -62,21 +62,9 @@ namespace SuperNewRoles.Roles.Impostor
                 writer.WriteBytesAndSize(buff);
                 writer.EndMessage();
                 RPCProcedure.AddBeacon(buff);
-                switch (Count)
-                {
-                    case 0:
-                        Positions[0] = PlayerControl.LocalPlayer.transform.position;
-                        break;
-                    case 1:
-                        Positions[1] = PlayerControl.LocalPlayer.transform.position;
-                        break;
-                    case 2:
-                        Positions[2] = PlayerControl.LocalPlayer.transform.position;
-                        break;
-                    default:
-                        Logger.Warn($"無効な値です:{Count}", "Conjurer Add");
-                        break;
-                }
+
+                Positions[Count] = PlayerControl.LocalPlayer.transform.position;
+
                 Count++;
                 Logger.Info($"Now:{Count}", "Conjurer Added");
                 foreach (var pos in Positions)
