@@ -15,12 +15,14 @@ namespace SuperNewRoles.Roles.Impostor
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
         public static CustomOption CoolDown;
+        public static CustomOption CanAddLength;
 
         public static void SetupCustomOptions()
         {
             Option = new(Id, false, CustomOptionType.Impostor, "ConjurerName", color, 1);
             PlayerCount = CustomOption.Create(Id + 1, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], Option);
             CoolDown = CustomOption.Create(Id + 2, false, CustomOptionType.Impostor, "CoolDown", 10f, 1f, 60f, 1f, Option);
+            CanAddLength = CustomOption.Create(Id + 3, false, CustomOptionType.Impostor, "CanAddLength", 10f, 0.5f, 20f, 1f, SelfBomberOption);
         }
         public static List<PlayerControl> Player;
         public static Color32 color = RoleClass.ImpostorRed;
@@ -46,6 +48,17 @@ namespace SuperNewRoles.Roles.Impostor
             if (StartbuttonSprite) return StartbuttonSprite;
             StartbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ConjurerStartButton.png", 115f);
             return StartbuttonSprite;
+        }
+
+        private static bool CanAddBeacon()
+        {
+            if (PlayerControl.LocalPlayer.CanMove && Count != 3)
+            {
+                if (Positions[Count - 1] != null)
+                    if (Vector2.Distance(PlayerControl.LocalPlayer.transform.position, Positions[Count - 1]) < CanAddLength.GetFloat())
+                        return true;
+            }
+            return false;
         }
 
         public static CustomButton BeaconButton;
@@ -77,7 +90,7 @@ namespace SuperNewRoles.Roles.Impostor
                 ResetCoolDown();
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
-            () => { return PlayerControl.LocalPlayer.CanMove && Count != 3; },
+            () => { return CanAddBeacon(); },
             () => { ResetCoolDown(); },
             GetBeaconButtonSprite(),
             new Vector3(0, 1, 0),
@@ -100,7 +113,7 @@ namespace SuperNewRoles.Roles.Impostor
                 Count = 0;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
-            () =>{ return PlayerControl.LocalPlayer.CanMove && Count == 3; },
+            () => { return PlayerControl.LocalPlayer.CanMove && Count == 3; },
             () =>
             {
                 ResetCoolDown();
@@ -126,7 +139,8 @@ namespace SuperNewRoles.Roles.Impostor
             BeaconButton.Timer = CoolDown.GetFloat();
         }
 
-        public static void ResetStartCoolDown(){
+        public static void ResetStartCoolDown()
+        {
             StartButton.MaxTimer = 0;
             StartButton.Timer = 0;
         }
