@@ -11,7 +11,7 @@ namespace SuperNewRoles.Mode.Werewolf
         public static bool IsChatBlock(PlayerControl sourcePlayer)
         {
             if (MeetingHud.Instance == null) return false;
-            if (ModeHandler.IsMode(ModeId.Werewolf) && MeetingHud.Instance.CurrentState == MeetingHud.VoteStates.Discussion) return PlayerControl.LocalPlayer.IsImpostor() && sourcePlayer.IsImpostor();
+            if (ModeHandler.IsMode(ModeId.Werewolf) && MeetingHud.Instance.CurrentState == MeetingHud.VoteStates.Discussion) return !PlayerControl.LocalPlayer.IsImpostor() || !sourcePlayer.IsImpostor();
             return false;
         }
         public static bool IsUseButton()
@@ -25,7 +25,9 @@ namespace SuperNewRoles.Mode.Werewolf
         {
             static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id, [HarmonyArgument(1)] Il2CppReferenceArray<Il2CppSystem.Object> parts)
             {
-                if (id is StringNames.MeetingVotingBegins && ModeHandler.IsMode(ModeId.Werewolf, false) && parts.Count > 0) __result = string.Format(ModTranslation.GetString("WerewolfAbilityTime"), parts[0]);
+                if (id is StringNames.MeetingVotingBegins && ModeHandler.IsMode(ModeId.Werewolf, false) && parts.Count > 0) {
+                    __result = string.Format(ModTranslation.GetString("WerewolfAbilityTime"), parts[0]);
+                }
             }
         }
     }

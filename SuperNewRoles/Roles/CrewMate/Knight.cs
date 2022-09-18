@@ -15,7 +15,7 @@ namespace SuperNewRoles.Roles.CrewMate
 {
     public static class Knight
     {
-        public const int OptionId = 992;// 設定のId
+        public const int OptionId = 999;// 設定のId
         // CustomOptionDate
         public static CustomRoleOption KnightOption;
         public static CustomOption KnightPlayerCount;

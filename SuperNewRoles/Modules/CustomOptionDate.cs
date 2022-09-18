@@ -995,7 +995,7 @@ namespace SuperNewRoles.Modules
 
             SpiritMediumOption = new(70, false, CustomOptionType.Crewmate, "SpiritMediumName", RoleClass.SpiritMedium.color, 1);
             SpiritMediumPlayerCount = Create(71, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpiritMediumOption);
-            SpiritMediumIsAutoMode = Create(993, false, CustomOptionType.Crewmate, "SpiritMediumIsAutoMode", false, SpiritMediumOption);
+            SpiritMediumIsAutoMode = Create(1004, false, CustomOptionType.Crewmate, "SpiritMediumIsAutoMode", false, SpiritMediumOption);
             SpiritMediumDisplayMode = Create(72, false, CustomOptionType.Crewmate, "SpiritMediumDisplaySetting", false, SpiritMediumOption);
             SpiritMediumMaxCount = Create(73, false, CustomOptionType.Crewmate, "SpiritMediumMaxCountSetting", 2f, 1f, 15f, 1f, SpiritMediumOption);
 
@@ -1655,8 +1655,8 @@ namespace SuperNewRoles.Modules
             DoppelgangerSucTime = Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
             DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
 
-            WerewolfOption = new(991, false, CustomOptionType.Impostor, "WerewolfName",RoleClass.Werewolf.color, 1);
-            WerewolfPlayerCount = Create(992, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
+            WerewolfOption = new(997, false, CustomOptionType.Impostor, "WerewolfName",RoleClass.Werewolf.color, 1);
+            WerewolfPlayerCount = Create(998, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
 
             Roles.CrewMate.Knight.SetupCustomOptions();
             //表示設定
