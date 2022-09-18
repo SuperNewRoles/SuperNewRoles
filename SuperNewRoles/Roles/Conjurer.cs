@@ -95,15 +95,17 @@ namespace SuperNewRoles.Roles.Impostor
             StartButton = new(
             () =>
             {
-                //Positions = new Vector2[] { new(), new(), new() };
                 Beacon.ClearBeacons();
                 ResetCoolDown();
                 Count = 0;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
+            () =>{ return PlayerControl.LocalPlayer.CanMove && Count == 3; },
             () =>
-            { return PlayerControl.LocalPlayer.CanMove && Count == 3; },
-            () => { ResetCoolDown(); },
+            {
+                ResetCoolDown();
+                ResetStartCoolDown();
+            },
             GetStartButtonSprite(),
             new Vector3(-1.8f, -0.06f, 0),
             hm,
@@ -122,6 +124,11 @@ namespace SuperNewRoles.Roles.Impostor
         {
             BeaconButton.MaxTimer = CoolDown.GetFloat();
             BeaconButton.Timer = CoolDown.GetFloat();
+        }
+
+        public static void ResetStartCoolDown(){
+            StartButton.MaxTimer = 0;
+            StartButton.Timer = 0;
         }
     }
 }
