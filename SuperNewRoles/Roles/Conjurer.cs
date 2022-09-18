@@ -152,7 +152,6 @@ namespace SuperNewRoles.Roles.Impostor
                                 pc.RpcMurderPlayer(pc);
                             }
                         }
-
                         Logger.Info("TRUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                     }
                 }
