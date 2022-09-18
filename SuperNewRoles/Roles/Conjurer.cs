@@ -36,7 +36,7 @@ namespace SuperNewRoles.Roles.Impostor
         public static Sprite GetBeaconButtonSprite()
         {
             if (AddbuttonSprite) return AddbuttonSprite;
-            AddbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ConjurerAddButton.png", 115f);
+            AddbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ConjurerBeaconButton.png", 115f);
             return AddbuttonSprite;
         }
         public static Sprite GetStartButtonSprite()
