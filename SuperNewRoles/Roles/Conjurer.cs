@@ -1,12 +1,11 @@
-using UnityEngine;
-using SuperNewRoles.Patch;
-using static SuperNewRoles.Modules.CustomOptions;
+using System;
 using System.Collections.Generic;
 using SuperNewRoles.Buttons;
-using Hazel;
-using System;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Patch;
+using UnityEngine;
+using static SuperNewRoles.Modules.CustomOptions;
 
 namespace SuperNewRoles.Roles.Impostor
 {
@@ -82,7 +81,7 @@ namespace SuperNewRoles.Roles.Impostor
         {
             Vector2 p1, p2;
             bool inside = false;
-            Vector2 oldPoint = poly[poly.Length - 1];
+            Vector2 oldPoint = poly[^1];
             for (int i = 0; i < poly.Length; i++)
             {
                 Vector2 newPoint = poly[i];
@@ -165,7 +164,8 @@ namespace SuperNewRoles.Roles.Impostor
                         }
                     }
                 }
-                if (ShowFlash.GetBool()){
+                if (ShowFlash.GetBool())
+                {
                     RPCHelper.StartRPC(CustomRPC.ShowFlash).EndRPC();
                     RPCProcedure.ShowFlash();
                 }
