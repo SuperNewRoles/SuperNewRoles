@@ -19,7 +19,7 @@ namespace SuperNewRoles.CustomObject
             {
                 CustomAnimation Conjurer_Beacon_Animation = new()
                 {
-                    Sprites = CustomAnimation.GetSprites("SuperNewRoles.Resources.ConjurerAnimation.Conjurer_Maker_30fps", 60)
+                    Sprites = CustomAnimation.GetSprites("SuperNewRoles.Resources.ConjurerAnimation.Conjurer_Beacon", 60)
                 };
                 Transform Conjurer_Beacon1 = GameObject.Instantiate(GameObject.Find($"Beacon{Conjurer.Count}").transform);
                 Conjurer_Beacon_Animation.Start(30, Conjurer_Beacon1);
