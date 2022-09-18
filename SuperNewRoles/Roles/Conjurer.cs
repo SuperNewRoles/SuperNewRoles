@@ -17,7 +17,7 @@ namespace SuperNewRoles.Roles.Impostor
         public static CustomOption CoolDown;
         public static CustomOption CanAddLength;
         public static CustomOption CanKillImpostor;
-
+        public static CustomOption ShowFlash;
         public static void SetupCustomOptions()
         {
             Option = new(Id, false, CustomOptionType.Impostor, "ConjurerName", color, 1);
@@ -25,6 +25,7 @@ namespace SuperNewRoles.Roles.Impostor
             CoolDown = CustomOption.Create(Id + 2, false, CustomOptionType.Impostor, "CoolDown", 10f, 1f, 60f, 1f, Option);
             CanAddLength = CustomOption.Create(Id + 3, false, CustomOptionType.Impostor, "CanAddLength", 10f, 0.5f, 20f, 1f, Option);
             CanKillImpostor = CustomOption.Create(Id + 4, false, CustomOptionType.Impostor, "CanKillImpostor", false, Option);
+            ShowFlash = CustomOption.Create(Id + 5, false, CustomOptionType.Impostor, "ShowFlash", false, Option);
         }
         public static List<PlayerControl> Player;
         public static Color32 color = RoleClass.ImpostorRed;
@@ -154,6 +155,9 @@ namespace SuperNewRoles.Roles.Impostor
                         }
                         Logger.Info("TRUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                     }
+                }
+                if (ShowFlash.GetBool()){
+                    Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
                 }
                 Beacon.ClearBeacons();
                 ResetCoolDown();
