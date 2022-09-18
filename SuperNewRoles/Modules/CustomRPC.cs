@@ -158,6 +158,7 @@ namespace SuperNewRoles.Modules
         ConnectKiller,
         Doppelganger,
         Werewolf,
+        Knight,
         //RoleId
     }
 
@@ -235,7 +236,8 @@ namespace SuperNewRoles.Modules
         PainterPaintSet,
         PainterSetTarget = 225,
         SharePhotograph,
-        MeetingKill
+        MeetingKill,
+        RPCKnightProtected,
     }
     public static class RPCProcedure
     {
@@ -708,6 +710,15 @@ namespace SuperNewRoles.Modules
                     MeetingHud.Instance.CheckForEndVoting();
             }
 
+        }
+
+        public static void RPCKnightProtected(byte KnightId, byte TargetId)
+        {
+            PlayerControl Knight = ModHelpers.PlayerById(KnightId);
+            PlayerControl Target = ModHelpers.PlayerById(TargetId);
+            Roles.CrewMate.Knight.GuardedPlayers.Add(TargetId); // 守護をかけられたプレイヤーを保存。
+            SuperNewRolesPlugin.Logger.LogInfo($"[RPCKnightProtected]{Knight.GetDefaultName()}が{Target.GetDefaultName()}に護衛を使用しました。");
+            if (Roles.CrewMate.Knight.KnightCanAnnounceOfProtected.GetBool()) ProctedMessager.ScheduleProctedMessage(ModTranslation.GetString("TheKnightProtected"));
         }
         public static void CustomRPCKill(byte notTargetId, byte targetId)
         {
@@ -1313,6 +1324,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.MeetingKill:
                             MeetingKill(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.RPCKnightProtected:
+                            RPCKnightProtected(reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }

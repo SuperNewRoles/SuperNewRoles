@@ -90,6 +90,7 @@ namespace SuperNewRoles.Patch
             Roles.Neutral.Hitman.WrapUp();
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
+            Roles.CrewMate.KnightProtected_Patch.WrapUp();
             if (AmongUsClient.Instance.AmHost)
             {
                 PlayerAnimation.PlayerAnimations.All(x =>

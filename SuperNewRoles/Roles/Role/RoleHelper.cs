@@ -5,6 +5,9 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.CrewMate;
+using SuperNewRoles.Roles.Neutral;
+
 
 namespace SuperNewRoles
 {
@@ -625,6 +628,9 @@ namespace SuperNewRoles
                 case RoleId.Werewolf:
                     RoleClass.Werewolf.WerewolfPlayer.Add(player);
                     break;
+                case RoleId.Knight:
+                    Knight.Player.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1050,6 +1056,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.Werewolf:
                     RoleClass.Werewolf.WerewolfPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Knight:
+                    Knight.Player.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1569,6 +1578,7 @@ namespace SuperNewRoles
                 else if (RoleClass.ConnectKiller.ConnectKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.ConnectKiller;
                 else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
                 else if (RoleClass.Werewolf.WerewolfPlayer.IsCheckListPlayerControl(player)) return RoleId.Werewolf;
+                else if (Knight.Player.IsCheckListPlayerControl(player)) return RoleId.Knight;
                 //ロールチェック
             }
             catch (Exception e)

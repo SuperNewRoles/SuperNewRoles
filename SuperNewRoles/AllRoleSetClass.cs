@@ -931,6 +931,7 @@ namespace SuperNewRoles
                 RoleId.ConnectKiller => CustomOptions.ConnectKillerPlayerCount.GetFloat(),
                 RoleId.Doppelganger => CustomOptions.DoppelgangerPlayerCount.GetFloat(),
                 RoleId.Werewolf => CustomOptions.WerewolfPlayerCount.GetFloat(),
+                RoleId.Knight => Roles.CrewMate.Knight.KnightPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

@@ -180,6 +180,7 @@ namespace SuperNewRoles.Roles
             ConnectKiller.ClearAndReload();
             Doppelganger.ClearAndReload();
             Werewolf.ClearAndReload();
+            CrewMate.Knight.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
