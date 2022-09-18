@@ -142,19 +142,46 @@ namespace SuperNewRoles.Roles.CrewMate
             SuperNewRolesPlugin.Logger.LogInfo("[Knight] 護衛可能な条件を満たしていない為、護衛ボタンを消去しました。");
         }
         /// <summary>
-        /// 騎士の護衛ボタンを使用可能に戻す。
+        /// 騎士の護衛対象者がキルを受けた場合、シールドに関わる変数を初期化する。
+        /// </summary>
+        public static class MurderPlayerPatch
+        {
+            public static void Postfix([HarmonyArgument(0)] PlayerControl target)
+            {
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Knight) && ProtectedPlayer == target)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo($"[Knight] {ProtectedPlayer.GetDefaultName()}がキルを受けた為、シールドに関わる変数を初期化します。");
+                    ProtectedPlayer = null;
+                    NumberOfShieldsRemaining = 0;
+                    SuperNewRolesPlugin.Logger.LogInfo($"[Knight] rotectedPlayer = {ProtectedPlayer},NumberOfShieldsRemaining = {NumberOfShieldsRemaining} : 初期化しました。");
+                }
+            }
+        }
+        /// <summary>
+        /// 会議終了時、騎士が次回会議で守護を利用可能に戻す。
+        /// 会議時にキルが起きていなかった場合張り直す。
         /// </summary>
         public static void WrapUp()
         {
-            CanProtect = true;
-            if (ProtectedPlayer != null && NumberOfShieldsRemaining > 0)
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Knight))
             {
-                ProtectedPlayer.RpcMurderPlayer(ProtectedPlayer);
-                SuperNewRolesPlugin.Logger.LogInfo($"[Knight] {ProtectedPlayer.GetDefaultName()} のシールドが会議開始時にも残っていた為、削除しました。");
+                if (ProtectedPlayer != null)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo($"[Knight] 会議終了時に守護が残っている為付与し直します。");
+                    var TargetID = ProtectedPlayer.PlayerId;
+                    var LocalID = CachedPlayer.LocalPlayer.PlayerId;
+
+                    RPCProcedure.RPCKnightProtected(LocalID, TargetID);
+
+                    MessageWriter ProtectWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCKnightProtected, SendOption.Reliable, -1);
+                    ProtectWriter.Write(LocalID);
+                    ProtectWriter.Write(TargetID);
+                    AmongUsClient.Instance.FinishRpcImmediately(ProtectWriter);
+                    SuperNewRolesPlugin.Logger.LogInfo($"[Knight] 会議終了時に守護が残っていた為、{ModHelpers.PlayerById(TargetID).GetDefaultName()}に付与し直しました。");
+                }
+                CanProtect = true;
+                SuperNewRolesPlugin.Logger.LogInfo($"[Knight] CanProtect = {CanProtect} : 護衛可能な状態に戻し、シールド対象およびシールド枚数をリセットしました。");
             }
-            ProtectedPlayer = null;
-            NumberOfShieldsRemaining = 0;
-            SuperNewRolesPlugin.Logger.LogInfo($"[Knight] CanProtect = {CanProtect} : 護衛可能な状態に戻し、シールド対象およびシールド枚数をリセットしました。");
         }
     }
 }
