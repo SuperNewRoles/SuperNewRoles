@@ -825,6 +825,10 @@ namespace SuperNewRoles.Modules
         public static CustomOption CamouflagerPlayerCount;
         public static CustomOption CamouflagerCoolTime;
         public static CustomOption CamouflagerDurationTime;
+        public static CustomOption CamouflagerCamouflageArsonist;
+        public static CustomOption CamouflagerCamouflageDemon;
+        public static CustomOption CamouflagerCamouflageLovers;
+        public static CustomOption CamouflagerCamouflageQuarreled;
         public static CustomOption CamouflagerCamouflageChangeColor;
         public static CustomOption CamouflagerCamouflageColor;
         //CustomOption
@@ -1659,8 +1663,12 @@ namespace SuperNewRoles.Modules
             CamouflagerPlayerCount = Create(993, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CamouflagerOption);
             CamouflagerCoolTime = Create(994, true, CustomOptionType.Impostor, "CamouflagerCoolTimeSetting", 30f, 0f, 60f, 2.5f, CamouflagerOption);
             CamouflagerDurationTime = Create(995, true, CustomOptionType.Impostor, "CamouflagerDurationTimeSetting", 10f, 0f, 60f, 2.5f, CamouflagerOption);
-            CamouflagerCamouflageChangeColor = Create(996, true, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
-            CamouflagerCamouflageColor = Create(997, true, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Roles.Impostor.Camouflager.ColorOption1, CamouflagerCamouflageChangeColor);
+            CamouflagerCamouflageArsonist = Create(996, true, CustomOptionType.Impostor, "CamouflagerCamouflageArsonistSetting", true, CamouflagerOption);
+            CamouflagerCamouflageDemon = Create(997, true, CustomOptionType.Impostor, "CamouflagerCamouflageDemonSetting", true, CamouflagerOption);
+            CamouflagerCamouflageLovers = Create(998, true, CustomOptionType.Impostor, "CamouflagerCamouflageLoversSetting", false, CamouflagerOption);
+            CamouflagerCamouflageQuarreled = Create(999, true, CustomOptionType.Impostor, "CamouflagerCamouflageQuarreledSetting", false, CamouflagerOption);
+            CamouflagerCamouflageChangeColor = Create(1000, true, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
+            CamouflagerCamouflageColor = Create(1001, true, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Roles.Impostor.Camouflager.ColorOption1, CamouflagerCamouflageChangeColor);
 
             //表示設定
 

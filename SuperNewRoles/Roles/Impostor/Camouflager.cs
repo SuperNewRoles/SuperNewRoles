@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Patch;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using static SuperNewRoles.Buttons.HudManagerStartPatch;
 
 namespace SuperNewRoles.Roles.Impostor
@@ -114,6 +116,8 @@ namespace SuperNewRoles.Roles.Impostor
                 player.RpcSetHat(Attire[player.PlayerId].Hat);
                 player.RpcSetVisor(Attire[player.PlayerId].Visor);
                 player.RpcSetPet(Attire[player.PlayerId].Pet);
+
+                SetNameUpdate.Postfix(player);
             }
         }
         public static void ResetCoolTime()
@@ -136,6 +140,10 @@ namespace SuperNewRoles.Roles.Impostor
                             RoleClass.Camouflager.Duration = 0f;
                             RoleClass.Camouflager.IsCamouflage = false;
                             ResetCamouflage();
+                            foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+                            {
+                                SetNameUpdate.Postfix(player);
+                            }
                         }
                     }
                 }

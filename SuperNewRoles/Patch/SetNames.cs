@@ -413,12 +413,29 @@ namespace SuperNewRoles.Patch
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
             }
-            SetNamesClass.ArsonistSet();
-            SetNamesClass.DemonSet();
-            SetNamesClass.CelebritySet();
-            SetNamesClass.QuarreledSet();
-            SetNamesClass.LoversSet();
-            SetNamesClass.SatsumaimoSet();
+
+            //名前の奴
+            if (RoleClass.Camouflager.IsCamouflage)
+            {
+                if(RoleClass.Camouflager.ArsonistMark)
+                    SetNamesClass.ArsonistSet();
+                if(RoleClass.Camouflager.DemonMark)
+                    SetNamesClass.DemonSet();
+                if(RoleClass.Camouflager.LoversMark)
+                    SetNamesClass.LoversSet();
+                if(RoleClass.Camouflager.QuarreledMark)
+                    SetNamesClass.QuarreledSet();
+            }
+            else
+            {
+                SetNamesClass.ArsonistSet();
+                SetNamesClass.DemonSet();
+                SetNamesClass.CelebritySet();
+                SetNamesClass.QuarreledSet();
+                SetNamesClass.LoversSet();
+                SetNamesClass.SatsumaimoSet();
+            }
+
             if (RoleClass.PartTimer.Datas.ContainsValue(CachedPlayer.LocalPlayer.PlayerId))
             {
                 PlayerControl PartTimerTarget = ModHelpers.PlayerById((byte)RoleClass.PartTimer.Datas.GetKey(CachedPlayer.LocalPlayer.PlayerId));

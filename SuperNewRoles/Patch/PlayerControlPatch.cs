@@ -973,6 +973,10 @@ namespace SuperNewRoles.Patches
                         }
                     }
                 }
+                if (RoleClass.Camouflager.IsCamouflage)
+                {
+                    Roles.Impostor.Camouflager.ResetCamouflage();
+                }
             }
             return (RoleClass.Assassin.TriggerPlayer != null)
             || (!MapOptions.MapOption.UseDeadBodyReport && target != null)
