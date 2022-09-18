@@ -16,13 +16,15 @@ namespace SuperNewRoles.Roles.Impostor
         public static CustomOption PlayerCount;
         public static CustomOption CoolDown;
         public static CustomOption CanAddLength;
+        public static CustomOption CanKillImpostor;
 
         public static void SetupCustomOptions()
         {
             Option = new(Id, false, CustomOptionType.Impostor, "ConjurerName", color, 1);
             PlayerCount = CustomOption.Create(Id + 1, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], Option);
             CoolDown = CustomOption.Create(Id + 2, false, CustomOptionType.Impostor, "CoolDown", 10f, 1f, 60f, 1f, Option);
-            CanAddLength = CustomOption.Create(Id + 3, false, CustomOptionType.Impostor, "CanAddLength", 10f, 0.5f, 20f, 1f, SelfBomberOption);
+            CanAddLength = CustomOption.Create(Id + 3, false, CustomOptionType.Impostor, "CanAddLength", 10f, 0.5f, 20f, 1f, Option);
+            CanKillImpostor = CustomOption.Create(Id + 4, false, CustomOptionType.Impostor, "CanKillImpostor", false, Option);
         }
         public static List<PlayerControl> Player;
         public static Color32 color = RoleClass.ImpostorRed;
@@ -133,15 +135,22 @@ namespace SuperNewRoles.Roles.Impostor
             () =>
             {
                 Logger.Info($"Beacon{Round}{Count}", "Beacons");
-                foreach (var pc in CachedPlayer.AllPlayers)
+                foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                 {
                     if (PointInPolygon(pc.transform.position, Positions))
                     {
+                        // インポスターをキルしない、インポスターではない
+                        if (!CanKillImpostor.GetBool() && !pc.IsImpostor())
+                        {
+                            pc.RpcMurderPlayer(pc);
+                        }
+                        // インポスターをキルする
+                        else if (CanKillImpostor.GetBool())
+                        {
+                            pc.RpcMurderPlayer(pc);
+                        }
+
                         Logger.Info("TRUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-                    }
-                    else
-                    {
-                        Logger.Info("FALSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                     }
                 }
                 Beacon.ClearBeacons();
