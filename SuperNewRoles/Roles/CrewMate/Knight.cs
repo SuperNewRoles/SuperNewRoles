@@ -34,11 +34,11 @@ namespace SuperNewRoles.Roles.CrewMate
 
         // RoleClass
         public static List<PlayerControl> Player;
-        public static PlayerControl ProtectedPlayer;
+        public static PlayerControl ProtectedPlayer; // 護衛対象者
         public static Color32 color = new(229, 228, 230, byte.MaxValue);
         public static bool CanProtect;
         public static float Times;
-        public static int NumberOfShieldsRemaining;
+        public static int NumberOfShieldsRemaining; // シールドの枚数を取得
         public static Sprite GetButtonSprite()
         {
             if (buttonSprite) return buttonSprite;
@@ -146,13 +146,15 @@ namespace SuperNewRoles.Roles.CrewMate
         /// </summary>
         public static class MurderPlayerPatch
         {
+            // 会議中にキルを受けていない場合、
+            // 護衛時に記録した護衛対象者に、会議終了後護衛を張り直す制御をしている為、キル時に変数をリセットする必要がある。
             public static void Postfix([HarmonyArgument(0)] PlayerControl target)
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Knight) && ProtectedPlayer == target)
                 {
                     SuperNewRolesPlugin.Logger.LogInfo($"[Knight] {ProtectedPlayer.GetDefaultName()}がキルを受けた為、シールドに関わる変数を初期化します。");
                     ProtectedPlayer = null;
-                    NumberOfShieldsRemaining = 0;
+                    NumberOfShieldsRemaining--;
                     SuperNewRolesPlugin.Logger.LogInfo($"[Knight] rotectedPlayer = {ProtectedPlayer},NumberOfShieldsRemaining = {NumberOfShieldsRemaining} : 初期化しました。");
                 }
             }

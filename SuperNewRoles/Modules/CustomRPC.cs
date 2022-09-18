@@ -685,7 +685,7 @@ namespace SuperNewRoles.Modules
             PlayerControl Target = ModHelpers.PlayerById(TargetId);
             Knight.ProtectPlayer(Target, 0);
             Roles.CrewMate.Knight.ProtectedPlayer = ModHelpers.PlayerById(TargetId); // 守護をかけられたプレイヤーを保存。
-            Roles.CrewMate.Knight.NumberOfShieldsRemaining = 1; //シールドの枚数を代入
+            Roles.CrewMate.Knight.NumberOfShieldsRemaining++; //シールドの枚数を追加
             SuperNewRolesPlugin.Logger.LogInfo($"[RPCKnightProtected]{Knight.GetDefaultName()}が{Target.GetDefaultName()}に護衛を使用しました。");
         }
         public static void CustomRPCKill(byte notTargetId, byte targetId)
