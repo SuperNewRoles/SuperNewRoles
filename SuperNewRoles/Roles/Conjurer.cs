@@ -54,15 +54,14 @@ namespace SuperNewRoles.Roles.Impostor
 
         private static bool CanAddBeacon()
         {
-            if (PlayerControl.LocalPlayer.CanMove)
+            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (Count == 0) return true;
+
+            if (Count != 3)
             {
-                if (Count == 0) return true;
-                if (Count != 3)
+                if (Vector2.Distance(PlayerControl.LocalPlayer.transform.position, Positions[Count - 1]) < CanAddLength.GetFloat())
                 {
-                    if (Vector2.Distance(PlayerControl.LocalPlayer.transform.position, Positions[Count - 1]) < CanAddLength.GetFloat())
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
             return false;
