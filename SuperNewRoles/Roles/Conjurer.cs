@@ -71,6 +71,8 @@ namespace SuperNewRoles.Roles.Impostor
                 {
                     Logger.Info($"{pos}", "PosData");
                 }
+
+                ResetCoolDown()
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () => { return PlayerControl.LocalPlayer.CanMove && Count != 3; },
