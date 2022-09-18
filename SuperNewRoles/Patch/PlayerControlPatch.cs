@@ -744,6 +744,7 @@ namespace SuperNewRoles.Patches
         {
             if (Roles.CrewMate.Knight.GuardedPlayers.Contains(target.PlayerId)){
                 Roles.CrewMate.Knight.GuardedPlayers.Remove(target.PlayerId);
+                target.protectedByGuardian = true;
                 return false;
             }
             EvilGambler.EvilGamblerMurder.Prefix(__instance, target);
