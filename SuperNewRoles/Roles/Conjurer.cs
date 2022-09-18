@@ -6,6 +6,7 @@ using SuperNewRoles.Buttons;
 using Hazel;
 using System;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles.Impostor
 {
@@ -165,7 +166,8 @@ namespace SuperNewRoles.Roles.Impostor
                     }
                 }
                 if (ShowFlash.GetBool()){
-                    Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+                    RPCHelper.StartRPC(CustomRPC.ShowFlash).EndRPC();
+                    RPCProcedure.ShowFlash();
                 }
                 Beacon.ClearBeacons();
                 ResetCoolDown();

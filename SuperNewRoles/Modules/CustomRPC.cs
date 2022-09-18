@@ -235,6 +235,7 @@ namespace SuperNewRoles.Modules
         PainterPaintSet,
         PainterSetTarget,
         SharePhotograph,
+        ShowFlash,
     }
     public static class RPCProcedure
     {
@@ -1018,6 +1019,9 @@ namespace SuperNewRoles.Modules
             })));
         }
 
+        public static void ShowFlash(){
+            Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+        }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
         class RPCHandlerPatch
         {
@@ -1277,6 +1281,9 @@ namespace SuperNewRoles.Modules
                                 Targets.Add(reader.ReadByte());
                             }
                             SluggerExile(source, Targets);
+                            break;
+                        case CustomRPC.ShowFlash:
+                            ShowFlash();
                             break;
                     }
                 }
