@@ -27,6 +27,7 @@ namespace SuperNewRoles.Roles.Impostor
             CanKillImpostor = CustomOption.Create(Id + 4, false, CustomOptionType.Impostor, "CanKillImpostor", false, Option);
             ShowFlash = CustomOption.Create(Id + 5, false, CustomOptionType.Impostor, "ShowFlash", false, Option);
         }
+
         public static List<PlayerControl> Player;
         public static Color32 color = RoleClass.ImpostorRed;
         public static int Count;
@@ -70,6 +71,12 @@ namespace SuperNewRoles.Roles.Impostor
             return false;
         }
 
+        /// <summary>
+        /// pがpolyから形成された多角形の中にあるか
+        /// </summary>
+        /// <param name="p">調べたい点</param>
+        /// <param name="poly">多角形の頂点</param>
+        /// <returns>多角形の中にある</returns>
         static bool PointInPolygon(Vector2 p, Vector2[] poly)
         {
             Vector2 p1, p2;
@@ -89,6 +96,14 @@ namespace SuperNewRoles.Roles.Impostor
             return inside;
         }
 
+        public static void AddBeacon(byte[] buff)
+        {
+            Vector3 position = Vector3.zero;
+            position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
+            position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
+            new Beacon(position);
+        }
+
         public static CustomButton BeaconButton;
         public static CustomButton StartButton;
         public static void SetupCustomButtons(HudManager hm)
@@ -101,19 +116,13 @@ namespace SuperNewRoles.Roles.Impostor
                 Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.x), 0, buff, 0 * sizeof(float), sizeof(float));
                 Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
-                MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.AddBeacon, SendOption.Reliable);
-                writer.WriteBytesAndSize(buff);
-                writer.EndMessage();
-                RPCProcedure.AddBeacon(buff);
+                AddBeacon(buff);
 
                 Positions[Count] = PlayerControl.LocalPlayer.transform.position;
 
                 Count++;
                 Logger.Info($"Now:{Count}", "Conjurer Added");
-                foreach (var pos in Positions)
-                {
-                    Logger.Info($"{pos}", "PosData");
-                }
+
                 ResetCoolDown();
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
@@ -153,7 +162,6 @@ namespace SuperNewRoles.Roles.Impostor
                                 pc.RpcMurderPlayer(pc);
                             }
                         }
-                        Logger.Info("TRUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                     }
                 }
                 if (ShowFlash.GetBool()){

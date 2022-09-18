@@ -235,7 +235,6 @@ namespace SuperNewRoles.Modules
         PainterPaintSet,
         PainterSetTarget,
         SharePhotograph,
-        AddBeacon,
     }
     public static class RPCProcedure
     {
@@ -1018,13 +1017,7 @@ namespace SuperNewRoles.Modules
                 }
             })));
         }
-        public static void AddBeacon(byte[] buff)
-        {
-            Vector3 position = Vector3.zero;
-            position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
-            position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
-            new Beacon(position);
-        }
+
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
         class RPCHandlerPatch
         {
@@ -1284,9 +1277,6 @@ namespace SuperNewRoles.Modules
                                 Targets.Add(reader.ReadByte());
                             }
                             SluggerExile(source, Targets);
-                            break;
-                        case CustomRPC.AddBeacon:
-                            AddBeacon(reader.ReadBytesAndSize());
                             break;
                     }
                 }
