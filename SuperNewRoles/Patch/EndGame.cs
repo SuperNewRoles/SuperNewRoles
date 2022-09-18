@@ -1008,6 +1008,7 @@ namespace SuperNewRoles.Patch
     {
         static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id)
         {
+            if (id is StringNames.GameDiscussTime && ModeHandler.IsMode(ModeId.Werewolf, false)) __result = ModTranslation.GetString("WerewolfAbilityTimeSetting");
             try
             {
                 if (ExileController.Instance != null && ExileController.Instance.exiled != null && ModeHandler.IsMode(ModeId.Default))
