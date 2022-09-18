@@ -54,11 +54,16 @@ namespace SuperNewRoles.Roles.Impostor
 
         private static bool CanAddBeacon()
         {
-            if (PlayerControl.LocalPlayer.CanMove && Count != 3)
+            if (PlayerControl.LocalPlayer.CanMove)
             {
-                if (Positions[Count - 1] != null)
+                if (Count == 0) return true;
+                if (Count != 3)
+                {
                     if (Vector2.Distance(PlayerControl.LocalPlayer.transform.position, Positions[Count - 1]) < CanAddLength.GetFloat())
+                    {
                         return true;
+                    }
+                }
             }
             return false;
         }
@@ -156,6 +161,7 @@ namespace SuperNewRoles.Roles.Impostor
                 ResetCoolDown();
                 Count = 0;
                 Round++;
+                Logger.Info($"Beacon{Round}{Count}", "Beacons");
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () => { return PlayerControl.LocalPlayer.CanMove && Count == 3; },
