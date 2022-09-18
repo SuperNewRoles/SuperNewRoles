@@ -46,7 +46,7 @@ namespace SuperNewRoles.Patch
 
         public static bool Prefix(PlayerControl sourcePlayer, string chatText)
         {
-            if (Mode.Werewolf.Main.IsChatBlock(sourcePlayer)) return false;
+            if (Mode.Werewolf.Main.IsChatBlock(sourcePlayer, chatText)) return false;
             if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
             {
                 if (AmongUsClient.Instance.AmHost)

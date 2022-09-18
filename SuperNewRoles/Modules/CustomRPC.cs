@@ -238,9 +238,14 @@ namespace SuperNewRoles.Modules
         SharePhotograph,
         MeetingKill,
         RPCKnightProtected,
+        RPCKnightProtectClear,
     }
     public static class RPCProcedure
     {
+        public static void RPCKnightProtectClear(byte Target)
+        {
+            Knight.GuardedPlayers.Remove(Target);
+        }
         public static void MeetingKill(byte SourceId, byte TargetId)
         {
             PlayerControl source = ModHelpers.PlayerById(SourceId);
@@ -1327,6 +1332,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.RPCKnightProtected:
                             RPCKnightProtected(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.RPCKnightProtectClear:
+                            RPCKnightProtectClear(reader.ReadByte());
                             break;
                     }
                 }

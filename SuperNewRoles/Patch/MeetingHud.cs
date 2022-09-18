@@ -527,7 +527,10 @@ namespace SuperNewRoles.Patch
 
                     if (Roles.CrewMate.Knight.GuardedPlayers.Contains((byte)i))
                     {
-                        Roles.CrewMate.Knight.GuardedPlayers.Remove((byte)i);
+                        var Writer = RPCHelper.StartRPC(CustomRPC.RPCKnightProtectClear);
+                        Writer.Write((byte)i);
+                        Writer.EndRPC();
+                        RPCProcedure.RPCKnightProtectClear((byte)i);
                         PlayerControl player = ModHelpers.PlayerById((byte)i);
                         var Guard = GameObject.Instantiate<RoleEffectAnimation>(FastDestroyableSingleton<RoleManager>.Instance.protectAnim, player.transform);
                         Guard.Play(player, null, player.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
