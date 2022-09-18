@@ -93,37 +93,25 @@ namespace SuperNewRoles.Roles.Impostor
             BeaconButton = new(
             () =>
             {
-                try
+                Logger.Info($"Now:{Count}", "Conjurer Add");
+                byte[] buff = new byte[sizeof(float) * 2];
+                Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.y), 0, buff, 1 * sizeof(float), sizeof(float));
+
+                MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.AddBeacon, SendOption.Reliable);
+                writer.WriteBytesAndSize(buff);
+                writer.EndMessage();
+                RPCProcedure.AddBeacon(buff);
+
+                Positions[Count] = PlayerControl.LocalPlayer.transform.position;
+
+                Count++;
+                Logger.Info($"Now:{Count}", "Conjurer Added");
+                foreach (var pos in Positions)
                 {
-                    Logger.Info($"Now:{Count}", "Conjurer Add");
-                    byte[] buff = new byte[sizeof(float) * 2];
-                    Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                    Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.y), 0, buff, 1 * sizeof(float), sizeof(float));
-
-                    MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.AddBeacon, SendOption.Reliable);
-                    writer.WriteBytesAndSize(buff);
-                    writer.EndMessage();
-                    RPCProcedure.AddBeacon(buff);
-
-                    Positions[Count] = PlayerControl.LocalPlayer.transform.position;
-
-                    Count++;
-                    Logger.Info($"Now:{Count}", "Conjurer Added");
-                    foreach (var pos in Positions)
-                    {
-                        Logger.Info($"{pos}", "PosData");
-                    }
-
-                    ResetCoolDown();
+                    Logger.Info($"{pos}", "PosData");
                 }
-                catch (Exception ex)
-                {
-                    Logger.Warn($"エラー:{ex}", "Conjurer add");
-                }
-                finally
-                {
-                    Logger.Info("最後まで通過", "Conjurer add");
-                }
+                ResetCoolDown();
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () => { return CanAddBeacon(); },
