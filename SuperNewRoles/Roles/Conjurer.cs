@@ -79,15 +79,16 @@ namespace SuperNewRoles.Roles.Impostor
                 }
                 Count++;
                 Logger.Info($"Now:{Count}", "Conjurer Added");
-                foreach(var pos in Positions){
-                    Logger.Info($"{pos}","PosData");
+                foreach (var pos in Positions)
+                {
+                    Logger.Info($"{pos}", "PosData");
                 }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
-            () =>{ return PlayerControl.LocalPlayer.CanMove && Count != 3; },
+            () => { return PlayerControl.LocalPlayer.CanMove && Count != 3; },
             () => { ResetCoolDown(); },
             GetBeaconButtonSprite(),
-            new Vector3(-1.8f, -0.06f, 0),
+            new Vector3(0, 1, 0),
             hm,
             hm.AbilityButton,
             KeyCode.Q,
