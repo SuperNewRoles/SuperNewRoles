@@ -34,9 +34,11 @@ namespace SuperNewRoles.Roles.CrewMate
 
         // RoleClass
         public static List<PlayerControl> Player;
+        public static PlayerControl ProtectedPlayer;
         public static Color32 color = new(229, 228, 230, byte.MaxValue);
         public static bool CanProtect;
         public static float Times;
+        public static int NumberOfShieldsRemaining;
         public static Sprite GetButtonSprite()
         {
             if (buttonSprite) return buttonSprite;
@@ -49,16 +51,10 @@ namespace SuperNewRoles.Roles.CrewMate
             Player = new();
             Times = KnightMaximumNumberOfTimes.GetFloat(); //最大護衛回数の取得
             CanProtect = true; //護衛を使用可能に変更
+            ProtectedPlayer = null;
+            NumberOfShieldsRemaining = 0;
 
             //CustomOptionからのGetBool()は判定が必要な場所でその都度行う為、ここに入れない。
-        }
-        /// <summary>
-        /// 騎士の護衛ボタンを使用可能に戻す。
-        /// </summary>
-        public static void WrapUp()
-        {
-            CanProtect = true;
-            SuperNewRolesPlugin.Logger.LogInfo($"[Knight] CanProtect = {CanProtect} : 護衛可能な状態に戻しました。");
         }
     }
 
@@ -145,6 +141,20 @@ namespace SuperNewRoles.Roles.CrewMate
             __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("KnightProtectButton") != null) Object.Destroy(x.transform.FindChild("KnightProtectButton").gameObject); });
             SuperNewRolesPlugin.Logger.LogInfo("[Knight] 護衛可能な条件を満たしていない為、護衛ボタンを消去しました。");
         }
-
+        /// <summary>
+        /// 騎士の護衛ボタンを使用可能に戻す。
+        /// </summary>
+        public static void WrapUp()
+        {
+            CanProtect = true;
+            if (ProtectedPlayer != null && NumberOfShieldsRemaining > 0)
+            {
+                ProtectedPlayer.RpcMurderPlayer(ProtectedPlayer);
+                SuperNewRolesPlugin.Logger.LogInfo($"[Knight] {ProtectedPlayer.GetDefaultName()} のシールドが会議開始時にも残っていた為、削除しました。");
+            }
+            ProtectedPlayer = null;
+            NumberOfShieldsRemaining = 0;
+            SuperNewRolesPlugin.Logger.LogInfo($"[Knight] CanProtect = {CanProtect} : 護衛可能な状態に戻し、シールド対象およびシールド枚数をリセットしました。");
+        }
     }
 }
