@@ -742,6 +742,10 @@ namespace SuperNewRoles.Patches
         public static bool resetToDead = false;
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
+            if (Roles.CrewMate.Knight.GuardedPlayers.Contains(target.PlayerId)){
+                Roles.CrewMate.Knight.GuardedPlayers.Remove(target.PlayerId);
+                return false;
+            }
             EvilGambler.EvilGamblerMurder.Prefix(__instance, target);
             Roles.Impostor.Doppelganger.KillCoolSetting.MurderPrefix(__instance, target);
             if (ModeHandler.IsMode(ModeId.Default))

@@ -39,6 +39,7 @@ namespace SuperNewRoles.Roles.CrewMate
         public static bool CanProtect;
         public static float Times;
         public static int NumberOfShieldsRemaining; // シールドの枚数を取得
+        public static List<byte> GuardedPlayers;
         public static Sprite GetButtonSprite()
         {
             if (buttonSprite) return buttonSprite;
@@ -53,6 +54,7 @@ namespace SuperNewRoles.Roles.CrewMate
             CanProtect = true; //護衛を使用可能に変更
             ProtectedPlayer = null;
             NumberOfShieldsRemaining = 0;
+            GuardedPlayers = new();
 
             //CustomOptionからのGetBool()は判定が必要な場所でその都度行う為、ここに入れない。
         }
@@ -78,9 +80,10 @@ namespace SuperNewRoles.Roles.CrewMate
         /// </summary>
         static void KnightOnClick(int Index, MeetingHud __instance)
         {
-            var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
+            var Target = ModHelpers.PlayerById((byte)Index);
             var TargetID = Target.PlayerId;
             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
+            if (GuardedPlayers.Contains(TargetID)) return;
 
             RPCProcedure.RPCKnightProtected(LocalID, TargetID);
 
@@ -93,6 +96,9 @@ namespace SuperNewRoles.Roles.CrewMate
                 Times--;
                 SuperNewRolesPlugin.Logger.LogInfo($"護衛残り回数は{Times}回です");
             }
+            NumberOfShieldsRemaining++;
+            ProtectedPlayer = Target;
+
             CanProtect = false;
             SuperNewRolesPlugin.Logger.LogInfo($"[Knight] CanProtect = {CanProtect} : 護衛を使用済みに変更しました。");
             //もし 護衛可能な上限回数に達している時　または　護衛不可能な状態の場合
@@ -122,7 +128,7 @@ namespace SuperNewRoles.Roles.CrewMate
                         renderer.sprite = GetButtonSprite();
                         PassiveButton button = targetBox.GetComponent<PassiveButton>();
                         button.OnClick.RemoveAllListeners();
-                        int copiedIndex = i;
+                        int copiedIndex = player.PlayerId;
                         button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => KnightOnClick(copiedIndex, __instance)));
                         SuperNewRolesPlugin.Logger.LogInfo($"[Knight]{player.GetDefaultName()}に護衛ボタンを表示します。");
                     }
