@@ -52,6 +52,7 @@ namespace SuperNewRoles.Roles.Impostor
             BeaconButton = new(
             () =>
             {
+                Logger.Info($"Now:{Count}", "Conjurer Add");
                 switch (Count)
                 {
                     case 0:
@@ -68,6 +69,7 @@ namespace SuperNewRoles.Roles.Impostor
                         break;
                 }
                 Count++;
+                Logger.Info($"Now:{Count}", "Conjurer Added");
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () =>
