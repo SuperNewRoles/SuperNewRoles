@@ -601,7 +601,10 @@ namespace SuperNewRoles.Patch
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
             {
                 CreateMeetingButton(__instance, "WerewolfKillButton", (int i, MeetingHud __instance) => {
-                    if (RoleClass.Werewolf.IsShooted || CachedPlayer.LocalPlayer.IsDead()) return;
+                    if (RoleClass.Werewolf.IsShooted || CachedPlayer.LocalPlayer.IsDead() || !Mode.Werewolf.Main.IsUseButton()) {
+                        __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
+                        return;
+                    }
                     RoleClass.Werewolf.IsShooted = true;
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.MeetingKill);
                     writer.Write(CachedPlayer.LocalPlayer.PlayerId);

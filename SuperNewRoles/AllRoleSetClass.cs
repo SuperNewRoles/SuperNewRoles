@@ -157,10 +157,6 @@ namespace SuperNewRoles
             {
                 AllRoleSetClass.AllRoleSet();
             }
-            else if (ModeHandler.IsMode(ModeId.Werewolf))
-            {
-                Mode.Werewolf.RoleSelectHandler.RoleSelect();
-            }
             else if (ModeHandler.IsMode(ModeId.NotImpostorCheck))
             {
                 Mode.NotImpostorCheck.SelectRolePatch.SetDesync();

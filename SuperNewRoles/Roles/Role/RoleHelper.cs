@@ -378,9 +378,6 @@ namespace SuperNewRoles
                 case RoleId.Magaziner:
                     RoleClass.Magaziner.MagazinerPlayer.Add(player);
                     break;
-                case RoleId.Hunter:
-                    Mode.Werewolf.Main.HunterPlayers.Add(player);
-                    break;
                 case RoleId.Mayor:
                     RoleClass.Mayor.MayorPlayer.Add(player);
                     break;
