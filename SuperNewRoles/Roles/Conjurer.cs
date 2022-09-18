@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using SuperNewRoles.Buttons;
 using Hazel;
 using System;
+using SuperNewRoles.CustomObject;
+
 namespace SuperNewRoles.Roles.Impostor
 {
     public class Conjurer
@@ -93,7 +95,8 @@ namespace SuperNewRoles.Roles.Impostor
             StartButton = new(
             () =>
             {
-                Positions = new Vector2[] { new(), new(), new() };
+                //Positions = new Vector2[] { new(), new(), new() };
+                Beacon.ClearBeacons();
                 ResetCoolDown();
                 Count = 0;
             },
