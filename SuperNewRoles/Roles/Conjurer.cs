@@ -23,8 +23,8 @@ namespace SuperNewRoles.Roles.Impostor
         {
             Option = new(Id, false, CustomOptionType.Impostor, "ConjurerName", color, 1);
             PlayerCount = CustomOption.Create(Id + 1, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], Option);
-            CoolDown = CustomOption.Create(Id + 2, false, CustomOptionType.Impostor, "CoolDown", 10f, 1f, 60f, 1f, Option);
-            CanAddLength = CustomOption.Create(Id + 3, false, CustomOptionType.Impostor, "CanAddLength", 10f, 0.5f, 20f, 1f, Option);
+            CoolDown = CustomOption.Create(Id + 2, false, CustomOptionType.Impostor, "CoolDown", 10f, 1f, 30f, 0.5f, Option);
+            CanAddLength = CustomOption.Create(Id + 3, false, CustomOptionType.Impostor, "CanAddLength", 10f, 0.5f, 40f, 0.5f, Option);
             CanKillImpostor = CustomOption.Create(Id + 4, false, CustomOptionType.Impostor, "CanKillImpostor", false, Option);
             ShowFlash = CustomOption.Create(Id + 5, false, CustomOptionType.Impostor, "ShowFlash", false, Option);
         }
