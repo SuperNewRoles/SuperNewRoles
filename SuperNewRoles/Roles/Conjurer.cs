@@ -3,7 +3,8 @@ using SuperNewRoles.Patch;
 using static SuperNewRoles.Modules.CustomOptions;
 using System.Collections.Generic;
 using SuperNewRoles.Buttons;
-
+using Hazel;
+using System;
 namespace SuperNewRoles.Roles.Impostor
 {
     public class Conjurer
@@ -53,6 +54,14 @@ namespace SuperNewRoles.Roles.Impostor
             () =>
             {
                 Logger.Info($"Now:{Count}", "Conjurer Add");
+                byte[] buff = new byte[sizeof(float) * 2];
+                Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.y), 0, buff, 1 * sizeof(float), sizeof(float));
+
+                MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.AddBeacon, SendOption.Reliable);
+                writer.WriteBytesAndSize(buff);
+                writer.EndMessage();
+                RPCProcedure.AddBeacon(buff);
                 switch (Count)
                 {
                     case 0:
@@ -70,10 +79,12 @@ namespace SuperNewRoles.Roles.Impostor
                 }
                 Count++;
                 Logger.Info($"Now:{Count}", "Conjurer Added");
+                foreach(var pos in Positions){
+                    Logger.Info($"{pos}","PosData");
+                }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
-            () =>
-            { return PlayerControl.LocalPlayer.CanMove && Count != 3; },
+            () =>{ return PlayerControl.LocalPlayer.CanMove && Count != 3; },
             () => { ResetCoolDown(); },
             GetBeaconButtonSprite(),
             new Vector3(-1.8f, -0.06f, 0),
