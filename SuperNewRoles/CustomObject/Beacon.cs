@@ -17,12 +17,12 @@ namespace SuperNewRoles.CustomObject
             index = Mathf.Clamp(index, 0, beaconAnimationSprites.Length - 1);
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                CustomAnimation Conjurer_Marker_Animation = new()
+                CustomAnimation Conjurer_Beacon_Animation = new()
                 {
                     Sprites = CustomAnimation.GetSprites("SuperNewRoles.Resources.ConjurerAnimation.Conjurer_Maker_30fps", 60)
                 };
-                Transform Conjurer_Marker1 = GameObject.Instantiate(GameObject.Find($"Marker{Conjurer.Count}").transform);
-                Conjurer_Marker_Animation.Start(30, Conjurer_Marker1);
+                Transform Conjurer_Beacon1 = GameObject.Instantiate(GameObject.Find($"Beacon{Conjurer.Count}").transform);
+                Conjurer_Beacon_Animation.Start(30, Conjurer_Beacon1);
             }
             return beaconAnimationSprites[index];
         }
@@ -46,7 +46,7 @@ namespace SuperNewRoles.CustomObject
 
         public Beacon(Vector2 p)
         {
-            GameObject = new GameObject($"Marker{Conjurer.Count}") { layer = 11 };
+            GameObject = new GameObject($"Beacon{Conjurer.Count}") { layer = 11 };
             GameObject.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
             Vector3 position = new(p.x, p.y, p.y / 1000f + 0.01f);
             position += (Vector3)PlayerControl.LocalPlayer.Collider.offset; // Add collider offset that DoMove moves the player up at a valid position
