@@ -93,9 +93,9 @@ namespace SuperNewRoles.Roles.Impostor
             StartButton = new(
             () =>
             {
+                Positions = new Vector2[] { new(), new(), new() };
                 ResetCoolDown();
                 Count = 0;
-
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () =>
