@@ -73,13 +73,14 @@ namespace SuperNewRoles.Roles.Impostor
             StartButton = new(
             () =>
             {
+                ResetCoolDown();
                 Count=0;
 
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () =>
             { return PlayerControl.LocalPlayer.CanMove && Count ==3; },
-            () => {  },
+            () => { ResetCoolDown(); },
             GetStartButtonSprite(),
             new Vector3(-1.8f, -0.06f, 0),
             hm,
