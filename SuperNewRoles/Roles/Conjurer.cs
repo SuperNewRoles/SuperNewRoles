@@ -22,10 +22,12 @@ namespace SuperNewRoles.Roles.Impostor
         public static List<PlayerControl> Player;
         public static Color32 color = RoleClass.ImpostorRed;
         public static int Count;
+        public static Vector2[] Positions;
         public static void ClearAndReload()
         {
             Player = new();
             Count = 0;
+            Positions = new Vector2[] { new(), new(), new() };
         }
 
         private static Sprite AddbuttonSprite;
@@ -50,12 +52,26 @@ namespace SuperNewRoles.Roles.Impostor
             BeaconButton = new(
             () =>
             {
+                switch (Count)
+                {
+                    case 0:
+                        Positions[0] = PlayerControl.LocalPlayer.transform.position;
+                        break;
+                    case 1:
+                        Positions[1] = PlayerControl.LocalPlayer.transform.position;
+                        break;
+                    case 2:
+                        Positions[2] = PlayerControl.LocalPlayer.transform.position;
+                        break;
+                    default:
+                        Logger.Warn($"無効な値です:{Count}", "Conjurer Add");
+                        break;
+                }
                 Count++;
-
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () =>
-            { return PlayerControl.LocalPlayer.CanMove && Count!=3; },
+            { return PlayerControl.LocalPlayer.CanMove && Count != 3; },
             () => { ResetCoolDown(); },
             GetBeaconButtonSprite(),
             new Vector3(-1.8f, -0.06f, 0),
@@ -74,12 +90,12 @@ namespace SuperNewRoles.Roles.Impostor
             () =>
             {
                 ResetCoolDown();
-                Count=0;
+                Count = 0;
 
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () =>
-            { return PlayerControl.LocalPlayer.CanMove && Count ==3; },
+            { return PlayerControl.LocalPlayer.CanMove && Count == 3; },
             () => { ResetCoolDown(); },
             GetStartButtonSprite(),
             new Vector3(-1.8f, -0.06f, 0),
