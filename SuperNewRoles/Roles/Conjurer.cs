@@ -139,15 +139,18 @@ namespace SuperNewRoles.Roles.Impostor
                 {
                     if (PointInPolygon(pc.transform.position, Positions))
                     {
-                        // インポスターをキルしない、インポスターではない
-                        if (!CanKillImpostor.GetBool() && !pc.IsImpostor())
+                        if (pc.IsAlive())
                         {
-                            pc.RpcMurderPlayer(pc);
-                        }
-                        // インポスターをキルする
-                        else if (CanKillImpostor.GetBool())
-                        {
-                            pc.RpcMurderPlayer(pc);
+                            // インポスターをキルしない、インポスターではない
+                            if (!CanKillImpostor.GetBool() && !pc.IsImpostor())
+                            {
+                                pc.RpcMurderPlayer(pc);
+                            }
+                            // インポスターをキルする
+                            else if (CanKillImpostor.GetBool())
+                            {
+                                pc.RpcMurderPlayer(pc);
+                            }
                         }
 
                         Logger.Info("TRUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
