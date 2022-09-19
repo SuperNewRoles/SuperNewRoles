@@ -111,20 +111,23 @@ namespace SuperNewRoles.Roles.Impostor
             BeaconButton = new(
             () =>
             {
-                Logger.Info($"Now:{Count}", "Conjurer Add");
-                byte[] buff = new byte[sizeof(float) * 2];
-                Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                if (CanAddBeacon())
+                {
+                    Logger.Info($"Now:{Count}", "Conjurer Add");
+                    byte[] buff = new byte[sizeof(float) * 2];
+                    Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
-                AddBeacon(buff);
+                    AddBeacon(buff);
 
-                // PositionsのCount番目に現在の座標を保存する
-                Positions[Count] = PlayerControl.LocalPlayer.transform.position;
+                    // PositionsのCount番目に現在の座標を保存する
+                    Positions[Count] = PlayerControl.LocalPlayer.transform.position;
 
-                Count++;
-                Logger.Info($"Now:{Count}", "Conjurer Added");
+                    Count++;
+                    Logger.Info($"Now:{Count}", "Conjurer Added");
 
-                ResetCoolDown();
+                    ResetCoolDown();
+                }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () => { return CanAddBeacon(); },
@@ -145,37 +148,40 @@ namespace SuperNewRoles.Roles.Impostor
             StartButton = new(
             () =>
             {
-                Logger.Info($"Beacon{Round}{Count}", "Beacons");
-                foreach (PlayerControl pc in CachedPlayer.AllPlayers)
+                if (PlayerControl.LocalPlayer.CanMove && Count == 3)
                 {
-                    // プレイヤーがPositionsで形成された三角形の中にいる
-                    if (PointInPolygon(pc.transform.position, Positions))
+                    Logger.Info($"Beacon{Round}{Count}", "Beacons");
+                    foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                     {
-                        if (pc.IsAlive())
+                        // プレイヤーがPositionsで形成された三角形の中にいる
+                        if (PointInPolygon(pc.transform.position, Positions))
                         {
-                            // インポスターをキルしない、インポスターではない
-                            if (!CanKillImpostor.GetBool() && !pc.IsImpostor())
+                            if (pc.IsAlive())
                             {
-                                pc.RpcMurderPlayer(pc);
-                            }
-                            // インポスターをキルする
-                            else if (CanKillImpostor.GetBool())
-                            {
-                                pc.RpcMurderPlayer(pc);
+                                // インポスターをキルしない、インポスターではない
+                                if (!CanKillImpostor.GetBool() && !pc.IsImpostor())
+                                {
+                                    pc.RpcMurderPlayer(pc);
+                                }
+                                // インポスターをキルする
+                                else if (CanKillImpostor.GetBool())
+                                {
+                                    pc.RpcMurderPlayer(pc);
+                                }
                             }
                         }
                     }
+                    if (ShowFlash.GetBool())
+                    { // Rpcにして、全視点光らせる
+                        RPCHelper.StartRPC(CustomRPC.ShowFlash).EndRPC();
+                        RPCProcedure.ShowFlash();
+                    }
+                    Beacon.ClearBeacons();
+                    ResetCoolDown();
+                    Count = 0;
+                    Round++; // 何週目かを増やす
+                    Logger.Info($"Beacon{Round}{Count}", "Beacons");
                 }
-                if (ShowFlash.GetBool())
-                { // Rpcにして、全視点光らせる
-                    RPCHelper.StartRPC(CustomRPC.ShowFlash).EndRPC();
-                    RPCProcedure.ShowFlash();
-                }
-                Beacon.ClearBeacons();
-                ResetCoolDown();
-                Count = 0;
-                Round++; // 何週目かを増やす
-                Logger.Info($"Beacon{Round}{Count}", "Beacons");
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () => { return PlayerControl.LocalPlayer.CanMove && Count == 3; },
