@@ -1,15 +1,12 @@
-using SuperNewRoles.Patch;
-using static SuperNewRoles.Modules.CustomOptions;
-using static SuperNewRoles.Roles.RoleClass;
-using System.Collections.Generic;
-using UnityEngine;
 using HarmonyLib;
-using System.Linq;
 using Hazel;
-using SuperNewRoles.CustomObject;
-using SuperNewRoles.Mode;
-using static SuperNewRoles.Roles.CrewMate.Knight;
+using UnityEngine;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Patch;
+using System.Collections.Generic;
+using System.Linq;
+using static SuperNewRoles.Modules.CustomOptions;
+using static SuperNewRoles.Roles.CrewMate.Knight;
 
 namespace SuperNewRoles.Roles.CrewMate
 {
