@@ -158,13 +158,7 @@ namespace SuperNewRoles.Roles.Impostor
                         {
                             if (pc.IsAlive())
                             {
-                                // インポスターをキルしない、インポスターではない
-                                if (!CanKillImpostor.GetBool() && !pc.IsImpostor())
-                                {
-                                    pc.RpcMurderPlayer(pc);
-                                }
-                                // インポスターをキルする
-                                else if (CanKillImpostor.GetBool())
+                                if ((!CanKillImpostor.GetBool() && !pc.IsImpostor()) || CanKillImpostor.GetBool())
                                 {
                                     pc.RpcMurderPlayer(pc);
                                 }
