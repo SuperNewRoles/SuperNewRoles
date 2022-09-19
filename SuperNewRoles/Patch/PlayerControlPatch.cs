@@ -742,11 +742,12 @@ namespace SuperNewRoles.Patches
         public static bool resetToDead = false;
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
-            if (Roles.CrewMate.Knight.GuardedPlayers.Contains(target.PlayerId)) {
-                var Writer = RPCHelper.StartRPC(CustomRPC.RPCKnightProtectClear);
+            if (Roles.CrewMate.Knight.GuardedPlayers.Contains(target.PlayerId))
+            {
+                var Writer = RPCHelper.StartRPC(CustomRPC.KnightProtectClear);
                 Writer.Write(target.PlayerId);
                 Writer.EndRPC();
-                RPCProcedure.RPCKnightProtectClear(target.PlayerId);
+                RPCProcedure.KnightProtectClear(target.PlayerId);
                 target.protectedByGuardian = true;
                 return false;
             }

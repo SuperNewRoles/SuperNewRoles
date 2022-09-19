@@ -237,12 +237,12 @@ namespace SuperNewRoles.Modules
         PainterSetTarget = 225,
         SharePhotograph,
         MeetingKill,
-        RPCKnightProtected,
-        RPCKnightProtectClear,
+        KnightProtected,
+        KnightProtectClear,
     }
     public static class RPCProcedure
     {
-        public static void RPCKnightProtectClear(byte Target)
+        public static void KnightProtectClear(byte Target)
         {
             Knight.GuardedPlayers.Remove(Target);
         }
@@ -717,12 +717,12 @@ namespace SuperNewRoles.Modules
 
         }
 
-        public static void RPCKnightProtected(byte KnightId, byte TargetId)
+        public static void KnightProtected(byte KnightId, byte TargetId)
         {
             PlayerControl Knight = ModHelpers.PlayerById(KnightId);
             PlayerControl Target = ModHelpers.PlayerById(TargetId);
             Roles.CrewMate.Knight.GuardedPlayers.Add(TargetId); // 守護をかけられたプレイヤーを保存。
-            SuperNewRolesPlugin.Logger.LogInfo($"[RPCKnightProtected]{Knight.GetDefaultName()}が{Target.GetDefaultName()}に護衛を使用しました。");
+            SuperNewRolesPlugin.Logger.LogInfo($"[KnightProtected]{Knight.GetDefaultName()}が{Target.GetDefaultName()}に護衛を使用しました。");
             if (Roles.CrewMate.Knight.KnightCanAnnounceOfProtected.GetBool()) ProctedMessager.ScheduleProctedMessage(ModTranslation.GetString("TheKnightProtected"));
         }
         public static void CustomRPCKill(byte notTargetId, byte targetId)
@@ -1330,11 +1330,11 @@ namespace SuperNewRoles.Modules
                         case CustomRPC.MeetingKill:
                             MeetingKill(reader.ReadByte(), reader.ReadByte());
                             break;
-                        case CustomRPC.RPCKnightProtected:
-                            RPCKnightProtected(reader.ReadByte(), reader.ReadByte());
+                        case CustomRPC.KnightProtected:
+                            KnightProtected(reader.ReadByte(), reader.ReadByte());
                             break;
-                        case CustomRPC.RPCKnightProtectClear:
-                            RPCKnightProtectClear(reader.ReadByte());
+                        case CustomRPC.KnightProtectClear:
+                            KnightProtectClear(reader.ReadByte());
                             break;
                     }
                 }

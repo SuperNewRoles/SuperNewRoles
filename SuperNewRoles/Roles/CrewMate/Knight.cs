@@ -85,9 +85,9 @@ namespace SuperNewRoles.Roles.CrewMate
             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
             if (GuardedPlayers.Contains(TargetID)) return;
 
-            RPCProcedure.RPCKnightProtected(LocalID, TargetID);
+            RPCProcedure.KnightProtected(LocalID, TargetID);
 
-            MessageWriter ProtectWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCKnightProtected, SendOption.Reliable, -1);
+            MessageWriter ProtectWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.KnightProtected, SendOption.Reliable, -1);
             ProtectWriter.Write(LocalID);
             ProtectWriter.Write(TargetID);
             AmongUsClient.Instance.FinishRpcImmediately(ProtectWriter);
@@ -179,9 +179,9 @@ namespace SuperNewRoles.Roles.CrewMate
                     var TargetID = ProtectedPlayer.PlayerId;
                     var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
-                    RPCProcedure.RPCKnightProtected(LocalID, TargetID);
+                    RPCProcedure.KnightProtected(LocalID, TargetID);
 
-                    MessageWriter ProtectWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCKnightProtected, SendOption.Reliable, -1);
+                    MessageWriter ProtectWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.KnightProtected, SendOption.Reliable, -1);
                     ProtectWriter.Write(LocalID);
                     ProtectWriter.Write(TargetID);
                     AmongUsClient.Instance.FinishRpcImmediately(ProtectWriter);
