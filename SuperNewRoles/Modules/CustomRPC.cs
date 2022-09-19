@@ -236,9 +236,25 @@ namespace SuperNewRoles.Modules
         PainterPaintSet,
         PainterSetTarget,
         SharePhotograph,
+        WaveCannon,
     }
     public static class RPCProcedure
     {
+        public static WaveCannonObject WaveCannon(byte Type, byte Id, byte[] buff, bool IsFlipX, byte OwnerId)
+        {
+            switch ((WaveCannonObject.RpcType)Type)
+            {
+                case WaveCannonObject.RpcType.Spawn:
+                    Vector2 position = Vector2.zero;
+                    position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
+                    position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
+                    return new(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
+                case WaveCannonObject.RpcType.Shoot:
+                    WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
+                    break;
+            }
+            return null;
+        }
         public static void SluggerExile(byte SourceId, List<byte> Targets)
         {
             Logger.Info("～SluggerExile～");
@@ -1318,6 +1334,9 @@ namespace SuperNewRoles.Modules
                                 Targets.Add(reader.ReadByte());
                             }
                             SluggerExile(source, Targets);
+                            break;
+                        case CustomRPC.WaveCannon:
+                            WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBytesAndSize(), reader.ReadBoolean(), reader.ReadByte());
                             break;
                     }
                 }

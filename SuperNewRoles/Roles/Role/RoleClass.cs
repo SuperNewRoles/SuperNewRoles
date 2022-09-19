@@ -3052,7 +3052,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 WaveCannonPlayer = new();
-                
+                WaveCannonObject.Ids = new();
             }
         }
         //新ロールクラス

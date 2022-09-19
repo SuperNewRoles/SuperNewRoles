@@ -106,7 +106,18 @@ namespace SuperNewRoles.Buttons
             WaveCannonButton = new(
                 () =>
                 {
-                    new WaveCannonObject(CachedPlayer.LocalPlayer.transform.position);
+                    var pos = CachedPlayer.LocalPlayer.transform.position;
+                    byte[] buff = new byte[sizeof(float) * 2];
+                    Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
+                    writer.Write((byte)WaveCannonObject.RpcType.Spawn);
+                    writer.Write(0);
+                    writer.WriteBytesAndSize(buff);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.EndRPC();
+                    RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Spawn, 0, buff, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId);
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.WaveCannon; },
                 () =>
@@ -132,6 +143,24 @@ namespace SuperNewRoles.Buttons
                 5f,
                 () =>
                 {
+                    WaveCannonObject obj = WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId && x.Id == WaveCannonObject.Ids[CachedPlayer.LocalPlayer.PlayerId] - 1);
+                    if (obj == null)
+                    {
+                        Logger.Info("nullなのでreturnしました","WaveCannonButton");
+                        return;
+                    }
+                    var pos = CachedPlayer.LocalPlayer.transform.position;
+                    byte[] buff = new byte[sizeof(float) * 2];
+                    Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
+                    writer.Write((byte)WaveCannonObject.RpcType.Shoot);
+                    writer.Write((byte)obj.Id);
+                    writer.WriteBytesAndSize(buff);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.EndRPC();
+                    RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Shoot, (byte)obj.Id, buff, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId);
                 }
             )
             {
