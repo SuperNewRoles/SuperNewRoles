@@ -304,7 +304,7 @@ namespace SuperNewRoles.Patches
                 var text = button.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
                 {
-                    text.SetText(ModTranslation.GetString("サブマージドを適用する"));
+                    text.SetText(ModTranslation.GetString("ApplyingSubmerged"));
                 })));
 
                 TwitchManager man = DestroyableSingleton<TwitchManager>.Instance;
@@ -315,7 +315,7 @@ namespace SuperNewRoles.Patches
                 async void onClick()
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[Submerged]Downloading Submerged!");
-                    ShowPopup(ModTranslation.GetString("ダウンロード中です。\nサブマージドのファイルは大きいため、時間がかかります。"));
+                    ShowPopup(ModTranslation.GetString("DownloadingSubmerged"));
                     await DownloadSubmarged();
                     button.SetActive(false);
                 }
