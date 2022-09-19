@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
 using UnhollowerBaseLib;
+using UnityEngine;
 
 namespace SuperNewRoles.Mode.Werewolf
 {
@@ -35,8 +36,10 @@ namespace SuperNewRoles.Mode.Werewolf
         {
             static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id, [HarmonyArgument(1)] Il2CppReferenceArray<Il2CppSystem.Object> parts)
             {
-                if (id is StringNames.MeetingVotingBegins && ModeHandler.IsMode(ModeId.Werewolf, false) && parts.Count > 0) {
-                    __result = string.Format(ModTranslation.GetString("WerewolfAbilityTime"), parts[0]);
+                if (id is StringNames.MeetingVotingBegins && ModeHandler.IsMode(ModeId.Werewolf, false))
+                {
+                    float num3 = (float)PlayerControl.GameOptions.DiscussionTime - MeetingHud.Instance.discussionTimer;
+                    __result = string.Format(ModTranslation.GetString("WerewolfAbilityTime"), Mathf.CeilToInt(num3));
                 }
             }
         }
