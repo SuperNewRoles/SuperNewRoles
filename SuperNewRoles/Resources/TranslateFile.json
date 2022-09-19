@@ -4637,6 +4637,14 @@
         "11": "\u89e3\u9664\u307e\u3067{0}\u79d2",
         "13": "\u8fd8\u6709{0}\u79d2\u89e3\u9664\u6b66\u88c5"
     },
+    "ConnectKillerName": {
+        "0": "Connect killer",
+        "11": "\u30b3\u30cd\u30af\u30c8\u30ad\u30e9\u30fc"
+    },
+    "ConnectKillerTitle1": {
+        "0": "Be a radio wave and move freely!",
+        "11": "\u96fb\u6ce2\u306b\u306a\u308a\u3001\u81ea\u7531\u306b\u79fb\u52d5\u3057\u3088\u3046"
+    },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
         "11": "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01",
