@@ -12,6 +12,7 @@ namespace SuperNewRoles.Mode.Werewolf
         public static bool IsChatBlock(PlayerControl sourcePlayer,string text)
         {
             if (MeetingHud.Instance == null) return false;
+            if (!ModeHandler.IsMode(ModeId.Werewolf)) return false;
             if (sourcePlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer) && text.EndsWith(ModTranslation.GetString("SoothSayerCrewmateText")))
@@ -28,6 +29,7 @@ namespace SuperNewRoles.Mode.Werewolf
         public static bool IsUseButton()
         {
             if (MeetingHud.Instance == null) return true;
+            if (!ModeHandler.IsMode(ModeId.Werewolf)) return true;
             if (MeetingHud.Instance.CurrentState == MeetingHud.VoteStates.Discussion) return true;
             return false;
         }
