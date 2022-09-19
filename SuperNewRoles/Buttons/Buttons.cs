@@ -126,7 +126,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
-                    WaveCannonButton.MaxTimer = RoleClass.Slugger.CoolTime;
+                    WaveCannonButton.MaxTimer = CustomOptions.WaveCannonCoolTime.GetFloat();
                     WaveCannonButton.Timer = WaveCannonButton.MaxTimer;
                     WaveCannonButton.effectCancellable = false;
                     WaveCannonButton.EffectDuration = RoleClass.Slugger.ChargeTime;

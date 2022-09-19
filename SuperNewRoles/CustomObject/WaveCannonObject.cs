@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -137,6 +138,8 @@ namespace SuperNewRoles.CustomObject
                         GameObject.Destroy(this.gameObject);
                         CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
                         Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonCoolTime.GetFloat();
+                        HudManagerStartPatch.WaveCannonButton.Timer = HudManagerStartPatch.WaveCannonButton.MaxTimer;
                     }
                 };
             };
