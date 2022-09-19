@@ -22,7 +22,7 @@ namespace SuperNewRoles
         public static bool IsBeta = IsViewText && ThisAssembly.Git.Branch != MasterBranch;
 
         //プルリク時にfalseなら指摘してください
-        public const bool IsViewText = false;
+        public const bool IsViewText = true;
         public const string ModUrl = "ykundesu/SuperNewRoles";
         public const string MasterBranch = "master";
         public const string ModName = "SuperNewRoles";
