@@ -240,12 +240,12 @@ namespace SuperNewRoles.Modules
     }
     public static class RPCProcedure
     {
-        public static WaveCannonObject WaveCannon(byte Type, byte Id, byte[] buff, bool IsFlipX, byte OwnerId)
+        public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)
         {
             switch ((WaveCannonObject.RpcType)Type)
             {
                 case WaveCannonObject.RpcType.Spawn:
-                    Vector2 position = Vector2.zero;
+                    Vector3 position = Vector3.zero;
                     position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
                     position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
                     return new(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
@@ -1336,7 +1336,7 @@ namespace SuperNewRoles.Modules
                             SluggerExile(source, Targets);
                             break;
                         case CustomRPC.WaveCannon:
-                            WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBytesAndSize(), reader.ReadBoolean(), reader.ReadByte());
+                            WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), reader.ReadBytesAndSize());
                             break;
                     }
                 }

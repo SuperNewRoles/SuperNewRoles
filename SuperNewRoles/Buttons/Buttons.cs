@@ -112,12 +112,12 @@ namespace SuperNewRoles.Buttons
                     Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
                     writer.Write((byte)WaveCannonObject.RpcType.Spawn);
-                    writer.Write(0);
-                    writer.WriteBytesAndSize(buff);
+                    writer.Write((byte)0);
                     writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
                     writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.WriteBytesAndSize(buff);
                     writer.EndRPC();
-                    RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Spawn, 0, buff, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId);
+                    RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Spawn, 0, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, buff);
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.WaveCannon; },
                 () =>
@@ -156,11 +156,30 @@ namespace SuperNewRoles.Buttons
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
                     writer.Write((byte)WaveCannonObject.RpcType.Shoot);
                     writer.Write((byte)obj.Id);
-                    writer.WriteBytesAndSize(buff);
                     writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
                     writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.WriteBytesAndSize(buff);
                     writer.EndRPC();
-                    RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Shoot, (byte)obj.Id, buff, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId);
+                    RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Shoot, (byte)obj.Id, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, buff);
+
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                    {
+                        if (player.IsDead()) continue;
+                        if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
+                        float posdata = player.GetTruePosition().y - obj.transform.position.y;
+                        if (posdata > 1 || posdata < -1) continue;
+                        posdata = obj.transform.position.x - (obj.IsFlipX ? -2 : 2);
+                        if ((obj.IsFlipX && player.transform.position.x > posdata) || (!obj.IsFlipX && player.transform.position.x < posdata)) continue;
+                        writer = RPCHelper.StartRPC(CustomRPC.RPCMurderPlayer);
+                        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                        writer.Write(player.PlayerId);
+                        writer.Write((byte)0);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        float Timer = PlayerControl.LocalPlayer.killTimer;
+                        RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, player.PlayerId, 0);
+                        PlayerControl.LocalPlayer.killTimer = Timer;
+                        FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.text = PlayerControl.LocalPlayer.killTimer <= 0f ? "" : PlayerControl.LocalPlayer.killTimer.ToString();
+                    }
                 }
             )
             {

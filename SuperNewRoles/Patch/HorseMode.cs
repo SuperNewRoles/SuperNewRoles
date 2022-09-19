@@ -11,7 +11,6 @@ namespace SuperNewRoles.Patches
     {
         private static bool horseButtonState = HorseModeOption.enableHorseMode;
         private static Sprite horseModeOffSprite = null;
-        private static Sprite horseModeOnSprite = null;
 
         private static void Prefix()
         {
@@ -25,25 +24,17 @@ namespace SuperNewRoles.Patches
             var spriteHorseButton = horseButton.GetComponent<SpriteRenderer>();
 
             horseModeOffSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
-            horseModeOnSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOn.png", 75f);
-
-            spriteHorseButton.sprite = horseButtonState ? horseModeOnSprite : horseModeOffSprite;
+            
+            spriteHorseButton.sprite = horseModeOffSprite;
 
             passiveHorseButton.OnClick = new ButtonClickedEvent();
 
             passiveHorseButton.OnClick.AddListener((UnityEngine.Events.UnityAction)delegate
             {
                 horseButtonState = horseModeSelectionBehavior.OnClick();
-                if (horseButtonState)
-                {
-                    if (horseModeOnSprite == null) horseModeOnSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOn.png", 75f);
-                    spriteHorseButton.sprite = horseModeOnSprite;
-                }
-                else
-                {
-                    if (horseModeOffSprite == null) horseModeOffSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
-                    spriteHorseButton.sprite = horseModeOffSprite;
-                }
+                if (horseModeOffSprite == null) horseModeOffSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
+                spriteHorseButton.sprite = horseModeOffSprite;
+                spriteHorseButton.transform.localScale *= -1;
                 CredentialsPatch.LogoPatch.UpdateSprite();
                 // Avoid wrong Player Particles floating around in the background
                 var particles = GameObject.FindObjectOfType<PlayerParticles>();

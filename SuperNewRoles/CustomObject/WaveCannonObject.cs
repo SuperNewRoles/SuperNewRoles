@@ -91,6 +91,7 @@ namespace SuperNewRoles.CustomObject
         }
         public void Shoot()
         {
+            SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ShootSound.raw"), false);
             IsShootNow = true;
             render.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannon.Cannon.png", 115f);
             sprites = new();
@@ -102,24 +103,6 @@ namespace SuperNewRoles.CustomObject
             IsLoop = false;
             freamrate = 12;
             Playing = true;
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
-            {
-                if (player.IsDead()) continue;
-                if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
-                float pos = player.GetTruePosition().y - transform.position.y;
-                if (pos > 1 || pos < -1) continue;
-                pos = transform.position.x - (IsFlipX ? -2 : 2);
-                if ((IsFlipX && player.transform.position.x > pos) || (!IsFlipX && player.transform.position.x < pos)) continue;
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.RPCMurderPlayer);
-                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                writer.Write(player.PlayerId);
-                writer.Write((byte)0);
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
-                float Timer = PlayerControl.LocalPlayer.killTimer;
-                RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, player.PlayerId, 0);
-                PlayerControl.LocalPlayer.killTimer = Timer;
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.text = PlayerControl.LocalPlayer.killTimer <= 0f ? "" : PlayerControl.LocalPlayer.killTimer.ToString();
-            }
             OnPlayEnd = () => {
                 IsLoop = true;
                 freamrate = 15;
@@ -155,6 +138,7 @@ namespace SuperNewRoles.CustomObject
         public void FixedUpdate()
         {
             if (render == null) { Objects.Remove(this); return; }
+            if (RoleClass.IsMeeting) { GameObject.Destroy(this.gameObject); return; }
             if (Owner != null && Owner.IsDead()) {
                 GameObject.Destroy(this.gameObject);
                 if (Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
