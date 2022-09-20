@@ -617,20 +617,18 @@ namespace SuperNewRoles.Patch
             if (JesterWin)
             {
                 WinnerPlayer.Data.IsDead = false;
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                TempData.winners.Add(new(WinnerPlayer.Data));
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.JesterWin;
             }
             else if (MadJesterWin)
             {
                 WinnerPlayer.Data.IsDead = false;
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                TempData.winners.Add(new(WinnerPlayer.Data));
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.MadJesterWin;
             }
             else if (JackalWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                TempData.winners = new();
                 foreach (var cp in CachedPlayer.AllPlayers)
                 {
                     if (cp.PlayerControl.IsJackalTeam())
@@ -642,7 +640,7 @@ namespace SuperNewRoles.Patch
             }
             else if (EgoistWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                TempData.winners = new();
                 foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
                 {
                     if (p.IsAlive())
@@ -654,19 +652,17 @@ namespace SuperNewRoles.Patch
             }
             else if (WorkpersonWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                TempData.winners.Add(new(WinnerPlayer.Data));
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
             }
             else if (FalseChargesWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                TempData.winners.Add(new(WinnerPlayer.Data));
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.FalseChargesWin;
             }
             else if (DemonWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                TempData.winners = new();
                 foreach (PlayerControl player in RoleClass.Demon.DemonPlayer)
                 {
                     if (Demon.IsWin(player))
@@ -678,7 +674,7 @@ namespace SuperNewRoles.Patch
             }
             else if (ArsonistWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                TempData.winners = new();
                 foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
                 {
                     if (Arsonist.IsArsonistWinFlag())
@@ -691,37 +687,32 @@ namespace SuperNewRoles.Patch
             }
             else if (VultureWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                TempData.winners.Add(new(WinnerPlayer.Data));
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.VultureWin;
             }
             else if (RevolutionistWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                TempData.winners.Add(new(WinnerPlayer.Data));
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.RevolutionistWin;
             }
             else if (SuicidalIdeationWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                TempData.winners.Add(new(WinnerPlayer.Data));
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.SuicidalIdeationWin;
             }
             else if (HitmanWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                TempData.winners.Add(new(WinnerPlayer.Data));
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.HitmanWin;
             }
             else if (PhotographerWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                TempData.winners.Add(new(WinnerPlayer.Data));
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.PhotographerWin;
             }
             else if (QuarreledWin)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                TempData.winners = new();
                 List<PlayerControl> winplays = new()
                 {
                     WinnerPlayer,
@@ -757,7 +748,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (!(isDleted || changeTheWinCondition))
                     {
-                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        TempData.winners = new();
                         isDleted = true;
                     }
                     TempData.winners.Add(new(player.Data));
@@ -771,7 +762,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (!(isDleted || changeTheWinCondition))
                     {
-                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        TempData.winners = new();
                         isDleted = true;
                     }
                     var (Complete, all) = TaskCount.TaskDateNoClearCheck(player.Data);
@@ -788,7 +779,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (!(isDleted || changeTheWinCondition))
                     {
-                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        TempData.winners = new();
                         isDleted = true;
                     }
                     TempData.winners.Add(new(player.Data));
@@ -807,7 +798,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (!(isDleted || changeTheWinCondition))
                         {
-                            TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                            TempData.winners = new();
                             isDleted = true;
                         }
                         TempData.winners.Add(new(player.Data));
@@ -821,7 +812,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (!(isDleted || changeTheWinCondition))
                         {
-                            TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                            TempData.winners = new();
                             isDleted = true;
                         }
                         TempData.winners.Add(new(player.Data));
@@ -847,7 +838,7 @@ namespace SuperNewRoles.Patch
                         {
                             if (!(isDleted || changeTheWinCondition))
                             {
-                                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                                TempData.winners = new();
                                 isDleted = true;
                             }
                             TempData.winners.Add(new(player.Data));
@@ -865,7 +856,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (!(isDleted || changeTheWinCondition))
                         {
-                            TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                            TempData.winners = new();
                             isDleted = true;
                         }
                         TempData.winners.Add(new(player.Data));
@@ -880,7 +871,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (!(isDleted || changeTheWinCondition))
                     {
-                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        TempData.winners = new();
                         isDleted = true;
                     }
                     TempData.winners.Add(new(player.Data));
@@ -1014,7 +1005,7 @@ namespace SuperNewRoles.Patch
             }
             if (ModeHandler.IsMode(ModeId.Zombie))
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                TempData.winners = new();
                 if (gameOverReason == GameOverReason.ImpostorByKill)
                 {
                     AdditionalTempData.winCondition = WinCondition.Default;
@@ -1040,7 +1031,7 @@ namespace SuperNewRoles.Patch
             }
             if (HAISON)
             {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                TempData.winners = new();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.IsPlayer())
