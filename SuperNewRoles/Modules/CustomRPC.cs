@@ -157,6 +157,9 @@ namespace SuperNewRoles.Modules
         ShiftActor,
         ConnectKiller,
         Doppelganger,
+        TheFirstLittlePig,
+        TheSecondLittlePig,
+        TheThirdLittlePig,
         //RoleId
     }
 

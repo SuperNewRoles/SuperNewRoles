@@ -575,6 +575,7 @@ namespace SuperNewRoles
             }
             bool IsNotEndRandomSelect = true;
             bool IsRevolutionistAssigned = false;
+            bool IsTheThreeLittlePigsAssigned = false;
             while (IsNotEndRandomSelect)
             {
                 if (Neutonepar.Count != 0)
@@ -585,6 +586,10 @@ namespace SuperNewRoles
                     if (SelectRoleDate == RoleId.Revolutionist)
                     {
                         IsRevolutionistAssigned = true;
+                    }
+                    else if(SelectRoleDate == RoleId.TheFirstLittlePig)
+                    {
+                        IsTheThreeLittlePigsAssigned = true;
                     }
 
                     int PlayerCount = (int)GetPlayerCount(SelectRoleDate);
@@ -700,6 +705,56 @@ namespace SuperNewRoles
                         CrewMatePlayerNum--;
                         PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
                         p.SetRoleRPC(RoleId.Dictator);
+                        CrewMatePlayers.Remove(p);
+                    }
+                }
+            }
+            if (IsTheThreeLittlePigsAssigned)
+            {
+                int PlayerCount1 = (int)GetPlayerCount(RoleId.TheSecondLittlePig);
+                int PlayerCount2 = (int)GetPlayerCount(RoleId.TheThirdLittlePig);
+                if(PlayerCount1 + PlayerCount2 >= CrewMatePlayerNum)
+                {
+                    for (int i = 1; i <= CrewMatePlayerNum; i++)
+                    {
+                        PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                        p.SetRoleRPC(RoleId.TheSecondLittlePig);
+                        CrewMatePlayers.Remove(p);
+                    }
+                    for(int i = 1; i <= CrewMatePlayerNum; i++)
+                    {
+                        PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                        p.SetRoleRPC(RoleId.TheThirdLittlePig);
+                        CrewMatePlayers.Remove(p);
+                    }
+                    CrewMatePlayerNum = 0;
+                }
+                else if (PlayerCount1 + PlayerCount2 >= CrewMatePlayers.Count)
+                {
+                    foreach (PlayerControl Player in CrewMatePlayers)
+                    {
+                        Player.SetRoleRPC(RoleId.TheSecondLittlePig);
+                    }
+                    foreach (PlayerControl Player in CrewMatePlayers)
+                    {
+                        Player.SetRoleRPC(RoleId.TheThirdLittlePig);
+                    }
+                    CrewMatePlayerNum = 0;
+                }
+                else
+                {
+                    for (int i = 1; i <= PlayerCount1; i++)
+                    {
+                        CrewMatePlayerNum--;
+                        PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                        p.SetRoleRPC(RoleId.TheSecondLittlePig);
+                        CrewMatePlayers.Remove(p);
+                    }
+                    for(int i = 1; i <= PlayerCount2; i++)
+                    {
+                        CrewMatePlayerNum--;
+                        PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                        p.SetRoleRPC(RoleId.TheThirdLittlePig);
                         CrewMatePlayers.Remove(p);
                     }
                 }
@@ -928,6 +983,9 @@ namespace SuperNewRoles
                 RoleId.ShiftActor => Roles.Impostor.ShiftActor.ShiftActorPlayerCount.GetFloat(),
                 RoleId.ConnectKiller => CustomOptions.ConnectKillerPlayerCount.GetFloat(),
                 RoleId.Doppelganger => CustomOptions.DoppelgangerPlayerCount.GetFloat(),
+                RoleId.TheFirstLittlePig => CustomOptions.TheThreeLittlePigsTeamCount.GetFloat(),
+                RoleId.TheSecondLittlePig => CustomOptions.TheThreeLittlePigsTeamCount.GetFloat(),
+                RoleId.TheThirdLittlePig => CustomOptions.TheThreeLittlePigsTeamCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

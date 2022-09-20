@@ -38,6 +38,7 @@ namespace SuperNewRoles.Patch
         HitmanWin,
         PhotographerWin,
         StefinderWin,
+        TheThreeLittlePigsWin,
         BugEnd
     }
     enum WinCondition
@@ -65,6 +66,7 @@ namespace SuperNewRoles.Patch
         HitmanWin,
         PhotographerWin,
         StefinderWin,
+        TheThreeLittlePigsWin,
         BugEnd
     }
     class FinalStatusPatch
@@ -303,6 +305,10 @@ namespace SuperNewRoles.Patch
                 case WinCondition.StefinderWin:
                     text = "StefinderName";
                     RoleColor = RoleClass.Stefinder.color;
+                    break;
+                case WinCondition.TheThreeLittlePigsWin:
+                    text = "TheThreeLittlePigsName";
+                    RoleColor = Roles.Neutral.TheThreeLittlePigs.color;
                     break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
@@ -564,6 +570,10 @@ namespace SuperNewRoles.Patch
             notWinners.AddRange(RoleClass.Photographer.PhotographerPlayer);
             notWinners.AddRange(RoleClass.Stefinder.StefinderPlayer);
 
+            notWinners.AddRange(Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.TheFirstLittlePigPlayer);
+            notWinners.AddRange(Roles.Neutral.TheThreeLittlePigs.TheSecondLittlePig.TheSecondLittlePigPlayer);
+            notWinners.AddRange(Roles.Neutral.TheThreeLittlePigs.TheThirdLittlePig.TheThirdLittlePigPlayer);
+
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
                 if (p.IsDead())
@@ -751,6 +761,76 @@ namespace SuperNewRoles.Patch
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.Default;
+            }
+            bool isDleted = false;
+            foreach (List<PlayerControl> team in Roles.Neutral.TheThreeLittlePigs.TheThreeLittlePigsPlayer)
+            {
+                bool win = false;
+                foreach(PlayerControl player in team)
+                {
+                    if (!Roles.Neutral.TheThreeLittlePigs.TaskCheck(player))
+                    {
+                        win = false;
+                        break;
+                    }
+                    if (player.IsAlive())
+                    {
+                        win = true;
+                    }
+                }
+                if (win)
+                {
+                    bool theyAllAlive = true;
+                    foreach (PlayerControl player in team)
+                    {
+                        if (player.IsDead())
+                        {
+                            theyAllAlive = false;
+                            break;
+                        }
+                    }
+                    foreach(PlayerControl player in team)
+                    {
+                        if (theyAllAlive)
+                        {
+                            if (!Roles.Neutral.TheThreeLittlePigs.AddWin)
+                            {
+                                if (!isDleted)
+                                {
+                                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                                    isDleted = true;
+                                }
+                                TempData.winners.Add(new(player.Data));
+                                AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
+                            }
+                            else
+                            {
+                                TempData.winners.Add(new WinningPlayerData(player.Data));
+                            }
+                        }
+                        else if (!theyAllAlive)
+                        {
+                            if(AdditionalTempData.gameOverReason == GameOverReason.HumansDisconnect ||
+                               AdditionalTempData.gameOverReason == GameOverReason.HumansByVote)
+                            {
+                                if (!Roles.Neutral.TheThreeLittlePigs.AddWin)
+                                {
+                                    if (!isDleted)
+                                    {
+                                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                                        isDleted = true;
+                                    }
+                                    TempData.winners.Add(new(player.Data));
+                                    AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
+                                }
+                                else
+                                {
+                                    TempData.winners.Add(new WinningPlayerData(player.Data));
+                                }
+                            }
+                        }
+                    }
+                }
             }
             foreach (PlayerControl p in RoleClass.God.GodPlayer)
             {

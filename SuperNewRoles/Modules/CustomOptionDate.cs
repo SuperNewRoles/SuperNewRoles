@@ -820,6 +820,21 @@ namespace SuperNewRoles.Modules
         public static CustomOption DoppelgangerCoolTome;
         public static CustomOption DoppelgangerSucTime;
         public static CustomOption DoppelgangerNotSucTime;
+
+        public static CustomRoleOption TheThreeLittlePigsOption;
+        public static CustomOption TheThreeLittlePigsTeamCount;
+        public static CustomOption TheFirstLittlePigClearTask;
+        public static CustomOption TheSecondLittlePigClearTask;
+        public static CustomOption TheThirdLittlePigClearTask;
+        public static CustomOption TheThreeLittlePigsTask;
+        public static CustomOption TheThreeLittlePigsCommonTask;
+        public static CustomOption TheThreeLittlePigsShortTask;
+        public static CustomOption TheThreeLittlePigsLongTask;
+        public static CustomOption TheFirstLittlePigAlwaysTimerAdvances;
+        public static CustomOption TheFirstLittlePigFlush;
+        public static CustomOption TheSecondLittlePigMaxGuardCount;
+        public static CustomOption TheThirdLittlePigCounterKillCount;
+        public static CustomOption TheThreeLittlePigsIsAddWin;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1647,6 +1662,22 @@ namespace SuperNewRoles.Modules
             DoppelgangerCoolTome = Create(989, true, CustomOptionType.Impostor, "DoppelgangerCoolDownSetting", 5f, 5f, 60f, 2.5f, DoppelgangerOption);
             DoppelgangerSucTime = Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
             DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
+
+            TheThreeLittlePigsOption = new CustomRoleOption(992, false, CustomOptionType.Neutral, "TheThreeLittlePigsName", Roles.Neutral.TheThreeLittlePigs.color, 1);
+            TheThreeLittlePigsTeamCount = CustomOption.Create(993, false, CustomOptionType.Neutral, "TheThreeLittlePigsTeamCountSetting", 1f, 1f, 4f, 1f, TheThreeLittlePigsOption);
+            TheFirstLittlePigClearTask = CustomOption.Create(994, false, CustomOptionType.Neutral, "TheFirstLittlePigClearTaskSetting", rates, TheThreeLittlePigsOption);
+            TheSecondLittlePigClearTask = CustomOption.Create(995, false, CustomOptionType.Neutral, "TheSecondLittlePigClearTaskSetting", rates, TheThreeLittlePigsOption);
+            TheThirdLittlePigClearTask = CustomOption.Create(996, false, CustomOptionType.Neutral, "TheThirdLittlePigClearTaskSetting", rates, TheThreeLittlePigsOption);
+            TheThreeLittlePigsTask = CustomOption.Create(997, false, CustomOptionType.Neutral, "TheThreeLittlePigsTaskSetting", false, TheThreeLittlePigsOption);
+            var TheThreeLittlePigsoption = SelectTask.TaskSetting(998, 999, 1000, TheThreeLittlePigsTask, CustomOptionType.Neutral, false);
+            TheThreeLittlePigsCommonTask = TheThreeLittlePigsoption.Item1;
+            TheThreeLittlePigsShortTask = TheThreeLittlePigsoption.Item2;
+            TheThreeLittlePigsLongTask = TheThreeLittlePigsoption.Item3;
+            TheFirstLittlePigAlwaysTimerAdvances = CustomOption.Create(1001, false, CustomOptionType.Neutral, "TheFirstLittlePigAlwaysTimerAdvancesSetting", false, TheThreeLittlePigsOption);
+            TheFirstLittlePigFlush = CustomOption.Create(1002, false, CustomOptionType.Neutral, "TheFirstLittlePigFlushSetting", true, TheThreeLittlePigsOption);
+            TheSecondLittlePigMaxGuardCount = CustomOption.Create(1003, false, CustomOptionType.Neutral, "TheSecondLittlePigMaxGuardCountSetting", 1f, 1f, 15f, 1f, TheThreeLittlePigsOption);
+            TheThirdLittlePigCounterKillCount = CustomOption.Create(1004, false, CustomOptionType.Neutral, "TheThirdLittlePigCounterKillCountSetting", 1f, 1f, 15f, 1f, TheThreeLittlePigsOption);
+            TheThreeLittlePigsIsAddWin = CustomOption.Create(1005, false, CustomOptionType.Neutral, "TheThreeLittlePigsIsAddWinSetting", false, TheThreeLittlePigsOption);
 
             //表示設定
 
