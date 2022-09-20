@@ -129,7 +129,7 @@ namespace SuperNewRoles.Buttons
                     WaveCannonButton.MaxTimer = CustomOptions.WaveCannonCoolTime.GetFloat();
                     WaveCannonButton.Timer = WaveCannonButton.MaxTimer;
                     WaveCannonButton.effectCancellable = false;
-                    WaveCannonButton.EffectDuration = RoleClass.Slugger.ChargeTime;
+                    WaveCannonButton.EffectDuration = CustomOptions.WaveCannonChargeTime.GetFloat();
                     WaveCannonButton.HasEffect = true;
                 },
                 RoleClass.Slugger.GetButtonSprite(),

@@ -816,6 +816,7 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption WaveCannonOption;
         public static CustomOption WaveCannonPlayerCount;
         public static CustomOption WaveCannonCoolTime;
+        public static CustomOption WaveCannonChargeTime;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1640,6 +1641,7 @@ namespace SuperNewRoles.Modules
             WaveCannonOption = new CustomRoleOption(1004, false, CustomOptionType.Impostor, "WaveCannonName",RoleClass.WaveCannon.color, 1);
             WaveCannonPlayerCount = CustomOption.Create(1005, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WaveCannonOption);
             WaveCannonCoolTime = CustomOption.Create(1006, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonOption);
+            WaveCannonChargeTime = CustomOption.Create(1007, false, CustomOptionType.Impostor, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
