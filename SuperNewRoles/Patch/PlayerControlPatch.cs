@@ -212,8 +212,9 @@ namespace SuperNewRoles.Patches
                         if (AmongUsClient.Instance.AmHost)
                         {
                             RoleClass.Camouflager.Duration = RoleClass.Camouflager.DurationTime;
-                            Roles.Impostor.Camouflager.Camouflage();
                             RoleClass.Camouflager.IsCamouflage = true;
+                            Roles.Impostor.Camouflager.Camouflage();
+                            SyncSetting.CustomSyncSettings(__instance);
                         }
                         return true;
                 }
@@ -960,6 +961,10 @@ namespace SuperNewRoles.Patches
         {
             if (!AmongUsClient.Instance.AmHost) return true;
             if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
+            if (RoleClass.Camouflager.IsCamouflage)
+            {
+                Roles.Impostor.Camouflager.ResetCamouflage();
+            }
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (__instance.IsRole(RoleId.Amnesiac))
@@ -972,10 +977,6 @@ namespace SuperNewRoles.Patches
                             __instance.SetRoleRPC(target.Object.GetRole());
                         }
                     }
-                }
-                if (RoleClass.Camouflager.IsCamouflage)
-                {
-                    Roles.Impostor.Camouflager.ResetCamouflage();
                 }
             }
             return (RoleClass.Assassin.TriggerPlayer != null)

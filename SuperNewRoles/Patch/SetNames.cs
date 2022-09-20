@@ -433,8 +433,8 @@ namespace SuperNewRoles.Patch
                 SetNamesClass.CelebritySet();
                 SetNamesClass.QuarreledSet();
                 SetNamesClass.LoversSet();
-                SetNamesClass.SatsumaimoSet();
             }
+            SetNamesClass.SatsumaimoSet();
 
             if (RoleClass.PartTimer.Datas.ContainsValue(CachedPlayer.LocalPlayer.PlayerId))
             {

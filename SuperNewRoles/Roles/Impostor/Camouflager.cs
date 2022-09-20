@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using static SuperNewRoles.Buttons.HudManagerStartPatch;
+using static SuperNewRoles.Mode.ModeHandler;
 
 namespace SuperNewRoles.Roles.Impostor
 {
@@ -84,24 +84,29 @@ namespace SuperNewRoles.Roles.Impostor
             //全プレイヤーのスキンを変更する部分
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
-                if (ModeHandler.IsMode(ModeId.Default))
+                if (IsMode(ModeId.Default))
                 {
-                    player.RpcSetName(" ");//名前を変更
-                    player.RpcSetColor(RoleClass.Camouflager.Color);//カラーをグレーに変更
+                    player.RpcSetName("");//名前を変更
+                    player.RpcSetColor(RoleClass.Camouflager.Color);//カラーを変更
                     player.RpcSetSkin(""); //スキンを変更
                     player.RpcSetHat("");  //ハットを変更
                     player.RpcSetVisor("");//バイザーを変更
                     player.RpcSetPet("");  //ペットを変更
                 }
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                if (IsMode(ModeId.SuperHostRoles))
                 {
-                    string name = "<color=#00000000>" + player.GetDefaultName();
-                    player.RpcSetName(name);
-                    player.RpcSetColor(RoleClass.Camouflager.Color);//カラーをグレーに変更
+                    player.RpcSetName("<color=#00000000>" + player.GetDefaultName());
+                    if (player.IsMod()) player.RpcSetNamePrivate("", player);
+                    player.RpcSetColor(RoleClass.Camouflager.Color);//カラーを変更
                     player.RpcSetSkin(""); //スキンを変更
                     player.RpcSetHat("");  //ハットを変更
                     player.RpcSetVisor("");//バイザーを変更
                     player.RpcSetPet("");  //ペットを変更
+
+                    new LateTask(() =>
+                    {
+                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(player);
+                    }, 0.25f);
                 }
 
             }
@@ -116,8 +121,6 @@ namespace SuperNewRoles.Roles.Impostor
                 player.RpcSetHat(Attire[player.PlayerId].Hat);
                 player.RpcSetVisor(Attire[player.PlayerId].Visor);
                 player.RpcSetPet(Attire[player.PlayerId].Pet);
-
-                SetNameUpdate.Postfix(player);
             }
         }
         public static void ResetCoolTime()
@@ -140,17 +143,20 @@ namespace SuperNewRoles.Roles.Impostor
                             RoleClass.Camouflager.Duration = 0f;
                             RoleClass.Camouflager.IsCamouflage = false;
                             ResetCamouflage();
-                            foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+                            new LateTask(() =>
                             {
-                                SetNameUpdate.Postfix(player);
-                            }
+                                Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+                            }, 0.25f);
                         }
                     }
                 }
                 else
                 {
-                    ResetCamouflage();
-                    RoleClass.Camouflager.IsCamouflage = false;
+                    if (RoleClass.Camouflager.IsCamouflage)
+                    {
+                        ResetCamouflage();
+                        RoleClass.Camouflager.IsCamouflage = false;
+                    }
                 }
             }
         }
