@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
+using SuperNewRoles.Patch;
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 
@@ -28,10 +28,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         new LateTask(() =>
                         {
                             RPCProcedure.ShareWinner(target.PlayerId);
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                             Writer.Write(target.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                            Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                            Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                             Writer.Write((byte)CustomGameOverReason.QuarreledWin);
                             Writer.EndRPC();
                             RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);
@@ -47,7 +47,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             };
                             RoleClass.Quarreled.IsQuarreledWin = true;
                             EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByTask, false);
-                        }, 0.15f);
+                        }, 0.15f, "Quarreled Murder EndGame");
                     }
                 }
             }

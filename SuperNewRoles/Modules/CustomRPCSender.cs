@@ -4,7 +4,7 @@ using InnerNet;
 using UnhollowerBaseLib;
 //TOHの開発者さんたち(主に空き瓶さん)ありがとうございます
 
-namespace SuperNewRoles
+namespace SuperNewRoles.Modules
 {
     public class CustomRpcSender
     {

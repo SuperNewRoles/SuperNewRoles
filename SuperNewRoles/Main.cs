@@ -1,3 +1,4 @@
+global using SuperNewRoles.Modules;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +25,10 @@ namespace SuperNewRoles
         public const string MasterBranch = "master";
         public const string ModName = "SuperNewRoles";
         public const string ColorModName = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
+        public const string DiscordServer = "https://discord.gg/6DjxfaDsAj";
+        public const string Twitter1 = "https://twitter.com/SNRDevs";
+        public const string Twitter2 = "https://twitter.com/SuperNewRoles";
+
 
         public static Version Version = Version.Parse(VersionString);
         public static BepInEx.Logging.ManualLogSource Logger;
@@ -45,7 +50,7 @@ namespace SuperNewRoles
             ChacheManager.Load();
             CustomCosmetics.CustomColors.Load();
             ConfigRoles.Load();
-            CustomOption.CustomOptions.Load();
+            CustomOptions.Load();
             Patches.FreeNamePatch.Initialize();
             // All Load() End
 
@@ -65,10 +70,14 @@ namespace SuperNewRoles
 
             // Old Delete End
 
-            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.Branch}", "ブランチ");
-            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.Commit}", "コミットId");
-            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.Commits}", "コミット数");
-            SuperNewRoles.Logger.Info($"{ThisAssembly.Git.BaseTag}", "タグ");
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Branch, "Branch");
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Commit, "Commit");
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Commits, "Commits");
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.BaseTag, "BaseTag");
+            SuperNewRoles.Logger.Info(ThisAssembly.Git.Tag, "Tag");
+            SuperNewRoles.Logger.Info(VersionString, "VersionString");
+            SuperNewRoles.Logger.Info(Application.version, "AmongUsVersion"); // アモングアス本体のバージョン
+
             Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
 
             var assembly = Assembly.GetExecutingAssembly();
@@ -80,29 +89,13 @@ namespace SuperNewRoles
             assembly = Assembly.GetExecutingAssembly();
             string[] resourceNames = assembly.GetManifestResourceNames();
             foreach (string resourceName in resourceNames)
-            {
                 if (resourceName.EndsWith(".png"))
-                {
                     ModHelpers.LoadSpriteFromResources(resourceName, 115f);
-                }
-            }
         }
-        /*
-        [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
-        class TranslateControllerMessagePatch
-        {
-            static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo(id+":"+__result);
-            }
-        }*/
         [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.AmBanned), MethodType.Getter)]
         public static class AmBannedPatch
         {
-            public static void Postfix(out bool __result)
-            {
-                __result = false;
-            }
+            public static void Postfix(out bool __result) => __result = false;
         }
         [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
         public static class ChatControllerAwakePatch
@@ -128,7 +121,7 @@ namespace SuperNewRoles
                     new LateTask(() =>
                     {
                         __instance.SetVisible(true);
-                    }, 0f, "AntiChatBag");
+                    }, 0f, "AntiChatBug");
                 }
                 if (__instance.IsOpen)
                 {
@@ -136,5 +129,6 @@ namespace SuperNewRoles
                 }
             }
         }
+        public static void AgarthaLoad() => Agartha.AgarthaPlugin.Instance.Log.LogInfo("アガルタやで");
     }
 }

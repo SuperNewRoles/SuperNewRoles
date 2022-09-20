@@ -1,7 +1,7 @@
 using System;
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
+
 
 namespace SuperNewRoles.Roles
 {
@@ -18,7 +18,7 @@ namespace SuperNewRoles.Roles
         }
         public static void LightOutStart()
         {
-            MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
+            MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
             RPCWriter.Write(true);
             AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
         }

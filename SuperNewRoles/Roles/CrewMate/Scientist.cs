@@ -2,7 +2,7 @@ using System;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Mode;
 using UnityEngine;
 
@@ -12,7 +12,6 @@ namespace SuperNewRoles.Roles
     {
         public static void EndMeeting()
         {
-            ResetScientist();
             ScientistEnd();
             ResetCoolDown();
         }
@@ -25,23 +24,21 @@ namespace SuperNewRoles.Roles
         public static void Start()
         {
             RoleClass.NiceScientist.IsScientist = true;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
             writer.Write(true);
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
             SpeedBooster.ResetCoolDown();
         }
-        public static void ResetScientist() { }
         public static void ScientistEnd()
         {
             RoleClass.NiceScientist.IsScientist = false;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
             writer.Write(false);
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
-            ResetScientist();
         }
         public static void SetOpacity(PlayerControl player, float opacity, bool cansee)
         {

@@ -1,7 +1,7 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
+
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -41,7 +41,7 @@ namespace SuperNewRoles.Patch
             {
                 if (AmongUsClient.Instance.AmHost && Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift))
                 {
-                    RPCHelper.StartRPC(CustomRPC.CustomRPC.SetHaison).EndRPC();
+                    RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
                     RPCProcedure.SetHaison();
                     ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                     MapUtilities.CachedShipStatus.enabled = false;
@@ -109,9 +109,6 @@ namespace SuperNewRoles.Patch
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
                         switch (MyRole)
                         {
-                            case RoleId.Researcher:
-                                Researcher.ReseUseButtonSetTargetPatch.Postfix();
-                                break;
                             case RoleId.Pursuer:
                                 Pursuer.PursureUpdate.Postfix();
                                 break;
@@ -182,6 +179,9 @@ namespace SuperNewRoles.Patch
                                 break;
                             case RoleId.Photographer:
                                 Roles.Neutral.Photographer.FixedUpdate();
+                                break;
+                            case RoleId.Doppelganger:
+                                Roles.Impostor.Doppelganger.FixedUpdate();
                                 break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)

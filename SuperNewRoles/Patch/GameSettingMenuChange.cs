@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
-    class DefaultCustomSettingChangePatch
+    class GameSettingMenuChangePatch
     {
         [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Start))]
         class GameSettingMenuStartPatch

@@ -1,6 +1,6 @@
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
+
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -62,7 +62,7 @@ namespace SuperNewRoles.Roles
                     if (Getsword(PlayerControl.LocalPlayer, p))
                     {
                         RPCProcedure.BySamuraiKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.BySamuraiKillRPC, SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.BySamuraiKillRPC, SendOption.Reliable, -1);
                         Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         Writer.Write(p.PlayerId);
                         RoleClass.Samurai.Sword = true;
@@ -75,7 +75,7 @@ namespace SuperNewRoles.Roles
         {
             Vector3 position = source.transform.position;
             Vector3 playerposition = player.transform.position;
-            var r = CustomOption.CustomOptions.SamuraiScope.GetFloat();
+            var r = CustomOptions.SamuraiScope.GetFloat();
             if ((position.x + r >= playerposition.x) && (playerposition.x >= position.x - r))
             {
                 if ((position.y + r >= playerposition.y) && (playerposition.y >= position.y - r))

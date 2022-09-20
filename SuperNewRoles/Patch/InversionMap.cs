@@ -1,5 +1,5 @@
 using HarmonyLib;
-using SuperNewRoles.CustomOption;
+
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
@@ -38,12 +38,7 @@ namespace SuperNewRoles.Patch
                     ShipStatus.Instance.MeetingSpawnCenter = new Vector2(-19.5f, -17f);
                     ShipStatus.Instance.MeetingSpawnCenter2 = new Vector2(-19.5f, -17f);
                 }
-                /*else if(PlayerControl.GameOptions.MapId == 4 && CustomOptionHolder.InversionAShip.GetBool())
-                {
-                    airship = GameObject.Find("Airship(Clone)");
-                    airship.transform.localScale = new Vector3(-0.7f, 0.7f, 1f);
-                    airshipの選択スポーンシステムの対応ができてないため非表示
-                }*/
+                //airshipは選択スポーンシステムの対応ができてないため非表示
             }
         }
     }

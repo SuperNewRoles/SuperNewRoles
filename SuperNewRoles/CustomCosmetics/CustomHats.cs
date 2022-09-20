@@ -569,7 +569,7 @@ namespace SuperNewRoles.CustomCosmetics
                 SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] ハットスタート:" + repo);
                 if (!ConfigRoles.DownloadSuperNewNamePlates.Value)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("ダウンロードをスキップしました:"/*"Skipped download.:"*/ + repo);
+                    SuperNewRolesPlugin.Logger.LogInfo("ダウンロードをスキップしました:" + repo);
                 }
                 else
                 {
