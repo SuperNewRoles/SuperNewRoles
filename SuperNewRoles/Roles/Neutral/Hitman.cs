@@ -59,7 +59,7 @@ namespace SuperNewRoles.Roles.Neutral
             {
                 if (RoleClass.Hitman.cooldownText != null)
                 {
-                    UnityEngine.Object.Destroy(RoleClass.Hitman.cooldownText.gameObject);
+                    Object.Destroy(RoleClass.Hitman.cooldownText.gameObject);
                     RoleClass.Hitman.cooldownText = null;
                 }
             }
