@@ -43,6 +43,13 @@ namespace SuperNewRoles.Roles
             ResetCoolDown();
             ResetSpeed();
         }
+        public static void HudUpdate()
+        {
+            if (HudManagerStartPatch.FreezerButton.Timer <= 0.1f && RoleClass.Freezer.IsSpeedDown)
+            {
+                SpeedDownEnd();
+            }
+        }
     }
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
     public static class PlayerPhysicsSpeedPatch2
@@ -56,17 +63,6 @@ namespace SuperNewRoles.Roles
                 {
                     __instance.body.velocity = new Vector2(0f, 0f);
                 }
-            }
-        }
-    }
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    public static class HudManagerUpdatePatch2
-    {
-        public static void Postfix()
-        {
-            if (HudManagerStartPatch.FreezerButton.Timer <= 0.1f && RoleClass.Freezer.IsSpeedDown)
-            {
-                Freezer.SpeedDownEnd();
             }
         }
     }

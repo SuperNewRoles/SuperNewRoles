@@ -4,13 +4,12 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     //Town Of Plusより!
     public static class Zoom
     {
-        public static void Postfix(HudManager __instance)
+        public static void HudUpdate(HudManager __instance)
         {
-            if (ModeHandler.IsMode(ModeId.Default) && MapOptions.MapOption.MouseZoom && PlayerControl.LocalPlayer.Data.IsDead)
+            if (ModeHandler.IsMode(ModeId.Default) && MapOptions.MapOption.MouseZoom && CachedPlayer.LocalPlayer.Data.IsDead)
             {
                 if (Input.GetAxis("Mouse ScrollWheel") > 0)
                 {
