@@ -534,7 +534,7 @@ namespace SuperNewRoles.CustomCosmetics
                                 info.reshashbf = current["reshashbf"]?.ToString();
 
                                 info.package = current["package"]?.ToString();
-                                SuperNewRolesPlugin.Logger.LogInfo(info.package);
+                                if (current["package"] == null) info.package = "NameNone";
                                 if (info.package != null && !CustomHats.Keys.Contains(info.package))
                                 {
                                     CustomHats.Keys.Add(info.package);
@@ -649,7 +649,7 @@ namespace SuperNewRoles.CustomCosmetics
                         info.reshashbf = current["reshashbf"]?.ToString();
 
                         info.package = current["package"]?.ToString();
-                        SuperNewRolesPlugin.Logger.LogInfo(info.package);
+                        if (current["package"] == null) info.package = "NameNone";
                         if (info.package != null && !CustomHats.Keys.Contains(info.package))
                         {
                             CustomHats.Keys.Add(info.package);
