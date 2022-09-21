@@ -598,6 +598,7 @@ namespace SuperNewRoles.Patch
             bool SuicidalIdeationWin = gameOverReason == (GameOverReason)CustomGameOverReason.SuicidalIdeationWin;
             bool HitmanWin = gameOverReason == (GameOverReason)CustomGameOverReason.HitmanWin;
             bool PhotographerWin = gameOverReason == (GameOverReason)CustomGameOverReason.PhotographerWin;
+            bool CrewmateWin = gameOverReason is (GameOverReason)CustomGameOverReason.CrewmateWin or GameOverReason.HumansByVote or GameOverReason.HumansByTask or GameOverReason.ImpostorDisconnect;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles) && EndData != null)
             {
@@ -724,6 +725,12 @@ namespace SuperNewRoles.Patch
                     TempData.winners.Add(new(player.Data));
                 }
                 AdditionalTempData.winCondition = WinCondition.QuarreledWin;
+            }
+            else if (CrewmateWin)
+            {
+                if (RoleClass.SatsumaAndImo.TeamNumber == 1)//クルーなら
+                    foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
+                        TempData.winners.Add(new(smp.Data));//さつまいもも勝ち
             }
 
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))
