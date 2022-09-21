@@ -3092,11 +3092,13 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new(255, 105, 180, byte.MaxValue);
             public static bool SameDie;
             public static bool AliveTaskCount;
+            public static bool IsSingleTeam;
             public static void ClearAndReload()
             {
                 LoversPlayer = new List<List<PlayerControl>>();
                 SameDie = CustomOptions.LoversSameDie.GetBool();
                 AliveTaskCount = CustomOptions.LoversAliveTaskCount.GetBool();
+                IsSingleTeam = CustomOptions.LoversSingleTeam.GetBool();
             }
         }
     }
