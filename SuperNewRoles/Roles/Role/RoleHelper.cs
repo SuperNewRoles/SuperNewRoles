@@ -1584,7 +1584,7 @@ namespace SuperNewRoles
         }
         public static bool IsAlive(this PlayerControl player)
         {
-            return !IsDead(player);
+            return player != null && !player.Data.Disconnected && !player.Data.IsDead;
         }
         public static bool IsDead(this CachedPlayer player)
         {
@@ -1592,7 +1592,7 @@ namespace SuperNewRoles
         }
         public static bool IsAlive(this CachedPlayer player)
         {
-            return !IsDead(player);
+            return player != null && !player.Data.Disconnected && !player.Data.IsDead;
         }
     }
 }
