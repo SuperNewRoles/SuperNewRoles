@@ -96,7 +96,6 @@ namespace SuperNewRoles
             if (__instance.notRealPlayer) return;
             CachedPlayer.AllPlayers.RemoveAll(p => p.PlayerControl.Pointer == __instance.Pointer);
             CachedPlayer.PlayerPtrs.Remove(__instance.Pointer);
-            PlayerAnimation.GetPlayerAnimation(__instance.PlayerId).OnDestroy();
         }
 
         [HarmonyPatch(typeof(GameData), nameof(GameData.Deserialize))]
