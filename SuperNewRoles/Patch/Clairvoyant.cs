@@ -5,18 +5,6 @@ namespace SuperNewRoles.Patch
 {
     public class Clairvoyant
     {
-        public static void TimerEnd()
-        {
-            /**
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Hawk))
-            {
-                MapBehaviour.Instance.Close();
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
-                FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.SetActive(true);
-                FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(true);
-            }
-            **/
-        }
         private static float count;
 
 

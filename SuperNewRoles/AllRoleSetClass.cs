@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -69,12 +69,6 @@ namespace SuperNewRoles
             {
                 IsNotDesync = false;
             }
-            /*
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-            {
-                IsNotDesync = false;
-            }
-            */
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 CustomRpcSender sender = CustomRpcSender.Create("SelectRoles Sender", SendOption.Reliable);
@@ -181,7 +175,6 @@ namespace SuperNewRoles
                 {
                     p.RpcSetRole(p.Data.Role.Role);
                 }
-                /*AmongUsClient.Instance.StartCoroutine(nameof(SetServerRole));*/
             }
             if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
@@ -933,6 +926,8 @@ namespace SuperNewRoles
                 RoleId.Stefinder => CustomOptions.StefinderPlayerCount.GetFloat(),
                 RoleId.Slugger => CustomOptions.SluggerPlayerCount.GetFloat(),
                 RoleId.ShiftActor => Roles.Impostor.ShiftActor.ShiftActorPlayerCount.GetFloat(),
+                RoleId.ConnectKiller => CustomOptions.ConnectKillerPlayerCount.GetFloat(),
+                RoleId.Doppelganger => CustomOptions.DoppelgangerPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

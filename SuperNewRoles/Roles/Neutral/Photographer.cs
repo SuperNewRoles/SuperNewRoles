@@ -7,7 +7,6 @@ namespace SuperNewRoles.Roles.Neutral
 {
     public static class Photographer
     {
-        //ここにコードを書きこんでください
         public static void WrapUp()
         {
             RoleClass.Photographer.IsPhotographerShared = false;

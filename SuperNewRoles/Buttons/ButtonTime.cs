@@ -72,16 +72,16 @@ namespace SuperNewRoles.Buttons
             {
                 TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.NiceHawk.DurationTime);
                 RoleClass.NiceHawk.Timer = (float)(RoleClass.NiceHawk.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
-                if (RoleClass.NiceHawk.Timer <= 0f) RoleClass.NiceHawk.Timer = 0f; NiceHawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
+                if (RoleClass.NiceHawk.Timer <= 0f) RoleClass.NiceHawk.Timer = 0f; RoleClass.Hawk.IsHawkOn = false; return;
             }
             if (PlayerControl.LocalPlayer.IsRole(RoleId.MadHawk))
             {
                 TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.MadHawk.DurationTime);
                 RoleClass.MadHawk.Timer = (float)(RoleClass.MadHawk.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
-                if (RoleClass.MadHawk.Timer <= 0f) RoleClass.MadHawk.Timer = 0f; MadHawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
+                if (RoleClass.MadHawk.Timer <= 0f) RoleClass.MadHawk.Timer = 0f;  RoleClass.Hawk.IsHawkOn = false; return;
             }
             RoleClass.Hawk.Timer = (float)(RoleClass.Hawk.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
-            if (RoleClass.Hawk.Timer <= 0f && PlayerControl.LocalPlayer.IsRole(RoleId.Hawk)) RoleClass.Hawk.Timer = 0f; Hawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
+            if (RoleClass.Hawk.Timer <= 0f && PlayerControl.LocalPlayer.IsRole(RoleId.Hawk)) RoleClass.Hawk.Timer = 0f;RoleClass.Hawk.IsHawkOn = false; return;
         }
         public static void ClairvoyantDuration()
         {
@@ -90,7 +90,7 @@ namespace SuperNewRoles.Buttons
             var TimeSpanDate = new TimeSpan(0, 0, 0, (int)MapOption.DurationTime);
             TimeSpanDate = new TimeSpan(0, 0, 0, (int)MapOption.DurationTime);
             MapOption.Timer = (float)(MapOption.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
-            if (MapOption.Timer <= 0f) MapOption.Timer = 0f; Patch.Clairvoyant.TimerEnd(); MapOption.IsZoomOn = false; return;
+            if (MapOption.Timer <= 0f) MapOption.Timer = 0f;  MapOption.IsZoomOn = false; return;
         }
         public static void TeleporterButton()
         {

@@ -15,7 +15,6 @@ namespace SuperNewRoles.Roles.CrewMate
 {
     public static class Psychometrist
     {
-        //ここにコードを書きこんでください
         public static void FixedUpdate()
         {
             foreach (var DeathTimeTextData in RoleClass.Psychometrist.DeathTimeTexts)

@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using SuperNewRoles.Buttons;
 
 
@@ -109,9 +109,6 @@ namespace SuperNewRoles.Patch
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
                         switch (MyRole)
                         {
-                            case RoleId.Researcher:
-                                Researcher.ReseUseButtonSetTargetPatch.Postfix();
-                                break;
                             case RoleId.Pursuer:
                                 Pursuer.PursureUpdate.Postfix();
                                 break;
@@ -182,6 +179,9 @@ namespace SuperNewRoles.Patch
                                 break;
                             case RoleId.Photographer:
                                 Roles.Neutral.Photographer.FixedUpdate();
+                                break;
+                            case RoleId.Doppelganger:
+                                Roles.Impostor.Doppelganger.FixedUpdate();
                                 break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
