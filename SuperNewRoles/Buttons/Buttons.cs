@@ -734,7 +734,7 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
 
-            SelfBomberButton = new Buttons.CustomButton(
+            SelfBomberButton = new(
                 () =>
                 {
                     if (PlayerControl.LocalPlayer.CanMove)
@@ -742,12 +742,12 @@ namespace SuperNewRoles.Buttons
                         SelfBomber.SelfBomb();
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && ModeHandler.IsMode(ModeId.Default) && SelfBomber.IsSelfBomber(PlayerControl.LocalPlayer); },
+                (bool isAlive, RoleId role) => { return isAlive && ModeHandler.IsMode(ModeId.Default) && PlayerControl.LocalPlayer.IsRole(RoleId.SelfBomber); },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
                 },
-                () => { SelfBomber.EndMeeting(); },
+                () => { SelfBomber.ResetCoolDown(); },
                 RoleClass.SelfBomber.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
@@ -1615,7 +1615,7 @@ namespace SuperNewRoles.Buttons
                 HasEffect = true
             };
 
-            SamuraiButton = new Buttons.CustomButton(
+            SamuraiButton = new(
                 () =>
                 {
                     if (PlayerControl.LocalPlayer.CanMove)
@@ -1628,7 +1628,7 @@ namespace SuperNewRoles.Buttons
                 {
                     return PlayerControl.LocalPlayer.CanMove;
                 },
-                () => { Samurai.EndMeeting(); },
+                () => { Samurai.ResetCoolDown(); },
                 RoleClass.Samurai.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,

@@ -32,6 +32,7 @@ namespace SuperNewRoles.Buttons
             {
                 RoleId.Minimalist => !RoleClass.Minimalist.UseSabo,
                 RoleId.DoubleKiller => !RoleClass.DoubleKiller.CanUseSabo,
+                RoleId.Samurai => !RoleClass.Samurai.UseSabo,
                 //サボタージュボタン無効か
                 _ => false
             };
@@ -55,6 +56,7 @@ namespace SuperNewRoles.Buttons
             {
                 RoleId.Minimalist => !RoleClass.Minimalist.UseVent,
                 RoleId.DoubleKiller => !RoleClass.DoubleKiller.CanUseVent,
+                RoleId.Samurai => !RoleClass.Samurai.UseVent,
                 //ベントボタン無効化
                 _ => false,
             };
