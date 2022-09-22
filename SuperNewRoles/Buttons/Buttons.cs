@@ -618,7 +618,7 @@ namespace SuperNewRoles.Buttons
             JackalSidekickButton = new(
                 () =>
                 {
-                    var target = Jackal.JackalFixedPatch.JackalSetTarget();
+                    var target = PlayerControlFixedUpdatePatch.JackalSetTarget();
                     if (target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.CanCreateSidekick)
                     {
                         bool IsFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
@@ -634,7 +634,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick && CustomOptions.JackalCreateSidekick.GetBool(); },
                 () =>
                 {
-                    return Jackal.JackalFixedPatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
@@ -656,7 +656,7 @@ namespace SuperNewRoles.Buttons
             JackalSeerSidekickButton = new(
                 () =>
                 {
-                    var target_JS = JackalSeer.JackalSeerFixedPatch.JackalSeerSetTarget();
+                    var target_JS = PlayerControlFixedUpdatePatch.JackalSetTarget();
                     if (target_JS && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.JackalSeer.CanCreateSidekick)
                     {
                         bool IsFakeSidekickSeer = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSeerSidekick, target_JS);
@@ -672,7 +672,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.CanCreateSidekick && CustomOptions.JackalSeerCreateSidekick.GetBool(); },
                 () =>
                 {
-                    return JackalSeer.JackalSeerFixedPatch.JackalSeerSetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
@@ -694,9 +694,9 @@ namespace SuperNewRoles.Buttons
             JackalKillButton = new(
                 () =>
                 {
-                    if (Jackal.JackalFixedPatch.JackalSetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    if (PlayerControlFixedUpdatePatch.JackalSetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
-                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, Jackal.JackalFixedPatch.JackalSetTarget());
+                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.JackalSetTarget());
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Jackal:
@@ -706,7 +706,7 @@ namespace SuperNewRoles.Buttons
                                 JackalSeer.ResetCoolDown();
                                 break;
                             case RoleId.TeleportingJackal:
-                                TeleportingJackal.ResetCoolDown();
+                                TeleportingJackal.ResetCoolDowns();
                                 break;
                         }
                     }
@@ -714,7 +714,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Jackal || role == RoleId.TeleportingJackal || role == RoleId.JackalSeer) && ModeHandler.IsMode(ModeId.Default); },
                 () =>
                 {
-                    return Jackal.JackalFixedPatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
@@ -734,7 +734,7 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
 
-            SelfBomberButton = new Buttons.CustomButton(
+            SelfBomberButton = new(
                 () =>
                 {
                     if (PlayerControl.LocalPlayer.CanMove)
@@ -742,12 +742,12 @@ namespace SuperNewRoles.Buttons
                         SelfBomber.SelfBomb();
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && ModeHandler.IsMode(ModeId.Default) && SelfBomber.IsSelfBomber(PlayerControl.LocalPlayer); },
+                (bool isAlive, RoleId role) => { return isAlive && ModeHandler.IsMode(ModeId.Default) && PlayerControl.LocalPlayer.IsRole(RoleId.SelfBomber); },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
                 },
-                () => { SelfBomber.EndMeeting(); },
+                () => { SelfBomber.ResetCoolDown(); },
                 RoleClass.SelfBomber.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
@@ -934,7 +934,7 @@ namespace SuperNewRoles.Buttons
                         killcount = RoleClass.Sheriff.KillMaxCount;
                         flag = PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
                     }
-                    sheriffNumShotsText.text = killcount > 0 ? String.Format(ModTranslation.GetString("SheriffNumTextName"), killcount) : "";
+                    sheriffNumShotsText.text = killcount > 0 ? string.Format(ModTranslation.GetString("SheriffNumTextName"), killcount) : "";
                     return flag;
                 },
                 () => { Sheriff.EndMeeting(); },
@@ -1615,7 +1615,7 @@ namespace SuperNewRoles.Buttons
                 HasEffect = true
             };
 
-            SamuraiButton = new Buttons.CustomButton(
+            SamuraiButton = new(
                 () =>
                 {
                     if (PlayerControl.LocalPlayer.CanMove)
@@ -1628,7 +1628,7 @@ namespace SuperNewRoles.Buttons
                 {
                     return PlayerControl.LocalPlayer.CanMove;
                 },
-                () => { Samurai.EndMeeting(); },
+                () => { Samurai.ResetCoolDown(); },
                 RoleClass.Samurai.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
@@ -1728,7 +1728,7 @@ namespace SuperNewRoles.Buttons
                             sabotageActive = true;
                             break;
                         }
-                    GhostMechanicNumRepairText.text = String.Format(ModTranslation.GetString("GhostMechanicCountText"), RoleClass.GhostMechanic.LimitCount);
+                    GhostMechanicNumRepairText.text = string.Format(ModTranslation.GetString("GhostMechanicCountText"), RoleClass.GhostMechanic.LimitCount);
                     return sabotageActive && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { GhostMechanicRepairButton.MaxTimer = 0f; GhostMechanicRepairButton.Timer = 0f; },
@@ -1826,8 +1826,8 @@ namespace SuperNewRoles.Buttons
                 {
                     float swapcount = RoleClass.PositionSwapper.SwapCount;
                     PositionSwapperNumText.text = swapcount > 0
-                        ? String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), swapcount)
-                        : String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), "0");
+                        ? string.Format(ModTranslation.GetString("PositionSwapperNumTextName"), swapcount)
+                        : string.Format(ModTranslation.GetString("PositionSwapperNumTextName"), "0");
                     return PlayerControl.LocalPlayer.CanMove
 && RoleClass.PositionSwapper.SwapCount > 0 && true && PlayerControl.LocalPlayer.CanMove;
                 },
@@ -1899,8 +1899,8 @@ namespace SuperNewRoles.Buttons
                     //テキストぉ
                     float SecretKillLimit = RoleClass.SecretlyKiller.SecretlyKillLimit;
                     SecretlyKillNumText.text = SecretKillLimit > 0
-                        ? String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), SecretKillLimit)
-                        : String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), "0");
+                        ? string.Format(ModTranslation.GetString("PositionSwapperNumTextName"), SecretKillLimit)
+                        : string.Format(ModTranslation.GetString("PositionSwapperNumTextName"), "0");
 
                     if (RoleClass.SecretlyKiller.MainCool > 0f && RoleClass.SecretlyKiller.IsKillCoolChange) return false;
                     if (RoleClass.SecretlyKiller.SecretlyKillLimit < 1 || RoleClass.SecretlyKiller.SecretlyCool > 0f) return false;
@@ -1971,9 +1971,9 @@ namespace SuperNewRoles.Buttons
             DoubleKillerMainKillButton = new(
                 () =>
                 {
-                    if (DoubleKiller.DoubleKillerFixedPatch.DoubleKillerSetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    if (PlayerControlFixedUpdatePatch.SetTarget()&&RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
-                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, DoubleKiller.DoubleKillerFixedPatch.DoubleKillerSetTarget());
+                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.DoubleKiller:
@@ -1988,7 +1988,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return (isAlive && (role == RoleId.DoubleKiller) && ModeHandler.IsMode(ModeId.Default)) || (isAlive && (role == RoleId.Smasher) && ModeHandler.IsMode(ModeId.Default)); },
                 () =>
                 {
-                    return DoubleKiller.DoubleKillerFixedPatch.DoubleKillerSetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
@@ -2010,9 +2010,9 @@ namespace SuperNewRoles.Buttons
             DoubleKillerSubKillButton = new(
                 () =>
                 {
-                    if (DoubleKiller.DoubleKillerFixedPatch.DoubleKillerSetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
-                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, DoubleKiller.DoubleKillerFixedPatch.DoubleKillerSetTarget());
+                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.DoubleKiller:
@@ -2031,7 +2031,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return (isAlive && (role == RoleId.DoubleKiller) && ModeHandler.IsMode(ModeId.Default)) || (isAlive && (role == RoleId.Smasher) && ModeHandler.IsMode(ModeId.Default) && !RoleClass.Smasher.SmashOn); },
                 () =>
                 {
-                    return DoubleKiller.DoubleKillerFixedPatch.DoubleKillerSetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
