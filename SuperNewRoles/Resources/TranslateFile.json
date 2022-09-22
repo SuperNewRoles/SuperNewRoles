@@ -106,6 +106,10 @@
         "0": "Downloading now.\nSubmerged files are large and take time.\n",
         "11": "\u30c0\u30a6\u30f3\u30ed\u30fc\u30c9\u4e2d\u3067\u3059\u3002\n\u30b5\u30d6\u30de\u30fc\u30b8\u30c9\u306e\u30d5\u30a1\u30a4\u30eb\u306f\u5927\u304d\u3044\u305f\u3081\u3001\u6642\u9593\u304c\u304b\u304b\u308a\u307e\u3059\u3002"
     },
+    "FinalResults": {
+        "0": "Final results",
+        "11": "\u6700\u7d42\u7d50\u679c"
+    },
     "colorSalmon": {
         "0": "Salmon",
         "11": "\u30b5\u30fc\u30e2\u30f3",
