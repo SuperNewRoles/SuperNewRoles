@@ -144,7 +144,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     //ただしホスト、お前はDesyncするな。
                     sender.RpcSetRole(Player, RoleTypes.Impostor);
                     //役職者で他プレイヤーを科学者にするループ
-                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    foreach (var pc in CachedPlayer.AllPlayers)
                     {
                         if (pc.PlayerId == Player.PlayerId) continue;
                         sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
@@ -172,13 +172,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     int PlayerCID = Player.GetClientId();
                     if (RoleClass.Spy.CanUseVent) sender.RpcSetRole(Player, RoleTypes.Engineer, PlayerCID);
                     else sender.RpcSetRole(Player, RoleTypes.Crewmate, PlayerCID);
-                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                     {
                         if (pc.PlayerId == Player.PlayerId) continue;
                         sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
                     }
                     //他視点で科学者にするループ
-                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                     {
                         if (pc.PlayerId == Player.PlayerId) continue;
                         if (pc.IsMod()) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
@@ -217,13 +217,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     int PlayerCID = Player.GetClientId();
                     sender.RpcSetRole(Player, roleTypes, PlayerCID);
-                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                     {
                         if (pc.PlayerId == Player.PlayerId) continue;
                         sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
                     }
                     //他視点で科学者にするループ
-                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                     {
                         if (pc.PlayerId == Player.PlayerId) continue;
                         if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Scientist); //ホスト視点用

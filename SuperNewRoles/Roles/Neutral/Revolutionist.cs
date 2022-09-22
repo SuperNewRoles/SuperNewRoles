@@ -29,7 +29,7 @@ namespace SuperNewRoles.Roles.Neutral
                         Buttons.HudManagerStartPatch.RevolutionistButton.Timer = RoleClass.Revolutionist.CoolTime;
                         Buttons.HudManagerStartPatch.RevolutionistButton.MaxTimer = RoleClass.Revolutionist.CoolTime;
                         bool IsFlag = true;
-                        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                        foreach (PlayerControl player in CachedPlayer.AllPlayers)
                         {
                             if (player.IsAlive() && CachedPlayer.LocalPlayer.PlayerId != player.PlayerId && !RoleClass.Revolutionist.RevolutionedPlayerId.Contains(player.PlayerId))
                             {

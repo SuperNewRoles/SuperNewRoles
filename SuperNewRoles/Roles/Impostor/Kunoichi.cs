@@ -19,7 +19,7 @@ namespace SuperNewRoles.Roles
             Vector3 mouseDirection = Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2);
             var mouseAngle = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
 
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 //自分自身は撃ち抜かれない
                 if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
