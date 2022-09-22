@@ -145,7 +145,7 @@ namespace SuperNewRoles.Patches
                                 {
                                     if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
                                     {
-                                        if (Samurai.Getsword(__instance, p))
+                                        if (SelfBomber.GetIsBomb(__instance, p,CustomOptions.SamuraiScope.GetFloat()))
                                         {
                                             __instance.RpcMurderPlayerCheck(p);
                                             RoleClass.Samurai.Sword = true;
