@@ -531,7 +531,7 @@ namespace SuperNewRoles.Patches
                                     }
                                     else
                                     {//塗れなかったらキルクールリセット
-                                        SyncSetting.OptionData.DeepCopy().KillCooldown = SyncSetting.KillCoolSet(0f);
+                                        __instance.RpcShowGuardEffect(__instance);
                                     }
                                 }, RoleClass.Arsonist.DurationTime, "SHR Arsonist Douse");
                             }
