@@ -132,7 +132,7 @@ namespace SuperNewRoles.Buttons
                     WaveCannonButton.EffectDuration = CustomOptions.WaveCannonChargeTime.GetFloat();
                     WaveCannonButton.HasEffect = true;
                 },
-                RoleClass.Slugger.GetButtonSprite(),
+                RoleClass.WaveCannon.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -164,7 +164,7 @@ namespace SuperNewRoles.Buttons
                 }
             )
             {
-                buttonText = ModTranslation.GetString("SluggerButtonName"),
+                buttonText = ModTranslation.GetString("WaveCannonButtonName"),
                 showButtonText = true
             };
 

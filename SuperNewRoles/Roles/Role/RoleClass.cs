@@ -3049,6 +3049,13 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> WaveCannonPlayer;
             public static Color32 color = ImpostorRed;
+            private static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 WaveCannonPlayer = new();
