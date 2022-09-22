@@ -580,6 +580,10 @@ namespace SuperNewRoles.Patches
                                 else SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 不正なキル");
                             }
                             break;
+                        case RoleId.DarkKiller:
+                            var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                            if (ma != null && !ma.IsActive) return false;
+                            break;
                     }
                     break;
                 case ModeId.Detective:
