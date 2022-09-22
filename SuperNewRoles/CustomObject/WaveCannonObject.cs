@@ -142,7 +142,13 @@ namespace SuperNewRoles.CustomObject
         public void FixedUpdate()
         {
             if (render == null) { Objects.Remove(this); return; }
-            if (RoleClass.IsMeeting) { GameObject.Destroy(this.gameObject); return; }
+            if (RoleClass.IsMeeting)
+            {
+                if (ChargeSound != null)
+                    ChargeSound.Stop();
+                GameObject.Destroy(effectGameObject);
+                GameObject.Destroy(gameObject);
+                return; }
             if (Owner != null && Owner.IsDead()) {
                 GameObject.Destroy(this.gameObject);
                 if (Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
@@ -150,6 +156,8 @@ namespace SuperNewRoles.CustomObject
                     CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
                     Camera.main.GetComponent<FollowerCamera>().Locked = false;
                 }
+                if (ChargeSound != null)
+                    ChargeSound.Stop();
                 Objects.Remove(this);
                 return;
             }

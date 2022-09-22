@@ -950,7 +950,7 @@ namespace SuperNewRoles.Modules
             PlayerControl target = ModHelpers.PlayerById(targetId);
             if (target == null || source == null) return;
             source.ProtectPlayer(target, colorid);
-            PlayerControl.LocalPlayer.MurderPlayer(target);
+            source.MurderPlayer(target);
             source.ProtectPlayer(target, colorid);
             if (targetId == CachedPlayer.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
         }
