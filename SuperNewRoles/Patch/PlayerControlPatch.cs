@@ -37,7 +37,7 @@ namespace SuperNewRoles.Patches
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
-    class RpcShapesihftPatch
+    class RpcShapeshiftPatch
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
