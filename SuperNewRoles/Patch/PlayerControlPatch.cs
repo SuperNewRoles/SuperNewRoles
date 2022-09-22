@@ -145,7 +145,7 @@ namespace SuperNewRoles.Patches
                                 {
                                     if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
                                     {
-                                        if (SelfBomber.GetIsBomb(__instance, p,CustomOptions.SamuraiScope.GetFloat()))
+                                        if (SelfBomber.GetIsBomb(__instance, p, CustomOptions.SamuraiScope.GetFloat()))
                                         {
                                             __instance.RpcMurderPlayerCheck(p);
                                             RoleClass.Samurai.Sword = true;
@@ -776,6 +776,10 @@ namespace SuperNewRoles.Patches
                         }
                     }
                 }
+
+                var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                if (__instance.IsRole(RoleId.DarkKiller))
+                    if (ma != null && !ma.IsActive) return false;
 
                 if (AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId)
                 {
