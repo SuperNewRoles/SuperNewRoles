@@ -161,25 +161,6 @@ namespace SuperNewRoles.Buttons
                     writer.WriteBytesAndSize(buff);
                     writer.EndRPC();
                     RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Shoot, (byte)obj.Id, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, buff);
-
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
-                    {
-                        if (player.IsDead()) continue;
-                        if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
-                        float posdata = player.GetTruePosition().y - obj.transform.position.y;
-                        if (posdata > 1 || posdata < -1) continue;
-                        posdata = obj.transform.position.x - (obj.IsFlipX ? -2 : 2);
-                        if ((obj.IsFlipX && player.transform.position.x > posdata) || (!obj.IsFlipX && player.transform.position.x < posdata)) continue;
-                        writer = RPCHelper.StartRPC(CustomRPC.RPCMurderPlayer);
-                        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                        writer.Write(player.PlayerId);
-                        writer.Write((byte)0);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        float Timer = PlayerControl.LocalPlayer.killTimer;
-                        RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, player.PlayerId, 0);
-                        PlayerControl.LocalPlayer.killTimer = Timer;
-                        FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.text = PlayerControl.LocalPlayer.killTimer <= 0f ? "" : PlayerControl.LocalPlayer.killTimer.ToString();
-                    }
                 }
             )
             {

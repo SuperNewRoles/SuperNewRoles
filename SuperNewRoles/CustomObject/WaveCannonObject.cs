@@ -47,6 +47,7 @@ namespace SuperNewRoles.CustomObject
         public bool IsFlipX;
         private int DestroyIndex = 0;
         static Vector3 OwnerPos;
+        static AudioSource ChargeSound;
 
         public WaveCannonObject(Vector3 pos, bool FlipX, PlayerControl _owner)
         {
@@ -88,9 +89,12 @@ namespace SuperNewRoles.CustomObject
             Id = Ids[Owner.PlayerId];
             Ids[Owner.PlayerId]++;
             IsShootNow = false;
+            ChargeSound = SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ChargeSound.raw"), true);
         }
         public void Shoot()
         {
+            if (ChargeSound != null)
+                ChargeSound.Stop();
             SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ShootSound.raw"), false);
             IsShootNow = true;
             render.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannon.Cannon.png", 115f);
@@ -149,7 +153,31 @@ namespace SuperNewRoles.CustomObject
                 Objects.Remove(this);
                 return;
             }
-            if (Owner != null && Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId && !RoleClass.IsMeeting) CachedPlayer.LocalPlayer.transform.position = OwnerPos;
+            if (Owner != null && Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId && !RoleClass.IsMeeting) {
+                CachedPlayer.LocalPlayer.transform.position = OwnerPos;
+
+                if (IsShootNow)
+                {
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                    {
+                        if (player.IsDead()) continue;
+                        if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
+                        float posdata = player.GetTruePosition().y - transform.position.y;
+                        if (posdata > 1 || posdata < -1) continue;
+                        posdata = transform.position.x - (IsFlipX ? -2 : 2);
+                        if ((IsFlipX && player.transform.position.x > posdata) || (!IsFlipX && player.transform.position.x < posdata)) continue;
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.RPCMurderPlayer);
+                        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                        writer.Write(player.PlayerId);
+                        writer.Write((byte)0);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        float Timer = PlayerControl.LocalPlayer.killTimer;
+                        RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, player.PlayerId, 0);
+                        PlayerControl.LocalPlayer.killTimer = Timer;
+                        FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.text = PlayerControl.LocalPlayer.killTimer <= 0f ? "" : PlayerControl.LocalPlayer.killTimer.ToString();
+                    }
+                }
+            }
             if (Playing)
             {
                 UpdateTime -= Time.fixedDeltaTime;
