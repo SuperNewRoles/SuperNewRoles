@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using SuperNewRoles.Buttons;
 
 
@@ -209,6 +209,13 @@ namespace SuperNewRoles.Patch
                                         sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
                                         RoleClass.SideKiller.IsUpMadKiller = true;
                                     }
+                                }
+                                break;
+                            case RoleId.Vulture:
+                                if (RoleClass.Vulture.Arrow?.arrow != null)
+                                {
+                                    Object.Destroy(RoleClass.Vulture.Arrow.arrow);
+                                    return;
                                 }
                                 break;
                         }

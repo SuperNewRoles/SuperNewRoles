@@ -22,8 +22,9 @@ namespace SuperNewRoles.Roles
         }
         public static void SetPlayerOutline(PlayerControl target, Color color)
         {
+            if (target == null) return;
             SpriteRenderer rend = target.MyRend();
-            if (target == null || rend == null) return;
+            if (rend == null) return;
             rend.material.SetFloat("_Outline", 1f);
             rend.material.SetColor("_OutlineColor", color);
         }

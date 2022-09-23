@@ -15,7 +15,7 @@ namespace SuperNewRoles.Roles
     [HarmonyPatch]
     public static class RoleClass
     {
-        public static bool IsMeeting;
+        public static bool IsMeeting => MeetingHud.Instance != null;
         public static bool IsCoolTimeSetted;
         public static System.Random rnd = new((int)DateTime.Now.Ticks);
         public static Color ImpostorRed = Palette.ImpostorRed;
@@ -32,7 +32,6 @@ namespace SuperNewRoles.Roles
             LateTask.Tasks = new();
             LateTask.AddTasks = new();
             BotManager.AllBots = new();
-            IsMeeting = false;
             IsCoolTimeSetted = false;
             IsStart = false;
             Agartha.MapData.ClearAndReloads();

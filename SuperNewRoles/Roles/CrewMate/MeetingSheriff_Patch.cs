@@ -156,7 +156,6 @@ namespace SuperNewRoles.Roles
                 WaveCannonObject.Objects = new();
             }
             LadderDead.Reset();
-            RoleClass.IsMeeting = true;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 Mode.SuperHostRoles.MorePatch.StartMeeting();
