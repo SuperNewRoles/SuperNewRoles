@@ -85,23 +85,6 @@ namespace SuperNewRoles.Patch
         public static string GetStatusText(FinalStatus status) => ModTranslation.GetString("FinalStatus" + status.ToString()); //ローカル関数
 
     }
-    public enum FinalStatus
-    {
-        Alive,
-        Kill,
-        Exiled,
-        NekomataExiled,
-        SheriffKill,
-        SheriffMisFire,
-        MeetingSheriffKill,
-        MeetingSheriffMisFire,
-        SelfBomb,
-        BySelfBomb,
-        Ignite,
-        Disconnected,
-        Dead,
-        Sabotage
-    }
     [HarmonyPatch(typeof(ShipStatus))]
     public class ShipStatusPatch
     {

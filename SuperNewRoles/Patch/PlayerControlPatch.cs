@@ -446,6 +446,7 @@ namespace SuperNewRoles.Patches
                                 {
                                     FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
                                     __instance.RpcMurderPlayer(__instance);
+                                    __instance.RpcSetFinalStatus(FinalStatus.SheriffMisFire);
                                 }
                                 else
                                 {
@@ -459,6 +460,8 @@ namespace SuperNewRoles.Patches
                                         RoleClass.Sheriff.KillCount[__instance.PlayerId] = CustomOptions.SheriffKillMaxCount.GetInt() - 1;
                                     }
                                     __instance.RpcMurderPlayerCheck(target);
+                                    if (target.IsRole(RoleId.HauntedWolf)) __instance.RpcSetFinalStatus(FinalStatus.SheriffHauntedWolfKill);
+                                    else __instance.RpcSetFinalStatus(FinalStatus.SheriffKill);
                                     Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
                                 }
                             }

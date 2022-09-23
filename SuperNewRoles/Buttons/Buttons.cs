@@ -914,6 +914,7 @@ namespace SuperNewRoles.Buttons
                             killWriter.Write(TargetID);
                             killWriter.Write(misfire);
                             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                            FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, misfire ? FinalStatus.MeetingSheriffMisFire : FinalStatus.MeetingSheriffKill);
                             Sheriff.ResetKillCoolDown();
                             RoleClass.Sheriff.KillMaxCount--;
                         }

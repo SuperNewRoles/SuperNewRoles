@@ -1,5 +1,6 @@
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles
 {
@@ -16,20 +17,15 @@ namespace SuperNewRoles.Roles
             {
                 if (p.IsAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {
-                    if (GetIsBomb(PlayerControl.LocalPlayer, p,CustomOptions.SelfBomberScope.GetFloat()))
+                    if (GetIsBomb(PlayerControl.LocalPlayer, p, CustomOptions.SelfBomberScope.GetFloat()))
                     {
-                        RPCProcedure.ByBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ByBomKillRPC, SendOption.Reliable, -1);
-                        Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                        Writer.Write(p.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        CachedPlayer.LocalPlayer.PlayerControl.UncheckedMurderPlayer(p, showAnimation: false);
+                        p.RpcSetFinalStatus(FinalStatus.SelfBomberBomb);
                     }
                 }
             }
-            RPCProcedure.BomKillRPC(CachedPlayer.LocalPlayer.PlayerId);
-            MessageWriter Writer2 = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.BomKillRPC, SendOption.Reliable, -1);
-            Writer2.Write(CachedPlayer.LocalPlayer.PlayerId);
-            AmongUsClient.Instance.FinishRpcImmediately(Writer2);
+            CachedPlayer.LocalPlayer.PlayerControl.UncheckedMurderPlayer(CachedPlayer.LocalPlayer, showAnimation:false);
+            CachedPlayer.LocalPlayer.PlayerControl.RpcSetFinalStatus(FinalStatus.SelfBomberBomb);
         }
         /// <summary>
         /// playerがsourceを中心としscope内にいるか

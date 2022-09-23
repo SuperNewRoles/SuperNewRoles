@@ -147,6 +147,13 @@ namespace SuperNewRoles.Helpers
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             TargetPlayer.Exiled();
         }
+        public static void RpcExiledUnchecked(this PlayerControl player)
+        {
+            MessageWriter RPCWriter = StartRPC(CustomRPC.ExiledRPC);
+            RPCWriter.Write(player.PlayerId);
+            RPCWriter.EndRPC();
+            RPCProcedure.ExiledRPC(player.PlayerId);
+        }
         public static void RPCSetColorModOnly(this PlayerControl player, byte color)
         {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)CustomRPC.UncheckedSetColor, SendOption.Reliable);
