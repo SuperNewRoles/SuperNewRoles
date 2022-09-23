@@ -2349,6 +2349,7 @@ namespace SuperNewRoles.Buttons
                 {
                     MatryoshkaButton.MaxTimer = RoleClass.Matryoshka.CoolTime;
                     MatryoshkaButton.Timer = RoleClass.Matryoshka.CoolTime;
+                    Roles.Impostor.Matryoshka.RpcSet(null, false);
                 },
                 RoleClass.Matryoshka.PutOnButtonSprite,
                 new Vector3(-1.8f, -0.06f, 0),
