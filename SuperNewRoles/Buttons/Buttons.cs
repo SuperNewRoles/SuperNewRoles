@@ -122,10 +122,10 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
-                    SluggerButton.MaxTimer = RoleClass.Slugger.CoolTime;
+                    SluggerButton.MaxTimer = CustomOptions.SluggerCoolTime.GetFloat();
                     SluggerButton.Timer = SluggerButton.MaxTimer;
                     SluggerButton.effectCancellable = false;
-                    SluggerButton.EffectDuration = RoleClass.Slugger.ChargeTime;
+                    SluggerButton.EffectDuration = CustomOptions.SluggerChargeTime.GetFloat();
                     SluggerButton.HasEffect = true;
                 },
                 RoleClass.Slugger.GetButtonSprite(),
@@ -141,7 +141,7 @@ namespace SuperNewRoles.Buttons
                 {
                     List<PlayerControl> Targets = new();
                     //一気にキルできるか。後に設定で変更可に
-                    if (RoleClass.Slugger.IsMultiKill)
+                    if (CustomOptions.SluggerIsMultiKill.GetBool())
                     {
                         Targets = Roles.Impostor.Slugger.SetTarget();
                     }
@@ -171,7 +171,7 @@ namespace SuperNewRoles.Buttons
                         TargetsId.Add(Target.PlayerId);
                     }
                     RPCProcedure.SluggerExile(CachedPlayer.LocalPlayer.PlayerId, TargetsId);
-                    SluggerButton.MaxTimer = RoleClass.Slugger.CoolTime;
+                    SluggerButton.MaxTimer = CustomOptions.SluggerCoolTime.GetFloat();
                     SluggerButton.Timer = SluggerButton.MaxTimer;
                 }
             )
@@ -188,13 +188,13 @@ namespace SuperNewRoles.Buttons
                     RoleClass.Photographer.PhotedPlayerIds.AddRange(Targets);
                     if (RoleClass.Photographer.BonusCount > 0 && Targets.Count >= RoleClass.Photographer.BonusCount)
                     {
-                        PhotographerButton.Timer = RoleClass.Photographer.BonusCoolTime;
+                        PhotographerButton.Timer = CustomOptions.PhotographerBonusCoolTime.GetFloat();
                     }
                     else
                     {
                         PhotographerButton.Timer = PhotographerButton.MaxTimer;
                     }
-                    if (RoleClass.Photographer.IsNotification)
+                    if (CustomOptions.PhotographerIsNotification.GetBool())
                     {
                         RPCHelper.StartRPC(CustomRPC.SharePhotograph).EndRPC();
                         RPCProcedure.SharePhotograph();
@@ -207,7 +207,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
-                    PhotographerButton.MaxTimer = RoleClass.Photographer.CoolTime;
+                    PhotographerButton.MaxTimer = CustomOptions.PhotographerCoolTime.GetFloat();
                     PhotographerButton.Timer = PhotographerButton.MaxTimer;
                 },
                 RoleClass.Photographer.GetButtonSprite(),
@@ -2238,8 +2238,8 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
-                    SuicidalIdeationButton.MaxTimer = RoleClass.SuicidalIdeation.TimeLeft;
-                    SuicidalIdeationButton.Timer = RoleClass.SuicidalIdeation.TimeLeft;
+                    SuicidalIdeationButton.MaxTimer = CustomOptions.SuicidalIdeationTimeLeft.GetFloat();
+                    SuicidalIdeationButton.Timer = SuicidalIdeationButton.MaxTimer;
                 },
                 RoleClass.SuicidalIdeation.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
@@ -2272,7 +2272,7 @@ namespace SuperNewRoles.Buttons
                     {
                         Roles.Neutral.Hitman.KillSuc();
                     }
-                    RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
+                    RoleClass.Hitman.UpdateTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
                     RoleClass.Hitman.ArrowUpdateTime = 0;
                     Roles.Neutral.Hitman.SetTarget();
                     HitmanKillButton.Timer = HitmanKillButton.MaxTimer;
@@ -2305,8 +2305,8 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.Matryoshka.IsLocalOn)
                     {
                         Roles.Impostor.Matryoshka.RpcSet(null, false);
-                        MatryoshkaButton.MaxTimer = RoleClass.Matryoshka.CoolTime;
-                        MatryoshkaButton.Timer = RoleClass.Matryoshka.CoolTime;
+                        MatryoshkaButton.MaxTimer = CustomOptions.MatryoshkaCoolTime.GetFloat();
+                        MatryoshkaButton.Timer = MatryoshkaButton.MaxTimer;
                     }
                     else
                     {
@@ -2330,7 +2330,7 @@ namespace SuperNewRoles.Buttons
                                             GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
                                             Roles.Impostor.Matryoshka.RpcSet(playerInfo.Object, true);
                                             RoleClass.Matryoshka.WearLimit--;
-                                            RoleClass.Matryoshka.MyKillCoolTime += RoleClass.Matryoshka.AddKillCoolTime;
+                                            RoleClass.Matryoshka.MyKillCoolTime += CustomOptions.MatryoshkaAddKillCoolTime.GetFloat();
                                             break;
                                         }
                                     }
@@ -2356,8 +2356,8 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
-                    MatryoshkaButton.MaxTimer = RoleClass.Matryoshka.CoolTime;
-                    MatryoshkaButton.Timer = RoleClass.Matryoshka.CoolTime;
+                    MatryoshkaButton.MaxTimer = CustomOptions.MatryoshkaCoolTime.GetFloat();
+                    MatryoshkaButton.Timer = MatryoshkaButton.MaxTimer;
                     Roles.Impostor.Matryoshka.RpcSet(null, false);
                 },
                 RoleClass.Matryoshka.PutOnButtonSprite,
@@ -2393,7 +2393,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
-                    NunButton.MaxTimer = RoleClass.Nun.CoolTime;
+                    NunButton.MaxTimer = CustomOptions.NunCoolTime.GetFloat();
                     NunButton.Timer = NunButton.MaxTimer;
                 },
                 RoleClass.Nun.GetButtonSprite(),
@@ -2468,10 +2468,10 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
-                    PsychometristButton.MaxTimer = RoleClass.Psychometrist.CoolTime;
+                    PsychometristButton.MaxTimer = CustomOptions.PsychometristCoolTime.GetFloat();
                     PsychometristButton.Timer = PsychometristButton.MaxTimer;
                     PsychometristButton.effectCancellable = false;
-                    PsychometristButton.EffectDuration = RoleClass.Psychometrist.ReadTime;
+                    PsychometristButton.EffectDuration = CustomOptions.PsychometristReadTime.GetFloat();
                     PsychometristButton.isEffectActive = false;
                 },
                 RoleClass.Psychometrist.GetButtonSprite(),
@@ -2485,7 +2485,7 @@ namespace SuperNewRoles.Buttons
                     return false;
                 },
                 true,
-                RoleClass.Psychometrist.ReadTime,
+                CustomOptions.PsychometristReadTime.GetFloat(),
                 () =>
                 {
                     if (RoleClass.IsMeeting) return;
@@ -2514,7 +2514,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
-                    PartTimerButton.MaxTimer = RoleClass.PartTimer.CoolTime;
+                    PartTimerButton.MaxTimer = CustomOptions.PartTimerCoolTime.GetFloat();
                     PartTimerButton.Timer = PartTimerButton.MaxTimer;
                 },
                 RoleClass.PartTimer.GetButtonSprite(),
@@ -2546,7 +2546,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
-                    PainterButton.MaxTimer = RoleClass.Painter.CoolTime;
+                    PainterButton.MaxTimer = CustomOptions.PainterCoolTime.GetFloat();
                     PainterButton.Timer = PainterButton.MaxTimer;
                 },
                 RoleClass.Painter.GetButtonSprite(),
@@ -2584,8 +2584,8 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
-                    StefinderKillButton.MaxTimer = RoleClass.Stefinder.KillCoolDown;
-                    StefinderKillButton.Timer = RoleClass.Stefinder.KillCoolDown;
+                    StefinderKillButton.MaxTimer = CustomOptions.StefinderKillCoolDown.GetFloat();
+                    StefinderKillButton.Timer = StefinderKillButton.MaxTimer;
                 },
                 __instance.KillButton.graphic.sprite,
                 new Vector3(0, 1, 0),

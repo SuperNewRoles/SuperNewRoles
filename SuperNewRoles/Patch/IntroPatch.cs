@@ -82,7 +82,7 @@ namespace SuperNewRoles.Patch
                 // Force Bounty Hunter to load a new Bounty when the Intro is over
                 if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hitman))
                 {
-                    RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
+                    RoleClass.Hitman.UpdateTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
                     Roles.Neutral.Hitman.SetTarget();
                     Roles.Neutral.Hitman.DestroyIntroHandle(__instance);
                     if (FastDestroyableSingleton<HudManager>.Instance != null)

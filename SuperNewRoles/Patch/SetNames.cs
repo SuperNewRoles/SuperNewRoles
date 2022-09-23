@@ -399,7 +399,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (RoleClass.PartTimer.IsLocalOn)
                     {
-                        if (RoleClass.PartTimer.IsCheckTargetRole)
+                        if (CustomOptions.PartTimerIsCheckTargetRole.GetBool())
                         {
                             SetNamesClass.SetPlayerRoleNames(RoleClass.PartTimer.CurrentTarget);
                             SetNamesClass.SetPlayerNameColors(RoleClass.PartTimer.CurrentTarget);

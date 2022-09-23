@@ -46,6 +46,13 @@ namespace SuperNewRoles.Roles
             ResetCoolDown();
             ResetSpeed();
         }
+        public static void HudUpdate()
+        {
+            if (HudManagerStartPatch.FreezerButton.Timer <= 0.1f && RoleClass.Freezer.IsSpeedDown)
+            {
+                SpeedDownEnd();
+            }
+        }
     }
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
     public static class PlayerPhysicsSpeedPatch2

@@ -137,19 +137,15 @@ namespace SuperNewRoles.Patches
                         }
                         return false;
                     case RoleId.Samurai:
-                        if (!RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId))
+                        if (!RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId) && AmongUsClient.Instance.AmHost)
                         {
-                            if (AmongUsClient.Instance.AmHost || !RoleClass.Samurai.Sword)
+                            foreach (PlayerControl p in CachedPlayer.AllPlayers)
                             {
-                                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                                if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
                                 {
-                                    if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
+                                    if (SelfBomber.GetIsBomb(__instance, p, CustomOptions.SamuraiScope.GetFloat()))
                                     {
-                                        if (SelfBomber.GetIsBomb(__instance, p,CustomOptions.SamuraiScope.GetFloat()))
-                                        {
-                                            __instance.RpcMurderPlayerCheck(p);
-                                            RoleClass.Samurai.Sword = true;
-                                        }
+                                        __instance.RpcMurderPlayerCheck(p);
                                     }
                                 }
                             }
