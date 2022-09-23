@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -928,6 +928,7 @@ namespace SuperNewRoles
                 RoleId.ShiftActor => Roles.Impostor.ShiftActor.ShiftActorPlayerCount.GetFloat(),
                 RoleId.ConnectKiller => CustomOptions.ConnectKillerPlayerCount.GetFloat(),
                 RoleId.WaveCannon => CustomOptions.WaveCannonPlayerCount.GetFloat(),
+                RoleId.Doppelganger => CustomOptions.DoppelgangerPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

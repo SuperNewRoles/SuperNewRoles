@@ -1,7 +1,5 @@
 using HarmonyLib;
 using Hazel;
-
-
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -167,6 +165,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.EvilButtoner:
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
+                    break;
+                case RoleId.Doppelganger:
+                    optdata.RoleOptions.ShapeshifterDuration = RoleClass.Doppelganger.DurationTime;
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Doppelganger.CoolTime;
+                    break;
+                case RoleId.DarkKiller:
+                    optdata.killCooldown = KillCoolSet(CustomOptions.DarkKillerKillCoolTime.GetFloat());
                     break;
             }
             if (player.IsDead()) optdata.AnonymousVotes = false;

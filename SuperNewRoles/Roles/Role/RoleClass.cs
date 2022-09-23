@@ -178,13 +178,13 @@ namespace SuperNewRoles.Roles
             Impostor.ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
             WaveCannon.ClearAndReload();
+            Doppelganger.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
             ChacheManager.Load();
         }
-        public static void NotRole() { }
         public static class SoothSayer
         {
             public static List<PlayerControl> SoothSayerPlayer;
@@ -358,7 +358,7 @@ namespace SuperNewRoles.Roles
             public static bool IsImpostorLight;
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
-            public static bool IsCreateSidekick;
+            public static bool CanCreateSidekick;
             public static List<int> CreatePlayers;
             public static bool IsCreatedFriend;
             public static bool CanCreateFriend;
@@ -379,7 +379,7 @@ namespace SuperNewRoles.Roles
                 IsUseSabo = CustomOptions.JackalUseSabo.GetBool();
                 IsImpostorLight = CustomOptions.JackalIsImpostorLight.GetBool();
                 CreateSidekick = CustomOptions.JackalCreateSidekick.GetBool();
-                IsCreateSidekick = CustomOptions.JackalCreateSidekick.GetBool();
+                CanCreateSidekick = CustomOptions.JackalCreateSidekick.GetBool();
                 NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.GetBool();
                 IsCreatedFriend = false;
                 CreatePlayers = new();
@@ -1905,7 +1905,7 @@ namespace SuperNewRoles.Roles
             public static bool IsImpostorLight;
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
-            public static bool IsCreateSidekick;
+            public static bool CanCreateSidekick;
             private static Sprite buttonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -1929,7 +1929,7 @@ namespace SuperNewRoles.Roles
                 IsUseSabo = CustomOptions.JackalSeerUseSabo.GetBool();
                 IsImpostorLight = CustomOptions.JackalSeerIsImpostorLight.GetBool();
                 CreateSidekick = CustomOptions.JackalSeerCreateSidekick.GetBool();
-                IsCreateSidekick = CustomOptions.JackalSeerCreateSidekick.GetBool();
+                CanCreateSidekick = CustomOptions.JackalSeerCreateSidekick.GetBool();
                 NewJackalCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.GetBool();
             }
         }
@@ -3049,16 +3049,43 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> WaveCannonPlayer;
             public static Color32 color = ImpostorRed;
             private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 WaveCannonPlayer = new();
                 WaveCannonObject.Ids = new();
+            }
+        }
+        public static class Doppelganger
+        {
+            public static List<PlayerControl> DoppelggerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float DurationTime;
+            public static float CoolTime;
+            public static float SucTime;
+            public static float NotSucTime;
+            private static Sprite buttonSprite;
+            public static float Duration;
+            public static TextMeshPro DoppelgangerDurationText = null;
+            public static Dictionary<byte, PlayerControl> DoppelgangerTargets;
+            public static float DefaultKillCool;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoppelgangerButton.png", 115f);
+                return buttonSprite;
+            }
+
+            public static void ClearAndReload() { 
+                DoppelggerPlayer = new();
+                DurationTime = CustomOptions.DoppelgangerDurationTime.GetFloat();
+                CoolTime = CustomOptions.DoppelgangerCoolTome.GetFloat();
+                SucTime = CustomOptions.DoppelgangerSucTime.GetFloat();
+                NotSucTime = CustomOptions.DoppelgangerNotSucTime.GetFloat();
+                Duration = DurationTime + 1.1f;
+                DoppelgangerTargets = new();
+                DefaultKillCool = PlayerControl.GameOptions.KillCooldown;
             }
         }
         //新ロールクラス
@@ -3078,11 +3105,13 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new(255, 105, 180, byte.MaxValue);
             public static bool SameDie;
             public static bool AliveTaskCount;
+            public static bool IsSingleTeam;
             public static void ClearAndReload()
             {
                 LoversPlayer = new List<List<PlayerControl>>();
                 SameDie = CustomOptions.LoversSameDie.GetBool();
                 AliveTaskCount = CustomOptions.LoversAliveTaskCount.GetBool();
+                IsSingleTeam = CustomOptions.LoversSingleTeam.GetBool();
             }
         }
     }

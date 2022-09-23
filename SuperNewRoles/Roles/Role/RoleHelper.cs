@@ -622,6 +622,9 @@ namespace SuperNewRoles
                 case RoleId.WaveCannon:
                     RoleClass.WaveCannon.WaveCannonPlayer.Add(player);
                     break;
+                case RoleId.Doppelganger:
+                    RoleClass.Doppelganger.DoppelggerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1044,6 +1047,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.WaveCannon:
                     RoleClass.WaveCannon.WaveCannonPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Doppelganger:
+                    RoleClass.Doppelganger.DoppelggerPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1562,6 +1568,7 @@ namespace SuperNewRoles
                 else if (ShiftActor.Player.IsCheckListPlayerControl(player)) return RoleId.ShiftActor;
                 else if (RoleClass.ConnectKiller.ConnectKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.ConnectKiller;
                 else if (RoleClass.WaveCannon.WaveCannonPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannon;
+                else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
                 //ロールチェック
             }
             catch (Exception e)
@@ -1577,7 +1584,7 @@ namespace SuperNewRoles
         }
         public static bool IsAlive(this PlayerControl player)
         {
-            return !IsDead(player);
+            return player != null && !player.Data.Disconnected && !player.Data.IsDead;
         }
         public static bool IsDead(this CachedPlayer player)
         {
@@ -1585,7 +1592,7 @@ namespace SuperNewRoles
         }
         public static bool IsAlive(this CachedPlayer player)
         {
-            return !IsDead(player);
+            return player != null && !player.Data.Disconnected && !player.Data.IsDead;
         }
     }
 }

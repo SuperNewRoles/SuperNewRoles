@@ -31,7 +31,7 @@ namespace SuperNewRoles
         private static void SendToFile(string text, LogLevel level = LogLevel.Info, string tag = "", int lineNumber = 0, string fileName = "")
         {
             var logger = SuperNewRolesPlugin.Logger;
-            string t = DateTime.Now.ToString("HH:mm:ss");
+            string t = DateTime.Now.ToString("HH:mm:ss.fff");
             if (sendToGameList.Contains(tag) || isAlsoInGame) SendInGame($"[{tag}]{text}");
             text = text.Replace("\r", "\\r").Replace("\n", "\\n");
             string log_text = $"[{t}][{tag}]{text}";

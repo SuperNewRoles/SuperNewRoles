@@ -58,7 +58,8 @@ namespace SuperNewRoles.Roles.Impostor
                 if (RoleClass.Matryoshka.Datas[source.PlayerId].Item1 != null)
                 {
                     RoleClass.Matryoshka.Datas[source.PlayerId].Item1.Reported = false;
-                    RoleClass.Matryoshka.Datas[source.PlayerId].Item1.bodyRenderer.enabled = true;
+                    if (RoleClass.Matryoshka.Datas[source.PlayerId].Item1.bodyRenderer != null)
+                        RoleClass.Matryoshka.Datas[source.PlayerId].Item1.bodyRenderer.enabled = true;
                 }
                 RoleClass.Matryoshka.Datas[source.PlayerId] = (null, 0);
             }
