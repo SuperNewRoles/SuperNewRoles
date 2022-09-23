@@ -1648,9 +1648,6 @@ namespace SuperNewRoles.Modules
             Roles.Impostor.ShiftActor.SetupCustomOptions();
 
             ConnectKillerOption = new(982, false, CustomOptionType.Impostor, "ConnectKillerName", RoleClass.ConnectKiller.color, 1);
-            ConnectKillerPlayerCount =Create(983, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConnectKillerOption);
-
-            ConnectKillerOption = new(982, false, CustomOptionType.Impostor, "ConnectKillerName", RoleClass.ConnectKiller.color, 1);
             ConnectKillerPlayerCount = Create(983, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConnectKillerOption);
 
             DoppelgangerOption = new(986, true, CustomOptionType.Impostor, "DoppelgangerName", RoleClass.Doppelganger.color, 1);
