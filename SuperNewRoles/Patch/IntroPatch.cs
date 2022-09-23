@@ -35,7 +35,7 @@ namespace SuperNewRoles.Patch
                 Logger.Info("=================Player Data=================", "Player Info");
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    Logger.Info($"{(p.AmOwner ? "[H]" : "[ ]")}{(p.IsMod() ? "[M]" : "[ ]")}{p.name}({p.PlayerId})({p.GetClient()?.PlatformData?.Platform}){(p.IsBot() ? "(BOT)" : "")}", "Player info");
+                    Logger.Info($"{(p.AmOwner ? "[H]" : "[ ]")}{(p.IsMod() ? "[M]" : "[ ]")}{p.name}(cid:{p.GetClientId()})(pid:{p.PlayerId})({p.GetClient()?.PlatformData?.Platform}){(p.IsBot() ? "(BOT)" : "")}", "Player info");
                 }
                 Logger.Info("=================Role Data=================", "Player Info");
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
