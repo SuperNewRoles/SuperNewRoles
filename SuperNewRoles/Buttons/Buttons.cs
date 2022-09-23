@@ -350,16 +350,17 @@ namespace SuperNewRoles.Buttons
             FalseChargesFalseChargeButton = new(
                 () =>
                 {
-                    if (SetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    PlayerControl Target = SetTarget();
+                    if (Target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
                         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                         {
-                            PlayerControl.LocalPlayer.CmdCheckMurder(SetTarget());
+                            PlayerControl.LocalPlayer.CmdCheckMurder(Target);
                         }
                         else
                         {
-                            ModHelpers.UncheckedMurderPlayer(SetTarget(), PlayerControl.LocalPlayer);
-                            RoleClass.FalseCharges.FalseChargePlayer = SetTarget().PlayerId;
+                            RoleClass.FalseCharges.FalseChargePlayer = Target.PlayerId;
+                            ModHelpers.UncheckedMurderPlayer(Target, PlayerControl.LocalPlayer);
                             RoleClass.FalseCharges.Turns = RoleClass.FalseCharges.DefaultTurn;
                         }
                     }

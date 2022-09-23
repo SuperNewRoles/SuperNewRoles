@@ -41,7 +41,7 @@ namespace SuperNewRoles.Patches
                 credentials.transform.position = new Vector3(0, 0f, 0);
                 //ブランチ名表示
                 string credentialsText = "";
-                if (ThisAssembly.Git.Branch != SuperNewRolesPlugin.MasterBranch)//masterビルド以外の時
+                if (SuperNewRolesPlugin.IsBeta)//masterビルド以外の時
                 {
                     //色+ブランチ名+コミット番号
                     credentialsText = $"\r\n<color={modColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>";
@@ -84,7 +84,7 @@ namespace SuperNewRoles.Patches
                     }
                     catch { }
                     //ブランチ名表示
-                    if (ThisAssembly.Git.Branch != SuperNewRolesPlugin.MasterBranch)//masterビルド以外の時
+                    if (SuperNewRolesPlugin.IsBeta)//masterビルド以外の時
                     {
                         //改行+Branch名+コミット番号
                         __instance.text.text += "\n" + $"{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})";

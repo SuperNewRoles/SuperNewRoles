@@ -584,7 +584,11 @@ namespace SuperNewRoles.Modules
         }
         public static void ShareSNRversion(int major, int minor, int build, int revision, Guid guid, int clientId)
         {
-            Version ver = revision < 0 ? new System.Version(major, minor, build) : new System.Version(major, minor, build, revision);
+            Version ver;
+            if (revision < 0)
+                ver = new(major, minor, build);
+            else
+                ver = new(major, minor, build, revision);
             ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers[clientId] = new PlayerVersion(ver, guid);
         }
         public static void SetRole(byte playerid, byte RPCRoleId)
@@ -1065,21 +1069,23 @@ namespace SuperNewRoles.Modules
                             ShareOptions((int)reader.ReadPackedUInt32(), reader);
                             break;
                         case CustomRPC.ShareSNRVersion:
+                            int major = reader.ReadPackedInt32();
+                            int minor = reader.ReadPackedInt32();
+                            int patch = reader.ReadPackedInt32();
                             int versionOwnerId = reader.ReadPackedInt32();
                             byte revision = 0xFF;
                             Guid guid;
                             if (reader.Length - reader.Position >= 17)
-                            { // enough bytes left to read
+                            {
                                 revision = reader.ReadByte();
-                                // GUID
                                 byte[] gbytes = reader.ReadBytes(16);
-                                guid = new Guid(gbytes);
+                                guid = new(gbytes);
                             }
                             else
                             {
-                                guid = new Guid(new byte[16]);
+                                guid = new(new byte[16]);
                             }
-                            ShareSNRversion(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), revision == 0xFF ? -1 : revision, guid, versionOwnerId);
+                            ShareSNRversion(major, minor, patch, revision == 0xFF ? -1 : revision, guid, versionOwnerId);
                             break;
                         case CustomRPC.SetRole:
                             SetRole(reader.ReadByte(), reader.ReadByte());
