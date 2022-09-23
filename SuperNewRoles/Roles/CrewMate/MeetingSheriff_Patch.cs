@@ -152,8 +152,6 @@ namespace SuperNewRoles.Roles
             if (AmongUsClient.Instance.AmHost)
             {
                 PlayerAnimation.PlayerAnimations.All(x => { x.RpcAnimation(RpcAnimationType.Stop); return false; });
-                WaveCannonObject.Objects.All(x => { GameObject.Destroy(x.gameObject); return false; });
-                WaveCannonObject.Objects = new();
             }
             LadderDead.Reset();
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))

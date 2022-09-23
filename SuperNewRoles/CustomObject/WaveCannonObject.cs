@@ -20,8 +20,10 @@ namespace SuperNewRoles.CustomObject
         {
             public static void Postfix(PlayerControl __instance)
             {
-                if (__instance == PlayerControl.LocalPlayer)
+                if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                {
                     AllFixedUpdate();
+                }
             }
         }
         public static List<WaveCannonObject> Objects = new();
@@ -148,7 +150,8 @@ namespace SuperNewRoles.CustomObject
                     ChargeSound.Stop();
                 GameObject.Destroy(effectGameObject);
                 GameObject.Destroy(gameObject);
-                return; }
+                return;
+            }
             if (Owner != null && Owner.IsDead()) {
                 GameObject.Destroy(this.gameObject);
                 if (Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
