@@ -1592,7 +1592,7 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
 
-            FreezerButton = new CustomButton(
+            FreezerButton = new(
                 () =>
                 {
                     FreezerButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
