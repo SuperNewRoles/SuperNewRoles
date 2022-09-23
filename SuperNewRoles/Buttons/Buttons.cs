@@ -1312,10 +1312,9 @@ namespace SuperNewRoles.Buttons
             SpeederButton = new(
                 () =>
                 {
-                    SpeederButton.MaxTimer = RoleClass.Speeder.DurationTime;
-                    SpeederButton.Timer = SpeederButton.MaxTimer;
-                    SpeederButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Speeder.DownStart();
+                    SpeederButton.MaxTimer = RoleClass.Speeder.CoolTime;
+                    SpeederButton.Timer = SpeederButton.MaxTimer;
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Speeder; },
                 () =>
@@ -1330,7 +1329,13 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49,
-                () => { return false; }
+                () => { return false; },
+                true,
+                5f,
+                () =>
+                {
+                    Speeder.SpeedDownEnd();
+                }
             )
             {
                 buttonText = ModTranslation.GetString("SpeederButtonName"),
