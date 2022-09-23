@@ -37,7 +37,10 @@ namespace SuperNewRoles.Patch
                 {
                     Logger.Info($"{(p.AmOwner ? "[H]" : "[ ]")}{(p.IsMod() ? "[M]" : "[ ]")}{p.name}({p.PlayerId}){(p.IsBot() ? "(BOT)" : "")}", "Player info");
                 }
-
+                Logger.Info("=================Role Data=================", "Player Info");
+                foreach (PlayerControl p in CachedPlayer.AllPlayers){
+                    Logger.Info($"{p.name}=>{p.GetRole()}({p.GetRoleType()})","Role Data");
+                }
             }
         }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
