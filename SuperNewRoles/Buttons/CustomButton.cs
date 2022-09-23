@@ -201,15 +201,4 @@ namespace SuperNewRoles.Buttons
             if ((hotkey.HasValue && Input.GetButtonDown(hotkey.Value.ToString())) || ConsoleJoystick.player.GetButtonDown(joystickkey)) OnClickEvent();
         }
     }
-
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    class HudManagerUpdatePatch
-    {
-        static void Postfix(HudManager __instance)
-        {
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-            CustomButton.HudUpdate();
-            ButtonTime.Update();
-        }
-    }
 }

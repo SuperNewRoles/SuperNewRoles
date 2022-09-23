@@ -107,7 +107,7 @@ windows7様<br>
 cRox様<br>
 
 ## 連絡について
-Discordサーバーからお願いします:[Discordサーバー](https://discord.gg/95YuUZp4kM)
+Discordサーバーからお願いします:[Discordサーバー](https://discord.gg/hXbDgQzSuK)
 
 ## 役職一覧
 Discordサーバーには全てすでに乗っています。
