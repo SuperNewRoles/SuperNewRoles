@@ -525,10 +525,6 @@ namespace SuperNewRoles
         {
             return AccessTools.Method(self.GetType(), nameof(Il2CppObjectBase.TryCast)).MakeGenericMethod(type).Invoke(self, Array.Empty<object>());
         }
-        internal static string Cs(object unityEngine, string v)
-        {
-            throw new NotImplementedException();
-        }
 
         public static Dictionary<string, Texture2D> CachedTexture = new();
 

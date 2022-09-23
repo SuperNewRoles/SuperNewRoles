@@ -1,7 +1,6 @@
 using HarmonyLib;
 using SuperNewRoles.Buttons;
-
-
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -86,7 +85,10 @@ namespace SuperNewRoles.Patch
 
         public static void Postfix(PlayerControl __instance)
         {
+            if (PlayerAnimation.GetPlayerAnimation(__instance.PlayerId) == null) new PlayerAnimation(__instance);
             if (__instance != PlayerControl.LocalPlayer) return;
+            SluggerDeadbody.AllFixedUpdate();
+            PlayerAnimation.FixedAllUpdate();
             PVCreator.FixedUpdate();
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {

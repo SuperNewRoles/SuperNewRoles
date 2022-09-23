@@ -12,7 +12,6 @@ namespace SuperNewRoles.Roles
     {
         public static void EndMeeting()
         {
-            ResetScientist();
             ScientistEnd();
             ResetCoolDown();
         }
@@ -32,7 +31,6 @@ namespace SuperNewRoles.Roles
             RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
             SpeedBooster.ResetCoolDown();
         }
-        public static void ResetScientist() { }
         public static void ScientistEnd()
         {
             RoleClass.NiceScientist.IsScientist = false;
@@ -41,7 +39,6 @@ namespace SuperNewRoles.Roles
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
-            ResetScientist();
         }
         public static void SetOpacity(PlayerControl player, float opacity, bool cansee)
         {
