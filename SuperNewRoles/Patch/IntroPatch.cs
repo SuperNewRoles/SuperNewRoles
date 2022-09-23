@@ -40,7 +40,7 @@ namespace SuperNewRoles.Patch
                 Logger.Info("=================Role Data=================", "Player Info");
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    Logger.Info($"{p.name}=>{p.GetRole()}({p.GetRoleType()})({(p.IsLovers() ? "♥" : "")})({(p.IsQuarreled() ? "○" : "")})", "Role Data");
+                    Logger.Info($"{p.name}=>{p.GetRole()}({p.GetRoleType()}){(p.IsLovers() ? "[♥]" : "")}{(p.IsQuarreled() ? "[○]" : "")}", "Role Data");
                 }
             }
         }
