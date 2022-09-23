@@ -46,7 +46,7 @@ namespace SuperNewRoles.CustomCosmetics
                         //CustomPlates.Add(plate);
                         //AllPlates.Add(plate);
                         __instance.allNamePlates.Add(plate);
-                        SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate] プレート読み込み完了:" + file.Name);
+                        //SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate] プレート読み込み完了:" + file.Name);
                     }
                     catch (Exception e)
                     {
