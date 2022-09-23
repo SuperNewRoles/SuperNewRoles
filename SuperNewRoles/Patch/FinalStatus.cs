@@ -45,8 +45,13 @@ namespace SuperNewRoles
         BestFalseChargesFalseCharge,
         SheriffHauntedWolfKill,
         MeetingSheriffHauntedWolfKill,
+        RemoteSheriffHauntedWolfKill,
+        RemoteSheriffKill,
+        RemoteSheriffMisFire,
         SerialKillerSelfDeath,
         VampireKill,
-        OverKillerOverKill
+        OverKillerOverKill,
+        SuicideWisherSelfDeath,
+        MadmakerMisSet,
     }
 }

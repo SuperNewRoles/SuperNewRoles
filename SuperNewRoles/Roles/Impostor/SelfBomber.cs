@@ -20,7 +20,7 @@ namespace SuperNewRoles.Roles
                     if (GetIsBomb(PlayerControl.LocalPlayer, p, CustomOptions.SelfBomberScope.GetFloat()))
                     {
                         CachedPlayer.LocalPlayer.PlayerControl.UncheckedMurderPlayer(p, showAnimation: false);
-                        p.RpcSetFinalStatus(FinalStatus.SelfBomberBomb);
+                        p.RpcSetFinalStatus(FinalStatus.BySelfBomberBomb);
                     }
                 }
             }
