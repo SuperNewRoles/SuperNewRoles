@@ -129,6 +129,7 @@ namespace SuperNewRoles.CustomObject
                         Camera.main.GetComponent<FollowerCamera>().Locked = false;
                         HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonCoolTime.GetFloat();
                         HudManagerStartPatch.WaveCannonButton.Timer = HudManagerStartPatch.WaveCannonButton.MaxTimer;
+                        RoleClass.WaveCannon.CannotMurderPlayers = new();
                     }
                 };
             };
@@ -172,7 +173,19 @@ namespace SuperNewRoles.CustomObject
                     foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
                         if (player.IsDead()) continue;
+                        if (RoleClass.WaveCannon.CannotMurderPlayers.Contains(player.PlayerId)) continue;
                         if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
+                        if (player.IsRole(RoleId.Shielder) && RoleClass.Shielder.IsShield.ContainsKey(player.PlayerId) && RoleClass.Shielder.IsShield[player.PlayerId])
+                        {
+                            MessageWriter msgwriter = RPCHelper.StartRPC(CustomRPC.ShielderProtect);
+                            msgwriter.Write(CachedPlayer.LocalPlayer.PlayerId);
+                            msgwriter.Write(player.PlayerId);
+                            msgwriter.Write(0);
+                            msgwriter.EndRPC();
+                            RPCProcedure.ShielderProtect(CachedPlayer.LocalPlayer.PlayerId, player.PlayerId, 0);
+                            RoleClass.WaveCannon.CannotMurderPlayers.Add(player.PlayerId);
+                            return;
+                        }
                         float posdata = player.GetTruePosition().y - transform.position.y;
                         if (posdata > 1 || posdata < -1) continue;
                         posdata = transform.position.x - (IsFlipX ? -2 : 2);

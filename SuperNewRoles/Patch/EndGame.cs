@@ -479,7 +479,7 @@ namespace SuperNewRoles.Patch
 
             foreach (var p in GameData.Instance.AllPlayers)
             {
-                if (p.Object.IsPlayer())
+                if (p != null && p.Object != null &&  p.Object.IsPlayer())
                 {
                     //var p = pc.Data;
                     var roles = IntroDate.GetIntroDate(p.Object.GetRole(), p.Object);

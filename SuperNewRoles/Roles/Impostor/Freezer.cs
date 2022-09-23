@@ -17,6 +17,7 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.FreezerButton.effectCancellable = false;
             HudManagerStartPatch.FreezerButton.EffectDuration = RoleClass.Freezer.DurationTime;
             HudManagerStartPatch.FreezerButton.HasEffect = true;
+            HudManagerStartPatch.FreezerButton.isEffectActive = false;
         }
         public static void DownStart()
         {
@@ -45,13 +46,6 @@ namespace SuperNewRoles.Roles
         {
             ResetCoolDown();
             ResetSpeed();
-        }
-        public static void HudUpdate()
-        {
-            if (HudManagerStartPatch.FreezerButton.Timer <= 0.1f && RoleClass.Freezer.IsSpeedDown)
-            {
-                SpeedDownEnd();
-            }
         }
     }
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]

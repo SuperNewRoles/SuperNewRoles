@@ -2665,13 +2665,14 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> WaveCannonPlayer;
             public static Color32 color = ImpostorRed;
-            private static Sprite buttonSprite;
+            public static List<byte> CannotMurderPlayers;
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f);
 
             public static void ClearAndReload()
             {
                 WaveCannonPlayer = new();
                 WaveCannonObject.Ids = new();
+                CannotMurderPlayers = new();
             }
         }
         public static class Doppelganger

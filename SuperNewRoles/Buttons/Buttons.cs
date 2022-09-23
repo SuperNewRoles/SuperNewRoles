@@ -1661,10 +1661,7 @@ namespace SuperNewRoles.Buttons
             FreezerButton = new(
                 () =>
                 {
-                    FreezerButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Freezer.DownStart();
-                    FreezerButton.MaxTimer = RoleClass.Freezer.CoolTime;
-                    FreezerButton.Timer = FreezerButton.MaxTimer;
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Freezer; },
                 () =>
