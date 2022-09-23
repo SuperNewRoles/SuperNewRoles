@@ -14,6 +14,9 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.FreezerButton.MaxTimer = RoleClass.Freezer.CoolTime;
             HudManagerStartPatch.FreezerButton.Timer = HudManagerStartPatch.FreezerButton.MaxTimer;
             HudManagerStartPatch.FreezerButton.actionButton.cooldownTimerText.color = Color.white;
+            HudManagerStartPatch.FreezerButton.effectCancellable = false;
+            HudManagerStartPatch.FreezerButton.EffectDuration = RoleClass.Freezer.DurationTime;
+            HudManagerStartPatch.FreezerButton.HasEffect = true;
         }
         public static void DownStart()
         {

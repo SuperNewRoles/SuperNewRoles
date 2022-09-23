@@ -13,7 +13,9 @@ namespace SuperNewRoles.Roles
         {
             HudManagerStartPatch.SpeederButton.MaxTimer = RoleClass.Speeder.CoolTime;
             HudManagerStartPatch.SpeederButton.Timer = HudManagerStartPatch.SpeederButton.MaxTimer;
-            HudManagerStartPatch.SpeederButton.actionButton.cooldownTimerText.color = Color.white;
+            HudManagerStartPatch.SpeederButton.effectCancellable = false;
+            HudManagerStartPatch.SpeederButton.EffectDuration = RoleClass.Speeder.DurationTime;
+            HudManagerStartPatch.SpeederButton.HasEffect = true;
         }
         public static void DownStart()
         {
