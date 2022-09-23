@@ -62,11 +62,4 @@ namespace SuperNewRoles.Roles
             }
         }
     }
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    public static class HudManagerUpdatePatch2
-    {
-        public static void Postfix()
-        {
-        }
-    }
 }
