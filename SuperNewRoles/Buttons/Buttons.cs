@@ -1587,13 +1587,13 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
 
-            FreezerButton = new Buttons.CustomButton(
+            FreezerButton = new CustomButton(
                 () =>
                 {
-                    FreezerButton.MaxTimer = RoleClass.Freezer.DurationTime;
-                    FreezerButton.Timer = FreezerButton.MaxTimer;
                     FreezerButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Freezer.DownStart();
+                    FreezerButton.MaxTimer = RoleClass.Freezer.CoolTime;
+                    FreezerButton.Timer = FreezerButton.MaxTimer;
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Freezer; },
                 () =>
@@ -1607,12 +1607,16 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49,
-                () => { return false; }
+                () => { return false; },
+                true,
+                5f,
+                () => {
+                    Freezer.SpeedDownEnd();
+                }
             )
             {
                 buttonText = ModTranslation.GetString("FreezerButtonName"),
                 showButtonText = true,
-                HasEffect = true
             };
 
             SamuraiButton = new(
