@@ -53,7 +53,7 @@ namespace SuperNewRoles.Modules
                 }
                 RegulationData.Regulations.Add(data);
             }
-            foreach (RegulationData data in RegulationData.Regulations)
+            /* foreach (RegulationData data in RegulationData.Regulations)
             {
                 SuperNewRolesPlugin.Logger.LogInfo
                     ("～～～～\n"
@@ -73,7 +73,7 @@ namespace SuperNewRoles.Modules
                 {
                     Logger.Info(CustomOption.options.FirstOrDefault((CustomOption option) => option.id == datas.Key).GetName() +" => "+datas.Value);
                 }
-            }
+            }*/
             Loaded = true;
         }
         public static void Select(int id)
