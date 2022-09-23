@@ -26,6 +26,20 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch]
     public class IntroPatch
     {
+        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin))]
+        class IntroCutsceneCoBeginPatch
+        {
+            static void Postfix()
+            {
+                Logger.Info("=================Player Info=================", "Intro Begin");
+                Logger.Info("=================Player Data=================", "Player Info");
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    Logger.Info($"{(p.AmOwner ? "[H]" : "[ ]")}{(p.IsMod() ? "[M]" : "[ ]")}{p.name}({p.PlayerId}){(p.IsBot() ? "(BOT)" : "")}", "Player info");
+                }
+
+            }
+        }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
         class IntroCutsceneOnDestroyPatch
         {
