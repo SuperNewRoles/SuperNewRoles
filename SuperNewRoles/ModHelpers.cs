@@ -754,7 +754,7 @@ namespace SuperNewRoles
             return dis <= distance;
         }
         public static bool GetManyKeyDown(KeyCode[] keyCodes) {
-            return keyCodes.Any(x => Input.GetKeyDown(x)) && keyCodes.All(x => Input.GetKeyDown(x));
+            return keyCodes.Any(x => Input.GetKey(x)) && keyCodes.All(x => Input.GetKeyDown(x));
         }
 
     }
