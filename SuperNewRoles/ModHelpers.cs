@@ -753,10 +753,9 @@ namespace SuperNewRoles
             float dis = Vector2.Distance(pos, pos2);
             return dis <= distance;
         }
+        /// <summary>keyCodesが押されているか</summary>
         public static bool GetManyKeyDown(KeyCode[] keyCodes) =>
             keyCodes.All(x => Input.GetKey(x)) && keyCodes.Any(x => Input.GetKeyDown(x));
-
-
     }
     public static class CreateFlag
     {
