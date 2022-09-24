@@ -36,21 +36,34 @@ namespace SuperNewRoles.Patch
     {
         static void Postfix()
         {
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-            if (!AmongUsClient.Instance.AmHost) return; // ホストでなければ処理しない
+            // 以下ホストのみ
+            if (!AmongUsClient.Instance.AmHost) return;
 
-            // 廃村
-            if (ModHelpers.GetManyKeyDown(new[] { KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift }))
+            //　ゲーム中
+            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
-                RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
-                RPCProcedure.SetHaison();
-                ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
-                MapUtilities.CachedShipStatus.enabled = false;
+                // 廃村
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift }))
+                {
+                    RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
+                    RPCProcedure.SetHaison();
+                    ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
+                    MapUtilities.CachedShipStatus.enabled = false;
+                }
             }
+
             // 会議を強制終了
-            if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }))
+            if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
             {
                 FastDestroyableSingleton<MeetingHud>.Instance.RpcClose();
+            }
+
+            // 以下フリープレイのみ
+            if (AmongUsClient.Instance.GameMode != GameModes.FreePlay) return;
+            // エアーシップのトイレのドアを開ける
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                RPCHelper.RpcOpenToilet();
             }
         }
     }
