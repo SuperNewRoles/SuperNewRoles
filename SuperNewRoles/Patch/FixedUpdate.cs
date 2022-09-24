@@ -34,7 +34,7 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
     class DebugManager
     {
-        public static void Postfix()
+        static void Postfix()
         {
             if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
             if (!AmongUsClient.Instance.AmHost) return; // ホストでなければ処理しない
