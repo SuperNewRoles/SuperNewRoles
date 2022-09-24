@@ -32,7 +32,7 @@ namespace SuperNewRoles.Patch
     }
 
     [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
-    class DebugManager
+    class ControllerManagerUpdate
     {
         static void Postfix()
         {
