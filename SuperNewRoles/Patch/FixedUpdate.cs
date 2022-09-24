@@ -49,7 +49,7 @@ namespace SuperNewRoles.Patch
 
             if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }))
             { // 会議を強制終了
-                MeetingHud.Instance.RpcClose();
+                FastDestroyableSingleton<MeetingHud>.Instance.RpcClose();
             }
         }
     }
