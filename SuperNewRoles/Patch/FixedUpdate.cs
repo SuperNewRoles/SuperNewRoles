@@ -32,24 +32,25 @@ namespace SuperNewRoles.Patch
     }
 
     [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
-    class DebugManager
+    class ControllerManagerUpdate
     {
-        public static void Postfix()
+        static void Postfix()
         {
-            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
-            {
-                if (AmongUsClient.Instance.AmHost && ModHelpers.GetManyKeyDown(new[] { KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift }))
-                {
-                    RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
-                    RPCProcedure.SetHaison();
-                    ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
-                    MapUtilities.CachedShipStatus.enabled = false;
-                }
+            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+            if (!AmongUsClient.Instance.AmHost) return; // ホストでなければ処理しない
 
-                if (AmongUsClient.Instance.AmHost && ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }))//Mと右左シフトを押したとき
-                {
-                    MeetingHud.Instance.RpcClose();//会議を強制終了
-                }
+            // 廃村
+            if (ModHelpers.GetManyKeyDown(new[] { KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift }))
+            {
+                RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
+                RPCProcedure.SetHaison();
+                ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
+                MapUtilities.CachedShipStatus.enabled = false;
+            }
+            // 会議を強制終了
+            if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }))
+            {
+                FastDestroyableSingleton<MeetingHud>.Instance.RpcClose();
             }
         }
     }
