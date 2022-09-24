@@ -1615,7 +1615,8 @@ namespace SuperNewRoles.Buttons
                 () => { return false; },
                 true,
                 5f,
-                () => {
+                () =>
+                {
                     Freezer.SpeedDownEnd();
                 }
             )
@@ -1980,7 +1981,7 @@ namespace SuperNewRoles.Buttons
             DoubleKillerMainKillButton = new(
                 () =>
                 {
-                    if (PlayerControlFixedUpdatePatch.SetTarget()&&RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
                         ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
                         switch (PlayerControl.LocalPlayer.GetRole())
@@ -2119,13 +2120,7 @@ namespace SuperNewRoles.Buttons
             };
 
             ToiletFanButton = new(
-                () =>
-                {
-                    ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 79);
-                    ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 80);
-                    ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
-                    ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
-                },
+                () => { RPCHelper.RpcOpenToilet(); },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.ToiletFan; },
                 () =>
                 {
