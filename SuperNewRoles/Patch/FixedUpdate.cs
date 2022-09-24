@@ -37,7 +37,7 @@ namespace SuperNewRoles.Patch
         public static void Postfix()
         {
             if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-            if (!AmongUsClient.Instance.AmClient) return; // ホストでなければ処理しない
+            if (!AmongUsClient.Instance.AmHost) return; // ホストでなければ処理しない
 
             if (ModHelpers.GetManyKeyDown(new[] { KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift }))
             { // 廃村
