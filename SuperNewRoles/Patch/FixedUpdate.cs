@@ -60,6 +60,7 @@ namespace SuperNewRoles.Patch
 
             // 以下フリープレイのみ
             if (AmongUsClient.Instance.GameMode != GameModes.FreePlay) return;
+            // エアーシップのトイレのドアを開ける
             if (Input.GetKeyDown(KeyCode.T))
             {
                 RPCHelper.RpcOpenToilet();
