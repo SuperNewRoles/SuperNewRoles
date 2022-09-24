@@ -39,16 +39,17 @@ namespace SuperNewRoles.Patch
             if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
             if (!AmongUsClient.Instance.AmHost) return; // ホストでなければ処理しない
 
+            // 廃村
             if (ModHelpers.GetManyKeyDown(new[] { KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift }))
-            { // 廃村
+            {
                 RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
                 RPCProcedure.SetHaison();
                 ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                 MapUtilities.CachedShipStatus.enabled = false;
             }
-
+            // 会議を強制終了
             if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }))
-            { // 会議を強制終了
+            {
                 FastDestroyableSingleton<MeetingHud>.Instance.RpcClose();
             }
         }
