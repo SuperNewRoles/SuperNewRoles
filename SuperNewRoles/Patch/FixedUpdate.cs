@@ -38,7 +38,7 @@ namespace SuperNewRoles.Patch
         {
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
-                if (AmongUsClient.Instance.AmHost && Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift))
+                if (AmongUsClient.Instance.AmHost && ModHelpers.GetManyKeyDown(new[] { KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift }))
                 {
                     RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
                     RPCProcedure.SetHaison();
@@ -46,7 +46,7 @@ namespace SuperNewRoles.Patch
                     MapUtilities.CachedShipStatus.enabled = false;
                 }
 
-                if (Input.GetKeyDown(KeyCode.M) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift) && AmongUsClient.Instance.AmHost)//Mと右左シフトを押したとき
+                if (AmongUsClient.Instance.AmHost && ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }))//Mと右左シフトを押したとき
                 {
                     MeetingHud.Instance.RpcClose();//会議を強制終了
                 }
