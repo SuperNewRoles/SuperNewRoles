@@ -1352,6 +1352,7 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
+                if (ModeHandler.IsMode(ModeId.HideAndSeek)) numTotalAlive += numImpostorsAlive;
                 TeamImpostorsAlive = numImpostorsAlive;
                 TotalAlive = numTotalAlive;
                 CrewAlive = numCrewAlive;

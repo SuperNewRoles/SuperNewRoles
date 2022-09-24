@@ -1190,6 +1190,7 @@ namespace SuperNewRoles
         }
         public static bool IsUseSabo(this PlayerControl player)
         {
+            if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;
             RoleId role = player.GetRole();
             if (role == RoleId.Minimalist) return RoleClass.Minimalist.UseSabo;
             if (role == RoleId.Samurai) return RoleClass.Samurai.UseSabo;
