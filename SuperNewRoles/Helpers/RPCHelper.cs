@@ -162,6 +162,14 @@ namespace SuperNewRoles.Helpers
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.UncheckedSetVanilaRole(player.PlayerId, (byte)roletype);
         }
+        /// <summary>
+        /// 役職をリセットし、新しい役職に変更します。
+        /// </summary>
+        public static void ResetAndSetRole(this PlayerControl target, RoleId RoleId)
+        {
+            target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
+            target.SetRoleRPC(RoleId);
+        }
 
         public static void RpcResetAbilityCooldown(this PlayerControl target)
         {
@@ -179,8 +187,10 @@ namespace SuperNewRoles.Helpers
             }
         }
 
-        public static void RpcOpenToilet() {
-            foreach (var i in new[] { 79, 80, 81, 82 }) {
+        public static void RpcOpenToilet()
+        {
+            foreach (var i in new[] { 79, 80, 81, 82 })
+            {
                 Logger.Info($"amount:{i}", "RpcOpenToilet");
                 ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, i);
             }
