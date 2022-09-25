@@ -1138,8 +1138,7 @@ namespace SuperNewRoles.Buttons
                     var target = SetTarget();
                     if (!target.Data.Role.IsImpostor && target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.MadMaker.IsCreateMadmate)
                     {
-                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
-                        target.SetRoleRPC(RoleId.MadMate);
+                        Madmate.CreateMadMate(target);
                         RoleClass.MadMaker.IsCreateMadmate = true;
                     }
                     else if (target.Data.Role.IsImpostor)
@@ -1794,8 +1793,7 @@ namespace SuperNewRoles.Buttons
                     var target = SetTarget();
                     if (!target.Data.Role.IsImpostor && target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.EvilHacker.IsCreateMadmate)
                     {
-                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
-                        target.SetRoleRPC(RoleId.MadMate);
+                        Madmate.CreateMadMate(target);
                         RoleClass.EvilHacker.IsCreateMadmate = false;
                     }
                     else if (target.Data.Role.IsImpostor)
@@ -2092,8 +2090,7 @@ namespace SuperNewRoles.Buttons
                     if (target && PlayerControl.LocalPlayer.CanMove && !RoleClass.FastMaker.IsCreatedMadMate)
                     {
                         PlayerControl.LocalPlayer.RpcShowGuardEffect(target); // 守護エフェクトの表示
-                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
-                        target.SetRoleRPC(RoleId.MadMate);//マッドにする
+                        Madmate.CreateMadMate(target);//くるぅにして、マッドにする
                         RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことに
                         SuperNewRolesPlugin.Logger.LogInfo("[FastMakerButton]マッドを作ったから普通のキルボタンに戻すよ!");
                     }
