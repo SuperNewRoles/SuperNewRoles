@@ -1,5 +1,6 @@
 using Hazel;
 using SuperNewRoles.Buttons;
+using static SuperNewRoles.Helpers.RPCHelper;
 using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles
@@ -47,6 +48,13 @@ namespace SuperNewRoles.Roles
                     JackalPlayerOutLineTarget();
                 }
             }
+        }
+        /// <summary>
+        /// (役職をリセットし、)ジャッカルフレンズに割り当てます。
+        /// </summary>
+        public static void CreateJackalFriends(PlayerControl target)
+        {
+            target.ResetAndSetRole(RoleId.JackalFriends);
         }
     }
 }
