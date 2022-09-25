@@ -52,6 +52,7 @@ namespace SuperNewRoles.Roles
         /// <summary>
         /// (役職をリセットし、)ジャッカルフレンズに割り当てます。
         /// </summary>
+        /// <param name="target">役職がJackalFriendsに変更される対象</param>
         public static void CreateJackalFriends(PlayerControl target)
         {
             target.ResetAndSetRole(RoleId.JackalFriends);

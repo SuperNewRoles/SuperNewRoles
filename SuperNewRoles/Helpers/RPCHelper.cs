@@ -165,6 +165,8 @@ namespace SuperNewRoles.Helpers
         /// <summary>
         /// 役職をリセットし、新しい役職に変更します。
         /// </summary>
+        /// <param name="target">役職が変更される対象(PlayerControl)</param>
+        /// <param name="RoleId">変更先の役職(RoleId)</param>
         public static void ResetAndSetRole(this PlayerControl target, RoleId RoleId)
         {
             target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
