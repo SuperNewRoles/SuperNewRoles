@@ -1,7 +1,7 @@
-using System.Linq;
 using Hazel;
 using InnerNet;
-
+using SuperNewRoles.Mode.SuperHostRoles;
+using System.Linq;
 using UnityEngine;
 using static MeetingHud;
 
@@ -171,6 +171,7 @@ namespace SuperNewRoles.Helpers
         {
             target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
             target.SetRoleRPC(RoleId);
+            Logger.Info($"[{target.GetDefaultName()}] の役職を [{RoleId}] に変更しました。");
         }
 
         public static void RpcResetAbilityCooldown(this PlayerControl target)
