@@ -57,21 +57,6 @@ namespace SuperNewRoles.Buttons
                 return false;
             }
         }
-        [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowSabotageMap))]
-        class ShowSaboMapBehaviourPatch
-        {
-            public static bool Prefix(MapBehaviour __instance)
-            {
-                if (!PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
-                {
-                    __instance.Close();
-                    FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowNormalMap(); }));
-                    return false;
-                }
-                return true;
-            }
-        }
-
         [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
         class MapBehaviourPatch
         {

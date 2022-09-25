@@ -50,6 +50,10 @@ namespace SuperNewRoles.Patch
             public static PoolablePlayer playerPrefab;
             public static void Prefix(IntroCutscene __instance)
             {
+                if (ModeHandler.IsMode(ModeId.HideAndSeek))
+                {
+                    new LateTask(() => RoleClass.Tuna.IsMeetingEnd = true, 6);
+                }
                 // プレイヤーのアイコンを生成
                 if (CachedPlayer.LocalPlayer != null && FastDestroyableSingleton<HudManager>.Instance != null)
                 {

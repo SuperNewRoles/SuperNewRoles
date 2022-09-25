@@ -690,7 +690,7 @@ namespace SuperNewRoles.Patches
         }
         public static void RpcMurderPlayerCheck(this PlayerControl __instance, PlayerControl target)
         {
-            if (ModeHandler.IsMode(ModeId.HideAndSeek) && target.IsImpostor()) return;
+            if (ModeHandler.IsMode(ModeId.HideAndSeek) && target.IsImpostor() && !__instance.IsRole(RoleId.Jackal)) return;
             if (target.IsRole(RoleId.Assassin) && target.IsAlive())
             {
                 new LateTask(() =>

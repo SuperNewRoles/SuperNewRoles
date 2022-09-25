@@ -437,15 +437,54 @@ namespace SuperNewRoles.Patch
                 var roleSummaryTextMeshRectTransform = roleSummaryTextMesh.GetComponent<RectTransform>();
                 roleSummaryTextMeshRectTransform.anchoredPosition = new Vector2(position.x + 3.5f, position.y - 0.1f);
                 roleSummaryTextMesh.text = roleSummaryText.ToString();
+
             }
             catch (Exception e)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
             }
             AdditionalTempData.Clear();
-
+            OnGameEndPatch.WinText = ModHelpers.Cs(RoleColor, haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName")));
             IsHaison = false;
         }
+    }
+
+    public class CustomPlayerData
+    {
+        public WinningPlayerData currentData;
+        public string name;
+        public bool IsWin;
+        public FinalStatus finalStatus;
+        public int CompleteTask;
+        public int TotalTask;
+        public RoleId? role;
+        public CustomPlayerData(GameData.PlayerInfo p, GameOverReason gameOverReason) {
+            currentData = new(p);
+            name = p.PlayerName;
+            try
+            {
+                (CompleteTask, TotalTask) = TaskCount.TaskDate(p);
+            }
+            catch
+            {
+
+            }
+            try
+            {
+                role = p.Object.GetRole();
+            }
+            catch
+            {
+                role = null;
+            }
+            var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
+                p.Disconnected == true ? FinalStatus.Disconnected :
+                FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId) ? FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] :
+                p.IsDead == true ? FinalStatus.Exiled :
+                gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor ? FinalStatus.Sabotage :
+                FinalStatus.Alive;
+            this.finalStatus = finalStatus;
+            }
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
@@ -453,6 +492,8 @@ namespace SuperNewRoles.Patch
     {
         public static PlayerControl WinnerPlayer;
         public static CustomGameOverReason? EndData = null;
+        public static List<CustomPlayerData> PlayerDatas = null;
+        public static string WinText;
         public static void Prefix([HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
             AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
@@ -1048,6 +1089,13 @@ namespace SuperNewRoles.Patch
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.HAISON;
+            }
+            foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
+            {
+                if (player.Object != null && player.Object.IsBot()) continue;
+                CustomPlayerData data = new(player, gameOverReason);
+                data.IsWin = TempData.winners.TrueForAll((Il2CppSystem.Predicate<WinningPlayerData>)(x => x.PlayerName == player.PlayerName));
+                PlayerDatas.Add(data);
             }
         }
     }
