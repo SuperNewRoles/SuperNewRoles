@@ -151,9 +151,17 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     PlayerControl target = Roles.Neutral.Pavlovsdogs.SetTarget();
-                    target.SetRoleRPC(RoleId.Pavlovsdogs);
-                    RoleClass.Pavlovsowner.CurrentChildPlayer = target;
-                    PavlovsownerCreatedogButton.Timer = PavlovsownerCreatedogButton.MaxTimer;
+                    if (!CustomOptions.PavlovsownerIsTargetImpostorDeath.GetBool() || !target.Data.Role.IsImpostor)
+                    {
+                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
+                        target.SetRoleRPC(RoleId.Pavlovsdogs);
+                        RoleClass.Pavlovsowner.CurrentChildPlayer = target;
+                        PavlovsownerCreatedogButton.Timer = PavlovsownerCreatedogButton.MaxTimer;
+                    }
+                    else if (target.Data.Role.IsImpostor && CustomOptions.PavlovsownerIsTargetImpostorDeath.GetBool())
+                    {
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsowner && RoleClass.Pavlovsowner.CanCreateDog; },
                 () =>
