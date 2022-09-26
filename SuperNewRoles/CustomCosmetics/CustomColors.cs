@@ -12,352 +12,126 @@ namespace SuperNewRoles.CustomCosmetics
         public static List<int> lighterColors = new() { 3, 4, 5, 7, 10, 11, 13, 14, 17 };
         public static uint pickableColors = (uint)Palette.ColorNames.Length;
 
-        /* version 1
-        private static readonly List<int> ORDER = new() { 7, 17, 5, 33, 4,
-                                                                    30, 0, 19, 27, 3,
-                                                                    13, 25, 18, 15, 23,
-                                                                    8, 32, 1, 21, 31,
-                                                                    10, 34, 12, 14, 28,
-                                                                    22, 29, 11, 26, 2,
-                                                                    20, 24, 9, 16, 6 }; */
+        public enum ColorType
+        {
+            Salmon,
+            Bordeaux,
+            Olive,
+            Turqoise,
+            Mint,
+            Lavender,
+            Nougat,
+            Peach,
+            Wasabi,
+            HotPink,
+            Petrol,
+            Lemon,
+            SignalOrange,
+            Teal,
+            Blurple,
+            Sunrise,
+            Ice,
+            PitchBlack,
+            Darkmagenta,
+            Mintcream,
+            Leaf,
+            Emerald,
+            Brightyellow,
+            Darkaqua,
+            Matcha,
+            Pitchwhite,
+            Darksky,
+            Intenseblue,
+            Blueclosertoblack,
+            Sunkengreenishblue,
+            Azi,
+            Pitchred,
+            Pitchblue,
+            Pitchgreen,
+            Pitchyellow,
+            Backblue,
+            Mildpurple,
+            Ashishreddishpurplecolor,
+            Melon,
+            Crasyublue,
+            Lightgreen
+        }
+
+
+        public static Dictionary<ColorType, Color32[]> LighterColorData = new(); // isLighterColorがtrue
+        public static Dictionary<ColorType, Color32[]> NoLighterColorData = new(); // isLighterColorがfalse
+
         public static void Load()
         {
-            List<StringNames> longlist = Enumerable.ToList<StringNames>(Palette.ColorNames);
-            List<Color32> colorlist = Enumerable.ToList<Color32>(Palette.PlayerColors);
-            List<Color32> shadowlist = Enumerable.ToList<Color32>(Palette.ShadowColors);
+            List<StringNames> longlist = Enumerable.ToList(Palette.ColorNames);
+            List<Color32> colorlist = Enumerable.ToList(Palette.PlayerColors);
+            List<Color32> shadowlist = Enumerable.ToList(Palette.ShadowColors);
 
-            List<CustomColor> colors = new()
+
+            LighterColorData.Add(ColorType.Salmon, new Color32[] { new(239, 191, 192, byte.MaxValue), new(182, 119, 114, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Bordeaux, new Color32[] { new(109, 7, 26, byte.MaxValue), new(54, 2, 11, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Olive, new Color32[] { new(154, 140, 61, byte.MaxValue), new(104, 95, 40, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Turqoise, new Color32[] { new(22, 132, 176, byte.MaxValue), new(15, 89, 117, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Mint, new Color32[] { new(111, 192, 156, byte.MaxValue), new(65, 148, 111, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Lavender, new Color32[] { new(173, 126, 201, byte.MaxValue), new(131, 58, 203, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Nougat, new Color32[] { new(160, 101, 56, byte.MaxValue), new(115, 15, 78, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Peach, new Color32[] { new(255, 164, 119, byte.MaxValue), new(238, 128, 100, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Wasabi, new Color32[] { new(112, 143, 46, byte.MaxValue), new(72, 92, 29, byte.MaxValue) });
+            LighterColorData.Add(ColorType.HotPink, new Color32[] { new(255, 51, 102, byte.MaxValue), new(232, 0, 58, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Petrol, new Color32[] { new(0, 99, 105, byte.MaxValue), new(0, 61, 54, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Lemon, new Color32[] { new(0xDB, 0xFD, 0x2F, byte.MaxValue), new(0x74, 0xE5, 0x10, byte.MaxValue) });
+            LighterColorData.Add(ColorType.SignalOrange, new Color32[] { new(0xF7, 0x44, 0x17, byte.MaxValue), new(0x9B, 0x2E, 0x0F, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Teal, new Color32[] { new(0x25, 0xB8, 0xBF, byte.MaxValue), new(0x12, 0x89, 0x86, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Blurple, new Color32[] { new(0x59, 0x3C, 0xD6, byte.MaxValue), new(0x29, 0x17, 0x96, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Sunrise, new Color32[] { new(0xFF, 0xCA, 0x19, byte.MaxValue), new(0xDB, 0x44, 0x42, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Ice, new Color32[] { new(0xA8, 0xDF, 0xFF, byte.MaxValue), new(0x59, 0x9F, 0xC8, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.PitchBlack, new Color32[] { new(0, 0, 0, byte.MaxValue), new(0, 0, 0, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Darkmagenta, new Color32[] { new(139, 0, 139, byte.MaxValue), new(153, 50, 204, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Mintcream, new Color32[] { new(245, 255, 250, byte.MaxValue), new(224, 255, 255, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Leaf, new Color32[] { new(62, 90, 11, byte.MaxValue), new(34, 50, 6, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Emerald, new Color32[] { new(98, 214, 133, byte.MaxValue), new(82, 179, 111, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Brightyellow, new Color32[] { new(248, 181, 0, byte.MaxValue), new(255, 102, 0, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Darkaqua, new Color32[] { new(14, 104, 188, byte.MaxValue), new(11, 85, 153, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Matcha, new Color32[] { new(52, 99, 23, byte.MaxValue), new(34, 54, 19, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Pitchwhite, new Color32[] { new(255, 255, 255, byte.MaxValue), new(240, 240, 240, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Darksky, new Color32[] { new(64, 128, 192, byte.MaxValue), new(32, 96, 128, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Intenseblue, new Color32[] { new(83, 136, 255, byte.MaxValue), new(76, 122, 230, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Blueclosertoblack, new Color32[] { new(0, 0, 50, byte.MaxValue), new(0, 0, 25, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Sunkengreenishblue, new Color32[] { new(128, 156, 166, byte.MaxValue), new(115, 141, 153, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Azi, new Color32[] { new(100, 48, 0, byte.MaxValue), new(98, 5, 0, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Pitchred, new Color32[] { new(255, 0, 0, byte.MaxValue), new(220, 20, 60, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Pitchblue, new Color32[] { new(0, 0, 128, byte.MaxValue), new(0, 0, 112, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Pitchgreen, new Color32[] { new(0, 128, 0, byte.MaxValue), new(0, 120, 0, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Pitchyellow, new Color32[] { new(255, 255, 0, byte.MaxValue), new(255, 235, 0, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Backblue, new Color32[] { new(0, 128, 255, byte.MaxValue), new(0, 85, 255, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Mildpurple, new Color32[] { new(109, 83, 131, byte.MaxValue), new(109, 83, 131, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Ashishreddishpurplecolor, new Color32[] { new(139, 102, 118, byte.MaxValue), new(139, 102, 118, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Melon, new Color32[] { new(0, 225, 129, byte.MaxValue), new(24, 255, 81, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Crasyublue, new Color32[] { new(2, 38, 106, byte.MaxValue), new(64, 0, 111, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Lightgreen, new Color32[] { new(226, 255, 5, byte.MaxValue), new(192, 201, 10, byte.MaxValue) });
+
+
+            List<CustomColor> colors = new();
+            foreach (KeyValuePair<ColorType, Color32[]> dicItem in LighterColorData)
             {
-
-                /* Custom Colors */
-                new CustomColor
+                colors.Add(new CustomColor
                 {
-                    longname = "colorSalmon",
-                    color = new Color32(239, 191, 192, byte.MaxValue), // color = new Color32(0xD8, 0x82, 0x83, byte.MaxValue),
-                    shadow = new Color32(182, 119, 114, byte.MaxValue), // shadow = new Color32(0xA5, 0x63, 0x65, byte.MaxValue),
+                    longname = $"color{dicItem.Key}",
+                    color = dicItem.Value[0],
+                    shadow = dicItem.Value[1],
                     isLighterColor = true
-                },
-
-                new CustomColor
+                });
+            }
+            foreach (KeyValuePair<ColorType, Color32[]> dicItem in NoLighterColorData)
+            {
+                colors.Add(new CustomColor
                 {
-                    longname = "colorBordeaux",
-                    color = new Color32(109, 7, 26, byte.MaxValue),
-                    shadow = new Color32(54, 2, 11, byte.MaxValue),
+                    longname = $"color{dicItem.Key}",
+                    color = dicItem.Value[0],
+                    shadow = dicItem.Value[1],
                     isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorOlive",
-                    color = new Color32(154, 140, 61, byte.MaxValue),
-                    shadow = new Color32(104, 95, 40, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorTurqoise",
-                    color = new Color32(22, 132, 176, byte.MaxValue),
-                    shadow = new Color32(15, 89, 117, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorMint",
-                    color = new Color32(111, 192, 156, byte.MaxValue),
-                    shadow = new Color32(65, 148, 111, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorLavender",
-                    color = new Color32(173, 126, 201, byte.MaxValue),
-                    shadow = new Color32(131, 58, 203, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorNougat",
-                    color = new Color32(160, 101, 56, byte.MaxValue),
-                    shadow = new Color32(115, 15, 78, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorPeach",
-                    color = new Color32(255, 164, 119, byte.MaxValue),
-                    shadow = new Color32(238, 128, 100, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorWasabi",
-                    color = new Color32(112, 143, 46, byte.MaxValue),
-                    shadow = new Color32(72, 92, 29, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorHotPink",
-                    color = new Color32(255, 51, 102, byte.MaxValue),
-                    shadow = new Color32(232, 0, 58, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorPetrol",
-                    color = new Color32(0, 99, 105, byte.MaxValue),
-                    shadow = new Color32(0, 61, 54, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorLemon",
-                    color = new Color32(0xDB, 0xFD, 0x2F, byte.MaxValue),
-                    shadow = new Color32(0x74, 0xE5, 0x10, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorSignalOrange",
-                    color = new Color32(0xF7, 0x44, 0x17, byte.MaxValue),
-                    shadow = new Color32(0x9B, 0x2E, 0x0F, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorTeal",
-                    color = new Color32(0x25, 0xB8, 0xBF, byte.MaxValue),
-                    shadow = new Color32(0x12, 0x89, 0x86, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorBlurple",
-                    color = new Color32(0x59, 0x3C, 0xD6, byte.MaxValue),
-                    shadow = new Color32(0x29, 0x17, 0x96, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorSunrise",
-                    color = new Color32(0xFF, 0xCA, 0x19, byte.MaxValue),
-                    shadow = new Color32(0xDB, 0x44, 0x42, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorIce",
-                    color = new Color32(0xA8, 0xDF, 0xFF, byte.MaxValue),
-                    shadow = new Color32(0x59, 0x9F, 0xC8, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorPitchBlack",
-                    color = new Color32(0, 0, 0, byte.MaxValue),
-                    shadow = new Color32(0, 0, 0, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorDarkmagenta",
-                    color = new Color32(139, 0, 139, byte.MaxValue),
-                    shadow = new Color32(153, 50, 204, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorMintcream",
-                    color = new Color32(245, 255, 250, byte.MaxValue),
-                    shadow = new Color32(224, 255, 255, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorLeaf",
-                    color = new Color32(62, 90, 11, byte.MaxValue),
-                    shadow = new Color32(34, 50, 6, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorEmerald",
-                    color = new Color32(98, 214, 133, byte.MaxValue),
-                    shadow = new Color32(82, 179, 111, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorBrightyellow",
-                    color = new Color32(248, 181, 0, byte.MaxValue),
-                    shadow = new Color32(255, 102, 0, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorDarkaqua",
-                    color = new Color32(14, 104, 188, byte.MaxValue),
-                    shadow = new Color32(11, 85, 153, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorMatcha",
-                    color = new Color32(52, 99, 23, byte.MaxValue),
-                    shadow = new Color32(34, 54, 19, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorPitchwhite",
-                    color = new Color32(255, 255, 255, byte.MaxValue),
-                    shadow = new Color32(240, 240, 240, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorDarksky",
-                    color = new Color32(64, 128, 192, byte.MaxValue),
-                    shadow = new Color32(32, 96, 128, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorIntenseblue",
-                    color = new Color32(83, 136, 255, byte.MaxValue),
-                    shadow = new Color32(76, 122, 230, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorBlueclosertoblack",
-                    color = new Color32(0, 0, 50, byte.MaxValue),
-                    shadow = new Color32(0, 0, 25, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorSunkengreenishblue",
-                    color = new Color32(128, 156, 166, byte.MaxValue),
-                    shadow = new Color32(115, 141, 153, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorAzi",
-                    color = new Color32(100, 48, 0, byte.MaxValue),
-                    shadow = new Color32(98, 5, 0, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorPitchred",
-                    color = new Color32(255, 0, 0, byte.MaxValue),
-                    shadow = new Color32(220, 20, 60, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorPitchblue",
-                    color = new Color32(0, 0, 128, byte.MaxValue),
-                    shadow = new Color32(0, 0, 112, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorPitchgreen",
-                    color = new Color32(0, 128, 0, byte.MaxValue),
-                    shadow = new Color32(0, 120, 0, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorPitchyellow",
-                    color = new Color32(255, 255, 0, byte.MaxValue),
-                    shadow = new Color32(255, 235, 0, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorBackblue",
-                    color = new Color32(0, 128, 255, byte.MaxValue),
-                    shadow = new Color32(0, 85, 255, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorMildpurple",
-                    color = new Color32(109, 83, 131, byte.MaxValue),
-                    shadow = new Color32(109, 83, 131, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorAshishreddishpurplecolor",
-                    color = new Color32(139, 102, 118, byte.MaxValue),
-                    shadow = new Color32(139, 102, 118, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorMelon",
-                    color = new Color32(0, 225, 129, byte.MaxValue),
-                    shadow = new Color32(24, 255, 81, byte.MaxValue),
-                    isLighterColor = true
-                },
-
-                new CustomColor
-                {
-                    longname = "colorCrasyublue",
-                    color = new Color32(2, 38, 106, byte.MaxValue),
-                    shadow = new Color32(64, 0, 111, byte.MaxValue),
-                    isLighterColor = false
-                },
-
-                new CustomColor
-                {
-                    longname = "colorLightgreen",
-                    color = new Color32(226, 255, 5, byte.MaxValue),
-                    shadow = new Color32(192, 201, 10, byte.MaxValue),
-                    isLighterColor = true
-                }
-            };
+                });
+            }
             pickableColors += (uint)colors.Count; // Colors to show in Tab
             /** Hidden Colors **/
 
@@ -377,6 +151,7 @@ namespace SuperNewRoles.CustomCosmetics
             Palette.PlayerColors = colorlist.ToArray();
             Palette.ShadowColors = shadowlist.ToArray();
         }
+
 
         protected internal struct CustomColor
         {

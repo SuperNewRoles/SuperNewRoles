@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -44,8 +44,28 @@ namespace SuperNewRoles.Patches
             SyncSetting.CustomSyncSettings();
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             if (target.IsBot()) return true;
+            if (__instance.PlayerId != target.PlayerId)
+            {
+                if (__instance.IsRole(RoleId.Doppelganger))
+                {
+                    RoleClass.Doppelganger.DoppelgangerTargets.Add(__instance.PlayerId, target);
+                    SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
+                }
+            }
             if (__instance.PlayerId == target.PlayerId)
             {
+                if (__instance.IsRole(RoleId.Doppelganger))
+                {
+                    RoleClass.Doppelganger.DoppelgangerTargets.Remove(__instance.PlayerId);
+                    SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲット、{target.Data.PlayerName}を削除");
+                }
+                if (ModeHandler.IsMode(ModeId.Default))
+                {
+                    if (__instance.IsRole(RoleId.Doppelganger))
+                    {
+                        Roles.Impostor.Doppelganger.ResetShapeCool();
+                    }
+                }
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
                 {
                     if (__instance.IsRole(RoleId.RemoteSheriff))
@@ -107,7 +127,7 @@ namespace SuperNewRoles.Patches
                             {
                                 if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
                                 {
-                                    if (SelfBomber.GetIsBomb(__instance, p))
+                                    if (SelfBomber.GetIsBomb(__instance, p, CustomOptions.SelfBomberScope.GetFloat()))
                                     {
                                         __instance.RpcMurderPlayerCheck(p);
                                     }
@@ -117,19 +137,15 @@ namespace SuperNewRoles.Patches
                         }
                         return false;
                     case RoleId.Samurai:
-                        if (!RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId))
+                        if (!RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId) && AmongUsClient.Instance.AmHost)
                         {
-                            if (AmongUsClient.Instance.AmHost || !RoleClass.Samurai.Sword)
+                            foreach (PlayerControl p in CachedPlayer.AllPlayers)
                             {
-                                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                                if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
                                 {
-                                    if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
+                                    if (SelfBomber.GetIsBomb(__instance, p, CustomOptions.SamuraiScope.GetFloat()))
                                     {
-                                        if (Samurai.Getsword(__instance, p))
-                                        {
-                                            __instance.RpcMurderPlayerCheck(p);
-                                            Samurai.IsSword();
-                                        }
+                                        __instance.RpcMurderPlayerCheck(p);
                                     }
                                 }
                             }
@@ -169,10 +185,7 @@ namespace SuperNewRoles.Patches
                         }
                         return false;
                     case RoleId.ToiletFan:
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 79);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 80);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
+                        RPCHelper.RpcOpenToilet();
                         return false;
                     case RoleId.NiceButtoner:
                         if (RoleClass.NiceButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
@@ -225,7 +238,7 @@ namespace SuperNewRoles.Patches
                             {
                                 PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
                             }
-                        }, 1.5f);
+                        }, 1.5f, "SHR RemoteSheriff Shape Revert");
                         PlayerControl.LocalPlayer.RpcShapeshift(player, true);
                     }
                     else if (ModeHandler.IsMode(ModeId.Default))
@@ -308,12 +321,6 @@ namespace SuperNewRoles.Patches
                     return false;
                 }
                 bool showAnimation = true;
-                /*
-                if (PlayerControl.LocalPlayer.IsRole(RoleType.Ninja) && Ninja.isStealthed(PlayerControl.LocalPlayer))
-                {
-                    showAnimation = false;
-                }
-                */
 
                 // Use an unchecked kill command, to allow shorter kill cooldowns etc. without getting kicked
                 MurderAttemptResult res = CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, __instance.currentTarget, showAnimation: showAnimation);
@@ -390,7 +397,7 @@ namespace SuperNewRoles.Patches
                                     __instance.RpcMurderPlayer(target);
                                 }
                                 isKill = false;
-                            }, AmongUsClient.Instance.Ping / 1000f * 1.1f);
+                            }, AmongUsClient.Instance.Ping / 1000f * 1.1f, "BattleRoyal Murder");
                         }
                     }
                     return false;
@@ -514,10 +521,12 @@ namespace SuperNewRoles.Patches
                                         Arsonist.ArsonistDouse(target, __instance);
                                         __instance.RpcShowGuardEffect(target);// もう一度エフェクト
                                         Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
-                                    }else{//塗れなかったらキルクールリセット
+                                    }
+                                    else
+                                    {//塗れなかったらキルクールリセット
                                         SyncSetting.OptionData.DeepCopy().KillCooldown = SyncSetting.KillCoolSet(0f);
                                     }
-                                }, RoleClass.Arsonist.DurationTime);
+                                }, RoleClass.Arsonist.DurationTime, "SHR Arsonist Douse");
                             }
                             return false;
                         case RoleId.Mafia:
@@ -563,6 +572,10 @@ namespace SuperNewRoles.Patches
                                 else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.IsCreatedFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 作ったので 普通のキル");
                                 else SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 不正なキル");
                             }
+                            break;
+                        case RoleId.DarkKiller:
+                            var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                            if (ma != null && !ma.IsActive) return false;
                             break;
                     }
                     break;
@@ -654,19 +667,19 @@ namespace SuperNewRoles.Patches
                         FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
                         __instance.RpcStartMeeting(null);
                     }
-                }, 0.5f);
+                }, 0.5f, "RpcCheckExile Assassin Start Meeting");
                 new LateTask(() =>
                 {
                     __instance.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}は誰だ？</size>");
-                }, 2f);
+                }, 2f, "RpcCheckExile Who Marine Name");
                 new LateTask(() =>
                 {
                     __instance.RpcSendChat($"\n{ModTranslation.GetString("MarineWhois")}");
-                }, 2.5f);
+                }, 2.5f, "RpcCheckExile Who Marine Chat");
                 new LateTask(() =>
                 {
                     __instance.RpcSetName(__instance.GetDefaultName());
-                }, 2f);
+                }, 2f, "RpcCheckExile Default Name");
                 RoleClass.Assassin.TriggerPlayer = __instance;
                 return;
             }
@@ -685,19 +698,19 @@ namespace SuperNewRoles.Patches
                         target.RpcStartMeeting(null);
                     }
                     RoleClass.Assassin.TriggerPlayer = target;
-                }, 0.5f);
+                }, 0.5f, "RpcMurderPlayerCheck Assassin Meeting");
                 new LateTask(() =>
                 {
                     target.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}は誰だ？</size>");
-                }, 2f);
+                }, 2f, "RpcMurderPlayerCheck Who Marine Name");
                 new LateTask(() =>
                 {
                     target.RpcSendChat($"\n{ModTranslation.GetString("MarineWhois")}");
-                }, 2.5f);
+                }, 2.5f, "RpcMurderPlayerCheck Who Marine Chat");
                 new LateTask(() =>
                 {
                     target.RpcSetName(target.GetDefaultName());
-                }, 2f);
+                }, 2f, "RpcMurderPlayerCheck Default Name");
                 return;
             }
             SuperNewRolesPlugin.Logger.LogInfo("i(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
@@ -727,6 +740,7 @@ namespace SuperNewRoles.Patches
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
             EvilGambler.EvilGamblerMurder.Prefix(__instance, target);
+            Roles.Impostor.Doppelganger.KillCoolSetting.MurderPrefix(__instance, target);
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 target.resetChange();
@@ -765,7 +779,7 @@ namespace SuperNewRoles.Patches
                     switch (target.GetRole())
                     {
                         case RoleId.Fox:
-                            Fox.FoxMurderPatch.Prefix(__instance, target);
+                            Fox.FoxMurderPatch.Guard(__instance, target);
                             break;
                     }
                 }
@@ -783,6 +797,7 @@ namespace SuperNewRoles.Patches
 
             SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
+            Roles.Impostor.Doppelganger.KillCoolSetting.ResetKillCool(__instance);
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
@@ -790,10 +805,6 @@ namespace SuperNewRoles.Patches
                 {
                     MurderPlayer.Postfix(__instance, target);
                 }
-            }
-            else if (ModeHandler.IsMode(ModeId.Detective))
-            {
-                Mode.Detective.Main.MurderPatch(target);
             }
             else if (ModeHandler.IsMode(ModeId.Default))
             {
@@ -815,7 +826,7 @@ namespace SuperNewRoles.Patches
                             FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(target);
                             target.RpcStartMeeting(null);
                         }
-                    }, 0.5f);
+                    }, 0.5f, "MurderPlayer Assassin Meeting");
                     RoleClass.Assassin.TriggerPlayer = target;
                     return;
                 }
@@ -906,7 +917,7 @@ namespace SuperNewRoles.Patches
                             FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
                             __instance.RpcStartMeeting(null);
                         }
-                    }, 0.5f);
+                    }, 0.5f, "Exiled Assassin Meeting");
                     RoleClass.Assassin.TriggerPlayer = __instance;
                     return;
                 }
@@ -1006,6 +1017,55 @@ namespace SuperNewRoles.Patches
                 }
             }
             return result.IsDead() ? null : result;
+        }
+        public static PlayerControl JackalSetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
+        {
+            PlayerControl result = null;
+            float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
+            if (!MapUtilities.CachedShipStatus) return result;
+            if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
+            if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
+
+            if (untargetablePlayers == null)
+            {
+                untargetablePlayers = new();
+            }
+
+            Vector2 truePosition = targetingPlayer.GetTruePosition();
+            Il2CppSystem.Collections.Generic.List<GameData.PlayerInfo> allPlayers = GameData.Instance.AllPlayers;
+            for (int i = 0; i < allPlayers.Count; i++)
+            {
+                GameData.PlayerInfo playerInfo = allPlayers[i];
+                //下記Jackalがbuttonのターゲットにできない役職の設定
+                if (playerInfo.Object.IsAlive() && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.Object.IsJackalTeamJackal() && !playerInfo.Object.IsJackalTeamSidekick())
+                {
+                    PlayerControl @object = playerInfo.Object;
+                    if (untargetablePlayers.Any(x => x == @object))
+                    {
+                        // if that player is not targetable: skip check
+                        continue;
+                    }
+
+                    if (@object && (!@object.inVent || targetPlayersInVents))
+                    {
+                        Vector2 vector = @object.GetTruePosition() - truePosition;
+                        float magnitude = vector.magnitude;
+                        if (magnitude <= num && !PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask))
+                        {
+                            result = @object;
+                            num = magnitude;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+        public static void SetPlayerOutline(PlayerControl target, Color color)
+        {
+            if (target == null || target.MyRend == null) return;
+
+            target.MyRend().material.SetFloat("_Outline", 1f);
+            target.MyRend().material.SetColor("_OutlineColor", color);
         }
     }
 }

@@ -399,7 +399,7 @@ namespace SuperNewRoles
                         writer.Write(showAnimation ? byte.MaxValue : 0);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
-                    }, tien);
+                    }, tien, "CheckMuderAttemptAndKill");
                 }
             }
             return murder;
@@ -524,10 +524,6 @@ namespace SuperNewRoles
         public static object TryCast(this Il2CppObjectBase self, Type type)
         {
             return AccessTools.Method(self.GetType(), nameof(Il2CppObjectBase.TryCast)).MakeGenericMethod(type).Invoke(self, Array.Empty<object>());
-        }
-        internal static string Cs(object unityEngine, string v)
-        {
-            throw new NotImplementedException();
         }
 
         public static Dictionary<string, Texture2D> CachedTexture = new();
@@ -757,7 +753,9 @@ namespace SuperNewRoles
             float dis = Vector2.Distance(pos, pos2);
             return dis <= distance;
         }
-
+        /// <summary>keyCodesが押されているか</summary>
+        public static bool GetManyKeyDown(KeyCode[] keyCodes) =>
+            keyCodes.All(x => Input.GetKey(x)) && keyCodes.Any(x => Input.GetKeyDown(x));
     }
     public static class CreateFlag
     {

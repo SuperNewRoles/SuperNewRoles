@@ -85,11 +85,6 @@ namespace SuperNewRoles.Mode
                 thisMode = ModeId.CopsRobbers;
                 CopsRobbers.Main.ClearAndReloads();
             }
-            /* else if (IsMode(ModeId.LevelUp, false))
-            {
-                thisMode = ModeId.LevelUp;
-                LevelUp.main.ClearAndReloads();
-            }*/
             else
             {
                 thisMode = ModeId.Default;
@@ -133,10 +128,7 @@ namespace SuperNewRoles.Mode
         {
             if (IsMode(ModeId.HideAndSeek)) HideAndSeek.Intro.IntroHandler(__instance);
             else if (IsMode(ModeId.BattleRoyal)) BattleRoyal.Intro.IntroHandler(__instance);
-            else if (IsMode(ModeId.SuperHostRoles)) SuperHostRoles.Intro.IntroHandler();
             else if (IsMode(ModeId.Zombie)) Zombie.Intro.IntroHandler(__instance);
-            else if (IsMode(ModeId.Detective)) SuperHostRoles.Intro.IntroHandler();
-            else if (IsMode(ModeId.Werewolf)) SuperHostRoles.Intro.IntroHandler();
         }
         public static void YouAreIntroHandler(IntroCutscene __instance)
         {

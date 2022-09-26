@@ -47,7 +47,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             };
                             RoleClass.Quarreled.IsQuarreledWin = true;
                             EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByTask, false);
-                        }, 0.15f);
+                        }, 0.15f, "Quarreled Murder EndGame");
                     }
                 }
             }

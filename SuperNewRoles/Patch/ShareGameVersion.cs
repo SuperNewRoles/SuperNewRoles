@@ -4,10 +4,10 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using Hazel;
-
-
+using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
+using Agartha;
 
 namespace SuperNewRoles.Patch
 {
@@ -106,6 +106,17 @@ namespace SuperNewRoles.Patch
                             }
                         }
                     }
+                    // アガルタ反映関係の警告文制御
+                    if ((CustomMapNames)PlayerControl.GameOptions.MapId == CustomMapNames.Mira && //マップ設定がMiraである かつ
+                        CustomOptions.enableAgartha.GetBool() && //「アガルタ」が有効である かつ
+                        !ModeHandler.IsMode(ModeId.Default, false) && //モードがデフォルトでない(特殊モードである) かつ
+                        !CustomOptions.DisconnectNotPCOption.GetBool() && //「PC以外キック」が無効(バニラをキックする状態)である かつ
+                        !CustomOptions.IsDebugMode.GetBool()) //Debugモードでない時
+                    {
+                        // 警告を表示する
+                        message += $"\n{ModTranslation.GetString("IsSpecialModeOnAndVanillaKickOff")}\n";
+                        blockStart = true;
+                    }
                 }
                 if (ConfigRoles.IsVersionErrorView.Value)
                 {
@@ -113,7 +124,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
                         {
-                            message += "\n" + ModTranslation.GetString("ErrorHostNoVersion") + "\n";
+                            message += $"\n{ModTranslation.GetString("ErrorHostNoVersion")}\n";
                             blockStart = true;
                         }
                         else
@@ -216,29 +227,12 @@ namespace SuperNewRoles.Patch
                 __instance.PlayerCounter.autoSizeTextContainer = true;
                 if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value)
                 {
-                    //MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.AutoCreateRoom, SendOption.Reliable, -1);
-                    //AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    //var roomid = InnerNet.GameCode.IntToGameName(AmongUsClient.Instance.GameId);
-                    //AmongUsClient.Instance.StartCoroutine(CREATEROOMANDJOIN(roomid, AmongUsClient.Instance.GameId));
                     notcreateroom = true;
                 }
             }
-            /**
-                if (!AmongUsClient.Instance.AmHost)
-                {
-                    if (!playerVersions.ContainsKey(AmongUsClient.Instance.HostId) || SuperNewRolesPlugin.Version.CompareTo(playerVersions[AmongUsClient.Instance.HostId].version) != 0)
-                    {
-                        __instance.GameStartText.text = ModTranslation.GetString("ErrorHostNoVersion");
-                        __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
-                    }
-                    else
-                    {
-                        __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
-                    }
-                }**/
         }
     }
-    public class PlayerVersion
+    public struct PlayerVersion
     {
         public readonly Version version;
         public readonly Guid guid;

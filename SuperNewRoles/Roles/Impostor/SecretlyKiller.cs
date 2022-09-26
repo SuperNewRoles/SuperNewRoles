@@ -1,14 +1,12 @@
 using SuperNewRoles.Buttons;
-using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
     public static class SecretlyKiller
     {
         public static void EndMeeting()
-        {
-            AllResetCoolDown();
-        }
+            => AllResetCoolDown();
+
         //リセクール (by:Buttons.cs)
         public static void MainResetCoolDown()
         {
@@ -25,11 +23,9 @@ namespace SuperNewRoles.Roles
         public static void AllResetCoolDown()
         {
             //シークレットリーリセット
-            HudManagerStartPatch.SecretlyKillerSecretlyKillButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
-            HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
+            SecretlyResetCoolDown();
             //ノーマルリセット
-            HudManagerStartPatch.SecretlyKillerMainButton.MaxTimer = RoleClass.SecretlyKiller.KillCoolTime;
-            HudManagerStartPatch.SecretlyKillerMainButton.Timer = RoleClass.SecretlyKiller.KillCoolTime;
+            MainResetCoolDown();
         }
 
         //シークレットキル (by:Buttons.cs)
@@ -37,13 +33,6 @@ namespace SuperNewRoles.Roles
         {
             RoleClass.SecretlyKiller.target.RpcMurderPlayer(RoleClass.SecretlyKiller.target);
             RoleClass.SecretlyKiller.target = null;
-        }
-        public static void SetPlayerOutline(PlayerControl target, Color color)
-        {
-            if (target == null || target.MyRend == null) return;
-
-            target.MyRend().material.SetFloat("_Outline", 1f);
-            target.MyRend().material.SetColor("_OutlineColor", color);
         }
     }
 }

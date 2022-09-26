@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 
-namespace SuperNewRoles
+namespace SuperNewRoles.Modules
 {
     //TownOfHostより！！
     public class LateTask
@@ -29,17 +29,17 @@ namespace SuperNewRoles
             timer = time;
             this.name = name;
             AddTasks.Add(this);
-            //Logger.info("New LateTask \"" + name + "\" is created");
+            Logger.Info("New LateTask \"" + name + "\" is created","LateTask");
         }
         public static void Update(float deltaTime)
         {
             var TasksToRemove = new List<LateTask>();
             Tasks.ForEach((task) =>
             {
-                //SuperNewRolesPlugin.Logger.LogInfo("LateTask \"" + task.name + "\" Start");
+                //Logger.Info("LateTask \"" + task.name + "\" Start","LateTask");
                 if (task.Run(deltaTime))
                 {
-                    //SuperNewRolesPlugin.Logger.LogInfo("LateTask \"" + task.name + "\" is finished");
+                    Logger.Info("LateTask \"" + task.name + "\" is finished","LateTask");
                     TasksToRemove.Add(task);
                 }
             });

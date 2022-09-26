@@ -42,11 +42,7 @@ namespace SuperNewRoles
             var Bot = Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
 
             id++;
-            /*
-            if (id < 14) {
-                id = 15;
-            }
-            */
+
             Bot.PlayerId = id;
             // Bot.PlayerId = BotPlayerId;
             GameData.Instance.AddPlayer(Bot);
@@ -66,7 +62,7 @@ namespace SuperNewRoles
             AllBots.Add(Bot);
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetBot);
             writer.Write(Bot.PlayerId);
-            new LateTask(() => writer.EndRPC(), 0.5f);
+            new LateTask(() => writer.EndRPC(), 0.5f, "Bot Spawn-End");
             return Bot;
         }
         public static void Despawn(PlayerControl Bot)

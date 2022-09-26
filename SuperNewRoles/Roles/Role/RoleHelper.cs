@@ -616,6 +616,12 @@ namespace SuperNewRoles
                 case RoleId.ShiftActor:
                     ShiftActor.Player.Add(player);
                     break;
+                case RoleId.ConnectKiller:
+                    RoleClass.ConnectKiller.ConnectKillerPlayer.Add(player);
+                    break;
+                case RoleId.Doppelganger:
+                    RoleClass.Doppelganger.DoppelggerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1033,6 +1039,12 @@ namespace SuperNewRoles
                 case RoleId.ShiftActor:
                     ShiftActor.Player.RemoveAll(ClearRemove);
                     break;
+                case RoleId.ConnectKiller:
+                    RoleClass.ConnectKiller.ConnectKillerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Doppelganger:
+                    RoleClass.Doppelganger.DoppelggerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -1139,7 +1151,7 @@ namespace SuperNewRoles
                 RoleId.Tuna => RoleClass.Tuna.IsUseVent,
                 RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
-                RoleId.Stefinder => RoleClass.Stefinder.UseVent,
+                RoleId.Stefinder => CustomOptions.StefinderVent.GetBool(),
                 _ => false,
             };
         }
@@ -1189,7 +1201,7 @@ namespace SuperNewRoles
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
                 RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
                 RoleId.Egoist => RoleClass.Egoist.UseSabo,
-                RoleId.Stefinder => RoleClass.Stefinder.UseSabo,
+                RoleId.Stefinder => CustomOptions.StefinderSabo.GetBool(),
                 _ => false,
             };
         }
@@ -1217,7 +1229,7 @@ namespace SuperNewRoles
                     RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
                     RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
                     RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
-                    RoleId.Photographer => RoleClass.Photographer.IsImpostorVision,
+                    RoleId.Photographer => CustomOptions.PhotographerIsImpostorVision.GetBool(),
                     _ => false,
                 };
         }
@@ -1548,6 +1560,8 @@ namespace SuperNewRoles
                 else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
                 else if (RoleClass.Slugger.SluggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Slugger;
                 else if (ShiftActor.Player.IsCheckListPlayerControl(player)) return RoleId.ShiftActor;
+                else if (RoleClass.ConnectKiller.ConnectKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.ConnectKiller;
+                else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
                 //ロールチェック
             }
             catch (Exception e)
@@ -1563,7 +1577,7 @@ namespace SuperNewRoles
         }
         public static bool IsAlive(this PlayerControl player)
         {
-            return !IsDead(player);
+            return player != null && !player.Data.Disconnected && !player.Data.IsDead;
         }
         public static bool IsDead(this CachedPlayer player)
         {
@@ -1571,7 +1585,7 @@ namespace SuperNewRoles
         }
         public static bool IsAlive(this CachedPlayer player)
         {
-            return !IsDead(player);
+            return player != null && !player.Data.Disconnected && !player.Data.IsDead;
         }
     }
 }
