@@ -64,7 +64,7 @@ namespace SuperNewRoles.Roles.Impostor
                     ? string.Format(ModTranslation.GetString("DoppelgangerDurationTimerText"), (int)RoleClass.Doppelganger.DurationTime)
                     : string.Format(ModTranslation.GetString("DoppelgangerDurationTimerText"), ((int)RoleClass.Doppelganger.Duration) + 1);
             }
-            else if(RoleClass.Doppelganger.DoppelgangerDurationText.text != "")
+            else if (RoleClass.Doppelganger.DoppelgangerDurationText.text != "")
             {
                 RoleClass.Doppelganger.DoppelgangerDurationText.text = "";
             }

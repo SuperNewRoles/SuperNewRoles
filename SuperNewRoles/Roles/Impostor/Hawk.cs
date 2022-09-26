@@ -4,7 +4,6 @@ namespace SuperNewRoles.Roles
 {
     public class Hawk
     {
-        public static void TimerEnd() { }
         private static float count;
         public class FixedUpdate
         {

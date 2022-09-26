@@ -1164,8 +1164,8 @@ namespace SuperNewRoles
                 RoleId.Tuna => RoleClass.Tuna.IsUseVent,
                 RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
-                RoleId.Stefinder => RoleClass.Stefinder.UseVent,
                 RoleId.Pavlovsdogs => CustomOptions.PavlovsdogCanVent.GetBool(),
+                RoleId.Stefinder => CustomOptions.StefinderVent.GetBool(),
                 _ => false,
             };
         }
@@ -1215,7 +1215,7 @@ namespace SuperNewRoles
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
                 RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
                 RoleId.Egoist => RoleClass.Egoist.UseSabo,
-                RoleId.Stefinder => RoleClass.Stefinder.UseSabo,
+                RoleId.Stefinder => CustomOptions.StefinderSabo.GetBool(),
                 _ => false,
             };
         }
@@ -1243,8 +1243,8 @@ namespace SuperNewRoles
                     RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
                     RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
                     RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
-                    RoleId.Photographer => RoleClass.Photographer.IsImpostorVision,
                     RoleId.Pavlovsdogs => CustomOptions.PavlovsdogIsImpostorView.GetBool(),
+                    RoleId.Photographer => CustomOptions.PhotographerIsImpostorVision.GetBool(),
                     _ => false,
                 };
         }
@@ -1596,7 +1596,7 @@ namespace SuperNewRoles
         }
         public static bool IsAlive(this PlayerControl player)
         {
-            return !IsDead(player);
+            return player != null && !player.Data.Disconnected && !player.Data.IsDead;
         }
         public static bool IsDead(this CachedPlayer player)
         {
@@ -1604,7 +1604,7 @@ namespace SuperNewRoles
         }
         public static bool IsAlive(this CachedPlayer player)
         {
-            return !IsDead(player);
+            return player != null && !player.Data.Disconnected && !player.Data.IsDead;
         }
     }
 }

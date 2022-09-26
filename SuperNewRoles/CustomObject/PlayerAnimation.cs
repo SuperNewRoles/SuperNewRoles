@@ -16,18 +16,6 @@ namespace SuperNewRoles.CustomObject
     }
     public class PlayerAnimation
     {
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-        public static class PlayerControlFixedUpdatePatch
-        {
-            public static void Postfix(PlayerControl __instance)
-            {
-                if (GetPlayerAnimation(__instance.PlayerId) == null) new PlayerAnimation(__instance);
-                if (__instance == PlayerControl.LocalPlayer)
-                {
-                    PlayerAnimation.FixedAllUpdate();
-                }
-            }
-        }
         public static List<PlayerAnimation> PlayerAnimations = new();
         public PlayerControl Player;
         public PlayerPhysics Physics;

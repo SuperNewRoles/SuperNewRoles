@@ -5,12 +5,10 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public class Tuna
     {
-        public static void Postfix()
+        public static void HudUpdate()
         {
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (RoleClass.IsMeeting) return;
             if (ModeHandler.IsMode(ModeId.Default))
             {

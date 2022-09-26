@@ -9,13 +9,7 @@ namespace SuperNewRoles.CustomObject
         public GameObject arrow;
         private Vector3 oldTarget;
 
-        private static Sprite sprite;
-        public static Sprite GetSprite()
-        {
-            if (sprite) return sprite;
-            sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Arrow.png", 200f);
-            return sprite;
-        }
+        public static Sprite GetSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Arrow.png", 200f);
 
         public Arrow(Color color)
         {
