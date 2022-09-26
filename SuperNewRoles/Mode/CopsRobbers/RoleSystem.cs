@@ -90,7 +90,8 @@ namespace SuperNewRoles.Mode.CopsRobbers
             AllRoleSetClass.Crewnotonepar = new();
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {
-                if (intro.RoleId is RoleId.Workperson)
+                if (intro.RoleId is
+                    RoleId.Workperson or RoleId.HomeSecurityGuard or RoleId.Tuna or RoleId.ToiletFan)
                 {
                     var option = IntroDate.GetOption(intro.RoleId);
                     if (option == null) continue;
@@ -135,6 +136,9 @@ namespace SuperNewRoles.Mode.CopsRobbers
             }
             AllRoleSetClass.CrewOrImpostorSet();
             AllRoleSetClass.AllRoleSet();
+            SuperHostRoles.RoleSelectHandler.SetCustomRoles();
+            SyncSetting.CustomSyncSettings();
+            ChacheManager.ResetChache();
         }
     }
 }
