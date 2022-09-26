@@ -1188,6 +1188,7 @@ namespace SuperNewRoles.Patch
             foreach (PlayerControl p in RoleClass.Tasker.TaskerPlayer)
             {
                 if (p == null) continue;
+                if (p.IsDead()) continue;
                 if (p.AllTasksCompleted())
                 {
                     __instance.enabled = false;
