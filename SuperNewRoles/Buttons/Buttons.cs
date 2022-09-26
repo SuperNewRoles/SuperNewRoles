@@ -1798,10 +1798,6 @@ namespace SuperNewRoles.Buttons
                         target.SetRoleRPC(RoleId.MadMate);
                         RoleClass.EvilHacker.IsCreateMadmate = false;
                     }
-                    else if (target.Data.Role.IsImpostor)
-                    {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                    }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.EvilHacker && ModeHandler.IsMode(ModeId.Default) && RoleClass.EvilHacker.IsCreateMadmate; },
                 () =>
