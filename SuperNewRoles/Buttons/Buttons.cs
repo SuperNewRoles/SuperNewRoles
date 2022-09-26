@@ -165,7 +165,7 @@ namespace SuperNewRoles.Buttons
                     PavlovsownerCreatedogButton.MaxTimer = CustomOptions.PavlovsownerCreateCoolTime.GetFloat();
                     PavlovsownerCreatedogButton.Timer = PavlovsownerCreatedogButton.MaxTimer;
                 },
-                RoleClass.Slugger.GetButtonSprite(),
+                RoleClass.Pavlovsowner.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -174,7 +174,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.GetString("SluggerButtonName"),
+                buttonText = ModTranslation.GetString("PavlovsownerCreatedogButtonName"),
                 showButtonText = true
             };
 
