@@ -28,13 +28,13 @@ namespace SuperNewRoles
             if (!isEnable) return;
             if (DestroyableSingleton<HudManager>._instance) DestroyableSingleton<HudManager>.Instance.Notifier.AddItem(text);
         }
-        private static void SendToFile(string text, LogLevel level = LogLevel.Info, string tag = "", int lineNumber = 0, string fileName = "")
+        private static void SendToFile(string text, string callerMember = "", LogLevel level = LogLevel.Info, string tag = "", int lineNumber = 0, string fileName = "")
         {
             var logger = SuperNewRolesPlugin.Logger;
-            string t = DateTime.Now.ToString("HH:mm:ss");
+            string t = DateTime.Now.ToString("HH:mm:ss.fff");
             if (sendToGameList.Contains(tag) || isAlsoInGame) SendInGame($"[{tag}]{text}");
             text = text.Replace("\r", "\\r").Replace("\n", "\\n");
-            string log_text = $"[{t}][{tag}]{text}";
+            string log_text = $"[{t}][{callerMember}][{tag}]{text}";
             if (isDetail && ConfigRoles.DebugMode.Value)
             {
                 StackFrame stack = new(2);
@@ -65,17 +65,17 @@ namespace SuperNewRoles
                     break;
             }
         }
-        public static void Info(string text, string tag = "", [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "") =>
-            SendToFile(text, LogLevel.Info, tag, lineNumber, fileName);
-        public static void Warn(string text, string tag, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "") =>
-            SendToFile(text, LogLevel.Warning, tag, lineNumber, fileName);
-        public static void Error(string text, string tag, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "") =>
-            SendToFile(text, LogLevel.Error, tag, lineNumber, fileName);
-        public static void Fatal(string text, string tag, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "") =>
-            SendToFile(text, LogLevel.Fatal, tag, lineNumber, fileName);
-        public static void Msg(string text, string tag, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "") =>
-            SendToFile(text, LogLevel.Message, tag, lineNumber, fileName);
-        public static void CurrentMethod([CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "")
+        public static void Info(string text, string tag = "", [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "") =>
+            SendToFile(text, callerMember, LogLevel.Info, tag, lineNumber, fileName);
+        public static void Warn(string text, string tag, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "") =>
+            SendToFile(text, callerMember, LogLevel.Warning, tag, lineNumber, fileName);
+        public static void Error(string text, string tag, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "") =>
+            SendToFile(text, callerMember, LogLevel.Error, tag, lineNumber, fileName);
+        public static void Fatal(string text, string tag, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "") =>
+            SendToFile(text, callerMember, LogLevel.Fatal, tag, lineNumber, fileName);
+        public static void Msg(string text, string tag, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "") =>
+            SendToFile(text, callerMember, LogLevel.Message, tag, lineNumber, fileName);
+        public static void CurrentMethod([CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "", [CallerMemberName] string callerMember = "")
         {
             StackFrame stack = new(1);
             Msg($"\"{stack.GetMethod().ReflectedType.Name}.{stack.GetMethod().Name}\" Called in \"{Path.GetFileName(fileName)}({lineNumber})\"", "Method");

@@ -137,19 +137,16 @@ namespace SuperNewRoles.Patches
                         }
                         return false;
                     case RoleId.Samurai:
-                        if (!RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId))
+                        if (!RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId) && AmongUsClient.Instance.AmHost)
                         {
-                            if (AmongUsClient.Instance.AmHost || !RoleClass.Samurai.Sword)
+                            foreach (PlayerControl p in CachedPlayer.AllPlayers)
                             {
-                                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                                if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
                                 {
-                                    if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
+                                    if (SelfBomber.GetIsBomb(__instance, p, CustomOptions.SamuraiScope.GetFloat()))
                                     {
-                                        if (SelfBomber.GetIsBomb(__instance, p, CustomOptions.SamuraiScope.GetFloat()))
-                                        {
-                                            __instance.RpcMurderPlayerCheck(p);
-                                            RoleClass.Samurai.Sword = true;
-                                        }
+                                        __instance.RpcMurderPlayerCheck(p);
+                                        RoleClass.Samurai.Sword = true;
                                     }
                                 }
                             }
@@ -189,10 +186,7 @@ namespace SuperNewRoles.Patches
                         }
                         return false;
                     case RoleId.ToiletFan:
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 79);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 80);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
+                        RPCHelper.RpcOpenToilet();
                         return false;
                     case RoleId.NiceButtoner:
                         if (RoleClass.NiceButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
@@ -565,8 +559,7 @@ namespace SuperNewRoles.Patches
                                 __instance.RpcShowGuardEffect(target);
                                 RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
                                 target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
-                                target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//クルーにして
-                                target.SetRoleRPC(RoleId.JackalFriends);//フレンズにする
+                                Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                                 RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
                                 SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
@@ -579,6 +572,10 @@ namespace SuperNewRoles.Patches
                                 else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.IsCreatedFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 作ったので 普通のキル");
                                 else SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 不正なキル");
                             }
+                            break;
+                        case RoleId.DarkKiller:
+                            var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                            if (ma != null && !ma.IsActive) return false;
                             break;
                     }
                     break;
