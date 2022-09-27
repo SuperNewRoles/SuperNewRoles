@@ -31,7 +31,8 @@ namespace SuperNewRoles.Buttons
             return player.GetRole() switch
             {
                 RoleId.Minimalist => !RoleClass.Minimalist.UseSabo,
-                RoleId.DoubleKiller => !RoleClass.DoubleKiller.CanUseSabo,
+                RoleId.DoubleKiller => !CustomOptions.DoubleKillerSabo.GetBool(),
+                RoleId.Samurai => !RoleClass.Samurai.UseSabo,
                 //サボタージュボタン無効か
                 _ => false
             };
@@ -54,7 +55,8 @@ namespace SuperNewRoles.Buttons
             return player.GetRole() switch
             {
                 RoleId.Minimalist => !RoleClass.Minimalist.UseVent,
-                RoleId.DoubleKiller => !RoleClass.DoubleKiller.CanUseVent,
+                RoleId.DoubleKiller => !CustomOptions.DoubleKillerVent.GetBool(),
+                RoleId.Samurai => !RoleClass.Samurai.UseVent,
                 //ベントボタン無効化
                 _ => false,
             };

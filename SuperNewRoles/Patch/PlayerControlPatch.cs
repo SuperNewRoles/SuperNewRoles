@@ -127,7 +127,7 @@ namespace SuperNewRoles.Patches
                             {
                                 if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
                                 {
-                                    if (SelfBomber.GetIsBomb(__instance, p))
+                                    if (SelfBomber.GetIsBomb(__instance, p, CustomOptions.SelfBomberScope.GetFloat()))
                                     {
                                         __instance.RpcMurderPlayerCheck(p);
                                     }
@@ -137,19 +137,15 @@ namespace SuperNewRoles.Patches
                         }
                         return false;
                     case RoleId.Samurai:
-                        if (!RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId))
+                        if (!RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId) && AmongUsClient.Instance.AmHost)
                         {
-                            if (AmongUsClient.Instance.AmHost || !RoleClass.Samurai.Sword)
+                            foreach (PlayerControl p in CachedPlayer.AllPlayers)
                             {
-                                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                                if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
                                 {
-                                    if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
+                                    if (SelfBomber.GetIsBomb(__instance, p, CustomOptions.SamuraiScope.GetFloat()))
                                     {
-                                        if (Samurai.Getsword(__instance, p))
-                                        {
-                                            __instance.RpcMurderPlayerCheck(p);
-                                            Samurai.IsSword();
-                                        }
+                                        __instance.RpcMurderPlayerCheck(p);
                                     }
                                 }
                             }
@@ -189,10 +185,7 @@ namespace SuperNewRoles.Patches
                         }
                         return false;
                     case RoleId.ToiletFan:
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 79);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 80);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
+                        RPCHelper.RpcOpenToilet();
                         return false;
                     case RoleId.NiceButtoner:
                         if (RoleClass.NiceButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
@@ -572,8 +565,7 @@ namespace SuperNewRoles.Patches
                                 __instance.RpcShowGuardEffect(target);
                                 RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
                                 target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
-                                target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//クルーにして
-                                target.SetRoleRPC(RoleId.JackalFriends);//フレンズにする
+                                Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                                 RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
                                 SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
@@ -586,6 +578,10 @@ namespace SuperNewRoles.Patches
                                 else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.IsCreatedFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 作ったので 普通のキル");
                                 else SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 不正なキル");
                             }
+                            break;
+                        case RoleId.DarkKiller:
+                            var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                            if (ma != null && !ma.IsActive) return false;
                             break;
                     }
                     break;
@@ -789,7 +785,7 @@ namespace SuperNewRoles.Patches
                     switch (target.GetRole())
                     {
                         case RoleId.Fox:
-                            Fox.FoxMurderPatch.Prefix(__instance, target);
+                            Fox.FoxMurderPatch.Guard(__instance, target);
                             break;
                     }
                 }
@@ -1027,6 +1023,55 @@ namespace SuperNewRoles.Patches
                 }
             }
             return result.IsDead() ? null : result;
+        }
+        public static PlayerControl JackalSetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
+        {
+            PlayerControl result = null;
+            float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
+            if (!MapUtilities.CachedShipStatus) return result;
+            if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
+            if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
+
+            if (untargetablePlayers == null)
+            {
+                untargetablePlayers = new();
+            }
+
+            Vector2 truePosition = targetingPlayer.GetTruePosition();
+            Il2CppSystem.Collections.Generic.List<GameData.PlayerInfo> allPlayers = GameData.Instance.AllPlayers;
+            for (int i = 0; i < allPlayers.Count; i++)
+            {
+                GameData.PlayerInfo playerInfo = allPlayers[i];
+                //下記Jackalがbuttonのターゲットにできない役職の設定
+                if (playerInfo.Object.IsAlive() && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.Object.IsJackalTeamJackal() && !playerInfo.Object.IsJackalTeamSidekick())
+                {
+                    PlayerControl @object = playerInfo.Object;
+                    if (untargetablePlayers.Any(x => x == @object))
+                    {
+                        // if that player is not targetable: skip check
+                        continue;
+                    }
+
+                    if (@object && (!@object.inVent || targetPlayersInVents))
+                    {
+                        Vector2 vector = @object.GetTruePosition() - truePosition;
+                        float magnitude = vector.magnitude;
+                        if (magnitude <= num && !PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask))
+                        {
+                            result = @object;
+                            num = magnitude;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+        public static void SetPlayerOutline(PlayerControl target, Color color)
+        {
+            if (target == null || target.MyRend == null) return;
+
+            target.MyRend().material.SetFloat("_Outline", 1f);
+            target.MyRend().material.SetColor("_OutlineColor", color);
         }
     }
 }

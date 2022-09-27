@@ -45,7 +45,7 @@ namespace SuperNewRoles.CustomCosmetics
                             : LoadTex.loadSprite("SuperNewRoles\\CustomVisorsChache\\" + file.Name)
                         };
                         __instance.allVisors.Add(plate);
-                        SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み完了:" + file.Name);
+                        //SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み完了:" + file.Name);
                     }
                     catch (Exception e)
                     {
