@@ -81,14 +81,14 @@ namespace SuperNewRoles.Patch
             }
         }
 
-        static void reduceKillCooldown(PlayerControl __instance)
+        static void ReduceKillCooldown(PlayerControl __instance)
         {
             if (CustomOptions.IsAlwaysReduceCooldown.GetBool())
             {
-                // オプションがONの場合はベント内はクールダウン減少を止める
-                bool exceptInVent = CustomOptions.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
+                // オプションがOFFの場合はベント内はクールダウン減少を止める
+                bool exceptInVent = !CustomOptions.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
                 // 配電盤タスク中はクールダウン減少を止める
-                bool exceptOnTask = CustomOptions.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
+                bool exceptOnTask = !CustomOptions.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
 
                 if (!__instance.Data.IsDead && !__instance.CanMove && !exceptInVent && !exceptOnTask)
                     __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
@@ -119,7 +119,7 @@ namespace SuperNewRoles.Patch
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
                     Roles.CrewMate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
-                    reduceKillCooldown(__instance);
+                    ReduceKillCooldown(__instance);
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
