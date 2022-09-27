@@ -780,6 +780,10 @@ namespace SuperNewRoles.Patches
                     }
                 }
 
+                var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                if (__instance.IsRole(RoleId.DarkKiller))
+                    if (ma != null && !ma.IsActive) return false;
+
                 if (AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId)
                 {
                     switch (target.GetRole())
