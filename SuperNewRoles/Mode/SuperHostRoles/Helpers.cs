@@ -64,7 +64,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             else
             {
-                var crs = CustomRpcSender.Create("RpcShowGuardEffect", SendOption.Reliable);
+                var crs = CustomRpcSender.Create("RpcShowGuardEffect", SendOption.None);
                 var clientId = shower.GetClientId();
                 Logger.Info($"非Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
                 crs.StartMessage(clientId);
