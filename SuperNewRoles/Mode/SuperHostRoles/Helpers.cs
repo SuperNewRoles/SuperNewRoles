@@ -88,7 +88,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         /// <param name="duration">継続時間</param>
         public static void ShowReactorFlash(this PlayerControl shower, float duration = 0f)
         {
-            //Logger.Info($"対象:{shower.name}({shower.GetRole()})", "ShowReactorFlash");
             if (shower == null || !AmongUsClient.Instance.AmHost || shower.AmOwner) return;
             int clientId = shower.GetClientId();
 
