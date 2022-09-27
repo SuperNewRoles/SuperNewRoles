@@ -146,7 +146,6 @@ namespace SuperNewRoles.Patches
                                     if (SelfBomber.GetIsBomb(__instance, p, CustomOptions.SamuraiScope.GetFloat()))
                                     {
                                         __instance.RpcMurderPlayerCheck(p);
-                                        RoleClass.Samurai.Sword = true;
                                     }
                                 }
                             }
