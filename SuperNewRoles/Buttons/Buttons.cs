@@ -1796,10 +1796,6 @@ namespace SuperNewRoles.Buttons
                         Madmate.CreateMadMate(target);
                         RoleClass.EvilHacker.IsCreateMadmate = false;
                     }
-                    else if (target.Data.Role.IsImpostor)
-                    {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                    }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.EvilHacker && ModeHandler.IsMode(ModeId.Default) && RoleClass.EvilHacker.IsCreateMadmate; },
                 () =>
@@ -1811,8 +1807,8 @@ namespace SuperNewRoles.Buttons
                 new Vector3(-2.7f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
-                KeyCode.Q,
-                8,
+                null,
+                0,
                 () => { return false; }
             )
             {
