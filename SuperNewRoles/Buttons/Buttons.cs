@@ -85,6 +85,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton PavlovsdogKillButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
+        public static TMPro.TMP_Text PavlovsdogKillSelfText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
         public static TMPro.TMP_Text PositionSwapperNumText;
         public static TMPro.TMP_Text SecretlyKillNumText;
@@ -121,6 +122,7 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.Pavlovsdogs.IsOwnerDead && CachedPlayer.LocalPlayer.IsAlive())
                     {
                         RoleClass.Pavlovsdogs.DeathTime -= Time.deltaTime;
+                        PavlovsdogKillSelfText.text = RoleClass.Pavlovsdogs.DeathTime> 0 ? string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)RoleClass.Pavlovsdogs.DeathTime) + 1) : "";
                         if (RoleClass.Pavlovsdogs.DeathTime <= 0)
                         {
                             PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
@@ -146,6 +148,12 @@ namespace SuperNewRoles.Buttons
                 buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
                 showButtonText = true
             };
+
+            PavlovsdogKillSelfText = GameObject.Instantiate(PavlovsdogKillButton.actionButton.cooldownTimerText, PavlovsdogKillButton.actionButton.cooldownTimerText.transform.parent);
+            PavlovsdogKillSelfText.text = "";
+            PavlovsdogKillSelfText.enableWordWrapping = false;
+            PavlovsdogKillSelfText.transform.localScale = Vector3.one * 0.5f;
+            PavlovsdogKillSelfText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
 
             PavlovsownerCreatedogButton = new(
                 () =>
@@ -958,7 +966,7 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
 
-            SheriffKillButton = new Buttons.CustomButton(
+            SheriffKillButton = new(
                 () =>
                 {
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
@@ -1036,7 +1044,7 @@ namespace SuperNewRoles.Buttons
             SheriffKillButton.buttonText = ModTranslation.GetString("SheriffKillButtonName");
             SheriffKillButton.showButtonText = true;
 
-            ClergymanLightOutButton = new Buttons.CustomButton(
+            ClergymanLightOutButton = new(
                 () =>
                 {
                     RoleClass.Clergyman.IsLightOff = true;
