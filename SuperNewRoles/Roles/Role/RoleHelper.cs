@@ -46,6 +46,7 @@ namespace SuperNewRoles
                 RoleId.MadSeer => true,
                 RoleId.BlackCat => true,
                 RoleId.MadMaker => true,
+                RoleId.SatsumaAndImo => RoleClass.SatsumaAndImo.TeamNumber == 2,
                 //isMad
                 _ => false,
             };
@@ -1166,6 +1167,7 @@ namespace SuperNewRoles
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
                 RoleId.Pavlovsdogs => CustomOptions.PavlovsdogCanVent.GetBool(),
                 RoleId.Stefinder => CustomOptions.StefinderVent.GetBool(),
+                RoleId.DoubleKiller => CustomOptions.DoubleKillerVent.GetBool(),
                 _ => false,
             };
         }
@@ -1216,6 +1218,9 @@ namespace SuperNewRoles
                 RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
                 RoleId.Egoist => RoleClass.Egoist.UseSabo,
                 RoleId.Stefinder => CustomOptions.StefinderSabo.GetBool(),
+                RoleId.Minimalist => RoleClass.Minimalist.UseSabo,
+                RoleId.DoubleKiller => CustomOptions.DoubleKillerSabo.GetBool(),
+                RoleId.Samurai => RoleClass.Samurai.UseSabo,
                 _ => false,
             };
         }
