@@ -2449,8 +2449,8 @@ namespace SuperNewRoles.Roles
             public static float WearDefaultTime;
             public static float WearTime;
             public static float MyKillCoolTime;
-            public static bool IsLocalOn => !Datas.Keys.All(data => data != CachedPlayer.LocalPlayer.PlayerId || Datas[data].Item1 == null);
-            public static Dictionary<byte, (DeadBody, float)> Datas;
+            public static bool IsLocalOn => !Datas.Keys.All(data => data != CachedPlayer.LocalPlayer.PlayerId);
+            public static Dictionary<byte, DeadBody> Datas;
             public static Sprite PutOnButtonSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaPutOnButton.png", 115f);
            public static Sprite TakeOffButtonSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaTakeOffButton.png", 115f);
             public static void ClearAndReload()

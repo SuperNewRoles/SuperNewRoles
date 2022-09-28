@@ -2290,37 +2290,27 @@ namespace SuperNewRoles.Buttons
             MatryoshkaButton = new(
                 () =>
                 {
-                    if (RoleClass.Matryoshka.IsLocalOn)
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
                     {
-                        Roles.Impostor.Matryoshka.RpcSet(null, false);
-                        MatryoshkaButton.MaxTimer = CustomOptions.MatryoshkaCoolTime.GetFloat();
-                        MatryoshkaButton.Timer = MatryoshkaButton.MaxTimer;
-                    }
-                    else
-                    {
-                        foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                        if (collider2D.tag == "DeadBody")
                         {
-                            if (collider2D.tag == "DeadBody")
+                            DeadBody component = collider2D.GetComponent<DeadBody>();
+                            Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                            Vector2 truePosition2 = component.TruePosition;
+                            Logger.Info((!component.Reported).ToString() + $"{truePosition2} : {truePosition} : {Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance} : {Vector2.Distance(truePosition2, truePosition)} : {PlayerControl.LocalPlayer.MaxReportDistance}");
+                            if (!component.Reported)
                             {
-                                DeadBody component = collider2D.GetComponent<DeadBody>();
-                                Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
-                                Vector2 truePosition2 = component.TruePosition;
-                                Logger.Info((!component.Reported).ToString() + $"{truePosition2} : {truePosition} : {Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance} : {Vector2.Distance(truePosition2, truePosition)} : {PlayerControl.LocalPlayer.MaxReportDistance}");
-                                if (!component.Reported)
+                                if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
                                 {
-                                    if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                                    if (RoleClass.Matryoshka.Datas.Values.All(data =>
                                     {
-                                        if (RoleClass.Matryoshka.Datas.Values.All(data =>
-                                        {
-                                            return data.Item1 == null || data.Item1.ParentId != component.ParentId;
-                                        }))
-                                        {
-                                            GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
-                                            Roles.Impostor.Matryoshka.RpcSet(playerInfo.Object, true);
-                                            RoleClass.Matryoshka.WearLimit--;
-                                            RoleClass.Matryoshka.MyKillCoolTime += CustomOptions.MatryoshkaAddKillCoolTime.GetFloat();
-                                            break;
-                                        }
+                                        return data == null || data.ParentId != component.ParentId;
+                                    }))
+                                    {
+                                        GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
+                                        Roles.Impostor.Matryoshka.RpcSet(playerInfo.Object, true);
+                                        RoleClass.Matryoshka.MyKillCoolTime += CustomOptions.MatryoshkaAddKillCoolTime.GetFloat();
+                                        break;
                                     }
                                 }
                             }
@@ -2340,12 +2330,19 @@ namespace SuperNewRoles.Buttons
                         MatryoshkaButton.Sprite = RoleClass.Matryoshka.PutOnButtonSprite;
                         MatryoshkaButton.buttonText = ModTranslation.GetString("MatryoshkaPutOnButtonName");
                     }
+                    MatryoshkaButton.HasEffect = __instance.ReportButton.graphic.color == Palette.EnabledColor;
                     return (__instance.ReportButton.graphic.color == Palette.EnabledColor || RoleClass.Matryoshka.IsLocalOn) && PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
                     MatryoshkaButton.MaxTimer = CustomOptions.MatryoshkaCoolTime.GetFloat();
                     MatryoshkaButton.Timer = MatryoshkaButton.MaxTimer;
+                    MatryoshkaButton.effectCancellable = true;
+                    MatryoshkaButton.EffectDuration = CustomOptions.MatryoshkaWearTime.GetFloat();
+                    if (RoleClass.Matryoshka.IsLocalOn)
+                    {
+                        RoleClass.Matryoshka.WearLimit--;
+                    }
                     Roles.Impostor.Matryoshka.RpcSet(null, false);
                 },
                 RoleClass.Matryoshka.PutOnButtonSprite,
@@ -2357,6 +2354,14 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     return false;
+                },
+                true,
+                5f,
+                () => {
+                    RoleClass.Matryoshka.WearLimit--;
+                    Roles.Impostor.Matryoshka.RpcSet(null, false);
+                    MatryoshkaButton.MaxTimer = CustomOptions.MatryoshkaCoolTime.GetFloat();
+                    MatryoshkaButton.Timer = MatryoshkaButton.MaxTimer;
                 }
                 )
             {
