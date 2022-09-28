@@ -2290,6 +2290,15 @@ namespace SuperNewRoles.Buttons
             MatryoshkaButton = new(
                 () =>
                 {
+                    if (MatryoshkaButton.isEffectActive)
+                    {
+                        MatryoshkaButton.isEffectActive = false;
+                        RoleClass.Matryoshka.WearLimit--;
+                        Roles.Impostor.Matryoshka.RpcSet(null, false);
+                        MatryoshkaButton.MaxTimer = CustomOptions.MatryoshkaCoolTime.GetFloat();
+                        MatryoshkaButton.Timer = MatryoshkaButton.MaxTimer;
+                        return;
+                    }
                     foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
                     {
                         if (collider2D.tag == "DeadBody")
