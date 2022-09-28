@@ -1657,10 +1657,10 @@ namespace SuperNewRoles.Modules
             DoppelgangerSucTime = Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
             DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
 
-            WaveCannonOption = new CustomRoleOption(1004, false, CustomOptionType.Impostor, "WaveCannonName", RoleClass.WaveCannon.color, 1);
-            WaveCannonPlayerCount = CustomOption.Create(1005, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WaveCannonOption);
-            WaveCannonCoolTime = CustomOption.Create(1006, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonOption);
-            WaveCannonChargeTime = CustomOption.Create(1007, false, CustomOptionType.Impostor, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonOption);
+            WaveCannonOption = new(1004, false, CustomOptionType.Impostor, "WaveCannonName", RoleClass.WaveCannon.color, 1);
+            WaveCannonPlayerCount = Create(1005, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WaveCannonOption);
+            WaveCannonCoolTime = Create(1006, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonOption);
+            WaveCannonChargeTime = Create(1007, false, CustomOptionType.Impostor, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonOption);
 
             //表示設定
 
