@@ -197,8 +197,7 @@ namespace SuperNewRoles.Patch
                                 Roles.Impostor.Doppelganger.FixedUpdate();
                                 break;
                             default:
-                                foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                                    NormalButtonDestroy.Postfix(p);
+                                NormalButtonDestroy.Postfix();
                                 break;
                         }
                     }
