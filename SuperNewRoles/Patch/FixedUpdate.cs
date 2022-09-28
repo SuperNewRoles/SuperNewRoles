@@ -196,6 +196,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.Doppelganger:
                                 Roles.Impostor.Doppelganger.FixedUpdate();
                                 break;
+                            case RoleId.ConnectKiller:
+                                Roles.Impostor.ConnectKiller.Update();
+                                break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                                     NormalButtonDestroy.Postfix(p);

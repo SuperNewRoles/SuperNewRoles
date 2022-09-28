@@ -2656,9 +2656,11 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> ConnectKillerPlayer;
             public static Color32 color = ImpostorRed;
+            public static bool OldCommsData;
             public static void ClearAndReload()
             {
                 ConnectKillerPlayer = new();
+                OldCommsData = false;
             }
         }
         public static class Doppelganger
