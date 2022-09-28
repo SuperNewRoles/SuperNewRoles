@@ -161,8 +161,7 @@ namespace SuperNewRoles.Buttons
                     PlayerControl target = Roles.Neutral.Pavlovsdogs.SetTarget();
                     if (!CustomOptions.PavlovsownerIsTargetImpostorDeath.GetBool() || !target.Data.Role.IsImpostor)
                     {
-                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
-                        target.SetRoleRPC(RoleId.Pavlovsdogs);
+                        target.ResetAndSetRole(RoleId.Pavlovsdogs);
                         RoleClass.Pavlovsowner.CurrentChildPlayer = target;
                         PavlovsownerCreatedogButton.Timer = PavlovsownerCreatedogButton.MaxTimer;
                     }
