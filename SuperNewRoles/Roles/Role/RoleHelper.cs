@@ -46,6 +46,7 @@ namespace SuperNewRoles
                 RoleId.MadSeer => true,
                 RoleId.BlackCat => true,
                 RoleId.MadMaker => true,
+                RoleId.SatsumaAndImo => RoleClass.SatsumaAndImo.TeamNumber == 2,
                 //isMad
                 _ => false,
             };
