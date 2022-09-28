@@ -207,12 +207,13 @@ namespace SuperNewRoles
                 RoleId.TeleportingJackal or
                 RoleId.JackalSeer or
                 RoleId.SidekickSeer or
-                RoleId.MayorFriends;
+                RoleId.MayorFriends or
+                RoleId.WaveCannonJackal;
         }
         public static bool IsJackalTeamJackal(this PlayerControl player)
         {
             RoleId role = player.GetRole();
-            return role is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal;
+            return role is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal or RoleId.WaveCannonJackal;
         }
         public static bool IsJackalTeamSidekick(this PlayerControl player)
         {
@@ -624,6 +625,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.Doppelganger:
                     RoleClass.Doppelganger.DoppelggerPlayer.Add(player);
+                    break;
+                case RoleId.WaveCannonJackal:
+                    RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -1051,6 +1055,9 @@ namespace SuperNewRoles
                 case RoleId.Doppelganger:
                     RoleClass.Doppelganger.DoppelggerPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.WaveCannonJackal:
+                    RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -1109,6 +1116,7 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
+                case RoleId.WaveCannonJackal:
                 //タスククリアか
                     IsTaskClear = true;
                     break;
@@ -1158,6 +1166,7 @@ namespace SuperNewRoles
                 RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
                 RoleId.Stefinder => CustomOptions.StefinderVent.GetBool(),
+                RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalUseSabo.GetBool(),
                 _ => false,
             };
         }
@@ -1208,6 +1217,7 @@ namespace SuperNewRoles
                 RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
                 RoleId.Egoist => RoleClass.Egoist.UseSabo,
                 RoleId.Stefinder => CustomOptions.StefinderSabo.GetBool(),
+                RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalUseSabo.GetBool(),
                 _ => false,
             };
         }
@@ -1236,6 +1246,7 @@ namespace SuperNewRoles
                     RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
                     RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
                     RoleId.Photographer => CustomOptions.PhotographerIsImpostorVision.GetBool(),
+                    RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalIsImpostorLight.GetBool(),
                     _ => false,
                 };
         }
@@ -1272,6 +1283,7 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
+                case RoleId.WaveCannonJackal:
                 //第三か
                     IsNeutral = true;
                     break;
@@ -1569,6 +1581,7 @@ namespace SuperNewRoles
                 else if (RoleClass.ConnectKiller.ConnectKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.ConnectKiller;
                 else if (RoleClass.WaveCannon.WaveCannonPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannon;
                 else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
+                else if (RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
                 //ロールチェック
             }
             catch (Exception e)

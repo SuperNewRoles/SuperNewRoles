@@ -827,6 +827,15 @@ namespace SuperNewRoles.Modules
         public static CustomOption DoppelgangerCoolTome;
         public static CustomOption DoppelgangerSucTime;
         public static CustomOption DoppelgangerNotSucTime;
+        
+        public static CustomRoleOption WaveCannonJackalOption;
+        public static CustomOption WaveCannonJackalPlayerCount;
+        public static CustomOption WaveCannonJackalCoolTime;
+        public static CustomOption WaveCannonJackalChargeTime;
+        public static CustomOption WaveCannonJackalKillCoolDown;
+        public static CustomOption WaveCannonJackalUseVent;
+        public static CustomOption WaveCannonJackalUseSabo;
+        public static CustomOption WaveCannonJackalIsImpostorLight;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1661,7 +1670,14 @@ namespace SuperNewRoles.Modules
             WaveCannonPlayerCount = Create(1005, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WaveCannonOption);
             WaveCannonCoolTime = Create(1006, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonOption);
             WaveCannonChargeTime = Create(1007, false, CustomOptionType.Impostor, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonOption);
-
+            
+            WaveCannonJackalOption = new(1008, false, CustomOptionType.Neutral, "WaveCannonJackalName",RoleClass.WaveCannonJackal.color, 1);
+            WaveCannonJackalPlayerCount = Create(1009, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WaveCannonJackalOption);
+            WaveCannonJackalKillCoolDown = Create(1010, false, CustomOptionType.Neutral, "JackalCoolDownSetting", 30f, 2.5f, 60f, 2.5f, WaveCannonJackalOption, format: "unitSeconds");
+            WaveCannonJackalUseVent = Create(1011, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, WaveCannonJackalOption);
+            WaveCannonJackalIsImpostorLight = Create(1012, false, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, WaveCannonJackalOption);
+            WaveCannonJackalUseSabo = Create(1013, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, WaveCannonJackalOption);
+            
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

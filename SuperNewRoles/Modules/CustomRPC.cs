@@ -158,6 +158,7 @@ namespace SuperNewRoles.Modules
         ConnectKiller,
         WaveCannon,
         Doppelganger,
+        WaveCannonJackal,
         //RoleId
     }
 

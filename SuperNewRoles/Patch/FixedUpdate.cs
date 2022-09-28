@@ -185,6 +185,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.Doppelganger:
                                 Roles.Impostor.Doppelganger.FixedUpdate();
                                 break;
+                            case RoleId.WaveCannonJackal:
+                                JackalSeer.JackalSeerFixedPatch.JackalSeerPlayerOutLineTarget();
+                                break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                                     NormalButtonDestroy.Postfix(p);

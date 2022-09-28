@@ -24,7 +24,7 @@ namespace SuperNewRoles.Roles
         }
         public class JackalSeerFixedPatch
         {
-            static void JackalSeerPlayerOutLineTarget()
+            public static void JackalSeerPlayerOutLineTarget()
             {
                 SetPlayerOutline(JackalSetTarget(), RoleClass.JackalSeer.color);
             }

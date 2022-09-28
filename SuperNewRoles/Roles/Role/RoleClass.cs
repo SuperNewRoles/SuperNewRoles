@@ -179,6 +179,7 @@ namespace SuperNewRoles.Roles
             ConnectKiller.ClearAndReload();
             WaveCannon.ClearAndReload();
             Doppelganger.ClearAndReload();
+            WaveCannonJackal.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2698,6 +2699,16 @@ namespace SuperNewRoles.Roles
                 Duration = DurationTime + 1.1f;
                 DoppelgangerTargets = new();
                 DefaultKillCool = PlayerControl.GameOptions.KillCooldown;
+            }
+        }
+        public static class WaveCannonJackal
+        {
+            public static List<PlayerControl> WaveCannonJackalPlayer;
+            public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                WaveCannonJackalPlayer = new();
+                
             }
         }
         //新ロールクラス
