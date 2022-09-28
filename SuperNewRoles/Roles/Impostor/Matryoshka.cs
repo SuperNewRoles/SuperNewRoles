@@ -50,7 +50,7 @@ namespace SuperNewRoles.Roles.Impostor
                     if (RoleClass.Matryoshka.Datas[source.PlayerId].Item1.bodyRenderer != null)
                         RoleClass.Matryoshka.Datas[source.PlayerId].Item1.bodyRenderer.enabled = true;
                 }
-                RoleClass.Matryoshka.Datas[source.PlayerId] = (null, 0);
+                RoleClass.Matryoshka.Datas.Remove(source.PlayerId);
             }
             else
             {
