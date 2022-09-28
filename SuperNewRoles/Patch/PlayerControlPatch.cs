@@ -185,10 +185,7 @@ namespace SuperNewRoles.Patches
                         }
                         return false;
                     case RoleId.ToiletFan:
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 79);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 80);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
+                        RPCHelper.RpcOpenToilet();
                         return false;
                     case RoleId.NiceButtoner:
                         if (RoleClass.NiceButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
@@ -408,6 +405,13 @@ namespace SuperNewRoles.Patches
                     Logger.Info("SHR", "CheckMurder");
                     if (RoleClass.Assassin.TriggerPlayer != null) return false;
                     Logger.Info("SHR-Assassin.TriggerPlayerを通過", "CheckMurder");
+                    foreach (var p in Seer.Seers)
+                    {
+                        foreach (var p2 in p) {
+                            if (!p2.IsMod())
+                                p2.ShowReactorFlash(1.5f);
+                        }
+                    }
                     switch (__instance.GetRole())
                     {
                         case RoleId.RemoteSheriff:
@@ -561,8 +565,7 @@ namespace SuperNewRoles.Patches
                                 __instance.RpcShowGuardEffect(target);
                                 RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
                                 target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
-                                target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//クルーにして
-                                target.SetRoleRPC(RoleId.JackalFriends);//フレンズにする
+                                Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                                 RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
                                 SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
@@ -776,6 +779,10 @@ namespace SuperNewRoles.Patches
                         }
                     }
                 }
+
+                var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                if (__instance.IsRole(RoleId.DarkKiller))
+                    if (ma != null && !ma.IsActive) return false;
 
                 if (AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId)
                 {

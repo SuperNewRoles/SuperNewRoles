@@ -1343,7 +1343,7 @@ namespace SuperNewRoles.Patch
                         if (playerInfo.Object.IsAlive())
                         {
                             numTotalAlive++;
-                            if (playerInfo.Object.IsRole(RoleId.Jackal, RoleId.Sidekick, RoleId.TeleportingJackal, RoleId.JackalSeer, RoleId.SidekickSeer))
+                            if (playerInfo.Object.IsJackalTeamJackal() || playerInfo.Object.IsJackalTeamSidekick())
                             {
                                 numTotalJackalTeam++;
                             }

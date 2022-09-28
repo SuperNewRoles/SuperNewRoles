@@ -27,7 +27,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     RoleId.truelover, RoleId.FalseCharges, RoleId.MadMaker, RoleId.ToiletFan, RoleId.NiceButtoner)
                     || (!RoleClass.Minimalist.UseSabo && player.IsRole(RoleId.Minimalist))
                     || (!RoleClass.Samurai.UseSabo && player.IsRole(RoleId.Samurai))
-                    || (!RoleClass.Egoist.UseSabo && player.IsRole(RoleId.Egoist))) return false;
+                    || (!RoleClass.Egoist.UseSabo && player.IsRole(RoleId.Egoist))
+                    || (!RoleClass.JackalSeer.IsUseSabo && player.IsRole(RoleId.JackalSeer))) return false;
             }
             if (PlayerControl.LocalPlayer.IsUseVent() && RoleHelpers.IsComms())
             {
