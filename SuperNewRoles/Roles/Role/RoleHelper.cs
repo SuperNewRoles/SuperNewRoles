@@ -35,36 +35,30 @@ namespace SuperNewRoles
         //We are Mad!
         public static bool IsMadRoles(this PlayerControl player)
         {
-            RoleId role = player.GetRole();
-            return role switch
-            {
-                RoleId.MadMate => true,
-                RoleId.MadMayor => true,
-                RoleId.MadStuntMan => true,
-                RoleId.MadHawk => true,
-                RoleId.MadJester => true,
-                RoleId.MadSeer => true,
-                RoleId.BlackCat => true,
-                RoleId.MadMaker => true,
-                RoleId.SatsumaAndImo => RoleClass.SatsumaAndImo.TeamNumber == 2,
-                //isMad
-                _ => false,
-            };
+            return player.GetRole() is
+                RoleId.MadMate or
+                RoleId.MadMayor or
+                RoleId.MadStuntMan or
+                RoleId.MadHawk or
+                RoleId.MadJester or
+                RoleId.MadSeer or
+                RoleId.BlackCat or
+                RoleId.MadMaker ||
+                (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2);
+            //isMad
         }
 
+
+
         //We are JackalFriends!
-        public static bool IsFriendRoles(this PlayerControl player)
-        {
-            RoleId role = player.GetRole();
-            return role switch
-            {
-                RoleId.JackalFriends => true,
-                RoleId.SeerFriends => true,
-                RoleId.MayorFriends => true,
-                //isFriends
-                _ => false,
-            };
-        }
+        public static bool IsFriendRoles(this PlayerControl player) =>
+            player.GetRole() is
+                RoleId.JackalFriends or
+                RoleId.SeerFriends or
+                RoleId.MayorFriends;
+        //isFriends
+
+
 
         public static bool IsQuarreled(this PlayerControl player, bool IsChache = true)
         {
