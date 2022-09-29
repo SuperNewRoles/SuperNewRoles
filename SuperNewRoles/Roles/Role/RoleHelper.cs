@@ -1351,14 +1351,8 @@ namespace SuperNewRoles
         {
             if (IsChache)
             {
-                try
-                {
-                    return ChacheManager.MyGhostRoleChache[player.PlayerId];
-                }
-                catch
-                {
-                    return RoleId.DefaultRole;
-                }
+                try { return ChacheManager.MyGhostRoleChache[player.PlayerId]; }
+                catch { return RoleId.DefaultRole; }
             }
             try
             {
@@ -1368,23 +1362,16 @@ namespace SuperNewRoles
             catch { }
             return RoleId.DefaultRole;
         }
-        public static bool IsGhostRole(this RoleId role)
-        {
-            return IntroDate.GetIntroDate(role).IsGhostRole;
-        }
+        public static bool IsGhostRole(this RoleId role) =>
+            IntroDate.GetIntroDate(role).IsGhostRole;
+
         public static bool IsGhostRole(this PlayerControl p, RoleId role, bool IsChache = true)
         {
             RoleId MyRole;
             if (IsChache)
             {
-                try
-                {
-                    MyRole = ChacheManager.MyGhostRoleChache[p.PlayerId];
-                }
-                catch
-                {
-                    MyRole = RoleId.DefaultRole;
-                }
+                try { MyRole = ChacheManager.MyGhostRoleChache[p.PlayerId]; }
+                catch { MyRole = RoleId.DefaultRole; }
             }
             else
             {
@@ -1396,14 +1383,8 @@ namespace SuperNewRoles
         {
             if (IsChache)
             {
-                try
-                {
-                    return ChacheManager.MyRoleChache[player.PlayerId];
-                }
-                catch
-                {
-                    return RoleId.DefaultRole;
-                }
+                try { return ChacheManager.MyRoleChache[player.PlayerId]               }
+                catch { return RoleId.DefaultRole; }
             }
             try
             {
