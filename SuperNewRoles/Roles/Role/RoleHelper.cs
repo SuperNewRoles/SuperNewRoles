@@ -1303,7 +1303,6 @@ namespace SuperNewRoles
         }
         public static float GetEndMeetingKillCoolTime(PlayerControl p)
         {
-            var role = p.GetRole();
             return GetCoolTime(p);
         }
         public static RoleId GetGhostRole(this PlayerControl player, bool IsChache = true)
