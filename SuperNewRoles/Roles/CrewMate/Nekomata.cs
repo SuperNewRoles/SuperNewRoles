@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Patch;
-
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
@@ -69,10 +69,8 @@ namespace SuperNewRoles.Roles
             SuperNewRolesPlugin.Logger.LogInfo(random.NameText().text);
             if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.NekomataExiled, random))
             {
-                MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.NekomataExiledRPC, SendOption.Reliable, -1);
-                RPCWriter.Write(random.PlayerId);
-                AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
-                RPCProcedure.ExiledRPC(random.PlayerId);
+                random.RpcExiledUnchecked();
+                random.RpcSetFinalStatus(FinalStatus.NekomataExiled);
                 if (random.IsRole(RoleId.NiceNekomata) || random.IsRole(RoleId.EvilNekomata) || (random.IsRole(RoleId.BlackCat) && RoleClass.NiceNekomata.IsChain))
                 {
                     p.RemoveAt(rdm);

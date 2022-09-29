@@ -292,6 +292,13 @@ namespace SuperNewRoles.Patch
                 countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
         }
     }
+    public class GameSettingsScale
+    {
+        public static void GameSettingsScalePatch(HudManager __instance)
+        {
+            if (__instance.GameSettings != null) __instance.GameSettings.fontSize = 1.2f;
+        }
+    }
     public class CustomOptionBlank : CustomOption
     {
         public CustomOptionBlank(CustomOption parent)
@@ -610,9 +617,9 @@ namespace SuperNewRoles.Patch
     }
 
     [HarmonyPatch(typeof(StringOption), nameof(StringOption.OnEnable))]
-    public class StringOptionEnablePatch
+    class StringOptionEnablePatch
     {
-        public static bool Prefix(StringOption __instance)
+        static bool Prefix(StringOption __instance)
         {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
             if (option == null)
@@ -623,15 +630,8 @@ namespace SuperNewRoles.Patch
                     __instance.OnValueChanged = new Action<OptionBehaviour>((o) => { });
                     __instance.TitleText.text = Regulation.title;
                     __instance.Value = __instance.oldValue = 0;
-                    if (RegulationData.Selected == Regulation.id)
-                    {
-                        __instance.ValueText.text = ModTranslation.GetString("optionOn");
-                    }
-                    else
-                    {
-                        __instance.ValueText.text = ModTranslation.GetString("optionOff");
+                    __instance.ValueText.text = RegulationData.Selected == Regulation.id ? ModTranslation.GetString("optionOn") : ModTranslation.GetString("optionOff");
 
-                    }
                     return false;
                 }
                 return true;
@@ -1161,16 +1161,6 @@ namespace SuperNewRoles.Patch
             {
                 SuperNewRolesPlugin.optionsPage++;
             }
-        }
-    }
-
-
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    public class GameSettingsScalePatch
-    {
-        public static void Prefix(HudManager __instance)
-        {
-            if (__instance.GameSettings != null) __instance.GameSettings.fontSize = 1.2f;
         }
     }
 }
