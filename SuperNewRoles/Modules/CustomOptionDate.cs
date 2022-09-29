@@ -151,8 +151,11 @@ namespace SuperNewRoles.Modules
 
         public static CustomRoleOption TaskerOption;
         public static CustomOption TaskerPlayerCount;
-        public static CustomOption TaskerAmount;
-        public static CustomOption TaskerIsKill;
+        public static CustomOption TaskerCommonTask;
+        public static CustomOption TaskerShortTask;
+        public static CustomOption TaskerLongTask;
+        public static CustomOption TaskerIsKillCoolTaskNow;
+        public static CustomOption TaskerCanKill;
 
         public static CustomRoleOption DoorrOption;
         public static CustomOption DoorrPlayerCount;
@@ -914,7 +917,7 @@ namespace SuperNewRoles.Modules
             IsAlwaysReduceCooldownExceptInVent = Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
             IsAlwaysReduceCooldownExceptOnTask = Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
 
-            IsChangeTheWinCondition = Create(992, true, CustomOptionType.Generic, "IsChangeTheWinCondition", true, null, isHeader: true);
+            IsChangeTheWinCondition = Create(1007, true, CustomOptionType.Generic, "IsChangeTheWinCondition", true, null, isHeader: true);
 
             MadRolesCanFixComms = Create(984, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
             MadRolesCanFixElectrical = Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
@@ -1653,6 +1656,16 @@ namespace SuperNewRoles.Modules
             DoppelgangerCoolTome = Create(989, true, CustomOptionType.Impostor, "DoppelgangerCoolDownSetting", 5f, 5f, 60f, 2.5f, DoppelgangerOption);
             DoppelgangerSucTime = Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
             DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
+
+            Roles.Impostor.Conjurer.SetupCustomOptions();
+            TaskerOption = new(1000, false, CustomOptionType.Impostor, "TaskerName", RoleClass.Tasker.color, 1);
+            TaskerPlayerCount = Create(1001, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
+            var taskeroption = SelectTask.TaskSetting(1002, 1003, 1004, TaskerOption, CustomOptionType.Impostor, false);
+            TaskerCommonTask = taskeroption.Item1;
+            TaskerShortTask = taskeroption.Item2;
+            TaskerLongTask = taskeroption.Item3;
+            TaskerIsKillCoolTaskNow = Create(1005, false, CustomOptionType.Impostor, "TaskerIsKillCoolTaskNow", true, TaskerOption);
+            TaskerCanKill = Create(1006, false, CustomOptionType.Impostor, "TaskerCanKill", true, TaskerOption);
 
             //表示設定
 
