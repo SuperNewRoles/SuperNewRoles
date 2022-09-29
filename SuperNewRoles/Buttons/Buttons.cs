@@ -2338,7 +2338,8 @@ namespace SuperNewRoles.Buttons
                 },
                 true,
                 5f,
-                () => {
+                () =>
+                {
                     RoleClass.Matryoshka.WearLimit--;
                     Roles.Impostor.Matryoshka.RpcSet(null, false);
                     MatryoshkaButton.MaxTimer = CustomOptions.MatryoshkaCoolTime.GetFloat();

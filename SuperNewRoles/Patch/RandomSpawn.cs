@@ -43,7 +43,7 @@ namespace SuperNewRoles.Patch
 
             PlayerControl.LocalPlayer.gameObject.SetActive(false);
             PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(-25f, 40f));
-                __instance.LocationButtons.Random().ReceiveClickUp();
+            __instance.LocationButtons.Random().ReceiveClickUp();
             ControllerManager.Instance.OpenOverlayMenu(__instance.name, null, __instance.DefaultButtonSelected, __instance.ControllerSelectable, false);
             PlayerControl.HideCursorTemporarily();
             ConsoleJoystick.SetMode_Menu();

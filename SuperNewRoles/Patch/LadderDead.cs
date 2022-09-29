@@ -42,7 +42,8 @@ namespace SuperNewRoles.Patch
                         if (Vector2.Distance(data.Value, player.transform.position) < 0.5f)
                         {
                             player.Data.IsDead = true;
-                            new LateTask(() => {
+                            new LateTask(() =>
+                            {
                                 player.RpcMurderPlayer(player);
                                 player.RpcSetFinalStatus(FinalStatus.LadderDeath);
                             }, 0.05f, "Ladder Murder");

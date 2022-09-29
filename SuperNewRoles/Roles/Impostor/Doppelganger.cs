@@ -1,10 +1,10 @@
+using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace SuperNewRoles.Roles.Impostor
 {
@@ -101,7 +101,7 @@ namespace SuperNewRoles.Roles.Impostor
             }
             public static void ResetKillCool(PlayerControl __instance)
             {
-                if (ModeHandler.IsMode(ModeId.Default) && !__instance.AmOwner) return; 
+                if (ModeHandler.IsMode(ModeId.Default) && !__instance.AmOwner) return;
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return;
                 if (__instance.IsRole(RoleId.Doppelganger))
                 {

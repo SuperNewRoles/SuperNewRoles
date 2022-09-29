@@ -75,7 +75,7 @@ namespace SuperNewRoles.CustomObject
                     return sprites.ToArray();
                 case 3:
                 case 4:
-                    return new Sprite[]{ ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.harisen.deadbody_{type}.PNG",115f)};
+                    return new Sprite[] { ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.harisen.deadbody_{type}.PNG", 115f) };
             }
             return null;
         }
@@ -94,7 +94,7 @@ namespace SuperNewRoles.CustomObject
             Sprites = GetSprites();
             DeadBodys.Add(this);
             transform.position = Player.transform.position;
-            transform.localScale = new(0.1f,0.1f,0);
+            transform.localScale = new(0.1f, 0.1f, 0);
             transform.Rotate((Source.transform.position - Player.transform.position));
             if (SpriteType == 3)
             {
