@@ -15,7 +15,10 @@ namespace SuperNewRoles.Roles
             if (AmongUsClient.Instance.AmHost)
             {
                 //もし 追放された役職が猫なら
-                if ((__instance != null && __instance.Object.IsRole(RoleId.NiceNekomata)) || __instance.Object.IsRole(RoleId.EvilNekomata) || __instance.Object.IsRole(RoleId.BlackCat))
+                if (__instance.Object.IsRole(RoleId.NiceNekomata) ||
+                    __instance.Object.IsRole(RoleId.EvilNekomata) ||
+                    __instance.Object.IsRole(RoleId.BlackCat) ||
+                    (__instance.Object.IsRole(RoleId.NekoKabocha) && Impostor.NekoKabocha.CanRevengeExile))
                 {
                     List<PlayerControl> p = new();//道連れにするプレイヤーの抽選リスト
                     foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
@@ -34,6 +37,21 @@ namespace SuperNewRoles.Roles
                                     SuperNewRolesPlugin.Logger.LogInfo("[SNR:イビル猫又Info]Impostorを道連れ対象から除外しました");
                                 else
                                     SuperNewRolesPlugin.Logger.LogError("[SNR:猫又Error]&[SNR:イビル猫又Error][NotImpostorExiled == true] 異常な抽選リストです");
+                            }
+                        }
+                        // 猫カボチャで。追放道連れにする
+                        else if (__instance.Object.IsRole(RoleId.NekoKabocha) && Impostor.NekoKabocha.CanRevengeExile)
+                        {
+                            if (p1.Data != __instance && p1.IsAlive())
+                            {
+                                if (p1.IsCrew() && Impostor.NekoKabocha.CanRevengeCrew){
+                                    p.Add(p1);
+                                }
+                                else if (p1.IsNeutral()&&Impostor.NekoKabocha.CanRevengeNeut){
+                                    p.Add(p1);
+                                }else if(p1.IsImpostor()&&Impostor.NekoKabocha.CanRevengeImp){
+                                    p.Add(p1);
+                                }
                             }
                         }
                         //ナイス・設定オフ
@@ -59,7 +77,6 @@ namespace SuperNewRoles.Roles
                     RPCProcedure.ExiledRPC(__instance.PlayerId);
                     NekomataProc(p);
                 }
-
             }
         }
         public static void NekomataProc(List<PlayerControl> p)

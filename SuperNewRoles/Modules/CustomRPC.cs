@@ -156,6 +156,7 @@ namespace SuperNewRoles.Modules
         Slugger,
         ShiftActor,
         ConnectKiller,
+        NekoKabocha,
         Doppelganger,
         Conjurer,
         //RoleId

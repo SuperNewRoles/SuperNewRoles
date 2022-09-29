@@ -53,5 +53,6 @@ namespace SuperNewRoles
         OverKillerOverKill,
         SuicideWisherSelfDeath,
         MadmakerMisSet,
+        Revenge,//猫カボチャの道連れ
     }
 }
