@@ -21,7 +21,7 @@ namespace SuperNewRoles.Patch
             static void Postfix(VitalsMinigame __instance)
             {
                 onTask = true;
-                ElectricPatch.done = false;
+                done = false;
             }
         }
         [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.FixedUpdate))]
@@ -29,7 +29,7 @@ namespace SuperNewRoles.Patch
         {
             static void Postfix(SwitchMinigame __instance)
             {
-                ElectricPatch.lastUpdate = DateTime.UtcNow;
+                lastUpdate = DateTime.UtcNow;
                 DestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(1f, new Action<float>((p) =>
                 {
                     if (p == 1f)

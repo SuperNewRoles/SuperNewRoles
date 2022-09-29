@@ -1,7 +1,6 @@
 using HarmonyLib;
 using SuperNewRoles.Buttons;
-
-
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -33,24 +32,38 @@ namespace SuperNewRoles.Patch
     }
 
     [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
-    class DebugManager
+    class ControllerManagerUpdate
     {
-        public static void Postfix()
+        static void Postfix()
         {
+            // 以下ホストのみ
+            if (!AmongUsClient.Instance.AmHost) return;
+
+            //　ゲーム中
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
-                if (AmongUsClient.Instance.AmHost && Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift))
+                // 廃村
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift }))
                 {
                     RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
                     RPCProcedure.SetHaison();
                     ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                     MapUtilities.CachedShipStatus.enabled = false;
                 }
+            }
 
-                if (Input.GetKeyDown(KeyCode.M) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift) && AmongUsClient.Instance.AmHost)//Mと右左シフトを押したとき
-                {
-                    MeetingHud.Instance.RpcClose();//会議を強制終了
-                }
+            // 会議を強制終了
+            if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
+            {
+                FastDestroyableSingleton<MeetingHud>.Instance.RpcClose();
+            }
+
+            // 以下フリープレイのみ
+            if (AmongUsClient.Instance.GameMode != GameModes.FreePlay) return;
+            // エアーシップのトイレのドアを開ける
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                RPCHelper.RpcOpenToilet();
             }
         }
     }
@@ -68,14 +81,14 @@ namespace SuperNewRoles.Patch
             }
         }
 
-        static void reduceKillCooldown(PlayerControl __instance)
+        static void ReduceKillCooldown(PlayerControl __instance)
         {
             if (CustomOptions.IsAlwaysReduceCooldown.GetBool())
             {
-                // オプションがONの場合はベント内はクールダウン減少を止める
-                bool exceptInVent = CustomOptions.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
+                // オプションがOFFの場合はベント内はクールダウン減少を止める
+                bool exceptInVent = !CustomOptions.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
                 // 配電盤タスク中はクールダウン減少を止める
-                bool exceptOnTask = CustomOptions.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
+                bool exceptOnTask = !CustomOptions.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
 
                 if (!__instance.Data.IsDead && !__instance.CanMove && !exceptInVent && !exceptOnTask)
                     __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
@@ -86,7 +99,10 @@ namespace SuperNewRoles.Patch
 
         public static void Postfix(PlayerControl __instance)
         {
+            if (PlayerAnimation.GetPlayerAnimation(__instance.PlayerId) == null) new PlayerAnimation(__instance);
             if (__instance != PlayerControl.LocalPlayer) return;
+            SluggerDeadbody.AllFixedUpdate();
+            PlayerAnimation.FixedAllUpdate();
             PVCreator.FixedUpdate();
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
@@ -103,7 +119,7 @@ namespace SuperNewRoles.Patch
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
                     Roles.CrewMate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
-                    reduceKillCooldown(__instance);
+                    ReduceKillCooldown(__instance);
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
@@ -140,9 +156,6 @@ namespace SuperNewRoles.Patch
                                 break;
                             case RoleId.Vampire:
                                 Vampire.FixedUpdate.Postfix();
-                                break;
-                            case RoleId.DarkKiller:
-                                DarkKiller.FixedUpdate.Postfix();
                                 break;
                             case RoleId.Vulture:
                                 Vulture.FixedUpdate.Postfix();
@@ -183,9 +196,11 @@ namespace SuperNewRoles.Patch
                             case RoleId.Doppelganger:
                                 Roles.Impostor.Doppelganger.FixedUpdate();
                                 break;
+                            case RoleId.ConnectKiller:
+                                Roles.Impostor.ConnectKiller.Update();
+                                break;
                             default:
-                                foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                                    NormalButtonDestroy.Postfix(p);
+                                NormalButtonDestroy.Postfix();
                                 break;
                         }
                     }
