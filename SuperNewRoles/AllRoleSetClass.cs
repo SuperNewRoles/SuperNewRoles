@@ -672,7 +672,7 @@ namespace SuperNewRoles
             if (IsRevolutionistAssigned)
             {
                 int PlayerCount = (int)GetPlayerCount(RoleId.Dictator);
-                Logger.Info(PlayerCount.ToString(),"Dictator");
+                Logger.Info(PlayerCount.ToString(), "Dictator");
                 if (PlayerCount >= CrewMatePlayerNum)
                 {
                     for (int i = 1; i <= CrewMatePlayerNum; i++)
@@ -961,7 +961,7 @@ namespace SuperNewRoles
             Crewnotonepar = new();
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {
-                if (intro.RoleId != RoleId.DefaultRole && (intro.RoleId != RoleId.Nun || (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship) && !intro.IsGhostRole)
+                if (intro.RoleId != RoleId.DefaultRole && (intro.RoleId != RoleId.Nun || (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship) && !intro.IsGhostRole && (intro.RoleId != RoleId.Werewolf || ModeHandler.IsMode(ModeId.Werewolf)) && (intro.RoleId != RoleId.Knight || ModeHandler.IsMode(ModeId.Werewolf)))
                 {
                     var option = IntroDate.GetOption(intro.RoleId);
                     if (option == null) continue;
