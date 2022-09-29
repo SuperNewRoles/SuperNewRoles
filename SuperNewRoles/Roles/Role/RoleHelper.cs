@@ -1282,46 +1282,22 @@ namespace SuperNewRoles
             float addition = PlayerControl.GameOptions.killCooldown;
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                RoleId role = __instance.GetRole();
-                switch (role)
+                addition = __instance.GetRole() switch
                 {
-                    case RoleId.SerialKiller:
-                        addition = RoleClass.SerialKiller.KillTime;
-                        break;
-                    case RoleId.OverKiller:
-                        addition = RoleClass.OverKiller.KillCoolTime;
-                        break;
-                    case RoleId.SideKiller:
-                        addition = RoleClass.SideKiller.KillCoolTime;
-                        break;
-                    case RoleId.MadKiller:
-                        addition = RoleClass.SideKiller.MadKillerCoolTime;
-                        break;
-                    case RoleId.Minimalist:
-                        addition = RoleClass.Minimalist.KillCoolTime;
-                        break;
-                    case RoleId.Survivor:
-                        addition = RoleClass.Survivor.KillCoolTime;
-                        break;
-                    case RoleId.DarkKiller:
-                        addition = RoleClass.DarkKiller.KillCoolTime;
-                        break;
-                    case RoleId.Cleaner:
-                        addition = RoleClass.Cleaner.KillCoolTime;
-                        break;
-                    case RoleId.Samurai:
-                        addition = RoleClass.Samurai.KillCoolTime;
-                        break;
-                    case RoleId.Kunoichi:
-                        addition = RoleClass.Kunoichi.KillCoolTime;
-                        break;
-                    case RoleId.Matryoshka:
-                        addition = RoleClass.Matryoshka.MyKillCoolTime;
-                        break;
-                    case RoleId.ShiftActor:
-                        addition = ShiftActor.KillCool;
-                        break;
-                }
+                    RoleId.SerialKiller => RoleClass.SerialKiller.KillTime,
+                    RoleId.OverKiller => RoleClass.OverKiller.KillCoolTime,
+                    RoleId.SideKiller => RoleClass.SideKiller.KillCoolTime,
+                    RoleId.MadKiller => RoleClass.SideKiller.MadKillerCoolTime,
+                    RoleId.Minimalist => RoleClass.Minimalist.KillCoolTime,
+                    RoleId.Survivor => RoleClass.Survivor.KillCoolTime,
+                    RoleId.DarkKiller => RoleClass.DarkKiller.KillCoolTime,
+                    RoleId.Cleaner => RoleClass.Cleaner.KillCoolTime,
+                    RoleId.Samurai => RoleClass.Samurai.KillCoolTime,
+                    RoleId.Kunoichi => RoleClass.Kunoichi.KillCoolTime,
+                    RoleId.Matryoshka => RoleClass.Matryoshka.MyKillCoolTime,
+                    RoleId.ShiftActor => ShiftActor.KillCool,
+                    _ => PlayerControl.GameOptions.killCooldown
+                };
             }
             return addition;
         }
