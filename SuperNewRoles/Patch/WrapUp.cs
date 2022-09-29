@@ -91,6 +91,7 @@ namespace SuperNewRoles.Patch
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
             Roles.CrewMate.KnightProtected_Patch.WrapUp();
+            Bestfalsecharge.WrapUp();
             if (AmongUsClient.Instance.AmHost)
             {
                 PlayerAnimation.PlayerAnimations.All(x =>
