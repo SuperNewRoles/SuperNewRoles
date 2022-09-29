@@ -548,6 +548,12 @@ namespace SuperNewRoles.MapCustoms.Airship
                 couldUse = true;
                 __result = byte.MaxValue;
 
+                PlayerTask task = null;
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && (task = __instance.FindTask(pc.Object)) != null)
+                    foreach (Console console in task.FindConsoles())
+                        console.AllowImpostor = true;
+                
+
                 if (__instance.name is not "secretroom_teleport-on2" and not "secretroom_teleport-on" and not "secretroom_teleport-console") return true;
 
                 if (__instance.name == "secretroom_teleport-console")

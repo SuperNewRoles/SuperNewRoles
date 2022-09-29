@@ -732,6 +732,11 @@ namespace SuperNewRoles.Patches
                 RoleClass.IsCoolTimeSetted = true;
                 return false;
             }
+            if (__instance.Data.Role.CanUseKillButton && PlayerControl.GameOptions.KillCooldown > 0f)
+            {
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(__instance.killTimer = time, RoleHelpers.GetEndMeetingKillCoolTime(__instance));
+                return false;
+            }
             return true;
         }
     }

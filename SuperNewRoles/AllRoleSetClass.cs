@@ -672,9 +672,11 @@ namespace SuperNewRoles
             }
 
             //革命者を選ぶ
+            Logger.Info(IsRevolutionistAssigned.ToString(), "Dictator");
             if (IsRevolutionistAssigned)
             {
                 int PlayerCount = (int)GetPlayerCount(RoleId.Dictator);
+                Logger.Info(PlayerCount.ToString(),"Dictator");
                 if (PlayerCount >= CrewMatePlayerNum)
                 {
                     for (int i = 1; i <= CrewMatePlayerNum; i++)
