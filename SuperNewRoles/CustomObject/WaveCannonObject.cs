@@ -43,6 +43,7 @@ namespace SuperNewRoles.CustomObject
         private bool Playing;
         private SpriteRenderer render;
         private SpriteRenderer effectrender;
+        private byte OwnerPlayerId;
         private Action OnPlayEnd;
         public static Dictionary<byte, int> Ids;
         public bool IsShootNow;
@@ -53,7 +54,8 @@ namespace SuperNewRoles.CustomObject
 
         public WaveCannonObject(Vector3 pos, bool FlipX, PlayerControl _owner)
         {
-            if (_owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            OwnerPlayerId = _owner.PlayerId;
+            if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
                 CachedPlayer.LocalPlayer.PlayerControl.moveable = false;
 
@@ -84,12 +86,12 @@ namespace SuperNewRoles.CustomObject
             pos.z -= 0.0003f;
             transform.position = pos + new Vector3(FlipX ? -4 : 4, 0, 0);
             transform.localScale = new(FlipX ? -1 : 1, 1, 1);
-            if (!Ids.ContainsKey(Owner.PlayerId))
+            if (!Ids.ContainsKey(OwnerPlayerId))
             {
-                Ids[Owner.PlayerId] = 0;
+                Ids[OwnerPlayerId] = 0;
             }
-            Id = Ids[Owner.PlayerId];
-            Ids[Owner.PlayerId]++;
+            Id = Ids[OwnerPlayerId];
+            Ids[OwnerPlayerId]++;
             IsShootNow = false;
             ChargeSound = SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ChargeSound.raw"), true);
         }
@@ -155,7 +157,7 @@ namespace SuperNewRoles.CustomObject
             }
             if (Owner != null && Owner.IsDead()) {
                 GameObject.Destroy(this.gameObject);
-                if (Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
                     CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
                     Camera.main.GetComponent<FollowerCamera>().Locked = false;
@@ -165,8 +167,8 @@ namespace SuperNewRoles.CustomObject
                 Objects.Remove(this);
                 return;
             }
-            if (Owner != null && Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId && !RoleClass.IsMeeting) {
-                CachedPlayer.LocalPlayer.transform.position = OwnerPos;
+            if (Owner != null && OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId && !RoleClass.IsMeeting) {
+                Owner.transform.position = OwnerPos;
 
                 if (IsShootNow)
                 {
@@ -175,6 +177,10 @@ namespace SuperNewRoles.CustomObject
                         if (player.IsDead()) continue;
                         if (RoleClass.WaveCannon.CannotMurderPlayers.Contains(player.PlayerId)) continue;
                         if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
+                        float posdata = player.GetTruePosition().y - transform.position.y;
+                        if (posdata > 1 || posdata < -1) continue;
+                        posdata = transform.position.x - (IsFlipX ? -2 : 2);
+                        if ((IsFlipX && player.transform.position.x > posdata) || (!IsFlipX && player.transform.position.x < posdata)) continue;
                         if (player.IsRole(RoleId.Shielder) && RoleClass.Shielder.IsShield.ContainsKey(player.PlayerId) && RoleClass.Shielder.IsShield[player.PlayerId])
                         {
                             MessageWriter msgwriter = RPCHelper.StartRPC(CustomRPC.ShielderProtect);
@@ -186,10 +192,6 @@ namespace SuperNewRoles.CustomObject
                             RoleClass.WaveCannon.CannotMurderPlayers.Add(player.PlayerId);
                             return;
                         }
-                        float posdata = player.GetTruePosition().y - transform.position.y;
-                        if (posdata > 1 || posdata < -1) continue;
-                        posdata = transform.position.x - (IsFlipX ? -2 : 2);
-                        if ((IsFlipX && player.transform.position.x > posdata) || (!IsFlipX && player.transform.position.x < posdata)) continue;
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.RPCMurderPlayer);
                         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         writer.Write(player.PlayerId);
@@ -197,8 +199,11 @@ namespace SuperNewRoles.CustomObject
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         float Timer = PlayerControl.LocalPlayer.killTimer;
                         RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, player.PlayerId, 0);
-                        PlayerControl.LocalPlayer.killTimer = Timer;
-                        FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.text = PlayerControl.LocalPlayer.killTimer <= 0f ? "" : PlayerControl.LocalPlayer.killTimer.ToString();
+                        if (PlayerControl.LocalPlayer.IsImpostor())
+                        {
+                            PlayerControl.LocalPlayer.killTimer = Timer;
+                            FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.text = PlayerControl.LocalPlayer.killTimer <= 0f ? "" : PlayerControl.LocalPlayer.killTimer.ToString();
+                        }
                     }
                 }
             }

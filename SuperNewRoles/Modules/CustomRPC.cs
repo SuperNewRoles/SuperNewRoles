@@ -242,6 +242,7 @@ namespace SuperNewRoles.Modules
     {
         public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)
         {
+            Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {buff.Length} : {ModHelpers.PlayerById(OwnerId).Data.PlayerName}","RpcWaveCannon");
             switch ((WaveCannonObject.RpcType)Type)
             {
                 case WaveCannonObject.RpcType.Spawn:
