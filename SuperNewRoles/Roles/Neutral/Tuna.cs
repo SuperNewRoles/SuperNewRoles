@@ -19,6 +19,7 @@ namespace SuperNewRoles.Roles
                         if (RoleClass.Tuna.Timer <= 0.1f)
                         {
                             CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
+                            PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.TunaSelfDeath);
                         }
                         RoleClass.Tuna.Timer -= Time.deltaTime;
                     }

@@ -617,9 +617,9 @@ namespace SuperNewRoles.Patch
     }
 
     [HarmonyPatch(typeof(StringOption), nameof(StringOption.OnEnable))]
-    public class StringOptionEnablePatch
+    class StringOptionEnablePatch
     {
-        public static bool Prefix(StringOption __instance)
+        static bool Prefix(StringOption __instance)
         {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
             if (option == null)
@@ -630,15 +630,8 @@ namespace SuperNewRoles.Patch
                     __instance.OnValueChanged = new Action<OptionBehaviour>((o) => { });
                     __instance.TitleText.text = Regulation.title;
                     __instance.Value = __instance.oldValue = 0;
-                    if (RegulationData.Selected == Regulation.id)
-                    {
-                        __instance.ValueText.text = ModTranslation.GetString("optionOn");
-                    }
-                    else
-                    {
-                        __instance.ValueText.text = ModTranslation.GetString("optionOff");
+                    __instance.ValueText.text = RegulationData.Selected == Regulation.id ? ModTranslation.GetString("optionOn") : ModTranslation.GetString("optionOff");
 
-                    }
                     return false;
                 }
                 return true;

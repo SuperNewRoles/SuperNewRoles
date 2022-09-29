@@ -42,10 +42,7 @@ namespace SuperNewRoles
                         var text = val[key]?.TryCast<JValue>().Value.ToString();
 
                         if (text != null && text.Length > 0)
-                        {
-                            if (text == blankText) strings[j] = "";
-                            else strings[j] = text;
-                        }
+                            strings[j] = text == blankText ? "" : text;
                     }
                     stringData[stringName] = strings;
                 }

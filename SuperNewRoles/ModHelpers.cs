@@ -404,7 +404,7 @@ namespace SuperNewRoles
             }
             return murder;
         }
-        public static void UncheckedMurderPlayer(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
+        public static void UncheckedMurderPlayer(this PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
             writer.Write(killer.PlayerId);
