@@ -1176,7 +1176,9 @@ namespace SuperNewRoles
                     if (task.TaskType == TaskTypes.FixComms)
                         return true;
             }
-            catch { }
+            catch (Exception e){
+                Logger.Error(e.ToString(), "IsComms");
+            }
             return false;
         }
         public static bool IsLightdown()
