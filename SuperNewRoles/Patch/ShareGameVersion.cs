@@ -232,7 +232,7 @@ namespace SuperNewRoles.Patch
             }
         }
     }
-    public class PlayerVersion
+    public struct PlayerVersion
     {
         public readonly Version version;
         public readonly Guid guid;

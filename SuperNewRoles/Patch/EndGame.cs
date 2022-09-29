@@ -86,7 +86,7 @@ namespace SuperNewRoles.Patch
 
     }
     [HarmonyPatch(typeof(ShipStatus))]
-    public class ShipStatusPatch
+    public static class ShipStatusPatch
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.IsGameOverDueToDeath))]
@@ -272,7 +272,7 @@ namespace SuperNewRoles.Patch
                     RoleColor = RoleClass.Spelunker.color;
                     break;
                 case WinCondition.SuicidalIdeationWin:
-                    text = RoleClass.SuicidalIdeation.SuicidalIdeationWinText ? "SuicidalIdeationWinText" : "SuicidalIdeationName";
+                    text = CustomOptions.SuicidalIdeationWinText.GetBool() ? "SuicidalIdeationWinText" : "SuicidalIdeationName";
                     RoleColor = RoleClass.SuicidalIdeation.color;
                     break;
                 case WinCondition.HitmanWin:
@@ -779,7 +779,7 @@ namespace SuperNewRoles.Patch
             }
             foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
             {
-                if(player.IsAlive() && RoleClass.Stefinder.SoloWin)
+                if(player.IsAlive() && CustomOptions.StefinderSoloWin.GetBool())
                 {
                     if (!RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
                        (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask ||
@@ -915,7 +915,7 @@ namespace SuperNewRoles.Patch
             }
             foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
             {
-                if (player.IsAlive() && !RoleClass.Stefinder.SoloWin)
+                if (player.IsAlive() && !CustomOptions.StefinderSoloWin.GetBool())
                 {
                     if (!RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
                        (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask ||
@@ -1079,7 +1079,7 @@ namespace SuperNewRoles.Patch
     }
 
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CheckEndCriteria))]
-    public class CheckGameEndPatch
+    public static class CheckGameEndPatch
     {
         public static bool Prefix(ShipStatus __instance)
         {

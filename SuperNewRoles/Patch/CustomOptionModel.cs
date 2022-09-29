@@ -292,6 +292,13 @@ namespace SuperNewRoles.Patch
                 countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
         }
     }
+    public class GameSettingsScale
+    {
+        public static void GameSettingsScalePatch(HudManager __instance)
+        {
+            if (__instance.GameSettings != null) __instance.GameSettings.fontSize = 1.2f;
+        }
+    }
     public class CustomOptionBlank : CustomOption
     {
         public CustomOptionBlank(CustomOption parent)
@@ -1161,16 +1168,6 @@ namespace SuperNewRoles.Patch
             {
                 SuperNewRolesPlugin.optionsPage++;
             }
-        }
-    }
-
-
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    public class GameSettingsScalePatch
-    {
-        public static void Prefix(HudManager __instance)
-        {
-            if (__instance.GameSettings != null) __instance.GameSettings.fontSize = 1.2f;
         }
     }
 }
