@@ -617,9 +617,9 @@ namespace SuperNewRoles.Patch
     }
 
     [HarmonyPatch(typeof(StringOption), nameof(StringOption.OnEnable))]
-    public class StringOptionEnablePatch
+    class StringOptionEnablePatch
     {
-        public static bool Prefix(StringOption __instance)
+        static bool Prefix(StringOption __instance)
         {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
             if (option == null)
