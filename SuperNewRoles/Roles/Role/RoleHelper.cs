@@ -1,3 +1,5 @@
+using System.IO.IsolatedStorage;
+using System.Runtime.CompilerServices;
 using System;
 using System.Collections.Generic;
 using Hazel;
@@ -1218,58 +1220,45 @@ namespace SuperNewRoles
                     _ => false,
                 };
         }
-        public static bool IsNeutral(this PlayerControl player)
-        {
-            var IsNeutral = false;
-            switch (player.GetRole())
-            {
-                case RoleId.Jester:
-                case RoleId.Jackal:
-                case RoleId.Sidekick:
-                case RoleId.Vulture:
-                case RoleId.Opportunist:
-                case RoleId.Researcher:
-                case RoleId.God:
-                case RoleId.Egoist:
-                case RoleId.Workperson:
-                case RoleId.truelover:
-                case RoleId.Amnesiac:
-                case RoleId.FalseCharges:
-                case RoleId.Fox:
-                case RoleId.TeleportingJackal:
-                case RoleId.Demon:
-                case RoleId.JackalSeer:
-                case RoleId.SidekickSeer:
-                case RoleId.Arsonist:
-                case RoleId.MayorFriends:
-                case RoleId.Tuna:
-                case RoleId.Neet:
-                case RoleId.Revolutionist:
-                case RoleId.Spelunker:
-                case RoleId.SuicidalIdeation:
-                case RoleId.Hitman:
-                case RoleId.Stefinder:
-                case RoleId.PartTimer:
-                case RoleId.Photographer:
-                    //第三か
-                    IsNeutral = true;
-                    break;
-            }
-            return IsNeutral;
-        }
+        public static bool IsNeutral(this PlayerControl player) =>
+            player.GetRole() is
+                RoleId.Jester or
+                RoleId.Jackal or
+                RoleId.Sidekick or
+                RoleId.Vulture or
+                RoleId.Opportunist or
+                RoleId.Researcher or
+                RoleId.God or
+                RoleId.Egoist or
+                RoleId.Workperson or
+                RoleId.truelover or
+                RoleId.Amnesiac or
+                RoleId.FalseCharges or
+                RoleId.Fox or
+                RoleId.TeleportingJackal or
+                RoleId.Demon or
+                RoleId.JackalSeer or
+                RoleId.SidekickSeer or
+                RoleId.Arsonist or
+                RoleId.MayorFriends or
+                RoleId.Tuna or
+                RoleId.Neet or
+                RoleId.Revolutionist or
+                RoleId.Spelunker or
+                RoleId.SuicidalIdeation or
+                RoleId.Hitman or
+                RoleId.Stefinder or
+                RoleId.PartTimer or
+                //第三か
+                RoleId.Photographer;
+
         public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
         {
             RoleId MyRole;
             if (IsChache)
             {
-                try
-                {
-                    MyRole = ChacheManager.MyRoleChache[p.PlayerId];
-                }
-                catch
-                {
-                    MyRole = RoleId.DefaultRole;
-                }
+                try { MyRole = ChacheManager.MyRoleChache[p.PlayerId]; }
+                catch { MyRole = RoleId.DefaultRole; }
             }
             else
             {
@@ -1280,14 +1269,8 @@ namespace SuperNewRoles
         public static bool IsRole(this PlayerControl p, params RoleId[] roles)
         {
             RoleId MyRole;
-            try
-            {
-                MyRole = ChacheManager.MyRoleChache[p.PlayerId];
-            }
-            catch
-            {
-                MyRole = RoleId.DefaultRole;
-            }
+            try { MyRole = ChacheManager.MyRoleChache[p.PlayerId]; }
+            catch { MyRole = RoleId.DefaultRole; }
             foreach (RoleId role in roles)
             {
                 if (role == MyRole) return true;
