@@ -199,6 +199,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.WaveCannonJackal:
                                 JackalSeer.JackalSeerFixedPatch.JackalSeerPlayerOutLineTarget();
                                 break;
+                            case RoleId.ConnectKiller:
+                                Roles.Impostor.ConnectKiller.Update();
+                                break;
                             default:
                                 NormalButtonDestroy.Postfix();
                                 break;

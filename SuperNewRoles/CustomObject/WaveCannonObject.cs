@@ -127,11 +127,14 @@ namespace SuperNewRoles.CustomObject
                     if (DestroyIndex > 3)
                     {
                         GameObject.Destroy(this.gameObject);
-                        CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
-                        Camera.main.GetComponent<FollowerCamera>().Locked = false;
-                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonCoolTime.GetFloat();
-                        HudManagerStartPatch.WaveCannonButton.Timer = HudManagerStartPatch.WaveCannonButton.MaxTimer;
-                        RoleClass.WaveCannon.CannotMurderPlayers = new();
+                        if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                        {
+                            CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
+                            Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                            HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonCoolTime.GetFloat();
+                            HudManagerStartPatch.WaveCannonButton.Timer = HudManagerStartPatch.WaveCannonButton.MaxTimer;
+                            RoleClass.WaveCannon.CannotMurderPlayers = new();
+                        }
                     }
                 };
             };
@@ -164,11 +167,11 @@ namespace SuperNewRoles.CustomObject
                 }
                 if (ChargeSound != null)
                     ChargeSound.Stop();
-                Objects.Remove(this);
                 return;
             }
-            if (Owner != null && OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId && !RoleClass.IsMeeting) {
-                Owner.transform.position = OwnerPos;
+            Logger.Info($"{OwnerPlayerId} : {Owner != null} : {OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId} : {CachedPlayer.LocalPlayer.PlayerId} : {PlayerControl.LocalPlayer.PlayerId} : {!RoleClass.IsMeeting} : {OwnerPos}","WaveCannonUpdate");
+            if (Owner != null && OwnerPlayerId == PlayerControl.LocalPlayer.PlayerId && !RoleClass.IsMeeting) {
+                //Owner.transform.position = OwnerPos;
 
                 if (IsShootNow)
                 {

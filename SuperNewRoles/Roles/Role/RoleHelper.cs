@@ -1136,8 +1136,7 @@ namespace SuperNewRoles
         public static bool IsUseVent(this PlayerControl player)
         {
             RoleId role = player.GetRole();
-            if (player.IsImpostor()) return true;
-            else if (ModeHandler.IsMode(ModeId.SuperHostRoles) && IsComms()) return false;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && IsComms() && !player.IsImpostor()) return false;
             return role switch
             {
                 RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,
@@ -1167,9 +1166,9 @@ namespace SuperNewRoles
                 RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
                 RoleId.Stefinder => CustomOptions.StefinderVent.GetBool(),
-                RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalUseSabo.GetBool(),
+                RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalUseVent.GetBool(),
                 RoleId.DoubleKiller => CustomOptions.DoubleKillerVent.GetBool(),
-                _ => false,
+                _ => player.IsImpostor(),
             };
         }
         public static bool IsSabotage()
@@ -1191,7 +1190,9 @@ namespace SuperNewRoles
                     if (task.TaskType == TaskTypes.FixComms)
                         return true;
             }
-            catch { }
+            catch (Exception e){
+                Logger.Error(e.ToString(), "IsComms");
+            }
             return false;
         }
         public static bool IsLightdown()
@@ -1208,9 +1209,6 @@ namespace SuperNewRoles
         public static bool IsUseSabo(this PlayerControl player)
         {
             RoleId role = player.GetRole();
-            if (role == RoleId.Minimalist) return RoleClass.Minimalist.UseSabo;
-            if (role == RoleId.Samurai) return RoleClass.Samurai.UseSabo;
-            else if (player.IsImpostor()) return true;
             return role switch
             {
                 RoleId.Jester => RoleClass.Jester.IsUseSabo && ModeHandler.IsMode(ModeId.Default),
@@ -1223,7 +1221,7 @@ namespace SuperNewRoles
                 RoleId.Minimalist => RoleClass.Minimalist.UseSabo,
                 RoleId.DoubleKiller => CustomOptions.DoubleKillerSabo.GetBool(),
                 RoleId.Samurai => RoleClass.Samurai.UseSabo,
-                _ => false,
+                _ => player.IsImpostor(),
             };
         }
         public static bool IsImpostorLight(this PlayerControl player)

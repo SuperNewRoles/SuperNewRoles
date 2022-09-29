@@ -153,6 +153,7 @@ namespace SuperNewRoles.Buttons
                 var ImpostorVentButton = FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton;
                 var ImpostorSabotageButton = FastDestroyableSingleton<HudManager>.Instance.SabotageButton;
 
+                Logger.Info(PlayerControl.LocalPlayer.IsUseVent().ToString(),"IsUseVent");
                 if (PlayerControl.LocalPlayer.IsUseVent())
                 {
                     if (!ImpostorVentButton.gameObject.active)

@@ -2657,9 +2657,11 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> ConnectKillerPlayer;
             public static Color32 color = ImpostorRed;
+            public static bool OldCommsData;
             public static void ClearAndReload()
             {
                 ConnectKillerPlayer = new();
+                OldCommsData = false;
             }
         }
         public static class WaveCannon
@@ -2667,6 +2669,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> WaveCannonPlayer;
             public static Color32 color = ImpostorRed;
             public static List<byte> CannotMurderPlayers;
+            public static bool IsLocalOn => WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId) != null;
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f);
 
             public static void ClearAndReload()

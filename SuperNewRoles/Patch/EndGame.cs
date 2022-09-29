@@ -476,7 +476,6 @@ namespace SuperNewRoles.Patch
             }
             var gameOverReason = AdditionalTempData.gameOverReason;
             AdditionalTempData.Clear();
-
             foreach (var p in GameData.Instance.AllPlayers)
             {
                 if (p != null && p.Object != null &&  p.Object.IsPlayer())
@@ -634,7 +633,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (cp.PlayerControl.IsJackalTeam())
                     {
-                        TempData.winners.Add(new(WinnerPlayer.Data));
+                        TempData.winners.Add(new(cp.Data));
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.JackalWin;

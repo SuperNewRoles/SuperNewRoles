@@ -1673,8 +1673,8 @@ namespace SuperNewRoles.Modules
             
             WaveCannonJackalOption = new(1008, false, CustomOptionType.Neutral, "WaveCannonJackalName",RoleClass.WaveCannonJackal.color, 1);
             WaveCannonJackalPlayerCount = Create(1009, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WaveCannonJackalOption);
-            WaveCannonJackalCoolTime = Create(1014, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonJackalOption);
-            WaveCannonJackalChargeTime = Create(1015, false, CustomOptionType.Impostor, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonJackalOption);
+            WaveCannonJackalCoolTime = Create(1014, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonJackalOption);
+            WaveCannonJackalChargeTime = Create(1015, false, CustomOptionType.Neutral, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonJackalOption);
             WaveCannonJackalKillCoolDown = Create(1010, false, CustomOptionType.Neutral, "JackalCoolDownSetting", 30f, 2.5f, 60f, 2.5f, WaveCannonJackalOption, format: "unitSeconds");
             WaveCannonJackalUseVent = Create(1011, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, WaveCannonJackalOption);
             WaveCannonJackalIsImpostorLight = Create(1012, false, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, WaveCannonJackalOption);
