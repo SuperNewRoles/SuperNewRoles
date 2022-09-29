@@ -2704,7 +2704,7 @@ namespace SuperNewRoles.Roles
         public static class WaveCannonJackal
         {
             public static List<PlayerControl> WaveCannonJackalPlayer;
-            public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
+            public static Color32 color = Jackal.color;
             public static void ClearAndReload()
             {
                 WaveCannonJackalPlayer = new();
