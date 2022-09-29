@@ -117,23 +117,6 @@ namespace SuperNewRoles.Patches
                                     return true;
                                 }
                             }
-                            else
-                            {
-                                FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
-                                if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
-                                    RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
-                                else
-                                    RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = CustomOptions.RemoteSheriffKillMaxCount.GetInt() - 1;
-                                if (RoleClass.RemoteSheriff.IsKillTeleport)
-                                    __instance.RpcMurderPlayerCheck(target);
-                                else
-                                {
-                                    target.RpcMurderPlayer(target);
-                                    __instance.RpcProtectPlayer(__instance, 0);
-                                }
-                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
-                                return true;
-                            }
                         }
                         return true;
                     case RoleId.SelfBomber:
