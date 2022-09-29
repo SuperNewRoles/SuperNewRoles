@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
-
-
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Sabotage;
 using TMPro;
@@ -50,6 +49,7 @@ namespace SuperNewRoles.Roles
             MapCustoms.AdditionalVents.ClearAndReload();
             MapCustoms.SpecimenVital.ClearAndReload();
             MapCustoms.MoveElecPad.ClearAndReload();
+            Beacon.ClearBeacons();
             SoothSayer.ClearAndReload();
             Jester.ClearAndReload();
             Lighter.ClearAndReload();
@@ -179,6 +179,7 @@ namespace SuperNewRoles.Roles
             Impostor.ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
             Doppelganger.ClearAndReload();
+            Conjurer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();

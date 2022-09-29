@@ -157,6 +157,7 @@ namespace SuperNewRoles.Modules
         ShiftActor,
         ConnectKiller,
         Doppelganger,
+        Conjurer,
         //RoleId
     }
 
@@ -230,6 +231,7 @@ namespace SuperNewRoles.Modules
         /* 210~214 is used Submerged Mod */
         PainterSetTarget = 215,
         SharePhotograph,
+        ShowFlash,
         SetFinalStatus
     }
     public static class RPCProcedure
@@ -975,6 +977,10 @@ namespace SuperNewRoles.Modules
                 }
             })));
         }
+
+        public static void ShowFlash(){
+            Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+        }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
         class RPCHandlerPatch
         {
@@ -1227,6 +1233,9 @@ namespace SuperNewRoles.Modules
                                 Targets.Add(reader.ReadByte());
                             }
                             SluggerExile(source, Targets);
+                            break;
+                        case CustomRPC.ShowFlash:
+                            ShowFlash();
                             break;
                         case CustomRPC.SetFinalStatus:
                             SetFinalStatus(reader.ReadByte(), (FinalStatus)reader.ReadByte());

@@ -1655,6 +1655,7 @@ namespace SuperNewRoles.Modules
             DoppelgangerSucTime = Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
             DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
 
+            Roles.Impostor.Conjurer.SetupCustomOptions();
             TaskerOption = new(1000, false, CustomOptionType.Impostor, "TaskerName", RoleClass.Tasker.color, 1);
             TaskerPlayerCount = Create(1001, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
             var taskeroption = SelectTask.TaskSetting(1002, 1003, 1004, TaskerOption, CustomOptionType.Impostor, false);
