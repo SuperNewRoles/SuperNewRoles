@@ -729,11 +729,9 @@ namespace SuperNewRoles.Patches
                 RoleClass.IsCoolTimeSetted = true;
                 return false;
             }
-            if (__instance.Data.Role.CanUseKillButton && !(PlayerControl.GameOptions.KillCooldown <= 0f))
+            if (__instance.Data.Role.CanUseKillButton && PlayerControl.GameOptions.KillCooldown > 0f)
             {
-                if (time <= 0f) time = 0f;
-                
-                DestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(__instance.killTimer = time, RoleHelpers.GetEndMeetingKillCoolTime(__instance));
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(__instance.killTimer = time, RoleHelpers.GetEndMeetingKillCoolTime(__instance));
                 return false;
             }
             return true;
