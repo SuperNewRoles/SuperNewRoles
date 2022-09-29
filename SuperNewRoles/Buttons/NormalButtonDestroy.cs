@@ -26,17 +26,6 @@ namespace SuperNewRoles.Buttons
                 _ => false
             };
         }
-        public static bool IsDestroySabo(this PlayerControl player)
-        {
-            return player.GetRole() switch
-            {
-                RoleId.Minimalist => !RoleClass.Minimalist.UseSabo,
-                RoleId.DoubleKiller => !RoleClass.DoubleKiller.CanUseSabo,
-                RoleId.Samurai => !RoleClass.Samurai.UseSabo,
-                //サボタージュボタン無効か
-                _ => false
-            };
-        }
         public static bool IsDestroyUse(this PlayerControl player)
         {//使用ボタン消す役職少ないと思うのでswitch文にしときます
          //役職増えたり複雑な条件増えてきたらreturn player.GetRole() switchにします
@@ -50,22 +39,12 @@ namespace SuperNewRoles.Buttons
             }
             return IsDestroyUse;
         }
-        public static bool IsDestroyVent(this PlayerControl player)
-        {
-            return player.GetRole() switch
-            {
-                RoleId.Minimalist => !RoleClass.Minimalist.UseVent,
-                RoleId.DoubleKiller => !RoleClass.DoubleKiller.CanUseVent,
-                RoleId.Samurai => !RoleClass.Samurai.UseVent,
-                //ベントボタン無効化
-                _ => false,
-            };
-        }
     }
     public class NormalButtonDestroy
     {
-        public static void Postfix(PlayerControl player)
+        public static void Postfix()
         {
+            PlayerControl player = CachedPlayer.LocalPlayer;
             if (player.IsDestroyKill())
                 if (FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.active)
                     FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
@@ -80,15 +59,9 @@ namespace SuperNewRoles.Buttons
                     FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.enabled = false;
                     FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
                 }
-            if (player.IsDestroySabo())
-                if (FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.active)
-                    FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(false);
             if (player.IsDestroyUse())
                 if (FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.active)//使うボタンが有効の時
                     FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.SetActive(false);//使うボタンを無効化
-            if (player.IsDestroyVent())
-                if (FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.active)
-                    FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
         }
     }
 }

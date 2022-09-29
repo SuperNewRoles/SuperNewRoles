@@ -1149,71 +1149,6 @@
         "11": "\u30d9\u30f3\u30c8\u304c\u4f7f\u3048\u308b",
         "13": "\u6293\u6355\u8005\u53ef\u4ee5\u4f7f\u7528\u7ba1\u9053"
     },
-    "FinalStatusAlive": {
-        "0": "Survival",
-        "11": "\u751f\u5b58",
-        "13": "\u5b58\u6d3b"
-    },
-    "FinalStatusKill": {
-        "0": "Kill",
-        "11": "\u30ad\u30eb",
-        "13": "\u88ab\u6740"
-    },
-    "FinalStatusExiled": {
-        "0": "Exiled",
-        "11": "\u8ffd\u653e",
-        "13": "\u6d41\u653e"
-    },
-    "FinalStatusNekomataExiled": {
-        "0": "The Way of the Nekomata",
-        "11": "\u732b\u53c8\u306e\u9053\u9023\u308c",
-        "13": "\u8fde\u5e26"
-    },
-    "FinalStatusSheriffKill": {
-        "0": "Sheriff kill",
-        "11": "\u30b7\u30a7\u30ea\u30d5\u30ad\u30eb",
-        "13": "\u8b66\u957f\u51fb\u6740"
-    },
-    "FinalStatusSheriffMisFire": {
-        "0": "Sheriff misfire",
-        "11": "\u30b7\u30a7\u30ea\u30d5\u8aa4\u7206",
-        "13": "\u8b66\u957f\u8d70\u706b"
-    },
-    "FinalStatusMeetingSheriffKill": {
-        "0": "Meeting Sheriff kill",
-        "11": "\u30df\u30fc\u30c6\u30a3\u30f3\u30b0\u30b7\u30a7\u30ea\u30d5\u30ad\u30eb",
-        "13": "\u6267\u6cd5\u5b98\u51fb\u6740"
-    },
-    "FinalStatusMeetingSheriffMisFire": {
-        "0": "Meeting Sheriff misfire",
-        "11": "\u30df\u30fc\u30c6\u30a3\u30f3\u30b0\u30b7\u30a7\u30ea\u30d5\u8aa4\u7206",
-        "13": "\u6267\u6cd5\u5b98\u8d70\u706b"
-    },
-    "FinalStatusSelfBomb": {
-        "0": "Self-destruct",
-        "11": "\u81ea\u7206",
-        "13": "\u81ea\u6740"
-    },
-    "FinalStatusBySelfBomb": {
-        "0": "Self-destruct collateral damage",
-        "11": "\u81ea\u7206\u5dfb\u304d\u6dfb\u3048",
-        "13": "\u6050\u88ad"
-    },
-    "FinalStatusDisconnected": {
-        "0": "amputation",
-        "11": "\u5207\u65ad",
-        "13": "\u65ad\u8fde"
-    },
-    "FinalStatusDead": {
-        "0": "Death",
-        "11": "\u6b7b\u4ea1",
-        "13": "\u6b7b\u4ea1"
-    },
-    "FinalStatusSabotage": {
-        "0": "Sabotage",
-        "11": "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5",
-        "13": "\u7834\u574f"
-    },
     "SabotageSetting": {
         "0": "Sabotage Setting",
         "11": "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u306e\u8a2d\u5b9a",
@@ -4800,5 +4735,187 @@
     "AgarthaName": {
         "0": "Agartha",
         "11": "\u30a2\u30ac\u30eb\u30bf"
+    },
+    "FinalStatusAlive": {
+        "0": "Survival",
+        "11": "\u751f\u5b58",
+        "13": "\u5b58\u6d3b"
+    },
+    "FinalStatusKill": {
+        "0": "Kill",
+        "11": "\u30ad\u30eb",
+        "13": "\u88ab\u6740"
+    },
+    "FinalStatusExiled": {
+        "0": "Exiled",
+        "11": "\u8ffd\u653e",
+        "13": "\u6d41\u653e"
+    },
+    "FinalStatusNekomataExiled": {
+        "0": "The Way of the Nekomata",
+        "11": "\u732b\u53c8\u306e\u9053\u9023\u308c",
+        "13": "\u8fde\u5e26"
+    },
+    "FinalStatusSheriffKill": {
+        "0": "Sheriff kill",
+        "11": "\u30b7\u30a7\u30ea\u30d5\u30ad\u30eb",
+        "13": "\u8b66\u957f\u51fb\u6740"
+    },
+    "FinalStatusSheriffMisFire": {
+        "0": "Sheriff misfire",
+        "11": "\u30b7\u30a7\u30ea\u30d5\u8aa4\u7206",
+        "13": "\u8b66\u957f\u8d70\u706b"
+    },
+    "FinalStatusMeetingSheriffKill": {
+        "0": "Meeting Sheriff kill",
+        "11": "\u30df\u30fc\u30c6\u30a3\u30f3\u30b0\u30b7\u30a7\u30ea\u30d5\u30ad\u30eb",
+        "13": "\u6267\u6cd5\u5b98\u51fb\u6740"
+    },
+    "FinalStatusMeetingSheriffMisFire": {
+        "0": "Meeting Sheriff misfire",
+        "11": "\u30df\u30fc\u30c6\u30a3\u30f3\u30b0\u30b7\u30a7\u30ea\u30d5\u8aa4\u7206",
+        "13": "\u6267\u6cd5\u5b98\u8d70\u706b"
+    },
+    "FinalStatusSelfBomb": {
+        "0": "Self-destruct",
+        "11": "\u81ea\u7206",
+        "13": "\u81ea\u6740"
+    },
+    "FinalStatusBySelfBomb": {
+        "0": "Self-destruct collateral damage",
+        "11": "\u81ea\u7206\u5dfb\u304d\u6dfb\u3048",
+        "13": "\u6050\u88ad"
+    },
+    "FinalStatusDisconnected": {
+        "0": "amputation",
+        "11": "\u5207\u65ad",
+        "13": "\u65ad\u8fde"
+    },
+    "FinalStatusDead": {
+        "0": "Death",
+        "11": "\u6b7b\u4ea1",
+        "13": "\u6b7b\u4ea1"
+    },
+    "FinalStatusSabotage": {
+        "0": "Sabotage",
+        "11": "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5",
+        "13": "\u7834\u574f"
+    },
+    "FinalStatusSluggerHarisen": {
+        "0": "Harisen",
+        "11": "\u30cf\u30ea\u30bb\u30f3",
+        "13": "\u98d3\u98ce"
+    },
+    "FinalStatusLoversBomb": {
+        "0": "Lovers Death",
+        "11": "\u30e9\u30d0\u30fc\u30ba\u6b7b",
+        "13": "\u604b\u4eba\u6b7b\u4ea1"
+    },
+    "FinalStatusKunaiKill": {
+        "0": "Kunai Kill",
+        "11": "\u30af\u30ca\u30a4\u30ad\u30eb",
+        "13": "\u56fd\u4e95\u6740\u3002"
+    },
+    "FinalStatusSamuraiKill": {
+        "0": "Samurai, must kill!",
+        "11": "\u4f8d\u3001\u5fc5\u6bba\uff01",
+        "13": "\u6b66\u58eb\uff0c\u5fc5\u987b\u6740\uff01"
+    },
+    "FinalStatusChiefMisSet": {
+        "0": "Village chief mistake",
+        "11": "\u6751\u9577\u30df\u30b9",
+        "13": "\u6751\u957f\u7684\u9519\u8bef"
+    },
+    "FinalStatusFalseChargesFalseCharge": {
+        "0": "Self-destruct for false accusation",
+        "11": "\u51a4\u7f6a\u306e\u305f\u3081\u306b\u81ea\u7206",
+        "13": "\u865a\u5047\u6307\u63a7\u7684\u81ea\u6bc1\u884c\u4e3a"
+    },
+    "FinalStatusSelfBomberBomb": {
+        "0": "suicide bomber self-destructs",
+        "11": "\u81ea\u7206\u9b54\u81ea\u7206",
+        "13": "\u81ea\u6740\u5f0f\u70b8\u5f39\u88ad\u51fb\u8005\u81ea\u6211\u6bc1\u706d"
+    },
+    "FinalStatusBySelfBomberBomb": {
+        "0": "suicide bomber self-destruct entrapment",
+        "11": "\u81ea\u7206\u9b54\u306e\u81ea\u7206\u5dfb\u304d\u8fbc\u307f",
+        "13": "\u81ea\u6740\u5f0f\u70b8\u5f39\u88ad\u51fb\u8005\u81ea\u6bc1\u8bf1\u9975"
+    },
+    "FinalStatusLadderDeath": {
+        "0": "Falling to his death",
+        "11": "\u8ee2\u843d\u6b7b",
+        "13": "\u6454\u6b7b"
+    },
+    "FinalStatusNunDeath": {
+        "0": "Death by fall",
+        "11": "\u306c\u30fc\u3093\u8ee2\u843d\u6b7b",
+        "13": "\u5c3c\u59d1\u6454\u6b7b"
+    },
+    "FinalStatusSpelunkerCommsElecDeath": {
+        "0": "Spelunker death by anxiety",
+        "11": "\u30b9\u30da\u30e9\u30f3\u30ab\u30fc\u4e0d\u5b89\u6b7b",
+        "13": "\u6f5c\u6c34\u5458\u7126\u8651\u75c7\u6b7b\u4ea1"
+    },
+    "FinalStatusSpelunkerSetRoleDeath": {
+        "0": "Spelunker Death by Responsibility",
+        "11": "\u30b9\u30da\u30e9\u30f3\u30ab\u30fc\u8cac\u4efb\u611f\u6b7b",
+        "13": "\u6f5c\u6c34\u5458\u8d23\u4efb\u6b7b\u4ea1"
+    },
+    "FinalStatusSpelunkerVentDeath": {
+        "0": "SpelunkerDeath from vent foot trapping",
+        "11": "\u30b9\u30da\u30e9\u30f3\u30ab\u30fc\u30d9\u30f3\u30c8\u8db3\u5f15\u3063\u639b\u3051\u6b7b",
+        "13": "\u6d1e\u7a74\u63a2\u9669\u8005\u6b7b\u4e8e\u901a\u98ce\u53e3\u811a\u4e0b\u7684\u9677\u9631"
+    },
+    "FinalStatusSpelunkerOpenDoor": {
+        "0": "Spelunker Death by Finger Pinching",
+        "11": "\u30b9\u30da\u30e9\u30f3\u30ab\u30fc\u6307\u631f\u307f\u6b7b",
+        "13": "\u6f5c\u6c34\u5458\u88ab\u6390\u65ad\u624b\u6307\u81f4\u6b7b"
+    },
+    "FinalStatusTunaSelfDeath": {
+        "0": "SpelunkerDeath by self-destruction",
+        "11": "\u30de\u30b0\u30ed\u81ea\u7206\u6b7b",
+        "13": "\u91d1\u67aa\u9c7c\u81ea\u6740\u6b7b\u4ea1"
+    },
+    "FinalStatusBestFalseChargesFalseCharge": {
+        "0": "spelunker death by false accusation",
+        "11": "\u51a4\u7f6a\u6b7b",
+        "13": "\u62fe\u8352\u8005\u88ab\u8bec\u9677\u6b7b\u4ea1"
+    },
+    "FinalStatusSheriffHauntedWolfKill": {
+        "0": "Wolf misdirected sheriff kill",
+        "11": "\u72fc\u8aa4\u7206\u30b7\u30a7\u30ea\u30d5\u30ad\u30eb",
+        "13": "\u91ce\u72fc\u8bef\u6740\u8b66\u957f"
+    },
+    "FinalStatusMeetingSheriffHauntedWolfKill": {
+        "0": "wolf misdirected meating sheriff kill",
+        "11": "\u72fc\u8aa4\u7206\u30df\u30a3\u30fc\u30c6\u30a3\u30f3\u30b0\u30b7\u30a7\u30ea\u30d5\u30ad\u30eb",
+        "13": "\u72fc\u8bef\u5bfc\u4e86\u6211\uff0c\u8b66\u957f\u6740\u4e86\u4eba"
+    },
+    "FinalStatusSerialKillerSelfDeath": {
+        "0": "Serial killer impulse death",
+        "11": "\u30b7\u30ea\u30a2\u30eb\u30ad\u30e9\u30fc\u885d\u52d5\u6b7b",
+        "13": "\u8fde\u73af\u6740\u624b\u51b2\u52a8\u81f4\u6b7b"
+    },
+    "FinalStatusVampireKill": {
+        "0": "Vampire Kill",
+        "11": "\u30f4\u30a1\u30f3\u30d1\u30a4\u30a2\u30ad\u30eb",
+        "13": "\u5438\u8840\u9b3c\u6740\u622e"
+    },
+    "FinalStatusOverKillerOverKill": {
+        "0": "Overkill!",
+        "11": "\u30aa\u30fc\u30d0\u30fc\u30ad\u30eb\uff01\uff01\uff01",
+        "13": "\u8fc7\u5ea6\u6740\u622e\uff01\uff01\u3002"
+    },
+    "FinalStatusRemoteSheriffHauntedWolfKill": {
+        "0": "wolf misdirected remote sheriff kill",
+        "11": "\u72fc\u8aa4\u7206\u30ea\u30e2\u30fc\u30c8\u30b7\u30a7\u30ea\u30d5\u30ad\u30eb"
+    },
+    "FinalStatusRemoteSheriffKill": {
+        "0": "Remote Sheriff kill",
+        "11": "\u30ea\u30e2\u30fc\u30c8\u30b7\u30a7\u30ea\u30d5\u30ad\u30eb"
+    },
+    "FinalStatusRemoteSheriffMisFire": {
+        "0": "RemoteSheriff misfire",
+        "11": "\u30ea\u30e2\u30fc\u30c8\u30b7\u30a7\u30ea\u30d5\u8aa4\u7206"
     }
 }

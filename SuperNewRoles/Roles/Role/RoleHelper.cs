@@ -46,6 +46,7 @@ namespace SuperNewRoles
                 RoleId.MadSeer => true,
                 RoleId.BlackCat => true,
                 RoleId.MadMaker => true,
+                RoleId.SatsumaAndImo => RoleClass.SatsumaAndImo.TeamNumber == 2,
                 //isMad
                 _ => false,
             };
@@ -1151,7 +1152,8 @@ namespace SuperNewRoles
                 RoleId.Tuna => RoleClass.Tuna.IsUseVent,
                 RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
-                RoleId.Stefinder => RoleClass.Stefinder.UseVent,
+                RoleId.Stefinder => CustomOptions.StefinderVent.GetBool(),
+                RoleId.DoubleKiller => CustomOptions.DoubleKillerVent.GetBool(),
                 _ => false,
             };
         }
@@ -1174,7 +1176,9 @@ namespace SuperNewRoles
                     if (task.TaskType == TaskTypes.FixComms)
                         return true;
             }
-            catch { }
+            catch (Exception e){
+                Logger.Error(e.ToString(), "IsComms");
+            }
             return false;
         }
         public static bool IsLightdown()
@@ -1201,7 +1205,10 @@ namespace SuperNewRoles
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
                 RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
                 RoleId.Egoist => RoleClass.Egoist.UseSabo,
-                RoleId.Stefinder => RoleClass.Stefinder.UseSabo,
+                RoleId.Stefinder => CustomOptions.StefinderSabo.GetBool(),
+                RoleId.Minimalist => RoleClass.Minimalist.UseSabo,
+                RoleId.DoubleKiller => CustomOptions.DoubleKillerSabo.GetBool(),
+                RoleId.Samurai => RoleClass.Samurai.UseSabo,
                 _ => false,
             };
         }
@@ -1229,7 +1236,7 @@ namespace SuperNewRoles
                     RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
                     RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
                     RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
-                    RoleId.Photographer => RoleClass.Photographer.IsImpostorVision,
+                    RoleId.Photographer => CustomOptions.PhotographerIsImpostorVision.GetBool(),
                     _ => false,
                 };
         }
