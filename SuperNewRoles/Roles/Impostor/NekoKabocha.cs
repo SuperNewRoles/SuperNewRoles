@@ -52,7 +52,7 @@ namespace SuperNewRoles.Roles.Impostor
                 (killer.IsImpostor() && CanRevengeImp))
             {
                 killer.RpcMurderPlayer(killer);
-                FinalStatusData.FinalStatuses[killer.PlayerId] = FinalStatus.Revenge;
+                killer.RpcSetFinalStatus(FinalStatus.Revenge);
             }
         }
     }
