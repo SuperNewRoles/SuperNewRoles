@@ -1366,7 +1366,7 @@ namespace SuperNewRoles
         {
             if (IsChache)
             {
-                try { return ChacheManager.MyRoleChache[player.PlayerId]               }
+                try { return ChacheManager.MyRoleChache[player.PlayerId]; }
                 catch { return RoleId.DefaultRole; }
             }
             try
