@@ -1,17 +1,15 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using SuperNewRoles.Patch;
 using static SuperNewRoles.Modules.CustomOptions;
 using static SuperNewRoles.Patch.CustomOption;
 using static SuperNewRoles.Roles.RoleClass;
-using static SuperNewRoles.Patch.FinalStatusPatch;
 
 namespace SuperNewRoles.Roles.Impostor
 {
     public static class NekoKabocha
     {
-        private const int OptionId = 984;
+        private const int OptionId = 992;
         public static CustomRoleOption NekoKabochaOption;
         public static CustomOption NekoKabochaPlayerCount;
         public static CustomOption KillCoolDown;
