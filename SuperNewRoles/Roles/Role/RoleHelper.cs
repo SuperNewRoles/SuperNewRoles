@@ -65,14 +65,8 @@ namespace SuperNewRoles
             if (player.IsBot()) return false;
             if (IsChache)
             {
-                try
-                {
-                    return ChacheManager.QuarreledChache[player.PlayerId] != null;
-                }
-                catch
-                {
-                    return false;
-                }
+                try { return ChacheManager.QuarreledChache[player.PlayerId] != null; }
+                catch { return false; }
             }
             foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
             {
@@ -91,14 +85,8 @@ namespace SuperNewRoles
             if (player.IsBot()) return false;
             if (IsChache)
             {
-                try
-                {
-                    return ChacheManager.LoversChache[player.PlayerId] != null;
-                }
-                catch
-                {
-                    return false;
-                }
+                try { return ChacheManager.LoversChache[player.PlayerId] != null; }
+                catch { return false; }
             }
             foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
             {
