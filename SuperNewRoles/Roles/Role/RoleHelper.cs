@@ -210,16 +210,12 @@ namespace SuperNewRoles
                 RoleId.SidekickSeer or
                 RoleId.MayorFriends;
         }
-        public static bool IsJackalTeamJackal(this PlayerControl player)
-        {
-            RoleId role = player.GetRole();
-            return role is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal;
-        }
-        public static bool IsJackalTeamSidekick(this PlayerControl player)
-        {
-            RoleId role = player.GetRole();
-            return role is RoleId.Sidekick or RoleId.SidekickSeer;
-        }
+        public static bool IsJackalTeamJackal(this PlayerControl player) =>
+            player.GetRole() is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal;
+
+        public static bool IsJackalTeamSidekick(this PlayerControl player) =>
+            player.GetRole() is RoleId.Sidekick or RoleId.SidekickSeer;
+
 
         public static void SetRole(this PlayerControl player, RoleId role)
         {
@@ -1046,7 +1042,7 @@ namespace SuperNewRoles
                 case RoleId.Doppelganger:
                     RoleClass.Doppelganger.DoppelggerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1104,7 +1100,7 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
-                //タスククリアか
+                    //タスククリアか
                     IsTaskClear = true;
                     break;
             }
@@ -1176,7 +1172,8 @@ namespace SuperNewRoles
                     if (task.TaskType == TaskTypes.FixComms)
                         return true;
             }
-            catch (Exception e){
+            catch (Exception e)
+            {
                 Logger.Error(e.ToString(), "IsComms");
             }
             return false;
@@ -1273,7 +1270,7 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
-                //第三か
+                    //第三か
                     IsNeutral = true;
                     break;
             }
