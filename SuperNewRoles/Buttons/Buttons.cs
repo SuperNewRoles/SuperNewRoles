@@ -2311,7 +2311,7 @@ namespace SuperNewRoles.Buttons
                             {
                                 if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
                                 {
-                                    if (RoleClass.Matryoshka.Datas.Values.All(data =>
+                                    if (RoleClass.Matryoshka.Data.Values.All(data =>
                                     {
                                         return data == null || data.ParentId != component.ParentId;
                                     }))

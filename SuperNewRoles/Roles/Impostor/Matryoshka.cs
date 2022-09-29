@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles.Impostor
     {
         public static void FixedUpdate()
         {
-            foreach (var Data in RoleClass.Matryoshka.Datas)
+            foreach (var Data in RoleClass.Matryoshka.Data)
             {
                 if (Data.Value == null) continue;
                 Data.Value.Reported = !CustomOptions.MatryoshkaWearReport.GetBool();
@@ -22,7 +22,7 @@ namespace SuperNewRoles.Roles.Impostor
         }
         public static void WrapUp()
         {
-            RoleClass.Matryoshka.Datas = new();
+            RoleClass.Matryoshka.Data = new();
         }
         public static void Set(PlayerControl source, PlayerControl target, bool Is)
         {
@@ -36,15 +36,15 @@ namespace SuperNewRoles.Roles.Impostor
             }
             if (!Is)
             {
-                if (RoleClass.Matryoshka.Datas.ContainsKey(source.PlayerId))
+                if (RoleClass.Matryoshka.Data.ContainsKey(source.PlayerId))
                 {
-                    if (RoleClass.Matryoshka.Datas[source.PlayerId] != null)
+                    if (RoleClass.Matryoshka.Data[source.PlayerId] != null)
                     {
-                        RoleClass.Matryoshka.Datas[source.PlayerId].Reported = false;
-                        if (RoleClass.Matryoshka.Datas[source.PlayerId].bodyRenderer != null)
-                            RoleClass.Matryoshka.Datas[source.PlayerId].bodyRenderer.enabled = true;
+                        RoleClass.Matryoshka.Data[source.PlayerId].Reported = false;
+                        if (RoleClass.Matryoshka.Data[source.PlayerId].bodyRenderer != null)
+                            RoleClass.Matryoshka.Data[source.PlayerId].bodyRenderer.enabled = true;
                     }
-                    RoleClass.Matryoshka.Datas.Remove(source.PlayerId);
+                    RoleClass.Matryoshka.Data.Remove(source.PlayerId);
                 }
             }
             else
@@ -54,7 +54,7 @@ namespace SuperNewRoles.Roles.Impostor
                 {
                     if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == target.PlayerId)
                     {
-                        RoleClass.Matryoshka.Datas[source.PlayerId] = array[i];
+                        RoleClass.Matryoshka.Data[source.PlayerId] = array[i];
                     }
                 }
             }
