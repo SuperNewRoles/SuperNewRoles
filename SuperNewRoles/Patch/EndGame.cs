@@ -444,6 +444,7 @@ namespace SuperNewRoles.Patch
         public static CustomGameOverReason? EndData = null;
         public static void Prefix([HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
+            Roles.Impostor.Camouflager.Camouflage();
             Roles.Impostor.Camouflager.ResetCamouflage();
             AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
