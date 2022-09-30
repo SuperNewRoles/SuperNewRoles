@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
 using SuperNewRoles.Patch;
+using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptions;
 using static SuperNewRoles.Patch.CustomOption;
 using static SuperNewRoles.Roles.RoleClass;

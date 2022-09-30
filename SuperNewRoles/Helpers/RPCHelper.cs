@@ -1,7 +1,7 @@
+using System.Linq;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.Mode.SuperHostRoles;
-using System.Linq;
 using UnityEngine;
 using static MeetingHud;
 

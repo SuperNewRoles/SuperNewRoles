@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Patch;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Sabotage;
 using TMPro;
@@ -195,7 +195,7 @@ namespace SuperNewRoles.Roles
             public static bool DisplayMode;
             public static int Count;
             public static Color32 color = new(190, 86, 235, byte.MaxValue);
-            public static Sprite GetButtonSprite() =>  ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SoothSayerButton.png", 115f);
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SoothSayerButton.png", 115f);
             public static void ClearAndReload()
             {
                 SoothSayerPlayer = new();
@@ -779,7 +779,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SelfBomberPlayer;
             public static Color32 color = ImpostorRed;
-            public static Sprite GetButtonSprite() =>  ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SelfBomberBomButton.png", 115f);
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SelfBomberBomButton.png", 115f);
 
             public static void ClearAndReload()
             {
@@ -2217,7 +2217,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SuicideWisherPlayer;
             public static Color32 color = ImpostorRed;
-            
+
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuicideWisherButton.png", 115f);
 
             public static void ClearAndReload()
@@ -2455,7 +2455,7 @@ namespace SuperNewRoles.Roles
             public static bool IsLocalOn => !Data.Keys.All(data => data != CachedPlayer.LocalPlayer.PlayerId);
             public static Dictionary<byte, DeadBody> Data;
             public static Sprite PutOnButtonSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaPutOnButton.png", 115f);
-           public static Sprite TakeOffButtonSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaTakeOffButton.png", 115f);
+            public static Sprite TakeOffButtonSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaTakeOffButton.png", 115f);
             public static void ClearAndReload()
             {
                 MatryoshkaPlayer = new();
@@ -2485,7 +2485,9 @@ namespace SuperNewRoles.Roles
             public static bool IsLocalOn => Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
             public static PlayerControl CurrentTarget => IsLocalOn ? ModHelpers.PlayerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
             public static Dictionary<PlayerControl, PlayerControl> PlayerDatas
-            { get{
+            {
+                get
+                {
                     //キャッシュ済みのプレイヤーリストとplayerByIdのリストの数が違ったらキャッシュを更新する
                     if (_playerDatas.Count != Datas.Count)
                     {

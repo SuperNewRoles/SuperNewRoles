@@ -24,7 +24,7 @@ namespace SuperNewRoles.Roles
                     }
                 }
             }
-            CachedPlayer.LocalPlayer.PlayerControl.UncheckedMurderPlayer(CachedPlayer.LocalPlayer, showAnimation:false);
+            CachedPlayer.LocalPlayer.PlayerControl.UncheckedMurderPlayer(CachedPlayer.LocalPlayer, showAnimation: false);
             CachedPlayer.LocalPlayer.PlayerControl.RpcSetFinalStatus(FinalStatus.SelfBomberBomb);
         }
         /// <summary>

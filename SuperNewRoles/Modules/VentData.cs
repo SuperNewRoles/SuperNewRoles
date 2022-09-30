@@ -9,7 +9,7 @@ namespace SuperNewRoles.Modules
 {
     public static class VentDataPatch
     {
-        [HarmonyPatch(typeof(IntroCutscene),nameof(IntroCutscene.OnDestroy))]
+        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
         class IntroCutsceneOnDestroy
         {
             public static void Postfix()

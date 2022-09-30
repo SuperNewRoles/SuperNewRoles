@@ -979,7 +979,8 @@ namespace SuperNewRoles.Modules
             })));
         }
 
-        public static void ShowFlash(){
+        public static void ShowFlash()
+        {
             Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]

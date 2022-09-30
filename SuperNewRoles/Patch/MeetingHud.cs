@@ -437,7 +437,7 @@ namespace SuperNewRoles.Patch
                                 }
                             }
                         }
-                        else if(!exiledPlayer.Object.IsBot())
+                        else if (!exiledPlayer.Object.IsBot())
                         {
                             foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                             {

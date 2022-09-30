@@ -1,6 +1,6 @@
 using System.Linq;
-using UnityEngine;
 using HarmonyLib;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral
 {
