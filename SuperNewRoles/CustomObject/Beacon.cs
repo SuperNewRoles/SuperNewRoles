@@ -64,13 +64,14 @@ namespace SuperNewRoles.CustomObject
 
         public static void ClearBeacons()
         {
-            int[] num = { -1, -2, -3 };
-            foreach (var n in num)
+            foreach (var b in AllBeacons)
             {
-                Logger.Info($"Beacon{Conjurer.Round}{Conjurer.Count + n}をClearします", "ClearBeacons");
-                GameObject.Find($"Beacon{Conjurer.Round}{Conjurer.Count + n}")?.SetActive(false);
-                GameObject.Find($"Beacon{Conjurer.Round}{Conjurer.Count + n}(Clone)")?.SetActive(false);
+                if (b.GameObject != null)
+                {
+                    b.GameObject.SetActive(false);
+                }
             }
+            Beacon.AllBeacons = new();
         }
     }
 }
