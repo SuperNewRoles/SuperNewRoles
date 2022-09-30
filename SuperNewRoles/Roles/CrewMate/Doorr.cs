@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using SuperNewRoles.Buttons;
-
+using SuperNewRoles.Helpers;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -27,7 +27,7 @@ namespace SuperNewRoles.Roles
             PlainDoor door = GetDoor();
             if (door != null)
             {
-                door.SetDoorway(!door.Open);
+                door.RpcSetDoorway(!door.Open);
             }
         }
         private static float IsPos(Vector3 mypos, PlainDoor Door, float distance)
