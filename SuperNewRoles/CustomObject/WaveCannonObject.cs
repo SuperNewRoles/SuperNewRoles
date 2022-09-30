@@ -158,7 +158,7 @@ namespace SuperNewRoles.CustomObject
                 GameObject.Destroy(gameObject);
                 return;
             }
-            if (Owner != null && Owner.IsDead()) {
+            if (Owner != null && (Owner.IsDead() || !(Owner.GetRole() is RoleId.WaveCannon or RoleId.WaveCannonJackal))) {
                 GameObject.Destroy(this.gameObject);
                 if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
