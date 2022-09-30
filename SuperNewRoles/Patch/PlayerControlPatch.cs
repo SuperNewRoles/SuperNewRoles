@@ -4,6 +4,7 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -804,6 +805,20 @@ namespace SuperNewRoles.Patches
             DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
+
+            if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId)
+            {
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
+                {
+                    if (CustomOptions.WaveCannonIsSyncKillCoolTime.GetBool())
+                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonCoolTime.GetFloat();
+                }
+                else
+                {
+                    if (CustomOptions.WaveCannonJackalIsSyncKillCoolTime.GetBool())
+                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonJackalCoolTime.GetFloat();
+                }
+            }
 
             SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
