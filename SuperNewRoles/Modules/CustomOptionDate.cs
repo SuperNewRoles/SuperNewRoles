@@ -1672,7 +1672,7 @@ namespace SuperNewRoles.Modules
             CamouflagerCamouflageLovers = Create(998, true, CustomOptionType.Impostor, "CamouflagerCamouflageLoversSetting", false, CamouflagerOption);
             CamouflagerCamouflageQuarreled = Create(999, true, CustomOptionType.Impostor, "CamouflagerCamouflageQuarreledSetting", false, CamouflagerOption);
             CamouflagerCamouflageChangeColor = Create(1000, true, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
-            CamouflagerCamouflageColor = Create(1001, true, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Roles.Impostor.Camouflager.ColorOption1, CamouflagerCamouflageChangeColor);
+            CamouflagerCamouflageColor = Create(1001, true, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Roles.Impostor.Camouflager.ColorOption, CamouflagerCamouflageChangeColor);
 
             //表示設定
 

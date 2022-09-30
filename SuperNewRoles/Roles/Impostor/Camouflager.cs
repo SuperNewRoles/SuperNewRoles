@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles.Impostor
 {
     public class Camouflager
     {
-        public static string[] ColorOption1 =
+        public static string[] ColorOption =
         {
             "<color=#C61111>■</color>",//赤
             "<color=#132ED2>■</color>",//青
@@ -31,27 +31,6 @@ namespace SuperNewRoles.Roles.Impostor
             "<color=#758593>■</color>",//グレー
             "<color=#918877>■</color>",//タン
             "<color=#D76464>■</color>" //コーラル
-        };
-        public static string[] ColorOption2 =
-        {
-            "colorRed",   //赤
-            "colorBlue",  //青
-            "colorGreen", //緑
-            "colorPink",  //ピンク
-            "colorOrange",//オレンジ
-            "colorYellow",//黄
-            "colorBlack", //黒
-            "colorWhite", //白
-            "colorPurple",//紫
-            "colorBrown", //茶
-            "colorCyan",  //水
-            "colorLime",  //黄緑
-            "colorMaroon",//マルーン
-            "colorRose",  //ローズ
-            "colorBanana",//バナナ
-            "colorGray",  //グレー
-            "colorTan",   //タン
-            "colorCoral"  //コーラル
         };
         public class AttireData
         {
@@ -99,7 +78,6 @@ namespace SuperNewRoles.Roles.Impostor
                         Mode.SuperHostRoles.FixedUpdate.SetRoleName(player);
                     }, 0.25f);
                 }
-
             }
         }
 
