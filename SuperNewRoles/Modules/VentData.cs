@@ -134,6 +134,20 @@ namespace SuperNewRoles.Modules
                     break;
             }
         }
+        public static void MadMateVent()
+        {
+            if (CustomOptions.MadRolesCanVentMove.GetBool())
+            {
+                Dictionary<string, VentData> ventMap = VentData.VentMap;
+                foreach (var ventData in ventMap)
+                {
+                    var vent = ventData.Value.Vent;
+                    vent.Center = null;
+                    vent.Right = null;
+                    vent.Left = null;
+                }
+            }
+        }
     }
     public class VentData
     {
