@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Agartha;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
-using Agartha;
 
 namespace SuperNewRoles.Patch
 {

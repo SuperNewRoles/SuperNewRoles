@@ -792,7 +792,7 @@ namespace SuperNewRoles.Patch
             }
             foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
             {
-                if(player.IsAlive() && CustomOptions.StefinderSoloWin.GetBool())
+                if (player.IsAlive() && CustomOptions.StefinderSoloWin.GetBool())
                 {
                     if (!RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
                        (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask ||
@@ -1380,7 +1380,8 @@ namespace SuperNewRoles.Patch
                                 {
                                     numTotalEgoist++;
                                     numImpostorsAlive++;
-                                } else if (playerInfo.Object.IsRole(RoleId.Hitman))
+                                }
+                                else if (playerInfo.Object.IsRole(RoleId.Hitman))
                                 {
                                     numHitmanAlive++;
                                 }

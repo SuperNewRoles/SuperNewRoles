@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.Patch;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Roles
 {
@@ -44,12 +44,16 @@ namespace SuperNewRoles.Roles
                         {
                             if (p1.Data != __instance && p1.IsAlive())
                             {
-                                if (p1.IsCrew() && Impostor.NekoKabocha.CanRevengeCrew){
+                                if (p1.IsCrew() && Impostor.NekoKabocha.CanRevengeCrew)
+                                {
                                     p.Add(p1);
                                 }
-                                else if (p1.IsNeutral()&&Impostor.NekoKabocha.CanRevengeNeut){
+                                else if (p1.IsNeutral() && Impostor.NekoKabocha.CanRevengeNeut)
+                                {
                                     p.Add(p1);
-                                }else if(p1.IsImpostor()&&Impostor.NekoKabocha.CanRevengeImp){
+                                }
+                                else if (p1.IsImpostor() && Impostor.NekoKabocha.CanRevengeImp)
+                                {
                                     p.Add(p1);
                                 }
                             }
