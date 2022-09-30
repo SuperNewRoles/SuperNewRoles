@@ -917,7 +917,7 @@ namespace SuperNewRoles.Modules
             IsAlwaysReduceCooldownExceptInVent = Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
             IsAlwaysReduceCooldownExceptOnTask = Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
 
-            IsChangeTheWinCondition = Create(1007, true, CustomOptionType.Generic, "IsChangeTheWinCondition", true, null, isHeader: true);
+            IsChangeTheWinCondition = Create(1005, true, CustomOptionType.Generic, "IsChangeTheWinCondition", true, null, isHeader: true);
 
             MadRolesCanFixComms = Create(984, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
             MadRolesCanFixElectrical = Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
@@ -1658,14 +1658,15 @@ namespace SuperNewRoles.Modules
             DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
 
             Roles.Impostor.Conjurer.SetupCustomOptions();
-            TaskerOption = new(1000, false, CustomOptionType.Impostor, "TaskerName", RoleClass.Tasker.color, 1);
-            TaskerPlayerCount = Create(1001, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
-            var taskeroption = SelectTask.TaskSetting(1002, 1003, 1004, TaskerOption, CustomOptionType.Impostor, false);
+
+            TaskerOption = new(1006, false, CustomOptionType.Impostor, "TaskerName", RoleClass.Tasker.color, 1);
+            TaskerPlayerCount = Create(1007, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
+            var taskeroption = SelectTask.TaskSetting(1008, 1009, 1010, TaskerOption, CustomOptionType.Impostor, false);
             TaskerCommonTask = taskeroption.Item1;
             TaskerShortTask = taskeroption.Item2;
             TaskerLongTask = taskeroption.Item3;
-            TaskerIsKillCoolTaskNow = Create(1005, false, CustomOptionType.Impostor, "TaskerIsKillCoolTaskNow", true, TaskerOption);
-            TaskerCanKill = Create(1006, false, CustomOptionType.Impostor, "TaskerCanKill", true, TaskerOption);
+            TaskerIsKillCoolTaskNow = Create(1011, false, CustomOptionType.Impostor, "TaskerIsKillCoolTaskNow", true, TaskerOption);
+            TaskerCanKill = Create(1012, false, CustomOptionType.Impostor, "TaskerCanKill", true, TaskerOption);
 
             //表示設定
 
