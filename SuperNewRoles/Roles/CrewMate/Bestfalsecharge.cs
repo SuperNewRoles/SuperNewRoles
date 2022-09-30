@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
@@ -12,10 +13,8 @@ namespace SuperNewRoles.Roles
             {
                 foreach (PlayerControl p in RoleClass.Bestfalsecharge.BestfalsechargePlayer)
                 {
-                    MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ExiledRPC, SendOption.Reliable, -1);
-                    RPCWriter.Write(p.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
-                    RPCProcedure.ExiledRPC(p.PlayerId);
+                    p.RpcExiledUnchecked();
+                    p.RpcSetFinalStatus(FinalStatus.BestFalseChargesFalseCharge);
                 }
                 RoleClass.Bestfalsecharge.IsOnMeeting = true;
             }

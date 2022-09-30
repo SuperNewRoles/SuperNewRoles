@@ -42,10 +42,7 @@ namespace SuperNewRoles.Patch
         public static void Prefix(GameData.PlayerInfo exiled)
         {
             RoleClass.IsCoolTimeSetted = false;
-            if (exiled != null)
-            {
-                FalseCharges.WrapUp(exiled.Object);
-            }
+            FalseCharges.WrapUp(exiled != null ? exiled.Object : null);
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.CognitiveDeficit)

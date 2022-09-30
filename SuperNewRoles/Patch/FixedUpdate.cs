@@ -91,9 +91,16 @@ namespace SuperNewRoles.Patch
                 bool exceptOnTask = !CustomOptions.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
 
                 if (!__instance.Data.IsDead && !__instance.CanMove && !exceptInVent && !exceptOnTask)
+                {
+                    __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
+                    return;
+                }
+            }
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && CustomOptions.TaskerIsKillCoolTaskNow.GetBool())
+            {
+                if (!__instance.Data.IsDead && !__instance.CanMove && Minigame.Instance != null && Minigame.Instance.MyNormTask != null && Minigame.Instance.MyNormTask.Owner.AmOwner)
                     __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
             }
-
         }
         public static bool IsProDown;
 
@@ -195,6 +202,9 @@ namespace SuperNewRoles.Patch
                                 break;
                             case RoleId.Doppelganger:
                                 Roles.Impostor.Doppelganger.FixedUpdate();
+                                break;
+                            case RoleId.ConnectKiller:
+                                Roles.Impostor.ConnectKiller.Update();
                                 break;
                             default:
                                 NormalButtonDestroy.Postfix();
