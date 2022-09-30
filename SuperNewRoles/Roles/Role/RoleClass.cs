@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
-
-
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Patch;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
@@ -50,6 +50,7 @@ namespace SuperNewRoles.Roles
             MapCustoms.AdditionalVents.ClearAndReload();
             MapCustoms.SpecimenVital.ClearAndReload();
             MapCustoms.MoveElecPad.ClearAndReload();
+            Beacon.ClearBeacons();
             SoothSayer.ClearAndReload();
             Jester.ClearAndReload();
             Lighter.ClearAndReload();
@@ -176,9 +177,11 @@ namespace SuperNewRoles.Roles
             Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
             Slugger.ClearAndReload();
-            Impostor.ShiftActor.ClearAndReload();
+            ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
+            NekoKabocha.ClearAndReload();
             Doppelganger.ClearAndReload();
+            Conjurer.ClearAndReload();
             Camouflager.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -193,13 +196,7 @@ namespace SuperNewRoles.Roles
             public static bool DisplayMode;
             public static int Count;
             public static Color32 color = new(190, 86, 235, byte.MaxValue);
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SoothSayerButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() =>  ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SoothSayerButton.png", 115f);
             public static void ClearAndReload()
             {
                 SoothSayerPlayer = new();
@@ -236,13 +233,7 @@ namespace SuperNewRoles.Roles
             public static float DefaultCrewVision;
             public static DateTime ButtonTimer;
 
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.LighterLightOnButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.LighterLightOnButton.png", 115f);
             public static void ClearAndReload()
             {
                 LighterPlayer = new();
@@ -272,13 +263,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = RoleClass.ImpostorRed;
             public static float CoolTime;
             public static float DurationTime;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.EvilScientistButton.png.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.EvilScientistButton.png.png", 115f);
             public static void ClearAndReload()
             {
                 EvilScientistPlayer = new();
@@ -300,14 +285,7 @@ namespace SuperNewRoles.Roles
             public static Dictionary<int, int> KillCount;
             public static DateTime ButtonTimer;
 
-            private static Sprite buttonSprite;
-
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
 
             public static void ClearAndReload()
             {
@@ -330,14 +308,7 @@ namespace SuperNewRoles.Roles
             public static float KillMaxCount;
             public static bool OneMeetingMultiKill;
 
-            private static Sprite buttonSprite;
-
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
             public static void ClearAndReload()
             {
                 MeetingSheriffPlayer = new();
@@ -363,13 +334,7 @@ namespace SuperNewRoles.Roles
             public static List<int> CreatePlayers;
             public static bool IsCreatedFriend;
             public static bool CanCreateFriend;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSidekickButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSidekickButton.png", 115f);
             public static void ClearAndReload()
             {
                 JackalPlayer = new();
@@ -394,13 +359,7 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float DurationTime;
             public static DateTime ButtonTimer;
-            private static Sprite ButtonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
-                return ButtonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
             public static void ClearAndReload()
             {
                 TeleporterPlayer = new();
@@ -433,12 +392,7 @@ namespace SuperNewRoles.Roles
             public static DateTime ButtonTimer;
             public static bool IsSpeedBoost;
             public static Dictionary<int, bool> IsBoostPlayers;
-            public static Sprite GetSpeedBoostButtonSprite()
-            {
-                if (SpeedBoostButtonSprite) return SpeedBoostButtonSprite;
-                SpeedBoostButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
-                return SpeedBoostButtonSprite;
-            }
+            public static Sprite GetSpeedBoostButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
 
             public static void ClearAndReload()
             {
@@ -490,13 +444,8 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new(205, 133, 63, byte.MaxValue);
             public static float CoolTime;
             public static DateTime ButtonTimer;
-            private static Sprite ButtonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoorrDoorButton.png", 115f);
-                return ButtonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoorrDoorButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 ButtonTimer = DateTime.Now;
@@ -522,13 +471,9 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float DurationTime;
             public static Dictionary<byte, bool> IsShield;
-            private static Sprite ButtonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ShielderButton.png", 115f);
-                return ButtonSprite;
-            }
+
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ShielderButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 ShielderPlayer = new();
@@ -545,13 +490,8 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float DurationTime;
             public static bool IsSpeedDown;
-            private static Sprite ButtonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.FreezerButton.png", 115f);
-                return ButtonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.FreezerButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 FreezerPlayer = new();
@@ -568,13 +508,8 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float DurationTime;
             public static bool IsSpeedDown;
-            private static Sprite ButtonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedDownButton.png", 115f);
-                return ButtonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedDownButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 SpeederPlayer = new();
@@ -611,13 +546,8 @@ namespace SuperNewRoles.Roles
             public static bool IsUseVent;
             public static bool ShowArrows;
             public static Arrow Arrow;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 VulturePlayer = new();
@@ -636,14 +566,9 @@ namespace SuperNewRoles.Roles
             public static float DurationTime;
             public static DateTime ButtonTimer;
             public static bool IsScientist;
-            private static Sprite buttonSprite;
             public static Dictionary<int, bool> IsScientistPlayers;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.NiceScientistButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.NiceScientistButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 NiceScientistPlayer = new();
@@ -667,13 +592,8 @@ namespace SuperNewRoles.Roles
             public static DateTime OldButtonTimer;
             public static float OldButtonTime;
 
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 ClergymanPlayer = new();
@@ -758,20 +678,10 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static DateTime ButtonTimer;
             public static Vector3 setpostion;
-            private static Sprite nosetbuttonSprite;
-            private static Sprite setbuttonSprite;
-            public static Sprite GetNoSetButtonSprite()
-            {
-                if (setbuttonSprite) return setbuttonSprite;
-                setbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MovingLocationSetButton.png", 115f);
-                return setbuttonSprite;
-            }
-            public static Sprite GetSetButtonSprite()
-            {
-                if (nosetbuttonSprite) return nosetbuttonSprite;
-                nosetbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MovingTpButton.png", 115f);
-                return nosetbuttonSprite;
-            }
+            public static Sprite GetNoSetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MovingLocationSetButton.png", 115f);
+
+            public static Sprite GetSetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MovingTpButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 MovingPlayer = new();
@@ -870,13 +780,8 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SelfBomberPlayer;
             public static Color32 color = ImpostorRed;
-            private static Sprite ButtonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SelfBomberBomButton.png", 115f);
-                return ButtonSprite;
-            }
+            public static Sprite GetButtonSprite() =>  ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SelfBomberBomButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 SelfBomberPlayer = new();
@@ -997,13 +902,8 @@ namespace SuperNewRoles.Roles
             public static Dictionary<int, int> Setdata;
             public static int Count;
             public static bool IsSet;
-            private static Sprite ButtonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CountChangerButton.png", 115f);
-                return ButtonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CountChangerButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 CountChangerPlayer = new();
@@ -1055,15 +955,10 @@ namespace SuperNewRoles.Roles
             public static bool IsHawkOn;
             public static float Timer;
             public static DateTime ButtonTimer;
-            private static Sprite buttonSprite;
             public static float Default;
             public static float CameraDefault;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HawkHawkEye.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HawkHawkEye.png", 115f);
+
             public static void ClearAndReload()
             {
                 HawkPlayer = new();
@@ -1137,20 +1032,9 @@ namespace SuperNewRoles.Roles
             public static int MyPlayerCount;
             public static float SetTime;
             public static bool IsOKSet;
-            private static Sprite GetbuttonSprite;
-            private static Sprite AddbuttonSprite;
-            public static Sprite GetGetButtonSprite()
-            {
-                if (GetbuttonSprite) return GetbuttonSprite;
-                GetbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MagazinerGetButton.png", 115f);
-                return GetbuttonSprite;
-            }
-            public static Sprite GetAddButtonSprite()
-            {
-                if (AddbuttonSprite) return AddbuttonSprite;
-                AddbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MagazinerAddButton.png", 115f);
-                return AddbuttonSprite;
-            }
+            public static Sprite GetGetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MagazinerGetButton.png", 115f);
+            public static Sprite GetAddButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MagazinerAddButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 MagazinerPlayer = new();
@@ -1176,13 +1060,8 @@ namespace SuperNewRoles.Roles
             public static Color32 color = Lovers.color;
             public static bool IsCreate;
             public static List<int> CreatePlayers;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.trueloverloveButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.trueloverloveButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 trueloverPlayer = new();
@@ -1558,13 +1437,8 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float DurationTime;
             public static DateTime ButtonTimer;
-            private static Sprite ButtonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
-                return ButtonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 NiceTeleporterPlayer = new();
@@ -1767,13 +1641,8 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float DurationTime;
             public static DateTime ButtonTimer;
-            private static Sprite ButtonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
-                return ButtonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 TeleportingJackalPlayer = new();
@@ -1811,13 +1680,7 @@ namespace SuperNewRoles.Roles
             public static bool IsCheckImpostor;
             public static bool IsAliveWin;
             public static float CoolTime;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DemonButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DemonButton.png", 115f);
 
             public static void ClearAndReload()
             {
@@ -1907,13 +1770,8 @@ namespace SuperNewRoles.Roles
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
             public static bool CanCreateSidekick;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 JackalSeerPlayer = new();
@@ -1971,20 +1829,9 @@ namespace SuperNewRoles.Roles
             public static bool TriggerArsonistWin;
             public static bool IsDouse;
             public static PlayerControl DouseTarget;
-            private static Sprite DousebuttonSprite;
-            private static Sprite IgnitebuttonSprite;
-            public static Sprite GetDouseButtonSprite()
-            {
-                if (DousebuttonSprite) return DousebuttonSprite;
-                DousebuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ArsonistDouse.png", 115f);
-                return DousebuttonSprite;
-            }
-            public static Sprite GetIgniteButtonSprite()
-            {
-                if (IgnitebuttonSprite) return IgnitebuttonSprite;
-                IgnitebuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ArsonistIgnite.png", 115f);
-                return IgnitebuttonSprite;
-            }
+            public static Sprite GetDouseButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ArsonistDouse.png", 115f);
+            public static Sprite GetIgniteButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ArsonistIgnite.png", 115f);
+
 
             public static void ClearAndReload()
             {
@@ -2010,13 +1857,8 @@ namespace SuperNewRoles.Roles
             public static bool IsMadRoleKill;
             public static bool MadRoleKill;
             public static int KillLimit;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ChiefSidekickButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ChiefSidekickButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 ChiefPlayer = new();
@@ -2036,13 +1878,8 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static int CleanMaxCount;
             public static float KillCoolTime;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 CleanerPlayer = new();
@@ -2058,13 +1895,8 @@ namespace SuperNewRoles.Roles
             public static bool IsUseVent;
             public static bool IsImpostorLight;
 
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 MadCleanerPlayer = new();
@@ -2083,13 +1915,8 @@ namespace SuperNewRoles.Roles
             public static bool UseSabo;
             public static bool Sword;
             public static List<byte> SwordedPlayer;
-            private static Sprite ButtonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SamuraiButton.png", 115f);
-                return ButtonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SamuraiButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 SamuraiPlayer = new();
@@ -2137,13 +1964,8 @@ namespace SuperNewRoles.Roles
             public static Vent Vent;
             public static int VentCount;
             public static bool IsMakeVent;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VentMakerButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VentMakerButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 VentMakerPlayer = new();
@@ -2157,13 +1979,8 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> GhostMechanicPlayer;
             public static Color32 color = Color.blue;
             public static int LimitCount;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 GhostMechanicPlayer = new();
@@ -2175,17 +1992,14 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> EvilHackerPlayer;
             public static Color32 color = ImpostorRed;
             public static bool IsCreateMadmate;
-            private static Sprite buttonSprite;
             public static Sprite GetButtonSprite()
             {
-                if (buttonSprite) return buttonSprite;
                 byte mapId = PlayerControl.GameOptions.MapId;
                 UseButtonSettings button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.PolusAdminButton]; // Polus
                 if (mapId is 0 or 3) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
                 else if (mapId == 1) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
                 else if (mapId == 4) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AirshipAdminButton]; // Airship
-                buttonSprite = button.Image;
-                return buttonSprite; //GMHからの引用
+                return button.Image;
             }
             public static void ClearAndReload()
             {
@@ -2209,13 +2023,8 @@ namespace SuperNewRoles.Roles
             public static int SwapCount;
             public static float CoolTime;
             public static DateTime ButtonTimer;
-            public static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PositionSwapperButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PositionSwapperButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 PositionSwapperPlayer = new();
@@ -2349,20 +2158,9 @@ namespace SuperNewRoles.Roles
             public static float HideTime;
             public static bool IsWaitAndPressTheButtonToHide;
             public static bool IsHideButton;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunaiButton.png", 115f);
-                return buttonSprite;
-            }
-            private static Sprite HidebuttonSprite;
-            public static Sprite GetHideButtonSprite()
-            {
-                if (HidebuttonSprite) return HidebuttonSprite;
-                HidebuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiHideButton.png", 115f);
-                return HidebuttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunaiButton.png", 115f);
+            public static Sprite GetHideButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiHideButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 HideKunai = CustomOptions.KunoichiHideKunai.GetBool();
@@ -2398,17 +2196,9 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> DoubleKillerPlayer;
             public static Color32 color = ImpostorRed;
-            public static float MainCoolTime;
-            public static float SubCoolTime;
-            public static bool CanUseSabo;
-            public static bool CanUseVent;
             public static void ClearAndReload()
             {
                 DoubleKillerPlayer = new();
-                MainCoolTime = CustomOptions.MainKillCoolTime.GetFloat();
-                SubCoolTime = CustomOptions.SubKillCoolTime.GetFloat();
-                CanUseSabo = CustomOptions.DoubleKillerSabo.GetBool();
-                CanUseVent = CustomOptions.DoubleKillerVent.GetBool();
             }
         }
         public static class Smasher
@@ -2428,13 +2218,9 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SuicideWisherPlayer;
             public static Color32 color = ImpostorRed;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuicideWisherButton.png", 115f);
-                return buttonSprite;
-            }
+            
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuicideWisherButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 SuicideWisherPlayer = new();
@@ -2469,13 +2255,8 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> ToiletFanPlayer;
             public static Color32 color = new(116, 80, 48, byte.MaxValue);
             public static float ToiletCool;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ToiletFanButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ToiletFanButton.png", 115f);
+
             public static void ClearAndReload()
             {
                 ToiletFanPlayer = new();
@@ -2489,13 +2270,7 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float SkillCount;
             public static Dictionary<int, int> SkillCountSHR;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ButtonerButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ButtonerButton.png", 115f);
             public static void ClearAndReload()
             {
                 EvilButtonerPlayer = new();
@@ -2631,24 +2406,12 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SuicidalIdeationPlayer;
             public static Color32 color = new(71, 71, 71, byte.MaxValue);
-            public static bool SuicidalIdeationWinText;
-            public static float TimeLeft;
             public static DateTime ButtonTimer;
             public static int CompletedTask;
-            public static float AddTimeLeft;
-            public static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuicidalIdeationButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuicidalIdeationButton.png", 115f);
             public static void ClearAndReload()
             {
                 SuicidalIdeationPlayer = new();
-                SuicidalIdeationWinText = CustomOptions.SuicidalIdeationWinText.GetBool();
-                TimeLeft = CustomOptions.SuicidalIdeationTimeLeft.GetFloat();
-                AddTimeLeft = CustomOptions.SuicidalIdeationAddTimeLeft.GetFloat();
                 ButtonTimer = DateTime.Now;
                 CompletedTask = 0;
             }
@@ -2657,10 +2420,8 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> HitmanPlayer;
             public static Color32 color = new(86, 41, 18, byte.MaxValue);
-            public static float KillCoolTime;
             public static int OutMissionLimit;
             public static PlayerControl Target;
-            public static float ChangeTargetTime;
             public static float UpdateTime;
             public static Arrow TargetArrow;
             public static float ArrowUpdateTimeDefault;
@@ -2671,17 +2432,8 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 HitmanPlayer = new();
-                KillCoolTime = CustomOptions.HitmanKillCoolTime.GetFloat();
-                if (CustomOptions.HitmanIsOutMission.GetBool())
-                {
-                    OutMissionLimit = CustomOptions.HitmanOutMissionLimit.GetInt();
-                }
-                else
-                {
-                    OutMissionLimit = -1;
-                }
-                ChangeTargetTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
-                UpdateTime = ChangeTargetTime;
+                OutMissionLimit = CustomOptions.HitmanIsOutMission.GetBool() ? CustomOptions.HitmanOutMissionLimit.GetInt() : -1;
+                UpdateTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
                 cooldownText = null;
                 WinKillCount = CustomOptions.HitmanWinKillCount.GetInt();
                 if (TargetArrow != null && TargetArrow.arrow != null)
@@ -2689,14 +2441,7 @@ namespace SuperNewRoles.Roles
                     UnityEngine.Object.Destroy(TargetArrow.arrow);
                 }
                 TargetArrow = null;
-                if (CustomOptions.HitmanIsArrowView.GetBool())
-                {
-                    ArrowUpdateTimeDefault = CustomOptions.HitmanArrowUpdateTime.GetFloat();
-                }
-                else
-                {
-                    ArrowUpdateTimeDefault = -1f;
-                }
+                ArrowUpdateTimeDefault = CustomOptions.HitmanIsArrowView.GetBool() ? CustomOptions.HitmanArrowUpdateTime.GetFloat() : -1;
                 ArrowUpdateTime = ArrowUpdateTimeDefault;
             }
         }
@@ -2705,48 +2450,19 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> MatryoshkaPlayer;
             public static Color32 color = ImpostorRed;
             public static int WearLimit;
-            public static bool WearReport;
             public static float WearDefaultTime;
             public static float WearTime;
-            public static float AddKillCoolTime;
             public static float MyKillCoolTime;
-            public static float CoolTime;
-            public static bool IsLocalOn => !Datas.Keys.All(data => data != CachedPlayer.LocalPlayer.PlayerId || Datas[data].Item1 == null);
-            public static Dictionary<byte, (DeadBody, float)> Datas;
-            public static Sprite PutOnButtonSprite
-            {
-                get
-                {
-                    if (_PutOnButtonSprite == null)
-                    {
-                        _PutOnButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaPutOnButton.png", 115f);
-                    }
-                    return _PutOnButtonSprite;
-                }
-            }
-            public static Sprite _PutOnButtonSprite;
-            public static Sprite TakeOffButtonSprite
-            {
-                get
-                {
-                    if (_TakeOffButtonSprite == null)
-                    {
-                        _TakeOffButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaTakeOffButton.png", 115f);
-                    }
-                    return _TakeOffButtonSprite;
-                }
-            }
-            public static Sprite _TakeOffButtonSprite;
+            public static bool IsLocalOn => !Data.Keys.All(data => data != CachedPlayer.LocalPlayer.PlayerId);
+            public static Dictionary<byte, DeadBody> Data;
+            public static Sprite PutOnButtonSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaPutOnButton.png", 115f);
+           public static Sprite TakeOffButtonSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaTakeOffButton.png", 115f);
             public static void ClearAndReload()
             {
                 MatryoshkaPlayer = new();
                 WearLimit = CustomOptions.MatryoshkaWearLimit.GetInt();
-                WearReport = CustomOptions.MatryoshkaWearReport.GetBool();
-                WearDefaultTime = CustomOptions.MatryoshkaWearTime.GetFloat();
-                AddKillCoolTime = CustomOptions.MatryoshkaAddKillCoolTime.GetFloat();
                 WearTime = 0;
-                Datas = new();
-                CoolTime = CustomOptions.MatryoshkaCoolTime.GetFloat();
+                Data = new();
                 MyKillCoolTime = PlayerControl.GameOptions.killCooldown;
             }
         }
@@ -2754,18 +2470,10 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> NunPlayer;
             public static Color32 color = ImpostorRed;
-            public static float CoolTime;
-            public static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.NunButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.NunButton.png", 115f);
             public static void ClearAndReload()
             {
                 NunPlayer = new();
-                CoolTime = CustomOptions.NunCoolTime.GetFloat();
             }
         }
         public static class PartTimer
@@ -2774,27 +2482,12 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new(0, 255, 0, byte.MaxValue);
             public static int DeathDefaultTurn;
             public static int DeathTurn;
-            public static float CoolTime;
-            public static bool IsCheckTargetRole;
             public static Dictionary<byte, byte> Datas;
-            public static bool IsLocalOn
-            {
-                get
-                {
-                    return Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
-                }
-            }
-            public static PlayerControl CurrentTarget
-            {
-                get
-                {
-                    return IsLocalOn ? ModHelpers.PlayerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
-                }
-            }
+            public static bool IsLocalOn => Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
+            public static PlayerControl CurrentTarget => IsLocalOn ? ModHelpers.PlayerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
             public static Dictionary<PlayerControl, PlayerControl> PlayerDatas
-            {
-                get
-                {
+            { get{
+                    //キャッシュ済みのプレイヤーリストとplayerByIdのリストの数が違ったらキャッシュを更新する
                     if (_playerDatas.Count != Datas.Count)
                     {
                         Dictionary<PlayerControl, PlayerControl> newdic = new();
@@ -2808,19 +2501,11 @@ namespace SuperNewRoles.Roles
                 }
             }
             private static Dictionary<PlayerControl, PlayerControl> _playerDatas;
-            public static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PartTimerButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PartTimerButton.png", 115f);
             public static void ClearAndReload()
             {
                 PartTimerPlayer = new();
                 DeathTurn = DeathDefaultTurn = CustomOptions.PartTimerDeathTurn.GetInt();
-                CoolTime = CustomOptions.PartTimerCoolTime.GetFloat();
-                IsCheckTargetRole = CustomOptions.PartTimerIsCheckTargetRole.GetBool();
                 Datas = new();
                 _playerDatas = new();
             }
@@ -2849,19 +2534,11 @@ namespace SuperNewRoles.Roles
             public static bool IsLocalActionSend;
             public static bool IsDeathFootpointBig;
             public static bool IsFootprintMeetingDestroy;
-            public static float CoolTime;
             public static PlayerControl CurrentTarget;
-            public static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PainterButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PainterButton.png", 115f);
             public static void ClearAndReload()
             {
                 PainterPlayer = new();
-                CoolTime = CustomOptions.PainterCoolTime.GetFloat();
                 ActionDatas = new();
                 IsEnables = new();
                 foreach (CrewMate.Painter.ActionType type in Enum.GetValues(typeof(CrewMate.Painter.ActionType)))
@@ -2886,14 +2563,6 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> PsychometristPlayer;
             public static Color32 color = new(238, 130, 238, byte.MaxValue);
-            public static float CoolTime;
-            public static float ReadTime;
-            public static bool IsCheckDeathTime;
-            public static int DeathTimeDeviation;
-            public static bool IsCheckDeathReason;
-            public static bool IsCheckFootprints;
-            public static float CanCheckFootprintsTime;
-            public static bool IsReportCheckedReportDeadbody;
             //(source, target) : Vector2
             public static Dictionary<(byte, byte), (List<Vector2>, bool)> FootprintsPosition;
             public static Dictionary<(byte, byte), float> FootprintsDeathTime;
@@ -2903,13 +2572,7 @@ namespace SuperNewRoles.Roles
             //(死体, テキスト, 誤差)
             public static List<(DeadBody, TextMeshPro, int)> DeathTimeTexts;
             public static DeadBody CurrentTarget;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PsychometristButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PsychometristButton.png", 115f);
 
             public static void ClearAndReload()
             {
@@ -2920,14 +2583,6 @@ namespace SuperNewRoles.Roles
                 FootprintsPosition = new();
                 FootprintObjects = new();
                 FootprintsDeathTime = new();
-                CoolTime = CustomOptions.PsychometristCoolTime.GetFloat();
-                ReadTime = CustomOptions.PsychometristReadTime.GetFloat();
-                IsCheckDeathTime = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
-                DeathTimeDeviation = CustomOptions.PsychometristDeathTimeDeviation.GetInt();
-                IsCheckDeathReason = CustomOptions.PsychometristIsCheckDeathReason.GetBool();
-                IsCheckFootprints = CustomOptions.PsychometristIsCheckFootprints.GetBool();
-                CanCheckFootprintsTime = CustomOptions.PsychometristCanCheckFootprintsTime.GetFloat();
-                IsReportCheckedReportDeadbody = CustomOptions.PsychometristIsReportCheckedDeadBody.GetBool();
             }
         }
         public static class SeeThroughPerson
@@ -2945,13 +2600,9 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> PhotographerPlayer;
             public static Color32 color = new(0, 255, 255, byte.MaxValue);
-            public static float CoolTime;
-            public static float BonusCoolTime;
             public static int BonusCount;
             public static List<byte> PhotedPlayerIds;
             public static bool IsPhotographerShared;
-            public static bool IsImpostorVision;
-            public static bool IsNotification;
             public static List<PlayerControl> PhotedPlayer
             {
                 get
@@ -2970,46 +2621,27 @@ namespace SuperNewRoles.Roles
                 }
             }
             public static List<PlayerControl> _photedPlayer;
-            public static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PhotographerButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PhotographerButton.png", 115f);
             public static void ClearAndReload()
             {
-
                 PhotographerPlayer = new();
                 PhotedPlayerIds = new();
                 _photedPlayer = new();
                 IsPhotographerShared = false;
-                CoolTime = CustomOptions.PhotographerCoolTime.GetFloat();
-                BonusCount = (CustomOptions.PhotographerIsBonus.GetBool() ? CustomOptions.PhotographerBonusCount.GetInt() : -1);
-                BonusCoolTime = CustomOptions.PhotographerBonusCoolTime.GetFloat();
-                IsImpostorVision = CustomOptions.PhotographerIsImpostorVision.GetBool();
-                IsNotification = CustomOptions.PhotographerIsNotification.GetBool();
+                BonusCount = CustomOptions.PhotographerIsBonus.GetBool() ? CustomOptions.PhotographerBonusCount.GetInt() : -1;
             }
         }
         public static class Stefinder
         {
             public static List<PlayerControl> StefinderPlayer;
             public static Color32 color = new(0, 255, 0, byte.MaxValue);
-            public static int KillCoolDown;
-            public static bool UseVent;
-            public static bool UseSabo;
-            public static bool IsKill;
-            public static bool SoloWin;
             public static List<byte> IsKillPlayer;
+            public static bool IsKill;
             public static PlayerControl target;
             public static DateTime ButtonTimer;
             public static void ClearAndReload()
             {
                 StefinderPlayer = new();
-                KillCoolDown = CustomOptions.StefinderKillCoolDown.GetInt();
-                UseVent = CustomOptions.StefinderVent.GetBool();
-                UseSabo = CustomOptions.StefinderSabo.GetBool();
-                SoloWin = CustomOptions.StefinderSoloWin.GetBool();
                 IsKill = false;
                 IsKillPlayer = new();
             }
@@ -3018,31 +2650,21 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SluggerPlayer;
             public static Color32 color = ImpostorRed;
-            public static float CoolTime;
-            public static float ChargeTime;
-            public static bool IsMultiKill;
-            private static Sprite buttonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SluggerButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SluggerButton.png", 115f);
             public static void ClearAndReload()
             {
                 SluggerPlayer = new();
-                CoolTime = CustomOptions.SluggerCoolTime.GetFloat();
-                ChargeTime = CustomOptions.SluggerChargeTime.GetFloat();
-                IsMultiKill = CustomOptions.SluggerIsMultiKill.GetBool();
             }
         }
         public static class ConnectKiller
         {
             public static List<PlayerControl> ConnectKillerPlayer;
             public static Color32 color = ImpostorRed;
+            public static bool OldCommsData;
             public static void ClearAndReload()
             {
                 ConnectKillerPlayer = new();
+                OldCommsData = false;
             }
         }
         public static class Doppelganger
@@ -3053,17 +2675,11 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float SucTime;
             public static float NotSucTime;
-            private static Sprite buttonSprite;
             public static float Duration;
             public static TextMeshPro DoppelgangerDurationText = null;
             public static Dictionary<byte, PlayerControl> DoppelgangerTargets;
             public static float DefaultKillCool;
-            public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoppelgangerButton.png", 115f);
-                return buttonSprite;
-            }
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoppelgangerButton.png", 115f);
             public static void ClearAndReload()
             {
                 DoppelggerPlayer = new();

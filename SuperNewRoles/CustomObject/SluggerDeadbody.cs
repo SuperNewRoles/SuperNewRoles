@@ -9,17 +9,6 @@ namespace SuperNewRoles.CustomObject
 {
     public class SluggerDeadbody
     {
-        [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.FixedUpdate))]
-        class FixedUpdatePatch
-        {
-            public static void Postfix(PlayerControl __instance)
-            {
-                if (__instance == PlayerControl.LocalPlayer)
-                {
-                    AllFixedUpdate();
-                }
-            }
-        }
         public static List<SluggerDeadbody> DeadBodys = new();
         public Vector2 Force;
         public PlayerControl Source

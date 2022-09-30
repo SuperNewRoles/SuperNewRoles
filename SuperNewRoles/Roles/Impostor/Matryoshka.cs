@@ -12,36 +12,17 @@ namespace SuperNewRoles.Roles.Impostor
     {
         public static void FixedUpdate()
         {
-            foreach (var Data in RoleClass.Matryoshka.Datas.ToArray())
+            foreach (var Data in RoleClass.Matryoshka.Data)
             {
-                if (Data.Value.Item1 != null)
-                {
-                    if (RoleClass.Matryoshka.WearReport)
-                    {
-                        Data.Value.Item1.Reported = false;
-                    }
-                    else
-                    {
-                        Data.Value.Item1.Reported = true;
-                    }
-                    Data.Value.Item1.bodyRenderer.enabled = false;
-                    Data.Value.Item1.transform.position = ModHelpers.PlayerById(Data.Key).transform.position;
-                    RoleClass.Matryoshka.Datas[Data.Key] = (Data.Value.Item1, Data.Value.Item2 - Time.fixedDeltaTime);
-                    if (RoleClass.Matryoshka.Datas[Data.Key].Item2 <= 0)
-                    {
-                        if (Data.Key == CachedPlayer.LocalPlayer.PlayerId)
-                        {
-                            Buttons.HudManagerStartPatch.MatryoshkaButton.MaxTimer = RoleClass.Matryoshka.CoolTime;
-                            Buttons.HudManagerStartPatch.MatryoshkaButton.Timer = RoleClass.Matryoshka.CoolTime;
-                        }
-                        Set(ModHelpers.PlayerById(Data.Key), null, false);
-                    }
-                }
+                if (Data.Value == null) continue;
+                Data.Value.Reported = !CustomOptions.MatryoshkaWearReport.GetBool();
+                Data.Value.bodyRenderer.enabled = false;
+                Data.Value.transform.position = ModHelpers.PlayerById(Data.Key).transform.position;
             }
         }
         public static void WrapUp()
         {
-            RoleClass.Matryoshka.Datas = new();
+            RoleClass.Matryoshka.Data = new();
         }
         public static void Set(PlayerControl source, PlayerControl target, bool Is)
         {
@@ -55,13 +36,16 @@ namespace SuperNewRoles.Roles.Impostor
             }
             if (!Is)
             {
-                if (RoleClass.Matryoshka.Datas[source.PlayerId].Item1 != null)
+                if (RoleClass.Matryoshka.Data.ContainsKey(source.PlayerId))
                 {
-                    RoleClass.Matryoshka.Datas[source.PlayerId].Item1.Reported = false;
-                    if (RoleClass.Matryoshka.Datas[source.PlayerId].Item1.bodyRenderer != null)
-                        RoleClass.Matryoshka.Datas[source.PlayerId].Item1.bodyRenderer.enabled = true;
+                    if (RoleClass.Matryoshka.Data[source.PlayerId] != null)
+                    {
+                        RoleClass.Matryoshka.Data[source.PlayerId].Reported = false;
+                        if (RoleClass.Matryoshka.Data[source.PlayerId].bodyRenderer != null)
+                            RoleClass.Matryoshka.Data[source.PlayerId].bodyRenderer.enabled = true;
+                    }
+                    RoleClass.Matryoshka.Data.Remove(source.PlayerId);
                 }
-                RoleClass.Matryoshka.Datas[source.PlayerId] = (null, 0);
             }
             else
             {
@@ -70,7 +54,7 @@ namespace SuperNewRoles.Roles.Impostor
                 {
                     if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == target.PlayerId)
                     {
-                        RoleClass.Matryoshka.Datas[source.PlayerId] = (array[i], RoleClass.Matryoshka.WearDefaultTime);
+                        RoleClass.Matryoshka.Data[source.PlayerId] = array[i];
                     }
                 }
             }
