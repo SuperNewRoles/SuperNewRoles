@@ -56,6 +56,7 @@ namespace SuperNewRoles.Roles
         public static void CreateJackalFriends(PlayerControl target)
         {
             target.ResetAndSetRole(RoleId.JackalFriends);
+            target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
         }
     }
 }
