@@ -35,50 +35,38 @@ namespace SuperNewRoles
         //We are Mad!
         public static bool IsMadRoles(this PlayerControl player)
         {
-            RoleId role = player.GetRole();
-            return role switch
-            {
-                RoleId.MadMate => true,
-                RoleId.MadMayor => true,
-                RoleId.MadStuntMan => true,
-                RoleId.MadHawk => true,
-                RoleId.MadJester => true,
-                RoleId.MadSeer => true,
-                RoleId.BlackCat => true,
-                RoleId.MadMaker => true,
-                RoleId.SatsumaAndImo => RoleClass.SatsumaAndImo.TeamNumber == 2,
-                //isMad
-                _ => false,
-            };
+            return player.GetRole() is
+                RoleId.MadMate or
+                RoleId.MadMayor or
+                RoleId.MadStuntMan or
+                RoleId.MadHawk or
+                RoleId.MadJester or
+                RoleId.MadSeer or
+                RoleId.BlackCat or
+                RoleId.MadMaker ||
+                (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2);
+            //isMad
         }
 
+
+
         //We are JackalFriends!
-        public static bool IsFriendRoles(this PlayerControl player)
-        {
-            RoleId role = player.GetRole();
-            return role switch
-            {
-                RoleId.JackalFriends => true,
-                RoleId.SeerFriends => true,
-                RoleId.MayorFriends => true,
-                //isFriends
-                _ => false,
-            };
-        }
+        public static bool IsFriendRoles(this PlayerControl player) =>
+            player.GetRole() is
+                RoleId.JackalFriends or
+                RoleId.SeerFriends or
+                RoleId.MayorFriends;
+        //isFriends
+
+
 
         public static bool IsQuarreled(this PlayerControl player, bool IsChache = true)
         {
             if (player.IsBot()) return false;
             if (IsChache)
             {
-                try
-                {
-                    return ChacheManager.QuarreledChache[player.PlayerId] != null;
-                }
-                catch
-                {
-                    return false;
-                }
+                try { return ChacheManager.QuarreledChache[player.PlayerId] != null; }
+                catch { return false; }
             }
             foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
             {
@@ -97,14 +85,8 @@ namespace SuperNewRoles
             if (player.IsBot()) return false;
             if (IsChache)
             {
-                try
-                {
-                    return ChacheManager.LoversChache[player.PlayerId] != null;
-                }
-                catch
-                {
-                    return false;
-                }
+                try { return ChacheManager.LoversChache[player.PlayerId] != null; }
+                catch { return false; }
             }
             foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
             {
@@ -198,9 +180,8 @@ namespace SuperNewRoles
             }
             return null;
         }
-        public static bool IsJackalTeam(this PlayerControl player)
-        {
-            return player.GetRole() is
+        public static bool IsJackalTeam(this PlayerControl player) =>
+            player.GetRole() is
                 RoleId.Jackal or
                 RoleId.Sidekick or
                 RoleId.JackalFriends or
@@ -210,1102 +191,1108 @@ namespace SuperNewRoles
                 RoleId.SidekickSeer or
                 RoleId.MayorFriends or
                 RoleId.WaveCannonJackal;
-        }
-        public static bool IsJackalTeamJackal(this PlayerControl player)
-        {
-            RoleId role = player.GetRole();
-            return role is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal or RoleId.WaveCannonJackal;
-        }
-        public static bool IsJackalTeamSidekick(this PlayerControl player)
-        {
-            RoleId role = player.GetRole();
-            return role is RoleId.Sidekick or RoleId.SidekickSeer;
-        }
+    }
+    public static bool IsJackalTeamJackal(this PlayerControl player)
+    {
+        RoleId role = player.GetRole();
+        return role is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal or RoleId.WaveCannonJackal;
+    }
+    public static bool IsJackalTeamSidekick(this PlayerControl player)
+    {
+        RoleId role = player.GetRole();
+        return role is RoleId.Sidekick or RoleId.SidekickSeer;
+    }
+    public static bool IsJackalTeamJackal(this PlayerControl player) =>
+            player.GetRole() is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal or RoleId.WaveCannonJackal;
 
-        public static void SetRole(this PlayerControl player, RoleId role)
+    public static bool IsJackalTeamSidekick(this PlayerControl player) =>
+            player.GetRole() is RoleId.Sidekick or RoleId.SidekickSeer;
+
+    public static void SetRole(this PlayerControl player, RoleId role)
+    {
+        if (!Roles.Neutral.Spelunker.CheckSetRole(player, role)) return;
+        switch (role)
         {
-            if (!Roles.Neutral.Spelunker.CheckSetRole(player, role)) return;
-            switch (role)
-            {
-                case RoleId.SoothSayer:
-                    RoleClass.SoothSayer.SoothSayerPlayer.Add(player);
-                    break;
-                case RoleId.Jester:
-                    RoleClass.Jester.JesterPlayer.Add(player);
-                    break;
-                case RoleId.Lighter:
-                    RoleClass.Lighter.LighterPlayer.Add(player);
-                    break;
-                case RoleId.EvilLighter:
-                    RoleClass.EvilLighter.EvilLighterPlayer.Add(player);
-                    break;
-                case RoleId.EvilScientist:
-                    RoleClass.EvilScientist.EvilScientistPlayer.Add(player);
-                    break;
-                case RoleId.Sheriff:
-                    RoleClass.Sheriff.SheriffPlayer.Add(player);
-                    break;
-                case RoleId.MeetingSheriff:
-                    RoleClass.MeetingSheriff.MeetingSheriffPlayer.Add(player);
-                    break;
-                case RoleId.Jackal:
-                    RoleClass.Jackal.JackalPlayer.Add(player);
-                    break;
-                case RoleId.Sidekick:
-                    RoleClass.Jackal.SidekickPlayer.Add(player);
-                    break;
-                case RoleId.Teleporter:
-                    RoleClass.Teleporter.TeleporterPlayer.Add(player);
-                    break;
-                case RoleId.SpiritMedium:
-                    RoleClass.SpiritMedium.SpiritMediumPlayer.Add(player);
-                    break;
-                case RoleId.SpeedBooster:
-                    RoleClass.SpeedBooster.SpeedBoosterPlayer.Add(player);
-                    break;
-                case RoleId.EvilSpeedBooster:
-                    RoleClass.EvilSpeedBooster.EvilSpeedBoosterPlayer.Add(player);
-                    break;
-                case RoleId.Tasker:
-                    RoleClass.Tasker.TaskerPlayer.Add(player);
-                    break;
-                case RoleId.Doorr:
-                    RoleClass.Doorr.DoorrPlayer.Add(player);
-                    break;
-                case RoleId.EvilDoorr:
-                    RoleClass.EvilDoorr.EvilDoorrPlayer.Add(player);
-                    break;
-                case RoleId.Shielder:
-                    RoleClass.Shielder.ShielderPlayer.Add(player);
-                    break;
-                case RoleId.Speeder:
-                    RoleClass.Speeder.SpeederPlayer.Add(player);
-                    break;
-                case RoleId.Freezer:
-                    RoleClass.Freezer.FreezerPlayer.Add(player);
-                    break;
-                case RoleId.Guesser:
-                    RoleClass.Guesser.GuesserPlayer.Add(player);
-                    break;
-                case RoleId.EvilGuesser:
-                    RoleClass.EvilGuesser.EvilGuesserPlayer.Add(player);
-                    break;
-                case RoleId.Vulture:
-                    RoleClass.Vulture.VulturePlayer.Add(player);
-                    break;
-                case RoleId.NiceScientist:
-                    RoleClass.NiceScientist.NiceScientistPlayer.Add(player);
-                    break;
-                case RoleId.Clergyman:
-                    RoleClass.Clergyman.ClergymanPlayer.Add(player);
-                    break;
-                case RoleId.MadMate:
-                    RoleClass.MadMate.MadMatePlayer.Add(player);
-                    break;
-                case RoleId.Bait:
-                    RoleClass.Bait.BaitPlayer.Add(player);
-                    break;
-                case RoleId.HomeSecurityGuard:
-                    RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.Add(player);
-                    break;
-                case RoleId.StuntMan:
-                    RoleClass.StuntMan.StuntManPlayer.Add(player);
-                    break;
-                case RoleId.Moving:
-                    RoleClass.Moving.MovingPlayer.Add(player);
-                    break;
-                case RoleId.Opportunist:
-                    RoleClass.Opportunist.OpportunistPlayer.Add(player);
-                    break;
-                case RoleId.NiceGambler:
-                    RoleClass.NiceGambler.NiceGamblerPlayer.Add(player);
-                    break;
-                case RoleId.EvilGambler:
-                    RoleClass.EvilGambler.EvilGamblerPlayer.Add(player);
-                    break;
-                case RoleId.Bestfalsecharge:
-                    RoleClass.Bestfalsecharge.BestfalsechargePlayer.Add(player);
-                    break;
-                case RoleId.Researcher:
-                    RoleClass.Researcher.ResearcherPlayer.Add(player);
-                    break;
-                case RoleId.SelfBomber:
-                    RoleClass.SelfBomber.SelfBomberPlayer.Add(player);
-                    break;
-                case RoleId.God:
-                    RoleClass.God.GodPlayer.Add(player);
-                    break;
-                case RoleId.AllCleaner:
-                    RoleClass.AllCleaner.AllCleanerPlayer.Add(player);
-                    break;
-                case RoleId.NiceNekomata:
-                    RoleClass.NiceNekomata.NiceNekomataPlayer.Add(player);
-                    break;
-                case RoleId.EvilNekomata:
-                    RoleClass.EvilNekomata.EvilNekomataPlayer.Add(player);
-                    break;
-                case RoleId.JackalFriends:
-                    RoleClass.JackalFriends.JackalFriendsPlayer.Add(player);
-                    break;
-                case RoleId.Doctor:
-                    RoleClass.Doctor.DoctorPlayer.Add(player);
-                    break;
-                case RoleId.CountChanger:
-                    RoleClass.CountChanger.CountChangerPlayer.Add(player);
-                    break;
-                case RoleId.Pursuer:
-                    RoleClass.Pursuer.PursuerPlayer.Add(player);
-                    break;
-                case RoleId.Minimalist:
-                    RoleClass.Minimalist.MinimalistPlayer.Add(player);
-                    break;
-                case RoleId.Hawk:
-                    RoleClass.Hawk.HawkPlayer.Add(player);
-                    break;
-                case RoleId.Egoist:
-                    RoleClass.Egoist.EgoistPlayer.Add(player);
-                    break;
-                case RoleId.NiceRedRidingHood:
-                    RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.Add(player);
-                    break;
-                case RoleId.EvilEraser:
-                    RoleClass.EvilEraser.EvilEraserPlayer.Add(player);
-                    break;
-                case RoleId.Workperson:
-                    RoleClass.Workperson.WorkpersonPlayer.Add(player);
-                    break;
-                case RoleId.Magaziner:
-                    RoleClass.Magaziner.MagazinerPlayer.Add(player);
-                    break;
-                case RoleId.Hunter:
-                    Mode.Werewolf.Main.HunterPlayers.Add(player);
-                    break;
-                case RoleId.Mayor:
-                    RoleClass.Mayor.MayorPlayer.Add(player);
-                    break;
-                case RoleId.truelover:
-                    RoleClass.Truelover.trueloverPlayer.Add(player);
-                    break;
-                case RoleId.Technician:
-                    RoleClass.Technician.TechnicianPlayer.Add(player);
-                    break;
-                case RoleId.SerialKiller:
-                    RoleClass.SerialKiller.SerialKillerPlayer.Add(player);
-                    break;
-                case RoleId.OverKiller:
-                    RoleClass.OverKiller.OverKillerPlayer.Add(player);
-                    break;
-                case RoleId.Levelinger:
-                    RoleClass.Levelinger.LevelingerPlayer.Add(player);
-                    break;
-                case RoleId.EvilMoving:
-                    RoleClass.EvilMoving.EvilMovingPlayer.Add(player);
-                    break;
-                case RoleId.Amnesiac:
-                    RoleClass.Amnesiac.AmnesiacPlayer.Add(player);
-                    break;
-                case RoleId.SideKiller:
-                    RoleClass.SideKiller.SideKillerPlayer.Add(player);
-                    break;
-                case RoleId.Survivor:
-                    RoleClass.Survivor.SurvivorPlayer.Add(player);
-                    break;
-                case RoleId.MadMayor:
-                    RoleClass.MadMayor.MadMayorPlayer.Add(player);
-                    break;
-                case RoleId.MadStuntMan:
-                    RoleClass.MadStuntMan.MadStuntManPlayer.Add(player);
-                    break;
-                case RoleId.NiceHawk:
-                    RoleClass.NiceHawk.NiceHawkPlayer.Add(player);
-                    break;
-                case RoleId.Bakery:
-                    RoleClass.Bakery.BakeryPlayer.Add(player);
-                    break;
-                case RoleId.MadJester:
-                    RoleClass.MadJester.MadJesterPlayer.Add(player);
-                    break;
-                case RoleId.MadHawk:
-                    RoleClass.MadHawk.MadHawkPlayer.Add(player);
-                    break;
-                case RoleId.FalseCharges:
-                    RoleClass.FalseCharges.FalseChargesPlayer.Add(player);
-                    break;
-                case RoleId.NiceTeleporter:
-                    RoleClass.NiceTeleporter.NiceTeleporterPlayer.Add(player);
-                    break;
-                case RoleId.Celebrity:
-                    RoleClass.Celebrity.CelebrityPlayer.Add(player);
-                    RoleClass.Celebrity.ViewPlayers.Add(player);
-                    break;
-                case RoleId.Nocturnality:
-                    RoleClass.Nocturnality.NocturnalityPlayer.Add(player);
-                    break;
-                case RoleId.Observer:
-                    RoleClass.Observer.ObserverPlayer.Add(player);
-                    break;
-                case RoleId.Vampire:
-                    RoleClass.Vampire.VampirePlayer.Add(player);
-                    break;
-                case RoleId.Fox:
-                    RoleClass.Fox.FoxPlayer.Add(player);
-                    break;
-                case RoleId.DarkKiller:
-                    RoleClass.DarkKiller.DarkKillerPlayer.Add(player);
-                    break;
-                case RoleId.Seer:
-                    RoleClass.Seer.SeerPlayer.Add(player);
-                    break;
-                case RoleId.MadSeer:
-                    RoleClass.MadSeer.MadSeerPlayer.Add(player);
-                    break;
-                case RoleId.EvilSeer:
-                    RoleClass.EvilSeer.EvilSeerPlayer.Add(player);
-                    break;
-                case RoleId.RemoteSheriff:
-                    RoleClass.RemoteSheriff.RemoteSheriffPlayer.Add(player);
-                    break;
-                case RoleId.TeleportingJackal:
-                    RoleClass.TeleportingJackal.TeleportingJackalPlayer.Add(player);
-                    break;
-                case RoleId.MadMaker:
-                    RoleClass.MadMaker.MadMakerPlayer.Add(player);
-                    break;
-                case RoleId.Demon:
-                    RoleClass.Demon.DemonPlayer.Add(player);
-                    break;
-                case RoleId.TaskManager:
-                    RoleClass.TaskManager.TaskManagerPlayer.Add(player);
-                    break;
-                case RoleId.SeerFriends:
-                    RoleClass.SeerFriends.SeerFriendsPlayer.Add(player);
-                    break;
-                case RoleId.JackalSeer:
-                    RoleClass.JackalSeer.JackalSeerPlayer.Add(player);
-                    break;
-                case RoleId.SidekickSeer:
-                    RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
-                    break;
-                case RoleId.Assassin:
-                    RoleClass.Assassin.AssassinPlayer.Add(player);
-                    break;
-                case RoleId.Marine:
-                    RoleClass.Marine.MarinePlayer.Add(player);
-                    break;
-                case RoleId.Arsonist:
-                    RoleClass.Arsonist.ArsonistPlayer.Add(player);
-                    break;
-                case RoleId.Chief:
-                    RoleClass.Chief.ChiefPlayer.Add(player);
-                    break;
-                case RoleId.Cleaner:
-                    RoleClass.Cleaner.CleanerPlayer.Add(player);
-                    break;
-                case RoleId.MadCleaner:
-                    RoleClass.MadCleaner.MadCleanerPlayer.Add(player);
-                    break;
-                case RoleId.Samurai:
-                    RoleClass.Samurai.SamuraiPlayer.Add(player);
-                    break;
-                case RoleId.MayorFriends:
-                    RoleClass.MayorFriends.MayorFriendsPlayer.Add(player);
-                    break;
-                case RoleId.VentMaker:
-                    RoleClass.VentMaker.VentMakerPlayer.Add(player);
-                    break;
-                case RoleId.GhostMechanic:
-                    RoleClass.GhostMechanic.GhostMechanicPlayer.Add(player);
-                    break;
-                case RoleId.EvilHacker:
-                    RoleClass.EvilHacker.EvilHackerPlayer.Add(player);
-                    break;
-                case RoleId.HauntedWolf:
-                    RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
-                    break;
-                case RoleId.PositionSwapper:
-                    RoleClass.PositionSwapper.PositionSwapperPlayer.Add(player);
-                    break;
-                case RoleId.Tuna:
-                    RoleClass.Tuna.TunaPlayer.Add(player);
-                    break;
-                case RoleId.Mafia:
-                    RoleClass.Mafia.MafiaPlayer.Add(player);
-                    break;
-                case RoleId.BlackCat:
-                    RoleClass.BlackCat.BlackCatPlayer.Add(player);
-                    break;
-                case RoleId.SecretlyKiller:
-                    RoleClass.SecretlyKiller.SecretlyKillerPlayer.Add(player);
-                    break;
-                case RoleId.Spy:
-                    RoleClass.Spy.SpyPlayer.Add(player);
-                    break;
-                case RoleId.Kunoichi:
-                    RoleClass.Kunoichi.KunoichiPlayer.Add(player);
-                    break;
-                case RoleId.DoubleKiller:
-                    RoleClass.DoubleKiller.DoubleKillerPlayer.Add(player);
-                    break;
-                case RoleId.Smasher:
-                    RoleClass.Smasher.SmasherPlayer.Add(player);
-                    break;
-                case RoleId.SuicideWisher:
-                    RoleClass.SuicideWisher.SuicideWisherPlayer.Add(player);
-                    break;
-                case RoleId.Neet:
-                    RoleClass.Neet.NeetPlayer.Add(player);
-                    break;
-                case RoleId.FastMaker:
-                    RoleClass.FastMaker.FastMakerPlayer.Add(player);
-                    break;
-                case RoleId.ToiletFan:
-                    RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
-                    break;
-                case (RoleId.SatsumaAndImo):
-                    RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.Add(player);
-                    break;
-                case RoleId.EvilButtoner:
-                    RoleClass.EvilButtoner.EvilButtonerPlayer.Add(player);
-                    break;
-                case RoleId.NiceButtoner:
-                    RoleClass.NiceButtoner.NiceButtonerPlayer.Add(player);
-                    break;
-                case RoleId.Finder:
-                    RoleClass.Finder.FinderPlayer.Add(player);
-                    break;
-                case RoleId.Revolutionist:
-                    RoleClass.Revolutionist.RevolutionistPlayer.Add(player);
-                    break;
-                case RoleId.Dictator:
-                    RoleClass.Dictator.DictatorPlayer.Add(player);
-                    break;
-                case RoleId.Spelunker:
-                    RoleClass.Spelunker.SpelunkerPlayer.Add(player);
-                    break;
-                case RoleId.SuicidalIdeation:
-                    RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.Add(player);
-                    break;
-                case RoleId.Hitman:
-                    RoleClass.Hitman.HitmanPlayer.Add(player);
-                    break;
-                case RoleId.Matryoshka:
-                    RoleClass.Matryoshka.MatryoshkaPlayer.Add(player);
-                    break;
-                case RoleId.Nun:
-                    RoleClass.Nun.NunPlayer.Add(player);
-                    break;
-                case RoleId.Psychometrist:
-                    RoleClass.Psychometrist.PsychometristPlayer.Add(player);
-                    break;
-                case RoleId.SeeThroughPerson:
-                    RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.Add(player);
-                    break;
-                case RoleId.PartTimer:
-                    RoleClass.PartTimer.PartTimerPlayer.Add(player);
-                    break;
-                case RoleId.Painter:
-                    RoleClass.Painter.PainterPlayer.Add(player);
-                    break;
-                case RoleId.Photographer:
-                    RoleClass.Photographer.PhotographerPlayer.Add(player);
-                    break;
-                case RoleId.Stefinder:
-                    RoleClass.Stefinder.StefinderPlayer.Add(player);
-                    break;
-                case RoleId.Slugger:
-                    RoleClass.Slugger.SluggerPlayer.Add(player);
-                    break;
-                case RoleId.ShiftActor:
-                    ShiftActor.Player.Add(player);
-                    break;
-                case RoleId.ConnectKiller:
-                    RoleClass.ConnectKiller.ConnectKillerPlayer.Add(player);
-                    break;
-                case RoleId.WaveCannon:
-                    RoleClass.WaveCannon.WaveCannonPlayer.Add(player);
-                    break;
-                case RoleId.Doppelganger:
-                    RoleClass.Doppelganger.DoppelggerPlayer.Add(player);
-                    break;
-                case RoleId.WaveCannonJackal:
-                    RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.Add(player);
-                    break;
-                //ロールアド
-                default:
-                    SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
-                    return;
-            }
-            bool flag = player.GetRole() != role && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
-            if (role.IsGhostRole())
-            {
-                ChacheManager.ResetMyGhostRoleChache();
-            }
-            else
-            {
-                ChacheManager.ResetMyRoleChache();
-            }
-            if (flag)
-            {
-                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            }
-            SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
-            ShiftActor.ShapeshifterSet();
-            PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(player.PlayerId);
-            if (anim != null) anim.HandleAnim(RpcAnimationType.Stop);
+            case RoleId.SoothSayer:
+                RoleClass.SoothSayer.SoothSayerPlayer.Add(player);
+                break;
+            case RoleId.Jester:
+                RoleClass.Jester.JesterPlayer.Add(player);
+                break;
+            case RoleId.Lighter:
+                RoleClass.Lighter.LighterPlayer.Add(player);
+                break;
+            case RoleId.EvilLighter:
+                RoleClass.EvilLighter.EvilLighterPlayer.Add(player);
+                break;
+            case RoleId.EvilScientist:
+                RoleClass.EvilScientist.EvilScientistPlayer.Add(player);
+                break;
+            case RoleId.Sheriff:
+                RoleClass.Sheriff.SheriffPlayer.Add(player);
+                break;
+            case RoleId.MeetingSheriff:
+                RoleClass.MeetingSheriff.MeetingSheriffPlayer.Add(player);
+                break;
+            case RoleId.Jackal:
+                RoleClass.Jackal.JackalPlayer.Add(player);
+                break;
+            case RoleId.Sidekick:
+                RoleClass.Jackal.SidekickPlayer.Add(player);
+                break;
+            case RoleId.Teleporter:
+                RoleClass.Teleporter.TeleporterPlayer.Add(player);
+                break;
+            case RoleId.SpiritMedium:
+                RoleClass.SpiritMedium.SpiritMediumPlayer.Add(player);
+                break;
+            case RoleId.SpeedBooster:
+                RoleClass.SpeedBooster.SpeedBoosterPlayer.Add(player);
+                break;
+            case RoleId.EvilSpeedBooster:
+                RoleClass.EvilSpeedBooster.EvilSpeedBoosterPlayer.Add(player);
+                break;
+            case RoleId.Tasker:
+                RoleClass.Tasker.TaskerPlayer.Add(player);
+                break;
+            case RoleId.Doorr:
+                RoleClass.Doorr.DoorrPlayer.Add(player);
+                break;
+            case RoleId.EvilDoorr:
+                RoleClass.EvilDoorr.EvilDoorrPlayer.Add(player);
+                break;
+            case RoleId.Shielder:
+                RoleClass.Shielder.ShielderPlayer.Add(player);
+                break;
+            case RoleId.Speeder:
+                RoleClass.Speeder.SpeederPlayer.Add(player);
+                break;
+            case RoleId.Freezer:
+                RoleClass.Freezer.FreezerPlayer.Add(player);
+                break;
+            case RoleId.Guesser:
+                RoleClass.Guesser.GuesserPlayer.Add(player);
+                break;
+            case RoleId.EvilGuesser:
+                RoleClass.EvilGuesser.EvilGuesserPlayer.Add(player);
+                break;
+            case RoleId.Vulture:
+                RoleClass.Vulture.VulturePlayer.Add(player);
+                break;
+            case RoleId.NiceScientist:
+                RoleClass.NiceScientist.NiceScientistPlayer.Add(player);
+                break;
+            case RoleId.Clergyman:
+                RoleClass.Clergyman.ClergymanPlayer.Add(player);
+                break;
+            case RoleId.MadMate:
+                RoleClass.MadMate.MadMatePlayer.Add(player);
+                break;
+            case RoleId.Bait:
+                RoleClass.Bait.BaitPlayer.Add(player);
+                break;
+            case RoleId.HomeSecurityGuard:
+                RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.Add(player);
+                break;
+            case RoleId.StuntMan:
+                RoleClass.StuntMan.StuntManPlayer.Add(player);
+                break;
+            case RoleId.Moving:
+                RoleClass.Moving.MovingPlayer.Add(player);
+                break;
+            case RoleId.Opportunist:
+                RoleClass.Opportunist.OpportunistPlayer.Add(player);
+                break;
+            case RoleId.NiceGambler:
+                RoleClass.NiceGambler.NiceGamblerPlayer.Add(player);
+                break;
+            case RoleId.EvilGambler:
+                RoleClass.EvilGambler.EvilGamblerPlayer.Add(player);
+                break;
+            case RoleId.Bestfalsecharge:
+                RoleClass.Bestfalsecharge.BestfalsechargePlayer.Add(player);
+                break;
+            case RoleId.Researcher:
+                RoleClass.Researcher.ResearcherPlayer.Add(player);
+                break;
+            case RoleId.SelfBomber:
+                RoleClass.SelfBomber.SelfBomberPlayer.Add(player);
+                break;
+            case RoleId.God:
+                RoleClass.God.GodPlayer.Add(player);
+                break;
+            case RoleId.AllCleaner:
+                RoleClass.AllCleaner.AllCleanerPlayer.Add(player);
+                break;
+            case RoleId.NiceNekomata:
+                RoleClass.NiceNekomata.NiceNekomataPlayer.Add(player);
+                break;
+            case RoleId.EvilNekomata:
+                RoleClass.EvilNekomata.EvilNekomataPlayer.Add(player);
+                break;
+            case RoleId.JackalFriends:
+                RoleClass.JackalFriends.JackalFriendsPlayer.Add(player);
+                break;
+            case RoleId.Doctor:
+                RoleClass.Doctor.DoctorPlayer.Add(player);
+                break;
+            case RoleId.CountChanger:
+                RoleClass.CountChanger.CountChangerPlayer.Add(player);
+                break;
+            case RoleId.Pursuer:
+                RoleClass.Pursuer.PursuerPlayer.Add(player);
+                break;
+            case RoleId.Minimalist:
+                RoleClass.Minimalist.MinimalistPlayer.Add(player);
+                break;
+            case RoleId.Hawk:
+                RoleClass.Hawk.HawkPlayer.Add(player);
+                break;
+            case RoleId.Egoist:
+                RoleClass.Egoist.EgoistPlayer.Add(player);
+                break;
+            case RoleId.NiceRedRidingHood:
+                RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.Add(player);
+                break;
+            case RoleId.EvilEraser:
+                RoleClass.EvilEraser.EvilEraserPlayer.Add(player);
+                break;
+            case RoleId.Workperson:
+                RoleClass.Workperson.WorkpersonPlayer.Add(player);
+                break;
+            case RoleId.Magaziner:
+                RoleClass.Magaziner.MagazinerPlayer.Add(player);
+                break;
+            case RoleId.Hunter:
+                Mode.Werewolf.Main.HunterPlayers.Add(player);
+                break;
+            case RoleId.Mayor:
+                RoleClass.Mayor.MayorPlayer.Add(player);
+                break;
+            case RoleId.truelover:
+                RoleClass.Truelover.trueloverPlayer.Add(player);
+                break;
+            case RoleId.Technician:
+                RoleClass.Technician.TechnicianPlayer.Add(player);
+                break;
+            case RoleId.SerialKiller:
+                RoleClass.SerialKiller.SerialKillerPlayer.Add(player);
+                break;
+            case RoleId.OverKiller:
+                RoleClass.OverKiller.OverKillerPlayer.Add(player);
+                break;
+            case RoleId.Levelinger:
+                RoleClass.Levelinger.LevelingerPlayer.Add(player);
+                break;
+            case RoleId.EvilMoving:
+                RoleClass.EvilMoving.EvilMovingPlayer.Add(player);
+                break;
+            case RoleId.Amnesiac:
+                RoleClass.Amnesiac.AmnesiacPlayer.Add(player);
+                break;
+            case RoleId.SideKiller:
+                RoleClass.SideKiller.SideKillerPlayer.Add(player);
+                break;
+            case RoleId.Survivor:
+                RoleClass.Survivor.SurvivorPlayer.Add(player);
+                break;
+            case RoleId.MadMayor:
+                RoleClass.MadMayor.MadMayorPlayer.Add(player);
+                break;
+            case RoleId.MadStuntMan:
+                RoleClass.MadStuntMan.MadStuntManPlayer.Add(player);
+                break;
+            case RoleId.NiceHawk:
+                RoleClass.NiceHawk.NiceHawkPlayer.Add(player);
+                break;
+            case RoleId.Bakery:
+                RoleClass.Bakery.BakeryPlayer.Add(player);
+                break;
+            case RoleId.MadJester:
+                RoleClass.MadJester.MadJesterPlayer.Add(player);
+                break;
+            case RoleId.MadHawk:
+                RoleClass.MadHawk.MadHawkPlayer.Add(player);
+                break;
+            case RoleId.FalseCharges:
+                RoleClass.FalseCharges.FalseChargesPlayer.Add(player);
+                break;
+            case RoleId.NiceTeleporter:
+                RoleClass.NiceTeleporter.NiceTeleporterPlayer.Add(player);
+                break;
+            case RoleId.Celebrity:
+                RoleClass.Celebrity.CelebrityPlayer.Add(player);
+                RoleClass.Celebrity.ViewPlayers.Add(player);
+                break;
+            case RoleId.Nocturnality:
+                RoleClass.Nocturnality.NocturnalityPlayer.Add(player);
+                break;
+            case RoleId.Observer:
+                RoleClass.Observer.ObserverPlayer.Add(player);
+                break;
+            case RoleId.Vampire:
+                RoleClass.Vampire.VampirePlayer.Add(player);
+                break;
+            case RoleId.Fox:
+                RoleClass.Fox.FoxPlayer.Add(player);
+                break;
+            case RoleId.DarkKiller:
+                RoleClass.DarkKiller.DarkKillerPlayer.Add(player);
+                break;
+            case RoleId.Seer:
+                RoleClass.Seer.SeerPlayer.Add(player);
+                break;
+            case RoleId.MadSeer:
+                RoleClass.MadSeer.MadSeerPlayer.Add(player);
+                break;
+            case RoleId.EvilSeer:
+                RoleClass.EvilSeer.EvilSeerPlayer.Add(player);
+                break;
+            case RoleId.RemoteSheriff:
+                RoleClass.RemoteSheriff.RemoteSheriffPlayer.Add(player);
+                break;
+            case RoleId.TeleportingJackal:
+                RoleClass.TeleportingJackal.TeleportingJackalPlayer.Add(player);
+                break;
+            case RoleId.MadMaker:
+                RoleClass.MadMaker.MadMakerPlayer.Add(player);
+                break;
+            case RoleId.Demon:
+                RoleClass.Demon.DemonPlayer.Add(player);
+                break;
+            case RoleId.TaskManager:
+                RoleClass.TaskManager.TaskManagerPlayer.Add(player);
+                break;
+            case RoleId.SeerFriends:
+                RoleClass.SeerFriends.SeerFriendsPlayer.Add(player);
+                break;
+            case RoleId.JackalSeer:
+                RoleClass.JackalSeer.JackalSeerPlayer.Add(player);
+                break;
+            case RoleId.SidekickSeer:
+                RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
+                break;
+            case RoleId.Assassin:
+                RoleClass.Assassin.AssassinPlayer.Add(player);
+                break;
+            case RoleId.Marine:
+                RoleClass.Marine.MarinePlayer.Add(player);
+                break;
+            case RoleId.Arsonist:
+                RoleClass.Arsonist.ArsonistPlayer.Add(player);
+                break;
+            case RoleId.Chief:
+                RoleClass.Chief.ChiefPlayer.Add(player);
+                break;
+            case RoleId.Cleaner:
+                RoleClass.Cleaner.CleanerPlayer.Add(player);
+                break;
+            case RoleId.MadCleaner:
+                RoleClass.MadCleaner.MadCleanerPlayer.Add(player);
+                break;
+            case RoleId.Samurai:
+                RoleClass.Samurai.SamuraiPlayer.Add(player);
+                break;
+            case RoleId.MayorFriends:
+                RoleClass.MayorFriends.MayorFriendsPlayer.Add(player);
+                break;
+            case RoleId.VentMaker:
+                RoleClass.VentMaker.VentMakerPlayer.Add(player);
+                break;
+            case RoleId.GhostMechanic:
+                RoleClass.GhostMechanic.GhostMechanicPlayer.Add(player);
+                break;
+            case RoleId.EvilHacker:
+                RoleClass.EvilHacker.EvilHackerPlayer.Add(player);
+                break;
+            case RoleId.HauntedWolf:
+                RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
+                break;
+            case RoleId.PositionSwapper:
+                RoleClass.PositionSwapper.PositionSwapperPlayer.Add(player);
+                break;
+            case RoleId.Tuna:
+                RoleClass.Tuna.TunaPlayer.Add(player);
+                break;
+            case RoleId.Mafia:
+                RoleClass.Mafia.MafiaPlayer.Add(player);
+                break;
+            case RoleId.BlackCat:
+                RoleClass.BlackCat.BlackCatPlayer.Add(player);
+                break;
+            case RoleId.SecretlyKiller:
+                RoleClass.SecretlyKiller.SecretlyKillerPlayer.Add(player);
+                break;
+            case RoleId.Spy:
+                RoleClass.Spy.SpyPlayer.Add(player);
+                break;
+            case RoleId.Kunoichi:
+                RoleClass.Kunoichi.KunoichiPlayer.Add(player);
+                break;
+            case RoleId.DoubleKiller:
+                RoleClass.DoubleKiller.DoubleKillerPlayer.Add(player);
+                break;
+            case RoleId.Smasher:
+                RoleClass.Smasher.SmasherPlayer.Add(player);
+                break;
+            case RoleId.SuicideWisher:
+                RoleClass.SuicideWisher.SuicideWisherPlayer.Add(player);
+                break;
+            case RoleId.Neet:
+                RoleClass.Neet.NeetPlayer.Add(player);
+                break;
+            case RoleId.FastMaker:
+                RoleClass.FastMaker.FastMakerPlayer.Add(player);
+                break;
+            case RoleId.ToiletFan:
+                RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
+                break;
+            case RoleId.SatsumaAndImo:
+                RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.Add(player);
+                break;
+            case RoleId.EvilButtoner:
+                RoleClass.EvilButtoner.EvilButtonerPlayer.Add(player);
+                break;
+            case RoleId.NiceButtoner:
+                RoleClass.NiceButtoner.NiceButtonerPlayer.Add(player);
+                break;
+            case RoleId.Finder:
+                RoleClass.Finder.FinderPlayer.Add(player);
+                break;
+            case RoleId.Revolutionist:
+                RoleClass.Revolutionist.RevolutionistPlayer.Add(player);
+                break;
+            case RoleId.Dictator:
+                RoleClass.Dictator.DictatorPlayer.Add(player);
+                break;
+            case RoleId.Spelunker:
+                RoleClass.Spelunker.SpelunkerPlayer.Add(player);
+                break;
+            case RoleId.SuicidalIdeation:
+                RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.Add(player);
+                break;
+            case RoleId.Hitman:
+                RoleClass.Hitman.HitmanPlayer.Add(player);
+                break;
+            case RoleId.Matryoshka:
+                RoleClass.Matryoshka.MatryoshkaPlayer.Add(player);
+                break;
+            case RoleId.Nun:
+                RoleClass.Nun.NunPlayer.Add(player);
+                break;
+            case RoleId.Psychometrist:
+                RoleClass.Psychometrist.PsychometristPlayer.Add(player);
+                break;
+            case RoleId.SeeThroughPerson:
+                RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.Add(player);
+                break;
+            case RoleId.PartTimer:
+                RoleClass.PartTimer.PartTimerPlayer.Add(player);
+                break;
+            case RoleId.Painter:
+                RoleClass.Painter.PainterPlayer.Add(player);
+                break;
+            case RoleId.Photographer:
+                RoleClass.Photographer.PhotographerPlayer.Add(player);
+                break;
+            case RoleId.Stefinder:
+                RoleClass.Stefinder.StefinderPlayer.Add(player);
+                break;
+            case RoleId.Slugger:
+                RoleClass.Slugger.SluggerPlayer.Add(player);
+                break;
+            case RoleId.ShiftActor:
+                ShiftActor.Player.Add(player);
+                break;
+            case RoleId.ConnectKiller:
+                RoleClass.ConnectKiller.ConnectKillerPlayer.Add(player);
+                break;
+            case RoleId.WaveCannon:
+                RoleClass.WaveCannon.WaveCannonPlayer.Add(player);
+                break;
+            case RoleId.NekoKabocha:
+                NekoKabocha.NekoKabochaPlayer.Add(player);
+                break;
+            case RoleId.Doppelganger:
+                RoleClass.Doppelganger.DoppelggerPlayer.Add(player);
+                break;
+<<<<<<< HEAD
+            case RoleId.WaveCannonJackal:
+                RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.Add(player);
+                break;
+            case RoleId.Conjurer:
+                Conjurer.Player.Add(player);
+                break;
+            //ロールアド
+            default:
+                SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
+                return;
         }
-        private static PlayerControl ClearTarget;
-        public static void ClearRole(this PlayerControl player)
+        bool flag = player.GetRole() != role && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
+        if (role.IsGhostRole())
         {
-            static bool ClearRemove(PlayerControl p)
-            {
-                return p.PlayerId == ClearTarget.PlayerId;
-            }
-            ClearTarget = player;
-            switch (player.GetRole())
-            {
-                case RoleId.SoothSayer:
-                    RoleClass.SoothSayer.SoothSayerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Jester:
-                    RoleClass.Jester.JesterPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Lighter:
-                    RoleClass.Lighter.LighterPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.EvilLighter:
-                    RoleClass.EvilLighter.EvilLighterPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.EvilScientist:
-                    RoleClass.EvilScientist.EvilScientistPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Sheriff:
-                    RoleClass.Sheriff.SheriffPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.MeetingSheriff:
-                    RoleClass.MeetingSheriff.MeetingSheriffPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Jackal:
-                    RoleClass.Jackal.JackalPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Sidekick:
-                    RoleClass.Jackal.SidekickPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Teleporter:
-                    RoleClass.Teleporter.TeleporterPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.SpiritMedium:
-                    RoleClass.SpiritMedium.SpiritMediumPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.SpeedBooster:
-                    RoleClass.SpeedBooster.SpeedBoosterPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.EvilSpeedBooster:
-                    RoleClass.EvilSpeedBooster.EvilSpeedBoosterPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Tasker:
-                    RoleClass.Tasker.TaskerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Doorr:
-                    RoleClass.Doorr.DoorrPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.EvilDoorr:
-                    RoleClass.EvilDoorr.EvilDoorrPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Shielder:
-                    RoleClass.Shielder.ShielderPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Speeder:
-                    RoleClass.Speeder.SpeederPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Freezer:
-                    RoleClass.Freezer.FreezerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Guesser:
-                    RoleClass.Guesser.GuesserPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.EvilGuesser:
-                    RoleClass.EvilGuesser.EvilGuesserPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Vulture:
-                    RoleClass.Vulture.VulturePlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.NiceScientist:
-                    RoleClass.NiceScientist.NiceScientistPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Clergyman:
-                    RoleClass.Clergyman.ClergymanPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.MadMate:
-                    RoleClass.MadMate.MadMatePlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Bait:
-                    RoleClass.Bait.BaitPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.HomeSecurityGuard:
-                    RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.StuntMan:
-                    RoleClass.StuntMan.StuntManPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Moving:
-                    RoleClass.Moving.MovingPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Opportunist:
-                    RoleClass.Opportunist.OpportunistPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.NiceGambler:
-                    RoleClass.NiceGambler.NiceGamblerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.EvilGambler:
-                    RoleClass.EvilGambler.EvilGamblerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Bestfalsecharge:
-                    RoleClass.Bestfalsecharge.BestfalsechargePlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Researcher:
-                    RoleClass.Researcher.ResearcherPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.SelfBomber:
-                    RoleClass.SelfBomber.SelfBomberPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.God:
-                    RoleClass.God.GodPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.AllCleaner:
-                    RoleClass.AllCleaner.AllCleanerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.NiceNekomata:
-                    RoleClass.NiceNekomata.NiceNekomataPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.EvilNekomata:
-                    RoleClass.EvilNekomata.EvilNekomataPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.JackalFriends:
-                    RoleClass.JackalFriends.JackalFriendsPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Doctor:
-                    RoleClass.Doctor.DoctorPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.CountChanger:
-                    RoleClass.CountChanger.CountChangerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Pursuer:
-                    RoleClass.Pursuer.PursuerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Minimalist:
-                    RoleClass.Minimalist.MinimalistPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Hawk:
-                    RoleClass.Hawk.HawkPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Egoist:
-                    RoleClass.Egoist.EgoistPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.NiceRedRidingHood:
-                    RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.EvilEraser:
-                    RoleClass.EvilEraser.EvilEraserPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Workperson:
-                    RoleClass.Workperson.WorkpersonPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Magaziner:
-                    RoleClass.Magaziner.MagazinerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Mayor:
-                    RoleClass.Mayor.MayorPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.truelover:
-                    RoleClass.Truelover.trueloverPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Technician:
-                    RoleClass.Technician.TechnicianPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.SerialKiller:
-                    RoleClass.SerialKiller.SerialKillerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.OverKiller:
-                    RoleClass.OverKiller.OverKillerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Levelinger:
-                    RoleClass.Levelinger.LevelingerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.EvilMoving:
-                    RoleClass.EvilMoving.EvilMovingPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Amnesiac:
-                    RoleClass.Amnesiac.AmnesiacPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.SideKiller:
-                    RoleClass.SideKiller.SideKillerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.MadKiller:
-                    RoleClass.SideKiller.MadKillerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Survivor:
-                    RoleClass.Survivor.SurvivorPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.MadMayor:
-                    RoleClass.MadMayor.MadMayorPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.MadStuntMan:
-                    RoleClass.MadStuntMan.MadStuntManPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.MadHawk:
-                    RoleClass.MadHawk.MadHawkPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.NiceHawk:
-                    RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Bakery:
-                    RoleClass.Bakery.BakeryPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.MadJester:
-                    RoleClass.MadJester.MadJesterPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.FalseCharges:
-                    RoleClass.FalseCharges.FalseChargesPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.NiceTeleporter:
-                    RoleClass.NiceTeleporter.NiceTeleporterPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Celebrity:
-                    RoleClass.Celebrity.CelebrityPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Nocturnality:
-                    RoleClass.Nocturnality.NocturnalityPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Observer:
-                    RoleClass.Observer.ObserverPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Vampire:
-                    RoleClass.Vampire.VampirePlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Fox:
-                    RoleClass.Fox.FoxPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.DarkKiller:
-                    RoleClass.DarkKiller.DarkKillerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Seer:
-                    RoleClass.Seer.SeerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.MadSeer:
-                    RoleClass.MadSeer.MadSeerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.EvilSeer:
-                    RoleClass.EvilSeer.EvilSeerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.TeleportingJackal:
-                    RoleClass.TeleportingJackal.TeleportingJackalPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.RemoteSheriff:
-                    RoleClass.RemoteSheriff.RemoteSheriffPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.MadMaker:
-                    RoleClass.MadMaker.MadMakerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Demon:
-                    RoleClass.Demon.DemonPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.TaskManager:
-                    RoleClass.TaskManager.TaskManagerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.SeerFriends:
-                    RoleClass.SeerFriends.SeerFriendsPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.JackalSeer:
-                    RoleClass.JackalSeer.JackalSeerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.SidekickSeer:
-                    RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Assassin:
-                    RoleClass.Assassin.AssassinPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Marine:
-                    RoleClass.Marine.MarinePlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Arsonist:
-                    RoleClass.Arsonist.ArsonistPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Chief:
-                    RoleClass.Chief.ChiefPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Cleaner:
-                    RoleClass.Cleaner.CleanerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.MadCleaner:
-                    RoleClass.MadCleaner.MadCleanerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Samurai:
-                    RoleClass.Samurai.SamuraiPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.MayorFriends:
-                    RoleClass.MayorFriends.MayorFriendsPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.VentMaker:
-                    RoleClass.VentMaker.VentMakerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.GhostMechanic:
-                    RoleClass.GhostMechanic.GhostMechanicPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.EvilHacker:
-                    RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.HauntedWolf:
-                    RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.PositionSwapper:
-                    RoleClass.PositionSwapper.PositionSwapperPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Tuna:
-                    RoleClass.Tuna.TunaPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Mafia:
-                    RoleClass.Mafia.MafiaPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.BlackCat:
-                    RoleClass.BlackCat.BlackCatPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Spy:
-                    RoleClass.Spy.SpyPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.DoubleKiller:
-                    RoleClass.DoubleKiller.DoubleKillerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Smasher:
-                    RoleClass.Smasher.SmasherPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.SuicideWisher:
-                    RoleClass.SuicideWisher.SuicideWisherPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Neet:
-                    RoleClass.Neet.NeetPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.FastMaker:
-                    RoleClass.FastMaker.FastMakerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.ToiletFan:
-                    RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
-                    break;
-                case (RoleId.SatsumaAndImo):
-                    RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.EvilButtoner:
-                    RoleClass.EvilButtoner.EvilButtonerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.NiceButtoner:
-                    RoleClass.NiceButtoner.NiceButtonerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Finder:
-                    RoleClass.Finder.FinderPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Revolutionist:
-                    RoleClass.Revolutionist.RevolutionistPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Dictator:
-                    RoleClass.Dictator.DictatorPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Spelunker:
-                    RoleClass.Spelunker.SpelunkerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.SuicidalIdeation:
-                    RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Hitman:
-                    RoleClass.Hitman.HitmanPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Matryoshka:
-                    RoleClass.Matryoshka.MatryoshkaPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Nun:
-                    RoleClass.Nun.NunPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Psychometrist:
-                    RoleClass.Psychometrist.PsychometristPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.SeeThroughPerson:
-                    RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.PartTimer:
-                    RoleClass.PartTimer.PartTimerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Painter:
-                    RoleClass.Painter.PainterPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Photographer:
-                    RoleClass.Photographer.PhotographerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Stefinder:
-                    RoleClass.Stefinder.StefinderPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Slugger:
-                    RoleClass.Slugger.SluggerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.ShiftActor:
-                    ShiftActor.Player.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.ConnectKiller:
-                    RoleClass.ConnectKiller.ConnectKillerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.WaveCannon:
-                    RoleClass.WaveCannon.WaveCannonPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Doppelganger:
-                    RoleClass.Doppelganger.DoppelggerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.WaveCannonJackal:
-                    RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.RemoveAll(ClearRemove);
-                    break;
-                //ロールリモベ
-            }
+            ChacheManager.ResetMyGhostRoleChache();
+        }
+        else
+        {
             ChacheManager.ResetMyRoleChache();
         }
-        public static void SetRoleRPC(this PlayerControl Player, RoleId SelectRoleDate)
+        if (flag)
         {
-            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetRole, SendOption.Reliable, -1);
-            killWriter.Write(Player.PlayerId);
-            killWriter.Write((byte)SelectRoleDate);
-            AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-            RPCProcedure.SetRole(Player.PlayerId, (byte)SelectRoleDate);
+            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
         }
-        public static bool IsClearTask(this PlayerControl player)
+        SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
+        ShiftActor.ShapeshifterSet();
+        PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(player.PlayerId);
+        if (anim != null) anim.HandleAnim(RpcAnimationType.Stop);
+    }
+    private static PlayerControl ClearTarget;
+    public static void ClearRole(this PlayerControl player)
+    {
+        static bool ClearRemove(PlayerControl p)
         {
-            var IsTaskClear = false;
-            switch (player.GetRole())
-            {
-                case RoleId.Jester:
-                case RoleId.Jackal:
-                case RoleId.Sidekick:
-                case RoleId.Vulture:
-                case RoleId.HomeSecurityGuard:
-                case RoleId.MadMate:
-                case RoleId.JackalFriends:
-                case RoleId.Opportunist:
-                case RoleId.Researcher:
-                case RoleId.God:
-                case RoleId.Egoist:
-                case RoleId.Workperson:
-                case RoleId.truelover:
-                case RoleId.Amnesiac:
-                case RoleId.MadMayor:
-                case RoleId.MadStuntMan:
-                case RoleId.MadKiller:
-                case RoleId.MadHawk:
-                case RoleId.MadJester:
-                case RoleId.FalseCharges:
-                case RoleId.Fox:
-                case RoleId.TeleportingJackal:
-                case RoleId.Demon:
-                case RoleId.SeerFriends:
-                case RoleId.Arsonist:
-                case RoleId.JackalSeer:
-                case RoleId.SidekickSeer:
-                case RoleId.MadMaker:
-                case RoleId.MadCleaner:
-                case RoleId.MayorFriends:
-                case RoleId.Tuna:
-                case RoleId.BlackCat:
-                case RoleId.Neet:
-                case RoleId.SatsumaAndImo:
-                case RoleId.Revolutionist:
-                case RoleId.Spelunker:
-                case RoleId.SuicidalIdeation:
-                case RoleId.Hitman:
-                case RoleId.Stefinder:
-                case RoleId.PartTimer:
-                case RoleId.Photographer:
-                case RoleId.WaveCannonJackal:
-                //タスククリアか
-                    IsTaskClear = true;
-                    break;
-            }
-            if (!IsTaskClear
-                && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
-                player.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff, RoleId.ToiletFan, RoleId.NiceButtoner))
-                || player.IsQuarreled()
-                || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
-                || player.IsImpostor()))
-            {
+            return p.PlayerId == ClearTarget.PlayerId;
+        }
+        ClearTarget = player;
+        switch (player.GetRole())
+        {
+            case RoleId.SoothSayer:
+                RoleClass.SoothSayer.SoothSayerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Jester:
+                RoleClass.Jester.JesterPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Lighter:
+                RoleClass.Lighter.LighterPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.EvilLighter:
+                RoleClass.EvilLighter.EvilLighterPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.EvilScientist:
+                RoleClass.EvilScientist.EvilScientistPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Sheriff:
+                RoleClass.Sheriff.SheriffPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.MeetingSheriff:
+                RoleClass.MeetingSheriff.MeetingSheriffPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Jackal:
+                RoleClass.Jackal.JackalPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Sidekick:
+                RoleClass.Jackal.SidekickPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Teleporter:
+                RoleClass.Teleporter.TeleporterPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.SpiritMedium:
+                RoleClass.SpiritMedium.SpiritMediumPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.SpeedBooster:
+                RoleClass.SpeedBooster.SpeedBoosterPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.EvilSpeedBooster:
+                RoleClass.EvilSpeedBooster.EvilSpeedBoosterPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Tasker:
+                RoleClass.Tasker.TaskerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Doorr:
+                RoleClass.Doorr.DoorrPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.EvilDoorr:
+                RoleClass.EvilDoorr.EvilDoorrPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Shielder:
+                RoleClass.Shielder.ShielderPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Speeder:
+                RoleClass.Speeder.SpeederPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Freezer:
+                RoleClass.Freezer.FreezerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Guesser:
+                RoleClass.Guesser.GuesserPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.EvilGuesser:
+                RoleClass.EvilGuesser.EvilGuesserPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Vulture:
+                RoleClass.Vulture.VulturePlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.NiceScientist:
+                RoleClass.NiceScientist.NiceScientistPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Clergyman:
+                RoleClass.Clergyman.ClergymanPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.MadMate:
+                RoleClass.MadMate.MadMatePlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Bait:
+                RoleClass.Bait.BaitPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.HomeSecurityGuard:
+                RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.StuntMan:
+                RoleClass.StuntMan.StuntManPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Moving:
+                RoleClass.Moving.MovingPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Opportunist:
+                RoleClass.Opportunist.OpportunistPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.NiceGambler:
+                RoleClass.NiceGambler.NiceGamblerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.EvilGambler:
+                RoleClass.EvilGambler.EvilGamblerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Bestfalsecharge:
+                RoleClass.Bestfalsecharge.BestfalsechargePlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Researcher:
+                RoleClass.Researcher.ResearcherPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.SelfBomber:
+                RoleClass.SelfBomber.SelfBomberPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.God:
+                RoleClass.God.GodPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.AllCleaner:
+                RoleClass.AllCleaner.AllCleanerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.NiceNekomata:
+                RoleClass.NiceNekomata.NiceNekomataPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.EvilNekomata:
+                RoleClass.EvilNekomata.EvilNekomataPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.JackalFriends:
+                RoleClass.JackalFriends.JackalFriendsPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Doctor:
+                RoleClass.Doctor.DoctorPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.CountChanger:
+                RoleClass.CountChanger.CountChangerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Pursuer:
+                RoleClass.Pursuer.PursuerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Minimalist:
+                RoleClass.Minimalist.MinimalistPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Hawk:
+                RoleClass.Hawk.HawkPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Egoist:
+                RoleClass.Egoist.EgoistPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.NiceRedRidingHood:
+                RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.EvilEraser:
+                RoleClass.EvilEraser.EvilEraserPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Workperson:
+                RoleClass.Workperson.WorkpersonPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Magaziner:
+                RoleClass.Magaziner.MagazinerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Mayor:
+                RoleClass.Mayor.MayorPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.truelover:
+                RoleClass.Truelover.trueloverPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Technician:
+                RoleClass.Technician.TechnicianPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.SerialKiller:
+                RoleClass.SerialKiller.SerialKillerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.OverKiller:
+                RoleClass.OverKiller.OverKillerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Levelinger:
+                RoleClass.Levelinger.LevelingerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.EvilMoving:
+                RoleClass.EvilMoving.EvilMovingPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Amnesiac:
+                RoleClass.Amnesiac.AmnesiacPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.SideKiller:
+                RoleClass.SideKiller.SideKillerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.MadKiller:
+                RoleClass.SideKiller.MadKillerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Survivor:
+                RoleClass.Survivor.SurvivorPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.MadMayor:
+                RoleClass.MadMayor.MadMayorPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.MadStuntMan:
+                RoleClass.MadStuntMan.MadStuntManPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.MadHawk:
+                RoleClass.MadHawk.MadHawkPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.NiceHawk:
+                RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Bakery:
+                RoleClass.Bakery.BakeryPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.MadJester:
+                RoleClass.MadJester.MadJesterPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.FalseCharges:
+                RoleClass.FalseCharges.FalseChargesPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.NiceTeleporter:
+                RoleClass.NiceTeleporter.NiceTeleporterPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Celebrity:
+                RoleClass.Celebrity.CelebrityPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Nocturnality:
+                RoleClass.Nocturnality.NocturnalityPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Observer:
+                RoleClass.Observer.ObserverPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Vampire:
+                RoleClass.Vampire.VampirePlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Fox:
+                RoleClass.Fox.FoxPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.DarkKiller:
+                RoleClass.DarkKiller.DarkKillerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Seer:
+                RoleClass.Seer.SeerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.MadSeer:
+                RoleClass.MadSeer.MadSeerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.EvilSeer:
+                RoleClass.EvilSeer.EvilSeerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.TeleportingJackal:
+                RoleClass.TeleportingJackal.TeleportingJackalPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.RemoteSheriff:
+                RoleClass.RemoteSheriff.RemoteSheriffPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.MadMaker:
+                RoleClass.MadMaker.MadMakerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Demon:
+                RoleClass.Demon.DemonPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.TaskManager:
+                RoleClass.TaskManager.TaskManagerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.SeerFriends:
+                RoleClass.SeerFriends.SeerFriendsPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.JackalSeer:
+                RoleClass.JackalSeer.JackalSeerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.SidekickSeer:
+                RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Assassin:
+                RoleClass.Assassin.AssassinPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Marine:
+                RoleClass.Marine.MarinePlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Arsonist:
+                RoleClass.Arsonist.ArsonistPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Chief:
+                RoleClass.Chief.ChiefPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Cleaner:
+                RoleClass.Cleaner.CleanerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.MadCleaner:
+                RoleClass.MadCleaner.MadCleanerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Samurai:
+                RoleClass.Samurai.SamuraiPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.MayorFriends:
+                RoleClass.MayorFriends.MayorFriendsPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.VentMaker:
+                RoleClass.VentMaker.VentMakerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.GhostMechanic:
+                RoleClass.GhostMechanic.GhostMechanicPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.EvilHacker:
+                RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.HauntedWolf:
+                RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.PositionSwapper:
+                RoleClass.PositionSwapper.PositionSwapperPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Tuna:
+                RoleClass.Tuna.TunaPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Mafia:
+                RoleClass.Mafia.MafiaPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.BlackCat:
+                RoleClass.BlackCat.BlackCatPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Spy:
+                RoleClass.Spy.SpyPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.DoubleKiller:
+                RoleClass.DoubleKiller.DoubleKillerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Smasher:
+                RoleClass.Smasher.SmasherPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.SuicideWisher:
+                RoleClass.SuicideWisher.SuicideWisherPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Neet:
+                RoleClass.Neet.NeetPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.FastMaker:
+                RoleClass.FastMaker.FastMakerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.ToiletFan:
+                RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.SatsumaAndImo:
+                RoleClass.SatsumaAndImo.SatsumaAndImoPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.EvilButtoner:
+                RoleClass.EvilButtoner.EvilButtonerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.NiceButtoner:
+                RoleClass.NiceButtoner.NiceButtonerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Finder:
+                RoleClass.Finder.FinderPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Revolutionist:
+                RoleClass.Revolutionist.RevolutionistPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Dictator:
+                RoleClass.Dictator.DictatorPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Spelunker:
+                RoleClass.Spelunker.SpelunkerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.SuicidalIdeation:
+                RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Hitman:
+                RoleClass.Hitman.HitmanPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Matryoshka:
+                RoleClass.Matryoshka.MatryoshkaPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Nun:
+                RoleClass.Nun.NunPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Psychometrist:
+                RoleClass.Psychometrist.PsychometristPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.SeeThroughPerson:
+                RoleClass.SeeThroughPerson.SeeThroughPersonPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.PartTimer:
+                RoleClass.PartTimer.PartTimerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Painter:
+                RoleClass.Painter.PainterPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Photographer:
+                RoleClass.Photographer.PhotographerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Stefinder:
+                RoleClass.Stefinder.StefinderPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Slugger:
+                RoleClass.Slugger.SluggerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.ShiftActor:
+                ShiftActor.Player.RemoveAll(ClearRemove);
+                break;
+            case RoleId.ConnectKiller:
+                RoleClass.ConnectKiller.ConnectKillerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.WaveCannon:
+                RoleClass.WaveCannon.WaveCannonPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.NekoKabocha:
+                NekoKabocha.NekoKabochaPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Doppelganger:
+                RoleClass.Doppelganger.DoppelggerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.WaveCannonJackal:
+                RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Conjurer:
+                Conjurer.Player.RemoveAll(ClearRemove);
+                break;
+                //ロールリモベ
+        }
+        ChacheManager.ResetMyRoleChache();
+    }
+    public static void SetRoleRPC(this PlayerControl Player, RoleId SelectRoleDate)
+    {
+        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetRole, SendOption.Reliable, -1);
+        killWriter.Write(Player.PlayerId);
+        killWriter.Write((byte)SelectRoleDate);
+        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+        RPCProcedure.SetRole(Player.PlayerId, (byte)SelectRoleDate);
+    }
+    public static bool IsClearTask(this PlayerControl player)
+    {
+        var IsTaskClear = false;
+        if (player.IsImpostor()) IsTaskClear = true;
+        switch (player.GetRole())
+        {
+            case RoleId.Jester:
+            case RoleId.Jackal:
+            case RoleId.Sidekick:
+            case RoleId.Vulture:
+            case RoleId.HomeSecurityGuard:
+            case RoleId.MadMate:
+            case RoleId.JackalFriends:
+            case RoleId.Opportunist:
+            case RoleId.Researcher:
+            case RoleId.God:
+            case RoleId.Egoist:
+            case RoleId.Workperson:
+            case RoleId.truelover:
+            case RoleId.Amnesiac:
+            case RoleId.MadMayor:
+            case RoleId.MadStuntMan:
+            case RoleId.MadKiller:
+            case RoleId.MadHawk:
+            case RoleId.MadJester:
+            case RoleId.FalseCharges:
+            case RoleId.Fox:
+            case RoleId.TeleportingJackal:
+            case RoleId.Demon:
+            case RoleId.SeerFriends:
+            case RoleId.Arsonist:
+            case RoleId.JackalSeer:
+            case RoleId.SidekickSeer:
+            case RoleId.MadMaker:
+            case RoleId.MadCleaner:
+            case RoleId.MayorFriends:
+            case RoleId.Tuna:
+            case RoleId.BlackCat:
+            case RoleId.Neet:
+            case RoleId.SatsumaAndImo:
+            case RoleId.Revolutionist:
+            case RoleId.Spelunker:
+            case RoleId.SuicidalIdeation:
+            case RoleId.Hitman:
+            case RoleId.Stefinder:
+            case RoleId.PartTimer:
+            case RoleId.Photographer:
+            case RoleId.WaveCannonJackal:
+                    //タスククリアか
                 IsTaskClear = true;
-            }
-            return IsTaskClear;
+                break;
         }
-        public static bool IsUseVent(this PlayerControl player)
+        if (!IsTaskClear
+            && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
+            player.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff, RoleId.ToiletFan, RoleId.NiceButtoner))
+            || player.IsQuarreled()
+            || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
+            || player.IsImpostor()))
         {
-            RoleId role = player.GetRole();
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && IsComms() && !player.IsImpostor()) return false;
-            return role switch
+            IsTaskClear = true;
+        }
+        return IsTaskClear;
+    }
+    public static bool IsUseVent(this PlayerControl player)
+    {
+        RoleId role = player.GetRole();
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && IsComms() && !player.IsImpostor()) return false;
+        return role switch
+        {
+            RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,
+            RoleId.Minimalist => RoleClass.Minimalist.UseVent,
+            RoleId.Samurai => RoleClass.Samurai.UseVent,
+            RoleId.Jester => RoleClass.Jester.IsUseVent,
+            RoleId.MadMate => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.MadMate.IsUseVent,
+            RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseVent,
+            RoleId.JackalFriends => RoleClass.JackalFriends.IsUseVent,
+            RoleId.Egoist => RoleClass.Egoist.UseVent,
+            RoleId.Technician => IsSabotage(),
+            RoleId.MadMayor => RoleClass.MadMayor.IsUseVent,
+            RoleId.MadJester => RoleClass.MadJester.IsUseVent,
+            RoleId.MadStuntMan => RoleClass.MadStuntMan.IsUseVent,
+            RoleId.MadHawk => RoleClass.MadHawk.IsUseVent,
+            RoleId.MadSeer => RoleClass.MadSeer.IsUseVent,
+            RoleId.MadMaker => RoleClass.MadMaker.IsUseVent,
+            RoleId.Fox => RoleClass.Fox.IsUseVent,
+            RoleId.Demon => RoleClass.Demon.IsUseVent,
+            RoleId.SeerFriends => RoleClass.SeerFriends.IsUseVent,
+            RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsUseVent,
+            RoleId.MadCleaner => RoleClass.MadCleaner.IsUseVent,
+            RoleId.Arsonist => RoleClass.Arsonist.IsUseVent,
+            RoleId.Vulture => RoleClass.Vulture.IsUseVent,
+            RoleId.MayorFriends => RoleClass.MayorFriends.IsUseVent,
+            RoleId.Tuna => RoleClass.Tuna.IsUseVent,
+            RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
+            RoleId.Spy => RoleClass.Spy.CanUseVent,
+            RoleId.Stefinder => CustomOptions.StefinderVent.GetBool(),
+            RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalUseVent.GetBool(),
+            RoleId.DoubleKiller => CustomOptions.DoubleKillerVent.GetBool(),
+            _ => player.IsImpostor(),
+        };
+    }
+    public static bool IsSabotage()
+    {
+        try
+        {
+            foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
+                    return true;
+        }
+        catch { }
+        return false;
+    }
+    public static bool IsComms()
+    {
+        try
+        {
+            foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                if (task.TaskType == TaskTypes.FixComms)
+                    return true;
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e.ToString(), "IsComms");
+        }
+        return false;
+    }
+    public static bool IsLightdown()
+    {
+        try
+        {
+            foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                if (task.TaskType == TaskTypes.FixLights)
+                    return true;
+        }
+        catch { }
+        return false;
+    }
+    public static bool IsUseSabo(this PlayerControl player)
+    {
+        RoleId role = player.GetRole();
+        return role switch
+        {
+            RoleId.Jester => RoleClass.Jester.IsUseSabo && ModeHandler.IsMode(ModeId.Default),
+            RoleId.Sidekick or RoleId.Jackal => RoleClass.Jackal.IsUseSabo,
+            RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
+            RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
+            RoleId.Egoist => RoleClass.Egoist.UseSabo,
+            RoleId.Stefinder => CustomOptions.StefinderSabo.GetBool(),
+            RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalUseSabo.GetBool(),
+            RoleId.Minimalist => RoleClass.Minimalist.UseSabo,
+            RoleId.DoubleKiller => CustomOptions.DoubleKillerSabo.GetBool(),
+            RoleId.Samurai => RoleClass.Samurai.UseSabo,
+            _ => player.IsImpostor(),
+        };
+    }
+    public static bool IsImpostorLight(this PlayerControl player)
+    {
+        RoleId role = player.GetRole();
+        return role == RoleId.Egoist
+            ? RoleClass.Egoist.ImpostorLight
+            : !ModeHandler.IsMode(ModeId.SuperHostRoles)
+            && role switch
             {
-                RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,
-                RoleId.Minimalist => RoleClass.Minimalist.UseVent,
-                RoleId.Samurai => RoleClass.Samurai.UseVent,
-                RoleId.Jester => RoleClass.Jester.IsUseVent,
-                RoleId.MadMate => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.MadMate.IsUseVent,
-                RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseVent,
-                RoleId.JackalFriends => RoleClass.JackalFriends.IsUseVent,
-                RoleId.Egoist => RoleClass.Egoist.UseVent,
-                RoleId.Technician => IsSabotage(),
-                RoleId.MadMayor => RoleClass.MadMayor.IsUseVent,
-                RoleId.MadJester => RoleClass.MadJester.IsUseVent,
-                RoleId.MadStuntMan => RoleClass.MadStuntMan.IsUseVent,
-                RoleId.MadHawk => RoleClass.MadHawk.IsUseVent,
-                RoleId.MadSeer => RoleClass.MadSeer.IsUseVent,
-                RoleId.MadMaker => RoleClass.MadMaker.IsUseVent,
-                RoleId.Fox => RoleClass.Fox.IsUseVent,
-                RoleId.Demon => RoleClass.Demon.IsUseVent,
-                RoleId.SeerFriends => RoleClass.SeerFriends.IsUseVent,
-                RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsUseVent,
-                RoleId.MadCleaner => RoleClass.MadCleaner.IsUseVent,
-                RoleId.Arsonist => RoleClass.Arsonist.IsUseVent,
-                RoleId.Vulture => RoleClass.Vulture.IsUseVent,
-                RoleId.MayorFriends => RoleClass.MayorFriends.IsUseVent,
-                RoleId.Tuna => RoleClass.Tuna.IsUseVent,
-                RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
-                RoleId.Spy => RoleClass.Spy.CanUseVent,
-                RoleId.Stefinder => CustomOptions.StefinderVent.GetBool(),
-                RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalUseVent.GetBool(),
-                RoleId.DoubleKiller => CustomOptions.DoubleKillerVent.GetBool(),
-                _ => player.IsImpostor(),
+                RoleId.MadMate => RoleClass.MadMate.IsImpostorLight,
+                RoleId.MadMayor => RoleClass.MadMayor.IsImpostorLight,
+                RoleId.MadStuntMan => RoleClass.MadStuntMan.IsImpostorLight,
+                RoleId.MadHawk => RoleClass.MadHawk.IsImpostorLight,
+                RoleId.MadJester => RoleClass.MadJester.IsImpostorLight,
+                RoleId.MadSeer => RoleClass.MadSeer.IsImpostorLight,
+                RoleId.Fox => RoleClass.Fox.IsImpostorLight,
+                RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsImpostorLight,
+                RoleId.MadMaker => RoleClass.MadMaker.IsImpostorLight,
+                RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsImpostorLight,
+                RoleId.JackalFriends => RoleClass.JackalFriends.IsImpostorLight,
+                RoleId.SeerFriends => RoleClass.SeerFriends.IsImpostorLight,
+                RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsImpostorLight,
+                RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
+                RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
+                RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
+                RoleId.Photographer => CustomOptions.PhotographerIsImpostorVision.GetBool(),
+                RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalIsImpostorLight.GetBool(),
+                _ => false,
             };
-        }
-        public static bool IsSabotage()
-        {
-            try
-            {
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
-                    if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
-                        return true;
-            }
-            catch { }
-            return false;
-        }
-        public static bool IsComms()
-        {
-            try
-            {
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
-                    if (task.TaskType == TaskTypes.FixComms)
-                        return true;
-            }
-            catch (Exception e){
-                Logger.Error(e.ToString(), "IsComms");
-            }
-            return false;
-        }
-        public static bool IsLightdown()
-        {
-            try
-            {
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
-                    if (task.TaskType == TaskTypes.FixLights)
-                        return true;
-            }
-            catch { }
-            return false;
-        }
-        public static bool IsUseSabo(this PlayerControl player)
-        {
-            RoleId role = player.GetRole();
-            return role switch
-            {
-                RoleId.Jester => RoleClass.Jester.IsUseSabo && ModeHandler.IsMode(ModeId.Default),
-                RoleId.Sidekick or RoleId.Jackal => RoleClass.Jackal.IsUseSabo,
-                RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
-                RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
-                RoleId.Egoist => RoleClass.Egoist.UseSabo,
-                RoleId.Stefinder => CustomOptions.StefinderSabo.GetBool(),
-                RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalUseSabo.GetBool(),
-                RoleId.Minimalist => RoleClass.Minimalist.UseSabo,
-                RoleId.DoubleKiller => CustomOptions.DoubleKillerSabo.GetBool(),
-                RoleId.Samurai => RoleClass.Samurai.UseSabo,
-                _ => player.IsImpostor(),
-            };
-        }
-        public static bool IsImpostorLight(this PlayerControl player)
-        {
-            RoleId role = player.GetRole();
-            return role == RoleId.Egoist
-                ? RoleClass.Egoist.ImpostorLight
-                : !ModeHandler.IsMode(ModeId.SuperHostRoles)
-                && role switch
-                {
-                    RoleId.MadMate => RoleClass.MadMate.IsImpostorLight,
-                    RoleId.MadMayor => RoleClass.MadMayor.IsImpostorLight,
-                    RoleId.MadStuntMan => RoleClass.MadStuntMan.IsImpostorLight,
-                    RoleId.MadHawk => RoleClass.MadHawk.IsImpostorLight,
-                    RoleId.MadJester => RoleClass.MadJester.IsImpostorLight,
-                    RoleId.MadSeer => RoleClass.MadSeer.IsImpostorLight,
-                    RoleId.Fox => RoleClass.Fox.IsImpostorLight,
-                    RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsImpostorLight,
-                    RoleId.MadMaker => RoleClass.MadMaker.IsImpostorLight,
-                    RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsImpostorLight,
-                    RoleId.JackalFriends => RoleClass.JackalFriends.IsImpostorLight,
-                    RoleId.SeerFriends => RoleClass.SeerFriends.IsImpostorLight,
-                    RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsImpostorLight,
-                    RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
-                    RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
-                    RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
-                    RoleId.Photographer => CustomOptions.PhotographerIsImpostorVision.GetBool(),
-                    RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalIsImpostorLight.GetBool(),
-                    _ => false,
-                };
-        }
-        public static bool IsNeutral(this PlayerControl player)
-        {
-            var IsNeutral = false;
-            switch (player.GetRole())
-            {
-                case RoleId.Jester:
-                case RoleId.Jackal:
-                case RoleId.Sidekick:
-                case RoleId.Vulture:
-                case RoleId.Opportunist:
-                case RoleId.Researcher:
-                case RoleId.God:
-                case RoleId.Egoist:
-                case RoleId.Workperson:
-                case RoleId.truelover:
-                case RoleId.Amnesiac:
-                case RoleId.FalseCharges:
-                case RoleId.Fox:
-                case RoleId.TeleportingJackal:
-                case RoleId.Demon:
-                case RoleId.JackalSeer:
-                case RoleId.SidekickSeer:
-                case RoleId.Arsonist:
-                case RoleId.MayorFriends:
-                case RoleId.Tuna:
-                case RoleId.Neet:
-                case RoleId.Revolutionist:
-                case RoleId.Spelunker:
-                case RoleId.SuicidalIdeation:
-                case RoleId.Hitman:
-                case RoleId.Stefinder:
-                case RoleId.PartTimer:
-                case RoleId.Photographer:
-                case RoleId.WaveCannonJackal:
-                //第三か
-                    IsNeutral = true;
-                    break;
-            }
-            return IsNeutral;
-        }
-        public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
+    }
+    public static bool IsNeutral(this PlayerControl player) =>
+        player.GetRole() is
+            RoleId.Jester or
+            RoleId.Jackal or
+            RoleId.Sidekick or
+            RoleId.Vulture or
+            RoleId.Opportunist or
+            RoleId.Researcher or
+            RoleId.God or
+            RoleId.Egoist or
+            RoleId.Workperson or
+            RoleId.truelover or
+            RoleId.Amnesiac or
+            RoleId.FalseCharges or
+            RoleId.Fox or
+            RoleId.TeleportingJackal or
+            RoleId.Demon or
+            RoleId.JackalSeer or
+            RoleId.SidekickSeer or
+            RoleId.Arsonist or
+            RoleId.MayorFriends or
+            RoleId.Tuna or
+            RoleId.Neet or
+            RoleId.Revolutionist or
+            RoleId.Spelunker or
+            RoleId.SuicidalIdeation or
+            RoleId.Hitman or
+            RoleId.Stefinder or
+            RoleId.PartTimer or
+        RoleId.WaveCannonJackal or
+            //第三か
+            RoleId.Photographer;
+    public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
         {
             RoleId MyRole;
             if (IsChache)
             {
-                try
-                {
-                    MyRole = ChacheManager.MyRoleChache[p.PlayerId];
-                }
-                catch
-                {
-                    MyRole = RoleId.DefaultRole;
-                }
+                try { MyRole = ChacheManager.MyRoleChache[p.PlayerId]; }
+                catch { MyRole = RoleId.DefaultRole; }
             }
             else
             {
@@ -1316,14 +1303,8 @@ namespace SuperNewRoles
         public static bool IsRole(this PlayerControl p, params RoleId[] roles)
         {
             RoleId MyRole;
-            try
-            {
-                MyRole = ChacheManager.MyRoleChache[p.PlayerId];
-            }
-            catch
-            {
-                MyRole = RoleId.DefaultRole;
-            }
+            try { MyRole = ChacheManager.MyRoleChache[p.PlayerId]; }
+            catch { MyRole = RoleId.DefaultRole; }
             foreach (RoleId role in roles)
             {
                 if (role == MyRole) return true;
@@ -1335,66 +1316,35 @@ namespace SuperNewRoles
             float addition = PlayerControl.GameOptions.killCooldown;
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                RoleId role = __instance.GetRole();
-                switch (role)
+                addition = __instance.GetRole() switch
                 {
-                    case RoleId.SerialKiller:
-                        addition = RoleClass.SerialKiller.KillTime;
-                        break;
-                    case RoleId.OverKiller:
-                        addition = RoleClass.OverKiller.KillCoolTime;
-                        break;
-                    case RoleId.SideKiller:
-                        addition = RoleClass.SideKiller.KillCoolTime;
-                        break;
-                    case RoleId.MadKiller:
-                        addition = RoleClass.SideKiller.MadKillerCoolTime;
-                        break;
-                    case RoleId.Minimalist:
-                        addition = RoleClass.Minimalist.KillCoolTime;
-                        break;
-                    case RoleId.Survivor:
-                        addition = RoleClass.Survivor.KillCoolTime;
-                        break;
-                    case RoleId.DarkKiller:
-                        addition = RoleClass.DarkKiller.KillCoolTime;
-                        break;
-                    case RoleId.Cleaner:
-                        addition = RoleClass.Cleaner.KillCoolTime;
-                        break;
-                    case RoleId.Samurai:
-                        addition = RoleClass.Samurai.KillCoolTime;
-                        break;
-                    case RoleId.Kunoichi:
-                        addition = RoleClass.Kunoichi.KillCoolTime;
-                        break;
-                    case RoleId.Matryoshka:
-                        addition = RoleClass.Matryoshka.MyKillCoolTime;
-                        break;
-                    case RoleId.ShiftActor:
-                        addition = ShiftActor.KillCool;
-                        break;
-                }
+                    RoleId.SerialKiller => RoleClass.SerialKiller.KillTime,
+                    RoleId.OverKiller => RoleClass.OverKiller.KillCoolTime,
+                    RoleId.SideKiller => RoleClass.SideKiller.KillCoolTime,
+                    RoleId.MadKiller => RoleClass.SideKiller.MadKillerCoolTime,
+                    RoleId.Minimalist => RoleClass.Minimalist.KillCoolTime,
+                    RoleId.Survivor => RoleClass.Survivor.KillCoolTime,
+                    RoleId.DarkKiller => RoleClass.DarkKiller.KillCoolTime,
+                    RoleId.Cleaner => RoleClass.Cleaner.KillCoolTime,
+                    RoleId.Samurai => RoleClass.Samurai.KillCoolTime,
+                    RoleId.Kunoichi => RoleClass.Kunoichi.KillCoolTime,
+                    RoleId.Matryoshka => RoleClass.Matryoshka.MyKillCoolTime,
+                    RoleId.ShiftActor => ShiftActor.KillCool,
+                    _ => PlayerControl.GameOptions.killCooldown
+                };
             }
             return addition;
         }
         public static float GetEndMeetingKillCoolTime(PlayerControl p)
         {
-            var role = p.GetRole();
             return GetCoolTime(p);
         }
         public static RoleId GetGhostRole(this PlayerControl player, bool IsChache = true)
         {
             if (IsChache)
             {
-                try
-                {
-                    return ChacheManager.MyGhostRoleChache[player.PlayerId];
-                }
-                catch
-                {
-                    return RoleId.DefaultRole;
-                }
+                try { return ChacheManager.MyGhostRoleChache[player.PlayerId]; }
+                catch { return RoleId.DefaultRole; }
             }
             try
             {
@@ -1404,23 +1354,16 @@ namespace SuperNewRoles
             catch { }
             return RoleId.DefaultRole;
         }
-        public static bool IsGhostRole(this RoleId role)
-        {
-            return IntroDate.GetIntroDate(role).IsGhostRole;
-        }
+        public static bool IsGhostRole(this RoleId role) =>
+            IntroDate.GetIntroDate(role).IsGhostRole;
+
         public static bool IsGhostRole(this PlayerControl p, RoleId role, bool IsChache = true)
         {
             RoleId MyRole;
             if (IsChache)
             {
-                try
-                {
-                    MyRole = ChacheManager.MyGhostRoleChache[p.PlayerId];
-                }
-                catch
-                {
-                    MyRole = RoleId.DefaultRole;
-                }
+                try { MyRole = ChacheManager.MyGhostRoleChache[p.PlayerId]; }
+                catch { MyRole = RoleId.DefaultRole; }
             }
             else
             {
@@ -1432,14 +1375,8 @@ namespace SuperNewRoles
         {
             if (IsChache)
             {
-                try
-                {
-                    return ChacheManager.MyRoleChache[player.PlayerId];
-                }
-                catch
-                {
-                    return RoleId.DefaultRole;
-                }
+                try { return ChacheManager.MyRoleChache[player.PlayerId]; }
+                catch { return RoleId.DefaultRole; }
             }
             try
             {
@@ -1585,6 +1522,8 @@ namespace SuperNewRoles
                 else if (RoleClass.WaveCannon.WaveCannonPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannon;
                 else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
                 else if (RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
+                else if (NekoKabocha.NekoKabochaPlayer.IsCheckListPlayerControl(player)) return RoleId.NekoKabocha;
+                else if (Conjurer.Player.IsCheckListPlayerControl(player)) return RoleId.Conjurer;
                 //ロールチェック
             }
             catch (Exception e)
