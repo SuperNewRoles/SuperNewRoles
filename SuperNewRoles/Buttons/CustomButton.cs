@@ -20,7 +20,7 @@ namespace SuperNewRoles.Buttons
         private readonly Action OnMeetingEnds;
         private readonly Func<bool, RoleId, bool> HasButton;
         private readonly Func<bool> CouldUse;
-        private readonly Action OnEffectEnds;
+        public readonly Action OnEffectEnds;
         public bool HasEffect;
         public bool isEffectActive = false;
         public bool showButtonText = true;
@@ -77,6 +77,7 @@ namespace SuperNewRoles.Buttons
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
                 this.OnClick();
 
+                Logger.Info($"クリック : {this.HasEffect} : {this.isEffectActive} : {this.EffectDuration}","CustomButton");
                 if (this.HasEffect && !this.isEffectActive)
                 {
                     this.Timer = this.EffectDuration;

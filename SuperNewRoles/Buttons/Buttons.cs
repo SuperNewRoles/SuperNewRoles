@@ -929,18 +929,29 @@ namespace SuperNewRoles.Buttons
             SheriffKillButton.buttonText = ModTranslation.GetString("SheriffKillButtonName");
             SheriffKillButton.showButtonText = true;
 
-            ClergymanLightOutButton = new Buttons.CustomButton(
+            ClergymanLightOutButton = new(
                 () =>
                 {
-                    RoleClass.Clergyman.IsLightOff = true;
-                    RoleClass.Clergyman.ButtonTimer = DateTime.Now;
-                    ClergymanLightOutButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
-                    Clergyman.LightOutStart();
+                    if (ClergymanLightOutButton.isEffectActive)
+                    {
+                        ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
+                        ClergymanLightOutButton.Timer = ClergymanLightOutButton.MaxTimer;
+                        MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
+                        RPCWriter.Write(false);
+                        AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
+                        RPCProcedure.RPCClergymanLightOut(false);
+                        ClergymanLightOutButton.isEffectActive = false;
+                        ClergymanLightOutButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                    }
+                    else
+                    {
+                        Clergyman.LightOutStart();
+                    }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Clergyman; },
                 () =>
                 {
-                    return ClergymanLightOutButton.Timer <= 0;
+                    return PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { Clergyman.EndMeeting(); },
                 RoleClass.Clergyman.GetButtonSprite(),
@@ -949,7 +960,17 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49,
-                () => { return false; }
+                () => { return false; },
+                true,
+                5f,
+                () => {
+                    MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
+                    RPCWriter.Write(false);
+                    AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
+                    RPCProcedure.RPCClergymanLightOut(false);
+                    ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
+                    ClergymanLightOutButton.Timer = ClergymanLightOutButton.MaxTimer;
+                }
             )
             {
                 buttonText = ModTranslation.GetString("ClergymanLightOutButtonName"),
