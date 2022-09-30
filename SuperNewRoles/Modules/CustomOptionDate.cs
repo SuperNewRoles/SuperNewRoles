@@ -151,8 +151,11 @@ namespace SuperNewRoles.Modules
 
         public static CustomRoleOption TaskerOption;
         public static CustomOption TaskerPlayerCount;
-        public static CustomOption TaskerAmount;
-        public static CustomOption TaskerIsKill;
+        public static CustomOption TaskerCommonTask;
+        public static CustomOption TaskerShortTask;
+        public static CustomOption TaskerLongTask;
+        public static CustomOption TaskerIsKillCoolTaskNow;
+        public static CustomOption TaskerCanKill;
 
         public static CustomRoleOption DoorrOption;
         public static CustomOption DoorrPlayerCount;
@@ -822,7 +825,7 @@ namespace SuperNewRoles.Modules
         public static CustomOption DoppelgangerCoolTome;
         public static CustomOption DoppelgangerSucTime;
         public static CustomOption DoppelgangerNotSucTime;
-        
+
         public static CustomRoleOption PavlovsownerOption;
         public static CustomOption PavlovsownerPlayerCount;
         public static CustomOption PavlovsownerCreateCoolTime;
@@ -926,7 +929,7 @@ namespace SuperNewRoles.Modules
             IsAlwaysReduceCooldownExceptInVent = Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
             IsAlwaysReduceCooldownExceptOnTask = Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
 
-            IsChangeTheWinCondition = Create(992, true, CustomOptionType.Generic, "IsChangeTheWinCondition", true, null, isHeader: true);
+            IsChangeTheWinCondition = Create(1005, true, CustomOptionType.Generic, "IsChangeTheWinCondition", true, null, isHeader: true);
 
             MadRolesCanFixComms = Create(984, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
             MadRolesCanFixElectrical = Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
@@ -1654,6 +1657,8 @@ namespace SuperNewRoles.Modules
 
             Roles.Impostor.ShiftActor.SetupCustomOptions();
 
+            Roles.Impostor.NekoKabocha.SetupCustomOptions();
+
             ConnectKillerOption = new(982, false, CustomOptionType.Impostor, "ConnectKillerName", RoleClass.ConnectKiller.color, 1);
             ConnectKillerPlayerCount = Create(983, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConnectKillerOption);
 
@@ -1676,6 +1681,17 @@ namespace SuperNewRoles.Modules
             PavlovsdogRunAwayKillCoolTime = CustomOption.Create(1000, false, CustomOptionType.Neutral, "PavlovsdogRunAwayKillCoolTime", 20f, 2.5f, 60f, 2.5f, PavlovsownerOption);
             PavlovsdogRunAwayDeathTime = CustomOption.Create(1001, false, CustomOptionType.Neutral, "PavlovsdogRunAwayDeathTime", 60f, 2.5f, 180f, 2.5f, PavlovsownerOption);
             PavlovsdogRunAwayDeathTimeIsMeetingReset = CustomOption.Create(1002, false, CustomOptionType.Neutral, "PavlovsdogRunAwayDeathTimeIsMeetingReset", true, PavlovsownerOption);
+
+            Roles.Impostor.Conjurer.SetupCustomOptions();
+
+            TaskerOption = new(1006, false, CustomOptionType.Impostor, "TaskerName", RoleClass.Tasker.color, 1);
+            TaskerPlayerCount = Create(1007, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
+            var taskeroption = SelectTask.TaskSetting(1008, 1009, 1010, TaskerOption, CustomOptionType.Impostor, false);
+            TaskerCommonTask = taskeroption.Item1;
+            TaskerShortTask = taskeroption.Item2;
+            TaskerLongTask = taskeroption.Item3;
+            TaskerIsKillCoolTaskNow = Create(1011, false, CustomOptionType.Impostor, "TaskerIsKillCoolTaskNow", true, TaskerOption);
+            TaskerCanKill = Create(1012, false, CustomOptionType.Impostor, "TaskerCanKill", true, TaskerOption);
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
