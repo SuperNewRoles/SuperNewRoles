@@ -134,7 +134,7 @@ namespace SuperNewRoles.Modules
                     break;
             }
         }
-        public static void MadMateVent()
+        public static void MadmateVent()
         {
             if (!CustomOptions.MadRolesCanVentMove.GetBool())
             {
