@@ -1,5 +1,6 @@
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Mode.SuperHostRoles;
 using static SuperNewRoles.Helpers.RPCHelper;
 using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
