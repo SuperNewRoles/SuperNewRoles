@@ -130,7 +130,7 @@ namespace SuperNewRoles.Patch
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
-                        if (PlayerControl.LocalPlayer.IsMadRoles() && CustomOptions.MadRolesCanVentMove.GetBool()) { VentDataModules.MadMateVent(); }
+                        if (PlayerControl.LocalPlayer.IsMadRoles()) { VentDataModules.MadMateVent(); }
                         switch (MyRole)
                         {
                             case RoleId.Pursuer:

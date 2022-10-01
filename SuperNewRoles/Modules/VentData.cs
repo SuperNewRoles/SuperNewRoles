@@ -136,7 +136,7 @@ namespace SuperNewRoles.Modules
         }
         public static void MadMateVent()
         {
-            if (CustomOptions.MadRolesCanVentMove.GetBool())
+            if (!CustomOptions.MadRolesCanVentMove.GetBool())
             {
                 Dictionary<string, VentData> ventMap = VentData.VentMap;
                 foreach (var ventData in ventMap)
