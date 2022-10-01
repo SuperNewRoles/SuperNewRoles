@@ -139,6 +139,11 @@ namespace SuperNewRoles.Patch
             return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format);
         }
 
+        public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, CustomOptionType type, RoleId roleId, int max = 1)
+        {
+            return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroDate.GetIntroDate(roleId).color, max);
+        }
+
         // Static behaviour
 
         public static void SwitchPreset(int newPreset)
