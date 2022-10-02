@@ -39,8 +39,9 @@ namespace SuperNewRoles.Roles
                         if (upflag)
                         {
                             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SidekickPromotes, SendOption.Reliable, -1);
+                            writer.Write(false);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RPCProcedure.SidekickPromotes();
+                            RPCProcedure.SidekickPromotes(false);
                         }
                     }
                 }
