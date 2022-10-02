@@ -1097,6 +1097,9 @@ namespace SuperNewRoles
                     //タスククリアか
                     IsTaskClear = true;
                     break;
+                case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
+                    IsTaskClear = true;
+                    break;
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&

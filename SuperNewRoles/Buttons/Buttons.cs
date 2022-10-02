@@ -1316,8 +1316,9 @@ namespace SuperNewRoles.Buttons
                         {
                             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ChiefSidekick);
                             writer.Write(target.PlayerId);
+                            writer.Write(target.IsClearTask());
                             RPCHelper.EndRPC(writer);
-                            RPCProcedure.ChiefSidekick(target.PlayerId);
+                            RPCProcedure.ChiefSidekick(target.PlayerId, target.IsClearTask());
                             RoleClass.Chief.IsCreateSheriff = true;
                         }
                         else

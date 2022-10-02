@@ -361,16 +361,20 @@ namespace SuperNewRoles.Modules
             }
         }
 
-        public static void ChiefSidekick(byte targetid)
+        public static void ChiefSidekick(byte targetid,bool IsTask)
         {
             RoleClass.Chief.SheriffPlayer.Add(targetid);
+            if (!IsTask)
+            {
+                RoleClass.Chief.NoTaskSheriffPlayer.Add(targetid);
+            }
             SetRole(targetid, (byte)RoleId.Sheriff);
             if (targetid == CachedPlayer.LocalPlayer.PlayerId)
             {
                 Sheriff.ResetKillCoolDown();
                 RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
             }
-            UncheckedSetVanilaRole(targetid, 0);
+            UncheckedSetVanilaRole(targetid, (byte)RoleTypes.Crewmate);
         }
         public static void FixLights()
         {
@@ -1188,7 +1192,7 @@ namespace SuperNewRoles.Modules
                             MapCustoms.Airship.SecretRoom.SetSecretRoomTeleportStatus((MapCustoms.Airship.SecretRoom.Status)reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.ChiefSidekick:
-                            ChiefSidekick(reader.ReadByte());
+                            ChiefSidekick(reader.ReadByte(), reader.ReadBoolean());
                             break;
                         case CustomRPC.RpcSetDoorway:
                             RPCHelper.RpcSetDoorway(reader.ReadByte(), reader.ReadBoolean());

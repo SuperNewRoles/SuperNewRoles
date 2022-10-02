@@ -5,7 +5,6 @@ using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
@@ -1848,6 +1847,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> ChiefPlayer;
             public static List<byte> SheriffPlayer;
+            public static List<byte> NoTaskSheriffPlayer;
             public static Color32 color = new(255, 255, 0, byte.MaxValue);
             public static bool IsCreateSheriff;
             public static float CoolTime;
@@ -1862,6 +1862,7 @@ namespace SuperNewRoles.Roles
             {
                 ChiefPlayer = new();
                 SheriffPlayer = new();
+                NoTaskSheriffPlayer = new();
                 IsCreateSheriff = false;
                 CoolTime = CustomOptions.ChiefSheriffCoolTime.GetFloat();
                 IsNeutralKill = CustomOptions.ChiefIsNeutralKill.GetBool();
