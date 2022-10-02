@@ -60,32 +60,27 @@ namespace SuperNewRoles.Modules
         }
         public void AnimationUpdate(float Deltatime)
         {
-            try { Updatetime -= Deltatime; }
-            catch (Exception ex) { Logger.Info($"Error1:{ex}", "Anim update"); }
-            try
+            Updatetime -= Deltatime;
+
+            if (Updatetime <= 0)
             {
-                if (Updatetime <= 0)
-                {
-                    try { render.sprite = Sprites[index]; }
-                    catch (Exception ex) { Logger.Info($"Error2:{ex}", "Anim update"); }
-                    index++;
-                    try
-                    {
-                        if (Sprites.Length <= index)
-                            index = 0;
-                    }
-                    catch (Exception ex) { Logger.Info($"Error3:{ex}", "Anim update"); }
-                    try { Updatetime = UpdateDefaultTime; }
-                    catch (Exception ex) { Logger.Info($"Error3:{ex}", "Anim update"); }
-                }
+                try { render.sprite = Sprites[index]; }
+                catch (Exception ex) { Logger.Info($"Error2:{ex}", "Anim update"); }
+                index++;
+
+                if (Sprites.Length <= index)
+                    index = 0;
+
+                Updatetime = UpdateDefaultTime;
+
             }
-            catch (Exception ex) { Logger.Info($"Error4:{ex}", "Anim update"); }
         }
-    }
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    class AnimationUpdatePatch
-    {
-        static void Postfix()
-            => CustomAnimation.Update();
+
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+        class AnimationUpdatePatch
+        {
+            static void Postfix()
+                => Update();
+        }
     }
 }
