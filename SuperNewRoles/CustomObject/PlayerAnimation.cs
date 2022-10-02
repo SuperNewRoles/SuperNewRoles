@@ -168,10 +168,15 @@ namespace SuperNewRoles.CustomObject
                     if (SoundManagerSource != null) SoundManagerSource.Stop();
                     break;
                 case RpcAnimationType.SluggerCharge:
+                    Playing = true;
                     SluggerChargeCreateAnimation();
                     void SluggerChargeCreateAnimation()
                     {
-                        if (Player.IsDead()) return;
+                        if (Player.IsDead() || !Player.IsRole(RoleId.Slugger) || !Playing)
+                        {
+                            Playing = false;
+                            SpriteRender.sprite = null;
+                        }
                         Init(GetSprites("SuperNewRoles.Resources.harisen.tame_", 4), false, 12, new(() =>
                         {
                             SluggerChargeCreateAnimation();
