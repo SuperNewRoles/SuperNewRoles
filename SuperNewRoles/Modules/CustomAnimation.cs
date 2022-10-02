@@ -61,18 +61,16 @@ namespace SuperNewRoles.Modules
         public void AnimationUpdate(float Deltatime)
         {
             Updatetime -= Deltatime;
-
             if (Updatetime <= 0)
             {
                 try { render.sprite = Sprites[index]; }
-                catch (Exception ex) { Logger.Info($"Error2:{ex}", "Anim update"); }
+                catch (Exception ex) { Logger.Info($"アニメーションで例外発生:{ex}", "Anim update"); }
                 index++;
 
                 if (Sprites.Length <= index)
                     index = 0;
 
                 Updatetime = UpdateDefaultTime;
-
             }
         }
 
