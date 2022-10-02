@@ -5,7 +5,6 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Mode;
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.UI;
 
 namespace SuperNewRoles.Roles.Impostor
 {
