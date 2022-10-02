@@ -50,6 +50,7 @@ namespace SuperNewRoles.Modules
 
         public static CustomOption MadRolesCanFixComms;
         public static CustomOption MadRolesCanFixElectrical;
+        public static CustomOption MadRolesCanVentMove;
 
         public static CustomRoleOption SoothSayerOption;
         public static CustomOption SoothSayerPlayerCount;
@@ -921,6 +922,7 @@ namespace SuperNewRoles.Modules
 
             MadRolesCanFixComms = Create(984, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
             MadRolesCanFixElectrical = Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
+            MadRolesCanVentMove = Create(1013, false, CustomOptionType.Crewmate, "MadRolesCanVentMove", false, null);
 
             SoothSayerOption = SetupCustomRoleOption(12, false, RoleId.SoothSayer);
             SoothSayerPlayerCount = Create(13, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
