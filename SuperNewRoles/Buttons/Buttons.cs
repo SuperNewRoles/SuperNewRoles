@@ -2261,7 +2261,6 @@ namespace SuperNewRoles.Buttons
                 {
                     if (MatryoshkaButton.isEffectActive)
                     {
-                        MatryoshkaButton.isEffectActive = false;
                         RoleClass.Matryoshka.WearLimit--;
                         Roles.Impostor.Matryoshka.RpcSet(null, false);
                         MatryoshkaButton.MaxTimer = CustomOptions.MatryoshkaCoolTime.GetFloat();
