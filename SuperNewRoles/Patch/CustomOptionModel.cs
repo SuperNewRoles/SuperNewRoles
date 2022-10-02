@@ -195,7 +195,7 @@ namespace SuperNewRoles.Patch
 
         public virtual bool GetBool()
         {
-            return selection > 0;
+            return selection > 0 && (parent == null || parent.GetBool());
         }
 
         public virtual float GetFloat()
