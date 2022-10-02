@@ -5,7 +5,6 @@ using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
