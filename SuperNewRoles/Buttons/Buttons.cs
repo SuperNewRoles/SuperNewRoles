@@ -114,7 +114,6 @@ namespace SuperNewRoles.Buttons
                     PavlovsdogKillButton.MaxTimer = RoleClass.Pavlovsdogs.IsOwnerDead ? CustomOptions.PavlovsdogRunAwayKillCoolTime.GetFloat() : CustomOptions.PavlovsdogKillCoolTime.GetFloat();
                     PavlovsdogKillButton.Timer = PavlovsdogKillButton.MaxTimer;
                     RoleClass.Pavlovsdogs.DeathTime = CustomOptions.PavlovsdogRunAwayDeathTime.GetFloat();
-                    RoleClass.Pavlovsowner.CreateLimit--;
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsdogs; },
                 () =>
@@ -122,7 +121,7 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.Pavlovsdogs.IsOwnerDead && CachedPlayer.LocalPlayer.IsAlive())
                     {
                         RoleClass.Pavlovsdogs.DeathTime -= Time.deltaTime;
-                        PavlovsdogKillSelfText.text = RoleClass.Pavlovsdogs.DeathTime> 0 ? string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)RoleClass.Pavlovsdogs.DeathTime) + 1) : "";
+                        PavlovsdogKillSelfText.text = RoleClass.Pavlovsdogs.DeathTime > 0 ? string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)RoleClass.Pavlovsdogs.DeathTime) + 1) : "";
                         if (RoleClass.Pavlovsdogs.DeathTime <= 0)
                         {
                             PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
@@ -159,6 +158,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     PlayerControl target = Roles.Neutral.Pavlovsdogs.SetTarget();
+                    RoleClass.Pavlovsowner.CreateLimit--;
                     if (!CustomOptions.PavlovsownerIsTargetImpostorDeath.GetBool() || !target.Data.Role.IsImpostor)
                     {
                         target.ResetAndSetRole(RoleId.Pavlovsdogs);
@@ -2427,7 +2427,8 @@ namespace SuperNewRoles.Buttons
                 },
                 true,
                 5f,
-                () => {
+                () =>
+                {
                     RoleClass.Matryoshka.WearLimit--;
                     Roles.Impostor.Matryoshka.RpcSet(null, false);
                     MatryoshkaButton.MaxTimer = CustomOptions.MatryoshkaCoolTime.GetFloat();
