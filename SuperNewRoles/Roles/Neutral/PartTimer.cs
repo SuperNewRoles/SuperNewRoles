@@ -1,3 +1,5 @@
+using SuperNewRoles.Helpers;
+
 namespace SuperNewRoles.Roles.Neutral
 {
     public static class PartTimer
@@ -21,7 +23,7 @@ namespace SuperNewRoles.Roles.Neutral
             if (!PlayerControl.LocalPlayer.IsRole(RoleId.PartTimer)) return;
             if (RoleClass.PartTimer.DeathTurn <= 0 && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.PartTimer.IsLocalOn)
             {
-                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                PlayerControl.LocalPlayer.RpcExiledUnchecked();
             }
             RoleClass.PartTimer.DeathTurn--;
         }
