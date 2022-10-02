@@ -20,7 +20,6 @@ namespace SuperNewRoles.Buttons
             ClergymanButton();
             LighterButton();
             MovingButton();
-            DoorrButton();
             TeleporterButton();
             HawkDuration();
             ScientistButton();
@@ -101,21 +100,6 @@ namespace SuperNewRoles.Buttons
             var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Teleporter.CoolTime);
             HudManagerStartPatch.TeleporterButton.Timer = (float)(RoleClass.Teleporter.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
             if (HudManagerStartPatch.TeleporterButton.Timer <= 0f) HudManagerStartPatch.TeleporterButton.Timer = 0f; return;
-        }
-        public static void DoorrButton()
-        {
-            if (HudManagerStartPatch.DoorrDoorButton.Timer == 0) return;
-            if (RoleClass.Doorr.ButtonTimer == null)
-            {
-                RoleClass.Doorr.ButtonTimer = DateTime.Now;
-            }
-            TimeSpan TimeSpanDate = new(0, 0, 0, (int)RoleClass.Doorr.CoolTime);
-            if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
-            {
-                TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.EvilDoorr.CoolTime);
-            }
-            HudManagerStartPatch.DoorrDoorButton.Timer = (float)(RoleClass.Doorr.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
-            if (HudManagerStartPatch.DoorrDoorButton.Timer <= 0f) HudManagerStartPatch.DoorrDoorButton.Timer = 0f; return;
         }
         public static void MovingButton()
         {
