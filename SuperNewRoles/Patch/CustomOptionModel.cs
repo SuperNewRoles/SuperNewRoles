@@ -139,8 +139,14 @@ namespace SuperNewRoles.Patch
             return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format);
         }
 
-        public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, CustomOptionType type, RoleId roleId, int max = 1)
+        public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn,RoleId roleId ,int max = 1)
         {
+            var type = IntroDate.GetIntroDate(roleId).Team switch {
+                TeamRoleType.Impostor => CustomOptionType.Impostor,
+                TeamRoleType.Neutral => CustomOptionType.Neutral,
+                TeamRoleType.Crewmate => CustomOptionType.Crewmate,
+                _ => CustomOptionType.Generic
+            };
             return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroDate.GetIntroDate(roleId).color, max);
         }
 
