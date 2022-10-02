@@ -77,15 +77,16 @@ namespace SuperNewRoles.Buttons
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
                 this.OnClick();
 
+                if (this.isEffectActive)
+                {
+                    this.isEffectActive = false;
+                    return;
+                }
                 if (this.HasEffect && !this.isEffectActive)
                 {
                     this.Timer = this.EffectDuration;
                     actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     this.isEffectActive = true;
-                }
-                if (this.isEffectActive)
-                {
-                    this.isEffectActive = false;
                 }
             }
         }
