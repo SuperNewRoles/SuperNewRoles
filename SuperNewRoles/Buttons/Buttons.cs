@@ -159,6 +159,7 @@ namespace SuperNewRoles.Buttons
                 {
                     PlayerControl target = Roles.Neutral.Pavlovsdogs.SetTarget();
                     RoleClass.Pavlovsowner.CreateLimit--;
+                    RPCProcedure.PavlovsownerCreateLimitDown((byte)RoleClass.Pavlovsowner.CreateLimit);
                     if (!CustomOptions.PavlovsownerIsTargetImpostorDeath.GetBool() || !target.Data.Role.IsImpostor)
                     {
                         target.ResetAndSetRole(RoleId.Pavlovsdogs);

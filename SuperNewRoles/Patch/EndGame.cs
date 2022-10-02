@@ -1221,7 +1221,7 @@ namespace SuperNewRoles.Patch
 
         public static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0 && statistics.PavlovsDogAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard() && !EvilEraser.IsNeetWinGuard())
+            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0 && statistics.PavlovsDogAlive == 0 && RoleClass.Pavlovsowner.EndGameCheckCreateLimit == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard() && !EvilEraser.IsNeetWinGuard())
             {
                 __instance.enabled = false;
                 var endReason = TempData.LastDeathReason switch
@@ -1253,7 +1253,7 @@ namespace SuperNewRoles.Patch
         }
         public static bool CheckAndEndGameForEgoistWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.EgoistAlive >= statistics.TotalAlive - statistics.EgoistAlive && statistics.EgoistAlive != 0 && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0 && statistics.PavlovsDogAlive == 0)
+            if (statistics.EgoistAlive >= statistics.TotalAlive - statistics.EgoistAlive && statistics.EgoistAlive != 0 && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0 && statistics.PavlovsDogAlive == 0 && RoleClass.Pavlovsowner.EndGameCheckCreateLimit == 0)
             {
                 __instance.enabled = false;
                 CustomEndGame((GameOverReason)CustomGameOverReason.EgoistWin, false);
@@ -1263,7 +1263,7 @@ namespace SuperNewRoles.Patch
         }
         public static bool CheckAndEndGameForJackalWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive && statistics.TeamImpostorsAlive == 0 && statistics.HitmanAlive == 0 && statistics.PavlovsDogAlive == 0 )
+            if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive && statistics.TeamImpostorsAlive == 0 && statistics.HitmanAlive == 0 && statistics.PavlovsDogAlive == 0 && RoleClass.Pavlovsowner.EndGameCheckCreateLimit == 0)
             {
                 foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
                 {
@@ -1281,7 +1281,7 @@ namespace SuperNewRoles.Patch
 
         public static bool CheckAndEndGameForPavlovsWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.PavlovsTeamAlive >= statistics.TotalAlive - statistics.PavlovsTeamAlive && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && statistics.PavlovsDogAlive == 1)
+            if (statistics.PavlovsTeamAlive >= statistics.TotalAlive - statistics.PavlovsTeamAlive && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && statistics.PavlovsDogAlive == 1 && RoleClass.Pavlovsowner.EndGameCheckCreateLimit >= 0)
             {
                 __instance.enabled = false;
                 CustomEndGame((GameOverReason)CustomGameOverReason.PavlovsTeamWin, false);
@@ -1413,7 +1413,8 @@ namespace SuperNewRoles.Patch
                                 {
                                     numTotalEgoist++;
                                     numImpostorsAlive++;
-                                } else if (playerInfo.Object.IsRole(RoleId.Hitman))
+                                }
+                                else if (playerInfo.Object.IsRole(RoleId.Hitman))
                                 {
                                     numHitmanAlive++;
                                 }

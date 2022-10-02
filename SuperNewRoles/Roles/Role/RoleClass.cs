@@ -2721,6 +2721,7 @@ namespace SuperNewRoles.Roles
             public static PlayerControl CurrentChildPlayer;
             public static Arrow DogArrow;
             public static int CreateLimit;
+            public static int EndGameCheckCreateLimit;
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PavlovsownerCreatedogButton.png", 115f);
             public static void ClearAndReload()
             {

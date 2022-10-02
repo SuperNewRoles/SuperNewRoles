@@ -235,6 +235,7 @@ namespace SuperNewRoles.Modules
         PainterSetTarget = 215,
         SharePhotograph,
         ShowFlash,
+        PavlovsownerCreateLimitDown,
         SetFinalStatus
     }
     public static class RPCProcedure
@@ -981,8 +982,14 @@ namespace SuperNewRoles.Modules
             })));
         }
 
-        public static void ShowFlash(){
+        public static void ShowFlash()
+        {
             Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+        }
+        public static void PavlovsownerCreateLimitDown(byte limit)
+        {
+            RoleClass.Pavlovsowner.EndGameCheckCreateLimit = limit;
+            SuperNewRolesPlugin.Logger.LogInfo($"パブロフのオーナー残り刷り込み回数{RoleClass.Pavlovsowner.EndGameCheckCreateLimit}");
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
         class RPCHandlerPatch
@@ -1242,6 +1249,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.SetFinalStatus:
                             SetFinalStatus(reader.ReadByte(), (FinalStatus)reader.ReadByte());
+                            break;
+                        case CustomRPC.PavlovsownerCreateLimitDown:
+                            PavlovsownerCreateLimitDown(reader.ReadByte());
                             break;
                     }
                 }
