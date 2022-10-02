@@ -26,6 +26,7 @@ namespace SuperNewRoles.Patch
                         if (PlayerControl.LocalPlayer.moveable)
                         {
                             PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                            PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.LadderDeath);
                         }
                     }
                 }
@@ -41,7 +42,11 @@ namespace SuperNewRoles.Patch
                         if (Vector2.Distance(data.Value, player.transform.position) < 0.5f)
                         {
                             player.Data.IsDead = true;
-                            new LateTask(() => player.RpcMurderPlayer(player), 0.05f, "Ladder Murder");
+                            new LateTask(() =>
+                            {
+                                player.RpcMurderPlayer(player);
+                                player.RpcSetFinalStatus(FinalStatus.LadderDeath);
+                            }, 0.05f, "Ladder Murder");
                         }
                     }
                 }

@@ -22,7 +22,7 @@ namespace SuperNewRoles.Roles
                 MeetingRoomManager.Instance.AssignSelf(__instance, null);
                 FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
                 __instance.RpcStartMeeting(null);
-            }, 0.5f,"EvilButtonerStartMeetingSHR");
+            }, 0.5f, "EvilButtonerStartMeetingSHR");
         }
     }
 }

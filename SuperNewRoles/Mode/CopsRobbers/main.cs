@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using SuperNewRoles.Helpers;
-using static SuperNewRoles.Patch.SetNamesClass;
-using UnityEngine;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
+using UnityEngine;
+using static SuperNewRoles.Patch.SetNamesClass;
 
 namespace SuperNewRoles.Mode.CopsRobbers
 {

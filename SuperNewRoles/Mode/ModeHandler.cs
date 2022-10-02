@@ -27,8 +27,7 @@ namespace SuperNewRoles.Mode
         NotImpostorCheck,
         Detective,
         Werewolf,
-        CopsRobbers,
-        LevelUp
+        CopsRobbers
     }
     public class ModeHandler
     {
@@ -148,7 +147,6 @@ namespace SuperNewRoles.Mode
             Detective.DetectiveOptions.Load();
             CopsRobbers.CopsRobbersOptions.Load();
             //Werewolf.WerewolfOptions.Load();
-            //LevelUp.main.Load();
 
             PlusMode.Options.Load();
         }
@@ -170,7 +168,6 @@ namespace SuperNewRoles.Mode
             else if (IsMode(ModeId.BattleRoyal)) BattleRoyal.Main.FixedUpdate();
             else if (IsMode(ModeId.Zombie)) Zombie.FixedUpdate.Update();
             else if (IsMode(ModeId.RandomColor)) RandomColor.FixedUpdate.Update();
-            //else if (IsMode(ModeId.LevelUp)) LevelUp.main.FixedUpdate();
 
         }
         public static void Wrapup(GameData.PlayerInfo exiled)
@@ -198,7 +195,9 @@ namespace SuperNewRoles.Mode
                 ? ModeId.Detective
                 : IsMode(ModeId.Werewolf, false)
                 ? ModeId.Werewolf
-                : IsMode(ModeId.CopsRobbers, false) ? ModeId.CopsRobbers : IsMode(ModeId.LevelUp, false) ? ModeId.LevelUp : ModeId.No;
+                : IsMode(ModeId.CopsRobbers, false)
+                ? ModeId.CopsRobbers
+                : ModeId.No;
         }
         public static string GetThisModeIntro()
         {
@@ -244,7 +243,6 @@ namespace SuperNewRoles.Mode
                     ModeId.Detective => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[6],
                     ModeId.CopsRobbers => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[7],
                     ModeId.Werewolf => false,//ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[7];
-                    ModeId.LevelUp => false,//ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[7];
                     _ => false,
                 };
         }

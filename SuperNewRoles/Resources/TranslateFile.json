@@ -979,11 +979,6 @@
         "11": "\u30ad\u30eb\u304c\u3067\u304d\u308b\u3088\u3046\u306b\u306a\u308b\u307e\u3067\u306e\u79d2\u6570",
         "13": "\u4ece\u6e38\u620f\u5f00\u59cb\u5230\u73a9\u5bb6\u53ef\u51fb\u6740\u7ecf\u8fc7\u7684\u65f6\u95f4"
     },
-    "LevelUpModeName": {
-        "0": "Level Up",
-        "11": "\u30ec\u30d9\u30eb\u30a2\u30c3\u30d7",
-        "13": "\u5347\u7ea7"
-    },
     "ZombieZombieName": {
         "0": "Zombie",
         "11": "\u30be\u30f3\u30d3",
@@ -1909,15 +1904,18 @@
         "11": "\u30bf\u30b9\u30af\u3092\u9811\u5f35\u3063\u3066\u7d42\u308f\u3089\u305b\u3088\u3046",
         "13": "\u5927\u5e08\uff0c\u4efb\u52a1\u8fd8\u6ca1\u5b8c\u6210\uff0c\u8fd8\u4e0d\u80fd\u4f11\u606f\u54e6"
     },
-    "TaskerTaskSetting": {
-        "0": "Task Amount",
-        "11": "\u30bf\u30b9\u30af\u91cf",
-        "13": "\u4efb\u52a1\u5927\u5e08\u4efb\u52a1\u6570"
+    "TaskerIsKillCoolTaskNow": {
+        "0": "Kill cool time is saved during the task.",
+        "11": "\u30bf\u30b9\u30af\u4e2d\u306b\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0\u304c\u8caf\u307e\u308b"
     },
-    "TaskerIsKillSetting": {
+    "TaskerCanKill": {
         "0": "Killable",
         "11": "\u30ad\u30eb\u3067\u304d\u308b",
         "13": "\u4efb\u52a1\u5927\u5e08\u53ef\u51fb\u6740"
+    },
+    "TaskerWinText": {
+        "0": "Impostor Task",
+        "11": "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u30bf\u30b9\u30af"
     },
     "DoorrName": {
         "0": "Doorr",

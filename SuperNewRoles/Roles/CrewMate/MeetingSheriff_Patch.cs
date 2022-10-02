@@ -115,6 +115,7 @@ namespace SuperNewRoles.Roles
             killWriter.Write(TargetID);
             killWriter.Write(misfire);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+            FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, misfire ? FinalStatus.MeetingSheriffMisFire : (Target.IsRole(RoleId.HauntedWolf) ? FinalStatus.MeetingSheriffHauntedWolfKill : FinalStatus.MeetingSheriffKill));
             RoleClass.MeetingSheriff.KillMaxCount--;
             if (RoleClass.MeetingSheriff.KillMaxCount <= 0 || !RoleClass.MeetingSheriff.OneMeetingMultiKill || misfire)
             {

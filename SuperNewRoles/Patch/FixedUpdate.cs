@@ -81,19 +81,26 @@ namespace SuperNewRoles.Patch
             }
         }
 
-        static void reduceKillCooldown(PlayerControl __instance)
+        static void ReduceKillCooldown(PlayerControl __instance)
         {
             if (CustomOptions.IsAlwaysReduceCooldown.GetBool())
             {
-                // オプションがONの場合はベント内はクールダウン減少を止める
-                bool exceptInVent = CustomOptions.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
+                // オプションがOFFの場合はベント内はクールダウン減少を止める
+                bool exceptInVent = !CustomOptions.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
                 // 配電盤タスク中はクールダウン減少を止める
-                bool exceptOnTask = CustomOptions.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
+                bool exceptOnTask = !CustomOptions.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
 
                 if (!__instance.Data.IsDead && !__instance.CanMove && !exceptInVent && !exceptOnTask)
+                {
+                    __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
+                    return;
+                }
+            }
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && CustomOptions.TaskerIsKillCoolTaskNow.GetBool())
+            {
+                if (!__instance.Data.IsDead && !__instance.CanMove && Minigame.Instance != null && Minigame.Instance.MyNormTask != null && Minigame.Instance.MyNormTask.Owner.AmOwner)
                     __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
             }
-
         }
         public static bool IsProDown;
 
@@ -119,7 +126,7 @@ namespace SuperNewRoles.Patch
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
                     Roles.CrewMate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
-                    reduceKillCooldown(__instance);
+                    ReduceKillCooldown(__instance);
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
@@ -156,9 +163,6 @@ namespace SuperNewRoles.Patch
                                 break;
                             case RoleId.Vampire:
                                 Vampire.FixedUpdate.Postfix();
-                                break;
-                            case RoleId.DarkKiller:
-                                DarkKiller.FixedUpdate.Postfix();
                                 break;
                             case RoleId.Vulture:
                                 Vulture.FixedUpdate.Postfix();
@@ -199,9 +203,11 @@ namespace SuperNewRoles.Patch
                             case RoleId.Doppelganger:
                                 Roles.Impostor.Doppelganger.FixedUpdate();
                                 break;
+                            case RoleId.ConnectKiller:
+                                Roles.Impostor.ConnectKiller.Update();
+                                break;
                             default:
-                                foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                                    NormalButtonDestroy.Postfix(p);
+                                NormalButtonDestroy.Postfix();
                                 break;
                         }
                     }

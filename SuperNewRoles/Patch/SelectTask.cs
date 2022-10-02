@@ -1,8 +1,8 @@
-using HarmonyLib;
 using System.Collections.Generic;
-using static SuperNewRoles.Modules.CustomOptions;
+using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using static SuperNewRoles.Modules.CustomOptions;
 
 namespace SuperNewRoles.Patch
 {
@@ -48,6 +48,10 @@ namespace SuperNewRoles.Patch
             taskData.Add(RoleId.Workperson, (WorkpersonCommonTask.GetInt(), WorkpersonShortTask.GetInt(), WorkpersonLongTask.GetInt()));
             taskData.Add(RoleId.TaskManager, (TaskManagerCommonTask.GetInt(), TaskManagerShortTask.GetInt(), TaskManagerLongTask.GetInt()));
             taskData.Add(RoleId.SuicidalIdeation, (SuicidalIdeationCommonTask.GetInt(), SuicidalIdeationLongTask.GetInt(), SuicidalIdeationShortTask.GetInt()));
+            taskData.Add(RoleId.Tasker, (TaskerCommonTask.GetInt(), TaskerLongTask.GetInt(), TaskerShortTask.GetInt()));
+
+            //テンプレート
+            //taskData.Add(RoleId, (CommonTask.GetInt(), LongTask.GetInt(), ShortTask.GetInt()));
 
             if (taskData.ContainsKey(p.GetRole())) // pの役職がDictionaryにあるか
             {
@@ -56,9 +60,9 @@ namespace SuperNewRoles.Patch
             }
             else if (p.IsLovers() && !p.IsImpostor())
             {
-                int commont = CustomOptions.LoversCommonTask.GetInt();
-                int shortt = CustomOptions.LoversShortTask.GetInt();
-                int longt = CustomOptions.LoversLongTask.GetInt();
+                int commont = LoversCommonTask.GetInt();
+                int shortt = LoversShortTask.GetInt();
+                int longt = LoversLongTask.GetInt();
                 if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
             }
             return (SyncSetting.OptionData.NumCommonTasks, SyncSetting.OptionData.NumShortTasks, SyncSetting.OptionData.NumLongTasks);

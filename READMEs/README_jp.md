@@ -63,7 +63,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 [TheOtherRoles](https://github.com/Eisbison/TheOtherRoles) modの作り方の参考にさせていただきました。**Eisbison**さんありがとうございます！
 
-[TheOtherRolesGM](https://github.com/yukinogatari/TheOtherRoles-GM) オプションやボタンなどのソースコードを参考にさせていただきました。**yukinogatari**さんありがとうございます！
+[TheOtherRolesGM](https://github.com/yukinogatari/TheOtherRoles-GM) オプションやボタンなどのソースコードを参考にさせていただきました。猫カボチャのアイデア元。**yukinogatari**さんありがとうございます！
 
 [Essentials](https://github.com/DorCoMaNdO/Reactor-Essentials) - カスタムゲームオプション
 **DorCoMaNdO**:
@@ -1611,6 +1611,20 @@ SuperHostRoles対応。SHRではシェイプシフトによりドアを開閉し
 | 名前               |           説明           |
 | ------------------ | :----------------------: |
 | トイレクールタイム | 開閉ボタンのクールタイム |
+-----------------------
+
+## ネコカボチャ
+### インポスター陣営
+キルされた際にキルした人を道連れにする。<br>
+また、追放された際にもランダムで一人を道連れにする。
+
+### ゲーム設定
+| 名前 | 説明 |
+|----------|:-------------:|
+| キルクールタイム | キルクールタイムを設定できます
+| クルーを道連れにするか |
+| 第三陣営を道連れにするか |
+| インポスター陣営を道連れにするか|
 -----------------------
 
 ## クラード
