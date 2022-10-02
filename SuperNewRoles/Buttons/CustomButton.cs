@@ -83,6 +83,10 @@ namespace SuperNewRoles.Buttons
                     actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     this.isEffectActive = true;
                 }
+                if (this.isEffectActive)
+                {
+                    this.isEffectActive = false;
+                }
             }
         }
 
