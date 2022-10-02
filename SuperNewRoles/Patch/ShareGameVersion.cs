@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Agartha;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
-using Agartha;
 
 namespace SuperNewRoles.Patch
 {
@@ -35,10 +35,10 @@ namespace SuperNewRoles.Patch
                 if (PlayerControl.LocalPlayer != null)
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[VersionShare]Version Shared!");
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareSNRVersion, SendOption.Reliable, -1);
-                    writer.Write((byte)SuperNewRolesPlugin.Version.Major);
-                    writer.Write((byte)SuperNewRolesPlugin.Version.Minor);
-                    writer.Write((byte)SuperNewRolesPlugin.Version.Build);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareSNRVersion, SendOption.Reliable, -1);
+                    writer.WritePacked(SuperNewRolesPlugin.Version.Major);
+                    writer.WritePacked(SuperNewRolesPlugin.Version.Minor);
+                    writer.WritePacked(SuperNewRolesPlugin.Version.Build);
                     writer.WritePacked(AmongUsClient.Instance.ClientId);
                     writer.Write((byte)(SuperNewRolesPlugin.Version.Revision < 0 ? 0xFF : SuperNewRolesPlugin.Version.Revision));
                     writer.Write(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray());
@@ -80,11 +80,10 @@ namespace SuperNewRoles.Patch
                 Proce++;
                 if (Proce >= 10)
                 {
-
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareSNRVersion, SendOption.Reliable, -1);
-                    writer.Write((byte)SuperNewRolesPlugin.Version.Major);
-                    writer.Write((byte)SuperNewRolesPlugin.Version.Minor);
-                    writer.Write((byte)SuperNewRolesPlugin.Version.Build);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareSNRVersion, SendOption.Reliable, -1);
+                    writer.WritePacked(SuperNewRolesPlugin.Version.Major);
+                    writer.WritePacked(SuperNewRolesPlugin.Version.Minor);
+                    writer.WritePacked(SuperNewRolesPlugin.Version.Build);
                     writer.WritePacked(AmongUsClient.Instance.ClientId);
                     writer.Write((byte)(SuperNewRolesPlugin.Version.Revision < 0 ? 0xFF : SuperNewRolesPlugin.Version.Revision));
                     writer.Write(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray());
@@ -155,11 +154,8 @@ namespace SuperNewRoles.Patch
                         {
                             if (!VersionPlayers.ContainsKey(client.Id))
                             {
-                                if (!(client.PlatformData.Platform != Platforms.StandaloneEpicPC && client.PlatformData.Platform != Platforms.StandaloneSteamPC && CustomOptions.DisconnectNotPCOption.GetBool()))
-                                {
-                                    message += string.Format(ModTranslation.GetString("ErrorClientNoVersion"), client.PlayerName) + "\n";
-                                    blockStart = true;
-                                }
+                                message += string.Format(ModTranslation.GetString("ErrorClientNoVersion"), client.PlayerName) + "\n";
+                                blockStart = true;
                             }
                             else
                             {
@@ -232,7 +228,7 @@ namespace SuperNewRoles.Patch
             }
         }
     }
-    public class PlayerVersion
+    public struct PlayerVersion
     {
         public readonly Version version;
         public readonly Guid guid;

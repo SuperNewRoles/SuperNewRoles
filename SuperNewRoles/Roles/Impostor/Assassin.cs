@@ -126,19 +126,19 @@ namespace SuperNewRoles.Roles
                         MeetingRoomManager.Instance.AssignSelf(exile, null);
                         FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(exile);
                         exile.RpcStartMeeting(null);
-                    }, 10.5f,"Assassin Meet");
+                    }, 10.5f, "Assassin Meet");
                     new LateTask(() =>
                     {
                         exile.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}<color=white>は誰だ？</size>");
-                    }, 12f,"Assassin Name");
+                    }, 12f, "Assassin Name");
                     new LateTask(() =>
                     {
                         exile.RpcSendChat($"\n{ModTranslation.GetString("MarineWhois")}");
-                    }, 12.5f,"Assassin Chat");
+                    }, 12.5f, "Assassin Chat");
                     new LateTask(() =>
                     {
                         exile.RpcSetName(exile.GetDefaultName());
-                    }, 13f,"Assassin Default");
+                    }, 13f, "Assassin Default");
                 }
                 RoleClass.Assassin.TriggerPlayer = exile;
             }
