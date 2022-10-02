@@ -93,8 +93,8 @@ namespace SuperNewRoles.Roles.Impostor
                     SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName},{__instance.PlayerId} => {target.Data.PlayerName},{target.PlayerId}");
                     SuperNewRolesPlugin.Logger.LogInfo($"ドッペルゲンガーの{__instance.Data.PlayerName}のキルクールを{(targetKill ? RoleClass.Doppelganger.SucTime : RoleClass.Doppelganger.NotSucTime)}秒に変更しました");
                     var optdata = SyncSetting.OptionData.DeepCopy();
-                    optdata.killCooldown = SyncSetting.KillCoolSet(SyncSetting.KillCoolSet(targetKill ? RoleClass.Doppelganger.SucTime      //ﾀｰｹﾞｯﾄだったら
-                                                                                                      : RoleClass.Doppelganger.NotSucTime));//ﾀｰｹﾞｯﾄ以外だったら
+                    optdata.killCooldown = SyncSetting.KillCoolSet(targetKill ? RoleClass.Doppelganger.SucTime     //ﾀｰｹﾞｯﾄだったら
+                                                                              : RoleClass.Doppelganger.NotSucTime);//ﾀｰｹﾞｯﾄ以外だったら
                     PlayerControl.GameOptions = optdata;
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, __instance.GetClientId());
                     writer.WriteBytesAndSize(optdata.ToBytes(5));
