@@ -176,6 +176,7 @@ namespace SuperNewRoles.CustomObject
                         {
                             Playing = false;
                             SpriteRender.sprite = null;
+                            return;
                         }
                         Init(GetSprites("SuperNewRoles.Resources.harisen.tame_", 4), false, 12, new(() =>
                         {
