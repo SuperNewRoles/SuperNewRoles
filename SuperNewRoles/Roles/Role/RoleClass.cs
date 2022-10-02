@@ -1991,6 +1991,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> EvilHackerPlayer;
             public static Color32 color = ImpostorRed;
             public static bool IsCreateMadmate;
+            public static bool IsMyAdmin;
             public static Sprite GetButtonSprite()
             {
                 byte mapId = PlayerControl.GameOptions.MapId;
@@ -2004,6 +2005,7 @@ namespace SuperNewRoles.Roles
             {
                 EvilHackerPlayer = new();
                 IsCreateMadmate = CustomOptions.EvilHackerMadmateSetting.GetBool();
+                IsMyAdmin = false;
             }
         }
         public static class HauntedWolf

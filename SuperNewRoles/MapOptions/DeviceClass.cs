@@ -21,7 +21,7 @@ namespace SuperNewRoles.MapOptions
             {
                 bool IsUse = MapOption.UseAdmin;
 
-                return IsUse;
+                return IsUse || RoleClass.EvilHacker.IsMyAdmin;
             }
         }
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]

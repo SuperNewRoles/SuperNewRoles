@@ -1734,6 +1734,7 @@ namespace SuperNewRoles.Buttons
                     CachedPlayer.LocalPlayer.NetTransform.Halt();
                     Action<MapBehaviour> tmpAction = (MapBehaviour m) => { m.ShowCountOverlay(); };
                     FastDestroyableSingleton<HudManager>.Instance.ShowMap(tmpAction);
+                    RoleClass.EvilHacker.IsMyAdmin = true;
                 },
                 (bool isAlive, RoleId role) => { return role == RoleId.EvilHacker; },
                 () =>
@@ -1744,6 +1745,7 @@ namespace SuperNewRoles.Buttons
                 {
                     EvilHackerButton.MaxTimer = 0f;
                     EvilHackerButton.Timer = 0f;
+                    RoleClass.EvilHacker.IsMyAdmin = false;
                 },
                 RoleClass.EvilHacker.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
