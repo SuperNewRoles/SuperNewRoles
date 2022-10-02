@@ -55,7 +55,7 @@ namespace SuperNewRoles.Patch
             // 会議を強制終了
             if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
             {
-                FastDestroyableSingleton<MeetingHud>.Instance.RpcClose();
+                MeetingHud.Instance.RpcClose();
             }
 
             // 以下フリープレイのみ
