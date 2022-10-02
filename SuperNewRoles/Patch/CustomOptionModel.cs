@@ -142,7 +142,7 @@ namespace SuperNewRoles.Patch
 
         public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1)
         {
-            if (type == CustomOptionType.Empty)
+            if (type is CustomOptionType.Empty)
                 type = IntroDate.GetIntroDate(roleId).Team switch
                 {
                     TeamRoleType.Impostor => CustomOptionType.Impostor,
