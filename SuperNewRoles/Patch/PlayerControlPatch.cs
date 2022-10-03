@@ -752,7 +752,7 @@ namespace SuperNewRoles.Patches
         public static bool resetToDead = false;
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
-            EvilGambler.EvilGamblerMurder.Prefix(__instance, target);
+            EvilGambler.MurderPlayerPrefix(__instance, target);
             Roles.Impostor.Doppelganger.KillCoolSetting.MurderPrefix(__instance, target);
             if (ModeHandler.IsMode(ModeId.Default))
             {
@@ -896,9 +896,10 @@ namespace SuperNewRoles.Patches
                 }
                 Minimalist.MurderPatch.Postfix(__instance);
             }
-            if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && ModeHandler.IsMode(ModeId.Default))
             {
-                if (__instance.IsImpostor() && !__instance.IsRole(RoleId.EvilGambler))
+                EvilGambler.MurderPlayerPostfix(__instance);
+                if (__instance.IsImpostor())
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance), RoleHelpers.GetCoolTime(__instance));
                 }
