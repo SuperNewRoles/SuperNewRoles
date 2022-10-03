@@ -1672,7 +1672,7 @@ namespace SuperNewRoles.Modules
 
             (PavlovsownerOption = new CustomRoleOption(992, false, CustomOptionType.Neutral, "PavlovsdogsName", RoleClass.Pavlovsdogs.color, 1))
             .RoleId = RoleId.Pavlovsowner;
-            PavlovsownerPlayerCount = CustomOption.Create(993, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PavlovsownerOption);
+            PavlovsownerPlayerCount = CustomOption.Create(993, false, CustomOptionType.Neutral, "SettingPlayerCountName", AlonePlayers[0], AlonePlayers[1], AlonePlayers[2], AlonePlayers[3], PavlovsownerOption);
             PavlovsownerCreateCoolTime = CustomOption.Create(994, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, PavlovsownerOption);
             PavlovsownerCreateDogLimit = CustomOption.Create(995, false, CustomOptionType.Neutral, "PavlovsownerCreateDogLimit", 1f, 1f, 15f, 1f, PavlovsownerOption);
             PavlovsownerIsTargetImpostorDeath = CustomOption.Create(996, false, CustomOptionType.Neutral, "PavlovsownerIsTargetImpostorDeath", true, PavlovsownerOption);
