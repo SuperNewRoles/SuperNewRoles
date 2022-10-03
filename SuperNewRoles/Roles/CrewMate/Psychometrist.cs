@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SuperNewRoles.Patch;
-using UnityEngine;
-using TMPro;
-
 using Hazel;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Patch;
+using TMPro;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.CrewMate
 {

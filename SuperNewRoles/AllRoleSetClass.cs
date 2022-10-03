@@ -676,7 +676,7 @@ namespace SuperNewRoles
             if (IsRevolutionistAssigned)
             {
                 int PlayerCount = (int)GetPlayerCount(RoleId.Dictator);
-                Logger.Info(PlayerCount.ToString(),"Dictator");
+                Logger.Info(PlayerCount.ToString(), "Dictator");
                 if (PlayerCount >= CrewMatePlayerNum)
                 {
                     for (int i = 1; i <= CrewMatePlayerNum; i++)

@@ -405,7 +405,7 @@ namespace SuperNewRoles.CustomCosmetics
                     {
                         if (!packages.ContainsKey(innerslothPackageName))
                             packages[innerslothPackageName] = new List<System.Tuple<HatData, HatExtension>>();
-                        packages[innerslothPackageName].Add(new System.Tuple<HatData, HatExtension>(hatData, new() { IsNull = true}));
+                        packages[innerslothPackageName].Add(new System.Tuple<HatData, HatExtension>(hatData, new() { IsNull = true }));
                     }
                 }
 
@@ -464,7 +464,8 @@ namespace SuperNewRoles.CustomCosmetics
             { "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master", "SuperNewNamePlates" },
 
             { "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master", "mememurahat" },
-            { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },
+            // Jsonエラーが出ている為一時的に消去
+            // { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },
 
             { "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master", "TheOtherRolesGMHaoming"},
             { "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master", "TheOtherRolesGM"},
