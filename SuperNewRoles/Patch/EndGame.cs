@@ -1370,6 +1370,7 @@ namespace SuperNewRoles.Patch
             public int TeamJackalAlive { get; set; }
             public int EgoistAlive { get; set; }
             public int PavlovsDogAlive { get; set; }
+            public int PavlovsownerAlive { get; set; }
             public int PavlovsTeamAlive { get; set; }
             public int HitmanAlive { get; set; }
             public PlayerStatistics(ShipStatus __instance)
@@ -1384,6 +1385,7 @@ namespace SuperNewRoles.Patch
                 int numTotalJackalTeam = 0;
                 int numTotalEgoist = 0;
                 int numPavlovsDogAlive = 0;
+                int numPavlovsownerAlive = 0;
                 int numPavlovsTeamAlive = 0;
                 int numHitmanAlive = 0;
 
@@ -1422,6 +1424,8 @@ namespace SuperNewRoles.Patch
                                 {
                                     if (playerInfo.Object.IsRole(RoleId.Pavlovsdogs))
                                         numPavlovsDogAlive++;
+                                    if (playerInfo.Object.IsRole(RoleId.Pavlovsowner))
+                                        numPavlovsownerAlive++;
                                     numPavlovsTeamAlive++;
                                 }
                             }
@@ -1434,6 +1438,7 @@ namespace SuperNewRoles.Patch
                 TeamJackalAlive = numTotalJackalTeam;
                 EgoistAlive = numTotalEgoist;
                 PavlovsDogAlive = numPavlovsDogAlive;
+                PavlovsownerAlive = numPavlovsownerAlive;
                 PavlovsTeamAlive = numPavlovsTeamAlive;
                 HitmanAlive = numHitmanAlive;
             }
