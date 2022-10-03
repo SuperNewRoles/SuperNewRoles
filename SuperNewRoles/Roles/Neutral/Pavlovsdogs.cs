@@ -13,7 +13,10 @@ namespace SuperNewRoles.Roles.Neutral
         {
             if (RoleClass.Pavlovsowner.CurrentChildPlayer)
             {
-                RoleClass.Pavlovsowner.DogArrow.Update(RoleClass.Pavlovsowner.CurrentChildPlayer.transform.position);
+                if (!RoleClass.Pavlovsowner.CurrentChildPlayer.IsRole(RoleId.Pavlovsdogs))
+                    RoleClass.Pavlovsowner.CurrentChildPlayer = null;
+                else
+                    RoleClass.Pavlovsowner.DogArrow.Update(RoleClass.Pavlovsowner.CurrentChildPlayer.transform.position);
             }
             RoleClass.Pavlovsowner.DogArrow.arrow.gameObject.SetActive(RoleClass.Pavlovsowner.CurrentChildPlayer);
         }
