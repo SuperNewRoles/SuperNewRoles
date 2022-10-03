@@ -464,9 +464,9 @@ namespace SuperNewRoles.MapCustoms.Airship
                                             GameObject.FindObjectOfType<VitalsMinigame>().Close();
                                             leftplayer = null;
                                             rightplayer = null;
-                                        }, 0.1f,"VitalText Close");
+                                        }, 0.1f, "VitalText Close");
                                     }
-                                }, 1f,"実験成功");
+                                }, 1f, "実験成功");
                             }
                         }));
                         foreach (VitalsPanel panel in minigame.vitals) GameObject.Destroy(panel.gameObject);
@@ -527,20 +527,6 @@ namespace SuperNewRoles.MapCustoms.Airship
                     yield return null;
                 }
             }
-            /*
-            static IEnumerator Move(Console __instance)
-            {
-                float num = 24f;
-                PlayerPhysics myPhysics = PlayerControl.LocalPlayer.MyPhysics;
-                Vector2 val = __instance.name.Contains("2") ? new Vector2(0.14f, -5.025f) : __instance.transform.position;
-                Vector2 val2 = Vector2.left.Rotate(PlayerControl.LocalPlayer.PlayerId * num);
-                val += val2 / 2f;
-                Camera.main.GetComponent<FollowerCamera>().Locked = false;
-                yield return myPhysics.WalkPlayerTo(val, 0.001f);
-                yield return (object)new WaitForSeconds(0.1f);
-                Camera.main.GetComponent<FollowerCamera>().Locked = true;
-            }
-            */
 
             static IEnumerator Move2(Console __instance)
             {
@@ -561,6 +547,12 @@ namespace SuperNewRoles.MapCustoms.Airship
                 canUse = false;
                 couldUse = true;
                 __result = byte.MaxValue;
+
+                PlayerTask task = null;
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && (task = __instance.FindTask(pc.Object)) != null)
+                    foreach (Console console in task.FindConsoles())
+                        console.AllowImpostor = true;
+
 
                 if (__instance.name is not "secretroom_teleport-on2" and not "secretroom_teleport-on" and not "secretroom_teleport-console") return true;
 

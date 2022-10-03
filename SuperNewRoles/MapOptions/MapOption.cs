@@ -100,32 +100,7 @@ namespace SuperNewRoles.MapOptions
             }
             BlockTool.OldDesyncCommsPlayers = new();
             BlockTool.CameraPlayers = new();
-            //BlockTool.VitalPlayers = new();
-            //BlockTool.AdminPlayers = new();
-            /*
-            if (DeviceUseCameraTime.GetFloat() == 0 || !UseCamera)
-            {
-                BlockTool.CameraTime = -10;
-            } else
-            {
-                BlockTool.CameraTime = DeviceUseCameraTime.GetFloat();
-            }
-            if (DeviceUseVitalOrDoorLogTime.GetFloat() == 0 || !UseVitalOrDoorLog)
-            {
-                BlockTool.VitalTime = -10;
-            }
-            else
-            {
-                BlockTool.VitalTime = DeviceUseVitalOrDoorLogTime.GetFloat();
-            }
-            if (DeviceUseAdminTime.GetFloat() == 0 || !UseAdmin)
-            {
-                BlockTool.AdminTime = -10;
-            }
-            else
-            {
-                BlockTool.AdminTime = DeviceUseAdminTime.GetFloat();
-            }*/
+
             PolusReactorTimeLimit.GetFloat();
             MiraReactorTimeLimit.GetFloat();
             AirshipReactorTimeLimit.GetFloat();
@@ -199,18 +174,8 @@ namespace SuperNewRoles.MapOptions
             RandomMapMira = CustomOption.Create(456, true, CustomOptionType.Generic, "RMMiraSetting", true, RandomMapOption);
             RandomMapPolus = CustomOption.Create(457, true, CustomOptionType.Generic, "RMPolusSetting", true, RandomMapOption);
             RandomMapAirship = CustomOption.Create(458, true, CustomOptionType.Generic, "RMAirshipSetting", true, RandomMapOption);
-            /*
-                        RestrictDevicesOption = CustomOption.Create(460, false, CustomOptionType.Generic, "RestrictDevicesSetting", true, MapOptionSetting);
-                        RestrictAdmin = CustomOption.Create(461, false, CustomOptionType.Generic, "RestrictAdminSetting", false, RestrictDevicesOption);
-                        IsYkundesuBeplnEx = CustomOption.Create(462, false, CustomOptionType.Generic, "IsYkundesuBeplnExSetting", false, RestrictAdmin);
-                        CanUseAdminTime = CustomOption.Create(463, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 300f, 2.5f, RestrictAdmin);
-                        RestrictCamera = CustomOption.Create(464, false, CustomOptionType.Generic, "RestrictCameraSetting", false, RestrictDevicesOption);
-                        CanUseCameraTime = CustomOption.Create(465, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 300f, 2.5f, RestrictCamera);
-                        RestrictVital = CustomOption.Create(466, false, CustomOptionType.Generic, "RestrictVitalSetting", false, RestrictDevicesOption);
-                        CanUseVitalTime = CustomOption.Create(467, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 300f, 2.5f, RestrictVital);
-            */
 
-            RandomSpawnOption = CustomOption.Create(955, false, CustomOptionType.Generic, "RandomSpawnOption", false, null);
+            RandomSpawnOption = CustomOption.Create(955, false, CustomOptionType.Generic, "RandomSpawnOption", false, MapOptionSetting);
 
             ReactorDurationOption = CustomOption.Create(468, true, CustomOptionType.Generic, "ReactorDurationSetting", false, MapOptionSetting);
             PolusReactorTimeLimit = CustomOption.Create(469, true, CustomOptionType.Generic, "PolusReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);

@@ -63,8 +63,17 @@ namespace SuperNewRoles.Patch
                     }
                     else if (text.ToLower().StartsWith("/rename "))
                     {
-                        handled = true;
-                        PlayerControl.LocalPlayer.RpcSetName(text.ToLower().Replace("/rename ", ""));
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            handled = true;
+                            PlayerControl.LocalPlayer.RpcSetName(text.ToLower().Replace("/rename ", ""));
+                        }
+                        else //ゲスト時には使用不可能にする
+                        {
+                            handled = true;
+                            __instance.AddChat(PlayerControl.LocalPlayer, ModTranslation.GetString("CannotUseRenameMessage"));
+                            SuperNewRolesPlugin.Logger.LogWarning($"ホストでない時に{text}を使用しました。ホストでない時は/renameは使用できません。");
+                        }
                     }
 
                     if (AmongUsClient.Instance.GameMode == GameModes.FreePlay)

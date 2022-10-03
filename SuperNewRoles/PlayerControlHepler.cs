@@ -86,12 +86,6 @@ namespace SuperNewRoles
                     var GhostRoleInfo = IntroDate.GetIntroDate(player.GetGhostRole(), player);
                     task.Text += "\n" + CustomOptions.Cs(GhostRoleInfo.color, $"{ModTranslation.GetString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
                 }
-                /**
-                if (player.IsQuarreled())
-                {
-                    task.Text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, String.Format(ModTranslation.GetString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
-                }
-                **/
 
                 player.myTasks.Insert(0, task);
             }

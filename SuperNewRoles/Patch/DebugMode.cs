@@ -1,13 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
-
-
-using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
@@ -51,11 +47,8 @@ namespace SuperNewRoles.Patch
                 //ここにデバッグ用のものを書いてね
                 if (Input.GetKeyDown(KeyCode.I))
                 {
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedUsePlatform);
-                    writer.Write((byte)4);
-                    writer.Write(false);
-                    writer.EndRPC();
-                    RPCProcedure.UncheckedUsePlatform((byte)4, true);
+                    foreach (PlayerControl p in Roles.RoleClass.Jackal.JackalPlayer)
+                        p.ShowReactorFlash();
                 }
                 if (Input.GetKeyDown(KeyCode.K))
                 {
@@ -73,18 +66,6 @@ namespace SuperNewRoles.Patch
                 {
                     ModHelpers.PlayerById(1).RpcMurderPlayer(PlayerControl.LocalPlayer);//ModHelpers.PlayerById(2));
                 }
-                /*
-                    if (Input.GetKeyDown(KeyCode.C))
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo("CHANGE!!!");
-                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                        {
-                            RoleManager.Instance.SetRole(p, RoleTypes.Engineer);
-                            AmongUsClient.Instance.Spawn(GameData.Instance, -2, SpawnFlags.IsClientCharacter);
-                            AmongUsClient.Instance.Spawn(p, p.OwnerId, SpawnFlags.IsClientCharacter);
-                        }
-                    }
-                    */
 
                 if (Input.GetKeyDown(KeyCode.F10))
                 {

@@ -7,7 +7,6 @@ namespace SuperNewRoles.Roles.Neutral
 {
     public static class PartTimer
     {
-        //ここにコードを書きこんでください
         public static void FixedUpdate()
         {
             foreach (var data in RoleClass.PartTimer.PlayerDatas)
@@ -25,9 +24,9 @@ namespace SuperNewRoles.Roles.Neutral
         public static void WrapUp()
         {
             if (!PlayerControl.LocalPlayer.IsRole(RoleId.PartTimer)) return;
-            if (RoleClass.PartTimer.DeathTurn <= 0 && !RoleClass.PartTimer.IsLocalOn && CachedPlayer.LocalPlayer.IsAlive())
+            if (RoleClass.PartTimer.DeathTurn <= 0 && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.PartTimer.IsLocalOn)
             {
-                PlayerControl.LocalPlayer.CustomRpcExiled();
+                PlayerControl.LocalPlayer.RpcExiledUnchecked();
             }
             RoleClass.PartTimer.DeathTurn--;
         }

@@ -26,7 +26,25 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch]
     public class IntroPatch
     {
-        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]
+        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin))]
+        class IntroCutsceneCoBeginPatch
+        {
+            static void Postfix()
+            {
+                Logger.Info("=================Player Info=================", "Intro Begin");
+                Logger.Info("=================Player Data=================", "Player Info");
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    Logger.Info($"{(p.AmOwner ? "[H]" : "[ ]")}{(p.IsMod() ? "[M]" : "[ ]")}{p.name}(cid:{p.GetClientId()})(pid:{p.PlayerId})({p.GetClient()?.PlatformData?.Platform}){(p.IsBot() ? "(BOT)" : "")}", "Player info");
+                }
+                Logger.Info("=================Role Data=================", "Player Info");
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    Logger.Info($"{p.name}=>{p.GetRole()}({p.GetRoleType()}){(p.IsLovers() ? "[♥]" : "")}{(p.IsQuarreled() ? "[○]" : "")}", "Role Data");
+                }
+            }
+        }
+        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
         class IntroCutsceneOnDestroyPatch
         {
             public static PoolablePlayer playerPrefab;
@@ -107,7 +125,7 @@ namespace SuperNewRoles.Patch
 
                 if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hitman))
                 {
-                    RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
+                    RoleClass.Hitman.UpdateTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
                     Roles.Neutral.Hitman.SetTarget();
                     Roles.Neutral.Hitman.DestroyIntroHandle(__instance);
                     if (FastDestroyableSingleton<HudManager>.Instance != null)
@@ -333,14 +351,7 @@ namespace SuperNewRoles.Patch
                 }
             }
             public static void Prefix(IntroCutscene __instance)
-            {/*
-                if (MapData.IsMap(CustomMapNames.Agartha))
-                {
-                    var (commont, shortt, longt) = PlayerControl.LocalPlayer.GetTaskCount();
-                    PlayerControl.LocalPlayer.GenerateAndAssignTasks(commont, shortt, longt);
-                }*/
-
-                //AmongUsClient.Instance.StartCoroutine(settask());
+            {
                 new LateTask(() =>
                 {
                     CustomButton.MeetingEndedUpdate();

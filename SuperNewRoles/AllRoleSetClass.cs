@@ -73,12 +73,6 @@ namespace SuperNewRoles
             {
                 IsNotDesync = false;
             }
-            /*
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-            {
-                IsNotDesync = false;
-            }
-            */
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 CustomRpcSender sender = CustomRpcSender.Create("SelectRoles Sender", SendOption.Reliable);
@@ -189,7 +183,6 @@ namespace SuperNewRoles
                 {
                     p.RpcSetRole(p.Data.Role.Role);
                 }
-                /*AmongUsClient.Instance.StartCoroutine(nameof(SetServerRole));*/
             }
             if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
@@ -687,9 +680,11 @@ namespace SuperNewRoles
             }
 
             //革命者を選ぶ
+            Logger.Info(IsRevolutionistAssigned.ToString(), "Dictator");
             if (IsRevolutionistAssigned)
             {
                 int PlayerCount = (int)GetPlayerCount(RoleId.Dictator);
+                Logger.Info(PlayerCount.ToString(), "Dictator");
                 if (PlayerCount >= CrewMatePlayerNum)
                 {
                     for (int i = 1; i <= CrewMatePlayerNum; i++)
@@ -945,6 +940,9 @@ namespace SuperNewRoles
                 RoleId.Slugger => CustomOptions.SluggerPlayerCount.GetFloat(),
                 RoleId.ShiftActor => Roles.Impostor.ShiftActor.ShiftActorPlayerCount.GetFloat(),
                 RoleId.ConnectKiller => CustomOptions.ConnectKillerPlayerCount.GetFloat(),
+                RoleId.NekoKabocha => Roles.Impostor.NekoKabocha.NekoKabochaPlayerCount.GetFloat(),
+                RoleId.Doppelganger => CustomOptions.DoppelgangerPlayerCount.GetFloat(),
+                RoleId.Conjurer => Roles.Impostor.Conjurer.PlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

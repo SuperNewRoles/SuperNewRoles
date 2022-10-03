@@ -56,7 +56,7 @@ namespace SuperNewRoles.Roles.Neutral
                 "GMExile",//"追放(死体なしキル)",
                 () =>
                 {
-                    target.CustomRpcExiled();
+                    target.RpcExiledUnchecked();
                     Minigame.Instance.Close();
                 }
             },
@@ -143,7 +143,7 @@ namespace SuperNewRoles.Roles.Neutral
             if (CustomOptions.GMOption.GetBool())
             {
                 PlayerControl.LocalPlayer.SetRoleRPC(RoleId.GM);
-                PlayerControl.LocalPlayer.CustomRpcExiled();
+                PlayerControl.LocalPlayer.RpcExiledUnchecked();
                 PlayerControl.LocalPlayer.Data.IsDead = true;
                 PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.Crewmate);
             }

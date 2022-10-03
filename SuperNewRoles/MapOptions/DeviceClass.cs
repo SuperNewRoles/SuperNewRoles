@@ -1,4 +1,5 @@
 using HarmonyLib;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.MapOptions
 {
@@ -10,14 +11,7 @@ namespace SuperNewRoles.MapOptions
             public static bool Prefix(MapConsole __instance)
             {
                 Roles.CrewMate.Painter.HandleRpc(Roles.CrewMate.Painter.ActionType.CheckAdmin);
-                bool IsUse = MapOption.UseAdmin;/*
-                if (MapOption.UseAdmin)
-                {
-                    if (BlockTool.AdminTime != -10 && BlockTool.AdminTime <= 0)
-                    {
-                        IsUse = false;
-                    }
-                }*/
+                bool IsUse = MapOption.UseAdmin;
                 return IsUse;
             }
         }
@@ -27,24 +21,16 @@ namespace SuperNewRoles.MapOptions
             public static bool Prefix(MapConsole __instance)
             {
                 bool IsUse = MapOption.UseAdmin;
-                /*
-                if (MapOption.UseAdmin)
-                {
-                    if (BlockTool.AdminTime > 0)
-                    {
-                        BlockTool.AdminTime -= Time.fixedDeltaTime;
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
-                        writer.Write(BlockTool.AdminTime);
-                        writer.Write((byte)SystemTypes.Admin);
-                        writer.EndRPC();
-                    }
-                    else if (BlockTool.AdminTime != -10 && BlockTool.AdminTime < 0.1)
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo("アドミンを無効に設定！");
-                        IsUse = false;
-                    }
-                }*/
-                return IsUse;
+
+                return IsUse || RoleClass.EvilHacker.IsMyAdmin;
+            }
+        }
+        [HarmonyPatch(typeof(MapCountOverlay),nameof(MapCountOverlay.OnDisable))]
+        class MapCountOverlayOnDisablePatch
+        {
+            public static void Postfix()
+            {
+                RoleClass.EvilHacker.IsMyAdmin = false;
             }
         }
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
@@ -64,23 +50,6 @@ namespace SuperNewRoles.MapOptions
                 {
                     __instance.Close();
                 }
-                else
-                {
-                    /*
-                    if (BlockTool.VitalTime > 0)
-                    {
-                        BlockTool.VitalTime -= Time.fixedDeltaTime;
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
-                        writer.Write(BlockTool.VitalTime);
-                        writer.Write((byte)SystemTypes.Medical);
-                        writer.EndRPC();
-                    }
-                    else if (BlockTool.CameraTime != -10)
-                    {
-                        __instance.Close();
-                    }
-                    */
-                }
             }
         }
         [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Update))]
@@ -91,22 +60,6 @@ namespace SuperNewRoles.MapOptions
                 if (MapOption.UseCamera == false)
                 {
                     __instance.Close();
-                }
-                else
-                {
-                    /*
-                    if (BlockTool.CameraTime > 0)
-                    {
-                        BlockTool.CameraTime -= Time.fixedDeltaTime;
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
-                        writer.Write(BlockTool.CameraTime);
-                        writer.Write((byte)SystemTypes.Security);
-                        writer.EndRPC();
-                    }
-                    else if (BlockTool.CameraTime != -10)
-                    {
-                        __instance.Close();
-                    }*/
                 }
             }
         }
@@ -120,21 +73,6 @@ namespace SuperNewRoles.MapOptions
                 {
                     __instance.Close();
                 }
-                else
-                {/*
-                    if (BlockTool.CameraTime > 0)
-                    {
-                        BlockTool.CameraTime -= Time.fixedDeltaTime;
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
-                        writer.Write(BlockTool.CameraTime);
-                        writer.Write((byte)SystemTypes.Security);
-                        writer.EndRPC();
-                    }
-                    else if (BlockTool.CameraTime != -10)
-                    {
-                        __instance.Close();
-                    }*/
-                }
             }
         }
 
@@ -146,19 +84,6 @@ namespace SuperNewRoles.MapOptions
                 if (MapOption.UseVitalOrDoorLog == false)
                 {
                     __instance.Close();
-                }
-                else
-                {/*
-                    if (BlockTool.VitalTime > 0)
-                    {
-                        BlockTool.VitalTime -= Time.fixedDeltaTime;
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
-                        writer.Write(BlockTool.VitalTime);
-                        writer.Write((byte)SystemTypes.Medical);
-                        writer.EndRPC();
-                    } else if(BlockTool.VitalTime != -10){
-                        __instance.Close();
-                    }*/
                 }
             }
         }

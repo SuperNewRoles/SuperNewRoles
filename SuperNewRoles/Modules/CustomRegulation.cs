@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using UnityEngine.Networking;
 using SuperNewRoles.Patch;
+using UnityEngine.Networking;
 
 namespace SuperNewRoles.Modules
 {
@@ -23,14 +23,18 @@ namespace SuperNewRoles.Modules
             }
             Logger.Info("通過");
             var json = JObject.Parse(request.downloadHandler.text);
-            RegulationData CustomData = new();
-            CustomData.id = 0;
-            CustomData.title = "カスタム";
+            RegulationData CustomData = new()
+            {
+                id = 0,
+                title = "カスタム"
+            };
             RegulationData.Regulations.Add(CustomData);
             for (var regulation = json["regulations"].First; regulation != null; regulation = regulation.Next)
             {
-                RegulationData data = new();
-                data.title = regulation["title"]?.ToString();
+                RegulationData data = new()
+                {
+                    title = regulation["title"]?.ToString()
+                };
                 RegulationData.MaxId++;
                 data.id = RegulationData.MaxId;
                 data.MeetingButtonNum = int.Parse(regulation["MeetingButtonNum"]?.ToString());
@@ -49,7 +53,7 @@ namespace SuperNewRoles.Modules
                 }
                 RegulationData.Regulations.Add(data);
             }
-            foreach (RegulationData data in RegulationData.Regulations)
+            /* foreach (RegulationData data in RegulationData.Regulations)
             {
                 SuperNewRolesPlugin.Logger.LogInfo
                     ("～～～～\n"
@@ -69,7 +73,7 @@ namespace SuperNewRoles.Modules
                 {
                     Logger.Info(CustomOption.options.FirstOrDefault((CustomOption option) => option.id == datas.Key).GetName() +" => "+datas.Value);
                 }
-            }
+            }*/
             Loaded = true;
         }
         public static void Select(int id)

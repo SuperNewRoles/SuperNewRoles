@@ -1,18 +1,12 @@
-using SuperNewRoles.Patch;
 using Hazel;
+using SuperNewRoles.Patch;
 using UnityEngine;
+using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles.Neutral
 {
     public static class Revolutionist
     {
-        public static void SetPlayerOutline(PlayerControl target, Color color)
-        {
-            if (target == null || target.MyRend() == null) return;
-
-            target.MyRend().material.SetFloat("_Outline", 1f);
-            target.MyRend().material.SetColor("_OutlineColor", color);
-        }
         public static void FixedUpdate()
         {
             if (RoleClass.Revolutionist.CurrentTarget != null)
