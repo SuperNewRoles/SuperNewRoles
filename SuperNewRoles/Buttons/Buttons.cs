@@ -940,7 +940,6 @@ namespace SuperNewRoles.Buttons
                         RPCWriter.Write(false);
                         AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
                         RPCProcedure.RPCClergymanLightOut(false);
-                        ClergymanLightOutButton.isEffectActive = false;
                         ClergymanLightOutButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
                     }
                     else

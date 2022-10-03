@@ -77,7 +77,10 @@ namespace SuperNewRoles.Buttons
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
                 this.OnClick();
 
-                Logger.Info($"クリック : {this.HasEffect} : {this.isEffectActive} : {this.EffectDuration}","CustomButton");
+                if (this.isEffectActive)
+                {
+                    this.isEffectActive = true;
+                }
                 if (this.HasEffect && !this.isEffectActive)
                 {
                     this.Timer = this.EffectDuration;
