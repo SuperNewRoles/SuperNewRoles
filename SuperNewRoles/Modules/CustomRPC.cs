@@ -361,10 +361,10 @@ namespace SuperNewRoles.Modules
             }
         }
 
-        public static void ChiefSidekick(byte targetid,bool IsTask)
+        public static void ChiefSidekick(byte targetid,bool IsTaskClear)
         {
             RoleClass.Chief.SheriffPlayer.Add(targetid);
-            if (!IsTask)
+            if (IsTaskClear)
             {
                 RoleClass.Chief.NoTaskSheriffPlayer.Add(targetid);
             }
