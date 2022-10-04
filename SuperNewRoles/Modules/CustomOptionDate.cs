@@ -893,6 +893,8 @@ namespace SuperNewRoles.Modules
             enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false);
             enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
+            GMOption = Create(1014, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
+
             if (ConfigRoles.DebugMode.Value)
             {
                 IsDebugMode = Create(10, true, CustomOptionType.Generic, "デバッグモード", false, null, isHeader: true);
@@ -1672,8 +1674,6 @@ namespace SuperNewRoles.Modules
             TaskerCanKill = Create(1012, false, CustomOptionType.Impostor, "TaskerCanKill", true, TaskerOption);
 
             //表示設定
-
-            GMOption = CustomOption.Create(1014, false, CustomOptionType.Neutral, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = Create(433, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
