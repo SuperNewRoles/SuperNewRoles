@@ -2109,23 +2109,21 @@ namespace SuperNewRoles.Buttons
             ButtonerButton = new(
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.CanMove && PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount != 0)
-                    {
-                        EvilButtoner.EvilButtonerStartMeeting(PlayerControl.LocalPlayer);
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner))
                         RoleClass.EvilButtoner.SkillCount--;
-                    }
-                    else if (PlayerControl.LocalPlayer.CanMove && PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount != 0)
-                    {
-                        EvilButtoner.EvilButtonerStartMeeting(PlayerControl.LocalPlayer);
+                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner))
                         RoleClass.NiceButtoner.SkillCount--;
-                    }
+                    else
+                        return;
+                    EvilButtoner.EvilButtonerStartMeeting(PlayerControl.LocalPlayer);
                 },
-                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.EvilButtoner || role == RoleId.NiceButtoner); },
+                (bool isAlive, RoleId role) => { return isAlive && role is RoleId.EvilButtoner or RoleId.NiceButtoner; },
                 () =>
                 {
-                    return ((PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount != 0) ||
-                            (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount != 0)) &&
-                             PlayerControl.LocalPlayer.CanMove;
+                    if (!PlayerControl.LocalPlayer.CanMove) return false;
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner)) return RoleClass.NiceButtoner.SkillCount != 0;
+                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner)) return RoleClass.EvilButtoner.SkillCount != 0;
+                    return false;
                 },
                 () =>
                 {
