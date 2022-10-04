@@ -6,7 +6,7 @@ namespace SuperNewRoles
 {
     public class CustomMessage
     {
-        private readonly TMPro.TMP_Text text;
+        public readonly TMPro.TMP_Text text;
         private static readonly List<CustomMessage> customMessages = new();
 
         public CustomMessage(string message, float duration)
@@ -27,6 +27,11 @@ namespace SuperNewRoles
 
                 FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
                 {
+                    if (text == null)
+                    {
+                        customMessages.Remove(this);
+                        return;
+                    }
                     bool even = ((int)(p * duration / 0.25f)) % 2 == 0; // Bool flips every 0.25 seconds
                     string prefix = even ? "<color=#FCBA03FF>" : "<color=#FF0000FF>";
                     text.text = prefix + message + "</color>";

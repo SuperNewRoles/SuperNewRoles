@@ -591,6 +591,8 @@ namespace SuperNewRoles.Roles
             public static DateTime OldButtonTimer;
             public static float OldButtonTime;
 
+            public static CustomMessage currentMessage;
+
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
 
             public static void ClearAndReload()
@@ -603,6 +605,7 @@ namespace SuperNewRoles.Roles
                 DefaultImpoVision = PlayerControl.GameOptions.ImpostorLightMod;
                 OldButtonTimer = DateTime.Now;
                 OldButtonTime = 0;
+                currentMessage = null;
             }
         }
         public static class MadMate

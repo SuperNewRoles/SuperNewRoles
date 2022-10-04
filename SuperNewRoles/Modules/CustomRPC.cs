@@ -702,7 +702,16 @@ namespace SuperNewRoles.Modules
             {
                 Clergyman.LightOutStartRPC();
             }
+            else
+            {
+                if (RoleClass.Clergyman.currentMessage.text != null)
+                {
+                    GameObject.Destroy(RoleClass.Clergyman.currentMessage.text.gameObject);
+                }
+                RoleClass.Clergyman.IsLightOff = false;
+            }
         }
+
         public static void SetSpeedBoost(bool Is, byte id)
         {
             var player = ModHelpers.PlayerById(id);
