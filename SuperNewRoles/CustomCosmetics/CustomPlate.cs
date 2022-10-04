@@ -38,8 +38,10 @@ namespace SuperNewRoles.CustomCosmetics
                         plate.displayOrder = 99;
                         plate.ChipOffset = new Vector2(0f, 0.2f);
                         plate.Free = true;
-                        plate.viewData.viewData = new();
-                        plate.viewData.viewData.Image = LoadTex.loadSprite("SuperNewRoles\\CustomPlatesChache\\" + Data.resource);
+                        plate.viewData.viewData = new()
+                        {
+                            Image = LoadTex.loadSprite("SuperNewRoles\\CustomPlatesChache\\" + Data.resource)
+                        };
                         //CustomPlates.Add(plate);
                         //AllPlates.Add(plate);
                         __instance.allNamePlates.Add(plate);

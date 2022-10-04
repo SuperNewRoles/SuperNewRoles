@@ -80,8 +80,9 @@ namespace SuperNewRoles.Buttons
                 if (this.isEffectActive)
                 {
                     this.isEffectActive = false;
+                    return;
                 }
-                else if (this.HasEffect && !this.isEffectActive)
+                if (this.HasEffect && !this.isEffectActive)
                 {
                     this.Timer = this.EffectDuration;
                     actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Sabotage;
@@ -27,6 +26,7 @@ namespace SuperNewRoles.Roles
         public static void ClearAndReloadRoles()
         {
             BlockPlayers = new();
+            RandomSpawn.IsFirstSpawn = true;
             DeadPlayer.deadPlayers = new();
             AllRoleSetClass.Assigned = false;
             LateTask.Tasks = new();
@@ -195,7 +195,7 @@ namespace SuperNewRoles.Roles
             public static bool DisplayMode;
             public static int Count;
             public static Color32 color = new(190, 86, 235, byte.MaxValue);
-            public static Sprite GetButtonSprite() =>  ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SoothSayerButton.png", 115f);
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SoothSayerButton.png", 115f);
             public static void ClearAndReload()
             {
                 SoothSayerPlayer = new();
@@ -782,7 +782,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SelfBomberPlayer;
             public static Color32 color = ImpostorRed;
-            public static Sprite GetButtonSprite() =>  ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SelfBomberBomButton.png", 115f);
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SelfBomberBomButton.png", 115f);
 
             public static void ClearAndReload()
             {
@@ -1851,6 +1851,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> ChiefPlayer;
             public static List<byte> SheriffPlayer;
+            public static List<byte> NoTaskSheriffPlayer;
             public static Color32 color = new(255, 255, 0, byte.MaxValue);
             public static bool IsCreateSheriff;
             public static float CoolTime;
@@ -1865,6 +1866,7 @@ namespace SuperNewRoles.Roles
             {
                 ChiefPlayer = new();
                 SheriffPlayer = new();
+                NoTaskSheriffPlayer = new();
                 IsCreateSheriff = false;
                 CoolTime = CustomOptions.ChiefSheriffCoolTime.GetFloat();
                 IsNeutralKill = CustomOptions.ChiefIsNeutralKill.GetBool();
@@ -1994,6 +1996,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> EvilHackerPlayer;
             public static Color32 color = ImpostorRed;
             public static bool IsCreateMadmate;
+            public static bool IsMyAdmin;
             public static Sprite GetButtonSprite()
             {
                 byte mapId = PlayerControl.GameOptions.MapId;
@@ -2007,6 +2010,7 @@ namespace SuperNewRoles.Roles
             {
                 EvilHackerPlayer = new();
                 IsCreateMadmate = CustomOptions.EvilHackerMadmateSetting.GetBool();
+                IsMyAdmin = false;
             }
         }
         public static class HauntedWolf
@@ -2220,7 +2224,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SuicideWisherPlayer;
             public static Color32 color = ImpostorRed;
-            
+
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuicideWisherButton.png", 115f);
 
             public static void ClearAndReload()
@@ -2458,7 +2462,7 @@ namespace SuperNewRoles.Roles
             public static bool IsLocalOn => !Data.Keys.All(data => data != CachedPlayer.LocalPlayer.PlayerId);
             public static Dictionary<byte, DeadBody> Data;
             public static Sprite PutOnButtonSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaPutOnButton.png", 115f);
-           public static Sprite TakeOffButtonSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaTakeOffButton.png", 115f);
+            public static Sprite TakeOffButtonSprite => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MatryoshkaTakeOffButton.png", 115f);
             public static void ClearAndReload()
             {
                 MatryoshkaPlayer = new();
@@ -2488,7 +2492,9 @@ namespace SuperNewRoles.Roles
             public static bool IsLocalOn => Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
             public static PlayerControl CurrentTarget => IsLocalOn ? ModHelpers.PlayerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
             public static Dictionary<PlayerControl, PlayerControl> PlayerDatas
-            { get{
+            {
+                get
+                {
                     //キャッシュ済みのプレイヤーリストとplayerByIdのリストの数が違ったらキャッシュを更新する
                     if (_playerDatas.Count != Datas.Count)
                     {

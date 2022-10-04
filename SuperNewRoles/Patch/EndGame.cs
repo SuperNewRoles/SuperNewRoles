@@ -693,6 +693,15 @@ namespace SuperNewRoles.Patch
             }
             else if (HitmanWin)
             {
+                if (WinnerPlayer == null)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls) if (p.IsRole(RoleId.Hitman)) WinnerPlayer = p;
+                    if (WinnerPlayer == null)
+                    {
+                        Logger.Error("エラー:殺し屋が生存していませんでした");
+                        WinnerPlayer = PlayerControl.LocalPlayer;
+                    }
+                }
                 (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.HitmanWin;
             }
@@ -732,9 +741,6 @@ namespace SuperNewRoles.Patch
                 foreach (var cp in CachedPlayer.AllPlayers)
                     if (cp.PlayerControl.IsMadRoles() || cp.PlayerControl.IsRole(RoleId.MadKiller)) TempData.winners.Add(new(cp.Data));
 
-                if (RoleClass.SatsumaAndImo.TeamNumber == 2)//マッドなら
-                    foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
-                        TempData.winners.Add(new(smp.Data));//さつまいもも勝ち
             }
 
 
@@ -790,7 +796,7 @@ namespace SuperNewRoles.Patch
             }
             foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
             {
-                if(player.IsAlive() && CustomOptions.StefinderSoloWin.GetBool())
+                if (player.IsAlive() && CustomOptions.StefinderSoloWin.GetBool())
                 {
                     if (!RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
                        (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask ||
@@ -1378,7 +1384,8 @@ namespace SuperNewRoles.Patch
                                 {
                                     numTotalEgoist++;
                                     numImpostorsAlive++;
-                                } else if (playerInfo.Object.IsRole(RoleId.Hitman))
+                                }
+                                else if (playerInfo.Object.IsRole(RoleId.Hitman))
                                 {
                                     numHitmanAlive++;
                                 }

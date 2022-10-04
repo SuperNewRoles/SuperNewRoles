@@ -55,7 +55,8 @@ namespace SuperNewRoles.Patch
             // 会議を強制終了
             if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
             {
-                FastDestroyableSingleton<MeetingHud>.Instance.RpcClose();
+                if (MeetingHud.Instance != null)
+                    MeetingHud.Instance.RpcClose();
             }
 
             // 以下フリープレイのみ
@@ -126,10 +127,12 @@ namespace SuperNewRoles.Patch
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
                     Roles.CrewMate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
+                    Roles.Neutral.PartTimer.FixedUpdate();
                     ReduceKillCooldown(__instance);
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
+                        if (PlayerControl.LocalPlayer.IsMadRoles()) { VentDataModules.MadmateVent(); }
                         switch (MyRole)
                         {
                             case RoleId.Pursuer:

@@ -545,18 +545,12 @@ namespace SuperNewRoles.Buttons
                 {
                     if (RoleClass.Doctor.Vital == null)
                     {
-                        var e = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("panel_vitals"));
-                        if (Camera.main == null) return;
-                        if (e == null)
-                        {
-                            e = MapLoader.Airship.AllConsoles.FirstOrDefault(x => x.gameObject.name.Contains("panel_vitals"))?.TryCast<SystemConsole>();
-                            if (e == null) return;
-                        }
-                        RoleClass.Doctor.Vital = UnityEngine.Object.Instantiate(e.MinigamePrefab, Camera.main.transform, false);
+                        var moto = PlayerControl.LocalPlayer.Data.Role.Role;
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
+                        CachedPlayer.LocalPlayer.Data.Role.TryCast<ScientistRole>().UseAbility();
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, moto);
+                        RoleClass.Doctor.Vital = GameObject.FindObjectOfType<VitalsMinigame>();
                     }
-                    RoleClass.Doctor.Vital.transform.SetParent(Camera.main.transform, false);
-                    RoleClass.Doctor.Vital.transform.localPosition = new Vector3(0.0f, 0.0f, -50f);
-                    RoleClass.Doctor.Vital.Begin(null);
                     RoleClass.Doctor.MyPanelFlag = true;
                 },
                 (bool isAlive, RoleId role) => { return role == RoleId.Doctor && isAlive; },
@@ -1342,8 +1336,9 @@ namespace SuperNewRoles.Buttons
                         {
                             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ChiefSidekick);
                             writer.Write(target.PlayerId);
+                            writer.Write(target.IsClearTask());
                             RPCHelper.EndRPC(writer);
-                            RPCProcedure.ChiefSidekick(target.PlayerId);
+                            RPCProcedure.ChiefSidekick(target.PlayerId, target.IsClearTask());
                             RoleClass.Chief.IsCreateSheriff = true;
                         }
                         else
@@ -1754,6 +1749,7 @@ namespace SuperNewRoles.Buttons
                     CachedPlayer.LocalPlayer.NetTransform.Halt();
                     Action<MapBehaviour> tmpAction = (MapBehaviour m) => { m.ShowCountOverlay(); };
                     FastDestroyableSingleton<HudManager>.Instance.ShowMap(tmpAction);
+                    RoleClass.EvilHacker.IsMyAdmin = true;
                 },
                 (bool isAlive, RoleId role) => { return role == RoleId.EvilHacker; },
                 () =>
@@ -1764,6 +1760,7 @@ namespace SuperNewRoles.Buttons
                 {
                     EvilHackerButton.MaxTimer = 0f;
                     EvilHackerButton.Timer = 0f;
+                    RoleClass.EvilHacker.IsMyAdmin = false;
                 },
                 RoleClass.EvilHacker.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
@@ -2284,7 +2281,6 @@ namespace SuperNewRoles.Buttons
                 {
                     if (MatryoshkaButton.isEffectActive)
                     {
-                        MatryoshkaButton.isEffectActive = false;
                         RoleClass.Matryoshka.WearLimit--;
                         Roles.Impostor.Matryoshka.RpcSet(null, false);
                         MatryoshkaButton.MaxTimer = CustomOptions.MatryoshkaCoolTime.GetFloat();
@@ -2358,7 +2354,8 @@ namespace SuperNewRoles.Buttons
                 },
                 true,
                 5f,
-                () => {
+                () =>
+                {
                     RoleClass.Matryoshka.WearLimit--;
                     Roles.Impostor.Matryoshka.RpcSet(null, false);
                     MatryoshkaButton.MaxTimer = CustomOptions.MatryoshkaCoolTime.GetFloat();

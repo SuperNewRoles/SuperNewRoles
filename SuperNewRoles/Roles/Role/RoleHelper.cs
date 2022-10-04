@@ -1097,6 +1097,9 @@ namespace SuperNewRoles
                     //タスククリアか
                     IsTaskClear = true;
                     break;
+                case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
+                    IsTaskClear = true;
+                    break;
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
@@ -1122,7 +1125,7 @@ namespace SuperNewRoles
                 RoleId.Jester => RoleClass.Jester.IsUseVent,
                 RoleId.MadMate => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.MadMate.IsUseVent,
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseVent,
-                RoleId.JackalFriends => RoleClass.JackalFriends.IsUseVent,
+                RoleId.JackalFriends => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.JackalFriends.IsUseVent,
                 RoleId.Egoist => RoleClass.Egoist.UseVent,
                 RoleId.Technician => IsSabotage(),
                 RoleId.MadMayor => RoleClass.MadMayor.IsUseVent,
