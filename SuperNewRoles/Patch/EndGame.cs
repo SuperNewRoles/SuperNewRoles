@@ -693,6 +693,15 @@ namespace SuperNewRoles.Patch
             }
             else if (HitmanWin)
             {
+                if (WinnerPlayer == null)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls) if (p.IsRole(RoleId.Hitman)) WinnerPlayer = p;
+                    if (WinnerPlayer == null)
+                    {
+                        Logger.Error("エラー:殺し屋が生存していませんでした");
+                        WinnerPlayer = PlayerControl.LocalPlayer;
+                    }
+                }
                 (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.HitmanWin;
             }
