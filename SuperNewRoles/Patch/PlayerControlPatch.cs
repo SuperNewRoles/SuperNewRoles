@@ -971,6 +971,10 @@ namespace SuperNewRoles.Patches
             if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
             if (ModeHandler.IsMode(ModeId.Default))
             {
+                if (__instance.IsRole(RoleId.EvilButtoner, RoleId.NiceButtoner) && target != null && target.PlayerId == __instance.PlayerId)
+                {
+                    return true;
+                }
                 if (__instance.IsRole(RoleId.Amnesiac))
                 {
                     if (!target.Disconnected)
