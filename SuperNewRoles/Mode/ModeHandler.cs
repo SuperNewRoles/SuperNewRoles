@@ -1,5 +1,5 @@
 using HarmonyLib;
-
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using static SuperNewRoles.Patch.CheckGameEndPatch;
 
@@ -29,7 +29,7 @@ namespace SuperNewRoles.Mode
         Werewolf,
         CopsRobbers
     }
-    public class ModeHandler
+    public static class ModeHandler
     {
         public static ModeId thisMode;
         public static void ClearAndReload()
@@ -266,6 +266,24 @@ namespace SuperNewRoles.Mode
         public static bool IsBlockGuardianAngelRole()
         {
             return IsMode(ModeId.Default) || IsBlockVanilaRole();
+        }
+        public static void HideName(this PlayerControl p)
+        {
+            string name = "<color=#00000000>" + p.GetDefaultName();
+
+            p.RpcSetName(name);
+        }
+        public static void HideName()
+        {
+            if (AmongUsClient.Instance.AmHost)
+            {
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    p.HideName();
+                    SuperNewRolesPlugin.Logger.LogInfo("[ModeHandler : HideName()]" + p.GetDefaultName() + "の名前を透明に変更しました");
+                }
+            }
+            else SuperNewRolesPlugin.Logger.LogInfo("[ModeHandler : HideName()]" + PlayerControl.LocalPlayer.GetDefaultName() + "ホストでない為、名前を透明化する処理を飛ばしました。");
         }
     }
 }

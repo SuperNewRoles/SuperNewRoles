@@ -181,7 +181,6 @@ namespace SuperNewRoles.Modules
         ShareWinner,
         TeleporterTP,
         SidekickPromotes = 160,
-        SidekickSeerPromotes,
         CreateSidekick,
         CreateSidekickSeer,
         SetSpeedBoost,
@@ -363,16 +362,20 @@ namespace SuperNewRoles.Modules
             }
         }
 
-        public static void ChiefSidekick(byte targetid)
+        public static void ChiefSidekick(byte targetid,bool IsTaskClear)
         {
             RoleClass.Chief.SheriffPlayer.Add(targetid);
+            if (IsTaskClear)
+            {
+                RoleClass.Chief.NoTaskSheriffPlayer.Add(targetid);
+            }
             SetRole(targetid, (byte)RoleId.Sheriff);
             if (targetid == CachedPlayer.LocalPlayer.PlayerId)
             {
                 Sheriff.ResetKillCoolDown();
                 RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
             }
-            UncheckedSetVanilaRole(targetid, 0);
+            UncheckedSetVanilaRole(targetid, (byte)RoleTypes.Crewmate);
         }
         public static void FixLights()
         {
@@ -700,7 +703,16 @@ namespace SuperNewRoles.Modules
             {
                 Clergyman.LightOutStartRPC();
             }
+            else
+            {
+                if (RoleClass.Clergyman.currentMessage.text != null)
+                {
+                    GameObject.Destroy(RoleClass.Clergyman.currentMessage.text.gameObject);
+                }
+                RoleClass.Clergyman.IsLightOff = false;
+            }
         }
+
         public static void SetSpeedBoost(bool Is, byte id)
         {
             var player = ModHelpers.PlayerById(id);
@@ -747,26 +759,27 @@ namespace SuperNewRoles.Modules
                 }
             }
         }
-        public static void SidekickPromotes()
+        public static void SidekickPromotes(bool isJackalSeer)
         {
-            foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer.ToArray())
+            if (isJackalSeer)
             {
-                p.ClearRole();
-                p.SetRole(RoleId.Jackal);
-                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                RoleClass.Jackal.CanCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.GetBool();
+                foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
+                {
+                    p.ClearRole();
+                    p.SetRole(RoleId.JackalSeer);
+                    //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
+                    RoleClass.JackalSeer.CanCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.GetBool();
+                }
             }
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            ChacheManager.ResetMyRoleChache();
-        }
-        public static void SidekickSeerPromotes()
-        {
-            foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
+            else
             {
-                p.ClearRole();
-                p.SetRole(RoleId.JackalSeer);
-                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                RoleClass.JackalSeer.CanCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.GetBool();
+                foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer.ToArray())
+                {
+                    p.ClearRole();
+                    p.SetRole(RoleId.Jackal);
+                    //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
+                    RoleClass.Jackal.CanCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.GetBool();
+                }
             }
             PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
@@ -1077,7 +1090,7 @@ namespace SuperNewRoles.Modules
                             SetQuarreled(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.SidekickPromotes:
-                            SidekickPromotes();
+                            SidekickPromotes(reader.ReadBoolean());
                             break;
                         case CustomRPC.CreateSidekick:
                             CreateSidekick(reader.ReadByte(), reader.ReadBoolean());
@@ -1152,9 +1165,6 @@ namespace SuperNewRoles.Modules
                         case CustomRPC.DemonCurse:
                             DemonCurse(reader.ReadByte(), reader.ReadByte());
                             break;
-                        case CustomRPC.SidekickSeerPromotes:
-                            SidekickSeerPromotes();
-                            break;
                         case CustomRPC.CreateSidekickSeer:
                             CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
                             break;
@@ -1192,7 +1202,7 @@ namespace SuperNewRoles.Modules
                             MapCustoms.Airship.SecretRoom.SetSecretRoomTeleportStatus((MapCustoms.Airship.SecretRoom.Status)reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.ChiefSidekick:
-                            ChiefSidekick(reader.ReadByte());
+                            ChiefSidekick(reader.ReadByte(), reader.ReadBoolean());
                             break;
                         case CustomRPC.RpcSetDoorway:
                             RPCHelper.RpcSetDoorway(reader.ReadByte(), reader.ReadBoolean());

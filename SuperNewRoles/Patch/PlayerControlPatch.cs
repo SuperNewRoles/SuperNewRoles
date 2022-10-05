@@ -44,7 +44,7 @@ namespace SuperNewRoles.Patches
             SyncSetting.CustomSyncSettings();
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             if (target.IsBot()) return true;
-            if (AmongUsClient.Instance.AmHost) return true;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return true;
             if (__instance.PlayerId != target.PlayerId)
             {
                 if (__instance.IsRole(RoleId.Doppelganger))
@@ -984,6 +984,10 @@ namespace SuperNewRoles.Patches
             }
             if (ModeHandler.IsMode(ModeId.Default))
             {
+                if (__instance.IsRole(RoleId.EvilButtoner, RoleId.NiceButtoner) && target != null && target.PlayerId == __instance.PlayerId)
+                {
+                    return true;
+                }
                 if (__instance.IsRole(RoleId.Amnesiac))
                 {
                     if (!target.Disconnected)

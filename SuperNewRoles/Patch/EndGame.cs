@@ -695,6 +695,15 @@ namespace SuperNewRoles.Patch
             }
             else if (HitmanWin)
             {
+                if (WinnerPlayer == null)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls) if (p.IsRole(RoleId.Hitman)) WinnerPlayer = p;
+                    if (WinnerPlayer == null)
+                    {
+                        Logger.Error("エラー:殺し屋が生存していませんでした","HitmanWin");
+                        WinnerPlayer = PlayerControl.LocalPlayer;
+                    }
+                }
                 (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.HitmanWin;
             }
@@ -734,9 +743,6 @@ namespace SuperNewRoles.Patch
                 foreach (var cp in CachedPlayer.AllPlayers)
                     if (cp.PlayerControl.IsMadRoles() || cp.PlayerControl.IsRole(RoleId.MadKiller)) TempData.winners.Add(new(cp.Data));
 
-                if (RoleClass.SatsumaAndImo.TeamNumber == 2)//マッドなら
-                    foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
-                        TempData.winners.Add(new(smp.Data));//さつまいもも勝ち
             }
 
 
