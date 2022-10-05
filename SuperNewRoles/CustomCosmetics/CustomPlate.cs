@@ -38,15 +38,14 @@ namespace SuperNewRoles.CustomCosmetics
                         plate.displayOrder = 99;
                         plate.ChipOffset = new Vector2(0f, 0.2f);
                         plate.Free = true;
-                        plate.viewData.viewData = new NamePlateViewData();
-                        var c = plate.viewData.viewData.Image;
-                        var d = LoadTex.loadSprite("SuperNewRoles\\CustomPlatesChache\\" + Data.resource);
-                        c = d;
-                        plate.viewData.viewData.Image = c;
+                        plate.viewData.viewData = new()
+                        {
+                            Image = LoadTex.loadSprite("SuperNewRoles\\CustomPlatesChache\\" + Data.resource)
+                        };
                         //CustomPlates.Add(plate);
                         //AllPlates.Add(plate);
                         __instance.allNamePlates.Add(plate);
-                        SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate] プレート読み込み完了:" + file.Name);
+                        //SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate] プレート読み込み完了:" + file.Name);
                     }
                     catch (Exception e)
                     {

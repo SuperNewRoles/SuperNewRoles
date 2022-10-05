@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.Patch;
-
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Roles
 {
@@ -17,7 +16,7 @@ namespace SuperNewRoles.Roles
             {
                 if (exiled != null)
                 {
-                    if (PlayerControl.LocalPlayer.IsDead() && !CachedPlayer.LocalPlayer.Data.Disconnected && RoleClass.FalseCharges.Turns != 255)
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.FalseCharges) && PlayerControl.LocalPlayer.IsDead() && !CachedPlayer.LocalPlayer.Data.Disconnected && RoleClass.FalseCharges.Turns != 255)
                     {
                         if (RoleClass.FalseCharges.Turns <= 0) return;
                         if (exiled.PlayerId == RoleClass.FalseCharges.FalseChargePlayer)

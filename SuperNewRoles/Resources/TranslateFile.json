@@ -819,6 +819,11 @@
         "11": "\u505c\u96fb\u4fee\u7406\u4e2d\u3067\u3082\u9032\u3080",
         "13": "\u51fb\u6740\u51b7\u5374\u4f1a\u5728\u4fee\u7406\u7d27\u6025\u4efb\u52a1\u65f6\u505c\u6b62\u8ba1\u7b97"
     },
+    "IsChangeTheWinCondition": {
+        "0": "Change the win condition",
+        "11": "\u52dd\u5229\u6761\u4ef6\u3092\u5909\u66f4\u3059\u308b",
+        "13": "\u6539\u53d8\u80dc\u5229\u6761\u4ef6"
+    },
     "DisconnectNotPC": {
         "0": "Kick non-PCs.",
         "11": "PC\u4ee5\u5916\u3092\u30ad\u30c3\u30af\u3059\u308b",
@@ -973,11 +978,6 @@
         "0": "Seconds to be able to make a kill",
         "11": "\u30ad\u30eb\u304c\u3067\u304d\u308b\u3088\u3046\u306b\u306a\u308b\u307e\u3067\u306e\u79d2\u6570",
         "13": "\u4ece\u6e38\u620f\u5f00\u59cb\u5230\u73a9\u5bb6\u53ef\u51fb\u6740\u7ecf\u8fc7\u7684\u65f6\u95f4"
-    },
-    "LevelUpModeName": {
-        "0": "Level Up",
-        "11": "\u30ec\u30d9\u30eb\u30a2\u30c3\u30d7",
-        "13": "\u5347\u7ea7"
     },
     "ZombieZombieName": {
         "0": "Zombie",
@@ -1904,15 +1904,18 @@
         "11": "\u30bf\u30b9\u30af\u3092\u9811\u5f35\u3063\u3066\u7d42\u308f\u3089\u305b\u3088\u3046",
         "13": "\u5927\u5e08\uff0c\u4efb\u52a1\u8fd8\u6ca1\u5b8c\u6210\uff0c\u8fd8\u4e0d\u80fd\u4f11\u606f\u54e6"
     },
-    "TaskerTaskSetting": {
-        "0": "Task Amount",
-        "11": "\u30bf\u30b9\u30af\u91cf",
-        "13": "\u4efb\u52a1\u5927\u5e08\u4efb\u52a1\u6570"
+    "TaskerIsKillCoolTaskNow": {
+        "0": "Kill cool time is saved during the task.",
+        "11": "\u30bf\u30b9\u30af\u4e2d\u306b\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0\u304c\u8caf\u307e\u308b"
     },
-    "TaskerIsKillSetting": {
+    "TaskerCanKill": {
         "0": "Killable",
         "11": "\u30ad\u30eb\u3067\u304d\u308b",
         "13": "\u4efb\u52a1\u5927\u5e08\u53ef\u51fb\u6740"
+    },
+    "TaskerWinText": {
+        "0": "Impostor Task",
+        "11": "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u30bf\u30b9\u30af"
     },
     "DoorrName": {
         "0": "Doorr",
@@ -4591,6 +4594,10 @@
     "MadRolesCanFixElectrical": {
         "0": "Mad roles can fix electrical sabotage",
         "11": "\u30de\u30c3\u30c9\u5f79\u8077\u304c\u505c\u96fb\u3092\u6cbb\u305b\u308b"
+    },
+    "MadRolesCanVentMove": {
+        "0": "Mad roles can vent move",
+        "11": "\u30de\u30c3\u30c9\u9663\u55b6\u304c\u30d9\u30f3\u30c8\u79fb\u52d5\u3067\u304d\u308b"
     },
     "DoppelgangerName": {
         "0": "Doppelganger",

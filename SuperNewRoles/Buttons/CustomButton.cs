@@ -20,7 +20,7 @@ namespace SuperNewRoles.Buttons
         private readonly Action OnMeetingEnds;
         private readonly Func<bool, RoleId, bool> HasButton;
         private readonly Func<bool> CouldUse;
-        private readonly Action OnEffectEnds;
+        public readonly Action OnEffectEnds;
         public bool HasEffect;
         public bool isEffectActive = false;
         public bool showButtonText = true;
@@ -77,6 +77,11 @@ namespace SuperNewRoles.Buttons
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
                 this.OnClick();
 
+                if (this.isEffectActive)
+                {
+                    this.isEffectActive = false;
+                    return;
+                }
                 if (this.HasEffect && !this.isEffectActive)
                 {
                     this.Timer = this.EffectDuration;
@@ -199,17 +204,6 @@ namespace SuperNewRoles.Buttons
             actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
             // Trigger OnClickEvent if the hotkey is being pressed down
             if ((hotkey.HasValue && Input.GetButtonDown(hotkey.Value.ToString())) || ConsoleJoystick.player.GetButtonDown(joystickkey)) OnClickEvent();
-        }
-    }
-
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    class HudManagerUpdatePatch
-    {
-        static void Postfix(HudManager __instance)
-        {
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-            CustomButton.HudUpdate();
-            ButtonTime.Update();
         }
     }
 }

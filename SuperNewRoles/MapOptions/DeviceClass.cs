@@ -87,7 +87,15 @@ namespace SuperNewRoles.MapOptions
                         }
                     }
                 }
-                return false;
+                return IsUse || RoleClass.EvilHacker.IsMyAdmin;
+            }
+        }
+        [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnDisable))]
+        class MapCountOverlayOnDisablePatch
+        {
+            public static void Postfix()
+            {
+                RoleClass.EvilHacker.IsMyAdmin = false;
             }
         }
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]

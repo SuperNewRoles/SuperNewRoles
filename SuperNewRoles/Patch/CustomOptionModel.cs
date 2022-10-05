@@ -18,7 +18,8 @@ namespace SuperNewRoles.Patch
         Generic,
         Impostor,
         Neutral,
-        Crewmate
+        Crewmate,
+        Empty // 使用されない
     }
 
     public class CustomOption
@@ -137,6 +138,19 @@ namespace SuperNewRoles.Patch
         public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
         {
             return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format);
+        }
+
+        public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1)
+        {
+            if (type is CustomOptionType.Empty)
+                type = IntroDate.GetIntroDate(roleId).Team switch
+                {
+                    TeamRoleType.Impostor => CustomOptionType.Impostor,
+                    TeamRoleType.Neutral => CustomOptionType.Neutral,
+                    TeamRoleType.Crewmate => CustomOptionType.Crewmate,
+                    _ => CustomOptionType.Generic
+                };
+            return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroDate.GetIntroDate(roleId).color, max);
         }
 
         // Static behaviour
@@ -290,6 +304,13 @@ namespace SuperNewRoles.Patch
             RoleOptions.Add(this);
             if (max > 1)
                 countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
+        }
+    }
+    public class GameSettingsScale
+    {
+        public static void GameSettingsScalePatch(HudManager __instance)
+        {
+            if (__instance.GameSettings != null) __instance.GameSettings.fontSize = 1.2f;
         }
     }
     public class CustomOptionBlank : CustomOption
@@ -610,9 +631,9 @@ namespace SuperNewRoles.Patch
     }
 
     [HarmonyPatch(typeof(StringOption), nameof(StringOption.OnEnable))]
-    public class StringOptionEnablePatch
+    class StringOptionEnablePatch
     {
-        public static bool Prefix(StringOption __instance)
+        static bool Prefix(StringOption __instance)
         {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
             if (option == null)
@@ -623,15 +644,8 @@ namespace SuperNewRoles.Patch
                     __instance.OnValueChanged = new Action<OptionBehaviour>((o) => { });
                     __instance.TitleText.text = Regulation.title;
                     __instance.Value = __instance.oldValue = 0;
-                    if (RegulationData.Selected == Regulation.id)
-                    {
-                        __instance.ValueText.text = ModTranslation.GetString("optionOn");
-                    }
-                    else
-                    {
-                        __instance.ValueText.text = ModTranslation.GetString("optionOff");
+                    __instance.ValueText.text = RegulationData.Selected == Regulation.id ? ModTranslation.GetString("optionOn") : ModTranslation.GetString("optionOff");
 
-                    }
                     return false;
                 }
                 return true;
@@ -1161,16 +1175,6 @@ namespace SuperNewRoles.Patch
             {
                 SuperNewRolesPlugin.optionsPage++;
             }
-        }
-    }
-
-
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    public class GameSettingsScalePatch
-    {
-        public static void Prefix(HudManager __instance)
-        {
-            if (__instance.GameSettings != null) __instance.GameSettings.fontSize = 1.2f;
         }
     }
 }

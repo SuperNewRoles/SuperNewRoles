@@ -8,42 +8,36 @@ namespace SuperNewRoles.Mode.Zombie
     {
         public static float NameChangeTimer;
         public static bool IsStart;
-        [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-        class TimerUpdate
+        public static void ZombieTimerUpdate(HudManager __instance)
         {
-            public static void Postfix(HudManager __instance)
-            {
-                if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-                Mode.ModeHandler.HudUpdate(__instance);
-                if (IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.Zombie) && !FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
-                    if (ModeHandler.IsMode(ModeId.Zombie) && IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
+            ModeHandler.HudUpdate(__instance);
+            if (ModeHandler.IsMode(ModeId.Zombie) && IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && !FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
+                if (ModeHandler.IsMode(ModeId.Zombie) && IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
+                {
+                    if (NameChangeTimer >= 0f)
                     {
-                        if (NameChangeTimer >= 0f)
-                        {
-                            NameChangeTimer -= Time.deltaTime;
-                        }
-                        else if (NameChangeTimer != -10)
-                        {
-                            foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                            {
-                                p.RpcSetName("　");
-                                if (p.IsImpostor())
-                                {
-                                    Main.SetZombie(p);
-                                }
-                            }
-                            byte BlueIndex = 1;
-                            foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                            {
-                                if (!p.IsZombie())
-                                {
-                                    ZombieOptions.ChengeSetting(p);
-                                }
-                            }
-                            NameChangeTimer = -10;
-                        }
+                        NameChangeTimer -= Time.deltaTime;
                     }
-            }
+                    else if (NameChangeTimer != -10)
+                    {
+                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                        {
+                            p.HideName();
+                            if (p.IsImpostor())
+                            {
+                                Main.SetZombie(p);
+                            }
+                        }
+                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                        {
+                            if (!p.IsZombie())
+                            {
+                                ZombieOptions.ChengeSetting(p);
+                            }
+                        }
+                        NameChangeTimer = -10;
+                    }
+                }
         }
         public static int FixedUpdateTimer = 0;
         public static void Update()

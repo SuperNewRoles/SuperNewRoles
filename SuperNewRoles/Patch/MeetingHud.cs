@@ -122,11 +122,7 @@ namespace SuperNewRoles.Patch
                         for (var i = 0; i < __instance.playerStates.Length; i++)
                         {
                             PlayerVoteArea ps = __instance.playerStates[i];
-                            if (ModeHandler.IsMode(ModeId.BattleRoyal))
-                            {
-                                if (ps != null && ModHelpers.PlayerById(ps.TargetPlayerId).IsRole(RoleId.Sheriff)) { }
-                            }
-                            else
+                            if (!ModeHandler.IsMode(ModeId.BattleRoyal))
                             {
                                 if (ps == null) continue;
                                 var voter = ModHelpers.PlayerById(ps.TargetPlayerId);
@@ -300,11 +296,7 @@ namespace SuperNewRoles.Patch
                     PlayerVoteArea ps = __instance.playerStates[i];
                     if (AmongUsClient.Instance.GameMode != GameModes.FreePlay || ps.TargetPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {
-                        if (ModeHandler.IsMode(ModeId.BattleRoyal))
-                        {
-                            if (ps != null && ModHelpers.PlayerById(ps.TargetPlayerId).IsRole(RoleId.Sheriff)) { }
-                        }
-                        else
+                        if (!ModeHandler.IsMode(ModeId.BattleRoyal))
                         {
                             if (ps == null) continue;
                             var voter = ModHelpers.PlayerById(ps.TargetPlayerId);
@@ -445,8 +437,7 @@ namespace SuperNewRoles.Patch
                                 }
                             }
                         }
-                        else if (exiledPlayer.Object.IsBot()) { }
-                        else
+                        else if (!exiledPlayer.Object.IsBot())
                         {
                             foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                             {
