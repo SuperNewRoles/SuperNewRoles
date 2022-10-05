@@ -698,7 +698,7 @@ namespace SuperNewRoles.Patch
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls) if (p.IsRole(RoleId.Hitman)) WinnerPlayer = p;
                     if (WinnerPlayer == null)
                     {
-                        Logger.Error("エラー:殺し屋が生存していませんでした");
+                        Logger.Error("エラー:殺し屋が生存していませんでした","HitmanWin");
                         WinnerPlayer = PlayerControl.LocalPlayer;
                     }
                 }
