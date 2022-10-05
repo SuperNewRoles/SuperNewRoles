@@ -606,7 +606,7 @@ namespace SuperNewRoles.Buttons
                         Jackal.ResetCoolDown();
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick; },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick && CustomOptions.JackalCreateSidekick.GetBool(); },
                 () =>
                 {
                     return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
