@@ -587,19 +587,25 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target = PlayerControlFixedUpdatePatch.JackalSetTarget();
-                    if (target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.CanCreateSidekick)
+                    if (target && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.CanCreateSidekick)
                     {
-                        bool IsFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
-                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekick, SendOption.Reliable, -1);
-                        killWriter.Write(target.PlayerId);
-                        killWriter.Write(IsFakeSidekick);
-                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        RPCProcedure.CreateSidekick(target.PlayerId, IsFakeSidekick);
+                        if (RoleClass.Jackal.CanCreateFriend)
+                        {
+                            target.SetRoleRPC(RoleId.JackalFriends);
+                        }
+                        else { 
+                            bool IsFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
+                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekick, SendOption.Reliable, -1);
+                            killWriter.Write(target.PlayerId);
+                            killWriter.Write(IsFakeSidekick);
+                            AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                            RPCProcedure.CreateSidekick(target.PlayerId, IsFakeSidekick);
+                        }
                         RoleClass.Jackal.CanCreateSidekick = false;
                         Jackal.ResetCoolDown();
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick && CustomOptions.JackalCreateSidekick.GetBool(); },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick; },
                 () =>
                 {
                     return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
