@@ -131,7 +131,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static Vector2 GetAdminTransform()
         {
-            return PlayerControl.GameOptions.MapId switch{
+            return PlayerControl.GameOptions.MapId switch
+            {
                 0 => new(3.48f, -8.624401f),
                 1 => new(21.024f, 19.095f),
                 2 => new(23.13707f, -21.523f),
@@ -143,7 +144,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
         public static Vector2 GetCameraTransform()
         {
-            return PlayerControl.GameOptions.MapId switch{
+            return PlayerControl.GameOptions.MapId switch
+            {
                 0 => new(-12.93658f, -2.790947f),
                 2 => new(-12.93658f, -2.790947f),
                 3 => new Vector2(13.07439f, -3.215496f),
@@ -153,11 +155,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static Vector2 GetVitalOrDoorLogTransform()
         {
-            return PlayerControl.GameOptions.MapId switch{
+            return PlayerControl.GameOptions.MapId switch
+            {
                 1 => new Vector2(15.51107f, -2.897387f),
-                2 =>new Vector2(26.20935f, -16.04406f),
+                2 => new Vector2(26.20935f, -16.04406f),
                 4 => new Vector2(25.28237f, -8.145635f),
-                _ => new(1000,1000)
+                _ => new(1000, 1000)
             };
         }
     }

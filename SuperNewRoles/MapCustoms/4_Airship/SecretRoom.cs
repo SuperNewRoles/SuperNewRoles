@@ -464,9 +464,9 @@ namespace SuperNewRoles.MapCustoms.Airship
                                             GameObject.FindObjectOfType<VitalsMinigame>().Close();
                                             leftplayer = null;
                                             rightplayer = null;
-                                        }, 0.1f,"VitalText Close");
+                                        }, 0.1f, "VitalText Close");
                                     }
-                                }, 1f,"実験成功");
+                                }, 1f, "実験成功");
                             }
                         }));
                         foreach (VitalsPanel panel in minigame.vitals) GameObject.Destroy(panel.gameObject);
@@ -547,6 +547,12 @@ namespace SuperNewRoles.MapCustoms.Airship
                 canUse = false;
                 couldUse = true;
                 __result = byte.MaxValue;
+
+                PlayerTask task = null;
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && (task = __instance.FindTask(pc.Object)) != null)
+                    foreach (Console console in task.FindConsoles())
+                        console.AllowImpostor = true;
+
 
                 if (__instance.name is not "secretroom_teleport-on2" and not "secretroom_teleport-on" and not "secretroom_teleport-console") return true;
 

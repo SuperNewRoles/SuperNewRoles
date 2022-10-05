@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using Agartha;
 using HarmonyLib;
+using SuperNewRoles.MapCustoms;
 
 namespace SuperNewRoles.Modules
 {
     public static class VentDataPatch
     {
-        [HarmonyPatch(typeof(IntroCutscene),nameof(IntroCutscene.OnDestroy))]
+        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
         class IntroCutsceneOnDestroy
         {
             public static void Postfix()
@@ -34,7 +35,7 @@ namespace SuperNewRoles.Modules
                     ventMap["NavVentSouth"].Vent.Right = connect ? ventMap["NavVentNorth"] : new Vent();
 
                     ventMap["ShieldsVent"].Vent.Left = connect ? ventMap["WeaponsVent"] : new Vent();
-                    ventMap["WeaponsVent"].Vent.Center = connect ? ventMap["ShieldsVent"] : new Vent();
+                    ventMap["WeaponsVent"].Vent.Left = connect ? ventMap["ShieldsVent"] : new Vent();
 
                     ventMap["ReactorVent"].Vent.Left = connect ? ventMap["UpperReactorVent"] : new Vent();
                     ventMap["UpperReactorVent"].Vent.Left = connect ? ventMap["ReactorVent"] : new Vent();
@@ -45,36 +46,25 @@ namespace SuperNewRoles.Modules
                     ventMap["REngineVent"].Vent.Center = connect ? ventMap["LEngineVent"] : new Vent();
                     ventMap["LEngineVent"].Vent.Center = connect ? ventMap["REngineVent"] : new Vent();
 
-                    if (ventMap.ContainsKey("StorageVent"))
+                    ventMap["AdminVent"].Vent.Center = connect ? ventMap["MedVent"] : new Vent();
+                    ventMap["MedVent"].Vent.Center = connect ? ventMap["AdminVent"] : new Vent();
+
+                    ventMap["CafeVent"].Vent.Center = connect ? ventMap["WeaponsVent"] : new Vent();
+                    ventMap["WeaponsVent"].Vent.Center = connect ? ventMap["CafeVent"] : new Vent();
+                    break;
+                case 1:
+                    //MIRA HQ
+                    if (MapCustom.MiraAdditionalVents.GetBool())
                     {
-                        ventMap["AdminVent"].Vent.Center = connect ? ventMap["StorageVent"] : new Vent();
-                        ventMap["StorageVent"].Vent.Left = connect ? ventMap["ElecVent"] : new Vent();
-                        ventMap["StorageVent"].Vent.Right = connect ? ventMap["AdminVent"] : new Vent();
+                        ventMap["AdditionalVent_12"].Vent.Center = connect ? ventMap["LaunchVent"] : new Vent();
+                        ventMap["LaunchVent"].Vent.Center = connect ? ventMap["AdditionalVent_12"] : new Vent();
 
-                        ventMap["StorageVent"].Vent.Center = connect ? ventMap["CafeUpperVent"] : new Vent();
+                        ventMap["AdditionalVent_13"].Vent.Right = connect ? ventMap["MedVent"] : new Vent();
+                        ventMap["MedVent"].Vent.Center = connect ? ventMap["AdditionalVent_13"] : new Vent();
+
+                        ventMap["AdditionalVent_14"].Vent.Center = connect ? ventMap["YHallRightVent"] : new Vent();
+                        ventMap["YHallRightVent"].Vent.Center = connect ? ventMap["AdditionalVent_14"] : new Vent();
                     }
-                    else
-                    {
-                        ventMap["AdminVent"].Vent.Center = connect ? ventMap["MedVent"] : new Vent();
-                        ventMap["MedVent"].Vent.Center = connect ? ventMap["AdminVent"] : new Vent();
-                    }
-
-                    if (ventMap.ContainsKey("CafeUpperVent"))
-                    {
-                        ventMap["CafeUpperVent"].Vent.Left = connect ? ventMap["LEngineVent"] : new Vent();
-                        ventMap["LEngineVent"].Vent.Right = connect ? ventMap["CafeUpperVent"] : new Vent();
-
-                        ventMap["CafeUpperVent"].Vent.Center = connect ? ventMap["StorageVent"] : new Vent();
-
-                        ventMap["CafeUpperVent"].Vent.Right = connect ? ventMap["WeaponsVent"] : new Vent();
-                        ventMap["WeaponsVent"].Vent.Left = connect ? ventMap["CafeUpperVent"] : new Vent();
-                    }
-                    else
-                    {
-                        ventMap["CafeVent"].Vent.Center = connect ? ventMap["WeaponsVent"] : new Vent();
-                        ventMap["WeaponsVent"].Vent.Center = connect ? ventMap["CafeVent"] : new Vent();
-                    }
-
                     break;
                 case 2:
                     //Polus
@@ -89,6 +79,18 @@ namespace SuperNewRoles.Modules
 
                     ventMap["AdminVent"].Vent.Center = connect ? ventMap["OfficeVent"] : new Vent();
                     ventMap["OfficeVent"].Vent.Center = connect ? ventMap["AdminVent"] : new Vent();
+
+                    if (MapCustom.PolusAdditionalVents.GetBool())
+                    {
+                        ventMap["AdditionalVent_12"].Vent.Center = connect ? ventMap["BathroomVent"] : new Vent();
+                        ventMap["BathroomVent"].Vent.Left = connect ? ventMap["AdditionalVent_12"] : new Vent();
+
+                        ventMap["AdditionalVent_13"].Vent.Right = connect ? ventMap["SouthVent"] : new Vent();
+                        ventMap["SouthVent"].Vent.Left = connect ? ventMap["AdditionalVent_13"] : new Vent();
+
+                        ventMap["AdditionalVent_14"].Vent.Center = connect ? ventMap["ScienceBuildingVent"] : new Vent();
+                        ventMap["ScienceBuildingVent"].Vent.Center = connect ? ventMap["AdditionalVent_14"] : new Vent();
+                    }
                     break;
                 case 3 when MapData.IsMap(CustomMapNames.Agartha):
                     break;
@@ -100,12 +102,50 @@ namespace SuperNewRoles.Modules
                     ventMap["EjectionVent"].Vent.Right = connect ? ventMap["KitchenVent"] : new Vent();
                     ventMap["KitchenVent"].Vent.Center = connect ? ventMap["EjectionVent"] : new Vent();
 
-                    ventMap["HallwayVent1"].Vent.Right = connect ? ventMap["HallwayVent2"] : new Vent();
+                    ventMap["HallwayVent1"].Vent.Center = connect ? ventMap["HallwayVent2"] : new Vent();
                     ventMap["HallwayVent2"].Vent.Center = connect ? ventMap["HallwayVent1"] : new Vent();
 
                     ventMap["GaproomVent2"].Vent.Center = connect ? ventMap["RecordsVent"] : new Vent();
                     ventMap["RecordsVent"].Vent.Center = connect ? ventMap["GaproomVent2"] : new Vent();
+
+                    if (MapCustom.AirShipAdditionalVents.GetBool())
+                    {
+                        ventMap["AdditionalVent_12"].Vent.Left = connect ? ventMap["AdditionalVent_16"] : new Vent();
+                        ventMap["AdditionalVent_16"].Vent.Center = connect ? ventMap["AdditionalVent_12"] : new Vent();
+
+                        ventMap["AdditionalVent_12"].Vent.Center = connect ? ventMap["AdditionalVent_17"] : new Vent();
+                        ventMap["AdditionalVent_17"].Vent.Center = connect ? ventMap["AdditionalVent_12"] : new Vent();
+
+                        ventMap["AdditionalVent_13"].Vent.Center = connect ? ventMap["StorageVent"] : new Vent();
+                        ventMap["StorageVent"].Vent.Center = connect ? ventMap["AdditionalVent_13"] : new Vent();
+
+                        ventMap["AdditionalVent_14"].Vent.Center = connect ? ventMap["AdditionalVent_15"] : new Vent();
+                        ventMap["AdditionalVent_15"].Vent.Center = connect ? ventMap["AdditionalVent_14"] : new Vent();
+
+                        ventMap["AdditionalVent_14"].Vent.Left = connect ? ventMap["EjectionVent"] : new Vent();
+                        ventMap["EjectionVent"].Vent.Center = connect ? ventMap["AdditionalVent_14"] : new Vent();
+
+                        ventMap["AdditionalVent_15"].Vent.Left = connect ? ventMap["EngineVent"] : new Vent();
+                        ventMap["EngineVent"].Vent.Center = connect ? ventMap["AdditionalVent_15"] : new Vent();
+
+                        ventMap["AdditionalVent_17"].Vent.Right = connect ? ventMap["ShowersVent"] : new Vent();
+                        ventMap["ShowersVent"].Vent.Center = connect ? ventMap["AdditionalVent_17"] : new Vent();
+                    }
                     break;
+            }
+        }
+        public static void MadmateVent()
+        {
+            if (!CustomOptions.MadRolesCanVentMove.GetBool())
+            {
+                Dictionary<string, VentData> ventMap = VentData.VentMap;
+                foreach (var ventData in ventMap)
+                {
+                    var vent = ventData.Value.Vent;
+                    vent.Center = null;
+                    vent.Right = null;
+                    vent.Left = null;
+                }
             }
         }
     }

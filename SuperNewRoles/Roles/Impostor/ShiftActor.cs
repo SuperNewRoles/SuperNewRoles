@@ -1,8 +1,8 @@
+using System.Collections.Generic;
 using SuperNewRoles.Patch;
+using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptions;
 using static SuperNewRoles.Roles.RoleClass;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor
 {
