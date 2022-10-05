@@ -31,7 +31,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         alives++;
                     }
                 }
-                if (AlivePlayer != alives || AllPlayer != allplayer)
+                if ((AlivePlayer != alives || AllPlayer != allplayer) && BROption.IsViewAlivePlayer.GetBool())
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
@@ -65,6 +65,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 if (StartSeconds <= 0)
                 {
                     IsStart = true;
+                    ModeHandler.HideName();
                     foreach (List<PlayerControl> team in Teams)
                     {
                         if (team.IsCheckListPlayerControl(PlayerControl.LocalPlayer))

@@ -18,12 +18,8 @@ namespace SuperNewRoles.Roles
                 {
                     if (SelfBomber.GetIsBomb(PlayerControl.LocalPlayer, p, CustomOptions.SamuraiScope.GetFloat()))
                     {
-                        RPCProcedure.BySamuraiKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.BySamuraiKillRPC, SendOption.Reliable, -1);
-                        Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                        Writer.Write(p.PlayerId);
-                        RoleClass.Samurai.Sword = true;
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        PlayerControl.LocalPlayer.UncheckedMurderPlayer(p, showAnimation: false);
+                        PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SamuraiKill);
                     }
                 }
             }

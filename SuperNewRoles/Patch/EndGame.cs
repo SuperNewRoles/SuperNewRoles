@@ -38,6 +38,7 @@ namespace SuperNewRoles.Patch
         HitmanWin,
         PhotographerWin,
         StefinderWin,
+        TaskerWin,
         BugEnd
     }
     enum WinCondition
@@ -65,6 +66,7 @@ namespace SuperNewRoles.Patch
         HitmanWin,
         PhotographerWin,
         StefinderWin,
+        TaskerWin,
         BugEnd
     }
     class FinalStatusPatch
@@ -84,23 +86,6 @@ namespace SuperNewRoles.Patch
         }
         public static string GetStatusText(FinalStatus status) => ModTranslation.GetString("FinalStatus" + status.ToString()); //ローカル関数
 
-    }
-    public enum FinalStatus
-    {
-        Alive,
-        Kill,
-        Exiled,
-        NekomataExiled,
-        SheriffKill,
-        SheriffMisFire,
-        MeetingSheriffKill,
-        MeetingSheriffMisFire,
-        SelfBomb,
-        BySelfBomb,
-        Ignite,
-        Disconnected,
-        Dead,
-        Sabotage
     }
     [HarmonyPatch(typeof(ShipStatus))]
     public static class ShipStatusPatch
@@ -320,6 +305,10 @@ namespace SuperNewRoles.Patch
                         //MadJester勝利をインポスター勝利とみなした
                         case (GameOverReason)CustomGameOverReason.MadJesterWin:
                             text = "ImpostorName";
+                            RoleColor = RoleClass.ImpostorRed;
+                            break;
+                        case (GameOverReason)CustomGameOverReason.TaskerWin:
+                            text = "TaskerWinText";
                             RoleColor = RoleClass.ImpostorRed;
                             break;
                     }
@@ -622,6 +611,7 @@ namespace SuperNewRoles.Patch
             // Neutral shifter can't win
 
             bool saboWin = gameOverReason == GameOverReason.ImpostorBySabotage;
+            bool TaskerWin = gameOverReason == (GameOverReason)CustomGameOverReason.TaskerWin;
             bool JesterWin = gameOverReason == (GameOverReason)CustomGameOverReason.JesterWin;
             bool MadJesterWin = gameOverReason == (GameOverReason)CustomGameOverReason.ImpostorWin;
             bool QuarreledWin = gameOverReason == (GameOverReason)CustomGameOverReason.QuarreledWin;
@@ -744,6 +734,15 @@ namespace SuperNewRoles.Patch
             }
             else if (HitmanWin)
             {
+                if (WinnerPlayer == null)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls) if (p.IsRole(RoleId.Hitman)) WinnerPlayer = p;
+                    if (WinnerPlayer == null)
+                    {
+                        Logger.Error("エラー:殺し屋が生存していませんでした","HitmanWin");
+                        WinnerPlayer = PlayerControl.LocalPlayer;
+                    }
+                }
                 (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.HitmanWin;
             }
@@ -773,15 +772,16 @@ namespace SuperNewRoles.Patch
                     foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
                         TempData.winners.Add(new(smp.Data));//さつまいもも勝ち
             }
+            else if (TaskerWin)
+            {
+                AdditionalTempData.winCondition = WinCondition.TaskerWin;
+            }
 
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
                 foreach (var cp in CachedPlayer.AllPlayers)
                     if (cp.PlayerControl.IsMadRoles() || cp.PlayerControl.IsRole(RoleId.MadKiller)) TempData.winners.Add(new(cp.Data));
 
-                if (RoleClass.SatsumaAndImo.TeamNumber == 2)//マッドなら
-                    foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
-                        TempData.winners.Add(new(smp.Data));//さつまいもも勝ち
             }
 
 
@@ -837,7 +837,7 @@ namespace SuperNewRoles.Patch
             }
             foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
             {
-                if(player.IsAlive() && CustomOptions.StefinderSoloWin.GetBool())
+                if (player.IsAlive() && CustomOptions.StefinderSoloWin.GetBool())
                 {
                     if (!RoleClass.Stefinder.IsKillPlayer.Contains(player.PlayerId) &&
                        (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask ||
@@ -1163,9 +1163,11 @@ namespace SuperNewRoles.Patch
             {
                 if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForSabotageWin(__instance)) return false;
+                if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
+                if (CheckAndEndGameForTaskerWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
                 if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
                 if (!PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
@@ -1219,9 +1221,41 @@ namespace SuperNewRoles.Patch
             return false;
         }
 
+        public static bool CheckAndEndGameForTaskerWin(ShipStatus __instance, PlayerStatistics statistics)
+        {
+            foreach (PlayerControl p in RoleClass.Tasker.TaskerPlayer)
+            {
+                if (p == null) continue;
+                if (p.IsDead()) continue;
+                if (p.AllTasksCompleted())
+                {
+                    __instance.enabled = false;
+                    var endReason = (GameOverReason)CustomGameOverReason.TaskerWin;
+                    if (Demon.IsDemonWinFlag())
+                    {
+                        endReason = (GameOverReason)CustomGameOverReason.DemonWin;
+                    }
+
+                    CustomEndGame(endReason, false);
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static bool CheckAndEndGameForHitmanWin(ShipStatus __instance, PlayerStatistics statistics)
+        {
+            if (statistics.TotalAlive <= 1 && statistics.HitmanAlive == 1)
+            {
+                __instance.enabled = false;
+                CustomEndGame((GameOverReason)CustomGameOverReason.HitmanWin, false);
+                return true;
+            }
+            return false;
+        }
+
         public static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard() && !EvilEraser.IsNeetWinGuard())
+            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard() && !EvilEraser.IsNeetWinGuard() && statistics.HitmanAlive == 0)
             {
                 __instance.enabled = false;
                 var endReason = TempData.LastDeathReason switch
@@ -1253,7 +1287,7 @@ namespace SuperNewRoles.Patch
         }
         public static bool CheckAndEndGameForEgoistWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.EgoistAlive >= statistics.TotalAlive - statistics.EgoistAlive && statistics.EgoistAlive != 0 && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
+            if (statistics.EgoistAlive >= statistics.TotalAlive - statistics.EgoistAlive && statistics.EgoistAlive != 0 && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0)
             {
                 __instance.enabled = false;
                 CustomEndGame((GameOverReason)CustomGameOverReason.EgoistWin, false);
@@ -1263,7 +1297,7 @@ namespace SuperNewRoles.Patch
         }
         public static bool CheckAndEndGameForJackalWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive && statistics.TeamImpostorsAlive == 0)
+            if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive && statistics.TeamImpostorsAlive == 0 && statistics.HitmanAlive == 0)
             {
                 foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
                 {
@@ -1281,7 +1315,7 @@ namespace SuperNewRoles.Patch
 
         public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
+            if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0 && statistics.HitmanAlive == 0)
             {
                 foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
                 {
@@ -1300,6 +1334,7 @@ namespace SuperNewRoles.Patch
         {
             foreach (PlayerControl p in RoleClass.Workperson.WorkpersonPlayer)
             {
+                if (p == null) continue;
                 if (!p.Data.Disconnected)
                 {
                     if (p.IsAlive() || !RoleClass.Workperson.IsAliveWin)
@@ -1357,6 +1392,7 @@ namespace SuperNewRoles.Patch
             public int TotalAlive { get; set; }
             public int TeamJackalAlive { get; set; }
             public int EgoistAlive { get; set; }
+            public int HitmanAlive { get; set; }
             public PlayerStatistics(ShipStatus __instance)
             {
                 GetPlayerCounts();
@@ -1368,6 +1404,7 @@ namespace SuperNewRoles.Patch
                 int numTotalAlive = 0;
                 int numTotalJackalTeam = 0;
                 int numTotalEgoist = 0;
+                int numHitmanAlive = 0;
 
                 for (int i = 0; i < GameData.Instance.PlayerCount; i++)
                 {
@@ -1385,7 +1422,7 @@ namespace SuperNewRoles.Patch
                             {
                                 numImpostorsAlive++;
                             }
-                            else if (!playerInfo.Object.IsCrew())
+                            else if (playerInfo.Object.IsCrew())
                             {
                                 numCrewAlive++;
                             }
@@ -1395,6 +1432,10 @@ namespace SuperNewRoles.Patch
                                 {
                                     numTotalEgoist++;
                                     numImpostorsAlive++;
+                                }
+                                else if (playerInfo.Object.IsRole(RoleId.Hitman))
+                                {
+                                    numHitmanAlive++;
                                 }
                             }
                         }
@@ -1406,6 +1447,7 @@ namespace SuperNewRoles.Patch
                 CrewAlive = numCrewAlive;
                 TeamJackalAlive = numTotalJackalTeam;
                 EgoistAlive = numTotalEgoist;
+                HitmanAlive = numHitmanAlive;
             }
         }
     }

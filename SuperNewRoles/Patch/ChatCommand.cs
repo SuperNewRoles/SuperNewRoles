@@ -71,7 +71,7 @@ namespace SuperNewRoles.Patch
                         else //ゲスト時には使用不可能にする
                         {
                             handled = true;
-                            __instance.AddChat(PlayerControl.LocalPlayer,ModTranslation.GetString("CannotUseRenameMessage"));
+                            __instance.AddChat(PlayerControl.LocalPlayer, ModTranslation.GetString("CannotUseRenameMessage"));
                             SuperNewRolesPlugin.Logger.LogWarning($"ホストでない時に{text}を使用しました。ホストでない時は/renameは使用できません。");
                         }
                     }

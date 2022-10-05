@@ -1,5 +1,5 @@
 using HarmonyLib;
-
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using static SuperNewRoles.Patch.CheckGameEndPatch;
 
@@ -25,10 +25,9 @@ namespace SuperNewRoles.Mode
         NotImpostorCheck,
         Detective,
         Werewolf,
-        CopsRobbers,
-        LevelUp
+        CopsRobbers
     }
-    public class ModeHandler
+    public static class ModeHandler
     {
         public static ModeId thisMode;
         public static void ClearAndReload()
@@ -144,7 +143,6 @@ namespace SuperNewRoles.Mode
             Detective.DetectiveOptions.Load();
             CopsRobbers.CopsRobbersOptions.Load();
             //Werewolf.WerewolfOptions.Load();
-            //LevelUp.main.Load();
 
             PlusMode.Options.Load();
         }
@@ -165,7 +163,6 @@ namespace SuperNewRoles.Mode
             else if (IsMode(ModeId.BattleRoyal)) BattleRoyal.Main.FixedUpdate();
             else if (IsMode(ModeId.Zombie)) Zombie.FixedUpdate.Update();
             else if (IsMode(ModeId.RandomColor)) RandomColor.FixedUpdate.Update();
-            //else if (IsMode(ModeId.LevelUp)) LevelUp.main.FixedUpdate();
 
         }
         public static void Wrapup(GameData.PlayerInfo exiled)
@@ -192,7 +189,9 @@ namespace SuperNewRoles.Mode
                 ? ModeId.Detective
                 : IsMode(ModeId.Werewolf, false)
                 ? ModeId.Werewolf
-                : IsMode(ModeId.CopsRobbers, false) ? ModeId.CopsRobbers : IsMode(ModeId.LevelUp, false) ? ModeId.LevelUp : ModeId.No;
+                : IsMode(ModeId.CopsRobbers, false)
+                ? ModeId.CopsRobbers
+                : ModeId.No;
         }
         public static string GetThisModeIntro()
         {
@@ -239,16 +238,15 @@ namespace SuperNewRoles.Mode
             if (mode is ModeId.Default) return !ModeSetting.GetBool();
             return mode switch
                 {
-                    ModeId.HideAndSeek => ThisModeSetting.GetString() == modes[0],
-                    ModeId.BattleRoyal => ThisModeSetting.GetString() == modes[2],
-                    ModeId.SuperHostRoles => ThisModeSetting.GetString() == modes[1],
-                    ModeId.Zombie => ThisModeSetting.GetString() == modes[3],
-                    ModeId.RandomColor => ThisModeSetting.GetString() == modes[4],
-                    ModeId.NotImpostorCheck => ThisModeSetting.GetString() == modes[5],
-                    ModeId.Detective => ThisModeSetting.GetString() == modes[6],
-                    ModeId.CopsRobbers => ThisModeSetting.GetString() == modes[7],
-                    ModeId.Werewolf => false,//ThisModeSetting.GetString() == modes[7];
-                    ModeId.LevelUp => false,//ThisModeSetting.GetString() == modes[7];
+                    ModeId.HideAndSeek => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[0],
+                    ModeId.BattleRoyal => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[2],
+                    ModeId.SuperHostRoles => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[1],
+                    ModeId.Zombie => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[3],
+                    ModeId.RandomColor => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[4],
+                    ModeId.NotImpostorCheck => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[5],
+                    ModeId.Detective => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[6],
+                    ModeId.CopsRobbers => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[7],
+                    ModeId.Werewolf => false,//ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[7];
                     _ => false,
                 };
         }
@@ -271,6 +269,24 @@ namespace SuperNewRoles.Mode
         public static bool IsBlockGuardianAngelRole()
         {
             return IsMode(ModeId.Default) || IsBlockVanilaRole();
+        }
+        public static void HideName(this PlayerControl p)
+        {
+            string name = "<color=#00000000>" + p.GetDefaultName();
+
+            p.RpcSetName(name);
+        }
+        public static void HideName()
+        {
+            if (AmongUsClient.Instance.AmHost)
+            {
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    p.HideName();
+                    SuperNewRolesPlugin.Logger.LogInfo("[ModeHandler : HideName()]" + p.GetDefaultName() + "の名前を透明に変更しました");
+                }
+            }
+            else SuperNewRolesPlugin.Logger.LogInfo("[ModeHandler : HideName()]" + PlayerControl.LocalPlayer.GetDefaultName() + "ホストでない為、名前を透明化する処理を飛ばしました。");
         }
     }
 }
