@@ -44,7 +44,7 @@ namespace SuperNewRoles.Patches
             SyncSetting.CustomSyncSettings();
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             if (target.IsBot()) return true;
-            if (AmongUsClient.Instance.AmHost) return true;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return true;
             if (__instance.PlayerId != target.PlayerId)
             {
                 if (__instance.IsRole(RoleId.Doppelganger))
