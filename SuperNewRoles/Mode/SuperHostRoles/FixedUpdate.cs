@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Patches;
@@ -42,16 +42,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 return DefaultName[playerid];
             }
         }
-        public static void RoleFixedUpdate() { }/*
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
-        public class KilltimerSheriff
-        {
-            public void Prefix()
-            {
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles) && PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff)) { }
-            }
-        }*/
-        //public static Dictionary<byte, float> UpdateTime;
+        public static void RoleFixedUpdate() { }
         public static void SetRoleName(PlayerControl player, bool IsUnchecked = false)
         {
             var caller = new System.Diagnostics.StackFrame(1, false);
@@ -94,9 +85,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             //必要がないなら処理しない
             if (player.IsMod() && DiePlayers.Count < 1) return;
 
+            var introdate = IntroDate.GetIntroDate(player.GetRole(), player);
+
             string Name = player.GetDefaultName();
             string NewName = "";
             string MySuffix = "";
+            string RoleNameText = ModHelpers.Cs(introdate.color, introdate.Name);
             Dictionary<byte, string> ChangePlayers = new();
 
             foreach (PlayerControl CelebrityPlayer in RoleClass.Celebrity.CelebrityPlayer)
@@ -193,8 +187,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 ChangePlayers[Player.PlayerId] = ChangePlayers[Player.PlayerId] + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)");
                             }
                         }
-
-
                     }
                 }
             }
@@ -222,25 +214,24 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (RoleClass.Sheriff.KillCount.ContainsKey(player.PlayerId))
                 {
-                    MySuffix += "(残り" + RoleClass.Sheriff.KillCount[player.PlayerId] + "発)";
+                    RoleNameText += ModHelpers.Cs(introdate.color, $"{RoleClass.Sheriff.KillCount[player.PlayerId]}");
                 }
             }
             else if (player.IsRole(RoleId.RemoteSheriff))
             {
                 if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId))
                 {
-                    MySuffix += "(残り" + RoleClass.RemoteSheriff.KillCount[player.PlayerId] + "発)";
+                    RoleNameText += ModHelpers.Cs(introdate.color, $"{RoleClass.RemoteSheriff.KillCount[player.PlayerId]}");
                 }
             }
             else if (player.IsRole(RoleId.Mafia))
             {
                 if (Mafia.IsKillFlag())
                 {
-                    MySuffix += " (キル可能)";
+                    RoleNameText += " (OK)";
                 }
             }
 
-            var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(player.GetRole(), player);
             string TaskText = "";
             if (!player.IsClearTask())
             {
@@ -291,7 +282,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         IsArsonistVIew = true;
                     }
                 }
-                NewName = "<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.Cs(introdate.color, Name + MySuffix);
+                NewName = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + ModHelpers.Cs(introdate.color, Name + MySuffix);
                 SuperNewRolesPlugin.Logger.LogInfo(NewName);
             }
             if (!player.IsMod())
@@ -376,14 +367,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 UpdateDate--;
                 RoleFixedUpdate();
-                /*
-                if (UpdateTime != null)
-                {
-                    foreach (var UpdateTimeData in UpdateTime){
-                        UpdateTime[UpdateTimeData.Key] -= Time.fixedDeltaTime;
-                    }
-                }
-                */
+
                 if (AmongUsClient.Instance.AmHost)
                 {
                     BlockTool.FixedUpdate();

@@ -16,18 +16,6 @@ namespace SuperNewRoles.CustomObject
     }
     public class PlayerAnimation
     {
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-        public static class PlayerControlFixedUpdatePatch
-        {
-            public static void Postfix(PlayerControl __instance)
-            {
-                if (GetPlayerAnimation(__instance.PlayerId) == null) new PlayerAnimation(__instance);
-                if (__instance == PlayerControl.LocalPlayer)
-                {
-                    PlayerAnimation.FixedAllUpdate();
-                }
-            }
-        }
         public static List<PlayerAnimation> PlayerAnimations = new();
         public PlayerControl Player;
         public PlayerPhysics Physics;
@@ -131,8 +119,9 @@ namespace SuperNewRoles.CustomObject
                 OnDestroy();
                 return;
             }
-            if (!Playing) {
-                    SpriteRender.sprite = null;
+            if (!Playing)
+            {
+                SpriteRender.sprite = null;
                 return;
             }
             updatetime -= Time.fixedDeltaTime;
@@ -163,7 +152,7 @@ namespace SuperNewRoles.CustomObject
         }
         public void RpcAnimation(RpcAnimationType AnimType)
         {
-            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.PlayPlayerAnimation);
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PlayPlayerAnimation);
             writer.Write(PlayerId);
             writer.Write((byte)AnimType);
             writer.EndRPC();

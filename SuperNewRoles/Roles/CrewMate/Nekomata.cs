@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Roles
 {
@@ -15,7 +15,10 @@ namespace SuperNewRoles.Roles
             if (AmongUsClient.Instance.AmHost)
             {
                 //もし 追放された役職が猫なら
-                if ((__instance != null && __instance.Object.IsRole(RoleId.NiceNekomata)) || __instance.Object.IsRole(RoleId.EvilNekomata) || __instance.Object.IsRole(RoleId.BlackCat))
+                if (__instance.Object.IsRole(RoleId.NiceNekomata) ||
+                    __instance.Object.IsRole(RoleId.EvilNekomata) ||
+                    __instance.Object.IsRole(RoleId.BlackCat) ||
+                    (__instance.Object.IsRole(RoleId.NekoKabocha) && Impostor.NekoKabocha.CanRevengeExile))
                 {
                     List<PlayerControl> p = new();//道連れにするプレイヤーの抽選リスト
                     foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
@@ -36,6 +39,25 @@ namespace SuperNewRoles.Roles
                                     SuperNewRolesPlugin.Logger.LogError("[SNR:猫又Error]&[SNR:イビル猫又Error][NotImpostorExiled == true] 異常な抽選リストです");
                             }
                         }
+                        // 猫カボチャで。追放道連れにする
+                        else if (__instance.Object.IsRole(RoleId.NekoKabocha) && Impostor.NekoKabocha.CanRevengeExile)
+                        {
+                            if (p1.Data != __instance && p1.IsAlive())
+                            {
+                                if (p1.IsCrew() && Impostor.NekoKabocha.CanRevengeCrew)
+                                {
+                                    p.Add(p1);
+                                }
+                                else if (p1.IsNeutral() && Impostor.NekoKabocha.CanRevengeNeut)
+                                {
+                                    p.Add(p1);
+                                }
+                                else if (p1.IsImpostor() && Impostor.NekoKabocha.CanRevengeImp)
+                                {
+                                    p.Add(p1);
+                                }
+                            }
+                        }
                         //ナイス・設定オフ
                         else
                         {
@@ -53,13 +75,12 @@ namespace SuperNewRoles.Roles
                             }
                         }
                     }
-                    MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ExiledRPC, SendOption.Reliable, -1);
+                    MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ExiledRPC, SendOption.Reliable, -1);
                     RPCWriter.Write(__instance.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
                     RPCProcedure.ExiledRPC(__instance.PlayerId);
                     NekomataProc(p);
                 }
-
             }
         }
         public static void NekomataProc(List<PlayerControl> p)
@@ -69,10 +90,8 @@ namespace SuperNewRoles.Roles
             SuperNewRolesPlugin.Logger.LogInfo(random.NameText().text);
             if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.NekomataExiled, random))
             {
-                MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.NekomataExiledRPC, SendOption.Reliable, -1);
-                RPCWriter.Write(random.PlayerId);
-                AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
-                RPCProcedure.ExiledRPC(random.PlayerId);
+                random.RpcExiledUnchecked();
+                random.RpcSetFinalStatus(FinalStatus.NekomataExiled);
                 if (random.IsRole(RoleId.NiceNekomata) || random.IsRole(RoleId.EvilNekomata) || (random.IsRole(RoleId.BlackCat) && RoleClass.NiceNekomata.IsChain))
                 {
                     p.RemoveAt(rdm);
@@ -83,7 +102,7 @@ namespace SuperNewRoles.Roles
                     if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
                     {
                         RPCProcedure.ShareWinner(random.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(random.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RoleClass.Jester.IsJesterWin = true;
@@ -92,7 +111,7 @@ namespace SuperNewRoles.Roles
                     if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
                     {
                         RPCProcedure.ShareWinner(random.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(random.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RoleClass.MadJester.IsMadJesterWin = true;

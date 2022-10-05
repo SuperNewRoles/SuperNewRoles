@@ -9,13 +9,12 @@ namespace SuperNewRoles.Roles.Impostor
 {
     public static class Nun
     {
-        //ここにコードを書きこんでください
         [HarmonyPatch(typeof(Console), nameof(Console.Use))]
         public static class MapConsoleCanUsePatch
         {
             public static void Postfix(Console __instance)
             {
-                Logger.Info(__instance.name,"やったぜ");
+                Logger.Info(__instance.name, "やったぜ");
             }
         }
         static bool Is = false;
@@ -44,10 +43,11 @@ namespace SuperNewRoles.Roles.Impostor
             __instance.IsLeft = !__instance.IsLeft;
             if (IsTargetOn)
             {
-                yield return Effects.All(Effects.Slide2D(__instance.transform, __instance.transform.localPosition , targetPos, __instance.Target.MyPhysics.Speed), Effects.Slide2DWorld(__instance.Target.transform, __instance.transform.position + new Vector3(0,0.3f), worldTargetPos2 + new Vector3(0, 0.3f), __instance.Target.MyPhysics.Speed));
-            } else
+                yield return Effects.All(Effects.Slide2D(__instance.transform, __instance.transform.localPosition, targetPos, __instance.Target.MyPhysics.Speed), Effects.Slide2DWorld(__instance.Target.transform, __instance.transform.position + new Vector3(0, 0.3f), worldTargetPos2 + new Vector3(0, 0.3f), __instance.Target.MyPhysics.Speed));
+            }
+            else
             {
-                yield return Effects.All(Effects.Slide2D(__instance.transform, __instance.transform.localPosition , targetPos, CachedPlayer.LocalPlayer.PlayerPhysics.Speed));
+                yield return Effects.All(Effects.Slide2D(__instance.transform, __instance.transform.localPosition, targetPos, CachedPlayer.LocalPlayer.PlayerPhysics.Speed));
             }
             if (Constants.ShouldPlaySfx())
             {

@@ -1,16 +1,14 @@
 using HarmonyLib;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public class Tuna
     {
-        public static void Postfix()
+        public static void HudUpdate()
         {
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (RoleClass.IsMeeting) return;
             if (ModeHandler.IsMode(ModeId.Default))
             {
@@ -21,6 +19,7 @@ namespace SuperNewRoles.Roles
                         if (RoleClass.Tuna.Timer <= 0.1f)
                         {
                             CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
+                            PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.TunaSelfDeath);
                         }
                         RoleClass.Tuna.Timer -= Time.deltaTime;
                     }

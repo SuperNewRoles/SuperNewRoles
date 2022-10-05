@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using TMPro;
@@ -289,7 +286,7 @@ namespace SuperNewRoles.Patch
             if (PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
             {
                 foreach (PlayerControl player in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
-                { 
+                {
                     //クルーなら
                     if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
                     {//名前に(C)をつける
@@ -402,11 +399,12 @@ namespace SuperNewRoles.Patch
                 {
                     if (RoleClass.PartTimer.IsLocalOn)
                     {
-                        if (RoleClass.PartTimer.IsCheckTargetRole)
+                        if (CustomOptions.PartTimerIsCheckTargetRole.GetBool())
                         {
                             SetNamesClass.SetPlayerRoleNames(RoleClass.PartTimer.CurrentTarget);
                             SetNamesClass.SetPlayerNameColors(RoleClass.PartTimer.CurrentTarget);
-                        } else
+                        }
+                        else
                         {
                             SetNamesClass.SetPlayerNameText(RoleClass.PartTimer.CurrentTarget, RoleClass.PartTimer.CurrentTarget.NameText().text + ModHelpers.Cs(RoleClass.PartTimer.color, "◀"));
                         }

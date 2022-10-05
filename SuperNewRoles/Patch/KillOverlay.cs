@@ -19,7 +19,7 @@ namespace SuperNewRoles.Patch
                 {
                     __state = __instance.KillAnims;
                     int index = ModHelpers.GetRandomIndex(__state.ToList());
-                    Logger.Info(__state.Length.ToString()+":"+index.ToString());
+                    Logger.Info(__state.Length.ToString() + ":" + index.ToString());
                     //0を変えることで強制的にキルアニメーションが変わる
                     var anim = __state[3];
                     __instance.KillAnims = new OverlayKillAnimation[1] { anim };
@@ -56,8 +56,8 @@ namespace SuperNewRoles.Patch
                                 IsFirstEnd = true;
                             }
                         }
-                        pet.localPosition = new(-0.05f, -0.37f,0.1f);
-                        __instance.KillAnims =__state;
+                        pet.localPosition = new(-0.05f, -0.37f, 0.1f);
+                        __instance.KillAnims = __state;
                     }
                 }
             }

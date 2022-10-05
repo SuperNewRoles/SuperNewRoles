@@ -4,9 +4,6 @@ using System.Linq;
 using System.Text;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Intro;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Attribute
@@ -247,8 +244,8 @@ namespace SuperNewRoles.Roles.Attribute
                             RoleClass.NiceGuesser.Count = PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser) ? CustomOptions.NiceGuesserShortMaxCount.GetInt() : CustomOptions.EvilGuesserShortMaxCount.GetInt();
                         }
                         // Shoot player and send chat info if activated
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.GuesserShoot, SendOption.Reliable, -1);
-                        writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.GuesserShoot, SendOption.Reliable, -1);
+                        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         writer.Write(dyingTarget.PlayerId);
                         writer.Write(focusedTarget.PlayerId);
                         writer.Write((byte)roleInfo.RoleId);

@@ -1,13 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
@@ -32,42 +28,7 @@ namespace SuperNewRoles.Patch
         {
             private static readonly System.Random random = new((int)DateTime.Now.Ticks);
             private static readonly List<PlayerControl> bots = new();
-            public class LateTask
-            {
-                public string name;
-                public float timer;
-                public Action action;
-                public static List<LateTask> Tasks = new();
-                public bool Run(float deltaTime)
-                {
-                    timer -= deltaTime;
-                    if (timer <= 0)
-                    {
-                        action();
-                        return true;
-                    }
-                    return false;
-                }
-                public LateTask(Action action, float time, string name = "No Name Task")
-                {
-                    this.action = action;
-                    this.timer = time;
-                    this.name = name;
-                    Tasks.Add(this);
-                }
-                public static void Update(float deltaTime)
-                {
-                    var TasksToRemove = new List<LateTask>();
-                    Tasks.ForEach((task) =>
-                    {
-                        if (task.Run(deltaTime))
-                        {
-                            TasksToRemove.Add(task);
-                        }
-                    });
-                    TasksToRemove.ForEach(task => Tasks.Remove(task));
-                }
-            }
+
             public static void Postfix(KeyboardJoystick __instance)
             {
                 if (!ConfigRoles.DebugMode.Value) return;
@@ -86,11 +47,8 @@ namespace SuperNewRoles.Patch
                 //ここにデバッグ用のものを書いてね
                 if (Input.GetKeyDown(KeyCode.I))
                 {
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedUsePlatform);
-                    writer.Write((byte)4);
-                    writer.Write(false);
-                    writer.EndRPC();
-                    RPCProcedure.UncheckedUsePlatform((byte)4, true);
+                    foreach (PlayerControl p in Roles.RoleClass.Jackal.JackalPlayer)
+                        p.ShowReactorFlash();
                 }
                 if (Input.GetKeyDown(KeyCode.K))
                 {
@@ -108,18 +66,6 @@ namespace SuperNewRoles.Patch
                 {
                     ModHelpers.PlayerById(1).RpcMurderPlayer(PlayerControl.LocalPlayer);//ModHelpers.PlayerById(2));
                 }
-                /*
-                    if (Input.GetKeyDown(KeyCode.C))
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo("CHANGE!!!");
-                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                        {
-                            RoleManager.Instance.SetRole(p, RoleTypes.Engineer);
-                            AmongUsClient.Instance.Spawn(GameData.Instance, -2, SpawnFlags.IsClientCharacter);
-                            AmongUsClient.Instance.Spawn(p, p.OwnerId, SpawnFlags.IsClientCharacter);
-                        }
-                    }
-                    */
 
                 if (Input.GetKeyDown(KeyCode.F10))
                 {
@@ -131,7 +77,7 @@ namespace SuperNewRoles.Patch
                 }
                 if (Input.GetKeyDown(KeyCode.F1))
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("new Vector2("+(PlayerControl.LocalPlayer.transform.position.x - 12.63f) +"f, "+ (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
+                    SuperNewRolesPlugin.Logger.LogInfo("new Vector2(" + (PlayerControl.LocalPlayer.transform.position.x - 12.63f) + "f, " + (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
                 }
             }
 

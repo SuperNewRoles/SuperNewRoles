@@ -1344,6 +1344,11 @@
         "11": "\u5168\u30d7\u30ec\u30a4\u30e4\u30fc\u306e\u30b9\u30dd\u30fc\u30f3\u3092\u5f85\u3063\u3066\u3044\u307e\u3059...\n\u30ed\u30c9\u30fc\u4e2d:\u6b8b\u308a{0}\u4eba</color></size>",
         "13": "\u7b49\u5f85\u6240\u6709\u73a9\u5bb6\u8fdb\u5165\u884c\u52a8\u9636\u6bb5...\n\u8f7d\u5165\u4e2d:\u8fd8\u5269{0}\u4eba</color></size>"
     },
+    "CRHideNameSetting": {
+        "0": "Hide Name",
+        "11": "\u540d\u524d\u3092\u96a0\u3059",
+        "13": "\u9690\u59d3\u57cb\u540d"
+    },
     "CrewMateName": {
         "0": "Crewmate",
         "11": "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8",
@@ -2054,30 +2059,20 @@
         "11": "\u30b9\u30d4\u30fc\u30c9\u30c0\u30a6\u30f3",
         "13": "\u51cf\u901f"
     },
-    "GuesserName": {
-        "0": "Guesser",
-        "11": "\u30b2\u30c3\u30b5\u30fc",
-        "13": "\u4fa0\u5ba2"
+    "NiceGuesserName": {
+        "0": "Nice Guesser",
+        "11": "\u30ca\u30a4\u30b9\u30b2\u30c3\u30b5\u30fc",
+        "13": "\u4e0d\u9519\u7684\u4fa0\u5ba2"
     },
-    "GuesserTitle1": {
+    "NiceGuesserTitle1": {
         "0": "Let's punch out the outsider.",
         "11": "\u4eba\u5916\u3092\u6253\u3061\u629c\u3053\u3046",
         "13": "\u751f\u547d\u5c31\u662f\u8c6a\u8d4c"
     },
-    "GuesserTitle2": {
+    "NiceGuesserTitle2": {
         "0": "Guess the position of the outsider",
         "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
         "13": "\u5728\u4f1a\u8bae\u4e0a\u731c\u6d4b\u654c\u4eba\u7684\u8eab\u4efd"
-    },
-    "GuesserOneMeetingShortSetting": {
-        "0": "Multiple hits in one meeting",
-        "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
-        "13": "\u4fa0\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a\u8bae\u4e2d\u591a\u6b21\u731c\u6d4b"
-    },
-    "GuesserShortMaxCountSetting": {
-        "0": "Number of times you can hit",
-        "11": "\u6253\u3066\u308b\u56de\u6570",
-        "13": "\u4fa0\u5ba2\u6700\u5927\u53ef\u731c\u6d4b\u6b21\u6570"
     },
     "EvilGuesserName": {
         "0": "Evil Guesser",
@@ -2086,17 +2081,17 @@
     },
     "EvilGuesserTitle1": {
         "0": "Guess the position of the camp other than Imposter.",
-        "11": "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u4ee5\u5916\u306e\u9663\u55b6\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
+        "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
         "13": "\u5728\u4f1a\u8bae\u4e0a\u731c\u6d4b\u4ed6\u4eba\u7684\u8eab\u4efd"
     },
     "EvilGuesserOneMeetingShortSetting": {
         "0": "Multiple hits in one meeting",
-        "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
+        "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
         "13": "\u523a\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a\u8bae\u4e2d\u591a\u6b21\u731c\u6d4b"
     },
     "EvilGuesserShortMaxCountSetting": {
         "0": "Number of times you can hit",
-        "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
+        "11": "\u6253\u3066\u308b\u56de\u6570",
         "13": "\u523a\u5ba2\u6700\u5927\u53ef\u731c\u6d4b\u6b21\u6570"
     },
     "VultureName": {

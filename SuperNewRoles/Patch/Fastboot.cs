@@ -10,7 +10,7 @@ namespace SuperNewRoles.Patch
         {
             if (!IsAgarthaLoaded)
             {
-                CustomMap.LoadedHandle.Load();
+                SuperNewRolesPlugin.AgarthaLoad();
                 IsAgarthaLoaded = true;
             }
             if (ConfigRoles.DebugMode.Value)

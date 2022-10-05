@@ -24,7 +24,7 @@ namespace SuperNewRoles.Roles.CrewMate
                     door.myCollider.isTrigger = true;
                     RoleClass.SeeThroughPerson.Objects.Add(newcollider.GetComponent<EdgeCollider2D>());
                     door.animator.Play(door.OpenDoorAnim);
-                }, 0.5f);
+                }, 0.5f, "SeeThroughPerson");
             }
         }
         public static void FixedUpdate()

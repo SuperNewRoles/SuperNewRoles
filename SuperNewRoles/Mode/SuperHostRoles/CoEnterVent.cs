@@ -1,5 +1,4 @@
 using Hazel;
-using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -35,6 +34,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.Samurai:
                     if (RoleClass.Samurai.UseVent) return true;
+                    break;
+                case RoleId.MadSeer:
+                    if (RoleClass.MadSeer.IsUseVent) return true;
+                    break;
+                case RoleId.SeerFriends:
+                    if (RoleClass.SeerFriends.IsUseVent) return true;
                     break;
                 case RoleId.RemoteSheriff:
                 case RoleId.Sheriff:

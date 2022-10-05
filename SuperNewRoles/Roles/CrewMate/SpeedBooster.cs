@@ -2,7 +2,7 @@ using System;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
@@ -17,7 +17,7 @@ namespace SuperNewRoles.Roles
         public static void BoostStart()
         {
             RoleClass.SpeedBooster.IsSpeedBoost = true;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedBoost, SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetSpeedBoost, SendOption.Reliable, -1);
             writer.Write(true);
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -26,7 +26,7 @@ namespace SuperNewRoles.Roles
         }
         public static void ResetSpeed()
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedBoost, SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetSpeedBoost, SendOption.Reliable, -1);
             writer.Write(false);
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
