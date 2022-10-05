@@ -83,7 +83,7 @@ namespace SuperNewRoles.Patch
                     ModTranslation.GetString("CommandsMessage7") + "\n" +
                     ModTranslation.GetString("CommandsMessage8") + "\n" +
                     ModTranslation.GetString("CommandsMessage9") + "\n" +
-                    "/Winner(/w) 勝者を見ることができます";
+                    ModTranslation.GetString("CommandsMessage10");
                 SendCommand(sourcePlayer, text);
                 return false;
             }
@@ -171,7 +171,7 @@ namespace SuperNewRoles.Patch
                 PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
                 if (OnGameEndPatch.PlayerDatas == null)
                 {
-                    SendCommand(target, "情報がありません", SNRCommander);
+                    SendCommand(target, ModTranslation.GetString("WinnersNoneData"), SNRCommander);
                     return false;
                 }
                 StringBuilder builder = new();
@@ -185,7 +185,7 @@ namespace SuperNewRoles.Patch
                     builder.Append(ModTranslation.GetString($"FinalStatus{data.finalStatus}"));
                     builder.Append(" : ");
                     if (data.role == null)
-                        builder.Append("取得失敗");
+                        builder.Append(ModTranslation.GetString("WinnerGetError"));
                     else
                         builder.Append(ModTranslation.GetString(IntroDate.GetIntroDate((RoleId)data.role).NameKey + "Name"));
                     builder.AppendLine();
