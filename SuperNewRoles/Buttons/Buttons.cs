@@ -591,10 +591,10 @@ namespace SuperNewRoles.Buttons
                     {
                         if (RoleClass.Jackal.CanCreateFriend)
                         {
-                            target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
-                            target.SetRoleRPC(RoleId.JackalFriends);
+                            target.ResetAndSetRole(RoleId.JackalFriends); //クルーにして フレンズにする
                         }
-                        else { 
+                        else
+                        {
                             bool IsFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
                             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekick, SendOption.Reliable, -1);
                             killWriter.Write(target.PlayerId);
@@ -963,7 +963,8 @@ namespace SuperNewRoles.Buttons
                 () => { return false; },
                 true,
                 5f,
-                () => {
+                () =>
+                {
                     MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
                     RPCWriter.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
