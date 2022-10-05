@@ -591,6 +591,7 @@ namespace SuperNewRoles.Buttons
                     {
                         if (RoleClass.Jackal.CanCreateFriend)
                         {
+                            target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
                             target.SetRoleRPC(RoleId.JackalFriends);
                         }
                         else { 
