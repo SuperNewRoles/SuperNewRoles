@@ -2685,7 +2685,8 @@ namespace SuperNewRoles.Roles
             public static int DefaultCount;
             public static int TurnCount;
             public static int MaxTurnCount;
-            public static List<PlayerControl> CurrentCrackedPlayerControls {
+            public static List<PlayerControl> CurrentCrackedPlayerControls
+            {
                 get
                 {
                     if (currentCrackedPlayerControls.Count != currentCrackedPlayers.Count)

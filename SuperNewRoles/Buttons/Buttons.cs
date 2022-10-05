@@ -992,7 +992,8 @@ namespace SuperNewRoles.Buttons
                 () => { return false; },
                 true,
                 5f,
-                () => {
+                () =>
+                {
                     MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
                     RPCWriter.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);

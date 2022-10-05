@@ -72,7 +72,7 @@ namespace SuperNewRoles.Roles.Impostor
         }
         public class KillCoolSetting
         {
-           
+
             public static void MurderPrefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
                 if (ModeHandler.IsMode(ModeId.Default) && !__instance.AmOwner) return;

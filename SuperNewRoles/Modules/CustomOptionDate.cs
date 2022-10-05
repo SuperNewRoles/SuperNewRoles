@@ -1657,7 +1657,7 @@ namespace SuperNewRoles.Modules
 
             Roles.Impostor.NekoKabocha.SetupCustomOptions();
 
-            CrackerOption = SetupCustomRoleOption(991, false,RoleId.Cracker);
+            CrackerOption = SetupCustomRoleOption(991, false, RoleId.Cracker);
             CrackerPlayerCount = Create(992, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CrackerOption);
             CrackerCoolTime = Create(986, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, CrackerOption);
             CrackerIsAdminView = Create(987, false, CustomOptionType.Impostor, "CrackerIsAdminView", false, CrackerOption);

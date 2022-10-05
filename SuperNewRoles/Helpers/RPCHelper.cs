@@ -42,7 +42,8 @@ namespace SuperNewRoles.Helpers
         public static void SendSingleRpc(CustomRPC RPCId, uint NetId, PlayerControl SendTarget = null) => StartRPC(NetId, RPCId, SendTarget).EndRPC();
         public static void SendSingleRpc(CustomRPC RPCId, PlayerControl SendTarget = null) => StartRPC(RPCId, SendTarget).EndRPC();
 
-        public static void SendSinglePlayerRpc(CustomRPC RPCId, byte Target, PlayerControl SendTarget = null) {
+        public static void SendSinglePlayerRpc(CustomRPC RPCId, byte Target, PlayerControl SendTarget = null)
+        {
             var writer = StartRPC(RPCId, SendTarget);
             writer.Write(Target);
             writer.EndRPC();
