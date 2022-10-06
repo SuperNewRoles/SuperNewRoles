@@ -154,40 +154,6 @@ namespace SuperNewRoles.Roles.Neutral
             gmButtons = new List<CustomButton>();
             gmKillButtons = new List<CustomButton>();
 
-            Vector3 gmCalcPos(byte index)
-            {
-                return new Vector3(-0.25f, -0.25f, 1.0f) + Vector3.right * index * 0.55f;
-            }
-
-            Action gmKillButtonOnClick(byte index)
-            {
-                return () =>
-                {
-                    PlayerControl target = ModHelpers.PlayerById(index);
-                    if (!MapOption.playerIcons.ContainsKey(index) || target.Data.Disconnected)
-                    {
-                        return;
-                    }
-
-                    if (!target.Data.IsDead)
-                    {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
-                        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                        writer.Write(index);
-                        writer.Write(0);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, index, 0);
-                    }
-                    else
-                    {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ReviveRPC, SendOption.Reliable, -1);
-                        writer.Write(index);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.ReviveRPC(index);
-                    }
-                };
-            };
-
             for (byte i = 0; i < 15; i++)
             {
 
