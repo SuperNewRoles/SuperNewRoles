@@ -4784,6 +4784,16 @@
         "11": "\u540d\u524d\u3092\u5909\u66f4\u3059\u308b\u3053\u3068\u304c\u3067\u304d\u307e\u305b\u3093\u3002\n/rename\u30b3\u30de\u30f3\u30c9\u306f\n\u30db\u30b9\u30c8\u6642\u306e\u307f\u4f7f\u7528\u53ef\u80fd\u3067\u3059\u3002",
         "13": "\u5b83\u4e0d\u80fd\u88ab\u91cd\u65b0\u547d\u540d\u3002\n/rename\u547d\u4ee4\u662f\n\u4ec5\u5728\u6258\u7ba1\u65f6\u53ef\u7528\u3002"
     },
+    "betatext1": {
+        "0": "\nThis is a beta version! Watch out for bugs!",
+        "11": "\n\u30d9\u30fc\u30bf\u7248\u3067\u3059! \u30d0\u30b0\u306b\u306f\u6ce8\u610f\u3057\u3066\u304f\u3060\u3055\u3044!",
+        "13": "\n\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u7248\u672c! \u5c0f\u5fc3\u866b\u5b50!"
+    },
+    "betatext2": {
+        "0": "\n~Information for developers~",
+        "11": "\n\uff5e\u958b\u767a\u8005\u7528\u306e\u60c5\u5831\uff5e",
+        "13": "\n~ \u5f00\u53d1\u8005\u7684\u4fe1\u606f ~\u3002"
+    },
     "Agartha_WareHouse": {
         "0": "WareHouse",
         "11": "\u5009\u5eab",
