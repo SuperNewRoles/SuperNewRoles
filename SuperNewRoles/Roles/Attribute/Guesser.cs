@@ -231,18 +231,19 @@ namespace SuperNewRoles.Roles.Attribute
                         // Reset the GUI
                         __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(true));
                         UnityEngine.Object.Destroy(container.gameObject);
-                        if ((RoleClass.NiceGuesser.Count > 1 || RoleClass.NiceGuesser.Count == -1) && dyingTarget != PlayerControl.LocalPlayer && (PlayerControl.LocalPlayer.IsImpostor() ? CustomOptions.EvilGuesserShortOneMeetingCount.GetBool() : CustomOptions.NiceGuesserShortOneMeetingCount.GetBool()))
+
+                        if (RoleClass.NiceGuesser.Count == -1)
+                        {
+                            RoleClass.NiceGuesser.Count = PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser) ? CustomOptions.NiceGuesserShortMaxCount.GetInt() : CustomOptions.EvilGuesserShortMaxCount.GetInt();
+                        }
+                        RoleClass.NiceGuesser.Count--;
+                        if ((RoleClass.NiceGuesser.Count > 0) && dyingTarget != PlayerControl.LocalPlayer && (PlayerControl.LocalPlayer.IsImpostor() ? CustomOptions.EvilGuesserShortOneMeetingCount.GetBool() : CustomOptions.NiceGuesserShortOneMeetingCount.GetBool()))
                         {
                             __instance.playerStates.ToList().ForEach(x => { if (x.TargetPlayerId == dyingTarget.PlayerId && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
                         }
                         else
                         {
                             __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
-                        }
-
-                        if (RoleClass.NiceGuesser.Count == -1)
-                        {
-                            RoleClass.NiceGuesser.Count = PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser) ? CustomOptions.NiceGuesserShortMaxCount.GetInt() : CustomOptions.EvilGuesserShortMaxCount.GetInt();
                         }
                         // Shoot player and send chat info if activated
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.GuesserShoot, SendOption.Reliable, -1);

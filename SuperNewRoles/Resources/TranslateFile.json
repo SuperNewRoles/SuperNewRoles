@@ -2102,15 +2102,19 @@
         "11": "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u4ee5\u5916\u306e\u9663\u55b6\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
         "13": "\u5728\u4f1a\u8bae\u4e0a\u731c\u6d4b\u4ed6\u4eba\u7684\u8eab\u4efd"
     },
-    "EvilGuesserOneMeetingShortSetting": {
-        "0": "Multiple hits in one meeting",
+    "EvilGuesserTitle2": {
+        "0": "Guess the position of the outsider",
         "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
         "13": "\u523a\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a\u8bae\u4e2d\u591a\u6b21\u731c\u6d4b"
     },
-    "EvilGuesserShortMaxCountSetting": {
-        "0": "Number of times you can hit",
+    "EvilGuesserOneMeetingShortSetting": {
+        "0": "Multiple hits in one meeting",
         "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
         "13": "\u523a\u5ba2\u6700\u5927\u53ef\u731c\u6d4b\u6b21\u6570"
+    },
+    "EvilGuesserShortMaxCountSetting": {
+        "0": "Number of times you can hit",
+        "11": "\u6253\u3066\u308b\u6700\u5927\u6570"
     },
     "VultureName": {
         "0": "Vulture",
