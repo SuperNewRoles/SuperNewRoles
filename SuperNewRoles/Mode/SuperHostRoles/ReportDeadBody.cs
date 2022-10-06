@@ -1,5 +1,4 @@
 using System.Linq;
-
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 
@@ -12,6 +11,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (!AmongUsClient.Instance.AmHost) return true;
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             //会議ボタンでもレポートでも起こる処理
+
+            foreach(var player in PlayerControl.AllPlayerControls)
+            {
+                if (player.IsRole(RoleId.Doppelganger))
+                {
+                    SyncSetting.CustomSyncSettings(player);
+                }
+            }
 
             if (target == null)
             {

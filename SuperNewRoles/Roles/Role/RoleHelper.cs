@@ -1310,6 +1310,7 @@ namespace SuperNewRoles
                     RoleId.Kunoichi => RoleClass.Kunoichi.KillCoolTime,
                     RoleId.Matryoshka => RoleClass.Matryoshka.MyKillCoolTime,
                     RoleId.ShiftActor => ShiftActor.KillCool,
+                    RoleId.Doppelganger => RoleClass.Doppelganger.CurrentCool,
                     _ => PlayerControl.GameOptions.killCooldown
                 };
             }
@@ -1317,6 +1318,7 @@ namespace SuperNewRoles
         }
         public static float GetEndMeetingKillCoolTime(PlayerControl p)
         {
+            if (p.IsRole(RoleId.Doppelganger)) return PlayerControl.GameOptions.killCooldown;
             return GetCoolTime(p);
         }
         public static RoleId GetGhostRole(this PlayerControl player, bool IsChache = true)
