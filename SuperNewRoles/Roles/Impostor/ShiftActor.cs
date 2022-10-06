@@ -43,6 +43,14 @@ namespace SuperNewRoles.Roles.Impostor
         }
         public static bool CanShow => Count <= Limit;// シェイプカウントが上限より少ないか
 
+        public static void FixedUpdate()
+        {
+            if (CachedPlayer.LocalPlayer.Data.Role == null || CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.Shapeshifter)
+            {
+                RoleManager.Instance.SetRole(CachedPlayer.LocalPlayer, RoleTypes.Shapeshifter);
+            }
+        }
+
         public static void Shapeshift(PlayerControl shapeshifter, PlayerControl target)
         {
             Logger.Info($"現在のカウント{Count}", "ShiftActor");
