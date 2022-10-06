@@ -361,10 +361,10 @@ namespace SuperNewRoles.Modules
             }
         }
 
-        public static void ChiefSidekick(byte targetid,bool IsTask)
+        public static void ChiefSidekick(byte targetid,bool IsTaskClear)
         {
             RoleClass.Chief.SheriffPlayer.Add(targetid);
-            if (!IsTask)
+            if (IsTaskClear)
             {
                 RoleClass.Chief.NoTaskSheriffPlayer.Add(targetid);
             }
@@ -702,7 +702,16 @@ namespace SuperNewRoles.Modules
             {
                 Clergyman.LightOutStartRPC();
             }
+            else
+            {
+                if (RoleClass.Clergyman.currentMessage.text != null)
+                {
+                    GameObject.Destroy(RoleClass.Clergyman.currentMessage.text.gameObject);
+                }
+                RoleClass.Clergyman.IsLightOff = false;
+            }
         }
+
         public static void SetSpeedBoost(bool Is, byte id)
         {
             var player = ModHelpers.PlayerById(id);
