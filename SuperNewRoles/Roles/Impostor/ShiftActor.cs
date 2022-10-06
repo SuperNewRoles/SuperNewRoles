@@ -41,11 +41,12 @@ namespace SuperNewRoles.Roles.Impostor
             Count = 0;
             IsWatchAttribute = ShiftActorCanWatchAttribute.GetBool(); // 重複を見れるか
         }
-        public static bool CanShow = Count >= Limit;// シェイプカウントが上限より少ないか
+        public static bool CanShow = Count <= Limit;// シェイプカウントが上限より少ないか
 
         public static void Shapeshift(PlayerControl shapeshifter, PlayerControl target)
         {
             Logger.Info($"現在のカウント{Count}", "ShiftActor");
+            if (shapeshifter.PlayerId != CachedPlayer.LocalPlayer.PlayerId) return;
             if (!CanShow) return;
             var TargetRoleText = "";
 
