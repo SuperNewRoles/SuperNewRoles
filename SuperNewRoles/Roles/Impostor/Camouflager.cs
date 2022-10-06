@@ -81,16 +81,24 @@ namespace SuperNewRoles.Roles.Impostor
             }
         }
 
+        public static void ResetCamouflage(PlayerControl target)
+        {
+            if (Attire.ContainsKey(target.PlayerId))
+            {
+                target.RpcSetName(Attire[target.PlayerId].Name);
+                target.RpcSetColor(Attire[target.PlayerId].Color);
+                target.RpcSetSkin(Attire[target.PlayerId].Skin);
+                target.RpcSetHat(Attire[target.PlayerId].Hat);
+                target.RpcSetVisor(Attire[target.PlayerId].Visor);
+                target.RpcSetPet(Attire[target.PlayerId].Pet);
+            }
+        }
+
         public static void ResetCamouflage()
         {
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
-                player.RpcSetName(Attire[player.PlayerId].Name);
-                player.RpcSetColor(Attire[player.PlayerId].Color);
-                player.RpcSetSkin(Attire[player.PlayerId].Skin);
-                player.RpcSetHat(Attire[player.PlayerId].Hat);
-                player.RpcSetVisor(Attire[player.PlayerId].Visor);
-                player.RpcSetPet(Attire[player.PlayerId].Pet);
+                ResetCamouflage(player);
             }
         }
         public static void ResetCoolTime()

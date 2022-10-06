@@ -9,6 +9,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
@@ -669,6 +670,7 @@ namespace SuperNewRoles.Patches
             }
             Logger.Info("全スタントマン系通過", "CheckMurder");
             __instance.RpcMurderPlayerCheck(target);
+            Camouflager.ResetCamouflage(target);
             Logger.Info("RpcMurderPlayerCheck(一番下)を通過", "CheckMurder");
             return false;
         }
