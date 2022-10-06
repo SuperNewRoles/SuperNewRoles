@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Agartha;
 using HarmonyLib;
@@ -138,14 +139,13 @@ namespace SuperNewRoles.Modules
         {
             if (!CustomOptions.MadRolesCanVentMove.GetBool())
             {
-                Dictionary<string, VentData> ventMap = VentData.VentMap;
-                foreach (var ventData in ventMap)
-                {
-                    var vent = ventData.Value.Vent;
-                    vent.Center = null;
-                    vent.Right = null;
-                    vent.Left = null;
-                }
+                if (Vent.currentVent != null) Vent.currentVent.Buttons.All(x => {
+                    if (x != null)
+                    {
+                        x.gameObject.SetActive(false);
+                    }
+                    return false;
+                });
             }
         }
     }
