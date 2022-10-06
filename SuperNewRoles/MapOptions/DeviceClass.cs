@@ -67,7 +67,7 @@ namespace SuperNewRoles.MapOptions
                                         {
                                             num2--;
                                         }
-                                        else if (RoleClass.Cracker.CrackedPlayers.Contains(component.PlayerId) && (component.PlayerId != CachedPlayer.LocalPlayer.PlayerId || !CustomOptions.CrackerIsSelfNone.GetBool()))
+                                        else if (!CustomOptions.CrackerIsAdminView.GetBool() && RoleClass.Cracker.CrackedPlayers.Contains(component.PlayerId) && (component.PlayerId != CachedPlayer.LocalPlayer.PlayerId || !CustomOptions.CrackerIsSelfNone.GetBool()))
                                         {
                                             num2--;
                                         }

@@ -17,7 +17,7 @@ namespace SuperNewRoles.Roles.Impostor
                 {
                     VitalsPanel vitalsPanel = __instance.vitals[k];
                     GameData.PlayerInfo player = GameData.Instance.AllPlayers[k];
-                    if (RoleClass.Cracker.CrackedPlayers.Contains(player.PlayerId) && (player.PlayerId != CachedPlayer.LocalPlayer.PlayerId || !CustomOptions.CrackerIsSelfNone.GetBool()))
+                    if (!CustomOptions.CrackerIsVitalsView.GetBool() && RoleClass.Cracker.CrackedPlayers.Contains(player.PlayerId) && (player.PlayerId != CachedPlayer.LocalPlayer.PlayerId || !CustomOptions.CrackerIsSelfNone.GetBool()))
                         if (!vitalsPanel.IsDead)
                             vitalsPanel.SetDead();
                 }
