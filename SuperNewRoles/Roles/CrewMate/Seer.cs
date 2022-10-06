@@ -41,8 +41,9 @@ namespace SuperNewRoles.Roles
                 {
                     // [enabled = false]のままにすると移行リアクターのFlashが動かなくなる為、処理終了後trueに戻す為のLateTask
                     // haomingさん　ありがとうございます!!
-                    FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
-                    FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(false);
+                    renderer.enabled = true;
+                    renderer.color = Color.black;
+                    renderer.gameObject.SetActive(false);
 
                 }, 0.5f, "ShowFlashReset");
             })));
