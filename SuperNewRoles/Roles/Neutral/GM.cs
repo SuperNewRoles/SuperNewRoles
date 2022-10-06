@@ -190,140 +190,83 @@ namespace SuperNewRoles.Roles.Neutral
 
             for (byte i = 0; i < 15; i++)
             {
-                //TheOtherRolesPlugin.Instance.Log.LogInfo($"Added {i}");
-                void Create(byte i)
-                {
-                    new CustomButton(
-                        () =>
+
+                gmZoomOut = new(
+                    () =>
+                    {
+
+                        if (Camera.main.orthographicSize < 18.0f)
                         {
-                            Logger.Info("クリック");
-                            PlayerControl player = ModHelpers.PlayerById(i);
-                            if (player.IsDead())
-                            {
-                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ReviveRPC, SendOption.Reliable, -1);
-                                writer.Write(i);
-                                AmongUsClient.Instance.FinishRpcImmediately(writer);
-                                RPCProcedure.ReviveRPC(i);
-                            } else
-                            {
-                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
-                                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                                writer.Write(i);
-                                writer.Write(0);
-                                AmongUsClient.Instance.FinishRpcImmediately(writer);
-                                RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, i, 0);
-                            }
-                        },
-                        (bool isAlive, RoleId role) => { return role == RoleId.GM && MapOption.playerIcons.ContainsKey(i) && !ModHelpers.PlayerById(i).Data.Disconnected; },
-                        () =>
-                        {
-                            return true;
-                        },
-                        () =>
-                        {
-                        },
-                        hm.KillButton.graphic.sprite,
-                        new Vector3(0, 1, 0),
-                        hm,
-                        hm.KillButton,
-                        KeyCode.Q,
-                        8,
-                        () =>
-                        {
-                            return true;
+                            Camera.main.orthographicSize *= 1.5f;
+                            hm.UICamera.orthographicSize *= 1.5f;
                         }
-                    )
-                    {
-                        buttonText = ModTranslation.GetString("FinalStatusKill"),
-                        showButtonText = true,
-                        MaxTimer = 0,
-                        Timer = 0
-                    };
-                    /*
 
-                    var buttonPos = gmKillButton.actionButton.buttonLabelText.transform.localPosition;
-                    gmKillButton.actionButton.buttonLabelText.transform.localPosition = new Vector3(buttonPos.x, buttonPos.y + 0.6f, -500f);
-                    gmKillButton.actionButton.buttonLabelText.transform.localScale = new Vector3(1.5f, 1.8f, 1.0f);
-                    */
-                }
-                //Create(i); 
+                        if (hm.transform.localScale.x < 6.0f)
+                        {
+                            hm.transform.localScale *= 1.5f;
+                        }
+
+                        /*TheOtherRolesPlugin.Instance.Log.LogInfo($"Camera zoom {Camera.main.orthographicSize} / {TaskPanelBehaviour.Instance.transform.localPosition.x}");*/
+                    },
+                    (bool IsAlive, RoleId role) => { return role == RoleId.GM; },
+                    () => { return true; },
+                    () => { },
+                    ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GMZoomOut.png", 115f),
+                    // position
+                    Vector3.zero + Vector3.up * 3.75f + Vector3.right * 0.55f,
+                    // hudmanager
+                    hm,
+                    hm.UseButton,
+                    // keyboard shortcut
+                    KeyCode.PageDown,
+                    0,
+                    () => false
+                )
+                {
+                    Timer = 0.0f,
+                    MaxTimer = 0.0f,
+                    showButtonText = false,
+                    LocalScale = Vector3.one * 0.275f
+                };
+
+                gmZoomIn = new(
+                    () =>
+                    {
+
+                        if (Camera.main.orthographicSize > 3.0f)
+                        {
+                            Camera.main.orthographicSize /= 1.5f;
+                            hm.UICamera.orthographicSize /= 1.5f;
+                        }
+
+                        if (hm.transform.localScale.x > 1.0f)
+                        {
+                            hm.transform.localScale /= 1.5f;
+                        }
+
+                        /*TheOtherRolesPlugin.Instance.Log.LogInfo($"Camera zoom {Camera.main.orthographicSize} / {TaskPanelBehaviour.Instance.transform.localPosition.x}");*/
+                    },
+                    (bool IsAlive, RoleId role) => { return role == RoleId.GM; },
+                    () => { return true; },
+                    () => { },
+                    ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GMZoomIn.png", 115f),
+                    // position
+                    Vector3.zero + Vector3.up * 3.75f + Vector3.right * 0.2f,
+                    // hudmanager
+                    hm,
+                    hm.UseButton,
+                    // keyboard shortcut
+                    KeyCode.PageUp,
+                    0,
+                    () => false
+                )
+                {
+                    Timer = 0.0f,
+                    MaxTimer = 0.0f,
+                    showButtonText = false,
+                    LocalScale = Vector3.one * 0.275f
+                };
             }
-
-            gmZoomOut = new CustomButton(
-                () =>
-                {
-
-                    if (Camera.main.orthographicSize < 18.0f)
-                    {
-                        Camera.main.orthographicSize *= 1.5f;
-                        hm.UICamera.orthographicSize *= 1.5f;
-                    }
-
-                    if (hm.transform.localScale.x < 6.0f)
-                    {
-                        hm.transform.localScale *= 1.5f;
-                    }
-
-                    /*TheOtherRolesPlugin.Instance.Log.LogInfo($"Camera zoom {Camera.main.orthographicSize} / {TaskPanelBehaviour.Instance.transform.localPosition.x}");*/
-                },
-                (bool IsAlive, RoleId role) => { return role == RoleId.GM; },
-                () => { return true; },
-                () => { },
-                ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GMZoomOut.png", 115f),
-                // position
-                Vector3.zero + Vector3.up * 3.75f + Vector3.right * 0.55f,
-                // hudmanager
-                hm,
-                hm.UseButton,
-                // keyboard shortcut
-                KeyCode.PageDown,
-                0,
-                () => false
-            )
-            {
-                Timer = 0.0f,
-                MaxTimer = 0.0f,
-                showButtonText = false,
-                LocalScale = Vector3.one * 0.275f
-            };
-
-            gmZoomIn = new CustomButton(
-                () =>
-                {
-
-                    if (Camera.main.orthographicSize > 3.0f)
-                    {
-                        Camera.main.orthographicSize /= 1.5f;
-                        hm.UICamera.orthographicSize /= 1.5f;
-                    }
-
-                    if (hm.transform.localScale.x > 1.0f)
-                    {
-                        hm.transform.localScale /= 1.5f;
-                    }
-
-                    /*TheOtherRolesPlugin.Instance.Log.LogInfo($"Camera zoom {Camera.main.orthographicSize} / {TaskPanelBehaviour.Instance.transform.localPosition.x}");*/
-                },
-                (bool IsAlive, RoleId role) => { return role == RoleId.GM; },
-                () => { return true; },
-                () => { },
-                ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GMZoomIn.png", 115f),
-                // position
-                Vector3.zero + Vector3.up * 3.75f + Vector3.right * 0.2f,
-                // hudmanager
-                hm,
-                hm.UseButton,
-                // keyboard shortcut
-                KeyCode.PageUp,
-                0,
-                () => false
-            )
-            {
-                Timer = 0.0f,
-                MaxTimer = 0.0f,
-                showButtonText = false,
-                LocalScale = Vector3.one * 0.275f
-            };
         }
     }
 }
