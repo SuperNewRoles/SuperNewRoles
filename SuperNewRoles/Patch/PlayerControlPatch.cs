@@ -230,7 +230,7 @@ namespace SuperNewRoles.Patches
                 NewTask(__instance);
                 foreach (ShapeshifterPanel panel in GameObject.FindObjectsOfType<ShapeshifterPanel>()) GameObject.Destroy(panel.gameObject);
                 int index = 0;
-                foreach (var Data in Roles.Neutral.GM.ActionDatas)
+                foreach (var Data in Roles.Neutral.GM.ActionDictionary)
                 {
                     int num = index % 3;
                     int num2 = index / 3;
