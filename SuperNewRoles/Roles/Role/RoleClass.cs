@@ -5,7 +5,6 @@ using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
@@ -27,6 +26,7 @@ namespace SuperNewRoles.Roles
         public static void ClearAndReloadRoles()
         {
             BlockPlayers = new();
+            RandomSpawn.IsFirstSpawn = true;
             DeadPlayer.deadPlayers = new();
             AllRoleSetClass.Assigned = false;
             LateTask.Tasks = new();
@@ -591,6 +591,8 @@ namespace SuperNewRoles.Roles
             public static DateTime OldButtonTimer;
             public static float OldButtonTime;
 
+            public static CustomMessage currentMessage;
+
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
 
             public static void ClearAndReload()
@@ -603,6 +605,7 @@ namespace SuperNewRoles.Roles
                 DefaultImpoVision = PlayerControl.GameOptions.ImpostorLightMod;
                 OldButtonTimer = DateTime.Now;
                 OldButtonTime = 0;
+                currentMessage = null;
             }
         }
         public static class MadMate
@@ -1848,6 +1851,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> ChiefPlayer;
             public static List<byte> SheriffPlayer;
+            public static List<byte> NoTaskSheriffPlayer;
             public static Color32 color = new(255, 255, 0, byte.MaxValue);
             public static bool IsCreateSheriff;
             public static float CoolTime;
@@ -1862,6 +1866,7 @@ namespace SuperNewRoles.Roles
             {
                 ChiefPlayer = new();
                 SheriffPlayer = new();
+                NoTaskSheriffPlayer = new();
                 IsCreateSheriff = false;
                 CoolTime = CustomOptions.ChiefSheriffCoolTime.GetFloat();
                 IsNeutralKill = CustomOptions.ChiefIsNeutralKill.GetBool();
@@ -1991,6 +1996,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> EvilHackerPlayer;
             public static Color32 color = ImpostorRed;
             public static bool IsCreateMadmate;
+            public static bool IsMyAdmin;
             public static Sprite GetButtonSprite()
             {
                 byte mapId = PlayerControl.GameOptions.MapId;
@@ -2004,6 +2010,7 @@ namespace SuperNewRoles.Roles
             {
                 EvilHackerPlayer = new();
                 IsCreateMadmate = CustomOptions.EvilHackerMadmateSetting.GetBool();
+                IsMyAdmin = false;
             }
         }
         public static class HauntedWolf

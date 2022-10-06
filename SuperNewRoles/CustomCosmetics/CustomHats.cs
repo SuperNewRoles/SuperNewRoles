@@ -397,9 +397,9 @@ namespace SuperNewRoles.CustomCosmetics
 
                     if (!ext.IsNull)
                     {
-                        if (!packages.ContainsKey(ext.package))
-                            packages[ext.package] = new List<System.Tuple<HatData, HatExtension>>();
-                        packages[ext.package].Add(new System.Tuple<HatData, HatExtension>(hatData, ext));
+                        if (!packages.ContainsKey(ext.package == null ? innerslothPackageName : ext.package))
+                            packages[ext.package == null ? innerslothPackageName : ext.package] = new();
+                        packages[ext.package == null ? innerslothPackageName : ext.package].Add(new System.Tuple<HatData, HatExtension>(hatData, ext));
                     }
                     else
                     {
@@ -427,6 +427,7 @@ namespace SuperNewRoles.CustomCosmetics
                 }
 
                 __instance.scroller.ContentYBounds.max = -(YOffset + 3.0f + headerSize);
+                __instance.currentHat = FastDestroyableSingleton<HatManager>.Instance.GetHatById(SaveManager.LastHat);
                 return false;
             }
         }
@@ -434,7 +435,7 @@ namespace SuperNewRoles.CustomCosmetics
         [HarmonyPatch(typeof(HatsTab), nameof(HatsTab.Update))]
         public class HatsTabUpdatePatch
         {
-            public static bool Prefix()
+            public static bool Prefix(HatsTab __instance)
             {
                 foreach (TMPro.TMP_Text customText in hatsTabCustomTexts)
                 {
@@ -464,7 +465,8 @@ namespace SuperNewRoles.CustomCosmetics
             { "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master", "SuperNewNamePlates" },
 
             { "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master", "mememurahat" },
-            { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },
+            // Jsonエラーが出ている為一時的に消去
+            // { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },
 
             { "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master", "TheOtherRolesGMHaoming"},
             { "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master", "TheOtherRolesGM"},
@@ -649,7 +651,6 @@ namespace SuperNewRoles.CustomCosmetics
                         info.reshashbf = current["reshashbf"]?.ToString();
 
                         info.package = current["package"]?.ToString();
-                        if (current["package"] == null) info.package = "NameNone";
                         if (info.package != null && !CustomHats.Keys.Contains(info.package))
                         {
                             CustomHats.Keys.Add(info.package);

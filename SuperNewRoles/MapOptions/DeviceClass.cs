@@ -1,4 +1,5 @@
 using HarmonyLib;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.MapOptions
 {
@@ -21,7 +22,15 @@ namespace SuperNewRoles.MapOptions
             {
                 bool IsUse = MapOption.UseAdmin;
 
-                return IsUse;
+                return IsUse || RoleClass.EvilHacker.IsMyAdmin;
+            }
+        }
+        [HarmonyPatch(typeof(MapCountOverlay),nameof(MapCountOverlay.OnDisable))]
+        class MapCountOverlayOnDisablePatch
+        {
+            public static void Postfix()
+            {
+                RoleClass.EvilHacker.IsMyAdmin = false;
             }
         }
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]

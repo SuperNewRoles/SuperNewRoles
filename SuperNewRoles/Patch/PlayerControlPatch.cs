@@ -4,6 +4,7 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -44,7 +45,7 @@ namespace SuperNewRoles.Patches
             SyncSetting.CustomSyncSettings();
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             if (target.IsBot()) return true;
-            if (AmongUsClient.Instance.AmHost) return true;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return true;
             if (__instance.PlayerId != target.PlayerId)
             {
                 if (__instance.IsRole(RoleId.Doppelganger))
@@ -832,6 +833,14 @@ namespace SuperNewRoles.Patches
                 {
                     RoleClass.Finder.KillCount++;
                 }
+                if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Slugger))
+                {
+                    if (CustomOptions.SluggerIsKillCoolSync.GetBool())
+                    {
+                        HudManagerStartPatch.SluggerButton.MaxTimer = CustomOptions.SluggerCoolTime.GetFloat();
+                        HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
+                    }
+                }
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.Death);
                 if (target.IsRole(RoleId.Assassin))
                 {
@@ -971,6 +980,10 @@ namespace SuperNewRoles.Patches
             if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
             if (ModeHandler.IsMode(ModeId.Default))
             {
+                if (__instance.IsRole(RoleId.EvilButtoner, RoleId.NiceButtoner) && target != null && target.PlayerId == __instance.PlayerId)
+                {
+                    return true;
+                }
                 if (__instance.IsRole(RoleId.Amnesiac))
                 {
                     if (!target.Disconnected)

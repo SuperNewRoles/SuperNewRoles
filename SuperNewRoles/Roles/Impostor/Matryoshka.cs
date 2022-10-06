@@ -17,7 +17,12 @@ namespace SuperNewRoles.Roles.Impostor
                 if (Data.Value == null) continue;
                 Data.Value.Reported = !CustomOptions.MatryoshkaWearReport.GetBool();
                 Data.Value.bodyRenderer.enabled = false;
-                Data.Value.transform.position = ModHelpers.PlayerById(Data.Key).transform.position;
+                PlayerControl player = ModHelpers.PlayerById(Data.Key);
+                Data.Value.transform.position = player.transform.position;
+                if (!player.IsRole(RoleId.Matryoshka))
+                {
+                    Set(player, null, false);
+                }
             }
         }
         public static void WrapUp()
