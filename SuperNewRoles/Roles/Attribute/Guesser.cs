@@ -17,7 +17,7 @@ namespace SuperNewRoles.Roles.Attribute
         private static Dictionary<TeamRoleType, SpriteRenderer> RoleSelectButtons;
         private static List<SpriteRenderer> PageButtons;
         public static TeamRoleType currentTeamType;
-        static void guesserSelectRole(TeamRoleType Role,bool SetPage = true)
+        static void guesserSelectRole(TeamRoleType Role, bool SetPage = true)
         {
             currentTeamType = Role;
             if (SetPage) Page = 1;
@@ -168,9 +168,8 @@ namespace SuperNewRoles.Roles.Attribute
             {
                 if (roleInfo == null ||
                     roleInfo.RoleId == RoleId.Hunter ||
-                    roleInfo.RoleId is RoleId.Assassin or RoleId.Marine
-                    )
-                //(roleInfo != IntroDate.CrewmateIntro && roleInfo != IntroDate.ImpostorIntro &&  IntroDate.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0))
+                    roleInfo.RoleId is RoleId.Assassin or RoleId.Marine ||
+                    (roleInfo != IntroDate.CrewmateIntro && roleInfo != IntroDate.ImpostorIntro && IntroDate.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0))
                 {
                     Logger.Info("continueになりました:"+roleInfo.RoleId, "Guesser");
                     continue; // Not guessable roles
