@@ -220,9 +220,11 @@ namespace SuperNewRoles.Mode
         public static bool IsMode(ModeId mode, bool IsChache = true)
         {
             if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || !PlayerControlHepler.IsMod(AmongUsClient.Instance.HostId)) return mode == ModeId.Default;
-            return mode == ModeId.Werewolf && IsChache
-                ? thisMode == ModeId.Default && IsMode(ModeId.Werewolf, false)
-                : IsChache
+            if (mode == ModeId.Werewolf)
+            {
+                return ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[8];
+            }
+            return IsChache
                 ? mode == thisMode
                 : mode switch
                 {
@@ -235,7 +237,6 @@ namespace SuperNewRoles.Mode
                     ModeId.NotImpostorCheck => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[5],
                     ModeId.Detective => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[6],
                     ModeId.CopsRobbers => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[7],
-                    ModeId.Werewolf => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[8],
                     ModeId.LevelUp => false,//ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[7];
                     _ => false,
                 };
