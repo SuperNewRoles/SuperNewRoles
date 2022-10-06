@@ -42,10 +42,7 @@ namespace SuperNewRoles.Patch
         public static void Prefix(GameData.PlayerInfo exiled)
         {
             RoleClass.IsCoolTimeSetted = false;
-            if (exiled != null)
-            {
-                FalseCharges.WrapUp(exiled.Object);
-            }
+            FalseCharges.WrapUp(exiled != null ? exiled.Object : null);
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.CognitiveDeficit)
@@ -93,6 +90,7 @@ namespace SuperNewRoles.Patch
             Roles.Neutral.Hitman.WrapUp();
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
+            Bestfalsecharge.WrapUp();
             if (AmongUsClient.Instance.AmHost)
             {
                 PlayerAnimation.PlayerAnimations.All(x =>

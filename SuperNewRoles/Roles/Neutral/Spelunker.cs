@@ -1,6 +1,6 @@
 using System.Linq;
-using UnityEngine;
 using HarmonyLib;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral
 {
@@ -13,6 +13,7 @@ namespace SuperNewRoles.Roles.Neutral
                 if (role != RoleId.Spelunker)
                 {
                     player.RpcMurderPlayer(player);
+                    player.RpcSetFinalStatus(FinalStatus.SpelunkerSetRoleDeath);
                     return false;
                 }
             }
@@ -39,7 +40,11 @@ namespace SuperNewRoles.Roles.Neutral
                     if (!RoleClass.Spelunker.IsVentChecked)
                     {
                         RoleClass.Spelunker.IsVentChecked = true;
-                        if (ModHelpers.IsSucsessChance(RoleClass.Spelunker.VentDeathChance)) PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        if (ModHelpers.IsSucsessChance(RoleClass.Spelunker.VentDeathChance))
+                        {
+                            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                            PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SpelunkerVentDeath);
+                        }
                     }
                 }
                 else
@@ -58,6 +63,7 @@ namespace SuperNewRoles.Roles.Neutral
                         if (RoleClass.Spelunker.CommsOrLightdownTime <= 0)
                         {
                             PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                            PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SpelunkerCommsElecDeath);
                         }
                     }
                 }
@@ -69,6 +75,7 @@ namespace SuperNewRoles.Roles.Neutral
             if (DeathPosition != null && Vector2.Distance((Vector2)DeathPosition, CachedPlayer.LocalPlayer.transform.position) < 0.5f)
             {
                 PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.NunDeath);
             }
         }
         public static void WrapUp()
@@ -105,6 +112,7 @@ namespace SuperNewRoles.Roles.Neutral
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSucsessChance(RoleClass.Spelunker.DoorOpenChance))
                     {
                         PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SpelunkerOpenDoor);
                     }
                 }
             }

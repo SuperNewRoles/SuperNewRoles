@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using SuperNewRoles.Helpers;
-using static SuperNewRoles.Patch.SetNamesClass;
-using UnityEngine;
 using SuperNewRoles.Mode.SuperHostRoles;
+using UnityEngine;
+using static SuperNewRoles.Patch.SetNamesClass;
 
 namespace SuperNewRoles.Mode.CopsRobbers
 {
@@ -278,7 +278,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.RpcSetName(p.GetDefaultName());
-                        if (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool()) HideName();
+                        if (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool()) ModeHandler.HideName();
                         if (p.IsImpostor())
                         {
                             p.RpcSnapTo(GetPosition(GetRandomSpawnPosition(p)));
@@ -341,20 +341,6 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     }
                 }
             }
-        }
-        public static void HideName()
-        {
-            if (AmongUsClient.Instance.AmHost)
-            {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                {
-                    string name = "<color=#00000000>" + p.GetDefaultName();
-
-                    p.RpcSetName(name);
-                    SuperNewRolesPlugin.Logger.LogInfo("[Mode.CopsRobbers : HideName()]" + p.GetDefaultName() + "の名前を透明に変更しました");
-                }
-            }
-            else SuperNewRolesPlugin.Logger.LogInfo("[Mode.CopsRobbers : HideName()]" + PlayerControl.LocalPlayer.GetDefaultName() + "ホストでない為、名前を透明化する処理を飛ばしました。");
         }
     }
 }

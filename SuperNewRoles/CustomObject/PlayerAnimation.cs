@@ -168,10 +168,16 @@ namespace SuperNewRoles.CustomObject
                     if (SoundManagerSource != null) SoundManagerSource.Stop();
                     break;
                 case RpcAnimationType.SluggerCharge:
+                    Playing = true;
                     SluggerChargeCreateAnimation();
                     void SluggerChargeCreateAnimation()
                     {
-                        if (Player.IsDead()) return;
+                        if (Player.IsDead() || !Player.IsRole(RoleId.Slugger) || !Playing)
+                        {
+                            Playing = false;
+                            SpriteRender.sprite = null;
+                            return;
+                        }
                         Init(GetSprites("SuperNewRoles.Resources.harisen.tame_", 4), false, 12, new(() =>
                         {
                             SluggerChargeCreateAnimation();
@@ -201,13 +207,13 @@ namespace SuperNewRoles.CustomObject
                     }
                     break;
                 case RpcAnimationType.SluggerMurder:
-                    Init(PlayerAnimation.GetSprites("SuperNewRoles.Resources.harisen.harisen_", 8), false, 40);
+                    Init(GetSprites("SuperNewRoles.Resources.harisen.harisen_", 8), false, 40);
                     OnAnimationEnd = new(() =>
                     {
-                        Init(PlayerAnimation.GetSprites("SuperNewRoles.Resources.harisen.harisen_", 1, start: 9), false, 8);
+                        Init(GetSprites("SuperNewRoles.Resources.harisen.harisen_", 1, start: 9), false, 8);
                         OnAnimationEnd = new(() =>
                         {
-                            Init(PlayerAnimation.GetSprites("SuperNewRoles.Resources.harisen.harisen_", 2, start: 10), false, 40);
+                            Init(GetSprites("SuperNewRoles.Resources.harisen.harisen_", 2, start: 10), false, 40);
                             OnFixedUpdate = new(() =>
                             {
                                 transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
