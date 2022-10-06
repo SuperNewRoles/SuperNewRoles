@@ -276,7 +276,10 @@ namespace SuperNewRoles.Roles.Attribute
         {
             public static void Postfix(MeetingHud __instance)
             {
-                createGuesserButton(__instance);
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilGuesser, RoleId.NiceGuesser) && (RoleClass.NiceGuesser.Count > 0 || RoleClass.NiceGuesser.Count == -1))
+                {
+                    createGuesserButton(__instance);
+                }
             }
         }
         public static void createGuesserButton(MeetingHud __instance)
