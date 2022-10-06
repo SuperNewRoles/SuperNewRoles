@@ -21,7 +21,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static bool Prefix(MapCountOverlay __instance)
             {
-                bool IsUse = MapOption.UseAdmin;
+                bool IsUse = MapOption.UseAdmin || RoleClass.EvilHacker.IsMyAdmin;
                 if (IsUse)
                 {
                     bool commsActive = false;
@@ -87,7 +87,7 @@ namespace SuperNewRoles.MapOptions
                         }
                     }
                 }
-                return IsUse || RoleClass.EvilHacker.IsMyAdmin;
+                return false;
             }
         }
         [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnDisable))]
