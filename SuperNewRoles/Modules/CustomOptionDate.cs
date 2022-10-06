@@ -1674,11 +1674,15 @@ namespace SuperNewRoles.Modules
             TaskerIsKillCoolTaskNow = Create(1011, false, CustomOptionType.Impostor, "TaskerIsKillCoolTaskNow", true, TaskerOption);
             TaskerCanKill = Create(1012, false, CustomOptionType.Impostor, "TaskerCanKill", true, TaskerOption);
 
-            NiceGuesserOption = new CustomRoleOption(971, false, CustomOptionType.Crewmate, "NiceGuesserName", RoleClass.NiceGuesser.color, 1);
-            NiceGuesserPlayerCount = CustomOption.Create(972, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGuesserOption);
-            NiceGuesserShortMaxCount = CustomOption.Create(977, false, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, NiceGuesserOption);
-            NiceGuesserShortOneMeetingCount = CustomOption.Create(978, false, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, NiceGuesserOption);
+            NiceGuesserOption = new(971, false, CustomOptionType.Crewmate, "NiceGuesserName", RoleClass.NiceGuesser.color, 1);
+            NiceGuesserPlayerCount = Create(972, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGuesserOption);
+            NiceGuesserShortMaxCount = Create(977, false, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, NiceGuesserOption);
+            NiceGuesserShortOneMeetingCount = Create(978, false, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, NiceGuesserOption);
 
+            EvilGuesserOption = new(973, false, CustomOptionType.Impostor, "EvilGuesserName", RoleClass.EvilGuesser.color, 1);
+            EvilGuesserPlayerCount = Create(974, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
+            EvilGuesserShortMaxCount = Create(975, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
+            EvilGuesserShortOneMeetingCount = Create(976, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

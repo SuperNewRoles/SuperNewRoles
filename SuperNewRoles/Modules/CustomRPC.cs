@@ -238,21 +238,39 @@ namespace SuperNewRoles.Modules
     }
     public static class RPCProcedure
     {
-        public static void guesserShoot(byte killerId, byte dyingTargetId, byte guessedTargetId, byte guessedRoleType)
+        public static void GuesserShoot(byte killerId, byte dyingTargetId, byte guessedTargetId, byte guessedRoleId)
         {
-            PlayerControl killer = ModHelpers.PlayerById(killerId);
             PlayerControl dyingTarget = ModHelpers.PlayerById(dyingTargetId);
             if (dyingTarget == null) return;
             dyingTarget.Exiled();
-
             if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.KillSfx, false, 0.8f);
+            if (MeetingHud.Instance)
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == dyingTargetId)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
 
+                    if (pva.VotedFor != dyingTargetId) continue;
+                    pva.UnsetVote();
+                    var voteAreaPlayer = ModHelpers.PlayerById(pva.TargetPlayerId);
+                    if (!voteAreaPlayer.AmOwner) continue;
+                    MeetingHud.Instance.ClearVote();
+
+                }
+                if (AmongUsClient.Instance.AmHost)
+                    MeetingHud.Instance.CheckForEndVoting();
+            }
             PlayerControl guesser = ModHelpers.PlayerById(killerId);
-            if (HudManager.Instance != null && guesser != null)
-                if (PlayerControl.LocalPlayer == dyingTarget)
-                    HudManager.Instance.KillOverlay.ShowKillAnimation(guesser.Data, dyingTarget.Data);
-
-            PlayerControl guessedTarget = ModHelpers.PlayerById(guessedTargetId);
+            if (FastDestroyableSingleton<HudManager>.Instance != null && guesser != null)
+                if (CachedPlayer.LocalPlayer.PlayerControl == dyingTarget)
+                {
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(guesser.Data, dyingTarget.Data);
+                    if (Roles.Attribute.Guesser.guesserUI != null) Roles.Attribute.Guesser.ExitButton.OnClick.Invoke();
+                }
         }
 
         public static void SetFinalStatus(byte targetId, FinalStatus Status)
@@ -1270,6 +1288,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.SetFinalStatus:
                             SetFinalStatus(reader.ReadByte(), (FinalStatus)reader.ReadByte());
+                            break;
+                        case CustomRPC.GuesserShoot:
+                            GuesserShoot(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }

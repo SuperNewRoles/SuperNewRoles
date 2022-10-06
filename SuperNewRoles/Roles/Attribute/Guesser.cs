@@ -12,7 +12,8 @@ namespace SuperNewRoles.Roles.Attribute
     {
         public const int MaxOneScreenRole = 40;
         public static int Page;
-        private static GameObject guesserUI;
+        public static PassiveButton ExitButton;
+        public static GameObject guesserUI;
         private static Dictionary<TeamRoleType, List<Transform>> RoleButtons;
         private static Dictionary<TeamRoleType, SpriteRenderer> RoleSelectButtons;
         private static List<SpriteRenderer> PageButtons;
@@ -73,6 +74,7 @@ namespace SuperNewRoles.Roles.Attribute
                 __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(true));
                 UnityEngine.Object.Destroy(container.gameObject);
             }));
+            ExitButton = exitButton.GetComponent<PassiveButton>();
 
             List<Transform> buttons = new();
             Transform selectedButton = null;
@@ -249,7 +251,7 @@ namespace SuperNewRoles.Roles.Attribute
                         writer.Write(focusedTarget.PlayerId);
                         writer.Write((byte)roleInfo.RoleId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.guesserShoot(PlayerControl.LocalPlayer.PlayerId, dyingTarget.PlayerId, focusedTarget.PlayerId, (byte)roleInfo.RoleId);
+                        RPCProcedure.GuesserShoot(PlayerControl.LocalPlayer.PlayerId, dyingTarget.PlayerId, focusedTarget.PlayerId, (byte)roleInfo.RoleId);
                     }
                 }));
                 i[(int)roleInfo.Team]++;
