@@ -467,10 +467,9 @@ namespace SuperNewRoles.Patch
             }
             var gameOverReason = AdditionalTempData.gameOverReason;
             AdditionalTempData.Clear();
-
             foreach (var p in GameData.Instance.AllPlayers)
             {
-                if (p.Object.IsPlayer())
+                if (p != null && p.Object != null &&  p.Object.IsPlayer())
                 {
                     //var p = pc.Data;
                     var roles = IntroDate.GetIntroDate(p.Object.GetRole(), p.Object);
@@ -626,7 +625,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (cp.PlayerControl.IsJackalTeam())
                     {
-                        TempData.winners.Add(new(WinnerPlayer.Data));
+                        TempData.winners.Add(new(cp.Data));
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.JackalWin;
@@ -1368,7 +1367,7 @@ namespace SuperNewRoles.Patch
                         if (playerInfo.Object.IsAlive())
                         {
                             numTotalAlive++;
-                            if (playerInfo.Object.IsRole(RoleId.Jackal, RoleId.Sidekick, RoleId.TeleportingJackal, RoleId.JackalSeer, RoleId.SidekickSeer))
+                            if (playerInfo.Object.IsJackalTeamJackal() || playerInfo.Object.IsJackalTeamSidekick())
                             {
                                 numTotalJackalTeam++;
                             }

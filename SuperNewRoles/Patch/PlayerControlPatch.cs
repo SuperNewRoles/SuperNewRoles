@@ -4,6 +4,7 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -50,7 +51,7 @@ namespace SuperNewRoles.Patches
             {
                 if (__instance.IsRole(RoleId.Doppelganger))
                 {
-                    RoleClass.Doppelganger.DoppelgangerTargets.Add(__instance.PlayerId, target);
+                    RoleClass.Doppelganger.Targets.Add(__instance.PlayerId, target);
                     SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
                 }
             }
@@ -58,14 +59,14 @@ namespace SuperNewRoles.Patches
             {
                 if (__instance.IsRole(RoleId.Doppelganger))
                 {
-                    RoleClass.Doppelganger.DoppelgangerTargets.Remove(__instance.PlayerId);
+                    RoleClass.Doppelganger.Targets.Remove(__instance.PlayerId);
                     SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲット、{target.Data.PlayerName}を削除");
                 }
                 if (ModeHandler.IsMode(ModeId.Default))
                 {
                     if (__instance.IsRole(RoleId.Doppelganger))
                     {
-                        Roles.Impostor.Doppelganger.ResetShapeCool();
+                        Doppelganger.ResetShapeCool();
                     }
                 }
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles))
@@ -763,8 +764,8 @@ namespace SuperNewRoles.Patches
         public static bool resetToDead = false;
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
-            EvilGambler.EvilGamblerMurder.Prefix(__instance, target);
-            Roles.Impostor.Doppelganger.KillCoolSetting.MurderPrefix(__instance, target);
+            EvilGambler.MurderPlayerPrefix(__instance, target);
+            Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 target.resetChange();
@@ -826,9 +827,22 @@ namespace SuperNewRoles.Patches
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
+            if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId)
+            {
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
+                {
+                    if (CustomOptions.WaveCannonIsSyncKillCoolTime.GetBool())
+                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonCoolTime.GetFloat();
+                }
+                else
+                {
+                    if (CustomOptions.WaveCannonJackalIsSyncKillCoolTime.GetBool())
+                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonJackalCoolTime.GetFloat();
+                }
+            }
+
             SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
-            Roles.Impostor.Doppelganger.KillCoolSetting.ResetKillCool(__instance);
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
@@ -842,6 +856,14 @@ namespace SuperNewRoles.Patches
                 if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Finder))
                 {
                     RoleClass.Finder.KillCount++;
+                }
+                if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Slugger))
+                {
+                    if (CustomOptions.SluggerIsKillCoolSync.GetBool())
+                    {
+                        HudManagerStartPatch.SluggerButton.MaxTimer = CustomOptions.SluggerCoolTime.GetFloat();
+                        HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
+                    }
                 }
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.Death);
                 if (target.IsRole(RoleId.Assassin))
@@ -907,9 +929,11 @@ namespace SuperNewRoles.Patches
                 }
                 Minimalist.MurderPatch.Postfix(__instance);
             }
-            if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && ModeHandler.IsMode(ModeId.Default))
             {
-                if (__instance.IsImpostor() && !__instance.IsRole(RoleId.EvilGambler))
+                EvilGambler.MurderPlayerPostfix(__instance);
+                Doppelganger.KillCoolSetting.MurderPlayer(__instance, target);
+                if (__instance.IsImpostor())
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance), RoleHelpers.GetCoolTime(__instance));
                 }
@@ -999,6 +1023,20 @@ namespace SuperNewRoles.Patches
                         {
                             __instance.SetRoleRPC(target.Object.GetRole());
                         }
+                    }
+                }
+            }
+            if(ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.IsRole(RoleId.Doppelganger))
+                    {
+                        new LateTask(() =>
+                        {
+                            player.RpcRevertShapeshift(false);
+                        }, 0.5f);
+                        SyncSetting.CustomSyncSettings(player);
                     }
                 }
             }

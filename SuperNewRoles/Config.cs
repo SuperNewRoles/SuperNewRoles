@@ -1,5 +1,7 @@
+using System.IO;
 using BepInEx.Configuration;
 using SuperNewRoles.Patch;
+using UnityEngine;
 
 namespace SuperNewRoles
 {
@@ -21,6 +23,7 @@ namespace SuperNewRoles
         public static ConfigEntry<bool> DownloadSuperNewNamePlates { get; set; }
         public static ConfigEntry<bool> DownloadOtherSkins { get; set; }
         public static ConfigEntry<bool> IsUpdate { get; set; }
+        public static ConfigEntry<bool> IsDeleted { get; set; }
         public static bool IsUpdated = false;
         public static void Load()
         {
@@ -39,6 +42,16 @@ namespace SuperNewRoles
             Ip = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server IP", "127.0.0.1");
             Port = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server Port", (ushort)22023);
             IsUpdate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsUpdate", true);
+            IsDeleted = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsDeleted", false);
+            if (!IsDeleted.Value)
+            {
+                if (Directory.Exists(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\") && Directory.Exists(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\"))
+                {
+                    DirectoryInfo di = new(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\");
+                    di.Delete(true);
+                }
+                IsDeleted.Value = true;
+            }
             if (IsUpdate.Value)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("IsUpdateが有効でした");
