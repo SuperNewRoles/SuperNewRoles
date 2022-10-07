@@ -10,6 +10,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
@@ -45,12 +46,12 @@ namespace SuperNewRoles.Patches
             SyncSetting.CustomSyncSettings();
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             if (target.IsBot()) return true;
-            if (AmongUsClient.Instance.AmHost) return true;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return true;
             if (__instance.PlayerId != target.PlayerId)
             {
                 if (__instance.IsRole(RoleId.Doppelganger))
                 {
-                    RoleClass.Doppelganger.DoppelgangerTargets.Add(__instance.PlayerId, target);
+                    RoleClass.Doppelganger.Targets.Add(__instance.PlayerId, target);
                     SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
                 }
             }
@@ -58,14 +59,14 @@ namespace SuperNewRoles.Patches
             {
                 if (__instance.IsRole(RoleId.Doppelganger))
                 {
-                    RoleClass.Doppelganger.DoppelgangerTargets.Remove(__instance.PlayerId);
+                    RoleClass.Doppelganger.Targets.Remove(__instance.PlayerId);
                     SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲット、{target.Data.PlayerName}を削除");
                 }
                 if (ModeHandler.IsMode(ModeId.Default))
                 {
                     if (__instance.IsRole(RoleId.Doppelganger))
                     {
-                        Roles.Impostor.Doppelganger.ResetShapeCool();
+                        Doppelganger.ResetShapeCool();
                     }
                 }
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles))
@@ -572,6 +573,7 @@ namespace SuperNewRoles.Patches
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                                 RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
                                 SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
+                                return false;
                             }
                             else
                             {
@@ -753,7 +755,7 @@ namespace SuperNewRoles.Patches
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
             EvilGambler.EvilGamblerMurder.Prefix(__instance, target);
-            Roles.Impostor.Doppelganger.KillCoolSetting.MurderPrefix(__instance, target);
+            Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 target.resetChange();
@@ -831,7 +833,6 @@ namespace SuperNewRoles.Patches
 
             SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
-            Roles.Impostor.Doppelganger.KillCoolSetting.ResetKillCool(__instance);
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
@@ -845,6 +846,14 @@ namespace SuperNewRoles.Patches
                 if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Finder))
                 {
                     RoleClass.Finder.KillCount++;
+                }
+                if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Slugger))
+                {
+                    if (CustomOptions.SluggerIsKillCoolSync.GetBool())
+                    {
+                        HudManagerStartPatch.SluggerButton.MaxTimer = CustomOptions.SluggerCoolTime.GetFloat();
+                        HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
+                    }
                 }
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.Death);
                 if (target.IsRole(RoleId.Assassin))
@@ -910,8 +919,9 @@ namespace SuperNewRoles.Patches
                 }
                 Minimalist.MurderPatch.Postfix(__instance);
             }
-            if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && ModeHandler.IsMode(ModeId.Default))
             {
+                Doppelganger.KillCoolSetting.MurderPlayer(__instance, target);
                 if (__instance.IsImpostor() && !__instance.IsRole(RoleId.EvilGambler))
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance), RoleHelpers.GetCoolTime(__instance));
@@ -985,6 +995,10 @@ namespace SuperNewRoles.Patches
             if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
             if (ModeHandler.IsMode(ModeId.Default))
             {
+                if (__instance.IsRole(RoleId.EvilButtoner, RoleId.NiceButtoner) && target != null && target.PlayerId == __instance.PlayerId)
+                {
+                    return true;
+                }
                 if (__instance.IsRole(RoleId.Amnesiac))
                 {
                     if (!target.Disconnected)
@@ -994,6 +1008,20 @@ namespace SuperNewRoles.Patches
                         {
                             __instance.SetRoleRPC(target.Object.GetRole());
                         }
+                    }
+                }
+            }
+            if(ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.IsRole(RoleId.Doppelganger))
+                    {
+                        new LateTask(() =>
+                        {
+                            player.RpcRevertShapeshift(false);
+                        }, 0.5f);
+                        SyncSetting.CustomSyncSettings(player);
                     }
                 }
             }

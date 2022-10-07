@@ -1,6 +1,7 @@
 using Hazel;
 using SuperNewRoles.Buttons;
 using UnityEngine;
+using SuperNewRoles.Mode.SuperHostRoles;
 using static SuperNewRoles.Helpers.RPCHelper;
 using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
@@ -45,8 +46,9 @@ namespace SuperNewRoles.Roles
                         if (upflag)
                         {
                             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SidekickPromotes, SendOption.Reliable, -1);
+                            writer.Write(false);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RPCProcedure.SidekickPromotes();
+                            RPCProcedure.SidekickPromotes(false);
                         }
                     }
                 }
@@ -63,6 +65,7 @@ namespace SuperNewRoles.Roles
         public static void CreateJackalFriends(PlayerControl target)
         {
             target.ResetAndSetRole(RoleId.JackalFriends);
+            target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
         }
     }
 }

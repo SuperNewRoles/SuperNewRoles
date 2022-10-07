@@ -32,13 +32,13 @@ namespace SuperNewRoles.Roles.Impostor
         public static List<PlayerControl> Player;
         public static Color32 color = RoleClass.ImpostorRed;
         public static int Count; // 何回設置したか
-        public static int Round; // 何週目か
+        //public static int Round; // 何週目か
         public static Vector2[] Positions;
         public static void ClearAndReload()
         {
             Player = new();
             Count = 0;
-            Round = 0;
+            //Round = 0;
             Positions = new Vector2[] { new(), new(), new() };
             Beacon.AllBeacons = new();
         }
@@ -152,7 +152,7 @@ namespace SuperNewRoles.Roles.Impostor
             {
                 if (PlayerControl.LocalPlayer.CanMove && Count == 3)
                 {
-                    Logger.Info($"Beacon{Round}{Count}", "Beacons");
+                    //Logger.Info($"Beacon{Round}{Count}", "Beacons");
                     foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                     {
                         // プレイヤーがPositionsで形成された三角形の中にいる
@@ -188,8 +188,8 @@ namespace SuperNewRoles.Roles.Impostor
                     Beacon.ClearBeacons();
                     ResetCoolDown();
                     Count = 0;
-                    Round++; // 何週目かを増やす
-                    Logger.Info($"Beacon{Round}{Count}", "Beacons");
+                    //Round++; // 何週目かを増やす
+                    //Logger.Info($"Beacon{Round}{Count}", "Beacons");
                 }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
