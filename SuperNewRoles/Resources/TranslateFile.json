@@ -4644,6 +4644,30 @@
         "11": "\u89e3\u9664\u307e\u3067{0}\u79d2",
         "13": "\u8fd8\u6709{0}\u79d2\u89e3\u9664\u6b66\u88c5"
     },
+    "WaveCannonName": {
+        "0": "Wave Cannon",
+        "11": "\u6ce2\u52d5\u7832"
+    },
+    "WaveCannonTitle1": {
+        "0": "Use the cannon and get the kill!",
+        "11": "\u5927\u7832\u3092\u4f7f\u7528\u3057\u3001\u30ad\u30eb\u3057\u3088\u3046"
+    },
+    "WaveCannonChargeTime": {
+        "0": "Charge Time",
+        "11": "\u30c1\u30e3\u30fc\u30b8\u6642\u9593"
+    },
+    "WaveCannonButtonName": {
+        "0": "Wave Cannon",
+        "11": "\u6ce2\u52d5\u7832"
+    },
+    "WaveCannonJackalName": {
+        "0": "Wave Cannon Jackal",
+        "11": "\u6ce2\u52d5\u7832\u30b8\u30e3\u30c3\u30ab\u30eb"
+    },
+    "WaveCannonJackalTitle1": {
+        "0": "Use the cannon and get the kill!",
+        "11": "\u5927\u7832\u3092\u4f7f\u7528\u3057\u3001\u30ad\u30eb\u3057\u3088\u3046"
+    },
     "CrackerName": {
         "0": "Cracker",
         "11": "\u30af\u30e9\u30c3\u30ab\u30fc"

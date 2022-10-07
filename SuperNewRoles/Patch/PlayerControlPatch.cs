@@ -754,7 +754,7 @@ namespace SuperNewRoles.Patches
         public static bool resetToDead = false;
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
-            EvilGambler.EvilGamblerMurder.Prefix(__instance, target);
+            EvilGambler.MurderPlayerPrefix(__instance, target);
             Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
             if (ModeHandler.IsMode(ModeId.Default))
             {
@@ -816,6 +816,20 @@ namespace SuperNewRoles.Patches
             DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
+
+            if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId)
+            {
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
+                {
+                    if (CustomOptions.WaveCannonIsSyncKillCoolTime.GetBool())
+                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonCoolTime.GetFloat();
+                }
+                else
+                {
+                    if (CustomOptions.WaveCannonJackalIsSyncKillCoolTime.GetBool())
+                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonJackalCoolTime.GetFloat();
+                }
+            }
 
             SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
@@ -907,8 +921,9 @@ namespace SuperNewRoles.Patches
             }
             if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && ModeHandler.IsMode(ModeId.Default))
             {
+                EvilGambler.MurderPlayerPostfix(__instance);
                 Doppelganger.KillCoolSetting.MurderPlayer(__instance, target);
-                if (__instance.IsImpostor() && !__instance.IsRole(RoleId.EvilGambler))
+                if (__instance.IsImpostor())
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance), RoleHelpers.GetCoolTime(__instance));
                 }

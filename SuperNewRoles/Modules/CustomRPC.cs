@@ -157,6 +157,8 @@ namespace SuperNewRoles.Modules
         ShiftActor,
         ConnectKiller,
         Cracker,
+        WaveCannon,
+        WaveCannonJackal,
         NekoKabocha,
         Doppelganger,
         Conjurer,
@@ -232,6 +234,7 @@ namespace SuperNewRoles.Modules
         /* 210~214 is used Submerged Mod */
         PainterSetTarget = 215,
         SharePhotograph,
+        WaveCannon,
         ShowFlash,
         SetFinalStatus,
         CrackerCrack
@@ -243,6 +246,24 @@ namespace SuperNewRoles.Modules
         {
             if (!RoleClass.Cracker.CrackedPlayers.Contains(Target)) RoleClass.Cracker.CrackedPlayers.Add(Target);
         }
+
+        public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)
+        {
+            Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {buff.Length} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
+            switch ((WaveCannonObject.RpcType)Type)
+            {
+                case WaveCannonObject.RpcType.Spawn:
+                    Vector3 position = Vector3.zero;
+                    position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
+                    position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
+                    return new(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
+                case WaveCannonObject.RpcType.Shoot:
+                    WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
+                    break;
+            }
+            return null;
+        }
+
         public static void SetFinalStatus(byte targetId, FinalStatus Status)
         {
             FinalStatusData.FinalStatuses[targetId] = Status;
@@ -891,7 +912,7 @@ namespace SuperNewRoles.Modules
             PlayerControl target = ModHelpers.PlayerById(targetId);
             if (target == null || source == null) return;
             source.ProtectPlayer(target, colorid);
-            PlayerControl.LocalPlayer.MurderPlayer(target);
+            source.MurderPlayer(target);
             source.ProtectPlayer(target, colorid);
             if (targetId == CachedPlayer.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
         }
@@ -1255,6 +1276,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.CrackerCrack:
                             CrackerCrack(reader.ReadByte());
+                            break;
+                        case CustomRPC.WaveCannon:
+                            WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), reader.ReadBytesAndSize());
                             break;
                         case CustomRPC.ShowFlash:
                             ShowFlash();

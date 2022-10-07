@@ -155,7 +155,6 @@ namespace SuperNewRoles.Roles
                 PlayerAnimation.PlayerAnimations.All(x => { x.RpcAnimation(RpcAnimationType.Stop); return false; });
             }
             LadderDead.Reset();
-            RoleClass.IsMeeting = true;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 Mode.SuperHostRoles.MorePatch.StartMeeting();

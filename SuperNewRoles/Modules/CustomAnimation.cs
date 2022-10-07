@@ -45,13 +45,14 @@ namespace SuperNewRoles.Modules
         public static void Update()
         {
             var deltatime = Time.deltaTime;
-            foreach (CustomAnimation anim in Animations)
+            foreach (CustomAnimation anim in Animations.ToArray())
             {
                 anim.AnimationUpdate(deltatime);
             }
         }
         public void AnimationUpdate(float Deltatime)
         {
+            if (render == null) { Animations.Remove(this); return; }
             Updatetime -= Deltatime;
             if (Updatetime <= 0)
             {

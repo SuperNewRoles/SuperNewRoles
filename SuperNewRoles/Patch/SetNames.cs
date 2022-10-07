@@ -373,22 +373,14 @@ namespace SuperNewRoles.Patch
                         SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                     }
                 }
-                if (LocalRole == RoleId.Jackal ||
-                    LocalRole == RoleId.Sidekick ||
-                    LocalRole == RoleId.TeleportingJackal ||
-                    LocalRole == RoleId.JackalSeer ||
-                    LocalRole == RoleId.SidekickSeer ||
+                if (PlayerControl.LocalPlayer.IsJackalTeamJackal() ||
+                    PlayerControl.LocalPlayer.IsJackalTeamSidekick() || 
                     JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         RoleId role = p.GetRole();
-                        if ((role == RoleId.Jackal ||
-                            role == RoleId.Sidekick ||
-                            role == RoleId.TeleportingJackal ||
-                            role == RoleId.JackalSeer ||
-                            role == RoleId.SidekickSeer
-                            ) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                        if (p.IsJackalTeamJackal() || p.IsJackalTeamSidekick() || p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                         {
                             SetNamesClass.SetPlayerRoleNames(p);
                             SetNamesClass.SetPlayerNameColors(p);
