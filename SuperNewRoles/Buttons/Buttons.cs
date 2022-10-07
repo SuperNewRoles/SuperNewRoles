@@ -175,6 +175,10 @@ namespace SuperNewRoles.Buttons
                     RPCProcedure.SluggerExile(CachedPlayer.LocalPlayer.PlayerId, TargetsId);
                     SluggerButton.MaxTimer = CustomOptions.SluggerCoolTime.GetFloat();
                     SluggerButton.Timer = SluggerButton.MaxTimer;
+                    if (CustomOptions.SluggerIsKillCoolSync.GetBool())
+                    {
+                        PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer);
+                    }
                 }
             )
             {
@@ -623,14 +627,21 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target = PlayerControlFixedUpdatePatch.JackalSetTarget();
-                    if (target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.CanCreateSidekick)
+                    if (target && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.CanCreateSidekick)
                     {
-                        bool IsFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
-                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekick, SendOption.Reliable, -1);
-                        killWriter.Write(target.PlayerId);
-                        killWriter.Write(IsFakeSidekick);
-                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        RPCProcedure.CreateSidekick(target.PlayerId, IsFakeSidekick);
+                        if (RoleClass.Jackal.CanCreateFriend)
+                        {
+                            target.ResetAndSetRole(RoleId.JackalFriends); //クルーにして フレンズにする
+                        }
+                        else
+                        {
+                            bool IsFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
+                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekick, SendOption.Reliable, -1);
+                            killWriter.Write(target.PlayerId);
+                            killWriter.Write(IsFakeSidekick);
+                            AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                            RPCProcedure.CreateSidekick(target.PlayerId, IsFakeSidekick);
+                        }
                         RoleClass.Jackal.CanCreateSidekick = false;
                         Jackal.ResetCoolDown();
                     }
