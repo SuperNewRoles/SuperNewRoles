@@ -1,19 +1,17 @@
-using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Buttons;
-using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Mode;
-using UnityEngine;
 using System.Collections.Generic;
+using SuperNewRoles.Buttons;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor
 {
-    internal class Doppelganger
+    public class Doppelganger
     {
         public static void DoppelgangerShape()
         {
             bool isShapeshift = false;
-            foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.DoppelgangerTargets)
+            foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.Targets)
             {
                 if (p.Key == PlayerControl.LocalPlayer.PlayerId)
                 {
@@ -48,7 +46,7 @@ namespace SuperNewRoles.Roles.Impostor
         public static void FixedUpdate()
         {
             bool shape = false;
-            foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.DoppelgangerTargets)
+            foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.Targets)
             {
                 if (p.Key == PlayerControl.LocalPlayer.PlayerId && p.Value != PlayerControl.LocalPlayer)
                 {
@@ -70,46 +68,33 @@ namespace SuperNewRoles.Roles.Impostor
             }
             if (shape && RoleClass.IsMeeting) PlayerControl.LocalPlayer.RpcRevertShapeshift(false);
         }
-        public static class KillCoolSetting
+        public class KillCoolSetting
         {
-            public static void MurderPrefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+            public static void MurderPlayer(PlayerControl __instance, PlayerControl target)
             {
                 if (__instance.IsRole(RoleId.Doppelganger))
                 {
-                    bool targetKill = false;
-                    foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.DoppelgangerTargets)
+                    if (!ModeHandler.IsMode(ModeId.SuperHostRoles) && __instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {
-                        if (p.Key == __instance.PlayerId && p.Value == target)
+                        if (RoleClass.Doppelganger.Targets.ContainsKey(__instance.PlayerId))
                         {
-                            targetKill = true;
-                            break;
+                            RoleClass.Doppelganger.CurrentCool = RoleClass.Doppelganger.Targets[__instance.PlayerId].PlayerId == target.PlayerId ?
+                                                                     RoleClass.Doppelganger.SucCool :
+                                                                     RoleClass.Doppelganger.NotSucCool;
                         }
+                        else RoleClass.Doppelganger.CurrentCool = RoleClass.Doppelganger.NotSucCool;
                     }
-                    SuperNewRolesPlugin.Logger.LogInfo("ドッペルゲンガーがキルしたことを感知");
-                    SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName},{__instance.PlayerId} => {target.Data.PlayerName},{target.PlayerId}");
-                    SuperNewRolesPlugin.Logger.LogInfo($"ドッペルゲンガーの{__instance.Data.PlayerName}のキルクールを{(targetKill ? RoleClass.Doppelganger.SucTime : RoleClass.Doppelganger.NotSucTime)}秒に変更しました");
-                    if ((ModeHandler.IsMode(ModeId.Default) && __instance != PlayerControl.LocalPlayer) || (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost))
-                        return;
-                    var optdata = SyncSetting.OptionData.DeepCopy();
-                    optdata.KillCooldown = SyncSetting.KillCoolSet(targetKill ? RoleClass.Doppelganger.SucTime     //ﾀｰｹﾞｯﾄだったら
-                                                                              : RoleClass.Doppelganger.NotSucTime);//ﾀｰｹﾞｯﾄ以外だったら
-                    if (PlayerControl.LocalPlayer.AmOwner) PlayerControl.GameOptions = optdata;
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, __instance.GetClientId());
-                    writer.WriteBytesAndSize(optdata.ToBytes(5));
-                    AmongUsClient.Instance.FinishRpcImmediately(writer);
                 }
             }
-            public static void ResetKillCool(PlayerControl __instance)
+            public static void SHRMurderPlayer(PlayerControl __instance, PlayerControl target)
             {
-                if ((ModeHandler.IsMode(ModeId.Default) && __instance != PlayerControl.LocalPlayer) || (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost))
-                    return;
-                var role = PlayerControl.LocalPlayer.GetRole();
-                var optdata = SyncSetting.OptionData.DeepCopy();
-                optdata.KillCooldown = SyncSetting.KillCoolSet(RoleClass.Doppelganger.DefaultKillCool);
-                if (PlayerControl.LocalPlayer.AmOwner) PlayerControl.GameOptions = optdata;
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, PlayerControl.LocalPlayer.GetClientId());
-                writer.WriteBytesAndSize(optdata.ToBytes(5));
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                if (__instance.IsRole(RoleId.Doppelganger))
+                {
+                    if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                    {
+                        SyncSetting.DoppelgangerCool(__instance, target);
+                    }
+                }
             }
         }
     }
