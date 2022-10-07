@@ -3,11 +3,10 @@ using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace SuperNewRoles.Roles.Impostor
 {
-    internal class Doppelganger
+    public class Doppelganger
     {
         public static void DoppelgangerShape()
         {
@@ -98,5 +97,6 @@ namespace SuperNewRoles.Roles.Impostor
                 }
             }
         }
+        public static bool Type = false;
     }
 }
