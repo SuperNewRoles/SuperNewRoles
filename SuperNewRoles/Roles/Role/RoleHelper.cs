@@ -592,6 +592,7 @@ namespace SuperNewRoles
                     break;
                 case RoleId.ShiftActor:
                     ShiftActor.Player.Add(player);
+                    RoleManager.Instance.SetRole(player, RoleTypes.Shapeshifter);
                     break;
                 case RoleId.ConnectKiller:
                     RoleClass.ConnectKiller.ConnectKillerPlayer.Add(player);
@@ -630,7 +631,6 @@ namespace SuperNewRoles
                 PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
             SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
-            ShiftActor.ShapeshifterSet();
             PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(player.PlayerId);
             if (anim != null) anim.HandleAnim(RpcAnimationType.Stop);
         }

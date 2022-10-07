@@ -136,6 +136,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
                         if (PlayerControl.LocalPlayer.IsMadRoles()) { VentDataModules.MadmateVent(); }
+                        NormalButtonDestroy.Postfix();
                         switch (MyRole)
                         {
                             case RoleId.Pursuer:
@@ -215,8 +216,8 @@ namespace SuperNewRoles.Patch
                             case RoleId.ConnectKiller:
                                 Roles.Impostor.ConnectKiller.Update();
                                 break;
-                            default:
-                                NormalButtonDestroy.Postfix();
+                            case RoleId.ShiftActor:
+                                Roles.Impostor.ShiftActor.FixedUpdate();
                                 break;
                         }
                     }
