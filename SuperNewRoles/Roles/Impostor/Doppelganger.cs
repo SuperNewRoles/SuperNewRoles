@@ -97,6 +97,5 @@ namespace SuperNewRoles.Roles.Impostor
                 }
             }
         }
-        public static bool Type = false;
     }
 }
