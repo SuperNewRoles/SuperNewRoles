@@ -72,10 +72,8 @@ namespace SuperNewRoles.Buttons
 
         void OnClickEvent()
         {
-            Logger.Info($"ボタンクリック : {this.Timer} : {this.CouldUse()}", "CustomButton");
             if ((this.Timer <= 0f && this.CouldUse()) || (this.HasEffect && this.isEffectActive && this.effectCancellable))
             {
-                Logger.Info($"通貨", "CustomButton");
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
                 this.OnClick();
 
