@@ -997,6 +997,20 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
+            if(ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.IsRole(RoleId.Doppelganger))
+                    {
+                        new LateTask(() =>
+                        {
+                            player.RpcRevertShapeshift(false);
+                        }, 0.5f);
+                        SyncSetting.CustomSyncSettings(player);
+                    }
+                }
+            }
             return (RoleClass.Assassin.TriggerPlayer != null)
             || (!MapOptions.MapOption.UseDeadBodyReport && target != null)
             || (!MapOptions.MapOption.UseMeetingButton && target == null)

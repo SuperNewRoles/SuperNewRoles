@@ -12,14 +12,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             //会議ボタンでもレポートでも起こる処理
 
-            foreach(var player in PlayerControl.AllPlayerControls)
-            {
-                if (player.IsRole(RoleId.Doppelganger))
-                {
-                    SyncSetting.CustomSyncSettings(player);
-                }
-            }
-
             if (target == null)
             {
                 //会議ボタンのみで起こる処理
