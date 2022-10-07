@@ -714,17 +714,18 @@ namespace SuperNewRoles.Roles
         public static class EvilGambler
         {
             public static List<PlayerControl> EvilGamblerPlayer;
-            public static int SucCool;
-            public static int NotSucCool;
+            public static float SucCool;
+            public static float NotSucCool;
             public static int SucPar;
             public static bool IsSuc;
+            public static float currentCool;
             public static Color32 color = ImpostorRed;
             public static void ClearAndReload()
             {
                 EvilGamblerPlayer = new();
                 IsSuc = false;
-                SucCool = CustomOptions.EvilGamblerSucTime.GetInt();
-                NotSucCool = CustomOptions.EvilGamblerNotSucTime.GetInt();
+                SucCool = CustomOptions.EvilGamblerSucTime.GetFloat();
+                NotSucCool = CustomOptions.EvilGamblerNotSucTime.GetFloat();
                 var temp = CustomOptions.EvilGamblerSucpar.GetString().Replace("0%", "");
                 SucPar = temp == "" ? 0 : int.Parse(temp);
             }
