@@ -112,11 +112,14 @@ namespace SuperNewRoles.Patch
             SluggerDeadbody.AllFixedUpdate();
             PlayerAnimation.FixedAllUpdate();
             PVCreator.FixedUpdate();
+
+            VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
+            OldModeButtons.OldModeUpdate();
+
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
                 var MyRole = PlayerControl.LocalPlayer.GetRole();
                 SetBasePlayerOutlines();
-                VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
                 LadderDead.FixedUpdate();
                 var ThisMode = ModeHandler.GetMode();
                 if (ThisMode == ModeId.Default)

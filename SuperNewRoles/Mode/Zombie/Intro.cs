@@ -25,12 +25,9 @@ namespace SuperNewRoles.Mode.Zombie
             }
             return Teams;
         }
-        public static void IntroHandler(IntroCutscene __instance)
+        public static (string, string, Color) IntroHandler(IntroCutscene __instance)
         {
-            __instance.BackgroundBar.material.color = Main.Zombiecolor;
-            __instance.TeamTitle.text = ModTranslation.GetString("ZombieModeName");
-            __instance.TeamTitle.color = Main.Zombiecolor;
-            __instance.ImpostorText.text = "";
+            return (ModTranslation.GetString("ZombieModeName"), "", Main.Zombiecolor);
         }
 
         public static void YouAreHandle(IntroCutscene __instance)
