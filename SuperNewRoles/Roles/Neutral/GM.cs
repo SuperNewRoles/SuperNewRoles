@@ -15,7 +15,7 @@ namespace SuperNewRoles.Roles.Neutral
         private static CustomButton gmZoomIn;
         private static CustomButton gmZoomOut;
         public static PlayerControl target;
-        public static Dictionary<string, Action> ActionDatas = new()
+        public static Dictionary<string, Action> ActionDictionary = new()
         {
             {
                 "GMTeleport",
