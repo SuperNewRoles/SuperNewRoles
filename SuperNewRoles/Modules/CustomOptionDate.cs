@@ -1676,13 +1676,13 @@ namespace SuperNewRoles.Modules
             DoppelgangerSucTime = Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
             DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
 
-            WaveCannonOption = new(1019, false, CustomOptionType.Impostor, "WaveCannonName", RoleClass.WaveCannon.color, 1);
+            WaveCannonOption = SetupCustomRoleOption(1019, false, RoleId.WaveCannon, CustomOptionType.Impostor);
             WaveCannonPlayerCount = Create(1018, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WaveCannonOption);
             WaveCannonCoolTime = Create(1020, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonOption);
             WaveCannonChargeTime = Create(1021, false, CustomOptionType.Impostor, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonOption);
             WaveCannonIsSyncKillCoolTime = Create(1016, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, WaveCannonOption);
 
-            WaveCannonJackalOption = new(1022, false, CustomOptionType.Neutral, "WaveCannonJackalName",RoleClass.WaveCannonJackal.color, 1);
+            WaveCannonJackalOption = SetupCustomRoleOption(1022, false, RoleId.WaveCannonJackal, CustomOptionType.Neutral);
             WaveCannonJackalPlayerCount = Create(1023, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WaveCannonJackalOption);
             WaveCannonJackalCoolTime = Create(1014, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonJackalOption);
             WaveCannonJackalChargeTime = Create(1015, false, CustomOptionType.Neutral, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonJackalOption);
