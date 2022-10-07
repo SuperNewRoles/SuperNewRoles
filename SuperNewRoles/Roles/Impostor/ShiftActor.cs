@@ -38,7 +38,7 @@ namespace SuperNewRoles.Roles.Impostor
             Player = new();
             KillCool = ShiftActorKillCool.GetFloat();
             Limit = ShiftActorShiftLimit.GetInt();
-            Count = 0;
+            Count = 1;
             IsWatchAttribute = ShiftActorCanWatchAttribute.GetBool(); // 重複を見れるか
         }
         public static bool CanShow => Count <= Limit;// シェイプカウントが上限より少ないか
