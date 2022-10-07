@@ -1,5 +1,4 @@
 using System.Linq;
-
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 

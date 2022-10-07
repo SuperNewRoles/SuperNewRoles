@@ -816,6 +816,7 @@ namespace SuperNewRoles.Modules
         public static CustomOption SluggerChargeTime;
         public static CustomOption SluggerCoolTime;
         public static CustomOption SluggerIsMultiKill;
+        public static CustomOption SluggerIsKillCoolSync;
 
         public static CustomRoleOption ConnectKillerOption;
         public static CustomOption ConnectKillerPlayerCount;
@@ -823,7 +824,7 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption DoppelgangerOption;
         public static CustomOption DoppelgangerPlayerCount;
         public static CustomOption DoppelgangerDurationTime;
-        public static CustomOption DoppelgangerCoolTome;
+        public static CustomOption DoppelgangerCoolTime;
         public static CustomOption DoppelgangerSucTime;
         public static CustomOption DoppelgangerNotSucTime;
         //CustomOption
@@ -1582,6 +1583,7 @@ namespace SuperNewRoles.Modules
             SluggerChargeTime = Create(903, false, CustomOptionType.Impostor, "SluggerChargeTime", 3f, 0f, 30f, 0.5f, SluggerOption);
             SluggerCoolTime = Create(904, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, SluggerOption);
             SluggerIsMultiKill = Create(905, false, CustomOptionType.Impostor, "SluggerIsMultiKill", false, SluggerOption);
+            SluggerIsKillCoolSync = Create(1000, false, CustomOptionType.Impostor, "SluggerIsKillCoolSync", false, SluggerOption);
 
             PainterOption = SetupCustomRoleOption(941, false, RoleId.Painter);
             PainterPlayerCount = Create(942, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PainterOption);
@@ -1654,7 +1656,7 @@ namespace SuperNewRoles.Modules
             DoppelgangerOption = SetupCustomRoleOption(986, true, RoleId.Doppelganger);
             DoppelgangerPlayerCount = Create(987, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
             DoppelgangerDurationTime = Create(988, true, CustomOptionType.Impostor, "DoppelgangerDurationTimeSetting", 90f, 0f, 250f, 5f, DoppelgangerOption);
-            DoppelgangerCoolTome = Create(989, true, CustomOptionType.Impostor, "DoppelgangerCoolDownSetting", 5f, 5f, 60f, 2.5f, DoppelgangerOption);
+            DoppelgangerCoolTime = Create(989, true, CustomOptionType.Impostor, "DoppelgangerCoolDownSetting", 5f, 5f, 60f, 2.5f, DoppelgangerOption);
             DoppelgangerSucTime = Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
             DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
 

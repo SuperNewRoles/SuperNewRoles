@@ -20,7 +20,7 @@ namespace SuperNewRoles.Buttons
         private readonly Action OnMeetingEnds;
         private readonly Func<bool, RoleId, bool> HasButton;
         private readonly Func<bool> CouldUse;
-        private readonly Action OnEffectEnds;
+        public readonly Action OnEffectEnds;
         public bool HasEffect;
         public bool isEffectActive = false;
         public bool showButtonText = true;

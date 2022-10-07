@@ -26,6 +26,7 @@ namespace SuperNewRoles.Roles
         public static void ClearAndReloadRoles()
         {
             BlockPlayers = new();
+            RandomSpawn.IsFirstSpawn = true;
             DeadPlayer.deadPlayers = new();
             AllRoleSetClass.Assigned = false;
             LateTask.Tasks = new();
@@ -590,6 +591,8 @@ namespace SuperNewRoles.Roles
             public static DateTime OldButtonTimer;
             public static float OldButtonTime;
 
+            public static CustomMessage currentMessage;
+
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
 
             public static void ClearAndReload()
@@ -602,6 +605,7 @@ namespace SuperNewRoles.Roles
                 DefaultImpoVision = PlayerControl.GameOptions.ImpostorLightMod;
                 OldButtonTimer = DateTime.Now;
                 OldButtonTime = 0;
+                currentMessage = null;
             }
         }
         public static class MadMate
@@ -2678,23 +2682,23 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static float DurationTime;
             public static float CoolTime;
-            public static float SucTime;
-            public static float NotSucTime;
+            public static float SucCool;
+            public static float NotSucCool;
             public static float Duration;
             public static TextMeshPro DoppelgangerDurationText = null;
-            public static Dictionary<byte, PlayerControl> DoppelgangerTargets;
-            public static float DefaultKillCool;
+            public static Dictionary<byte, PlayerControl> Targets;
+            public static float CurrentCool;
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoppelgangerButton.png", 115f);
             public static void ClearAndReload()
             {
                 DoppelggerPlayer = new();
                 DurationTime = CustomOptions.DoppelgangerDurationTime.GetFloat();
-                CoolTime = CustomOptions.DoppelgangerCoolTome.GetFloat();
-                SucTime = CustomOptions.DoppelgangerSucTime.GetFloat();
-                NotSucTime = CustomOptions.DoppelgangerNotSucTime.GetFloat();
+                CoolTime = CustomOptions.DoppelgangerCoolTime.GetFloat();
+                SucCool = CustomOptions.DoppelgangerSucTime.GetFloat();
+                NotSucCool = CustomOptions.DoppelgangerNotSucTime.GetFloat();
                 Duration = DurationTime + 1.1f;
-                DoppelgangerTargets = new();
-                DefaultKillCool = PlayerControl.GameOptions.KillCooldown;
+                Targets = new();
+                CurrentCool = PlayerControl.GameOptions.KillCooldown;
             }
         }
         //新ロールクラス
