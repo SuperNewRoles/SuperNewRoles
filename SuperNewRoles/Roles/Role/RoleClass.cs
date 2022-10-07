@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
     [HarmonyPatch]
     public static class RoleClass
     {
-        public static bool IsMeeting;
+        public static bool IsMeeting => MeetingHud.Instance != null;
         public static bool IsCoolTimeSetted;
         public static System.Random rnd = new((int)DateTime.Now.Ticks);
         public static Color ImpostorRed = Palette.ImpostorRed;
@@ -32,7 +32,6 @@ namespace SuperNewRoles.Roles
             LateTask.Tasks = new();
             LateTask.AddTasks = new();
             BotManager.AllBots = new();
-            IsMeeting = false;
             IsCoolTimeSetted = false;
             IsStart = false;
             Agartha.MapData.ClearAndReloads();
@@ -179,8 +178,10 @@ namespace SuperNewRoles.Roles
             Slugger.ClearAndReload();
             ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
-            NekoKabocha.ClearAndReload();
+            WaveCannon.ClearAndReload();
             Doppelganger.ClearAndReload();
+            WaveCannonJackal.ClearAndReload();
+            NekoKabocha.ClearAndReload();
             Conjurer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -2676,6 +2677,21 @@ namespace SuperNewRoles.Roles
                 OldCommsData = false;
             }
         }
+        public static class WaveCannon
+        {
+            public static List<PlayerControl> WaveCannonPlayer;
+            public static Color32 color = ImpostorRed;
+            public static List<byte> CannotMurderPlayers;
+            public static bool IsLocalOn => WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId) != null;
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f);
+
+            public static void ClearAndReload()
+            {
+                WaveCannonPlayer = new();
+                WaveCannonObject.Ids = new();
+                CannotMurderPlayers = new();
+            }
+        }
         public static class Doppelganger
         {
             public static List<PlayerControl> DoppelggerPlayer;
@@ -2699,6 +2715,16 @@ namespace SuperNewRoles.Roles
                 Duration = DurationTime + 1.1f;
                 Targets = new();
                 CurrentCool = PlayerControl.GameOptions.KillCooldown;
+            }
+        }
+        public static class WaveCannonJackal
+        {
+            public static List<PlayerControl> WaveCannonJackalPlayer;
+            public static Color32 color = Jackal.color;
+            public static void ClearAndReload()
+            {
+                WaveCannonJackalPlayer = new();
+                
             }
         }
         //新ロールクラス

@@ -817,6 +817,20 @@ namespace SuperNewRoles.Patches
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
+            if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId)
+            {
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
+                {
+                    if (CustomOptions.WaveCannonIsSyncKillCoolTime.GetBool())
+                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonCoolTime.GetFloat();
+                }
+                else
+                {
+                    if (CustomOptions.WaveCannonJackalIsSyncKillCoolTime.GetBool())
+                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonJackalCoolTime.GetFloat();
+                }
+            }
+
             SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
 

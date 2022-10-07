@@ -1,5 +1,6 @@
 using Hazel;
 using SuperNewRoles.Buttons;
+using UnityEngine;
 using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles
@@ -13,13 +14,17 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.JackalSeerSidekickButton.MaxTimer = RoleClass.JackalSeer.KillCoolDown;
             HudManagerStartPatch.JackalSeerSidekickButton.Timer = RoleClass.JackalSeer.KillCoolDown;
         }
-        public static void EndMeeting()
+        public static void EndMeeting() => ResetCoolDown();
+        public static void SetPlayerOutline(PlayerControl target, Color color)
         {
-            ResetCoolDown();
+            if (target == null || target.MyRend() == null) return;
+
+            target.MyRend().material.SetFloat("_Outline", 1f);
+            target.MyRend().material.SetColor("_OutlineColor", color);
         }
         public class JackalSeerFixedPatch
         {
-            static void JackalSeerPlayerOutLineTarget()
+            public static void JackalSeerPlayerOutLineTarget()
             {
                 SetPlayerOutline(JackalSetTarget(), RoleClass.JackalSeer.color);
             }

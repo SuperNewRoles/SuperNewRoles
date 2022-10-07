@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
@@ -39,6 +40,7 @@ namespace SuperNewRoles.Roles.Impostor
             Count = 0;
             //Round = 0;
             Positions = new Vector2[] { new(), new(), new() };
+            Beacon.AllBeacons = new();
         }
 
         private static Sprite AddbuttonSprite;
@@ -160,7 +162,20 @@ namespace SuperNewRoles.Roles.Impostor
                             {
                                 if ((!CanKillImpostor.GetBool() && !pc.IsImpostor()) || CanKillImpostor.GetBool())
                                 {
-                                    pc.RpcMurderPlayer(pc);
+                                    if (pc.IsRole(RoleId.Shielder) && RoleClass.Shielder.IsShield.ContainsKey(pc.PlayerId) && RoleClass.Shielder.IsShield[pc.PlayerId])
+                                    {
+                                        MessageWriter msgwriter = RPCHelper.StartRPC(CustomRPC.ShielderProtect);
+                                        msgwriter.Write(CachedPlayer.LocalPlayer.PlayerId);
+                                        msgwriter.Write(pc.PlayerId);
+                                        msgwriter.Write(0);
+                                        msgwriter.EndRPC();
+                                        RPCProcedure.ShielderProtect(CachedPlayer.LocalPlayer.PlayerId, pc.PlayerId, 0);
+                                        RoleClass.WaveCannon.CannotMurderPlayers.Add(pc.PlayerId);
+                                    }
+                                    else
+                                    {
+                                        pc.RpcMurderPlayer(pc);
+                                    }
                                 }
                             }
                         }
