@@ -223,6 +223,24 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             writer.WriteBytesAndSize(optdata.ToBytes(5));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
+        public static void DoppelgangerCool(PlayerControl player, PlayerControl target)
+        {
+            if (!AmongUsClient.Instance.AmHost) return;
+            var optdata = OptionData.DeepCopy();
+            optdata.RoleOptions.ShapeshifterDuration = RoleClass.Doppelganger.DurationTime;
+            optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Doppelganger.CoolTime;
+            if (RoleClass.Doppelganger.Targets.ContainsKey(player.PlayerId))
+            {
+                optdata.KillCooldown = KillCoolSet(RoleClass.Doppelganger.Targets[player.PlayerId].PlayerId == target.PlayerId ?
+                                                       RoleClass.Doppelganger.SucCool :
+                                                       RoleClass.Doppelganger.NotSucCool);
+            }
+            else optdata.KillCooldown = KillCoolSet(RoleClass.Doppelganger.NotSucCool);
+            if (player.AmOwner) PlayerControl.GameOptions = optdata;
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
+            writer.WriteBytesAndSize(optdata.ToBytes(5));
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
         public static void CustomSyncSettings()
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)

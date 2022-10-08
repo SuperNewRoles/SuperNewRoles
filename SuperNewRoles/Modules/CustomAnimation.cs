@@ -14,14 +14,7 @@ namespace SuperNewRoles.Modules
                 string countdata = "000" + i.ToString();
                 if (i >= 10)
                 {
-                    if (i >= 100)
-                    {
-                        countdata = "0" + i.ToString();
-                    }
-                    else
-                    {
-                        countdata = "00" + i.ToString();
-                    }
+                    countdata = i >= 100 ? "0" + i.ToString() : "00" + i.ToString();
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("パス:" + path + "_" + countdata + ".png");
                 Sprites.Add(ModHelpers.LoadSpriteFromResources(path + "_" + countdata + ".png", 110f));
@@ -52,30 +45,37 @@ namespace SuperNewRoles.Modules
         public static void Update()
         {
             var deltatime = Time.deltaTime;
-            foreach (CustomAnimation anim in Animations)
+            foreach (CustomAnimation anim in Animations.ToArray())
             {
                 anim.AnimationUpdate(deltatime);
             }
         }
         public void AnimationUpdate(float Deltatime)
         {
+            if (render == null) { Animations.Remove(this); return; }
             Updatetime -= Deltatime;
             if (Updatetime <= 0)
             {
+                if (render == null)
+                {
+                    Animations.Remove(this);
+                    return;
+                }
                 render.sprite = Sprites[index];
                 index++;
+
                 if (Sprites.Length <= index)
-                {
                     index = 0;
-                }
+
                 Updatetime = UpdateDefaultTime;
             }
         }
-    }
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    class AnimationUpdatePatch
-    {
-        static void Postfix()
-            => CustomAnimation.Update();
+
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+        class AnimationUpdatePatch
+        {
+            static void Postfix()
+                => Update();
+        }
     }
 }

@@ -78,10 +78,6 @@ namespace SuperNewRoles.Patch
             CustomButton.MeetingEndedUpdate();
 
             PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            new LateTask(() =>
-            {
-                RoleClass.IsMeeting = false;
-            }, 0.1f, "SetIsMeeting");
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
             ModeHandler.Wrapup(exiled);
             RedRidingHood.WrapUp(exiled);
