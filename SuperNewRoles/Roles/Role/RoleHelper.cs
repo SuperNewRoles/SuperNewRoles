@@ -259,8 +259,8 @@ namespace SuperNewRoles
                 case RoleId.Freezer:
                     RoleClass.Freezer.FreezerPlayer.Add(player);
                     break;
-                case RoleId.Guesser:
-                    RoleClass.Guesser.GuesserPlayer.Add(player);
+                case RoleId.NiceGuesser:
+                    RoleClass.NiceGuesser.NiceGuesserPlayer.Add(player);
                     break;
                 case RoleId.EvilGuesser:
                     RoleClass.EvilGuesser.EvilGuesserPlayer.Add(player);
@@ -590,9 +590,6 @@ namespace SuperNewRoles
                 case RoleId.Slugger:
                     RoleClass.Slugger.SluggerPlayer.Add(player);
                     break;
-                case RoleId.NiceGuesser:
-                    RoleClass.NiceGuesser.NiceGuesserPlayer.Add(player);
-                    break;
                 case RoleId.ShiftActor:
                     ShiftActor.Player.Add(player);
                     RoleManager.Instance.SetRole(player, RoleTypes.Shapeshifter);
@@ -710,8 +707,8 @@ namespace SuperNewRoles
                 case RoleId.Freezer:
                     RoleClass.Freezer.FreezerPlayer.RemoveAll(ClearRemove);
                     break;
-                case RoleId.Guesser:
-                    RoleClass.Guesser.GuesserPlayer.RemoveAll(ClearRemove);
+                case RoleId.NiceGuesser:
+                    RoleClass.NiceGuesser.NiceGuesserPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.EvilGuesser:
                     RoleClass.EvilGuesser.EvilGuesserPlayer.RemoveAll(ClearRemove);
@@ -1033,9 +1030,6 @@ namespace SuperNewRoles
                     break;
                 case RoleId.Slugger:
                     RoleClass.Slugger.SluggerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.NiceGuesser:
-                    RoleClass.NiceGuesser.NiceGuesserPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.ShiftActor:
                     ShiftActor.Player.RemoveAll(ClearRemove);
@@ -1417,7 +1411,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Shielder.ShielderPlayer.IsCheckListPlayerControl(player)) return RoleId.Shielder;
                 else if (RoleClass.Speeder.SpeederPlayer.IsCheckListPlayerControl(player)) return RoleId.Speeder;
                 else if (RoleClass.Freezer.FreezerPlayer.IsCheckListPlayerControl(player)) return RoleId.Freezer;
-                else if (RoleClass.Guesser.GuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.Guesser;
+                else if (RoleClass.NiceGuesser.NiceGuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceGuesser;
                 else if (RoleClass.EvilGuesser.EvilGuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilGuesser;
                 else if (RoleClass.Vulture.VulturePlayer.IsCheckListPlayerControl(player)) return RoleId.Vulture;
                 else if (RoleClass.NiceScientist.NiceScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceScientist;
@@ -1534,7 +1528,6 @@ namespace SuperNewRoles
                 else if (RoleClass.Photographer.PhotographerPlayer.IsCheckListPlayerControl(player)) return RoleId.Photographer;
                 else if (RoleClass.Stefinder.StefinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Stefinder;
                 else if (RoleClass.Slugger.SluggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Slugger;
-                else if (RoleClass.NiceGuesser.NiceGuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceGuesser;
                 else if (ShiftActor.Player.IsCheckListPlayerControl(player)) return RoleId.ShiftActor;
                 else if (RoleClass.ConnectKiller.ConnectKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.ConnectKiller;
                 else if (RoleClass.GM.gm != null && RoleClass.GM.gm.PlayerId == player.PlayerId) return RoleId.GM;

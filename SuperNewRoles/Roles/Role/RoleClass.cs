@@ -68,7 +68,7 @@ namespace SuperNewRoles.Roles
             Shielder.ClearAndReload();
             Speeder.ClearAndReload();
             Freezer.ClearAndReload();
-            Guesser.ClearAndReload();
+            NiceGuesser.ClearAndReload();
             EvilGuesser.ClearAndReload();
             Vulture.ClearAndReload();
             NiceScientist.ClearAndReload();
@@ -176,7 +176,6 @@ namespace SuperNewRoles.Roles
             Photographer.ClearAndReload();
             Stefinder.ClearAndReload();
             Slugger.ClearAndReload();
-            NiceGuesser.ClearAndReload();
             ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
             GM.ClearAndReload();
@@ -519,13 +518,15 @@ namespace SuperNewRoles.Roles
                 IsSpeedDown = false;
             }
         }
-        public static class Guesser
+        public static class NiceGuesser
         {
-            public static List<PlayerControl> GuesserPlayer;
-            public static Color32 color = new(255, 255, 0, byte.MaxValue);
+            public static List<PlayerControl> NiceGuesserPlayer;
+            public static Color32 color = Color.yellow;
+            public static int Count;
             public static void ClearAndReload()
             {
-                GuesserPlayer = new();
+                NiceGuesserPlayer = new();
+                Count = -1;
             }
         }
         public static class EvilGuesser
@@ -2761,7 +2762,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 WaveCannonJackalPlayer = new();
-                
+
             }
         }
         public static class GM
@@ -2771,17 +2772,6 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 gm = null;
-            }
-        }
-        public static class NiceGuesser
-        {
-            public static List<PlayerControl> NiceGuesserPlayer;
-            public static Color32 color = Color.yellow;
-            public static int Count;
-            public static void ClearAndReload()
-            {
-                NiceGuesserPlayer = new();
-                Count = -1;                
             }
         }
         //新ロールクラス

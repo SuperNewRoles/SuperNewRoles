@@ -41,7 +41,7 @@ namespace SuperNewRoles.Modules
         Shielder,
         Speeder,
         Freezer,
-        Guesser,
+        NiceGuesser,
         EvilGuesser,
         Vulture,
         NiceScientist,
@@ -154,7 +154,6 @@ namespace SuperNewRoles.Modules
         Stefinder,
         Stefinder1,
         Slugger,
-        NiceGuesser,
         ShiftActor,
         ConnectKiller,
         GM,
@@ -279,7 +278,7 @@ namespace SuperNewRoles.Modules
                     if (Roles.Attribute.Guesser.guesserUI != null) Roles.Attribute.Guesser.ExitButton.OnClick.Invoke();
                 }
         }
-        
+
         public static void CrackerCrack(byte Target)
         {
             if (!RoleClass.Cracker.CrackedPlayers.Contains(Target)) RoleClass.Cracker.CrackedPlayers.Add(Target);

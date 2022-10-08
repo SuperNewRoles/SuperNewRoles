@@ -183,10 +183,10 @@ namespace SuperNewRoles.Modules
         public static CustomOption SpeederCoolTime;
         public static CustomOption SpeederDurationTime;
 
-        public static CustomRoleOption GuesserOption;
-        public static CustomOption GuesserPlayerCount;
-        public static CustomOption GuesserShortOneMeetingCount;
-        public static CustomOption GuesserShortMaxCount;
+        public static CustomRoleOption NiceGuesserOption;
+        public static CustomOption NiceGuesserPlayerCount;
+        public static CustomOption NiceGuesserShortOneMeetingCount;
+        public static CustomOption NiceGuesserShortMaxCount;
 
         public static CustomRoleOption EvilGuesserOption;
         public static CustomOption EvilGuesserPlayerCount;
@@ -822,7 +822,7 @@ namespace SuperNewRoles.Modules
 
         public static CustomRoleOption ConnectKillerOption;
         public static CustomOption ConnectKillerPlayerCount;
-        
+
         public static CustomRoleOption WaveCannonOption;
         public static CustomOption WaveCannonPlayerCount;
         public static CustomOption WaveCannonCoolTime;
@@ -845,11 +845,7 @@ namespace SuperNewRoles.Modules
         public static CustomOption DoppelgangerSucTime;
         public static CustomOption DoppelgangerNotSucTime;
 
-        public static CustomRoleOption NiceGuesserOption;
-        public static CustomOption NiceGuesserPlayerCount;
-        public static CustomOption NiceGuesserShortOneMeetingCount;
-        public static CustomOption NiceGuesserShortMaxCount;
-        
+
         public static CustomRoleOption WaveCannonJackalOption;
         public static CustomOption WaveCannonJackalPlayerCount;
         public static CustomOption WaveCannonJackalCoolTime;
