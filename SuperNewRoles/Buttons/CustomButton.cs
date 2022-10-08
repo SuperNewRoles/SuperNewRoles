@@ -10,6 +10,15 @@ namespace SuperNewRoles.Buttons
     public class CustomButton
     {
         public static List<CustomButton> buttons = new();
+        public static List<CustomButton> currentButtons
+        {
+            get
+            {
+                RoleId Role = PlayerControl.LocalPlayer.GetRole();
+                bool IsAlive = CachedPlayer.LocalPlayer.IsAlive();
+                return buttons.FindAll(x => x.HasButton(IsAlive, Role));
+            }
+        }
         public ActionButton actionButton;
         public Vector3 PositionOffset;
         public Vector3 LocalScale = Vector3.one;
@@ -20,7 +29,7 @@ namespace SuperNewRoles.Buttons
         private readonly Action OnMeetingEnds;
         private readonly Func<bool, RoleId, bool> HasButton;
         private readonly Func<bool> CouldUse;
-        private readonly Action OnEffectEnds;
+        public readonly Action OnEffectEnds;
         public bool HasEffect;
         public bool isEffectActive = false;
         public bool showButtonText = true;
@@ -58,7 +67,7 @@ namespace SuperNewRoles.Buttons
             button.OnClick = new Button.ButtonClickedEvent();
             button.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
 
-            button.OnClick.AddListener((UnityEngine.Events.UnityAction)OnClickEvent);
+            button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClickEvent()));
 
             LocalScale = actionButton.transform.localScale;
             if (textTemplate)
@@ -73,7 +82,7 @@ namespace SuperNewRoles.Buttons
 
         void OnClickEvent()
         {
-            if ((this.Timer < 0f) || (this.HasEffect && this.isEffectActive && this.effectCancellable))
+            if ((this.Timer < 0f && CouldUse() && CachedPlayer.LocalPlayer.PlayerControl.CanMove) || (this.HasEffect && this.isEffectActive && this.effectCancellable))
             {
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
                 this.OnClick();
@@ -171,7 +180,50 @@ namespace SuperNewRoles.Buttons
                 Vector3 pos = hudManager.UseButton.transform.localPosition;
                 if (mirror) pos = new Vector3(-pos.x, pos.y, pos.z);
                 actionButton.transform.localPosition = pos + PositionOffset;
-                //actionButton.transform.localScale = LocalScale;
+                if (currentButtons.Count <= 1) {
+                    if (actionButton is KillButton)
+                    {
+                        actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localPosition;
+                        actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localScale;
+                    }
+                    else
+                    {
+                        actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
+                        actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
+                    }
+                } else if (currentButtons.Count == 2)
+                {
+                    if (currentButtons[0] == this)
+                    {
+                        if (actionButton is KillButton)
+                        {
+                            actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localPosition;
+                            actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localScale;
+
+                        }
+                        else
+                        {
+                            actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
+                            actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
+                        }
+                    }
+                    else if (currentButtons[1] == this)
+                    {
+                        if (currentButtons[0].actionButton is KillButton)
+                        {
+                            actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
+                            actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
+                        }
+                        else
+                        {
+                            Vector3 poss = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
+                            poss.x -= 1.5f;
+                            poss.y -= 1.5f;
+                            actionButton.transform.localPosition = poss;
+                            actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
+                        }
+                    }
+                }
             }
             if (CouldUse())
             {

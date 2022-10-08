@@ -59,7 +59,7 @@ namespace SuperNewRoles.Patch
             {
                 bool hidename = ModHelpers.HidePlayerName(PlayerControl.LocalPlayer, player);
                 player.NameText().text = hidename ? "" : player.CurrentOutfit.PlayerName;
-                if (PlayerControl.LocalPlayer.IsImpostor() && (player.IsImpostor() || player.IsRole(RoleId.Spy)))
+                if ((PlayerControl.LocalPlayer.IsImpostor() && (player.IsImpostor() || player.IsRole(RoleId.Spy))) || (ModeHandler.IsMode(ModeId.HideAndSeek) && player.IsImpostor()))
                 {
                     SetPlayerNameColor(player, RoleClass.ImpostorRed);
                 }
@@ -76,7 +76,7 @@ namespace SuperNewRoles.Patch
         {
             if (p.IsBot()) return;
             bool commsActive = RoleHelpers.IsComms();
-            TMPro.TextMeshPro playerInfo = PlayerInfos.ContainsKey(p.PlayerId) ? PlayerInfos[p.PlayerId] : null;
+            TextMeshPro playerInfo = PlayerInfos.ContainsKey(p.PlayerId) ? PlayerInfos[p.PlayerId] : null;
             if (playerInfo == null)
             {
                 playerInfo = UnityEngine.Object.Instantiate(p.NameText(), p.NameText().transform.parent);
@@ -373,22 +373,14 @@ namespace SuperNewRoles.Patch
                         SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                     }
                 }
-                if (LocalRole == RoleId.Jackal ||
-                    LocalRole == RoleId.Sidekick ||
-                    LocalRole == RoleId.TeleportingJackal ||
-                    LocalRole == RoleId.JackalSeer ||
-                    LocalRole == RoleId.SidekickSeer ||
+                if (PlayerControl.LocalPlayer.IsJackalTeamJackal() ||
+                    PlayerControl.LocalPlayer.IsJackalTeamSidekick() || 
                     JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         RoleId role = p.GetRole();
-                        if ((role == RoleId.Jackal ||
-                            role == RoleId.Sidekick ||
-                            role == RoleId.TeleportingJackal ||
-                            role == RoleId.JackalSeer ||
-                            role == RoleId.SidekickSeer
-                            ) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                        if (p.IsJackalTeamJackal() || p.IsJackalTeamSidekick() || p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                         {
                             SetNamesClass.SetPlayerRoleNames(p);
                             SetNamesClass.SetPlayerNameColors(p);
