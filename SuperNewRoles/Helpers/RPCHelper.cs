@@ -38,6 +38,26 @@ namespace SuperNewRoles.Helpers
         {
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
         }
+        public static void SendSingleRpc(byte RPCId, uint NetId, PlayerControl SendTarget = null) => StartRPC(NetId, RPCId, SendTarget).EndRPC();
+        public static void SendSingleRpc(CustomRPC RPCId, uint NetId, PlayerControl SendTarget = null) => StartRPC(NetId, RPCId, SendTarget).EndRPC();
+        public static void SendSingleRpc(CustomRPC RPCId, PlayerControl SendTarget = null) => StartRPC(RPCId, SendTarget).EndRPC();
+
+        public static void SendSinglePlayerRpc(CustomRPC RPCId, byte Target, PlayerControl SendTarget = null)
+        {
+            var writer = StartRPC(RPCId, SendTarget);
+            writer.Write(Target);
+            writer.EndRPC();
+        }
+
+        //Source And Target
+        public static void SendSTRpc(CustomRPC RPCId, byte Source, byte Target, PlayerControl SendTarget = null)
+        {
+            var writer = StartRPC(RPCId, SendTarget);
+            writer.Write(Source);
+            writer.Write(Target);
+            writer.EndRPC();
+        }
+
         public static void RpcSetDoorway(byte id, bool Open)
         {
             ShipStatus.Instance.AllDoors.FirstOrDefault((a) => a.Id == id).SetDoorway(Open);

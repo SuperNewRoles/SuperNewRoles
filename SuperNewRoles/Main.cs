@@ -19,6 +19,7 @@ namespace SuperNewRoles
         public const string Id = "jp.ykundesu.supernewroles";
         //バージョンと同時にIsBetaも変える
         public const string VersionString = "1.4.2.1";
+
         public static bool IsBeta = IsViewText && ThisAssembly.Git.Branch != MasterBranch;
 
         //プルリク時にfalseなら指摘してください
@@ -28,7 +29,7 @@ namespace SuperNewRoles
         public const string MasterBranch = "master";
         public const string ModName = "SuperNewRoles";
         public const string ColorModName = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
-        public const string DiscordServer = "https://discord.gg/6DjxfaDsAj";
+        public const string DiscordServer = "https://discord.gg/hXbDgQzSuK";
         public const string Twitter1 = "https://twitter.com/SNRDevs";
         public const string Twitter2 = "https://twitter.com/SuperNewRoles";
 

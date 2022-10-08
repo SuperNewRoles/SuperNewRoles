@@ -2075,22 +2075,22 @@
     "NiceGuesserTitle1": {
         "0": "Let's punch out the outsider.",
         "11": "\u4eba\u5916\u3092\u6253\u3061\u629c\u3053\u3046",
-        "13": "\u751f\u547d\u5c31\u662f\u8c6a\u8d4c"
+        "13": "\u751f\u547d\u5c31\u662f\u8c6a?"
     },
     "NiceGuesserTitle2": {
         "0": "Guess the position of the outsider",
         "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
-        "13": "\u5728\u4f1a\u8bae\u4e0a\u731c\u6d4b\u654c\u4eba\u7684\u8eab\u4efd"
+        "13": "\u5728\u4f1a?\u4e0a\u731c??\u4eba\u7684\u8eab?"
     },
     "GuesserOneMeetingShortSetting": {
         "0": "Multiple hits in one meeting",
         "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
-        "13": "\u4fa0\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a\u8bae\u4e2d\u591a\u6b21\u731c\u6d4b"
+        "13": "\u4fa0\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a?\u4e2d\u591a\u6b21\u731c?"
     },
     "GuesserShortMaxCountSetting": {
         "0": "Number of times you can hit",
         "11": "\u6253\u3066\u308b\u56de\u6570",
-        "13": "\u4fa0\u5ba2\u6700\u5927\u53ef\u731c\u6d4b\u6b21\u6570"
+        "13": "\u4fa0\u5ba2\u6700\u5927\u53ef\u731c?\u6b21\u6570"
     },
     "EvilGuesserName": {
         "0": "Evil Guesser",
@@ -2100,26 +2100,21 @@
     "EvilGuesserTitle1": {
         "0": "Guess the position of the camp other than Imposter.",
         "11": "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u4ee5\u5916\u306e\u9663\u55b6\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
-        "13": "\u5728\u4f1a\u8bae\u4e0a\u731c\u6d4b\u4ed6\u4eba\u7684\u8eab\u4efd"
+        "13": "\u5728\u4f1a?\u4e0a\u731c?\u4ed6\u4eba\u7684\u8eab?"
     },
     "EvilGuesserTitle2": {
         "0": "Guess the position of the outsider",
         "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
-        "13": "\u523a\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a\u8bae\u4e2d\u591a\u6b21\u731c\u6d4b"
+        "13": "\u523a\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a?\u4e2d\u591a\u6b21\u731c?"
     },
     "EvilGuesserOneMeetingShortSetting": {
         "0": "Multiple hits in one meeting",
         "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
-        "13": "\u523a\u5ba2\u6700\u5927\u53ef\u731c\u6d4b\u6b21\u6570"
+        "13": "\u523a\u5ba2\u6700\u5927\u53ef\u731c?\u6b21\u6570"
     },
     "EvilGuesserShortMaxCountSetting": {
         "0": "Number of times you can hit",
         "11": "\u6253\u3066\u308b\u6700\u5927\u6570"
-    },
-    "VultureName": {
-        "0": "Vulture",
-        "11": "\u30f4\u30a1\u30eb\u30c1\u30e3\u30fc",
-        "13": "\u79c3\u9e6b"
     },
     "VultureTitle1": {
         "0": "Let's eat a corpse.",
@@ -4647,6 +4642,62 @@
         "0": "{0} seconds left to deactivate.",
         "11": "\u89e3\u9664\u307e\u3067{0}\u79d2",
         "13": "\u8fd8\u6709{0}\u79d2\u89e3\u9664\u6b66\u88c5"
+    },
+    "WaveCannonName": {
+        "0": "Wave Cannon",
+        "11": "\u6ce2\u52d5\u7832"
+    },
+    "WaveCannonTitle1": {
+        "0": "Use the cannon and get the kill!",
+        "11": "\u5927\u7832\u3092\u4f7f\u7528\u3057\u3001\u30ad\u30eb\u3057\u3088\u3046"
+    },
+    "WaveCannonChargeTime": {
+        "0": "Charge Time",
+        "11": "\u30c1\u30e3\u30fc\u30b8\u6642\u9593"
+    },
+    "WaveCannonButtonName": {
+        "0": "Wave Cannon",
+        "11": "\u6ce2\u52d5\u7832"
+    },
+    "WaveCannonJackalName": {
+        "0": "Wave Cannon Jackal",
+        "11": "\u6ce2\u52d5\u7832\u30b8\u30e3\u30c3\u30ab\u30eb"
+    },
+    "WaveCannonJackalTitle1": {
+        "0": "Use the cannon and get the kill!",
+        "11": "\u5927\u7832\u3092\u4f7f\u7528\u3057\u3001\u30ad\u30eb\u3057\u3088\u3046"
+    },
+    "CrackerName": {
+        "0": "Cracker",
+        "11": "\u30af\u30e9\u30c3\u30ab\u30fc"
+    },
+    "CrackerTitle1": {
+        "0": "Let's crack on and play God!",
+        "11": "\u30af\u30e9\u30c3\u30af\u3057\u3066\u795e\u96a0\u3057\u3092\u3057\u3088\u3046"
+    },
+    "CrackerIsAdminView": {
+        "0": "Counted by Admins",
+        "11": "\u30a2\u30c9\u30df\u30f3\u306b\u30ab\u30a6\u30f3\u30c8\u3055\u308c\u308b"
+    },
+    "CrackerIsVitalsView": {
+        "0": "Counted in Vitals",
+        "11": "\u30d0\u30a4\u30bf\u30eb\u306b\u30ab\u30a6\u30f3\u30c8\u3055\u308c\u308b"
+    },
+    "CrackerOneTurnSelectCount": {
+        "0": "Number of times you can crack in one turn",
+        "11": "1\u30bf\u30fc\u30f3\u5185\u306b\u30af\u30e9\u30c3\u30af\u3067\u304d\u308b\u56de\u6570"
+    },
+    "CrackerAllTurnSelectCount": {
+        "0": "Number of times you can crack during a match",
+        "11": "\u8a66\u5408\u4e2d\u306b\u30af\u30e9\u30c3\u30af\u3067\u304d\u308b\u56de\u6570"
+    },
+    "CrackerIsSelfNone": {
+        "0": "Cracks are unrecognizable to the cracker",
+        "11": "\u30af\u30e9\u30c3\u30af\u8005\u306f\u30af\u30e9\u30c3\u30af\u3092\u8a8d\u8b58\u3067\u304d\u306a\u3044"
+    },
+    "CrackerButtonName": {
+        "0": "Crack!!!",
+        "11": "\u30af\u30e9\u30c3\u30af"
     },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",

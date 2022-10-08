@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -81,7 +82,8 @@ namespace SuperNewRoles.Patch
                     ModTranslation.GetString("CommandsMessage6") + "\n" +
                     ModTranslation.GetString("CommandsMessage7") + "\n" +
                     ModTranslation.GetString("CommandsMessage8") + "\n" +
-                    ModTranslation.GetString("CommandsMessage9");
+                    ModTranslation.GetString("CommandsMessage9") + "\n" +
+                    ModTranslation.GetString("CommandsMessage10");
                 SendCommand(sourcePlayer, text);
                 return false;
             }
@@ -159,6 +161,36 @@ namespace SuperNewRoles.Patch
                     }
                     RoleCommand(SendTime: sendtime, target: target);
                 }
+                return false;
+            }
+            else if (
+                Commands[0].Equals("/Winners", StringComparison.OrdinalIgnoreCase) ||
+                Commands[0].Equals("/w", StringComparison.OrdinalIgnoreCase)
+                )
+            {
+                PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
+                if (OnGameEndPatch.PlayerDatas == null)
+                {
+                    SendCommand(target, ModTranslation.GetString("WinnersNoneData"), SNRCommander);
+                    return false;
+                }
+                StringBuilder builder = new();
+                foreach (var data in OnGameEndPatch.PlayerDatas)
+                {
+                    if (data.IsWin) builder.Append("★");
+                    else builder.Append("　");
+                    builder.Append(data.name);
+                    builder.Append($"({data.CompleteTask}/{data.TotalTask})");
+                    builder.Append(" : ");
+                    builder.Append(ModTranslation.GetString($"FinalStatus{data.finalStatus}"));
+                    builder.Append(" : ");
+                    if (data.role == null)
+                        builder.Append(ModTranslation.GetString("WinnerGetError"));
+                    else
+                        builder.Append(ModTranslation.GetString(IntroDate.GetIntroDate((RoleId)data.role).NameKey + "Name"));
+                    builder.AppendLine();
+                }
+                SendCommand(target, builder.ToString(), $"<size=200%>{OnGameEndPatch.WinText}</size>");
                 return false;
             }
             else

@@ -80,6 +80,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton PhotographerButton;
         public static CustomButton StefinderKillButton;
         public static CustomButton SluggerButton;
+        public static CustomButton CrackerButton;
+        public static CustomButton WaveCannonButton;
         public static CustomButton DoppelgangerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
@@ -103,6 +105,71 @@ namespace SuperNewRoles.Buttons
 
         public static void Postfix(HudManager __instance)
         {
+            WaveCannonButton = new(
+                () =>
+                {
+                    var pos = CachedPlayer.LocalPlayer.transform.position;
+                    byte[] buff = new byte[sizeof(float) * 2];
+                    Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
+                    writer.Write((byte)WaveCannonObject.RpcType.Spawn);
+                    writer.Write((byte)0);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.WriteBytesAndSize(buff);
+                    writer.EndRPC();
+                    RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Spawn, 0, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, buff);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role is RoleId.WaveCannon or RoleId.WaveCannonJackal; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptions.WaveCannonCoolTime.GetFloat() : CustomOptions.WaveCannonJackalCoolTime.GetFloat();
+                    WaveCannonButton.Timer = WaveCannonButton.MaxTimer;
+                    WaveCannonButton.effectCancellable = false;
+                    WaveCannonButton.EffectDuration = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptions.WaveCannonChargeTime.GetFloat() : CustomOptions.WaveCannonJackalChargeTime.GetFloat();
+                    WaveCannonButton.HasEffect = true;
+                },
+                RoleClass.WaveCannon.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; },
+                true,
+                5f,
+                () =>
+                {
+                    WaveCannonObject obj = WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId && x.Id == WaveCannonObject.Ids[CachedPlayer.LocalPlayer.PlayerId] - 1);
+                    if (obj == null)
+                    {
+                        Logger.Info("nullなのでreturnしました","WaveCannonButton");
+                        return;
+                    }
+                    var pos = CachedPlayer.LocalPlayer.transform.position;
+                    byte[] buff = new byte[sizeof(float) * 2];
+                    Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.WaveCannon);
+                    writer.Write((byte)WaveCannonObject.RpcType.Shoot);
+                    writer.Write((byte)obj.Id);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerPhysics.FlipX);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.WriteBytesAndSize(buff);
+                    writer.EndRPC();
+                    RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Shoot, (byte)obj.Id, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, buff);
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("WaveCannonButtonName"),
+                showButtonText = true
+            };
+
             SluggerButton = new(
                 () =>
                 {
@@ -174,13 +241,16 @@ namespace SuperNewRoles.Buttons
                     RPCProcedure.SluggerExile(CachedPlayer.LocalPlayer.PlayerId, TargetsId);
                     SluggerButton.MaxTimer = CustomOptions.SluggerCoolTime.GetFloat();
                     SluggerButton.Timer = SluggerButton.MaxTimer;
+                    if (CustomOptions.SluggerIsKillCoolSync.GetBool())
+                    {
+                        PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer);
+                    }
                 }
             )
             {
                 buttonText = ModTranslation.GetString("SluggerButtonName"),
                 showButtonText = true
             };
-
 
             PhotographerButton = new(
                 () =>
@@ -263,6 +333,41 @@ namespace SuperNewRoles.Buttons
                 buttonText = ModTranslation.GetString("ScientistButtonName"),
                 showButtonText = true
             };
+
+            CrackerButton = new(
+                () =>
+                {
+                    byte TargetId = SetTarget(RoleClass.Cracker.CurrentCrackedPlayerControls).PlayerId;
+                    RoleClass.Cracker.currentCrackedPlayers.Add(TargetId);
+                    RPCHelper.SendSinglePlayerRpc(CustomRPC.CrackerCrack, TargetId);
+                    RPCProcedure.CrackerCrack(TargetId);
+                    RoleClass.Cracker.TurnCount--;
+                    RoleClass.Cracker.MaxTurnCount--;
+                    CrackerButton.Timer = CrackerButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Cracker && RoleClass.Cracker.TurnCount > 0 && RoleClass.Cracker.MaxTurnCount > 0; },
+                () =>
+                {
+                    return SetTarget(RoleClass.Cracker.CurrentCrackedPlayerControls) && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    CrackerButton.MaxTimer = CustomOptions.CrackerCoolTime.GetFloat();
+                    CrackerButton.Timer = CrackerButton.MaxTimer;
+                },
+                ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CrackerButton.png", 115f),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("CrackerButtonName"),
+                showButtonText = true
+            };
+
             FalseChargesFalseChargeButton = new(
                 () =>
                 {
@@ -587,14 +692,21 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target = PlayerControlFixedUpdatePatch.JackalSetTarget();
-                    if (target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.CanCreateSidekick)
+                    if (target && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.CanCreateSidekick)
                     {
-                        bool IsFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
-                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekick, SendOption.Reliable, -1);
-                        killWriter.Write(target.PlayerId);
-                        killWriter.Write(IsFakeSidekick);
-                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        RPCProcedure.CreateSidekick(target.PlayerId, IsFakeSidekick);
+                        if (RoleClass.Jackal.CanCreateFriend)
+                        {
+                            target.ResetAndSetRole(RoleId.JackalFriends); //クルーにして フレンズにする
+                        }
+                        else
+                        {
+                            bool IsFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
+                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekick, SendOption.Reliable, -1);
+                            killWriter.Write(target.PlayerId);
+                            killWriter.Write(IsFakeSidekick);
+                            AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                            RPCProcedure.CreateSidekick(target.PlayerId, IsFakeSidekick);
+                        }
                         RoleClass.Jackal.CanCreateSidekick = false;
                         Jackal.ResetCoolDown();
                     }
@@ -676,10 +788,13 @@ namespace SuperNewRoles.Buttons
                             case RoleId.TeleportingJackal:
                                 TeleportingJackal.ResetCoolDowns();
                                 break;
+                            case RoleId.WaveCannonJackal:
+                                Roles.Neutral.WaveCannonJackal.ResetCoolDowns();
+                                break;
                         }
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Jackal || role == RoleId.TeleportingJackal || role == RoleId.JackalSeer) && ModeHandler.IsMode(ModeId.Default); },
+                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Jackal || role == RoleId.TeleportingJackal || role == RoleId.JackalSeer || role == RoleId.WaveCannonJackal) && ModeHandler.IsMode(ModeId.Default); },
                 () =>
                 {
                     return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -687,7 +802,8 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
+                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
+                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannonJackal)) { Roles.Neutral.WaveCannonJackal.ResetCoolDowns(); }
                 },
                 __instance.KillButton.graphic.sprite,
                 new Vector3(0, 1, 0),
@@ -732,12 +848,8 @@ namespace SuperNewRoles.Buttons
             DoorrDoorButton = new(
                 () =>
                 {
-                    if (Doorr.CheckTarget() && PlayerControl.LocalPlayer.CanMove)
-                    {
-                        Doorr.DoorrBtn();
-                        RoleClass.Doorr.ButtonTimer = DateTime.Now;
-                        Doorr.ResetCoolDown();
-                    }
+                    Doorr.DoorrBtn();
+                    Doorr.ResetCoolDown();
                 },
                 (bool isAlive, RoleId role) => { return isAlive && Doorr.IsDoorr(PlayerControl.LocalPlayer); },
                 () =>
@@ -956,7 +1068,8 @@ namespace SuperNewRoles.Buttons
                 () => { return false; },
                 true,
                 5f,
-                () => {
+                () =>
+                {
                     MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
                     RPCWriter.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
@@ -1580,10 +1693,7 @@ namespace SuperNewRoles.Buttons
             FreezerButton = new(
                 () =>
                 {
-                    FreezerButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Freezer.DownStart();
-                    FreezerButton.MaxTimer = RoleClass.Freezer.CoolTime;
-                    FreezerButton.Timer = FreezerButton.MaxTimer;
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Freezer; },
                 () =>
@@ -2620,6 +2730,7 @@ namespace SuperNewRoles.Buttons
             RoleClass.Doppelganger.DoppelgangerDurationText.transform.localPosition += new Vector3(-2.575f, -0.95f, 0);
 
             Roles.Impostor.Conjurer.SetupCustomButtons(__instance);
+            Roles.Neutral.GM.CreateButton(__instance);
             SetCustomButtonCooldowns();
         }
     }

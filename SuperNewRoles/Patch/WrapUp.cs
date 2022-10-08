@@ -78,10 +78,6 @@ namespace SuperNewRoles.Patch
             CustomButton.MeetingEndedUpdate();
 
             PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            new LateTask(() =>
-            {
-                RoleClass.IsMeeting = false;
-            }, 0.1f, "SetIsMeeting");
             if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
             ModeHandler.Wrapup(exiled);
             RedRidingHood.WrapUp(exiled);
@@ -102,6 +98,7 @@ namespace SuperNewRoles.Patch
             SecretRoom.Reset();
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Roles.CrewMate.Painter.WrapUp();
             Roles.Neutral.Photographer.WrapUp();
+            Roles.Impostor.Cracker.WrapUp();
             if (exiled == null) return;
 
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();

@@ -50,13 +50,20 @@ namespace SuperNewRoles.Patch
             public static PoolablePlayer playerPrefab;
             public static void Prefix(IntroCutscene __instance)
             {
+                if (ModeHandler.IsMode(ModeId.HideAndSeek))
+                {
+                    new LateTask(() => RoleClass.Tuna.IsMeetingEnd = true, 6);
+                }
                 // プレイヤーのアイコンを生成
-                if (CachedPlayer.LocalPlayer != null && FastDestroyableSingleton<HudManager>.Instance != null)
+                if (PlayerControl.LocalPlayer != null && FastDestroyableSingleton<HudManager>.Instance != null)
                 {
                     Vector3 bottomLeft = new(-FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.x, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.y, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.z);
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
+
+                    int index = -1;
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
                         GameData.PlayerInfo data = p.Data;
+                        Logger.Info($"生成:{p.Data.PlayerName}");
                         PoolablePlayer player = Object.Instantiate(__instance.PlayerPrefab, FastDestroyableSingleton<HudManager>.Instance.transform);
                         playerPrefab = __instance.PlayerPrefab;
                         p.SetPlayerMaterialColors(player.cosmetics.currentBodySprite.BodySprite);
@@ -72,14 +79,55 @@ namespace SuperNewRoles.Patch
                             player.transform.localScale = Vector3.one * 0.4f;
                             player.gameObject.SetActive(false);
                         }
+                        else if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
+                        {
+                            player.gameObject.SetActive(false);
+                            if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
+                            index++;
+                            player.transform.localPosition = new(-4.75f + (index * 0.425f), -2.4f, 0);
+                            player.transform.localScale = new(0.25f, 0.25f, 0.25f);
+                            player.cosmetics.nameText.transform.localPosition -= new Vector3(0, 0.3f, 0);
+                            PassiveButton button = player.gameObject.AddComponent<PassiveButton>();
+                            button.OnMouseOut = new();
+                            button.OnMouseOver = new();
+                            button.OnClick = new();
+                            static void Create(PassiveButton button, PlayerControl target)
+                            {
+                                button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
+                                {
+                                    Roles.Neutral.GM.target = target;
+                                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                                    foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+                                    {
+                                        p.Data.Role.NameColor = Color.white;
+                                    }
+                                    CachedPlayer.LocalPlayer.Data.IsDead = false;
+                                    CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+                                    CachedPlayer.LocalPlayer.Data.IsDead = true;
+                                    foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+                                    {
+                                        if (p.PlayerControl.IsImpostor())
+                                        {
+                                            p.Data.Role.NameColor = RoleClass.ImpostorRed;
+                                        }
+                                    }
+                                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                                }));
+                            }
+                            Create(button, p);
+                            button.Colliders = new Collider2D[] { player.gameObject.AddComponent<PolygonCollider2D>() };
+                            button._CachedZ_k__BackingField = 0.1f;
+                            button.CachedZ = 0.1f;
+                            player.gameObject.SetActive(true);
+                        }
                         else
                         {
                             player.gameObject.SetActive(false);
                         }
+                        Logger.Info($"生成完了:{p.Data.PlayerName}");
                     }
                 }
 
-                // Force Bounty Hunter to load a new Bounty when the Intro is over
                 if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hitman))
                 {
                     RoleClass.Hitman.UpdateTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
@@ -200,16 +248,19 @@ namespace SuperNewRoles.Patch
         public static void SetupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
             IntroHandler.Handler();
-            Color32 color = new(127, 127, 127, byte.MaxValue);
+
+            Color32 color = __instance.TeamTitle.color;
+            Color32 backcolor = __instance.BackgroundBar.material.color;
+            string TeamTitle = __instance.TeamTitle.text;
+            string ImpostorText = __instance.ImpostorText.text;
             if (ModeHandler.IsMode(ModeId.Default, ModeId.SuperHostRoles))
             {
-                if (PlayerControl.LocalPlayer.IsNeutral())
+                if (PlayerControl.LocalPlayer.IsNeutral() && !PlayerControl.LocalPlayer.IsRole(RoleId.GM))
                 {
                     IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
-                    __instance.BackgroundBar.material.color = color;
-                    __instance.TeamTitle.text = ModTranslation.GetString("Neutral");
-                    __instance.TeamTitle.color = color;
-                    __instance.ImpostorText.text = ModTranslation.GetString("NeutralSubIntro");
+                    TeamTitle = ModTranslation.GetString("Neutral");
+                    ImpostorText = ModTranslation.GetString("NeutralSubIntro");
+                    color = new(127, 127, 127, byte.MaxValue);
                 }
                 else
                 {
@@ -227,19 +278,53 @@ namespace SuperNewRoles.Patch
                         case RoleId.SeerFriends:
                         case RoleId.MayorFriends:
                         case RoleId.SatsumaAndImo:
+                        case RoleId.GM:
                             IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
-                            __instance.BackgroundBar.material.color = Intro.color;
-                            __instance.TeamTitle.text = ModTranslation.GetString(Intro.NameKey + "Name");
-                            __instance.TeamTitle.color = Intro.color;
-                            __instance.ImpostorText.text = "";
+                            color = Intro.color;
+                            TeamTitle = ModTranslation.GetString(Intro.NameKey + "Name");
+                            ImpostorText = "";
                             break;
                     }
                 }
             }
             else
             {
-                ModeHandler.IntroHandler(__instance);
+                (TeamTitle, ImpostorText, color) = ModeHandler.IntroHandler(__instance);
+                if (TeamTitle == "NONE" && ImpostorText == "NONE") return;
             }
+            if (OldModeButtons.IsOldMode)
+            {
+                if (ModeHandler.IsMode(ModeId.Default))
+                {
+                    var myrole = PlayerControl.LocalPlayer.GetRole();
+                    if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
+                    {
+                        var date = IntroDate.GetIntroDate(myrole);
+                        color = date.color;
+                        TeamTitle = ModTranslation.GetString(date.NameKey + "Name");
+                        ImpostorText = date.TitleDesc;
+                    }
+                    if (PlayerControl.LocalPlayer.IsLovers())
+                    {
+                        ImpostorText += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                    }
+                    if (PlayerControl.LocalPlayer.IsQuarreled())
+                    {
+                        ImpostorText += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
+                    }
+                }
+                __instance.ImpostorText.gameObject.SetActive(true);
+                if (ImpostorText.Length >= 10)
+                {
+                    __instance.ImpostorText.transform.localPosition += new Vector3(0,0.5f,0);
+                    __instance.ImpostorText.transform.localScale *= 1.5f;
+                }
+            }
+            __instance.TeamTitle.text = TeamTitle;
+            __instance.ImpostorText.text = ImpostorText;
+            __instance.BackgroundBar.material.color = color;
+            __instance.TeamTitle.color = color;
+
             //SetUpRoleTextPatch.Postfix(__instance);
         }
 
@@ -306,8 +391,9 @@ namespace SuperNewRoles.Patch
                     yield return null;
                 }
             }
-            public static void Prefix(IntroCutscene __instance)
+            public static bool Prefix(IntroCutscene __instance)
             {
+                if (OldModeButtons.IsOldMode) return false;
                 new LateTask(() =>
                 {
                     CustomButton.MeetingEndedUpdate();
@@ -338,6 +424,7 @@ namespace SuperNewRoles.Patch
                     }
                     ModeHandler.YouAreIntroHandler(__instance);
                 }, 0f, "Override Role Text");
+                return true;
             }
         }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]

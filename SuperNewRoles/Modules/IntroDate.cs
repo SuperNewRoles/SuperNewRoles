@@ -219,8 +219,12 @@ namespace SuperNewRoles.Modules
         public static IntroDate NiceGuesserIntro = new("NiceGuesser", RoleClass.NiceGuesser.color, 1, RoleId.NiceGuesser, TeamRoleType.Crewmate);
         public static IntroDate ShiftActorIntro = new("ShiftActor", ShiftActor.color, 1, RoleId.ShiftActor, TeamRoleType.Impostor);
         public static IntroDate ConnectKillerIntro = new("ConnectKiller", RoleClass.ConnectKiller.color, 1, RoleId.ConnectKiller, TeamRoleType.Impostor);
+        public static IntroDate GMIntro = new("GM", RoleClass.GM.color, 1, RoleId.GM, TeamRoleType.Neutral);
+        public static IntroDate CrackerIntro = new("Cracker", RoleClass.Cracker.color, 1, RoleId.Cracker, TeamRoleType.Impostor);
         public static IntroDate NekoKabochaIntro = new("NekoKabocha", NekoKabocha.color, 1, RoleId.NekoKabocha, TeamRoleType.Impostor);
+        public static IntroDate WaveCannonIntro = new("WaveCannon", RoleClass.WaveCannon.color, 1, RoleId.WaveCannon, TeamRoleType.Impostor);
         public static IntroDate DoppelgangerIntro = new("Doppelganger", RoleClass.Doppelganger.color, 1, RoleId.Doppelganger, TeamRoleType.Impostor);
+        public static IntroDate WaveCannonJackalIntro = new("WaveCannonJackal", RoleClass.WaveCannonJackal.color, 1, RoleId.WaveCannonJackal, TeamRoleType.Neutral);
         public static IntroDate ConjurerIntro = new("Conjurer", Conjurer.color, 1, RoleId.Conjurer, TeamRoleType.Impostor);
         //イントロオブジェ
     }

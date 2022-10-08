@@ -1,14 +1,17 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
+using TMPro;
+using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
@@ -49,7 +52,7 @@ namespace SuperNewRoles.Patches
             {
                 if (__instance.IsRole(RoleId.Doppelganger))
                 {
-                    RoleClass.Doppelganger.DoppelgangerTargets.Add(__instance.PlayerId, target);
+                    RoleClass.Doppelganger.Targets.Add(__instance.PlayerId, target);
                     SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
                 }
             }
@@ -57,14 +60,14 @@ namespace SuperNewRoles.Patches
             {
                 if (__instance.IsRole(RoleId.Doppelganger))
                 {
-                    RoleClass.Doppelganger.DoppelgangerTargets.Remove(__instance.PlayerId);
+                    RoleClass.Doppelganger.Targets.Remove(__instance.PlayerId);
                     SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲット、{target.Data.PlayerName}を削除");
                 }
                 if (ModeHandler.IsMode(ModeId.Default))
                 {
                     if (__instance.IsRole(RoleId.Doppelganger))
                     {
-                        Roles.Impostor.Doppelganger.ResetShapeCool();
+                        Doppelganger.ResetShapeCool();
                     }
                 }
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles))
@@ -210,7 +213,57 @@ namespace SuperNewRoles.Patches
             return !ModeHandler.IsMode(ModeId.SuperHostRoles);
         }
     }
-
+    [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Begin))]
+    class ShapeshifterMinigameBeginPatch
+    {
+        public static void Postfix(ShapeshifterMinigame __instance, PlayerTask task)
+        {
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
+            {
+                static void NewTask(ShapeshifterMinigame __instance)
+                {
+                    new LateTask(() =>
+                    {
+                        if (__instance == null) return;
+                        __instance.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.transform.localScale;
+                        NewTask(__instance);
+                    },0.1f);
+                }
+                NewTask(__instance);
+                foreach (ShapeshifterPanel panel in GameObject.FindObjectsOfType<ShapeshifterPanel>()) GameObject.Destroy(panel.gameObject);
+                int index = 0;
+                foreach (var Data in Roles.Neutral.GM.ActionDictionary)
+                {
+                    int num = index % 3;
+                    int num2 = index / 3;
+                    ShapeshifterPanel panel = GameObject.Instantiate(__instance.PanelPrefab, __instance.transform);
+                    panel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
+                    static void Create(ShapeshifterPanel panel, int index, Action action)
+                    {
+                        panel.SetPlayer(index, CachedPlayer.LocalPlayer.Data, (Action)(() => {
+                            if (MeetingHud.Instance != null) MeetingHud.Instance.transform.FindChild("ButtonStuff").gameObject.SetActive(true);
+                            action(); }));
+                    }
+                    Create(panel, index, Data.Value);
+                    panel.PlayerIcon.gameObject.SetActive(false);
+                    panel.LevelNumberText.transform.parent.gameObject.SetActive(false);
+                    panel.transform.FindChild("Nameplate").GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+                    panel.transform.FindChild("Nameplate/Highlight/ShapeshifterIcon").gameObject.SetActive(false);
+                    panel.NameText.text = ModTranslation.GetString(Data.Key);
+                    panel.NameText.transform.localPosition = new(0, 0, -0.1f);
+                    index++;
+                }
+                if (MeetingHud.Instance != null)
+                {
+                    MeetingHud.Instance.transform.FindChild("ButtonStuff").gameObject.SetActive(false);
+                    __instance.transform.FindChild("CloseButton").GetComponent<PassiveButton>().OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
+                    {
+                        MeetingHud.Instance.transform.FindChild("ButtonStuff").gameObject.SetActive(true);
+                    }));
+                }
+            }
+        }
+    }
     [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Shapeshift))]
     class ShapeshifterMinigameShapeshiftPatch
     {
@@ -404,7 +457,7 @@ namespace SuperNewRoles.Patches
                     Logger.Info("SHR-Assassin.TriggerPlayerを通過", "CheckMurder");
                     if (target.IsRole(RoleId.NekoKabocha))
                     {
-                        Roles.Impostor.NekoKabocha.OnKill(__instance);
+                        NekoKabocha.OnKill(__instance);
                         return true;
                     }
                     foreach (var p in Seer.Seers)
@@ -695,6 +748,7 @@ namespace SuperNewRoles.Patches
         }
         public static void RpcMurderPlayerCheck(this PlayerControl __instance, PlayerControl target)
         {
+            if (ModeHandler.IsMode(ModeId.HideAndSeek) && target.IsImpostor() && !__instance.IsRole(RoleId.Jackal)) return;
             if (target.IsRole(RoleId.Assassin) && target.IsAlive())
             {
                 new LateTask(() =>
@@ -752,8 +806,8 @@ namespace SuperNewRoles.Patches
         public static bool resetToDead = false;
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
-            EvilGambler.EvilGamblerMurder.Prefix(__instance, target);
-            Roles.Impostor.Doppelganger.KillCoolSetting.MurderPrefix(__instance, target);
+            EvilGambler.MurderPlayerPrefix(__instance, target);
+            Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 target.resetChange();
@@ -799,7 +853,7 @@ namespace SuperNewRoles.Patches
                             Fox.FoxMurderPatch.Guard(__instance, target);
                             break;
                         case RoleId.NekoKabocha:
-                            Roles.Impostor.NekoKabocha.OnKill(__instance);
+                            NekoKabocha.OnKill(__instance);
                             break;
                     }
                 }
@@ -815,9 +869,22 @@ namespace SuperNewRoles.Patches
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
+            if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId)
+            {
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
+                {
+                    if (CustomOptions.WaveCannonIsSyncKillCoolTime.GetBool())
+                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonCoolTime.GetFloat();
+                }
+                else
+                {
+                    if (CustomOptions.WaveCannonJackalIsSyncKillCoolTime.GetBool())
+                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonJackalCoolTime.GetFloat();
+                }
+            }
+
             SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
-            Roles.Impostor.Doppelganger.KillCoolSetting.ResetKillCool(__instance);
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
@@ -831,6 +898,14 @@ namespace SuperNewRoles.Patches
                 if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Finder))
                 {
                     RoleClass.Finder.KillCount++;
+                }
+                if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Slugger))
+                {
+                    if (CustomOptions.SluggerIsKillCoolSync.GetBool())
+                    {
+                        HudManagerStartPatch.SluggerButton.MaxTimer = CustomOptions.SluggerCoolTime.GetFloat();
+                        HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
+                    }
                 }
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.Death);
                 if (target.IsRole(RoleId.Assassin))
@@ -896,9 +971,11 @@ namespace SuperNewRoles.Patches
                 }
                 Minimalist.MurderPatch.Postfix(__instance);
             }
-            if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && ModeHandler.IsMode(ModeId.Default))
             {
-                if (__instance.IsImpostor() && !__instance.IsRole(RoleId.EvilGambler))
+                EvilGambler.MurderPlayerPostfix(__instance);
+                Doppelganger.KillCoolSetting.MurderPlayer(__instance, target);
+                if (__instance.IsImpostor())
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance), RoleHelpers.GetCoolTime(__instance));
                 }
@@ -967,8 +1044,19 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
         {
+            if (__instance.IsRole(RoleId.GM))
+            {
+                MeetingRoomManager.Instance.AssignSelf(__instance, target);
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
+                    __instance.RpcStartMeeting(target);
+                }
+                return false;
+            }
             if (!AmongUsClient.Instance.AmHost) return true;
             if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
+            if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (__instance.IsRole(RoleId.EvilButtoner, RoleId.NiceButtoner) && target != null && target.PlayerId == __instance.PlayerId)
@@ -987,10 +1075,23 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
+            if(ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.IsRole(RoleId.Doppelganger))
+                    {
+                        new LateTask(() =>
+                        {
+                            player.RpcRevertShapeshift(false);
+                        }, 0.5f);
+                        SyncSetting.CustomSyncSettings(player);
+                    }
+                }
+            }
             return (RoleClass.Assassin.TriggerPlayer != null)
             || (!MapOptions.MapOption.UseDeadBodyReport && target != null)
             || (!MapOptions.MapOption.UseMeetingButton && target == null)
-            || ModeHandler.IsMode(ModeId.HideAndSeek)
             || ModeHandler.IsMode(ModeId.BattleRoyal)
             || ModeHandler.IsMode(ModeId.CopsRobbers)
                 ? false
