@@ -64,7 +64,7 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
             HudManagerStartPatch.ClergymanLightOutButton.Timer = HudManagerStartPatch.ClergymanLightOutButton.MaxTimer;
             HudManagerStartPatch.ClergymanLightOutButton.effectCancellable = true;
-            Logger.Info(RoleClass.Clergyman.DurationTime.ToString() ,"ClergymanDuration");
+            Logger.Info(RoleClass.Clergyman.DurationTime.ToString(), "ClergymanDuration");
             HudManagerStartPatch.ClergymanLightOutButton.EffectDuration = RoleClass.Clergyman.DurationTime;
             HudManagerStartPatch.ClergymanLightOutButton.HasEffect = true;
             RoleClass.Clergyman.IsLightOff = false;

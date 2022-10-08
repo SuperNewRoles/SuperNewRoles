@@ -193,7 +193,7 @@ namespace SuperNewRoles
                 RoleId.WaveCannonJackal;
         public static bool IsJackalTeamJackal(this PlayerControl player)
             => player.GetRole() is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal or RoleId.WaveCannonJackal;
-        
+
         public static bool IsJackalTeamSidekick(this PlayerControl player)
             => player.GetRole() is RoleId.Sidekick or RoleId.SidekickSeer;
 
@@ -599,6 +599,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.GM:
                     RoleClass.GM.gm = player;
+                    break;
+                case RoleId.Cracker:
+                    RoleClass.Cracker.CrackerPlayer.Add(player);
                     break;
                 case RoleId.WaveCannon:
                     RoleClass.WaveCannon.WaveCannonPlayer.Add(player);
@@ -1037,6 +1040,9 @@ namespace SuperNewRoles
                 case RoleId.GM:
                     if (RoleClass.GM.gm != null && player.PlayerId == RoleClass.GM.gm.PlayerId) RoleClass.GM.gm = null;
                     break;
+                case RoleId.Cracker:
+                    RoleClass.Cracker.CrackerPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.WaveCannon:
                     RoleClass.WaveCannon.WaveCannonPlayer.RemoveAll(ClearRemove);
                     break;
@@ -1141,9 +1147,9 @@ namespace SuperNewRoles
                 RoleId.Minimalist => RoleClass.Minimalist.UseVent,
                 RoleId.Samurai => RoleClass.Samurai.UseVent,
                 RoleId.Jester => RoleClass.Jester.IsUseVent,
-                RoleId.MadMate => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.MadMate.IsUseVent,
+                RoleId.MadMate => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.MadMate.IsUseVent,
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseVent,
-                RoleId.JackalFriends => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.JackalFriends.IsUseVent,
+                RoleId.JackalFriends => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.JackalFriends.IsUseVent,
                 RoleId.Egoist => RoleClass.Egoist.UseVent,
                 RoleId.Technician => IsSabotage(),
                 RoleId.MadMayor => RoleClass.MadMayor.IsUseVent,
@@ -1161,7 +1167,7 @@ namespace SuperNewRoles
                 RoleId.Vulture => RoleClass.Vulture.IsUseVent,
                 RoleId.MayorFriends => RoleClass.MayorFriends.IsUseVent,
                 RoleId.Tuna => RoleClass.Tuna.IsUseVent,
-                RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
+                RoleId.BlackCat => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
                 RoleId.Stefinder => CustomOptions.StefinderVent.GetBool(),
                 RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalUseVent.GetBool(),
@@ -1311,6 +1317,8 @@ namespace SuperNewRoles
             }
             return false;
         }
+        public static bool IsRole(this PlayerControl player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
+        public static bool IsRole(this CachedPlayer player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
         public static float GetCoolTime(PlayerControl __instance)
         {
             float addition = PlayerControl.GameOptions.killCooldown;
@@ -1523,6 +1531,7 @@ namespace SuperNewRoles
                 else if (ShiftActor.Player.IsCheckListPlayerControl(player)) return RoleId.ShiftActor;
                 else if (RoleClass.ConnectKiller.ConnectKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.ConnectKiller;
                 else if (RoleClass.GM.gm != null && RoleClass.GM.gm.PlayerId == player.PlayerId) return RoleId.GM;
+                else if (RoleClass.Cracker.CrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Cracker;
                 else if (NekoKabocha.NekoKabochaPlayer.IsCheckListPlayerControl(player)) return RoleId.NekoKabocha;
                 else if (RoleClass.WaveCannon.WaveCannonPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannon;
                 else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;

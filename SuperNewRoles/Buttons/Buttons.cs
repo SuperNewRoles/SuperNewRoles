@@ -80,6 +80,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton PhotographerButton;
         public static CustomButton StefinderKillButton;
         public static CustomButton SluggerButton;
+        public static CustomButton CrackerButton;
         public static CustomButton WaveCannonButton;
         public static CustomButton DoppelgangerButton;
 
@@ -332,6 +333,41 @@ namespace SuperNewRoles.Buttons
                 buttonText = ModTranslation.GetString("ScientistButtonName"),
                 showButtonText = true
             };
+
+            CrackerButton = new(
+                () =>
+                {
+                    byte TargetId = SetTarget(RoleClass.Cracker.CurrentCrackedPlayerControls).PlayerId;
+                    RoleClass.Cracker.currentCrackedPlayers.Add(TargetId);
+                    RPCHelper.SendSinglePlayerRpc(CustomRPC.CrackerCrack, TargetId);
+                    RPCProcedure.CrackerCrack(TargetId);
+                    RoleClass.Cracker.TurnCount--;
+                    RoleClass.Cracker.MaxTurnCount--;
+                    CrackerButton.Timer = CrackerButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Cracker && RoleClass.Cracker.TurnCount > 0 && RoleClass.Cracker.MaxTurnCount > 0; },
+                () =>
+                {
+                    return SetTarget(RoleClass.Cracker.CurrentCrackedPlayerControls) && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    CrackerButton.MaxTimer = CustomOptions.CrackerCoolTime.GetFloat();
+                    CrackerButton.Timer = CrackerButton.MaxTimer;
+                },
+                ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CrackerButton.png", 115f),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("CrackerButtonName"),
+                showButtonText = true
+            };
+
             FalseChargesFalseChargeButton = new(
                 () =>
                 {
