@@ -21,14 +21,12 @@ namespace SuperNewRoles.Patch
             {
                 WallHack.WallHackUpdate();
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-                Freezer.HudUpdate();
                 Mode.Zombie.FixedUpdate.ZombieTimerUpdate(__instance);
                 CustomButton.HudUpdate();
                 ButtonTime.Update();
                 Tuna.HudUpdate();
                 Arsonist.HudUpdate();
                 Shielder.HudUpdate();
-                Speeder.HudUpdate();
                 Zoom.HudUpdate(__instance);
             }
         }

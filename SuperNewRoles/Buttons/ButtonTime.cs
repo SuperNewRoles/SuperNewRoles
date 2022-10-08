@@ -10,14 +10,8 @@ namespace SuperNewRoles.Buttons
     {
         public static void Update()
         {
-            try
-            {
-                ClergymanDuration();
-            }
-            catch { }
             SpeedBoosterButton();
             EvilSpeedBoosterButton();
-            ClergymanButton();
             LighterButton();
             MovingButton();
             TeleporterButton();
@@ -143,23 +137,6 @@ namespace SuperNewRoles.Buttons
                 HudManagerStartPatch.LighterLightOnButton.Timer = (float)(RoleClass.Lighter.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
                 if (HudManagerStartPatch.LighterLightOnButton.Timer <= 0f) HudManagerStartPatch.LighterLightOnButton.Timer = 0f; return;
             }
-        }
-        public static void ClergymanDuration()
-        {
-            if (RoleClass.Clergyman.OldButtonTime == 0) return;
-            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Clergyman.DurationTime);
-            RoleClass.Clergyman.OldButtonTime = (float)(RoleClass.Clergyman.OldButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
-            if (RoleClass.Clergyman.OldButtonTime <= 0f) RoleClass.Clergyman.OldButtonTime = 0f; return;
-        }
-        public static void ClergymanButton()
-        {
-            if (RoleClass.Clergyman.ButtonTimer == null)
-            {
-                RoleClass.Clergyman.ButtonTimer = DateTime.Now;
-            }
-            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Clergyman.CoolTime);
-            HudManagerStartPatch.ClergymanLightOutButton.Timer = (float)(RoleClass.Clergyman.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
-            if (HudManagerStartPatch.ClergymanLightOutButton.Timer <= 0f) HudManagerStartPatch.ClergymanLightOutButton.Timer = 0f; return;
         }
         public static void SheriffKillButton()
         {

@@ -465,10 +465,9 @@ namespace SuperNewRoles.Patch
             }
             var gameOverReason = AdditionalTempData.gameOverReason;
             AdditionalTempData.Clear();
-
             foreach (var p in GameData.Instance.AllPlayers)
             {
-                if (p.Object.IsPlayer())
+                if (p != null && p.Object != null &&  p.Object.IsPlayer())
                 {
                     //var p = pc.Data;
                     var roles = IntroDate.GetIntroDate(p.Object.GetRole(), p.Object);
@@ -624,7 +623,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (cp.PlayerControl.IsJackalTeam())
                     {
-                        TempData.winners.Add(new(WinnerPlayer.Data));
+                        TempData.winners.Add(new(cp.Data));
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.JackalWin;
@@ -693,6 +692,15 @@ namespace SuperNewRoles.Patch
             }
             else if (HitmanWin)
             {
+                if (WinnerPlayer == null)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls) if (p.IsRole(RoleId.Hitman)) WinnerPlayer = p;
+                    if (WinnerPlayer == null)
+                    {
+                        Logger.Error("エラー:殺し屋が生存していませんでした","HitmanWin");
+                        WinnerPlayer = PlayerControl.LocalPlayer;
+                    }
+                }
                 (TempData.winners = new()).Add(new(WinnerPlayer.Data));
                 AdditionalTempData.winCondition = WinCondition.HitmanWin;
             }
@@ -732,9 +740,6 @@ namespace SuperNewRoles.Patch
                 foreach (var cp in CachedPlayer.AllPlayers)
                     if (cp.PlayerControl.IsMadRoles() || cp.PlayerControl.IsRole(RoleId.MadKiller)) TempData.winners.Add(new(cp.Data));
 
-                if (RoleClass.SatsumaAndImo.TeamNumber == 2)//マッドなら
-                    foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
-                        TempData.winners.Add(new(smp.Data));//さつまいもも勝ち
             }
 
 
@@ -1360,7 +1365,7 @@ namespace SuperNewRoles.Patch
                         if (playerInfo.Object.IsAlive())
                         {
                             numTotalAlive++;
-                            if (playerInfo.Object.IsRole(RoleId.Jackal, RoleId.Sidekick, RoleId.TeleportingJackal, RoleId.JackalSeer, RoleId.SidekickSeer))
+                            if (playerInfo.Object.IsJackalTeamJackal() || playerInfo.Object.IsJackalTeamSidekick())
                             {
                                 numTotalJackalTeam++;
                             }

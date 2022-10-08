@@ -22,7 +22,7 @@ namespace SuperNewRoles.Mode.Zombie
                     {
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
-                            p.RpcSetName("　");
+                            p.HideName();
                             if (p.IsImpostor())
                             {
                                 Main.SetZombie(p);

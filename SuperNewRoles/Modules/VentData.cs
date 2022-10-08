@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Agartha;
 using HarmonyLib;
@@ -132,6 +133,19 @@ namespace SuperNewRoles.Modules
                         ventMap["ShowersVent"].Vent.Center = connect ? ventMap["AdditionalVent_17"] : new Vent();
                     }
                     break;
+            }
+        }
+        public static void MadmateVent()
+        {
+            if (!CustomOptions.MadRolesCanVentMove.GetBool())
+            {
+                if (Vent.currentVent != null) Vent.currentVent.Buttons.All(x => {
+                    if (x != null)
+                    {
+                        x.gameObject.SetActive(false);
+                    }
+                    return false;
+                });
             }
         }
     }

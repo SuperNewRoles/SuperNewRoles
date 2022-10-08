@@ -152,14 +152,13 @@ namespace SuperNewRoles.Buttons
             {
                 var ImpostorVentButton = FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton;
                 var ImpostorSabotageButton = FastDestroyableSingleton<HudManager>.Instance.SabotageButton;
-
-                if (PlayerControl.LocalPlayer.IsUseVent())
+                if (PlayerControl.LocalPlayer.IsUseVent() && (MapBehaviour.Instance == null || !MapBehaviour.Instance.IsOpen))
                 {
                     if (!ImpostorVentButton.gameObject.active)
                     {
                         ImpostorVentButton.Show();
                     }
-                    if (Input.GetKeyDown(KeyCode.V) || KeyboardJoystick.player.GetButtonDown(50))
+                    if ((Input.GetKeyDown(KeyCode.V) || KeyboardJoystick.player.GetButtonDown(50)) && !OldModeButtons.IsOldMode)
                     {
                         ImpostorVentButton.DoClick();
                     }
@@ -172,7 +171,7 @@ namespace SuperNewRoles.Buttons
                     }
                 }
 
-                if (PlayerControl.LocalPlayer.IsUseSabo())
+                if (PlayerControl.LocalPlayer.IsUseSabo() && (MapBehaviour.Instance == null || !MapBehaviour.Instance.IsOpen))
                 {
                     if (!ImpostorSabotageButton.gameObject.active)
                     {

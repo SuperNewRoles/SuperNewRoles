@@ -134,7 +134,7 @@ namespace SuperNewRoles.Patch
         public static float GetNeutralLightRadius(ShipStatus shipStatus, bool isImpostor)
         {
             if (SubmergedCompatibility.isSubmerged()) return SubmergedCompatibility.GetSubmergedNeutralLightRadius(isImpostor);
-            if (Clergyman.IsLightOutVision() && isImpostor) return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision;
+            if (Clergyman.IsLightOutVision()) return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision;
             if (isImpostor) return shipStatus.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
 
             SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
@@ -143,7 +143,7 @@ namespace SuperNewRoles.Patch
             var LocalPlayer = PlayerControl.LocalPlayer;
             if (LocalPlayer.IsRole(RoleId.Nocturnality))
             {
-                lerpValue = 1 - lerpValue >= 0 ? 1f - lerpValue : 1f + (1f - lerpValue);
+                lerpValue = 1 - lerpValue;
             }
             return Mathf.Lerp(shipStatus.MinLightRadius, shipStatus.MaxLightRadius, lerpValue) * PlayerControl.GameOptions.CrewLightMod;
         }

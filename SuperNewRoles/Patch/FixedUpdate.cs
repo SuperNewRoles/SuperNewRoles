@@ -55,7 +55,8 @@ namespace SuperNewRoles.Patch
             // 会議を強制終了
             if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
             {
-                FastDestroyableSingleton<MeetingHud>.Instance.RpcClose();
+                if (MeetingHud.Instance != null)
+                    MeetingHud.Instance.RpcClose();
             }
 
             // 以下フリープレイのみ
@@ -111,11 +112,14 @@ namespace SuperNewRoles.Patch
             SluggerDeadbody.AllFixedUpdate();
             PlayerAnimation.FixedAllUpdate();
             PVCreator.FixedUpdate();
+
+            VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
+            OldModeButtons.OldModeUpdate();
+
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
                 var MyRole = PlayerControl.LocalPlayer.GetRole();
                 SetBasePlayerOutlines();
-                VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
                 LadderDead.FixedUpdate();
                 var ThisMode = ModeHandler.GetMode();
                 if (ThisMode == ModeId.Default)
@@ -126,10 +130,13 @@ namespace SuperNewRoles.Patch
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
                     Roles.CrewMate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
+                    Roles.Neutral.PartTimer.FixedUpdate();
                     ReduceKillCooldown(__instance);
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
+                        if (PlayerControl.LocalPlayer.IsMadRoles()) { VentDataModules.MadmateVent(); }
+                        NormalButtonDestroy.Postfix();
                         switch (MyRole)
                         {
                             case RoleId.Pursuer:
@@ -203,11 +210,14 @@ namespace SuperNewRoles.Patch
                             case RoleId.Doppelganger:
                                 Roles.Impostor.Doppelganger.FixedUpdate();
                                 break;
+                            case RoleId.WaveCannonJackal:
+                                JackalSeer.JackalSeerFixedPatch.JackalSeerPlayerOutLineTarget();
+                                break;
                             case RoleId.ConnectKiller:
                                 Roles.Impostor.ConnectKiller.Update();
                                 break;
-                            default:
-                                NormalButtonDestroy.Postfix();
+                            case RoleId.ShiftActor:
+                                Roles.Impostor.ShiftActor.FixedUpdate();
                                 break;
                         }
                     }
@@ -234,6 +244,13 @@ namespace SuperNewRoles.Patch
                                         sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
                                         RoleClass.SideKiller.IsUpMadKiller = true;
                                     }
+                                }
+                                break;
+                            case RoleId.Vulture:
+                                if (RoleClass.Vulture.Arrow?.arrow != null)
+                                {
+                                    Object.Destroy(RoleClass.Vulture.Arrow.arrow);
+                                    return;
                                 }
                                 break;
                         }
