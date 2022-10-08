@@ -912,9 +912,7 @@ namespace SuperNewRoles.Modules
             enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false);
             enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
-            GMOption = Create(1014, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
-
-            IsOldMode = Create(1005, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true);
+            IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true);
 
 
             if (ConfigRoles.DebugMode.Value)
@@ -939,6 +937,8 @@ namespace SuperNewRoles.Modules
             MapCustoms.MapCustom.CreateOption();
 
             Sabotage.Options.Load();
+
+            GMOption = Create(1028, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
 
             IsAlwaysReduceCooldown = Create(682, false, CustomOptionType.Generic, "IsAlwaysReduceCooldown", false, null, isHeader: true);
             IsAlwaysReduceCooldownExceptInVent = Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
@@ -1608,7 +1608,7 @@ namespace SuperNewRoles.Modules
             SluggerChargeTime = Create(903, false, CustomOptionType.Impostor, "SluggerChargeTime", 3f, 0f, 30f, 0.5f, SluggerOption);
             SluggerCoolTime = Create(904, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, SluggerOption);
             SluggerIsMultiKill = Create(905, false, CustomOptionType.Impostor, "SluggerIsMultiKill", false, SluggerOption);
-            SluggerIsKillCoolSync = Create(1000, false, CustomOptionType.Impostor, "SluggerIsKillCoolSync", false, SluggerOption);
+            SluggerIsKillCoolSync = Create(1030, false, CustomOptionType.Impostor, "SluggerIsKillCoolSync", false, SluggerOption);
 
             PainterOption = SetupCustomRoleOption(941, false, RoleId.Painter);
             PainterPlayerCount = Create(942, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PainterOption);
@@ -1698,7 +1698,7 @@ namespace SuperNewRoles.Modules
             WaveCannonJackalKillCoolDown = Create(1024, false, CustomOptionType.Neutral, "JackalCoolDownSetting", 30f, 2.5f, 60f, 2.5f, WaveCannonJackalOption, format: "unitSeconds");
             WaveCannonJackalUseVent = Create(1025, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, WaveCannonJackalOption);
             WaveCannonJackalIsImpostorLight = Create(1026, false, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, WaveCannonJackalOption);
-            WaveCannonJackalUseSabo = Create(1013, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, WaveCannonJackalOption);
+            WaveCannonJackalUseSabo = Create(1029, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, WaveCannonJackalOption);
             WaveCannonJackalIsSyncKillCoolTime = Create(1017, false, CustomOptionType.Neutral, "IsSyncKillCoolTime", false, WaveCannonJackalOption);
 
             Roles.Impostor.Conjurer.SetupCustomOptions();

@@ -10,8 +10,6 @@ namespace SuperNewRoles.Roles.Neutral
 {
     public static class GM
     {
-        private static List<CustomButton> gmButtons;
-        private static List<CustomButton> gmKillButtons;
         private static CustomButton gmZoomIn;
         private static CustomButton gmZoomOut;
         public static PlayerControl target;
@@ -150,10 +148,6 @@ namespace SuperNewRoles.Roles.Neutral
         }
         public static void CreateButton(HudManager hm)
         {
-
-            gmButtons = new List<CustomButton>();
-            gmKillButtons = new List<CustomButton>();
-
             for (byte i = 0; i < 15; i++)
             {
 
@@ -179,7 +173,7 @@ namespace SuperNewRoles.Roles.Neutral
                     () => { },
                     ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GMZoomOut.png", 115f),
                     // position
-                    Vector3.zero + Vector3.up * 3.75f + Vector3.right * 0.55f,
+                    (Vector3.zero + Vector3.up * 3.75f + Vector3.right * 0.2f) + new Vector3(0.2f, -0.5f, 0),
                     // hudmanager
                     hm,
                     hm.UseButton,
@@ -192,7 +186,7 @@ namespace SuperNewRoles.Roles.Neutral
                     Timer = 0.0f,
                     MaxTimer = 0.0f,
                     showButtonText = false,
-                    LocalScale = Vector3.one * 0.275f
+                    LocalScale = Vector3.one * 0.1f
                 };
 
                 gmZoomIn = new(
@@ -217,7 +211,7 @@ namespace SuperNewRoles.Roles.Neutral
                     () => { },
                     ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GMZoomIn.png", 115f),
                     // position
-                    Vector3.zero + Vector3.up * 3.75f + Vector3.right * 0.2f,
+                    (Vector3.zero + Vector3.up * 3.75f + Vector3.right * 0.2f) + new Vector3(0.2f,0,0),
                     // hudmanager
                     hm,
                     hm.UseButton,
@@ -230,7 +224,7 @@ namespace SuperNewRoles.Roles.Neutral
                     Timer = 0.0f,
                     MaxTimer = 0.0f,
                     showButtonText = false,
-                    LocalScale = Vector3.one * 0.275f
+                    LocalScale = Vector3.one * 0.1f
                 };
             }
         }

@@ -84,8 +84,9 @@ namespace SuperNewRoles.Patch
                             player.gameObject.SetActive(false);
                             if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
                             index++;
-                            player.transform.localPosition = new(-5.05f + (index * 0.425f), -2.7f, 0);
+                            player.transform.localPosition = new(-4.75f + (index * 0.425f), -2.4f, 0);
                             player.transform.localScale = new(0.25f, 0.25f, 0.25f);
+                            player.cosmetics.nameText.transform.localPosition -= new Vector3(0, 0.3f, 0);
                             PassiveButton button = player.gameObject.AddComponent<PassiveButton>();
                             button.OnMouseOut = new();
                             button.OnMouseOver = new();
