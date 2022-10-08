@@ -93,14 +93,14 @@ namespace SuperNewRoles.Patch
                             }
                             col = Math.Clamp(col, 0, Palette.PlayerColors.Length - 1);
                             PlayerControl.LocalPlayer.SetColor(col);
-                            __instance.AddChat(PlayerControl.LocalPlayer, "Changed color succesfully"); ;
+                            __instance.AddChat(PlayerControl.LocalPlayer, "Changed color succesfully");
                         }
                         else if (text.ToLower().StartsWith("/name "))
                         {
                             handled = true;
                             string col = text[6..];
                             PlayerControl.LocalPlayer.SetName(col);
-                            __instance.AddChat(PlayerControl.LocalPlayer, "Changed name succesfully"); ;
+                            __instance.AddChat(PlayerControl.LocalPlayer, "Changed name succesfully");
                         }
                     }
                     if (handled)
