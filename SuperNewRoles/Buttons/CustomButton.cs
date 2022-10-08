@@ -66,7 +66,7 @@ namespace SuperNewRoles.Buttons
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();
 
-            button.OnClick.AddListener((UnityEngine.Events.UnityAction)OnClickEvent);
+            button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClickEvent()));
 
             LocalScale = actionButton.transform.localScale;
             if (textTemplate)

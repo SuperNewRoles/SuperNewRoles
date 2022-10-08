@@ -812,12 +812,8 @@ namespace SuperNewRoles.Buttons
             DoorrDoorButton = new(
                 () =>
                 {
-                    if (Doorr.CheckTarget() && PlayerControl.LocalPlayer.CanMove)
-                    {
-                        Doorr.DoorrBtn();
-                        RoleClass.Doorr.ButtonTimer = DateTime.Now;
-                        Doorr.ResetCoolDown();
-                    }
+                    Doorr.DoorrBtn();
+                    Doorr.ResetCoolDown();
                 },
                 (bool isAlive, RoleId role) => { return isAlive && Doorr.IsDoorr(PlayerControl.LocalPlayer); },
                 () =>

@@ -443,12 +443,10 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> DoorrPlayer;
             public static Color32 color = new(205, 133, 63, byte.MaxValue);
             public static float CoolTime;
-            public static DateTime ButtonTimer;
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoorrDoorButton.png", 115f);
 
             public static void ClearAndReload()
             {
-                ButtonTimer = DateTime.Now;
                 DoorrPlayer = new();
                 CoolTime = CustomOptions.DoorrCoolTime.GetFloat();
             }
