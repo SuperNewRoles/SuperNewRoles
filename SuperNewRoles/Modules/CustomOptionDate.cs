@@ -829,6 +829,15 @@ namespace SuperNewRoles.Modules
         public static CustomOption WaveCannonChargeTime;
         public static CustomOption WaveCannonIsSyncKillCoolTime;
 
+        public static CustomRoleOption CrackerOption;
+        public static CustomOption CrackerPlayerCount;
+        public static CustomOption CrackerCoolTime;
+        public static CustomOption CrackerIsAdminView;
+        public static CustomOption CrackerIsVitalsView;
+        public static CustomOption CrackerOneTurnSelectCount;
+        public static CustomOption CrackerAllTurnSelectCount;
+        public static CustomOption CrackerIsSelfNone;
+
         public static CustomRoleOption DoppelgangerOption;
         public static CustomOption DoppelgangerPlayerCount;
         public static CustomOption DoppelgangerDurationTime;
@@ -1670,6 +1679,15 @@ namespace SuperNewRoles.Modules
 
             Roles.Impostor.NekoKabocha.SetupCustomOptions();
 
+            CrackerOption = SetupCustomRoleOption(1030, false, RoleId.Cracker);
+            CrackerPlayerCount = Create(1031, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CrackerOption);
+            CrackerCoolTime = Create(1032, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, CrackerOption);
+            CrackerIsAdminView = Create(1033, false, CustomOptionType.Impostor, "CrackerIsAdminView", false, CrackerOption);
+            CrackerIsVitalsView = Create(1034, false, CustomOptionType.Impostor, "CrackerIsVitalsView", false, CrackerOption);
+            CrackerOneTurnSelectCount = Create(1035, false, CustomOptionType.Impostor, "CrackerOneTurnSelectCount", 1f, 1f, 15f, 1f, CrackerOption);
+            CrackerAllTurnSelectCount = Create(1036, false, CustomOptionType.Impostor, "CrackerAllTurnSelectCount", 3f, 1f, 100f, 1f, CrackerOption);
+            CrackerIsSelfNone = Create(1037, false, CustomOptionType.Impostor, "CrackerIsSelfNone", true, CrackerOption);
+
             ConnectKillerOption = SetupCustomRoleOption(982, false, RoleId.ConnectKiller);
             ConnectKillerPlayerCount = Create(983, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConnectKillerOption);
 
@@ -1706,7 +1724,6 @@ namespace SuperNewRoles.Modules
             TaskerLongTask = taskeroption.Item3;
             TaskerIsKillCoolTaskNow = Create(1011, false, CustomOptionType.Impostor, "TaskerIsKillCoolTaskNow", true, TaskerOption);
             TaskerCanKill = Create(1012, false, CustomOptionType.Impostor, "TaskerCanKill", true, TaskerOption);
-
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

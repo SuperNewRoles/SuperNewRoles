@@ -597,6 +597,9 @@ namespace SuperNewRoles
                 case RoleId.ConnectKiller:
                     RoleClass.ConnectKiller.ConnectKillerPlayer.Add(player);
                     break;
+                case RoleId.Cracker:
+                    RoleClass.Cracker.CrackerPlayer.Add(player);
+                    break;
                 case RoleId.WaveCannon:
                     RoleClass.WaveCannon.WaveCannonPlayer.Add(player);
                     break;
@@ -1030,6 +1033,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.ConnectKiller:
                     RoleClass.ConnectKiller.ConnectKillerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Cracker:
+                    RoleClass.Cracker.CrackerPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.WaveCannon:
                     RoleClass.WaveCannon.WaveCannonPlayer.RemoveAll(ClearRemove);
@@ -1516,10 +1522,11 @@ namespace SuperNewRoles
                 else if (RoleClass.Slugger.SluggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Slugger;
                 else if (ShiftActor.Player.IsCheckListPlayerControl(player)) return RoleId.ShiftActor;
                 else if (RoleClass.ConnectKiller.ConnectKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.ConnectKiller;
+                else if (RoleClass.Cracker.CrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Cracker;
+                else if (NekoKabocha.NekoKabochaPlayer.IsCheckListPlayerControl(player)) return RoleId.NekoKabocha;
                 else if (RoleClass.WaveCannon.WaveCannonPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannon;
                 else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
                 else if (RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
-                else if (NekoKabocha.NekoKabochaPlayer.IsCheckListPlayerControl(player)) return RoleId.NekoKabocha;
                 else if (Conjurer.Player.IsCheckListPlayerControl(player)) return RoleId.Conjurer;
                 //ロールチェック
             }

@@ -156,6 +156,7 @@ namespace SuperNewRoles.Modules
         Slugger,
         ShiftActor,
         ConnectKiller,
+        Cracker,
         WaveCannon,
         WaveCannonJackal,
         NekoKabocha,
@@ -235,10 +236,17 @@ namespace SuperNewRoles.Modules
         SharePhotograph,
         WaveCannon,
         ShowFlash,
-        SetFinalStatus
+        SetFinalStatus,
+        CrackerCrack
     }
+
     public static class RPCProcedure
     {
+        public static void CrackerCrack(byte Target)
+        {
+            if (!RoleClass.Cracker.CrackedPlayers.Contains(Target)) RoleClass.Cracker.CrackedPlayers.Add(Target);
+        }
+
         public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)
         {
             Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {buff.Length} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
@@ -381,7 +389,7 @@ namespace SuperNewRoles.Modules
             }
         }
 
-        public static void ChiefSidekick(byte targetid,bool IsTaskClear)
+        public static void ChiefSidekick(byte targetid, bool IsTaskClear)
         {
             RoleClass.Chief.SheriffPlayer.Add(targetid);
             if (IsTaskClear)
@@ -1265,6 +1273,9 @@ namespace SuperNewRoles.Modules
                                 Targets.Add(reader.ReadByte());
                             }
                             SluggerExile(source, Targets);
+                            break;
+                        case CustomRPC.CrackerCrack:
+                            CrackerCrack(reader.ReadByte());
                             break;
                         case CustomRPC.WaveCannon:
                             WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), reader.ReadBytesAndSize());

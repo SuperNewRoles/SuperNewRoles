@@ -178,10 +178,11 @@ namespace SuperNewRoles.Roles
             Slugger.ClearAndReload();
             ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
+            Cracker.ClearAndReload();
+            NekoKabocha.ClearAndReload();
             WaveCannon.ClearAndReload();
             Doppelganger.ClearAndReload();
             WaveCannonJackal.ClearAndReload();
-            NekoKabocha.ClearAndReload();
             Conjurer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -2675,6 +2676,41 @@ namespace SuperNewRoles.Roles
                 OldCommsData = false;
             }
         }
+        public static class Cracker
+        {
+            public static List<PlayerControl> CrackerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static List<byte> CrackedPlayers;
+            public static List<byte> currentCrackedPlayers;
+            public static int DefaultCount;
+            public static int TurnCount;
+            public static int MaxTurnCount;
+            public static List<PlayerControl> CurrentCrackedPlayerControls
+            {
+                get
+                {
+                    if (currentCrackedPlayerControls.Count != currentCrackedPlayers.Count)
+                    {
+                        List<PlayerControl> newList = new();
+                        foreach (byte p in currentCrackedPlayers) newList.Add(ModHelpers.PlayerById(p));
+                        currentCrackedPlayerControls = newList;
+                    }
+                    return currentCrackedPlayerControls;
+                }
+            }
+            private static List<PlayerControl> currentCrackedPlayerControls;
+            public static void ClearAndReload()
+            {
+                CrackerPlayer = new();
+                CrackedPlayers = new();
+                currentCrackedPlayers = new();
+                MaxTurnCount = CustomOptions.CrackerAllTurnSelectCount.GetInt();
+                DefaultCount = CustomOptions.CrackerOneTurnSelectCount.GetInt();
+                TurnCount = DefaultCount;
+                currentCrackedPlayerControls = new();
+            }
+        }
+
         public static class WaveCannon
         {
             public static List<PlayerControl> WaveCannonPlayer;
