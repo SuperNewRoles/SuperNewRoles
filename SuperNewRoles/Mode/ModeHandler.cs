@@ -128,7 +128,7 @@ namespace SuperNewRoles.Mode
         {
             if (IsMode(ModeId.BattleRoyal)) return BattleRoyal.Intro.IntroHandler(__instance);
             else if (IsMode(ModeId.Zombie)) return Zombie.Intro.IntroHandler(__instance);
-            return ("", "", new());
+            return ("NONE", "NONE", new());
         }
         public static void YouAreIntroHandler(IntroCutscene __instance)
         {
