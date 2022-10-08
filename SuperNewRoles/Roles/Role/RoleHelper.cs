@@ -1200,6 +1200,7 @@ namespace SuperNewRoles
         }
         public static bool IsUseSabo(this PlayerControl player)
         {
+            if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;
             RoleId role = player.GetRole();
             return role switch
             {

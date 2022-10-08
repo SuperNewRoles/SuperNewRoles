@@ -67,7 +67,7 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
                     {
                         __instance.Close();
-                        DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+                        FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                         return false;
                     }
                 }

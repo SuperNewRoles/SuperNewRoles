@@ -10,7 +10,7 @@ using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.CustomCosmetics;
-
+using SuperNewRoles.Mode;
 using SuperNewRoles.Patch;
 using TMPro;
 using Twitch;
@@ -77,9 +77,9 @@ namespace SuperNewRoles.Patches
                         {
                             __instance.text.text += "\n" + ModTranslation.GetString("DebugModeOn");
                         }
-                        if (!Mode.ModeHandler.IsMode(Mode.ModeId.Default))
+                        if (!ModeHandler.IsMode(Mode.ModeId.Default) || ModeHandler.IsMode(ModeId.HideAndSeek))
                         {
-                            __instance.text.text += "\n" + ModTranslation.GetString("SettingMode") + ":" + Mode.ModeHandler.ThisModeSetting.GetString();
+                            __instance.text.text += "\n" + ModTranslation.GetString("SettingMode") + ":" + ModeHandler.GetThisModeIntro();
                         }
                     }
                     catch { }

@@ -697,6 +697,7 @@ namespace SuperNewRoles.Patches
         }
         public static void RpcMurderPlayerCheck(this PlayerControl __instance, PlayerControl target)
         {
+            if (ModeHandler.IsMode(ModeId.HideAndSeek) && target.IsImpostor() && !__instance.IsRole(RoleId.Jackal)) return;
             if (target.IsRole(RoleId.Assassin) && target.IsAlive())
             {
                 new LateTask(() =>
@@ -994,6 +995,7 @@ namespace SuperNewRoles.Patches
         {
             if (!AmongUsClient.Instance.AmHost) return true;
             if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
+            if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (__instance.IsRole(RoleId.EvilButtoner, RoleId.NiceButtoner) && target != null && target.PlayerId == __instance.PlayerId)
@@ -1029,7 +1031,6 @@ namespace SuperNewRoles.Patches
             return (RoleClass.Assassin.TriggerPlayer != null)
             || (!MapOptions.MapOption.UseDeadBodyReport && target != null)
             || (!MapOptions.MapOption.UseMeetingButton && target == null)
-            || ModeHandler.IsMode(ModeId.HideAndSeek)
             || ModeHandler.IsMode(ModeId.BattleRoyal)
             || ModeHandler.IsMode(ModeId.CopsRobbers)
                 ? false
