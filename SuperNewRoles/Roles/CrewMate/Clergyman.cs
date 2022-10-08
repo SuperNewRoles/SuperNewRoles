@@ -43,22 +43,20 @@ namespace SuperNewRoles.Roles
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.JackalFriends)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.SeerFriends)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.JackalSeer)
-                ? true
-                : CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.SidekickSeer) || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.BlackCat);
-        }
-        public static bool IsLightOutVisionNoTime()
-        {
-            return CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor;
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.JackalSeer)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.SidekickSeer)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.BlackCat)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.Hitman);
         }
         public static void LightOutStartRPC()
         {
-            if (IsLightOutVisionNoTime())
-            {
-                RoleClass.Clergyman.currentMessage = new(ModTranslation.GetString("ClergymanLightOutMessage"), RoleClass.Clergyman.DurationTime);
-            }
             if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.ClergymanLightOut))
             {
                 RoleClass.Clergyman.IsLightOff = true;
+            }
+            if (IsLightOutVision())
+            {
+                RoleClass.Clergyman.currentMessage = new(ModTranslation.GetString("ClergymanLightOutMessage"), RoleClass.Clergyman.DurationTime);
             }
         }
         public static void EndMeeting()

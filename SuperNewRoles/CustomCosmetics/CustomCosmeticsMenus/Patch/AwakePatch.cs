@@ -104,7 +104,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ObjectData.VisorText.name = "VisorText";
             ObjectData.SkinText.name = "SkinText";
             ObjectData.NamePlateText.name = "NamePlateText";
-            ObjectData.PetText.name = "PetText"; ;
+            ObjectData.PetText.name = "PetText";
             ObjectData.CubeText.name = "CubeText";
 
             ObjectData.HatText.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.HatLabel);

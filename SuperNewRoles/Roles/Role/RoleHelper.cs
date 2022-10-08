@@ -193,7 +193,7 @@ namespace SuperNewRoles
                 RoleId.WaveCannonJackal;
         public static bool IsJackalTeamJackal(this PlayerControl player)
             => player.GetRole() is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal or RoleId.WaveCannonJackal;
-        
+
         public static bool IsJackalTeamSidekick(this PlayerControl player)
             => player.GetRole() is RoleId.Sidekick or RoleId.SidekickSeer;
 
@@ -592,6 +592,7 @@ namespace SuperNewRoles
                     break;
                 case RoleId.ShiftActor:
                     ShiftActor.Player.Add(player);
+                    RoleManager.Instance.SetRole(player, RoleTypes.Shapeshifter);
                     break;
                 case RoleId.ConnectKiller:
                     RoleClass.ConnectKiller.ConnectKillerPlayer.Add(player);
@@ -633,7 +634,6 @@ namespace SuperNewRoles
                 PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
             SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
-            ShiftActor.ShapeshifterSet();
             PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(player.PlayerId);
             if (anim != null) anim.HandleAnim(RpcAnimationType.Stop);
         }
@@ -1140,9 +1140,9 @@ namespace SuperNewRoles
                 RoleId.Minimalist => RoleClass.Minimalist.UseVent,
                 RoleId.Samurai => RoleClass.Samurai.UseVent,
                 RoleId.Jester => RoleClass.Jester.IsUseVent,
-                RoleId.MadMate => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.MadMate.IsUseVent,
+                RoleId.MadMate => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.MadMate.IsUseVent,
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseVent,
-                RoleId.JackalFriends => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.JackalFriends.IsUseVent,
+                RoleId.JackalFriends => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.JackalFriends.IsUseVent,
                 RoleId.Egoist => RoleClass.Egoist.UseVent,
                 RoleId.Technician => IsSabotage(),
                 RoleId.MadMayor => RoleClass.MadMayor.IsUseVent,
@@ -1160,7 +1160,7 @@ namespace SuperNewRoles
                 RoleId.Vulture => RoleClass.Vulture.IsUseVent,
                 RoleId.MayorFriends => RoleClass.MayorFriends.IsUseVent,
                 RoleId.Tuna => RoleClass.Tuna.IsUseVent,
-                RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
+                RoleId.BlackCat => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
                 RoleId.Stefinder => CustomOptions.StefinderVent.GetBool(),
                 RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalUseVent.GetBool(),
@@ -1206,6 +1206,7 @@ namespace SuperNewRoles
         }
         public static bool IsUseSabo(this PlayerControl player)
         {
+            if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;
             RoleId role = player.GetRole();
             return role switch
             {
@@ -1308,6 +1309,8 @@ namespace SuperNewRoles
             }
             return false;
         }
+        public static bool IsRole(this PlayerControl player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
+        public static bool IsRole(this CachedPlayer player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
         public static float GetCoolTime(PlayerControl __instance)
         {
             float addition = PlayerControl.GameOptions.killCooldown;

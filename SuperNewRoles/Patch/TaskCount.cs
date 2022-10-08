@@ -107,9 +107,6 @@ namespace SuperNewRoles.Patch
                     case ModeId.Detective:
                         Mode.Detective.Task.TaskCountDetective(__instance);
                         return;
-                    case ModeId.HideAndSeek:
-                        Mode.HideAndSeek.Task.TaskCountHideAndSeek(__instance);
-                        return;
                 }
             }
         }

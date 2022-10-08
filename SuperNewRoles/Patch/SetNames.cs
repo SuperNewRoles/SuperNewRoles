@@ -59,7 +59,7 @@ namespace SuperNewRoles.Patch
             {
                 bool hidename = ModHelpers.HidePlayerName(PlayerControl.LocalPlayer, player);
                 player.NameText().text = hidename ? "" : player.CurrentOutfit.PlayerName;
-                if (PlayerControl.LocalPlayer.IsImpostor() && (player.IsImpostor() || player.IsRole(RoleId.Spy)))
+                if ((PlayerControl.LocalPlayer.IsImpostor() && (player.IsImpostor() || player.IsRole(RoleId.Spy))) || (ModeHandler.IsMode(ModeId.HideAndSeek) && player.IsImpostor()))
                 {
                     SetPlayerNameColor(player, RoleClass.ImpostorRed);
                 }
@@ -76,7 +76,7 @@ namespace SuperNewRoles.Patch
         {
             if (p.IsBot()) return;
             bool commsActive = RoleHelpers.IsComms();
-            TMPro.TextMeshPro playerInfo = PlayerInfos.ContainsKey(p.PlayerId) ? PlayerInfos[p.PlayerId] : null;
+            TextMeshPro playerInfo = PlayerInfos.ContainsKey(p.PlayerId) ? PlayerInfos[p.PlayerId] : null;
             if (playerInfo == null)
             {
                 playerInfo = UnityEngine.Object.Instantiate(p.NameText(), p.NameText().transform.parent);

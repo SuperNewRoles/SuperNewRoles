@@ -50,6 +50,10 @@ namespace SuperNewRoles.Patch
             public static PoolablePlayer playerPrefab;
             public static void Prefix(IntroCutscene __instance)
             {
+                if (ModeHandler.IsMode(ModeId.HideAndSeek))
+                {
+                    new LateTask(() => RoleClass.Tuna.IsMeetingEnd = true, 6);
+                }
                 // プレイヤーのアイコンを生成
                 if (CachedPlayer.LocalPlayer != null && FastDestroyableSingleton<HudManager>.Instance != null)
                 {
@@ -201,9 +205,10 @@ namespace SuperNewRoles.Patch
         {
             IntroHandler.Handler();
 
-            Color32 color = new(127, 127, 127, byte.MaxValue);
-            string TeamTitle = "";
-            string ImpostorText = "";
+            Color32 color = __instance.TeamTitle.color;
+            Color32 backcolor = __instance.BackgroundBar.material.color;
+            string TeamTitle = __instance.TeamTitle.text;
+            string ImpostorText = __instance.ImpostorText.text;
             if (ModeHandler.IsMode(ModeId.Default, ModeId.SuperHostRoles))
             {
                 if (PlayerControl.LocalPlayer.IsNeutral())
@@ -211,6 +216,7 @@ namespace SuperNewRoles.Patch
                     IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
                     TeamTitle = ModTranslation.GetString("Neutral");
                     ImpostorText = ModTranslation.GetString("NeutralSubIntro");
+                    color = new(127, 127, 127, byte.MaxValue);
                 }
                 else
                 {
