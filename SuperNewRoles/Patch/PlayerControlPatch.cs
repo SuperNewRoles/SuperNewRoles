@@ -457,7 +457,7 @@ namespace SuperNewRoles.Patches
                     Logger.Info("SHR-Assassin.TriggerPlayerを通過", "CheckMurder");
                     if (target.IsRole(RoleId.NekoKabocha))
                     {
-                        Roles.Impostor.NekoKabocha.OnKill(__instance);
+                        NekoKabocha.OnKill(__instance);
                         return true;
                     }
                     foreach (var p in Seer.Seers)
@@ -853,7 +853,7 @@ namespace SuperNewRoles.Patches
                             Fox.FoxMurderPatch.Guard(__instance, target);
                             break;
                         case RoleId.NekoKabocha:
-                            Roles.Impostor.NekoKabocha.OnKill(__instance);
+                            NekoKabocha.OnKill(__instance);
                             break;
                     }
                 }

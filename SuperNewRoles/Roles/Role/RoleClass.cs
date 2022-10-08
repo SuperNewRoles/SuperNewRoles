@@ -183,7 +183,6 @@ namespace SuperNewRoles.Roles
             WaveCannon.ClearAndReload();
             Doppelganger.ClearAndReload();
             WaveCannonJackal.ClearAndReload();
-            NekoKabocha.ClearAndReload();
             Conjurer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
