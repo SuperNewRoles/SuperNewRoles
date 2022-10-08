@@ -597,6 +597,9 @@ namespace SuperNewRoles
                 case RoleId.ConnectKiller:
                     RoleClass.ConnectKiller.ConnectKillerPlayer.Add(player);
                     break;
+                case RoleId.GM:
+                    RoleClass.GM.gm = player;
+                    break;
                 case RoleId.Cracker:
                     RoleClass.Cracker.CrackerPlayer.Add(player);
                     break;
@@ -1034,6 +1037,9 @@ namespace SuperNewRoles
                 case RoleId.ConnectKiller:
                     RoleClass.ConnectKiller.ConnectKillerPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.GM:
+                    if (RoleClass.GM.gm != null && player.PlayerId == RoleClass.GM.gm.PlayerId) RoleClass.GM.gm = null;
+                    break;
                 case RoleId.Cracker:
                     RoleClass.Cracker.CrackerPlayer.RemoveAll(ClearRemove);
                     break;
@@ -1111,6 +1117,7 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
+                case RoleId.GM:
                 case RoleId.WaveCannonJackal:
                     //タスククリアか
                     IsTaskClear = true;
@@ -1254,33 +1261,34 @@ namespace SuperNewRoles
         }
         public static bool IsNeutral(this PlayerControl player) =>
             player.GetRole() is
-                RoleId.Jester or
-                RoleId.Jackal or
-                RoleId.Sidekick or
-                RoleId.Vulture or
-                RoleId.Opportunist or
-                RoleId.Researcher or
-                RoleId.God or
-                RoleId.Egoist or
-                RoleId.Workperson or
-                RoleId.truelover or
-                RoleId.Amnesiac or
-                RoleId.FalseCharges or
-                RoleId.Fox or
-                RoleId.TeleportingJackal or
-                RoleId.Demon or
-                RoleId.JackalSeer or
-                RoleId.SidekickSeer or
-                RoleId.Arsonist or
-                RoleId.MayorFriends or
-                RoleId.Tuna or
-                RoleId.Neet or
-                RoleId.Revolutionist or
-                RoleId.Spelunker or
-                RoleId.SuicidalIdeation or
-                RoleId.Hitman or
-                RoleId.Stefinder or
-                RoleId.PartTimer or
+            RoleId.Jester or
+            RoleId.Jackal or
+            RoleId.Sidekick or
+            RoleId.Vulture or
+            RoleId.Opportunist or
+            RoleId.Researcher or
+            RoleId.God or
+            RoleId.Egoist or
+            RoleId.Workperson or
+            RoleId.truelover or
+            RoleId.Amnesiac or
+            RoleId.FalseCharges or
+            RoleId.Fox or
+            RoleId.TeleportingJackal or
+            RoleId.Demon or
+            RoleId.JackalSeer or
+            RoleId.SidekickSeer or
+            RoleId.Arsonist or
+            RoleId.MayorFriends or
+            RoleId.Tuna or
+            RoleId.Neet or
+            RoleId.Revolutionist or
+            RoleId.Spelunker or
+            RoleId.SuicidalIdeation or
+            RoleId.Hitman or
+            RoleId.Stefinder or
+            RoleId.PartTimer or
+            RoleId.GM or
             RoleId.WaveCannonJackal or
                 //第三か
                 RoleId.Photographer;
@@ -1522,6 +1530,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Slugger.SluggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Slugger;
                 else if (ShiftActor.Player.IsCheckListPlayerControl(player)) return RoleId.ShiftActor;
                 else if (RoleClass.ConnectKiller.ConnectKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.ConnectKiller;
+                else if (RoleClass.GM.gm != null && RoleClass.GM.gm.PlayerId == player.PlayerId) return RoleId.GM;
                 else if (RoleClass.Cracker.CrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Cracker;
                 else if (NekoKabocha.NekoKabochaPlayer.IsCheckListPlayerControl(player)) return RoleId.NekoKabocha;
                 else if (RoleClass.WaveCannon.WaveCannonPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannon;

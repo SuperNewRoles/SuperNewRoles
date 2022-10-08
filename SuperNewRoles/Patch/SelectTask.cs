@@ -65,6 +65,10 @@ namespace SuperNewRoles.Patch
                 int longt = LoversLongTask.GetInt();
                 if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
             }
+            else if (p.IsRole(RoleId.GM))
+            {
+                return (0,0,0);
+            }
             return (SyncSetting.OptionData.NumCommonTasks, SyncSetting.OptionData.NumShortTasks, SyncSetting.OptionData.NumLongTasks);
         }
         public static (CustomOption, CustomOption, CustomOption) TaskSetting(int commonid, int shortid, int longid, CustomOption Child = null, CustomOptionType type = CustomOptionType.Generic, bool IsSHROn = false)

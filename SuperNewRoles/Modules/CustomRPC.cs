@@ -156,6 +156,7 @@ namespace SuperNewRoles.Modules
         Slugger,
         ShiftActor,
         ConnectKiller,
+        GM,
         Cracker,
         WaveCannon,
         WaveCannonJackal,
@@ -850,6 +851,7 @@ namespace SuperNewRoles.Modules
             var player = ModHelpers.PlayerById(playerid);
             if (player != null)
             {
+                player.Data.IsDead = true;
                 player.Exiled();
             }
         }

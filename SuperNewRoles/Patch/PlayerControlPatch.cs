@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -10,6 +10,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
+using TMPro;
 using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 using static SuperNewRoles.Helpers.DesyncHelpers;
@@ -212,7 +213,57 @@ namespace SuperNewRoles.Patches
             return !ModeHandler.IsMode(ModeId.SuperHostRoles);
         }
     }
-
+    [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Begin))]
+    class ShapeshifterMinigameBeginPatch
+    {
+        public static void Postfix(ShapeshifterMinigame __instance, PlayerTask task)
+        {
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
+            {
+                static void NewTask(ShapeshifterMinigame __instance)
+                {
+                    new LateTask(() =>
+                    {
+                        if (__instance == null) return;
+                        __instance.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.transform.localScale;
+                        NewTask(__instance);
+                    },0.1f);
+                }
+                NewTask(__instance);
+                foreach (ShapeshifterPanel panel in GameObject.FindObjectsOfType<ShapeshifterPanel>()) GameObject.Destroy(panel.gameObject);
+                int index = 0;
+                foreach (var Data in Roles.Neutral.GM.ActionDictionary)
+                {
+                    int num = index % 3;
+                    int num2 = index / 3;
+                    ShapeshifterPanel panel = GameObject.Instantiate(__instance.PanelPrefab, __instance.transform);
+                    panel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
+                    static void Create(ShapeshifterPanel panel, int index, Action action)
+                    {
+                        panel.SetPlayer(index, CachedPlayer.LocalPlayer.Data, (Action)(() => {
+                            if (MeetingHud.Instance != null) MeetingHud.Instance.transform.FindChild("ButtonStuff").gameObject.SetActive(true);
+                            action(); }));
+                    }
+                    Create(panel, index, Data.Value);
+                    panel.PlayerIcon.gameObject.SetActive(false);
+                    panel.LevelNumberText.transform.parent.gameObject.SetActive(false);
+                    panel.transform.FindChild("Nameplate").GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+                    panel.transform.FindChild("Nameplate/Highlight/ShapeshifterIcon").gameObject.SetActive(false);
+                    panel.NameText.text = ModTranslation.GetString(Data.Key);
+                    panel.NameText.transform.localPosition = new(0, 0, -0.1f);
+                    index++;
+                }
+                if (MeetingHud.Instance != null)
+                {
+                    MeetingHud.Instance.transform.FindChild("ButtonStuff").gameObject.SetActive(false);
+                    __instance.transform.FindChild("CloseButton").GetComponent<PassiveButton>().OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
+                    {
+                        MeetingHud.Instance.transform.FindChild("ButtonStuff").gameObject.SetActive(true);
+                    }));
+                }
+            }
+        }
+    }
     [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Shapeshift))]
     class ShapeshifterMinigameShapeshiftPatch
     {
@@ -406,7 +457,7 @@ namespace SuperNewRoles.Patches
                     Logger.Info("SHR-Assassin.TriggerPlayerを通過", "CheckMurder");
                     if (target.IsRole(RoleId.NekoKabocha))
                     {
-                        Roles.Impostor.NekoKabocha.OnKill(__instance);
+                        NekoKabocha.OnKill(__instance);
                         return true;
                     }
                     foreach (var p in Seer.Seers)
@@ -802,7 +853,7 @@ namespace SuperNewRoles.Patches
                             Fox.FoxMurderPatch.Guard(__instance, target);
                             break;
                         case RoleId.NekoKabocha:
-                            Roles.Impostor.NekoKabocha.OnKill(__instance);
+                            NekoKabocha.OnKill(__instance);
                             break;
                     }
                 }
@@ -993,6 +1044,16 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
         {
+            if (__instance.IsRole(RoleId.GM))
+            {
+                MeetingRoomManager.Instance.AssignSelf(__instance, target);
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
+                    __instance.RpcStartMeeting(target);
+                }
+                return false;
+            }
             if (!AmongUsClient.Instance.AmHost) return true;
             if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
             if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;

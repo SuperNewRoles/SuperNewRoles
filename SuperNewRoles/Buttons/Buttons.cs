@@ -2730,6 +2730,7 @@ namespace SuperNewRoles.Buttons
             RoleClass.Doppelganger.DoppelgangerDurationText.transform.localPosition += new Vector3(-2.575f, -0.95f, 0);
 
             Roles.Impostor.Conjurer.SetupCustomButtons(__instance);
+            Roles.Neutral.GM.CreateButton(__instance);
             SetCustomButtonCooldowns();
         }
     }

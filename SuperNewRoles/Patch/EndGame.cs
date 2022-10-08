@@ -1153,7 +1153,7 @@ namespace SuperNewRoles.Patch
             if (DebugMode.IsDebugMode()) return false;
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             if (RoleClass.Revolutionist.MeetingTrigger != null) return false;
-            var statistics = new PlayerStatistics(__instance);
+            PlayerStatistics statistics = new(__instance);
             if (!ModeHandler.IsMode(ModeId.Default))
             {
                 ModeHandler.EndGameChecks(__instance, statistics);
@@ -1169,6 +1169,7 @@ namespace SuperNewRoles.Patch
                 if (CheckAndEndGameForTaskerWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
                 if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
+                if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
                 if (!PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             }
             return false;
@@ -1416,6 +1417,10 @@ namespace SuperNewRoles.Patch
                             if (playerInfo.Object.IsJackalTeamJackal() || playerInfo.Object.IsJackalTeamSidekick())
                             {
                                 numTotalJackalTeam++;
+                            }
+                            else if (playerInfo.Object.IsRole(RoleId.Hitman))
+                            {
+                                numHitmanAlive++;
                             }
                             else if (playerInfo.Object.IsImpostor())
                             {

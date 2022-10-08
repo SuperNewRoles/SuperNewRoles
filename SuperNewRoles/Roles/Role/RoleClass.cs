@@ -178,6 +178,7 @@ namespace SuperNewRoles.Roles
             Slugger.ClearAndReload();
             ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
+            GM.ClearAndReload();
             Cracker.ClearAndReload();
             NekoKabocha.ClearAndReload();
             WaveCannon.ClearAndReload();
@@ -2492,6 +2493,7 @@ namespace SuperNewRoles.Roles
             public static Dictionary<byte, byte> Datas;
             public static bool IsLocalOn => Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
             public static PlayerControl CurrentTarget => IsLocalOn ? ModHelpers.PlayerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
+
             public static Dictionary<PlayerControl, PlayerControl> PlayerDatas
             {
                 get
@@ -2759,6 +2761,15 @@ namespace SuperNewRoles.Roles
             {
                 WaveCannonJackalPlayer = new();
                 
+            }
+        }
+        public static class GM
+        {
+            public static PlayerControl gm;
+            public static Color32 color = new(255, 91, 112, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                gm = null;
             }
         }
         //新ロールクラス
