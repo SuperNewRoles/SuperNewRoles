@@ -82,7 +82,7 @@ namespace SuperNewRoles.Buttons
 
         void OnClickEvent()
         {
-            if ((this.Timer < 0f && CouldUse() && CachedPlayer.LocalPlayer.PlayerControl.CanMove) || (this.HasEffect && this.isEffectActive && this.effectCancellable))
+            if ((this.Timer <= 0f && CouldUse()) || (this.HasEffect && this.isEffectActive && this.effectCancellable))
             {
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
                 this.OnClick();
