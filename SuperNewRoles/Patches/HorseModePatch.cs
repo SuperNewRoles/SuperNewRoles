@@ -1,10 +1,9 @@
 using HarmonyLib;
-using SuperNewRoles.Patch;
 using UnityEngine;
 using static UnityEngine.UI.Button;
 using Object = UnityEngine.Object;
 
-namespace SuperNewRoles.Patches
+namespace SuperNewRoles.Patch
 {
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
     public class MainMenuPatch
@@ -24,7 +23,7 @@ namespace SuperNewRoles.Patches
             var spriteHorseButton = horseButton.GetComponent<SpriteRenderer>();
 
             horseModeOffSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
-            
+
             spriteHorseButton.sprite = horseModeOffSprite;
 
             passiveHorseButton.OnClick = new ButtonClickedEvent();

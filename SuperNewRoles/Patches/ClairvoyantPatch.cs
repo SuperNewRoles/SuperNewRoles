@@ -6,8 +6,6 @@ namespace SuperNewRoles.Patch
     public class Clairvoyant
     {
         private static float count;
-
-
         //千里眼機能の中身
         public class FixedUpdate
         {
