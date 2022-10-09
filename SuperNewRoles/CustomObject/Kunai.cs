@@ -17,12 +17,12 @@ namespace SuperNewRoles.CustomObject
 
         public Kunai()
         {
-            kunai = new GameObject("Kunai")
+            this.kunai = new GameObject("Kunai")
             {
                 layer = 5
             };
-            image = kunai.AddComponent<SpriteRenderer>();
-            image.sprite = GetSprite();
+            this.image = this.kunai.AddComponent<SpriteRenderer>();
+            this.image.sprite = GetSprite();
         }
     }
 }

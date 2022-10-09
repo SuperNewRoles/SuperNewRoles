@@ -43,7 +43,7 @@ namespace SuperNewRoles.Modules
         {
             get
             {
-                return AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost ? RegulationData.Selected == 0 ? ClientSelection : ClientSelectedSelection : HostSelection;
+                return AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost ? RegulationData.Selected == 0 ? this.ClientSelection : this.ClientSelectedSelection : this.HostSelection;
             }
             set
             {
@@ -51,16 +51,16 @@ namespace SuperNewRoles.Modules
                 {
                     if (RegulationData.Selected == 0)
                     {
-                        ClientSelection = value;
+                        this.ClientSelection = value;
                     }
                     else
                     {
-                        ClientSelectedSelection = value;
+                        this.ClientSelectedSelection = value;
                     }
                 }
                 else
                 {
-                    HostSelection = value;
+                    this.HostSelection = value;
                 }
             }
         }
@@ -74,7 +74,7 @@ namespace SuperNewRoles.Modules
         {
             get
             {
-                return GetBool();
+                return this.GetBool();
             }
         }
 
@@ -104,11 +104,11 @@ namespace SuperNewRoles.Modules
                 parent.children.Add(this);
             }
 
-            selection = 0;
+            this.selection = 0;
             if (id > 0)
             {
-                entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", id.ToString(), defaultSelection);
-                selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
+                this.entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", id.ToString(), this.defaultSelection);
+                this.selection = Mathf.Clamp(this.entry.Value, 0, selections.Length - 1);
                 if (options.Any(x => x.id == id))
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("CustomOptionのId(" + id + ")が重複しています。");
@@ -190,51 +190,51 @@ namespace SuperNewRoles.Modules
 
         public virtual int GetSelection()
         {
-            return selection;
+            return this.selection;
         }
 
         public virtual bool GetBool()
         {
-            return selection > 0;
+            return this.selection > 0;
         }
 
         public virtual float GetFloat()
         {
-            return (float)selections[selection];
+            return (float)this.selections[this.selection];
         }
 
         public virtual int GetInt()
         {
-            return (int)GetFloat();
+            return (int)this.GetFloat();
         }
 
         public virtual string GetString()
         {
-            string sel = selections[selection].ToString();
-            return format != "" ? sel : ModTranslation.GetString(sel);
+            string sel = this.selections[this.selection].ToString();
+            return this.format != "" ? sel : ModTranslation.GetString(sel);
         }
 
         public virtual string GetName()
         {
-            return ModTranslation.GetString(name);
+            return ModTranslation.GetString(this.name);
         }
 
         // Option changes
 
         public virtual void UpdateSelection(int newSelection)
         {
-            selection = Mathf.Clamp((newSelection + selections.Length) % selections.Length, 0, selections.Length - 1);
-            if (optionBehaviour is not null and StringOption stringOption)
+            this.selection = Mathf.Clamp((newSelection + this.selections.Length) % this.selections.Length, 0, this.selections.Length - 1);
+            if (this.optionBehaviour is not null and StringOption stringOption)
             {
-                stringOption.oldValue = stringOption.Value = selection;
-                stringOption.ValueText.text = GetString();
+                stringOption.oldValue = stringOption.Value = this.selection;
+                stringOption.ValueText.text = this.GetString();
 
                 if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
                 {
-                    if (id == 0) SwitchPreset(selection); // Switch presets
-                    else if (entry != null && AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
+                    if (this.id == 0) SwitchPreset(this.selection); // Switch presets
+                    else if (this.entry != null && AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
                     {
-                        entry.Value = selection;
+                        this.entry.Value = this.selection;
                     } // Save selection to config
 
                     ShareOptionSelections();// Share all selections
@@ -254,7 +254,7 @@ namespace SuperNewRoles.Modules
         {
             get
             {
-                return GetSelection();
+                return this.GetSelection();
             }
         }
 
@@ -262,7 +262,7 @@ namespace SuperNewRoles.Modules
         {
             get
             {
-                return GetSelection() != 0;
+                return this.GetSelection() != 0;
             }
         }
 
@@ -270,7 +270,7 @@ namespace SuperNewRoles.Modules
         {
             get
             {
-                return IntroDate.GetIntroDate(RoleId);
+                return IntroDate.GetIntroDate(this.RoleId);
             }
         }
 
@@ -278,7 +278,7 @@ namespace SuperNewRoles.Modules
         {
             get
             {
-                return countOption != null ? Mathf.RoundToInt(countOption.GetFloat()) : 1;
+                return this.countOption != null ? Mathf.RoundToInt(this.countOption.GetFloat()) : 1;
             }
         }
 
@@ -286,7 +286,7 @@ namespace SuperNewRoles.Modules
         {
             get
             {
-                return (Rate, Count);
+                return (this.Rate, this.Count);
             }
         }
 
@@ -303,7 +303,7 @@ namespace SuperNewRoles.Modules
             catch { }
             RoleOptions.Add(this);
             if (max > 1)
-                countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
+                this.countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
         }
     }
     public class GameSettingsScale

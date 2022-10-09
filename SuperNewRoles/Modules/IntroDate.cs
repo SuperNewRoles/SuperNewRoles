@@ -20,7 +20,7 @@ namespace SuperNewRoles.Modules
             this.color = color;
             this.BackGround = BackGround;
             this.NameKey = NameKey;
-            RoleIds = RoleId;
+            this.RoleIds = RoleId;
         }
         public static TeamDate VultureTeam = new("Test", Color.black, Color.yellow, new List<RoleId> { RoleId.Sheriff });
     }

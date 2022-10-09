@@ -44,24 +44,24 @@ namespace SuperNewRoles
         public Il2CppListEnumerable(List<T> list)
         {
             Il2CppListStruct* listStruct = (Il2CppListStruct*)list.Pointer;
-            _count = listStruct->_size;
-            _arrayPointer = listStruct->_items;
+            this._count = listStruct->_size;
+            this._arrayPointer = listStruct->_items;
         }
 
-        object IEnumerator.Current => Current;
+        object IEnumerator.Current => this.Current;
         public T Current { get; private set; }
 
         public bool MoveNext()
         {
-            if (++_index >= _count) return false;
-            IntPtr refPtr = *(IntPtr*)IntPtr.Add(IntPtr.Add(_arrayPointer, _offset), _index * _elemSize);
-            Current = _objFactory(refPtr);
+            if (++this._index >= this._count) return false;
+            IntPtr refPtr = *(IntPtr*)IntPtr.Add(IntPtr.Add(this._arrayPointer, _offset), this._index * _elemSize);
+            this.Current = _objFactory(refPtr);
             return true;
         }
 
         public void Reset()
         {
-            _index = -1;
+            this._index = -1;
         }
 
         public System.Collections.Generic.IEnumerator<T> GetEnumerator()

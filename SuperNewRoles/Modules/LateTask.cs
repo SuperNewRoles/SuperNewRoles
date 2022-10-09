@@ -15,10 +15,10 @@ namespace SuperNewRoles.Modules
         public static List<LateTask> AddTasks = new();
         public bool Run(float deltaTime)
         {
-            timer -= deltaTime;
-            if (timer <= 0)
+            this.timer -= deltaTime;
+            if (this.timer <= 0)
             {
-                action();
+                this.action();
                 return true;
             }
             return false;
@@ -26,7 +26,7 @@ namespace SuperNewRoles.Modules
         public LateTask(Action action, float time, string name = "No Name Task")
         {
             this.action = action;
-            timer = time;
+            this.timer = time;
             this.name = name;
             AddTasks.Add(this);
             Logger.Info("New LateTask \"" + name + "\" is created", "LateTask");

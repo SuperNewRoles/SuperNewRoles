@@ -25,15 +25,15 @@ namespace SuperNewRoles.Modules
         private CustomRpcSender() { }
         public CustomRpcSender(string name, SendOption sendOption, bool isUnsafe)
         {
-            stream = MessageWriter.Get(sendOption);
+            this.stream = MessageWriter.Get(sendOption);
 
             this.name = name;
             this.sendOption = sendOption;
             this.isUnsafe = isUnsafe;
-            currentRpcTarget = -2;
-            onSendDelegate = () => Logger.Info($"{this.name}'s onSendDelegate =>", "CustomRpcSender");
+            this.currentRpcTarget = -2;
+            this.onSendDelegate = () => Logger.Info($"{this.name}'s onSendDelegate =>", "CustomRpcSender");
 
-            currentState = State.Ready;
+            this.currentState = State.Ready;
             Logger.Info($"\"{name}\" is ready", "CustomRpcSender");
         }
         public static CustomRpcSender Create(string name = "No Name Sender", SendOption sendOption = SendOption.None, bool isUnsafe = false)
@@ -44,10 +44,10 @@ namespace SuperNewRoles.Modules
         #region Start/End Message
         public CustomRpcSender StartMessage(int tarGetClientId = -1)
         {
-            if (currentState != State.Ready)
+            if (this.currentState != State.Ready)
             {
-                string errorMsg = $"Messageを開始しようとしましたが、StateがReadyではありません (in: \"{name}\") (State: \"{currentState}\")";
-                if (isUnsafe)
+                string errorMsg = $"Messageを開始しようとしましたが、StateがReadyではありません (in: \"{this.name}\") (State: \"{this.currentState}\")";
+                if (this.isUnsafe)
                 {
                     Logger.Warn(errorMsg, "CustomRpcSender.Warn");
                 }
@@ -60,27 +60,27 @@ namespace SuperNewRoles.Modules
             if (tarGetClientId < 0)
             {
                 // 全員に対するRPC
-                stream.StartMessage(5);
-                stream.Write(AmongUsClient.Instance.GameId);
+                this.stream.StartMessage(5);
+                this.stream.Write(AmongUsClient.Instance.GameId);
             }
             else
             {
                 // 特定のクライアントに対するRPC (Desync)
-                stream.StartMessage(6);
-                stream.Write(AmongUsClient.Instance.GameId);
-                stream.WritePacked(tarGetClientId);
+                this.stream.StartMessage(6);
+                this.stream.Write(AmongUsClient.Instance.GameId);
+                this.stream.WritePacked(tarGetClientId);
             }
 
-            currentRpcTarget = tarGetClientId;
-            currentState = State.InRootMessage;
+            this.currentRpcTarget = tarGetClientId;
+            this.currentState = State.InRootMessage;
             return this;
         }
         public CustomRpcSender EndMessage()
         {
-            if (currentState != State.InRootMessage)
+            if (this.currentState != State.InRootMessage)
             {
-                string errorMsg = $"Messageを終了しようとしましたが、StateがInRootMessageではありません (in: \"{name}\")";
-                if (isUnsafe)
+                string errorMsg = $"Messageを終了しようとしましたが、StateがInRootMessageではありません (in: \"{this.name}\")";
+                if (this.isUnsafe)
                 {
                     Logger.Warn(errorMsg, "CustomRpcSender.Warn");
                 }
@@ -89,24 +89,24 @@ namespace SuperNewRoles.Modules
                     throw new InvalidOperationException(errorMsg);
                 }
             }
-            stream.EndMessage();
+            this.stream.EndMessage();
 
-            currentRpcTarget = -2;
-            currentState = State.Ready;
+            this.currentRpcTarget = -2;
+            this.currentState = State.Ready;
             return this;
         }
         #endregion
         #region Start/End Rpc
         public CustomRpcSender StartRpc(uint targetNetId, RpcCalls rpcCall)
-            => StartRpc(targetNetId, (byte)rpcCall);
+            => this.StartRpc(targetNetId, (byte)rpcCall);
         public CustomRpcSender StartRpc(
           uint targetNetId,
           byte callId)
         {
-            if (currentState != State.InRootMessage)
+            if (this.currentState != State.InRootMessage)
             {
-                string errorMsg = $"RPCを開始しようとしましたが、StateがInRootMessageではありません (in: \"{name}\")";
-                if (isUnsafe)
+                string errorMsg = $"RPCを開始しようとしましたが、StateがInRootMessageではありません (in: \"{this.name}\")";
+                if (this.isUnsafe)
                 {
                     Logger.Warn(errorMsg, "CustomRpcSender.Warn");
                 }
@@ -116,19 +116,19 @@ namespace SuperNewRoles.Modules
                 }
             }
 
-            stream.StartMessage(2);
-            stream.WritePacked(targetNetId);
-            stream.Write(callId);
+            this.stream.StartMessage(2);
+            this.stream.WritePacked(targetNetId);
+            this.stream.Write(callId);
 
-            currentState = State.InRpc;
+            this.currentState = State.InRpc;
             return this;
         }
         public CustomRpcSender EndRpc()
         {
-            if (currentState != State.InRpc)
+            if (this.currentState != State.InRpc)
             {
-                string errorMsg = $"RPCを終了しようとしましたが、StateがInRpcではありません (in: \"{name}\")";
-                if (isUnsafe)
+                string errorMsg = $"RPCを終了しようとしましたが、StateがInRpcではありません (in: \"{this.name}\")";
+                if (this.isUnsafe)
                 {
                     Logger.Warn(errorMsg, "CustomRpcSender.Warn");
                 }
@@ -138,8 +138,8 @@ namespace SuperNewRoles.Modules
                 }
             }
 
-            stream.EndMessage();
-            currentState = State.InRootMessage;
+            this.stream.EndMessage();
+            this.currentState = State.InRootMessage;
             return this;
         }
         #endregion
@@ -149,10 +149,10 @@ namespace SuperNewRoles.Modules
           int tarGetClientId = -1)
         {
             if (tarGetClientId == -2) tarGetClientId = -1;
-            if (currentState is not State.Ready and not State.InRootMessage)
+            if (this.currentState is not State.Ready and not State.InRootMessage)
             {
-                string errorMsg = $"RPCを自動で開始しようとしましたが、StateがReadyまたはInRootMessageではありません (in: \"{name}\")";
-                if (isUnsafe)
+                string errorMsg = $"RPCを自動で開始しようとしましたが、StateがReadyまたはInRootMessageではありません (in: \"{this.name}\")";
+                if (this.isUnsafe)
                 {
                     Logger.Warn(errorMsg, "CustomRpcSender.Warn");
                 }
@@ -161,23 +161,23 @@ namespace SuperNewRoles.Modules
                     throw new InvalidOperationException(errorMsg);
                 }
             }
-            if (currentRpcTarget != tarGetClientId)
+            if (this.currentRpcTarget != tarGetClientId)
             {
                 //StartMessage処理
-                if (currentState == State.InRootMessage) EndMessage();
-                StartMessage(tarGetClientId);
+                if (this.currentState == State.InRootMessage) this.EndMessage();
+                this.StartMessage(tarGetClientId);
             }
-            StartRpc(targetNetId, callId);
+            this.StartRpc(targetNetId, callId);
 
             return this;
         }
         public void SendMessage()
         {
-            if (currentState == State.InRootMessage) EndMessage();
-            if (currentState != State.Ready)
+            if (this.currentState == State.InRootMessage) this.EndMessage();
+            if (this.currentState != State.Ready)
             {
-                string errorMsg = $"RPCを送信しようとしましたが、StateがReadyではありません (in: \"{name}\")";
-                if (isUnsafe)
+                string errorMsg = $"RPCを送信しようとしましたが、StateがReadyではありません (in: \"{this.name}\")";
+                if (this.isUnsafe)
                 {
                     Logger.Warn(errorMsg, "CustomRpcSender.Warn");
                 }
@@ -187,38 +187,38 @@ namespace SuperNewRoles.Modules
                 }
             }
 
-            AmongUsClient.Instance.SendOrDisconnect(stream);
-            onSendDelegate();
-            currentState = State.Finished;
-            Logger.Info($"\"{name}\" is finished", "CustomRpcSender");
-            stream.Recycle();
+            AmongUsClient.Instance.SendOrDisconnect(this.stream);
+            this.onSendDelegate();
+            this.currentState = State.Finished;
+            Logger.Info($"\"{this.name}\" is finished", "CustomRpcSender");
+            this.stream.Recycle();
         }
 
         // Write
         #region PublicWriteMethods
-        public CustomRpcSender Write(float val) => Write(w => w.Write(val));
-        public CustomRpcSender Write(string val) => Write(w => w.Write(val));
-        public CustomRpcSender Write(ulong val) => Write(w => w.Write(val));
-        public CustomRpcSender Write(int val) => Write(w => w.Write(val));
-        public CustomRpcSender Write(uint val) => Write(w => w.Write(val));
-        public CustomRpcSender Write(ushort val) => Write(w => w.Write(val));
-        public CustomRpcSender Write(byte val) => Write(w => w.Write(val));
-        public CustomRpcSender Write(sbyte val) => Write(w => w.Write(val));
-        public CustomRpcSender Write(bool val) => Write(w => w.Write(val));
-        public CustomRpcSender Write(Il2CppStructArray<byte> bytes) => Write(w => w.Write(bytes));
-        public CustomRpcSender Write(Il2CppStructArray<byte> bytes, int offset, int length) => Write(w => w.Write(bytes, offset, length));
-        public CustomRpcSender WriteBytesAndSize(Il2CppStructArray<byte> bytes) => Write(w => w.WriteBytesAndSize(bytes));
-        public CustomRpcSender WritePacked(int val) => Write(w => w.WritePacked(val));
-        public CustomRpcSender WritePacked(uint val) => Write(w => w.WritePacked(val));
-        public CustomRpcSender WriteNetObject(InnerNetObject obj) => Write(w => w.WriteNetObject(obj));
+        public CustomRpcSender Write(float val) => this.Write(w => w.Write(val));
+        public CustomRpcSender Write(string val) => this.Write(w => w.Write(val));
+        public CustomRpcSender Write(ulong val) => this.Write(w => w.Write(val));
+        public CustomRpcSender Write(int val) => this.Write(w => w.Write(val));
+        public CustomRpcSender Write(uint val) => this.Write(w => w.Write(val));
+        public CustomRpcSender Write(ushort val) => this.Write(w => w.Write(val));
+        public CustomRpcSender Write(byte val) => this.Write(w => w.Write(val));
+        public CustomRpcSender Write(sbyte val) => this.Write(w => w.Write(val));
+        public CustomRpcSender Write(bool val) => this.Write(w => w.Write(val));
+        public CustomRpcSender Write(Il2CppStructArray<byte> bytes) => this.Write(w => w.Write(bytes));
+        public CustomRpcSender Write(Il2CppStructArray<byte> bytes, int offset, int length) => this.Write(w => w.Write(bytes, offset, length));
+        public CustomRpcSender WriteBytesAndSize(Il2CppStructArray<byte> bytes) => this.Write(w => w.WriteBytesAndSize(bytes));
+        public CustomRpcSender WritePacked(int val) => this.Write(w => w.WritePacked(val));
+        public CustomRpcSender WritePacked(uint val) => this.Write(w => w.WritePacked(val));
+        public CustomRpcSender WriteNetObject(InnerNetObject obj) => this.Write(w => w.WriteNetObject(obj));
         #endregion
 
         private CustomRpcSender Write(Action<MessageWriter> action)
         {
-            if (currentState != State.InRpc)
+            if (this.currentState != State.InRpc)
             {
-                string errorMsg = $"RPCを書き込もうとしましたが、StateがWrite(書き込み中)ではありません (in: \"{name}\")";
-                if (isUnsafe)
+                string errorMsg = $"RPCを書き込もうとしましたが、StateがWrite(書き込み中)ではありません (in: \"{this.name}\")";
+                if (this.isUnsafe)
                 {
                     Logger.Warn(errorMsg, "CustomRpcSender.Warn");
                 }
@@ -227,7 +227,7 @@ namespace SuperNewRoles.Modules
                     throw new InvalidOperationException(errorMsg);
                 }
             }
-            action(stream);
+            action(this.stream);
 
             return this;
         }

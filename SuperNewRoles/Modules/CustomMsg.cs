@@ -18,8 +18,8 @@ namespace SuperNewRoles.Modules
 
                 gameObject.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
                 UnityEngine.Object.DestroyImmediate(gameObject.GetComponent<RoomTracker>());
-                text = gameObject.GetComponent<TMPro.TMP_Text>();
-                text.text = message;
+                this.text = gameObject.GetComponent<TMPro.TMP_Text>();
+                this.text.text = message;
 
                 // Use local position to place it in the player's view instead of the world location
                 gameObject.transform.localPosition = new Vector3(0, -1.8f, gameObject.transform.localPosition.z);
@@ -27,18 +27,18 @@ namespace SuperNewRoles.Modules
 
                 FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
                 {
-                    if (text == null)
+                    if (this.text == null)
                     {
                         customMessages.Remove(this);
                         return;
                     }
                     bool even = ((int)(p * duration / 0.25f)) % 2 == 0; // Bool flips every 0.25 seconds
                     string prefix = even ? "<color=#FCBA03FF>" : "<color=#FF0000FF>";
-                    text.text = prefix + message + "</color>";
-                    if (text != null) text.color = even ? Color.yellow : Color.red;
-                    if (p == 1f && text != null && text.gameObject != null)
+                    this.text.text = prefix + message + "</color>";
+                    if (this.text != null) this.text.color = even ? Color.yellow : Color.red;
+                    if (p == 1f && this.text != null && this.text.gameObject != null)
                     {
-                        UnityEngine.Object.Destroy(text.gameObject);
+                        UnityEngine.Object.Destroy(this.text.gameObject);
                         customMessages.Remove(this);
                     }
                 })));

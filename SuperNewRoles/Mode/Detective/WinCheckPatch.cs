@@ -104,7 +104,7 @@ namespace SuperNewRoles.Mode.Detective
             public int TotalAlive { get; set; }
             public PlayerStatistics()
             {
-                GetPlayerCounts();
+                this.GetPlayerCounts();
             }
             private void GetPlayerCounts()
             {
@@ -131,9 +131,9 @@ namespace SuperNewRoles.Mode.Detective
                         }
                     }
                 }
-                TeamImpostorsAlive = numImpostorsAlive;
-                TotalAlive = numTotalAlive;
-                CrewAlive = numCrewAlive;
+                this.TeamImpostorsAlive = numImpostorsAlive;
+                this.TotalAlive = numTotalAlive;
+                this.CrewAlive = numCrewAlive;
             }
         }
     }

@@ -15,16 +15,16 @@ namespace SuperNewRoles.CustomObject
         {
             get
             {
-                if (_source == null)
+                if (this._source == null)
                 {
-                    _source = SourceId.GetPlayerControl();
+                    this._source = this.SourceId.GetPlayerControl();
                 }
-                return _source;
+                return this._source;
             }
             set
             {
-                _source = value;
-                SourceId = _source.PlayerId;
+                this._source = value;
+                this.SourceId = this._source.PlayerId;
             }
         }
         private PlayerControl _source;
@@ -33,22 +33,22 @@ namespace SuperNewRoles.CustomObject
         {
             get
             {
-                if (_player == null)
+                if (this._player == null)
                 {
-                    _player = PlayerId.GetPlayerControl();
+                    this._player = this.PlayerId.GetPlayerControl();
                 }
-                return _player;
+                return this._player;
             }
             set
             {
-                _player = value;
-                PlayerId = _player.PlayerId;
+                this._player = value;
+                this.PlayerId = this._player.PlayerId;
             }
         }
         private PlayerControl _player;
         public byte PlayerId;
         public GameObject gameObject;
-        public Transform transform => gameObject.transform;
+        public Transform transform => this.gameObject.transform;
         public SpriteRenderer Renderer;
         public float UpdateTime;
         public Sprite[] Sprites;
@@ -61,7 +61,7 @@ namespace SuperNewRoles.CustomObject
             //3～4はシンプル
             int type = ModHelpers.GetRandomInt(4);
             type = 4;
-            SpriteType = type;
+            this.SpriteType = type;
             switch (type)
             {
                 case 0:
@@ -83,33 +83,33 @@ namespace SuperNewRoles.CustomObject
         {
             this.SourceId = SourceId;
             this.PlayerId = TargetId;
-            Force = force;
-            gameObject = new("SluggerDeadBody");
-            Renderer = gameObject.AddComponent<SpriteRenderer>();
-            Rigidbody2D body = gameObject.AddComponent<Rigidbody2D>();
+            this.Force = force;
+            this.gameObject = new("SluggerDeadBody");
+            this.Renderer = this.gameObject.AddComponent<SpriteRenderer>();
+            Rigidbody2D body = this.gameObject.AddComponent<Rigidbody2D>();
             body.gravityScale = 0f;
-            Vector3 kakeru = Source.transform.position - Player.transform.position;
+            Vector3 kakeru = this.Source.transform.position - this.Player.transform.position;
             body.velocity = kakeru * -10f;
-            Index = 0;
-            Sprites = GetSprites();
+            this.Index = 0;
+            this.Sprites = this.GetSprites();
             DeadBodys.Add(this);
-            transform.position = Player.transform.position;
-            transform.localScale = new(0.1f, 0.1f, 0);
-            transform.Rotate(Source.transform.position - Player.transform.position);
-            if (SpriteType == 3)
+            this.transform.position = this.Player.transform.position;
+            this.transform.localScale = new(0.1f, 0.1f, 0);
+            this.transform.Rotate(this.Source.transform.position - this.Player.transform.position);
+            if (this.SpriteType == 3)
             {
-                transform.Rotate((Source.transform.position - Player.transform.position) * -1f);
+                this.transform.Rotate((this.Source.transform.position - this.Player.transform.position) * -1f);
             }
-            Renderer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.PlayerMaterial;
-            Renderer.maskInteraction = SpriteMaskInteraction.None;
-            PlayerMaterial.SetColors(Player.Data.DefaultOutfit.ColorId, Renderer);
+            this.Renderer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+            this.Renderer.maskInteraction = SpriteMaskInteraction.None;
+            PlayerMaterial.SetColors(this.Player.Data.DefaultOutfit.ColorId, this.Renderer);
             PlayerMaterial.Properties Properties = new()
             {
                 MaskLayer = 0,
                 MaskType = PlayerMaterial.MaskType.None,
-                ColorId = Player.Data.DefaultOutfit.ColorId
+                ColorId = this.Player.Data.DefaultOutfit.ColorId
             };
-            Renderer.material.SetInt(PlayerMaterial.MaskLayer, Properties.MaskLayer);
+            this.Renderer.material.SetInt(PlayerMaterial.MaskLayer, Properties.MaskLayer);
         }
         public static void AllFixedUpdate()
         {
@@ -121,32 +121,32 @@ namespace SuperNewRoles.CustomObject
         public void FixedUpdate()
         {
             //transform.position += new Vector3(Force.x,Force.y,0);
-            if (gameObject == null)
+            if (this.gameObject == null)
             {
                 DeadBodys.Remove(this);
                 return;
             }
-            UpdateTime -= Time.fixedDeltaTime;
-            if (UpdateTime <= 0)
+            this.UpdateTime -= Time.fixedDeltaTime;
+            if (this.UpdateTime <= 0)
             {
-                UpdateTime = 0.1f;
-                Index++;
-                if (Sprites.Length <= Index)
+                this.UpdateTime = 0.1f;
+                this.Index++;
+                if (this.Sprites.Length <= this.Index)
                 {
-                    Index = 0;
+                    this.Index = 0;
                 }
-                Renderer.sprite = Sprites[Index];
+                this.Renderer.sprite = this.Sprites[this.Index];
             }
-            if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) > 30 || RoleClass.IsMeeting)
+            if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, this.transform.position) > 30 || RoleClass.IsMeeting)
             {
                 foreach (SluggerDeadbody deadbody in DeadBodys)
                 {
-                    if (deadbody.SourceId == SourceId)
+                    if (deadbody.SourceId == this.SourceId)
                     {
                         GameObject.Destroy(deadbody.gameObject);
                     }
                 }
-                DeadBodys.RemoveAll(x => x.SourceId == SourceId);
+                DeadBodys.RemoveAll(x => x.SourceId == this.SourceId);
                 return;
             }
         }

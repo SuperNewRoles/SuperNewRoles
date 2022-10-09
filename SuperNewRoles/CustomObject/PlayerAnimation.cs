@@ -36,17 +36,17 @@ namespace SuperNewRoles.CustomObject
                 Logger.Error($"Playerがnullでした", "PlayerAnimation");
                 return;
             }
-            Physics = Player.MyPhysics;
-            PlayerId = Player.PlayerId;
-            gameObject = new("PlayerAnimation");
-            transform = gameObject.transform;
-            transform.SetParent(Player.transform.FindChild("Sprite"));
-            SpriteRender = gameObject.AddComponent<SpriteRenderer>();
+            this.Physics = Player.MyPhysics;
+            this.PlayerId = Player.PlayerId;
+            this.gameObject = new("PlayerAnimation");
+            this.transform = this.gameObject.transform;
+            this.transform.SetParent(Player.transform.FindChild("Sprite"));
+            this.SpriteRender = this.gameObject.AddComponent<SpriteRenderer>();
             PlayerAnimations.Add(this);
         }
         public void OnDestroy()
         {
-            if (CachedPlayer.LocalPlayer == null || PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            if (CachedPlayer.LocalPlayer == null || this.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
                 PlayerAnimations = new();
                 return;
@@ -94,16 +94,16 @@ namespace SuperNewRoles.CustomObject
         public void Init(Sprite[] sprites, bool isLoop, float framerate, Action onAnimationEnd = null, Action onFixedUpdate = null)
         {
             Logger.Info("いにっと");
-            Sprites = sprites;
-            IsLoop = isLoop;
-            Playing = true;
-            Framerate = framerate;
-            updatedefaulttime = 1 / framerate;
-            updatetime = updatedefaulttime;
-            index = 0;
-            OnAnimationEnd = onAnimationEnd;
-            OnFixedUpdate = onFixedUpdate;
-            SpriteRender.sprite = sprites[0];
+            this.Sprites = sprites;
+            this.IsLoop = isLoop;
+            this.Playing = true;
+            this.Framerate = framerate;
+            this.updatedefaulttime = 1 / framerate;
+            this.updatetime = this.updatedefaulttime;
+            this.index = 0;
+            this.OnAnimationEnd = onAnimationEnd;
+            this.OnFixedUpdate = onFixedUpdate;
+            this.SpriteRender.sprite = sprites[0];
         }
         public static void FixedAllUpdate()
         {
@@ -114,88 +114,88 @@ namespace SuperNewRoles.CustomObject
         }
         public void FixedUpdate()
         {
-            if (SpriteRender == null)
+            if (this.SpriteRender == null)
             {
-                OnDestroy();
+                this.OnDestroy();
                 return;
             }
-            if (!Playing)
+            if (!this.Playing)
             {
-                SpriteRender.sprite = null;
+                this.SpriteRender.sprite = null;
                 return;
             }
-            updatetime -= Time.fixedDeltaTime;
-            OnFixedUpdate?.Invoke();
-            if (updatetime <= 0)
+            this.updatetime -= Time.fixedDeltaTime;
+            this.OnFixedUpdate?.Invoke();
+            if (this.updatetime <= 0)
             {
-                index++;
-                if (Sprites.Length <= index)
+                this.index++;
+                if (this.Sprites.Length <= this.index)
                 {
-                    if (IsLoop)
+                    if (this.IsLoop)
                     {
-                        index = 0;
+                        this.index = 0;
                     }
                     else
                     {
-                        Playing = false;
-                        Logger.Info($"チェック:{OnAnimationEnd != null}");
-                        OnAnimationEnd?.Invoke();
+                        this.Playing = false;
+                        Logger.Info($"チェック:{this.OnAnimationEnd != null}");
+                        this.OnAnimationEnd?.Invoke();
                         return;
                     }
                 }
-                SpriteRender.sprite = Sprites[index];
-                updatetime = updatedefaulttime;
+                this.SpriteRender.sprite = this.Sprites[this.index];
+                this.updatetime = this.updatedefaulttime;
             }
         }
         public void RpcAnimation(RpcAnimationType AnimType)
         {
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PlayPlayerAnimation);
-            writer.Write(PlayerId);
+            writer.Write(this.PlayerId);
             writer.Write((byte)AnimType);
             writer.EndRPC();
-            HandleAnim(AnimType);
+            this.HandleAnim(AnimType);
         }
         public void HandleAnim(RpcAnimationType AnimType)
         {
             switch (AnimType)
             {
                 case RpcAnimationType.Stop:
-                    Playing = false;
-                    SpriteRender.sprite = null;
-                    if (SoundManagerSource != null) SoundManagerSource.Stop();
+                    this.Playing = false;
+                    this.SpriteRender.sprite = null;
+                    if (this.SoundManagerSource != null) this.SoundManagerSource.Stop();
                     break;
                 case RpcAnimationType.SluggerCharge:
-                    Playing = true;
+                    this.Playing = true;
                     SluggerChargeCreateAnimation();
                     void SluggerChargeCreateAnimation()
                     {
-                        if (Player.IsDead() || !Player.IsRole(RoleId.Slugger) || !Playing)
+                        if (this.Player.IsDead() || !this.Player.IsRole(RoleId.Slugger) || !this.Playing)
                         {
-                            Playing = false;
-                            SpriteRender.sprite = null;
+                            this.Playing = false;
+                            this.SpriteRender.sprite = null;
                             return;
                         }
-                        Init(GetSprites("SuperNewRoles.Resources.harisen.tame_", 4), false, 12, new(() =>
+                        this.Init(GetSprites("SuperNewRoles.Resources.harisen.tame_", 4), false, 12, new(() =>
                         {
                             SluggerChargeCreateAnimation();
                         }), new(() =>
                         {
-                            transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
-                            transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
-                            if (SoundManagerSource == null)
+                            this.transform.localScale = new(this.Physics.FlipX ? 1 : -1, 1, 1);
+                            this.transform.localPosition = new(this.Physics.FlipX ? -0.75f : 0.75f, 0, -1);
+                            if (this.SoundManagerSource == null)
                             {
-                                if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) <= 5f)
+                                if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, this.transform.position) <= 5f)
                                 {
-                                    SoundManagerSource = SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Charge.raw"), false);
+                                    this.SoundManagerSource = SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Charge.raw"), false);
                                 }
                             }
                             else
                             {
-                                if (!SoundManagerSource.isPlaying)
+                                if (!this.SoundManagerSource.isPlaying)
                                 {
-                                    if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) <= 5f)
+                                    if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, this.transform.position) <= 5f)
                                     {
-                                        SoundManagerSource = SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Charge.raw"), false);
+                                        this.SoundManagerSource = SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Charge.raw"), false);
                                     }
                                 }
                             }
@@ -204,31 +204,31 @@ namespace SuperNewRoles.CustomObject
                     }
                     break;
                 case RpcAnimationType.SluggerMurder:
-                    Init(GetSprites("SuperNewRoles.Resources.harisen.harisen_", 8), false, 40);
-                    OnAnimationEnd = new(() =>
+                    this.Init(GetSprites("SuperNewRoles.Resources.harisen.harisen_", 8), false, 40);
+                    this.OnAnimationEnd = new(() =>
                     {
-                        Init(GetSprites("SuperNewRoles.Resources.harisen.harisen_", 1, start: 9), false, 8);
-                        OnAnimationEnd = new(() =>
+                        this.Init(GetSprites("SuperNewRoles.Resources.harisen.harisen_", 1, start: 9), false, 8);
+                        this.OnAnimationEnd = new(() =>
                         {
-                            Init(GetSprites("SuperNewRoles.Resources.harisen.harisen_", 2, start: 10), false, 40);
-                            OnFixedUpdate = new(() =>
+                            this.Init(GetSprites("SuperNewRoles.Resources.harisen.harisen_", 2, start: 10), false, 40);
+                            this.OnFixedUpdate = new(() =>
                             {
-                                transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
-                                transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
+                                this.transform.localScale = new(this.Physics.FlipX ? 1 : -1, 1, 1);
+                                this.transform.localPosition = new(this.Physics.FlipX ? -0.75f : 0.75f, 0, -1);
                             });
                         });
-                        OnFixedUpdate = new(() =>
+                        this.OnFixedUpdate = new(() =>
                         {
-                            transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
-                            transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
+                            this.transform.localScale = new(this.Physics.FlipX ? 1 : -1, 1, 1);
+                            this.transform.localPosition = new(this.Physics.FlipX ? -0.75f : 0.75f, 0, -1);
                         });
                     });
-                    OnFixedUpdate = new(() =>
+                    this.OnFixedUpdate = new(() =>
                     {
-                        transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
-                        transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
+                        this.transform.localScale = new(this.Physics.FlipX ? 1 : -1, 1, 1);
+                        this.transform.localPosition = new(this.Physics.FlipX ? -0.75f : 0.75f, 0, -1);
                     });
-                    if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) <= 5f)
+                    if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, this.transform.position) <= 5f)
                     {
                         SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.harisen.Hit.raw"), false, 1.5f);
                     }

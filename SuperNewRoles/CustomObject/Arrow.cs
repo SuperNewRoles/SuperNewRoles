@@ -13,39 +13,39 @@ namespace SuperNewRoles.CustomObject
 
         public Arrow(Color color)
         {
-            arrow = new GameObject("Arrow")
+            this.arrow = new GameObject("Arrow")
             {
                 layer = 5
             };
-            image = arrow.AddComponent<SpriteRenderer>();
-            image.sprite = GetSprite();
-            image.color = color;
+            this.image = this.arrow.AddComponent<SpriteRenderer>();
+            this.image.sprite = GetSprite();
+            this.image.color = color;
         }
 
         public void Update()
         {
-            Vector3 target = oldTarget;
+            Vector3 target = this.oldTarget;
             if (target == null) target = Vector3.zero;
-            Update(target);
+            this.Update(target);
         }
 
         public void Update(Vector3 target, Color? color = null)
         {
-            if (arrow == null) return;
-            oldTarget = target;
+            if (this.arrow == null) return;
+            this.oldTarget = target;
 
-            if (color.HasValue) image.color = color.Value;
+            if (color.HasValue) this.image.color = color.Value;
 
             Camera main = Camera.main;
             Vector2 vector = target - main.transform.position;
-            float num = vector.magnitude / (main.orthographicSize * perc);
-            image.enabled = (double)num > 0.3;
+            float num = vector.magnitude / (main.orthographicSize * this.perc);
+            this.image.enabled = (double)num > 0.3;
             Vector2 vector2 = main.WorldToViewportPoint(target);
-            if (Between(vector2.x, 0f, 1f) && Between(vector2.y, 0f, 1f))
+            if (this.Between(vector2.x, 0f, 1f) && this.Between(vector2.y, 0f, 1f))
             {
-                arrow.transform.position = target - (Vector3)vector.normalized * 0.6f;
+                this.arrow.transform.position = target - (Vector3)vector.normalized * 0.6f;
                 float num2 = Mathf.Clamp(num, 0f, 1f);
-                arrow.transform.localScale = new Vector3(num2, num2, num2);
+                this.arrow.transform.localScale = new Vector3(num2, num2, num2);
             }
             else
             {
@@ -53,11 +53,11 @@ namespace SuperNewRoles.CustomObject
                 float orthographicSize = main.orthographicSize;
                 float num3 = main.orthographicSize * main.aspect;
                 Vector3 vector4 = new(Mathf.LerpUnclamped(0f, num3 * 0.88f, vector3.x), Mathf.LerpUnclamped(0f, orthographicSize * 0.79f, vector3.y), 0f);
-                arrow.transform.position = main.transform.position + vector4;
-                arrow.transform.localScale = Vector3.one;
+                this.arrow.transform.position = main.transform.position + vector4;
+                this.arrow.transform.localScale = Vector3.one;
             }
 
-            LookAt2d(arrow.transform, target);
+            this.LookAt2d(this.arrow.transform, target);
         }
 
         private void LookAt2d(Transform transform, Vector3 target)

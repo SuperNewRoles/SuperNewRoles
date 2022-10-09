@@ -256,13 +256,13 @@ namespace SuperNewRoles
             public CustomNetworkTransform Netrans;
             public void FixedUpdate()
             {
-                index++;
-                if (pos.Count <= index)
+                this.index++;
+                if (this.pos.Count <= this.index)
                 {
-                    End();
+                    this.End();
                     return;
                 }
-                Netrans.RpcSnapTo(pos[index]);
+                this.Netrans.RpcSnapTo(this.pos[this.index]);
             }
             public void End()
             {

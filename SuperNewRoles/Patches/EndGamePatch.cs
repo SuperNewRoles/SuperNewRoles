@@ -449,11 +449,11 @@ namespace SuperNewRoles.Patches
         public RoleId? role;
         public CustomPlayerData(GameData.PlayerInfo p, GameOverReason gameOverReason)
         {
-            currentData = new(p);
-            name = p.PlayerName;
+            this.currentData = new(p);
+            this.name = p.PlayerName;
             try
             {
-                (CompleteTask, TotalTask) = TaskCount.TaskDate(p);
+                (this.CompleteTask, this.TotalTask) = TaskCount.TaskDate(p);
             }
             catch
             {
@@ -461,11 +461,11 @@ namespace SuperNewRoles.Patches
             }
             try
             {
-                role = p.Object.GetRole();
+                this.role = p.Object.GetRole();
             }
             catch
             {
-                role = null;
+                this.role = null;
             }
             FinalStatus finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
                 p.Disconnected == true ? FinalStatus.Disconnected :
@@ -1398,7 +1398,7 @@ namespace SuperNewRoles.Patches
             public int HitmanAlive { get; set; }
             public PlayerStatistics(ShipStatus __instance)
             {
-                GetPlayerCounts();
+                this.GetPlayerCounts();
             }
             private void GetPlayerCounts()
             {
@@ -1449,12 +1449,12 @@ namespace SuperNewRoles.Patches
                     }
                 }
                 if (ModeHandler.IsMode(ModeId.HideAndSeek)) numTotalAlive += numImpostorsAlive;
-                TeamImpostorsAlive = numImpostorsAlive;
-                TotalAlive = numTotalAlive;
-                CrewAlive = numCrewAlive;
-                TeamJackalAlive = numTotalJackalTeam;
-                EgoistAlive = numTotalEgoist;
-                HitmanAlive = numHitmanAlive;
+                this.TeamImpostorsAlive = numImpostorsAlive;
+                this.TotalAlive = numTotalAlive;
+                this.CrewAlive = numCrewAlive;
+                this.TeamJackalAlive = numTotalJackalTeam;
+                this.EgoistAlive = numTotalEgoist;
+                this.HitmanAlive = numHitmanAlive;
             }
         }
     }

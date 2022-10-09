@@ -47,7 +47,7 @@ namespace SuperNewRoles
 
         public override void Load()
         {
-            Logger = Log;
+            Logger = this.Log;
             Instance = this;
             // All Load() Start
             ModTranslation.Load();
@@ -87,7 +87,7 @@ namespace SuperNewRoles
             Assembly assembly = Assembly.GetExecutingAssembly();
 
             StringDATE = new Dictionary<string, Dictionary<int, string>>();
-            Harmony.PatchAll();
+            this.Harmony.PatchAll();
             SubmergedCompatibility.Initialize();
 
             assembly = Assembly.GetExecutingAssembly();

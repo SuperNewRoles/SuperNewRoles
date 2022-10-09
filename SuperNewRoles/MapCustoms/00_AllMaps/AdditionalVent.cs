@@ -16,22 +16,22 @@ namespace SuperNewRoles.MapCustoms
         {
             // Create the vent
             Vent referenceVent = Object.FindObjectOfType<Vent>();
-            vent = Object.Instantiate(referenceVent);
-            vent.transform.position = p;
-            vent.Left = null;
-            vent.Right = null;
-            vent.Center = null;
+            this.vent = Object.Instantiate(referenceVent);
+            this.vent.transform.position = p;
+            this.vent.Left = null;
+            this.vent.Right = null;
+            this.vent.Center = null;
             Vent tmp = MapUtilities.CachedShipStatus.AllVents[0];
-            vent.EnterVentAnim = tmp.EnterVentAnim;
-            vent.ExitVentAnim = tmp.ExitVentAnim;
-            vent.Offset = new Vector3(0f, 0.25f, 0f);
-            vent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1; // Make sure we have a unique id
+            this.vent.EnterVentAnim = tmp.EnterVentAnim;
+            this.vent.ExitVentAnim = tmp.ExitVentAnim;
+            this.vent.Offset = new Vector3(0f, 0.25f, 0f);
+            this.vent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1; // Make sure we have a unique id
             List<Vent> allVentsList = ShipStatus.Instance.AllVents.ToList();
-            allVentsList.Add(vent);
+            allVentsList.Add(this.vent);
             ShipStatus.Instance.AllVents = allVentsList.ToArray();
-            vent.gameObject.SetActive(true);
-            vent.name = "AdditionalVent_" + vent.Id;
-            vent.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+            this.vent.gameObject.SetActive(true);
+            this.vent.name = "AdditionalVent_" + this.vent.Id;
+            this.vent.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
             AllVents.Add(this);
         }
 

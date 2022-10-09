@@ -31,15 +31,15 @@ namespace SuperNewRoles.Modules
         public static List<CustomAnimation> Animations = new();
         public void Start(float freamlate, Transform obj)
         {
-            UpdateDefaultTime = 1f / freamlate;
-            if (UpdateDefaultTime == 0)
+            this.UpdateDefaultTime = 1f / freamlate;
+            if (this.UpdateDefaultTime == 0)
             {
-                UpdateDefaultTime = 1;
+                this.UpdateDefaultTime = 1;
             }
-            Updatetime = UpdateDefaultTime;
-            Object = obj;
-            render = obj.GetComponent<SpriteRenderer>();
-            index = 0;
+            this.Updatetime = this.UpdateDefaultTime;
+            this.Object = obj;
+            this.render = obj.GetComponent<SpriteRenderer>();
+            this.index = 0;
             Animations.Add(this);
         }
         public static void Update()
@@ -52,22 +52,22 @@ namespace SuperNewRoles.Modules
         }
         public void AnimationUpdate(float Deltatime)
         {
-            if (render == null) { Animations.Remove(this); return; }
-            Updatetime -= Deltatime;
-            if (Updatetime <= 0)
+            if (this.render == null) { Animations.Remove(this); return; }
+            this.Updatetime -= Deltatime;
+            if (this.Updatetime <= 0)
             {
-                if (render == null)
+                if (this.render == null)
                 {
                     Animations.Remove(this);
                     return;
                 }
-                render.sprite = Sprites[index];
-                index++;
+                this.render.sprite = this.Sprites[this.index];
+                this.index++;
 
-                if (Sprites.Length <= index)
-                    index = 0;
+                if (this.Sprites.Length <= this.index)
+                    this.index = 0;
 
-                Updatetime = UpdateDefaultTime;
+                this.Updatetime = this.UpdateDefaultTime;
             }
         }
 

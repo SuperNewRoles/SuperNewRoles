@@ -95,7 +95,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
             public int TotalAlive { get; set; }
             public PlayerStatistics()
             {
-                GetPlayerCounts();
+                this.GetPlayerCounts();
             }
             private void GetPlayerCounts()
             {
@@ -122,9 +122,9 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                         }
                     }
                 }
-                TeamImpostorsAlive = numImpostorsAlive;
-                TotalAlive = numTotalAlive;
-                CrewAlive = numCrewAlive;
+                this.TeamImpostorsAlive = numImpostorsAlive;
+                this.TotalAlive = numTotalAlive;
+                this.CrewAlive = numCrewAlive;
             }
         }
     }

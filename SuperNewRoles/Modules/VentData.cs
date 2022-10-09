@@ -162,10 +162,10 @@ namespace SuperNewRoles.Modules
 
         public VentData(Vent vent)
         {
-            Vent = vent;
-            Id = vent.Id;
-            PreSealed = false;
-            Sealed = false;
+            this.Vent = vent;
+            this.Id = vent.Id;
+            this.PreSealed = false;
+            this.Sealed = false;
         }
 
         public static implicit operator Vent(VentData vent)

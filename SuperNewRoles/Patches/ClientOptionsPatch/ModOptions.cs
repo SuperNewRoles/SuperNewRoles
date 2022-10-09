@@ -218,9 +218,9 @@ namespace SuperNewRoles.Patches
 
             public SelectionBehaviour(string title, Func<bool> onClick, bool defaultValue)
             {
-                Title = title;
-                OnClick = onClick;
-                DefaultValue = defaultValue;
+                this.Title = title;
+                this.OnClick = onClick;
+                this.DefaultValue = defaultValue;
             }
         }
     }

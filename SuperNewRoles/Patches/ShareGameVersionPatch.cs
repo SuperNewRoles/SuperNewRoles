@@ -241,7 +241,7 @@ namespace SuperNewRoles.Patches
 
         public bool GuidMatches()
         {
-            return Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.Equals(guid);
+            return Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.Equals(this.guid);
         }
     }
 }

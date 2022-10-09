@@ -31,13 +31,13 @@ namespace SuperNewRoles.CustomObject
 
         public GameObject gameObject;
         public GameObject effectGameObject;
-        public Transform transform => gameObject.transform;
+        public Transform transform => this.gameObject.transform;
 
         public PlayerControl Owner;
         public int Id;
         private List<Sprite> sprites;
         private float UpdateTime;
-        private float DefaultUpdateTime => 1f / freamrate;
+        private float DefaultUpdateTime => 1f / this.freamrate;
         private int freamrate;
         private int index;
         private bool IsLoop;
@@ -55,45 +55,45 @@ namespace SuperNewRoles.CustomObject
 
         public WaveCannonObject(Vector3 pos, bool FlipX, PlayerControl _owner)
         {
-            OwnerPlayerId = _owner.PlayerId;
-            if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            this.OwnerPlayerId = _owner.PlayerId;
+            if (this.OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
                 CachedPlayer.LocalPlayer.PlayerControl.moveable = false;
 
                 Camera.main.GetComponent<FollowerCamera>().Locked = true;
             }
             OwnerPos = _owner.transform.position;
-            IsFlipX = FlipX;
-            Owner = _owner;
-            Id = 0;
-            gameObject = new("WaveCannonObject");
-            effectGameObject = new("WaveCannonEffect");
-            effectGameObject.transform.SetParent(transform);
-            effectGameObject.transform.localPosition = new(22.45f, 0, 1);
-            effectGameObject.transform.localScale = new(7 * 1.4f, 1.5f, 1);
-            render = gameObject.AddComponent<SpriteRenderer>();
-            effectrender = effectGameObject.AddComponent<SpriteRenderer>();
-            index = 0;
-            sprites = new();
+            this.IsFlipX = FlipX;
+            this.Owner = _owner;
+            this.Id = 0;
+            this.gameObject = new("WaveCannonObject");
+            this.effectGameObject = new("WaveCannonEffect");
+            this.effectGameObject.transform.SetParent(this.transform);
+            this.effectGameObject.transform.localPosition = new(22.45f, 0, 1);
+            this.effectGameObject.transform.localScale = new(7 * 1.4f, 1.5f, 1);
+            this.render = this.gameObject.AddComponent<SpriteRenderer>();
+            this.effectrender = this.effectGameObject.AddComponent<SpriteRenderer>();
+            this.index = 0;
+            this.sprites = new();
             for (int i = 1; i <= 5; i++)
             {
-                sprites.Add(ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Charge_000{i}.png", 115f));
+                this.sprites.Add(ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Charge_000{i}.png", 115f));
             }
-            render.sprite = sprites[0];
-            IsLoop = true;
-            freamrate = 25;
-            Playing = true;
+            this.render.sprite = this.sprites[0];
+            this.IsLoop = true;
+            this.freamrate = 25;
+            this.Playing = true;
             Objects.Add(this);
             pos.z -= 0.0003f;
-            transform.position = pos + new Vector3(FlipX ? -4 : 4, 0, 0);
-            transform.localScale = new(FlipX ? -1 : 1, 1, 1);
-            if (!Ids.ContainsKey(OwnerPlayerId))
+            this.transform.position = pos + new Vector3(FlipX ? -4 : 4, 0, 0);
+            this.transform.localScale = new(FlipX ? -1 : 1, 1, 1);
+            if (!Ids.ContainsKey(this.OwnerPlayerId))
             {
-                Ids[OwnerPlayerId] = 0;
+                Ids[this.OwnerPlayerId] = 0;
             }
-            Id = Ids[OwnerPlayerId];
-            Ids[OwnerPlayerId]++;
-            IsShootNow = false;
+            this.Id = Ids[this.OwnerPlayerId];
+            Ids[this.OwnerPlayerId]++;
+            this.IsShootNow = false;
             ChargeSound = SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ChargeSound.raw"), true);
         }
         public void Shoot()
@@ -101,35 +101,35 @@ namespace SuperNewRoles.CustomObject
             if (ChargeSound != null)
                 ChargeSound.Stop();
             SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ShootSound.raw"), false);
-            IsShootNow = true;
-            render.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannon.Cannon.png", 115f);
-            sprites = new();
+            this.IsShootNow = true;
+            this.render.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannon.Cannon.png", 115f);
+            this.sprites = new();
             for (int i = 1; i <= 12; i++)
             {
-                sprites.Add(ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Shoot_00{(i <= 9 ? "0" : "")}{i}.png", 115f));
+                this.sprites.Add(ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Shoot_00{(i <= 9 ? "0" : "")}{i}.png", 115f));
             }
-            effectrender.sprite = sprites[0];
-            IsLoop = false;
-            freamrate = 12;
-            Playing = true;
-            OnPlayEnd = () =>
+            this.effectrender.sprite = this.sprites[0];
+            this.IsLoop = false;
+            this.freamrate = 12;
+            this.Playing = true;
+            this.OnPlayEnd = () =>
             {
-                IsLoop = true;
-                freamrate = 15;
-                Playing = true;
-                sprites = new();
+                this.IsLoop = true;
+                this.freamrate = 15;
+                this.Playing = true;
+                this.sprites = new();
                 for (int i = 6; i <= 12; i++)
                 {
-                    sprites.Add(ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Shoot_00{(i <= 9 ? "0" : "")}{i}.png", 115f));
+                    this.sprites.Add(ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Shoot_00{(i <= 9 ? "0" : "")}{i}.png", 115f));
                 }
-                effectrender.sprite = sprites[0];
-                OnPlayEnd = () =>
+                this.effectrender.sprite = this.sprites[0];
+                this.OnPlayEnd = () =>
                 {
-                    DestroyIndex++;
-                    if (DestroyIndex > 3)
+                    this.DestroyIndex++;
+                    if (this.DestroyIndex > 3)
                     {
                         GameObject.Destroy(this.gameObject);
-                        if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                        if (this.OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                         {
                             if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
                             {
@@ -161,19 +161,19 @@ namespace SuperNewRoles.CustomObject
         }
         public void FixedUpdate()
         {
-            if (render == null) { Objects.Remove(this); return; }
+            if (this.render == null) { Objects.Remove(this); return; }
             if (RoleClass.IsMeeting)
             {
                 if (ChargeSound != null)
                     ChargeSound.Stop();
-                GameObject.Destroy(effectGameObject);
-                GameObject.Destroy(gameObject);
+                GameObject.Destroy(this.effectGameObject);
+                GameObject.Destroy(this.gameObject);
                 return;
             }
-            if (Owner != null && (Owner.IsDead() || !(Owner.GetRole() is RoleId.WaveCannon or RoleId.WaveCannonJackal)))
+            if (this.Owner != null && (this.Owner.IsDead() || !(this.Owner.GetRole() is RoleId.WaveCannon or RoleId.WaveCannonJackal)))
             {
                 GameObject.Destroy(this.gameObject);
-                if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                if (this.OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
                     CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
                     Camera.main.GetComponent<FollowerCamera>().Locked = false;
@@ -182,22 +182,22 @@ namespace SuperNewRoles.CustomObject
                     ChargeSound.Stop();
                 return;
             }
-            Logger.Info($"{OwnerPlayerId} : {Owner != null} : {OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId} : {CachedPlayer.LocalPlayer.PlayerId} : {PlayerControl.LocalPlayer.PlayerId} : {!RoleClass.IsMeeting} : {OwnerPos}", "WaveCannonUpdate");
-            if (Owner != null && OwnerPlayerId == PlayerControl.LocalPlayer.PlayerId && !RoleClass.IsMeeting)
+            Logger.Info($"{this.OwnerPlayerId} : {this.Owner != null} : {this.OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId} : {CachedPlayer.LocalPlayer.PlayerId} : {PlayerControl.LocalPlayer.PlayerId} : {!RoleClass.IsMeeting} : {OwnerPos}", "WaveCannonUpdate");
+            if (this.Owner != null && this.OwnerPlayerId == PlayerControl.LocalPlayer.PlayerId && !RoleClass.IsMeeting)
             {
                 //Owner.transform.position = OwnerPos;
 
-                if (IsShootNow)
+                if (this.IsShootNow)
                 {
                     foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
                         if (player.IsDead()) continue;
                         if (RoleClass.WaveCannon.CannotMurderPlayers.Contains(player.PlayerId)) continue;
                         if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
-                        float posdata = player.GetTruePosition().y - transform.position.y;
+                        float posdata = player.GetTruePosition().y - this.transform.position.y;
                         if (posdata is > 1 or < (-1)) continue;
-                        posdata = transform.position.x - (IsFlipX ? -2 : 2);
-                        if ((IsFlipX && player.transform.position.x > posdata) || (!IsFlipX && player.transform.position.x < posdata)) continue;
+                        posdata = this.transform.position.x - (this.IsFlipX ? -2 : 2);
+                        if ((this.IsFlipX && player.transform.position.x > posdata) || (!this.IsFlipX && player.transform.position.x < posdata)) continue;
                         if (player.IsRole(RoleId.Shielder) && RoleClass.Shielder.IsShield.ContainsKey(player.PlayerId) && RoleClass.Shielder.IsShield[player.PlayerId])
                         {
                             MessageWriter msgwriter = RPCHelper.StartRPC(CustomRPC.ShielderProtect);
@@ -224,26 +224,26 @@ namespace SuperNewRoles.CustomObject
                     }
                 }
             }
-            if (Playing)
+            if (this.Playing)
             {
-                UpdateTime -= Time.fixedDeltaTime;
-                if (UpdateTime <= 0)
+                this.UpdateTime -= Time.fixedDeltaTime;
+                if (this.UpdateTime <= 0)
                 {
-                    index++;
-                    if (index >= sprites.Count)
+                    this.index++;
+                    if (this.index >= this.sprites.Count)
                     {
-                        index = 0;
-                        if (OnPlayEnd != null && IsLoop) OnPlayEnd();
-                        if (!IsLoop)
+                        this.index = 0;
+                        if (this.OnPlayEnd != null && this.IsLoop) this.OnPlayEnd();
+                        if (!this.IsLoop)
                         {
-                            Playing = false;
-                            OnPlayEnd?.Invoke();
+                            this.Playing = false;
+                            this.OnPlayEnd?.Invoke();
                             return;
                         }
                     }
-                    UpdateTime = DefaultUpdateTime;
-                    if (IsShootNow) effectrender.sprite = sprites[index];
-                    else render.sprite = sprites[index];
+                    this.UpdateTime = this.DefaultUpdateTime;
+                    if (this.IsShootNow) this.effectrender.sprite = this.sprites[this.index];
+                    else this.render.sprite = this.sprites[this.index];
                 }
             }
         }

@@ -30,31 +30,31 @@ namespace SuperNewRoles.CustomObject
                 this.color = Palette.PlayerColors[(int)player.Data.DefaultOutfit.ColorId];
 
             Vector3 posdata = pos != null ? (Vector3)pos : player.transform.position;
-            footprint = new GameObject("Footprint");
+            this.footprint = new GameObject("Footprint");
             Vector3 position = new(posdata.x, posdata.y, posdata.z + 1f);
-            footprint.transform.position = position;
-            footprint.transform.localPosition = position;
-            footprint.transform.Rotate(0f, 0f, UnityEngine.Random.Range(0f, 360f));
-            footprint.transform.SetParent(player.transform.parent);
+            this.footprint.transform.position = position;
+            this.footprint.transform.localPosition = position;
+            this.footprint.transform.Rotate(0f, 0f, UnityEngine.Random.Range(0f, 360f));
+            this.footprint.transform.SetParent(player.transform.parent);
 
-            spriteRenderer = footprint.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = getFootprintSprite();
-            spriteRenderer.color = color;
+            this.spriteRenderer = this.footprint.AddComponent<SpriteRenderer>();
+            this.spriteRenderer.sprite = getFootprintSprite();
+            this.spriteRenderer.color = this.color;
 
-            footprint.SetActive(true);
+            this.footprint.SetActive(true);
 
             if (footprintDuration > 0)
             {
                 footprints.Add(this);
                 HudManager.Instance.StartCoroutine(Effects.Lerp(footprintDuration, new Action<float>((p) =>
                 {
-                    Color c = color;
+                    Color c = this.color;
 
-                    if (spriteRenderer) spriteRenderer.color = new Color(c.r, c.g, c.b, Mathf.Clamp01(1 - p));
+                    if (this.spriteRenderer) this.spriteRenderer.color = new Color(c.r, c.g, c.b, Mathf.Clamp01(1 - p));
 
-                    if (p == 1f && footprint != null)
+                    if (p == 1f && this.footprint != null)
                     {
-                        UnityEngine.Object.Destroy(footprint);
+                        UnityEngine.Object.Destroy(this.footprint);
                         footprints.Remove(this);
                     }
                 })));
@@ -69,19 +69,19 @@ namespace SuperNewRoles.CustomObject
             else
                 this.color = (Color)color;
 
-            footprint = new GameObject("Footprint");
+            this.footprint = new GameObject("Footprint");
             Vector3 position = new(pos.x, pos.y, 1f);
-            footprint.transform.position = position;
-            footprint.transform.localPosition = position;
+            this.footprint.transform.position = position;
+            this.footprint.transform.localPosition = position;
 
-            footprint.transform.Rotate(0.0f, 0.0f, UnityEngine.Random.Range(0.0f, 360.0f));
+            this.footprint.transform.Rotate(0.0f, 0.0f, UnityEngine.Random.Range(0.0f, 360.0f));
 
 
-            spriteRenderer = footprint.AddComponent<SpriteRenderer>();
-            spriteRenderer.sprite = getFootprintSprite();
-            spriteRenderer.color = this.color;
+            this.spriteRenderer = this.footprint.AddComponent<SpriteRenderer>();
+            this.spriteRenderer.sprite = getFootprintSprite();
+            this.spriteRenderer.color = this.color;
 
-            footprint.SetActive(true);
+            this.footprint.SetActive(true);
 
             if (footprintDuration > 0)
             {
@@ -89,11 +89,11 @@ namespace SuperNewRoles.CustomObject
                 {
                     Color c = this.color;
 
-                    if (spriteRenderer) spriteRenderer.color = new Color(c.r, c.g, c.b, Mathf.Clamp01(1 - p));
+                    if (this.spriteRenderer) this.spriteRenderer.color = new Color(c.r, c.g, c.b, Mathf.Clamp01(1 - p));
 
-                    if (p == 1f && footprint != null)
+                    if (p == 1f && this.footprint != null)
                     {
-                        UnityEngine.Object.Destroy(footprint);
+                        UnityEngine.Object.Destroy(this.footprint);
                     }
                 })));
             }
