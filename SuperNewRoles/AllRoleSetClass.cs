@@ -946,6 +946,7 @@ namespace SuperNewRoles
                 RoleId.Doppelganger => CustomOptions.DoppelgangerPlayerCount.GetFloat(),
                 RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalPlayerCount.GetFloat(),
                 RoleId.Conjurer => Roles.Impostor.Conjurer.PlayerCount.GetFloat(),
+                RoleId.Camouflager => CustomOptions.CamouflagerPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

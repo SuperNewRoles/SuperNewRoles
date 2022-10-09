@@ -5,7 +5,7 @@ using Hazel;
 using SuperNewRoles.CustomObject;
 
 using SuperNewRoles.Mode;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles

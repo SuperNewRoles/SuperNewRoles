@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptions;
 using static SuperNewRoles.Roles.RoleClass;

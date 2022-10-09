@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
-using static SuperNewRoles.Patch.CheckGameEndPatch;
+using static SuperNewRoles.Patches.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {

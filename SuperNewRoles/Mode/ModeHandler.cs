@@ -1,8 +1,8 @@
 using HarmonyLib;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
-using static SuperNewRoles.Patch.CheckGameEndPatch;
+using static SuperNewRoles.Patches.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode
 {
@@ -239,18 +239,18 @@ namespace SuperNewRoles.Mode
             if (IsChache) return mode == thisMode;
             if (mode is ModeId.Default) return !ModeSetting.GetBool();
             return mode switch
-                {
-                    ModeId.HideAndSeek => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[0],
-                    ModeId.BattleRoyal => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[2],
-                    ModeId.SuperHostRoles => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[1],
-                    ModeId.Zombie => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[3],
-                    ModeId.RandomColor => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[4],
-                    ModeId.NotImpostorCheck => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[5],
-                    ModeId.Detective => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[6],
-                    ModeId.CopsRobbers => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[7],
-                    ModeId.Werewolf => false,//ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[7];
-                    _ => false,
-                };
+            {
+                ModeId.HideAndSeek => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[0],
+                ModeId.BattleRoyal => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[2],
+                ModeId.SuperHostRoles => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[1],
+                ModeId.Zombie => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[3],
+                ModeId.RandomColor => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[4],
+                ModeId.NotImpostorCheck => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[5],
+                ModeId.Detective => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[6],
+                ModeId.CopsRobbers => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[7],
+                ModeId.Werewolf => false,//ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[7];
+                _ => false,
+            };
         }
         public static bool EndGameChecks(ShipStatus __instance, PlayerStatistics statistics)
         {

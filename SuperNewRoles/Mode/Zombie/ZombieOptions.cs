@@ -1,6 +1,6 @@
 using Hazel;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Mode.Zombie
 {
