@@ -255,7 +255,6 @@ namespace SuperNewRoles.Modules
                     if (Is) Roles.Impostor.Camouflager.CamouflageSHR();
                     else Roles.Impostor.Camouflager.ResetCamouflageSHR();
                 }
-                return;
             }
             else
             {
