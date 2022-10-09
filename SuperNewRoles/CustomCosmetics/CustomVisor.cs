@@ -20,11 +20,11 @@ namespace SuperNewRoles.CustomCosmetics
                 SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み処理開始");
                 Il2CppSystem.Collections.Generic.List<NamePlateData> AllPlates = __instance.allNamePlates;
 
-                DirectoryInfo plateDir = new DirectoryInfo("SuperNewRoles\\CustomVisorsChache");
+                DirectoryInfo plateDir = new("SuperNewRoles\\CustomVisorsChache");
                 if (!plateDir.Exists) plateDir.Create();
                 List<FileInfo> Files = plateDir.GetFiles("*.png").ToList();
                 Files.AddRange(plateDir.GetFiles("*.jpg"));
-                List<VisorData> CustomPlates = new List<VisorData>();
+                List<VisorData> CustomPlates = new();
                 foreach (FileInfo file in Files)
                 {
                     try

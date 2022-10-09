@@ -9,7 +9,7 @@ namespace SuperNewRoles.MapOptions
             if (!AmongUsClient.Instance.AmHost) return;
             if (MapOption.IsRandomMap)
             {
-                System.Random rand = new System.Random();
+                System.Random rand = new();
                 List<byte> RandomMaps = new();
                 if (MapOption.ValidationSkeld) RandomMaps.Add(0);
                 if (MapOption.ValidationMira) RandomMaps.Add(1);

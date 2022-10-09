@@ -69,7 +69,7 @@ namespace SuperNewRoles.Roles
                                     Writer.Write((byte)CustomGameOverReason.FalseChargesWin);
                                     Writer.EndRPC();
                                     RPCProcedure.SetWinCond((byte)CustomGameOverReason.FalseChargesWin);
-                                    List<PlayerControl> winplayers = new List<PlayerControl>
+                                    List<PlayerControl> winplayers = new()
                                     {
                                         player
                                     };

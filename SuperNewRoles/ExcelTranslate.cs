@@ -35,7 +35,7 @@ namespace SuperNewRoles
                 JObject val = token.Value.TryCast<JObject>();
                 if (token.HasValues)
                 {
-                    Dictionary<int, string> strings = new Dictionary<int, string>();
+                    Dictionary<int, string> strings = new();
                     for (int j = 0; j < (int)SupportedLangs.Irish + 1; j++)
                     {
                         string key = j.ToString();

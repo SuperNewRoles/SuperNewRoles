@@ -28,7 +28,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         Writer.Write((byte)CustomGameOverReason.JesterWin);
                         Writer.EndRPC();
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.JesterWin);
-                        List<PlayerControl> winplayers = new List<PlayerControl>
+                        List<PlayerControl> winplayers = new()
                         {
                             exiled.Object
                         };
@@ -61,7 +61,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         Writer.Write((byte)CustomGameOverReason.ImpostorWin);
                         Writer.EndRPC();
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.ImpostorWin);
-                        List<PlayerControl> winplayers = new List<PlayerControl>
+                        List<PlayerControl> winplayers = new()
                         {
                             exiled.Object
                         };

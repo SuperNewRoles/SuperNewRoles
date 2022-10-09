@@ -110,13 +110,13 @@ namespace SuperNewRoles.Mode
             else if (IsMode(ModeId.Detective)) return SuperHostRoles.Intro.ModeHandler(__instance);
             else if (IsMode(ModeId.Werewolf))
             {
-                Il2CppSystem.Collections.Generic.List<PlayerControl> Data = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                Il2CppSystem.Collections.Generic.List<PlayerControl> Data = new();
                 Data.Add(PlayerControl.LocalPlayer);
                 return Data;
             }
             else if (IsMode(ModeId.CopsRobbers))
             {
-                Il2CppSystem.Collections.Generic.List<PlayerControl> Data = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                Il2CppSystem.Collections.Generic.List<PlayerControl> Data = new();
                 Data.Add(PlayerControl.LocalPlayer);
                 return Data;
             }

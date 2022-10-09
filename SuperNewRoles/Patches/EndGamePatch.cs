@@ -394,7 +394,7 @@ namespace SuperNewRoles.Patches
                 roleSummary.transform.position = new Vector3(__instance.Navigation.ExitButton.transform.position.x + 0.1f, position.y - 0.1f, -14f);
                 roleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
 
-                StringBuilder roleSummaryText = new StringBuilder();
+                StringBuilder roleSummaryText = new();
                 roleSummaryText.AppendLine(ModTranslation.GetString("最終結果"));
 
                 foreach (AdditionalTempData.PlayerRoleInfo datas in AdditionalTempData.playerRoles)

@@ -15,7 +15,7 @@ namespace SuperNewRoles.Patches
         private static void Prefix()
         {
             // Horse mode stuff
-            ClientModOptionsPatch.SelectionBehaviour horseModeSelectionBehavior = new ClientModOptionsPatch.SelectionBehaviour("Enable Horse Mode", () => HorseModeOption.enableHorseMode = ConfigRoles.EnableHorseMode.Value = !ConfigRoles.EnableHorseMode.Value, ConfigRoles.EnableHorseMode.Value);
+            ClientModOptionsPatch.SelectionBehaviour horseModeSelectionBehavior = new("Enable Horse Mode", () => HorseModeOption.enableHorseMode = ConfigRoles.EnableHorseMode.Value = !ConfigRoles.EnableHorseMode.Value, ConfigRoles.EnableHorseMode.Value);
 
             GameObject bottomTemplate = GameObject.Find("InventoryButton");
             if (bottomTemplate == null) return;

@@ -337,16 +337,16 @@ namespace SuperNewRoles
                 numShort = 1;
             }
 
-            Il2CppSystem.Collections.Generic.List<byte> tasks = new Il2CppSystem.Collections.Generic.List<byte>();
-            Il2CppSystem.Collections.Generic.HashSet<TaskTypes> hashSet = new Il2CppSystem.Collections.Generic.HashSet<TaskTypes>();
+            Il2CppSystem.Collections.Generic.List<byte> tasks = new();
+            Il2CppSystem.Collections.Generic.HashSet<TaskTypes> hashSet = new();
 
-            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> commonTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
+            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> commonTasks = new();
             foreach (NormalPlayerTask task in ShipStatus.Instance.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(task);
 
-            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> shortTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
+            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> shortTasks = new();
             foreach (NormalPlayerTask task in ShipStatus.Instance.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(task);
 
-            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> longTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
+            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> longTasks = new();
             foreach (NormalPlayerTask task in ShipStatus.Instance.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(task);
 
             int start = 0;

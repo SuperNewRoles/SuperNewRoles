@@ -22,10 +22,10 @@ namespace SuperNewRoles.Patches
                 Transform mapNameTransform = __instance.AllItems.FirstOrDefault(x => x.gameObject.activeSelf && x.name.Equals("MapName", StringComparison.OrdinalIgnoreCase));
                 if (mapNameTransform == null) return;
 
-                List<KeyValuePair<string, int>> options = new List<KeyValuePair<string, int>>();
+                List<KeyValuePair<string, int>> options = new();
                 for (int i = 0; i < Constants.MapNames.Length; i++)
                 {
-                    KeyValuePair<string, int> kvp = new KeyValuePair<string, int>
+                    KeyValuePair<string, int> kvp = new()
                     {
                         key = Constants.MapNames[i],
                         value = i

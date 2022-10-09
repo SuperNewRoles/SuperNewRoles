@@ -43,7 +43,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void RoleFixedUpdate() { }
         public static void SetRoleName(PlayerControl player, bool IsUnchecked = false)
         {
-            System.Diagnostics.StackFrame caller = new System.Diagnostics.StackFrame(1, false);
+            System.Diagnostics.StackFrame caller = new(1, false);
             System.Reflection.MethodBase callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
@@ -63,7 +63,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
             if (player.IsBot() || !AmongUsClient.Instance.AmHost) return;
 
-            System.Diagnostics.StackFrame caller = new System.Diagnostics.StackFrame(1, false);
+            System.Diagnostics.StackFrame caller = new(1, false);
             System.Reflection.MethodBase callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
@@ -328,7 +328,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
         public static void SetRoleNames(bool IsUnchecked = false)
         {
-            System.Diagnostics.StackFrame caller = new System.Diagnostics.StackFrame(1, false);
+            System.Diagnostics.StackFrame caller = new(1, false);
             System.Reflection.MethodBase callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
@@ -404,7 +404,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void SetDefaultNames()
         {
-            System.Diagnostics.StackFrame caller = new System.Diagnostics.StackFrame(1, false);
+            System.Diagnostics.StackFrame caller = new(1, false);
             System.Reflection.MethodBase callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;

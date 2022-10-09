@@ -5,7 +5,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
     {
         public static bool CheckEndGame(ShipStatus __instance)
         {
-            PlayerStatistics statistics = new PlayerStatistics();
+            PlayerStatistics statistics = new();
             return !CheckAndEndGameForSabotageWin(__instance)
             && !CheckAndEndGameForImpostorWin(__instance, statistics)
 && !CheckAndEndGameForCrewmateWin(__instance, statistics)

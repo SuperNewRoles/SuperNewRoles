@@ -69,7 +69,7 @@ namespace SuperNewRoles
         public static void CachePlayerPatch(PlayerControl __instance)
         {
             if (__instance.notRealPlayer) return;
-            CachedPlayer player = new CachedPlayer
+            CachedPlayer player = new()
             {
                 transform = __instance.transform,
                 PlayerControl = __instance,

@@ -109,7 +109,7 @@ namespace SuperNewRoles.Roles
         public static string GetExileText()
         {
             //翻訳
-            System.Random rand = new System.Random();
+            System.Random rand = new();
             return rand.Next(1, 10) == 1 ? ModTranslation.GetString("BakeryExileText2") : ModTranslation.GetString("BakeryExileText");
         }
 

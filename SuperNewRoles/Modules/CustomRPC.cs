@@ -957,7 +957,7 @@ namespace SuperNewRoles.Modules
             Vector3 SwapPosition = SwapPlayer.transform.position;
             Vector3 SwapperPosition = SwapperPlayer.transform.position;
             //Text
-            System.Random rand = new System.Random();
+            System.Random rand = new();
             if (SwapperID == PlayerControl.LocalPlayer.PlayerId)
             {
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;

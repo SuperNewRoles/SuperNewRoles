@@ -108,7 +108,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 {
                     foreach (PoolablePlayer player in ObjectData.PresetAreas)
                     {
-                        GameData.PlayerOutfit outfit = new GameData.PlayerOutfit();
+                        GameData.PlayerOutfit outfit = new();
                         ObjectData.ClosetPresetData data = SelectPatch.GetData(i);
                         outfit.ColorId = data.BodyColor.Value;
                         outfit.HatId = data.Hat.Value;

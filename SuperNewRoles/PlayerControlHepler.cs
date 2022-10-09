@@ -43,7 +43,7 @@ namespace SuperNewRoles
 
             List<IntroDate> infos = new() { IntroDate.GetIntroDate(player.GetRole(), player) };
 
-            List<PlayerTask> toRemove = new List<PlayerTask>();
+            List<PlayerTask> toRemove = new();
             bool aaa = false;
             string mytxt = "";
             foreach (PlayerTask t in player.myTasks)

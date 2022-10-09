@@ -149,12 +149,12 @@ namespace SuperNewRoles.Patches
         {
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                Il2CppSystem.Collections.Generic.List<PlayerControl> newTeam2 = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                Il2CppSystem.Collections.Generic.List<PlayerControl> newTeam2 = new();
                 newTeam2.Add(PlayerControl.LocalPlayer);
                 yourTeam = newTeam2;
                 if (PlayerControl.LocalPlayer.IsCrew())
                 {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> newTeam = new();
                     newTeam.Add(PlayerControl.LocalPlayer);
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {

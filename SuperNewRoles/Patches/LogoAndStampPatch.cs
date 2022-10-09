@@ -278,7 +278,7 @@ namespace SuperNewRoles.Patches
                     amongUsLogo.transform.position += Vector3.up * 0.25f;
                 }
 
-                GameObject snrLogo = new GameObject("bannerLogo");
+                GameObject snrLogo = new("bannerLogo");
                 snrLogo.transform.position = Vector3.up;
                 renderer = snrLogo.AddComponent<SpriteRenderer>();
                 LoadSprites();

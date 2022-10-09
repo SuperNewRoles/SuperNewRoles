@@ -101,7 +101,7 @@ namespace SuperNewRoles.Patches
             meetingUnderlay.sprite = colorBG;
             meetingUnderlay.enabled = true;
             meetingUnderlay.transform.localScale = new Vector3(20f, 20f, 1f);
-            Color32 clearBlack = new Color32(0, 0, 0, 0);
+            Color32 clearBlack = new(0, 0, 0, 0);
 
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
             {
@@ -155,8 +155,8 @@ namespace SuperNewRoles.Patches
             infoOverlayRoles.text = rolesText;
             infoOverlayRoles.enabled = true;
 
-            Color underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
-            Color underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
+            Color underlayTransparent = new(0.1f, 0.1f, 0.1f, 0.0f);
+            Color underlayOpaque = new(0.1f, 0.1f, 0.1f, 0.88f);
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
             {
                 infoUnderlay.color = Color.Lerp(underlayTransparent, underlayOpaque, t);
@@ -172,8 +172,8 @@ namespace SuperNewRoles.Patches
             if (MeetingHud.Instance == null) FastDestroyableSingleton<HudManager>.Instance.SetHudActive(true);
 
             overlayShown = false;
-            Color underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
-            Color underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
+            Color underlayTransparent = new(0.1f, 0.1f, 0.1f, 0.0f);
+            Color underlayOpaque = new(0.1f, 0.1f, 0.1f, 0.88f);
 
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
             {

@@ -36,7 +36,7 @@ namespace SuperNewRoles.Patches
 
         private static bool TryMoveObjects()
         {
-            List<string> toMove = new List<string>
+            List<string> toMove = new()
             {
                 "HostGameButton",
                 "FindGameButton",

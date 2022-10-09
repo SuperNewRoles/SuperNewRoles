@@ -113,7 +113,7 @@ namespace SuperNewRoles.Modules
             ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
             IRegionInfo[] regions = defaultRegions;
 
-            DnsRegionInfo CustomRegion = new DnsRegionInfo(ConfigRoles.Ip.Value, "Custom", StringNames.NoTranslation, ConfigRoles.Ip.Value, ConfigRoles.Port.Value, false);
+            DnsRegionInfo CustomRegion = new(ConfigRoles.Ip.Value, "Custom", StringNames.NoTranslation, ConfigRoles.Ip.Value, ConfigRoles.Port.Value, false);
             regions = regions.Concat(new IRegionInfo[] { CustomRegion.CastFast<IRegionInfo>() }).ToArray();
             ServerManager.DefaultRegions = regions;
             serverManager.AvailableRegions = regions;

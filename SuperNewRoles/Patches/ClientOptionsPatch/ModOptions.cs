@@ -148,7 +148,7 @@ namespace SuperNewRoles.Patches
                 SelectionBehaviour info = AllOptions[i];
 
                 ToggleButtonBehaviour button = Object.Instantiate(buttonPrefab, popUp.transform);
-                Vector3 pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
+                Vector3 pos = new(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
 
                 Transform transform = button.transform;
                 transform.localPosition = pos;

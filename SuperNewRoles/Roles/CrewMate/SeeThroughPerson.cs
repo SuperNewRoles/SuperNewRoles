@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles.CrewMate
                 door.animator.Play(door.CloseDoorAnim);
                 new LateTask(() =>
                 {
-                    GameObject newcollider = new GameObject("Door-SeeThroughPersonCollider-" + door.transform.position.x + "." + door.transform.position.y + "." + door.Id);
+                    GameObject newcollider = new("Door-SeeThroughPersonCollider-" + door.transform.position.x + "." + door.transform.position.y + "." + door.Id);
                     newcollider.transform.position = door.transform.position;
                     PolygonCollider2D TempCollider = door.gameObject.AddComponent<PolygonCollider2D>();
                     newcollider.AddComponent<EdgeCollider2D>().points = TempCollider.points;

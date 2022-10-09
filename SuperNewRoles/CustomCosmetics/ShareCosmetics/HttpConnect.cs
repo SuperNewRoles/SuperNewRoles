@@ -28,9 +28,9 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
             SuperNewRolesPlugin.Logger.LogInfo("DLDATA:" + dldata);
             SharePatch.PlayerDatas[id] = dldata;
             SuperNewRolesPlugin.Logger.LogInfo("c");
-            MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(dldata));
+            MemoryStream ms = new(Encoding.UTF8.GetBytes(dldata));
             SuperNewRolesPlugin.Logger.LogInfo("e");
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(CosmeticsObject));
+            DataContractJsonSerializer serializer = new(typeof(CosmeticsObject));
             SuperNewRolesPlugin.Logger.LogInfo("f");
             object data = serializer.ReadObject(ms);
             SuperNewRolesPlugin.Logger.LogInfo("g");

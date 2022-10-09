@@ -34,7 +34,7 @@ namespace SuperNewRoles.Buttons
             }
             if (RoleClass.NiceScientist.IsScientist)
             {
-                TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)durationtime);
+                TimeSpan TimeSpanDate = new(0, 0, 0, (int)durationtime);
                 HudManagerStartPatch.ScientistButton.MaxTimer = durationtime;
                 HudManagerStartPatch.ScientistButton.Timer = (float)(RoleClass.NiceScientist.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
                 if (HudManagerStartPatch.ScientistButton.Timer <= 0f)
@@ -49,7 +49,7 @@ namespace SuperNewRoles.Buttons
             }
             else
             {
-                TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)cooltime);
+                TimeSpan TimeSpanDate = new(0, 0, 0, (int)cooltime);
                 HudManagerStartPatch.ScientistButton.Timer = (float)(RoleClass.NiceScientist.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
                 if (HudManagerStartPatch.ScientistButton.Timer <= 0f) HudManagerStartPatch.ScientistButton.Timer = 0f; return;
             }
@@ -60,7 +60,7 @@ namespace SuperNewRoles.Buttons
             if (RoleClass.NiceHawk.Timer == 0 && PlayerControl.LocalPlayer.IsRole(RoleId.NiceHawk)) return;
             if (RoleClass.MadHawk.Timer == 0 && PlayerControl.LocalPlayer.IsRole(RoleId.MadHawk)) return;
             RoleClass.Hawk.IsHawkOn = true;
-            TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Hawk.DurationTime);
+            TimeSpan TimeSpanDate = new(0, 0, 0, (int)RoleClass.Hawk.DurationTime);
             if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceHawk))
             {
                 TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.NiceHawk.DurationTime);
@@ -80,7 +80,7 @@ namespace SuperNewRoles.Buttons
         {
             if (MapOption.Timer == 0 && PlayerControl.LocalPlayer.Data.IsDead && MapOption.ClairvoyantZoom) return;
             MapOption.IsZoomOn = true;
-            TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)MapOption.DurationTime);
+            TimeSpan TimeSpanDate = new(0, 0, 0, (int)MapOption.DurationTime);
             TimeSpanDate = new TimeSpan(0, 0, 0, (int)MapOption.DurationTime);
             MapOption.Timer = (float)(MapOption.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
             if (MapOption.Timer <= 0f) MapOption.Timer = 0f; MapOption.IsZoomOn = false; return;
@@ -91,7 +91,7 @@ namespace SuperNewRoles.Buttons
             {
                 RoleClass.Teleporter.ButtonTimer = DateTime.Now;
             }
-            TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Teleporter.CoolTime);
+            TimeSpan TimeSpanDate = new(0, 0, 0, (int)RoleClass.Teleporter.CoolTime);
             HudManagerStartPatch.TeleporterButton.Timer = (float)(RoleClass.Teleporter.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
             if (HudManagerStartPatch.TeleporterButton.Timer <= 0f) HudManagerStartPatch.TeleporterButton.Timer = 0f; return;
         }
@@ -102,7 +102,7 @@ namespace SuperNewRoles.Buttons
             {
                 RoleClass.Moving.ButtonTimer = DateTime.Now;
             }
-            TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Moving.CoolTime);
+            TimeSpan TimeSpanDate = new(0, 0, 0, (int)RoleClass.Moving.CoolTime);
             if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilMoving))
             {
                 TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.EvilMoving.CoolTime);
@@ -114,7 +114,7 @@ namespace SuperNewRoles.Buttons
         {
             if (RoleClass.Lighter.IsLightOn)
             {
-                TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Lighter.DurationTime);
+                TimeSpan TimeSpanDate = new(0, 0, 0, (int)RoleClass.Lighter.DurationTime);
                 HudManagerStartPatch.LighterLightOnButton.MaxTimer = RoleClass.Lighter.DurationTime;
                 HudManagerStartPatch.LighterLightOnButton.Timer = (float)((RoleClass.Lighter.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
                 if (HudManagerStartPatch.LighterLightOnButton.Timer <= 0f)
@@ -133,7 +133,7 @@ namespace SuperNewRoles.Buttons
                 {
                     RoleClass.Lighter.ButtonTimer = DateTime.Now;
                 }
-                TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Lighter.CoolTime);
+                TimeSpan TimeSpanDate = new(0, 0, 0, (int)RoleClass.Lighter.CoolTime);
                 HudManagerStartPatch.LighterLightOnButton.Timer = (float)(RoleClass.Lighter.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
                 if (HudManagerStartPatch.LighterLightOnButton.Timer <= 0f) HudManagerStartPatch.LighterLightOnButton.Timer = 0f; return;
             }
@@ -145,7 +145,7 @@ namespace SuperNewRoles.Buttons
             {
                 RoleClass.Sheriff.ButtonTimer = DateTime.Now;
             }
-            TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff) ? (int)RoleClass.Sheriff.CoolTime : (int)RoleClass.RemoteSheriff.CoolTime);
+            TimeSpan TimeSpanDate = new(0, 0, 0, PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff) ? (int)RoleClass.Sheriff.CoolTime : (int)RoleClass.RemoteSheriff.CoolTime);
             HudManagerStartPatch.SheriffKillButton.Timer = (float)(RoleClass.Sheriff.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
             if (HudManagerStartPatch.SheriffKillButton.Timer <= 0f) HudManagerStartPatch.SheriffKillButton.Timer = 0f; return;
         }
@@ -153,7 +153,7 @@ namespace SuperNewRoles.Buttons
         {
             if (RoleClass.SpeedBooster.IsSpeedBoost)
             {
-                TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.SpeedBooster.DurationTime);
+                TimeSpan TimeSpanDate = new(0, 0, 0, (int)RoleClass.SpeedBooster.DurationTime);
                 HudManagerStartPatch.SpeedBoosterBoostButton.MaxTimer = RoleClass.SpeedBooster.DurationTime;
                 HudManagerStartPatch.SpeedBoosterBoostButton.Timer = (float)((RoleClass.SpeedBooster.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
                 if (HudManagerStartPatch.SpeedBoosterBoostButton.Timer <= 0f)
@@ -172,7 +172,7 @@ namespace SuperNewRoles.Buttons
                 {
                     RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
                 }
-                TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.SpeedBooster.CoolTime);
+                TimeSpan TimeSpanDate = new(0, 0, 0, (int)RoleClass.SpeedBooster.CoolTime);
                 HudManagerStartPatch.SpeedBoosterBoostButton.Timer = (float)(RoleClass.SpeedBooster.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
                 if (HudManagerStartPatch.SpeedBoosterBoostButton.Timer <= 0f) HudManagerStartPatch.SpeedBoosterBoostButton.Timer = 0f; return;
             }
@@ -181,7 +181,7 @@ namespace SuperNewRoles.Buttons
         {
             if (RoleClass.EvilSpeedBooster.IsSpeedBoost)
             {
-                TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.EvilSpeedBooster.DurationTime);
+                TimeSpan TimeSpanDate = new(0, 0, 0, (int)RoleClass.EvilSpeedBooster.DurationTime);
                 HudManagerStartPatch.EvilSpeedBoosterBoostButton.MaxTimer = RoleClass.EvilSpeedBooster.DurationTime;
                 HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = (float)((RoleClass.EvilSpeedBooster.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
                 if (HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer <= 0f)
@@ -200,7 +200,7 @@ namespace SuperNewRoles.Buttons
                 {
                     RoleClass.EvilSpeedBooster.ButtonTimer = DateTime.Now;
                 }
-                TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.EvilSpeedBooster.CoolTime);
+                TimeSpan TimeSpanDate = new(0, 0, 0, (int)RoleClass.EvilSpeedBooster.CoolTime);
                 HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = (float)(RoleClass.EvilSpeedBooster.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
                 if (HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer <= 0f) Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = 0f; return;
             }

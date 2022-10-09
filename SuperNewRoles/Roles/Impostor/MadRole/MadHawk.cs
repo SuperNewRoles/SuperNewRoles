@@ -22,7 +22,7 @@ namespace SuperNewRoles.Roles
                 }
                 if (RoleClass.MadHawk.timer1 >= 0.1 && !RoleClass.IsMeeting)
                 {
-                    TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, 10);
+                    TimeSpan TimeSpanDate = new(0, 0, 0, 10);
                     RoleClass.MadHawk.timer1 = (float)(RoleClass.MadHawk.Timer2 + TimeSpanDate - DateTime.Now).TotalSeconds;
                     CachedPlayer.LocalPlayer.transform.localPosition = RoleClass.MadHawk.Postion;
                     SuperNewRolesPlugin.Logger.LogInfo(RoleClass.MadHawk.timer1);

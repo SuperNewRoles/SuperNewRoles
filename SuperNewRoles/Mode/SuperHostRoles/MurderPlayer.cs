@@ -34,7 +34,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             Writer.Write((byte)CustomGameOverReason.QuarreledWin);
                             Writer.EndRPC();
                             RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);
-                            List<PlayerControl> winplayers = new List<PlayerControl>
+                            List<PlayerControl> winplayers = new()
                             {
                                 target
                             };
