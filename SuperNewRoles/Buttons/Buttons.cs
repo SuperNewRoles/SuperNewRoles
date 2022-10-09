@@ -1976,7 +1976,7 @@ namespace SuperNewRoles.Buttons
                 new Vector3(0, 1, 0),
                 __instance,
                 __instance.KillButton,
-                KeyCode.F,
+                KeyCode.Q,
                 49,
                 () =>
                 {
