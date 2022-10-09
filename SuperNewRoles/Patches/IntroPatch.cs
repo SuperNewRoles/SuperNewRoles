@@ -33,6 +33,7 @@ namespace SuperNewRoles.Patches
             {
                 Logger.Info("=================Player Info=================", "Intro Begin");
                 Logger.Info("=================Player Data=================", "Player Info");
+                Logger.Info($"プレイヤー数：{CachedPlayer.AllPlayers.Count}人", "All Player Count");
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     Logger.Info($"{(p.AmOwner ? "[H]" : "[ ]")}{(p.IsMod() ? "[M]" : "[ ]")}{p.name}(cid:{p.GetClientId()})(pid:{p.PlayerId})({p.GetClient()?.PlatformData?.Platform}){(p.IsBot() ? "(BOT)" : "")}", "Player info");
@@ -42,6 +43,9 @@ namespace SuperNewRoles.Patches
                 {
                     Logger.Info($"{p.name}=>{p.GetRole()}({p.GetRoleType()}){(p.IsLovers() ? "[♥]" : "")}{(p.IsQuarreled() ? "[○]" : "")}", "Role Data");
                 }
+                Logger.Info("=================Other Data=================", "Intro Begin");
+                Logger.Info($"MapId:{PlayerControl.GameOptions.MapId} MapNames:{(MapNames)PlayerControl.GameOptions.MapId}", "Other Data");
+                Logger.Info($"Mode:{ModeHandler.GetMode()}", "Other Data");
             }
         }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
