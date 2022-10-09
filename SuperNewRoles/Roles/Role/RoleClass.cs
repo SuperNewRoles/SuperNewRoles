@@ -185,6 +185,7 @@ namespace SuperNewRoles.Roles
             Doppelganger.ClearAndReload();
             WaveCannonJackal.ClearAndReload();
             Conjurer.ClearAndReload();
+            Camouflager.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2770,6 +2771,42 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 gm = null;
+            }
+        }
+        public static class Camouflager
+        {
+            public static List<PlayerControl> CamouflagerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static bool ArsonistMark;
+            public static bool DemonMark;
+            public static bool LoversMark;
+            public static bool QuarreledMark;
+            public static byte Color;
+            private static Sprite buttonSprite;
+            public static DateTime ButtonTimer;
+            public static bool IsCamouflage;
+            public static float Duration;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CamouflagerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                CamouflagerPlayer = new();
+                CoolTime = CustomOptions.CamouflagerCoolTime.GetFloat();
+                DurationTime = CustomOptions.CamouflagerDurationTime.GetFloat();
+                ArsonistMark = CustomOptions.CamouflagerCamouflageArsonist.GetBool();
+                DemonMark = CustomOptions.CamouflagerCamouflageDemon.GetBool();
+                LoversMark = CustomOptions.CamouflagerCamouflageLovers.GetBool();
+                QuarreledMark = CustomOptions.CamouflagerCamouflageQuarreled.GetBool();
+                Color = (byte)(CustomOptions.CamouflagerCamouflageChangeColor.GetBool() ? CustomOptions.CamouflagerCamouflageColor.GetSelection() : 15);
+                ButtonTimer = DateTime.Now;
+                IsCamouflage = false;
+                Duration = DurationTime;
             }
         }
         //新ロールクラス

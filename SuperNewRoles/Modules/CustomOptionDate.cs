@@ -854,6 +854,17 @@ namespace SuperNewRoles.Modules
         public static CustomOption WaveCannonJackalUseSabo;
         public static CustomOption WaveCannonJackalIsImpostorLight;
         public static CustomOption WaveCannonJackalIsSyncKillCoolTime;
+
+        public static CustomRoleOption CamouflagerOption;
+        public static CustomOption CamouflagerPlayerCount;
+        public static CustomOption CamouflagerCoolTime;
+        public static CustomOption CamouflagerDurationTime;
+        public static CustomOption CamouflagerCamouflageArsonist;
+        public static CustomOption CamouflagerCamouflageDemon;
+        public static CustomOption CamouflagerCamouflageLovers;
+        public static CustomOption CamouflagerCamouflageQuarreled;
+        public static CustomOption CamouflagerCamouflageChangeColor;
+        public static CustomOption CamouflagerCamouflageColor;
         //CustomOption
 
         public static CustomOption GMOption;
@@ -1729,6 +1740,18 @@ namespace SuperNewRoles.Modules
             TaskerLongTask = taskeroption.Item3;
             TaskerIsKillCoolTaskNow = Create(1011, false, CustomOptionType.Impostor, "TaskerIsKillCoolTaskNow", true, TaskerOption);
             TaskerCanKill = Create(1012, false, CustomOptionType.Impostor, "TaskerCanKill", true, TaskerOption);
+
+            CamouflagerOption = new(1007, true, CustomOptionType.Impostor, "CamouflagerName", RoleClass.Camouflager.color, 1);
+            CamouflagerPlayerCount = Create(1008, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CamouflagerOption);
+            CamouflagerCoolTime = Create(1009, true, CustomOptionType.Impostor, "CamouflagerCoolTimeSetting", 30f, 0f, 60f, 2.5f, CamouflagerOption);
+            CamouflagerDurationTime = Create(1010, true, CustomOptionType.Impostor, "CamouflagerDurationTimeSetting", 10f, 0f, 60f, 2.5f, CamouflagerOption);
+            CamouflagerCamouflageArsonist = Create(1011, true, CustomOptionType.Impostor, "CamouflagerCamouflageArsonistSetting", true, CamouflagerOption);
+            CamouflagerCamouflageDemon = Create(1012, true, CustomOptionType.Impostor, "CamouflagerCamouflageDemonSetting", true, CamouflagerOption);
+            CamouflagerCamouflageLovers = Create(1013, true, CustomOptionType.Impostor, "CamouflagerCamouflageLoversSetting", false, CamouflagerOption);
+            CamouflagerCamouflageQuarreled = Create(1014, true, CustomOptionType.Impostor, "CamouflagerCamouflageQuarreledSetting", false, CamouflagerOption);
+            CamouflagerCamouflageChangeColor = Create(1015, true, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
+            CamouflagerCamouflageColor = Create(1016, true, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Roles.Impostor.Camouflager.ColorOption, CamouflagerCamouflageChangeColor);
+
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

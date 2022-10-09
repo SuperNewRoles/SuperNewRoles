@@ -200,6 +200,15 @@ namespace SuperNewRoles.Patches
                         if (RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1)
                             EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
                         return false;
+                    case RoleId.Camouflager:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            RoleClass.Camouflager.Duration = RoleClass.Camouflager.DurationTime;
+                            RoleClass.Camouflager.IsCamouflage = true;
+                            Roles.Impostor.Camouflager.Camouflage();
+                            SyncSetting.CustomSyncSettings(__instance);
+                        }
+                        return true;
                 }
             }
             return true;
@@ -715,6 +724,7 @@ namespace SuperNewRoles.Patches
             }
             Logger.Info("全スタントマン系通過", "CheckMurder");
             __instance.RpcMurderPlayerCheck(target);
+            Camouflager.ResetCamouflage(target);
             Logger.Info("RpcMurderPlayerCheck(一番下)を通過", "CheckMurder");
             return false;
         }
@@ -1059,6 +1069,10 @@ namespace SuperNewRoles.Patches
             if (!AmongUsClient.Instance.AmHost) return true;
             if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
             if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;
+            if (RoleClass.Camouflager.IsCamouflage)
+            {
+                Roles.Impostor.Camouflager.ResetCamouflage();
+            }
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (__instance.IsRole(RoleId.EvilButtoner, RoleId.NiceButtoner) && target != null && target.PlayerId == __instance.PlayerId)

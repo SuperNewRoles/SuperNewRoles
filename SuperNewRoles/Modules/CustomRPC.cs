@@ -163,6 +163,7 @@ namespace SuperNewRoles.Modules
         NekoKabocha,
         Doppelganger,
         Conjurer,
+        Camouflager,
         //RoleId
     }
 

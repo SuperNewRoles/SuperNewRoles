@@ -618,6 +618,9 @@ namespace SuperNewRoles
                 case RoleId.Conjurer:
                     Conjurer.Player.Add(player);
                     break;
+                case RoleId.Camouflager:
+                    RoleClass.Camouflager.CamouflagerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1058,7 +1061,10 @@ namespace SuperNewRoles
                 case RoleId.Conjurer:
                     Conjurer.Player.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                case RoleId.Camouflager:
+                    RoleClass.Camouflager.CamouflagerPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1537,6 +1543,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
                 else if (RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
                 else if (Conjurer.Player.IsCheckListPlayerControl(player)) return RoleId.Conjurer;
+                else if (RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player)) return RoleId.Camouflager;
                 //ロールチェック
             }
             catch (Exception e)
