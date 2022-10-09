@@ -4652,6 +4652,84 @@
         "11": "\u89e3\u9664\u307e\u3067{0}\u79d2",
         "13": "\u8fd8\u6709{0}\u79d2\u89e3\u9664\u6b66\u88c5"
     },
+    "CrackerName": {
+        "0": "Cracker",
+        "11": "\u30af\u30e9\u30c3\u30ab\u30fc"
+    },
+    "CrackerTitle1": {
+        "0": "Let's crack on and play God!",
+        "11": "\u30af\u30e9\u30c3\u30af\u3057\u3066\u795e\u96a0\u3057\u3092\u3057\u3088\u3046"
+    },
+    "CrackerIsAdminView": {
+        "0": "Counted by Admins",
+        "11": "\u30a2\u30c9\u30df\u30f3\u306b\u30ab\u30a6\u30f3\u30c8\u3055\u308c\u308b"
+    },
+    "CrackerIsVitalsView": {
+        "0": "Counted in Vitals",
+        "11": "\u30d0\u30a4\u30bf\u30eb\u306b\u30ab\u30a6\u30f3\u30c8\u3055\u308c\u308b"
+    },
+    "CrackerOneTurnSelectCount": {
+        "0": "Number of times you can crack in one turn",
+        "11": "1\u30bf\u30fc\u30f3\u5185\u306b\u30af\u30e9\u30c3\u30af\u3067\u304d\u308b\u56de\u6570"
+    },
+    "CrackerAllTurnSelectCount": {
+        "0": "Number of times you can crack during a match",
+        "11": "\u8a66\u5408\u4e2d\u306b\u30af\u30e9\u30c3\u30af\u3067\u304d\u308b\u56de\u6570"
+    },
+    "CrackerIsSelfNone": {
+        "0": "Cracks are unrecognizable to the cracker",
+        "11": "\u30af\u30e9\u30c3\u30af\u8005\u306f\u30af\u30e9\u30c3\u30af\u3092\u8a8d\u8b58\u3067\u304d\u306a\u3044"
+    },
+    "CrackerButtonName": {
+        "0": "Crack!!!",
+        "11": "\u30af\u30e9\u30c3\u30af"
+    },
+    "CamouflagerName": {
+        "0": "Camouflager",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e3\u30fc",
+        "13": "\u4f2a\u88c5\u8005"
+    },
+    "CamouflagerTitle1": {
+        "0": "Let's hide in the crowd.",
+        "11": "\u4eba\u6df7\u307f\u306b\u96a0\u308c\u3088\u3046",
+        "13": "\u8ba9\u6211\u4eec\u8eb2\u5728\u4eba\u7fa4\u4e2d"
+    },
+    "CamouflagerCoolTimeSetting": {
+        "0": "Camouflage Cooltime",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+    },
+    "CamouflagerDurationTimeSetting": {
+        "0": "Camouflage Duration",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u306e\u6301\u7d9a\u6642\u9593"
+    },
+    "CamouflagerCamouflageArsonistSetting": {
+        "0": "Arsonists can still see mark while activating their skill",
+        "11": "\u30a2\u30fc\u30bd\u30cb\u30b9\u30c8\u304c\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306b\u5857\u3063\u305f\u4eba\u304c\u308f\u304b\u308b"
+    },
+    "CamouflagerCamouflageDemonSetting": {
+        "0": "Demon can still see mark while activating their skill",
+        "11": "\u60aa\u9b54\u304c\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306b\u546a\u3063\u305f\u4eba\u304c\u308f\u304b\u308b"
+    },
+    "CamouflagerCamouflageLoversSetting": {
+        "0": "Lovers can still see mark while activating their skill",
+        "11": "\u30e9\u30d0\u30fc\u30ba\u304c\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306b\u76f8\u65b9\u304c\u308f\u304b\u308b"
+    },
+    "CamouflagerCamouflageQuarreledSetting": {
+        "0": "Quarreled can still mark while activating their skill",
+        "11": "\u30af\u30e9\u30fc\u30c9\u304c\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306b\u76f8\u65b9\u304c\u308f\u304b\u308b"
+    },
+    "CamouflagerCamouflageChangeColorSetting": {
+        "0": "Change the color of camouflage",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306e\u8272\u3092\u5909\u66f4\u3059\u308b"
+    },
+    "CamouflagerCamouflageColorSetting": {
+        "0": "Camouflage color",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306e\u8272"
+    },
+    "CamouflagerButtonName": {
+        "0": "Camouflager",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5"
+    },
     "PavlovsdogsName": {
         "0": "Pavlov's dogs",
         "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u72ac"
@@ -4660,28 +4738,46 @@
         "0": "Pavlov's owner",
         "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u30aa\u30fc\u30ca\u30fc"
     },
+    "PavlovsdogsTitle1": {
+        "0": "Let us be of service.",
+        "11": "\u304a\u5f79\u306b\u7acb\u3063\u3066\u307f\u305b\u307e\u3057\u3087\u3046",
+        "13": "\u8ba9\u6211\u4eec\u4e3a\u60a8\u63d0\u4f9b\u670d\u52a1\u3002"
+    },
+    "PavlovsownerTitle1": {
+        "0": "Be my dog!",
+        "11": "\u79c1\u306e\u72ac\u306b\u306a\u308a\u306a\u3055\u3044\uff01",
+        "13": "\u505a\u6211\u7684\u72d7!"
+    },
     "PavlovsownerCreateDogCoolTime": {
+        "0": "Side Kick Cool Time",
         "11": "\u30b5\u30a4\u30c9\u30ad\u30c3\u30af\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
     },
     "PavlovsownerCreateDogLimit": {
+        "0": "Number of times a side kick can be made in one match",
         "11": "1\u8a66\u5408\u5185\u306b\u30b5\u30a4\u30c9\u30ad\u30c3\u30af\u3067\u304d\u308b\u56de\u6570"
     },
     "PavlovsownerIsTargetImpostorDeath": {
+        "0": "Self-destruct if the opponent is an Imposter",
         "11": "\u76f8\u624b\u304c\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3060\u3068\u81ea\u7206\u3059\u308b"
     },
     "PavlovsdogIsImpostorView": {
+        "0": "Pavlov's dog has a view of the imposter",
         "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u72ac\u304c\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u8996\u754c"
     },
     "PavlovsdogRunAwayKillCoolTime": {
+        "0": "Coold time when out of control",
         "11": "\u66b4\u8d70\u6642\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
     },
     "PavlovsdogRunAwayDeathTime": {
+        "0": "Self-destruct time when out of control",
         "11": "\u66b4\u8d70\u6642\u306e\u81ea\u7206\u30bf\u30a4\u30e0"
     },
     "PavlovsdogRunAwayDeathTimeIsMeetingReset": {
+        "0": "Reset self-destruct time in a meeting",
         "11": "\u4f1a\u8b70\u3067\u81ea\u7206\u30bf\u30a4\u30e0\u3092\u30ea\u30bb\u30c3\u30c8\u3059\u308b"
     },
     "PavlovsTeamWinText": {
+        "0": "Pavlov's dog and owner",
         "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u72ac\u3068\u30aa\u30fc\u30ca\u30fc"
     },
     "ConnectKillerName": {
@@ -4707,6 +4803,18 @@
     "WaveCannonChargeTime": {
         "0": "Charge Time",
         "11": "\u30c1\u30e3\u30fc\u30b8\u6642\u9593"
+    },
+    "WaveCannonButtonName": {
+        "0": "Wave Cannon",
+        "11": "\u6ce2\u52d5\u7832"
+    },
+    "WaveCannonJackalName": {
+        "0": "Wave Cannon Jackal",
+        "11": "\u6ce2\u52d5\u7832\u30b8\u30e3\u30c3\u30ab\u30eb"
+    },
+    "WaveCannonJackalTitle1": {
+        "0": "Use the cannon and get the kill!",
+        "11": "\u5927\u7832\u3092\u4f7f\u7528\u3057\u3001\u30ad\u30eb\u3057\u3088\u3046"
     },
     "ImpostorCanKillSetting": {
         "0": "Can kill impostor",
@@ -4780,6 +4888,50 @@
     "WerewolfAbilityTime": {
         "0": "{0} seconds remaining until the end of the ability use time",
         "11": "\u80fd\u529b\u4f7f\u7528\u30bf\u30a4\u30e0\u304c\u7d42\u4e86\u3059\u308b\u307e\u3067\u6b8b\u308a{0}\u79d2"
+    },
+    "GMName": {
+        "0": "GM",
+        "11": "GM"
+    },
+    "GMTitle1": {
+        "0": "You are Game Master",
+        "11": "\u3042\u306a\u305f\u306f\u30b2\u30fc\u30e0\u30de\u30b9\u30bf\u30fc"
+    },
+    "GMTeleport": {
+        "0": "Teleport",
+        "11": "\u30c6\u30ec\u30dd\u30fc\u30c8"
+    },
+    "GMKill": {
+        "0": "Kill",
+        "11": "\u30ad\u30eb"
+    },
+    "GMRevive": {
+        "0": "Revive",
+        "11": "\u5fa9\u6d3b"
+    },
+    "GMExile": {
+        "0": "Exile",
+        "11": "\u8ffd\u653e(\u6b7b\u4f53\u306a\u3057\u30ad\u30eb)"
+    },
+    "GMCleanDeadbody": {
+        "0": "Clean Deadbody",
+        "11": "\u6b7b\u4f53\u524a\u9664"
+    },
+    "GMStartMeeting": {
+        "0": "Start Meeting",
+        "11": "\u4f1a\u8b70\u958b\u59cb"
+    },
+    "GMCleanDeadbodyAndRevive": {
+        "0": "Clean Deadbody and Revive",
+        "11": "\u6b7b\u4f53\u3092\u524a\u9664\u3057\u3066\u5fa9\u6d3b"
+    },
+    "GMSpawnDeadbody": {
+        "0": "Spawn Deadbody",
+        "11": "\u6b7b\u4f53\u3092\u751f\u6210"
+    },
+    "GMEndMeeting": {
+        "0": "EndMeeting",
+        "11": "\u4f1a\u8b70\u7d42\u4e86"
     },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
