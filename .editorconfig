@@ -10,6 +10,10 @@ trim_trailing_whitespace = true
 insert_final_newline = false
 dotnet_diagnostic.IDE0051.severity = silent
 dotnet_diagnostic.IDE0052.severity = silent
+# Null 条件演算子（?.)、Null 合体演算子（??)、Null 合体割り当て演算子の警告
+dotnet_diagnostic.UNT0007.severity = warning
+dotnet_diagnostic.UNT0008.severity = warning
+dotnet_diagnostic.UNT0023.severity = warning
 # usingをディレクティブごとにスペースで分けるか
 dotnet_separate_import_directive_groups = false
 # usingの先頭をSystemに並び変えるか
@@ -37,7 +41,7 @@ dotnet_style_collection_initializer = true:suggestion
 # 明示的に提供されたタプル名を使用する
 dotnet_style_explicit_tuple_names = true:suggestion
 # 可能であれば、null 条件演算子を使用する
-dotnet_style_null_propagation = true:silent
+dotnet_style_null_propagation = false:suggestion
 # オブジェクト初期化子を使用する
 dotnet_style_object_initializer = true:warning
 # 折り返し時の演算子の位置
