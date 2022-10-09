@@ -84,6 +84,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton DoppelgangerButton;
         public static CustomButton PavlovsownerCreatedogButton;
         public static CustomButton PavlovsdogKillButton;
+        public static CustomButton CamouflagerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text PavlovsdogKillSelfText;
@@ -2062,7 +2063,7 @@ namespace SuperNewRoles.Buttons
                 new Vector3(0, 1, 0),
                 __instance,
                 __instance.KillButton,
-                KeyCode.F,
+                KeyCode.Q,
                 49,
                 () =>
                 {
@@ -2816,7 +2817,55 @@ namespace SuperNewRoles.Buttons
             RoleClass.Doppelganger.DoppelgangerDurationText.transform.localPosition += new Vector3(-2.575f, -0.95f, 0);
 
             Roles.Impostor.Conjurer.SetupCustomButtons(__instance);
+
             Roles.Neutral.GM.CreateButton(__instance);
+
+            CamouflagerButton = new(
+                () =>
+                {
+                    if (CamouflagerButton.isEffectActive)
+                    {
+                        Roles.Impostor.Camouflager.RpcResetCamouflage();
+                        CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
+                        CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
+                    }
+                    else
+                    {
+                        Roles.Impostor.Camouflager.RpcCamouflage();
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Camouflager && ModeHandler.IsMode(ModeId.Default); },
+                () => { return PlayerControl.LocalPlayer.CanMove; },
+                () =>
+                {
+                    CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
+                    CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
+                    CamouflagerButton.effectCancellable = false;
+                    CamouflagerButton.EffectDuration = CustomOptions.CamouflagerDurationTime.GetFloat();
+                    CamouflagerButton.HasEffect = true;
+                },
+                RoleClass.Camouflager.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; },
+                true,
+                5f,
+                () =>
+                {
+                    Logger.Info("効果終了のお知らせ");
+                    Roles.Impostor.Camouflager.RpcResetCamouflage();
+                    CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
+                    CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("CamouflagerButtonName"),
+                showButtonText = true
+            };
+
             SetCustomButtonCooldowns();
         }
     }

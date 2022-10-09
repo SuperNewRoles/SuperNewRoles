@@ -68,7 +68,7 @@ namespace SuperNewRoles.Roles
             Shielder.ClearAndReload();
             Speeder.ClearAndReload();
             Freezer.ClearAndReload();
-            Guesser.ClearAndReload();
+            NiceGuesser.ClearAndReload();
             EvilGuesser.ClearAndReload();
             Vulture.ClearAndReload();
             NiceScientist.ClearAndReload();
@@ -187,6 +187,7 @@ namespace SuperNewRoles.Roles
             Pavlovsowner.ClearAndReload();
             WaveCannonJackal.ClearAndReload();
             Conjurer.ClearAndReload();
+            Camouflager.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -520,13 +521,15 @@ namespace SuperNewRoles.Roles
                 IsSpeedDown = false;
             }
         }
-        public static class Guesser
+        public static class NiceGuesser
         {
-            public static List<PlayerControl> GuesserPlayer;
-            public static Color32 color = new(255, 255, 0, byte.MaxValue);
+            public static List<PlayerControl> NiceGuesserPlayer;
+            public static Color32 color = Color.yellow;
+            public static int Count;
             public static void ClearAndReload()
             {
-                GuesserPlayer = new();
+                NiceGuesserPlayer = new();
+                Count = -1;
             }
         }
         public static class EvilGuesser
@@ -2811,6 +2814,42 @@ namespace SuperNewRoles.Roles
                 DogArrow.arrow.SetActive(false);
                 CreateLimit = CustomOptions.PavlovsownerCreateDogLimit.GetInt();
                 CountData = new();
+            }
+        }
+        public static class Camouflager
+        {
+            public static List<PlayerControl> CamouflagerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static bool ArsonistMark;
+            public static bool DemonMark;
+            public static bool LoversMark;
+            public static bool QuarreledMark;
+            public static byte Color;
+            private static Sprite buttonSprite;
+            public static DateTime ButtonTimer;
+            public static bool IsCamouflage;
+            public static float Duration;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CamouflagerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                CamouflagerPlayer = new();
+                CoolTime = CustomOptions.CamouflagerCoolTime.GetFloat();
+                DurationTime = CustomOptions.CamouflagerDurationTime.GetFloat();
+                ArsonistMark = CustomOptions.CamouflagerCamouflageArsonist.GetBool();
+                DemonMark = CustomOptions.CamouflagerCamouflageDemon.GetBool();
+                LoversMark = CustomOptions.CamouflagerCamouflageLovers.GetBool();
+                QuarreledMark = CustomOptions.CamouflagerCamouflageQuarreled.GetBool();
+                Color = (byte)(CustomOptions.CamouflagerCamouflageChangeColor.GetBool() ? CustomOptions.CamouflagerCamouflageColor.GetSelection() : 15);
+                ButtonTimer = DateTime.Now;
+                IsCamouflage = false;
+                Duration = DurationTime;
             }
         }
         //新ロールクラス

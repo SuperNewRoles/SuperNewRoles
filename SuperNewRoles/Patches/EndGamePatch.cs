@@ -492,6 +492,8 @@ namespace SuperNewRoles.Patches
         public static string WinText;
         public static void Prefix([HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
+            Roles.Impostor.Camouflager.Camouflage();
+            Roles.Impostor.Camouflager.ResetCamouflage();
             AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
@@ -641,7 +643,7 @@ namespace SuperNewRoles.Patches
             bool PavlovsTeamWin = gameOverReason == (GameOverReason)CustomGameOverReason.PavlovsTeamWin;
             bool CrewmateWin = gameOverReason is (GameOverReason)CustomGameOverReason.CrewmateWin or GameOverReason.HumansByVote or GameOverReason.HumansByTask or GameOverReason.ImpostorDisconnect;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && EndData != null)
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers) && EndData != null)
             {
                 JesterWin = EndData == CustomGameOverReason.JesterWin;
                 MadJesterWin = EndData == CustomGameOverReason.MadJesterWin;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -15,6 +15,7 @@ using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
+using static GameData;
 
 namespace SuperNewRoles.Patches
 {
@@ -200,6 +201,15 @@ namespace SuperNewRoles.Patches
                         if (RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1)
                             EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
                         return false;
+                    case RoleId.Camouflager:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            RoleClass.Camouflager.Duration = RoleClass.Camouflager.DurationTime;
+                            RoleClass.Camouflager.IsCamouflage = true;
+                            Roles.Impostor.Camouflager.Camouflage();
+                            SyncSetting.CustomSyncSettings(__instance);
+                        }
+                        return true;
                 }
             }
             return true;
@@ -438,6 +448,7 @@ namespace SuperNewRoles.Patches
                         {
                             target.Data.IsDead = true;
                             __instance.RpcMurderPlayer(target);
+                            Mode.BattleRoyal.Main.MurderPlayer(__instance, target);
                             isKill = false;
                         }
                         else
@@ -447,6 +458,7 @@ namespace SuperNewRoles.Patches
                                 if (__instance.IsAlive() && target.IsAlive())
                                 {
                                     __instance.RpcMurderPlayer(target);
+                                    Mode.BattleRoyal.Main.MurderPlayer(__instance, target);
                                 }
                                 isKill = false;
                             }, AmongUsClient.Instance.Ping / 1000f * 1.1f, "BattleRoyal Murder");
@@ -715,6 +727,7 @@ namespace SuperNewRoles.Patches
             }
             Logger.Info("全スタントマン系通過", "CheckMurder");
             __instance.RpcMurderPlayerCheck(target);
+            Camouflager.ResetCamouflageSHR(target);
             Logger.Info("RpcMurderPlayerCheck(一番下)を通過", "CheckMurder");
             return false;
         }
@@ -813,6 +826,8 @@ namespace SuperNewRoles.Patches
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 target.resetChange();
+                if (RoleClass.Camouflager.IsCamouflage && target.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                    __instance.resetChange();
                 if (target.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.SideKiller))
@@ -897,6 +912,21 @@ namespace SuperNewRoles.Patches
             }
             else if (ModeHandler.IsMode(ModeId.Default))
             {
+                if (RoleClass.Camouflager.IsCamouflage)
+                {
+                    PlayerOutfit outfit = new()
+                    {
+                        PlayerName = "　",
+                        ColorId = RoleClass.Camouflager.Color,
+                        SkinId = "",
+                        HatId = "",
+                        VisorId = "",
+                        PetId = "",
+                    };
+                    target.setOutfit(outfit, true);
+                    if (target.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                        __instance.setOutfit(outfit, true);
+                }
                 if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Finder))
                 {
                     RoleClass.Finder.KillCount++;
@@ -1059,6 +1089,10 @@ namespace SuperNewRoles.Patches
             if (!AmongUsClient.Instance.AmHost) return true;
             if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
             if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;
+            if (RoleClass.Camouflager.IsCamouflage)
+            {
+                Roles.Impostor.Camouflager.ResetCamouflage();
+            }
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (__instance.IsRole(RoleId.EvilButtoner, RoleId.NiceButtoner) && target != null && target.PlayerId == __instance.PlayerId)

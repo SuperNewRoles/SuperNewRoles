@@ -106,7 +106,7 @@ namespace SuperNewRoles.Modules
         public static IntroDate ShielderIntro = new("Shielder", RoleClass.Shielder.color, 3, RoleId.Shielder);
         public static IntroDate FreezerIntro = new("Freezer", RoleClass.Freezer.color, 3, RoleId.Freezer, TeamRoleType.Impostor);
         public static IntroDate SpeederIntro = new("Speeder", RoleClass.Speeder.color, 2, RoleId.Speeder, TeamRoleType.Impostor);
-        public static IntroDate GuesserIntro = new("Guesser", RoleClass.Guesser.color, 2, RoleId.Guesser);
+        public static IntroDate NiceGuesserIntro = new("NiceGuesser", RoleClass.NiceGuesser.color, 1, RoleId.NiceGuesser, TeamRoleType.Crewmate);
         public static IntroDate EvilGuesserIntro = new("EvilGuesser", RoleClass.EvilGuesser.color, 1, RoleId.EvilGuesser, TeamRoleType.Impostor);
         public static IntroDate VultureIntro = new("Vulture", RoleClass.Vulture.color, 1, RoleId.Vulture, TeamRoleType.Neutral);
         public static IntroDate NiceScientistIntro = new("NiceScientist", RoleClass.NiceScientist.color, 2, RoleId.NiceScientist);
@@ -228,6 +228,7 @@ namespace SuperNewRoles.Modules
         public static IntroDate PavlovsownerIntro = new("Pavlovsowner", RoleClass.Pavlovsowner.color, 1, RoleId.Pavlovsowner, TeamRoleType.Neutral);
         public static IntroDate WaveCannonJackalIntro = new("WaveCannonJackal", RoleClass.WaveCannonJackal.color, 1, RoleId.WaveCannonJackal, TeamRoleType.Neutral);
         public static IntroDate ConjurerIntro = new("Conjurer", Conjurer.color, 1, RoleId.Conjurer, TeamRoleType.Impostor);
+        public static IntroDate CamouflagerIntro = new("Camouflager", RoleClass.Camouflager.color, 1, RoleId.Camouflager, TeamRoleType.Impostor);
         //イントロオブジェ
     }
 }

@@ -300,7 +300,9 @@ namespace SuperNewRoles.Modules
                     return _.NameKey + "Name" == name;
                 }).RoleId;
             }
-            catch { }
+            catch {
+                Logger.Info("RoleId取得でエラーが発生しました:"+name,"CustomRoleOption");
+            }
             RoleOptions.Add(this);
             if (max > 1)
                 countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");

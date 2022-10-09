@@ -98,6 +98,7 @@ namespace SuperNewRoles.Patches
                 {
                     case ModeId.SuperHostRoles:
                     case ModeId.Default:
+                    case ModeId.CopsRobbers:
                         CountDefaultTask(__instance);
                         return;
                     case ModeId.Zombie:

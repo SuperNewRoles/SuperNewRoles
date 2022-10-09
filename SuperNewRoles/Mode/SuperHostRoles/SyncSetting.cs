@@ -10,7 +10,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void CustomSyncSettings(this PlayerControl player)
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers)) return;
             var role = player.GetRole();
             var optdata = OptionData.DeepCopy();
             if (player.IsCrewVision())
@@ -172,6 +172,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.DarkKiller:
                     optdata.killCooldown = KillCoolSet(CustomOptions.DarkKillerKillCoolTime.GetFloat());
+                    break;
+                case RoleId.Camouflager:
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Camouflager.CoolTime >= 5f ? RoleClass.Camouflager.CoolTime : 5f;
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
+                    if (RoleClass.Camouflager.IsCamouflage)
+                    {
+                        optdata.RoleOptions.ShapeshifterCooldown =
+                                RoleClass.Camouflager.CoolTime >= 5f ? (RoleClass.Camouflager.CoolTime + RoleClass.Camouflager.DurationTime - 2f)
+                                                                     : (3f + RoleClass.Camouflager.DurationTime);
+                    }
                     break;
             }
             if (player.IsDead()) optdata.AnonymousVotes = false;

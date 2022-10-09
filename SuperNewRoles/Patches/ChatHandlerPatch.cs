@@ -62,7 +62,10 @@ namespace SuperNewRoles.Patches
                 string betatext = "";
                 if (SuperNewRolesPlugin.IsBeta)
                 {
-                    betatext = "\nベータ版です！バグには注意してください！";
+                    betatext = ModTranslation.GetString("betatext1");
+                    betatext += ModTranslation.GetString("betatext2");
+                    betatext += $"\nBranch: {ThisAssembly.Git.Branch}";
+                    betatext += $"\nCommitId: {ThisAssembly.Git.Commit}";
                 }
                 SendCommand(sourcePlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
                 return false;

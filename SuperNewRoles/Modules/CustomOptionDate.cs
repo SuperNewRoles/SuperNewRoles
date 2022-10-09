@@ -183,10 +183,10 @@ namespace SuperNewRoles.Modules
         public static CustomOption SpeederCoolTime;
         public static CustomOption SpeederDurationTime;
 
-        public static CustomRoleOption GuesserOption;
-        public static CustomOption GuesserPlayerCount;
-        public static CustomOption GuesserShortOneMeetingCount;
-        public static CustomOption GuesserShortMaxCount;
+        public static CustomRoleOption NiceGuesserOption;
+        public static CustomOption NiceGuesserPlayerCount;
+        public static CustomOption NiceGuesserShortOneMeetingCount;
+        public static CustomOption NiceGuesserShortMaxCount;
 
         public static CustomRoleOption EvilGuesserOption;
         public static CustomOption EvilGuesserPlayerCount;
@@ -866,6 +866,17 @@ namespace SuperNewRoles.Modules
         public static CustomOption WaveCannonJackalUseSabo;
         public static CustomOption WaveCannonJackalIsImpostorLight;
         public static CustomOption WaveCannonJackalIsSyncKillCoolTime;
+
+        public static CustomRoleOption CamouflagerOption;
+        public static CustomOption CamouflagerPlayerCount;
+        public static CustomOption CamouflagerCoolTime;
+        public static CustomOption CamouflagerDurationTime;
+        public static CustomOption CamouflagerCamouflageArsonist;
+        public static CustomOption CamouflagerCamouflageDemon;
+        public static CustomOption CamouflagerCamouflageLovers;
+        public static CustomOption CamouflagerCamouflageQuarreled;
+        public static CustomOption CamouflagerCamouflageChangeColor;
+        public static CustomOption CamouflagerCamouflageColor;
         //CustomOption
 
         public static CustomOption GMOption;
@@ -1754,6 +1765,27 @@ namespace SuperNewRoles.Modules
             TaskerLongTask = taskeroption.Item3;
             TaskerIsKillCoolTaskNow = Create(1011, false, CustomOptionType.Impostor, "TaskerIsKillCoolTaskNow", true, TaskerOption);
             TaskerCanKill = Create(1012, false, CustomOptionType.Impostor, "TaskerCanKill", true, TaskerOption);
+
+            CamouflagerOption =  SetupCustomRoleOption(1038, true, RoleId.Camouflager);
+            CamouflagerPlayerCount = Create(1039, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CamouflagerOption);
+            CamouflagerCoolTime = Create(1040, true, CustomOptionType.Impostor, "CamouflagerCoolTimeSetting", 30f, 0f, 60f, 2.5f, CamouflagerOption);
+            CamouflagerDurationTime = Create(1041, true, CustomOptionType.Impostor, "CamouflagerDurationTimeSetting", 10f, 0f, 60f, 2.5f, CamouflagerOption);
+            CamouflagerCamouflageArsonist = Create(1042, true, CustomOptionType.Impostor, "CamouflagerCamouflageArsonistSetting", true, CamouflagerOption);
+            CamouflagerCamouflageDemon = Create(1043, true, CustomOptionType.Impostor, "CamouflagerCamouflageDemonSetting", true, CamouflagerOption);
+            CamouflagerCamouflageLovers = Create(1044, true, CustomOptionType.Impostor, "CamouflagerCamouflageLoversSetting", false, CamouflagerOption);
+            CamouflagerCamouflageQuarreled = Create(1045, true, CustomOptionType.Impostor, "CamouflagerCamouflageQuarreledSetting", false, CamouflagerOption);
+            CamouflagerCamouflageChangeColor = Create(1046, true, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
+            CamouflagerCamouflageColor = Create(1047, true, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Roles.Impostor.Camouflager.ColorOption, CamouflagerCamouflageChangeColor);
+
+            NiceGuesserOption = SetupCustomRoleOption(971, false, RoleId.NiceGuesser);
+            NiceGuesserPlayerCount = Create(972, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGuesserOption);
+            NiceGuesserShortMaxCount = Create(977, false, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, NiceGuesserOption);
+            NiceGuesserShortOneMeetingCount = Create(978, false, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, NiceGuesserOption);
+
+            EvilGuesserOption = SetupCustomRoleOption(971, false, RoleId.EvilGuesser);
+            EvilGuesserPlayerCount = Create(974, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
+            EvilGuesserShortMaxCount = Create(975, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
+            EvilGuesserShortOneMeetingCount = Create(976, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

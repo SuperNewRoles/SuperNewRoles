@@ -269,6 +269,7 @@ namespace SuperNewRoles.Patches
                             break;
                     }
                     SerialKiller.SHRFixedUpdate(MyRole);
+                    Roles.Impostor.Camouflager.SHRFixedUpdate();
                 }
                 else if (ThisMode == ModeId.NotImpostorCheck)
                 {

@@ -2067,30 +2067,30 @@
         "11": "\u30b9\u30d4\u30fc\u30c9\u30c0\u30a6\u30f3",
         "13": "\u51cf\u901f"
     },
-    "GuesserName": {
+    "NiceGuesserName": {
         "0": "Guesser",
         "11": "\u30b2\u30c3\u30b5\u30fc",
         "13": "\u4fa0\u5ba2"
     },
-    "GuesserTitle1": {
+    "NiceGuesserTitle1": {
         "0": "Let's punch out the outsider.",
         "11": "\u4eba\u5916\u3092\u6253\u3061\u629c\u3053\u3046",
-        "13": "\u751f\u547d\u5c31\u662f\u8c6a\u8d4c"
+        "13": "\u751f\u547d\u5c31\u662f\u8c6a?"
     },
-    "GuesserTitle2": {
+    "NiceGuesserTitle2": {
         "0": "Guess the position of the outsider",
         "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
-        "13": "\u5728\u4f1a\u8bae\u4e0a\u731c\u6d4b\u654c\u4eba\u7684\u8eab\u4efd"
+        "13": "\u5728\u4f1a?\u4e0a\u731c??\u4eba\u7684\u8eab?"
     },
     "GuesserOneMeetingShortSetting": {
         "0": "Multiple hits in one meeting",
         "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
-        "13": "\u4fa0\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a\u8bae\u4e2d\u591a\u6b21\u731c\u6d4b"
+        "13": "\u4fa0\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a?\u4e2d\u591a\u6b21\u731c?"
     },
     "GuesserShortMaxCountSetting": {
         "0": "Number of times you can hit",
         "11": "\u6253\u3066\u308b\u56de\u6570",
-        "13": "\u4fa0\u5ba2\u6700\u5927\u53ef\u731c\u6d4b\u6b21\u6570"
+        "13": "\u4fa0\u5ba2\u6700\u5927\u53ef\u731c?\u6b21\u6570"
     },
     "EvilGuesserName": {
         "0": "Evil Guesser",
@@ -2100,22 +2100,21 @@
     "EvilGuesserTitle1": {
         "0": "Guess the position of the camp other than Imposter.",
         "11": "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u4ee5\u5916\u306e\u9663\u55b6\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
-        "13": "\u5728\u4f1a\u8bae\u4e0a\u731c\u6d4b\u4ed6\u4eba\u7684\u8eab\u4efd"
+        "13": "\u5728\u4f1a?\u4e0a\u731c?\u4ed6\u4eba\u7684\u8eab?"
+    },
+    "EvilGuesserTitle2": {
+        "0": "Guess the position of the outsider",
+        "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
+        "13": "\u523a\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a?\u4e2d\u591a\u6b21\u731c?"
     },
     "EvilGuesserOneMeetingShortSetting": {
         "0": "Multiple hits in one meeting",
-        "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
-        "13": "\u523a\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a\u8bae\u4e2d\u591a\u6b21\u731c\u6d4b"
+        "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
+        "13": "\u523a\u5ba2\u6700\u5927\u53ef\u731c?\u6b21\u6570"
     },
     "EvilGuesserShortMaxCountSetting": {
         "0": "Number of times you can hit",
-        "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
-        "13": "\u523a\u5ba2\u6700\u5927\u53ef\u731c\u6d4b\u6b21\u6570"
-    },
-    "VultureName": {
-        "0": "Vulture",
-        "11": "\u30f4\u30a1\u30eb\u30c1\u30e3\u30fc",
-        "13": "\u79c3\u9e6b"
+        "11": "\u6253\u3066\u308b\u6700\u5927\u6570"
     },
     "VultureTitle1": {
         "0": "Let's eat a corpse.",
@@ -4700,6 +4699,52 @@
         "0": "Crack!!!",
         "11": "\u30af\u30e9\u30c3\u30af"
     },
+    "CamouflagerName": {
+        "0": "Camouflager",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e3\u30fc",
+        "13": "\u4f2a\u88c5\u8005"
+    },
+    "CamouflagerTitle1": {
+        "0": "Let's hide in the crowd.",
+        "11": "\u4eba\u6df7\u307f\u306b\u96a0\u308c\u3088\u3046",
+        "13": "\u8ba9\u6211\u4eec\u8eb2\u5728\u4eba\u7fa4\u4e2d"
+    },
+    "CamouflagerCoolTimeSetting": {
+        "0": "Camouflage Cooltime",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+    },
+    "CamouflagerDurationTimeSetting": {
+        "0": "Camouflage Duration",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u306e\u6301\u7d9a\u6642\u9593"
+    },
+    "CamouflagerCamouflageArsonistSetting": {
+        "0": "Arsonists can still see mark while activating their skill",
+        "11": "\u30a2\u30fc\u30bd\u30cb\u30b9\u30c8\u304c\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306b\u5857\u3063\u305f\u4eba\u304c\u308f\u304b\u308b"
+    },
+    "CamouflagerCamouflageDemonSetting": {
+        "0": "Demon can still see mark while activating their skill",
+        "11": "\u60aa\u9b54\u304c\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306b\u546a\u3063\u305f\u4eba\u304c\u308f\u304b\u308b"
+    },
+    "CamouflagerCamouflageLoversSetting": {
+        "0": "Lovers can still see mark while activating their skill",
+        "11": "\u30e9\u30d0\u30fc\u30ba\u304c\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306b\u76f8\u65b9\u304c\u308f\u304b\u308b"
+    },
+    "CamouflagerCamouflageQuarreledSetting": {
+        "0": "Quarreled can still mark while activating their skill",
+        "11": "\u30af\u30e9\u30fc\u30c9\u304c\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306b\u76f8\u65b9\u304c\u308f\u304b\u308b"
+    },
+    "CamouflagerCamouflageChangeColorSetting": {
+        "0": "Change the color of camouflage",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306e\u8272\u3092\u5909\u66f4\u3059\u308b"
+    },
+    "CamouflagerCamouflageColorSetting": {
+        "0": "Camouflage color",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306e\u8272"
+    },
+    "CamouflagerButtonName": {
+        "0": "Camouflager",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5"
+    },
     "PavlovsdogsName": {
         "0": "Pavlov's dogs",
         "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u72ac"
@@ -4707,6 +4752,11 @@
     "PavlovsownerName": {
         "0": "Pavlov's owner",
         "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u30aa\u30fc\u30ca\u30fc"
+    },
+    "PavlovsownerTitle1": {
+        "0": "Be my dog!",
+        "11": "\u79c1\u306e\u72ac\u306b\u306a\u308a\u306a\u3055\u3044\uff01",
+        "13": "\u505a\u6211\u7684\u72d7!"
     },
     "PavlovsownerCreateDogCoolTime": {
         "0": "Side Kick Cool Time",
@@ -4879,6 +4929,16 @@
         "0": "Cannot rename.\nThe /rename command can only be used on\navailable only when hosted.",
         "11": "\u540d\u524d\u3092\u5909\u66f4\u3059\u308b\u3053\u3068\u304c\u3067\u304d\u307e\u305b\u3093\u3002\n/rename\u30b3\u30de\u30f3\u30c9\u306f\n\u30db\u30b9\u30c8\u6642\u306e\u307f\u4f7f\u7528\u53ef\u80fd\u3067\u3059\u3002",
         "13": "\u5b83\u4e0d\u80fd\u88ab\u91cd\u65b0\u547d\u540d\u3002\n/rename\u547d\u4ee4\u662f\n\u4ec5\u5728\u6258\u7ba1\u65f6\u53ef\u7528\u3002"
+    },
+    "betatext1": {
+        "0": "\nThis is a beta version! Watch out for bugs!",
+        "11": "\n\u30d9\u30fc\u30bf\u7248\u3067\u3059! \u30d0\u30b0\u306b\u306f\u6ce8\u610f\u3057\u3066\u304f\u3060\u3055\u3044!",
+        "13": "\n\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u7248\u672c! \u5c0f\u5fc3\u866b\u5b50!"
+    },
+    "betatext2": {
+        "0": "\n~Information for developers~",
+        "11": "\n\uff5e\u958b\u767a\u8005\u7528\u306e\u60c5\u5831\uff5e",
+        "13": "\n~ \u5f00\u53d1\u8005\u7684\u4fe1\u606f ~\u3002"
     },
     "Agartha_WareHouse": {
         "0": "WareHouse",

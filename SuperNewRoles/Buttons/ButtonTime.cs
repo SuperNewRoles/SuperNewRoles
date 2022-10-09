@@ -1,6 +1,7 @@
 using System;
 
 using SuperNewRoles.MapOptions;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace SuperNewRoles.Buttons
             TeleporterButton();
             HawkDuration();
             ScientistButton();
+            CamouflagerButton();
         }
         public static void ScientistButton()
         {
@@ -203,6 +205,28 @@ namespace SuperNewRoles.Buttons
                 var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.EvilSpeedBooster.CoolTime);
                 HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = (float)(RoleClass.EvilSpeedBooster.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
                 if (HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer <= 0f) Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = 0f; return;
+            }
+        }
+        public static void CamouflagerButton()
+        {
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                if (RoleClass.Camouflager.IsCamouflage)
+                {
+                    var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Camouflager.DurationTime);
+                    HudManagerStartPatch.CamouflagerButton.actionButton.cooldownTimerText.color = Color.green;
+                    HudManagerStartPatch.CamouflagerButton.MaxTimer = RoleClass.Camouflager.DurationTime;
+                    HudManagerStartPatch.CamouflagerButton.Timer = (float)((RoleClass.Camouflager.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+                    if (HudManagerStartPatch.CamouflagerButton.Timer <= 0f)
+                    {
+                        Roles.Impostor.Camouflager.ResetCamouflageSHR();
+                        Roles.Impostor.Camouflager.ResetCoolTime();
+                        HudManagerStartPatch.CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
+                        RoleClass.Camouflager.IsCamouflage = false;
+                        HudManagerStartPatch.CamouflagerButton.actionButton.cooldownTimerText.color = Color.white;
+                        RoleClass.Camouflager.ButtonTimer = DateTime.Now;
+                    }
+                }
             }
         }
     }
