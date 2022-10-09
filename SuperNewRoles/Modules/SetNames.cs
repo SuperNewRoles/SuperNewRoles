@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using TMPro;
 using UnityEngine;

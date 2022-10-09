@@ -8,7 +8,7 @@ using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using TMPro;
 using SuperNewRoles.Roles.Impostor;
@@ -227,7 +227,7 @@ namespace SuperNewRoles.Patches
                         if (__instance == null) return;
                         __instance.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.transform.localScale;
                         NewTask(__instance);
-                    },0.1f);
+                    }, 0.1f);
                 }
                 NewTask(__instance);
                 foreach (ShapeshifterPanel panel in GameObject.FindObjectsOfType<ShapeshifterPanel>()) GameObject.Destroy(panel.gameObject);
@@ -240,9 +240,11 @@ namespace SuperNewRoles.Patches
                     panel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
                     static void Create(ShapeshifterPanel panel, int index, Action action)
                     {
-                        panel.SetPlayer(index, CachedPlayer.LocalPlayer.Data, (Action)(() => {
+                        panel.SetPlayer(index, CachedPlayer.LocalPlayer.Data, (Action)(() =>
+                        {
                             if (MeetingHud.Instance != null) MeetingHud.Instance.transform.FindChild("ButtonStuff").gameObject.SetActive(true);
-                            action(); }));
+                            action();
+                        }));
                     }
                     Create(panel, index, Data.Value);
                     panel.PlayerIcon.gameObject.SetActive(false);
@@ -1075,7 +1077,7 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
-            if(ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
+            if (ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {

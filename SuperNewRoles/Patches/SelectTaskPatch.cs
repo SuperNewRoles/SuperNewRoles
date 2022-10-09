@@ -67,7 +67,7 @@ namespace SuperNewRoles.Patches
             }
             else if (p.IsRole(RoleId.GM))
             {
-                return (0,0,0);
+                return (0, 0, 0);
             }
             return (SyncSetting.OptionData.NumCommonTasks, SyncSetting.OptionData.NumShortTasks, SyncSetting.OptionData.NumLongTasks);
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -84,7 +84,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (p.IsDead() || p.IsRole(RoleId.God))
                     {
                         DiePlayers.Add(p);
-                    } else
+                    }
+                    else
                     {
                         AlivePlayers.Add(p);
                     }

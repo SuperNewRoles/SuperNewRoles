@@ -447,7 +447,8 @@ namespace SuperNewRoles.Patches
         public int CompleteTask;
         public int TotalTask;
         public RoleId? role;
-        public CustomPlayerData(GameData.PlayerInfo p, GameOverReason gameOverReason) {
+        public CustomPlayerData(GameData.PlayerInfo p, GameOverReason gameOverReason)
+        {
             currentData = new(p);
             name = p.PlayerName;
             try
@@ -473,7 +474,7 @@ namespace SuperNewRoles.Patches
                 gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor ? FinalStatus.Sabotage :
                 FinalStatus.Alive;
             this.finalStatus = finalStatus;
-            }
+        }
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
@@ -508,7 +509,7 @@ namespace SuperNewRoles.Patches
             AdditionalTempData.Clear();
             foreach (var p in GameData.Instance.AllPlayers)
             {
-                if (p != null && p.Object != null &&  p.Object.IsPlayer())
+                if (p != null && p.Object != null && p.Object.IsPlayer())
                 {
                     //var p = pc.Data;
                     var roles = IntroDate.GetIntroDate(p.Object.GetRole(), p.Object);

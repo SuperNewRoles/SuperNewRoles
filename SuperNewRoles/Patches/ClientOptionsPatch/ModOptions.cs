@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using static UnityEngine.UI.Button;
 using Object = UnityEngine.Object;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     [HarmonyPatch]
     public static class ClientModOptionsPatch

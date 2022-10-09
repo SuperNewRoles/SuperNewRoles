@@ -11,7 +11,7 @@ using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using TMPro;
 using Twitch;
 using UnityEngine;

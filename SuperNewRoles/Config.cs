@@ -1,6 +1,6 @@
 using System.IO;
 using BepInEx.Configuration;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
 
 namespace SuperNewRoles

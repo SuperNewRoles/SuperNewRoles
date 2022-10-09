@@ -1,7 +1,7 @@
 using HarmonyLib;
 using SuperNewRoles.Roles;
 
-namespace SuperNewRoles.Patch.Harmony
+namespace SuperNewRoles.Patches.Harmony
 {
     //キルされたとき実行！
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]

@@ -1,7 +1,7 @@
 using HarmonyLib;
 using SuperNewRoles.Roles;
 
-namespace SuperNewRoles.Patch.Harmony
+namespace SuperNewRoles.Patches.Harmony
 {
     //追放されたとき実行！
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]

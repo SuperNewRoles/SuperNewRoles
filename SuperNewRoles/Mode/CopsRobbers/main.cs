@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
-using static SuperNewRoles.Patch.SetNamesClass;
+using static SuperNewRoles.Modules.SetNamesClass;
 
 namespace SuperNewRoles.Mode.CopsRobbers
 {

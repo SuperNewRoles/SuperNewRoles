@@ -316,7 +316,7 @@ namespace SuperNewRoles.Patches
                 __instance.ImpostorText.gameObject.SetActive(true);
                 if (ImpostorText.Length >= 10)
                 {
-                    __instance.ImpostorText.transform.localPosition += new Vector3(0,0.5f,0);
+                    __instance.ImpostorText.transform.localPosition += new Vector3(0, 0.5f, 0);
                     __instance.ImpostorText.transform.localScale *= 1.5f;
                 }
             }

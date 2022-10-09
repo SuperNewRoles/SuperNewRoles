@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
-using static SuperNewRoles.Patch.CheckGameEndPatch;
+using static SuperNewRoles.Patches.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.Zombie
 {

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using UnityEngine;
-using static SuperNewRoles.Patch.CustomOption;
+using static SuperNewRoles.Modules.CustomOption;
 
 namespace SuperNewRoles.Modules
 {
@@ -822,7 +822,7 @@ namespace SuperNewRoles.Modules
 
         public static CustomRoleOption ConnectKillerOption;
         public static CustomOption ConnectKillerPlayerCount;
-        
+
         public static CustomRoleOption WaveCannonOption;
         public static CustomOption WaveCannonPlayerCount;
         public static CustomOption WaveCannonCoolTime;
@@ -844,7 +844,7 @@ namespace SuperNewRoles.Modules
         public static CustomOption DoppelgangerCoolTime;
         public static CustomOption DoppelgangerSucTime;
         public static CustomOption DoppelgangerNotSucTime;
-        
+
         public static CustomRoleOption WaveCannonJackalOption;
         public static CustomOption WaveCannonJackalPlayerCount;
         public static CustomOption WaveCannonJackalCoolTime;
