@@ -259,8 +259,8 @@ namespace SuperNewRoles
                 case RoleId.Freezer:
                     RoleClass.Freezer.FreezerPlayer.Add(player);
                     break;
-                case RoleId.Guesser:
-                    RoleClass.Guesser.GuesserPlayer.Add(player);
+                case RoleId.NiceGuesser:
+                    RoleClass.NiceGuesser.NiceGuesserPlayer.Add(player);
                     break;
                 case RoleId.EvilGuesser:
                     RoleClass.EvilGuesser.EvilGuesserPlayer.Add(player);
@@ -710,8 +710,8 @@ namespace SuperNewRoles
                 case RoleId.Freezer:
                     RoleClass.Freezer.FreezerPlayer.RemoveAll(ClearRemove);
                     break;
-                case RoleId.Guesser:
-                    RoleClass.Guesser.GuesserPlayer.RemoveAll(ClearRemove);
+                case RoleId.NiceGuesser:
+                    RoleClass.NiceGuesser.NiceGuesserPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.EvilGuesser:
                     RoleClass.EvilGuesser.EvilGuesserPlayer.RemoveAll(ClearRemove);
@@ -1417,7 +1417,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Shielder.ShielderPlayer.IsCheckListPlayerControl(player)) return RoleId.Shielder;
                 else if (RoleClass.Speeder.SpeederPlayer.IsCheckListPlayerControl(player)) return RoleId.Speeder;
                 else if (RoleClass.Freezer.FreezerPlayer.IsCheckListPlayerControl(player)) return RoleId.Freezer;
-                else if (RoleClass.Guesser.GuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.Guesser;
+                else if (RoleClass.NiceGuesser.NiceGuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceGuesser;
                 else if (RoleClass.EvilGuesser.EvilGuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilGuesser;
                 else if (RoleClass.Vulture.VulturePlayer.IsCheckListPlayerControl(player)) return RoleId.Vulture;
                 else if (RoleClass.NiceScientist.NiceScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceScientist;

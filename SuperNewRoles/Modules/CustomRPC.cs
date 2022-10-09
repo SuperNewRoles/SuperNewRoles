@@ -41,7 +41,7 @@ namespace SuperNewRoles.Modules
         Shielder,
         Speeder,
         Freezer,
-        Guesser,
+        NiceGuesser,
         EvilGuesser,
         Vulture,
         NiceScientist,
@@ -236,6 +236,7 @@ namespace SuperNewRoles.Modules
         /* 210~214 is used Submerged Mod */
         PainterSetTarget = 215,
         SharePhotograph,
+        GuesserShoot,
         WaveCannon,
         ShowFlash,
         SetFinalStatus,
@@ -244,6 +245,41 @@ namespace SuperNewRoles.Modules
 
     public static class RPCProcedure
     {
+        public static void GuesserShoot(byte killerId, byte dyingTargetId, byte guessedTargetId, byte guessedRoleId)
+        {
+            PlayerControl dyingTarget = ModHelpers.PlayerById(dyingTargetId);
+            if (dyingTarget == null) return;
+            dyingTarget.Exiled();
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.KillSfx, false, 0.8f);
+            if (MeetingHud.Instance)
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == dyingTargetId)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+
+                    if (pva.VotedFor != dyingTargetId) continue;
+                    pva.UnsetVote();
+                    var voteAreaPlayer = ModHelpers.PlayerById(pva.TargetPlayerId);
+                    if (!voteAreaPlayer.AmOwner) continue;
+                    MeetingHud.Instance.ClearVote();
+
+                }
+                if (AmongUsClient.Instance.AmHost)
+                    MeetingHud.Instance.CheckForEndVoting();
+            }
+            PlayerControl guesser = ModHelpers.PlayerById(killerId);
+            if (FastDestroyableSingleton<HudManager>.Instance != null && guesser != null)
+                if (CachedPlayer.LocalPlayer.PlayerControl == dyingTarget)
+                {
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(guesser.Data, dyingTarget.Data);
+                    if (Roles.Attribute.Guesser.guesserUI != null) Roles.Attribute.Guesser.ExitButton.OnClick.Invoke();
+                }
+        }
+
         public static void CrackerCrack(byte Target)
         {
             if (!RoleClass.Cracker.CrackedPlayers.Contains(Target)) RoleClass.Cracker.CrackedPlayers.Add(Target);
@@ -1288,6 +1324,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.SetFinalStatus:
                             SetFinalStatus(reader.ReadByte(), (FinalStatus)reader.ReadByte());
+                            break;
+                        case CustomRPC.GuesserShoot:
+                            GuesserShoot(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }

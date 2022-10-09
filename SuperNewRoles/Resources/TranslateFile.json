@@ -2067,30 +2067,30 @@
         "11": "\u30b9\u30d4\u30fc\u30c9\u30c0\u30a6\u30f3",
         "13": "\u51cf\u901f"
     },
-    "GuesserName": {
+    "NiceGuesserName": {
         "0": "Guesser",
         "11": "\u30b2\u30c3\u30b5\u30fc",
         "13": "\u4fa0\u5ba2"
     },
-    "GuesserTitle1": {
+    "NiceGuesserTitle1": {
         "0": "Let's punch out the outsider.",
         "11": "\u4eba\u5916\u3092\u6253\u3061\u629c\u3053\u3046",
-        "13": "\u751f\u547d\u5c31\u662f\u8c6a\u8d4c"
+        "13": "\u751f\u547d\u5c31\u662f\u8c6a?"
     },
-    "GuesserTitle2": {
+    "NiceGuesserTitle2": {
         "0": "Guess the position of the outsider",
         "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
-        "13": "\u5728\u4f1a\u8bae\u4e0a\u731c\u6d4b\u654c\u4eba\u7684\u8eab\u4efd"
+        "13": "\u5728\u4f1a?\u4e0a\u731c??\u4eba\u7684\u8eab?"
     },
     "GuesserOneMeetingShortSetting": {
         "0": "Multiple hits in one meeting",
         "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
-        "13": "\u4fa0\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a\u8bae\u4e2d\u591a\u6b21\u731c\u6d4b"
+        "13": "\u4fa0\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a?\u4e2d\u591a\u6b21\u731c?"
     },
     "GuesserShortMaxCountSetting": {
         "0": "Number of times you can hit",
         "11": "\u6253\u3066\u308b\u56de\u6570",
-        "13": "\u4fa0\u5ba2\u6700\u5927\u53ef\u731c\u6d4b\u6b21\u6570"
+        "13": "\u4fa0\u5ba2\u6700\u5927\u53ef\u731c?\u6b21\u6570"
     },
     "EvilGuesserName": {
         "0": "Evil Guesser",
@@ -2100,22 +2100,21 @@
     "EvilGuesserTitle1": {
         "0": "Guess the position of the camp other than Imposter.",
         "11": "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u4ee5\u5916\u306e\u9663\u55b6\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
-        "13": "\u5728\u4f1a\u8bae\u4e0a\u731c\u6d4b\u4ed6\u4eba\u7684\u8eab\u4efd"
+        "13": "\u5728\u4f1a?\u4e0a\u731c?\u4ed6\u4eba\u7684\u8eab?"
+    },
+    "EvilGuesserTitle2": {
+        "0": "Guess the position of the outsider",
+        "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
+        "13": "\u523a\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a?\u4e2d\u591a\u6b21\u731c?"
     },
     "EvilGuesserOneMeetingShortSetting": {
         "0": "Multiple hits in one meeting",
-        "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
-        "13": "\u523a\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a\u8bae\u4e2d\u591a\u6b21\u731c\u6d4b"
+        "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
+        "13": "\u523a\u5ba2\u6700\u5927\u53ef\u731c?\u6b21\u6570"
     },
     "EvilGuesserShortMaxCountSetting": {
         "0": "Number of times you can hit",
-        "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
-        "13": "\u523a\u5ba2\u6700\u5927\u53ef\u731c\u6d4b\u6b21\u6570"
-    },
-    "VultureName": {
-        "0": "Vulture",
-        "11": "\u30f4\u30a1\u30eb\u30c1\u30e3\u30fc",
-        "13": "\u79c3\u9e6b"
+        "11": "\u6253\u3066\u308b\u6700\u5927\u6570"
     },
     "VultureTitle1": {
         "0": "Let's eat a corpse.",

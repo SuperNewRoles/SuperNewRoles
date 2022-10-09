@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -831,7 +831,7 @@ namespace SuperNewRoles
                 RoleId.Shielder => CustomOptions.ShielderPlayerCount.GetFloat(),
                 RoleId.Speeder => CustomOptions.SpeederPlayerCount.GetFloat(),
                 RoleId.Freezer => CustomOptions.FreezerPlayerCount.GetFloat(),
-                RoleId.Guesser => CustomOptions.GuesserPlayerCount.GetFloat(),
+                RoleId.NiceGuesser => CustomOptions.NiceGuesserPlayerCount.GetFloat(),
                 RoleId.EvilGuesser => CustomOptions.EvilGuesserPlayerCount.GetFloat(),
                 RoleId.Vulture => CustomOptions.VulturePlayerCount.GetFloat(),
                 RoleId.NiceScientist => CustomOptions.NiceScientistPlayerCount.GetFloat(),
@@ -981,7 +981,7 @@ namespace SuperNewRoles
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {
                 if (intro.RoleId == RoleId.DefaultRole ||
-                    intro.RoleId == RoleId.GM || 
+                    intro.RoleId == RoleId.GM ||
                     (intro.RoleId == RoleId.Nun && (MapNames)PlayerControl.GameOptions.MapId != MapNames.Airship) ||
                     intro.IsGhostRole) continue;
                 var option = IntroDate.GetOption(intro.RoleId);
