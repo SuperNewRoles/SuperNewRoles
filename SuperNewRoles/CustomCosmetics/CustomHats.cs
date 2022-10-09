@@ -397,9 +397,9 @@ namespace SuperNewRoles.CustomCosmetics
 
                     if (!ext.IsNull)
                     {
-                        if (!packages.ContainsKey(ext.package ?? innerslothPackageName))
-                            packages[ext.package ?? innerslothPackageName] = new();
-                        packages[ext.package ?? innerslothPackageName].Add(new System.Tuple<HatData, HatExtension>(hatData, ext));
+                        if (!packages.ContainsKey(ext.package == null ? innerslothPackageName : ext.package))
+                            packages[ext.package == null ? innerslothPackageName : ext.package] = new();
+                        packages[ext.package == null ? innerslothPackageName : ext.package].Add(new System.Tuple<HatData, HatExtension>(hatData, ext));
                     }
                     else
                     {
