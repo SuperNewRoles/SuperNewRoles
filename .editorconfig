@@ -69,9 +69,9 @@ dotnet_remove_unnecessary_suppression_exclusions = none
 # new式を簡略化する
 csharp_style_implicit_object_creation_when_type_is_apparent = true:warning
 # varを使わず明示的に型を指定するか
-csharp_style_var_elsewhere = false:silent
-csharp_style_var_for_built_in_types = false:silent
-csharp_style_var_when_type_is_apparent = false:silent
+csharp_style_var_elsewhere = true:suggestion
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
 # パターンマッチング設定
 csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
 csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
