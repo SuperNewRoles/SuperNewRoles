@@ -11,7 +11,8 @@ namespace SuperNewRoles.CustomObject
 {
     public class WaveCannonObject
     {
-        public enum RpcType{
+        public enum RpcType
+        {
             Spawn,
             Shoot
         }
@@ -111,7 +112,8 @@ namespace SuperNewRoles.CustomObject
             IsLoop = false;
             freamrate = 12;
             Playing = true;
-            OnPlayEnd = () => {
+            OnPlayEnd = () =>
+            {
                 IsLoop = true;
                 freamrate = 15;
                 Playing = true;
@@ -168,7 +170,8 @@ namespace SuperNewRoles.CustomObject
                 GameObject.Destroy(gameObject);
                 return;
             }
-            if (Owner != null && (Owner.IsDead() || !(Owner.GetRole() is RoleId.WaveCannon or RoleId.WaveCannonJackal))) {
+            if (Owner != null && (Owner.IsDead() || !(Owner.GetRole() is RoleId.WaveCannon or RoleId.WaveCannonJackal)))
+            {
                 GameObject.Destroy(this.gameObject);
                 if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
@@ -179,8 +182,9 @@ namespace SuperNewRoles.CustomObject
                     ChargeSound.Stop();
                 return;
             }
-            Logger.Info($"{OwnerPlayerId} : {Owner != null} : {OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId} : {CachedPlayer.LocalPlayer.PlayerId} : {PlayerControl.LocalPlayer.PlayerId} : {!RoleClass.IsMeeting} : {OwnerPos}","WaveCannonUpdate");
-            if (Owner != null && OwnerPlayerId == PlayerControl.LocalPlayer.PlayerId && !RoleClass.IsMeeting) {
+            Logger.Info($"{OwnerPlayerId} : {Owner != null} : {OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId} : {CachedPlayer.LocalPlayer.PlayerId} : {PlayerControl.LocalPlayer.PlayerId} : {!RoleClass.IsMeeting} : {OwnerPos}", "WaveCannonUpdate");
+            if (Owner != null && OwnerPlayerId == PlayerControl.LocalPlayer.PlayerId && !RoleClass.IsMeeting)
+            {
                 //Owner.transform.position = OwnerPos;
 
                 if (IsShootNow)
@@ -191,7 +195,7 @@ namespace SuperNewRoles.CustomObject
                         if (RoleClass.WaveCannon.CannotMurderPlayers.Contains(player.PlayerId)) continue;
                         if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
                         float posdata = player.GetTruePosition().y - transform.position.y;
-                        if (posdata > 1 || posdata < -1) continue;
+                        if (posdata is > 1 or < (-1)) continue;
                         posdata = transform.position.x - (IsFlipX ? -2 : 2);
                         if ((IsFlipX && player.transform.position.x > posdata) || (!IsFlipX && player.transform.position.x < posdata)) continue;
                         if (player.IsRole(RoleId.Shielder) && RoleClass.Shielder.IsShield.ContainsKey(player.PlayerId) && RoleClass.Shielder.IsShield[player.PlayerId])
@@ -233,7 +237,7 @@ namespace SuperNewRoles.CustomObject
                         if (!IsLoop)
                         {
                             Playing = false;
-                            if (OnPlayEnd != null) OnPlayEnd();
+                            OnPlayEnd?.Invoke();
                             return;
                         }
                     }

@@ -139,7 +139,8 @@ namespace SuperNewRoles.Modules
         {
             if (!CustomOptions.MadRolesCanVentMove.GetBool())
             {
-                if (Vent.currentVent != null) Vent.currentVent.Buttons.All(x => {
+                if (Vent.currentVent != null) Vent.currentVent.Buttons.All(x =>
+                {
                     if (x != null)
                     {
                         x.gameObject.SetActive(false);

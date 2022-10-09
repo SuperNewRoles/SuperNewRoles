@@ -711,7 +711,7 @@ namespace SuperNewRoles.CustomCosmetics
             }
             catch (System.Exception ex)
             {
-                SuperNewRolesPlugin.Instance.Log.LogError("HatsError: "+ex.ToString());
+                SuperNewRolesPlugin.Instance.Log.LogError("HatsError: " + ex.ToString());
             }
             return HttpStatusCode.OK;
         }

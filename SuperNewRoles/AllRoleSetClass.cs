@@ -980,7 +980,7 @@ namespace SuperNewRoles
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {
                 if (intro.RoleId == RoleId.DefaultRole ||
-                    intro.RoleId == RoleId.GM || 
+                    intro.RoleId == RoleId.GM ||
                     (intro.RoleId == RoleId.Nun && (MapNames)PlayerControl.GameOptions.MapId != MapNames.Airship) ||
                     intro.IsGhostRole) continue;
                 var option = IntroDate.GetOption(intro.RoleId);

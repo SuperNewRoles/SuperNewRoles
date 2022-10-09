@@ -28,9 +28,8 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsLightOutVision()
         {
-            return !RoleClass.Clergyman.IsLightOff
-                ? false
-                : (CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor)
+            return RoleClass.Clergyman.IsLightOff
+&& ((CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadMate)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadMayor)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadJester)
@@ -46,7 +45,7 @@ namespace SuperNewRoles.Roles
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.JackalSeer)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.SidekickSeer)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.BlackCat)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.Hitman);
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.Hitman));
         }
         public static void LightOutStartRPC()
         {

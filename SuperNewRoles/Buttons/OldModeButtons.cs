@@ -21,7 +21,8 @@ namespace SuperNewRoles.Buttons
             }
         }
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
-        static class MeetingHudUpdate {
+        static class MeetingHudUpdate
+        {
             public static bool IsEnd = false;
             public static float time;
             public static void Postfix(MeetingHud __instance)
@@ -39,7 +40,8 @@ namespace SuperNewRoles.Buttons
                         time = 3f;
                         IsEnd = true;
                         return;
-                    } else
+                    }
+                    else
                     {
                         FastDestroyableSingleton<HudManager>.Instance.discussEmblem.gameObject.SetActive(false);
                         time = 99999999;
@@ -48,7 +50,7 @@ namespace SuperNewRoles.Buttons
                 }
             }
         }
-        [HarmonyPatch(typeof(HudManager),nameof(HudManager.SetHudActive))]
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive))]
         class HudManagerSetHudActivePatch
         {
             public static void Postfix() => OldModeUpdate();
@@ -61,7 +63,8 @@ namespace SuperNewRoles.Buttons
         [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.HandleHud))]
         class KeyboardJoystickHandleHUDPatch
         {
-            public static bool Prefix() {
+            public static bool Prefix()
+            {
                 if (!CanUseKeyboard) return true;
                 if (!DestroyableSingleton<HudManager>.InstanceExists)
                 {
@@ -69,7 +72,7 @@ namespace SuperNewRoles.Buttons
                 }
                 if (Input.GetKeyDown(KeyCode.Tab))
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((MapBehaviour m) => 
+                    FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((MapBehaviour m) =>
                     {
                         m.ShowNormalMap();
                     }));
@@ -98,7 +101,8 @@ namespace SuperNewRoles.Buttons
             {
                 Hud.UseButton.buttonLabelText.transform.localPosition = new();
                 Hud.UseButton.buttonLabelText.transform.localScale = new(1.7f, 1.7f, 1.7f);
-            } else
+            }
+            else
             {
                 Hud.UseButton.buttonLabelText.transform.localPosition = new(0, -0.45f, 0);
                 Hud.UseButton.buttonLabelText.transform.localScale = new(1.1f, 1.1f, 1.1f);
@@ -116,7 +120,7 @@ namespace SuperNewRoles.Buttons
             //通報
             Hud.ReportButton.transform.localPosition = new(4.425f, -0.5f, -9);
             Hud.ReportButton.transform.localScale = new(1.2f, 1.2f, 1.2f);
-            
+
             if (Hud.AbilityButton != null)
             {
                 Hud.AbilityButton.transform.localPosition = new(3f, Hud.KillButton.gameObject.active ? -0.5f : -2.1f, -9);
@@ -131,7 +135,8 @@ namespace SuperNewRoles.Buttons
                 {
                     Hud.SabotageButton.transform.localScale = new();
                     IsViewUseButton = false;
-                } else if (Hud.SabotageButton.gameObject.active && PlayerControl.LocalPlayer.CanMove)
+                }
+                else if (Hud.SabotageButton.gameObject.active && PlayerControl.LocalPlayer.CanMove)
                 {
                     Hud.ImpostorVentButton.transform.localScale = new();
                     IsViewUseButton = false;
@@ -139,13 +144,15 @@ namespace SuperNewRoles.Buttons
                 if (!IsViewUseButton)
                 {
                     Hud.UseButton.transform.localScale = new();
-                } else
+                }
+                else
                 {
                     Hud.UseButton.transform.localScale = new(1.2f, 1.2f, 1.2f);
                     Hud.SabotageButton.transform.localScale = new();
                     Hud.ImpostorVentButton.transform.localScale = new();
                 }
-            } else
+            }
+            else
             {
                 Hud.UseButton.transform.localScale = new(1.2f, 1.2f, 1.2f);
                 Hud.SabotageButton.transform.localScale = new();

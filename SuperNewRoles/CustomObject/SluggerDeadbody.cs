@@ -95,7 +95,7 @@ namespace SuperNewRoles.CustomObject
             DeadBodys.Add(this);
             transform.position = Player.transform.position;
             transform.localScale = new(0.1f, 0.1f, 0);
-            transform.Rotate((Source.transform.position - Player.transform.position));
+            transform.Rotate(Source.transform.position - Player.transform.position);
             if (SpriteType == 3)
             {
                 transform.Rotate((Source.transform.position - Player.transform.position) * -1f);

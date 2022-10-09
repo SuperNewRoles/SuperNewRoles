@@ -266,7 +266,7 @@ namespace SuperNewRoles.Mode
         }
         public static bool IsBlockVanilaRole()
         {
-            return IsMode(ModeId.NotImpostorCheck) ? false : !IsMode(ModeId.Detective) && !IsMode(ModeId.Default);
+            return !IsMode(ModeId.NotImpostorCheck) && !IsMode(ModeId.Detective) && !IsMode(ModeId.Default);
         }
         public static bool IsBlockGuardianAngelRole()
         {

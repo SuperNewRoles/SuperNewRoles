@@ -12,11 +12,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static bool CheckEndGame(ShipStatus __instance, PlayerStatistics statistics)
         {
-            return CheckAndEndGameForImpostorWin(__instance, statistics)
-            || CheckAndEndGameForJackalWin(__instance, statistics)
-            || CheckAndEndGameForSabotageWin(__instance)
-                ? false
-                : (PlusModeHandler.IsMode(PlusModeId.NotTaskWin) || !CheckAndEndGameForTaskWin(__instance))
+            return !CheckAndEndGameForImpostorWin(__instance, statistics)
+            && !CheckAndEndGameForJackalWin(__instance, statistics)
+            && !CheckAndEndGameForSabotageWin(__instance)
+&& (PlusModeHandler.IsMode(PlusModeId.NotTaskWin) || !CheckAndEndGameForTaskWin(__instance))
 && CheckAndEndGameForWorkpersonWin(__instance) && false;
         }
 
