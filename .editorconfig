@@ -83,7 +83,7 @@ csharp_style_conditional_delegate_call = true:suggestion
 # ローカル関数をstaticでマークする
 csharp_prefer_static_local_function = true:suggestion
 # コードが1行であっても中かっこを使用するか
-csharp_prefer_braces = false:suggestion
+csharp_prefer_braces = true:suggestion
 # 単純なusingステートメントを使用するか
 csharp_prefer_simple_using_statement = true:suggestion
 # 式レベルの設定
