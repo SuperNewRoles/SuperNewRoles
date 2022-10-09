@@ -20,17 +20,10 @@ namespace SuperNewRoles.Roles
         }
         public static void MurderPlayerPostfix(PlayerControl __instance)
         {
-            if (__instance.IsRole(RoleId.EvilGambler))
-            {
-                if (!ModeHandler.IsMode(ModeId.SuperHostRoles) && __instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-                {
-                    if (RoleClass.EvilGambler.GetSuc())
-                        //成功
-                        RoleClass.EvilGambler.currentCool = RoleClass.EvilGambler.SucCool;
-                    else
-                        //失敗
-                        RoleClass.EvilGambler.currentCool = RoleClass.EvilGambler.NotSucCool;
-                }
+            if (!__instance.IsRole(RoleId.EvilGambler)) return;
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles) && __instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            { // 成功 : 失敗
+                RoleClass.EvilGambler.currentCool = RoleClass.EvilGambler.GetSuc() ? RoleClass.EvilGambler.SucCool : RoleClass.EvilGambler.NotSucCool;
             }
         }
     }
