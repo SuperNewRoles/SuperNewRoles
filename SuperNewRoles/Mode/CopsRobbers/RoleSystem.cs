@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.CopsRobbers

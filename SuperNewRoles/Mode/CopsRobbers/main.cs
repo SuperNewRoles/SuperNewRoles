@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
 using static SuperNewRoles.Modules.SetNamesClass;
 
