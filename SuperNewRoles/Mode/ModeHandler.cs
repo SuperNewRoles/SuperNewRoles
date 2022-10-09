@@ -231,13 +231,13 @@ namespace SuperNewRoles.Mode
             {
                 return mode is ModeId.Default;
             }
+
+            if (mode is ModeId.Default) return !ModeSetting.GetBool();
             if (mode is ModeId.HideAndSeek && IsChache)
             {
                 return IsMode(ModeId.HideAndSeek, false);
             }
-
             if (IsChache) return mode == thisMode;
-            if (mode is ModeId.Default) return !ModeSetting.GetBool();
             return mode switch
             {
                 ModeId.HideAndSeek => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[0],
