@@ -1,9 +1,10 @@
 using HarmonyLib;
+using SuperNewRoles.Patch;
 using UnityEngine;
 using static UnityEngine.UI.Button;
 using Object = UnityEngine.Object;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
     public class MainMenuPatch

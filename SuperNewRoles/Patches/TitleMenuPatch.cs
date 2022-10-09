@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace SuperNewRoles.Patch
 {
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
-    public class MainMenuPatch
+    public class MainMenuStartPatch
     {
         private static void Prefix(MainMenuManager __instance)
         {
