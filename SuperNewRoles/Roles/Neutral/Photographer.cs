@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral
 {
     public static class Photographer
     {
-        //ここにコードを書きこんでください
         public static void WrapUp()
         {
             RoleClass.Photographer.IsPhotographerShared = false;

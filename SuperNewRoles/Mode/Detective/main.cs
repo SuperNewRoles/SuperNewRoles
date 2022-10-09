@@ -41,30 +41,5 @@ namespace SuperNewRoles.Mode.Detective
             DetectivePlayer.RpcSetName(ModHelpers.Cs(DetectiveColor, DetectivePlayer.GetDefaultName()));
             DetectivePlayer.SetName(ModHelpers.Cs(DetectiveColor, DetectivePlayer.GetDefaultName()));
         }
-        public static void MurderPatch(PlayerControl target)
-        {
-            if (!AmongUsClient.Instance.AmHost) return;
-            /*
-            if (target.PlayerId != 0)
-            {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                {
-                    if (!p.Data.Disconnected && p.IsImpostor())
-                    {
-                        p.RpcSetNamePrivate(ModHelpers.Cs(RoleClass.ImpostorRed, p.GetDefaultName()), target);
-                    }
-                }
-            } else
-            {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                {
-                    if (!p.Data.Disconnected && p.IsImpostor())
-                    {
-                        p.SetName(ModHelpers.Cs(RoleClass.ImpostorRed, p.GetDefaultName()));
-                    }
-                }
-            }
-            */
-        }
     }
 }

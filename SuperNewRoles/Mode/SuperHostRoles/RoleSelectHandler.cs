@@ -18,17 +18,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetCustomRoles();
             SyncSetting.CustomSyncSettings();
             ChacheManager.ResetChache();
-            Main.SendAllRoleChat();
             return sender;
         }
         public static void SpawnBots()
         {
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !ModeHandler.IsMode(ModeId.HideAndSeek))
             {
                 int impostor = PlayerControl.GameOptions.NumImpostors;
                 int crewmate = 0;
                 //ジャッカルがいるなら
-                if (CustomOptions.JackalOption.GetSelection() != 0)
+                if (CustomOptions.JackalOption.GetSelection() != 0 || CustomOptions.JackalSeerOption.GetSelection() != 0)
                 {
                     for (int i = 0; i < (PlayerControl.GameOptions.NumImpostors + 2); i++)
                     {
@@ -103,6 +102,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetRoleDesync(RoleClass.Truelover.trueloverPlayer, RoleTypes.Impostor);
             SetRoleDesync(RoleClass.FalseCharges.FalseChargesPlayer, RoleTypes.Impostor);
             SetRoleDesync(RoleClass.MadMaker.MadMakerPlayer, RoleTypes.Impostor);
+            SetRoleDesync(RoleClass.JackalSeer.JackalSeerPlayer, RoleTypes.Impostor);
             /*============インポスターにDesync============*/
 
 
@@ -118,6 +118,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (RoleClass.Tuna.IsUseVent) SetVanillaRole(RoleClass.Tuna.TunaPlayer, RoleTypes.Engineer);
             SetVanillaRole(RoleClass.Technician.TechnicianPlayer, RoleTypes.Engineer);
             if (RoleClass.BlackCat.IsUseVent) SetVanillaRole(RoleClass.BlackCat.BlackCatPlayer, RoleTypes.Engineer);
+            if (RoleClass.MadSeer.IsUseVent) SetVanillaRole(RoleClass.MadSeer.MadSeerPlayer, RoleTypes.Engineer);
+            if (RoleClass.SeerFriends.IsUseVent) SetVanillaRole(RoleClass.SeerFriends.SeerFriendsPlayer, RoleTypes.Engineer);
             /*============エンジニアに役職設定============*/
 
 
@@ -134,6 +136,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetVanillaRole(RoleClass.Samurai.SamuraiPlayer, RoleTypes.Shapeshifter, false);
             SetVanillaRole(RoleClass.EvilButtoner.EvilButtonerPlayer, RoleTypes.Shapeshifter, false);
             SetVanillaRole(RoleClass.SuicideWisher.SuicideWisherPlayer, RoleTypes.Shapeshifter, false);
+            SetVanillaRole(RoleClass.Doppelganger.DoppelggerPlayer, RoleTypes.Shapeshifter, false);
+            SetVanillaRole(RoleClass.Camouflager.CamouflagerPlayer, RoleTypes.Shapeshifter, false);
             /*============シェイプシフター役職設定============*/
 
             foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer)

@@ -399,12 +399,12 @@ namespace SuperNewRoles
                         writer.Write(showAnimation ? byte.MaxValue : 0);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
-                    }, tien);
+                    }, tien, "CheckMuderAttemptAndKill");
                 }
             }
             return murder;
         }
-        public static void UncheckedMurderPlayer(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
+        public static void UncheckedMurderPlayer(this PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
             writer.Write(killer.PlayerId);
@@ -426,6 +426,24 @@ namespace SuperNewRoles
         {
             var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
             return client;
+        }
+        public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
+        {
+            List<T> newList = new();
+            foreach (T item in list)
+            {
+                newList.Add(item);
+            }
+            return newList;
+        }
+        public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this List<T> list)
+        {
+            Il2CppSystem.Collections.Generic.List<T> newList = new();
+            foreach (T item in list)
+            {
+                newList.Add(item);
+            }
+            return newList;
         }
         public static Dictionary<string, AudioClip> CachedAudioClips = new();
         public static AudioClip loadAudioClipFromResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")
@@ -524,10 +542,6 @@ namespace SuperNewRoles
         public static object TryCast(this Il2CppObjectBase self, Type type)
         {
             return AccessTools.Method(self.GetType(), nameof(Il2CppObjectBase.TryCast)).MakeGenericMethod(type).Invoke(self, Array.Empty<object>());
-        }
-        internal static string Cs(object unityEngine, string v)
-        {
-            throw new NotImplementedException();
         }
 
         public static Dictionary<string, Texture2D> CachedTexture = new();
@@ -757,7 +771,9 @@ namespace SuperNewRoles
             float dis = Vector2.Distance(pos, pos2);
             return dis <= distance;
         }
-
+        /// <summary>keyCodesが押されているか</summary>
+        public static bool GetManyKeyDown(KeyCode[] keyCodes) =>
+            keyCodes.All(x => Input.GetKey(x)) && keyCodes.Any(x => Input.GetKeyDown(x));
     }
     public static class CreateFlag
     {

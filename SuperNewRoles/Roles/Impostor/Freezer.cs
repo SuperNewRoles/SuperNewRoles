@@ -14,6 +14,10 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.FreezerButton.MaxTimer = RoleClass.Freezer.CoolTime;
             HudManagerStartPatch.FreezerButton.Timer = HudManagerStartPatch.FreezerButton.MaxTimer;
             HudManagerStartPatch.FreezerButton.actionButton.cooldownTimerText.color = Color.white;
+            HudManagerStartPatch.FreezerButton.effectCancellable = false;
+            HudManagerStartPatch.FreezerButton.EffectDuration = RoleClass.Freezer.DurationTime;
+            HudManagerStartPatch.FreezerButton.HasEffect = true;
+            HudManagerStartPatch.FreezerButton.isEffectActive = false;
         }
         public static void DownStart()
         {
@@ -52,21 +56,10 @@ namespace SuperNewRoles.Roles
             if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                if (RoleClass.Freezer.IsSpeedDown)
+                if (RoleClass.Freezer.IsSpeedDown || RoleClass.WaveCannon.IsLocalOn)
                 {
                     __instance.body.velocity = new Vector2(0f, 0f);
                 }
-            }
-        }
-    }
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    public static class HudManagerUpdatePatch2
-    {
-        public static void Postfix()
-        {
-            if (HudManagerStartPatch.FreezerButton.Timer <= 0.1f && RoleClass.Freezer.IsSpeedDown)
-            {
-                Freezer.SpeedDownEnd();
             }
         }
     }

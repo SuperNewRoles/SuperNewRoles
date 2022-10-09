@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.Patch;
-
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -47,7 +46,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             };
                             RoleClass.Quarreled.IsQuarreledWin = true;
                             EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByTask, false);
-                        }, 0.15f);
+                        }, 0.15f, "Quarreled Murder EndGame");
                     }
                 }
             }

@@ -1,4 +1,3 @@
-using HarmonyLib;
 using Hazel;
 using InnerNet;
 
@@ -6,36 +5,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     public static class NotBlackOut
     {
-        [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
-        class CheckForEndVotingPatch
-        {
-            public static void Prefix(MeetingHud __instance)
-            {
-                if (!AmongUsClient.Instance.AmHost) return;
-                if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles))
-                {
-                    EndMeetingPatch();
-                }
-            }
-        }
-        public static void EndMeetingPatch()
-        {/*
-            //霊界用暗転バグ対処
-            foreach (var pc in CachedPlayer.AllPlayers)
-                if (IsAntiBlackOut(pc) && pc.IsDead()) pc.ResetPlayerCam(19f);*/
-        }
-        public static bool IsAntiBlackOut(PlayerControl player)
-        {
-            if (player.IsMod()) return false;
-            /*
-			if (player.IsRole(RoleId.Egoist)) return true;
-			if (player.IsRole(RoleId.Sheriff)) return true;
-            if (player.IsRole(RoleId.truelover)) return true;
-            if (player.IsRole(RoleId.FalseCharges)) return true;
-            if (player.IsRole(RoleId.RemoteSheriff)) return true;
-            */
-            return false;
-        }
         public static void ResetPlayerCam(this PlayerControl pc, float delay = 0f)
         {
             if (pc == null || !AmongUsClient.Instance.AmHost || pc.AmOwner) return;
