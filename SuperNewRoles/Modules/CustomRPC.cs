@@ -239,11 +239,29 @@ namespace SuperNewRoles.Modules
         WaveCannon,
         ShowFlash,
         SetFinalStatus,
-        CrackerCrack
+        CrackerCrack,
+        Camouflage
     }
 
     public static class RPCProcedure
     {
+        public static void Camouflage(bool Is)
+        {
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    if (Is) Roles.Impostor.Camouflager.CamouflageSHR();
+                    else Roles.Impostor.Camouflager.ResetCamouflageSHR();
+                }
+                return;
+            }
+            else
+            {
+                if (Is) Roles.Impostor.Camouflager.Camouflage();
+                else Roles.Impostor.Camouflager.ResetCamouflage();
+            }
+        }
         public static void CrackerCrack(byte Target)
         {
             if (!RoleClass.Cracker.CrackedPlayers.Contains(Target)) RoleClass.Cracker.CrackedPlayers.Add(Target);
@@ -1288,6 +1306,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.SetFinalStatus:
                             SetFinalStatus(reader.ReadByte(), (FinalStatus)reader.ReadByte());
+                            break;
+                        case CustomRPC.Camouflage:
+                            Camouflage(reader.ReadBoolean());
                             break;
                     }
                 }

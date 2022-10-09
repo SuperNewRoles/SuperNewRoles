@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
+using static GameData;
 using static SuperNewRoles.Buttons.HudManagerStartPatch;
 using static SuperNewRoles.Mode.ModeHandler;
 
@@ -42,13 +44,71 @@ namespace SuperNewRoles.Roles.Impostor
             public string Pet { get; set; }
         }
         public static Dictionary<byte, AttireData> Attire;
+        public static void RpcResetCamouflage()
+        {
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Camouflage);
+            writer.Write(false);
+            writer.EndRPC();
+            RPCProcedure.Camouflage(false);
+        }
+
+        public static void RpcCamouflage()
+        {
+            if (IsMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
+            {
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    CamouflageSHR();
+                }
+            }
+            else
+            {
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Camouflage);
+                writer.Write(true);
+                writer.EndRPC();
+                RPCProcedure.Camouflage(true);
+            }
+        }
         public static void Camouflage()
         {
+            RoleClass.Camouflager.IsCamouflage = true;
+            PlayerOutfit outfit = new()
+            {
+                PlayerName = "　",
+                ColorId = RoleClass.Camouflager.Color,
+                SkinId = "",
+                HatId = "",
+                VisorId = "",
+                PetId = "",
+            };
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                if (p == null) continue;
+                if (p.Data.Disconnected) continue;
+                p.setOutfit(outfit, true);
+            }
+        }
+
+        public static void ResetCamouflage()
+        {
+            RoleClass.Camouflager.IsCamouflage = false;
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                if (p == null) continue;
+                if (p.Data.Disconnected) continue;
+                p.resetChange();
+            }
+        }
+
+        public static void CamouflageSHR()
+        {
             //全プレイヤーのスキンを保存する部分
+            RoleClass.Camouflager.ButtonTimer = DateTime.Now;
+            RoleClass.Camouflager.IsCamouflage = true;
             Attire = new();
             foreach (CachedPlayer player in CachedPlayer.AllPlayers)
             {
-                var data = new AttireData
+                AttireData data = new()
                 {
                     Name = player.Data.DefaultOutfit.PlayerName,
                     Color = (byte)player.Data.DefaultOutfit.ColorId,
@@ -81,7 +141,7 @@ namespace SuperNewRoles.Roles.Impostor
             }
         }
 
-        public static void ResetCamouflage(PlayerControl target)
+        public static void ResetCamouflageSHR(PlayerControl target)
         {
             if (Attire.ContainsKey(target.PlayerId))
             {
@@ -94,12 +154,13 @@ namespace SuperNewRoles.Roles.Impostor
             }
         }
 
-        public static void ResetCamouflage()
+        public static void ResetCamouflageSHR()
         {
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
-                ResetCamouflage(player);
+                ResetCamouflageSHR(player);
             }
+            RoleClass.Camouflager.IsCamouflage = false;
         }
         public static void ResetCoolTime()
         {
@@ -109,7 +170,7 @@ namespace SuperNewRoles.Roles.Impostor
         }
         public static void SHRFixedUpdate()
         {
-            if (AmongUsClient.Instance.AmHost)
+            if (AmongUsClient.Instance.AmHost && IsMode(ModeId.SuperHostRoles))
             {
                 if (!RoleClass.IsMeeting)
                 {
