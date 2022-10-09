@@ -43,6 +43,9 @@ namespace SuperNewRoles.Patches
                 {
                     Logger.Info($"{p.name}=>{p.GetRole()}({p.GetRoleType()}){(p.IsLovers() ? "[♥]" : "")}{(p.IsQuarreled() ? "[○]" : "")}", "Role Data");
                 }
+                Logger.Info("=================Other Data=================", "Intro Begin");
+                Logger.Info($"MapId:{PlayerControl.GameOptions.MapId} MapNames:{(MapNames)PlayerControl.GameOptions.MapId}", "Other Data");
+                Logger.Info($"Mode:{ModeHandler.GetMode()}", "Other Data");
             }
         }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
