@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using UnityEngine;
-using static SuperNewRoles.Patch.CustomOption;
+using static SuperNewRoles.Modules.CustomOption;
 
 namespace SuperNewRoles.Modules
 {
@@ -42,6 +42,8 @@ namespace SuperNewRoles.Modules
         public static CustomOption IsAlwaysReduceCooldown;
         public static CustomOption IsAlwaysReduceCooldownExceptInVent;
         public static CustomOption IsAlwaysReduceCooldownExceptOnTask;
+
+        public static CustomOption IsOldMode;
 
         public static CustomOption IsChangeTheWinCondition;
 
@@ -181,10 +183,10 @@ namespace SuperNewRoles.Modules
         public static CustomOption SpeederCoolTime;
         public static CustomOption SpeederDurationTime;
 
-        public static CustomRoleOption GuesserOption;
-        public static CustomOption GuesserPlayerCount;
-        public static CustomOption GuesserShortOneMeetingCount;
-        public static CustomOption GuesserShortMaxCount;
+        public static CustomRoleOption NiceGuesserOption;
+        public static CustomOption NiceGuesserPlayerCount;
+        public static CustomOption NiceGuesserShortOneMeetingCount;
+        public static CustomOption NiceGuesserShortMaxCount;
 
         public static CustomRoleOption EvilGuesserOption;
         public static CustomOption EvilGuesserPlayerCount;
@@ -821,13 +823,51 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption ConnectKillerOption;
         public static CustomOption ConnectKillerPlayerCount;
 
+        public static CustomRoleOption WaveCannonOption;
+        public static CustomOption WaveCannonPlayerCount;
+        public static CustomOption WaveCannonCoolTime;
+        public static CustomOption WaveCannonChargeTime;
+        public static CustomOption WaveCannonIsSyncKillCoolTime;
+
+        public static CustomRoleOption CrackerOption;
+        public static CustomOption CrackerPlayerCount;
+        public static CustomOption CrackerCoolTime;
+        public static CustomOption CrackerIsAdminView;
+        public static CustomOption CrackerIsVitalsView;
+        public static CustomOption CrackerOneTurnSelectCount;
+        public static CustomOption CrackerAllTurnSelectCount;
+        public static CustomOption CrackerIsSelfNone;
+
         public static CustomRoleOption DoppelgangerOption;
         public static CustomOption DoppelgangerPlayerCount;
         public static CustomOption DoppelgangerDurationTime;
-        public static CustomOption DoppelgangerCoolTome;
+        public static CustomOption DoppelgangerCoolTime;
         public static CustomOption DoppelgangerSucTime;
         public static CustomOption DoppelgangerNotSucTime;
+
+        public static CustomRoleOption WaveCannonJackalOption;
+        public static CustomOption WaveCannonJackalPlayerCount;
+        public static CustomOption WaveCannonJackalCoolTime;
+        public static CustomOption WaveCannonJackalChargeTime;
+        public static CustomOption WaveCannonJackalKillCoolDown;
+        public static CustomOption WaveCannonJackalUseVent;
+        public static CustomOption WaveCannonJackalUseSabo;
+        public static CustomOption WaveCannonJackalIsImpostorLight;
+        public static CustomOption WaveCannonJackalIsSyncKillCoolTime;
+
+        public static CustomRoleOption CamouflagerOption;
+        public static CustomOption CamouflagerPlayerCount;
+        public static CustomOption CamouflagerCoolTime;
+        public static CustomOption CamouflagerDurationTime;
+        public static CustomOption CamouflagerCamouflageArsonist;
+        public static CustomOption CamouflagerCamouflageDemon;
+        public static CustomOption CamouflagerCamouflageLovers;
+        public static CustomOption CamouflagerCamouflageQuarreled;
+        public static CustomOption CamouflagerCamouflageChangeColor;
+        public static CustomOption CamouflagerCamouflageColor;
         //CustomOption
+
+        public static CustomOption GMOption;
 
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
@@ -892,6 +932,9 @@ namespace SuperNewRoles.Modules
             enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false);
             enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
+            IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true);
+
+
             if (ConfigRoles.DebugMode.Value)
             {
                 IsDebugMode = Create(10, true, CustomOptionType.Generic, "デバッグモード", false, null, isHeader: true);
@@ -914,6 +957,8 @@ namespace SuperNewRoles.Modules
             MapCustoms.MapCustom.CreateOption();
 
             Sabotage.Options.Load();
+
+            GMOption = Create(1028, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
 
             IsAlwaysReduceCooldown = Create(682, false, CustomOptionType.Generic, "IsAlwaysReduceCooldown", false, null, isHeader: true);
             IsAlwaysReduceCooldownExceptInVent = Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
@@ -1583,7 +1628,7 @@ namespace SuperNewRoles.Modules
             SluggerChargeTime = Create(903, false, CustomOptionType.Impostor, "SluggerChargeTime", 3f, 0f, 30f, 0.5f, SluggerOption);
             SluggerCoolTime = Create(904, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, SluggerOption);
             SluggerIsMultiKill = Create(905, false, CustomOptionType.Impostor, "SluggerIsMultiKill", false, SluggerOption);
-            SluggerIsKillCoolSync = Create(1000, false, CustomOptionType.Impostor, "SluggerIsKillCoolSync", false, SluggerOption);
+            SluggerIsKillCoolSync = Create(1030, false, CustomOptionType.Impostor, "SluggerIsKillCoolSync", false, SluggerOption);
 
             PainterOption = SetupCustomRoleOption(941, false, RoleId.Painter);
             PainterPlayerCount = Create(942, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], PainterOption);
@@ -1650,15 +1695,40 @@ namespace SuperNewRoles.Modules
 
             Roles.Impostor.NekoKabocha.SetupCustomOptions();
 
+            CrackerOption = SetupCustomRoleOption(1030, false, RoleId.Cracker);
+            CrackerPlayerCount = Create(1031, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CrackerOption);
+            CrackerCoolTime = Create(1032, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, CrackerOption);
+            CrackerIsAdminView = Create(1033, false, CustomOptionType.Impostor, "CrackerIsAdminView", false, CrackerOption);
+            CrackerIsVitalsView = Create(1034, false, CustomOptionType.Impostor, "CrackerIsVitalsView", false, CrackerOption);
+            CrackerOneTurnSelectCount = Create(1035, false, CustomOptionType.Impostor, "CrackerOneTurnSelectCount", 1f, 1f, 15f, 1f, CrackerOption);
+            CrackerAllTurnSelectCount = Create(1036, false, CustomOptionType.Impostor, "CrackerAllTurnSelectCount", 3f, 1f, 100f, 1f, CrackerOption);
+            CrackerIsSelfNone = Create(1037, false, CustomOptionType.Impostor, "CrackerIsSelfNone", true, CrackerOption);
+
             ConnectKillerOption = SetupCustomRoleOption(982, false, RoleId.ConnectKiller);
             ConnectKillerPlayerCount = Create(983, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConnectKillerOption);
 
             DoppelgangerOption = SetupCustomRoleOption(986, true, RoleId.Doppelganger);
             DoppelgangerPlayerCount = Create(987, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
             DoppelgangerDurationTime = Create(988, true, CustomOptionType.Impostor, "DoppelgangerDurationTimeSetting", 90f, 0f, 250f, 5f, DoppelgangerOption);
-            DoppelgangerCoolTome = Create(989, true, CustomOptionType.Impostor, "DoppelgangerCoolDownSetting", 5f, 5f, 60f, 2.5f, DoppelgangerOption);
+            DoppelgangerCoolTime = Create(989, true, CustomOptionType.Impostor, "DoppelgangerCoolDownSetting", 5f, 5f, 60f, 2.5f, DoppelgangerOption);
             DoppelgangerSucTime = Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
             DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
+
+            WaveCannonOption = SetupCustomRoleOption(1019, false, RoleId.WaveCannon, CustomOptionType.Impostor);
+            WaveCannonPlayerCount = Create(1018, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WaveCannonOption);
+            WaveCannonCoolTime = Create(1020, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonOption);
+            WaveCannonChargeTime = Create(1021, false, CustomOptionType.Impostor, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonOption);
+            WaveCannonIsSyncKillCoolTime = Create(1016, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, WaveCannonOption);
+
+            WaveCannonJackalOption = SetupCustomRoleOption(1022, false, RoleId.WaveCannonJackal, CustomOptionType.Neutral);
+            WaveCannonJackalPlayerCount = Create(1023, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WaveCannonJackalOption);
+            WaveCannonJackalCoolTime = Create(1014, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonJackalOption);
+            WaveCannonJackalChargeTime = Create(1015, false, CustomOptionType.Neutral, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonJackalOption);
+            WaveCannonJackalKillCoolDown = Create(1024, false, CustomOptionType.Neutral, "JackalCoolDownSetting", 30f, 2.5f, 60f, 2.5f, WaveCannonJackalOption, format: "unitSeconds");
+            WaveCannonJackalUseVent = Create(1025, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, WaveCannonJackalOption);
+            WaveCannonJackalIsImpostorLight = Create(1026, false, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, WaveCannonJackalOption);
+            WaveCannonJackalUseSabo = Create(1029, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, WaveCannonJackalOption);
+            WaveCannonJackalIsSyncKillCoolTime = Create(1017, false, CustomOptionType.Neutral, "IsSyncKillCoolTime", false, WaveCannonJackalOption);
 
             Roles.Impostor.Conjurer.SetupCustomOptions();
 
@@ -1671,6 +1741,26 @@ namespace SuperNewRoles.Modules
             TaskerIsKillCoolTaskNow = Create(1011, false, CustomOptionType.Impostor, "TaskerIsKillCoolTaskNow", true, TaskerOption);
             TaskerCanKill = Create(1012, false, CustomOptionType.Impostor, "TaskerCanKill", true, TaskerOption);
 
+            CamouflagerOption =  SetupCustomRoleOption(1038, true, RoleId.Camouflager);
+            CamouflagerPlayerCount = Create(1039, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CamouflagerOption);
+            CamouflagerCoolTime = Create(1040, true, CustomOptionType.Impostor, "CamouflagerCoolTimeSetting", 30f, 0f, 60f, 2.5f, CamouflagerOption);
+            CamouflagerDurationTime = Create(1041, true, CustomOptionType.Impostor, "CamouflagerDurationTimeSetting", 10f, 0f, 60f, 2.5f, CamouflagerOption);
+            CamouflagerCamouflageArsonist = Create(1042, true, CustomOptionType.Impostor, "CamouflagerCamouflageArsonistSetting", true, CamouflagerOption);
+            CamouflagerCamouflageDemon = Create(1043, true, CustomOptionType.Impostor, "CamouflagerCamouflageDemonSetting", true, CamouflagerOption);
+            CamouflagerCamouflageLovers = Create(1044, true, CustomOptionType.Impostor, "CamouflagerCamouflageLoversSetting", false, CamouflagerOption);
+            CamouflagerCamouflageQuarreled = Create(1045, true, CustomOptionType.Impostor, "CamouflagerCamouflageQuarreledSetting", false, CamouflagerOption);
+            CamouflagerCamouflageChangeColor = Create(1046, true, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
+            CamouflagerCamouflageColor = Create(1047, true, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Roles.Impostor.Camouflager.ColorOption, CamouflagerCamouflageChangeColor);
+
+            NiceGuesserOption = SetupCustomRoleOption(971, false, RoleId.NiceGuesser);
+            NiceGuesserPlayerCount = Create(972, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGuesserOption);
+            NiceGuesserShortMaxCount = Create(977, false, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, NiceGuesserOption);
+            NiceGuesserShortOneMeetingCount = Create(978, false, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, NiceGuesserOption);
+
+            EvilGuesserOption = SetupCustomRoleOption(971, false, RoleId.EvilGuesser);
+            EvilGuesserPlayerCount = Create(974, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
+            EvilGuesserShortMaxCount = Create(975, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
+            EvilGuesserShortOneMeetingCount = Create(976, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

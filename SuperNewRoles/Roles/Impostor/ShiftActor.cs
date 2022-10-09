@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptions;
 using static SuperNewRoles.Roles.RoleClass;
@@ -38,14 +38,23 @@ namespace SuperNewRoles.Roles.Impostor
             Player = new();
             KillCool = ShiftActorKillCool.GetFloat();
             Limit = ShiftActorShiftLimit.GetInt();
-            Count = 0;
+            Count = 1;
             IsWatchAttribute = ShiftActorCanWatchAttribute.GetBool(); // 重複を見れるか
         }
-        public static bool CanShow = Count >= Limit;// シェイプカウントが上限より少ないか
+        public static bool CanShow => Count <= Limit;// シェイプカウントが上限より少ないか
+
+        public static void FixedUpdate()
+        {
+            if (CachedPlayer.LocalPlayer.Data.Role == null || CachedPlayer.LocalPlayer.IsRole(RoleTypes.Shapeshifter))
+            {
+                RoleManager.Instance.SetRole(CachedPlayer.LocalPlayer, RoleTypes.Shapeshifter);
+            }
+        }
 
         public static void Shapeshift(PlayerControl shapeshifter, PlayerControl target)
         {
             Logger.Info($"現在のカウント{Count}", "ShiftActor");
+            if (shapeshifter.PlayerId != CachedPlayer.LocalPlayer.PlayerId) return;
             if (!CanShow) return;
             var TargetRoleText = "";
 

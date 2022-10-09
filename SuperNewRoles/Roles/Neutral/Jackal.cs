@@ -1,5 +1,6 @@
 using Hazel;
 using SuperNewRoles.Buttons;
+using UnityEngine;
 using SuperNewRoles.Mode.SuperHostRoles;
 using static SuperNewRoles.Helpers.RPCHelper;
 using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
@@ -15,9 +16,15 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.JackalSidekickButton.MaxTimer = RoleClass.Jackal.KillCoolDown;
             HudManagerStartPatch.JackalSidekickButton.Timer = RoleClass.Jackal.KillCoolDown;
         }
-        public static void EndMeeting()
-            => ResetCoolDown();
-
+        public static void EndMeeting() => ResetCoolDown();
+        public static void SetPlayerOutline(PlayerControl target, Color color)
+        {
+            if (target == null) return;
+            SpriteRenderer rend = target.MyRend();
+            if (rend == null) return;
+            rend.material.SetFloat("_Outline", 1f);
+            rend.material.SetColor("_OutlineColor", color);
+        }
         public class JackalFixedPatch
         {
             static void JackalPlayerOutLineTarget()

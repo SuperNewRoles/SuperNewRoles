@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace SuperNewRoles.Roles
         public static void ResetCoolDown()
         {
             HudManagerStartPatch.DoorrDoorButton.MaxTimer = CachedPlayer.LocalPlayer.Data.Role.IsImpostor ? RoleClass.EvilDoorr.CoolTime : RoleClass.Doorr.CoolTime;
-            RoleClass.Doorr.ButtonTimer = DateTime.Now;
+            HudManagerStartPatch.DoorrDoorButton.Timer = HudManagerStartPatch.DoorrDoorButton.MaxTimer;
         }
         public static bool IsDoorr(PlayerControl Player)
         {
@@ -24,7 +25,9 @@ namespace SuperNewRoles.Roles
         }
         public static void DoorrBtn()
         {
+            Logger.Info("ボタンクリック","DoorrBtn");
             PlainDoor door = GetDoor();
+            Logger.Info($"nullチェック:{door != null}", "DoorrBtn");
             if (door != null)
             {
                 door.RpcSetDoorway(!door.Open);
@@ -37,41 +40,16 @@ namespace SuperNewRoles.Roles
         }
         private static PlainDoor GetDoor()
         {
-            Vector3 position = CachedPlayer.LocalPlayer.transform.position;
-            List<PlainDoor> selectdoors = new();
-            foreach (PlainDoor door in MapUtilities.CachedShipStatus.AllDoors)
-            {
-                var getispos = IsPos(position, door, 2);
-                if (getispos != 0)
-                {
-                    selectdoors.Add(door);
-                }
-            }
-            bool flag = true;
-            while (flag)
-            {
-                if (selectdoors.Count >= 2)
-                {
-                    if (IsPos(position, selectdoors[0], 2) >= IsPos(position, selectdoors[1], 2))
-                    {
-                        selectdoors.Remove(selectdoors[0]);
-                    }
-                    else
-                    {
-                        selectdoors.Remove(selectdoors[1]);
-                    }
-                }
-                else
-                {
-                    flag = false;
-                }
-            }
-            return selectdoors[0];
+            return GameObject.FindObjectsOfType<DoorConsole>().ToArray().FirstOrDefault(x => {
+                if (x.MyDoor == null) return false;
+                float num = Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), x.transform.position);
+                return num <= x.UsableDistance;
+            })?.MyDoor;
         }
         public static void EndMeeting()
         {
             HudManagerStartPatch.DoorrDoorButton.MaxTimer = CachedPlayer.LocalPlayer.Data.Role.IsImpostor ? RoleClass.EvilDoorr.CoolTime : RoleClass.Doorr.CoolTime;
-            RoleClass.Doorr.ButtonTimer = DateTime.Now;
+            HudManagerStartPatch.DoorrDoorButton.Timer = HudManagerStartPatch.DoorrDoorButton.MaxTimer;
         }
     }
 }

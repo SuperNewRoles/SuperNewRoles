@@ -1,10 +1,13 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles;
+using static RoleManager;
 
 namespace SuperNewRoles
 {
@@ -14,8 +17,9 @@ namespace SuperNewRoles
         public static bool doReplace = false;
         public static CustomRpcSender sender;
         public static List<(PlayerControl, RoleTypes)> StoragedData = new();
-        public static bool Prefix()
+        public static bool Prefix(PlayerControl __instance, RoleTypes roleType)
         {
+            Logger.Info($"{__instance.Data.PlayerName} の役職が {roleType} になりました", "RpcSetRole");
             return true;
         }
         public static void Release()
@@ -57,7 +61,7 @@ namespace SuperNewRoles
         public static bool IsSetRoleRPC = false;
         public static bool IsShapeSet = false;
         public static bool IsNotDesync = false;
-        public static bool Prefix()
+        public static bool Prefix(RoleManager __instance)
         {
             AllRoleSetClass.SetPlayerNum();
             IsNotPrefix = false;
@@ -145,6 +149,10 @@ namespace SuperNewRoles
             {
                 Mode.CopsRobbers.RoleSelectHandler.Handler();
                 return false;
+            }
+            else if (ModeHandler.IsMode(ModeId.Default))
+            {
+                Roles.Neutral.GM.AssignGM();
             }
             return true;
         }
@@ -681,9 +689,10 @@ namespace SuperNewRoles
                 {
                     for (int i = 1; i <= CrewMatePlayerNum; i++)
                     {
-                        PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                        int index = ModHelpers.GetRandomIndex(CrewMatePlayers);
+                        PlayerControl p = CrewMatePlayers[index];
                         p.SetRoleRPC(RoleId.Dictator);
-                        CrewMatePlayers.Remove(p);
+                        CrewMatePlayers.RemoveAt(index);
                     }
                     CrewMatePlayerNum = 0;
                 }
@@ -693,6 +702,7 @@ namespace SuperNewRoles
                     {
                         Player.SetRoleRPC(RoleId.Dictator);
                     }
+                    CrewMatePlayers = new();
                     CrewMatePlayerNum = 0;
                 }
                 else
@@ -700,9 +710,10 @@ namespace SuperNewRoles
                     for (int i = 1; i <= PlayerCount; i++)
                     {
                         CrewMatePlayerNum--;
-                        PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                        int Index = ModHelpers.GetRandomIndex(CrewMatePlayers);
+                        PlayerControl p = CrewMatePlayers[Index];
                         p.SetRoleRPC(RoleId.Dictator);
-                        CrewMatePlayers.Remove(p);
+                        CrewMatePlayers.RemoveAt(Index);
                     }
                 }
             }
@@ -820,7 +831,7 @@ namespace SuperNewRoles
                 RoleId.Shielder => CustomOptions.ShielderPlayerCount.GetFloat(),
                 RoleId.Speeder => CustomOptions.SpeederPlayerCount.GetFloat(),
                 RoleId.Freezer => CustomOptions.FreezerPlayerCount.GetFloat(),
-                RoleId.Guesser => CustomOptions.GuesserPlayerCount.GetFloat(),
+                RoleId.NiceGuesser => CustomOptions.NiceGuesserPlayerCount.GetFloat(),
                 RoleId.EvilGuesser => CustomOptions.EvilGuesserPlayerCount.GetFloat(),
                 RoleId.Vulture => CustomOptions.VulturePlayerCount.GetFloat(),
                 RoleId.NiceScientist => CustomOptions.NiceScientistPlayerCount.GetFloat(),
@@ -929,9 +940,13 @@ namespace SuperNewRoles
                 RoleId.Slugger => CustomOptions.SluggerPlayerCount.GetFloat(),
                 RoleId.ShiftActor => Roles.Impostor.ShiftActor.ShiftActorPlayerCount.GetFloat(),
                 RoleId.ConnectKiller => CustomOptions.ConnectKillerPlayerCount.GetFloat(),
+                RoleId.Cracker => CustomOptions.CrackerPlayerCount.GetFloat(),
                 RoleId.NekoKabocha => Roles.Impostor.NekoKabocha.NekoKabochaPlayerCount.GetFloat(),
+                RoleId.WaveCannon => CustomOptions.WaveCannonPlayerCount.GetFloat(),
                 RoleId.Doppelganger => CustomOptions.DoppelgangerPlayerCount.GetFloat(),
+                RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalPlayerCount.GetFloat(),
                 RoleId.Conjurer => Roles.Impostor.Conjurer.PlayerCount.GetFloat(),
+                RoleId.Camouflager => CustomOptions.CamouflagerPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };
@@ -942,7 +957,7 @@ namespace SuperNewRoles
             ImpostorPlayers = new();
             foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
-                if (Player.Data.Role.IsSimpleRole)
+                if (Player.Data.Role.IsSimpleRole && !Player.IsRole(RoleId.GM))
                 {
                     if (Player.IsImpostor())
                     {
@@ -965,44 +980,45 @@ namespace SuperNewRoles
             Crewnotonepar = new();
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {
-                if (intro.RoleId != RoleId.DefaultRole && (intro.RoleId != RoleId.Nun || (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship) && !intro.IsGhostRole)
+                if (intro.RoleId == RoleId.DefaultRole ||
+                    intro.RoleId == RoleId.GM ||
+                    (intro.RoleId == RoleId.Nun && (MapNames)PlayerControl.GameOptions.MapId != MapNames.Airship) ||
+                    intro.IsGhostRole) continue;
+                var option = IntroDate.GetOption(intro.RoleId);
+                if (option == null) continue;
+                var selection = option.GetSelection();
+                if (selection != 0)
                 {
-                    var option = IntroDate.GetOption(intro.RoleId);
-                    if (option == null) continue;
-                    var selection = option.GetSelection();
-                    if (selection != 0)
+                    if (selection == 10)
                     {
-                        if (selection == 10)
+                        switch (intro.Team)
+                        {
+                            case TeamRoleType.Crewmate:
+                                Crewonepar.Add(intro.RoleId);
+                                break;
+                            case TeamRoleType.Impostor:
+                                Impoonepar.Add(intro.RoleId);
+                                break;
+                            case TeamRoleType.Neutral:
+                                Neutonepar.Add(intro.RoleId);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 1; i <= selection; i++)
                         {
                             switch (intro.Team)
                             {
                                 case TeamRoleType.Crewmate:
-                                    Crewonepar.Add(intro.RoleId);
+                                    Crewnotonepar.Add(intro.RoleId);
                                     break;
                                 case TeamRoleType.Impostor:
-                                    Impoonepar.Add(intro.RoleId);
+                                    Imponotonepar.Add(intro.RoleId);
                                     break;
                                 case TeamRoleType.Neutral:
-                                    Neutonepar.Add(intro.RoleId);
+                                    Neutnotonepar.Add(intro.RoleId);
                                     break;
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 1; i <= selection; i++)
-                            {
-                                switch (intro.Team)
-                                {
-                                    case TeamRoleType.Crewmate:
-                                        Crewnotonepar.Add(intro.RoleId);
-                                        break;
-                                    case TeamRoleType.Impostor:
-                                        Imponotonepar.Add(intro.RoleId);
-                                        break;
-                                    case TeamRoleType.Neutral:
-                                        Neutnotonepar.Add(intro.RoleId);
-                                        break;
-                                }
                             }
                         }
                     }

@@ -1,6 +1,7 @@
 using System;
 
 using SuperNewRoles.MapOptions;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
@@ -14,10 +15,10 @@ namespace SuperNewRoles.Buttons
             EvilSpeedBoosterButton();
             LighterButton();
             MovingButton();
-            DoorrButton();
             TeleporterButton();
             HawkDuration();
             ScientistButton();
+            CamouflagerButton();
         }
         public static void ScientistButton()
         {
@@ -95,21 +96,6 @@ namespace SuperNewRoles.Buttons
             var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Teleporter.CoolTime);
             HudManagerStartPatch.TeleporterButton.Timer = (float)(RoleClass.Teleporter.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
             if (HudManagerStartPatch.TeleporterButton.Timer <= 0f) HudManagerStartPatch.TeleporterButton.Timer = 0f; return;
-        }
-        public static void DoorrButton()
-        {
-            if (HudManagerStartPatch.DoorrDoorButton.Timer == 0) return;
-            if (RoleClass.Doorr.ButtonTimer == null)
-            {
-                RoleClass.Doorr.ButtonTimer = DateTime.Now;
-            }
-            TimeSpan TimeSpanDate = new(0, 0, 0, (int)RoleClass.Doorr.CoolTime);
-            if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
-            {
-                TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.EvilDoorr.CoolTime);
-            }
-            HudManagerStartPatch.DoorrDoorButton.Timer = (float)(RoleClass.Doorr.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
-            if (HudManagerStartPatch.DoorrDoorButton.Timer <= 0f) HudManagerStartPatch.DoorrDoorButton.Timer = 0f; return;
         }
         public static void MovingButton()
         {
@@ -219,6 +205,28 @@ namespace SuperNewRoles.Buttons
                 var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.EvilSpeedBooster.CoolTime);
                 HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = (float)(RoleClass.EvilSpeedBooster.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
                 if (HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer <= 0f) Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = 0f; return;
+            }
+        }
+        public static void CamouflagerButton()
+        {
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                if (RoleClass.Camouflager.IsCamouflage)
+                {
+                    var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Camouflager.DurationTime);
+                    HudManagerStartPatch.CamouflagerButton.actionButton.cooldownTimerText.color = Color.green;
+                    HudManagerStartPatch.CamouflagerButton.MaxTimer = RoleClass.Camouflager.DurationTime;
+                    HudManagerStartPatch.CamouflagerButton.Timer = (float)((RoleClass.Camouflager.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+                    if (HudManagerStartPatch.CamouflagerButton.Timer <= 0f)
+                    {
+                        Roles.Impostor.Camouflager.ResetCamouflageSHR();
+                        Roles.Impostor.Camouflager.ResetCoolTime();
+                        HudManagerStartPatch.CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
+                        RoleClass.Camouflager.IsCamouflage = false;
+                        HudManagerStartPatch.CamouflagerButton.actionButton.cooldownTimerText.color = Color.white;
+                        RoleClass.Camouflager.ButtonTimer = DateTime.Now;
+                    }
+                }
             }
         }
     }

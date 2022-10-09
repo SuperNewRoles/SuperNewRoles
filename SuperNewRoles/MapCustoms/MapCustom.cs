@@ -1,4 +1,4 @@
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.MapCustoms
 {
