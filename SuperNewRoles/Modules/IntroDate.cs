@@ -106,6 +106,7 @@ namespace SuperNewRoles.Modules
         public static IntroDate ShielderIntro = new("Shielder", RoleClass.Shielder.color, 3, RoleId.Shielder);
         public static IntroDate FreezerIntro = new("Freezer", RoleClass.Freezer.color, 3, RoleId.Freezer, TeamRoleType.Impostor);
         public static IntroDate SpeederIntro = new("Speeder", RoleClass.Speeder.color, 2, RoleId.Speeder, TeamRoleType.Impostor);
+        public static IntroDate NiceGuesserIntro = new("NiceGuesser", RoleClass.NiceGuesser.color, 1, RoleId.NiceGuesser, TeamRoleType.Crewmate);
         public static IntroDate EvilGuesserIntro = new("EvilGuesser", RoleClass.EvilGuesser.color, 1, RoleId.EvilGuesser, TeamRoleType.Impostor);
         public static IntroDate VultureIntro = new("Vulture", RoleClass.Vulture.color, 1, RoleId.Vulture, TeamRoleType.Neutral);
         public static IntroDate NiceScientistIntro = new("NiceScientist", RoleClass.NiceScientist.color, 2, RoleId.NiceScientist);
@@ -216,7 +217,6 @@ namespace SuperNewRoles.Modules
         public static IntroDate StefinderIntro = new("Stefinder", RoleClass.Stefinder.color, 1, RoleId.Stefinder, TeamRoleType.Neutral);
         public static IntroDate StefinderIntro1 = new("Stefinder", RoleClass.ImpostorRed, 1, RoleId.Stefinder1, TeamRoleType.Neutral);
         public static IntroDate SluggerIntro = new("Slugger", RoleClass.Slugger.color, 1, RoleId.Slugger, TeamRoleType.Impostor);
-        public static IntroDate NiceGuesserIntro = new("NiceGuesser", RoleClass.NiceGuesser.color, 1, RoleId.NiceGuesser, TeamRoleType.Crewmate);
         public static IntroDate ShiftActorIntro = new("ShiftActor", ShiftActor.color, 1, RoleId.ShiftActor, TeamRoleType.Impostor);
         public static IntroDate ConnectKillerIntro = new("ConnectKiller", RoleClass.ConnectKiller.color, 1, RoleId.ConnectKiller, TeamRoleType.Impostor);
         public static IntroDate GMIntro = new("GM", RoleClass.GM.color, 1, RoleId.GM, TeamRoleType.Neutral);
