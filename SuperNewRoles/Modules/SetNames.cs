@@ -48,11 +48,11 @@ namespace SuperNewRoles.Modules
         {
             Dictionary<byte, PlayerControl> playersById = ModHelpers.AllPlayersById();
 
-            foreach (var pro in PlayerInfos)
+            foreach (KeyValuePair<byte, TextMeshPro> pro in PlayerInfos)
             {
                 pro.Value.text = "";
             }
-            foreach (var pro in MeetingPlayerInfos)
+            foreach (KeyValuePair<byte, TextMeshPro> pro in MeetingPlayerInfos)
             {
                 pro.Value.text = "";
             }
@@ -103,7 +103,7 @@ namespace SuperNewRoles.Modules
             // Set player name higher to align in middle
             if (meetingInfo != null && playerVoteArea != null)
             {
-                var playerName = playerVoteArea.NameText;
+                TextMeshPro playerName = playerVoteArea.NameText;
                 playerName.transform.localPosition = new Vector3(0.3384f, 0.0311f + 0.0683f, -0.1f);
             }
             string TaskText = "";
@@ -113,12 +113,12 @@ namespace SuperNewRoles.Modules
                 {
                     if (commsActive)
                     {
-                        var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
+                        int all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
                         TaskText += ModHelpers.Cs(Color.yellow, "(?/" + all + ")");
                     }
                     else
                     {
-                        var (Complete, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                        (int Complete, int all) = TaskCount.TaskDateNoClearCheck(p.Data);
                         TaskText += ModHelpers.Cs(Color.yellow, "(" + Complete + "/" + all + ")");
                     }
                 }
@@ -144,7 +144,7 @@ namespace SuperNewRoles.Modules
             Color roleColors;
             string GhostroleNames = "";
             Color? GhostroleColors = null;
-            var role = p.GetRole();
+            RoleId role = p.GetRole();
             if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && p.IsAlive()))
             {
                 if (p.IsImpostor())
@@ -160,20 +160,20 @@ namespace SuperNewRoles.Modules
             }
             else if (PlayerControl.LocalPlayer.IsRole(RoleId.Stefinder) && RoleClass.Stefinder.IsKill)
             {
-                var introdate = IntroDate.GetIntroDate(role);
+                IntroDate introdate = IntroDate.GetIntroDate(role);
                 roleNames = introdate.Name;
                 roleColors = RoleClass.ImpostorRed;
             }
             else
             {
-                var introdate = IntroDate.GetIntroDate(role);
+                IntroDate introdate = IntroDate.GetIntroDate(role);
                 roleNames = introdate.Name;
                 roleColors = introdate.color;
             }
-            var GhostRole = p.GetGhostRole();
+            RoleId GhostRole = p.GetGhostRole();
             if (GhostRole != RoleId.DefaultRole)
             {
-                var GhostIntro = IntroDate.GetIntroDate(GhostRole);
+                IntroDate GhostIntro = IntroDate.GetIntroDate(GhostRole);
                 GhostroleNames = GhostIntro.Name;
                 GhostroleColors = GhostIntro.color;
             }
@@ -181,7 +181,7 @@ namespace SuperNewRoles.Modules
         }
         public static void SetPlayerNameColors(PlayerControl player)
         {
-            var role = player.GetRole();
+            RoleId role = player.GetRole();
             if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && player.IsAlive())) return;
             SetPlayerNameColor(player, IntroDate.GetIntroDate(role).color);
         }

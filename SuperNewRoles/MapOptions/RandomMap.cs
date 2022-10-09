@@ -9,7 +9,7 @@ namespace SuperNewRoles.MapOptions
             if (!AmongUsClient.Instance.AmHost) return;
             if (MapOption.IsRandomMap)
             {
-                var rand = new System.Random();
+                System.Random rand = new System.Random();
                 List<byte> RandomMaps = new();
                 if (MapOption.ValidationSkeld) RandomMaps.Add(0);
                 if (MapOption.ValidationMira) RandomMaps.Add(1);
@@ -20,7 +20,7 @@ namespace SuperNewRoles.MapOptions
                 {
                     return;
                 }
-                var MapsId = RandomMaps[rand.Next(RandomMaps.Count)];
+                byte MapsId = RandomMaps[rand.Next(RandomMaps.Count)];
                 PlayerControl.GameOptions.MapId = MapsId;
                 CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
             }

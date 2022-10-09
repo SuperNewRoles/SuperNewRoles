@@ -727,7 +727,7 @@ namespace SuperNewRoles.Roles
                 IsSuc = false;
                 SucCool = CustomOptions.EvilGamblerSucTime.GetFloat();
                 NotSucCool = CustomOptions.EvilGamblerNotSucTime.GetFloat();
-                var temp = CustomOptions.EvilGamblerSucpar.GetString().Replace("0%", "");
+                string temp = CustomOptions.EvilGamblerSucpar.GetString().Replace("0%", "");
                 SucPar = temp == "" ? 0 : int.Parse(temp);
             }
             public static bool GetSuc()
@@ -1254,7 +1254,7 @@ namespace SuperNewRoles.Roles
                 }
                 else if (MadKillerPair.ContainsValue(p.PlayerId))
                 {
-                    var key = MadKillerPair.GetKey(p.PlayerId);
+                    byte? key = MadKillerPair.GetKey(p.PlayerId);
                     return key == null ? null : ModHelpers.PlayerById((byte)key);
                 }
                 return null;
@@ -2502,7 +2502,7 @@ namespace SuperNewRoles.Roles
                     if (_playerDatas.Count != Datas.Count)
                     {
                         Dictionary<PlayerControl, PlayerControl> newdic = new();
-                        foreach (var data in Datas)
+                        foreach (KeyValuePair<byte, byte> data in Datas)
                         {
                             newdic.Add(ModHelpers.PlayerById(data.Key), ModHelpers.PlayerById(data.Value));
                         }

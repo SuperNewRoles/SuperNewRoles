@@ -181,7 +181,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                 {
                                     p.Data.IsDead = false;
                                     Winners.Add(p);
-                                    var writer = RPCHelper.StartRPC(CustomRPC.ShareWinner);
+                                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ShareWinner);
                                     writer.Write(p.PlayerId);
                                     writer.EndRPC();
                                 }
@@ -196,7 +196,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             }
             else
             {
-                var alives = 0;
+                int alives = 0;
                 FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
@@ -260,21 +260,21 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     if (IsTeamBattle)
                     {
                         float count = BROption.TeamAmount.GetFloat();
-                        var oneteamcount = Mathf.CeilToInt(CachedPlayer.AllPlayers.Count / count);
+                        int oneteamcount = Mathf.CeilToInt(CachedPlayer.AllPlayers.Count / count);
                         List<PlayerControl> target = new();
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
                             target.Add(p);
                         }
                         List<PlayerControl> TempTeam = new();
-                        var counttemp = target.Count;
+                        int counttemp = target.Count;
                         for (int i = 0; i < counttemp; i++)
                         {
                             SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] OneTeamCount:" + oneteamcount);
                             SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Index:" + i);
                             if (target.Count > 0)
                             {
-                                var index = ModHelpers.GetRandomIndex(target);
+                                int index = ModHelpers.GetRandomIndex(target);
                                 TempTeam.Add(target[index]);
                                 target.RemoveAt(index);
                                 SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Add");
@@ -365,7 +365,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     {
                         if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                         {
-                            foreach (var pc in CachedPlayer.AllPlayers)
+                            foreach (CachedPlayer pc in CachedPlayer.AllPlayers)
                             {
                                 pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
                             }

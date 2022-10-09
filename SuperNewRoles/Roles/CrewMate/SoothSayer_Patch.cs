@@ -22,8 +22,8 @@ namespace SuperNewRoles.Roles
         private static string namedate;
         static void SoothSayerOnClick(int Index, MeetingHud __instance)
         {
-            var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
-            var introdate = Target.GetRole();
+            PlayerControl Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
+            RoleId introdate = Target.GetRole();
             if (RoleClass.SoothSayer.DisplayMode)
             {
                 if (Target.IsImpostor()) namedate = "Impostor";
@@ -35,7 +35,7 @@ namespace SuperNewRoles.Roles
             {
                 namedate = IntroDate.GetIntroDate(introdate, Target).NameKey;
             }
-            var name = ModTranslation.GetString(namedate + "Name");
+            string name = ModTranslation.GetString(namedate + "Name");
             FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.GetString("SoothSayerGetChat"), Target.NameText().text, name));
 
             RoleClass.SoothSayer.Count--;
@@ -56,7 +56,7 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                    var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
+                    PlayerControl player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
                     if (player.IsAlive() && !RoleClass.SoothSayer.DisplayedPlayer.Contains(player.PlayerId) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
@@ -76,8 +76,8 @@ namespace SuperNewRoles.Roles
 
         static void SpiritOnClick(int Index, MeetingHud __instance)
         {
-            var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
-            var introdate = Target.GetRole();
+            PlayerControl Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
+            RoleId introdate = Target.GetRole();
             namedate = IntroDate.GetIntroDate(introdate, Target).NameKey;
             if (RoleClass.SpiritMedium.DisplayMode)
             {
@@ -90,7 +90,7 @@ namespace SuperNewRoles.Roles
             {
                 namedate = IntroDate.GetIntroDate(introdate, Target).NameKey;
             }
-            var name = ModTranslation.GetString(namedate + "Name");
+            string name = ModTranslation.GetString(namedate + "Name");
             FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.GetString("SoothSayerGetChat"), Target.NameText().text, name));
             RoleClass.SpiritMedium.MaxCount--;
             if (!RoleClass.SoothSayer.DisplayedPlayer.Contains(Target.PlayerId))
@@ -111,7 +111,7 @@ namespace SuperNewRoles.Roles
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
 
-                    var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
+                    PlayerControl player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
                     if (!player.Data.Disconnected && player.IsDead() && !RoleClass.SoothSayer.DisplayedPlayer.Contains(player.PlayerId) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;

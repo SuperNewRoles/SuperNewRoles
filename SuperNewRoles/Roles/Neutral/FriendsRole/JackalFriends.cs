@@ -29,7 +29,7 @@ namespace SuperNewRoles.Roles
                 default:
                     return false;
             }
-            var taskdata = TaskCount.TaskDate(p.Data).Item1;
+            int taskdata = TaskCount.TaskDate(p.Data).Item1;
             if (CheckTask <= taskdata)
             {
                 CheckedJackal.Add(p.PlayerId);

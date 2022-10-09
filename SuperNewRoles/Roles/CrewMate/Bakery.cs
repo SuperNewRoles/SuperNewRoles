@@ -35,7 +35,7 @@ namespace SuperNewRoles.Roles
 
                 PlayerControl player = RoleClass.Assassin.TriggerPlayer;
 
-                var exile = ModeHandler.IsMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.Main.RealExiled : exiled.Object;
+                PlayerControl exile = ModeHandler.IsMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.Main.RealExiled : exiled.Object;
                 if (exile != null && exile.IsRole(RoleId.Marine))
                 {
                     printStr = player.Data.PlayerName + ModTranslation.GetString("AssassinSucsess");
@@ -64,7 +64,7 @@ namespace SuperNewRoles.Roles
                 __instance.Text.text = string.Empty;
 
 
-                var exile = exiled.Object;
+                PlayerControl exile = exiled.Object;
                 if (exile != null && exile.IsRole(RoleId.Dictator))
                 {
                     printStr = exiled.PlayerName + ModTranslation.GetString("RevolutionistSucsess");
@@ -109,7 +109,7 @@ namespace SuperNewRoles.Roles
         public static string GetExileText()
         {
             //翻訳
-            var rand = new System.Random();
+            System.Random rand = new System.Random();
             return rand.Next(1, 10) == 1 ? ModTranslation.GetString("BakeryExileText2") : ModTranslation.GetString("BakeryExileText");
         }
 

@@ -21,7 +21,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                     if (p.PlayerId != 0)
                     {
                         p.RpcSetRoleDesync(RoleTypes.Impostor);//p.Data.Role.Role);
-                        foreach (var pc in CachedPlayer.AllPlayers)
+                        foreach (CachedPlayer pc in CachedPlayer.AllPlayers)
                         {
                             if (Main.Impostors.Contains(pc.PlayerId))
                             {
@@ -38,7 +38,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                     else
                     {
                         DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);//p.Data.Role.Role);
-                        foreach (var pc in CachedPlayer.AllPlayers)
+                        foreach (CachedPlayer pc in CachedPlayer.AllPlayers)
                         {
                             if (pc.PlayerId != 0)
                             {

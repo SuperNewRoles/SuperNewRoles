@@ -16,10 +16,10 @@ namespace SuperNewRoles.MapCustoms
             if (flag) return;
             if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustom.SpecimenVital.GetBool())
             {
-                var panel = GameObject.Find("panel_vitals");
+                GameObject panel = GameObject.Find("panel_vitals");
                 if (panel != null)
                 {
-                    var transform = panel.GetComponent<Transform>();
+                    Transform transform = panel.GetComponent<Transform>();
                     transform.SetPositionAndRotation(pos, transform.rotation);
                     flag = true;
                 }

@@ -70,10 +70,10 @@ namespace SuperNewRoles.Roles.CrewMate
         public static void SpawnFootprints()
         {
             if (RoleClass.Painter.CurrentTarget == null) throw new Exception("RoleClass.Painter.CurrentTargetがnullです");
-            foreach (var data in RoleClass.Painter.ActionDatas)
+            foreach (KeyValuePair<ActionType, List<Vector2>> data in RoleClass.Painter.ActionDatas)
             {
                 Logger.Info($"{data.Key}の数は{data.Value.Count}です");
-                foreach (var pos in data.Value)
+                foreach (Vector2 pos in data.Value)
                 {
                     Footprint print = new(-1f, false, RoleClass.Painter.CurrentTarget, new(pos.x, pos.y, 0.01f));
                     if (data.Key == ActionType.Death && RoleClass.Painter.IsDeathFootpointBig) print.footprint.transform.localScale *= 3f;
@@ -94,7 +94,7 @@ namespace SuperNewRoles.Roles.CrewMate
         {
             if (RoleClass.Painter.IsLocalActionSend && PlayerControl.LocalPlayer.IsAlive())
             {
-                var pos = CachedPlayer.LocalPlayer.transform.position;
+                Vector3 pos = CachedPlayer.LocalPlayer.transform.position;
                 byte[] buff = new byte[sizeof(float) * 2];
                 Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
                 Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));

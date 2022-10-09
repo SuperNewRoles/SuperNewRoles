@@ -35,9 +35,9 @@ namespace SuperNewRoles.Patches
             static void Postfix(VersionShower __instance)
             {
 
-                var amongUsLogo = GameObject.Find("bannerLogo_AmongUs");
+                GameObject amongUsLogo = GameObject.Find("bannerLogo_AmongUs");
                 if (amongUsLogo == null) return;
-                var credentials = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(__instance.text);
+                TextMeshPro credentials = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(__instance.text);
                 credentials.transform.position = new Vector3(0, 0f, 0);
                 //ブランチ名表示
                 string credentialsText = "";
@@ -53,7 +53,7 @@ namespace SuperNewRoles.Patches
                 credentials.fontSize *= 0.9f;
                 AutoUpdate.checkForUpdate(credentials);
 
-                var version = UnityEngine.Object.Instantiate(credentials);
+                TextMeshPro version = UnityEngine.Object.Instantiate(credentials);
                 version.transform.position = new Vector3(0, -0.35f, 0);
                 version.SetText($"{SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}");
 
@@ -139,7 +139,7 @@ namespace SuperNewRoles.Patches
                     Downloaded = true;
                     HttpClient http = new();
                     http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, OnlyIfCached = false };
-                    var response = await http.GetAsync(new Uri($"https://raw.githubusercontent.com/{SuperNewRolesPlugin.ModUrl}/master/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
+                    HttpResponseMessage response = await http.GetAsync(new Uri($"https://raw.githubusercontent.com/{SuperNewRolesPlugin.ModUrl}/master/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
                     try
                     {
                         if (response.StatusCode != HttpStatusCode.OK)
@@ -155,7 +155,7 @@ namespace SuperNewRoles.Patches
                         string json = await response.Content.ReadAsStringAsync();
                         JToken jobj = JObject.Parse(json);
 
-                        var devs = jobj["Devs"];
+                        JToken devs = jobj["Devs"];
                         for (JToken current = devs.First; current != null; current = current.Next)
                         {
                             if (current.HasValues)
@@ -164,7 +164,7 @@ namespace SuperNewRoles.Patches
                             }
                         }
 
-                        var Sponsers = jobj["Sponsers"];
+                        JToken Sponsers = jobj["Sponsers"];
                         for (JToken current = Sponsers.First; current != null; current = current.Next)
                         {
                             if (current.HasValues)
@@ -173,7 +173,7 @@ namespace SuperNewRoles.Patches
                             }
                         }
 
-                        var Translator = jobj["Translate"];
+                        JToken Translator = jobj["Translate"];
                         for (JToken current = Translator.First; current != null; current = current.Next)
                         {
                             if (current.HasValues)
@@ -192,40 +192,40 @@ namespace SuperNewRoles.Patches
             public static GameObject CreditsPopup;
             static void ViewBoosterPatch(MainMenuManager __instance)
             {
-                var template = __instance.transform.FindChild("StatsPopup");
-                var obj = GameObject.Instantiate(template, template.transform.parent).gameObject;
+                Transform template = __instance.transform.FindChild("StatsPopup");
+                GameObject obj = GameObject.Instantiate(template, template.transform.parent).gameObject;
                 CreditsPopup = obj;
                 GameObject.Destroy(obj.GetComponent<StatsPopup>());
-                var devtitletext = obj.transform.FindChild("StatNumsText_TMP");
+                Transform devtitletext = obj.transform.FindChild("StatNumsText_TMP");
                 devtitletext.GetComponent<TextMeshPro>().text = ModTranslation.GetString("Developer");
                 devtitletext.localPosition = new Vector3(-3.25f, -1.65f, -2f);
                 devtitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
-                var devtext = obj.transform.FindChild("StatsText_TMP");
+                Transform devtext = obj.transform.FindChild("StatsText_TMP");
                 devtext.localPosition = new Vector3(-1f, -1.65f, -2f);
                 devtext.localScale = new Vector3(1.25f, 1.25f, 1f);
                 devtext.GetComponent<TextMeshPro>().text = DevsData;
 
-                var boostertitletext = GameObject.Instantiate(devtitletext, obj.transform);
+                Transform boostertitletext = GameObject.Instantiate(devtitletext, obj.transform);
                 boostertitletext.GetComponent<TextMeshPro>().text = ModTranslation.GetString("Sponsor");
                 boostertitletext.localPosition = new Vector3(1.45f, -1.65f, -2f);
                 boostertitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
 
-                var boostertext = GameObject.Instantiate(devtext, obj.transform);
+                Transform boostertext = GameObject.Instantiate(devtext, obj.transform);
                 boostertext.localPosition = new Vector3(3f, -1.65f, -2f);
                 boostertext.localScale = new Vector3(1.25f, 1.25f, 1f);
                 boostertext.GetComponent<TextMeshPro>().text = SponsersData;
 
-                var transtitletext = GameObject.Instantiate(devtitletext, obj.transform);
+                Transform transtitletext = GameObject.Instantiate(devtitletext, obj.transform);
                 transtitletext.GetComponent<TextMeshPro>().text = ModTranslation.GetString("Translator");
                 transtitletext.localPosition = new Vector3(0.5f, -4.5f, -2f);
                 transtitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
 
-                var transtext = GameObject.Instantiate(devtext, obj.transform);
+                Transform transtext = GameObject.Instantiate(devtext, obj.transform);
                 transtext.localPosition = new Vector3(3f, -5f, -2f);
                 transtext.localScale = new Vector3(1.5f, 1.5f, 1f);
                 transtext.GetComponent<TextMeshPro>().text = TransData;
 
-                var textobj = obj.transform.FindChild("Title_TMP");
+                Transform textobj = obj.transform.FindChild("Title_TMP");
                 GameObject.Destroy(textobj.GetComponent<TextTranslatorTMP>());
                 textobj.GetComponent<TextMeshPro>().text = ModTranslation.GetString("DevAndSpnTitle");
                 textobj.localScale = new Vector3(1.5f, 1.5f, 1f);
@@ -244,7 +244,7 @@ namespace SuperNewRoles.Patches
                     else
                         break;
                 }
-                var AnnouncementPopup = __instance.transform.FindChild("Announcement").GetComponent<AnnouncementPopUp>();
+                AnnouncementPopUp AnnouncementPopup = __instance.transform.FindChild("Announcement").GetComponent<AnnouncementPopUp>();
                 if (AnnouncementPopup != null)
                 {
                     AnnouncementPopup.Show();
@@ -271,14 +271,14 @@ namespace SuperNewRoles.Patches
 
                 DestroyableSingleton<ModManager>.Instance.ShowModStamp();
 
-                var amongUsLogo = GameObject.Find("bannerLogo_AmongUs");
+                GameObject amongUsLogo = GameObject.Find("bannerLogo_AmongUs");
                 if (amongUsLogo != null)
                 {
                     amongUsLogo.transform.localScale *= 0.6f;
                     amongUsLogo.transform.position += Vector3.up * 0.25f;
                 }
 
-                var snrLogo = new GameObject("bannerLogo");
+                GameObject snrLogo = new GameObject("bannerLogo");
                 snrLogo.transform.position = Vector3.up;
                 renderer = snrLogo.AddComponent<SpriteRenderer>();
                 LoadSprites();
@@ -291,17 +291,17 @@ namespace SuperNewRoles.Patches
                 SuperNewRolesPlugin.Logger.LogInfo("[Submerged]Passage ahhhhhh!:" + Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"));
                 //サブマージド追加ボタン
 
-                var template = GameObject.Find("ExitGameButton");
+                GameObject template = GameObject.Find("ExitGameButton");
                 if (template == null) return;
 
-                var button = UnityEngine.Object.Instantiate(template, null);
+                GameObject button = UnityEngine.Object.Instantiate(template, null);
                 button.transform.localPosition = new Vector3(button.transform.localPosition.x, button.transform.localPosition.y + 0.6f, button.transform.localPosition.z);
 
                 PassiveButton passiveButton = button.GetComponent<PassiveButton>();
                 passiveButton.OnClick = new Button.ButtonClickedEvent();
                 passiveButton.OnClick.AddListener((UnityEngine.Events.UnityAction)onClick);
 
-                var text = button.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+                TMP_Text text = button.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
                 {
                     text.SetText(ModTranslation.GetString("サブマージドを適用する"));
@@ -359,7 +359,7 @@ namespace SuperNewRoles.Patches
                 {
                     HttpClient httpa = new();
                     httpa.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Downloader");
-                    var responsea = await httpa.GetAsync(new Uri("https://api.github.com/repos/submergedAmongUs/submerged/releases/latest"), HttpCompletionOption.ResponseContentRead);
+                    HttpResponseMessage responsea = await httpa.GetAsync(new Uri("https://api.github.com/repos/submergedAmongUs/submerged/releases/latest"), HttpCompletionOption.ResponseContentRead);
                     if (responsea.StatusCode != HttpStatusCode.OK || responsea.Content == null)
                     {
                         System.Console.WriteLine("Server returned no data: " + responsea.StatusCode.ToString());
@@ -385,7 +385,7 @@ namespace SuperNewRoles.Patches
                     }
                     HttpClient http = new();
                     http.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Downloader");
-                    var response = await http.GetAsync(new Uri(url), HttpCompletionOption.ResponseContentRead);
+                    HttpResponseMessage response = await http.GetAsync(new Uri(url), HttpCompletionOption.ResponseContentRead);
                     if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
                     {
                         System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
@@ -393,9 +393,9 @@ namespace SuperNewRoles.Patches
                     }
                     string code = Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll");
 
-                    using (var responseStream = await response.Content.ReadAsStreamAsync())
+                    using (Stream responseStream = await response.Content.ReadAsStreamAsync())
                     {
-                        using var fileStream = File.Create(code);
+                        using FileStream fileStream = File.Create(code);
                         // probably want to have proper name here
                         responseStream.CopyTo(fileStream);
                     }

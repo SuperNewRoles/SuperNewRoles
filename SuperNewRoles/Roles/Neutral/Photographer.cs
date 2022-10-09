@@ -47,7 +47,7 @@ namespace SuperNewRoles.Roles.Neutral
 
                 if (!(distance > ShipStatus.Instance.CalculateLightRadius(CachedPlayer.LocalPlayer.Data) * distMod || anythingBetween))
                 {
-                    var rend = p.PlayerControl.MyRend();
+                    SpriteRenderer rend = p.PlayerControl.MyRend();
                     if (p == null || p.PlayerControl == null || rend == null) continue;
                     rend.material.SetFloat("_Outline", 1f);
                     rend.material.SetColor("_OutlineColor", RoleClass.Photographer.color);
@@ -70,7 +70,7 @@ namespace SuperNewRoles.Roles.Neutral
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
 
             //SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
-            var reason = (GameOverReason)CustomGameOverReason.PhotographerWin;
+            GameOverReason reason = (GameOverReason)CustomGameOverReason.PhotographerWin;
             if (AmongUsClient.Instance.AmHost)
             {
                 CheckGameEndPatch.CustomEndGame(reason, false);

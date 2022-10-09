@@ -75,7 +75,7 @@ namespace SuperNewRoles.Patches
         {
             foreach (PlayerControl target in CachedPlayer.AllPlayers)
             {
-                var rend = target.MyRend();
+                SpriteRenderer rend = target.MyRend();
                 if (target == null || rend == null) continue;
                 if (rend.material.GetFloat("_Outline") == 0f) continue;
                 rend.material.SetFloat("_Outline", 0f);
@@ -118,10 +118,10 @@ namespace SuperNewRoles.Patches
 
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
-                var MyRole = PlayerControl.LocalPlayer.GetRole();
+                RoleId MyRole = PlayerControl.LocalPlayer.GetRole();
                 SetBasePlayerOutlines();
                 LadderDead.FixedUpdate();
-                var ThisMode = ModeHandler.GetMode();
+                ModeId ThisMode = ModeHandler.GetMode();
                 if (ThisMode == ModeId.Default)
                 {
                     SabotageManager.Update();
@@ -238,7 +238,7 @@ namespace SuperNewRoles.Patches
                             case RoleId.SideKiller:
                                 if (!RoleClass.SideKiller.IsUpMadKiller)
                                 {
-                                    var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
+                                    PlayerControl sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
                                     if (sideplayer != null)
                                     {
                                         sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);

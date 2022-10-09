@@ -106,7 +106,7 @@ namespace SuperNewRoles.Roles.Neutral
         {
             public static void Postfix(DoorConsole __instance)
             {
-                __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
+                __instance.CanUse(PlayerControl.LocalPlayer.Data, out bool canUse, out bool _);
                 if (canUse)
                 {
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSucsessChance(RoleClass.Spelunker.DoorOpenChance))

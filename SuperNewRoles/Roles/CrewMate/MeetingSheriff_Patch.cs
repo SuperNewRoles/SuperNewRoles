@@ -94,7 +94,7 @@ namespace SuperNewRoles.Roles
     {
         public static bool IsMeetingSheriffKill(PlayerControl Target)
         {
-            var roledata = CountChanger.GetRoleType(Target);
+            TeamRoleType roledata = CountChanger.GetRoleType(Target);
             return (roledata == TeamRoleType.Impostor)
                 || (Target.IsMadRoles() && RoleClass.MeetingSheriff.MadRoleKill)
                 || (Target.IsFriendRoles() && RoleClass.MeetingSheriff.MadRoleKill)
@@ -102,10 +102,10 @@ namespace SuperNewRoles.Roles
         }
         static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
         {
-            var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
-            var misfire = !IsMeetingSheriffKill(Target);
-            var TargetID = Target.PlayerId;
-            var LocalID = CachedPlayer.LocalPlayer.PlayerId;
+            PlayerControl Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
+            bool misfire = !IsMeetingSheriffKill(Target);
+            byte TargetID = Target.PlayerId;
+            byte LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
             RPCProcedure.MeetingSheriffKill(LocalID, TargetID, misfire);
 
@@ -129,7 +129,7 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                    var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
+                    PlayerControl player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
                     if (player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;

@@ -128,7 +128,7 @@ namespace SuperNewRoles.Patches
                         }
                         else
                         {
-                            var client = AmongUsClient.Instance.GetHost();
+                            InnerNet.ClientData client = AmongUsClient.Instance.GetHost();
                             PlayerVersion PV = VersionPlayers[client.Id];
                             int diff = SuperNewRolesPlugin.Version.CompareTo(PV.version);
                             if (diff > 0)

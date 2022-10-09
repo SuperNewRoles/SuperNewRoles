@@ -20,7 +20,7 @@ namespace SuperNewRoles.CustomCosmetics
             {
                 byte[] bytes = File.ReadAllBytes(path);
                 Texture2D texture = new(2, 2);
-                var Array = (Il2CppStructArray<byte>)bytes;
+                Il2CppStructArray<byte> Array = (Il2CppStructArray<byte>)bytes;
                 LoadImage.Invoke(texture.Pointer, Array.Pointer, false);
 
                 Rect rect = new(0f, 0f, texture.width, texture.height);

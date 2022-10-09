@@ -30,7 +30,7 @@ namespace SuperNewRoles
         }
         private static void SendToFile(string text, string callerMember = "", LogLevel level = LogLevel.Info, string tag = "", int lineNumber = 0, string fileName = "")
         {
-            var logger = SuperNewRolesPlugin.Logger;
+            BepInEx.Logging.ManualLogSource logger = SuperNewRolesPlugin.Logger;
             string t = DateTime.Now.ToString("HH:mm:ss.fff");
             if (sendToGameList.Contains(tag) || isAlsoInGame) SendInGame($"[{tag}]{text}");
             text = text.Replace("\r", "\\r").Replace("\n", "\\n");

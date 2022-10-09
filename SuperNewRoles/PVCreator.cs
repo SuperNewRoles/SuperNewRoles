@@ -78,7 +78,7 @@ namespace SuperNewRoles
             get
             {
                 List<int> lists = new();
-                var Color = Palette.PlayerColors.ToList();
+                List<Color32> Color = Palette.PlayerColors.ToList();
                 Color.RemoveAt(CachedPlayer.LocalPlayer.Data.DefaultOutfit.ColorId);
                 for (int i = 0; i < posdatas.Count; i++)
                 {
@@ -101,7 +101,7 @@ namespace SuperNewRoles
         public static void End()
         {
             Is = false;
-            var text = "\nnew(){";
+            string text = "\nnew(){";
             foreach (Vector2 pos in poss)
             {
                 text += $"new({pos.x}f,{pos.y}f),";
@@ -112,7 +112,7 @@ namespace SuperNewRoles
             Logger.Info("");
             Logger.Info("");
             text = "new(){";
-            foreach (var data in ventdatas)
+            foreach ((double, int) data in ventdatas)
             {
                 text += $"({data.Item1}f,{data.Item2}),";
             }

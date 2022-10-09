@@ -59,7 +59,7 @@ namespace SuperNewRoles.CustomObject
         {
             //0～2はアニメーションあり(index:8)
             //3～4はシンプル
-            var type = ModHelpers.GetRandomInt(4);
+            int type = ModHelpers.GetRandomInt(4);
             type = 4;
             SpriteType = type;
             switch (type)
@@ -86,7 +86,7 @@ namespace SuperNewRoles.CustomObject
             Force = force;
             gameObject = new("SluggerDeadBody");
             Renderer = gameObject.AddComponent<SpriteRenderer>();
-            var body = gameObject.AddComponent<Rigidbody2D>();
+            Rigidbody2D body = gameObject.AddComponent<Rigidbody2D>();
             body.gravityScale = 0f;
             Vector3 kakeru = Source.transform.position - Player.transform.position;
             body.velocity = kakeru * -10f;

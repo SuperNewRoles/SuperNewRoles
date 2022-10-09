@@ -32,8 +32,8 @@ namespace SuperNewRoles.Roles
         /// </summary>
         public static bool GetIsBomb(PlayerControl source, PlayerControl player, float scope)
         {
-            var position = source.transform.position;
-            var playerposition = player.transform.position;
+            UnityEngine.Vector3 position = source.transform.position;
+            UnityEngine.Vector3 playerposition = player.transform.position;
             if ((position.x + scope >= playerposition.x) && (playerposition.x >= position.x - scope))
             {
                 if ((position.y + scope >= playerposition.y) && (playerposition.y >= position.y - scope))

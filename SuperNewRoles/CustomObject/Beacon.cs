@@ -55,7 +55,7 @@ namespace SuperNewRoles.CustomObject
             BeaconRenderer = GameObject.AddComponent<SpriteRenderer>();
             BeaconRenderer.sprite = GetBeaconAnimationSprite(0);
             // Only render the beacon for the conjurer
-            var playerIsTrickster = PlayerControl.LocalPlayer;
+            PlayerControl playerIsTrickster = PlayerControl.LocalPlayer;
             GameObject.SetActive(playerIsTrickster);
 
             AllBeacons.Add(this);
@@ -65,7 +65,7 @@ namespace SuperNewRoles.CustomObject
         public static void ClearBeacons()
         {
             int[] num = { -1, -2, -3 };
-            foreach (var n in num)
+            foreach (int n in num)
             {
                 Logger.Info($"Beacon{Conjurer.Count + n}をClearします", "ClearBeacons");
                 GameObject.Find($"Beacon{Conjurer.Count + n}")?.SetActive(false);

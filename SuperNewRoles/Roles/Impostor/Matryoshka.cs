@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles.Impostor
     {
         public static void FixedUpdate()
         {
-            foreach (var Data in RoleClass.Matryoshka.Data)
+            foreach (KeyValuePair<byte, DeadBody> Data in RoleClass.Matryoshka.Data)
             {
                 if (Data.Value == null) continue;
                 Data.Value.Reported = !CustomOptions.MatryoshkaWearReport.GetBool();

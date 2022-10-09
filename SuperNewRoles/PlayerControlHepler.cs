@@ -43,19 +43,19 @@ namespace SuperNewRoles
 
             List<IntroDate> infos = new() { IntroDate.GetIntroDate(player.GetRole(), player) };
 
-            var toRemove = new List<PlayerTask>();
-            var aaa = false;
-            var mytxt = "";
+            List<PlayerTask> toRemove = new List<PlayerTask>();
+            bool aaa = false;
+            string mytxt = "";
             foreach (PlayerTask t in player.myTasks)
             {
-                var textTask = t.gameObject.GetComponent<ImportantTextTask>();
+                ImportantTextTask textTask = t.gameObject.GetComponent<ImportantTextTask>();
                 if (textTask != null)
                 {
                     if (aaa == false)
                     {
                         mytxt = textTask.Text;
                     }
-                    var info = infos.FirstOrDefault(x => textTask.Text.StartsWith(ModTranslation.GetString(x.NameKey + "Name")));
+                    IntroDate info = infos.FirstOrDefault(x => textTask.Text.StartsWith(ModTranslation.GetString(x.NameKey + "Name")));
                     if (info != null)
                         infos.Remove(info); // TextTask for this RoleInfo does not have to be added, as it already exists
                     else
@@ -73,7 +73,7 @@ namespace SuperNewRoles
             // Add TextTask for remaining RoleInfos
             foreach (IntroDate roleInfo in infos)
             {
-                var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
+                ImportantTextTask task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
 
                 task.Text = CustomOptions.Cs(roleInfo.color, $"{ModTranslation.GetString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
@@ -83,7 +83,7 @@ namespace SuperNewRoles
                 }
                 if (!player.IsGhostRole(RoleId.DefaultRole))
                 {
-                    var GhostRoleInfo = IntroDate.GetIntroDate(player.GetGhostRole(), player);
+                    IntroDate GhostRoleInfo = IntroDate.GetIntroDate(player.GetGhostRole(), player);
                     task.Text += "\n" + CustomOptions.Cs(GhostRoleInfo.color, $"{ModTranslation.GetString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
                 }
 

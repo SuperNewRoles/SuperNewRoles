@@ -5,7 +5,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
     {
         public static bool CheckEndGame(ShipStatus __instance)
         {
-            var statistics = new PlayerStatistics();
+            PlayerStatistics statistics = new PlayerStatistics();
             return !CheckAndEndGameForSabotageWin(__instance)
             && !CheckAndEndGameForImpostorWin(__instance, statistics)
 && !CheckAndEndGameForCrewmateWin(__instance, statistics)
@@ -62,7 +62,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
         {
             if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive)
             {
-                var endReason = TempData.LastDeathReason switch
+                GameOverReason endReason = TempData.LastDeathReason switch
                 {
                     DeathReason.Exile => GameOverReason.ImpostorByVote,
                     DeathReason.Kill => GameOverReason.ImpostorByKill,

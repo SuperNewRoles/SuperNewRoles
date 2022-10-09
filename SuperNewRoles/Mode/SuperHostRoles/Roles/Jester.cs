@@ -15,12 +15,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             if (!AmongUsClient.Instance.AmHost) return;
             if (exiled.Object.IsRole(RoleId.Jester))
             {
-                var (Complete, all) = TaskCount.TaskDateNoClearCheck(exiled);
+                (int Complete, int all) = TaskCount.TaskDateNoClearCheck(exiled);
                 if (!RoleClass.Jester.IsJesterTaskClearWin || Complete >= all)
                 {
                     try
                     {
-                        var Writer = RPCHelper.StartRPC(CustomRPC.ShareWinner);
+                        Hazel.MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.ShareWinner);
                         Writer.Write(exiled.Object.PlayerId);
                         Writer.EndRPC();
                         RPCProcedure.ShareWinner(exiled.Object.PlayerId);
@@ -28,7 +28,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         Writer.Write((byte)CustomGameOverReason.JesterWin);
                         Writer.EndRPC();
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.JesterWin);
-                        var winplayers = new List<PlayerControl>
+                        List<PlayerControl> winplayers = new List<PlayerControl>
                         {
                             exiled.Object
                         };
@@ -48,12 +48,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             }
             else if (exiled.Object.IsRole(RoleId.MadJester))
             {
-                var (Complete, all) = TaskCount.TaskDateNoClearCheck(exiled);
+                (int Complete, int all) = TaskCount.TaskDateNoClearCheck(exiled);
                 if (!RoleClass.MadJester.IsMadJesterTaskClearWin || Complete >= all)
                 {
                     try
                     {
-                        var Writer = RPCHelper.StartRPC(CustomRPC.ShareWinner);
+                        Hazel.MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.ShareWinner);
                         Writer.Write(exiled.Object.PlayerId);
                         Writer.EndRPC();
                         RPCProcedure.ShareWinner(exiled.Object.PlayerId);
@@ -61,7 +61,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         Writer.Write((byte)CustomGameOverReason.ImpostorWin);
                         Writer.EndRPC();
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.ImpostorWin);
-                        var winplayers = new List<PlayerControl>
+                        List<PlayerControl> winplayers = new List<PlayerControl>
                         {
                             exiled.Object
                         };

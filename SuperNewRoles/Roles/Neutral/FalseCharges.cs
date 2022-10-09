@@ -45,7 +45,7 @@ namespace SuperNewRoles.Roles
             {
                 if (exiled != null)
                 {
-                    foreach (var data in RoleClass.FalseCharges.FalseChargePlayers)
+                    foreach (KeyValuePair<byte, byte> data in RoleClass.FalseCharges.FalseChargePlayers)
                     {
                         if (exiled.PlayerId == data.Value && !exiled.Data.Disconnected)
                         {
@@ -60,8 +60,8 @@ namespace SuperNewRoles.Roles
                                             p.RpcMurderPlayer(p);
                                         }
                                     }
-                                    var player = ModHelpers.PlayerById(data.Key);
-                                    var Writer = RPCHelper.StartRPC(CustomRPC.ShareWinner);
+                                    PlayerControl player = ModHelpers.PlayerById(data.Key);
+                                    MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.ShareWinner);
                                     Writer.Write(player.PlayerId);
                                     Writer.EndRPC();
                                     RPCProcedure.ShareWinner(player.PlayerId);
@@ -69,7 +69,7 @@ namespace SuperNewRoles.Roles
                                     Writer.Write((byte)CustomGameOverReason.FalseChargesWin);
                                     Writer.EndRPC();
                                     RPCProcedure.SetWinCond((byte)CustomGameOverReason.FalseChargesWin);
-                                    var winplayers = new List<PlayerControl>
+                                    List<PlayerControl> winplayers = new List<PlayerControl>
                                     {
                                         player
                                     };
@@ -89,7 +89,7 @@ namespace SuperNewRoles.Roles
                         }
                     }
                 }
-                foreach (var data in RoleClass.FalseCharges.AllTurns)
+                foreach (KeyValuePair<byte, int> data in RoleClass.FalseCharges.AllTurns)
                 {
                     RoleClass.FalseCharges.AllTurns[data.Key]--;
                 }

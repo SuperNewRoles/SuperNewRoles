@@ -41,21 +41,21 @@ namespace SuperNewRoles
             [HarmonyTargetMethod]
             public static MethodBase TargetMethod()
             {
-                var type = typeof(PlayerControl).GetNestedTypes(AccessTools.all).FirstOrDefault(t => t.Name.Contains("Start"));
+                Type type = typeof(PlayerControl).GetNestedTypes(AccessTools.all).FirstOrDefault(t => t.Name.Contains("Start"));
                 return AccessTools.Method(type, nameof(IEnumerator.MoveNext));
             }
 
             [HarmonyPostfix]
             public static void SetLocalPlayer()
             {
-                var localPlayer = PlayerControl.LocalPlayer;
+                PlayerControl localPlayer = PlayerControl.LocalPlayer;
                 if (!localPlayer)
                 {
                     CachedPlayer.LocalPlayer = null;
                     return;
                 }
 
-                var cached = CachedPlayer.AllPlayers.FirstOrDefault(p => p.PlayerControl.Pointer == localPlayer.Pointer);
+                CachedPlayer cached = CachedPlayer.AllPlayers.FirstOrDefault(p => p.PlayerControl.Pointer == localPlayer.Pointer);
                 if (cached != null)
                 {
                     CachedPlayer.LocalPlayer = cached;
@@ -69,7 +69,7 @@ namespace SuperNewRoles
         public static void CachePlayerPatch(PlayerControl __instance)
         {
             if (__instance.notRealPlayer) return;
-            var player = new CachedPlayer
+            CachedPlayer player = new CachedPlayer
             {
                 transform = __instance.transform,
                 PlayerControl = __instance,
@@ -79,7 +79,7 @@ namespace SuperNewRoles
             CachedPlayer.AllPlayers.Add(player);
             CachedPlayer.PlayerPtrs[__instance.Pointer] = player;
 
-            foreach (var cachedPlayer in CachedPlayer.AllPlayers.ToArray())
+            foreach (CachedPlayer cachedPlayer in CachedPlayer.AllPlayers.ToArray())
             {
                 if (!cachedPlayer.PlayerControl || !cachedPlayer.PlayerPhysics || !cachedPlayer.NetTransform || !cachedPlayer.transform)
                 {

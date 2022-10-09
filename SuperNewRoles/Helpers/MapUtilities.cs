@@ -28,10 +28,10 @@ namespace SuperNewRoles
         {
             if (!CachedShipStatus) return;
 
-            var systems = CachedShipStatus.Systems;
+            Il2CppSystem.Collections.Generic.Dictionary<SystemTypes, ISystemType> systems = CachedShipStatus.Systems;
             if (systems.Count <= 0) return;
 
-            foreach (var systemTypes in SystemTypeHelpers.AllTypes)
+            foreach (SystemTypes systemTypes in SystemTypeHelpers.AllTypes)
             {
                 if (!systems.ContainsKey(systemTypes)) continue;
                 _systems[systemTypes] = systems[systemTypes].TryCast<Object>();

@@ -26,7 +26,7 @@ namespace SuperNewRoles.Roles.Neutral
                 Writer.EndRPC();
                 RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
                 //SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
-                var reason = (GameOverReason)CustomGameOverReason.HitmanWin;
+                GameOverReason reason = (GameOverReason)CustomGameOverReason.HitmanWin;
                 if (AmongUsClient.Instance.AmHost)
                 {
                     CheckGameEndPatch.CustomEndGame(reason, false);
@@ -71,7 +71,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
                 if (RoleClass.Hitman.Target != null)
                 {
-                    foreach (var icondata in MapOptions.MapOption.playerIcons)
+                    foreach (KeyValuePair<byte, PoolablePlayer> icondata in MapOptions.MapOption.playerIcons)
                     {
                         if (icondata.Key == RoleClass.Hitman.Target.PlayerId)
                         {

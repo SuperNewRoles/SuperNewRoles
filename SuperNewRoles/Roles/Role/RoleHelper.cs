@@ -1072,7 +1072,7 @@ namespace SuperNewRoles
         }
         public static bool IsClearTask(this PlayerControl player)
         {
-            var IsTaskClear = false;
+            bool IsTaskClear = false;
             if (player.IsImpostor()) IsTaskClear = true;
             switch (player.GetRole())
             {

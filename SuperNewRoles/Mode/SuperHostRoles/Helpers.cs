@@ -20,7 +20,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
             if (player == null) return;
             if (seer == null) seer = player;
-            var clientId = seer.GetClientId();
+            int clientId = seer.GetClientId();
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.Reliable, clientId);
             writer.Write((ushort)role);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -31,7 +31,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             //seer: 上の変更を確認することができるプレイヤー
             if (player == null) return;
             if (seer == null) seer = player;
-            var clientId = seer.GetClientId();
+            int clientId = seer.GetClientId();
             SuperNewRolesPlugin.Logger.LogInfo("(Desync => " + seer.Data.PlayerName + " ) " + player.Data.PlayerName + " => " + role);
             sender.StartMessage(clientId)
                 .StartRpc(player.NetId, RpcCalls.SetRole)
@@ -64,8 +64,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             else
             {
-                var crs = CustomRpcSender.Create("RpcShowGuardEffect");
-                var clientId = shower.GetClientId();
+                CustomRpcSender crs = CustomRpcSender.Create("RpcShowGuardEffect");
+                int clientId = shower.GetClientId();
                 Logger.Info($"非Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
                 crs.StartMessage(clientId);
                 crs.StartRpc(shower.NetId, (byte)RpcCalls.ProtectPlayer)// 守護を始める

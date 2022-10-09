@@ -87,7 +87,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 hats = PlayerCustomizationMenu.Instance.transform.FindChild("HatsGroup").GetComponentsInChildren<HatParent>();
             }
             HatsTab hatstab = PlayerCustomizationMenu.Instance.transform.FindChild("HatsGroup").GetComponent<HatsTab>();
-            foreach (var data in CustomHats.HatsTabOnEnablePatch.Chips)
+            foreach (ColorChip data in CustomHats.HatsTabOnEnablePatch.Chips)
             {
                 SuperNewRolesPlugin.Logger.LogInfo(data + "をDestroy");
                 GameObject.Destroy(data);
@@ -213,7 +213,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             List<PoolablePlayer> presetplayers = new();
             for (float i = 0; i < 10; i++)
             {
-                var obj = GameObject.Instantiate(ColorButton, PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup"));
+                ColorChip obj = GameObject.Instantiate(ColorButton, PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup"));
                 Set(obj.Button, (int)i);
                 obj.Button.OnMouseOver = new();
                 obj.Button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => obj.GetComponent<SpriteRenderer>().color = Color.yellow));
@@ -224,7 +224,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 GameObject.Destroy(obj.GetComponent<BoxCollider2D>());
                 obj.Button.Colliders = new List<Collider2D>() { obj.gameObject.AddComponent<PolygonCollider2D>() }.ToArray();
                 obj.transform.localPosition = i > 4 ? new Vector3(-1.2f + ((i - 5) * 1.7f), -0.75f, 4) : new Vector3(-1.2f + (i * 1.7f), 1.6f, 4);
-                var player = GameObject.Instantiate(PlayerCustomizationMenu.Instance.PreviewArea, obj.transform);
+                PoolablePlayer player = GameObject.Instantiate(PlayerCustomizationMenu.Instance.PreviewArea, obj.transform);
                 player.transform.localScale = new(0.2f, 0.135f, 0.25f);
                 player.transform.localPosition = new();
                 obj.gameObject.SetActive(true);

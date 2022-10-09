@@ -350,7 +350,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         LowerInfoText.fontSizeMin = 2.0f;
                         LowerInfoText.fontSizeMax = 2.0f;
                     }
-                    __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
+                    __instance.CanUse(PlayerControl.LocalPlayer.Data, out bool canUse, out bool _);
                     if (canUse)
                     {
                         LowerInfoText.text = "Escで実験から抜ける";
@@ -380,7 +380,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                 }
                 else if (__instance.name == "secretroom_teleport-console")
                 {
-                    __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
+                    __instance.CanUse(PlayerControl.LocalPlayer.Data, out bool canUse, out bool _);
                     if (canUse)
                     {
                         if (RoleHelpers.IsComms()) return false;
@@ -390,7 +390,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         RPCHelper.EndRPC(writer);
                         SetSecretRoomTeleportStatus(Status.UseConsole, CachedPlayer.LocalPlayer.PlayerId, 0);
                         ViewMinigame();
-                        var minigame = GameObject.FindObjectOfType<VitalsMinigame>();
+                        VitalsMinigame minigame = GameObject.FindObjectOfType<VitalsMinigame>();
                         minigame.name = "secretroom_teleport-console";
                         minigame.BatteryText.text = "実験を開始する";
                         minigame.BatteryText.color = Color.white;
@@ -404,7 +404,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         leftpool.transform.localScale = new Vector3(1, 1, 1);
                         //leftpool.UpdateFromLocalPlayer(PlayerMaterial.MaskType.ComplexUI);
                         leftpool.cosmetics.colorBlindText.transform.localPosition = new Vector3(0.3f, -0.251f, -0.5f);
-                        var lefttext = leftpool.NameText();
+                        TextMeshPro lefttext = leftpool.NameText();
                         lefttext.gameObject.SetActive(true);
                         lefttext.text = CachedPlayer.LocalPlayer.Data.PlayerName;
                         lefttext.transform.localPosition = new Vector3(0, 1, -0.5f);
@@ -419,7 +419,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         //rightpool.UpdateFromLocalPlayer(PlayerMaterial.MaskType.ComplexUI);
                         rightpool.cosmetics.colorBlindText.transform.localPosition = new Vector3(-0.3f, -0.251f, -0.5f);
                         rightpool.cosmetics.colorBlindText.transform.localScale = new Vector3(-3, 3, 3);
-                        var righttext = rightpool.NameText();
+                        TextMeshPro righttext = rightpool.NameText();
                         righttext.gameObject.SetActive(true);
                         righttext.text = CachedPlayer.LocalPlayer.Data.PlayerName;
                         righttext.transform.localPosition = new Vector3(0, 1, -0.5f);
@@ -427,16 +427,16 @@ namespace SuperNewRoles.MapCustoms.Airship
                         rightpool.name = "right";
                         right = rightpool;
 
-                        var timetext = GameObject.Instantiate(rightpool.NameText(), minigame.transform);
+                        TextMeshPro timetext = GameObject.Instantiate(rightpool.NameText(), minigame.transform);
                         timetext.gameObject.SetActive(true);
                         timetext.GetComponent<TextMeshPro>().characterWidthAdjustment = 10f;
                         timetext.text = "";
                         timetext.transform.localPosition = new Vector3(0, 1, -0.5f);
                         timetext.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
 
-                        var startbutton = GameObject.Instantiate(minigame.transform.FindChild("CloseButton"), minigame.transform);
+                        Transform startbutton = GameObject.Instantiate(minigame.transform.FindChild("CloseButton"), minigame.transform);
                         startbutton.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SecretRoom_Aislehjhrtjh.png", 115f);
-                        var button = startbutton.GetComponent<PassiveButton>();
+                        PassiveButton button = startbutton.GetComponent<PassiveButton>();
                         startbutton.transform.localScale = new Vector3(1, 20, 1);
                         button.OnClick = new();
                         bool Is = false;
@@ -449,7 +449,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                                 writer.Write((byte)Status.Wait);
                                 RPCHelper.EndRPC(writer);
                                 Is = true;
-                                var obj = GameObject.FindObjectOfType<VitalsMinigame>();
+                                VitalsMinigame obj = GameObject.FindObjectOfType<VitalsMinigame>();
                                 obj.BatteryText.text = "処理中...";
                                 new LateTask(() =>
                                 {
@@ -594,7 +594,7 @@ namespace SuperNewRoles.MapCustoms.Airship
         }
         static void ViewMinigame()
         {
-            var moto = PlayerControl.LocalPlayer.Data.Role.Role;
+            RoleTypes moto = PlayerControl.LocalPlayer.Data.Role.Role;
             DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
             CachedPlayer.LocalPlayer.Data.Role.TryCast<ScientistRole>().UseAbility();
             DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, moto);
@@ -612,7 +612,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                 console.usableDistance = Distance;
                 console.TaskTypes = new TaskTypes[0];
                 console.ValidTasks = new UnhollowerBaseLib.Il2CppReferenceArray<TaskSet>(0);
-                var list = ShipStatus.Instance.AllConsoles.ToList();
+                List<Console> list = ShipStatus.Instance.AllConsoles.ToList();
                 list.Add(console);
                 ShipStatus.Instance.AllConsoles = new UnhollowerBaseLib.Il2CppReferenceArray<Console>(list.ToArray());
             }

@@ -85,7 +85,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 { ModTranslation.GetString("SamuraiName"), IntroDate.SamuraiIntro },
                 { ModTranslation.GetString("BlackCatName"), IntroDate.BlackCatIntro },
             };
-            foreach (var data in NameData)
+            foreach (KeyValuePair<string, IntroDate> data in NameData)
             {
                 if (data.Key == role)
                 {

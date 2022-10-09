@@ -106,7 +106,7 @@ namespace SuperNewRoles.Roles
 
             public static void swapRole(PlayerControl p1, PlayerControl p2)
             {
-                var index = players.FindIndex(x => x.player == p1);
+                int index = players.FindIndex(x => x.player == p1);
                 if (index >= 0)
                 {
                     players[index].player = p2;

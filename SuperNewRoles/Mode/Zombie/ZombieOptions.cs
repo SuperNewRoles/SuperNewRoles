@@ -28,7 +28,7 @@ namespace SuperNewRoles.Mode.Zombie
         static float GetSpeed(float speed) { return speed <= 0 ? 0.001f : speed; }
         public static void FirstChangeSettings()
         {
-            var optdata = SyncSetting.OptionData.DeepCopy();
+            GameOptionsData optdata = SyncSetting.OptionData.DeepCopy();
             optdata.CrewLightMod = GetSpeed(ZombieCommingLightOption.GetFloat());
             optdata.ImpostorLightMod = GetSpeed(ZombieCommingSpeedOption.GetFloat());
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
@@ -41,7 +41,7 @@ namespace SuperNewRoles.Mode.Zombie
         }
         public static void ChengeSetting(PlayerControl player)
         {
-            var optdata = SyncSetting.OptionData.DeepCopy();
+            GameOptionsData optdata = SyncSetting.OptionData.DeepCopy();
 
             if (player.IsZombie())
             {

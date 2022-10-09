@@ -11,15 +11,15 @@ namespace SuperNewRoles.Patches
     {
         private static void Prefix(MainMenuManager __instance)
         {
-            var template = GameObject.Find("ExitGameButton");
+            GameObject template = GameObject.Find("ExitGameButton");
             if (template == null) return;
 
-            var buttonDiscord = UnityEngine.Object.Instantiate(template, null);
+            GameObject buttonDiscord = UnityEngine.Object.Instantiate(template, null);
             buttonDiscord.transform.localPosition = File.Exists(Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"))
                 ? new Vector3(buttonDiscord.transform.localPosition.x, buttonDiscord.transform.localPosition.y + 0.6f, buttonDiscord.transform.localPosition.z)
                 : new Vector3(buttonDiscord.transform.localPosition.x, buttonDiscord.transform.localPosition.y + 1.2f, buttonDiscord.transform.localPosition.z);
 
-            var textDiscord = buttonDiscord.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+            TMPro.TMP_Text textDiscord = buttonDiscord.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
             __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
             {
                 textDiscord.SetText("Discord");
@@ -38,12 +38,12 @@ namespace SuperNewRoles.Patches
                 buttonSpriteDiscord.color = textDiscord.color = discordColor;
             });
 
-            var buttonTwitter = Object.Instantiate(template, null);
+            GameObject buttonTwitter = Object.Instantiate(template, null);
             buttonTwitter.transform.localPosition = File.Exists(Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"))
                 ? new Vector3(buttonTwitter.transform.localPosition.x, buttonTwitter.transform.localPosition.y + 1.2f, buttonTwitter.transform.localPosition.z)
                 : new Vector3(buttonTwitter.transform.localPosition.x, buttonTwitter.transform.localPosition.y + 1.8f, buttonTwitter.transform.localPosition.z);
 
-            var textTwitter = buttonTwitter.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+            TMPro.TMP_Text textTwitter = buttonTwitter.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
             __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
             {
                 textTwitter.SetText("Twitter");
@@ -61,16 +61,16 @@ namespace SuperNewRoles.Patches
                 buttonSpriteTwitter.color = textTwitter.color = TwitterColor;
             });
 
-            var buttonTwitterSNRDevs = Object.Instantiate(template, null);
+            GameObject buttonTwitterSNRDevs = Object.Instantiate(template, null);
             buttonTwitterSNRDevs.SetActive(false);
 
-            var buttonTwitterSuperNewRoles = Object.Instantiate(template, null);
+            GameObject buttonTwitterSuperNewRoles = Object.Instantiate(template, null);
             buttonTwitterSuperNewRoles.SetActive(false);
 
             passiveButtonTwitter.OnClick.AddListener((System.Action)(() =>
             {
                 buttonTwitterSNRDevs.SetActive(true);
-                var textTwitterSNRDevs = buttonTwitterSNRDevs.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+                TMPro.TMP_Text textTwitterSNRDevs = buttonTwitterSNRDevs.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
                 {
                     textTwitterSNRDevs.SetText("SuperNewRolesの人");
@@ -82,7 +82,7 @@ namespace SuperNewRoles.Patches
                 passivebuttonTwitterSNRDevs.OnClick.AddListener((System.Action)(() => Application.OpenURL(SuperNewRolesPlugin.Twitter1)));
 
                 buttonTwitterSuperNewRoles.SetActive(true);
-                var textTwitterSuperNewRoles = buttonTwitterSuperNewRoles.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+                TMPro.TMP_Text textTwitterSuperNewRoles = buttonTwitterSuperNewRoles.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
                 {
                     textTwitterSuperNewRoles.SetText("Super New Roles");

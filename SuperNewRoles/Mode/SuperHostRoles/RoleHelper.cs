@@ -7,7 +7,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static bool IsCrewVision(this PlayerControl player)
         {
-            var IsCrewVision = false;
+            bool IsCrewVision = false;
             switch (player.GetRole())
             {
                 case RoleId.Sheriff:
@@ -42,7 +42,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static bool IsZeroCoolEngineer(this PlayerControl player)
         {
-            var IsZeroCoolEngineer = false;
+            bool IsZeroCoolEngineer = false;
             switch (player.GetRole())
             {
                 case RoleId.Technician:

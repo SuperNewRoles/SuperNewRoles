@@ -22,8 +22,8 @@ namespace SuperNewRoles
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             Stream stream = assembly.GetManifestResourceStream("SuperNewRoles.Resources.TranslateFile.json");
-            var byteTexture = new byte[stream.Length];
-            var read = stream.Read(byteTexture, 0, (int)stream.Length);
+            byte[] byteTexture = new byte[stream.Length];
+            int read = stream.Read(byteTexture, 0, (int)stream.Length);
             string json = System.Text.Encoding.UTF8.GetString(byteTexture);
             JObject parsed = JObject.Parse(json);
             for (int i = 0; i < parsed.Count; i++)
@@ -32,14 +32,14 @@ namespace SuperNewRoles
                 if (token == null) continue;
 
                 string stringName = token.Name;
-                var val = token.Value.TryCast<JObject>();
+                JObject val = token.Value.TryCast<JObject>();
                 if (token.HasValues)
                 {
-                    var strings = new Dictionary<int, string>();
+                    Dictionary<int, string> strings = new Dictionary<int, string>();
                     for (int j = 0; j < (int)SupportedLangs.Irish + 1; j++)
                     {
                         string key = j.ToString();
-                        var text = val[key]?.TryCast<JValue>().Value.ToString();
+                        string text = val[key]?.TryCast<JValue>().Value.ToString();
 
                         if (text != null && text.Length > 0)
                             strings[j] = text == blankText ? "" : text;
@@ -61,7 +61,7 @@ namespace SuperNewRoles
                 return def;
             }
 
-            var data = stringData[keyClean];
+            Dictionary<int, string> data = stringData[keyClean];
             int lang = (int)SaveManager.LastLanguage;
 
             if (data.ContainsKey(lang))

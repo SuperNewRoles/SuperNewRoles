@@ -52,8 +52,8 @@ namespace SuperNewRoles.CustomCosmetics
             if (reshash == null || !File.Exists(respath))
                 return true;
 
-            using var stream = File.OpenRead(respath);
-            var hash = System.BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+            using FileStream stream = File.OpenRead(respath);
+            string hash = System.BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
             return !reshash.Equals(hash);
         }
         public static async Task<HttpStatusCode> FetchHats(string repo)
@@ -62,7 +62,7 @@ namespace SuperNewRoles.CustomCosmetics
             SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate:Download] ダウンロード開始:" + repo);
             HttpClient http = new();
             http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
-            var response = await http.GetAsync(new System.Uri($"{repo}/CustomNamePlates.json"), HttpCompletionOption.ResponseContentRead);
+            HttpResponseMessage response = await http.GetAsync(new System.Uri($"{repo}/CustomNamePlates.json"), HttpCompletionOption.ResponseContentRead);
             try
             {
                 if (response.StatusCode != HttpStatusCode.OK) return response.StatusCode;
@@ -104,13 +104,13 @@ namespace SuperNewRoles.CustomCosmetics
                         markedfordownload.Add(data.resource);
                 }
 
-                foreach (var file in markedfordownload)
+                foreach (string file in markedfordownload)
                 {
 
-                    var hatFileResponse = await http.GetAsync($"{repo}/NamePlates/{file}", HttpCompletionOption.ResponseContentRead);
+                    HttpResponseMessage hatFileResponse = await http.GetAsync($"{repo}/NamePlates/{file}", HttpCompletionOption.ResponseContentRead);
                     if (hatFileResponse.StatusCode != HttpStatusCode.OK) continue;
-                    using var responseStream = await hatFileResponse.Content.ReadAsStreamAsync();
-                    using var fileStream = File.Create($"{filePath}\\{file}");
+                    using Stream responseStream = await hatFileResponse.Content.ReadAsStreamAsync();
+                    using FileStream fileStream = File.Create($"{filePath}\\{file}");
                     responseStream.CopyTo(fileStream);
                 }
 

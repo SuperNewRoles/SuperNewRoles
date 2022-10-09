@@ -34,7 +34,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (BattleRoyal.Main.VentData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))
                 {
-                    var data = BattleRoyal.Main.VentData[CachedPlayer.LocalPlayer.PlayerId];
+                    int? data = BattleRoyal.Main.VentData[CachedPlayer.LocalPlayer.PlayerId];
                     if (data != null)
                     {
                         PlayerControl.LocalPlayer.MyPhysics.RpcExitVent((int)data);

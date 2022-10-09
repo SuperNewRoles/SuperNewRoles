@@ -30,7 +30,7 @@ namespace SuperNewRoles.Modules
         public static IEnumerator FetchConfig()
         {
             // config.json を GoogleDriveなどに上げる
-            var request = UnityWebRequest.Get("https://raw.githubusercontent.com/ykundesu/AmongUs_Blacklist/main/Blacklist.json");
+            UnityWebRequest request = UnityWebRequest.Get("https://raw.githubusercontent.com/ykundesu/AmongUs_Blacklist/main/Blacklist.json");
             yield return request.SendWebRequest();
             SuperNewRolesPlugin.Logger.LogInfo("前");
             if (request.isNetworkError || request.isHttpError)
@@ -38,8 +38,8 @@ namespace SuperNewRoles.Modules
                 yield break;
             }
             SuperNewRolesPlugin.Logger.LogInfo("通貨");
-            var json = JObject.Parse(request.downloadHandler.text);
-            for (var user = json["blockedUsers"].First; user != null; user = user.Next)
+            JObject json = JObject.Parse(request.downloadHandler.text);
+            for (JToken user = json["blockedUsers"].First; user != null; user = user.Next)
             {
                 BlackPlayer player = new()
                 {
@@ -64,7 +64,7 @@ namespace SuperNewRoles.Modules
             } while (clientData == null);
             SuperNewRolesPlugin.Logger.LogInfo(clientData.FriendCode);
             SuperNewRolesPlugin.Logger.LogInfo("回数:" + BlackPlayer.Players.Count);
-            foreach (var player in BlackPlayer.Players)
+            foreach (BlackPlayer player in BlackPlayer.Players)
             {
                 SuperNewRolesPlugin.Logger.LogInfo(player.FriendCode + " : " + player.FriendCode);
                 if (player.FriendCode == clientData.FriendCode || player.clientId == clientId.ToString())

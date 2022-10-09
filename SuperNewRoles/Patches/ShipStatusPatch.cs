@@ -140,7 +140,7 @@ namespace SuperNewRoles.Patches
             SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
             float lerpValue = switchSystem.Value / 255f;
 
-            var LocalPlayer = PlayerControl.LocalPlayer;
+            PlayerControl LocalPlayer = PlayerControl.LocalPlayer;
             if (LocalPlayer.IsRole(RoleId.Nocturnality))
             {
                 lerpValue = 1 - lerpValue;

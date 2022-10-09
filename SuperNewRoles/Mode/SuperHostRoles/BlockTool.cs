@@ -59,7 +59,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         if (p.IsAlive() && !p.IsMod())
                         {
-                            var cid = p.GetClientId();
+                            int cid = p.GetClientId();
                             bool IsGuard = false;
                             Vector2 playerposition = p.GetTruePosition();
                             //カメラチェック
@@ -67,19 +67,19 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             //アドミンチェック
                             if (!MapOption.UseAdmin)
                             {
-                                var AdminDistance = Vector2.Distance(playerposition, GetAdminTransform());
+                                float AdminDistance = Vector2.Distance(playerposition, GetAdminTransform());
                                 if (AdminDistance <= UsableDistance) IsGuard = true;
                             }
                             //Polus用のアドミンチェック。Polusはアドミンが2つあるから
                             if (!IsGuard && PlayerControl.GameOptions.MapId == 2 && !MapOption.UseAdmin)
                             {
-                                var AdminDistance = Vector2.Distance(playerposition, new Vector2(24.66107f, -21.523f));
+                                float AdminDistance = Vector2.Distance(playerposition, new Vector2(24.66107f, -21.523f));
                                 if (AdminDistance <= UsableDistance) IsGuard = true;
                             }
                             //AirShip(アーカイブ)用のアドミンチェック。AirShipはアドミンが2つあるから
                             if ((!IsGuard && PlayerControl.GameOptions.MapId == 4 && !MapOption.UseAdmin) || (!IsGuard && PlayerControl.GameOptions.MapId == 4 && MapCustoms.MapCustom.RecordsAdminDestroy.GetBool() && MapOption.MapOptionSetting.GetBool()))
                             {
-                                var AdminDistance = Vector2.Distance(playerposition, new Vector2(19.9f, 12.9f));
+                                float AdminDistance = Vector2.Distance(playerposition, new Vector2(19.9f, 12.9f));
                                 if (AdminDistance <= UsableDistance) IsGuard = true;
                             }
                             //バイタルもしくはドアログを防ぐ
@@ -87,7 +87,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             {
                                 float distance = UsableDistance;
                                 if (PlayerControl.GameOptions.MapId == 2) distance += 0.5f;
-                                var AdminDistance = Vector2.Distance(playerposition, GetVitalOrDoorLogTransform());
+                                float AdminDistance = Vector2.Distance(playerposition, GetVitalOrDoorLogTransform());
                                 if (AdminDistance <= distance) IsGuard = true;
                             }
                             if (IsGuard && !p.inVent)

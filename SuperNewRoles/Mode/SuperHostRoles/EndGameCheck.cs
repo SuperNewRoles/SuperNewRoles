@@ -27,7 +27,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (p.IsAlive())
                 {
-                    var (Complete, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                    (int Complete, int all) = TaskCount.TaskDateNoClearCheck(p.Data);
                     if (!RoleClass.God.IsTaskEndWin || Complete >= all)
                     {
                         if (WinGods == null)
@@ -161,7 +161,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard() && !EvilEraser.IsNeetWinGuard())
             {
                 __instance.enabled = false;
-                var endReason = TempData.LastDeathReason switch
+                GameOverReason endReason = TempData.LastDeathReason switch
                 {
                     DeathReason.Exile => GameOverReason.ImpostorByVote,
                     DeathReason.Kill => GameOverReason.ImpostorByKill,
@@ -198,7 +198,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     if (p.IsAlive() || !RoleClass.Workperson.IsAliveWin)
                     {
-                        var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                        (int playerCompleted, int playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
                             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);

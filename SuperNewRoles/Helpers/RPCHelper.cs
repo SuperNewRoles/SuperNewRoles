@@ -31,7 +31,7 @@ namespace SuperNewRoles.Helpers
         }
         public static MessageWriter StartRPC(uint NetId, byte RPCId, PlayerControl SendTarget = null)
         {
-            var target = SendTarget != null ? SendTarget.GetClientId() : -1;
+            int target = SendTarget != null ? SendTarget.GetClientId() : -1;
             return AmongUsClient.Instance.StartRpcImmediately(NetId, RPCId, SendOption.Reliable, target);
         }
         public static void EndRPC(this MessageWriter Writer)
@@ -44,7 +44,7 @@ namespace SuperNewRoles.Helpers
 
         public static void SendSinglePlayerRpc(CustomRPC RPCId, byte Target, PlayerControl SendTarget = null)
         {
-            var writer = StartRPC(RPCId, SendTarget);
+            MessageWriter writer = StartRPC(RPCId, SendTarget);
             writer.Write(Target);
             writer.EndRPC();
         }
@@ -52,7 +52,7 @@ namespace SuperNewRoles.Helpers
         //Source And Target
         public static void SendSTRpc(CustomRPC RPCId, byte Source, byte Target, PlayerControl SendTarget = null)
         {
-            var writer = StartRPC(RPCId, SendTarget);
+            MessageWriter writer = StartRPC(RPCId, SendTarget);
             writer.Write(Source);
             writer.Write(Target);
             writer.EndRPC();
@@ -86,7 +86,7 @@ namespace SuperNewRoles.Helpers
         {
             if (TargetPlayer == null || NewName == null || !AmongUsClient.Instance.AmHost) return;
             if (SeePlayer == null) SeePlayer = TargetPlayer;
-            var clientId = SeePlayer.GetClientId();
+            int clientId = SeePlayer.GetClientId();
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SetName, SendOption.Reliable, clientId);
             writer.Write(NewName);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -115,7 +115,7 @@ namespace SuperNewRoles.Helpers
         {
             if (SourcePlayer == null || target == null || !AmongUsClient.Instance.AmHost) return;
             if (SeePlayer == null) SeePlayer = SourcePlayer;
-            var clientId = SeePlayer.GetClientId();
+            int clientId = SeePlayer.GetClientId();
             MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(SourcePlayer.NetId, (byte)RpcCalls.ProtectPlayer, SendOption.Reliable, clientId);
             val.WriteNetObject(target);
             val.Write(colorId);
@@ -126,7 +126,7 @@ namespace SuperNewRoles.Helpers
         {
             if (SourcePlayer == null || target == null || !AmongUsClient.Instance.AmHost) return;
             if (SeePlayer == null) SeePlayer = SourcePlayer;
-            var clientId = SeePlayer.GetClientId();
+            int clientId = SeePlayer.GetClientId();
             sender.StartMessage(clientId)
                 .StartRpc(SourcePlayer.NetId, RpcCalls.ProtectPlayer)
                 .WriteNetObject(target)
@@ -139,7 +139,7 @@ namespace SuperNewRoles.Helpers
         {
             if (TargetPlayer == null || Chat == null) return;
             if (SeePlayer == null) SeePlayer = TargetPlayer;
-            var clientId = SeePlayer.GetClientId();
+            int clientId = SeePlayer.GetClientId();
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SendChat, SendOption.None, clientId);
             writer.Write(Chat);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -219,7 +219,7 @@ namespace SuperNewRoles.Helpers
 
         public static void RpcOpenToilet()
         {
-            foreach (var i in new[] { 79, 80, 81, 82 })
+            foreach (int i in new[] { 79, 80, 81, 82 })
             {
                 Logger.Info($"amount:{i}", "RpcOpenToilet");
                 ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, i);

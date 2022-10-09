@@ -25,7 +25,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsSheriffKill(PlayerControl Target)
         {
-            var roledata = CountChanger.GetRoleType(Target);
+            TeamRoleType roledata = CountChanger.GetRoleType(Target);
             RoleId role = Target.GetRole();
 
             if ((roledata == TeamRoleType.Impostor) || Target.IsRole(RoleId.HauntedWolf)) return CustomOptions.SheriffCanKillImpostor.GetBool();//インポスター、狼付きは設定がimp設定が有効な時切れる
@@ -38,7 +38,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsChiefSheriffKill(PlayerControl Target)
         {
-            var roledata = CountChanger.GetRoleType(Target);
+            TeamRoleType roledata = CountChanger.GetRoleType(Target);
             return (roledata == TeamRoleType.Impostor)
             || (Target.IsMadRoles() && RoleClass.Chief.IsMadRoleKill)
             || (Target.IsFriendRoles() && RoleClass.Chief.IsMadRoleKill)
@@ -47,7 +47,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsRemoteSheriffKill(PlayerControl Target)
         {
-            var roledata = CountChanger.GetRoleType(Target);
+            TeamRoleType roledata = CountChanger.GetRoleType(Target);
             return (roledata == TeamRoleType.Impostor)
             || (Target.IsMadRoles() && RoleClass.RemoteSheriff.IsMadRoleKill)
             || (Target.IsFriendRoles() && RoleClass.RemoteSheriff.IsMadRoleKill)

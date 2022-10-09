@@ -38,7 +38,7 @@ namespace SuperNewRoles.MapCustoms
 
             if (!console.TaskTypes.Contains(TaskTypes.FixWiring))
             {
-                var list = console.TaskTypes.ToList();
+                System.Collections.Generic.List<TaskTypes> list = console.TaskTypes.ToList();
                 list.Add(TaskTypes.FixWiring);
                 console.TaskTypes = list.ToArray();
             }
@@ -64,7 +64,7 @@ namespace SuperNewRoles.MapCustoms
                 console.usableDistance = 0.7f;
                 console.TaskTypes = new TaskTypes[0];
                 console.ValidTasks = new UnhollowerBaseLib.Il2CppReferenceArray<TaskSet>(0);
-                var list = ShipStatus.Instance.AllConsoles.ToList();
+                System.Collections.Generic.List<Console> list = ShipStatus.Instance.AllConsoles.ToList();
                 list.Add(console);
                 ShipStatus.Instance.AllConsoles = new UnhollowerBaseLib.Il2CppReferenceArray<Console>(list.ToArray());
             }

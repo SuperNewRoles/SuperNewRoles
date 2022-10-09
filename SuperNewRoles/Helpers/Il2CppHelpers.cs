@@ -13,10 +13,10 @@ namespace SuperNewRoles
             public static Func<IntPtr, T> Cast;
             static CastHelper()
             {
-                var constructor = typeof(T).GetConstructor(new[] { typeof(IntPtr) });
-                var ptr = Expression.Parameter(typeof(IntPtr));
-                var create = Expression.New(constructor!, ptr);
-                var lambda = Expression.Lambda<Func<IntPtr, T>>(create, ptr);
+                ConstructorInfo constructor = typeof(T).GetConstructor(new[] { typeof(IntPtr) });
+                ParameterExpression ptr = Expression.Parameter(typeof(IntPtr));
+                NewExpression create = Expression.New(constructor!, ptr);
+                Expression<Func<IntPtr, T>> lambda = Expression.Lambda<Func<IntPtr, T>>(create, ptr);
                 Cast = lambda.Compile();
             }
         }

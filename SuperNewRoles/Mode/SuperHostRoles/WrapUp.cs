@@ -55,7 +55,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    var Side = RoleHelpers.GetOneSideQuarreled(exiled.Object);
+                    PlayerControl Side = RoleHelpers.GetOneSideQuarreled(exiled.Object);
                     if (Side.IsDead())
                     {
                         RPCProcedure.ShareWinner(exiled.Object.PlayerId);
@@ -66,7 +66,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Writer.Write((byte)CustomGameOverReason.QuarreledWin);
                         Writer.EndRPC();
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);
-                        var winplayers = new List<PlayerControl>
+                        List<PlayerControl> winplayers = new List<PlayerControl>
                         {
                             exiled.Object
                         };

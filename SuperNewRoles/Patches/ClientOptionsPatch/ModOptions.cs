@@ -38,7 +38,7 @@ namespace SuperNewRoles.Patches
         public static void MainMenuManager_StartPostfix(MainMenuManager __instance)
         {
             // Prefab for the title
-            var tmp = __instance.Announcement.transform.Find("Title_Text").gameObject.GetComponent<TextMeshPro>();
+            TextMeshPro tmp = __instance.Announcement.transform.Find("Title_Text").gameObject.GetComponent<TextMeshPro>();
             tmp.alignment = TextAlignmentOptions.Center;
             tmp.transform.localPosition += Vector3.left * 0.2f;
             titleText = Object.Instantiate(tmp);
@@ -74,13 +74,13 @@ namespace SuperNewRoles.Patches
         {
             popUp = Object.Instantiate(prefab.gameObject);
             Object.DontDestroyOnLoad(popUp);
-            var transform = popUp.transform;
-            var pos = transform.localPosition;
+            Transform transform = popUp.transform;
+            Vector3 pos = transform.localPosition;
             pos.z = -810f;
             transform.localPosition = pos;
 
             Object.Destroy(popUp.GetComponent<OptionsMenuBehaviour>());
-            foreach (var gObj in popUp.gameObject.GetAllChilds())
+            foreach (GameObject gObj in popUp.gameObject.GetAllChilds())
             {
                 if (gObj.name is not "Background" and not "CloseButton")
                     Object.Destroy(gObj);
@@ -91,15 +91,15 @@ namespace SuperNewRoles.Patches
         private static void InitializeMoreButton(OptionsMenuBehaviour __instance)
         {
             moreOptions = Object.Instantiate(buttonPrefab, __instance.CensorChatButton.transform.parent);
-            var transform = __instance.CensorChatButton.transform;
+            Transform transform = __instance.CensorChatButton.transform;
             _origin ??= transform.localPosition;
             transform.localPosition = _origin.Value + Vector3.left * 2.6f;
             moreOptions.transform.localPosition = _origin.Value + Vector3.right * 2.6f;
-            var trans = moreOptions.transform.localPosition;
+            Vector3 trans = moreOptions.transform.localPosition;
             moreOptions.gameObject.SetActive(true);
             trans = moreOptions.transform.position;
             moreOptions.Text.text = ModTranslation.GetString("modOptionsText");
-            var moreOptionsButton = moreOptions.GetComponent<PassiveButton>();
+            PassiveButton moreOptionsButton = moreOptions.GetComponent<PassiveButton>();
             moreOptionsButton.OnClick = new ButtonClickedEvent();
             moreOptionsButton.OnClick.AddListener((Action)(() =>
             {
@@ -130,7 +130,7 @@ namespace SuperNewRoles.Patches
         {
             if (!popUp || popUp.GetComponentInChildren<TextMeshPro>() || !titleText) return;
 
-            var title = titleTextTitle = Object.Instantiate(titleText, popUp.transform);
+            TextMeshPro title = titleTextTitle = Object.Instantiate(titleText, popUp.transform);
             title.GetComponent<RectTransform>().localPosition = Vector3.up * 2.3f;
             title.gameObject.SetActive(true);
             title.text = ModTranslation.GetString("modOptionsText");
@@ -143,14 +143,14 @@ namespace SuperNewRoles.Patches
 
             modButtons = new List<ToggleButtonBehaviour>();
 
-            for (var i = 0; i < AllOptions.Length; i++)
+            for (int i = 0; i < AllOptions.Length; i++)
             {
-                var info = AllOptions[i];
+                SelectionBehaviour info = AllOptions[i];
 
-                var button = Object.Instantiate(buttonPrefab, popUp.transform);
-                var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
+                ToggleButtonBehaviour button = Object.Instantiate(buttonPrefab, popUp.transform);
+                Vector3 pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
 
-                var transform = button.transform;
+                Transform transform = button.transform;
                 transform.localPosition = pos;
 
                 button.onState = info.DefaultValue;
@@ -164,8 +164,8 @@ namespace SuperNewRoles.Patches
                 button.name = info.Title.Replace(" ", "") + "Toggle";
                 button.gameObject.SetActive(true);
 
-                var passiveButton = button.GetComponent<PassiveButton>();
-                var colliderButton = button.GetComponent<BoxCollider2D>();
+                PassiveButton passiveButton = button.GetComponent<PassiveButton>();
+                BoxCollider2D colliderButton = button.GetComponent<BoxCollider2D>();
 
                 colliderButton.size = new Vector2(2.2f, .7f);
 
@@ -182,14 +182,14 @@ namespace SuperNewRoles.Patches
                 passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = new Color32(34, 139, 34, byte.MaxValue)));
                 passiveButton.OnMouseOut.AddListener((Action)(() => button.Background.color = button.onState ? Color.green : Palette.ImpostorRed));
 
-                foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
+                foreach (SpriteRenderer spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
                     spr.size = new Vector2(2.2f, .7f);
                 modButtons.Add(button);
             }
         }
         private static IEnumerable<GameObject> GetAllChilds(this GameObject Go)
         {
-            for (var i = 0; i < Go.transform.childCount; i++)
+            for (int i = 0; i < Go.transform.childCount; i++)
             {
                 yield return Go.transform.GetChild(i).gameObject;
             }

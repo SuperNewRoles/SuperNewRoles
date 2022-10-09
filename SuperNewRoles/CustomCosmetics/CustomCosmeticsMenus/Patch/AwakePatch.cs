@@ -19,10 +19,10 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ObjectData.Selected = "";
             ObjectData.HatTabButtons = new Transform[] { };
             TabSelectPatch.IsFirst = false;
-            var ClosetTabButton = __instance.Tabs[0].Button.transform.parent;
-            var PresetTabButton = __instance.Tabs[1].Button.transform.parent;
-            var ClosetTab = __instance.Tabs[0].Tab.transform;
-            var PresetTab = __instance.Tabs[1].Tab.transform;
+            Transform ClosetTabButton = __instance.Tabs[0].Button.transform.parent;
+            Transform PresetTabButton = __instance.Tabs[1].Button.transform.parent;
+            Transform ClosetTab = __instance.Tabs[0].Tab.transform;
+            Transform PresetTab = __instance.Tabs[1].Tab.transform;
             SuperNewRolesPlugin.Logger.LogInfo(ClosetTabButton.name + ":" + PresetTabButton.name);
             int i = 0;
             foreach (TabButton button in __instance.Tabs)
@@ -35,8 +35,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 i++;
             }
 
-            var ColorButton = GameObject.Instantiate(GameObject.FindObjectOfType<PlayerTab>().ColorChips[0], ClosetTab);
-            var ColorButton_Passive = ColorButton.Button;
+            ColorChip ColorButton = GameObject.Instantiate(GameObject.FindObjectOfType<PlayerTab>().ColorChips[0], ClosetTab);
+            PassiveButton ColorButton_Passive = ColorButton.Button;
             ColorButton_Passive.OnClick = new();
             ColorButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.ColorShow()));
             ObjectData.ColorButton = ColorButton;
@@ -44,8 +44,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
 
             ColorButton.GetComponent<SpriteRenderer>().color = new Color32(0xA8, 0xDF, 0xFF, byte.MaxValue);
             ColorButton.SelectionHighlight.color = Color.white;
-            var HatButton = GameObject.Instantiate(ColorButton, ClosetTab);
-            var HatButton_Passive = HatButton.Button;
+            ColorChip HatButton = GameObject.Instantiate(ColorButton, ClosetTab);
+            PassiveButton HatButton_Passive = HatButton.Button;
             HatButton_Passive.OnClick = new();
             HatButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.HatShow()));
             ObjectData.HatButton = HatButton;
@@ -53,36 +53,36 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             HatButton.transform.localScale *= 2.75f;
             HatButton.SelectionHighlight.color = Color.white;
 
-            var SkinButton = GameObject.Instantiate(HatButton, ClosetTab);
-            var SkinButton_Passive = SkinButton.Button;
+            ColorChip SkinButton = GameObject.Instantiate(HatButton, ClosetTab);
+            PassiveButton SkinButton_Passive = SkinButton.Button;
             SkinButton_Passive.OnClick = new();
             SkinButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CosmicShow("SkinGroup")));
             ObjectData.SkinButton = SkinButton;
             SkinButton.name = "SkinButton";
 
-            var PetButton = GameObject.Instantiate(HatButton, ClosetTab);
-            var PetButton_Passive = PetButton.Button;
+            ColorChip PetButton = GameObject.Instantiate(HatButton, ClosetTab);
+            PassiveButton PetButton_Passive = PetButton.Button;
             PetButton_Passive.OnClick = new();
             PetButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CosmicShow("PetsGroup")));
             ObjectData.PetButton = PetButton;
             PetButton.name = "PetButton";
 
-            var VisorButton = GameObject.Instantiate(HatButton, ClosetTab);
-            var VisorButton_Passive = VisorButton.Button;
+            ColorChip VisorButton = GameObject.Instantiate(HatButton, ClosetTab);
+            PassiveButton VisorButton_Passive = VisorButton.Button;
             VisorButton_Passive.OnClick = new();
             VisorButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CosmicShow("VisorGroup")));
             ObjectData.VisorButton = VisorButton;
             VisorButton.name = "VisorButton";
 
-            var NamePlateButton = GameObject.Instantiate(HatButton, ClosetTab);
-            var NamePlateButton_Passive = NamePlateButton.Button;
+            ColorChip NamePlateButton = GameObject.Instantiate(HatButton, ClosetTab);
+            PassiveButton NamePlateButton_Passive = NamePlateButton.Button;
             NamePlateButton_Passive.OnClick = new();
             NamePlateButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CosmicShow("NameplateGroup")));
             ObjectData.NamePlateButton = NamePlateButton;
             NamePlateButton.name = "NamePlateButton";
 
-            var CubeButton = GameObject.Instantiate(HatButton, ClosetTab);
-            var CubeButton_Passive = CubeButton.Button;
+            ColorChip CubeButton = GameObject.Instantiate(HatButton, ClosetTab);
+            PassiveButton CubeButton_Passive = CubeButton.Button;
             CubeButton_Passive.OnClick = new();
             CubeButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CubeShow()));
             ObjectData.CubeButton = CubeButton;

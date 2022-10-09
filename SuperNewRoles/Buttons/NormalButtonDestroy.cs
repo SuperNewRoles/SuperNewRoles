@@ -30,7 +30,7 @@ namespace SuperNewRoles.Buttons
         public static bool IsDestroyUse(this PlayerControl player)
         {//使用ボタン消す役職少ないと思うのでswitch文にしときます
          //役職増えたり複雑な条件増えてきたらreturn player.GetRole() switchにします
-            var IsDestroyUse = false;
+            bool IsDestroyUse = false;
             switch (player.GetRole())
             {
                 case RoleId.Neet:

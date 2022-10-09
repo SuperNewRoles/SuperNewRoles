@@ -39,10 +39,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
         public static void RoleTextHandler(IntroCutscene __instance)
         {
-            var myrole = PlayerControl.LocalPlayer.GetRole();
+            RoleId myrole = PlayerControl.LocalPlayer.GetRole();
             if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
             {
-                var date = IntroDate.GetIntroDate(myrole);
+                IntroDate date = IntroDate.GetIntroDate(myrole);
                 __instance.YouAreText.color = date.color;
                 __instance.RoleText.text = ModTranslation.GetString(date.NameKey + "Name");
                 __instance.RoleText.color = date.color;

@@ -458,7 +458,7 @@ namespace SuperNewRoles.Modules
 
         public static void UseStuntmanCount(byte playerid)
         {
-            var player = ModHelpers.PlayerById(playerid);
+            PlayerControl player = ModHelpers.PlayerById(playerid);
             if (player == null) return;
             if (player.IsRole(RoleId.MadStuntMan))
             {
@@ -485,8 +485,8 @@ namespace SuperNewRoles.Modules
         }
         public static void SetMadKiller(byte sourceid, byte targetid)
         {
-            var source = ModHelpers.PlayerById(sourceid);
-            var target = ModHelpers.PlayerById(targetid);
+            PlayerControl source = ModHelpers.PlayerById(sourceid);
+            PlayerControl target = ModHelpers.PlayerById(targetid);
             if (source == null || target == null) return;
             target.ClearRole();
             RoleClass.SideKiller.MadKillerPlayer.Add(target);
@@ -497,7 +497,7 @@ namespace SuperNewRoles.Modules
         }
         public static void UncheckedSetVanilaRole(byte playerid, byte roletype)
         {
-            var player = ModHelpers.PlayerById(playerid);
+            PlayerControl player = ModHelpers.PlayerById(playerid);
             if (player == null) return;
             DestroyableSingleton<RoleManager>.Instance.SetRole(player, (RoleTypes)roletype);
             player.Data.Role.Role = (RoleTypes)roletype;
@@ -520,7 +520,7 @@ namespace SuperNewRoles.Modules
         }
         public static void UncheckedSetTasks(byte playerId, byte[] taskTypeIds)
         {
-            var player = ModHelpers.PlayerById(playerId);
+            PlayerControl player = ModHelpers.PlayerById(playerId);
             player.ClearAllTasks();
             GameData.Instance.SetTasks(playerId, taskTypeIds);
         }
@@ -547,7 +547,7 @@ namespace SuperNewRoles.Modules
             AmongUsClient.Instance.StartCoroutine(nameof(CREATEROOMANDJOIN));
             static IEnumerator CREATEROOMANDJOIN()
             {
-                var gameid = AmongUsClient.Instance.GameId;
+                int gameid = AmongUsClient.Instance.GameId;
                 yield return new WaitForSeconds(8);
                 try
                 {
@@ -566,8 +566,8 @@ namespace SuperNewRoles.Modules
 
         public static void CountChangerSetRPC(byte sourceid, byte targetid)
         {
-            var source = ModHelpers.PlayerById(sourceid);
-            var target = ModHelpers.PlayerById(targetid);
+            PlayerControl source = ModHelpers.PlayerById(sourceid);
+            PlayerControl target = ModHelpers.PlayerById(targetid);
             if (source == null || target == null) return;
             if (CustomOptions.CountChangerNextTurn.GetBool())
             {
@@ -580,7 +580,7 @@ namespace SuperNewRoles.Modules
         }
         public static void SetDetective(byte playerid)
         {
-            var player = ModHelpers.PlayerById(playerid);
+            PlayerControl player = ModHelpers.PlayerById(playerid);
             if (player == null) return;
             Mode.Detective.Main.DetectivePlayer = player;
         }
@@ -612,8 +612,8 @@ namespace SuperNewRoles.Modules
         }
         public static void SetRole(byte playerid, byte RPCRoleId)
         {
-            var player = ModHelpers.PlayerById(playerid);
-            var roleId = (RoleId)RPCRoleId;
+            PlayerControl player = ModHelpers.PlayerById(playerid);
+            RoleId roleId = (RoleId)RPCRoleId;
             if (!roleId.IsGhostRole())
             {
                 player.ClearRole();
@@ -743,7 +743,7 @@ namespace SuperNewRoles.Modules
 
         public static void SetSpeedBoost(bool Is, byte id)
         {
-            var player = ModHelpers.PlayerById(id);
+            PlayerControl player = ModHelpers.PlayerById(id);
             if (player == null) return;
             if (player.Data.Role.IsImpostor)
             {
@@ -756,7 +756,7 @@ namespace SuperNewRoles.Modules
         }
         public static void ReviveRPC(byte playerid)
         {
-            var player = ModHelpers.PlayerById(playerid);
+            PlayerControl player = ModHelpers.PlayerById(playerid);
             if (player == null) return;
             player.Revive();
             DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == playerid);
@@ -814,7 +814,7 @@ namespace SuperNewRoles.Modules
         }
         public static void CreateSidekick(byte playerid, bool IsFake)
         {
-            var player = ModHelpers.PlayerById(playerid);
+            PlayerControl player = ModHelpers.PlayerById(playerid);
             if (player == null) return;
             if (IsFake)
             {
@@ -831,7 +831,7 @@ namespace SuperNewRoles.Modules
         }
         public static void CreateSidekickSeer(byte playerid, bool IsFake)
         {
-            var player = ModHelpers.PlayerById(playerid);
+            PlayerControl player = ModHelpers.PlayerById(playerid);
             if (player == null) return;
             if (IsFake)
             {
@@ -848,7 +848,7 @@ namespace SuperNewRoles.Modules
         }
         public static void ExiledRPC(byte playerid)
         {
-            var player = ModHelpers.PlayerById(playerid);
+            PlayerControl player = ModHelpers.PlayerById(playerid);
             if (player != null)
             {
                 player.Data.IsDead = true;
@@ -891,7 +891,7 @@ namespace SuperNewRoles.Modules
         }
         public static void TeleporterTP(byte playerid)
         {
-            var p = ModHelpers.PlayerById(playerid);
+            PlayerControl p = ModHelpers.PlayerById(playerid);
             CachedPlayer.LocalPlayer.transform.position = p.transform.position;
             if (SubmergedCompatibility.isSubmerged())
             {
@@ -942,7 +942,7 @@ namespace SuperNewRoles.Modules
             VentMakerVent.transform.position = new Vector3(x, y, z);
             VentMakerVent.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
             VentMakerVent.Id = MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max() + 1;
-            var allVentsList = MapUtilities.CachedShipStatus.AllVents.ToList();
+            List<Vent> allVentsList = MapUtilities.CachedShipStatus.AllVents.ToList();
             allVentsList.Add(VentMakerVent);
             MapUtilities.CachedShipStatus.AllVents = allVentsList.ToArray();
             VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
@@ -952,12 +952,12 @@ namespace SuperNewRoles.Modules
         {
             SuperNewRolesPlugin.Logger.LogInfo("スワップ開始！");
 
-            var SwapPlayer = ModHelpers.PlayerById(SwapPlayerID);
-            var SwapperPlayer = ModHelpers.PlayerById(SwapperID);
-            var SwapPosition = SwapPlayer.transform.position;
-            var SwapperPosition = SwapperPlayer.transform.position;
+            PlayerControl SwapPlayer = ModHelpers.PlayerById(SwapPlayerID);
+            PlayerControl SwapperPlayer = ModHelpers.PlayerById(SwapperID);
+            Vector3 SwapPosition = SwapPlayer.transform.position;
+            Vector3 SwapperPosition = SwapperPlayer.transform.position;
             //Text
-            var rand = new System.Random();
+            System.Random rand = new System.Random();
             if (SwapperID == PlayerControl.LocalPlayer.PlayerId)
             {
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;
@@ -995,7 +995,7 @@ namespace SuperNewRoles.Modules
                     Vector2 MeetingSpawnUnder = new(22.0948f, -25.1668f);
                     Vector2 LocketSpawn = new(26.6442f, -6.775f);
                     Vector2 LeftReactorSpawn = new(4.6395f, -4.2884f);
-                    var loc = locId switch
+                    Vector2 loc = locId switch
                     {
                         0 => InitialSpawnCenter,
                         1 => MeetingSpawnCenter,

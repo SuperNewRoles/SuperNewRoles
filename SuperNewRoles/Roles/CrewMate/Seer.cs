@@ -24,7 +24,7 @@ namespace SuperNewRoles.Roles
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
             {
-                var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
+                SpriteRenderer renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
                 if (p < 0.5)
                 {
                     if (renderer != null)
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Roles
         {
             public static void WrapUpPostfix()
             {
-                var role = PlayerControl.LocalPlayer.GetRole();
+                RoleId role = PlayerControl.LocalPlayer.GetRole();
                 if (role is RoleId.Seer or RoleId.MadSeer or RoleId.EvilSeer or RoleId.SeerFriends or RoleId.JackalSeer or RoleId.SidekickSeer)
                 {
                     List<Vector3> DeadBodyPositions = new();
@@ -100,7 +100,7 @@ namespace SuperNewRoles.Roles
                         GameObject soul = new();
                         soul.transform.position = pos;
                         soul.layer = 5;
-                        var rend = soul.AddComponent<SpriteRenderer>();
+                        SpriteRenderer rend = soul.AddComponent<SpriteRenderer>();
                         rend.sprite = GetSoulSprite();
 
                         if (limitSoulDuration)
@@ -109,7 +109,7 @@ namespace SuperNewRoles.Roles
                             {
                                 if (rend != null)
                                 {
-                                    var tmp = rend.color;
+                                    Color tmp = rend.color;
                                     tmp.a = Mathf.Clamp01(1 - p);
                                     rend.color = tmp;
                                 }
@@ -124,7 +124,7 @@ namespace SuperNewRoles.Roles
             {
                 public static void Postfix([HarmonyArgument(0)] PlayerControl target)
                 {
-                    var role = PlayerControl.LocalPlayer.GetRole();
+                    RoleId role = PlayerControl.LocalPlayer.GetRole();
                     if (role is RoleId.Seer or RoleId.MadSeer or RoleId.EvilSeer or RoleId.SeerFriends or RoleId.JackalSeer or RoleId.SidekickSeer)
                     {
                         bool ModeFlag = false;

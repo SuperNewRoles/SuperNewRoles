@@ -53,8 +53,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         }
         public static void NekomataProc(List<PlayerControl> p)
         {
-            var rdm = ModHelpers.GetRandomIndex(p);
-            var random = p[rdm];
+            int rdm = ModHelpers.GetRandomIndex(p);
+            PlayerControl random = p[rdm];
             random.RpcCheckExile();
             if ((random.IsRole(RoleId.NiceNekomata) || random.IsRole(RoleId.EvilNekomata) || random.IsRole(RoleId.BlackCat)) && RoleClass.NiceNekomata.IsChain)
             {

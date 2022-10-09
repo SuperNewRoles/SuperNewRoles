@@ -969,7 +969,7 @@ namespace SuperNewRoles.Modules
             JesterIsVent = Create(18, true, CustomOptionType.Neutral, "JesterIsVentSetting", false, JesterOption);
             JesterIsSabotage = Create(19, false, CustomOptionType.Neutral, "JesterIsSabotageSetting", false, JesterOption);
             JesterIsWinCleartask = Create(20, true, CustomOptionType.Neutral, "JesterIsWinClearTaskSetting", false, JesterOption);
-            var jesteroption = SelectTask.TaskSetting(21, 22, 23, JesterIsWinCleartask, CustomOptionType.Neutral, true);
+            (CustomOption, CustomOption, CustomOption) jesteroption = SelectTask.TaskSetting(21, 22, 23, JesterIsWinCleartask, CustomOptionType.Neutral, true);
             JesterCommonTask = jesteroption.Item1;
             JesterShortTask = jesteroption.Item2;
             JesterLongTask = jesteroption.Item3;
@@ -1093,7 +1093,7 @@ namespace SuperNewRoles.Modules
             MadMateOption = SetupCustomRoleOption(130, true, RoleId.MadMate);
             MadMatePlayerCount = Create(131, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMateOption);
             MadMateIsCheckImpostor = Create(132, true, CustomOptionType.Crewmate, "MadMateIsCheckImpostorSetting", false, MadMateOption);
-            var madmateoption = SelectTask.TaskSetting(133, 134, 135, MadMateIsCheckImpostor, CustomOptionType.Crewmate, true);
+            (CustomOption, CustomOption, CustomOption) madmateoption = SelectTask.TaskSetting(133, 134, 135, MadMateIsCheckImpostor, CustomOptionType.Crewmate, true);
             MadMateCommonTask = madmateoption.Item1;
             MadMateShortTask = madmateoption.Item2;
             MadMateLongTask = madmateoption.Item3;
@@ -1137,7 +1137,7 @@ namespace SuperNewRoles.Modules
             GodPlayerCount = Create(165, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GodOption);
             GodViewVote = Create(167, true, CustomOptionType.Neutral, "GodViewVoteSetting", false, GodOption);
             GodIsEndTaskWin = Create(168, true, CustomOptionType.Neutral, "GodIsEndTaskWinSetting", true, GodOption);
-            var godoption = SelectTask.TaskSetting(169, 170, 171, GodIsEndTaskWin, CustomOptionType.Neutral, true);
+            (CustomOption, CustomOption, CustomOption) godoption = SelectTask.TaskSetting(169, 170, 171, GodIsEndTaskWin, CustomOptionType.Neutral, true);
             GodCommonTask = godoption.Item1;
             GodShortTask = godoption.Item2;
             GodLongTask = godoption.Item3;
@@ -1155,7 +1155,7 @@ namespace SuperNewRoles.Modules
             JackalFriendsIsUseVent = Create(182, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, JackalFriendsOption);
             JackalFriendsIsImpostorLight = Create(183, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, JackalFriendsOption);
             JackalFriendsIsCheckJackal = Create(184, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, JackalFriendsOption);
-            var JackalFriendsoption = SelectTask.TaskSetting(185, 186, 187, JackalFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
+            (CustomOption, CustomOption, CustomOption) JackalFriendsoption = SelectTask.TaskSetting(185, 186, 187, JackalFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
             JackalFriendsCommonTask = JackalFriendsoption.Item1;
             JackalFriendsShortTask = JackalFriendsoption.Item2;
             JackalFriendsLongTask = JackalFriendsoption.Item3;
@@ -1265,7 +1265,7 @@ namespace SuperNewRoles.Modules
             MadMayorPlayerCount = Create(270, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMayorOption);
             MadMayorVoteCount = Create(271, true, CustomOptionType.Crewmate, "MadMayorVoteCountSetting", 2f, 1f, 100f, 1f, MadMayorOption);
             MadMayorIsCheckImpostor = Create(272, true, CustomOptionType.Crewmate, "MadMayorIsCheckImpostorSetting", false, MadMayorOption);
-            var madmayoroption = SelectTask.TaskSetting(273, 274, 275, MadMayorIsCheckImpostor, CustomOptionType.Crewmate, true);
+            (CustomOption, CustomOption, CustomOption) madmayoroption = SelectTask.TaskSetting(273, 274, 275, MadMayorIsCheckImpostor, CustomOptionType.Crewmate, true);
             MadMayorCommonTask = madmayoroption.Item1;
             MadMayorShortTask = madmayoroption.Item2;
             MadMayorLongTask = madmayoroption.Item3;
@@ -1298,7 +1298,7 @@ namespace SuperNewRoles.Modules
             MadJesterIsUseVent = Create(298, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadJesterOption);
             MadJesterIsImpostorLight = Create(299, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadJesterOption);
             IsMadJesterTaskClearWin = Create(300, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
-            var MadJesteroption = SelectTask.TaskSetting(667, 668, 669, IsMadJesterTaskClearWin, CustomOptionType.Crewmate, true);
+            (CustomOption, CustomOption, CustomOption) MadJesteroption = SelectTask.TaskSetting(667, 668, 669, IsMadJesterTaskClearWin, CustomOptionType.Crewmate, true);
             MadJesterCommonTask = MadJesteroption.Item1;
             MadJesterShortTask = MadJesteroption.Item2;
             MadJesterLongTask = MadJesteroption.Item3;
@@ -1351,7 +1351,7 @@ namespace SuperNewRoles.Modules
             MadSeerIsUseVent = Create(328, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadSeerOption);
             MadSeerIsImpostorLight = Create(329, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadSeerOption);
             MadSeerIsCheckImpostor = Create(330, true, CustomOptionType.Crewmate, "MadMateIsCheckImpostorSetting", false, MadSeerOption);
-            var madseeroption = SelectTask.TaskSetting(331, 332, 526, MadSeerIsCheckImpostor, CustomOptionType.Crewmate, true);
+            (CustomOption, CustomOption, CustomOption) madseeroption = SelectTask.TaskSetting(331, 332, 526, MadSeerIsCheckImpostor, CustomOptionType.Crewmate, true);
             MadSeerCommonTask = madseeroption.Item1;
             MadSeerShortTask = madseeroption.Item2;
             MadSeerLongTask = madseeroption.Item3;
@@ -1386,7 +1386,7 @@ namespace SuperNewRoles.Modules
 
             TaskManagerOption = SetupCustomRoleOption(357, true, RoleId.TaskManager);
             TaskManagerPlayerCount = Create(358, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TaskManagerOption);
-            var taskmanageroption = SelectTask.TaskSetting(359, 360, 361, TaskManagerOption, CustomOptionType.Crewmate, true);
+            (CustomOption, CustomOption, CustomOption) taskmanageroption = SelectTask.TaskSetting(359, 360, 361, TaskManagerOption, CustomOptionType.Crewmate, true);
             TaskManagerCommonTask = taskmanageroption.Item1;
             TaskManagerShortTask = taskmanageroption.Item2;
             TaskManagerLongTask = taskmanageroption.Item3;
@@ -1399,7 +1399,7 @@ namespace SuperNewRoles.Modules
             SeerFriendsIsUseVent = Create(367, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, SeerFriendsOption);
             SeerFriendsIsImpostorLight = Create(368, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, SeerFriendsOption);
             SeerFriendsIsCheckJackal = Create(369, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, SeerFriendsOption);
-            var SeerFriendsoption = SelectTask.TaskSetting(371, 372, 373, SeerFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
+            (CustomOption, CustomOption, CustomOption) SeerFriendsoption = SelectTask.TaskSetting(371, 372, 373, SeerFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
             SeerFriendsCommonTask = SeerFriendsoption.Item1;
             SeerFriendsShortTask = SeerFriendsoption.Item2;
             SeerFriendsLongTask = SeerFriendsoption.Item3;
@@ -1451,7 +1451,7 @@ namespace SuperNewRoles.Modules
             MayorFriendsIsUseVent = Create(407, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MayorFriendsOption);
             MayorFriendsIsImpostorLight = Create(408, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MayorFriendsOption);
             MayorFriendsIsCheckJackal = Create(409, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, MayorFriendsOption);
-            var MayorFriendsoption = SelectTask.TaskSetting(410, 411, 412, MayorFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
+            (CustomOption, CustomOption, CustomOption) MayorFriendsoption = SelectTask.TaskSetting(410, 411, 412, MayorFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
             MayorFriendsCommonTask = MayorFriendsoption.Item1;
             MayorFriendsShortTask = MayorFriendsoption.Item2;
             MayorFriendsLongTask = MayorFriendsoption.Item3;
@@ -1498,7 +1498,7 @@ namespace SuperNewRoles.Modules
             BlackCatPlayerCount = Create(557, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BlackCatOption);
             BlackCatNotImpostorExiled = Create(675, true, CustomOptionType.Crewmate, "NotImpostorExiled", false, BlackCatOption);
             BlackCatIsCheckImpostor = Create(558, true, CustomOptionType.Crewmate, "MadMateIsCheckImpostorSetting", false, BlackCatOption);
-            var blackcatoption = SelectTask.TaskSetting(559, 560, 561, BlackCatIsCheckImpostor, CustomOptionType.Crewmate, true);
+            (CustomOption, CustomOption, CustomOption) blackcatoption = SelectTask.TaskSetting(559, 560, 561, BlackCatIsCheckImpostor, CustomOptionType.Crewmate, true);
             BlackCatCommonTask = blackcatoption.Item1;
             BlackCatShortTask = blackcatoption.Item2;
             BlackCatLongTask = blackcatoption.Item3;
@@ -1596,7 +1596,7 @@ namespace SuperNewRoles.Modules
             SuicidalIdeationTimeLeft = Create(833, false, CustomOptionType.Neutral, "SuicidalIdeationTimeLeftSetting", 90f, 30f, 600f, 5f, SuicidalIdeationOption, format: "unitSeconds");
             SuicidalIdeationAddTimeLeft = Create(834, false, CustomOptionType.Neutral, "SuicidalIdeationAddTimeLeftSetting", 20f, 0f, 300f, 5f, SuicidalIdeationOption, format: "unitSeconds");
             SuicidalIdeationFallProbability = Create(835, false, CustomOptionType.Neutral, "SuicidalIdeationFallProbabilitySetting", rates, SuicidalIdeationOption);
-            var SuicidalIdeationoption = SelectTask.TaskSetting(836, 837, 838, SuicidalIdeationOption, CustomOptionType.Neutral, false);
+            (CustomOption, CustomOption, CustomOption) SuicidalIdeationoption = SelectTask.TaskSetting(836, 837, 838, SuicidalIdeationOption, CustomOptionType.Neutral, false);
             SuicidalIdeationCommonTask = SuicidalIdeationoption.Item1;
             SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
             SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
@@ -1723,7 +1723,7 @@ namespace SuperNewRoles.Modules
 
             TaskerOption = SetupCustomRoleOption(1006, false, RoleId.Tasker);
             TaskerPlayerCount = Create(1007, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
-            var taskeroption = SelectTask.TaskSetting(1008, 1009, 1010, TaskerOption, CustomOptionType.Impostor, false);
+            (CustomOption, CustomOption, CustomOption) taskeroption = SelectTask.TaskSetting(1008, 1009, 1010, TaskerOption, CustomOptionType.Impostor, false);
             TaskerCommonTask = taskeroption.Item1;
             TaskerShortTask = taskeroption.Item2;
             TaskerLongTask = taskeroption.Item3;
@@ -1743,7 +1743,7 @@ namespace SuperNewRoles.Modules
             LoversSameDie = Create(440, true, CustomOptionType.Neutral, "LoversSameDieSetting", true, LoversOption);
             LoversAliveTaskCount = Create(441, true, CustomOptionType.Neutral, "LoversAliveTaskCountSetting", false, LoversOption);
             LoversDuplicationQuarreled = Create(442, true, CustomOptionType.Neutral, "LoversDuplicationQuarreledSetting", true, LoversOption);
-            var loversoption = SelectTask.TaskSetting(443, 444, 445, LoversOption, CustomOptionType.Neutral, true);
+            (CustomOption, CustomOption, CustomOption) loversoption = SelectTask.TaskSetting(443, 444, 445, LoversOption, CustomOptionType.Neutral, true);
             LoversCommonTask = loversoption.Item1;
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;

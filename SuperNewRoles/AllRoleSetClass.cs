@@ -25,7 +25,7 @@ namespace SuperNewRoles
         public static void Release()
         {
             sender.StartMessage(-1);
-            foreach (var pair in StoragedData)
+            foreach ((PlayerControl, RoleTypes) pair in StoragedData)
             {
                 pair.Item1.SetRole(pair.Item2);
                 sender.StartRpc(pair.Item1.NetId, RpcCalls.SetRole)
@@ -89,7 +89,7 @@ namespace SuperNewRoles
                 {
                     if (SelectPlayers.Count >= 1)
                     {
-                        var newimpostor = ModHelpers.GetRandom(SelectPlayers);
+                        PlayerControl newimpostor = ModHelpers.GetRandom(SelectPlayers);
                         AllRoleSetClass.impostors.Add(newimpostor);
                         newimpostor.Data.Role.Role = RoleTypes.Impostor;
                         newimpostor.Data.Role.TeamType = RoleTeamTypes.Impostor;
@@ -111,7 +111,7 @@ namespace SuperNewRoles
                 }
 
                 //サーバーの役職判定をだます
-                foreach (var pc in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl pc in PlayerControl.AllPlayerControls)
                 {
                     sender.AutoStartRpc(pc.NetId, (byte)RpcCalls.SetRole)
                         .Write((ushort)RoleTypes.Shapeshifter)
@@ -190,7 +190,7 @@ namespace SuperNewRoles
                 {
                     if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                     {
-                        foreach (var pc in CachedPlayer.AllPlayers)
+                        foreach (CachedPlayer pc in CachedPlayer.AllPlayers)
                         {
                             pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
                         }
@@ -308,7 +308,7 @@ namespace SuperNewRoles
                     List<PlayerControl> Listdate = new();
                     for (int i2 = 0; i2 < 2; i2++)
                     {
-                        var player = ModHelpers.GetRandomIndex<PlayerControl>(SelectPlayers);
+                        int player = ModHelpers.GetRandomIndex<PlayerControl>(SelectPlayers);
                         Listdate.Add(SelectPlayers[player]);
                         SelectPlayers.RemoveAt(player);
                     }
@@ -325,7 +325,7 @@ namespace SuperNewRoles
             if (!(CustomOptions.LoversPar.GetString() == "100%"))
             {
                 List<string> a = new();
-                var SucPar = int.Parse(CustomOptions.LoversPar.GetString().Replace("0%", ""));
+                int SucPar = int.Parse(CustomOptions.LoversPar.GetString().Replace("0%", ""));
                 for (int i = 0; i < SucPar; i++)
                 {
                     a.Add("Suc");
@@ -374,7 +374,7 @@ namespace SuperNewRoles
                     List<PlayerControl> Listdate = new();
                     for (int i2 = 0; i2 < 2; i2++)
                     {
-                        var player = ModHelpers.GetRandomIndex(SelectPlayers);
+                        int player = ModHelpers.GetRandomIndex(SelectPlayers);
                         Listdate.Add(SelectPlayers[player]);
                         SelectPlayers.RemoveAt(player);
                     }
@@ -983,9 +983,9 @@ namespace SuperNewRoles
                     intro.RoleId == RoleId.GM ||
                     (intro.RoleId == RoleId.Nun && (MapNames)PlayerControl.GameOptions.MapId != MapNames.Airship) ||
                     intro.IsGhostRole) continue;
-                var option = IntroDate.GetOption(intro.RoleId);
+                CustomRoleOption option = IntroDate.GetOption(intro.RoleId);
                 if (option == null) continue;
-                var selection = option.GetSelection();
+                int selection = option.GetSelection();
                 if (selection != 0)
                 {
                     if (selection == 10)
@@ -1023,7 +1023,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            var Assassinselection = CustomOptions.AssassinAndMarineOption.GetSelection();
+            int Assassinselection = CustomOptions.AssassinAndMarineOption.GetSelection();
             if (Assassinselection != 0 && CrewMatePlayerNum > 0 && CrewMatePlayers.Count > 0)
             {
                 if (Assassinselection == 10)

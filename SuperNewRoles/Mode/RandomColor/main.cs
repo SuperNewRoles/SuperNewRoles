@@ -62,7 +62,7 @@ namespace SuperNewRoles.Mode.RandomColor
         {
             if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0)
             {
-                var endReason = TempData.LastDeathReason switch
+                GameOverReason endReason = TempData.LastDeathReason switch
                 {
                     DeathReason.Exile => GameOverReason.ImpostorByVote,
                     DeathReason.Kill => GameOverReason.ImpostorByKill,

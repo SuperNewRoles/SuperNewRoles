@@ -15,7 +15,7 @@ namespace SuperNewRoles.MapCustoms
         public AdditionalVents(Vector3 p)
         {
             // Create the vent
-            var referenceVent = Object.FindObjectOfType<Vent>();
+            Vent referenceVent = Object.FindObjectOfType<Vent>();
             vent = Object.Instantiate(referenceVent);
             vent.transform.position = p;
             vent.Left = null;
@@ -26,7 +26,7 @@ namespace SuperNewRoles.MapCustoms
             vent.ExitVentAnim = tmp.ExitVentAnim;
             vent.Offset = new Vector3(0f, 0.25f, 0f);
             vent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1; // Make sure we have a unique id
-            var allVentsList = ShipStatus.Instance.AllVents.ToList();
+            List<Vent> allVentsList = ShipStatus.Instance.AllVents.ToList();
             allVentsList.Add(vent);
             ShipStatus.Instance.AllVents = allVentsList.ToArray();
             vent.gameObject.SetActive(true);

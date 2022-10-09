@@ -58,14 +58,14 @@ namespace SuperNewRoles.Mode.Zombie
                 {
                     foreach (int pint in Main.ZombiePlayers)
                     {
-                        var p1 = ModHelpers.PlayerById((byte)pint);
+                        PlayerControl p1 = ModHelpers.PlayerById((byte)pint);
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
                             if (!p.IsZombie())
                             {
                                 if (p != null && p.IsAlive() && !p.Data.Disconnected)
                                 {
-                                    var DistanceData = Vector2.Distance(p.transform.position, p1.transform.position);
+                                    float DistanceData = Vector2.Distance(p.transform.position, p1.transform.position);
                                     if (DistanceData <= 0.5f)
                                     {
                                         Main.SetZombie(p);

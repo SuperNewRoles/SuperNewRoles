@@ -15,9 +15,9 @@ namespace SuperNewRoles.Modules
 
         public static void Postfix(RegionMenu __instance)
         {
-            var template = DestroyableSingleton<JoinGameButton>.Instance;
-            var joinGameButtons = GameObject.FindObjectsOfType<JoinGameButton>();
-            foreach (var t in joinGameButtons)
+            JoinGameButton template = DestroyableSingleton<JoinGameButton>.Instance;
+            UnhollowerBaseLib.Il2CppArrayBase<JoinGameButton> joinGameButtons = GameObject.FindObjectsOfType<JoinGameButton>();
+            foreach (JoinGameButton t in joinGameButtons)
             {  // The correct button has a background, the other 2 dont
                 if (t.GameIdText != null && t.GameIdText.Background != null)
                 {
@@ -31,7 +31,7 @@ namespace SuperNewRoles.Modules
             {
                 ipField = UnityEngine.Object.Instantiate(template.GameIdText, __instance.transform);
                 ipField.gameObject.name = "IpTextBox";
-                var arrow = ipField.transform.FindChild("arrowEnter");
+                Transform arrow = ipField.transform.FindChild("arrowEnter");
                 if (arrow == null || arrow.gameObject == null) return;
                 UnityEngine.Object.DestroyImmediate(arrow.gameObject);
 
@@ -68,7 +68,7 @@ namespace SuperNewRoles.Modules
             {
                 portField = UnityEngine.Object.Instantiate(template.GameIdText, __instance.transform);
                 portField.gameObject.name = "PortTextBox";
-                var arrow = portField.transform.FindChild("arrowEnter");
+                Transform arrow = portField.transform.FindChild("arrowEnter");
                 if (arrow == null || arrow.gameObject == null) return;
                 UnityEngine.Object.DestroyImmediate(arrow.gameObject);
 
@@ -113,7 +113,7 @@ namespace SuperNewRoles.Modules
             ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
             IRegionInfo[] regions = defaultRegions;
 
-            var CustomRegion = new DnsRegionInfo(ConfigRoles.Ip.Value, "Custom", StringNames.NoTranslation, ConfigRoles.Ip.Value, ConfigRoles.Port.Value, false);
+            DnsRegionInfo CustomRegion = new DnsRegionInfo(ConfigRoles.Ip.Value, "Custom", StringNames.NoTranslation, ConfigRoles.Ip.Value, ConfigRoles.Port.Value, false);
             regions = regions.Concat(new IRegionInfo[] { CustomRegion.CastFast<IRegionInfo>() }).ToArray();
             ServerManager.DefaultRegions = regions;
             serverManager.AvailableRegions = regions;

@@ -103,14 +103,14 @@ namespace SuperNewRoles.Mode.CopsRobbers
         {
             if (!SpawnPosition.ContainsKey(player.PlayerId))
             {
-                var type = ModHelpers.GetRandom(Rooms[GetMap()]);
+                SystemTypes type = ModHelpers.GetRandom(Rooms[GetMap()]);
                 SpawnPosition[player.PlayerId] = type;
             }
             return (SystemTypes)SpawnPosition[player.PlayerId];
         }
         public static SystemTypes SetRandomArrestPosition(PlayerControl player)
         {
-            var type = ModHelpers.GetRandom(Rooms[GetMap()]);
+            SystemTypes type = ModHelpers.GetRandom(Rooms[GetMap()]);
             ArrestPositions[player.PlayerId] = type;
             Arrest.Add(player.PlayerId);
             //player.MyPhysics.RpcClimbLadder(null);
@@ -135,7 +135,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
         public static Vector2 GetPosition(SystemTypes type)
         {
             //return new Vector2(-13.4818f, -5.3336f);
-            var MAP = GetMap();
+            MapNames MAP = GetMap();
             switch (type)
             {
                 case SystemTypes.Comms:
@@ -300,7 +300,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                             {
                                 if (!pc.IsArrest())
                                 {
-                                    var DistanceData = Vector2.Distance(player.transform.position, p.transform.position);
+                                    float DistanceData = Vector2.Distance(player.transform.position, p.transform.position);
                                     if (DistanceData <= 0.5f)
                                     {
                                         Teleport(p, GetPosition(SetRandomArrestPosition(p)));
@@ -309,7 +309,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                                 else
                                 {
                                     Vector2 getpos = GetPosition((SystemTypes)ArrestPositions[p.PlayerId]);
-                                    var DistanceData = Vector2.Distance(p.transform.position, getpos);
+                                    float DistanceData = Vector2.Distance(p.transform.position, getpos);
                                     bool flag = false;
                                     flag = DistanceData >= 1f;
 
@@ -331,7 +331,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                         {
                             if (p != null && !p.Data.Disconnected)
                             {
-                                var DistanceData = Vector2.Distance(player.transform.position, p.transform.position);
+                                float DistanceData = Vector2.Distance(player.transform.position, p.transform.position);
                                 if (DistanceData <= 0.5f)
                                 {
                                     RemoveArrest(p);

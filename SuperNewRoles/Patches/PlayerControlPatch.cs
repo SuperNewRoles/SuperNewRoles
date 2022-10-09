@@ -232,7 +232,7 @@ namespace SuperNewRoles.Patches
                 NewTask(__instance);
                 foreach (ShapeshifterPanel panel in GameObject.FindObjectsOfType<ShapeshifterPanel>()) GameObject.Destroy(panel.gameObject);
                 int index = 0;
-                foreach (var Data in Roles.Neutral.GM.ActionDictionary)
+                foreach (KeyValuePair<string, Action> Data in Roles.Neutral.GM.ActionDictionary)
                 {
                     int num = index % 3;
                     int num2 = index / 3;
@@ -296,10 +296,10 @@ namespace SuperNewRoles.Patches
                     {
                         if (player.IsAlive())
                         {
-                            var Target = player;
-                            var misfire = !Sheriff.IsRemoteSheriffKill(Target);
-                            var TargetID = Target.PlayerId;
-                            var LocalID = CachedPlayer.LocalPlayer.PlayerId;
+                            PlayerControl Target = player;
+                            bool misfire = !Sheriff.IsRemoteSheriffKill(Target);
+                            byte TargetID = Target.PlayerId;
+                            byte LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
                             PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, true);
 
@@ -462,9 +462,9 @@ namespace SuperNewRoles.Patches
                         NekoKabocha.OnKill(__instance);
                         return true;
                     }
-                    foreach (var p in Seer.Seers)
+                    foreach (List<PlayerControl> p in Seer.Seers)
                     {
-                        foreach (var p2 in p)
+                        foreach (PlayerControl p2 in p)
                         {
                             if (!p2.IsMod())
                                 p2.ShowReactorFlash(1.5f);
@@ -637,7 +637,7 @@ namespace SuperNewRoles.Patches
                             }
                             break;
                         case RoleId.DarkKiller:
-                            var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                            SwitchSystem ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                             if (ma != null && !ma.IsActive) return false;
                             break;
                     }
@@ -817,7 +817,7 @@ namespace SuperNewRoles.Patches
                 {
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.SideKiller))
                     {
-                        var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
+                        PlayerControl sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
                         if (sideplayer != null)
                         {
                             if (!RoleClass.SideKiller.IsUpMadKiller)
@@ -843,7 +843,7 @@ namespace SuperNewRoles.Patches
                     }
                 }
 
-                var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                SwitchSystem ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                 if (__instance.IsRole(RoleId.DarkKiller))
                     if (ma != null && !ma.IsActive) return false;
 
@@ -959,7 +959,7 @@ namespace SuperNewRoles.Patches
                 {
                     if (AmongUsClient.Instance.AmHost)
                     {
-                        var Side = RoleHelpers.GetOneSideQuarreled(target);
+                        PlayerControl Side = RoleHelpers.GetOneSideQuarreled(target);
                         if (Side.IsDead())
                         {
                             RPCProcedure.ShareWinner(target.PlayerId);
@@ -1079,7 +1079,7 @@ namespace SuperNewRoles.Patches
             }
             if (ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
-                foreach (var player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     if (player.IsRole(RoleId.Doppelganger))
                     {

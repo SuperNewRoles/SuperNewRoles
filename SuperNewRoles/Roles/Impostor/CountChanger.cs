@@ -28,7 +28,7 @@ namespace SuperNewRoles.Roles
         {
             if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
             {
-                var player = ModHelpers.PlayerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]);
+                PlayerControl player = ModHelpers.PlayerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]);
                 return Get(player);
             }
             else
@@ -59,7 +59,7 @@ namespace SuperNewRoles.Roles
         }
         public static int? GetKey(this Dictionary<int, int> dics, int id)
         {
-            foreach (var data in dics)
+            foreach (KeyValuePair<int, int> data in dics)
             {
                 if (data.Value == id)
                 {

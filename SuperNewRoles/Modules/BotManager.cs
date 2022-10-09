@@ -39,7 +39,7 @@ namespace SuperNewRoles.Modules
                     id = p.PlayerId;
                 }
             }
-            var Bot = Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
+            PlayerControl Bot = Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
 
             id++;
 

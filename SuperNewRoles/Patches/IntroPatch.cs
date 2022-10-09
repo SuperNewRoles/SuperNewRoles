@@ -149,12 +149,12 @@ namespace SuperNewRoles.Patches
         {
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                var newTeam2 = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                Il2CppSystem.Collections.Generic.List<PlayerControl> newTeam2 = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                 newTeam2.Add(PlayerControl.LocalPlayer);
                 yourTeam = newTeam2;
                 if (PlayerControl.LocalPlayer.IsCrew())
                 {
-                    var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     newTeam.Add(PlayerControl.LocalPlayer);
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
@@ -231,7 +231,7 @@ namespace SuperNewRoles.Patches
             }
             else
             {
-                var temp = ModeHandler.TeamHandler(__instance);
+                Il2CppSystem.Collections.Generic.List<PlayerControl> temp = ModeHandler.TeamHandler(__instance);
                 if (temp != new Il2CppSystem.Collections.Generic.List<PlayerControl>())
                 {
                     yourTeam = temp;
@@ -296,10 +296,10 @@ namespace SuperNewRoles.Patches
             {
                 if (ModeHandler.IsMode(ModeId.Default))
                 {
-                    var myrole = PlayerControl.LocalPlayer.GetRole();
+                    RoleId myrole = PlayerControl.LocalPlayer.GetRole();
                     if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                     {
-                        var date = IntroDate.GetIntroDate(myrole);
+                        IntroDate date = IntroDate.GetIntroDate(myrole);
                         color = date.color;
                         TeamTitle = ModTranslation.GetString(date.NameKey + "Name");
                         ImpostorText = date.TitleDesc;
@@ -399,10 +399,10 @@ namespace SuperNewRoles.Patches
                     CustomButton.MeetingEndedUpdate();
                     if (ModeHandler.IsMode(ModeId.Default))
                     {
-                        var myrole = PlayerControl.LocalPlayer.GetRole();
+                        RoleId myrole = PlayerControl.LocalPlayer.GetRole();
                         if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                         {
-                            var date = IntroDate.GetIntroDate(myrole);
+                            IntroDate date = IntroDate.GetIntroDate(myrole);
                             __instance.YouAreText.color = date.color;
                             __instance.RoleText.text = ModTranslation.GetString(date.NameKey + "Name");
                             __instance.RoleText.color = date.color;

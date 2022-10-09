@@ -11,12 +11,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (!AmongUsClient.Instance.AmHost) return;
             if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
-            var role = player.GetRole();
-            var optdata = OptionData.DeepCopy();
+            RoleId role = player.GetRole();
+            GameOptionsData optdata = OptionData.DeepCopy();
             if (player.IsCrewVision())
             {
                 optdata.ImpostorLightMod = optdata.CrewLightMod;
-                var switchSystemToiletFan = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                SwitchSystem switchSystemToiletFan = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                 if (switchSystemToiletFan != null && switchSystemToiletFan.IsActive)
                 {
                     optdata.ImpostorLightMod /= 5;
@@ -25,7 +25,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (player.IsImpostorVision())
             {
                 optdata.CrewLightMod = optdata.ImpostorLightMod;
-                var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                SwitchSystem switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                 if (switchSystem2 != null && switchSystem2.IsActive)
                 {
                     optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
@@ -61,7 +61,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         if (!RoleClass.MadMaker.IsImpostorLight)
                         {
                             optdata.ImpostorLightMod = optdata.CrewLightMod;
-                            var switchSystemMadMaker = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                            SwitchSystem switchSystemMadMaker = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                             if (switchSystemMadMaker != null && switchSystemMadMaker.IsActive)
                             {
                                 optdata.ImpostorLightMod /= 5;
@@ -73,7 +73,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         if (RoleClass.MadMaker.IsImpostorLight)
                         {
                             optdata.CrewLightMod = optdata.ImpostorLightMod;
-                            var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                            SwitchSystem switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                             if (switchSystem2 != null && switchSystem2.IsActive)
                             {
                                 optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
@@ -110,7 +110,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.KillCooldown = KillCoolSet(RoleClass.Arsonist.CoolTime);
                     break;
                 case RoleId.Nocturnality:
-                    var switchSystemNocturnality = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                    SwitchSystem switchSystemNocturnality = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                     if (switchSystemNocturnality == null || !switchSystemNocturnality.IsActive) optdata.CrewLightMod /= 5;
                     else optdata.CrewLightMod *= 5;
                     break;
@@ -127,7 +127,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         if (!RoleClass.Jackal.IsImpostorLight)
                         {
                             optdata.ImpostorLightMod = optdata.CrewLightMod;
-                            var switchSystemJackal = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                            SwitchSystem switchSystemJackal = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                             if (switchSystemJackal != null && switchSystemJackal.IsActive) optdata.ImpostorLightMod /= 5;
                         }
                     }
@@ -136,7 +136,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         if (RoleClass.Jackal.IsImpostorLight)
                         {
                             optdata.CrewLightMod = optdata.ImpostorLightMod;
-                            var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                            SwitchSystem switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                             if (switchSystem2 != null && switchSystem2.IsActive) optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
                         }
                     }
@@ -153,7 +153,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (RoleClass.SatsumaAndImo.TeamNumber != 1)//クルーじゃないとき
                     {
                         optdata.CrewLightMod = optdata.ImpostorLightMod;
-                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        SwitchSystem switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                         if (switchSystem2 != null && switchSystem2.IsActive)
                         {
                             optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
@@ -186,8 +186,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (!AmongUsClient.Instance.AmHost) return;
             if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
-            var role = player.GetRole();
-            var optdata = OptionData.DeepCopy();
+            RoleId role = player.GetRole();
+            GameOptionsData optdata = OptionData.DeepCopy();
 
             switch (role)
             {
@@ -197,7 +197,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.Arsonist:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Arsonist.CoolTime) * 2;
                     optdata.ImpostorLightMod = optdata.CrewLightMod;
-                    var switchSystemArsonist = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                    SwitchSystem switchSystemArsonist = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                     if (switchSystemArsonist != null && switchSystemArsonist.IsActive) optdata.ImpostorLightMod /= 5;
                     optdata.RoleOptions.ShapeshifterCooldown = 1f;
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
@@ -215,8 +215,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void GamblersetCool(PlayerControl p)
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            var role = p.GetRole();
-            var optdata = OptionData.DeepCopy();
+            RoleId role = p.GetRole();
+            GameOptionsData optdata = OptionData.DeepCopy();
             optdata.KillCooldown = RoleClass.EvilGambler.GetSuc() ? KillCoolSet(RoleClass.EvilGambler.SucCool) : KillCoolSet(RoleClass.EvilGambler.NotSucCool);
             if (p.AmOwner) PlayerControl.GameOptions = optdata;
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, p.GetClientId());
@@ -226,7 +226,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void DoppelgangerCool(PlayerControl player, PlayerControl target)
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            var optdata = OptionData.DeepCopy();
+            GameOptionsData optdata = OptionData.DeepCopy();
             optdata.RoleOptions.ShapeshifterDuration = RoleClass.Doppelganger.DurationTime;
             optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Doppelganger.CoolTime;
             if (RoleClass.Doppelganger.Targets.ContainsKey(player.PlayerId))
@@ -253,7 +253,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static GameOptionsData DeepCopy(this GameOptionsData opt)
         {
-            var optByte = opt.ToBytes(5);
+            UnhollowerBaseLib.Il2CppStructArray<byte> optByte = opt.ToBytes(5);
             return GameOptionsData.FromBytes(optByte);
         }
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]

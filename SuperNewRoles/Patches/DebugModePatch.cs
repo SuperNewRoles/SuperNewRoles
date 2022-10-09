@@ -90,7 +90,7 @@ namespace SuperNewRoles.Patches
         }
         public static bool IsDebugMode()
         {
-            var IsDebugModeBool = false;
+            bool IsDebugModeBool = false;
             if (ConfigRoles.DebugMode.Value)
             {
                 if (CustomOptions.IsDebugMode.GetBool())

@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles.Neutral
     {
         public static void FixedUpdate()
         {
-            foreach (var data in RoleClass.PartTimer.PlayerDatas)
+            foreach (KeyValuePair<PlayerControl, PlayerControl> data in RoleClass.PartTimer.PlayerDatas)
             {
                 if (data.Value.IsDead())
                 {

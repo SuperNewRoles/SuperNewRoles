@@ -34,7 +34,7 @@ namespace SuperNewRoles.Roles
                 {
                     if (RoleClass.JackalSeer.SidekickSeerPlayer.Count > 0)
                     {
-                        var upflag = true;
+                        bool upflag = true;
                         foreach (PlayerControl p in RoleClass.JackalSeer.JackalSeerPlayer)
                         {
                             if (p.IsAlive())

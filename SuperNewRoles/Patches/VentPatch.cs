@@ -7,9 +7,9 @@ namespace SuperNewRoles.Patches
     {
         static void Postfix(Vent __instance)
         {
-            var color = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer).color;
+            UnityEngine.Color color = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer).color;
             string[] ventColors = new string[] { "_OutlineColor", "_AddColor" };
-            foreach (var data in ventColors)
+            foreach (string data in ventColors)
                 __instance.myRend.material.SetColor(data, color);
         }
     }

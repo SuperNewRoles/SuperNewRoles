@@ -160,7 +160,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                         if (p.IsDead()) continue;
                         if (target.Count > 0)
                         {
-                            var index = ModHelpers.GetRandomIndex(target);
+                            int index = ModHelpers.GetRandomIndex(target);
                             OutfitManager.resetChange(p);
                             OutfitManager.changeToPlayer(p, target[index]);
                             target.RemoveAt(index);

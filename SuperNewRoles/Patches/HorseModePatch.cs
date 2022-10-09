@@ -15,13 +15,13 @@ namespace SuperNewRoles.Patches
         private static void Prefix()
         {
             // Horse mode stuff
-            var horseModeSelectionBehavior = new ClientModOptionsPatch.SelectionBehaviour("Enable Horse Mode", () => HorseModeOption.enableHorseMode = ConfigRoles.EnableHorseMode.Value = !ConfigRoles.EnableHorseMode.Value, ConfigRoles.EnableHorseMode.Value);
+            ClientModOptionsPatch.SelectionBehaviour horseModeSelectionBehavior = new ClientModOptionsPatch.SelectionBehaviour("Enable Horse Mode", () => HorseModeOption.enableHorseMode = ConfigRoles.EnableHorseMode.Value = !ConfigRoles.EnableHorseMode.Value, ConfigRoles.EnableHorseMode.Value);
 
-            var bottomTemplate = GameObject.Find("InventoryButton");
+            GameObject bottomTemplate = GameObject.Find("InventoryButton");
             if (bottomTemplate == null) return;
-            var horseButton = Object.Instantiate(bottomTemplate, bottomTemplate.transform.parent);
-            var passiveHorseButton = horseButton.GetComponent<PassiveButton>();
-            var spriteHorseButton = horseButton.GetComponent<SpriteRenderer>();
+            GameObject horseButton = Object.Instantiate(bottomTemplate, bottomTemplate.transform.parent);
+            PassiveButton passiveHorseButton = horseButton.GetComponent<PassiveButton>();
+            SpriteRenderer spriteHorseButton = horseButton.GetComponent<SpriteRenderer>();
 
             horseModeOffSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
 
@@ -37,7 +37,7 @@ namespace SuperNewRoles.Patches
                 spriteHorseButton.transform.localScale *= -1;
                 CredentialsPatch.LogoPatch.UpdateSprite();
                 // Avoid wrong Player Particles floating around in the background
-                var particles = GameObject.FindObjectOfType<PlayerParticles>();
+                PlayerParticles particles = GameObject.FindObjectOfType<PlayerParticles>();
                 if (particles != null)
                 {
                     particles.pool.ReclaimAll();
@@ -46,9 +46,9 @@ namespace SuperNewRoles.Patches
             });
 
 
-            var CreditsButton = Object.Instantiate(bottomTemplate, bottomTemplate.transform.parent);
-            var passiveCreditsButton = CreditsButton.GetComponent<PassiveButton>();
-            var spriteCreditsButton = CreditsButton.GetComponent<SpriteRenderer>();
+            GameObject CreditsButton = Object.Instantiate(bottomTemplate, bottomTemplate.transform.parent);
+            PassiveButton passiveCreditsButton = CreditsButton.GetComponent<PassiveButton>();
+            SpriteRenderer spriteCreditsButton = CreditsButton.GetComponent<SpriteRenderer>();
 
             spriteCreditsButton.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreditsButton.png", 75f);
 

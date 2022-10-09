@@ -16,13 +16,13 @@ namespace SuperNewRoles.Roles.CrewMate
     {
         public static void FixedUpdate()
         {
-            foreach (var DeathTimeTextData in RoleClass.Psychometrist.DeathTimeTexts)
+            foreach ((DeadBody, TextMeshPro, int) DeathTimeTextData in RoleClass.Psychometrist.DeathTimeTexts)
             {
                 string newtext = "";
                 if (CustomOptions.PsychometristIsCheckDeathReason.GetBool())
                 {
                     GameData.PlayerInfo p = ModHelpers.PlayerById(DeathTimeTextData.Item1.ParentId)?.Data;
-                    var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
+                    FinalStatus finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
                         p.Disconnected == true ? FinalStatus.Disconnected :
                         FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId) ? FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] :
                         p.IsDead == true ? FinalStatus.Exiled :
@@ -46,7 +46,7 @@ namespace SuperNewRoles.Roles.CrewMate
             if (RoleClass.Psychometrist.FootprintsPosition.Count != 0)
             {
                 RoleClass.Psychometrist.UpdateTime -= Time.fixedDeltaTime;
-                foreach (var data in RoleClass.Psychometrist.FootprintsPosition.ToArray())
+                foreach (KeyValuePair<(byte, byte), (List<Vector2>, bool)> data in RoleClass.Psychometrist.FootprintsPosition.ToArray())
                 {
                     if (data.Value.Item2)
                     {
@@ -94,10 +94,10 @@ namespace SuperNewRoles.Roles.CrewMate
             }
             if (CustomOptions.PsychometristIsCheckFootprints.GetBool())
             {
-                var index = (deadPlayer.killerIfExisting.PlayerId, deadPlayer.player.PlayerId);
-                var Lists = RoleClass.Psychometrist.FootprintsPosition[index].Item1;
+                (byte, byte) index = (deadPlayer.killerIfExisting.PlayerId, deadPlayer.player.PlayerId);
+                List<Vector2> Lists = RoleClass.Psychometrist.FootprintsPosition[index].Item1;
                 Color color = Palette.PlayerColors[deadPlayer.killerIfExisting.Data.DefaultOutfit.ColorId];
-                foreach (var data in Lists)
+                foreach (Vector2 data in Lists)
                 {
                     RoleClass.Psychometrist.FootprintObjects[index].Add(new Footprint(-1, true, data));
                 }

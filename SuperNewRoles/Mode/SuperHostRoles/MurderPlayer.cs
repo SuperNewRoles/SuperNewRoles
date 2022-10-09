@@ -21,7 +21,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    var Side = RoleHelpers.GetOneSideQuarreled(target);
+                    PlayerControl Side = RoleHelpers.GetOneSideQuarreled(target);
                     if (Side.IsDead())
                     {
                         new LateTask(() =>
@@ -34,7 +34,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             Writer.Write((byte)CustomGameOverReason.QuarreledWin);
                             Writer.EndRPC();
                             RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);
-                            var winplayers = new List<PlayerControl>
+                            List<PlayerControl> winplayers = new List<PlayerControl>
                             {
                                 target
                             };

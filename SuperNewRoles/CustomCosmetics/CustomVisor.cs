@@ -18,20 +18,20 @@ namespace SuperNewRoles.CustomCosmetics
                 if (isAdded || !DownLoadClassVisor.IsEndDownload) return;
                 isAdded = true;
                 SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み処理開始");
-                var AllPlates = __instance.allNamePlates;
+                Il2CppSystem.Collections.Generic.List<NamePlateData> AllPlates = __instance.allNamePlates;
 
-                var plateDir = new DirectoryInfo("SuperNewRoles\\CustomVisorsChache");
+                DirectoryInfo plateDir = new DirectoryInfo("SuperNewRoles\\CustomVisorsChache");
                 if (!plateDir.Exists) plateDir.Create();
-                var Files = plateDir.GetFiles("*.png").ToList();
+                List<FileInfo> Files = plateDir.GetFiles("*.png").ToList();
                 Files.AddRange(plateDir.GetFiles("*.jpg"));
-                var CustomPlates = new List<VisorData>();
-                foreach (var file in Files)
+                List<VisorData> CustomPlates = new List<VisorData>();
+                foreach (FileInfo file in Files)
                 {
                     try
                     {
-                        var plate = ScriptableObject.CreateInstance<VisorData>();
-                        var FileName = file.Name[0..^4];
-                        var Data = DownLoadClassVisor.Visordetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
+                        VisorData plate = ScriptableObject.CreateInstance<VisorData>();
+                        string FileName = file.Name[0..^4];
+                        CustomVisors Data = DownLoadClassVisor.Visordetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
                         plate.name = Data.name + "\nby " + Data.author;
                         plate.ProductId = "CustomVisors_" + Data.resource.Replace(".png", "").Replace(".jpg", "");
                         plate.BundleId = "CustomVisors_" + Data.resource.Replace(".png", "").Replace(".jpg", "");

@@ -56,7 +56,7 @@ namespace SuperNewRoles.Roles.Impostor
             Logger.Info($"現在のカウント{Count}", "ShiftActor");
             if (shapeshifter.PlayerId != CachedPlayer.LocalPlayer.PlayerId) return;
             if (!CanShow) return;
-            var TargetRoleText = "";
+            string TargetRoleText = "";
 
             // 役職名
             if (!ModHelpers.IsSucsessChance(ShiftActorRightChance.GetSelection() + 1))
@@ -102,9 +102,9 @@ namespace SuperNewRoles.Roles.Impostor
             Logger.Info($"テキスト名は{TargetRoleText}", "ShiftActor");
 
             // ここからが表示関連
-            var text1 = ModTranslation.GetString("ShiftActorText1"); // の役職は
-            var text2 = ModTranslation.GetString("ShiftActorText2"); // です
-            var showtext = $"{target.name}{text1}{TargetRoleText}{text2}"; // ex)たろうの役職はパン屋 ♥です
+            string text1 = ModTranslation.GetString("ShiftActorText1"); // の役職は
+            string text2 = ModTranslation.GetString("ShiftActorText2"); // です
+            string showtext = $"{target.name}{text1}{TargetRoleText}{text2}"; // ex)たろうの役職はパン屋 ♥です
 
             new CustomMessage(showtext, 10);
 

@@ -53,8 +53,8 @@ namespace SuperNewRoles.Patches
                         if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.CanBan())
                         {
                             handled = true;
-                            if (!float.TryParse(text[4..], out var cooltime)) __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/kc {キルクールタイム}");
-                            var settime = cooltime;
+                            if (!float.TryParse(text[4..], out float cooltime)) __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/kc {キルクールタイム}");
+                            float settime = cooltime;
                             if (settime == 0) settime = 0.00001f;
                             PlayerControl.GameOptions.KillCooldown = settime;
                             CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);

@@ -35,7 +35,7 @@ namespace SuperNewRoles.Roles
         }
         private static float IsPos(Vector3 mypos, PlainDoor Door, float distance)
         {
-            var Distance = Vector3.Distance(mypos, Door.transform.position);
+            float Distance = Vector3.Distance(mypos, Door.transform.position);
             return Distance <= distance ? Distance : 0f;
         }
         private static PlainDoor GetDoor()

@@ -30,10 +30,10 @@ namespace SuperNewRoles
             _elemSize = IntPtr.Size;
             _offset = 4 * IntPtr.Size;
 
-            var constructor = typeof(T).GetConstructor(new[] { typeof(IntPtr) });
-            var ptr = Expression.Parameter(typeof(IntPtr));
-            var create = Expression.New(constructor!, ptr);
-            var lambda = Expression.Lambda<Func<IntPtr, T>>(create, ptr);
+            System.Reflection.ConstructorInfo constructor = typeof(T).GetConstructor(new[] { typeof(IntPtr) });
+            ParameterExpression ptr = Expression.Parameter(typeof(IntPtr));
+            NewExpression create = Expression.New(constructor!, ptr);
+            Expression<Func<IntPtr, T>> lambda = Expression.Lambda<Func<IntPtr, T>>(create, ptr);
             _objFactory = lambda.Compile();
         }
 
@@ -43,7 +43,7 @@ namespace SuperNewRoles
 
         public Il2CppListEnumerable(List<T> list)
         {
-            var listStruct = (Il2CppListStruct*)list.Pointer;
+            Il2CppListStruct* listStruct = (Il2CppListStruct*)list.Pointer;
             _count = listStruct->_size;
             _arrayPointer = listStruct->_items;
         }
@@ -54,7 +54,7 @@ namespace SuperNewRoles
         public bool MoveNext()
         {
             if (++_index >= _count) return false;
-            var refPtr = *(IntPtr*)IntPtr.Add(IntPtr.Add(_arrayPointer, _offset), _index * _elemSize);
+            IntPtr refPtr = *(IntPtr*)IntPtr.Add(IntPtr.Add(_arrayPointer, _offset), _index * _elemSize);
             Current = _objFactory(refPtr);
             return true;
         }

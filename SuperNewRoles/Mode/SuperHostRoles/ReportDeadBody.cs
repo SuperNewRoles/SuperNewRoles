@@ -24,12 +24,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             //if (RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) return true;
             if (__instance.IsRole(RoleId.Minimalist))
             {
-                var a = RoleClass.Minimalist.UseReport;
+                bool a = RoleClass.Minimalist.UseReport;
                 return a;
             }
             if (__instance.IsRole(RoleId.Fox))
             {
-                var a = RoleClass.Fox.UseReport;
+                bool a = RoleClass.Fox.UseReport;
                 return a;
             }
             //if (target.Object.IsRole(RoleId.Bait) && (!deadPlayer.killerIfExisting.IsRole(RoleId.Minimalist) || RoleClass.Minimalist.UseReport)) if (!RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) { return false; } else { return true; }

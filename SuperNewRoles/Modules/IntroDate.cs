@@ -68,7 +68,7 @@ namespace SuperNewRoles.Modules
             }
             catch
             {
-                var data = IntroDatas.FirstOrDefault((_) => _.RoleId == RoleId);
+                IntroDate data = IntroDatas.FirstOrDefault((_) => _.RoleId == RoleId);
                 if (data == null) data = CrewmateIntro;
                 IntroDatasCache[RoleId] = data;
                 return data;
@@ -76,7 +76,7 @@ namespace SuperNewRoles.Modules
         }
         public static CustomRoleOption GetOption(RoleId roleId)
         {
-            var option = CustomRoleOption.RoleOptions.FirstOrDefault((_) => _.RoleId == roleId);
+            CustomRoleOption option = CustomRoleOption.RoleOptions.FirstOrDefault((_) => _.RoleId == roleId);
             return option;
         }
         public static string GetTitle(string name, Int16 num)

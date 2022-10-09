@@ -158,8 +158,8 @@ namespace SuperNewRoles.Buttons
 
         private void Update(bool isAlive, RoleId role)
         {
-            var localPlayer = CachedPlayer.LocalPlayer;
-            var moveable = localPlayer.PlayerControl.moveable;
+            CachedPlayer localPlayer = CachedPlayer.LocalPlayer;
+            bool moveable = localPlayer.PlayerControl.moveable;
 
             if (localPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton(isAlive, role))
             {

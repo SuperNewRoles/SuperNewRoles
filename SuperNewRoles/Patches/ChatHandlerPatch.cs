@@ -55,7 +55,7 @@ namespace SuperNewRoles.Patches
                 }
             }
 
-            var Commands = chatText.Split(" ");
+            string[] Commands = chatText.Split(" ");
             if (Commands[0].Equals("/version", StringComparison.OrdinalIgnoreCase) ||
                 Commands[0].Equals("/v", StringComparison.OrdinalIgnoreCase))
             {
@@ -175,7 +175,7 @@ namespace SuperNewRoles.Patches
                     return false;
                 }
                 StringBuilder builder = new();
-                foreach (var data in OnGameEndPatch.PlayerDatas)
+                foreach (CustomPlayerData data in OnGameEndPatch.PlayerDatas)
                 {
                     if (data.IsWin) builder.Append("★");
                     else builder.Append("　");
@@ -243,7 +243,7 @@ namespace SuperNewRoles.Patches
         static string GetInRole(List<CustomRoleOption> optionsnotorder)
         {
             string text = ModTranslation.GetString("NowRolesMessage") + "\n";
-            var options = optionsnotorder.OrderBy((CustomRoleOption x) =>
+            IOrderedEnumerable<CustomRoleOption> options = optionsnotorder.OrderBy((CustomRoleOption x) =>
             {
                 return x.Intro.Team switch
                 {
@@ -387,7 +387,7 @@ namespace SuperNewRoles.Patches
             {
                 yield return new WaitForSeconds(time);
             }
-            var crs = CustomRpcSender.Create("AllSend");
+            CustomRpcSender crs = CustomRpcSender.Create("AllSend");
             crs.AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetName)
                 .Write(SendName)
                 .EndRpc()
@@ -408,7 +408,7 @@ namespace SuperNewRoles.Patches
             {
                 yield return new WaitForSeconds(time);
             }
-            var crs = CustomRpcSender.Create("PrivateSend");
+            CustomRpcSender crs = CustomRpcSender.Create("PrivateSend");
             crs.AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.GetClientId())
                 .Write(SendName)
                 .EndRpc()

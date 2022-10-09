@@ -277,7 +277,7 @@ namespace SuperNewRoles.CustomCosmetics
                     {
                         foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                         {
-                            var color = pc.CurrentOutfit.ColorId;
+                            int color = pc.CurrentOutfit.ColorId;
                             pc.SetHat("hat_dusk", color);
                             pc.HatRenderer().Hat = CreateHatData(hats[0], true, true);
                             pc.HatRenderer().SetHat(color);
@@ -339,7 +339,7 @@ namespace SuperNewRoles.CustomCosmetics
                     hatsTabCustomTexts.Add(title);
                 }
 
-                var numHats = hats.Count;
+                int numHats = hats.Count;
 
                 int i2 = 0;
                 for (int i = 0; i < hats.Count; i++)
@@ -397,9 +397,9 @@ namespace SuperNewRoles.CustomCosmetics
 
                     if (!ext.IsNull)
                     {
-                        if (!packages.ContainsKey(ext.package == null ? innerslothPackageName : ext.package))
-                            packages[ext.package == null ? innerslothPackageName : ext.package] = new();
-                        packages[ext.package == null ? innerslothPackageName : ext.package].Add(new System.Tuple<HatData, HatExtension>(hatData, ext));
+                        if (!packages.ContainsKey(ext.package ?? innerslothPackageName))
+                            packages[ext.package ?? innerslothPackageName] = new();
+                        packages[ext.package ?? innerslothPackageName].Add(new System.Tuple<HatData, HatExtension>(hatData, ext));
                     }
                     else
                     {
@@ -411,7 +411,7 @@ namespace SuperNewRoles.CustomCosmetics
 
                 float YOffset = __instance.YStart;
 
-                var orderedKeys = packages.Keys.OrderBy((string x) =>
+                IOrderedEnumerable<string> orderedKeys = packages.Keys.OrderBy((string x) =>
                 {
                     return x == innerslothPackageName
                         ? 100003
@@ -570,7 +570,7 @@ namespace SuperNewRoles.CustomCosmetics
             }
             CustomHats.IsEnd = true;
             Logger.Info(repos.Count.ToString());
-            foreach (var repo in hatRepos)
+            foreach (KeyValuePair<string, string> repo in hatRepos)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] ハットスタート:" + repo.Key);
                 if (!ConfigRoles.DownloadSuperNewNamePlates.Value)
@@ -613,7 +613,7 @@ namespace SuperNewRoles.CustomCosmetics
         {
             HttpClient http = new();
             http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
-            var response = await http.GetAsync(new System.Uri($"{repo}/CustomHats.json"), HttpCompletionOption.ResponseContentRead);
+            HttpResponseMessage response = await http.GetAsync(new System.Uri($"{repo}/CustomHats.json"), HttpCompletionOption.ResponseContentRead);
             try
             {
                 if (response.StatusCode != HttpStatusCode.OK) return response.StatusCode;
@@ -623,7 +623,7 @@ namespace SuperNewRoles.CustomCosmetics
                     return HttpStatusCode.ExpectationFailed;
                 }
                 string json = await response.Content.ReadAsStringAsync();
-                var responsestream = await response.Content.ReadAsStreamAsync();
+                Stream responsestream = await response.Content.ReadAsStreamAsync();
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
                 responsestream.CopyTo(File.Create($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json"));
                 JToken jobj = JObject.Parse(json)["hats"];
@@ -690,13 +690,13 @@ namespace SuperNewRoles.CustomCosmetics
                         markedfordownload.Add(data.backflipresource);
                 }
 
-                foreach (var file in markedfordownload)
+                foreach (string file in markedfordownload)
                 {
-                    var hatFileResponse = await http.GetAsync($"{repo}/hats/{file}", HttpCompletionOption.ResponseContentRead);
+                    HttpResponseMessage hatFileResponse = await http.GetAsync($"{repo}/hats/{file}", HttpCompletionOption.ResponseContentRead);
                     //SuperNewRolesPlugin.Logger.LogInfo(file);
                     if (hatFileResponse.StatusCode != HttpStatusCode.OK) continue;
-                    using var responseStream = await hatFileResponse.Content.ReadAsStreamAsync();
-                    using var fileStream = File.Create($"{filePath}\\{file}");
+                    using Stream responseStream = await hatFileResponse.Content.ReadAsStreamAsync();
+                    using FileStream fileStream = File.Create($"{filePath}\\{file}");
                     responseStream.CopyTo(fileStream);
                 }
                 if (!CachedRepos.Contains(repo))
@@ -721,8 +721,8 @@ namespace SuperNewRoles.CustomCosmetics
             if (reshash == null || !File.Exists(respath))
                 return true;
 
-            using var stream = File.OpenRead(respath);
-            var hash = System.BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+            using FileStream stream = File.OpenRead(respath);
+            string hash = System.BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
             return !reshash.Equals(hash);
         }
 

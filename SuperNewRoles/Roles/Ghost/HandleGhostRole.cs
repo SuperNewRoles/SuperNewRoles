@@ -22,7 +22,7 @@ namespace SuperNewRoles.Roles
         public static bool HandleAssign(PlayerControl player)
         {
             //各役職にあったアサインをする
-            var Team = TeamRoleType.Error;
+            TeamRoleType Team = TeamRoleType.Error;
             Team = player.IsCrew() ? TeamRoleType.Crewmate : player.IsNeutral() ? TeamRoleType.Neutral : TeamRoleType.Impostor;
             List<IntroDate> GhostRoles = new();
             foreach (IntroDate intro in IntroDate.GhostRoleDatas)
@@ -30,7 +30,7 @@ namespace SuperNewRoles.Roles
                 if (intro.Team != Team) continue;
                 GhostRoles.Add(intro);
             }
-            var assignrole = Assing(GhostRoles);
+            RoleId assignrole = Assing(GhostRoles);
             if (assignrole == RoleId.DefaultRole) return false;
             switch (Team)
             {
@@ -64,11 +64,11 @@ namespace SuperNewRoles.Roles
             foreach (IntroDate data in datas)
             {
                 //その役職のプレイヤー数を取得
-                var count = AllRoleSetClass.GetPlayerCount(data.RoleId);
+                float count = AllRoleSetClass.GetPlayerCount(data.RoleId);
                 //設定を取得
-                var option = IntroDate.GetOption(data.RoleId);
+                CustomRoleOption option = IntroDate.GetOption(data.RoleId);
                 //確率を取得
-                var selection = option.GetSelection();
+                int selection = option.GetSelection();
 
                 //確率が0%ではないかつ、
                 //もう割り当てきられてないか(最大人数まで割り当てられていないか)

@@ -84,7 +84,7 @@ namespace SuperNewRoles
 
             Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
 
-            var assembly = Assembly.GetExecutingAssembly();
+            Assembly assembly = Assembly.GetExecutingAssembly();
 
             StringDATE = new Dictionary<string, Dictionary<int, string>>();
             Harmony.PatchAll();

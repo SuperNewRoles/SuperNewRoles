@@ -85,8 +85,8 @@ namespace SuperNewRoles.Roles
         }
         public static void NekomataProc(List<PlayerControl> p)
         {
-            var rdm = ModHelpers.GetRandomIndex(p);
-            var random = p[rdm];
+            int rdm = ModHelpers.GetRandomIndex(p);
+            PlayerControl random = p[rdm];
             SuperNewRolesPlugin.Logger.LogInfo(random.NameText().text);
             if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.NekomataExiled, random))
             {

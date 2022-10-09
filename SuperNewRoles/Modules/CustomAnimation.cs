@@ -44,7 +44,7 @@ namespace SuperNewRoles.Modules
         }
         public static void Update()
         {
-            var deltatime = Time.deltaTime;
+            float deltatime = Time.deltaTime;
             foreach (CustomAnimation anim in Animations.ToArray())
             {
                 anim.AnimationUpdate(deltatime);

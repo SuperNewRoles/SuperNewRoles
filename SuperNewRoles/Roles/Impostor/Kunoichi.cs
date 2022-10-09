@@ -17,7 +17,7 @@ namespace SuperNewRoles.Roles
             float num = 7;
             Vector3 pos;
             Vector3 mouseDirection = Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2);
-            var mouseAngle = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
+            float mouseAngle = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
 
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
@@ -54,15 +54,15 @@ namespace SuperNewRoles.Roles
             Vector3 shotForward = Vector3.Scale(mouseWorldPos - RoleClass.Kunoichi.SendKunai.kunai.transform.position, new Vector3(1, 1, 0)).normalized;
 
             // 弾に速度を与える
-            var body = RoleClass.Kunoichi.SendKunai.kunai.AddComponent<Rigidbody2D>();
+            Rigidbody2D body = RoleClass.Kunoichi.SendKunai.kunai.AddComponent<Rigidbody2D>();
             body.gravityScale = 0f;
             body.velocity = shotForward * 10f;
         }
         public static void Update()
         {
             Vector3 mouseDirection = Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2);
-            var MouseAngle = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
-            var targetPosition = CachedPlayer.LocalPlayer.transform.position + new Vector3(0.8f * (float)Math.Cos(MouseAngle), 0.8f * (float)Math.Sin(MouseAngle));
+            float MouseAngle = Mathf.Atan2(mouseDirection.y, mouseDirection.x);
+            Vector3 targetPosition = CachedPlayer.LocalPlayer.transform.position + new Vector3(0.8f * (float)Math.Cos(MouseAngle), 0.8f * (float)Math.Sin(MouseAngle));
             RoleClass.Kunoichi.Kunai.kunai.transform.position += (targetPosition - RoleClass.Kunoichi.Kunai.kunai.transform.position) * 0.4f;
             RoleClass.Kunoichi.Kunai.image.transform.eulerAngles = new Vector3(0f, 0f, (float)(MouseAngle * 360f / Math.PI / 2f));
             if (Math.Cos(MouseAngle) < 0.0)
@@ -87,7 +87,7 @@ namespace SuperNewRoles.Roles
                 }
                 else
                 {
-                    var kunaipos = kunai.kunai.transform.position;
+                    Vector3 kunaipos = kunai.kunai.transform.position;
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.IsDead()) continue;
@@ -199,7 +199,7 @@ namespace SuperNewRoles.Roles
         public static void SetOpacity(PlayerControl player, float opacity, bool cansee)
         {
             // Sometimes it just doesn't work?
-            var color = Color.Lerp(Palette.ClearWhite, Palette.White, opacity);
+            Color color = Color.Lerp(Palette.ClearWhite, Palette.White, opacity);
             try
             {
                 if (player.MyRend() != null)
@@ -248,12 +248,12 @@ namespace SuperNewRoles.Roles
                 if (!ModeHandler.IsMode(ModeId.Default)) return;
                 if (__instance.myPlayer.IsRole(RoleId.Kunoichi))
                 {
-                    var Scientist = __instance.myPlayer;
+                    PlayerControl Scientist = __instance.myPlayer;
                     if (Scientist == null || Scientist.IsDead()) return;
-                    var ison = RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(__instance.myPlayer.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[__instance.myPlayer.PlayerId];
+                    bool ison = RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(__instance.myPlayer.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[__instance.myPlayer.PlayerId];
                     bool canSee = !ison || PlayerControl.LocalPlayer.IsDead() || __instance.myPlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
 
-                    var opacity = canSee ? 0.1f : 0.0f;
+                    float opacity = canSee ? 0.1f : 0.0f;
                     if (ison)
                     {
                         opacity = Math.Max(opacity, 0);

@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles
             //ボタンのカウントが0になったら自殺する
             if (HudManagerStartPatch.SuicidalIdeationButton.Timer <= 0f) PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
             //タスクを完了したかを検知
-            var (playerCompleted, playerTotal) = TaskCount.TaskDate(PlayerControl.LocalPlayer.Data);
+            (int playerCompleted, int playerTotal) = TaskCount.TaskDate(PlayerControl.LocalPlayer.Data);
             if (RoleClass.SuicidalIdeation.CompletedTask <= playerCompleted)
             {
                 RoleClass.SuicidalIdeation.CompletedTask += 1;

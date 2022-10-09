@@ -70,7 +70,7 @@ namespace SuperNewRoles.Mode.Detective
         {
             if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamImpostorsAlive != 0)
             {
-                var endReason = TempData.LastDeathReason switch
+                GameOverReason endReason = TempData.LastDeathReason switch
                 {
                     DeathReason.Exile => GameOverReason.ImpostorByVote,
                     DeathReason.Kill => GameOverReason.ImpostorByKill,

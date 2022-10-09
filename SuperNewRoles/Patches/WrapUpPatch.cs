@@ -55,7 +55,7 @@ namespace SuperNewRoles.Patches
                 if (exiled.Object.PlayerId != CachedPlayer.LocalPlayer.PlayerId) return;
                 if (exiled.Object.IsRole(RoleId.SideKiller))
                 {
-                    var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
+                    PlayerControl sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
                     if (sideplayer != null)
                     {
                         if (!RoleClass.SideKiller.IsUpMadKiller)
@@ -105,7 +105,7 @@ namespace SuperNewRoles.Patches
             exiled.Object.Exiled();
             exiled.IsDead = true;
             FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
-            var Player = ModHelpers.PlayerById(exiled.PlayerId);
+            PlayerControl Player = ModHelpers.PlayerById(exiled.PlayerId);
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (RoleClass.Lovers.SameDie && Player.IsLovers())
@@ -128,7 +128,7 @@ namespace SuperNewRoles.Patches
                 EvilEraser.IsWinFoxGuard = false;
                 if (RoleHelpers.IsQuarreled(Player))
                 {
-                    var Side = RoleHelpers.GetOneSideQuarreled(Player);
+                    PlayerControl Side = RoleHelpers.GetOneSideQuarreled(Player);
                     if (Side.IsDead())
                     {
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);

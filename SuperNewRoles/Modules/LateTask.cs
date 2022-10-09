@@ -33,7 +33,7 @@ namespace SuperNewRoles.Modules
         }
         public static void Update(float deltaTime)
         {
-            var TasksToRemove = new List<LateTask>();
+            List<LateTask> TasksToRemove = new List<LateTask>();
             Tasks.ForEach((task) =>
             {
                 //Logger.Info("LateTask \"" + task.name + "\" Start","LateTask");

@@ -19,13 +19,13 @@ namespace SuperNewRoles.Patches
             public static void Postfix(GameSettingMenu __instance)
             {
                 // Setup mapNameTransform
-                var mapNameTransform = __instance.AllItems.FirstOrDefault(x => x.gameObject.activeSelf && x.name.Equals("MapName", StringComparison.OrdinalIgnoreCase));
+                Transform mapNameTransform = __instance.AllItems.FirstOrDefault(x => x.gameObject.activeSelf && x.name.Equals("MapName", StringComparison.OrdinalIgnoreCase));
                 if (mapNameTransform == null) return;
 
-                var options = new List<KeyValuePair<string, int>>();
+                List<KeyValuePair<string, int>> options = new List<KeyValuePair<string, int>>();
                 for (int i = 0; i < Constants.MapNames.Length; i++)
                 {
-                    var kvp = new KeyValuePair<string, int>
+                    KeyValuePair<string, int> kvp = new KeyValuePair<string, int>
                     {
                         key = Constants.MapNames[i],
                         value = i

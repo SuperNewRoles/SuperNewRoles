@@ -33,7 +33,7 @@ namespace SuperNewRoles.Patches
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    foreach (var data in TargetLadderData)
+                    foreach (KeyValuePair<byte, Vector3> data in TargetLadderData)
                     {
                         PlayerControl player = ModHelpers.PlayerById(data.Key);
                         if (player.IsDead()) continue;
@@ -56,8 +56,8 @@ namespace SuperNewRoles.Patches
         {
             public static void Postfix(PlayerPhysics __instance, Ladder source, byte climbLadderSid)
             {
-                var sourcepos = source.transform.position;
-                var targetpos = source.Destination.transform.position;
+                Vector3 sourcepos = source.transform.position;
+                Vector3 targetpos = source.Destination.transform.position;
                 //降りている
                 if (sourcepos.y > targetpos.y)
                 {

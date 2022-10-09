@@ -17,10 +17,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (!AmongUsClient.Instance.AmHost) return;
                 if (IsOldSHR && WinCond != null && AmongUsClient.Instance.AmHost)
                 {
-                    var Template = "最終結果\n勝利陣営:{0}";
+                    string Template = "最終結果\n勝利陣営:{0}";
                     if (WinCond == CustomGameOverReason.GodWin)
                     {
-                        var players = "";
+                        string players = "";
                         try
                         {
                             foreach (PlayerControl p in Winner)

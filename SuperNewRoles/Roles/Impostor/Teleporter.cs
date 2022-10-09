@@ -23,7 +23,7 @@ namespace SuperNewRoles.Roles
                     aliveplayers.Add(p);
                 }
             }
-            var player = ModHelpers.GetRandom(aliveplayers);
+            PlayerControl player = ModHelpers.GetRandom(aliveplayers);
             RPCProcedure.TeleporterTP(player.PlayerId);
 
             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TeleporterTP, SendOption.Reliable, -1);

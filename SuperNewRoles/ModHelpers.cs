@@ -77,7 +77,7 @@ namespace SuperNewRoles
         }
         public static byte? GetKey(this Dictionary<byte, byte> dec, byte Value)
         {
-            foreach (var data in dec)
+            foreach (KeyValuePair<byte, byte> data in dec)
             {
                 if (data.Value == Value)
                 {
@@ -143,11 +143,11 @@ namespace SuperNewRoles
         {
             SkinViewData nextSkin = DestroyableSingleton<HatManager>.Instance.GetSkinById(SkinId).viewData.viewData;
             AnimationClip clip = null;
-            var spriteAnim = playerPhysics.GetSkin().animator;
-            var anim = spriteAnim.m_animator;
-            var skinLayer = playerPhysics.GetSkin();
+            PowerTools.SpriteAnim spriteAnim = playerPhysics.GetSkin().animator;
+            Animator anim = spriteAnim.m_animator;
+            SkinLayer skinLayer = playerPhysics.GetSkin();
 
-            var currentPhysicsAnim = playerPhysics.Animator.GetCurrentAnimation();
+            AnimationClip currentPhysicsAnim = playerPhysics.Animator.GetCurrentAnimation();
             clip = currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.RunAnim
                 ? nextSkin.RunAnim
                 : currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.SpawnAnim
@@ -337,17 +337,17 @@ namespace SuperNewRoles
                 numShort = 1;
             }
 
-            var tasks = new Il2CppSystem.Collections.Generic.List<byte>();
-            var hashSet = new Il2CppSystem.Collections.Generic.HashSet<TaskTypes>();
+            Il2CppSystem.Collections.Generic.List<byte> tasks = new Il2CppSystem.Collections.Generic.List<byte>();
+            Il2CppSystem.Collections.Generic.HashSet<TaskTypes> hashSet = new Il2CppSystem.Collections.Generic.HashSet<TaskTypes>();
 
-            var commonTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(task);
+            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> commonTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
+            foreach (NormalPlayerTask task in ShipStatus.Instance.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(task);
 
-            var shortTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(task);
+            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> shortTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
+            foreach (NormalPlayerTask task in ShipStatus.Instance.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(task);
 
-            var longTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(task);
+            Il2CppSystem.Collections.Generic.List<NormalPlayerTask> longTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
+            foreach (NormalPlayerTask task in ShipStatus.Instance.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(task);
 
             int start = 0;
             ShipStatus.Instance.AddTasksFromList(ref start, numCommon, tasks, hashSet, commonTasks);
@@ -417,14 +417,14 @@ namespace SuperNewRoles
         {
             if (player == null) return;
             if (seer == null) seer = player;
-            var clientId = seer.PlayerControl.GetClientId();
+            int clientId = seer.PlayerControl.GetClientId();
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.Reliable, clientId);
             writer.Write((ushort)role);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
         public static InnerNet.ClientData GetClient(this PlayerControl player)
         {
-            var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
+            InnerNet.ClientData client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
             return client;
         }
         public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
@@ -451,10 +451,10 @@ namespace SuperNewRoles
             // must be "raw (headerless) 2-channel signed 32 bit pcm (le)" (can e.g. use Audacity® to export)
             try
             {
-                if (CachedAudioClips.TryGetValue(path, out var audio)) return audio;
+                if (CachedAudioClips.TryGetValue(path, out AudioClip audio)) return audio;
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 Stream stream = assembly.GetManifestResourceStream(path);
-                var byteAudio = new byte[stream.Length];
+                byte[] byteAudio = new byte[stream.Length];
                 _ = stream.Read(byteAudio, 0, (int)stream.Length);
                 float[] samples = new float[byteAudio.Length / 4]; // 4 bytes per sample
                 int offset;
@@ -483,7 +483,7 @@ namespace SuperNewRoles
         }
         public static int GetClientId(this PlayerControl player)
         {
-            var client = player.GetClient();
+            InnerNet.ClientData client = player.GetClient();
             return client == null ? -1 : client.Id;
         }
         public static bool IsSucsessChance(int SucsessChance, int MaxChance = 10)
@@ -520,7 +520,7 @@ namespace SuperNewRoles
         {
             try
             {
-                if (CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
+                if (CachedSprites.TryGetValue(path + pixelsPerUnit, out Sprite sprite)) return sprite;
                 Texture2D texture = LoadTextureFromResources(path);
                 sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
                 sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
@@ -554,8 +554,8 @@ namespace SuperNewRoles
                 texture = new(2, 2, TextureFormat.ARGB32, true);
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 Stream stream = assembly.GetManifestResourceStream(path);
-                var byteTexture = new byte[stream.Length];
-                var read = stream.Read(byteTexture, 0, (int)stream.Length);
+                byte[] byteTexture = new byte[stream.Length];
+                int read = stream.Read(byteTexture, 0, (int)stream.Length);
                 LoadImage(texture, byteTexture, false);
                 texture.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
                 return CachedTexture[path] = texture;
@@ -573,17 +573,17 @@ namespace SuperNewRoles
         }
         public static T GetRandom<T>(List<T> list)
         {
-            var indexdate = UnityEngine.Random.Range(0, list.Count);
+            int indexdate = UnityEngine.Random.Range(0, list.Count);
             return list[indexdate];
         }
         public static PlayerControl GetRandompc(List<PlayerControl> list)
         {
-            var indexdate = UnityEngine.Random.Range(0, list.Count);
+            int indexdate = UnityEngine.Random.Range(0, list.Count);
             return list[indexdate];
         }
         public static int GetRandomIndex<T>(List<T> list)
         {
-            var indexdate = UnityEngine.Random.Range(0, list.Count);
+            int indexdate = UnityEngine.Random.Range(0, list.Count);
             return indexdate;
         }
 
@@ -731,7 +731,7 @@ namespace SuperNewRoles
         {
             if (iCall_LoadImage == null)
                 iCall_LoadImage = IL2CPP.ResolveICall<d_LoadImage>("UnityEngine.ImageConversion::LoadImage");
-            var il2cppArray = (Il2CppStructArray<byte>)data;
+            Il2CppStructArray<byte> il2cppArray = (Il2CppStructArray<byte>)data;
             return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
         }
 

@@ -60,7 +60,7 @@ namespace SuperNewRoles.Roles
         public static bool IsViewIcon(PlayerControl player)
         {
             if (player == null) return false;
-            foreach (var data in RoleClass.Demon.CurseDatas)
+            foreach (KeyValuePair<byte, List<PlayerControl>> data in RoleClass.Demon.CurseDatas)
             {
                 foreach (PlayerControl Player in data.Value)
                 {

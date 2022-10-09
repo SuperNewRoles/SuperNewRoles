@@ -16,10 +16,10 @@ namespace SuperNewRoles.Sabotage
         public static bool IsOK(CustomSabotage sabotage)
         {
             return Options.SabotageSetting.GetBool() && sabotage switch
-                {
-                    CustomSabotage.CognitiveDeficit => PlayerControl.GameOptions.MapId == 4 && Options.CognitiveDeficitSetting.GetBool(),
-                    _ => false,
-                };
+            {
+                CustomSabotage.CognitiveDeficit => PlayerControl.GameOptions.MapId == 4 && Options.CognitiveDeficitSetting.GetBool(),
+                _ => false,
+            };
         }
         public static bool IsOKMeeting()
         {

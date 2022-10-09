@@ -81,14 +81,14 @@ namespace SuperNewRoles.Mode.Werewolf
             if (IsDiscussion)
             {
                 Time = 3;
-                foreach (var players in SoothRoles)
+                foreach (KeyValuePair<int, int> players in SoothRoles)
                 {
                     PlayerControl source = ModHelpers.PlayerById((byte)players.Key);
                     PlayerControl target = ModHelpers.PlayerById((byte)players.Value);
                     if (source == null || target == null || source.Data.Disconnected) break;
                     string Chat = "";
-                    var RoleDate = IntroDate.GetIntroDate(target.GetRole(), target);
-                    var RoleName = ModTranslation.GetString("Werewolf" + RoleDate.NameKey + "Name");
+                    IntroDate RoleDate = IntroDate.GetIntroDate(target.GetRole(), target);
+                    string RoleName = ModTranslation.GetString("Werewolf" + RoleDate.NameKey + "Name");
                     Chat += string.Format(ModTranslation.GetString("WereWolfMediumAbilityText"), target.GetDefaultName(), RoleName);
                     new LateTask(() =>
                     {
@@ -102,8 +102,8 @@ namespace SuperNewRoles.Mode.Werewolf
                     {
                         string Chat = "";
                         PlayerControl target = exiled.Object;
-                        var RoleDate = IntroDate.GetIntroDate(target.GetRole(), target);
-                        var RoleName = ModTranslation.GetString("Werewolf" + RoleDate.NameKey + "Name");
+                        IntroDate RoleDate = IntroDate.GetIntroDate(target.GetRole(), target);
+                        string RoleName = ModTranslation.GetString("Werewolf" + RoleDate.NameKey + "Name");
                         Chat += string.Format(ModTranslation.GetString("WereWolfMediumAbilityText"), target.GetDefaultName(), RoleName);
                         new LateTask(() =>
                         {
@@ -112,9 +112,9 @@ namespace SuperNewRoles.Mode.Werewolf
                         Time += 3;
                     }
                 }
-                foreach (var players in HunterKillPlayers)
+                foreach (int players in HunterKillPlayers)
                 {
-                    var player = ModHelpers.PlayerById((byte)players);
+                    PlayerControl player = ModHelpers.PlayerById((byte)players);
                     player.RpcMurderPlayer(player);
                 }
                 if (Time <= 9)

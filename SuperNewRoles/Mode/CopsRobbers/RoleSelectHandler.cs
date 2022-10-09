@@ -20,7 +20,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             {
                 if (SelectPlayers.Count >= 1)
                 {
-                    var newimpostor = ModHelpers.GetRandom(SelectPlayers);
+                    PlayerControl newimpostor = ModHelpers.GetRandom(SelectPlayers);
                     impostors.Add(newimpostor);
                     SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
                 }

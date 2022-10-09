@@ -16,7 +16,7 @@ namespace SuperNewRoles
         {
             public static bool Prefix(AnnouncementPopUp __instance)
             {
-                var text = __instance.AnnounceTextMeshPro;
+                TMPro.TextMeshPro text = __instance.AnnounceTextMeshPro;
                 text.text = announcement;
                 return false;
             }
@@ -43,7 +43,7 @@ namespace SuperNewRoles
             {
                 HttpClient http = new();
                 http.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Updater");
-                var response = await http.GetAsync(new System.Uri(updateURL), HttpCompletionOption.ResponseContentRead);
+                HttpResponseMessage response = await http.GetAsync(new System.Uri(updateURL), HttpCompletionOption.ResponseContentRead);
                 if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
                 {
                     System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
@@ -57,9 +57,9 @@ namespace SuperNewRoles
 
                 File.Move(fullname, fullname + ".old"); // rename current executable to old
 
-                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                using (Stream responseStream = await response.Content.ReadAsStreamAsync())
                 {
-                    using var fileStream = File.Create(fullname);
+                    using FileStream fileStream = File.Create(fullname);
                     // probably want to have proper name here
                     responseStream.CopyTo(fileStream);
                 }
@@ -80,9 +80,9 @@ namespace SuperNewRoles
 
                 File.Move(fullname, fullname + ".old"); // rename current executable to old
 
-                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                using (Stream responseStream = await response.Content.ReadAsStreamAsync())
                 {
-                    using var fileStream = File.Create(fullname);
+                    using FileStream fileStream = File.Create(fullname);
                     // probably want to have proper name here
                     responseStream.CopyTo(fileStream);
                 }
@@ -103,7 +103,7 @@ namespace SuperNewRoles
             {
                 HttpClient http = new();
                 http.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Updater");
-                var response = await http.GetAsync(new System.Uri($"https://api.github.com/repos/{SuperNewRolesPlugin.ModUrl}/releases/latest"), HttpCompletionOption.ResponseContentRead);
+                HttpResponseMessage response = await http.GetAsync(new System.Uri($"https://api.github.com/repos/{SuperNewRolesPlugin.ModUrl}/releases/latest"), HttpCompletionOption.ResponseContentRead);
                 Logger.Info($"https://api.github.com/repos/{SuperNewRolesPlugin.ModUrl}/releases/latest", "リリース情報のURL");
                 if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
                 {
@@ -165,16 +165,16 @@ namespace SuperNewRoles
                         response = await http.GetAsync(new System.Uri(updateURL), HttpCompletionOption.ResponseContentRead);
                         if (response.StatusCode == HttpStatusCode.OK && response.Content != null)
                         {
-                            var codeBase = Assembly.GetExecutingAssembly().CodeBase.Replace("SuperNewRoles.dll", "Agartha.dll");
+                            string codeBase = Assembly.GetExecutingAssembly().CodeBase.Replace("SuperNewRoles.dll", "Agartha.dll");
                             System.UriBuilder uri = new(codeBase);
-                            var fullname = System.Uri.UnescapeDataString(uri.Path);
+                            string fullname = System.Uri.UnescapeDataString(uri.Path);
                             if (File.Exists(fullname + ".old")) // Clear old file in case it wasnt;
                                 File.Delete(fullname + ".old");
 
                             File.Move(fullname, fullname + ".old"); // rename current executable to old
 
-                            using var responseStream = await response.Content.ReadAsStreamAsync();
-                            using var fileStream = File.Create(fullname);
+                            using Stream responseStream = await response.Content.ReadAsStreamAsync();
+                            using FileStream fileStream = File.Create(fullname);
                             // probably want to have proper name here
                             responseStream.CopyTo(fileStream);
                         }

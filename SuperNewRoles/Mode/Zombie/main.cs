@@ -30,7 +30,7 @@ namespace SuperNewRoles.Mode.Zombie
                 GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
                 if (!playerInfo.Object.IsZombie())
                 {
-                    var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);
+                    (int playerCompleted, int playerTotal) = TaskCount.TaskDate(playerInfo);
                     __instance.TotalTasks += playerTotal;
                     __instance.CompletedTasks += playerCompleted;
                 }

@@ -21,7 +21,7 @@ namespace SuperNewRoles.Patches
                     int index = ModHelpers.GetRandomIndex(__state.ToList());
                     Logger.Info(__state.Length.ToString() + ":" + index.ToString());
                     //0を変えることで強制的にキルアニメーションが変わる
-                    var anim = __state[3];
+                    OverlayKillAnimation anim = __state[3];
                     __instance.KillAnims = new OverlayKillAnimation[1] { anim };
                     Logger.Info(__instance.KillAnims.Length.ToString());
                 }
@@ -34,7 +34,7 @@ namespace SuperNewRoles.Patches
                 {
                     if (!Constants.ShouldHorseAround())
                     {
-                        var anim = __instance.transform.FindChild("PunchShootKill(Clone)");
+                        Transform anim = __instance.transform.FindChild("PunchShootKill(Clone)");
                         anim.transform.FindChild("Impostor").gameObject.SetActive(false);
                         //anim.transform.FindChild("killstabknife").gameObject.SetActive(false);
                         //anim.transform.FindChild("killstabknifehand").gameObject.SetActive(false);
@@ -45,7 +45,7 @@ namespace SuperNewRoles.Patches
                         Transform pet = null;
                         for (int i = 0; i < anim.childCount; i++)
                         {
-                            var child = anim.GetChild(i);
+                            Transform child = anim.GetChild(i);
                             if (child.name == "PetSlot")
                             {
                                 if (IsFirstEnd)

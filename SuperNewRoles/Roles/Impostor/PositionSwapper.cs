@@ -30,8 +30,8 @@ namespace SuperNewRoles.Roles
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:" + p.PlayerId + "\n生存:" + p.IsAlive());
             }
-            var RandomPlayer = ModHelpers.GetRandom<PlayerControl>(AlivePlayer);
-            var PushSwapper = PlayerControl.LocalPlayer;
+            PlayerControl RandomPlayer = ModHelpers.GetRandom<PlayerControl>(AlivePlayer);
+            PlayerControl PushSwapper = PlayerControl.LocalPlayer;
             RPCProcedure.PositionSwapperTP(RandomPlayer.PlayerId, PushSwapper.PlayerId);
 
             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.PositionSwapperTP, SendOption.Reliable, -1);

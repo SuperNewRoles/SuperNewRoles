@@ -185,7 +185,7 @@ namespace SuperNewRoles.Patches
                 poolablePlayer.cosmetics.nameText.transform.localPosition = new Vector3(poolablePlayer.cosmetics.nameText.transform.localPosition.x, poolablePlayer.cosmetics.nameText.transform.localPosition.y, -15f);
                 poolablePlayer.cosmetics.nameText.text = winningPlayerData2.PlayerName;
 
-                foreach (var data in AdditionalTempData.playerRoles)
+                foreach (AdditionalTempData.PlayerRoleInfo data in AdditionalTempData.playerRoles)
                 {
                     Logger.Info(data.PlayerName + ":" + winningPlayerData2.PlayerName);
                     if (data.PlayerName != winningPlayerData2.PlayerName) continue;
@@ -198,8 +198,8 @@ namespace SuperNewRoles.Patches
             bonusTextObject.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
             textRenderer = bonusTextObject.GetComponent<TMPro.TMP_Text>();
             textRenderer.text = "";
-            var text = "";
-            var RoleColor = Color.white;
+            string text = "";
+            Color RoleColor = Color.white;
             switch (AdditionalTempData.winCondition)
             {
                 case WinCondition.LoversWin:
@@ -316,7 +316,7 @@ namespace SuperNewRoles.Patches
             }
             textRenderer.color = AdditionalTempData.winCondition == WinCondition.HAISON ? Color.clear : RoleColor;
             __instance.BackgroundBar.material.SetColor("_Color", RoleColor);
-            var haison = false;
+            bool haison = false;
             if (text == "HAISON")
             {
                 haison = true;
@@ -389,17 +389,17 @@ namespace SuperNewRoles.Patches
             textRenderer.text = haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName"));
             try
             {
-                var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
+                Vector3 position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
                 GameObject roleSummary = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
                 roleSummary.transform.position = new Vector3(__instance.Navigation.ExitButton.transform.position.x + 0.1f, position.y - 0.1f, -14f);
                 roleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
 
-                var roleSummaryText = new StringBuilder();
+                StringBuilder roleSummaryText = new StringBuilder();
                 roleSummaryText.AppendLine(ModTranslation.GetString("最終結果"));
 
-                foreach (var datas in AdditionalTempData.playerRoles)
+                foreach (AdditionalTempData.PlayerRoleInfo datas in AdditionalTempData.playerRoles)
                 {
-                    var taskInfo = datas.TasksTotal > 0 ? $"<color=#FAD934FF>({datas.TasksCompleted}/{datas.TasksTotal})</color>" : "";
+                    string taskInfo = datas.TasksTotal > 0 ? $"<color=#FAD934FF>({datas.TasksCompleted}/{datas.TasksTotal})</color>" : "";
                     string roleText = CustomOptions.Cs(datas.IntroDate.color, datas.IntroDate.NameKey + "Name");
                     if (datas.GhostIntroDate.RoleId != RoleId.DefaultRole)
                     {
@@ -423,7 +423,7 @@ namespace SuperNewRoles.Patches
                 roleSummaryTextMesh.fontSizeMax = 1.25f;
                 roleSummaryTextMesh.fontSize = 1.25f;
 
-                var roleSummaryTextMeshRectTransform = roleSummaryTextMesh.GetComponent<RectTransform>();
+                RectTransform roleSummaryTextMeshRectTransform = roleSummaryTextMesh.GetComponent<RectTransform>();
                 roleSummaryTextMeshRectTransform.anchoredPosition = new Vector2(position.x + 3.5f, position.y - 0.1f);
                 roleSummaryTextMesh.text = roleSummaryText.ToString();
 
@@ -467,7 +467,7 @@ namespace SuperNewRoles.Patches
             {
                 role = null;
             }
-            var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
+            FinalStatus finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
                 p.Disconnected == true ? FinalStatus.Disconnected :
                 FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId) ? FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] :
                 p.IsDead == true ? FinalStatus.Exiled :
@@ -505,26 +505,26 @@ namespace SuperNewRoles.Patches
                 PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();
                 CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
             }
-            var gameOverReason = AdditionalTempData.gameOverReason;
+            GameOverReason gameOverReason = AdditionalTempData.gameOverReason;
             AdditionalTempData.Clear();
-            foreach (var p in GameData.Instance.AllPlayers)
+            foreach (GameData.PlayerInfo p in GameData.Instance.AllPlayers)
             {
                 if (p != null && p.Object != null && p.Object.IsPlayer())
                 {
                     //var p = pc.Data;
-                    var roles = IntroDate.GetIntroDate(p.Object.GetRole(), p.Object);
+                    IntroDate roles = IntroDate.GetIntroDate(p.Object.GetRole(), p.Object);
                     if (RoleClass.Stefinder.IsKillPlayer.Contains(p.PlayerId))
                     {
                         roles = IntroDate.StefinderIntro1;
                     }
-                    var ghostRoles = IntroDate.GetIntroDate(p.Object.GetGhostRole(), p.Object);
-                    var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
+                    IntroDate ghostRoles = IntroDate.GetIntroDate(p.Object.GetGhostRole(), p.Object);
+                    (int tasksCompleted, int tasksTotal) = TaskCount.TaskDate(p);
                     if (p.Object.IsImpostor())
                     {
                         tasksCompleted = 0;
                         tasksTotal = 0;
                     }
-                    var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
+                    FinalStatus finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
                         p.Disconnected == true ? FinalStatus.Disconnected :
                         FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId) ? FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] :
                         p.IsDead == true ? FinalStatus.Exiled :
@@ -607,7 +607,7 @@ namespace SuperNewRoles.Patches
             {
                 if (notWinners.Any(x => x.Data.PlayerName == winner.PlayerName)) winnersToRemove.Add(winner);
             }
-            foreach (var winner in winnersToRemove) TempData.winners.Remove(winner);
+            foreach (WinningPlayerData winner in winnersToRemove) TempData.winners.Remove(winner);
             // Neutral shifter can't win
 
             bool saboWin = gameOverReason == GameOverReason.ImpostorBySabotage;
@@ -661,7 +661,7 @@ namespace SuperNewRoles.Patches
             else if (JackalWin)
             {
                 TempData.winners = new();
-                foreach (var cp in CachedPlayer.AllPlayers)
+                foreach (CachedPlayer cp in CachedPlayer.AllPlayers)
                 {
                     if (cp.PlayerControl.IsJackalTeam())
                     {
@@ -779,7 +779,7 @@ namespace SuperNewRoles.Patches
 
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
-                foreach (var cp in CachedPlayer.AllPlayers)
+                foreach (CachedPlayer cp in CachedPlayer.AllPlayers)
                     if (cp.PlayerControl.IsMadRoles() || cp.PlayerControl.IsRole(RoleId.MadKiller)) TempData.winners.Add(new(cp.Data));
 
             }
@@ -813,7 +813,7 @@ namespace SuperNewRoles.Patches
                         TempData.winners = new();
                         isDleted = true;
                     }
-                    var (Complete, all) = TaskCount.TaskDateNoClearCheck(player.Data);
+                    (int Complete, int all) = TaskCount.TaskDateNoClearCheck(player.Data);
                     if (!RoleClass.God.IsTaskEndWin || Complete >= all)
                     {
                         TempData.winners.Add(new(player.Data));
@@ -944,7 +944,7 @@ namespace SuperNewRoles.Patches
             }
             foreach (PlayerControl p in RoleClass.SuicidalIdeation.SuicidalIdeationPlayer)
             {
-                var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                (int playerCompleted, int playerTotal) = TaskCount.TaskDate(p.Data);
                 if (p.IsAlive() && playerTotal > playerCompleted)
                 {
                     TempData.winners.Add(new(p.Data));
@@ -1013,7 +1013,7 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
-            foreach (var PartTimerData in RoleClass.PartTimer.PlayerDatas)//フリーター
+            foreach (KeyValuePair<PlayerControl, PlayerControl> PartTimerData in RoleClass.PartTimer.PlayerDatas)//フリーター
             {
                 Logger.Info(PartTimerData.Key.Data.PlayerName);
                 if (TempData.winners.ToArray().Any(x => x.PlayerName == PartTimerData.Value.Data.PlayerName))
@@ -1030,7 +1030,7 @@ namespace SuperNewRoles.Patches
             {
                 if (notWinners.Any(x => x.Data.PlayerName == winner.PlayerName)) winnersToRemove.Add(winner);
             }
-            foreach (var winner in winnersToRemove) TempData.winners.Remove(winner);
+            foreach (WinningPlayerData winner in winnersToRemove) TempData.winners.Remove(winner);
 
 
             if (ModeHandler.IsMode(ModeId.BattleRoyal))
@@ -1233,7 +1233,7 @@ namespace SuperNewRoles.Patches
                 if (p.AllTasksCompleted())
                 {
                     __instance.enabled = false;
-                    var endReason = (GameOverReason)CustomGameOverReason.TaskerWin;
+                    GameOverReason endReason = (GameOverReason)CustomGameOverReason.TaskerWin;
                     if (Demon.IsDemonWinFlag())
                     {
                         endReason = (GameOverReason)CustomGameOverReason.DemonWin;
@@ -1261,7 +1261,7 @@ namespace SuperNewRoles.Patches
             if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard() && !EvilEraser.IsNeetWinGuard() && statistics.HitmanAlive == 0)
             {
                 __instance.enabled = false;
-                var endReason = TempData.LastDeathReason switch
+                GameOverReason endReason = TempData.LastDeathReason switch
                 {
                     DeathReason.Exile => GameOverReason.ImpostorByVote,
                     DeathReason.Kill => GameOverReason.ImpostorByKill,
@@ -1342,7 +1342,7 @@ namespace SuperNewRoles.Patches
                 {
                     if (p.IsAlive() || !RoleClass.Workperson.IsAliveWin)
                     {
-                        var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                        (int playerCompleted, int playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
                             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
@@ -1366,7 +1366,7 @@ namespace SuperNewRoles.Patches
                 {
                     if (p.IsAlive())
                     {
-                        var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                        (int playerCompleted, int playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
                             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);

@@ -18,20 +18,20 @@ namespace SuperNewRoles.CustomCosmetics
                 if (isAdded || !DownLoadClass.IsEndDownload) return;
                 isAdded = true;
                 SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate] プレート読み込み処理開始");
-                var AllPlates = __instance.allNamePlates;
+                Il2CppSystem.Collections.Generic.List<NamePlateData> AllPlates = __instance.allNamePlates;
 
-                var plateDir = new DirectoryInfo("SuperNewRoles\\CustomPlatesChache");
+                DirectoryInfo plateDir = new DirectoryInfo("SuperNewRoles\\CustomPlatesChache");
                 if (!plateDir.Exists) plateDir.Create();
-                var Files = plateDir.GetFiles("*.png").ToList();
+                List<FileInfo> Files = plateDir.GetFiles("*.png").ToList();
                 Files.AddRange(plateDir.GetFiles("*.jpg"));
-                var CustomPlates = new List<NamePlateData>();
-                foreach (var file in Files)
+                List<NamePlateData> CustomPlates = new List<NamePlateData>();
+                foreach (FileInfo file in Files)
                 {
                     try
                     {
-                        var plate = ScriptableObject.CreateInstance<NamePlateData>();
-                        var FileName = file.Name[0..^4];
-                        var Data = DownLoadClass.platedetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
+                        NamePlateData plate = ScriptableObject.CreateInstance<NamePlateData>();
+                        string FileName = file.Name[0..^4];
+                        CustomPlates Data = DownLoadClass.platedetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
                         plate.name = Data.name + "\nby " + Data.author;
                         plate.ProductId = "CustomNamePlates_" + Data.resource.Replace(".png", "").Replace(".jpg", "");
                         plate.BundleId = "CustomNamePlates_" + Data.resource.Replace(".png", "").Replace(".jpg", "");

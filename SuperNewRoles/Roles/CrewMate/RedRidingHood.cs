@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles
                 {
                     DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == CachedPlayer.LocalPlayer.PlayerId)?.FirstOrDefault();
                     if (deadPlayer.killerIfExisting == null) return;
-                    var killer = PlayerControl.AllPlayerControls.ToArray().ToList().FirstOrDefault((PlayerControl a) => a.PlayerId == deadPlayer.killerIfExistingId);
+                    PlayerControl killer = PlayerControl.AllPlayerControls.ToArray().ToList().FirstOrDefault((PlayerControl a) => a.PlayerId == deadPlayer.killerIfExistingId);
 
                     Logger.Info($"え:{killer.IsDead()} || {killer.PlayerId == player.Object.PlayerId}");
 
@@ -25,7 +25,7 @@ namespace SuperNewRoles.Roles
                         Logger.Info($"お:{!EvilEraser.IsBlock(EvilEraser.BlockTypes.RedRidingHoodRevive, killer)}");
                         if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.RedRidingHoodRevive, killer))
                         {
-                            var Writer = RPCHelper.StartRPC(CustomRPC.ReviveRPC);
+                            Hazel.MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.ReviveRPC);
                             Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             Writer.EndRPC();
                             RPCProcedure.ReviveRPC(CachedPlayer.LocalPlayer.PlayerId);

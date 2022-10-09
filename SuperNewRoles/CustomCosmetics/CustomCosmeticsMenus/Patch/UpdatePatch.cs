@@ -9,8 +9,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static PlayerVoteArea area;
         public static void Postfix(PlayerCustomizationMenu __instance)
         {
-            var ClosetTab = __instance.Tabs[0].Tab.transform;
-            var PresetTab = __instance.Tabs[1].Tab.transform;
+            Transform ClosetTab = __instance.Tabs[0].Tab.transform;
+            Transform PresetTab = __instance.Tabs[1].Tab.transform;
             ObjectData.CosmicubeMenuHolderTint.enabled = false;
             if (!ObjectData.IsShow)
             {
@@ -34,14 +34,14 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 }
                 if (area.gameObject.active) area.PreviewNameplate(SaveManager.LastNamePlate);
 
-                var panel = __instance.transform.FindChild("Background/RightPanel");
+                Transform panel = __instance.transform.FindChild("Background/RightPanel");
 
                 panel.FindChild("Gradient").gameObject.SetActive(false);
 
                 panel.localPosition = new Vector3(0, 0, -4.29f);
                 area.transform.localPosition = new Vector3(3.5f, 1.75f, -70.71f);
-                var colortab = __instance.transform.FindChild("Header/Tabs/ColorTab");
-                var closettab = __instance.transform.FindChild("Header/Tabs/HatsTab");
+                Transform colortab = __instance.transform.FindChild("Header/Tabs/ColorTab");
+                Transform closettab = __instance.transform.FindChild("Header/Tabs/HatsTab");
 
                 if (!ObjectData.IsShow)
                 {
@@ -108,8 +108,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 {
                     foreach (PoolablePlayer player in ObjectData.PresetAreas)
                     {
-                        var outfit = new GameData.PlayerOutfit();
-                        var data = SelectPatch.GetData(i);
+                        GameData.PlayerOutfit outfit = new GameData.PlayerOutfit();
+                        ObjectData.ClosetPresetData data = SelectPatch.GetData(i);
                         outfit.ColorId = data.BodyColor.Value;
                         outfit.HatId = data.Hat.Value;
                         outfit.VisorId = data.Visor.Value;

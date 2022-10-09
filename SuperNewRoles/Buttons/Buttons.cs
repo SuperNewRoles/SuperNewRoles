@@ -107,7 +107,7 @@ namespace SuperNewRoles.Buttons
             WaveCannonButton = new(
                 () =>
                 {
-                    var pos = CachedPlayer.LocalPlayer.transform.position;
+                    Vector3 pos = CachedPlayer.LocalPlayer.transform.position;
                     byte[] buff = new byte[sizeof(float) * 2];
                     Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
                     Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
@@ -150,7 +150,7 @@ namespace SuperNewRoles.Buttons
                         Logger.Info("nullなのでreturnしました", "WaveCannonButton");
                         return;
                     }
-                    var pos = CachedPlayer.LocalPlayer.transform.position;
+                    Vector3 pos = CachedPlayer.LocalPlayer.transform.position;
                     byte[] buff = new byte[sizeof(float) * 2];
                     Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
                     Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
@@ -172,7 +172,7 @@ namespace SuperNewRoles.Buttons
             SluggerButton = new(
                 () =>
                 {
-                    var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
+                    PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
                     anim.RpcAnimation(RpcAnimationType.SluggerCharge);
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Slugger; },
@@ -180,7 +180,7 @@ namespace SuperNewRoles.Buttons
                 {
                     if (SluggerButton.isEffectActive && !PlayerControl.LocalPlayer.CanMove)
                     {
-                        var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
+                        PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
                         SluggerButton.isEffectActive = false;
                         anim.RpcAnimation(RpcAnimationType.Stop);
                     }
@@ -221,7 +221,7 @@ namespace SuperNewRoles.Buttons
                     {
                         AnimationType = RpcAnimationType.SluggerMurder;
                     }
-                    var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
+                    PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
                     anim.RpcAnimation(AnimationType);
                     MessageWriter RPCWriter = RPCHelper.StartRPC((RpcCalls)CustomRPC.SluggerExile);
                     RPCWriter.Write(CachedPlayer.LocalPlayer.PlayerId);
@@ -414,7 +414,7 @@ namespace SuperNewRoles.Buttons
                 {
                     if (PlayerControl.LocalPlayer.CanMove && !RoleClass.Truelover.IsCreate && !PlayerControl.LocalPlayer.IsLovers())
                     {
-                        var target = SetTarget();
+                        PlayerControl target = SetTarget();
                         if (target == null || target.IsLovers()) return;
                         RoleClass.Truelover.IsCreate = true;
                         RoleHelpers.SetLovers(PlayerControl.LocalPlayer, target);
@@ -610,9 +610,9 @@ namespace SuperNewRoles.Buttons
                     {
                         RoleClass.CountChanger.IsSet = true;
                         RoleClass.CountChanger.Count--;
-                        var Target = PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true);
-                        var TargetID = Target.PlayerId;
-                        var LocalID = CachedPlayer.LocalPlayer.PlayerId;
+                        PlayerControl Target = PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true);
+                        byte TargetID = Target.PlayerId;
+                        byte LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
                         RPCProcedure.CountChangerSetRPC(LocalID, TargetID);
                         MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CountChangerSetRPC, SendOption.Reliable, -1);
@@ -649,7 +649,7 @@ namespace SuperNewRoles.Buttons
                 {
                     if (RoleClass.Doctor.Vital == null)
                     {
-                        var moto = PlayerControl.LocalPlayer.Data.Role.Role;
+                        RoleTypes moto = PlayerControl.LocalPlayer.Data.Role.Role;
                         DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
                         CachedPlayer.LocalPlayer.Data.Role.TryCast<ScientistRole>().UseAbility();
                         DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, moto);
@@ -690,7 +690,7 @@ namespace SuperNewRoles.Buttons
             JackalSidekickButton = new(
                 () =>
                 {
-                    var target = PlayerControlFixedUpdatePatch.JackalSetTarget();
+                    PlayerControl target = PlayerControlFixedUpdatePatch.JackalSetTarget();
                     if (target && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.CanCreateSidekick)
                     {
                         if (RoleClass.Jackal.CanCreateFriend)
@@ -735,7 +735,7 @@ namespace SuperNewRoles.Buttons
             JackalSeerSidekickButton = new(
                 () =>
                 {
-                    var target_JS = PlayerControlFixedUpdatePatch.JackalSetTarget();
+                    PlayerControl target_JS = PlayerControlFixedUpdatePatch.JackalSetTarget();
                     if (target_JS && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.JackalSeer.CanCreateSidekick)
                     {
                         bool IsFakeSidekickSeer = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSeerSidekick, target_JS);
@@ -978,14 +978,14 @@ namespace SuperNewRoles.Buttons
                     {
                         if (RoleClass.Sheriff.KillMaxCount > 0 && SetTarget())
                         {
-                            var Target = PlayerControlFixedUpdatePatch.SetTarget();
-                            var LocalID = CachedPlayer.LocalPlayer.PlayerId;
-                            var misfire = !Sheriff.IsSheriffKill(Target);
+                            PlayerControl Target = PlayerControlFixedUpdatePatch.SetTarget();
+                            byte LocalID = CachedPlayer.LocalPlayer.PlayerId;
+                            bool misfire = !Sheriff.IsSheriffKill(Target);
                             if (RoleClass.Chief.SheriffPlayer.Contains(LocalID))
                             {
                                 misfire = !Sheriff.IsChiefSheriffKill(Target);
                             }
-                            var TargetID = Target.PlayerId;
+                            byte TargetID = Target.PlayerId;
 
                             RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
                             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1);
@@ -1165,7 +1165,7 @@ namespace SuperNewRoles.Buttons
             ImpostorSidekickButton = new(
                 () =>
                 {
-                    var target = SetTarget(Crewmateonly: true);
+                    PlayerControl target = SetTarget(Crewmateonly: true);
                     if (target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.Levelinger.IsCreateMadmate)
                     {
                         target.SetRoleRPC(RoleId.MadMate);
@@ -1198,7 +1198,7 @@ namespace SuperNewRoles.Buttons
             SideKillerSidekickButton = new(
                 () =>
                 {
-                    var target = SetTarget(Crewmateonly: true);
+                    PlayerControl target = SetTarget(Crewmateonly: true);
                     if (target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.SideKiller.IsCreateMadKiller)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetMadKiller);
@@ -1236,7 +1236,7 @@ namespace SuperNewRoles.Buttons
             MadMakerSidekickButton = new(
                 () =>
                 {
-                    var target = SetTarget();
+                    PlayerControl target = SetTarget();
                     if (!target.Data.Role.IsImpostor && target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.MadMaker.IsCreateMadmate)
                     {
                         Madmate.CreateMadMate(target);
@@ -1320,7 +1320,7 @@ namespace SuperNewRoles.Buttons
             ArsonistDouseButton = new(
                 () =>
                 {
-                    var Target = SetTarget(untarget: Arsonist.GetUntarget());
+                    PlayerControl Target = SetTarget(untarget: Arsonist.GetUntarget());
                     RoleClass.Arsonist.DouseTarget = Target;
                     ArsonistDouseButton.MaxTimer = RoleClass.Arsonist.DurationTime;
                     ArsonistDouseButton.Timer = ArsonistDouseButton.MaxTimer;
@@ -1367,7 +1367,7 @@ namespace SuperNewRoles.Buttons
                     Writer.EndRPC();
                     RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
                     //SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
-                    var reason = (GameOverReason)CustomGameOverReason.ArsonistWin;
+                    GameOverReason reason = (GameOverReason)CustomGameOverReason.ArsonistWin;
                     if (ModeHandler.IsMode(ModeId.SuperHostRoles)) reason = GameOverReason.ImpostorByKill;
                     if (AmongUsClient.Instance.AmHost)
                     {
@@ -1441,7 +1441,7 @@ namespace SuperNewRoles.Buttons
             ChiefSidekickButton = new(
                 () =>
                 {
-                    var target = SetTarget();
+                    PlayerControl target = SetTarget();
                     if (target && !RoleClass.Chief.IsCreateSheriff)
                     {
                         if (!target.IsImpostor())
@@ -1887,7 +1887,7 @@ namespace SuperNewRoles.Buttons
             EvilHackerMadmateSetting = new(
                 () =>
                 {
-                    var target = SetTarget();
+                    PlayerControl target = SetTarget();
                     if (!target.Data.Role.IsImpostor && target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.EvilHacker.IsCreateMadmate)
                     {
                         Madmate.CreateMadMate(target);
@@ -2019,7 +2019,7 @@ namespace SuperNewRoles.Buttons
                 49,
                 () =>
                 {
-                    var ma = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    SwitchSystem ma = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                     return (ma == null || ma.IsActive) && (!RoleClass.SecretlyKiller.IsBlackOutKillCharge || !PlayerControl.LocalPlayer.CanMove);
                 }
             );
@@ -2179,7 +2179,7 @@ namespace SuperNewRoles.Buttons
             FastMakerButton = new(
                 () =>
                 {
-                    var target = SetTarget();
+                    PlayerControl target = SetTarget();
                     //マッド作ってないなら
                     if (target && PlayerControl.LocalPlayer.CanMove && !RoleClass.FastMaker.IsCreatedMadMate)
                     {

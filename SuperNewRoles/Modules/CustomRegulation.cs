@@ -14,7 +14,7 @@ namespace SuperNewRoles.Modules
         {
             if (Loaded) yield break;
             Logger.Info("フェチ開始いいいい");
-            var request = UnityWebRequest.Get("https://raw.githubusercontent.com/ykundesu/SuperNewRegulations/main/Regulations.json");
+            UnityWebRequest request = UnityWebRequest.Get("https://raw.githubusercontent.com/ykundesu/SuperNewRegulations/main/Regulations.json");
             yield return request.SendWebRequest();
             if (request.isNetworkError || request.isHttpError)
             {
@@ -22,14 +22,14 @@ namespace SuperNewRoles.Modules
                 yield break;
             }
             Logger.Info("通過");
-            var json = JObject.Parse(request.downloadHandler.text);
+            JObject json = JObject.Parse(request.downloadHandler.text);
             RegulationData CustomData = new()
             {
                 id = 0,
                 title = "カスタム"
             };
             RegulationData.Regulations.Add(CustomData);
-            for (var regulation = json["regulations"].First; regulation != null; regulation = regulation.Next)
+            for (JToken regulation = json["regulations"].First; regulation != null; regulation = regulation.Next)
             {
                 RegulationData data = new()
                 {
@@ -47,7 +47,7 @@ namespace SuperNewRoles.Modules
                 data.CommonTask = int.Parse(regulation["CommonTask"]?.ToString());
                 data.LongTask = int.Parse(regulation["LongTask"]?.ToString());
                 data.ShortTask = int.Parse(regulation["ShortTask"]?.ToString());
-                for (var option = regulation["ModOptions"].First; option != null; option = option.Next)
+                for (JToken option = regulation["ModOptions"].First; option != null; option = option.Next)
                 {
                     data.ChangeOptions.Add(int.Parse(option["id"]?.ToString()), int.Parse(option["selection"]?.ToString()));
                 }
@@ -104,9 +104,9 @@ namespace SuperNewRoles.Modules
             {
                 options.selection = options.defaultSelection;
             }
-            foreach (var option in data.ChangeOptions)
+            foreach (KeyValuePair<int, int> option in data.ChangeOptions)
             {
-                var opt = CustomOption.options.FirstOrDefault((CustomOption optiondata) => optiondata.id == option.Key);
+                CustomOption opt = CustomOption.options.FirstOrDefault((CustomOption optiondata) => optiondata.id == option.Key);
                 if (opt != null)
                 {
                     opt.selection = option.Value;

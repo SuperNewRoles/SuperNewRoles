@@ -100,7 +100,7 @@ namespace SuperNewRoles.Buttons
 
                 bool roleCouldUse = @object.IsUseVent();
 
-                var usableDistance = __instance.UsableDistance;
+                float usableDistance = __instance.UsableDistance;
 
                 if (SubmergedCompatibility.isSubmerged())
                 {
@@ -150,8 +150,8 @@ namespace SuperNewRoles.Buttons
         {
             public static void Postfix(PlayerControl __instance)
             {
-                var ImpostorVentButton = FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton;
-                var ImpostorSabotageButton = FastDestroyableSingleton<HudManager>.Instance.SabotageButton;
+                VentButton ImpostorVentButton = FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton;
+                SabotageButton ImpostorSabotageButton = FastDestroyableSingleton<HudManager>.Instance.SabotageButton;
                 if (PlayerControl.LocalPlayer.IsUseVent() && (MapBehaviour.Instance == null || !MapBehaviour.Instance.IsOpen))
                 {
                     if (!ImpostorVentButton.gameObject.active)

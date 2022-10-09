@@ -24,7 +24,7 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.Levelinger.ReviveUseXP <= RoleClass.Levelinger.ThisXP)
                 {
-                    var Writer = RPCHelper.StartRPC(CustomRPC.ReviveRPC);
+                    Hazel.MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.ReviveRPC);
                     Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     Writer.EndRPC();
                     RPCProcedure.ReviveRPC(CachedPlayer.LocalPlayer.PlayerId);
