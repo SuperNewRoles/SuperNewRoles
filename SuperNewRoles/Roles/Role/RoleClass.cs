@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Sabotage;
 using TMPro;
@@ -178,10 +178,12 @@ namespace SuperNewRoles.Roles
             Slugger.ClearAndReload();
             ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
+            GM.ClearAndReload();
+            Cracker.ClearAndReload();
+            NekoKabocha.ClearAndReload();
             WaveCannon.ClearAndReload();
             Doppelganger.ClearAndReload();
             WaveCannonJackal.ClearAndReload();
-            NekoKabocha.ClearAndReload();
             Conjurer.ClearAndReload();
             Camouflager.ClearAndReload();
             //ロールクリア
@@ -444,12 +446,10 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> DoorrPlayer;
             public static Color32 color = new(205, 133, 63, byte.MaxValue);
             public static float CoolTime;
-            public static DateTime ButtonTimer;
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoorrDoorButton.png", 115f);
 
             public static void ClearAndReload()
             {
-                ButtonTimer = DateTime.Now;
                 DoorrPlayer = new();
                 CoolTime = CustomOptions.DoorrCoolTime.GetFloat();
             }
@@ -2494,6 +2494,7 @@ namespace SuperNewRoles.Roles
             public static Dictionary<byte, byte> Datas;
             public static bool IsLocalOn => Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
             public static PlayerControl CurrentTarget => IsLocalOn ? ModHelpers.PlayerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
+
             public static Dictionary<PlayerControl, PlayerControl> PlayerDatas
             {
                 get
@@ -2678,6 +2679,41 @@ namespace SuperNewRoles.Roles
                 OldCommsData = false;
             }
         }
+        public static class Cracker
+        {
+            public static List<PlayerControl> CrackerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static List<byte> CrackedPlayers;
+            public static List<byte> currentCrackedPlayers;
+            public static int DefaultCount;
+            public static int TurnCount;
+            public static int MaxTurnCount;
+            public static List<PlayerControl> CurrentCrackedPlayerControls
+            {
+                get
+                {
+                    if (currentCrackedPlayerControls.Count != currentCrackedPlayers.Count)
+                    {
+                        List<PlayerControl> newList = new();
+                        foreach (byte p in currentCrackedPlayers) newList.Add(ModHelpers.PlayerById(p));
+                        currentCrackedPlayerControls = newList;
+                    }
+                    return currentCrackedPlayerControls;
+                }
+            }
+            private static List<PlayerControl> currentCrackedPlayerControls;
+            public static void ClearAndReload()
+            {
+                CrackerPlayer = new();
+                CrackedPlayers = new();
+                currentCrackedPlayers = new();
+                MaxTurnCount = CustomOptions.CrackerAllTurnSelectCount.GetInt();
+                DefaultCount = CustomOptions.CrackerOneTurnSelectCount.GetInt();
+                TurnCount = DefaultCount;
+                currentCrackedPlayerControls = new();
+            }
+        }
+
         public static class WaveCannon
         {
             public static List<PlayerControl> WaveCannonPlayer;
@@ -2725,7 +2761,16 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 WaveCannonJackalPlayer = new();
-                
+
+            }
+        }
+        public static class GM
+        {
+            public static PlayerControl gm;
+            public static Color32 color = new(255, 91, 112, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                gm = null;
             }
         }
         public static class Camouflager

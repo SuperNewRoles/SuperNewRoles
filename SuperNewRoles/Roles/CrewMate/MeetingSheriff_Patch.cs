@@ -5,7 +5,7 @@ using Hazel;
 using SuperNewRoles.CustomObject;
 
 using SuperNewRoles.Mode;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -184,6 +184,34 @@ namespace SuperNewRoles.Roles
                 }
                 Meetingsheriff_updatepatch.index = 1;
                 CreateAreaButton(__instance);
+            }
+            if (ModeHandler.IsMode(ModeId.Default) && RoleClass.GM.gm != null)
+            {
+                List<PlayerVoteArea> newareas = new();
+                List<PlayerVoteArea> deadareas = new();
+                foreach (PlayerVoteArea area in __instance.playerStates)
+                {
+                    if (!ModHelpers.PlayerById(area.TargetPlayerId).IsRole(RoleId.GM))
+                    {
+                        if (ModHelpers.PlayerById(area.TargetPlayerId).IsAlive())
+                            newareas.Add(area);
+                        else
+                            deadareas.Add(area);
+                    }
+                    else
+                        area.gameObject.SetActive(false);
+                }
+                foreach (PlayerVoteArea area in deadareas)
+                {
+                    newareas.Add(area);
+                }
+                int i = 0;
+                foreach (PlayerVoteArea area in newareas)
+                {
+                    area.transform.localPosition = Meetingsheriff_updatepatch.Positions[i];
+                    i++;
+                }
+                __instance.playerStates = newareas.ToArray();
             }
             if (ModeHandler.IsMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count > 0)
             {

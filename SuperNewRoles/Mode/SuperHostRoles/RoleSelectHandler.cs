@@ -22,7 +22,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void SpawnBots()
         {
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !ModeHandler.IsMode(ModeId.HideAndSeek))
             {
                 int impostor = PlayerControl.GameOptions.NumImpostors;
                 int crewmate = 0;

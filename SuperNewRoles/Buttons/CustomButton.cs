@@ -65,8 +65,9 @@ namespace SuperNewRoles.Buttons
             actionButton = UnityEngine.Object.Instantiate(textTemplate, textTemplate.transform.parent);
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();
+            button.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
 
-            button.OnClick.AddListener((UnityEngine.Events.UnityAction)OnClickEvent);
+            button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClickEvent()));
 
             LocalScale = actionButton.transform.localScale;
             if (textTemplate)
@@ -179,26 +180,18 @@ namespace SuperNewRoles.Buttons
                 Vector3 pos = hudManager.UseButton.transform.localPosition;
                 if (mirror) pos = new Vector3(-pos.x, pos.y, pos.z);
                 actionButton.transform.localPosition = pos + PositionOffset;
-                if (currentButtons.Count <= 1) {
-                    if (actionButton is KillButton)
-                    {
-                        actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localPosition;
-                        actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localScale;
-                    }
-                    else
-                    {
-                        actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
-                        actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
-                    }
-                } else if (currentButtons.Count == 2)
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
                 {
-                    if (currentButtons[0] == this)
+                    actionButton.transform.localScale = new(0.7f, 0.7f, 0.7f);
+                }
+                else
+                {
+                    if (currentButtons.Count <= 1)
                     {
                         if (actionButton is KillButton)
                         {
                             actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localPosition;
                             actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localScale;
-
                         }
                         else
                         {
@@ -206,20 +199,37 @@ namespace SuperNewRoles.Buttons
                             actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
                         }
                     }
-                    else if (currentButtons[1] == this)
+                    else if (currentButtons.Count == 2)
                     {
-                        if (currentButtons[0].actionButton is KillButton)
+                        if (currentButtons[0] == this)
                         {
-                            actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
-                            actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
+                            if (actionButton is KillButton)
+                            {
+                                actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localPosition;
+                                actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localScale;
+
+                            }
+                            else
+                            {
+                                actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
+                                actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
+                            }
                         }
-                        else
+                        else if (currentButtons[1] == this)
                         {
-                            Vector3 poss = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
-                            poss.x -= 1.5f;
-                            poss.y -= 1.5f;
-                            actionButton.transform.localPosition = poss;
-                            actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
+                            if (currentButtons[0].actionButton is KillButton)
+                            {
+                                actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
+                                actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
+                            }
+                            else
+                            {
+                                Vector3 poss = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
+                                poss.x -= 1.5f;
+                                poss.y -= 1.5f;
+                                actionButton.transform.localPosition = poss;
+                                actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
+                            }
                         }
                     }
                 }

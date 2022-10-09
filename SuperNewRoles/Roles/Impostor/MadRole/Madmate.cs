@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using static SuperNewRoles.Helpers.RPCHelper;
 
 namespace SuperNewRoles.Roles

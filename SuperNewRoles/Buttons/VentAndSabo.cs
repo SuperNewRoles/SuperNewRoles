@@ -67,7 +67,7 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
                     {
                         __instance.Close();
-                        DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+                        FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                         return false;
                     }
                 }
@@ -133,7 +133,7 @@ namespace SuperNewRoles.Buttons
 
                 couldUse = (@object.inVent || roleCouldUse) && !pc.IsDead && (@object.CanMove || @object.inVent);
                 canUse = couldUse;
-                if (pc.Role.Role == RoleTypes.Engineer) return true;
+                if (pc.Object.IsRole(RoleTypes.Engineer)) return true;
                 if (canUse)
                 {
                     Vector2 truePosition = @object.GetTruePosition();
