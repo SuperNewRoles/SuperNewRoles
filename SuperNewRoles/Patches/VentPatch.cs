@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     [HarmonyPatch(typeof(Vent), nameof(Vent.SetOutline))]
     class VentSetOutlinePatch

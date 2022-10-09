@@ -4,7 +4,7 @@ using HarmonyLib;
 using Il2CppSystem.Collections.Generic;
 using UnityEngine;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     class GameSettingMenuChangePatch
     {

@@ -10,7 +10,7 @@ using SuperNewRoles.Roles;
 using UnityEngine;
 using static System.String;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoSpawnPlayer))]
     public class AmongUsClientOnPlayerJoinedPatch

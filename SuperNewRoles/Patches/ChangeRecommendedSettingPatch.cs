@@ -3,7 +3,7 @@ using SuperNewRoles.Mode;
 using UnityEngine;
 
 //TOHより!
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     [HarmonyPatch(typeof(GameOptionsData), nameof(GameOptionsData.SetRecommendations))]
     public static class ChangeRecommendedSettingPatch

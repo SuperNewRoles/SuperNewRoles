@@ -8,7 +8,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
     public class StartGame

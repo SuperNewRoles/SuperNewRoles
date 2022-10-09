@@ -1,4 +1,5 @@
 using Hazel;
+
 namespace SuperNewRoles
 {
     public static class FinalStatusClass

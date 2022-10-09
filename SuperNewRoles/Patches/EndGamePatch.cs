@@ -10,7 +10,7 @@ using SuperNewRoles.Roles;
 using UnhollowerBaseLib;
 using UnityEngine;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     public enum CustomGameOverReason
     {

@@ -5,7 +5,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Awake))]
     static class ShipStatus_AwakePatch

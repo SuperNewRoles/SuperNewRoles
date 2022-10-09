@@ -4,7 +4,7 @@ using Hazel;
 using InnerNet;
 using static System.Int32;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     [HarmonyPatch]
     public static class DynamicLobbies

@@ -9,7 +9,7 @@ using TMPro;
 using UnhollowerBaseLib;
 using UnityEngine;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     [HarmonyPatch(typeof(SpawnInMinigame), nameof(SpawnInMinigame.Begin))]
     public static class RandomSpawn

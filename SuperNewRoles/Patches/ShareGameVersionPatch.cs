@@ -9,7 +9,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
     public static class PlayerCountChange

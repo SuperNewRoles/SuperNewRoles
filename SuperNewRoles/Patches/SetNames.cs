@@ -6,7 +6,7 @@ using SuperNewRoles.Roles;
 using TMPro;
 using UnityEngine;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     public class SetNamesClass
     {
@@ -374,7 +374,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
                 if (PlayerControl.LocalPlayer.IsJackalTeamJackal() ||
-                    PlayerControl.LocalPlayer.IsJackalTeamSidekick() || 
+                    PlayerControl.LocalPlayer.IsJackalTeamSidekick() ||
                     JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)

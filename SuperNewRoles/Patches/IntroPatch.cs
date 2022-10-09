@@ -6,7 +6,7 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     [HarmonyPatch(typeof(Constants), nameof(Constants.ShouldHorseAround))]
     public static class ShouldAlwaysHorseAround

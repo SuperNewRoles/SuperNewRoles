@@ -4,7 +4,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using static SuperNewRoles.Modules.CustomOptions;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     public static class SelectTask
     {

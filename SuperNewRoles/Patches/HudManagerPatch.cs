@@ -5,7 +5,7 @@ using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Roles;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     class HudManagerPatch
     {

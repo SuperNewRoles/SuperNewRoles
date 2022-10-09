@@ -6,7 +6,7 @@ using Hazel;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     class DebugMode
     {

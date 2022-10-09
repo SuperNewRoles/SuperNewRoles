@@ -1,8 +1,7 @@
 using System.Linq;
 using HarmonyLib;
 
-
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     class Chat
     {

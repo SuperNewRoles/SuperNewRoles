@@ -1,9 +1,8 @@
 using HarmonyLib;
-
 using SuperNewRoles.Mode;
 using UnityEngine;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     class GameStartPatch
     {

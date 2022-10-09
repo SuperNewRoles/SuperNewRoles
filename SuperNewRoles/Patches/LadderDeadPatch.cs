@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using HarmonyLib;
-
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
-
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     public static class LadderDead
     {

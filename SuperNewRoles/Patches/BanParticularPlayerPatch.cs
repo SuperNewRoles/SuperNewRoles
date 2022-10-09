@@ -1,7 +1,7 @@
 using HarmonyLib;
 using InnerNet;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
     class BanBlockedPlayerPatch

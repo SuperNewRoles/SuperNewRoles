@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Update))]
     class SplashLogoAnimatorPatch

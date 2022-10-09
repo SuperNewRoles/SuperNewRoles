@@ -3,15 +3,13 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
-
-
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Patches
 {
     class WrapUpPatch
     {
