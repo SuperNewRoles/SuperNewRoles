@@ -240,11 +240,29 @@ namespace SuperNewRoles.Modules
         WaveCannon,
         ShowFlash,
         SetFinalStatus,
-        CrackerCrack
+        CrackerCrack,
+        Camouflage
     }
 
     public static class RPCProcedure
     {
+        public static void Camouflage(bool Is)
+        {
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    if (Is) Roles.Impostor.Camouflager.CamouflageSHR();
+                    else Roles.Impostor.Camouflager.ResetCamouflageSHR();
+                }
+            }
+            else
+            {
+                if (Is) Roles.Impostor.Camouflager.Camouflage();
+                else Roles.Impostor.Camouflager.ResetCamouflage();
+            }
+        }
+
         public static void GuesserShoot(byte killerId, byte dyingTargetId, byte guessedTargetId, byte guessedRoleId)
         {
             PlayerControl dyingTarget = ModHelpers.PlayerById(dyingTargetId);
@@ -1324,6 +1342,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.SetFinalStatus:
                             SetFinalStatus(reader.ReadByte(), (FinalStatus)reader.ReadByte());
+                            break;
+                        case CustomRPC.Camouflage:
+                            Camouflage(reader.ReadBoolean());
                             break;
                         case CustomRPC.GuesserShoot:
                             GuesserShoot(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());

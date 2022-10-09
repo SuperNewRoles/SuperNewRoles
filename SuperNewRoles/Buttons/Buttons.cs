@@ -2736,9 +2736,16 @@ namespace SuperNewRoles.Buttons
             CamouflagerButton = new(
                 () =>
                 {
-                    Roles.Impostor.Camouflager.Camouflage();
-                    RoleClass.Camouflager.ButtonTimer = DateTime.Now;
-                    RoleClass.Camouflager.IsCamouflage = true;
+                    if (CamouflagerButton.isEffectActive)
+                    {
+                        Roles.Impostor.Camouflager.RpcResetCamouflage();
+                        CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
+                        CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
+                    }
+                    else
+                    {
+                        Roles.Impostor.Camouflager.RpcCamouflage();
+                    }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Camouflager && ModeHandler.IsMode(ModeId.Default); },
                 () => { return PlayerControl.LocalPlayer.CanMove; },
@@ -2746,6 +2753,9 @@ namespace SuperNewRoles.Buttons
                 {
                     CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
                     CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
+                    CamouflagerButton.effectCancellable = false;
+                    CamouflagerButton.EffectDuration = CustomOptions.CamouflagerDurationTime.GetFloat();
+                    CamouflagerButton.HasEffect = true;
                 },
                 RoleClass.Camouflager.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
@@ -2753,7 +2763,16 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49,
-                () => { return false; }
+                () => { return false; },
+                true,
+                5f,
+                () =>
+                {
+                    Logger.Info("効果終了のお知らせ");
+                    Roles.Impostor.Camouflager.RpcResetCamouflage();
+                    CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
+                    CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
+                }
             )
             {
                 buttonText = ModTranslation.GetString("CamouflagerButtonName"),

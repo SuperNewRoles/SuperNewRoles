@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -15,6 +15,7 @@ using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
+using static GameData;
 
 namespace SuperNewRoles.Patches
 {
@@ -724,7 +725,7 @@ namespace SuperNewRoles.Patches
             }
             Logger.Info("全スタントマン系通過", "CheckMurder");
             __instance.RpcMurderPlayerCheck(target);
-            Camouflager.ResetCamouflage(target);
+            Camouflager.ResetCamouflageSHR(target);
             Logger.Info("RpcMurderPlayerCheck(一番下)を通過", "CheckMurder");
             return false;
         }
@@ -823,6 +824,8 @@ namespace SuperNewRoles.Patches
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 target.resetChange();
+                if (RoleClass.Camouflager.IsCamouflage && target.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                    __instance.resetChange();
                 if (target.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.SideKiller))
@@ -907,6 +910,21 @@ namespace SuperNewRoles.Patches
             }
             else if (ModeHandler.IsMode(ModeId.Default))
             {
+                if (RoleClass.Camouflager.IsCamouflage)
+                {
+                    PlayerOutfit outfit = new()
+                    {
+                        PlayerName = "　",
+                        ColorId = RoleClass.Camouflager.Color,
+                        SkinId = "",
+                        HatId = "",
+                        VisorId = "",
+                        PetId = "",
+                    };
+                    target.setOutfit(outfit, true);
+                    if (target.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                        __instance.setOutfit(outfit, true);
+                }
                 if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Finder))
                 {
                     RoleClass.Finder.KillCount++;
