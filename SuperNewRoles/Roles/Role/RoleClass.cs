@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Sabotage;
 using TMPro;
@@ -2760,7 +2760,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 WaveCannonJackalPlayer = new();
-                
+
             }
         }
         public static class GM

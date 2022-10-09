@@ -8,7 +8,6 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -148,7 +147,7 @@ namespace SuperNewRoles.Buttons
                     WaveCannonObject obj = WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId && x.Id == WaveCannonObject.Ids[CachedPlayer.LocalPlayer.PlayerId] - 1);
                     if (obj == null)
                     {
-                        Logger.Info("nullなのでreturnしました","WaveCannonButton");
+                        Logger.Info("nullなのでreturnしました", "WaveCannonButton");
                         return;
                     }
                     var pos = CachedPlayer.LocalPlayer.transform.position;
