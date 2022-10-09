@@ -3,7 +3,7 @@ using BepInEx.Configuration;
 using SuperNewRoles.Patches;
 using UnityEngine;
 
-namespace SuperNewRoles
+namespace SuperNewRoles.Modules
 {
     public static class ConfigRoles
     {

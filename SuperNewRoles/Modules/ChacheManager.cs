@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 
-
-namespace SuperNewRoles
+namespace SuperNewRoles.Modules
 {
     class ChacheManager
     {

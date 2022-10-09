@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace SuperNewRoles
+namespace SuperNewRoles.Modules
 {
     [HarmonyPatch]
     public static class TasksArrow

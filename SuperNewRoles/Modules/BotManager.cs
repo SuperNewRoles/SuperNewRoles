@@ -3,7 +3,7 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using UnityEngine;
 
-namespace SuperNewRoles
+namespace SuperNewRoles.Modules
 {
     public static class BotManager
     {

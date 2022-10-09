@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SuperNewRoles
+namespace SuperNewRoles.Modules
 {
     public class CustomMessage
     {
