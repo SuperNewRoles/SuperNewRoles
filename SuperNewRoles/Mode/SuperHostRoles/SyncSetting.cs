@@ -10,7 +10,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void CustomSyncSettings(this PlayerControl player)
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers)) return;
             var role = player.GetRole();
             var optdata = OptionData.DeepCopy();
             if (player.IsCrewVision())

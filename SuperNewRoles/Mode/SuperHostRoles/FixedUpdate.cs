@@ -19,11 +19,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             public static void Prefix()
             {
                 DefaultName = new Dictionary<int, string>();
-                foreach (var pc in CachedPlayer.AllPlayers)
+                foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                 {
                     //SuperNewRolesPlugin.Logger.LogInfo($"{pc.PlayerId}:{pc.name}:{pc.NameText().text}");
-                    DefaultName[pc.PlayerId] = pc.PlayerControl.name;
-                    pc.PlayerControl.NameText().text = pc.PlayerControl.name;
+                    DefaultName[pc.PlayerId] = pc.Data.PlayerName;
+                    pc.NameText().text = pc.Data.PlayerName;
                 }
             }
         }
