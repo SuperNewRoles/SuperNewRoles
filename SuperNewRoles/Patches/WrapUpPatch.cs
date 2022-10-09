@@ -110,6 +110,7 @@ namespace SuperNewRoles.Patches
             if (exiled == null) return;
             SoothSayer_Patch.WrapUp(exiled.Object);
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();
+            Seer.WrapUp_ShowFlash();
             Nekomata.NekomataEnd(exiled);
             Roles.Impostor.NekoKabocha.OnWrapUp(exiled.Object);
 

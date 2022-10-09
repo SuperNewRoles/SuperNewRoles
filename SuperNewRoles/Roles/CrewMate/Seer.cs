@@ -19,12 +19,12 @@ namespace SuperNewRoles.Roles
 
         public static void ShowFlash(Color color, float duration = 1f)
         {//画面を光らせる
+            var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
             if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
             {
-                var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
                 if (p < 0.5)
                 {
                     if (renderer != null)
@@ -34,19 +34,22 @@ namespace SuperNewRoles.Roles
                 {
                     if (renderer != null)
                         renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
+                    if (p == 1f && renderer != null) renderer.enabled = false;
                 }
-                if (p == 1f && renderer != null) renderer.enabled = false;
-
-                new LateTask(() =>
-                {
-                    // [enabled = false]のままにすると移行リアクターのFlashが動かなくなる為、処理終了後trueに戻す為のLateTask
-                    // haomingさん　ありがとうございます!!
-                    renderer.enabled = true;
-                    renderer.color = Color.black;
-                    renderer.gameObject.SetActive(false);
-
-                }, 0.5f, "ShowFlashReset");
             })));
+            new LateTask(() =>
+            {
+                renderer.enabled = true;
+            }, duration * 4f + 0.5f, $"{duration * 4f + 0.5f}ShowFlashReset");
+        }
+        public static void WrapUp_ShowFlash()
+        {
+            // [enabled = false]のままにすると、以降リアクターのFlashが動かなくなる為、処理終了後trueに戻す為のLateTask
+            // haomingさん　ありがとうございます!!
+            var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
+            renderer.enabled = true;
+            renderer.color = Color.black;
+            renderer.gameObject.SetActive(false);
         }
         private static Sprite SoulSprite;
         public static Sprite GetSoulSprite()
