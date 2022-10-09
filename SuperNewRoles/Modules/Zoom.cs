@@ -2,7 +2,7 @@ using HarmonyLib;
 using SuperNewRoles.Mode;
 using UnityEngine;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Modules
 {
     //Town Of Plusより!
     public static class Zoom

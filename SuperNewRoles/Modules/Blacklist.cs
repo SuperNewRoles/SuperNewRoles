@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Modules
 {
     public static class Blacklist
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SuperNewRoles.Patch
+namespace SuperNewRoles.Modules
 {
     public class DeadPlayer
     {

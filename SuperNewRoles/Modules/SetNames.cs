@@ -6,7 +6,7 @@ using SuperNewRoles.Roles;
 using TMPro;
 using UnityEngine;
 
-namespace SuperNewRoles.Patches
+namespace SuperNewRoles.Modules
 {
     public class SetNamesClass
     {

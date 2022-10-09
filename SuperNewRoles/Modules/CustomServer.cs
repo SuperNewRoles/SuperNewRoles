@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace SuperNewRoles.Patches
+namespace SuperNewRoles.Modules
 {
     [HarmonyPatch(typeof(RegionMenu), nameof(RegionMenu.Open))]
     public static class RegionMenuOpenPatch

@@ -1,6 +1,6 @@
 using Hazel;
 
-namespace SuperNewRoles
+namespace SuperNewRoles.Modules
 {
     public static class FinalStatusClass
     {
