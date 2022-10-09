@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Sabotage;
 using TMPro;
@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
     [HarmonyPatch]
     public static class RoleClass
     {
-        public static bool IsMeeting;
+        public static bool IsMeeting => MeetingHud.Instance != null;
         public static bool IsCoolTimeSetted;
         public static System.Random rnd = new((int)DateTime.Now.Ticks);
         public static Color ImpostorRed = Palette.ImpostorRed;
@@ -26,12 +26,12 @@ namespace SuperNewRoles.Roles
         public static void ClearAndReloadRoles()
         {
             BlockPlayers = new();
+            RandomSpawn.IsFirstSpawn = true;
             DeadPlayer.deadPlayers = new();
             AllRoleSetClass.Assigned = false;
             LateTask.Tasks = new();
             LateTask.AddTasks = new();
             BotManager.AllBots = new();
-            IsMeeting = false;
             IsCoolTimeSetted = false;
             IsStart = false;
             Agartha.MapData.ClearAndReloads();
@@ -178,10 +178,14 @@ namespace SuperNewRoles.Roles
             Slugger.ClearAndReload();
             ShiftActor.ClearAndReload();
             ConnectKiller.ClearAndReload();
+            GM.ClearAndReload();
+            Cracker.ClearAndReload();
             NekoKabocha.ClearAndReload();
+            WaveCannon.ClearAndReload();
             Doppelganger.ClearAndReload();
             Pavlovsdogs.ClearAndReload();
             Pavlovsowner.ClearAndReload();
+            WaveCannonJackal.ClearAndReload();
             Conjurer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -443,12 +447,10 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> DoorrPlayer;
             public static Color32 color = new(205, 133, 63, byte.MaxValue);
             public static float CoolTime;
-            public static DateTime ButtonTimer;
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoorrDoorButton.png", 115f);
 
             public static void ClearAndReload()
             {
-                ButtonTimer = DateTime.Now;
                 DoorrPlayer = new();
                 CoolTime = CustomOptions.DoorrCoolTime.GetFloat();
             }
@@ -592,6 +594,8 @@ namespace SuperNewRoles.Roles
             public static DateTime OldButtonTimer;
             public static float OldButtonTime;
 
+            public static CustomMessage currentMessage;
+
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
 
             public static void ClearAndReload()
@@ -604,6 +608,7 @@ namespace SuperNewRoles.Roles
                 DefaultImpoVision = PlayerControl.GameOptions.ImpostorLightMod;
                 OldButtonTimer = DateTime.Now;
                 OldButtonTime = 0;
+                currentMessage = null;
             }
         }
         public static class MadMate
@@ -712,17 +717,18 @@ namespace SuperNewRoles.Roles
         public static class EvilGambler
         {
             public static List<PlayerControl> EvilGamblerPlayer;
-            public static int SucCool;
-            public static int NotSucCool;
+            public static float SucCool;
+            public static float NotSucCool;
             public static int SucPar;
             public static bool IsSuc;
+            public static float currentCool;
             public static Color32 color = ImpostorRed;
             public static void ClearAndReload()
             {
                 EvilGamblerPlayer = new();
                 IsSuc = false;
-                SucCool = CustomOptions.EvilGamblerSucTime.GetInt();
-                NotSucCool = CustomOptions.EvilGamblerNotSucTime.GetInt();
+                SucCool = CustomOptions.EvilGamblerSucTime.GetFloat();
+                NotSucCool = CustomOptions.EvilGamblerNotSucTime.GetFloat();
                 var temp = CustomOptions.EvilGamblerSucpar.GetString().Replace("0%", "");
                 SucPar = temp == "" ? 0 : int.Parse(temp);
             }
@@ -2489,6 +2495,7 @@ namespace SuperNewRoles.Roles
             public static Dictionary<byte, byte> Datas;
             public static bool IsLocalOn => Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
             public static PlayerControl CurrentTarget => IsLocalOn ? ModHelpers.PlayerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
+
             public static Dictionary<PlayerControl, PlayerControl> PlayerDatas
             {
                 get
@@ -2673,29 +2680,98 @@ namespace SuperNewRoles.Roles
                 OldCommsData = false;
             }
         }
+        public static class Cracker
+        {
+            public static List<PlayerControl> CrackerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static List<byte> CrackedPlayers;
+            public static List<byte> currentCrackedPlayers;
+            public static int DefaultCount;
+            public static int TurnCount;
+            public static int MaxTurnCount;
+            public static List<PlayerControl> CurrentCrackedPlayerControls
+            {
+                get
+                {
+                    if (currentCrackedPlayerControls.Count != currentCrackedPlayers.Count)
+                    {
+                        List<PlayerControl> newList = new();
+                        foreach (byte p in currentCrackedPlayers) newList.Add(ModHelpers.PlayerById(p));
+                        currentCrackedPlayerControls = newList;
+                    }
+                    return currentCrackedPlayerControls;
+                }
+            }
+            private static List<PlayerControl> currentCrackedPlayerControls;
+            public static void ClearAndReload()
+            {
+                CrackerPlayer = new();
+                CrackedPlayers = new();
+                currentCrackedPlayers = new();
+                MaxTurnCount = CustomOptions.CrackerAllTurnSelectCount.GetInt();
+                DefaultCount = CustomOptions.CrackerOneTurnSelectCount.GetInt();
+                TurnCount = DefaultCount;
+                currentCrackedPlayerControls = new();
+            }
+        }
+
+        public static class WaveCannon
+        {
+            public static List<PlayerControl> WaveCannonPlayer;
+            public static Color32 color = ImpostorRed;
+            public static List<byte> CannotMurderPlayers;
+            public static bool IsLocalOn => WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == CachedPlayer.LocalPlayer.PlayerId) != null;
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WaveCannonButton.png", 115f);
+
+            public static void ClearAndReload()
+            {
+                WaveCannonPlayer = new();
+                WaveCannonObject.Ids = new();
+                CannotMurderPlayers = new();
+            }
+        }
         public static class Doppelganger
         {
             public static List<PlayerControl> DoppelggerPlayer;
             public static Color32 color = ImpostorRed;
             public static float DurationTime;
             public static float CoolTime;
-            public static float SucTime;
-            public static float NotSucTime;
+            public static float SucCool;
+            public static float NotSucCool;
             public static float Duration;
             public static TextMeshPro DoppelgangerDurationText = null;
-            public static Dictionary<byte, PlayerControl> DoppelgangerTargets;
-            public static float DefaultKillCool;
+            public static Dictionary<byte, PlayerControl> Targets;
+            public static float CurrentCool;
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoppelgangerButton.png", 115f);
             public static void ClearAndReload()
             {
                 DoppelggerPlayer = new();
                 DurationTime = CustomOptions.DoppelgangerDurationTime.GetFloat();
-                CoolTime = CustomOptions.DoppelgangerCoolTome.GetFloat();
-                SucTime = CustomOptions.DoppelgangerSucTime.GetFloat();
-                NotSucTime = CustomOptions.DoppelgangerNotSucTime.GetFloat();
+                CoolTime = CustomOptions.DoppelgangerCoolTime.GetFloat();
+                SucCool = CustomOptions.DoppelgangerSucTime.GetFloat();
+                NotSucCool = CustomOptions.DoppelgangerNotSucTime.GetFloat();
                 Duration = DurationTime + 1.1f;
-                DoppelgangerTargets = new();
-                DefaultKillCool = PlayerControl.GameOptions.KillCooldown;
+                Targets = new();
+                CurrentCool = PlayerControl.GameOptions.KillCooldown;
+            }
+        }
+        public static class WaveCannonJackal
+        {
+            public static List<PlayerControl> WaveCannonJackalPlayer;
+            public static Color32 color = Jackal.color;
+            public static void ClearAndReload()
+            {
+                WaveCannonJackalPlayer = new();
+
+            }
+        }
+        public static class GM
+        {
+            public static PlayerControl gm;
+            public static Color32 color = new(255, 91, 112, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                gm = null;
             }
         }
         public static class Pavlovsdogs

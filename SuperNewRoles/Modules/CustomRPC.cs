@@ -10,12 +10,12 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
-using static SuperNewRoles.Patch.FinalStatusPatch;
+using static SuperNewRoles.Patches.FinalStatusPatch;
 
 namespace SuperNewRoles.Modules
 {
@@ -156,6 +156,10 @@ namespace SuperNewRoles.Modules
         Slugger,
         ShiftActor,
         ConnectKiller,
+        GM,
+        Cracker,
+        WaveCannon,
+        WaveCannonJackal,
         NekoKabocha,
         Doppelganger,
         Pavlovsdogs,
@@ -233,10 +237,13 @@ namespace SuperNewRoles.Modules
         /* 210~214 is used Submerged Mod */
         PainterSetTarget = 215,
         SharePhotograph,
+        WaveCannon,
         ShowFlash,
         PavlovsOwnerCreateDog,
-        SetFinalStatus
+        SetFinalStatus,
+        CrackerCrack
     }
+
     public static class RPCProcedure
     {
         public static void PavlovsOwnerCreateDog(byte sourceid, byte targetid, bool IsSelfDeath)
@@ -259,6 +266,29 @@ namespace SuperNewRoles.Modules
             }
 
         }
+
+        public static void CrackerCrack(byte Target)
+        {
+            if (!RoleClass.Cracker.CrackedPlayers.Contains(Target)) RoleClass.Cracker.CrackedPlayers.Add(Target);
+        }
+
+        public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)
+        {
+            Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {buff.Length} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
+            switch ((WaveCannonObject.RpcType)Type)
+            {
+                case WaveCannonObject.RpcType.Spawn:
+                    Vector3 position = Vector3.zero;
+                    position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
+                    position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
+                    return new(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
+                case WaveCannonObject.RpcType.Shoot:
+                    WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
+                    break;
+            }
+            return null;
+        }
+
         public static void SetFinalStatus(byte targetId, FinalStatus Status)
         {
             FinalStatusData.FinalStatuses[targetId] = Status;
@@ -384,10 +414,10 @@ namespace SuperNewRoles.Modules
             }
         }
 
-        public static void ChiefSidekick(byte targetid,bool IsTask)
+        public static void ChiefSidekick(byte targetid, bool IsTaskClear)
         {
             RoleClass.Chief.SheriffPlayer.Add(targetid);
-            if (!IsTask)
+            if (IsTaskClear)
             {
                 RoleClass.Chief.NoTaskSheriffPlayer.Add(targetid);
             }
@@ -725,7 +755,16 @@ namespace SuperNewRoles.Modules
             {
                 Clergyman.LightOutStartRPC();
             }
+            else
+            {
+                if (RoleClass.Clergyman.currentMessage.text != null)
+                {
+                    GameObject.Destroy(RoleClass.Clergyman.currentMessage.text.gameObject);
+                }
+                RoleClass.Clergyman.IsLightOff = false;
+            }
         }
+
         public static void SetSpeedBoost(bool Is, byte id)
         {
             var player = ModHelpers.PlayerById(id);
@@ -836,6 +875,7 @@ namespace SuperNewRoles.Modules
             var player = ModHelpers.PlayerById(playerid);
             if (player != null)
             {
+                player.Data.IsDead = true;
                 player.Exiled();
             }
         }
@@ -898,7 +938,7 @@ namespace SuperNewRoles.Modules
             PlayerControl target = ModHelpers.PlayerById(targetId);
             if (target == null || source == null) return;
             source.ProtectPlayer(target, colorid);
-            PlayerControl.LocalPlayer.MurderPlayer(target);
+            source.MurderPlayer(target);
             source.ProtectPlayer(target, colorid);
             if (targetId == CachedPlayer.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
         }
@@ -1259,6 +1299,12 @@ namespace SuperNewRoles.Modules
                                 Targets.Add(reader.ReadByte());
                             }
                             SluggerExile(source, Targets);
+                            break;
+                        case CustomRPC.CrackerCrack:
+                            CrackerCrack(reader.ReadByte());
+                            break;
+                        case CustomRPC.WaveCannon:
+                            WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), reader.ReadBytesAndSize());
                             break;
                         case CustomRPC.ShowFlash:
                             ShowFlash();
