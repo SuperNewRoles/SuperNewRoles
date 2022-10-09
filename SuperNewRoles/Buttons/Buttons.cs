@@ -82,6 +82,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton CrackerButton;
         public static CustomButton WaveCannonButton;
         public static CustomButton DoppelgangerButton;
+        public static CustomButton CamouflagerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2729,7 +2730,36 @@ namespace SuperNewRoles.Buttons
             RoleClass.Doppelganger.DoppelgangerDurationText.transform.localPosition += new Vector3(-2.575f, -0.95f, 0);
 
             Roles.Impostor.Conjurer.SetupCustomButtons(__instance);
+
             Roles.Neutral.GM.CreateButton(__instance);
+
+            CamouflagerButton = new(
+                () =>
+                {
+                    Roles.Impostor.Camouflager.Camouflage();
+                    RoleClass.Camouflager.ButtonTimer = DateTime.Now;
+                    RoleClass.Camouflager.IsCamouflage = true;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Camouflager && ModeHandler.IsMode(ModeId.Default); },
+                () => { return PlayerControl.LocalPlayer.CanMove; },
+                () =>
+                {
+                    CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
+                    CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
+                },
+                RoleClass.Camouflager.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("CamouflagerButtonName"),
+                showButtonText = true
+            };
+
             SetCustomButtonCooldowns();
         }
     }
