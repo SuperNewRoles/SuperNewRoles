@@ -234,11 +234,31 @@ namespace SuperNewRoles.Modules
         PainterSetTarget = 215,
         SharePhotograph,
         ShowFlash,
-        PavlovsownerCreateLimitDown,
+        PavlovsOwnerCreateDog,
         SetFinalStatus
     }
     public static class RPCProcedure
     {
+        public static void PavlovsOwnerCreateDog(byte sourceid, byte targetid, bool IsSelfDeath)
+        {
+            PlayerControl source = ModHelpers.PlayerById(sourceid);
+            PlayerControl target = ModHelpers.PlayerById(targetid);
+            if (source == null || target == null) return;
+            if (IsSelfDeath)
+            {
+                source.MurderPlayer(source);
+            } else
+            {
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
+                SetRole(targetid, (byte)RoleId.Pavlovsdogs);
+                if (!RoleClass.Pavlovsowner.CountData.ContainsKey(sourceid))
+                {
+                    RoleClass.Pavlovsowner.CountData[sourceid] = CustomOptions.PavlovsownerCreateDogLimit.GetInt();
+                }
+                RoleClass.Pavlovsowner.CountData[sourceid]--;
+            }
+
+        }
         public static void SetFinalStatus(byte targetId, FinalStatus Status)
         {
             FinalStatusData.FinalStatuses[targetId] = Status;
@@ -990,11 +1010,6 @@ namespace SuperNewRoles.Modules
         {
             Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
         }
-        public static void PavlovsownerCreateLimitDown(byte limit)
-        {
-            RoleClass.Pavlovsowner.EndGameCheckCreateLimit = limit;
-            SuperNewRolesPlugin.Logger.LogInfo($"パブロフのオーナー残り刷り込み回数{RoleClass.Pavlovsowner.EndGameCheckCreateLimit}");
-        }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
         class RPCHandlerPatch
         {
@@ -1251,8 +1266,8 @@ namespace SuperNewRoles.Modules
                         case CustomRPC.SetFinalStatus:
                             SetFinalStatus(reader.ReadByte(), (FinalStatus)reader.ReadByte());
                             break;
-                        case CustomRPC.PavlovsownerCreateLimitDown:
-                            PavlovsownerCreateLimitDown(reader.ReadByte());
+                        case CustomRPC.PavlovsOwnerCreateDog:
+                            PavlovsOwnerCreateDog(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                             break;
                     }
                 }

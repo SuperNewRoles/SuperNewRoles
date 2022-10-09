@@ -2725,6 +2725,7 @@ namespace SuperNewRoles.Roles
             public static Arrow DogArrow;
             public static int CreateLimit;
             public static int EndGameCheckCreateLimit;
+            public static Dictionary<byte, int> CountData;
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PavlovsownerCreatedogButton.png", 115f);
             public static void ClearAndReload()
             {
@@ -2734,6 +2735,7 @@ namespace SuperNewRoles.Roles
                 DogArrow = new(color);
                 DogArrow.arrow.SetActive(false);
                 CreateLimit = CustomOptions.PavlovsownerCreateDogLimit.GetInt();
+                CountData = new();
             }
         }
         //新ロールクラス

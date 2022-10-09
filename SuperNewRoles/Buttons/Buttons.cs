@@ -159,17 +159,13 @@ namespace SuperNewRoles.Buttons
                 {
                     PlayerControl target = Roles.Neutral.Pavlovsdogs.SetTarget();
                     RoleClass.Pavlovsowner.CreateLimit--;
-                    RPCProcedure.PavlovsownerCreateLimitDown((byte)RoleClass.Pavlovsowner.CreateLimit);
-                    if (!CustomOptions.PavlovsownerIsTargetImpostorDeath.GetBool() || !target.Data.Role.IsImpostor)
-                    {
-                        target.ResetAndSetRole(RoleId.Pavlovsdogs);
-                        RoleClass.Pavlovsowner.CurrentChildPlayer = target;
-                        PavlovsownerCreatedogButton.Timer = PavlovsownerCreatedogButton.MaxTimer;
-                    }
-                    else if (target.Data.Role.IsImpostor && CustomOptions.PavlovsownerIsTargetImpostorDeath.GetBool())
-                    {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                    }
+                    bool IsSelfDeath = target.IsImpostor() && CustomOptions.PavlovsownerIsTargetImpostorDeath.GetBool();
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PavlovsOwnerCreateDog);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write(target.PlayerId);
+                    writer.Write(IsSelfDeath);
+                    writer.EndRPC();
+                    RPCProcedure.PavlovsOwnerCreateDog(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId, IsSelfDeath);
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsowner && RoleClass.Pavlovsowner.CanCreateDog; },
                 () =>
