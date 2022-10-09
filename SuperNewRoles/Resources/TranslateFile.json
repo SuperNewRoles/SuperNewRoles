@@ -4753,6 +4753,11 @@
         "0": "Pavlov's owner",
         "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u30aa\u30fc\u30ca\u30fc"
     },
+    "PavlovsdogsTitle1": {
+        "0": "Let us be of service.",
+        "11": "\u304a\u5f79\u306b\u7acb\u3063\u3066\u307f\u305b\u307e\u3057\u3087\u3046",
+        "13": "\u8ba9\u6211\u4eec\u4e3a\u60a8\u63d0\u4f9b\u670d\u52a1\u3002"
+    },
     "PavlovsownerTitle1": {
         "0": "Be my dog!",
         "11": "\u79c1\u306e\u72ac\u306b\u306a\u308a\u306a\u3055\u3044\uff01",
