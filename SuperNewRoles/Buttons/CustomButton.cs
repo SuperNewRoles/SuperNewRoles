@@ -60,31 +60,31 @@ namespace SuperNewRoles.Buttons
             this.buttonText = buttonText;
             this.StopCountCool = StopCountCool;
             this.color = color;
-            this.Timer = 16.2f;
+            Timer = 16.2f;
             buttons.Add(this);
-            this.actionButton = UnityEngine.Object.Instantiate(textTemplate, textTemplate.transform.parent);
-            PassiveButton button = this.actionButton.GetComponent<PassiveButton>();
+            actionButton = UnityEngine.Object.Instantiate(textTemplate, textTemplate.transform.parent);
+            PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();
             button.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
 
-            button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => this.OnClickEvent()));
+            button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClickEvent()));
 
-            this.LocalScale = this.actionButton.transform.localScale;
+            LocalScale = actionButton.transform.localScale;
             if (textTemplate)
             {
-                UnityEngine.Object.Destroy(this.actionButton.buttonLabelText);
-                this.actionButton.buttonLabelText = UnityEngine.Object.Instantiate(textTemplate.buttonLabelText, this.actionButton.transform);
+                UnityEngine.Object.Destroy(actionButton.buttonLabelText);
+                actionButton.buttonLabelText = UnityEngine.Object.Instantiate(textTemplate.buttonLabelText, actionButton.transform);
             }
-            this.SetActive(false);
+            SetActive(false);
         }
         public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool mirror = false, string buttonText = "", Color? color = null)
         : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey, StopCountCool, false, 0f, () => { }, mirror, buttonText, color) { }
 
         void OnClickEvent()
         {
-            if ((this.Timer < 0f && this.CouldUse() && CachedPlayer.LocalPlayer.PlayerControl.CanMove) || (this.HasEffect && this.isEffectActive && this.effectCancellable))
+            if ((this.Timer < 0f && CouldUse() && CachedPlayer.LocalPlayer.PlayerControl.CanMove) || (this.HasEffect && this.isEffectActive && this.effectCancellable))
             {
-                this.actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
+                actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
                 this.OnClick();
 
                 if (this.isEffectActive)
@@ -95,7 +95,7 @@ namespace SuperNewRoles.Buttons
                 if (this.HasEffect && !this.isEffectActive)
                 {
                     this.Timer = this.EffectDuration;
-                    this.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     this.isEffectActive = true;
                 }
             }
@@ -146,127 +146,130 @@ namespace SuperNewRoles.Buttons
         {
             if (isActive)
             {
-                this.actionButton.gameObject.SetActive(true);
-                this.actionButton.graphic.enabled = true;
+                actionButton.gameObject.SetActive(true);
+                actionButton.graphic.enabled = true;
             }
             else
             {
-                this.actionButton.gameObject.SetActive(false);
-                this.actionButton.graphic.enabled = false;
+                actionButton.gameObject.SetActive(false);
+                actionButton.graphic.enabled = false;
             }
         }
 
         private void Update(bool isAlive, RoleId role)
         {
-            CachedPlayer localPlayer = CachedPlayer.LocalPlayer;
-            bool moveable = localPlayer.PlayerControl.moveable;
+            var localPlayer = CachedPlayer.LocalPlayer;
+            var moveable = localPlayer.PlayerControl.moveable;
 
-            if (localPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !this.HasButton(isAlive, role))
+            if (localPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton(isAlive, role))
             {
-                this.SetActive(false);
+                SetActive(false);
                 return;
             }
-            this.SetActive(this.hudManager.UseButton.isActiveAndEnabled);
+            SetActive(hudManager.UseButton.isActiveAndEnabled);
 
-            this.actionButton.graphic.sprite = this.Sprite;
-            if (this.showButtonText && this.buttonText != "")
+            actionButton.graphic.sprite = Sprite;
+            if (showButtonText && buttonText != "")
             {
-                this.actionButton.OverrideText(this.buttonText);
+                actionButton.OverrideText(buttonText);
             }
-            this.actionButton.buttonLabelText.enabled = this.showButtonText; // Only show the text if it's a kill button
+            actionButton.buttonLabelText.enabled = showButtonText; // Only show the text if it's a kill button
 
-            if (this.hudManager.UseButton != null)
+            if (hudManager.UseButton != null)
             {
-                Vector3 pos = this.hudManager.UseButton.transform.localPosition;
-                if (this.mirror) pos = new Vector3(-pos.x, pos.y, pos.z);
-                this.actionButton.transform.localPosition = pos + this.PositionOffset;
+                Vector3 pos = hudManager.UseButton.transform.localPosition;
+                if (mirror) pos = new Vector3(-pos.x, pos.y, pos.z);
+                actionButton.transform.localPosition = pos + PositionOffset;
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
                 {
-                    this.actionButton.transform.localScale = new(0.7f, 0.7f, 0.7f);
+                    actionButton.transform.localScale = new(0.7f, 0.7f, 0.7f);
                 }
                 else
                 {
-                    if (currentButtons.Count <= 1)
+                    if (OldModeButtons.IsOldMode)
                     {
-                        if (this.actionButton is KillButton)
+                        if (currentButtons.Count <= 1)
                         {
-                            this.actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localPosition;
-                            this.actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localScale;
-                        }
-                        else
-                        {
-                            this.actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
-                            this.actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
-                        }
-                    }
-                    else if (currentButtons.Count == 2)
-                    {
-                        if (currentButtons[0] == this)
-                        {
-                            if (this.actionButton is KillButton)
+                            if (actionButton is KillButton)
                             {
-                                this.actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localPosition;
-                                this.actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localScale;
+                                actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localPosition;
+                                actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localScale;
+                            }
+                            else
+                            {
+                                actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
+                                actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
+                            }
+                        }
+                        else if (currentButtons.Count == 2)
+                        {
+                            if (currentButtons[0] == this)
+                            {
+                                if (actionButton is KillButton)
+                                {
+                                    actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localPosition;
+                                    actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.KillButton.transform.localScale;
 
+                                }
+                                else
+                                {
+                                    actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
+                                    actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
+                                }
                             }
-                            else
+                            else if (currentButtons[1] == this)
                             {
-                                this.actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
-                                this.actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
-                            }
-                        }
-                        else if (currentButtons[1] == this)
-                        {
-                            if (currentButtons[0].actionButton is KillButton)
-                            {
-                                this.actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
-                                this.actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
-                            }
-                            else
-                            {
-                                Vector3 poss = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
-                                poss.x -= 1.5f;
-                                poss.y -= 1.5f;
-                                this.actionButton.transform.localPosition = poss;
-                                this.actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
+                                if (currentButtons[0].actionButton is KillButton)
+                                {
+                                    actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
+                                    actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
+                                }
+                                else
+                                {
+                                    Vector3 poss = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
+                                    poss.x -= 1.5f;
+                                    poss.y -= 1.5f;
+                                    actionButton.transform.localPosition = poss;
+                                    actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
+                                }
                             }
                         }
                     }
                 }
             }
-            if (this.CouldUse())
+            if (CouldUse())
             {
-                this.actionButton.graphic.color = this.actionButton.buttonLabelText.color = Palette.EnabledColor;
-                this.actionButton.graphic.material.SetFloat("_Desat", 0f);
+                actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
+                actionButton.graphic.material.SetFloat("_Desat", 0f);
             }
             else
             {
-                this.actionButton.graphic.color = this.actionButton.buttonLabelText.color = Palette.DisabledClear;
-                this.actionButton.graphic.material.SetFloat("_Desat", 1f);
+                actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.DisabledClear;
+                actionButton.graphic.material.SetFloat("_Desat", 1f);
             }
 
-            if (this.color != null)
+            if (color != null)
             {
-                this.actionButton.graphic.color = (Color)this.color;
+                actionButton.graphic.color = (Color)color;
             }
 
-            if (this.Timer >= 0)
+            if (Timer >= 0)
             {
-                if ((this.HasEffect && this.isEffectActive) ||
-                    (!localPlayer.PlayerControl.inVent && moveable && !this.StopCountCool()))
-                    this.Timer -= Time.deltaTime;
+                if ((HasEffect && isEffectActive) ||
+                    (!localPlayer.PlayerControl.inVent && moveable && !StopCountCool()))
+                    Timer -= Time.deltaTime;
             }
 
-            if (this.Timer <= 0 && this.HasEffect && this.isEffectActive)
+            if (Timer <= 0 && HasEffect && isEffectActive)
             {
-                this.isEffectActive = false;
-                this.actionButton.cooldownTimerText.color = Palette.EnabledColor;
-                this.OnEffectEnds();
+                isEffectActive = false;
+                actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                OnEffectEnds();
             }
 
-            this.actionButton.SetCoolDown(this.Timer, (this.HasEffect && this.isEffectActive) ? this.EffectDuration : this.MaxTimer);
+            actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
             // Trigger OnClickEvent if the hotkey is being pressed down
-            if ((this.hotkey.HasValue && Input.GetButtonDown(this.hotkey.Value.ToString())) || ConsoleJoystick.player.GetButtonDown(this.joystickkey)) this.OnClickEvent();
+            if ((hotkey.HasValue && Input.GetButtonDown(hotkey.Value.ToString())) || ConsoleJoystick.player.GetButtonDown(joystickkey)) OnClickEvent();
         }
     }
 }
