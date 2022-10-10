@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
-
-using SuperNewRoles.Patch;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patches;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles

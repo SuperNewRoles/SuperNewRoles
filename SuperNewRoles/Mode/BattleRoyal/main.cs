@@ -11,6 +11,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
 {
     class Main
     {
+        public static Dictionary<byte, int> KillCount;
         public static void FixedUpdate()
         {
             if (!AmongUsClient.Instance.AmHost) return;
@@ -31,13 +32,28 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         alives++;
                     }
                 }
-                if (AlivePlayer != alives || AllPlayer != allplayer)
+                if ((AlivePlayer != alives || AllPlayer != allplayer) && BROption.IsViewAlivePlayer.GetBool())
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (!p.Data.Disconnected)
                         {
-                            p.RpcSetNamePrivate("(" + alives + "/" + allplayer + ")");
+                            string EndText = " ";
+                            if (BROption.IsKillCountView.GetBool())
+                            {
+                                if (KillCount.ContainsKey(p.PlayerId)) EndText += KillCount[p.PlayerId];
+                                else EndText += "0";
+
+                                if (!BROption.IsKillCountViewSelfOnly.GetBool())
+                                {
+                                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                                    {
+                                        if (p2.PlayerId == p.PlayerId) continue;
+                                        p.RpcSetNamePrivate(EndText, p2);
+                                    }
+                                }
+                            }
+                            p.RpcSetNamePrivate($"({alives}/{allplayer}){EndText}");
                         }
                     }
                     AlivePlayer = alives;
@@ -65,6 +81,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 if (StartSeconds <= 0)
                 {
                     IsStart = true;
+                    ModeHandler.HideName();
                     foreach (List<PlayerControl> team in Teams)
                     {
                         if (team.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
@@ -84,6 +101,11 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static int AlivePlayer;
         public static int AllPlayer;
         public static bool IsStart;
+        public static void MurderPlayer(PlayerControl source, PlayerControl target)
+        {
+            if (!KillCount.ContainsKey(source.PlayerId)) KillCount[source.PlayerId] = 0;
+            KillCount[source.PlayerId]++;
+        }
         [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoExitVent))]
         class CoExitVentPatch
         {
@@ -239,6 +261,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static void ClearAndReload()
         {
             IsViewAlivePlayer = BROption.IsViewAlivePlayer.GetBool();
+            KillCount = new();
             AlivePlayer = 0;
             AllPlayer = 0;
             IsStart = false;

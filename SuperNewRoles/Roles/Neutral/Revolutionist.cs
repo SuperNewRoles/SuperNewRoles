@@ -1,5 +1,5 @@
-using SuperNewRoles.Patch;
 using Hazel;
+using SuperNewRoles.Patches;
 using UnityEngine;
 using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 

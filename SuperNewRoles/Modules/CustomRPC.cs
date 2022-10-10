@@ -10,12 +10,12 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
-using static SuperNewRoles.Patch.FinalStatusPatch;
+using static SuperNewRoles.Patches.FinalStatusPatch;
 
 namespace SuperNewRoles.Modules
 {
@@ -41,7 +41,7 @@ namespace SuperNewRoles.Modules
         Shielder,
         Speeder,
         Freezer,
-        Guesser,
+        NiceGuesser,
         EvilGuesser,
         Vulture,
         NiceScientist,
@@ -156,9 +156,16 @@ namespace SuperNewRoles.Modules
         Slugger,
         ShiftActor,
         ConnectKiller,
+        GM,
+        Cracker,
+        WaveCannon,
+        WaveCannonJackal,
+        NekoKabocha,
         Doppelganger,
         Werewolf,
         Knight,
+        Conjurer,
+        Camouflager,
         //RoleId
     }
 
@@ -180,7 +187,6 @@ namespace SuperNewRoles.Modules
         ShareWinner,
         TeleporterTP,
         SidekickPromotes = 160,
-        SidekickSeerPromotes,
         CreateSidekick,
         CreateSidekickSeer,
         SetSpeedBoost,
@@ -236,7 +242,13 @@ namespace SuperNewRoles.Modules
         MeetingKill,
         KnightProtected,
         KnightProtectClear,
+        GuesserShoot,
+        WaveCannon,
+        ShowFlash,
+        CrackerCrack,
+        Camouflage
     }
+
     public static class RPCProcedure
     {
         public static void KnightProtectClear(byte Target)
@@ -255,19 +267,77 @@ namespace SuperNewRoles.Modules
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, source.Data);
             }
+        }
+        public static void Camouflage(bool Is)
+        {
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    if (Is) Roles.Impostor.Camouflager.CamouflageSHR();
+                    else Roles.Impostor.Camouflager.ResetCamouflageSHR();
+                }
+            }
+            else
+            {
+                if (Is) Roles.Impostor.Camouflager.Camouflage();
+                else Roles.Impostor.Camouflager.ResetCamouflage();
+            }
+        }
+
+        public static void GuesserShoot(byte killerId, byte dyingTargetId, byte guessedTargetId, byte guessedRoleId)
+        {
+            PlayerControl dyingTarget = ModHelpers.PlayerById(dyingTargetId);
+            if (dyingTarget == null) return;
+            dyingTarget.Exiled();
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.KillSfx, false, 0.8f);
             if (MeetingHud.Instance)
             {
                 foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
                 {
-                    if (pva.TargetPlayerId == TargetId)
+                    if (pva.TargetPlayerId == dyingTargetId)
                     {
                         pva.SetDead(pva.DidReport, true);
                         pva.Overlay.gameObject.SetActive(true);
                     }
+                    if (pva.VotedFor != dyingTargetId) continue;
+                    pva.UnsetVote();
+                    var voteAreaPlayer = ModHelpers.PlayerById(pva.TargetPlayerId);
+                    if (!voteAreaPlayer.AmOwner) continue;
+                    MeetingHud.Instance.ClearVote();
                 }
                 if (AmongUsClient.Instance.AmHost)
                     MeetingHud.Instance.CheckForEndVoting();
             }
+            PlayerControl guesser = ModHelpers.PlayerById(killerId);
+            if (FastDestroyableSingleton<HudManager>.Instance != null && guesser != null)
+                if (CachedPlayer.LocalPlayer.PlayerControl == dyingTarget)
+                {
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(guesser.Data, dyingTarget.Data);
+                    if (Roles.Attribute.Guesser.guesserUI != null) Roles.Attribute.Guesser.ExitButton.OnClick.Invoke();
+                }
+        }
+
+        public static void CrackerCrack(byte Target)
+        {
+            if (!RoleClass.Cracker.CrackedPlayers.Contains(Target)) RoleClass.Cracker.CrackedPlayers.Add(Target);
+        }
+
+        public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)
+        {
+            Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {buff.Length} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
+            switch ((WaveCannonObject.RpcType)Type)
+            {
+                case WaveCannonObject.RpcType.Spawn:
+                    Vector3 position = Vector3.zero;
+                    position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
+                    position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
+                    return new(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
+                case WaveCannonObject.RpcType.Shoot:
+                    WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
+                    break;
+            }
+            return null;
         }
         public static void SetFinalStatus(byte targetId, FinalStatus Status)
         {
@@ -395,16 +465,20 @@ namespace SuperNewRoles.Modules
             }
         }
 
-        public static void ChiefSidekick(byte targetid)
+        public static void ChiefSidekick(byte targetid, bool IsTaskClear)
         {
             RoleClass.Chief.SheriffPlayer.Add(targetid);
+            if (IsTaskClear)
+            {
+                RoleClass.Chief.NoTaskSheriffPlayer.Add(targetid);
+            }
             SetRole(targetid, (byte)RoleId.Sheriff);
             if (targetid == CachedPlayer.LocalPlayer.PlayerId)
             {
                 Sheriff.ResetKillCoolDown();
                 RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
             }
-            UncheckedSetVanilaRole(targetid, 0);
+            UncheckedSetVanilaRole(targetid, (byte)RoleTypes.Crewmate);
         }
         public static void FixLights()
         {
@@ -741,7 +815,16 @@ namespace SuperNewRoles.Modules
             {
                 Clergyman.LightOutStartRPC();
             }
+            else
+            {
+                if (RoleClass.Clergyman.currentMessage.text != null)
+                {
+                    GameObject.Destroy(RoleClass.Clergyman.currentMessage.text.gameObject);
+                }
+                RoleClass.Clergyman.IsLightOff = false;
+            }
         }
+
         public static void SetSpeedBoost(bool Is, byte id)
         {
             var player = ModHelpers.PlayerById(id);
@@ -788,26 +871,27 @@ namespace SuperNewRoles.Modules
                 }
             }
         }
-        public static void SidekickPromotes()
+        public static void SidekickPromotes(bool isJackalSeer)
         {
-            foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer.ToArray())
+            if (isJackalSeer)
             {
-                p.ClearRole();
-                p.SetRole(RoleId.Jackal);
-                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                RoleClass.Jackal.CanCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.GetBool();
+                foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
+                {
+                    p.ClearRole();
+                    p.SetRole(RoleId.JackalSeer);
+                    //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
+                    RoleClass.JackalSeer.CanCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.GetBool();
+                }
             }
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            ChacheManager.ResetMyRoleChache();
-        }
-        public static void SidekickSeerPromotes()
-        {
-            foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
+            else
             {
-                p.ClearRole();
-                p.SetRole(RoleId.JackalSeer);
-                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                RoleClass.JackalSeer.CanCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.GetBool();
+                foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer.ToArray())
+                {
+                    p.ClearRole();
+                    p.SetRole(RoleId.Jackal);
+                    //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
+                    RoleClass.Jackal.CanCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.GetBool();
+                }
             }
             PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
@@ -851,6 +935,7 @@ namespace SuperNewRoles.Modules
             var player = ModHelpers.PlayerById(playerid);
             if (player != null)
             {
+                player.Data.IsDead = true;
                 player.Exiled();
             }
         }
@@ -913,7 +998,7 @@ namespace SuperNewRoles.Modules
             PlayerControl target = ModHelpers.PlayerById(targetId);
             if (target == null || source == null) return;
             source.ProtectPlayer(target, colorid);
-            PlayerControl.LocalPlayer.MurderPlayer(target);
+            source.MurderPlayer(target);
             source.ProtectPlayer(target, colorid);
             if (targetId == CachedPlayer.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
         }
@@ -1020,6 +1105,11 @@ namespace SuperNewRoles.Modules
                 }
             })));
         }
+
+        public static void ShowFlash()
+        {
+            Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+        }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
         class RPCHandlerPatch
         {
@@ -1113,7 +1203,7 @@ namespace SuperNewRoles.Modules
                             SetQuarreled(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.SidekickPromotes:
-                            SidekickPromotes();
+                            SidekickPromotes(reader.ReadBoolean());
                             break;
                         case CustomRPC.CreateSidekick:
                             CreateSidekick(reader.ReadByte(), reader.ReadBoolean());
@@ -1188,9 +1278,6 @@ namespace SuperNewRoles.Modules
                         case CustomRPC.DemonCurse:
                             DemonCurse(reader.ReadByte(), reader.ReadByte());
                             break;
-                        case CustomRPC.SidekickSeerPromotes:
-                            SidekickSeerPromotes();
-                            break;
                         case CustomRPC.CreateSidekickSeer:
                             CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
                             break;
@@ -1228,7 +1315,7 @@ namespace SuperNewRoles.Modules
                             MapCustoms.Airship.SecretRoom.SetSecretRoomTeleportStatus((MapCustoms.Airship.SecretRoom.Status)reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.ChiefSidekick:
-                            ChiefSidekick(reader.ReadByte());
+                            ChiefSidekick(reader.ReadByte(), reader.ReadBoolean());
                             break;
                         case CustomRPC.RpcSetDoorway:
                             RPCHelper.RpcSetDoorway(reader.ReadByte(), reader.ReadBoolean());
@@ -1282,8 +1369,23 @@ namespace SuperNewRoles.Modules
                         case CustomRPC.KnightProtectClear:
                             KnightProtectClear(reader.ReadByte());
                             break;
+                        case CustomRPC.CrackerCrack:
+                            CrackerCrack(reader.ReadByte());
+                            break;
+                        case CustomRPC.WaveCannon:
+                            WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), reader.ReadBytesAndSize());
+                            break;
+                        case CustomRPC.ShowFlash:
+                            ShowFlash();
+                            break;
                         case CustomRPC.SetFinalStatus:
                             SetFinalStatus(reader.ReadByte(), (FinalStatus)reader.ReadByte());
+                            break;
+                        case CustomRPC.Camouflage:
+                            Camouflage(reader.ReadBoolean());
+                            break;
+                        case CustomRPC.GuesserShoot:
+                            GuesserShoot(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }

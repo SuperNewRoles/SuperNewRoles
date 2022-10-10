@@ -18,7 +18,7 @@ namespace SuperNewRoles.Roles
                 {
                     if (SelfBomber.GetIsBomb(PlayerControl.LocalPlayer, p, CustomOptions.SamuraiScope.GetFloat()))
                     {
-                        PlayerControl.LocalPlayer.UncheckedMurderPlayer(p, showAnimation:false);
+                        PlayerControl.LocalPlayer.UncheckedMurderPlayer(p, showAnimation: false);
                         PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SamuraiKill);
                     }
                 }

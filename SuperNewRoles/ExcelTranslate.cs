@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
-using System.Text.RegularExpressions;
 
 namespace SuperNewRoles
 {

@@ -50,6 +50,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     // player.RpcSetName("");
                 }
             }
+            RoleSystem.AssignRole();
             Main.ChangeCosmetics();
         }
     }

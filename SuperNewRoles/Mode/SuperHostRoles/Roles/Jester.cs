@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles
