@@ -249,11 +249,20 @@ namespace SuperNewRoles.Modules
         ShowFlash,
         PavlovsOwnerCreateDog,
         CrackerCrack,
-        Camouflage
+        Camouflage,
+        ShowGuardEffect
     }
 
     public static class RPCProcedure
     {
+        public static void ShowGuardEffect(byte showerid, byte targetid)
+        {
+            if (showerid != CachedPlayer.LocalPlayer.PlayerId) return;
+            PlayerControl target = ModHelpers.PlayerById(targetid);
+            if (target == null) return;
+            PlayerControl.LocalPlayer.ProtectPlayer(target);
+            PlayerControl.LocalPlayer.MurderPlayer(target);
+        }
         public static void KnightProtectClear(byte Target)
         {
             Knight.GuardedPlayers.Remove(Target);
@@ -1412,6 +1421,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.GuesserShoot:
                             GuesserShoot(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.ShowGuardEffect:
+                            ShowGuardEffect(reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }
