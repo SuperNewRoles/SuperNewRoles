@@ -1073,16 +1073,6 @@ namespace SuperNewRoles.Patches
             }
         }
     }
-    public class WrapUpClass
-    {
-        public static void SetCoolTime()
-        {
-            PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer), RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer));
-        }
-        public static void WrapUpPostfix(GameData.PlayerInfo exiled)
-        {
-        }
-    }
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.ReEnableGameplay))]
     class ExileControllerReEnableGameplayPatch
     {
