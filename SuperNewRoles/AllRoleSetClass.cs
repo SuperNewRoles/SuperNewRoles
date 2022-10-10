@@ -982,7 +982,7 @@ namespace SuperNewRoles
                 if (intro.RoleId != RoleId.DefaultRole &&
                     (intro.RoleId != RoleId.Nun || (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship)
                     && !intro.IsGhostRole
-                    && intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight || ModeHandler.IsMode(ModeId.Werewolf)
+                    && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))
                     && intro.RoleId is not RoleId.GM
                     && intro.RoleId != RoleId.Pavlovsdogs)
                 {
