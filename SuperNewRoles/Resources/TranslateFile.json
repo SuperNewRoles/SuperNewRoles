@@ -1236,309 +1236,88 @@
     },
     "WereWolfHunterText": {
         "0": "Let's die with someone else.",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u8ab0\u304b\u3092\u9053\u9023\u308c\u306b\u3057\u3088\u3046",
-        "12": "\u00a0",
-        "13": "\u6765\u9001\u522b\u4eba\u4e0a\u8def\u5427",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u6765\u9001\u522b\u4eba\u4e0a\u8def\u5427"
     },
     "WereWolf.WereWolf": {
         "0": "Werewolf",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u4eba\u72fc",
-        "12": "\u00a0",
-        "13": "\u72fc\u4eba",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u72fc\u4eba"
     },
     "WereWolf.WereWolfText": {
         "0": "Let's Eat Villager and Win!",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u5e02\u6c11\u3092\u98df\u3079\u3066\u52dd\u5229\u3057\u3088\u3046",
-        "12": "\u00a0",
-        "13": "\u5403\u6389\u5e02\u6c11\u83b7\u5f97\u80dc\u5229",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u5403\u6389\u5e02\u6c11\u83b7\u5f97\u80dc\u5229"
     },
     "WareWolfMadman": {
         "0": "Madmate",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u72c2\u4eba",
-        "12": "\u00a0",
-        "13": "\u9690\u72fc",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u9690\u72fc"
     },
     "WereWolfMadmanText": {
         "0": "Help the werewolves and win!",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u4eba\u72fc\u3092\u52a9\u3051\u3066\u52dd\u5229\u3057\u3088\u3046",
-        "12": "\u00a0",
-        "13": "\u5e2e\u52a9\u72fc\u4eba\u83b7\u5f97\u80dc\u5229",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u5e2e\u52a9\u72fc\u4eba\u83b7\u5f97\u80dc\u5229"
     },
     "WareWolfVillager": {
         "0": "Villager",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u5e02\u6c11",
-        "12": "\u00a0",
-        "13": "\u5e02\u6c11",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u5e02\u6c11"
     },
     "WereWolfVillagerText": {
         "0": "Expel the werewolves in the debate and win!",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u8b70\u8ad6\u3067\u4eba\u72fc\u3092\u8ffd\u653e\u3057\u3066\u52dd\u5229\u3057\u3088\u3046",
-        "12": "\u00a0",
-        "13": "\u901a\u8fc7\u8fa9\u8bba\u653e\u9010\u72fc\u4eba\u83b7\u5f97\u80dc\u5229",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u901a\u8fc7\u8fa9\u8bba\u653e\u9010\u72fc\u4eba\u83b7\u5f97\u80dc\u5229"
     },
     "WareWolfFortuneTeller": {
         "0": "FortuneTeller",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u5360\u3044\u5e2b",
-        "12": "\u00a0",
-        "13": "\u9884\u8a00\u5bb6",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u9884\u8a00\u5bb6"
     },
     "WereWolfFortuneTellerText": {
         "0": "Divination to discover the werewolf and win!",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u5360\u3063\u3066\u4eba\u72fc\u3092\u767a\u898b\u3057\u3066\u52dd\u5229\u3057\u3088\u3046",
-        "12": "\u00a0",
-        "13": "\u901a\u8fc7\u5360\u535c\u627e\u5230\u72fc\u4eba\u83b7\u5f97\u80dc\u5229",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u901a\u8fc7\u5360\u535c\u627e\u5230\u72fc\u4eba\u83b7\u5f97\u80dc\u5229"
     },
     "WareWolfMedium": {
         "0": "Medium",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u970a\u5a92\u5e2b",
-        "12": "\u00a0",
-        "13": "\u5b88\u5893\u4eba",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u5b88\u5893\u4eba"
     },
     "WereWolfMediumText": {
         "0": "Search out the role of the dead and win!",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u6b7b\u3093\u3060\u4eba\u306e\u5f79\u8077\u3092\u8abf\u3079\u3066\u52dd\u5229\u3057\u3088\u3046",
-        "12": "\u00a0",
-        "13": "\u67e5\u6e05\u6b7b\u8005\u804c\u4e1a\u83b7\u5f97\u80dc\u5229",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u67e5\u6e05\u6b7b\u8005\u804c\u4e1a\u83b7\u5f97\u80dc\u5229"
     },
     "WereWolfMeetingNormal": {
         "0": "This is Meeting Time.",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u4eca\u56de\u306f\u4f1a\u8b70\u30bf\u30a4\u30e0\u3067\u3059\u3002",
-        "12": "\u00a0",
-        "13": "\u672c\u6b21\u4f1a\u8bae\u65f6\u95f4",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u672c\u6b21\u4f1a\u8bae\u65f6\u95f4"
     },
     "WereWolfMeetingAbility": {
         "0": "This is Use to Ability Time.",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u4eca\u56de\u306f\u80fd\u529b\u4f7f\u7528\u30bf\u30a4\u30e0\u3067\u3059\u3002",
-        "12": "\u00a0",
-        "13": "\u672c\u6b21\u80fd\u529b\u4f7f\u7528\u65f6\u95f4",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u672c\u6b21\u80fd\u529b\u4f7f\u7528\u65f6\u95f4"
     },
     "WereWolfMediumAbilityText": {
         "0": "{0}'s Role is {1}!",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "{0}\u306e\u5f79\u8077\u306f{1}\u3067\u3059!",
-        "12": "\u00a0",
-        "13": "{0}\u7684\u804c\u4e1a\u662f{1}!",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "{0}\u7684\u804c\u4e1a\u662f{1}!"
     },
     "WerewolfModeName": {
         "0": "Werewolf",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u4eba\u72fc",
-        "12": "\u00a0",
-        "13": "\u00a0",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u00a0"
     },
     "WerewolfAbilityTimeSetting": {
         "0": "Ability Time",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u80fd\u529b\u4f7f\u7528\u30bf\u30a4\u30e0",
-        "12": "\u00a0",
-        "13": "\u00a0",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u00a0"
     },
     "WerewolfAbilityTime": {
         "0": "{0} seconds remaining until the end of the ability use time",
-        "1": "\u00a0",
-        "2": "\u00a0",
-        "3": "\u00a0",
-        "4": "\u00a0",
-        "5": "\u00a0",
-        "6": "\u00a0",
-        "7": "\u00a0",
-        "8": "\u00a0",
-        "9": "\u00a0",
-        "10": "\u00a0",
         "11": "\u80fd\u529b\u4f7f\u7528\u30bf\u30a4\u30e0\u304c\u7d42\u4e86\u3059\u308b\u307e\u3067\u6b8b\u308a{0}\u79d2",
-        "12": "\u00a0",
-        "13": "\u00a0",
-        "14": "\u00a0",
-        "15": "\u00a0"
+        "13": "\u00a0"
     },
     "HauntedWolfName": {
         "0": "HauntedWolf",
@@ -5025,6 +4804,50 @@
     "PavlovsTeamWinText": {
         "0": "Pavlov's dog and owner",
         "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u72ac\u3068\u30aa\u30fc\u30ca\u30fc"
+    },
+    "KnightTitle1": {
+        "0": "I will protect you according to my beliefs.",
+        "11": "\u6211\u304c\u4fe1\u5ff5\u306b\u6cbf\u3063\u3066\u8b77\u885b\u3057\u3088\u3046",
+        "13": "\u6211\u5c06\u6839\u636e\u6211\u7684\u4fe1\u5ff5\u6765\u4fdd\u62a4\u3002"
+    },
+    "KnightDescription": {
+        "0": "During the conference phase, you can put up a shield to prevent one kill by using the protect button. If the protection is successful, a successful protection announcement will be played at the beginning of the next meeting phase.",
+        "11": "\u4f1a\u8b70\u30d5\u30a7\u30a4\u30ba\u4e2d\u306b\u8b77\u885b\u30dc\u30bf\u30f3\u3092\u4f7f\u7528\u3059\u308b\u4e8b\u3067\u3001\u30ad\u30eb\u3092\u4e00\u56de\u9632\u3050\u30b7\u30fc\u30eb\u30c9\u3092\u5f35\u308b\u3053\u3068\u304c\u3067\u304d\u307e\u3059\u3002 \u8a2d\u5b9a\u306b\u3088\u308a\u8b77\u885b\u304c\u6210\u529f\u3057\u305f\u969b\u3001\u6b21\u306e\u4f1a\u8b70\u30d5\u30a7\u30a4\u30ba\u958b\u59cb\u6642\u306b\u8b77\u885b\u6210\u529f\u30a2\u30ca\u30a6\u30f3\u30b9\u304c\u6d41\u308c\u307e\u3059\u3002",
+        "13": "\u5728\u4f1a\u8bae\u9636\u6bb5\u4f7f\u7528 \"\u4fdd\u62a4 \"\u6309\u94ae\uff0c\u4f60\u53ef\u4ee5\u7ad6\u8d77\u4e00\u4e2a\u9632\u62a4\u7f69\uff0c\u9632\u6b62\u88ab\u6740\u3002 \u5982\u679c\u4fdd\u62a4\u8bbe\u7f6e\u6210\u529f\uff0c\u5728\u4e0b\u4e00\u4e2a\u4f1a\u8bae\u9636\u6bb5\u5f00\u59cb\u65f6\u5c06\u64ad\u653e\u4fdd\u62a4\u6210\u529f\u7684\u516c\u544a\u3002"
+    },
+    "KnightCanAnnounceOfProtected": {
+        "0": "Play an announcement when the protection is successful?",
+        "11": "\u8b77\u885b\u6210\u529f\u6642\u306b\u30a2\u30ca\u30a6\u30f3\u30b9\u3092\u6d41\u3059\u304b",
+        "13": "\u60a8\u662f\u5426\u5e0c\u671b\u5728\u4fdd\u62a4\u6210\u529f\u540e\u5f97\u5230\u901a\u77e5\uff1f"
+    },
+    "KnightSetTheUpperLimitOfTheGuarding": {
+        "0": "Do you want to set a limit on the number of protections?",
+        "11": "\u8b77\u885b\u56de\u6570\u306b\u4e0a\u9650\u3092\u8a2d\u3051\u308b\u304b",
+        "13": "\u4f60\u60f3\u4e3a\u4f60\u7684\u4fdd\u62a4\u6b21\u6570\u8bbe\u7f6e\u4e00\u4e2a\u4e0a\u9650\u5417\uff1f"
+    },
+    "KnightMaximumNumberOfTimes": {
+        "0": "Maximum number of times protection is possible.",
+        "11": "\u8b77\u885b\u4e0a\u9650\u56de\u6570",
+        "13": "\u53ef\u80fd\u7684\u6700\u5927\u4fdd\u62a4\u6b21\u6570\u3002"
+    },
+    "TheKnightProtected": {
+        "0": "The knight's protection was successful.",
+        "11": "\u9a0e\u58eb\u306e\u8b77\u885b\u304c\u6210\u529f\u3057\u307e\u3057\u305f\u3002",
+        "13": "\u9a91\u58eb\u7684\u62a4\u9001\u662f\u6210\u529f\u7684\u3002"
+    },
+    "KnightProtectButton": {
+        "0": "Protect",
+        "11": "\u8b77\u885b",
+        "13": "\u4fdd\u62a4"
+    },
+    "WerewolfName": {
+        "0": "Werewolf",
+        "11": "\u4eba\u72fc",
+        "13": "\u4eba\u72fc"
+    },
+    "WerewolfTitle1": {
+        "0": "Let's kill a villager!",
+        "11": "\u6751\u4eba\u3092\u30ad\u30eb\u3057\u3088\u3046"
     },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",

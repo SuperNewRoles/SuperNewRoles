@@ -2,7 +2,6 @@ using HarmonyLib;
 using Hazel;
 using UnityEngine;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
 using System.Collections.Generic;
 using System.Linq;
 using static SuperNewRoles.Modules.CustomOptions;
