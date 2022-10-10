@@ -991,7 +991,7 @@ namespace SuperNewRoles.Modules
             SoothSayerPlayerCount = Create(13, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
             SoothSayerDisplayMode = Create(14, false, CustomOptionType.Crewmate, "SoothSayerDisplaySetting", false, SoothSayerOption);
             SoothSayerMaxCount = Create(15, false, CustomOptionType.Crewmate, "SoothSayerMaxCountSetting", CrewPlayers[0] - 1, CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
-            SoothSayerFirstWhiteOption = Create(992, false, CustomOptionType.Crewmate, "SoothSayerFirstWhiteOption", false, SoothSayerOption);
+            SoothSayerFirstWhiteOption = Create(1050, false, CustomOptionType.Crewmate, "SoothSayerFirstWhiteOption", false, SoothSayerOption);
 
             JesterOption = SetupCustomRoleOption(16, true, RoleId.Jester);
             JesterPlayerCount = Create(17, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JesterOption);
@@ -1062,7 +1062,7 @@ namespace SuperNewRoles.Modules
 
             SpiritMediumOption = SetupCustomRoleOption(70, false, RoleId.SpiritMedium);
             SpiritMediumPlayerCount = Create(71, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpiritMediumOption);
-            SpiritMediumIsAutoMode = Create(1004, false, CustomOptionType.Crewmate, "SpiritMediumIsAutoMode", false, SpiritMediumOption);
+            SpiritMediumIsAutoMode = Create(1058, false, CustomOptionType.Crewmate, "SpiritMediumIsAutoMode", false, SpiritMediumOption);
             SpiritMediumDisplayMode = Create(72, false, CustomOptionType.Crewmate, "SpiritMediumDisplaySetting", false, SpiritMediumOption);
             SpiritMediumMaxCount = Create(73, false, CustomOptionType.Crewmate, "SpiritMediumMaxCountSetting", 2f, 1f, 15f, 1f, SpiritMediumOption);
 
@@ -1733,8 +1733,8 @@ namespace SuperNewRoles.Modules
             DoppelgangerSucTime = Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
             DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
 
-            WerewolfOption = new(997, false, CustomOptionType.Impostor, "WerewolfName",RoleClass.Werewolf.color, 1);
-            WerewolfPlayerCount = Create(998, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
+            WerewolfOption = new(1057, false, CustomOptionType.Impostor, "WerewolfName",RoleClass.Werewolf.color, 1);
+            WerewolfPlayerCount = Create(1051, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
 
             Roles.CrewMate.Knight.SetupCustomOptions();
 
@@ -1778,23 +1778,23 @@ namespace SuperNewRoles.Modules
             TaskerIsKillCoolTaskNow = Create(1011, false, CustomOptionType.Impostor, "TaskerIsKillCoolTaskNow", true, TaskerOption);
             TaskerCanKill = Create(1012, false, CustomOptionType.Impostor, "TaskerCanKill", true, TaskerOption);
 
-            CamouflagerOption =  SetupCustomRoleOption(1038, true, RoleId.Camouflager);
-            CamouflagerPlayerCount = Create(1039, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CamouflagerOption);
-            CamouflagerCoolTime = Create(1040, true, CustomOptionType.Impostor, "CamouflagerCoolTimeSetting", 30f, 0f, 60f, 2.5f, CamouflagerOption);
-            CamouflagerDurationTime = Create(1041, true, CustomOptionType.Impostor, "CamouflagerDurationTimeSetting", 10f, 0f, 60f, 2.5f, CamouflagerOption);
-            CamouflagerCamouflageArsonist = Create(1042, true, CustomOptionType.Impostor, "CamouflagerCamouflageArsonistSetting", true, CamouflagerOption);
-            CamouflagerCamouflageDemon = Create(1043, true, CustomOptionType.Impostor, "CamouflagerCamouflageDemonSetting", true, CamouflagerOption);
-            CamouflagerCamouflageLovers = Create(1044, true, CustomOptionType.Impostor, "CamouflagerCamouflageLoversSetting", false, CamouflagerOption);
-            CamouflagerCamouflageQuarreled = Create(1045, true, CustomOptionType.Impostor, "CamouflagerCamouflageQuarreledSetting", false, CamouflagerOption);
-            CamouflagerCamouflageChangeColor = Create(1046, true, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
-            CamouflagerCamouflageColor = Create(1047, true, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Roles.Impostor.Camouflager.ColorOption, CamouflagerCamouflageChangeColor);
+            CamouflagerOption =  SetupCustomRoleOption(1059, true, RoleId.Camouflager);
+            CamouflagerPlayerCount = Create(1060, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CamouflagerOption);
+            CamouflagerCoolTime = Create(1061, true, CustomOptionType.Impostor, "CamouflagerCoolTimeSetting", 30f, 0f, 60f, 2.5f, CamouflagerOption);
+            CamouflagerDurationTime = Create(1062, true, CustomOptionType.Impostor, "CamouflagerDurationTimeSetting", 10f, 0f, 60f, 2.5f, CamouflagerOption);
+            CamouflagerCamouflageArsonist = Create(1063, true, CustomOptionType.Impostor, "CamouflagerCamouflageArsonistSetting", true, CamouflagerOption);
+            CamouflagerCamouflageDemon = Create(1064, true, CustomOptionType.Impostor, "CamouflagerCamouflageDemonSetting", true, CamouflagerOption);
+            CamouflagerCamouflageLovers = Create(1065, true, CustomOptionType.Impostor, "CamouflagerCamouflageLoversSetting", false, CamouflagerOption);
+            CamouflagerCamouflageQuarreled = Create(1066, true, CustomOptionType.Impostor, "CamouflagerCamouflageQuarreledSetting", false, CamouflagerOption);
+            CamouflagerCamouflageChangeColor = Create(1067, true, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
+            CamouflagerCamouflageColor = Create(1068, true, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Roles.Impostor.Camouflager.ColorOption, CamouflagerCamouflageChangeColor);
 
-            NiceGuesserOption = SetupCustomRoleOption(971, false, RoleId.NiceGuesser);
-            NiceGuesserPlayerCount = Create(972, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGuesserOption);
+            NiceGuesserOption = SetupCustomRoleOption(1069, false, RoleId.NiceGuesser);
+            NiceGuesserPlayerCount = Create(1070, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGuesserOption);
             NiceGuesserShortMaxCount = Create(977, false, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, NiceGuesserOption);
             NiceGuesserShortOneMeetingCount = Create(978, false, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, NiceGuesserOption);
 
-            EvilGuesserOption = SetupCustomRoleOption(971, false, RoleId.EvilGuesser);
+            EvilGuesserOption = SetupCustomRoleOption(1071, false, RoleId.EvilGuesser);
             EvilGuesserPlayerCount = Create(974, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
             EvilGuesserShortMaxCount = Create(975, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
             EvilGuesserShortOneMeetingCount = Create(976, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
