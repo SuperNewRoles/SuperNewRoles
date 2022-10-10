@@ -180,6 +180,9 @@ namespace SuperNewRoles
             }
             return null;
         }
+        public static bool IsPavlovsTeam(this PlayerControl player) => player.GetRole() is
+                RoleId.Pavlovsdogs or
+                RoleId.Pavlovsowner;
         public static bool IsJackalTeam(this PlayerControl player) =>
             player.GetRole() is
                 RoleId.Jackal or
@@ -611,6 +614,12 @@ namespace SuperNewRoles
                     break;
                 case RoleId.Doppelganger:
                     RoleClass.Doppelganger.DoppelggerPlayer.Add(player);
+                    break;
+                case RoleId.Pavlovsdogs:
+                    RoleClass.Pavlovsdogs.PavlovsdogsPlayer.Add(player);
+                    break;
+                case RoleId.Pavlovsowner:
+                    RoleClass.Pavlovsowner.PavlovsownerPlayer.Add(player);
                     break;
                 case RoleId.WaveCannonJackal:
                     RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.Add(player);
@@ -1055,6 +1064,12 @@ namespace SuperNewRoles
                 case RoleId.Doppelganger:
                     RoleClass.Doppelganger.DoppelggerPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Pavlovsdogs:
+                    RoleClass.Pavlovsdogs.PavlovsdogsPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Pavlovsowner:
+                    RoleClass.Pavlovsowner.PavlovsownerPlayer.RemoveAll(ClearRemove);
+                    break;
                 case RoleId.WaveCannonJackal:
                     RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.RemoveAll(ClearRemove);
                     break;
@@ -1123,6 +1138,8 @@ namespace SuperNewRoles
                 case RoleId.Stefinder:
                 case RoleId.PartTimer:
                 case RoleId.Photographer:
+                case RoleId.Pavlovsdogs:
+                case RoleId.Pavlovsowner:
                 case RoleId.GM:
                 case RoleId.WaveCannonJackal:
                     //タスククリアか
@@ -1175,6 +1192,7 @@ namespace SuperNewRoles
                 RoleId.Tuna => RoleClass.Tuna.IsUseVent,
                 RoleId.BlackCat => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
+                RoleId.Pavlovsdogs => CustomOptions.PavlovsdogCanVent.GetBool(),
                 RoleId.Stefinder => CustomOptions.StefinderVent.GetBool(),
                 RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalUseVent.GetBool(),
                 RoleId.DoubleKiller => CustomOptions.DoubleKillerVent.GetBool(),
@@ -1260,6 +1278,7 @@ namespace SuperNewRoles
                     RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
                     RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
                     RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
+                    RoleId.Pavlovsdogs => CustomOptions.PavlovsdogIsImpostorView.GetBool(),
                     RoleId.Photographer => CustomOptions.PhotographerIsImpostorVision.GetBool(),
                     RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalIsImpostorLight.GetBool(),
                     _ => false,
@@ -1296,8 +1315,10 @@ namespace SuperNewRoles
             RoleId.PartTimer or
             RoleId.GM or
             RoleId.WaveCannonJackal or
-                //第三か
-                RoleId.Photographer;
+            RoleId.Photographer or
+            RoleId.Pavlovsdogs or
+            RoleId.Pavlovsowner;
+            //第三か
         public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
         {
             RoleId MyRole;
@@ -1541,6 +1562,8 @@ namespace SuperNewRoles
                 else if (NekoKabocha.NekoKabochaPlayer.IsCheckListPlayerControl(player)) return RoleId.NekoKabocha;
                 else if (RoleClass.WaveCannon.WaveCannonPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannon;
                 else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
+                else if (RoleClass.Pavlovsdogs.PavlovsdogsPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsdogs;
+                else if (RoleClass.Pavlovsowner.PavlovsownerPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsowner;
                 else if (RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
                 else if (Conjurer.Player.IsCheckListPlayerControl(player)) return RoleId.Conjurer;
                 else if (RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player)) return RoleId.Camouflager;

@@ -944,6 +944,7 @@ namespace SuperNewRoles
                 RoleId.NekoKabocha => Roles.Impostor.NekoKabocha.NekoKabochaPlayerCount.GetFloat(),
                 RoleId.WaveCannon => CustomOptions.WaveCannonPlayerCount.GetFloat(),
                 RoleId.Doppelganger => CustomOptions.DoppelgangerPlayerCount.GetFloat(),
+                RoleId.Pavlovsowner => CustomOptions.PavlovsownerPlayerCount.GetFloat(),
                 RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalPlayerCount.GetFloat(),
                 RoleId.Conjurer => Roles.Impostor.Conjurer.PlayerCount.GetFloat(),
                 RoleId.Camouflager => CustomOptions.CamouflagerPlayerCount.GetFloat(),
@@ -983,7 +984,8 @@ namespace SuperNewRoles
                 if (intro.RoleId == RoleId.DefaultRole ||
                     intro.RoleId == RoleId.GM ||
                     (intro.RoleId == RoleId.Nun && (MapNames)PlayerControl.GameOptions.MapId != MapNames.Airship) ||
-                    intro.IsGhostRole) continue;
+                    intro.IsGhostRole &&
+                    intro.RoleId != RoleId.Pavlovsdogs) continue;
                 var option = IntroDate.GetOption(intro.RoleId);
                 if (option == null) continue;
                 var selection = option.GetSelection();

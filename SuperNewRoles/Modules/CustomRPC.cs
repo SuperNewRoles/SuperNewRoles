@@ -162,6 +162,8 @@ namespace SuperNewRoles.Modules
         WaveCannonJackal,
         NekoKabocha,
         Doppelganger,
+        Pavlovsdogs,
+        Pavlovsowner,
         Conjurer,
         Camouflager,
         //RoleId
@@ -239,6 +241,7 @@ namespace SuperNewRoles.Modules
         GuesserShoot,
         WaveCannon,
         ShowFlash,
+        PavlovsOwnerCreateDog,
         SetFinalStatus,
         CrackerCrack,
         Camouflage
@@ -246,6 +249,26 @@ namespace SuperNewRoles.Modules
 
     public static class RPCProcedure
     {
+        public static void PavlovsOwnerCreateDog(byte sourceid, byte targetid, bool IsSelfDeath)
+        {
+            PlayerControl source = ModHelpers.PlayerById(sourceid);
+            PlayerControl target = ModHelpers.PlayerById(targetid);
+            if (source == null || target == null) return;
+            if (IsSelfDeath)
+            {
+                source.MurderPlayer(source);
+            } else
+            {
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
+                SetRole(targetid, (byte)RoleId.Pavlovsdogs);
+                if (!RoleClass.Pavlovsowner.CountData.ContainsKey(sourceid))
+                {
+                    RoleClass.Pavlovsowner.CountData[sourceid] = CustomOptions.PavlovsownerCreateDogLimit.GetInt();
+                }
+                RoleClass.Pavlovsowner.CountData[sourceid]--;
+            }
+
+        }
         public static void Camouflage(bool Is)
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
@@ -1342,6 +1365,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.SetFinalStatus:
                             SetFinalStatus(reader.ReadByte(), (FinalStatus)reader.ReadByte());
+                            break;
+                        case CustomRPC.PavlovsOwnerCreateDog:
+                            PavlovsOwnerCreateDog(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                             break;
                         case CustomRPC.Camouflage:
                             Camouflage(reader.ReadBoolean());

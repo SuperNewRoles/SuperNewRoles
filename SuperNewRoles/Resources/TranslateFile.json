@@ -4745,6 +4745,56 @@
         "0": "Camouflager",
         "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5"
     },
+    "PavlovsdogsName": {
+        "0": "Pavlov's dogs",
+        "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u72ac"
+    },
+    "PavlovsownerName": {
+        "0": "Pavlov's owner",
+        "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u30aa\u30fc\u30ca\u30fc"
+    },
+    "PavlovsdogsTitle1": {
+        "0": "Let us be of service.",
+        "11": "\u304a\u5f79\u306b\u7acb\u3063\u3066\u307f\u305b\u307e\u3057\u3087\u3046",
+        "13": "\u8ba9\u6211\u4eec\u4e3a\u60a8\u63d0\u4f9b\u670d\u52a1\u3002"
+    },
+    "PavlovsownerTitle1": {
+        "0": "Be my dog!",
+        "11": "\u79c1\u306e\u72ac\u306b\u306a\u308a\u306a\u3055\u3044\uff01",
+        "13": "\u505a\u6211\u7684\u72d7!"
+    },
+    "PavlovsownerCreateDogCoolTime": {
+        "0": "Side Kick Cool Time",
+        "11": "\u30b5\u30a4\u30c9\u30ad\u30c3\u30af\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+    },
+    "PavlovsownerCreateDogLimit": {
+        "0": "Number of times a side kick can be made in one match",
+        "11": "1\u8a66\u5408\u5185\u306b\u30b5\u30a4\u30c9\u30ad\u30c3\u30af\u3067\u304d\u308b\u56de\u6570"
+    },
+    "PavlovsownerIsTargetImpostorDeath": {
+        "0": "Self-destruct if the opponent is an Imposter",
+        "11": "\u76f8\u624b\u304c\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3060\u3068\u81ea\u7206\u3059\u308b"
+    },
+    "PavlovsdogIsImpostorView": {
+        "0": "Pavlov's dog has a view of the imposter",
+        "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u72ac\u304c\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u8996\u754c"
+    },
+    "PavlovsdogRunAwayKillCoolTime": {
+        "0": "Coold time when out of control",
+        "11": "\u66b4\u8d70\u6642\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+    },
+    "PavlovsdogRunAwayDeathTime": {
+        "0": "Self-destruct time when out of control",
+        "11": "\u66b4\u8d70\u6642\u306e\u81ea\u7206\u30bf\u30a4\u30e0"
+    },
+    "PavlovsdogRunAwayDeathTimeIsMeetingReset": {
+        "0": "Reset self-destruct time in a meeting",
+        "11": "\u4f1a\u8b70\u3067\u81ea\u7206\u30bf\u30a4\u30e0\u3092\u30ea\u30bb\u30c3\u30c8\u3059\u308b"
+    },
+    "PavlovsTeamWinText": {
+        "0": "Pavlov's dog and owner",
+        "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u72ac\u3068\u30aa\u30fc\u30ca\u30fc"
+    },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
         "11": "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01",
