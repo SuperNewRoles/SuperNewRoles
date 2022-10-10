@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
-using SuperNewRoles.CustomRPC;
+
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -9,6 +9,14 @@ namespace SuperNewRoles.Roles
     class Seer
     //マッド・イビル・フレンズ・ジャッカル・サイドキック　シーア
     {
+        public static List<List<PlayerControl>> Seers = new() {
+            RoleClass.Seer.SeerPlayer,
+            RoleClass.EvilSeer.EvilSeerPlayer,
+            RoleClass.MadSeer.MadSeerPlayer,
+            RoleClass.JackalSeer.JackalSeerPlayer,
+            RoleClass.SeerFriends.SeerFriendsPlayer
+        };
+
         public static void ShowFlash(Color color, float duration = 1f)
         {//画面を光らせる
             if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;

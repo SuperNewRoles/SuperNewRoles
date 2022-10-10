@@ -1,7 +1,7 @@
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Mode;
 using UnityEngine;
 
@@ -13,18 +13,20 @@ namespace SuperNewRoles.Roles
         {
             HudManagerStartPatch.SpeederButton.MaxTimer = RoleClass.Speeder.CoolTime;
             HudManagerStartPatch.SpeederButton.Timer = HudManagerStartPatch.SpeederButton.MaxTimer;
-            HudManagerStartPatch.SpeederButton.actionButton.cooldownTimerText.color = Color.white;
+            HudManagerStartPatch.SpeederButton.effectCancellable = false;
+            HudManagerStartPatch.SpeederButton.EffectDuration = RoleClass.Speeder.DurationTime;
+            HudManagerStartPatch.SpeederButton.HasEffect = true;
         }
         public static void DownStart()
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedDown, SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetSpeedDown, SendOption.Reliable, -1);
             writer.Write(true);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.SetSpeedDown(true);
         }
         public static void ResetSpeed()
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedDown, SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetSpeedDown, SendOption.Reliable, -1);
             writer.Write(false);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.SetSpeedDown(false);
@@ -43,6 +45,13 @@ namespace SuperNewRoles.Roles
             ResetCoolDown();
             ResetSpeed();
         }
+        public static void HudUpdate()
+        {
+            if (HudManagerStartPatch.SpeederButton.Timer <= 0.1 && RoleClass.Speeder.IsSpeedDown)
+            {
+                Speeder.SpeedDownEnd();
+            }
+        }
     }
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
     public static class PlayerPhysicsSpeedPatch
@@ -56,17 +65,6 @@ namespace SuperNewRoles.Roles
                 {
                     __instance.body.velocity /= 10f;
                 }
-            }
-        }
-    }
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-    public static class HudManagerUpdatePatch
-    {
-        public static void Postfix()
-        {
-            if (HudManagerStartPatch.SpeederButton.Timer <= 0.1 && RoleClass.Speeder.IsSpeedDown)
-            {
-                Speeder.SpeedDownEnd();
             }
         }
     }

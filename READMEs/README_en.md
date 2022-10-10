@@ -121,51 +121,52 @@ Please use the Discord server:[Discord server](https://discord.gg/hXbDgQzSuK)
 It is already on the Discord server.
 
 
-| Impostor | Crewmate | Neutral | Redundant Camps |
-|----------|-------------|-----------------|----------------|
-| [Teleporter](#Teleporter) | [Lighter](#Lighter) | [Jester](#Jester) | [Quarreled](#Quarreled) |
-| [EvilSpeedBooster](#EvilSpeedBooster) | [Sheriff](#Sheriff) | [Opportunist](#Opportunist) | [Lovers](#Lovers) |
-| [EvilDoorr](#EvilDoorr) | [SpeedBooster](#SpeedBooster) | [Jackal](#Jackal) |  |
-| [EvilGambler](#EvilGambler) | [Doorr](#Doorr) | [Sidekick](#Sidekick) |  |
-| [SelfBomber](#SelfBomber) | [Clergyman](#Clergyman) | [God](#God) | |
-| [EvilNekomata](#EvilNekomata) | [Madmate](#Madmate) | [Egoist](#Egoist) | |
-| [CountChanger](#CountChanger) | [Bait](#Bait) | [Work Person](#WorkPerson) |  |
-| [Pursuer](#Pursuer) | [Home Security Guard](#HomeSecurityGuard) |  [True Lover](#TrueLover) |  |
-| [EvilScientist](#EvilScientist) | [Stuntman](#Stuntman) | [Amnesiac](#Amnesiac) |  |
-| [Hawk](#Hawk) | [Moving](#Moving) |[Jackal Friends](#JackalFriends)  |  |
-| [Minimalist](#Minimalist) | [Best False Charge](#BestFalseCharge) | [FalseCharges](#FalseCharges) |  |
-| [Magaziner](#Magaziner)| [Nice Nekomata](#NiceNekomata) | [Fox](#Fox) |  |
-| [SerialKiller](#SerialKiller) | [Doctor](#Doctor)|[TeleportingJackal](#TeleportingJackal)
-| [EvilEraser](#EvilEraser) | [MeetingSheriff](#MeetingSheriff)| [Demon](#Demon)
-| [OverKiller](#OverKiller) | [NicScientist](#NicScientist)| [JackalSeer](#JackalSeer)
-| [EvilMoving](#EvilMoving) |[NiceRedRidingHood](#NiceRedRidingHood)| [Sidekick(Seer)](#SidekickSeer)
-| [Levelinger](#Levelinger) | [Mayor](#Mayor) | [Arsonist](#Arsonist)
-| [SideKiller](#SideKiller) | [Technician](#Technician) | [Neet](#Neet)
-| [Survivor](#Survivor) | [Diviner](#Diviner)
-| [EvilSeer](#EvilSeer)|[Spirit Medium](#SpiritMedium)
-| [DarkKiller](#DarkKiller)|[MadMayor](#MadMayor)
-| [Vampire](#Vampire)|[NiceHawk](#NiceHawk)
-| [AssassinAndMarine](#AssassinAndMarine)|[MadStuntman](#MadStuntman)
-| [Cleaner](#Cleaner)|[MadHawk](#MadHawk)
-| [Samurai](#Samurai)|[Bakery](#Bakery)
-| [VentMaker](#VentMaker)|[MadJester](#MadJester)
-| [EvilHacker](#EvilHacker)|[NiceTeleporter](#[NiceTeleporter)
-| [PositionSwapper](#PositionSwapper)|[Celebrity](#Celebrity)
-| [Mafia](#Mafia)|[Nocturnality](#Nocturnality)
-| [SuicideWisher](#SuicideWisher)|[Observer](#Observer)
-| [Fast Maker](#FastMaker)|[Seer](#Seer)
-| [Kunoichi](#Kunoichi)|[MadSeer](#MadSeer)
-| [DoubleKiller](#DoubleKiller)|[RemoteSheriff](#RemoteSheriff)
-| [Smasher](#Smasher)|[TaskManager](#TaskManager)
-| [Secretly Killer](#SecretlyKiller) |[MadMaker](#MadMaker)
-| |[Chief](#Chief)
-| |[MadCleaner](#MadCleaner)
-| |[MayorFriends](#MayorFriends)
-| |[HauntedWolf](#HauntedWolf)
-| |[BlackCat](#BlackCat)
-| |[Spy](#Spy)
-| |[GhostMechanic](#GhostMechanic)
-| |[ToiletFan](#ToiletFan)
+| Impostor                                | Crewmate                                  | Neutral                                 | Redundant Camps         |
+| --------------------------------------- | ----------------------------------------- | --------------------------------------- | ----------------------- |
+| [Teleporter](#Teleporter)               | [Lighter](#Lighter)                       | [Jester](#Jester)                       | [Quarreled](#Quarreled) |
+| [EvilSpeedBooster](#EvilSpeedBooster)   | [Sheriff](#Sheriff)                       | [Opportunist](#Opportunist)             | [Lovers](#Lovers)       |
+| [EvilDoorr](#EvilDoorr)                 | [SpeedBooster](#SpeedBooster)             | [Jackal](#Jackal)                       |                         |
+| [EvilGambler](#EvilGambler)             | [Doorr](#Doorr)                           | [Sidekick](#Sidekick)                   |                         |
+| [SelfBomber](#SelfBomber)               | [Clergyman](#Clergyman)                   | [God](#God)                             |                         |
+| [EvilNekomata](#EvilNekomata)           | [Madmate](#Madmate)                       | [Egoist](#Egoist)                       |                         |
+| [CountChanger](#CountChanger)           | [Bait](#Bait)                             | [Work Person](#WorkPerson)              |                         |
+| [Pursuer](#Pursuer)                     | [Home Security Guard](#HomeSecurityGuard) | [True Lover](#TrueLover)                |                         |
+| [EvilScientist](#EvilScientist)         | [Stuntman](#Stuntman)                     | [Amnesiac](#Amnesiac)                   |                         |
+| [Hawk](#Hawk)                           | [Moving](#Moving)                         | [Jackal Friends](#JackalFriends)        |                         |
+| [Minimalist](#Minimalist)               | [Best False Charge](#BestFalseCharge)     | [FalseCharges](#FalseCharges)           |                         |
+| [Magaziner](#Magaziner)                 | [Nice Nekomata](#NiceNekomata)            | [Fox](#Fox)                             |                         |
+| [SerialKiller](#SerialKiller)           | [Doctor](#Doctor)                         | [TeleportingJackal](#TeleportingJackal) |
+| [EvilEraser](#EvilEraser)               | [MeetingSheriff](#MeetingSheriff)         | [Demon](#Demon)                         |
+| [OverKiller](#OverKiller)               | [NicScientist](#NicScientist)             | [JackalSeer](#JackalSeer)               |
+| [EvilMoving](#EvilMoving)               | [NiceRedRidingHood](#NiceRedRidingHood)   | [Sidekick(Seer)](#SidekickSeer)         |
+| [Levelinger](#Levelinger)               | [Mayor](#Mayor)                           | [Arsonist](#Arsonist)                   |
+| [SideKiller](#SideKiller)               | [Technician](#Technician)                 | [Neet](#Neet)                           |
+| [Survivor](#Survivor)                   | [Diviner](#Diviner)                       |
+| [EvilSeer](#EvilSeer)                   | [Spirit Medium](#SpiritMedium)            |
+| [DarkKiller](#DarkKiller)               | [MadMayor](#MadMayor)                     |
+| [Vampire](#Vampire)                     | [NiceHawk](#NiceHawk)                     |
+| [AssassinAndMarine](#AssassinAndMarine) | [MadStuntman](#MadStuntman)               |
+| [Cleaner](#Cleaner)                     | [MadHawk](#MadHawk)                       |
+| [Samurai](#Samurai)                     | [Bakery](#Bakery)                         |
+| [VentMaker](#VentMaker)                 | [MadJester](#MadJester)                   |
+| [EvilHacker](#EvilHacker)               | [NiceTeleporter](#[NiceTeleporter)        |
+| [PositionSwapper](#PositionSwapper)     | [Celebrity](#Celebrity)                   |
+| [Mafia](#Mafia)                         | [Nocturnality](#Nocturnality)             |
+| [SuicideWisher](#SuicideWisher)         | [Observer](#Observer)                     |
+| [Fast Maker](#FastMaker)                | [Seer](#Seer)                             |
+| [Kunoichi](#Kunoichi)                   | [MadSeer](#MadSeer)                       |
+| [DoubleKiller](#DoubleKiller)           | [RemoteSheriff](#RemoteSheriff)           |
+| [Smasher](#Smasher)                     | [TaskManager](#TaskManager)               |
+| [Secretly Killer](#SecretlyKiller)      | [MadMaker](#MadMaker)                     |
+|                                         | [Chief](#Chief)                           |
+|                                         | [MadCleaner](#MadCleaner)                 |
+|                                         | [MayorFriends](#MayorFriends)             |
+|                                         | [HauntedWolf](#HauntedWolf)               |
+|                                         | [BlackCat](#BlackCat)                     |
+|                                         | [Spy](#Spy)                               |
+|                                         | [GhostMechanic](#GhostMechanic)           |
+|                                         | [ToiletFan](#ToiletFan)                   |
+|                                         | [Knight](#Knight)                         |
 
 # Position Details 
 ## Attention. 
@@ -175,9 +176,9 @@ The number of people is omitted from the setup.
 By pressing the teleport button, the 
 Teleport everyone to one randomly selected person. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Cool Down | Button Cool Down.
+| Name      |    Description    |
+| --------- | :---------------: |
+| Cool Down | Button Cool Down. |
 
 ----------------------- 
 ## EvilSpeedBooster
@@ -185,12 +186,12 @@ Teleport everyone to one randomly selected person.
 By pressing the Speed Boost button, the 
 You can speed up your own speed for a certain period of time. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Cool Down | Button Cool Down. 
-| Duration Time | Speed Boost Duration. 
-| Double the speed | Speed during boosting. 
-| If this position is selected, the speed booster will not be selected. 
+| Name                                                                  |      Description       |
+| --------------------------------------------------------------------- | :--------------------: |
+| Cool Down                                                             |   Button Cool Down.    |
+| Duration Time                                                         | Speed Boost Duration.  |
+| Double the speed                                                      | Speed during boosting. |
+| If this position is selected, the speed booster will not be selected. |
 
 ----------------------- 
 ## EvilDoorr
@@ -200,9 +201,9 @@ Visit www.DeepL.com/profor more information.
 By clicking on the door button, the 
 The door can be opened and closed. There is a cool time. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Door Cool Time | Button Cool Down. 
+| Name           |    Description    |
+| -------------- | :---------------: |
+| Door Cool Time | Button Cool Down. |
 
 ----------------------- 
 ## EvilGambler
@@ -212,11 +213,11 @@ If it becomes a success, to the successful kill cooldown of the setting,<br>
 Failure will result in a kill cooldown on the failure of the setup. <br> 
 It is recommended to set a short cool for success and a long cool for failure. <br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Kill cool time on success| It is kill-cool time for success.
-| Kill Cool Time on Failure| It's kill-cool time for failure.
-| Success probability| The probability of successful gambling.
+| Name                      |               Description               |
+| ------------------------- | :-------------------------------------: |
+| Kill cool time on success |    It is kill-cool time for success.    |
+| Kill Cool Time on Failure |    It's kill-cool time for failure.     |
+| Success probability       | The probability of successful gambling. |
 
 ----------------------- 
 ## SelfBomber
@@ -225,9 +226,9 @@ Press the self-destruct button.
 People around you and yourself will die. <br> 
 Note that another Impostor will also be selected as a target. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Range (radius) | The range of the self-destruct. 
+| Name           |           Description           |
+| -------------- | :-----------------------------: |
+| Range (radius) | The range of the self-destruct. |
 
 ----------------------- 
 ## EvilNekomata 
@@ -238,9 +239,9 @@ We will take one of them on the road, regardless of their position. <br>
 Whether or not Nekomata are chained together can be changed by the Nice Nekomata. <br> 
 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Not taking the Imposter off the road | Excludes the Impostor from being taken as a companion when he/she is hung.
+| Name                                 |                                Description                                 |
+| ------------------------------------ | :------------------------------------------------------------------------: |
+| Not taking the Imposter off the road | Excludes the Impostor from being taken as a companion when he/she is hung. |
 ----------------------- 
 ## CountChanger
 ### Team Impostor
@@ -248,10 +249,10 @@ You can change the decision of the opponent and the position. .<br>
 If the opponent exchanges with a crewmate, he will not die even if the sheriff suicide attacks 
 him, etc..<br><br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Maximum count | You can set the number of times the capability can be used. 
-| Reflected in next turn| You can set whether the decision is exchanged on the next turn after the ability is used. 
+| Name                   |                                        Description                                        |
+| ---------------------- | :---------------------------------------------------------------------------------------: |
+| Maximum count          |                You can set the number of times the capability can be used.                |
+| Reflected in next turn | You can set whether the decision is exchanged on the next turn after the ability is used. |
 
 ----------------------- 
 ## Pursuer
@@ -264,19 +265,19 @@ Arrows will be displayed to the location of nearby non-Team Impostorplayers.
 By pressing the transparency button, .<br> 
 You become invisible for a certain period of time. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Evil Scientist Invisibility Cooldown | Allows you to set the cooldown before the ability can be used 
-| Evil Scientist's Invisibility Duration | Transparency Duration You can set the duration of the capability. 
+| Name                                   |                            Description                            |
+| -------------------------------------- | :---------------------------------------------------------------: |
+| Evil Scientist Invisibility Cooldown   |   Allows you to set the cooldown before the ability can be used   |
+| Evil Scientist's Invisibility Duration | Transparency Duration You can set the duration of the capability. |
 ----------------------- 
 ## Hawk
 ### Team Impostor
 Clicking the Hawkeye button widens the visible area for a certain period of time. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Cool Time | You can set the cooldown before the ability can be used. 
-| Duration | Duration You can set the duration of the capability.
+| Name      |                       Description                        |
+| --------- | :------------------------------------------------------: |
+| Cool Time | You can set the cooldown before the ability can be used. |
+| Duration  |   Duration You can set the duration of the capability.   |
 
 ----------------------- 
 ## Minimalist
@@ -284,12 +285,12 @@ Clicking the Hawkeye button widens the visible area for a certain period of time
 This is a position with a short kill cool time instead of the absence of some buttons. <br> 
 SuperHostRoles support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Minimalist Kill Cool Time | You can set the cooldown time before the ability can be used. 
-| Use Vent | You can set whether minimalists can use vents. 
-| Use Sabotage | Minimalists can set whether they can use sabotage. 
-| DeadBody Report | You can set whether the minimalist can report. 
+| Name                      |                          Description                          |
+| ------------------------- | :-----------------------------------------------------------: |
+| Minimalist Kill Cool Time | You can set the cooldown time before the ability can be used. |
+| Use Vent                  |        You can set whether minimalists can use vents.         |
+| Use Sabotage              |      Minimalists can set whether they can use sabotage.       |
+| DeadBody Report           |        You can set whether the minimalist can report.         |
 
 ----------------------- 
 ## Magaziner
@@ -302,9 +303,9 @@ kill time saved is greater than 1. <br>
 Pressing the Use button consumes the number stored and shortens the timer on the Kill 
 button to the set time. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Kill cool time after magazine use | You can set the kill cool time after pressing the Use 
+| Name                              |                      Description                      |
+| --------------------------------- | :---------------------------------------------------: |
+| Kill cool time after magazine use | You can set the kill cool time after pressing the Use |
 button. 
 
 ----------------------- 
@@ -316,9 +317,9 @@ Each kill resets the suicide timer. <br>
 The kill cool time is short. <br> 
 SuperHostRoles support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Time to suicide | You can set the kill cool time after you press the Use button. 
+| Name            |                          Description                           |
+| --------------- | :------------------------------------------------------------: |
+| Time to suicide | You can set the kill cool time after you press the Use button. |
 
 ----------------------- 
 ## EvilEraser
@@ -327,9 +328,9 @@ You can activate the ability only a specified number of times. <br>
 Can defend against baits, stuntmen, red hoods, divine victory, and clergy. <br> 
 The number of times it can be used is reduced each time it is defended. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Max Erase Count | You can set the number of times the capability can be used. 
+| Name            |                         Description                         |
+| --------------- | :---------------------------------------------------------: |
+| Max Erase Count | You can set the number of times the capability can be used. |
 
 ----------------------- 
 ## OverKiller
@@ -341,10 +342,10 @@ It is recommended to use about 10 corpses because of the possibility of falling 
 Switch, etc. <br> 
 SuperHostRoles support. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| OverKiller Kill Cool Time | You can set the cooldown before the ability can be used. 
-| Number of bodies per | Number of corpses per kill. 
+| Name                      |                       Description                        |
+| ------------------------- | :------------------------------------------------------: |
+| OverKiller Kill Cool Time | You can set the cooldown before the ability can be used. |
+| Number of bodies per      |               Number of corpses per kill.                |
 
 ----------------------- 
 ## EvilMoving
@@ -354,9 +355,9 @@ Press that button to set the move location. <br>
 After that, there is a cool time.<br> 
 A button appears that allows you to teleport to the move location. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Teleportation Cool Time | You can set the cooldown before the ability can be used. 
+| Name                    |                       Description                        |
+| ----------------------- | :------------------------------------------------------: |
+| Teleportation Cool Time | You can set the cooldown before the ability can be used. |
 
 ----------------------- 
 ## Levelinger
@@ -366,17 +367,17 @@ When the experience level reaches a certain number, the level increases. <br>
 As the level increases, each Impostor's special abilities become available. <br> 
 In addition, the killcools accumulate while the levelers are doing their tasks. <br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| XP gained from kills | You can set the experience gained from kills. 
-| Number of experience levels gained | The number of experience levels that can be raised. 
-|1 Abilities gained at level| You can set the abilities that can be obtained at the 1 level. 
-| 2 Abilities gained at level | You can set the abilities that you can get at the 2 levels. 
-| 3 Abilities gained at level | You can set the abilities that are available at the 3 levels. 
-| 4 Abilities gained at level | You can set the abilities that you can obtain at the 4 levels. 
-| 5 Abilities gained at level | You can set the abilities that you can get at the 5 levels. 
-| Can be revived by spending XP | You can set whether you can revive by spending experience. 
-| Amount of XP to use | Amount of experience to be used | You can set the amount of experience to be used. 
+| Name                               |                          Description                           |
+| ---------------------------------- | :------------------------------------------------------------: |
+| XP gained from kills               |         You can set the experience gained from kills.          |
+| Number of experience levels gained |      The number of experience levels that can be raised.       |
+| 1 Abilities gained at level        | You can set the abilities that can be obtained at the 1 level. |
+| 2 Abilities gained at level        |  You can set the abilities that you can get at the 2 levels.   |
+| 3 Abilities gained at level        | You can set the abilities that are available at the 3 levels.  |
+| 4 Abilities gained at level        | You can set the abilities that you can obtain at the 4 levels. |
+| 5 Abilities gained at level        |  You can set the abilities that you can get at the 5 levels.   |
+| Can be revived by spending XP      |   You can set whether you can revive by spending experience.   |
+| Amount of XP to use                |                Amount of experience to be used                 | You can set the amount of experience to be used. |
 
 ----------------------- 
 ## SideKiller
@@ -390,10 +391,10 @@ If you are promoted to Impostor, you will be in the Impostor's field of view in 
 decision.<br> 
 Impostor can't kill mad killer 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| SideKiller Kill Cool Time | You can set the kill cool time for the side killer. 
-| MadKiller Kill Cool Time | You can set the kill cool time for the mud killer. 
+| Name                      |                     Description                     |
+| ------------------------- | :-------------------------------------------------: |
+| SideKiller Kill Cool Time | You can set the kill cool time for the side killer. |
+| MadKiller Kill Cool Time  | You can set the kill cool time for the mud killer.  |
 
 ----------------------- 
 ## Survivor
@@ -401,9 +402,9 @@ Impostor can't kill mad killer
 You must survive to win. .<br> 
 Survivors can kill with n times faster than normal kill cool. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Kill Cool Time | You can set the survivor's kill cool time. 
+| Name           |                Description                 |
+| -------------- | :----------------------------------------: |
+| Kill Cool Time | You can set the survivor's kill cool time. |
 
 ----------------------- 
 ## Vampire
@@ -411,9 +412,9 @@ Survivors can kill with n times faster than normal kill cool.
 By pressing the kill button, the kill partner dies after a set time. <br><br 
 If another person is killed before the kill occurs, another person is targeted. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Kill Delay | You can set the delay time for vampire kills. 
+| Name       |                  Description                  |
+| ---------- | :-------------------------------------------: |
+| Kill Delay | You can set the delay time for vampire kills. |
 
 ----------------------- 
 ## Samurai
@@ -423,10 +424,10 @@ settings)<br>
 Instead, it has a special move button that can be used only once during the match. <br> 
 Using a special move wipes out all other players within a set area. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| KillCoolTime | You can set the kill time of the samurai. 
-| AttackCoolTime | You can set the amount of time that a 
+| Name           |                Description                |
+| -------------- | :---------------------------------------: |
+| KillCoolTime   | You can set the kill time of the samurai. |
+| AttackCoolTime |   You can set the amount of time that a   |
 samurai can release a special move. 
 | Use Vent | You can set whether a samurai can use a vent. 
 | Use Sabotage | You can set whether the samurai can use sabotage. 
@@ -438,8 +439,8 @@ samurai can release a special move.
 There is a suicide button, and at any time you like, you can. <br>
 Can commit suicide. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
+| Name | Description |
+| ---- | :---------: |
 
 ----------------------- 
 ## FastMaker
@@ -447,8 +448,8 @@ Can commit suicide.
 The first kill can make a mad mate.<br> 
 The second and subsequent kills are normal kills. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
+| Name | Description |
+| ---- | :---------: |
 
 ----------------------- 
 ## Kunoichi
@@ -461,12 +462,12 @@ for transparency" section), you can make it transparent. It will be released whe
 something. 
 The F key can be used to equip a kunai. <br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Kunai Cool Time |
-| Number of kunai required for a kill | How many kunai are needed to get a kill? 
-| Time required for transparency | Time taken from stop to transparency 
-| Can throw kunai during invisibility. | You can throw a kunai during invisibility. 
+| Name                                 |                Description                 |
+| ------------------------------------ | :----------------------------------------: |
+| Kunai Cool Time                      |
+| Number of kunai required for a kill  |  How many kunai are needed to get a kill?  |
+| Time required for transparency       |    Time taken from stop to transparency    |
+| Can throw kunai during invisibility. | You can throw a kunai during invisibility. |
 
 ----------------------- 
 ## SecretlyKiller
@@ -475,11 +476,11 @@ Please be quiet during the power outage.<br>
 Normal kill button and .<br> 
 Ability to kill targets remotely with no sound and no kill warp.<br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Same in kill buttons | Is the coold time reset when using the normal kill button and the secretly kill button synchronized?
-| Kill cool charge during power outage
-| Ability limit | 
+| Name                                 |                                             Description                                              |
+| ------------------------------------ | :--------------------------------------------------------------------------------------------------: |
+| Same in kill buttons                 | Is the coold time reset when using the normal kill button and the secretly kill button synchronized? |
+| Kill cool charge during power outage |
+| Ability limit                        |
 
 ----------------------- 
 ## Smasher 
@@ -490,9 +491,9 @@ of having a kill kill cooler. <br>
 To prevent kills without a first kill, the sub's kill button requires a 10 second kill cooldown 
 only at the beginning of the match. <br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| KillCoolDown | You can set the kill cool time for the smasher. 
+| Name         |                   Description                   |
+| ------------ | :---------------------------------------------: |
+| KillCoolDown | You can set the kill cool time for the smasher. |
 
 ----------------------- 
 ## DoubleKiller
@@ -501,9 +502,9 @@ Use the independent kill button.<br>
 It has two kill buttons, each with its own cooldown. .<br> 
 You can change in the settings whether you can use sabotage or not. <br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| MainKillCoolDown | You can set the kill cool time for the main kill button, which is usually activated by the Q 
+| Name             |                                         Description                                          |
+| ---------------- | :------------------------------------------------------------------------------------------: |
+| MainKillCoolDown | You can set the kill cool time for the main kill button, which is usually activated by the Q |
 key. 
 | SubKillCoolDown | You can set the kill cool down time for the sub kill button operated by the F key. 
 | Use Sabotage | You can set whether double killers can use sabotage. 
@@ -514,11 +515,11 @@ key.
 By pressing the light button, .<br> 
 Changes to a set field of view for a set period of time 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Lighter Cooldown | You can set the cooldown before the ability can be used. 
-| Lighter Duration | You can set the duration of the capability. 
-| View in light | You can set the visibility while the ability is in use. 
+| Name             |                       Description                        |
+| ---------------- | :------------------------------------------------------: |
+| Lighter Cooldown | You can set the cooldown before the ability can be used. |
+| Lighter Duration |       You can set the duration of the capability.        |
+| View in light    | You can set the visibility while the ability is in use.  |
 
 ----------------------- 
 ## Sheriff 
@@ -528,13 +529,13 @@ However, if you kill a crewmate,<br>
 The sheriff himself will die. <br> 
 SuperHostRoles support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Kill Cooldown | Individual kill cool down time can be set. 
-| Can Kill a Neutral | You can set whether you can kill the third camp. 
-| Can Kill a Lovers |You can set whether Lovers can be killed. 
-| Can Kill a MadRole |You can set whether you can kill MAD & FRIENDS positions. 
-| Maximum number of kills |You can set the number of kills a sheriff can make. 
+| Name                    |                        Description                        |
+| ----------------------- | :-------------------------------------------------------: |
+| Kill Cooldown           |        Individual kill cool down time can be set.         |
+| Can Kill a Neutral      |     You can set whether you can kill the third camp.      |
+| Can Kill a Lovers       |         You can set whether Lovers can be killed.         |
+| Can Kill a MadRole      | You can set whether you can kill MAD & FRIENDS positions. |
+| Maximum number of kills |    You can set the number of kills a sheriff can make.    |
 
 ----------------------- 
 ## SpeedBooster 
@@ -543,11 +544,11 @@ By pressing the Speed Boost button,<br> the
 You can speed up your own speed for a certain amount of time. <br> 
 *Note: Since this is double speed, the original speed is relevant. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Speed Up Cooldown | You can set the cooldown before the ability can be used. 
-| Duration of speed-up | You can set the duration of the capability. 
-| Double your speed | Allows you to set the double speed of the speed. 
+| Name                 |                       Description                        |
+| -------------------- | :------------------------------------------------------: |
+| Speed Up Cooldown    | You can set the cooldown before the ability can be used. |
+| Duration of speed-up |       You can set the duration of the capability.        |
+| Double your speed    |     Allows you to set the double speed of the speed.     |
 
 ----------------------- 
 ## Doorr
@@ -555,9 +556,9 @@ You can speed up your own speed for a certain amount of time. <br>
 By clicking on the door button,<br> 
 The door can be opened and closed. There is a cool time. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Door Cool Time | You can set the cooldown before the ability can be used. 
+| Name           |                       Description                        |
+| -------------- | :------------------------------------------------------: |
+| Door Cool Time | You can set the cooldown before the ability can be used. |
 
 ----------------------- 
 ## Clergyman
@@ -565,11 +566,11 @@ The door can be opened and closed. There is a cool time.
 It can cause a power outage for the Impostor. <br>
 The capacity is currently not functioning.
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Cool Time | You can set the cooldown before the ability can be used. 
-| Duration Time | You can set the duration of the capability. 
-| Impostor Down Vision. | You can set the visibility during power outage. 
+| Name                  |                       Description                        |
+| --------------------- | :------------------------------------------------------: |
+| Cool Time             | You can set the cooldown before the ability can be used. |
+| Duration Time         |       You can set the duration of the capability.        |
+| Impostor Down Vision. |     You can set the visibility during power outage.      |
 
 ----------------------- 
 ## MadMate
@@ -581,15 +582,15 @@ You can check the Impostor in the settings. <br>
 You can also set whether to put in a vent. 
 SuperHostRoles support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| You can check the Impostor. | The name of the Impostor turns red after the specified task is completed. 
-| Common Tasks | You can set the number of normal tasks before the Impostor can be checked. 
-| Long Tasks | You can set the number of long tasks before the Impostor can be checked. 
-| Short Tasks | You can set the number of short tasks before the Impostor can be checked. 
-| Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
-| Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the Impostor's view. 
+| Name                                                           |                                         Description                                         |
+| -------------------------------------------------------------- | :-----------------------------------------------------------------------------------------: |
+| You can check the Impostor.                                    |          The name of the Impostor turns red after the specified task is completed.          |
+| Common Tasks                                                   |         You can set the number of normal tasks before the Impostor can be checked.          |
+| Long Tasks                                                     |          You can set the number of long tasks before the Impostor can be checked.           |
+| Short Tasks                                                    |          You can set the number of short tasks before the Impostor can be checked.          |
+| Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Use Vent                                                       |                             You will be able to put in a vent.                              |
+| Impostor Light                                                 |            You can set whether the view will be the same as the Impostor's view.            |
 
 ----------------------- 
 ## Bait
@@ -598,9 +599,9 @@ If killed,<br> the
 The person you kill will be made to report you. .<br> 
 SuperHostRoles support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Time to report a call
+| Name                  | Description |
+| --------------------- | :---------: |
+| Time to report a call |
 
 ----------------------- 
 ## HomeSecurityGuard
@@ -616,9 +617,9 @@ It prevents a specified number of unconditional kills. <br>
 However, the stuntman himself will not be notified, etc. <br> <br>
 SuperHostRoles support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Guard Max Count | The number of times you can guard. 
+| Name            |            Description             |
+| --------------- | :--------------------------------: |
+| Guard Max Count | The number of times you can guard. |
 
 ----------------------- 
 ## Moving
@@ -628,9 +629,9 @@ Press that button to set the move location. <br>
 After that, there is a cool time.<br> 
 A button appears that allows you to teleport to the move location. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Teleportation Cool Time | You can set the cooldown time before the ability can be used. 
+| Name                    |                          Description                          |
+| ----------------------- | :-----------------------------------------------------------: |
+| Teleportation Cool Time | You can set the cooldown time before the ability can be used. |
 
 ----------------------- 
 ## Best False Charge
@@ -646,9 +647,9 @@ When I am expelled from a meeting, .<br>
 We will take one of them on the road, regardless of their position. <br> 
 SuperHostRoles support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| If a nekomata is taken as a companion, is it to be taken as a companion again? 
+| Name                                                                           | Description |
+| ------------------------------------------------------------------------------ | :---------: |
+| If a nekomata is taken as a companion, is it to be taken as a companion again? |
 
 ----------------------- 
 ## Doctor
@@ -663,13 +664,13 @@ Meeting Sheriffs can kill outsiders at meetings. <br>
 However, if you kill a crewmate,<br> 
 The sheriff himself dies. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Can Kill a Neutral | You can set whether you can kill the third camp. 
-| Can Kill a Lovers |You can set whether Lovers can be killed. 
-| Can Kill a MadRole |You can set whether you can kill MAD & FRIENDS positions. 
-| Maximum number of Meeting Sheriff kills | The maximum number of kills for a meeting sheriff. 
-| Can you get multiple kills in one meeting? | You can set whether multiple kills are allowed in one meeting. 
+| Name                                       |                          Description                           |
+| ------------------------------------------ | :------------------------------------------------------------: |
+| Can Kill a Neutral                         |        You can set whether you can kill the third camp.        |
+| Can Kill a Lovers                          |           You can set whether Lovers can be killed.            |
+| Can Kill a MadRole                         |   You can set whether you can kill MAD & FRIENDS positions.    |
+| Maximum number of Meeting Sheriff kills    |       The maximum number of kills for a meeting sheriff.       |
+| Can you get multiple kills in one meeting? | You can set whether multiple kills are allowed in one meeting. |
 
 ----------------------- 
 ## NiceScientist
@@ -677,10 +678,10 @@ The sheriff himself dies.
 By pressing the transparency button, .<br> 
 You become invisible for a certain period of time. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Cool Time | You can set the cooldown before the ability can be used. 
-| Duration Time | You can set the duration of the capability. 
+| Name          |                       Description                        |
+| ------------- | :------------------------------------------------------: |
+| Cool Time     | You can set the cooldown before the ability can be used. |
+| Duration Time |       You can set the duration of the capability.        |
 
 ----------------------- 
 ## NiceRedRidingHood
@@ -688,9 +689,9 @@ You become invisible for a certain period of time.
 If the person who kills you dies, you come back to life. <br> 
 All positions are not displayed at the time of death 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Maximum number of revives | You can set the maximum number of revivals. 
+| Name                      |                 Description                 |
+| ------------------------- | :-----------------------------------------: |
+| Maximum number of revives | You can set the maximum number of revivals. |
 
 ----------------------- 
 ## Mayor
@@ -700,9 +701,9 @@ SuperHostRoles support
 Note: The vote count setting will also include the normal vote count; setting it to 1 vote will 
 result in the normal vote count. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Mayer's vote count | You can set the number of votes for Mayer. 
+| Name               |                Description                 |
+| ------------------ | :----------------------------------------: |
+| Mayer's vote count | You can set the number of votes for Mayer. |
 
 ----------------------- 
 ## Technician
@@ -718,10 +719,10 @@ SuperHostRoles support
 A fortune teller button will appear next to the person alive during the meeting. <br> 
 When you press that button, the position of the person you pressed will appear in the chat. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Position visibility | You can set whether to show the camps or not. 
-| Number of times you can divine | Number of times you can divvy up 
+| Name                           |                  Description                  |
+| ------------------------------ | :-------------------------------------------: |
+| Position visibility            | You can set whether to show the camps or not. |
+| Number of times you can divine |       Number of times you can divvy up        |
 
 ----------------------- 
 ## Medium
@@ -729,10 +730,10 @@ When you press that button, the position of the person you pressed will appear i
 A medium button appears next to the dead person during the meeting. <br> 
 When you press that button, the position of the person you pressed will appear in the chat. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Position visibility | You can set whether to show the camps or not. 
-| Number of times you can divine | Number of times you can divvy up 
+| Name                           |                  Description                  |
+| ------------------------------ | :-------------------------------------------: |
+| Position visibility            | You can set whether to show the camps or not. |
+| Number of times you can divine |       Number of times you can divvy up        |
 
 ----------------------- 
 ## MadMayor
@@ -745,16 +746,16 @@ Note: The vote count setting will also include the normal vote count; setting it
 result in the normal vote count. <br> 
 SuperHostRoles support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| MadMayer's vote count | You can set the number of votes for Madmaier. 
-| You can check the Impostor. | The name of the Impostor turns red after the specified task is completed. 
-| Common Tasks | You can set the number of normal tasks before the Impostor can be checked. 
-| Long Tasks | You can set the number of long tasks before the Impostor can be checked. 
-| Short Tasks | You can set the number of short tasks before the Impostor can be checked. 
-| Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
-| Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the Impostor's view. 
+| Name                                                           |                                         Description                                         |
+| -------------------------------------------------------------- | :-----------------------------------------------------------------------------------------: |
+| MadMayer's vote count                                          |                        You can set the number of votes for Madmaier.                        |
+| You can check the Impostor.                                    |          The name of the Impostor turns red after the specified task is completed.          |
+| Common Tasks                                                   |         You can set the number of normal tasks before the Impostor can be checked.          |
+| Long Tasks                                                     |          You can set the number of long tasks before the Impostor can be checked.           |
+| Short Tasks                                                    |          You can set the number of short tasks before the Impostor can be checked.          |
+| Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Use Vent                                                       |                             You will be able to put in a vent.                              |
+| Impostor Light                                                 |            You can set whether the view will be the same as the Impostor's view.            |
 
 ----------------------- 
 ## NiceHawk
@@ -762,10 +763,10 @@ SuperHostRoles support
 Clicking the Hawkeye button widens the visible area for a certain period of time. <br> 
 However, if Hawkeye is used, it will not be able to move for 10 seconds afterwards. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Cooldown | You can set the cooldown time before the ability can be used. 
-| Duration | You can set the duration of the capability. 
+| Name     |                          Description                          |
+| -------- | :-----------------------------------------------------------: |
+| Cooldown | You can set the cooldown time before the ability can be used. |
+| Duration |          You can set the duration of the capability.          |
 
 ----------------------- 
 ## MadHawk
@@ -775,12 +776,12 @@ The decision is crewmate, but.<br>
 This is a roll of the Impostor camp. <br> 
 Help the Impostor. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Cooldown | You can set the cooldown time before the ability can be used. 
-| Duration | You can set the duration of the capability. 
-| Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the Impostor's view.
+| Name           |                              Description                              |
+| -------------- | :-------------------------------------------------------------------: |
+| Cooldown       |     You can set the cooldown time before the ability can be used.     |
+| Duration       |              You can set the duration of the capability.              |
+| Use Vent       |                  You will be able to put in a vent.                   |
+| Impostor Light | You can set whether the view will be the same as the Impostor's view. |
 
 ----------------------- 
 ## Baker
@@ -798,8 +799,8 @@ Spies are crewmates and have no special abilities. <br>
 In normal mode, an Impostor cannot cut fellow Impostors and spies.<br> 
 SuperHostRoles support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
+| Name | Description |
+| ---- | :---------: |
 
 ----------------------- 
 ## MadJester
@@ -808,11 +809,11 @@ If you are expelled with the task completed (even if you are not doing the task 
 off), the Team Impostorwins. <br> 
 SuperHostRoles support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the Impostor's view.
-| YJester was Clear Task Win | You cannot win without doing a task. Individual task 
+| Name                       |                              Description                              |
+| -------------------------- | :-------------------------------------------------------------------: |
+| Use Vent                   |                  You will be able to put in a vent.                   |
+| Impostor Light             | You can set whether the view will be the same as the Impostor's view. |
+| YJester was Clear Task Win |         You cannot win without doing a task. Individual task          |
 settings are available 
 
 ----------------------- 
@@ -822,11 +823,11 @@ If you get expelled at the meeting, you win. <br>
 Sabotage and venting can be used in the settings. <br> 
 SuperHostRoles support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| You can sabotage it. | Sabotage can be used. 
-| I can put it in a vent. | You can enter vents. 
-| Jester was Clear Task Win | You can't win if you don't do the task. 
+| Name                      |               Description               |
+| ------------------------- | :-------------------------------------: |
+| You can sabotage it.      |          Sabotage can be used.          |
+| I can put it in a vent.   |          You can enter vents.           |
+| Jester was Clear Task Win | You can't win if you don't do the task. |
 
 ----------------------- 
 ## Opportunist
@@ -843,17 +844,36 @@ Can kill and vent. <br>
 Press the side kick button.<br> 
 Target can be [Sidekick](#SideKick). <br> 
 The ability to sabotage can be changed in the settings. <br> 
-It is also possible to change in the settings whether a side kick can be made. <br> 
+It is also possible to change in the settings whether a side kick can be made. <br>
+<br>
+
+Note: The behavior of the settings for creating [Jackal Friends](#JackalFriends) differs between SNR and SHR.
+
+- SHR:
+  - It can be made with a first hand kill.
+  - When the imposter is targeted,<br>
+  the protective effect is triggered and the kill can be triggered thereafter At first glance,<br>
+  it looks as if you have been able to make [Jackal Friends](#JackalFriends), but it is not.<br>
+  [Jackal Friends](#JackalFriends) has not been converted.
+   <br>
+- SNR:
+  - It can be made with a Sidekick button.
+  - If the setting to create [Sidekick](#Sidekick) is also enabled at the same time,<br>
+  the setting to create [SideKick](#SideKick) will not be reflected.
+    - Only Jackal Friends will be able to make only.
+
+<br>
+
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Jackal's kill cool time | Individual kill cool time can be set for each jackal. 
-| Use Vent | to enter a vent. 
-| Use Sabotage | Sabotage can be used. 
-| Impostor Light | You can set whether the view will be the same as the Impostor's view.
-| Can Create JackalFriends | You can make [JackalFriends](#JackalFriends) with your first kill! 
-| Jackal can make a Sidekick | Jackals can make side kicks. 
-| New jackals can make side kicks | Promoted jackals can make side kicks. 
+| Name                            |                              Description                              |
+| ------------------------------- | :-------------------------------------------------------------------: |
+| Jackal's kill cool time         |         Individual kill cool time can be set for each jackal.         |
+| Use Vent                        |                           to enter a vent.                            |
+| Use Sabotage                    |                         Sabotage can be used.                         |
+| Impostor Light                  | You can set whether the view will be the same as the Impostor's view. |
+| Can Create JackalFriends        |             You can make [JackalFriends](#JackalFriends)              |
+| Jackal can make a Sidekick      |                     Jackals can make side kicks.                      |
+| New jackals can make side kicks |                 Promoted jackals can make side kicks.                 |
 
 ----------------------- 
 ## Sidekick 
@@ -872,15 +892,15 @@ Jackals do not tell us who the Jackal Friends are. <br>
 Jackal Friends will be put in the vent. (Can be changed in settings).<br> 
 Impostor, Jackal can kill Jackal Friends. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Is Check Jackal | After the specified task is completed, the jackal's name turns blue. You can also see the job 
-| Common Tasks | You can set the number of normal tasks until jackals can be checked. 
-| Long Tasks | You can set the number of long tasks until you can see jackals. 
-| Short Tasks | You can set the number of short tasks until you can check jackals. 
-| Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
-| Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the Impostor's view.
+| Name                                                           |                                          Description                                          |
+| -------------------------------------------------------------- | :-------------------------------------------------------------------------------------------: |
+| Is Check Jackal                                                | After the specified task is completed, the jackal's name turns blue. You can also see the job |
+| Common Tasks                                                   |             You can set the number of normal tasks until jackals can be checked.              |
+| Long Tasks                                                     |                You can set the number of long tasks until you can see jackals.                |
+| Short Tasks                                                    |              You can set the number of short tasks until you can check jackals.               |
+| Amount of tasks that will be able to be checked (of all tasks) |  If the result of the calculation of the task amount is a fraction, it will be rounded down.  |
+| Use Vent                                                       |                              You will be able to put in a vent.                               |
+| Impostor Light                                                 |             You can set whether the view will be the same as the Impostor's view.             |
 
 ----------------------- 
 ## God
@@ -905,11 +925,11 @@ When all tasks are completed, the game is forcibly terminated. However, it is mo
 crew task. <br> 
 SuperHostRoles support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Common Tasks | You can set the number of normal tasks for a worker. 
-| Short Tasks | You can set the number of short tasks for a worker. 
-| Long Tasks | You can set the number of long tasks for a worker. 
+| Name         |                     Description                      |
+| ------------ | :--------------------------------------------------: |
+| Common Tasks | You can set the number of normal tasks for a worker. |
+| Short Tasks  | You can set the number of short tasks for a worker.  |
+| Long Tasks   |  You can set the number of long tasks for a worker.  |
 
 ----------------------- 
 ## TrueLover
@@ -942,10 +962,10 @@ meeting. <br>
 However, Ability 2 [Show Souls] is currently not available. <br>
 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Mode | You can switch between three modes: [Show Death Flash + Souls] or [Show Death Flash] or [Show Souls]. 
-| Limit Soul Duration | If off, the ghost will not disappear no matter how many times the meeting is interrupted. 
+| Name                |                                              Description                                              |
+| ------------------- | :---------------------------------------------------------------------------------------------------: |
+| Mode                | You can switch between three modes: [Show Death Flash + Souls] or [Show Death Flash] or [Show Souls]. |
+| Limit Soul Duration |       If off, the ghost will not disappear no matter how many times the meeting is interrupted.       |
 When on, you can set the time for the ghost to disappear from after the report meeting of the 
 corpse. 
 | Soul Duration | The time when the ghost is visible | The time[s] when the ghost disappears after the corpse 
@@ -974,10 +994,10 @@ meeting. <br>
 However, Ability 2 [Show Souls] is currently not available. <br>
 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Mode | You can switch between three modes: [Show Death Flash + Souls] or [Show Death Flash] or [Show Souls]. 
-| Limit Soul Duration | If off, the ghost will not disappear no matter how many times the meeting is interrupted. 
+| Name                |                                              Description                                              |
+| ------------------- | :---------------------------------------------------------------------------------------------------: |
+| Mode                | You can switch between three modes: [Show Death Flash + Souls] or [Show Death Flash] or [Show Souls]. |
+| Limit Soul Duration |       If off, the ghost will not disappear no matter how many times the meeting is interrupted.       |
 When on, you can set the time for the ghost to disappear from after the report meeting of the 
 corpse. 
 | Soul Duration | The time when the ghost is visible | The time[s] when the ghost disappears after the corpse 
@@ -1008,10 +1028,10 @@ meeting. <br>
 However, Ability 2 [Show Souls] is currently not available. <br> 
 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Mode | You can switch between three modes: [Show Death Flash + Souls] or [Show Death Flash] or [Show Souls]. 
-| Limit Soul Duration | If off, the ghost will not disappear no matter how many times the meeting is interrupted. 
+| Name                |                                              Description                                              |
+| ------------------- | :---------------------------------------------------------------------------------------------------: |
+| Mode                | You can switch between three modes: [Show Death Flash + Souls] or [Show Death Flash] or [Show Souls]. |
+| Limit Soul Duration |       If off, the ghost will not disappear no matter how many times the meeting is interrupted.       |
 When on, you can set the time for the ghost to disappear from after the report meeting of the 
 corpse. 
 | Soul Duration | The time when the ghost is visible | The time[s] when the ghost disappears after the corpse 
@@ -1041,10 +1061,10 @@ meeting. <br>
 However, Ability 2 [Show Souls] is currently not available. <br> 
 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Mode | You can switch between three modes: [Show Death Flash + Souls] or [Show Death Flash] or [Show Souls]. 
-| Limit Soul Duration | If off, the ghost will not disappear no matter how many times the meeting is interrupted. 
+| Name                |                                              Description                                              |
+| ------------------- | :---------------------------------------------------------------------------------------------------: |
+| Mode                | You can switch between three modes: [Show Death Flash + Souls] or [Show Death Flash] or [Show Souls]. |
+| Limit Soul Duration |       If off, the ghost will not disappear no matter how many times the meeting is interrupted.       |
 When on, you can set the time for the ghost to disappear from after the report meeting of the 
 corpse. 
 | Soul Duration | The time when the ghost is visible | The time[s] when the ghost disappears after the corpse 
@@ -1082,10 +1102,10 @@ meeting. <br>
 However, Ability 2 [Show Souls] is currently not available. <br> 
 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Mode | You can switch between three modes: [Show Death Flash + Souls] or [Show Death Flash] or [Show Souls]. 
-| Limit Soul Duration | If off, the ghost will not disappear no matter how many times the meeting is interrupted. 
+| Name                |                                              Description                                              |
+| ------------------- | :---------------------------------------------------------------------------------------------------: |
+| Mode                | You can switch between three modes: [Show Death Flash + Souls] or [Show Death Flash] or [Show Souls]. |
+| Limit Soul Duration |       If off, the ghost will not disappear no matter how many times the meeting is interrupted.       |
 When on, you can set the time for the ghost to disappear from after the report meeting of the 
 corpse. 
 | Soul Duration | The time when the ghost is visible | The time[s] when the ghost disappears after the corpse 
@@ -1111,9 +1131,9 @@ When all jackals die, they are promoted to jackal seers.
 The Dark Killer is an Impostor that can only be killed during a power outage. <br> 
 Instead, the killcool is short. <br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Dark Killer's Kill Cool Time | Allows you to set an individual kill cool time. 
+| Name                         |                   Description                   |
+| ---------------------------- | :---------------------------------------------: |
+| Dark Killer's Kill Cool Time | Allows you to set an individual kill cool time. |
 
 ----------------------- 
 ## Fox
@@ -1124,11 +1144,11 @@ Also, you will not be killed.<br>
 SHR compatible.<br> 
 SHR Support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the Impostor's view.
-| Use DeadBody Report | Off to disable reporting. 
+| Name                |                              Description                              |
+| ------------------- | :-------------------------------------------------------------------: |
+| Use Vent            |                  You will be able to put in a vent.                   |
+| Impostor Light      | You can set whether the view will be the same as the Impostor's view. |
+| Use DeadBody Report |                       Off to disable reporting.                       |
 
 ----------------------- 
 ## Assassins & Merlin 
@@ -1147,10 +1167,10 @@ because if he reveals his true identity, he will lose the Assassin's Conference.
 Both are SHR compatible.<br> 
 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Number of Assassin | Number of Assassins 
-| Number of Merine | Number of Marlins 
+| Name               |     Description     |
+| ------------------ | :-----------------: |
+| Number of Assassin | Number of Assassins |
+| Number of Merine   |  Number of Marlins  |
 
 ----------------------- 
 ## Cleaner
@@ -1158,10 +1178,10 @@ Both are SHR compatible.<br>
 Impostor that can make dead bodies disappear. <br> 
 If the corpse is erased, the killcool is reset to the specified value. <br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Kill CoolDown | Kill Cool Down for Cleaner | Allows you to set individual kill cool time. 
-| CoolDown | You can set the kill cooldown time for the ability to erase corpses. 
+| Name          |                             Description                              |
+| ------------- | :------------------------------------------------------------------: |
+| Kill CoolDown |                      Kill Cool Down for Cleaner                      | Allows you to set individual kill cool time. |
+| CoolDown      | You can set the kill cooldown time for the ability to erase corpses. |
 
 ----------------------- 
 ## Samurai
@@ -1174,9 +1194,9 @@ once during the match. <br>
 When he uses his special move, he wipes out all other players within a set area. <br> 
 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Samurai Kill Cooldown | You can set individual kill cooldown time. Cooldown for corpse 
+| Name                  |                          Description                           |
+| --------------------- | :------------------------------------------------------------: |
+| Samurai Kill Cooldown | You can set individual kill cooldown time. Cooldown for corpse |
 extinguisher 
 | Special Move Cooldown | 
 | Use Vent | You can set whether Samurai can use vents. 
@@ -1190,8 +1210,8 @@ Let's make a vent!<br>
 A pair of vents can be made.<br>
 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
+| Name | Description |
+| ---- | :---------: |
 
 ----------------------- 
 ## EvilHacker 
@@ -1200,9 +1220,9 @@ Impostor to see Admin anytime.<br>
 When looking at the admins, they cannot move and do not accumulate any kill cool time.<br> 
 Possible to make side kick mad mate in settings.<br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Can an EvilHacker Make a Madmate | Can Evil Hackers Make Mad Mate 
+| Name                             |          Description           |
+| -------------------------------- | :----------------------------: |
+| Can an EvilHacker Make a Madmate | Can Evil Hackers Make Mad Mate |
 
 ----------------------- 
 ## Mad stuntman 
@@ -1210,10 +1230,10 @@ Possible to make side kick mad mate in settings.<br>
 Madmate version of [Stuntman](#Stuntman).<br> 
 It cannot see the Impostor, but it can unconditionally prevent kills. <br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the Impostor's view.  
+| Name           |                              Description                              |
+| -------------- | :-------------------------------------------------------------------: |
+| Use Vent       |                  You will be able to put in a vent.                   |
+| Impostor Light | You can set whether the view will be the same as the Impostor's view. |
 
 ----------------------- 
 ## Nocturnality
@@ -1235,14 +1255,14 @@ A version of [Sheriff](#Sheriff) that can do remote kills. <br>
 Able to shapeshift target to kill the shapeshifter. <br> 
 SHR compatible.<br>
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Kill Cooldown | Individual kill cool down time can be set. 
-| Can Kill a Neutral | You can set whether you can kill the third camp. 
-| Can Kill a Lovers |You can set whether Lovers can be killed. 
-| Can Kill a MadRole |You can set whether you can kill MAD & FRIENDS positions. 
-| Maximum number of kills |You can set the number of kills a sheriff can make. 
-| Kill Teleport | You can set whether a kill warp will occur.
+| Name                    |                        Description                        |
+| ----------------------- | :-------------------------------------------------------: |
+| Kill Cooldown           |        Individual kill cool down time can be set.         |
+| Can Kill a Neutral      |     You can set whether you can kill the third camp.      |
+| Can Kill a Lovers       |         You can set whether Lovers can be killed.         |
+| Can Kill a MadRole      | You can set whether you can kill MAD & FRIENDS positions. |
+| Maximum number of kills |    You can set the number of kills a sheriff can make.    |
+| Kill Teleport           |        You can set whether a kill warp will occur.        |
 
 ----------------------- 
 ## Task Manager 
@@ -1252,11 +1272,11 @@ Finish the task and mount up!<br>
 A crew mate that allows you to set the number of tasks individually.<br>
 SHR compatible. <br>
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Common Tasks | You can set the number of individual normal tasks. 
-| Long Tasks | You can set the number of individual long tasks. 
-| Short Tasks | You can set the number of individual short tasks. 
+| Name         |                    Description                     |
+| ------------ | :------------------------------------------------: |
+| Common Tasks | You can set the number of individual normal tasks. |
+| Long Tasks   |  You can set the number of individual long tasks.  |
+| Short Tasks  | You can set the number of individual short tasks.  |
 
 ----------------------- 
 ## Mudmaker 
@@ -1264,10 +1284,10 @@ SHR compatible. <br>
 Mud Mate that can make mad mate.<br> 
 SHR compatible.<br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the Impostor's view.
+| Name           |                              Description                              |
+| -------------- | :-------------------------------------------------------------------: |
+| Use Vent       |                  You will be able to put in a vent.                   |
+| Impostor Light | You can set whether the view will be the same as the Impostor's view. |
 
 ----------------------- 
 ## Chief
@@ -1275,13 +1295,13 @@ SHR compatible.<br>
 A sheriff may be appointed. <br> 
 Trying to make an Impostor a sheriff is self-destructive.<br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Kill Cooldown | Individual kill cool down time can be set. 
-| Can Kill a Neutral | You can set whether you can kill the third camp. 
-| Can Kill a Lovers |You can set whether Lovers can be killed. 
-| Can Kill a MadRole |You can set whether you can kill MAD & FRIENDS positions. 
-| Maximum number of kills |You can set the number of kills a sheriff can make. 
+| Name                    |                        Description                        |
+| ----------------------- | :-------------------------------------------------------: |
+| Kill Cooldown           |        Individual kill cool down time can be set.         |
+| Can Kill a Neutral      |     You can set whether you can kill the third camp.      |
+| Can Kill a Lovers       |         You can set whether Lovers can be killed.         |
+| Can Kill a MadRole      | You can set whether you can kill MAD & FRIENDS positions. |
+| Maximum number of kills |    You can set the number of kills a sheriff can make.    |
 
 ----------------------- 
 ## Mud Cleaner 
@@ -1289,11 +1309,11 @@ Trying to make an Impostor a sheriff is self-destructive.<br>
 Cleaner - Madmate version of cleaner. .<br> 
 Instead of being able to make corpses disappear, it does not have the fanatic ability. <br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| CoolDown | You can set the kill cooldown time for the ability to erase corpses. 
-| Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the Impostor's view.
+| Name           |                              Description                              |
+| -------------- | :-------------------------------------------------------------------: |
+| CoolDown       | You can set the kill cooldown time for the ability to erase corpses.  |
+| Use Vent       |                  You will be able to put in a vent.                   |
+| Impostor Light | You can set whether the view will be the same as the Impostor's view. |
 
 ----------------------- 
 ## Mayer Friends 
@@ -1309,26 +1329,26 @@ result in the normal vote count. <br>
 SuperHostRoles support 
 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| MadMayer's vote count | You can set the number of votes for Madmaier. 
-| Is Check Jackal | After the specified task is completed, the jackal's name turns blue. You can also see the job 
-| Common Tasks | You can set the number of normal tasks until jackals can be checked. 
-| Long Tasks | You can set the number of long tasks until you can see jackals. 
-| Short Tasks | You can set the number of short tasks until you can check jackals. 
-| Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
-| Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the Impostor's view. 
+| Name                                                           |                                          Description                                          |
+| -------------------------------------------------------------- | :-------------------------------------------------------------------------------------------: |
+| MadMayer's vote count                                          |                         You can set the number of votes for Madmaier.                         |
+| Is Check Jackal                                                | After the specified task is completed, the jackal's name turns blue. You can also see the job |
+| Common Tasks                                                   |             You can set the number of normal tasks until jackals can be checked.              |
+| Long Tasks                                                     |                You can set the number of long tasks until you can see jackals.                |
+| Short Tasks                                                    |              You can set the number of short tasks until you can check jackals.               |
+| Amount of tasks that will be able to be checked (of all tasks) |  If the result of the calculation of the task amount is a fraction, it will be rounded down.  |
+| Use Vent                                                       |                              You will be able to put in a vent.                               |
+| Impostor Light                                                 |             You can set whether the view will be the same as the Impostor's view.             |
 
 ----------------------- 
 ## FalseCharges
 
 ### Team Third
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Turn of the false accusation range | 
-| Cool Time | Allows you to set an individual kill cool time. 
+| Name                               |                   Description                   |
+| ---------------------------------- | :---------------------------------------------: |
+| Turn of the false accusation range |
+| Cool Time                          | Allows you to set an individual kill cool time. |
 
 ----------------------- 
 ## TeleportingJackal
@@ -1338,17 +1358,17 @@ Can kill and vent. <br>
 Press the side kick button.<br> 
 The ability to sabotage can be changed in the settings. <br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Is Check Jackal | After the specified task is completed, the jackal's name turns blue. You can also see the job 
-| Common Tasks | You can set the number of normal tasks until jackals can be checked. 
-| Long Tasks | You can set the number of long tasks until you can see jackals. 
-| Short Tasks | You can set the number of short tasks until you can check jackals. 
-| Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
-| Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the Impostor's view.
-| Cool Down | Button Cool Down. 
-| Time to be teleported
+| Name                                                           |                                          Description                                          |
+| -------------------------------------------------------------- | :-------------------------------------------------------------------------------------------: |
+| Is Check Jackal                                                | After the specified task is completed, the jackal's name turns blue. You can also see the job |
+| Common Tasks                                                   |             You can set the number of normal tasks until jackals can be checked.              |
+| Long Tasks                                                     |                You can set the number of long tasks until you can see jackals.                |
+| Short Tasks                                                    |              You can set the number of short tasks until you can check jackals.               |
+| Amount of tasks that will be able to be checked (of all tasks) |  If the result of the calculation of the task amount is a fraction, it will be rounded down.  |
+| Use Vent                                                       |                              You will be able to put in a vent.                               |
+| Impostor Light                                                 |             You can set whether the view will be the same as the Impostor's view.             |
+| Cool Down                                                      |                                       Button Cool Down.                                       |
+| Time to be teleported                                          |
 
 ----------------------- 
 ## Demon
@@ -1357,10 +1377,10 @@ SHR compatible.<br>
 If the Impostor wins with all survivors cursed, he will sidestep the Impostor victory and win 
 alone. <br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Cooldown | You can set the cooldown time for the ability to curse. 
-| You can check the Impostor. | The name of the Impostor turns red after the specified task is completed. 
+| Name                        |                                Description                                |
+| --------------------------- | :-----------------------------------------------------------------------: |
+| Cooldown                    |          You can set the cooldown time for the ability to curse.          |
+| You can check the Impostor. | The name of the Impostor turns red after the specified task is completed. |
 a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent.
 | You have to be alive to win. | You can set whether you can only win if you are alive or not 
@@ -1377,11 +1397,11 @@ With SHR, the kill button is used to paint,<br> and the
 Shape-shifting with everyone painted is the winner. <br> 
 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Cooldown | You can set the cooldown before the ability can be used. 
-| Douse Duration | Time required to finish oiling.
-| Use Vent | You will be able to put in a vent.
+| Name           |                       Description                        |
+| -------------- | :------------------------------------------------------: |
+| Cooldown       | You can set the cooldown before the ability can be used. |
+| Douse Duration |             Time required to finish oiling.              |
+| Use Vent       |            You will be able to put in a vent.            |
 
 ----------------------- 
 ## NEET 
@@ -1392,9 +1412,9 @@ Voting rights.<br>
 There is no. <br>
 If it survives to the end, it is the Team Thirdthat wins alone, just like [God](#God). 
 
-| Name | Description 
-|----------|:-------------:| 
-| Add Win | Change the win condition for NEET. If it is off, it is a single win; if it is on, it is an additional win.
+| Name    |                                                Description                                                 |
+| ------- | :--------------------------------------------------------------------------------------------------------: |
+| Add Win | Change the win condition for NEET. If it is off, it is a single win; if it is on, it is an additional win. |
 ----------------------- 
 ## HauntedWolf
 ### Team Crew
@@ -1402,8 +1422,8 @@ It is judged as an Impostor to fortune tellers, sheriffs, etc. <br>
 Tasks, etc. are the same as regular crews. <br> 
 SHR compatible.<br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
+| Name | Description |
+| ---- | :---------: |
 
 ----------------------- 
 ## GhostMechanic
@@ -1411,9 +1431,9 @@ SHR compatible.<br>
 After death, the position changes,<br> and the 
 It will be able to cure sabotage, like the engineer's repair of TheOtherRoles. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Number of times sabotage can be repaired | Number of times you can use the Sabotage Repair capability. 
+| Name                                     |                         Description                         |
+| ---------------------------------------- | :---------------------------------------------------------: |
+| Number of times sabotage can be repaired | Number of times you can use the Sabotage Repair capability. |
 
 ----------------------- 
 ## PositionSwapper
@@ -1422,10 +1442,10 @@ When using the ability, swap your position with a random player. <br>
 Just that. <br> 
 It could be strong if you know how to use it. <br> 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Swapping limits | You can set the number of times the swap capability can be used 
-| Swapping cooltime | Allows you to set the amount of time between swapping and being able 
+| Name              |                             Description                              |
+| ----------------- | :------------------------------------------------------------------: |
+| Swapping limits   |   You can set the number of times the swap capability can be used    |
+| Swapping cooltime | Allows you to set the amount of time between swapping and being able |
 to swap again 
 
 ----------------------- 
@@ -1439,11 +1459,11 @@ After the first move button, the tuna will kill itself if it stops for a set amo
 SuperHostRoles support 
 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Stopping Time | 
-| Use Vent | You can set whether Maguro can use the vent. 
-| Add Win | Change the win condition for Tuna. If it is off, it is a single win; if it is on, it is an additional win.
+| Name          |                                                Description                                                 |
+| ------------- | :--------------------------------------------------------------------------------------------------------: |
+| Stopping Time |
+| Use Vent      |                                You can set whether Maguro can use the vent.                                |
+| Add Win       | Change the win condition for Tuna. If it is off, it is a single win; if it is on, it is an additional win. |
 ----------------------- 
 ## Mafia 
 ### Team Impostor
@@ -1451,8 +1471,8 @@ When all non-Mafia Impostors are dead, they can be killed. <br>
 The kill-cool time will continue to advance while the kill is not made. <br> 
 SuperHostRoles support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
+| Name | Description |
+| ---- | :---------: |
 
 ----------------------- 
 ## BlackCat 
@@ -1460,16 +1480,16 @@ SuperHostRoles support
 A [Mad Mate](#Mad Mate) version of [Nice Nekomata](#Nice Nekomata).<br> 
 SuperHostRoles support 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| You can check the Impostor. | The name of the Impostor turns red after the specified task is completed. 
-| Common Tasks | You can set the number of normal tasks before the Impostor can be checked. 
-| Long Tasks | You can set the number of long tasks before the Impostor can be checked. 
-| Short Tasks | You can set the number of short tasks before the Impostor can be checked. 
-| Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
-| Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the Impostor's view. 
-| Not taking the Imposter off the road | Excludes the Impostor from being taken as a companion when he/she is hung.
+| Name                                                           |                                         Description                                         |
+| -------------------------------------------------------------- | :-----------------------------------------------------------------------------------------: |
+| You can check the Impostor.                                    |          The name of the Impostor turns red after the specified task is completed.          |
+| Common Tasks                                                   |         You can set the number of normal tasks before the Impostor can be checked.          |
+| Long Tasks                                                     |          You can set the number of long tasks before the Impostor can be checked.           |
+| Short Tasks                                                    |          You can set the number of short tasks before the Impostor can be checked.          |
+| Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Use Vent                                                       |                             You will be able to put in a vent.                              |
+| Impostor Light                                                 |            You can set whether the view will be the same as the Impostor's view.            |
+| Not taking the Imposter off the road                           |         Excludes the Impostor from being taken as a companion when he/she is hung.          |
 ----------------------- 
 ## ToiletFan
 ### Team Crew
@@ -1479,9 +1499,33 @@ By pressing the open/close button. Allows you to open all lounge restroom doors.
 SuperHostRoles support.<br>
 in SHR mode, the door is opened and closed by shape-shifting. <br>
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Toilet Cool Time | Cool time for open/close button
+| Name             |           Description           |
+| ---------------- | :-----------------------------: |
+| Toilet Cool Time | Cool time for open/close button |
+----------------------- 
+## Knight
+### Team Crew
+#### Intro
+- I will protect you according to my beliefs.
+#### Description
+- During the conference phase, you can put up a shield to prevent one kill by using the protect button. 
+If the protection is successful, a successful protection announcement will be played at the beginning of the next meeting phase.
+
+#### Ability
+- Once per meeting phase, you can put up a shield that prevents one kill.
+- The shield disappears when a kill is prevented or at the beginning of the Conference Phase.
+- The shield also prevents kills during the conference phase.
+- If the same person receives both a kill and a protection in the same conference phase, priority is given to the one who declares his/her action earlier.
+(Kills are handled in real time and do not wait for the guarding ability to be selected.)
+- If the target's kill process has already been executed after the protective ability is used, the ability will not fire but can be used again.
+
+### Game Settings
+| Name                                                     |                                                                                         Description                                                                                         |
+| -------------------------------------------------------- | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| Play an announcement when the protection is successful?  |                     When the protection is successful, set whether the announcement of successful protection will be played at the beginning of the next meeting phase.                     |
+| Do you want to set a limit on the number of protections? |                          Allow one protection to be used at all times during a meeting with no upper limit, or set a limit on the number of times it can be used.                           |
+| Maximum number of times protection is possible.          | If an upper limit is set, set the maximum number of times the protection can be used. This set number of times will be the number of times the protection ability can be used in one match. |
+|                                                          |
 ----------------------- 
 ## Quarreled
 ### overlapping camps 
@@ -1489,10 +1533,9 @@ This roll will be in pairs. <br>
 If both die, they win alone. <br> 
 If you live to the end, you are defeated. 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Only Crewmate Team | Clade can be selected or not only for the clade. 
-
+| Name               |                   Description                    |
+| ------------------ | :----------------------------------------------: |
+| Only Crewmate Team | Clade can be selected or not only for the clade. |
 ----------------------- 
 ## Lovers
 ### overlapping camps 
@@ -1503,14 +1546,13 @@ Otherwise, whichever player survives to the end of the game wins. <br>
 SuperHostRoles support 
 
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
-| Discharge probability | You can set the probability of getting Lovers. 
-| Chosen only by Cluemate | Clade can be selected or not only for the clade. 
-| Single camp | single camp or single camp. 
-| TTwo people die at the same time | When one of the Lovers dies, the other also commits suicide. 
-| Tasks are counted when surviving | Sets whether or not Lovers' tasks are counted in the overall amount of tasks for the crewmate 
+| Name                             |                                          Description                                          |
+| -------------------------------- | :-------------------------------------------------------------------------------------------: |
+| Discharge probability            |                        You can set the probability of getting Lovers.                         |
+| Chosen only by Cluemate          |                       Clade can be selected or not only for the clade.                        |
+| Single camp                      |                                  single camp or single camp.                                  |
+| TTwo people die at the same time |                 When one of the Lovers dies, the other also commits suicide.                  |
+| Tasks are counted when surviving | Sets whether or not Lovers' tasks are counted in the overall amount of tasks for the crewmate |
 when alive. 
 | Does not overlap with Quarreled | You can set whether or not to duplicate with Quarreled. 
-
 ----------------------- 

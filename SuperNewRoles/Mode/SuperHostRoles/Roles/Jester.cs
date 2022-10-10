@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
+
+
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles
@@ -20,11 +20,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                 {
                     try
                     {
-                        var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
+                        var Writer = RPCHelper.StartRPC(CustomRPC.ShareWinner);
                         Writer.Write(exiled.Object.PlayerId);
                         Writer.EndRPC();
                         RPCProcedure.ShareWinner(exiled.Object.PlayerId);
-                        Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                        Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                         Writer.Write((byte)CustomGameOverReason.JesterWin);
                         Writer.EndRPC();
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.JesterWin);
@@ -53,11 +53,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                 {
                     try
                     {
-                        var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
+                        var Writer = RPCHelper.StartRPC(CustomRPC.ShareWinner);
                         Writer.Write(exiled.Object.PlayerId);
                         Writer.EndRPC();
                         RPCProcedure.ShareWinner(exiled.Object.PlayerId);
-                        Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                        Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                         Writer.Write((byte)CustomGameOverReason.ImpostorWin);
                         Writer.EndRPC();
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.ImpostorWin);

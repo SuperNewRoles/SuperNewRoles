@@ -1,7 +1,5 @@
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -12,7 +10,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void CustomSyncSettings(this PlayerControl player)
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers)) return;
             var role = player.GetRole();
             var optdata = OptionData.DeepCopy();
             if (player.IsCrewVision())
@@ -168,6 +166,23 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.EvilButtoner:
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
+                case RoleId.Doppelganger:
+                    optdata.RoleOptions.ShapeshifterDuration = RoleClass.Doppelganger.DurationTime;
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Doppelganger.CoolTime;
+                    break;
+                case RoleId.DarkKiller:
+                    optdata.killCooldown = KillCoolSet(CustomOptions.DarkKillerKillCoolTime.GetFloat());
+                    break;
+                case RoleId.Camouflager:
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Camouflager.CoolTime >= 5f ? RoleClass.Camouflager.CoolTime : 5f;
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
+                    if (RoleClass.Camouflager.IsCamouflage)
+                    {
+                        optdata.RoleOptions.ShapeshifterCooldown =
+                                RoleClass.Camouflager.CoolTime >= 5f ? (RoleClass.Camouflager.CoolTime + RoleClass.Camouflager.DurationTime - 2f)
+                                                                     : (3f + RoleClass.Camouflager.DurationTime);
+                    }
+                    break;
             }
             if (player.IsDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;
@@ -218,6 +233,24 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             writer.WriteBytesAndSize(optdata.ToBytes(5));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
+        public static void DoppelgangerCool(PlayerControl player, PlayerControl target)
+        {
+            if (!AmongUsClient.Instance.AmHost) return;
+            var optdata = OptionData.DeepCopy();
+            optdata.RoleOptions.ShapeshifterDuration = RoleClass.Doppelganger.DurationTime;
+            optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Doppelganger.CoolTime;
+            if (RoleClass.Doppelganger.Targets.ContainsKey(player.PlayerId))
+            {
+                optdata.KillCooldown = KillCoolSet(RoleClass.Doppelganger.Targets[player.PlayerId].PlayerId == target.PlayerId ?
+                                                       RoleClass.Doppelganger.SucCool :
+                                                       RoleClass.Doppelganger.NotSucCool);
+            }
+            else optdata.KillCooldown = KillCoolSet(RoleClass.Doppelganger.NotSucCool);
+            if (player.AmOwner) PlayerControl.GameOptions = optdata;
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
+            writer.WriteBytesAndSize(optdata.ToBytes(5));
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
         public static void CustomSyncSettings()
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -243,6 +276,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             public static void Postfix()
             {
                 OptionData = PlayerControl.GameOptions.DeepCopy();
+                Patches.OnGameEndPatch.PlayerDatas = new();
             }
         }
     }

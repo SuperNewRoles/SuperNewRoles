@@ -1,10 +1,7 @@
 //元:https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/AirShipStatusPatch.cs
 using System.Linq;
 using HarmonyLib;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnhollowerBaseLib;
@@ -92,9 +89,9 @@ namespace SuperNewRoles.Roles
                             exile.RpcSetNamePlate("nameplate_NoPlate");
                             exile.RpcSetSkin("skin_None");
                         }
-                    }, 5f);
+                    }, 5f, "Assassin Set Skins");
                 }
-                new LateTask(() => MeetingHud.Instance.RpcVotingComplete(array, exileplayer, true), 0.2f);
+                new LateTask(() => MeetingHud.Instance.RpcVotingComplete(array, exileplayer, true), 0.2f, "Assassin Vote Comp");
             }
         }
         public static void WrapUp()
@@ -129,19 +126,19 @@ namespace SuperNewRoles.Roles
                         MeetingRoomManager.Instance.AssignSelf(exile, null);
                         FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(exile);
                         exile.RpcStartMeeting(null);
-                    }, 10.5f);
+                    }, 10.5f, "Assassin Meet");
                     new LateTask(() =>
                     {
                         exile.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}<color=white>は誰だ？</size>");
-                    }, 12f);
+                    }, 12f, "Assassin Name");
                     new LateTask(() =>
                     {
                         exile.RpcSendChat($"\n{ModTranslation.GetString("MarineWhois")}");
-                    }, 12.5f);
+                    }, 12.5f, "Assassin Chat");
                     new LateTask(() =>
                     {
                         exile.RpcSetName(exile.GetDefaultName());
-                    }, 13f);
+                    }, 13f, "Assassin Default");
                 }
                 RoleClass.Assassin.TriggerPlayer = exile;
             }

@@ -1,4 +1,5 @@
 using Hazel;
+using InnerNet;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -46,6 +47,79 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             sender.Write((ushort)role);
             sender.EndRpc();
             player.SetRole(role);
+        }
+
+        /// <summary>
+        /// 守護ガードのエフェクトを表示する(キルクールもリセット)
+        /// </summary>
+        /// <param name="shower">エフェクトを見れる人</param>
+        /// <param name="target">エフェクトをかける人</param>
+        public static void RpcShowGuardEffect(this PlayerControl shower, PlayerControl target)
+        {
+            if (shower.IsMod())
+            {// mod導入者ならCustomRpcSenderを使用しなくても正しくRpcを送れる。
+                Logger.Info($"Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
+                shower.ProtectPlayer(target, 0);
+                shower.RpcMurderPlayer(target);
+            }
+            else
+            {
+                var crs = CustomRpcSender.Create("RpcShowGuardEffect");
+                var clientId = shower.GetClientId();
+                Logger.Info($"非Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
+                crs.StartMessage(clientId);
+                crs.StartRpc(shower.NetId, (byte)RpcCalls.ProtectPlayer)// 守護を始める
+                    .WriteNetObject(target) // targetを対象に
+                    .Write(0) // ProtectPlayerの引数2の、coloridを0で実行
+                    .EndRpc(); // 守護終わり
+
+                crs.StartRpc(shower.NetId, (byte)RpcCalls.MurderPlayer) // キルを始める
+                    .WriteNetObject(target) // targetを対象に
+                    .EndRpc(); // キル終わり
+
+                crs.EndMessage(); // RpcShowGuardEffect終わり
+                crs.SendMessage(); // ログへ出力(のはず)
+            }
+        }
+        /// <summary>
+        /// リアクターのフラッシュをshowerのみに見せる
+        /// </summary>
+        /// <param name="shower">見る人</param>
+        /// <param name="duration">継続時間</param>
+        public static void ShowReactorFlash(this PlayerControl shower, float duration = 0f)
+        {
+            if (shower == null || !AmongUsClient.Instance.AmHost || shower.AmOwner) return;
+            int clientId = shower.GetClientId();
+
+            byte reactorId = 3;
+            if (PlayerControl.GameOptions.MapId == 2) reactorId = 21;
+
+            // ReactorサボをDesyncで発動
+            SuperNewRolesPlugin.Logger.LogInfo("SetDesyncSabotage");
+            MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+            SabotageWriter.Write(reactorId);
+            MessageExtensions.WriteNetObject(SabotageWriter, shower);
+            SabotageWriter.Write((byte)128);
+            AmongUsClient.Instance.FinishRpcImmediately(SabotageWriter);
+
+            new LateTask(() =>
+            { // Reactorサボを修理
+                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+                SabotageFixWriter.Write(reactorId);
+                MessageExtensions.WriteNetObject(SabotageFixWriter, shower);
+                SabotageFixWriter.Write((byte)16);
+                AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
+            }, 0.1f + duration, "Fix Desync Reactor");
+
+            if (PlayerControl.GameOptions.MapId == 4) //Airship用
+                new LateTask(() =>
+                { // Reactorサボを修理
+                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+                    SabotageFixWriter.Write(reactorId);
+                    MessageExtensions.WriteNetObject(SabotageFixWriter, shower);
+                    SabotageFixWriter.Write((byte)17);
+                    AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
+                }, 0.1f + duration, "Fix Desync Reactor 2");
         }
     }
 }

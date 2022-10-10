@@ -1,5 +1,5 @@
 using HarmonyLib;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.MapOptions;
 using UnityEngine;
 
@@ -7,7 +7,6 @@ namespace SuperNewRoles.Buttons
 {
     public static class VentAndSabo
     {
-
         [HarmonyPatch(typeof(MapTaskOverlay), nameof(MapTaskOverlay.SetIconLocation))]
         public static class MapTaskOverlaySetIconLocationPatch
         {
@@ -68,7 +67,7 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
                     {
                         __instance.Close();
-                        DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+                        FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                         return false;
                     }
                 }
@@ -134,7 +133,7 @@ namespace SuperNewRoles.Buttons
 
                 couldUse = (@object.inVent || roleCouldUse) && !pc.IsDead && (@object.CanMove || @object.inVent);
                 canUse = couldUse;
-                if (pc.Role.Role == RoleTypes.Engineer) return true;
+                if (pc.Object.IsRole(RoleTypes.Engineer)) return true;
                 if (canUse)
                 {
                     Vector2 truePosition = @object.GetTruePosition();
@@ -153,14 +152,13 @@ namespace SuperNewRoles.Buttons
             {
                 var ImpostorVentButton = FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton;
                 var ImpostorSabotageButton = FastDestroyableSingleton<HudManager>.Instance.SabotageButton;
-
-                if (PlayerControl.LocalPlayer.IsUseVent())
+                if (PlayerControl.LocalPlayer.IsUseVent() && (MapBehaviour.Instance == null || !MapBehaviour.Instance.IsOpen))
                 {
                     if (!ImpostorVentButton.gameObject.active)
                     {
                         ImpostorVentButton.Show();
                     }
-                    if (Input.GetKeyDown(KeyCode.V) || KeyboardJoystick.player.GetButtonDown(50))
+                    if ((Input.GetKeyDown(KeyCode.V) || KeyboardJoystick.player.GetButtonDown(50)))
                     {
                         ImpostorVentButton.DoClick();
                     }
@@ -173,7 +171,7 @@ namespace SuperNewRoles.Buttons
                     }
                 }
 
-                if (PlayerControl.LocalPlayer.IsUseSabo())
+                if (PlayerControl.LocalPlayer.IsUseSabo() && (MapBehaviour.Instance == null || !MapBehaviour.Instance.IsOpen))
                 {
                     if (!ImpostorSabotageButton.gameObject.active)
                     {

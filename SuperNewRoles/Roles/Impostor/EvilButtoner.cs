@@ -1,3 +1,5 @@
+using Hazel;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
@@ -5,13 +7,15 @@ namespace SuperNewRoles.Roles
     public static class EvilButtoner
     {
         //SNR
-        public static void EvilButtonerStartMeeting(PlayerControl sourceId)
+        public static void EvilButtonerStartMeeting(PlayerControl source)
         {
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                MeetingRoomManager.Instance.AssignSelf(sourceId, null);
-                FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(sourceId);
-                sourceId.RpcStartMeeting(null);
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ReportDeadBody);
+                writer.Write(source.PlayerId);
+                writer.Write(source.PlayerId);
+                writer.EndRPC();
+                RPCProcedure.ReportDeadBody(source.PlayerId, source.PlayerId);
             }
         }
         //SHR
@@ -22,7 +26,7 @@ namespace SuperNewRoles.Roles
                 MeetingRoomManager.Instance.AssignSelf(__instance, null);
                 FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
                 __instance.RpcStartMeeting(null);
-            }, 0.5f);
+            }, 0.5f, "EvilButtonerStartMeetingSHR");
         }
     }
 }

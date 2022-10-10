@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
-using static SuperNewRoles.EndGame.CheckGameEndPatch;
+using static SuperNewRoles.Patches.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.Zombie
 {
@@ -38,24 +38,12 @@ namespace SuperNewRoles.Mode.Zombie
         }
         public static void SetZombie(this PlayerControl player)
         {
-            //player.RpcSetHat("");
-            /*
-            player.RpcSetSkin("");
-            */
             player.RpcSetColor(2);
-            /*
-            player.UncheckSetVisor("visor_pk01_DumStickerVisor");
-            */
 
             foreach (PlayerTask task in player.myTasks)
             {
                 task.Complete();
             }
-            /*
-            var Data = PlayerControl.GameOptions;
-            Data.CrewLightMod = ZombieOptions.ZombieLight.GetFloat();
-            RPCHelper.RPCGameOptionsPrivate(Data,player);
-            */
             if (!ZombiePlayers.Contains(player.PlayerId)) ZombiePlayers.Add(player.PlayerId);
             ZombieOptions.ChengeSetting(player);
         }
@@ -93,10 +81,7 @@ namespace SuperNewRoles.Mode.Zombie
             {
                 p.SetHat("", 0);
             }
-            /*
-            PlayerControl.GameOptions.ImpostorLightMod = ZombieOptions.ZombieLight.GetFloat();
-            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
-            */
+
             SyncSetting.OptionData = PlayerControl.GameOptions;
             ZombieOptions.ZombieLight = ZombieOptions.ZombieLightOption.GetFloat();
             ZombieOptions.ZombieSpeed = ZombieOptions.ZombieSpeedOption.GetFloat();
@@ -110,15 +95,7 @@ namespace SuperNewRoles.Mode.Zombie
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     p.GetDefaultName();
-                    /*
-                    p.UncheckSetVisor("visor_EmptyVisor");
-                    */
 
-                    //p.RpcSetHat("");
-
-                    /*
-                    p.RpcSetSkin("");
-                    */
                 }
             }
             ZombieOptions.FirstChangeSettings();

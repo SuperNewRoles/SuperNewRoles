@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Patch;
+
+using SuperNewRoles.Patches;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -69,7 +69,7 @@ namespace SuperNewRoles.Roles
                 {
                     if (GameObject.FindObjectOfType<VitalsMinigame>() && PlayerControl.LocalPlayer.IsRole(RoleId.Doctor))
                     {
-                        new LateTask(() => RoleClass.Doctor.MyPanelFlag = false,0.5f);
+                        new LateTask(() => RoleClass.Doctor.MyPanelFlag = false, 0.5f, "Doctor flag");
                     }
                 }
             }

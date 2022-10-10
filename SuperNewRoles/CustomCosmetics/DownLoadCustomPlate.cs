@@ -11,33 +11,29 @@ using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics
 {
-    [HarmonyPatch]
-    public class CustomPlates
+    public struct CustomPlates
     {
-        public class CustomPlate
-        {
-            public string author { get; set; }
-            public string name { get; set; }
-            public string resource { get; set; }
-            public string reshasha { get; set; }
-        }
+        public string author { get; set; }
+        public string name { get; set; }
+        public string resource { get; set; }
+        public string reshasha { get; set; }
     }
     public static class DownLoadClass
     {
         public static bool IsEndDownload = false;
         public static bool running = false;
         public static List<string> fetchs = new();
-        public static List<CustomPlates.CustomPlate> platedetails = new();
-        public static async void Load()
+        public static List<CustomPlates> platedetails = new();
+        public static void Load()
         {
-            await Patches.CredentialsPatch.LogoPatch.FetchBoosters();
+            Patches.CredentialsPatch.LogoPatch.FetchBoosters();
             if (running)
                 return;
             IsEndDownload = false;
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\");
             SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate:Download] ダウンロード開始");
-            await FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
+            FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
             running = true;
         }
         private static string SanitizeResourcePath(string res)
@@ -79,13 +75,13 @@ namespace SuperNewRoles.CustomCosmetics
                 JToken jobj = JObject.Parse(json)["nameplates"];
                 if (!jobj.HasValues) return HttpStatusCode.ExpectationFailed;
 
-                List<CustomPlates.CustomPlate> platedatas = new();
+                List<CustomPlates> platedatas = new();
 
                 for (JToken current = jobj.First; current != null; current = current.Next)
                 {
                     if (current.HasValues)
                     {
-                        CustomPlates.CustomPlate info = new()
+                        CustomPlates info = new()
                         {
                             name = current["name"]?.ToString(),
                             resource = SanitizeResourcePath(current["resource"]?.ToString())
@@ -102,7 +98,7 @@ namespace SuperNewRoles.CustomCosmetics
 
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\";
                 MD5 md5 = MD5.Create();
-                foreach (CustomPlates.CustomPlate data in platedatas)
+                foreach (CustomPlates data in platedatas)
                 {
                     if (DoesResourceRequireDownload(filePath + data.resource, data.reshasha, md5))
                         markedfordownload.Add(data.resource);

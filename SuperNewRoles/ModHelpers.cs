@@ -5,8 +5,8 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
+
+
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using TMPro;
@@ -202,7 +202,7 @@ namespace SuperNewRoles
                     bool IsSend = false;
                     if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
                     {
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
                         writer.Write(target.PlayerId);
                         writer.Write(target.PlayerId);
                         writer.Write(0);
@@ -214,7 +214,7 @@ namespace SuperNewRoles
                     {
                         if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
                         {
-                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
                             writer.Write(target.PlayerId);
                             writer.Write(target.PlayerId);
                             writer.Write(0);
@@ -225,7 +225,7 @@ namespace SuperNewRoles
                     }
                     if (IsSend)
                     {
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseStuntmanCount);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UseStuntmanCount);
                         writer.Write(target.PlayerId);
                         writer.EndRPC();
                         RPCProcedure.UseStuntmanCount(target.PlayerId);
@@ -239,7 +239,7 @@ namespace SuperNewRoles
                     bool IsSend = false;
                     if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
                     {
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
                         writer.Write(target.PlayerId);
                         writer.Write(target.PlayerId);
                         writer.Write(0);
@@ -251,7 +251,7 @@ namespace SuperNewRoles
                     {
                         if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
                         {
-                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
                             writer.Write(target.PlayerId);
                             writer.Write(target.PlayerId);
                             writer.Write(0);
@@ -263,7 +263,7 @@ namespace SuperNewRoles
 
                     if (IsSend)
                     {
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseStuntmanCount);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UseStuntmanCount);
                         writer.Write(target.PlayerId);
                         writer.EndRPC();
                         RPCProcedure.UseStuntmanCount(target.PlayerId);
@@ -272,7 +272,7 @@ namespace SuperNewRoles
             }
             if (target.IsRole(RoleId.Shielder) && !killer.IsRole(RoleId.OverKiller) && RoleClass.Shielder.IsShield[target.PlayerId])
             {
-                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShielderProtect);
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ShielderProtect);
                 writer.Write(target.PlayerId);
                 writer.Write(target.PlayerId);
                 writer.Write(0);
@@ -286,7 +286,7 @@ namespace SuperNewRoles
                     bool IsSend = false;
                     if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId))
                     {
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
                         writer.Write(target.PlayerId);
                         writer.Write(target.PlayerId);
                         writer.Write(0);
@@ -298,7 +298,7 @@ namespace SuperNewRoles
                     {
                         if (!(RoleClass.Fox.KillGuard[target.PlayerId] <= 0))
                         {
-                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
                             writer.Write(target.PlayerId);
                             writer.Write(target.PlayerId);
                             writer.Write(0);
@@ -309,7 +309,7 @@ namespace SuperNewRoles
                     }
                     if (IsSend)
                     {
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseStuntmanCount);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UseStuntmanCount);
                         writer.Write(target.PlayerId);
                         writer.EndRPC();
                         RPCProcedure.UseStuntmanCount(target.PlayerId);
@@ -324,7 +324,7 @@ namespace SuperNewRoles
 
             List<byte> taskTypeIds = GenerateTasks(numCommon, numShort, numLong);
 
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UncheckedSetTasks, SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetTasks, SendOption.Reliable, -1);
             writer.Write(player.PlayerId);
             writer.WriteBytesAndSize(taskTypeIds.ToArray());
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -382,7 +382,7 @@ namespace SuperNewRoles
             {
                 if (tien <= 0)
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
                     writer.Write(killer.PlayerId);
                     writer.Write(target.PlayerId);
                     writer.Write(showAnimation ? byte.MaxValue : 0);
@@ -393,20 +393,20 @@ namespace SuperNewRoles
                 {
                     new LateTask(() =>
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
                         writer.Write(killer.PlayerId);
                         writer.Write(target.PlayerId);
                         writer.Write(showAnimation ? byte.MaxValue : 0);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
-                    }, tien);
+                    }, tien, "CheckMuderAttemptAndKill");
                 }
             }
             return murder;
         }
-        public static void UncheckedMurderPlayer(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
+        public static void UncheckedMurderPlayer(this PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
             writer.Write(killer.PlayerId);
             writer.Write(target.PlayerId);
             writer.Write(showAnimation ? byte.MaxValue : 0);
@@ -426,6 +426,24 @@ namespace SuperNewRoles
         {
             var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
             return client;
+        }
+        public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
+        {
+            List<T> newList = new();
+            foreach (T item in list)
+            {
+                newList.Add(item);
+            }
+            return newList;
+        }
+        public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this List<T> list)
+        {
+            Il2CppSystem.Collections.Generic.List<T> newList = new();
+            foreach (T item in list)
+            {
+                newList.Add(item);
+            }
+            return newList;
         }
         public static Dictionary<string, AudioClip> CachedAudioClips = new();
         public static AudioClip loadAudioClipFromResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")
@@ -484,7 +502,7 @@ namespace SuperNewRoles
         /// <returns></returns>
         public static int GetRandomInt(int max, int min = 0)
         {
-            return UnityEngine.Random.Range(min, max+1);
+            return UnityEngine.Random.Range(min, max + 1);
         }
         public static bool HidePlayerName(PlayerControl source, PlayerControl target)
         {
@@ -525,10 +543,6 @@ namespace SuperNewRoles
         {
             return AccessTools.Method(self.GetType(), nameof(Il2CppObjectBase.TryCast)).MakeGenericMethod(type).Invoke(self, Array.Empty<object>());
         }
-        internal static string Cs(object unityEngine, string v)
-        {
-            throw new NotImplementedException();
-        }
 
         public static Dictionary<string, Texture2D> CachedTexture = new();
 
@@ -557,12 +571,7 @@ namespace SuperNewRoles
         {
             return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptions.ToByte(c.r), CustomOptions.ToByte(c.g), CustomOptions.ToByte(c.b), CustomOptions.ToByte(c.a), s);
         }
-        public static T GetRandom<T>(List<T> list)
-        {
-            var indexdate = UnityEngine.Random.Range(0, list.Count);
-            return list[indexdate];
-        }
-        public static PlayerControl GetRandompc(List<PlayerControl> list)
+        public static T GetRandom<T>(this List<T> list)
         {
             var indexdate = UnityEngine.Random.Range(0, list.Count);
             return list[indexdate];
@@ -757,7 +766,9 @@ namespace SuperNewRoles
             float dis = Vector2.Distance(pos, pos2);
             return dis <= distance;
         }
-
+        /// <summary>keyCodesが押されているか</summary>
+        public static bool GetManyKeyDown(KeyCode[] keyCodes) =>
+            keyCodes.All(x => Input.GetKey(x)) && keyCodes.Any(x => Input.GetKeyDown(x));
     }
     public static class CreateFlag
     {

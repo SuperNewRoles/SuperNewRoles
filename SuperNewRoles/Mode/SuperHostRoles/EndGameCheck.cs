@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
-using static SuperNewRoles.EndGame.CheckGameEndPatch;
+using static SuperNewRoles.Patches.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -14,28 +12,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static bool CheckEndGame(ShipStatus __instance, PlayerStatistics statistics)
         {
-            return CheckAndEndGameForDefaultWin(__instance, statistics)
+            return CheckAndEndGameForImpostorWin(__instance, statistics)
             || CheckAndEndGameForJackalWin(__instance, statistics)
             || CheckAndEndGameForSabotageWin(__instance)
                 ? false
                 : (PlusModeHandler.IsMode(PlusModeId.NotTaskWin) || !CheckAndEndGameForTaskWin(__instance))
 && CheckAndEndGameForWorkpersonWin(__instance) && false;
         }
-        public static void WinNeutral(List<PlayerControl> players)
-        {
-            /**
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
-            {
-                if (players.IsCheckListPlayerControl(p))
-                {
-                    p.UnCheckedRpcSetRole(RoleTypes.Impostor);
-                } else
-                {
-                    p.UnCheckedRpcSetRole(RoleTypes.Crewmate);
-                }
-            }
-            **/
-        }
+
         public static void CustomEndGame(ShipStatus __instance, GameOverReason reason, bool showAd)
         {
             Chat.IsOldSHR = true;
@@ -58,7 +42,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             if (Chat.WinCond == CustomGameOverReason.GodWin)
             {
-                WinNeutral(WinGods);
                 Chat.Winner = WinGods;
             }
 
@@ -145,7 +128,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive && statistics.TeamImpostorsAlive == 0)
             {
-                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                 Writer.Write((byte)CustomGameOverReason.JackalWin);
                 Writer.EndRPC();
                 RPCProcedure.SetWinCond((byte)CustomGameOverReason.JackalWin);
@@ -156,72 +139,45 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             return false;
         }
 
-        public static bool CheckAndEndGameForDefaultWin(ShipStatus __instance, PlayerStatistics statistics)
+        public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            int num1 = 0;
-            int num2 = 0;
-            int num3 = 0;
-            for (int index = 0; index < GameData.Instance.PlayerCount; ++index)
+            if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
             {
-                GameData.PlayerInfo allPlayer = GameData.Instance.AllPlayers[index];
-                if (!allPlayer.Disconnected && allPlayer.Object.IsPlayer())
+                foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
                 {
-                    //インポスター判定ならnum3にカウント
-                    if (allPlayer.Object.IsImpostor() || allPlayer.Object.IsRole(RoleId.Egoist))
-                        ++num3;
-                    //生存しているかつ
-                    if (!allPlayer.IsDead)
+                    if (!p.IsImpostor() && !p.Data.Disconnected)
                     {
-                        //インポスターならnum2に追加
-                        if (allPlayer.Object.IsImpostor() || allPlayer.Object.IsRole(RoleId.Egoist))
-                            ++num2;
-                        //違うならnum1に追加
-                        else
-                            ++num1;
+                        return false;
                     }
                 }
+                __instance.enabled = false;
+                CustomEndGame(__instance, GameOverReason.HumansByVote, false);
+                return true;
             }
-            if (num2 <= 0 && statistics.TeamJackalAlive <= 0 && (!DestroyableSingleton<TutorialManager>.InstanceExists || num3 > 0))
+            return false;
+        }
+
+        public static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
+        {
+            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard() && !EvilEraser.IsNeetWinGuard())
             {
-                CustomEndGame(__instance, GameOverReason.HumansByVote, !SaveManager.BoughtNoAds);
-            }
-            else if (num1 <= num2 && statistics.TeamJackalAlive < 1)
-            {
-                if (!DestroyableSingleton<TutorialManager>.InstanceExists)
+                __instance.enabled = false;
+                var endReason = TempData.LastDeathReason switch
                 {
-                    var endReason = TempData.LastDeathReason switch
-                    {
-                        DeathReason.Exile => GameOverReason.ImpostorByVote,
-                        DeathReason.Kill => GameOverReason.ImpostorByKill,
-                        _ => GameOverReason.ImpostorByVote,
-                    };
-                    int impostorplayer = 0;
-                    int egoistplayer = 0;
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                    {
-                        if (p.IsAlive())
-                        {
-                            if (p.IsImpostor()) impostorplayer++;
-                            else if (p.IsRole(RoleId.Egoist)) egoistplayer++;
-                        }
-                    }
-                    if (impostorplayer <= 0 && egoistplayer >= 1)
-                    {
-                        MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
-                        Writer.Write((byte)CustomGameOverReason.EgoistWin);
-                        Writer.EndRPC();
-                        RPCProcedure.SetWinCond((byte)CustomGameOverReason.EgoistWin);
-                    }
-                    if (Demon.IsDemonWinFlag())
-                    {
-                        MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
-                        Writer.Write((byte)CustomGameOverReason.DemonWin);
-                        Writer.EndRPC();
-                        RPCProcedure.SetWinCond((byte)CustomGameOverReason.DemonWin);
-                    }
-                    CustomEndGame(__instance, endReason, !SaveManager.BoughtNoAds);
-                    return true;
+                    DeathReason.Exile => GameOverReason.ImpostorByVote,
+                    DeathReason.Kill => GameOverReason.ImpostorByKill,
+                    _ => GameOverReason.ImpostorByVote,
+                };
+                if (Demon.IsDemonWinFlag())
+                {
+                    MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
+                    Writer.Write((byte)CustomGameOverReason.DemonWin);
+                    Writer.EndRPC();
+                    RPCProcedure.SetWinCond((byte)CustomGameOverReason.DemonWin);
                 }
+
+                CustomEndGame(__instance, endReason, false);
+                return true;
             }
             return false;
         }
@@ -231,16 +187,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 Chat.WinCond = CustomGameOverReason.ArsonistWin;
                 RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
-                return true;
-            }
-            return false;
-        }
-        public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
-        {
-            if (statistics.CrewAlive > 0 && statistics.TeamImpostorsAlive < 1 && statistics.TeamJackalAlive < 1)// && Chat.WinCond == null)
-            {
-                Chat.WinCond = CustomGameOverReason.CrewmateWin;
-                CustomEndGame(__instance, GameOverReason.HumansByVote, false);
                 return true;
             }
             return false;
@@ -256,11 +202,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             RPCProcedure.ShareWinner(p.PlayerId);
-                            Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                            Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                             Writer.Write((byte)CustomGameOverReason.WorkpersonWin);
                             Writer.EndRPC();
                             RPCProcedure.SetWinCond((byte)CustomGameOverReason.WorkpersonWin);
@@ -276,12 +222,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void EndGameForSabotage(ShipStatus __instance)
         {
-            if (true)//Chat.WinCond == null)
-            {
-                Chat.WinCond = CustomGameOverReason.ImpostorWin;
-                CustomEndGame(__instance, GameOverReason.ImpostorBySabotage, false);
-                return;
-            }
+            Chat.WinCond = CustomGameOverReason.ImpostorWin;
+            CustomEndGame(__instance, GameOverReason.ImpostorBySabotage, false);
         }
     }
 }

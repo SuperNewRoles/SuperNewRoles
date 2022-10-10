@@ -21,16 +21,17 @@ namespace SuperNewRoles.CustomCosmetics
         public static Material hatShader;
 
         public static Dictionary<string, HatExtension> CustomHatRegistry = new();
-        public static HatExtension TestExt = null;
+        public static HatExtension TestExt = new() { IsNull = true };
         public static bool IsEnd = false;
 
-        public class HatExtension
+        public struct HatExtension
         {
-            public string author { get; set; }
-            public string package { get; set; }
-            public string condition { get; set; }
-            public Sprite FlipImage { get; set; }
-            public Sprite BackFlipImage { get; set; }
+            public bool IsNull;
+            public string author;
+            public string package;
+            public string condition;
+            public Sprite FlipImage;
+            public Sprite BackFlipImage;
         }
 
         public class CustomHat
@@ -249,7 +250,7 @@ namespace SuperNewRoles.CustomCosmetics
                 HatParent hp = __instance.myPlayer.HatRenderer();
                 if (hp.Hat == null) return;
                 HatExtension extend = hp.Hat.GetHatExtension();
-                if (extend == null) return;
+                if (extend.IsNull) return;
                 if (extend.FlipImage != null)
                 {
                     hp.FrontLayer.sprite = __instance.Rend().flipX ? extend.FlipImage : hp.Hat.hatViewData.viewData.MainImage;
@@ -394,17 +395,17 @@ namespace SuperNewRoles.CustomCosmetics
                 {
                     HatExtension ext = hatData.GetHatExtension();
 
-                    if (ext != null)
+                    if (!ext.IsNull)
                     {
-                        if (!packages.ContainsKey(ext.package))
-                            packages[ext.package] = new List<System.Tuple<HatData, HatExtension>>();
-                        packages[ext.package].Add(new System.Tuple<HatData, HatExtension>(hatData, ext));
+                        if (!packages.ContainsKey(ext.package == null ? innerslothPackageName : ext.package))
+                            packages[ext.package == null ? innerslothPackageName : ext.package] = new();
+                        packages[ext.package == null ? innerslothPackageName : ext.package].Add(new System.Tuple<HatData, HatExtension>(hatData, ext));
                     }
                     else
                     {
                         if (!packages.ContainsKey(innerslothPackageName))
                             packages[innerslothPackageName] = new List<System.Tuple<HatData, HatExtension>>();
-                        packages[innerslothPackageName].Add(new System.Tuple<HatData, HatExtension>(hatData, null));
+                        packages[innerslothPackageName].Add(new System.Tuple<HatData, HatExtension>(hatData, new() { IsNull = true }));
                     }
                 }
 
@@ -426,6 +427,7 @@ namespace SuperNewRoles.CustomCosmetics
                 }
 
                 __instance.scroller.ContentYBounds.max = -(YOffset + 3.0f + headerSize);
+                __instance.currentHat = FastDestroyableSingleton<HatManager>.Instance.GetHatById(SaveManager.LastHat);
                 return false;
             }
         }
@@ -433,7 +435,7 @@ namespace SuperNewRoles.CustomCosmetics
         [HarmonyPatch(typeof(HatsTab), nameof(HatsTab.Update))]
         public class HatsTabUpdatePatch
         {
-            public static bool Prefix()
+            public static bool Prefix(HatsTab __instance)
             {
                 foreach (TMPro.TMP_Text customText in hatsTabCustomTexts)
                 {
@@ -460,14 +462,13 @@ namespace SuperNewRoles.CustomCosmetics
         //レポURL、レポ
         public static Dictionary<string, string> hatRepos = new()
         {
+
             { "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master", "SuperNewNamePlates" },
 
             { "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master", "mememurahat" },
             { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },
 
             { "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master", "TheOtherRolesGMHaoming"},
-            { "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master", "TheOtherRolesGM"},
-            { "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master", "TheOtherHats"},
         };
 
         public static List<string> CachedRepos = new();
@@ -496,8 +497,9 @@ namespace SuperNewRoles.CustomCosmetics
             string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
             foreach (string repo in repos)
             {
-                if (File.Exists($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json"))
+                if (File.Exists($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json") && hatRepos.FirstOrDefault(data => data.Key == repo).Value is not ("TheOtherHats" or "TheOtherRolesGM"))
                 {
+                    CustomHats.IsEnd = true;
                     StreamReader sr = new($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json");
 
                     string text = sr.ReadToEnd();
@@ -505,7 +507,7 @@ namespace SuperNewRoles.CustomCosmetics
                     sr.Close();
 
                     JToken jobj = JObject.Parse(text)["hats"];
-                    if (jobj.HasValues)
+                    if (jobj != null && jobj.HasValues)
                     {
 
                         List<CustomHatOnline> hatdatas = new();
@@ -533,7 +535,7 @@ namespace SuperNewRoles.CustomCosmetics
                                 info.reshashbf = current["reshashbf"]?.ToString();
 
                                 info.package = current["package"]?.ToString();
-                                SuperNewRolesPlugin.Logger.LogInfo(info.package);
+                                if (current["package"] == null) info.package = "NameNone";
                                 if (info.package != null && !CustomHats.Keys.Contains(info.package))
                                 {
                                     CustomHats.Keys.Add(info.package);
@@ -552,38 +554,36 @@ namespace SuperNewRoles.CustomCosmetics
                                 hatdatas.Add(info);
                             }
                         }
-                        CustomHats.Keys.Add("InnerSloth");
+                        if (!CustomHats.Keys.Contains("InnerSloth"))
+                            CustomHats.Keys.Add("InnerSloth");
 
                         hatDetails.AddRange(hatdatas);
                         CachedRepos.Add(repo);
                         Repos.Remove(repo);
-                        if (Repos.Count < 1)
-                        {
-                            CustomHats.IsEnd = true;
-                        }
                     }
                 }
             }
-            foreach (string repo in repos)
+            CustomHats.IsEnd = true;
+            foreach (var repo in hatRepos)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] ハットスタート:" + repo);
+                SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] ハットスタート:" + repo.Key);
                 if (!ConfigRoles.DownloadSuperNewNamePlates.Value)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("ダウンロードをスキップしました:"/*"Skipped download.:"*/ + repo);
+                    SuperNewRolesPlugin.Logger.LogInfo("ダウンロードをスキップしました:" + repo.Key);
                 }
                 else
                 {
                     try
                     {
-                        HttpStatusCode status = await FetchHats(repo);
+                        HttpStatusCode status = await FetchHats(repo.Key);
                         if (status != HttpStatusCode.OK)
-                            System.Console.WriteLine($"Custom hats could not be loaded from repo: {repo}\n");
+                            System.Console.WriteLine($"Custom hats could not be loaded from repo: {repo.Key}\n");
                         else
-                            SuperNewRolesPlugin.Logger.LogInfo("ハット終了:" + repo);
+                            SuperNewRolesPlugin.Logger.LogInfo("ハット終了:" + repo.Key);
                     }
                     catch (System.Exception e)
                     {
-                        System.Console.WriteLine($"Unable to fetch hats from repo: {repo}\n" + e.Message);
+                        System.Console.WriteLine($"Unable to fetch hats from repo: {repo.Key}\n" + e.Message);
                     }
                 }
             }
@@ -646,9 +646,7 @@ namespace SuperNewRoles.CustomCosmetics
                         info.reshashf = current["reshashf"]?.ToString();
                         info.backflipresource = SanitizeResourcePath(current["backflipresource"]?.ToString());
                         info.reshashbf = current["reshashbf"]?.ToString();
-
                         info.package = current["package"]?.ToString();
-                        SuperNewRolesPlugin.Logger.LogInfo(info.package);
                         if (info.package != null && !CustomHats.Keys.Contains(info.package))
                         {
                             CustomHats.Keys.Add(info.package);
@@ -707,8 +705,7 @@ namespace SuperNewRoles.CustomCosmetics
             }
             catch (System.Exception ex)
             {
-                SuperNewRolesPlugin.Instance.Log.LogError(ex.ToString());
-                System.Console.WriteLine(ex);
+                SuperNewRolesPlugin.Instance.Log.LogError("HatsError: "+ex.ToString());
             }
             return HttpStatusCode.OK;
         }
@@ -736,7 +733,7 @@ namespace SuperNewRoles.CustomCosmetics
     {
         public static CustomHats.HatExtension GetHatExtension(this HatData hat)
         {
-            if (CustomHats.TestExt != null && CustomHats.TestExt.condition.Equals(hat.name))
+            if (!CustomHats.TestExt.IsNull && CustomHats.TestExt.condition.Equals(hat.name))
             {
                 return CustomHats.TestExt;
             }

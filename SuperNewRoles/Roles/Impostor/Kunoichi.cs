@@ -3,7 +3,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Mode;
 using UnityEngine;
 
@@ -127,7 +127,7 @@ namespace SuperNewRoles.Roles
                     {
                         if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)//透明化していた場合
                         {
-                            HideOff();; // 透明化を解除する
+                            HideOff(); // 透明化を解除する
                         }
                         RoleClass.Kunoichi.StopTime = 0;//止まっている時間を 0 にする
                     }
@@ -160,27 +160,12 @@ namespace SuperNewRoles.Roles
                     RoleClass.Kunoichi.OldPosition = CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(); // 現在の位置を記録する(*2)
                 }
             }
-            /*
-            if (RoleClass.Kunoichi.KunaiSend)
-            {
-                if (PhysicsHelpers.AnythingBetween(RoleClass.Kunoichi.SendKunai.kunai.transform.position, , Constants.ShipAndObjectsMask, false);)
-                {
-                    RoleClass.Kunoichi.SendKunai.kunai.transform.position += new Vector3(0.1f, 0, 0);
-                } else
-                {
-                    return;
-                }
-                RoleClass.Kunoichi.SendKunai.kunai.GetComponent<Rigidbody2D>().velocity = new Vector2();
-                RoleClass.Kunoichi.Kunais.Add(RoleClass.Kunoichi.SendKunai);
-                RoleClass.Kunoichi.SendKunai = null;
-                RoleClass.Kunoichi.KunaiSend = false;
-            }*/
         }
         public static void HideOn()
         {
-            // 透明化するコード
+            // 透明化する
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
                 writer.Write(true);
                 writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -189,9 +174,9 @@ namespace SuperNewRoles.Roles
         }
         public static void HideOff()
         {
-            // 透明化を解除するコード
+            // 透明化を解除する
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
                 writer.Write(false);
                 writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);

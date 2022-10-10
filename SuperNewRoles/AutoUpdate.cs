@@ -65,7 +65,7 @@ namespace SuperNewRoles
                 }
 
                 //アガルタ
-                updateURL = updateURL.Replace("SuperNewRoles.dll","Agartha.dll");
+                updateURL = updateURL.Replace("SuperNewRoles.dll", "Agartha.dll");
                 response = await http.GetAsync(new System.Uri(updateURL), HttpCompletionOption.ResponseContentRead);
                 if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
                 {
@@ -103,7 +103,8 @@ namespace SuperNewRoles
             {
                 HttpClient http = new();
                 http.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Updater");
-                var response = await http.GetAsync(new System.Uri("https://api.github.com/repos/ykundesu/SuperNewRoles/releases/latest"), HttpCompletionOption.ResponseContentRead);
+                var response = await http.GetAsync(new System.Uri($"https://api.github.com/repos/{SuperNewRolesPlugin.ModUrl}/releases/latest"), HttpCompletionOption.ResponseContentRead);
+                Logger.Info($"https://api.github.com/repos/{SuperNewRolesPlugin.ModUrl}/releases/latest", "リリース情報のURL");
                 if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
                 {
                     System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
@@ -123,7 +124,7 @@ namespace SuperNewRoles
                 // check version
                 SuperNewRolesPlugin.NewVersion = tagname.Replace("v", "");
                 System.Version newver = System.Version.Parse(SuperNewRolesPlugin.NewVersion);
-                System.Version Version = SuperNewRolesPlugin.Version;
+                System.Version Version = SuperNewRolesPlugin.ThisVersion;
                 announcement = string.Format(ModTranslation.GetString("announcementUpdate"), newver, announcement);
                 if (!ConfigRoles.AutoUpdate.Value)
                 {
@@ -140,50 +141,6 @@ namespace SuperNewRoles
                     if (ConfigRoles.DebugMode.Value)
                     {
                         SuperNewRolesPlugin.Logger.LogInfo("最新バージョンです");
-                    }
-                    if (AgarthaPlugin.VersionString != SuperNewRolesPlugin.VersionString)
-                    {
-                        Logger.Info("アガルタが古いです");
-                        JToken assets = data["assets"];
-                        if (!assets.HasValues)
-                            return false;
-                        for (JToken current = assets.First; current != null; current = current.Next)
-                        {
-                            string browser_download_url = current["browser_download_url"]?.ToString();
-                            if (browser_download_url != null && current["content_type"] != null)
-                            {
-                                if (current["content_type"].ToString().Equals("application/x-msdownload") &&
-                                    browser_download_url.EndsWith("SuperNewRoles.dll"))
-                                {
-                                    updateURL = browser_download_url;
-                                    break;
-                                }
-                            }
-                        }
-                        updateURL = updateURL.Replace("SuperNewRoles.dll", "Agartha.dll");
-                        response = await http.GetAsync(new System.Uri(updateURL), HttpCompletionOption.ResponseContentRead);
-                        if (response.StatusCode == HttpStatusCode.OK && response.Content != null)
-                        {
-                            var codeBase = Assembly.GetExecutingAssembly().CodeBase.Replace("SuperNewRoles.dll","Agartha.dll");
-                            System.UriBuilder uri = new(codeBase);
-                            var fullname = System.Uri.UnescapeDataString(uri.Path);
-                            if (File.Exists(fullname + ".old")) // Clear old file in case it wasnt;
-                                File.Delete(fullname + ".old");
-
-                            File.Move(fullname, fullname + ".old"); // rename current executable to old
-
-                            using (var responseStream = await response.Content.ReadAsStreamAsync())
-                            {
-                                using var fileStream = File.Create(fullname);
-                                // probably want to have proper name here
-                                responseStream.CopyTo(fileStream);
-                            }
-                        }
-                        else
-                        {
-                            System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
-                            return false;
-                        }
                     }
                 }
                 else

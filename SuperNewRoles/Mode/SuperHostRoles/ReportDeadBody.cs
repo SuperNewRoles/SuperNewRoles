@@ -1,6 +1,5 @@
 using System.Linq;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles

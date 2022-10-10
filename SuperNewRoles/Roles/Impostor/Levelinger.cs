@@ -1,6 +1,6 @@
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles
 {
@@ -24,11 +24,11 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.Levelinger.ReviveUseXP <= RoleClass.Levelinger.ThisXP)
                 {
-                    var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ReviveRPC);
+                    var Writer = RPCHelper.StartRPC(CustomRPC.ReviveRPC);
                     Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     Writer.EndRPC();
                     RPCProcedure.ReviveRPC(CachedPlayer.LocalPlayer.PlayerId);
-                    Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.CleanBody);
+                    Writer = RPCHelper.StartRPC(CustomRPC.CleanBody);
                     Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     Writer.EndRPC();
                     RPCProcedure.CleanBody(CachedPlayer.LocalPlayer.PlayerId);

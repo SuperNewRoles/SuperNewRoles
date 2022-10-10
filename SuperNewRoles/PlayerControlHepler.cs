@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using InnerNet;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Intro;
 using SuperNewRoles.Roles;
 using UnityEngine;
-using static SuperNewRoles.Patch.ShareGameVersion;
+
+using static SuperNewRoles.Patches.ShareGameVersion;
 
 namespace SuperNewRoles
 {
@@ -42,7 +41,7 @@ namespace SuperNewRoles
         {
             if (player == null) return;
 
-            List<Intro.IntroDate> infos = new() { Intro.IntroDate.GetIntroDate(player.GetRole(), player) };
+            List<IntroDate> infos = new() { IntroDate.GetIntroDate(player.GetRole(), player) };
 
             var toRemove = new List<PlayerTask>();
             var aaa = false;
@@ -72,12 +71,12 @@ namespace SuperNewRoles
             }
 
             // Add TextTask for remaining RoleInfos
-            foreach (Intro.IntroDate roleInfo in infos)
+            foreach (IntroDate roleInfo in infos)
             {
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
 
-                task.Text = CustomOption.CustomOptions.Cs(roleInfo.color, $"{ModTranslation.GetString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
+                task.Text = CustomOptions.Cs(roleInfo.color, $"{ModTranslation.GetString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
                 if (player.IsLovers())
                 {
                     task.Text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, ModTranslation.GetString("LoversName") + ": " + string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
@@ -85,14 +84,8 @@ namespace SuperNewRoles
                 if (!player.IsGhostRole(RoleId.DefaultRole))
                 {
                     var GhostRoleInfo = IntroDate.GetIntroDate(player.GetGhostRole(), player);
-                    task.Text += "\n" + CustomOption.CustomOptions.Cs(GhostRoleInfo.color, $"{ModTranslation.GetString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
+                    task.Text += "\n" + CustomOptions.Cs(GhostRoleInfo.color, $"{ModTranslation.GetString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
                 }
-                /**
-                if (player.IsQuarreled())
-                {
-                    task.Text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, String.Format(ModTranslation.GetString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
-                }
-                **/
 
                 player.myTasks.Insert(0, task);
             }

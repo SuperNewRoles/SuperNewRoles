@@ -1,4 +1,4 @@
-using SuperNewRoles.CustomRPC;
+
 
 namespace SuperNewRoles.Roles
 {
@@ -22,7 +22,6 @@ namespace SuperNewRoles.Roles
             if (Mode.ModeHandler.IsMode(Mode.ModeId.Zombie)) Mode.Zombie.Main.SetTimer();
             if (Mode.ModeHandler.IsMode(Mode.ModeId.BattleRoyal)) Mode.BattleRoyal.Main.IsCountOK = true;
             if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles)) Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
-            if (Mode.ModeHandler.IsMode(Mode.ModeId.Werewolf)) Mode.Werewolf.Main.IntroHandler();
             if (Mode.ModeHandler.IsMode(Mode.ModeId.CopsRobbers)) Mode.CopsRobbers.Main.IsStart = true;
         }
     }

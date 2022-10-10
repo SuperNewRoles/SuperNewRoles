@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using HarmonyLib;
-using SuperNewRoles.EndGame;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {

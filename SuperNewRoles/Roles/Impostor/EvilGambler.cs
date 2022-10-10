@@ -1,5 +1,3 @@
-using HarmonyLib;
-using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 
@@ -7,25 +5,23 @@ namespace SuperNewRoles.Roles
 {
     class EvilGambler
     {
-        public static class EvilGamblerMurder
+        public static void MurderPlayerPrefix(PlayerControl __instance, PlayerControl target)
         {
-            public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+            if (__instance.IsRole(RoleId.EvilGambler))
             {
-                if (__instance.IsRole(RoleId.EvilGambler))
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
-                    if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-                    {
-                        SyncSetting.GamblersetCool(__instance);
-                        return;
-                    }
-                    else if (__instance == PlayerControl.LocalPlayer)
-                    {
-                        if (RoleClass.EvilGambler.GetSuc())//成功
-                            PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.SucCool);
-                        else//失敗
-                            PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.NotSucCool);
-                    }
+                    SyncSetting.GamblersetCool(__instance);
+                    return;
                 }
+            }
+        }
+        public static void MurderPlayerPostfix(PlayerControl __instance)
+        {
+            if (!__instance.IsRole(RoleId.EvilGambler)) return;
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles) && __instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            { // 成功 : 失敗
+                RoleClass.EvilGambler.currentCool = RoleClass.EvilGambler.GetSuc() ? RoleClass.EvilGambler.SucCool : RoleClass.EvilGambler.NotSucCool;
             }
         }
     }

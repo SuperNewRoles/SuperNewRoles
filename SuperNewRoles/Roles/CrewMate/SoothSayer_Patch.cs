@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-using SuperNewRoles.CustomRPC;
+
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -12,12 +13,12 @@ namespace SuperNewRoles.Roles
         {
             if (PlayerControl.LocalPlayer.IsDead() && PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer))
             {
-                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
             }
         }
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
-    class SoothSayer_Patch
+    public static class SoothSayer_Patch
     {
         private static string namedate;
         static void SoothSayerOnClick(int Index, MeetingHud __instance)
@@ -33,7 +34,7 @@ namespace SuperNewRoles.Roles
             }
             else
             {
-                namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
+                namedate = IntroDate.GetIntroDate(introdate, Target).NameKey;
             }
             var name = ModTranslation.GetString(namedate + "Name");
             FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.GetString("SoothSayerGetChat"), Target.NameText().text, name));
@@ -78,7 +79,7 @@ namespace SuperNewRoles.Roles
         {
             var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
             var introdate = Target.GetRole();
-            namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
+            namedate = IntroDate.GetIntroDate(introdate, Target).NameKey;
             if (RoleClass.SpiritMedium.DisplayMode)
             {
                 if (Target.IsImpostor()) namedate = "Impostor";
@@ -88,7 +89,7 @@ namespace SuperNewRoles.Roles
             }
             else
             {
-                namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
+                namedate = IntroDate.GetIntroDate(introdate, Target).NameKey;
             }
             var name = ModTranslation.GetString(namedate + "Name");
             FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.GetString("SoothSayerGetChat"), Target.NameText().text, name));
@@ -105,6 +106,7 @@ namespace SuperNewRoles.Roles
         }
         static void SpiritEvent(MeetingHud __instance)
         {
+            if (CustomOptions.SpiritMediumIsAutoMode.GetBool()) return;
             if (PlayerControl.LocalPlayer.IsRole(RoleId.SpiritMedium) && PlayerControl.LocalPlayer.IsAlive() && RoleClass.SpiritMedium.MaxCount >= 1)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
@@ -134,6 +136,29 @@ namespace SuperNewRoles.Roles
         {
             Event(__instance);
             SpiritEvent(__instance);
+            StartMeeting();
+        }
+        public static void StartMeeting()
+        {
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer) && RoleClass.SoothSayer.CanFirstWhite)
+            {
+                RoleClass.SoothSayer.CanFirstWhite = false;
+                List<PlayerControl> WhitePlayers = PlayerControl.AllPlayerControls.ToArray().ToList().FindAll(x => x.IsAlive() && x.IsCrew() && x.PlayerId != CachedPlayer.LocalPlayer.PlayerId);
+                if (WhitePlayers.Count <= 0) { FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(CachedPlayer.LocalPlayer, ModTranslation.GetString("SoothSayerNoneTarget")); return; }
+                PlayerControl Target = WhitePlayers.GetRandom();
+                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(CachedPlayer.LocalPlayer, Target.Data.PlayerName + ModTranslation.GetString("SoothSayerCrewmateText"));
+            }
+            else if (PlayerControl.LocalPlayer.IsRole(RoleId.SpiritMedium) && CustomOptions.SpiritMediumIsAutoMode.GetBool())
+            {
+                if (RoleClass.SpiritMedium.ExilePlayer == null) return;
+                string CrewText = RoleClass.SpiritMedium.ExilePlayer.IsCrew() ? ModTranslation.GetString("SoothSayerCrewmateText") : ModTranslation.GetString("SoothSayerNotCrewmateText");
+                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(CachedPlayer.LocalPlayer, RoleClass.SpiritMedium.ExilePlayer.Data.PlayerName + CrewText);
+                RoleClass.SpiritMedium.ExilePlayer = null;
+            }
+        }
+        public static void WrapUp(PlayerControl exiled)
+        {
+            RoleClass.SpiritMedium.ExilePlayer = exiled;
         }
     }
 }

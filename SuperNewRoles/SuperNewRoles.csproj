@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
-        <Version>1.2.3.0</Version>
+        <Version>1.4.2.2</Version>
         <Description>SuperNewRoles</Description>
         <Authors>ykundesu</Authors>
         <AmongUs Condition=" '$(AmongUs)' == '' ">C:/Program Files/Epic Games/AmongUs_mymod</AmongUs>
@@ -20,25 +20,26 @@
         <EmbeddedResource Include="Resources\**" />
     </ItemGroup>
 
-  <ItemGroup>
-		<Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
-		<Reference Include="$(AmongUs)/BepInEx/unhollowed/*.dll" />
-		<Reference Include="$(AmongUs)/BepInEx/plugins/Agartha.dll" />
-	</ItemGroup>
+    <ItemGroup>
+        <Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
+        <Reference Include="$(AmongUs)/BepInEx/unhollowed/*.dll" />
+        <Reference Include="$(AmongUs)/BepInEx/plugins/Agartha.dll" />
+    </ItemGroup>
 
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
         <Message Text="Second occurrence" />
         <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\netstandard2.1\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
     </Target>
 
-	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-		<Exec Command="python &quot;$(SolutionDir)StartTranslate.py&quot;" />
-	</Target>
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+        <Exec Command="python &quot;$(SolutionDir)StartTranslate.py&quot;" />
+    </Target>
 
     <ItemGroup>
-    <PackageReference Include="GitInfo" Version="2.0.20">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+        <PackageReference Include="GitInfo" Version="2.0.20">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="BepInEx.AutoPlugin" Version="1.0.1" PrivateAssets="all" />
     </ItemGroup>
 </Project>

@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles
 {
@@ -17,13 +16,13 @@ namespace SuperNewRoles.Roles
             {
                 if (exiled != null)
                 {
-                    if (PlayerControl.LocalPlayer.IsDead() && !CachedPlayer.LocalPlayer.Data.Disconnected && RoleClass.FalseCharges.Turns != 255)
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.FalseCharges) && PlayerControl.LocalPlayer.IsDead() && !CachedPlayer.LocalPlayer.Data.Disconnected && RoleClass.FalseCharges.Turns != 255)
                     {
                         if (RoleClass.FalseCharges.Turns <= 0) return;
                         if (exiled.PlayerId == RoleClass.FalseCharges.FalseChargePlayer)
                         {
                             RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
-                            MessageWriter Writer = RPCHelper.StartRPC((byte)CustomRPC.CustomRPC.ShareWinner);
+                            MessageWriter Writer = RPCHelper.StartRPC((byte)CustomRPC.ShareWinner);
                             Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             Writer.EndRPC();
                             if (AmongUsClient.Instance.AmHost)
@@ -32,7 +31,7 @@ namespace SuperNewRoles.Roles
                             }
                             else
                             {
-                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
                                 writer.Write((byte)CustomGameOverReason.FalseChargesWin);
                                 writer.Write(false);
                                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -62,11 +61,11 @@ namespace SuperNewRoles.Roles
                                         }
                                     }
                                     var player = ModHelpers.PlayerById(data.Key);
-                                    var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
+                                    var Writer = RPCHelper.StartRPC(CustomRPC.ShareWinner);
                                     Writer.Write(player.PlayerId);
                                     Writer.EndRPC();
                                     RPCProcedure.ShareWinner(player.PlayerId);
-                                    Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                                    Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                                     Writer.Write((byte)CustomGameOverReason.FalseChargesWin);
                                     Writer.EndRPC();
                                     RPCProcedure.SetWinCond((byte)CustomGameOverReason.FalseChargesWin);
@@ -75,8 +74,8 @@ namespace SuperNewRoles.Roles
                                         player
                                     };
                                     //EndGameCheck.WinNeutral(winplayers);
-                                    Chat.WinCond = CustomGameOverReason.FalseChargesWin;
-                                    Chat.Winner = new List<PlayerControl>
+                                    Mode.SuperHostRoles.Chat.WinCond = CustomGameOverReason.FalseChargesWin;
+                                    Mode.SuperHostRoles.Chat.Winner = new List<PlayerControl>
                                     {
                                         player
                                     };

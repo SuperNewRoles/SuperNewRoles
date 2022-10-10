@@ -1,4 +1,4 @@
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Buttons
@@ -10,7 +10,8 @@ namespace SuperNewRoles.Buttons
             return player.GetRole() switch
             {
                 RoleId.FastMaker => !RoleClass.FastMaker.IsCreatedMadMate,
-                RoleId.SecretlyKiller or RoleId.DoubleKiller or RoleId.Smasher => true,
+                RoleId.SecretlyKiller or RoleId.DoubleKiller or RoleId.Smasher or RoleId.Conjurer => true,
+                RoleId.Tasker => !CustomOptions.TaskerCanKill.GetBool(),
                 //キルボタン無効か
                 _ => false
             };
@@ -23,16 +24,6 @@ namespace SuperNewRoles.Buttons
                 RoleId.Fox => !RoleClass.Fox.UseReport,
                 RoleId.Neet => true,
                 //通報ボタン無効か
-                _ => false
-            };
-        }
-        public static bool IsDestroySabo(this PlayerControl player)
-        {
-            return player.GetRole() switch
-            {
-                RoleId.Minimalist => !RoleClass.Minimalist.UseSabo,
-                RoleId.DoubleKiller => !RoleClass.DoubleKiller.CanUseSabo,
-                //サボタージュボタン無効か
                 _ => false
             };
         }
@@ -49,27 +40,16 @@ namespace SuperNewRoles.Buttons
             }
             return IsDestroyUse;
         }
-        public static bool IsDestroyVent(this PlayerControl player)
-        {
-            return player.GetRole() switch
-            {
-                RoleId.Minimalist => !RoleClass.Minimalist.UseVent,
-                RoleId.DoubleKiller => !RoleClass.DoubleKiller.CanUseVent,
-                //ベントボタン無効化
-                _ => false,
-            };
-        }
     }
     public class NormalButtonDestroy
     {
-        public static void Postfix(PlayerControl player)
+        public static void Postfix()
         {
+            PlayerControl player = CachedPlayer.LocalPlayer;
             if (player.IsDestroyKill())
-            {
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
-            }
+                if (FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.active)
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
             if (player.IsDestroyReport())
-            {
                 if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
                 {
                     FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);//通報
@@ -80,28 +60,9 @@ namespace SuperNewRoles.Buttons
                     FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.enabled = false;
                     FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
                 }
-            }
-            if (player.IsDestroySabo())
-            {
-                if (FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.active)
-                {
-                    FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(false);
-                }
-            }
             if (player.IsDestroyUse())
-            {
                 if (FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.active)//使うボタンが有効の時
-                {
                     FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.SetActive(false);//使うボタンを無効化
-                }
-            }
-            if (player.IsDestroyVent())
-            {
-                if (FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.active)
-                {
-                    FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
-                }
-            }
         }
     }
 }

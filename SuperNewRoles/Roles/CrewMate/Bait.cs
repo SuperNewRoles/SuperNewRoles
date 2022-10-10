@@ -1,7 +1,7 @@
 using System.Linq;
 using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Patch;
+
+using SuperNewRoles.Patches;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -20,7 +20,7 @@ namespace SuperNewRoles.Roles
                 {
                     if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.BaitReport))
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ReportDeadBody, SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ReportDeadBody, SendOption.Reliable, -1);
                         writer.Write(deadPlayer.killerIfExisting.PlayerId);
                         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);

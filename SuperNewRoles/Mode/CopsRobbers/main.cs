@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using SuperNewRoles.Helpers;
-using static SuperNewRoles.Patch.SetNamesClass;
-using UnityEngine;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Patches;
+using UnityEngine;
+using static SuperNewRoles.Modules.SetNamesClass;
 
 namespace SuperNewRoles.Mode.CopsRobbers
 {
@@ -16,6 +17,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             IsMove = false;
             SpawnPosition = new();
             LastCount = 0;
+            OnGameEndPatch.EndData = null;
         }
         public static bool IsStart;
         public static PlayerControl GetBot()
@@ -52,10 +54,12 @@ namespace SuperNewRoles.Mode.CopsRobbers
         public static bool EndGameCheck(ShipStatus __instance)
         {
             bool impostorwin = true;
+            int ImpostorCount = 0;
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (!p.Data.Disconnected)
                 {
+                    if (p.IsImpostor()) ImpostorCount++;
                     if (!p.IsImpostor() && !p.IsArrest())
                     {
                         impostorwin = false;
@@ -74,10 +78,16 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                 return true;
             }
-            else
+            else if (ImpostorCount <= 0)
             {
-                return false;
+                __instance.enabled = false;
+                ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
+                return true;
             }
+            else if (SuperHostRoles.EndGameCheck.CheckAndEndGameForWorkpersonWin(__instance))
+                return false;
+            else
+                return false;
         }
         public static void ChangeCosmetics()
         {
@@ -180,39 +190,19 @@ namespace SuperNewRoles.Mode.CopsRobbers
         static float ImpostorMoveTime;
         static int LastCount;
         static float LastUpdate;
+        static float UpdateTime = 0.1f;
         public static List<byte> TeleportIDs = new();
-        public static void Teleport(PlayerControl player, Vector2 position)
-        {
-            player.RpcSnapTo(position);
-            return;
-            /*
-            PlayerControl bot = GetBot();
-            if (bot != null && !TeleportIDs.Contains(player.PlayerId))
-            {
-                IsTeleport = true;
-                TeleportIDs.Add(player.PlayerId);
-                bot.NetTransform.RpcSnapTo(position);
-                IsTeleport = false;
-                new LateTask(() =>
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("BOTX:"+ bot.transform.position.x);
-                    if (bot.transform.position.x != 99999) {
-                        player.RPCMurderPlayerPrivate(bot);
-                    }
-                    if (!IsTeleport)
-                    {
-                        bot.NetTransform.RpcSnapTo(new Vector2(99999, 99999));
-                    }
-                }, 0.5f);
-                new LateTask(() => {
-                    TeleportIDs.Remove(player.PlayerId);
-                }, 0.6f);
-            }
-            */
-        }
+        public static void Teleport(PlayerControl player, Vector2 position) => player.RpcSnapTo(position);
+
         public static void HudUpdate()
         {
-            if (!AmongUsClient.Instance.AmHost) return;
+            if (!AmongUsClient.Instance.AmHost) {
+                if (PlayerControl.LocalPlayer.Data.PlayerName == PlayerControl.LocalPlayer.GetDefaultName())
+                {
+                    SetNameUpdate.Postfix(CachedPlayer.LocalPlayer);
+                }
+                return;
+            }
             if (!IsStart) return;
             if (!IsMove)
             {
@@ -221,11 +211,6 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 int NotLoadedCount = 0;
                 if (PlayerControl.GameOptions.MapId == 4)
                 {
-                    /*
-                    if (PlayerControl.LocalPlayer.name != "　" && PlayerControl.LocalPlayer.name != "<color=black><size=7500%>■</size></color>")
-                    {
-                        PlayerControl.LocalPlayer.RpcSetName("<color=black><size=7500%>■</size></color>");
-                    }*/
                     foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                     {
                         if (ModHelpers.IsPositionDistance(p.transform.position, new Vector2(3, 6), 0.5f) ||
@@ -251,27 +236,15 @@ namespace SuperNewRoles.Mode.CopsRobbers
                         p.RpcSetNamePrivate(name);
                     }
                 }
-                /*
-                if (!ModHelpers.IsPositionDistance(CachedPlayer.LocalPlayer.transform.position, new Vector2(9990, 8551f), 0.5f) &&
-                    !ModHelpers.IsPositionDistance(CachedPlayer.LocalPlayer.transform.position, new Vector2(9990, 8550f), 0.5f))
-                {
-                    if (players.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
-                    {
-                        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(9991, 8551f));
-                        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(9990, 8550f));
-                    }
-                    else
-                    {
-                        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(9991, 8552f));
-                        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(9990, 8551f));
-                    }
-                }
-                */
+
                 int i = 0;
                 foreach (PlayerControl p in players)
                 {
-                    p.RpcSnapTo(new Vector2(-30, 30));
-                    i++;
+                    if (PlayerControl.GameOptions.MapId == 4)
+                    {
+                        p.RpcSnapTo(new Vector2(-30, 30));
+                        i++;
+                    }
                 }
                 if (IsMoveOK)
                 {
@@ -314,7 +287,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 int i = 0;
                 foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                 {
-                    if (p.PlayerControl.IsImpostor())
+                    if (PlayerControl.GameOptions.MapId == 4 && p.PlayerControl.IsImpostor())
                     {
                         p.PlayerControl.RpcSnapTo(new Vector2(-30, 30));
                         i++;
@@ -325,14 +298,22 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.RpcSetName(p.GetDefaultName());
-                        if (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool()) HideName();
-                        if (p.IsImpostor())
+                        if (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool()) ModeHandler.HideName();
+                        if (PlayerControl.GameOptions.MapId == 4 && p.IsImpostor())
                         {
                             p.RpcSnapTo(GetPosition(GetRandomSpawnPosition(p)));
                         }
                     }
                 }
                 return;
+            }
+
+            SetNameUpdate.Postfix(CachedPlayer.LocalPlayer);
+            UpdateTime -= Time.deltaTime;
+            if (UpdateTime <= 0)
+            {
+                UpdateTime = 0.5f;
+                RoleSystem.RoleSetName();
             }
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
@@ -359,14 +340,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                                     var DistanceData = Vector2.Distance(p.transform.position, getpos);
                                     bool flag = false;
                                     flag = DistanceData >= 1f;
-                                    /*if (p.PlayerId == 0)
-                                    {
-                                        flag = DistanceData >= 2f;
-                                    } else
-                                    {
-                                        flag = DistanceData >= 0.5;
-                                    }
-                                    */
+
                                     if (flag)
                                     {
                                         Teleport(p, getpos);
@@ -395,20 +369,6 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     }
                 }
             }
-        }
-        public static void HideName()
-        {
-            if (AmongUsClient.Instance.AmHost)
-            {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                {
-                    string name = "<color=#00000000>" + p.GetDefaultName();
-
-                    p.RpcSetName(name);
-                    SuperNewRolesPlugin.Logger.LogInfo("[Mode.CopsRobbers : HideName()]" + p.GetDefaultName() + "の名前を透明に変更しました");
-                }
-            }
-            else SuperNewRolesPlugin.Logger.LogInfo("[Mode.CopsRobbers : HideName()]" + PlayerControl.LocalPlayer.GetDefaultName() + "ホストでない為、名前を透明化する処理を飛ばしました。");
         }
     }
 }

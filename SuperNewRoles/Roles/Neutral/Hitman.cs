@@ -1,30 +1,27 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using UnityEngine;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.CustomObject;
 using Hazel;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.EndGame;
+using SuperNewRoles.Patches;
+using UnityEngine;
+
 
 namespace SuperNewRoles.Roles.Neutral
 {
     public static class Hitman
     {
-        //ここにコードを書きこんでください
         public static void KillSuc()
         {
             RoleClass.Hitman.WinKillCount--;
             if (RoleClass.Hitman.WinKillCount <= 0)
             {
                 RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
-                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                 Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(Writer);
 
-                Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                 Writer.Write((byte)CustomGameOverReason.HitmanWin);
                 Writer.EndRPC();
                 RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
@@ -36,7 +33,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
                 else
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
                     writer.Write((byte)reason);
                     writer.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -45,7 +42,7 @@ namespace SuperNewRoles.Roles.Neutral
         }
         public static void EndMeeting()
         {
-            Buttons.HudManagerStartPatch.HitmanKillButton.MaxTimer = RoleClass.Hitman.KillCoolTime;
+            Buttons.HudManagerStartPatch.HitmanKillButton.MaxTimer = CustomOptions.HitmanKillCoolTime.GetFloat();
             Buttons.HudManagerStartPatch.HitmanKillButton.Timer = Buttons.HudManagerStartPatch.HitmanKillButton.MaxTimer;
         }
         public static void FixedUpdate()
@@ -56,20 +53,21 @@ namespace SuperNewRoles.Roles.Neutral
             {
                 SetTarget();
                 LimitDown();
-                RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
+                RoleClass.Hitman.UpdateTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
             }
             if (PlayerControl.LocalPlayer.IsDead())
             {
                 if (RoleClass.Hitman.cooldownText != null)
                 {
-                    UnityEngine.Object.Destroy(RoleClass.Hitman.cooldownText.gameObject);
+                    Object.Destroy(RoleClass.Hitman.cooldownText.gameObject);
                     RoleClass.Hitman.cooldownText = null;
                 }
-            } else
+            }
+            else
             {
                 if (RoleClass.Hitman.cooldownText != null)
                 {
-                    RoleClass.Hitman.cooldownText.text = Mathf.CeilToInt(Mathf.Clamp(RoleClass.Hitman.UpdateTime, 0, RoleClass.Hitman.ChangeTargetTime)).ToString();
+                    RoleClass.Hitman.cooldownText.text = Mathf.CeilToInt(Mathf.Clamp(RoleClass.Hitman.UpdateTime, 0, CustomOptions.HitmanChangeTargetTime.GetFloat())).ToString();
                 }
                 if (RoleClass.Hitman.Target != null)
                 {
@@ -109,12 +107,13 @@ namespace SuperNewRoles.Roles.Neutral
         {
             if (!PlayerControl.LocalPlayer.IsRole(RoleId.Hitman)) return;
             SetTarget();
-            RoleClass.Hitman.UpdateTime = RoleClass.Hitman.ChangeTargetTime;
+            RoleClass.Hitman.UpdateTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
         }
         public static void SetTarget()
         {
             List<PlayerControl> targets = PlayerControl.AllPlayerControls.ToArray().ToList();
-            targets.RemoveAll(player => {
+            targets.RemoveAll(player =>
+            {
                 return player.IsDead() || player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
             });
             if (targets.Count > 0)
@@ -136,7 +135,8 @@ namespace SuperNewRoles.Roles.Neutral
             if (RoleClass.Hitman.ArrowUpdateTimeDefault != -1)
             {
                 RoleClass.Hitman.TargetArrow = new Arrow(RoleClass.Hitman.color);
-                if (RoleClass.Hitman.Target != null) {
+                if (RoleClass.Hitman.Target != null)
+                {
                     RoleClass.Hitman.ArrowPosition = RoleClass.Hitman.Target.transform.position;
                     RoleClass.Hitman.TargetArrow.Update(RoleClass.Hitman.Target.transform.position);
                 }

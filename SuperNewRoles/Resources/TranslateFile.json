@@ -439,14 +439,14 @@
         "13": "\u5176\u4ed6\u8bbe\u7f6e"
     },
     "optionOn": {
-        "0": "On",
-        "11": "\u30aa\u30f3",
-        "13": "\u5f00\u542f"
+        "0": "<color=#03ff0c>On</color>",
+        "11": "<color=#03ff0c>\u30aa\u30f3</color>",
+        "13": "<color=#03ff0c>\u5f00\u542f</color>"
     },
     "optionOff": {
-        "0": "Off",
-        "11": "\u30aa\u30d5",
-        "13": "\u5173\u95ed"
+        "0": "<color=#f22f21>Off</color>",
+        "11": "<color=#f22f21>\u30aa\u30d5</color>",
+        "13": "<color=#f22f21>\u5173\u95ed</color>"
     },
     "preset1": {
         "0": "Preset 1",
@@ -602,6 +602,11 @@
         "0": "The version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0} is wrong.",
         "11": "{0}\u306e<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u30d0\u30fc\u30b8\u30e7\u30f3\u304c\u9055\u3044\u307e\u3059\u3002",
         "13": "{0}\u5b89\u88c5\u7684<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u6a21\u7ec4\u7248\u672c\u4e0d\u540c"
+    },
+    "IsSpecialModeOnAndVanillaKickOff": {
+        "0": "If <color=#2792c3>[Kick non-PCs]</color> is disabled, the\nmap will be selected for <color=#cd5c5c>MiraHQ</color>.\nIf you want to use<color=#a67646>Agartha</color>\nEnable <color=#2792c3>[Kick non-PCs]</color>.",
+        "11": "<color=#2792c3>\u300cPC\u4ee5\u5916\u3092\u30ad\u30c3\u30af\u3059\u308b\u300d</color>\u304c\u7121\u52b9\u3067\u3042\u308b\u5834\u5408\u3001\n\u30de\u30c3\u30d7\u306f<color=#cd5c5c>MiraHQ</color>\u306b\u9078\u629e\u3055\u308c\u307e\u3059\u3002\n<color=#a67646>Agartha</color>\u3092\u4f7f\u7528\u3057\u305f\u3044\u5834\u5408\u306f\u3001\n<color=#2792c3>\u300cPC\u4ee5\u5916\u3092\u30ad\u30c3\u30af\u3059\u308b\u300d</color>\u3092\u6709\u52b9\u306b\u3057\u3066\u304f\u3060\u3055\u3044\u3002",
+        "13": "\u5982\u679c <color=#2792c3>\"\u8e22\u6389\u975ePC\u7684\u4eba\"</color>\u88ab\u7981\u7528\uff0c\u90a3\u4e48\n\u5c06\u4e3a<color=#cd5c5c>MiraHQ</color>\u9009\u62e9\u5730\u56fe\u3002\n<color=#a67646>Agartha</color>\n\u542f\u7528 <color=#2792c3>\"\u8e22\u6389\u975ePC\u7684\u4eba\"</color>\u3002"
     },
     "RamdomMapSetting": {
         "0": "RandomMap",
@@ -814,6 +819,11 @@
         "11": "\u505c\u96fb\u4fee\u7406\u4e2d\u3067\u3082\u9032\u3080",
         "13": "\u51fb\u6740\u51b7\u5374\u4f1a\u5728\u4fee\u7406\u7d27\u6025\u4efb\u52a1\u65f6\u505c\u6b62\u8ba1\u7b97"
     },
+    "IsChangeTheWinCondition": {
+        "0": "Change the win condition",
+        "11": "\u52dd\u5229\u6761\u4ef6\u3092\u5909\u66f4\u3059\u308b",
+        "13": "\u6539\u53d8\u80dc\u5229\u6761\u4ef6"
+    },
     "DisconnectNotPC": {
         "0": "Kick non-PCs.",
         "11": "PC\u4ee5\u5916\u3092\u30ad\u30c3\u30af\u3059\u308b",
@@ -968,11 +978,6 @@
         "0": "Seconds to be able to make a kill",
         "11": "\u30ad\u30eb\u304c\u3067\u304d\u308b\u3088\u3046\u306b\u306a\u308b\u307e\u3067\u306e\u79d2\u6570",
         "13": "\u4ece\u6e38\u620f\u5f00\u59cb\u5230\u73a9\u5bb6\u53ef\u51fb\u6740\u7ecf\u8fc7\u7684\u65f6\u95f4"
-    },
-    "LevelUpModeName": {
-        "0": "Level Up",
-        "11": "\u30ec\u30d9\u30eb\u30a2\u30c3\u30d7",
-        "13": "\u5347\u7ea7"
     },
     "ZombieZombieName": {
         "0": "Zombie",
@@ -1229,11 +1234,6 @@
         "11": "\u5168\u54e1\u304c\u89e3\u9664\u3057\u306a\u3044\u3068\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u3067\u304d\u306a\u3044",
         "13": "\u6709\u73a9\u5bb6\u6ca1\u6709\u89e3\u9664\u8ba4\u77e5\u5e72\u6270\u5219\u7834\u574f\u4e0d\u80fd\u53d1\u8d77"
     },
-    "WareWolfHunter": {
-        "0": "Hunter",
-        "11": "\u30cf\u30f3\u30bf\u30fc",
-        "13": "\u730e\u624b"
-    },
     "WereWolfHunterText": {
         "0": "Let's die with someone else.",
         "11": "\u8ab0\u304b\u3092\u9053\u9023\u308c\u306b\u3057\u3088\u3046",
@@ -1304,6 +1304,21 @@
         "11": "{0}\u306e\u5f79\u8077\u306f{1}\u3067\u3059!",
         "13": "{0}\u7684\u804c\u4e1a\u662f{1}!"
     },
+    "WerewolfModeName": {
+        "0": "Werewolf",
+        "11": "\u4eba\u72fc",
+        "13": "\u00a0"
+    },
+    "WerewolfAbilityTimeSetting": {
+        "0": "Ability Time",
+        "11": "\u80fd\u529b\u4f7f\u7528\u30bf\u30a4\u30e0",
+        "13": "\u00a0"
+    },
+    "WerewolfAbilityTime": {
+        "0": "{0} seconds remaining until the end of the ability use time",
+        "11": "\u80fd\u529b\u4f7f\u7528\u30bf\u30a4\u30e0\u304c\u7d42\u4e86\u3059\u308b\u307e\u3067\u6b8b\u308a{0}\u79d2",
+        "13": "\u00a0"
+    },
     "HauntedWolfName": {
         "0": "HauntedWolf",
         "11": "\u72fc\u6191\u304d",
@@ -1343,6 +1358,15 @@
         "0": "Waiting for all players to spawn...\nLoading: {0} people remaining</color></size>",
         "11": "\u5168\u30d7\u30ec\u30a4\u30e4\u30fc\u306e\u30b9\u30dd\u30fc\u30f3\u3092\u5f85\u3063\u3066\u3044\u307e\u3059...\n\u30ed\u30c9\u30fc\u4e2d:\u6b8b\u308a{0}\u4eba</color></size>",
         "13": "\u7b49\u5f85\u6240\u6709\u73a9\u5bb6\u8fdb\u5165\u884c\u52a8\u9636\u6bb5...\n\u8f7d\u5165\u4e2d:\u8fd8\u5269{0}\u4eba</color></size>"
+    },
+    "CRHideNameSetting": {
+        "0": "Hide Name",
+        "11": "\u540d\u524d\u3092\u96a0\u3059",
+        "13": "\u9690\u59d3\u57cb\u540d"
+    },
+    "IsOldMode": {
+        "0": "OldMode",
+        "11": "\u30aa\u30eb\u30c9\u30e2\u30fc\u30c9"
     },
     "CrewMateName": {
         "0": "Crewmate",
@@ -1894,15 +1918,18 @@
         "11": "\u30bf\u30b9\u30af\u3092\u9811\u5f35\u3063\u3066\u7d42\u308f\u3089\u305b\u3088\u3046",
         "13": "\u5927\u5e08\uff0c\u4efb\u52a1\u8fd8\u6ca1\u5b8c\u6210\uff0c\u8fd8\u4e0d\u80fd\u4f11\u606f\u54e6"
     },
-    "TaskerTaskSetting": {
-        "0": "Task Amount",
-        "11": "\u30bf\u30b9\u30af\u91cf",
-        "13": "\u4efb\u52a1\u5927\u5e08\u4efb\u52a1\u6570"
+    "TaskerIsKillCoolTaskNow": {
+        "0": "Kill cool time is saved during the task.",
+        "11": "\u30bf\u30b9\u30af\u4e2d\u306b\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0\u304c\u8caf\u307e\u308b"
     },
-    "TaskerIsKillSetting": {
+    "TaskerCanKill": {
         "0": "Killable",
         "11": "\u30ad\u30eb\u3067\u304d\u308b",
         "13": "\u4efb\u52a1\u5927\u5e08\u53ef\u51fb\u6740"
+    },
+    "TaskerWinText": {
+        "0": "Impostor Task",
+        "11": "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u30bf\u30b9\u30af"
     },
     "DoorrName": {
         "0": "Doorr",
@@ -2054,30 +2081,30 @@
         "11": "\u30b9\u30d4\u30fc\u30c9\u30c0\u30a6\u30f3",
         "13": "\u51cf\u901f"
     },
-    "GuesserName": {
+    "NiceGuesserName": {
         "0": "Guesser",
         "11": "\u30b2\u30c3\u30b5\u30fc",
         "13": "\u4fa0\u5ba2"
     },
-    "GuesserTitle1": {
+    "NiceGuesserTitle1": {
         "0": "Let's punch out the outsider.",
         "11": "\u4eba\u5916\u3092\u6253\u3061\u629c\u3053\u3046",
-        "13": "\u751f\u547d\u5c31\u662f\u8c6a\u8d4c"
+        "13": "\u751f\u547d\u5c31\u662f\u8c6a?"
     },
-    "GuesserTitle2": {
+    "NiceGuesserTitle2": {
         "0": "Guess the position of the outsider",
         "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
-        "13": "\u5728\u4f1a\u8bae\u4e0a\u731c\u6d4b\u654c\u4eba\u7684\u8eab\u4efd"
+        "13": "\u5728\u4f1a?\u4e0a\u731c??\u4eba\u7684\u8eab?"
     },
     "GuesserOneMeetingShortSetting": {
         "0": "Multiple hits in one meeting",
         "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
-        "13": "\u4fa0\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a\u8bae\u4e2d\u591a\u6b21\u731c\u6d4b"
+        "13": "\u4fa0\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a?\u4e2d\u591a\u6b21\u731c?"
     },
     "GuesserShortMaxCountSetting": {
         "0": "Number of times you can hit",
         "11": "\u6253\u3066\u308b\u56de\u6570",
-        "13": "\u4fa0\u5ba2\u6700\u5927\u53ef\u731c\u6d4b\u6b21\u6570"
+        "13": "\u4fa0\u5ba2\u6700\u5927\u53ef\u731c?\u6b21\u6570"
     },
     "EvilGuesserName": {
         "0": "Evil Guesser",
@@ -2087,22 +2114,25 @@
     "EvilGuesserTitle1": {
         "0": "Guess the position of the camp other than Imposter.",
         "11": "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u4ee5\u5916\u306e\u9663\u55b6\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
-        "13": "\u5728\u4f1a\u8bae\u4e0a\u731c\u6d4b\u4ed6\u4eba\u7684\u8eab\u4efd"
+        "13": "\u5728\u4f1a?\u4e0a\u731c?\u4ed6\u4eba\u7684\u8eab?"
+    },
+    "EvilGuesserTitle2": {
+        "0": "Guess the position of the outsider",
+        "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
+        "13": "\u523a\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a?\u4e2d\u591a\u6b21\u731c?"
     },
     "EvilGuesserOneMeetingShortSetting": {
         "0": "Multiple hits in one meeting",
-        "11": "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046",
-        "13": "\u523a\u5ba2\u80fd\u5426\u5728\u4e00\u6b21\u4f1a\u8bae\u4e2d\u591a\u6b21\u731c\u6d4b"
+        "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
+        "13": "\u523a\u5ba2\u6700\u5927\u53ef\u731c?\u6b21\u6570"
     },
     "EvilGuesserShortMaxCountSetting": {
         "0": "Number of times you can hit",
-        "11": "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b",
-        "13": "\u523a\u5ba2\u6700\u5927\u53ef\u731c\u6d4b\u6b21\u6570"
+        "11": "\u6253\u3066\u308b\u6700\u5927\u6570"
     },
     "VultureName": {
         "0": "Vulture",
-        "11": "\u30f4\u30a1\u30eb\u30c1\u30e3\u30fc",
-        "13": "\u79c3\u9e6b"
+        "11": "\u30f4\u30a1\u30eb\u30c1\u30e3\u30fc"
     },
     "VultureTitle1": {
         "0": "Let's eat a corpse.",
@@ -4546,13 +4576,334 @@
     },
     "SatsumaAndImoName": {
         "0": "SatsumaAndImo",
-        "11": "\u3055\u3064\u3068\u307e\u3044\u3082",
+        "11": "\u3055\u3064\u307e\u3068\u3044\u3082",
         "13": "\u4eba\u683c\u5206\u88c2\u8005"
     },
     "SatsumaAndImoTitle1": {
         "0": "Madmate And Crewmate",
         "11": "\u30de\u30c3\u30c9\u30e1\u30a4\u30c8 & \u30af\u30eb\u30fc\u30e1\u30a4\u30c8",
         "13": "\u662f\u6211\u75af\u4e86\uff0c\u8fd8\u662f\u5927\u5bb6\u90fd\u75af\u4e86\uff1f"
+    },
+    "ShiftActorName": {
+        "0": "Shift Actor",
+        "11": "\u30b7\u30d5\u30c8\u30a2\u30af\u30bf\u30fc"
+    },
+    "ShiftActorTitle1": {
+        "0": "Let's play it out perfectly",
+        "11": "\u5b8c\u74a7\u306b\u6f14\u3058\u5207\u308d\u3046"
+    },
+    "CanWatchAttribute": {
+        "0": "Can watch attribute",
+        "11": "\u91cd\u8907\u5f79\u8077\u3092\u898b\u308c\u308b"
+    },
+    "ShiftActorText1": {
+        "0": "'s role is",
+        "11": "\u306e\u5f79\u8077\u306f"
+    },
+    "ShiftActorText2": {
+        "0": ".",
+        "11": "\u3067\u3059"
+    },
+    "MadRolesCanFixComms": {
+        "0": "Mad roles can fix comms sabotage",
+        "11": "\u30de\u30c3\u30c9\u5f79\u8077\u304c\u30b3\u30df\u30e5\u30b5\u30dc\u3092\u6cbb\u305b\u308b"
+    },
+    "MadRolesCanFixElectrical": {
+        "0": "Mad roles can fix electrical sabotage",
+        "11": "\u30de\u30c3\u30c9\u5f79\u8077\u304c\u505c\u96fb\u3092\u6cbb\u305b\u308b"
+    },
+    "MadRolesCanVentMove": {
+        "0": "Mad roles can vent move",
+        "11": "\u30de\u30c3\u30c9\u9663\u55b6\u304c\u30d9\u30f3\u30c8\u79fb\u52d5\u3067\u304d\u308b"
+    },
+    "DoppelgangerName": {
+        "0": "Doppelganger",
+        "11": "\u30c9\u30c3\u30da\u30eb\u30b2\u30f3\u30ac\u30fc",
+        "13": "\u591a\u4f69\u5c14\u6839\u683c"
+    },
+    "DoppelgangerTitle1": {
+        "0": "\"It seems that if you'll meet myself, you're dead\"",
+        "11": "\u540c\u3058\u9854\u306e\u4eba\u306b\u51fa\u4f1a\u3046\u3068\u6b7b\u3093\u3058\u3083\u3046\u3093\u3060\u3063\u3066",
+        "13": "\u4ed6\u4eec\u8bf4\uff0c\u5982\u679c\u4f60\u9047\u5230\u76f8\u540c\u9762\u5b54\u7684\u4eba\uff0c\u4f60\u5c31\u4f1a\u6b7b"
+    },
+    "DoppelgangerDescription": {
+        "0": "Doppelgangers can ShapeShift.\nIf a ShapeShifted target is killed during ShapeShift, the Kill Cool  is shorter.\nIf, instead, a non-shapeShifted target is killed or a non-shapeShifted target is killed, the Kill Cool will be longer.",
+        "11": "\u30c9\u30c3\u30da\u30eb\u30b2\u30f3\u30ac\u30fc\u306f\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u304c\u3067\u304d\u307e\u3059\n\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u3092\u3057\u305f\u72b6\u614b\u3067\u3001\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u306e\u5909\u8eab\u5148\u3092\u30ad\u30eb\u3059\u308b\u3068\u30ad\u30eb\u30af\u30fc\u30eb\u304c\u77ed\u304f\u306a\u308a\u307e\u3059\u3002\n\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u306e\u5909\u8eab\u5148\u4ee5\u5916\u3092\u30ad\u30eb\u3057\u305f\u308a\u3001\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u3092\u3057\u306a\u3044\u72b6\u614b\u3067\u30ad\u30eb\u3059\u308b\u3068\u3001\u30ad\u30eb\u30af\u30fc\u30eb\u304c\u9577\u304f\u306a\u3063\u3066\u3057\u307e\u3059\u3002",
+        "13": "\u4e8c\u91cd\u8eab\u53ef\u4ee5\u53d8\u8eab\u3002\n\u5982\u679c\u4f60\u5728\u79fb\u5f62\u6362\u5f71\u65f6\u6740\u6b7b\u4e00\u4e2a\u79fb\u5f62\u6362\u5f71\u7684\u76ee\u6807\uff0c\u6740\u622e\u51b7\u5374\u65f6\u95f4\u4f1a\u7f29\u77ed\u3002\n\u76f8\u53cd\uff0c\u5982\u679c\u4f60\u6740\u4e86\u4e00\u4e2a\u975e\u79fb\u5f62\u6362\u5f71\u6216\u975e\u79fb\u5f62\u6362\u5f71\u7684\u76ee\u6807\uff0c\u6740\u622e\u51b7\u5374\u4f1a\u66f4\u957f\u3002"
+    },
+    "DoppelgangerDurationTimeSetting": {
+        "0": "Shapeshift Duration",
+        "11": "\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u306e\u6301\u7d9a\u6642\u9593",
+        "13": "\u79fb\u5f62\u6362\u5f71\u6301\u7eed\u65f6\u95f4"
+    },
+    "DoppelgangerCoolDownSetting": {
+        "0": "Shapeshift Cooldown",
+        "11": "\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0",
+        "13": "\u79fb\u5f62\u6362\u5f71\u7684\u51b7\u5374\u65f6\u95f4"
+    },
+    "DoppelgangerSucTimeSetting": {
+        "0": "Kill Cool Time on Success",
+        "11": "\u6210\u529f\u6642\u306e\u30ad\u30eb\u30af\u30fc\u30eb",
+        "13": "\u8d4c\u5f92\u8d4c\u535a\u6210\u529f\u7684\u51fb\u6740\u51b7\u5374"
+    },
+    "DoppelgangerNotSucTimeSetting": {
+        "0": "Kill Cool Time on Failur",
+        "11": "\u5931\u6557\u6642\u306e\u30ad\u30eb\u30af\u30fc\u30eb",
+        "13": "\u8d4c\u5f92\u8d4c\u535a\u5931\u8d25\u7684\u51fb\u6740\u51b7\u5374"
+    },
+    "DoppelgangerButtonName": {
+        "0": "ShapeShift",
+        "11": "\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8",
+        "13": "\u79fb\u5f62\u6362\u5f71"
+    },
+    "DoppelgangerDurationTimerText": {
+        "0": "{0} seconds left to deactivate.",
+        "11": "\u89e3\u9664\u307e\u3067{0}\u79d2",
+        "13": "\u8fd8\u6709{0}\u79d2\u89e3\u9664\u6b66\u88c5"
+    },
+    "WaveCannonName": {
+        "0": "Wave Cannon",
+        "11": "\u6ce2\u52d5\u7832"
+    },
+    "WaveCannonTitle1": {
+        "0": "Use the cannon and get the kill!",
+        "11": "\u5927\u7832\u3092\u4f7f\u7528\u3057\u3001\u30ad\u30eb\u3057\u3088\u3046"
+    },
+    "WaveCannonChargeTime": {
+        "0": "Charge Time",
+        "11": "\u30c1\u30e3\u30fc\u30b8\u6642\u9593"
+    },
+    "WaveCannonButtonName": {
+        "0": "Wave Cannon",
+        "11": "\u6ce2\u52d5\u7832"
+    },
+    "WaveCannonJackalName": {
+        "0": "Wave Cannon Jackal",
+        "11": "\u6ce2\u52d5\u7832\u30b8\u30e3\u30c3\u30ab\u30eb"
+    },
+    "WaveCannonJackalTitle1": {
+        "0": "Use the cannon and get the kill!",
+        "11": "\u5927\u7832\u3092\u4f7f\u7528\u3057\u3001\u30ad\u30eb\u3057\u3088\u3046"
+    },
+    "CrackerName": {
+        "0": "Cracker",
+        "11": "\u30af\u30e9\u30c3\u30ab\u30fc"
+    },
+    "CrackerTitle1": {
+        "0": "Let's crack on and play God!",
+        "11": "\u30af\u30e9\u30c3\u30af\u3057\u3066\u795e\u96a0\u3057\u3092\u3057\u3088\u3046"
+    },
+    "CrackerIsAdminView": {
+        "0": "Counted by Admins",
+        "11": "\u30a2\u30c9\u30df\u30f3\u306b\u30ab\u30a6\u30f3\u30c8\u3055\u308c\u308b"
+    },
+    "CrackerIsVitalsView": {
+        "0": "Counted in Vitals",
+        "11": "\u30d0\u30a4\u30bf\u30eb\u306b\u30ab\u30a6\u30f3\u30c8\u3055\u308c\u308b"
+    },
+    "CrackerOneTurnSelectCount": {
+        "0": "Number of times you can crack in one turn",
+        "11": "1\u30bf\u30fc\u30f3\u5185\u306b\u30af\u30e9\u30c3\u30af\u3067\u304d\u308b\u56de\u6570"
+    },
+    "CrackerAllTurnSelectCount": {
+        "0": "Number of times you can crack during a match",
+        "11": "\u8a66\u5408\u4e2d\u306b\u30af\u30e9\u30c3\u30af\u3067\u304d\u308b\u56de\u6570"
+    },
+    "CrackerIsSelfNone": {
+        "0": "Cracks are unrecognizable to the cracker",
+        "11": "\u30af\u30e9\u30c3\u30af\u8005\u306f\u30af\u30e9\u30c3\u30af\u3092\u8a8d\u8b58\u3067\u304d\u306a\u3044"
+    },
+    "CrackerButtonName": {
+        "0": "Crack!!!",
+        "11": "\u30af\u30e9\u30c3\u30af"
+    },
+    "CamouflagerName": {
+        "0": "Camouflager",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e3\u30fc",
+        "13": "\u4f2a\u88c5\u8005"
+    },
+    "CamouflagerTitle1": {
+        "0": "Let's hide in the crowd.",
+        "11": "\u4eba\u6df7\u307f\u306b\u96a0\u308c\u3088\u3046",
+        "13": "\u8ba9\u6211\u4eec\u8eb2\u5728\u4eba\u7fa4\u4e2d"
+    },
+    "CamouflagerCoolTimeSetting": {
+        "0": "Camouflage Cooltime",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+    },
+    "CamouflagerDurationTimeSetting": {
+        "0": "Camouflage Duration",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u306e\u6301\u7d9a\u6642\u9593"
+    },
+    "CamouflagerCamouflageArsonistSetting": {
+        "0": "Arsonists can still see mark while activating their skill",
+        "11": "\u30a2\u30fc\u30bd\u30cb\u30b9\u30c8\u304c\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306b\u5857\u3063\u305f\u4eba\u304c\u308f\u304b\u308b"
+    },
+    "CamouflagerCamouflageDemonSetting": {
+        "0": "Demon can still see mark while activating their skill",
+        "11": "\u60aa\u9b54\u304c\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306b\u546a\u3063\u305f\u4eba\u304c\u308f\u304b\u308b"
+    },
+    "CamouflagerCamouflageLoversSetting": {
+        "0": "Lovers can still see mark while activating their skill",
+        "11": "\u30e9\u30d0\u30fc\u30ba\u304c\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306b\u76f8\u65b9\u304c\u308f\u304b\u308b"
+    },
+    "CamouflagerCamouflageQuarreledSetting": {
+        "0": "Quarreled can still mark while activating their skill",
+        "11": "\u30af\u30e9\u30fc\u30c9\u304c\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306b\u76f8\u65b9\u304c\u308f\u304b\u308b"
+    },
+    "CamouflagerCamouflageChangeColorSetting": {
+        "0": "Change the color of camouflage",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306e\u8272\u3092\u5909\u66f4\u3059\u308b"
+    },
+    "CamouflagerCamouflageColorSetting": {
+        "0": "Camouflage color",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5\u4e2d\u306e\u8272"
+    },
+    "CamouflagerButtonName": {
+        "0": "Camouflager",
+        "11": "\u30ab\u30e2\u30d5\u30e9\u30fc\u30b8\u30e5"
+    },
+    "PavlovsdogsName": {
+        "0": "Pavlov's dogs",
+        "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u72ac"
+    },
+    "PavlovsownerName": {
+        "0": "Pavlov's owner",
+        "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u30aa\u30fc\u30ca\u30fc"
+    },
+    "PavlovsdogsTitle1": {
+        "0": "Let us be of service.",
+        "11": "\u304a\u5f79\u306b\u7acb\u3063\u3066\u307f\u305b\u307e\u3057\u3087\u3046",
+        "13": "\u8ba9\u6211\u4eec\u4e3a\u60a8\u63d0\u4f9b\u670d\u52a1\u3002"
+    },
+    "PavlovsownerTitle1": {
+        "0": "Be my dog!",
+        "11": "\u79c1\u306e\u72ac\u306b\u306a\u308a\u306a\u3055\u3044\uff01",
+        "13": "\u505a\u6211\u7684\u72d7!"
+    },
+    "PavlovsownerCreateDogCoolTime": {
+        "0": "Side Kick Cool Time",
+        "11": "\u30b5\u30a4\u30c9\u30ad\u30c3\u30af\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+    },
+    "PavlovsownerCreateDogLimit": {
+        "0": "Number of times a side kick can be made in one match",
+        "11": "1\u8a66\u5408\u5185\u306b\u30b5\u30a4\u30c9\u30ad\u30c3\u30af\u3067\u304d\u308b\u56de\u6570"
+    },
+    "PavlovsownerIsTargetImpostorDeath": {
+        "0": "Self-destruct if the opponent is an Imposter",
+        "11": "\u76f8\u624b\u304c\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3060\u3068\u81ea\u7206\u3059\u308b"
+    },
+    "PavlovsdogIsImpostorView": {
+        "0": "Pavlov's dog has a view of the imposter",
+        "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u72ac\u304c\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u8996\u754c"
+    },
+    "PavlovsdogRunAwayKillCoolTime": {
+        "0": "Coold time when out of control",
+        "11": "\u66b4\u8d70\u6642\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+    },
+    "PavlovsdogRunAwayDeathTime": {
+        "0": "Self-destruct time when out of control",
+        "11": "\u66b4\u8d70\u6642\u306e\u81ea\u7206\u30bf\u30a4\u30e0"
+    },
+    "PavlovsdogRunAwayDeathTimeIsMeetingReset": {
+        "0": "Reset self-destruct time in a meeting",
+        "11": "\u4f1a\u8b70\u3067\u81ea\u7206\u30bf\u30a4\u30e0\u3092\u30ea\u30bb\u30c3\u30c8\u3059\u308b"
+    },
+    "PavlovsTeamWinText": {
+        "0": "Pavlov's dog and owner",
+        "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u72ac\u3068\u30aa\u30fc\u30ca\u30fc"
+    },
+    "KnightName": {
+        "0": "Knight",
+        "11": "\u9a0e\u58eb\u306e\u8b77\u885b\u304c\u6210\u529f\u3057\u307e\u3057\u305f\u3002"
+    },
+    "KnightTitle1": {
+        "0": "I will protect you according to my beliefs.",
+        "11": "\u6211\u304c\u4fe1\u5ff5\u306b\u6cbf\u3063\u3066\u8b77\u885b\u3057\u3088\u3046",
+        "13": "\u6211\u5c06\u6839\u636e\u6211\u7684\u4fe1\u5ff5\u6765\u4fdd\u62a4\u3002"
+    },
+    "KnightDescription": {
+        "0": "During the conference phase, you can put up a shield to prevent one kill by using the protect button. If the protection is successful, a successful protection announcement will be played at the beginning of the next meeting phase.",
+        "11": "\u4f1a\u8b70\u30d5\u30a7\u30a4\u30ba\u4e2d\u306b\u8b77\u885b\u30dc\u30bf\u30f3\u3092\u4f7f\u7528\u3059\u308b\u4e8b\u3067\u3001\u30ad\u30eb\u3092\u4e00\u56de\u9632\u3050\u30b7\u30fc\u30eb\u30c9\u3092\u5f35\u308b\u3053\u3068\u304c\u3067\u304d\u307e\u3059\u3002 \u8a2d\u5b9a\u306b\u3088\u308a\u8b77\u885b\u304c\u6210\u529f\u3057\u305f\u969b\u3001\u6b21\u306e\u4f1a\u8b70\u30d5\u30a7\u30a4\u30ba\u958b\u59cb\u6642\u306b\u8b77\u885b\u6210\u529f\u30a2\u30ca\u30a6\u30f3\u30b9\u304c\u6d41\u308c\u307e\u3059\u3002",
+        "13": "\u5728\u4f1a\u8bae\u9636\u6bb5\u4f7f\u7528 \"\u4fdd\u62a4 \"\u6309\u94ae\uff0c\u4f60\u53ef\u4ee5\u7ad6\u8d77\u4e00\u4e2a\u9632\u62a4\u7f69\uff0c\u9632\u6b62\u88ab\u6740\u3002 \u5982\u679c\u4fdd\u62a4\u8bbe\u7f6e\u6210\u529f\uff0c\u5728\u4e0b\u4e00\u4e2a\u4f1a\u8bae\u9636\u6bb5\u5f00\u59cb\u65f6\u5c06\u64ad\u653e\u4fdd\u62a4\u6210\u529f\u7684\u516c\u544a\u3002"
+    },
+    "KnightCanAnnounceOfProtected": {
+        "0": "Play an announcement when the protection is successful?",
+        "11": "\u8b77\u885b\u6210\u529f\u6642\u306b\u30a2\u30ca\u30a6\u30f3\u30b9\u3092\u6d41\u3059\u304b",
+        "13": "\u60a8\u662f\u5426\u5e0c\u671b\u5728\u4fdd\u62a4\u6210\u529f\u540e\u5f97\u5230\u901a\u77e5\uff1f"
+    },
+    "KnightSetTheUpperLimitOfTheGuarding": {
+        "0": "Do you want to set a limit on the number of protections?",
+        "11": "\u8b77\u885b\u56de\u6570\u306b\u4e0a\u9650\u3092\u8a2d\u3051\u308b\u304b",
+        "13": "\u4f60\u60f3\u4e3a\u4f60\u7684\u4fdd\u62a4\u6b21\u6570\u8bbe\u7f6e\u4e00\u4e2a\u4e0a\u9650\u5417\uff1f"
+    },
+    "KnightMaximumNumberOfTimes": {
+        "0": "Maximum number of times protection is possible.",
+        "11": "\u8b77\u885b\u4e0a\u9650\u56de\u6570",
+        "13": "\u53ef\u80fd\u7684\u6700\u5927\u4fdd\u62a4\u6b21\u6570\u3002"
+    },
+    "TheKnightProtected": {
+        "0": "The knight's protection was successful.",
+        "11": "\u9a0e\u58eb\u306e\u8b77\u885b\u304c\u6210\u529f\u3057\u307e\u3057\u305f\u3002",
+        "13": "\u9a91\u58eb\u7684\u62a4\u9001\u662f\u6210\u529f\u7684\u3002"
+    },
+    "KnightProtectButton": {
+        "0": "Protect",
+        "11": "\u8b77\u885b",
+        "13": "\u4fdd\u62a4"
+    },
+    "WerewolfName": {
+        "0": "Werewolf",
+        "11": "\u4eba\u72fc",
+        "13": "\u4eba\u72fc"
+    },
+    "WerewolfTitle1": {
+        "0": "Let's kill a villager!",
+        "11": "\u6751\u4eba\u3092\u30ad\u30eb\u3057\u3088\u3046"
+    },
+    "ConnectKillerName": {
+        "0": "ConnectKiller",
+        "11": "\u30b3\u30cd\u30af\u30c8\u30ad\u30e9\u30fc"
+    },
+    "ConnectKillerTitle1": {
+        "0": "Lets\u2019 Connect!",
+        "11": "\u901a\u4fe1\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u3067\u30d9\u30f3\u30c8\u3092\u7e4b\u3052\u3088\u3046"
+    },
+    "NekoKabochaName": {
+        "0": "NekoKabocha",
+        "11": "\u30cd\u30b3\u30ab\u30dc\u30c1\u30e3"
+    },
+    "NekoKabochaTitle1": {
+        "0": "Let me take you on the road.",
+        "11": "\u9053\u9023\u308c\u3092\u8d77\u3053\u305d\u3046"
+    },
+    "KillCoolDown": {
+        "0": "KillCoolDown",
+        "11": "\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+    },
+    "CanRevengeCrewMate": {
+        "0": "Can take crewmates on the road",
+        "11": "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3092\u9053\u9023\u308c\u53ef"
+    },
+    "CanRevengeImpostor": {
+        "0": "Can take Imposter on the road",
+        "11": "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u9053\u9023\u308c\u53ef"
+    },
+    "CanRevengeNeutral": {
+        "0": "Can take a third camp",
+        "11": "\u7b2c\u4e09\u9663\u55b6\u3092\u9053\u9023\u308c\u53ef"
+    },
+    "CanRevengeExiled": {
+        "0": "Can take a crewmate in exile",
+        "11": "\u8ffd\u653e\u3067\u9053\u9023\u308c\u53ef"
+    },
+    "GMName": {
+        "0": "GM",
+        "11": "GM"
+    },
+    "GMTitle1": {
+        "0": "You are Game Master",
+        "11": "\u3042\u306a\u305f\u306f\u30b2\u30fc\u30e0\u30de\u30b9\u30bf\u30fc"
     },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
@@ -4688,6 +5039,21 @@
         "0": "You cannot make a room public contains mod in your name.",
         "11": "mod\u304c\u540d\u524d\u306b\u542b\u307e\u308c\u3066\u3044\u308b\u72b6\u614b\u3067\u306f\u516c\u958b\u90e8\u5c4b\u306b\u3059\u308b\u3053\u3068\u306f\u3067\u304d\u307e\u305b\u3093\u3002",
         "13": "\u4f60\u4e0d\u80fd\u5728\u6635\u79f0\u91cc\u6709\u201cmod\u201d\u65f6\u5c06\u623f\u95f4\u72b6\u6001\u8bbe\u7f6e\u4e3a\u516c\u5f00\u3002"
+    },
+    "CannotUseRenameMessage": {
+        "0": "Cannot rename.\nThe /rename command can only be used on\navailable only when hosted.",
+        "11": "\u540d\u524d\u3092\u5909\u66f4\u3059\u308b\u3053\u3068\u304c\u3067\u304d\u307e\u305b\u3093\u3002\n/rename\u30b3\u30de\u30f3\u30c9\u306f\n\u30db\u30b9\u30c8\u6642\u306e\u307f\u4f7f\u7528\u53ef\u80fd\u3067\u3059\u3002",
+        "13": "\u5b83\u4e0d\u80fd\u88ab\u91cd\u65b0\u547d\u540d\u3002\n/rename\u547d\u4ee4\u662f\n\u4ec5\u5728\u6258\u7ba1\u65f6\u53ef\u7528\u3002"
+    },
+    "betatext1": {
+        "0": "\nThis is a beta version! Watch out for bugs!",
+        "11": "\n\u30d9\u30fc\u30bf\u7248\u3067\u3059! \u30d0\u30b0\u306b\u306f\u6ce8\u610f\u3057\u3066\u304f\u3060\u3055\u3044!",
+        "13": "\n\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5\u7248\u672c! \u5c0f\u5fc3\u866b\u5b50!"
+    },
+    "betatext2": {
+        "0": "\n~Information for developers~",
+        "11": "\n\uff5e\u958b\u767a\u8005\u7528\u306e\u60c5\u5831\uff5e",
+        "13": "\n~ \u5f00\u53d1\u8005\u7684\u4fe1\u606f ~\u3002"
     },
     "Agartha_WareHouse": {
         "0": "WareHouse",

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
+using static SuperNewRoles.Helpers.RPCHelper;
 
 namespace SuperNewRoles.Roles
 {
@@ -43,6 +43,14 @@ namespace SuperNewRoles.Roles
                 return true;
             }
             return false;
+        }
+        /// <summary>
+        /// (役職をリセットし、)マッドメイトに割り当てます。
+        /// </summary>
+        /// <param name="target">役職がMadMateに変更される対象</param>
+        public static void CreateMadMate(PlayerControl target)
+        {
+            target.ResetAndSetRole(RoleId.MadMate);
         }
     }
 }

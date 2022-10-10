@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Intro;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -21,17 +18,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetCustomRoles();
             SyncSetting.CustomSyncSettings();
             ChacheManager.ResetChache();
-            Main.SendAllRoleChat();
             return sender;
         }
         public static void SpawnBots()
         {
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !ModeHandler.IsMode(ModeId.HideAndSeek))
             {
                 int impostor = PlayerControl.GameOptions.NumImpostors;
                 int crewmate = 0;
                 //ジャッカルがいるなら
-                if (CustomOptions.JackalOption.GetSelection() != 0)
+                if (CustomOptions.JackalOption.GetSelection() != 0 || CustomOptions.JackalSeerOption.GetSelection() != 0)
                 {
                     for (int i = 0; i < (PlayerControl.GameOptions.NumImpostors + 2); i++)
                     {
@@ -100,101 +96,50 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void SetCustomRoles()
         {
             /*============インポスターにDesync============*/
-            List<PlayerControl> DesyncImpostors = new();
-            DesyncImpostors.AddRange(RoleClass.Jackal.JackalPlayer);
-            DesyncImpostors.AddRange(RoleClass.Sheriff.SheriffPlayer);
-            DesyncImpostors.AddRange(RoleClass.Demon.DemonPlayer);
-            DesyncImpostors.AddRange(RoleClass.Truelover.trueloverPlayer);
-            DesyncImpostors.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
-            DesyncImpostors.AddRange(RoleClass.MadMaker.MadMakerPlayer);
+            SetRoleDesync(RoleClass.Jackal.JackalPlayer, RoleTypes.Impostor);
+            SetRoleDesync(RoleClass.Sheriff.SheriffPlayer, RoleTypes.Impostor);
+            SetRoleDesync(RoleClass.Demon.DemonPlayer, RoleTypes.Impostor);
+            SetRoleDesync(RoleClass.Truelover.trueloverPlayer, RoleTypes.Impostor);
+            SetRoleDesync(RoleClass.FalseCharges.FalseChargesPlayer, RoleTypes.Impostor);
+            SetRoleDesync(RoleClass.MadMaker.MadMakerPlayer, RoleTypes.Impostor);
+            SetRoleDesync(RoleClass.JackalSeer.JackalSeerPlayer, RoleTypes.Impostor);
             /*============インポスターにDesync============*/
 
 
             /*============エンジニアに役職設定============*/
-            List<PlayerControl> SetRoleEngineers = new();
-            if (RoleClass.Jester.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Jester.JesterPlayer);
-            if (RoleClass.JackalFriends.IsUseVent) SetRoleEngineers.AddRange(RoleClass.JackalFriends.JackalFriendsPlayer);
-            if (RoleClass.MadMate.IsUseVent) SetRoleEngineers.AddRange(RoleClass.MadMate.MadMatePlayer);
-            if (RoleClass.MadMayor.IsUseVent) SetRoleEngineers.AddRange(RoleClass.MadMayor.MadMayorPlayer);
-            if (RoleClass.MadStuntMan.IsUseVent) SetRoleEngineers.AddRange(RoleClass.MadStuntMan.MadStuntManPlayer);
-            if (RoleClass.MadJester.IsUseVent) SetRoleEngineers.AddRange(RoleClass.MadJester.MadJesterPlayer);
-            if (RoleClass.Fox.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Fox.FoxPlayer);
-            if (RoleClass.MayorFriends.IsUseVent) SetRoleEngineers.AddRange(RoleClass.MayorFriends.MayorFriendsPlayer);
-            if (RoleClass.Tuna.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Tuna.TunaPlayer);
-            SetRoleEngineers.AddRange(RoleClass.Technician.TechnicianPlayer);
-            if (RoleClass.BlackCat.IsUseVent) SetRoleEngineers.AddRange(RoleClass.BlackCat.BlackCatPlayer);
+            if (RoleClass.Jester.IsUseVent) SetVanillaRole(RoleClass.Jester.JesterPlayer, RoleTypes.Engineer);
+            if (RoleClass.JackalFriends.IsUseVent) SetVanillaRole(RoleClass.JackalFriends.JackalFriendsPlayer, RoleTypes.Engineer);
+            if (RoleClass.MadMate.IsUseVent) SetVanillaRole(RoleClass.MadMate.MadMatePlayer, RoleTypes.Engineer);
+            if (RoleClass.MadMayor.IsUseVent) SetVanillaRole(RoleClass.MadMayor.MadMayorPlayer, RoleTypes.Engineer);
+            if (RoleClass.MadStuntMan.IsUseVent) SetVanillaRole(RoleClass.MadStuntMan.MadStuntManPlayer, RoleTypes.Engineer);
+            if (RoleClass.MadJester.IsUseVent) SetVanillaRole(RoleClass.MadJester.MadJesterPlayer, RoleTypes.Engineer);
+            if (RoleClass.Fox.IsUseVent) SetVanillaRole(RoleClass.Fox.FoxPlayer, RoleTypes.Engineer);
+            if (RoleClass.MayorFriends.IsUseVent) SetVanillaRole(RoleClass.MayorFriends.MayorFriendsPlayer, RoleTypes.Engineer);
+            if (RoleClass.Tuna.IsUseVent) SetVanillaRole(RoleClass.Tuna.TunaPlayer, RoleTypes.Engineer);
+            SetVanillaRole(RoleClass.Technician.TechnicianPlayer, RoleTypes.Engineer);
+            if (RoleClass.BlackCat.IsUseVent) SetVanillaRole(RoleClass.BlackCat.BlackCatPlayer, RoleTypes.Engineer);
+            if (RoleClass.MadSeer.IsUseVent) SetVanillaRole(RoleClass.MadSeer.MadSeerPlayer, RoleTypes.Engineer);
+            if (RoleClass.SeerFriends.IsUseVent) SetVanillaRole(RoleClass.SeerFriends.SeerFriendsPlayer, RoleTypes.Engineer);
             /*============エンジニアに役職設定============*/
 
 
             /*============シェイプシフターDesync============*/
-            List<PlayerControl> DesyncShapeshifters = new();
-            DesyncShapeshifters.AddRange(RoleClass.Arsonist.ArsonistPlayer);
-            DesyncShapeshifters.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
-            DesyncShapeshifters.AddRange(RoleClass.ToiletFan.ToiletFanPlayer);
-            DesyncShapeshifters.AddRange(RoleClass.NiceButtoner.NiceButtonerPlayer);
+            SetRoleDesync(RoleClass.Arsonist.ArsonistPlayer, RoleTypes.Shapeshifter);
+            SetRoleDesync(RoleClass.RemoteSheriff.RemoteSheriffPlayer, RoleTypes.Shapeshifter);
+            SetRoleDesync(RoleClass.ToiletFan.ToiletFanPlayer, RoleTypes.Shapeshifter);
+            SetRoleDesync(RoleClass.NiceButtoner.NiceButtonerPlayer, RoleTypes.Shapeshifter);
             /*============シェイプシフターDesync============*/
 
 
             /*============シェイプシフター役職設定============*/
-            List<PlayerControl> SetRoleShapeshifters = new();
-            SetRoleShapeshifters.AddRange(RoleClass.SelfBomber.SelfBomberPlayer);
-            SetRoleShapeshifters.AddRange(RoleClass.Samurai.SamuraiPlayer);
-            SetRoleShapeshifters.AddRange(RoleClass.EvilButtoner.EvilButtonerPlayer);
-            SetRoleShapeshifters.AddRange(RoleClass.SuicideWisher.SuicideWisherPlayer);
+            SetVanillaRole(RoleClass.SelfBomber.SelfBomberPlayer, RoleTypes.Shapeshifter, false);
+            SetVanillaRole(RoleClass.Samurai.SamuraiPlayer, RoleTypes.Shapeshifter, false);
+            SetVanillaRole(RoleClass.EvilButtoner.EvilButtonerPlayer, RoleTypes.Shapeshifter, false);
+            SetVanillaRole(RoleClass.SuicideWisher.SuicideWisherPlayer, RoleTypes.Shapeshifter, false);
+            SetVanillaRole(RoleClass.Doppelganger.DoppelggerPlayer, RoleTypes.Shapeshifter, false);
+            SetVanillaRole(RoleClass.Camouflager.CamouflagerPlayer, RoleTypes.Shapeshifter, false);
             /*============シェイプシフター役職設定============*/
 
-            foreach (PlayerControl Player in DesyncImpostors)
-            {
-                if (!Player.IsMod())
-                {
-                    int PlayerCID = Player.GetClientId();
-                    sender.RpcSetRole(Player, RoleTypes.Impostor, PlayerCID);
-                    foreach (var pc in PlayerControl.AllPlayerControls)
-                    {
-                        if (pc.PlayerId == Player.PlayerId) continue;
-                        sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
-                    }
-                    //他視点で科学者にするループ
-                    foreach (var pc in PlayerControl.AllPlayerControls)
-                    {
-                        if (pc.PlayerId == Player.PlayerId) continue;
-                        if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
-                        else sender.RpcSetRole(Player, RoleTypes.Scientist, pc.GetClientId());
-                    }
-                }
-                else
-                {
-                    //ホストは代わりに普通のクルーにする
-                    Player.SetRole(RoleTypes.Crewmate); //ホスト視点用
-                    sender.RpcSetRole(Player, RoleTypes.Crewmate);
-                }
-            }
-            foreach (PlayerControl Player in DesyncShapeshifters)
-            {
-                if (!Player.IsMod())
-                {
-                    int PlayerCID = Player.GetClientId();
-                    sender.RpcSetRole(Player, RoleTypes.Shapeshifter, PlayerCID);
-                    foreach (var pc in PlayerControl.AllPlayerControls)
-                    {
-                        if (pc.PlayerId == Player.PlayerId) continue;
-                        sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
-                    }
-                    //他視点で科学者にするループ
-                    foreach (var pc in PlayerControl.AllPlayerControls)
-                    {
-                        if (pc.PlayerId == Player.PlayerId) continue;
-                        if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
-                        else sender.RpcSetRole(Player, RoleTypes.Scientist, pc.GetClientId());
-                    }
-                }
-                else
-                {
-                    //ホストは代わりに普通のクルーにする
-                    Player.SetRole(RoleTypes.Crewmate); //ホスト視点用
-                    sender.RpcSetRole(Player, RoleTypes.Crewmate);
-                }
-            }
             foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer)
             {
                 if (!Player.IsMod())
@@ -260,19 +205,61 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     else Player.SetRole(RoleTypes.Crewmate);
                 }
             }
-
-            foreach (PlayerControl p in SetRoleEngineers)
+            return;
+        }
+        /// <summary>
+        /// Desyncで役職をセットする
+        /// </summary>
+        /// <param name="player">ターゲット</param>
+        /// <param name="roleTypes">Desyncしたい役職(他視点は科学者固定)</param>
+        public static void SetRoleDesync(List<PlayerControl> player, RoleTypes roleTypes)
+        {
+            foreach (PlayerControl Player in player)
             {
-                if (!p.IsMod())
+                Logger.Info($"{Player.name}({Player.GetRole()})=>{roleTypes}を実行", "SetRoleDesync");
+                if (!Player.IsMod())
                 {
-                    sender.RpcSetRole(p, RoleTypes.Engineer);
+                    int PlayerCID = Player.GetClientId();
+                    sender.RpcSetRole(Player, roleTypes, PlayerCID);
+                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    {
+                        if (pc.PlayerId == Player.PlayerId) continue;
+                        sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
+                    }
+                    //他視点で科学者にするループ
+                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    {
+                        if (pc.PlayerId == Player.PlayerId) continue;
+                        if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
+                        else sender.RpcSetRole(Player, RoleTypes.Scientist, pc.GetClientId());
+                    }
+                }
+                else
+                {
+                    //Modクライアントは代わりに普通のクルーにする
+                    Player.SetRole(RoleTypes.Crewmate); //Modクライアント視点用
+                    sender.RpcSetRole(Player, RoleTypes.Crewmate);
                 }
             }
-            foreach (PlayerControl p in SetRoleShapeshifters)
+        }
+        /// <summary>
+        /// バニラ役職をセットする
+        /// </summary>
+        /// <param name="player">ターゲット</param>
+        /// <param name="roleTypes">セットする役職</param>
+        /// <param name="isNotModOnly">非Mod導入者のみか(概定はtrue)</param>
+        public static void SetVanillaRole(List<PlayerControl> player, RoleTypes roleTypes, bool isNotModOnly = true)
+        {
+            foreach (PlayerControl p in player)
             {
-                sender.RpcSetRole(p, RoleTypes.Shapeshifter);
+                if (p.IsMod() && isNotModOnly)
+                {
+                    Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}Mod導入者かつ、非導入者のみなので破棄", "SetVanillaRole");
+                    return;
+                }
+                Logger.Info($"{p.name}({p.GetRole()})=>{roleTypes}を実行", "SetVanillaRole");
+                sender.RpcSetRole(p, roleTypes);
             }
-            return;
         }
         public static void CrewOrImpostorSet()
         {

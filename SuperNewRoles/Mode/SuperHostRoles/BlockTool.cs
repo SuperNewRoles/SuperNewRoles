@@ -131,28 +131,37 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static Vector2 GetAdminTransform()
         {
-            if (PlayerControl.GameOptions.MapId == 0) return new Vector2(3.48f, -8.624401f);
-            else if (PlayerControl.GameOptions.MapId == 1) return new Vector2(21.024f, 19.095f);
-            else if (PlayerControl.GameOptions.MapId == 2) return new Vector2(23.13707f, -21.523f);
-            else if (PlayerControl.GameOptions.MapId == 3) return new Vector2(-3.48f, -8.624401f);
-            else if (PlayerControl.GameOptions.MapId == 4) return new Vector2(-22.323f, 0.9099998f);
-            return new Vector2(1000, 1000);
+            return PlayerControl.GameOptions.MapId switch
+            {
+                0 => new(3.48f, -8.624401f),
+                1 => new(21.024f, 19.095f),
+                2 => new(23.13707f, -21.523f),
+                3 => new(-3.48f, -8.624401f),
+                4 => new(-22.323f, 0.9099998f),
+                _ => new(1000, 1000)
+            };
         }
 
         public static Vector2 GetCameraTransform()
         {
-            if (PlayerControl.GameOptions.MapId == 0) return new Vector2(-12.93658f, -2.790947f);
-            else if (PlayerControl.GameOptions.MapId == 2) return new Vector2(2.428533f, -12.52964f);
-            else if (PlayerControl.GameOptions.MapId == 3) return new Vector2(13.07439f, -3.215496f);
-            else if (PlayerControl.GameOptions.MapId == 4) return new Vector2(8.018572f, -9.942375f);
-            return new Vector2(1000, 1000);
+            return PlayerControl.GameOptions.MapId switch
+            {
+                0 => new(-12.93658f, -2.790947f),
+                2 => new(-12.93658f, -2.790947f),
+                3 => new Vector2(13.07439f, -3.215496f),
+                4 => new Vector2(8.018572f, -9.942375f),
+                _ => new(1000, 1000)
+            };
         }
         public static Vector2 GetVitalOrDoorLogTransform()
         {
-            if (PlayerControl.GameOptions.MapId == 1) return new Vector2(15.51107f, -2.897387f);
-            else if (PlayerControl.GameOptions.MapId == 2) return new Vector2(26.20935f, -16.04406f);
-            else if (PlayerControl.GameOptions.MapId == 4) return new Vector2(25.28237f, -8.145635f);
-            return new Vector2(1000, 1000);
+            return PlayerControl.GameOptions.MapId switch
+            {
+                1 => new Vector2(15.51107f, -2.897387f),
+                2 => new Vector2(26.20935f, -16.04406f),
+                4 => new Vector2(25.28237f, -8.145635f),
+                _ => new(1000, 1000)
+            };
         }
     }
 }

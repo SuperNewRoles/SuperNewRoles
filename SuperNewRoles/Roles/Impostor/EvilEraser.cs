@@ -1,5 +1,5 @@
 using Hazel;
-using SuperNewRoles.CustomRPC;
+
 using SuperNewRoles.Helpers;
 
 //TODO:さつまいも、いつかリファクタします
@@ -47,7 +47,7 @@ namespace SuperNewRoles.Roles
         }
         public static void UseCount(PlayerControl player)
         {
-            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseEraserCount);
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UseEraserCount);
             writer.Write(player.PlayerId);
             writer.EndRPC();
             RPCProcedure.UseEraserCount(player.PlayerId);

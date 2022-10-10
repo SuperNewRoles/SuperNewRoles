@@ -1,170 +1,49 @@
+using System;
 using System.Collections.Generic;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Intro;
-using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Roles;
+using System.Text;
+using HarmonyLib;
+using UnhollowerBaseLib;
+using UnityEngine;
 
 namespace SuperNewRoles.Mode.Werewolf
 {
     class Main
     {
-        public static bool IsDiscussion;
-        public static bool IsFirst;
-        public static int AbilityTime;
-        public static int DiscussionTime;
-        public static Dictionary<int, int> SoothRoles;
-        public static List<int> HunterKillPlayers;
-        public static List<int> WolfKillPlayers;
-        public static List<PlayerControl> HunterPlayers = new();
-        public static PlayerControl HunterExilePlayer;
-        public static int Time;
-        public static bool IsAbility { get { return !IsDiscussion; } set { IsDiscussion = !value; } }
-        public static void ClearAndReload()
+        public static bool IsChatBlock(PlayerControl sourcePlayer,string text)
         {
-            PlayerControl.GameOptions.KillCooldown = -1;
-            PlayerControl.GameOptions.DiscussionTime = 0;
-            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            if (MeetingHud.Instance == null) return false;
+            if (!ModeHandler.IsMode(ModeId.Werewolf)) return false;
+            if (sourcePlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
-                p.GetDefaultName();
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer) && text.EndsWith(ModTranslation.GetString("SoothSayerCrewmateText")))
+                {
+                    return false;
+                } else if (PlayerControl.LocalPlayer.IsRole(RoleId.SpiritMedium) && (text.EndsWith(ModTranslation.GetString("SoothSayerCrewmateText")) || text.EndsWith(ModTranslation.GetString("SoothSayerNotCrewmateText"))))
+                {
+                    return false;
+                }
             }
-            IsDiscussion = true;
-            IsFirst = true;
-            DiscussionTime = 30;
-            AbilityTime = 10;
-            SoothRoles = new();
-            HunterKillPlayers = new();
-            WolfKillPlayers = new();
-            HunterPlayers = new();
-            HunterExilePlayer = null;
+            if (ModeHandler.IsMode(ModeId.Werewolf) && MeetingHud.Instance.CurrentState == MeetingHud.VoteStates.Discussion) return (!PlayerControl.LocalPlayer.IsImpostor() && PlayerControl.LocalPlayer.IsAlive()) || !sourcePlayer.IsImpostor();
+            return false;
         }
-        public static void IntroHandler()
+        public static bool IsUseButton()
         {
-            if (!AmongUsClient.Instance.AmHost) return;
-            PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.GetString("WereWolfMeetingNormal"));
-            new LateTask(() =>
-            {
-                IsDiscussion = true;
-                PlayerControl.GameOptions.VotingTime = DiscussionTime;
-                CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
-                MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, CachedPlayer.LocalPlayer.Data);
-                FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
-                PlayerControl.LocalPlayer.RpcStartMeeting(CachedPlayer.LocalPlayer.Data);
-            }, 20, "DiscussionStartMeeting");
+            if (MeetingHud.Instance == null) return true;
+            if (!ModeHandler.IsMode(ModeId.Werewolf)) return true;
+            if (MeetingHud.Instance.CurrentState == MeetingHud.VoteStates.Discussion) return true;
+            return false;
         }
-        public static void Wrapup(GameData.PlayerInfo exiled)
+        [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
+        class TranslationControllerGetStringPatch
         {
-            IsDiscussion = !IsDiscussion;
-            if (!AmongUsClient.Instance.AmHost) return;
-            if (IsAbility)
+            static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id, [HarmonyArgument(1)] Il2CppReferenceArray<Il2CppSystem.Object> parts)
             {
-                PlayerControl.GameOptions.VotingTime = AbilityTime;
-                PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.GetString("WereWolfMeetingAbility"));
-                HunterExilePlayer = null;
-                SoothRoles = new();
-                HunterKillPlayers = new();
-                WolfKillPlayers = new();
-            }
-            else
-            {
-                PlayerControl.GameOptions.VotingTime = DiscussionTime;
-                PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.GetString("WereWolfMeetingNormal"));
-                if (HunterExilePlayer != null)
+                if (id is StringNames.MeetingVotingBegins && ModeHandler.IsMode(ModeId.Werewolf, false))
                 {
-                    HunterExilePlayer.RpcMurderPlayer(HunterExilePlayer);
-                }
-                foreach (int playerid in WolfKillPlayers)
-                {
-                    PlayerControl player = ModHelpers.PlayerById((byte)playerid);
-                    if (player != null) player.RpcMurderPlayer(player);
+                    float num3 = (float)PlayerControl.GameOptions.DiscussionTime - MeetingHud.Instance.discussionTimer;
+                    __result = string.Format(ModTranslation.GetString("WerewolfAbilityTime"), Mathf.CeilToInt(num3));
                 }
             }
-            if (IsDiscussion)
-            {
-                Time = 3;
-                foreach (var players in SoothRoles)
-                {
-                    PlayerControl source = ModHelpers.PlayerById((byte)players.Key);
-                    PlayerControl target = ModHelpers.PlayerById((byte)players.Value);
-                    if (source == null || target == null || source.Data.Disconnected) break;
-                    string Chat = "";
-                    var RoleDate = IntroDate.GetIntroDate(target.GetRole(), target);
-                    var RoleName = ModTranslation.GetString("Werewolf" + RoleDate.NameKey + "Name");
-                    Chat += string.Format(ModTranslation.GetString("WereWolfMediumAbilityText"), target.GetDefaultName(), RoleName);
-                    new LateTask(() =>
-                    {
-                        source.RPCSendChatPrivate(Chat);
-                    }, Time, "AbilityChatSend");
-                    Time += 3;
-                }
-                if (exiled != null)
-                {
-                    foreach (PlayerControl player in RoleClass.SpiritMedium.SpiritMediumPlayer)
-                    {
-                        string Chat = "";
-                        PlayerControl target = exiled.Object;
-                        var RoleDate = IntroDate.GetIntroDate(target.GetRole(), target);
-                        var RoleName = ModTranslation.GetString("Werewolf" + RoleDate.NameKey + "Name");
-                        Chat += string.Format(ModTranslation.GetString("WereWolfMediumAbilityText"), target.GetDefaultName(), RoleName);
-                        new LateTask(() =>
-                        {
-                            player.RPCSendChatPrivate(Chat);
-                        }, Time, "AbilityChatSend");
-                        Time += 3;
-                    }
-                }
-                foreach (var players in HunterKillPlayers)
-                {
-                    var player = ModHelpers.PlayerById((byte)players);
-                    player.RpcMurderPlayer(player);
-                }
-                if (Time <= 9)
-                {
-                    Time += 7;
-                }
-                new LateTask(() =>
-                {
-                    GameData.PlayerInfo target;
-                    try
-                    {
-                        target = ModHelpers.PlayerById((byte)WolfKillPlayers[0]).Data;
-                    }
-                    catch
-                    {
-                        target = CachedPlayer.LocalPlayer.Data;
-                    }
-                    MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, target);
-                    FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
-                    PlayerControl.LocalPlayer.RpcStartMeeting(target);
-                    PlayerControl.LocalPlayer.RpcSetName(ModTranslation.GetString("WereWolfMeetingNormal"));
-                    SetDefaultName();
-                }, Time, "KillStartMeeting");
-
-                static void SetDefaultName()
-                {
-                    new LateTask(() =>
-                    {
-                        PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.GetDefaultName());
-                    }, 5, "NameChangeMeeting");
-                }
-                SoothRoles = new();
-                HunterKillPlayers = new();
-            }
-            else if (IsAbility)
-            {
-                new LateTask(() =>
-                {
-                    MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
-                    FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
-                    PlayerControl.LocalPlayer.RpcStartMeeting(null);
-                    PlayerControl.LocalPlayer.RpcSetName(ModTranslation.GetString("WereWolfMeetingAbility"));
-                }, 11, "AbilityStartMeeting");
-                new LateTask(() =>
-                {
-                    PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.GetDefaultName());
-                }, 5, "NameChangeMeeting");
-            }
-            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
         }
     }
 }
