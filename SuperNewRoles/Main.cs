@@ -11,14 +11,13 @@ using UnityEngine;
 
 namespace SuperNewRoles
 {
-    [BepInPlugin(Id, "SuperNewRoles", VersionString)]
+    [BepInAutoPlugin("jp.ykundesu.supernewroles","SuperNewRoles")]
     [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInProcess("Among Us.exe")]
-    public class SuperNewRolesPlugin : BasePlugin
+    public partial class SuperNewRolesPlugin : BasePlugin
     {
-        public const string Id = "jp.ykundesu.supernewroles";
         //バージョンと同時にIsBetaも変える
-        public const string VersionString = "1.4.2.1";
+        public static readonly string VersionString = $"{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public static bool IsBeta = IsViewText && ThisAssembly.Git.Branch != MasterBranch;
 
@@ -34,11 +33,11 @@ namespace SuperNewRoles
         public const string Twitter2 = "https://twitter.com/SuperNewRoles";
 
 
-        public static Version Version = Version.Parse(VersionString);
+        public static Version ThisVersion = System.Version.Parse($"{Assembly.GetExecutingAssembly().GetName().Version}");
         public static BepInEx.Logging.ManualLogSource Logger;
         public static Sprite ModStamp;
         public static int optionsPage = 1;
-        public Harmony Harmony { get; } = new Harmony(Id);
+        public Harmony Harmony { get; } = new Harmony("jp.ykundesu.supernewroles");
         public static SuperNewRolesPlugin Instance;
         public static Dictionary<string, Dictionary<int, string>> StringDATE;
         public static bool IsUpdate = false;

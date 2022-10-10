@@ -124,7 +124,7 @@ namespace SuperNewRoles
                 // check version
                 SuperNewRolesPlugin.NewVersion = tagname.Replace("v", "");
                 System.Version newver = System.Version.Parse(SuperNewRolesPlugin.NewVersion);
-                System.Version Version = SuperNewRolesPlugin.Version;
+                System.Version Version = SuperNewRolesPlugin.ThisVersion;
                 announcement = string.Format(ModTranslation.GetString("announcementUpdate"), newver, announcement);
                 if (!ConfigRoles.AutoUpdate.Value)
                 {
