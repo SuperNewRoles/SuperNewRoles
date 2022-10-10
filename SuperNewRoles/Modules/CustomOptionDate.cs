@@ -850,6 +850,18 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption WerewolfOption;
         public static CustomOption WerewolfPlayerCount;
 
+        public static CustomRoleOption PavlovsownerOption;
+        public static CustomOption PavlovsownerPlayerCount;
+        public static CustomOption PavlovsownerCreateCoolTime;
+        public static CustomOption PavlovsownerCreateDogLimit;
+        public static CustomOption PavlovsownerIsTargetImpostorDeath;
+        public static CustomOption PavlovsdogIsImpostorView;
+        public static CustomOption PavlovsdogKillCoolTime;
+        public static CustomOption PavlovsdogCanVent;
+        public static CustomOption PavlovsdogRunAwayKillCoolTime;
+        public static CustomOption PavlovsdogRunAwayDeathTime;
+        public static CustomOption PavlovsdogRunAwayDeathTimeIsMeetingReset;
+
         public static CustomRoleOption WaveCannonJackalOption;
         public static CustomOption WaveCannonJackalPlayerCount;
         public static CustomOption WaveCannonJackalCoolTime;
@@ -1702,7 +1714,7 @@ namespace SuperNewRoles.Modules
 
             Roles.Impostor.NekoKabocha.SetupCustomOptions();
 
-            CrackerOption = SetupCustomRoleOption(1030, false, RoleId.Cracker);
+            CrackerOption = SetupCustomRoleOption(1038, false, RoleId.Cracker);
             CrackerPlayerCount = Create(1031, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CrackerOption);
             CrackerCoolTime = Create(1032, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 60f, 2.5f, CrackerOption);
             CrackerIsAdminView = Create(1033, false, CustomOptionType.Impostor, "CrackerIsAdminView", false, CrackerOption);
@@ -1725,6 +1737,20 @@ namespace SuperNewRoles.Modules
             WerewolfPlayerCount = Create(998, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
 
             Roles.CrewMate.Knight.SetupCustomOptions();
+
+            (PavlovsownerOption = new(1039, false, CustomOptionType.Neutral, "PavlovsdogsName", RoleClass.Pavlovsdogs.color, 1))
+            .RoleId = RoleId.Pavlovsowner;
+            PavlovsownerPlayerCount = Create(1040, false, CustomOptionType.Neutral, "SettingPlayerCountName", AlonePlayers[0], AlonePlayers[1], AlonePlayers[2], AlonePlayers[3], PavlovsownerOption);
+            PavlovsownerCreateCoolTime = Create(1041, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, PavlovsownerOption);
+            PavlovsownerCreateDogLimit = Create(1042, false, CustomOptionType.Neutral, "PavlovsownerCreateDogLimit", 1f, 1f, 15f, 1f, PavlovsownerOption);
+            PavlovsownerIsTargetImpostorDeath = Create(1043, false, CustomOptionType.Neutral, "PavlovsownerIsTargetImpostorDeath", true, PavlovsownerOption);
+            PavlovsdogIsImpostorView = Create(1044, false, CustomOptionType.Neutral, "PavlovsdogIsImpostorView", true, PavlovsownerOption);
+            PavlovsdogKillCoolTime = Create(1045, false, CustomOptionType.Neutral, "SheriffCoolDownSetting", 30f, 2.5f, 120f, 2.5f, PavlovsownerOption);
+            PavlovsdogCanVent = Create(1046, false, CustomOptionType.Neutral, "MadMateUseVentSetting", true, PavlovsownerOption);
+            PavlovsdogRunAwayKillCoolTime = Create(1047, false, CustomOptionType.Neutral, "PavlovsdogRunAwayKillCoolTime", 20f, 2.5f, 60f, 2.5f, PavlovsownerOption);
+            PavlovsdogRunAwayDeathTime = Create(1048, false, CustomOptionType.Neutral, "PavlovsdogRunAwayDeathTime", 60f, 2.5f, 180f, 2.5f, PavlovsownerOption);
+            PavlovsdogRunAwayDeathTimeIsMeetingReset = Create(1049, false, CustomOptionType.Neutral, "PavlovsdogRunAwayDeathTimeIsMeetingReset", true, PavlovsownerOption);
+
             WaveCannonOption = SetupCustomRoleOption(1019, false, RoleId.WaveCannon, CustomOptionType.Impostor);
             WaveCannonPlayerCount = Create(1018, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WaveCannonOption);
             WaveCannonCoolTime = Create(1020, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonOption);

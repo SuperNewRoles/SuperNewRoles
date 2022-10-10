@@ -844,7 +844,26 @@ Can kill and vent. <br>
 Press the side kick button.<br> 
 Target can be [Sidekick](#SideKick). <br> 
 The ability to sabotage can be changed in the settings. <br> 
-It is also possible to change in the settings whether a side kick can be made. <br> 
+It is also possible to change in the settings whether a side kick can be made. <br>
+<br>
+
+Note: The behavior of the settings for creating [Jackal Friends](#JackalFriends) differs between SNR and SHR.
+
+- SHR:
+  - It can be made with a first hand kill.
+  - When the imposter is targeted,<br>
+  the protective effect is triggered and the kill can be triggered thereafter At first glance,<br>
+  it looks as if you have been able to make [Jackal Friends](#JackalFriends), but it is not.<br>
+  [Jackal Friends](#JackalFriends) has not been converted.
+   <br>
+- SNR:
+  - It can be made with a Sidekick button.
+  - If the setting to create [Sidekick](#Sidekick) is also enabled at the same time,<br>
+  the setting to create [SideKick](#SideKick) will not be reflected.
+    - Only Jackal Friends will be able to make only.
+
+<br>
+
 ### Game Settings 
 | Name                            |                              Description                              |
 | ------------------------------- | :-------------------------------------------------------------------: |
@@ -852,7 +871,7 @@ It is also possible to change in the settings whether a side kick can be made. <
 | Use Vent                        |                           to enter a vent.                            |
 | Use Sabotage                    |                         Sabotage can be used.                         |
 | Impostor Light                  | You can set whether the view will be the same as the Impostor's view. |
-| Can Create JackalFriends        |  You can make [JackalFriends](#JackalFriends) with your first kill!   |
+| Can Create JackalFriends        |             You can make [JackalFriends](#JackalFriends)              |
 | Jackal can make a Sidekick      |                     Jackals can make side kicks.                      |
 | New jackals can make side kicks |                 Promoted jackals can make side kicks.                 |
 

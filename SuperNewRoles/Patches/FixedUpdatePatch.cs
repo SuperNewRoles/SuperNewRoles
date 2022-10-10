@@ -210,6 +210,9 @@ namespace SuperNewRoles.Patches
                             case RoleId.Doppelganger:
                                 Roles.Impostor.Doppelganger.FixedUpdate();
                                 break;
+                            case RoleId.Pavlovsowner:
+                                Roles.Neutral.Pavlovsdogs.OwnerFixedUpdate();
+                                break;
                             case RoleId.WaveCannonJackal:
                                 JackalSeer.JackalSeerFixedPatch.JackalSeerPlayerOutLineTarget();
                                 break;

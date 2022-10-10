@@ -82,9 +82,12 @@ namespace SuperNewRoles.Buttons
         public static CustomButton CrackerButton;
         public static CustomButton WaveCannonButton;
         public static CustomButton DoppelgangerButton;
+        public static CustomButton PavlovsownerCreatedogButton;
+        public static CustomButton PavlovsdogKillButton;
         public static CustomButton CamouflagerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
+        public static TMPro.TMP_Text PavlovsdogKillSelfText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
         public static TMPro.TMP_Text PositionSwapperNumText;
         public static TMPro.TMP_Text SecretlyKillNumText;
@@ -105,6 +108,90 @@ namespace SuperNewRoles.Buttons
 
         public static void Postfix(HudManager __instance)
         {
+            PavlovsdogKillButton = new(
+                () =>
+                {
+                    PlayerControl target = Roles.Neutral.Pavlovsdogs.SetTarget(false);
+                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, target);
+                    PavlovsdogKillButton.MaxTimer = RoleClass.Pavlovsdogs.IsOwnerDead ? CustomOptions.PavlovsdogRunAwayKillCoolTime.GetFloat() : CustomOptions.PavlovsdogKillCoolTime.GetFloat();
+                    PavlovsdogKillButton.Timer = PavlovsdogKillButton.MaxTimer;
+                    RoleClass.Pavlovsdogs.DeathTime = CustomOptions.PavlovsdogRunAwayDeathTime.GetFloat();
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsdogs; },
+                () =>
+                {
+                    if (RoleClass.Pavlovsdogs.IsOwnerDead && CachedPlayer.LocalPlayer.IsAlive())
+                    {
+                        RoleClass.Pavlovsdogs.DeathTime -= Time.deltaTime;
+                        PavlovsdogKillSelfText.text = RoleClass.Pavlovsdogs.DeathTime > 0 ? string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)RoleClass.Pavlovsdogs.DeathTime) + 1) : "";
+                        if (RoleClass.Pavlovsdogs.DeathTime <= 0)
+                        {
+                            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        }
+                    }
+                    return Roles.Neutral.Pavlovsdogs.SetTarget(false) && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    if (CustomOptions.PavlovsdogRunAwayDeathTimeIsMeetingReset.GetBool()) RoleClass.Pavlovsdogs.DeathTime = CustomOptions.PavlovsdogRunAwayDeathTime.GetFloat();
+                    PavlovsdogKillButton.MaxTimer = RoleClass.Pavlovsdogs.IsOwnerDead ? CustomOptions.PavlovsdogRunAwayKillCoolTime.GetFloat() : CustomOptions.PavlovsdogKillCoolTime.GetFloat();
+                    PavlovsdogKillButton.Timer = PavlovsdogKillButton.MaxTimer;
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.Q,
+                8,
+                () => { return RoleClass.IsMeeting; }
+            )
+            {
+                buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
+                showButtonText = true
+            };
+
+            PavlovsdogKillSelfText = GameObject.Instantiate(PavlovsdogKillButton.actionButton.cooldownTimerText, PavlovsdogKillButton.actionButton.cooldownTimerText.transform.parent);
+            PavlovsdogKillSelfText.text = "";
+            PavlovsdogKillSelfText.enableWordWrapping = false;
+            PavlovsdogKillSelfText.transform.localScale = Vector3.one * 0.5f;
+            PavlovsdogKillSelfText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+
+            PavlovsownerCreatedogButton = new(
+                () =>
+                {
+                    PlayerControl target = Roles.Neutral.Pavlovsdogs.SetTarget();
+                    RoleClass.Pavlovsowner.CreateLimit--;
+                    bool IsSelfDeath = target.IsImpostor() && CustomOptions.PavlovsownerIsTargetImpostorDeath.GetBool();
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PavlovsOwnerCreateDog);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write(target.PlayerId);
+                    writer.Write(IsSelfDeath);
+                    writer.EndRPC();
+                    RPCProcedure.PavlovsOwnerCreateDog(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId, IsSelfDeath);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsowner && RoleClass.Pavlovsowner.CanCreateDog; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove && Roles.Neutral.Pavlovsdogs.SetTarget();
+                },
+                () =>
+                {
+                    PavlovsownerCreatedogButton.MaxTimer = CustomOptions.PavlovsownerCreateCoolTime.GetFloat();
+                    PavlovsownerCreatedogButton.Timer = PavlovsownerCreatedogButton.MaxTimer;
+                },
+                RoleClass.Pavlovsowner.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("PavlovsownerCreatedogButtonName"),
+                showButtonText = true
+            };
+
             WaveCannonButton = new(
                 () =>
                 {
@@ -956,7 +1043,7 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true
             };
 
-            SheriffKillButton = new Buttons.CustomButton(
+            SheriffKillButton = new(
                 () =>
                 {
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
