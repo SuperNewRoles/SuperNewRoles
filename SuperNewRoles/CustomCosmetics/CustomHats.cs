@@ -499,7 +499,6 @@ namespace SuperNewRoles.CustomCosmetics
             {
                 if (File.Exists($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json") && hatRepos.FirstOrDefault(data => data.Key == repo).Value is not ("TheOtherHats" or "TheOtherRolesGM"))
                 {
-                    Logger.Info("a");
                     CustomHats.IsEnd = true;
                     StreamReader sr = new($"{filePath}\\{hatRepos.FirstOrDefault(data => data.Key == repo).Value}.json");
 
@@ -508,7 +507,6 @@ namespace SuperNewRoles.CustomCosmetics
                     sr.Close();
 
                     JToken jobj = JObject.Parse(text)["hats"];
-                    Logger.Info("b");
                     if (jobj != null && jobj.HasValues)
                     {
 
@@ -516,7 +514,6 @@ namespace SuperNewRoles.CustomCosmetics
 
                         for (JToken current = jobj.First; current != null; current = current.Next)
                         {
-                            Logger.Info("c");
                             if (current.HasValues)
                             {
                                 CustomHatOnline info = new()
@@ -559,7 +556,6 @@ namespace SuperNewRoles.CustomCosmetics
                         }
                         if (!CustomHats.Keys.Contains("InnerSloth"))
                             CustomHats.Keys.Add("InnerSloth");
-                        Logger.Info("d");
 
                         hatDetails.AddRange(hatdatas);
                         CachedRepos.Add(repo);
@@ -568,7 +564,6 @@ namespace SuperNewRoles.CustomCosmetics
                 }
             }
             CustomHats.IsEnd = true;
-            Logger.Info(repos.Count.ToString());
             foreach (var repo in hatRepos)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] ハットスタート:" + repo.Key);

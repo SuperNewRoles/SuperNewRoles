@@ -213,11 +213,12 @@ namespace SuperNewRoles.Mode
         {
             if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || !PlayerControlHepler.IsMod(AmongUsClient.Instance.HostId))
                 return mode is ModeId.Default;
-            if (IsChache) return mode == thisMode;
             if (mode is ModeId.HideAndSeek && IsChache)
                 return IsMode(ModeId.HideAndSeek, false);
             if (mode is ModeId.Werewolf)
                 return ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[8];
+            if (IsChache)
+                return mode == thisMode;
             if (mode is ModeId.Default)
                 return !ModeSetting.GetBool();
             return mode switch
