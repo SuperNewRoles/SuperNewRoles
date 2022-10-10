@@ -158,7 +158,7 @@ namespace SuperNewRoles.Buttons
                     {
                         ImpostorVentButton.Show();
                     }
-                    if ((Input.GetKeyDown(KeyCode.V) || KeyboardJoystick.player.GetButtonDown(50)) && !OldModeButtons.IsOldMode)
+                    if ((Input.GetKeyDown(KeyCode.V) || KeyboardJoystick.player.GetButtonDown(50)))
                     {
                         ImpostorVentButton.DoClick();
                     }
