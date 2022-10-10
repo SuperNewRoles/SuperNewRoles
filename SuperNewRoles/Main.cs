@@ -16,7 +16,6 @@ namespace SuperNewRoles
     [BepInProcess("Among Us.exe")]
     public partial class SuperNewRolesPlugin : BasePlugin
     {
-        //バージョンと同時にIsBetaも変える
         public static readonly string VersionString = $"{Assembly.GetExecutingAssembly().GetName().Version}";
 
         public static bool IsBeta = IsViewText && ThisAssembly.Git.Branch != MasterBranch;
@@ -79,6 +78,7 @@ namespace SuperNewRoles
             SuperNewRoles.Logger.Info(ThisAssembly.Git.BaseTag, "BaseTag");
             SuperNewRoles.Logger.Info(ThisAssembly.Git.Tag, "Tag");
             SuperNewRoles.Logger.Info(VersionString, "VersionString");
+            SuperNewRoles.Logger.Info(Version, nameof(Version));
             SuperNewRoles.Logger.Info(Application.version, "AmongUsVersion"); // アモングアス本体のバージョン
 
             Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
