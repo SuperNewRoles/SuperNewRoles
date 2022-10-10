@@ -224,6 +224,8 @@ namespace SuperNewRoles.Modules
         public static IntroDate NekoKabochaIntro = new("NekoKabocha", NekoKabocha.color, 1, RoleId.NekoKabocha, TeamRoleType.Impostor);
         public static IntroDate WaveCannonIntro = new("WaveCannon", RoleClass.WaveCannon.color, 1, RoleId.WaveCannon, TeamRoleType.Impostor);
         public static IntroDate DoppelgangerIntro = new("Doppelganger", RoleClass.Doppelganger.color, 1, RoleId.Doppelganger, TeamRoleType.Impostor);
+        public static IntroDate WerewolfIntro = new("Werewolf", RoleClass.Werewolf.color, 1, RoleId.Werewolf, TeamRoleType.Impostor);
+        public static IntroDate KnightIntro = new("Knight", Roles.CrewMate.Knight.color, 1, RoleId.Knight, TeamRoleType.Crewmate);
         public static IntroDate PavlovsdogsIntro = new("Pavlovsdogs", RoleClass.Pavlovsdogs.color, 1, RoleId.Pavlovsdogs, TeamRoleType.Neutral);
         public static IntroDate PavlovsownerIntro = new("Pavlovsowner", RoleClass.Pavlovsowner.color, 1, RoleId.Pavlovsowner, TeamRoleType.Neutral);
         public static IntroDate WaveCannonJackalIntro = new("WaveCannonJackal", RoleClass.WaveCannonJackal.color, 1, RoleId.WaveCannonJackal, TeamRoleType.Neutral);

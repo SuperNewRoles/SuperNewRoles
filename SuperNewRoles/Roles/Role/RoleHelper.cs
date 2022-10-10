@@ -5,6 +5,9 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.CrewMate;
+using SuperNewRoles.Roles.Neutral;
+
 
 namespace SuperNewRoles
 {
@@ -355,9 +358,6 @@ namespace SuperNewRoles
                 case RoleId.Magaziner:
                     RoleClass.Magaziner.MagazinerPlayer.Add(player);
                     break;
-                case RoleId.Hunter:
-                    Mode.Werewolf.Main.HunterPlayers.Add(player);
-                    break;
                 case RoleId.Mayor:
                     RoleClass.Mayor.MayorPlayer.Add(player);
                     break;
@@ -614,6 +614,12 @@ namespace SuperNewRoles
                     break;
                 case RoleId.Doppelganger:
                     RoleClass.Doppelganger.DoppelggerPlayer.Add(player);
+                    break;
+                case RoleId.Werewolf:
+                    RoleClass.Werewolf.WerewolfPlayer.Add(player);
+                    break;
+                case RoleId.Knight:
+                    Knight.Player.Add(player);
                     break;
                 case RoleId.Pavlovsdogs:
                     RoleClass.Pavlovsdogs.PavlovsdogsPlayer.Add(player);
@@ -1063,6 +1069,12 @@ namespace SuperNewRoles
                     break;
                 case RoleId.Doppelganger:
                     RoleClass.Doppelganger.DoppelggerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Werewolf:
+                    RoleClass.Werewolf.WerewolfPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Knight:
+                    Knight.Player.RemoveAll(ClearRemove);
                     break;
                 case RoleId.Pavlovsdogs:
                     RoleClass.Pavlovsdogs.PavlovsdogsPlayer.RemoveAll(ClearRemove);
@@ -1562,6 +1574,9 @@ namespace SuperNewRoles
                 else if (NekoKabocha.NekoKabochaPlayer.IsCheckListPlayerControl(player)) return RoleId.NekoKabocha;
                 else if (RoleClass.WaveCannon.WaveCannonPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannon;
                 else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
+                else if (RoleClass.Werewolf.WerewolfPlayer.IsCheckListPlayerControl(player)) return RoleId.Werewolf;
+                else if (Knight.Player.IsCheckListPlayerControl(player)) return RoleId.Knight;
+
                 else if (RoleClass.Pavlovsdogs.PavlovsdogsPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsdogs;
                 else if (RoleClass.Pavlovsowner.PavlovsownerPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsowner;
                 else if (RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;

@@ -84,6 +84,7 @@ namespace SuperNewRoles.Patches
             Roles.Neutral.Hitman.WrapUp();
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
+            Roles.CrewMate.KnightProtected_Patch.WrapUp();
             Bestfalsecharge.WrapUp();
             if (AmongUsClient.Instance.AmHost)
             {
@@ -98,7 +99,7 @@ namespace SuperNewRoles.Patches
             Roles.Neutral.Photographer.WrapUp();
             Roles.Impostor.Cracker.WrapUp();
             if (exiled == null) return;
-
+            Roles.SoothSayer_Patch.WrapUp(exiled.Object);
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();
             Nekomata.NekomataEnd(exiled);
 

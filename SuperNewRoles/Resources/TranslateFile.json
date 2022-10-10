@@ -1234,11 +1234,6 @@
         "11": "\u5168\u54e1\u304c\u89e3\u9664\u3057\u306a\u3044\u3068\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u3067\u304d\u306a\u3044",
         "13": "\u6709\u73a9\u5bb6\u6ca1\u6709\u89e3\u9664\u8ba4\u77e5\u5e72\u6270\u5219\u7834\u574f\u4e0d\u80fd\u53d1\u8d77"
     },
-    "WareWolfHunter": {
-        "0": "Hunter",
-        "11": "\u30cf\u30f3\u30bf\u30fc",
-        "13": "\u730e\u624b"
-    },
     "WereWolfHunterText": {
         "0": "Let's die with someone else.",
         "11": "\u8ab0\u304b\u3092\u9053\u9023\u308c\u306b\u3057\u3088\u3046",
@@ -1308,6 +1303,21 @@
         "0": "{0}'s Role is {1}!",
         "11": "{0}\u306e\u5f79\u8077\u306f{1}\u3067\u3059!",
         "13": "{0}\u7684\u804c\u4e1a\u662f{1}!"
+    },
+    "WerewolfModeName": {
+        "0": "Werewolf",
+        "11": "\u4eba\u72fc",
+        "13": "\u00a0"
+    },
+    "WerewolfAbilityTimeSetting": {
+        "0": "Ability Time",
+        "11": "\u80fd\u529b\u4f7f\u7528\u30bf\u30a4\u30e0",
+        "13": "\u00a0"
+    },
+    "WerewolfAbilityTime": {
+        "0": "{0} seconds remaining until the end of the ability use time",
+        "11": "\u80fd\u529b\u4f7f\u7528\u30bf\u30a4\u30e0\u304c\u7d42\u4e86\u3059\u308b\u307e\u3067\u6b8b\u308a{0}\u79d2",
+        "13": "\u00a0"
     },
     "HauntedWolfName": {
         "0": "HauntedWolf",
@@ -4794,6 +4804,50 @@
     "PavlovsTeamWinText": {
         "0": "Pavlov's dog and owner",
         "11": "\u30d1\u30d6\u30ed\u30d5\u306e\u72ac\u3068\u30aa\u30fc\u30ca\u30fc"
+    },
+    "KnightTitle1": {
+        "0": "I will protect you according to my beliefs.",
+        "11": "\u6211\u304c\u4fe1\u5ff5\u306b\u6cbf\u3063\u3066\u8b77\u885b\u3057\u3088\u3046",
+        "13": "\u6211\u5c06\u6839\u636e\u6211\u7684\u4fe1\u5ff5\u6765\u4fdd\u62a4\u3002"
+    },
+    "KnightDescription": {
+        "0": "During the conference phase, you can put up a shield to prevent one kill by using the protect button. If the protection is successful, a successful protection announcement will be played at the beginning of the next meeting phase.",
+        "11": "\u4f1a\u8b70\u30d5\u30a7\u30a4\u30ba\u4e2d\u306b\u8b77\u885b\u30dc\u30bf\u30f3\u3092\u4f7f\u7528\u3059\u308b\u4e8b\u3067\u3001\u30ad\u30eb\u3092\u4e00\u56de\u9632\u3050\u30b7\u30fc\u30eb\u30c9\u3092\u5f35\u308b\u3053\u3068\u304c\u3067\u304d\u307e\u3059\u3002 \u8a2d\u5b9a\u306b\u3088\u308a\u8b77\u885b\u304c\u6210\u529f\u3057\u305f\u969b\u3001\u6b21\u306e\u4f1a\u8b70\u30d5\u30a7\u30a4\u30ba\u958b\u59cb\u6642\u306b\u8b77\u885b\u6210\u529f\u30a2\u30ca\u30a6\u30f3\u30b9\u304c\u6d41\u308c\u307e\u3059\u3002",
+        "13": "\u5728\u4f1a\u8bae\u9636\u6bb5\u4f7f\u7528 \"\u4fdd\u62a4 \"\u6309\u94ae\uff0c\u4f60\u53ef\u4ee5\u7ad6\u8d77\u4e00\u4e2a\u9632\u62a4\u7f69\uff0c\u9632\u6b62\u88ab\u6740\u3002 \u5982\u679c\u4fdd\u62a4\u8bbe\u7f6e\u6210\u529f\uff0c\u5728\u4e0b\u4e00\u4e2a\u4f1a\u8bae\u9636\u6bb5\u5f00\u59cb\u65f6\u5c06\u64ad\u653e\u4fdd\u62a4\u6210\u529f\u7684\u516c\u544a\u3002"
+    },
+    "KnightCanAnnounceOfProtected": {
+        "0": "Play an announcement when the protection is successful?",
+        "11": "\u8b77\u885b\u6210\u529f\u6642\u306b\u30a2\u30ca\u30a6\u30f3\u30b9\u3092\u6d41\u3059\u304b",
+        "13": "\u60a8\u662f\u5426\u5e0c\u671b\u5728\u4fdd\u62a4\u6210\u529f\u540e\u5f97\u5230\u901a\u77e5\uff1f"
+    },
+    "KnightSetTheUpperLimitOfTheGuarding": {
+        "0": "Do you want to set a limit on the number of protections?",
+        "11": "\u8b77\u885b\u56de\u6570\u306b\u4e0a\u9650\u3092\u8a2d\u3051\u308b\u304b",
+        "13": "\u4f60\u60f3\u4e3a\u4f60\u7684\u4fdd\u62a4\u6b21\u6570\u8bbe\u7f6e\u4e00\u4e2a\u4e0a\u9650\u5417\uff1f"
+    },
+    "KnightMaximumNumberOfTimes": {
+        "0": "Maximum number of times protection is possible.",
+        "11": "\u8b77\u885b\u4e0a\u9650\u56de\u6570",
+        "13": "\u53ef\u80fd\u7684\u6700\u5927\u4fdd\u62a4\u6b21\u6570\u3002"
+    },
+    "TheKnightProtected": {
+        "0": "The knight's protection was successful.",
+        "11": "\u9a0e\u58eb\u306e\u8b77\u885b\u304c\u6210\u529f\u3057\u307e\u3057\u305f\u3002",
+        "13": "\u9a91\u58eb\u7684\u62a4\u9001\u662f\u6210\u529f\u7684\u3002"
+    },
+    "KnightProtectButton": {
+        "0": "Protect",
+        "11": "\u8b77\u885b",
+        "13": "\u4fdd\u62a4"
+    },
+    "WerewolfName": {
+        "0": "Werewolf",
+        "11": "\u4eba\u72fc",
+        "13": "\u4eba\u72fc"
+    },
+    "WerewolfTitle1": {
+        "0": "Let's kill a villager!",
+        "11": "\u6751\u4eba\u3092\u30ad\u30eb\u3057\u3088\u3046"
     },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",

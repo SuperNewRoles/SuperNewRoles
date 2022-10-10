@@ -166,6 +166,7 @@ It is already on the Discord server.
 |                                         | [Spy](#Spy)                               |
 |                                         | [GhostMechanic](#GhostMechanic)           |
 |                                         | [ToiletFan](#ToiletFan)                   |
+|                                         | [Knight](#Knight)                         |
 
 # Position Details 
 ## Attention. 
@@ -1502,6 +1503,30 @@ in SHR mode, the door is opened and closed by shape-shifting. <br>
 | ---------------- | :-----------------------------: |
 | Toilet Cool Time | Cool time for open/close button |
 ----------------------- 
+## Knight
+### Team Crew
+#### Intro
+- I will protect you according to my beliefs.
+#### Description
+- During the conference phase, you can put up a shield to prevent one kill by using the protect button. 
+If the protection is successful, a successful protection announcement will be played at the beginning of the next meeting phase.
+
+#### Ability
+- Once per meeting phase, you can put up a shield that prevents one kill.
+- The shield disappears when a kill is prevented or at the beginning of the Conference Phase.
+- The shield also prevents kills during the conference phase.
+- If the same person receives both a kill and a protection in the same conference phase, priority is given to the one who declares his/her action earlier.
+(Kills are handled in real time and do not wait for the guarding ability to be selected.)
+- If the target's kill process has already been executed after the protective ability is used, the ability will not fire but can be used again.
+
+### Game Settings
+| Name                                                     |                                                                                         Description                                                                                         |
+| -------------------------------------------------------- | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| Play an announcement when the protection is successful?  |                     When the protection is successful, set whether the announcement of successful protection will be played at the beginning of the next meeting phase.                     |
+| Do you want to set a limit on the number of protections? |                          Allow one protection to be used at all times during a meeting with no upper limit, or set a limit on the number of times it can be used.                           |
+| Maximum number of times protection is possible.          | If an upper limit is set, set the maximum number of times the protection can be used. This set number of times will be the number of times the protection ability can be used in one match. |
+|                                                          |
+----------------------- 
 ## Quarreled
 ### overlapping camps 
 This roll will be in pairs. <br> 
@@ -1511,7 +1536,6 @@ If you live to the end, you are defeated.
 | Name               |                   Description                    |
 | ------------------ | :----------------------------------------------: |
 | Only Crewmate Team | Clade can be selected or not only for the clade. |
-
 ----------------------- 
 ## Lovers
 ### overlapping camps 
@@ -1531,5 +1555,4 @@ SuperHostRoles support
 | Tasks are counted when surviving | Sets whether or not Lovers' tasks are counted in the overall amount of tasks for the crewmate |
 when alive. 
 | Does not overlap with Quarreled | You can set whether or not to duplicate with Quarreled. 
-
 ----------------------- 

@@ -823,6 +823,15 @@ namespace SuperNewRoles.Patches
         public static bool resetToDead = false;
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
+            if (Roles.CrewMate.Knight.GuardedPlayers.Contains(target.PlayerId))
+            {
+                var Writer = RPCHelper.StartRPC(CustomRPC.KnightProtectClear);
+                Writer.Write(target.PlayerId);
+                Writer.EndRPC();
+                RPCProcedure.KnightProtectClear(target.PlayerId);
+                target.protectedByGuardian = true;
+                return false;
+            }
             EvilGambler.MurderPlayerPrefix(__instance, target);
             Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
             if (ModeHandler.IsMode(ModeId.Default))
@@ -904,6 +913,7 @@ namespace SuperNewRoles.Patches
 
             SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
+            Roles.CrewMate.KnightProtected_Patch.MurderPlayerPatch.Postfix(target);
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {

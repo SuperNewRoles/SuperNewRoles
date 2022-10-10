@@ -44,9 +44,10 @@ namespace SuperNewRoles.Patches
     {
         static readonly string SNRCommander = $"<size=200%>{SuperNewRolesPlugin.ColorModName}</size>";
         public static string WelcomeToSuperNewRoles = $"<size=150%>Welcome To {SuperNewRolesPlugin.ColorModName}</size>";
-
+        
         public static bool Prefix(PlayerControl sourcePlayer, string chatText)
         {
+            if (Mode.Werewolf.Main.IsChatBlock(sourcePlayer, chatText)) return false;
             if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
             {
                 if (AmongUsClient.Instance.AmHost)

@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnhollowerBaseLib;
+using UnityEngine;
 using static MeetingHud;
 
 namespace SuperNewRoles.Patches
@@ -83,92 +85,6 @@ namespace SuperNewRoles.Patches
                             }
                             return false;
                         }
-                    }
-                }
-                else if (ModeHandler.IsMode(ModeId.Werewolf))
-                {
-                    if (Mode.Werewolf.Main.IsAbility)
-                    {
-                        foreach (var ps in __instance.playerStates)
-                        {
-                            PlayerControl player = ModHelpers.PlayerById(ps.TargetPlayerId);
-                            if (!ps.AmDead && !ps.DidVote && (player.IsImpostor() || (!player.IsRole(RoleId.DefaultRole) && !player.IsRole(RoleId.MadMate) && !player.IsRole(RoleId.SpiritMedium) && !(player.PlayerId == Mode.Werewolf.Main.HunterExilePlayer.PlayerId && Mode.Werewolf.Main.HunterPlayers.IsCheckListPlayerControl(player)))))
-                                return false;
-                        }
-                        for (var i = 0; i < __instance.playerStates.Length; i++)
-                        {
-                            PlayerVoteArea ps = __instance.playerStates[i];
-                            PlayerControl player = ModHelpers.PlayerById(ps.TargetPlayerId);
-                            PlayerControl VoteTarget = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => info.PlayerId == ps.VotedFor)?.Object;
-                            if (ps.VotedFor != 253 && ps.VotedFor != 254 && VoteTarget != null)
-                            {
-                                if (player.IsImpostor())
-                                    Mode.Werewolf.Main.WolfKillPlayers.Add(VoteTarget.PlayerId);
-                                else if (player.IsRole(RoleId.SoothSayer))
-                                    Mode.Werewolf.Main.SoothRoles.Add(player.PlayerId, VoteTarget.PlayerId);
-                                else if (player.PlayerId == Mode.Werewolf.Main.HunterExilePlayer.PlayerId && Mode.Werewolf.Main.HunterPlayers.IsCheckListPlayerControl(player))
-                                    Mode.Werewolf.Main.SoothRoles.Add(player.PlayerId, VoteTarget.PlayerId);
-                            }
-                        }
-                        __instance.RpcVotingComplete(new List<VoterState>().ToArray(), null, false);
-                        return false;
-                    }
-                    else
-                    {
-                        foreach (var ps in __instance.playerStates)
-                        {
-                            if (!(ps.AmDead || ps.DidVote))//死んでいないプレイヤーが投票していない
-                                return false;
-                        }
-                        VoterState[] states1;
-                        GameData.PlayerInfo exiledPlayer1 = CachedPlayer.LocalPlayer.Data;
-                        bool tie1 = false;
-
-                        List<VoterState> statesList1 = new();
-                        for (var i = 0; i < __instance.playerStates.Length; i++)
-                        {
-                            PlayerVoteArea ps = __instance.playerStates[i];
-                            if (!ModeHandler.IsMode(ModeId.BattleRoyal))
-                            {
-                                if (ps == null) continue;
-                                var voter = ModHelpers.PlayerById(ps.TargetPlayerId);
-                                if (voter == null || voter.Data == null || voter.Data.Disconnected) continue;
-                                statesList1.Add(new VoterState()
-                                {
-                                    VoterId = ps.TargetPlayerId,
-                                    VotedForId = ps.VotedFor
-                                });
-                            }
-                        }
-                        states1 = statesList1.ToArray();
-                        var VotingData1 = __instance.CustomCalculateVotes();
-                        byte exileId1 = byte.MaxValue;
-                        int max1 = 0;
-                        foreach (var data in VotingData1)
-                        {
-                            if (data.Value > max1)
-                            {
-                                exileId1 = data.Key;
-                                max1 = data.Value;
-                                tie1 = false;
-                            }
-                            else if (data.Value == max1)
-                            {
-                                exileId1 = byte.MaxValue;
-                                tie1 = true;
-                            }
-                        }
-                        exiledPlayer1 = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tie1 && info.PlayerId == exileId1);
-                        if (exiledPlayer1 != null && Mode.Werewolf.Main.HunterPlayers.IsCheckListPlayerControl(exiledPlayer1.Object))
-                        {
-                            Mode.Werewolf.Main.HunterExilePlayer = exiledPlayer1.Object;
-                            __instance.RpcVotingComplete(states1, null, false); //RPC
-                        }
-                        else
-                        {
-                            __instance.RpcVotingComplete(states1, exiledPlayer1, tie1); //RPC
-                        }
-                        return false;
                     }
                 }
                 else if (RoleClass.Assassin.TriggerPlayer != null)
@@ -558,7 +474,7 @@ namespace SuperNewRoles.Patches
         public static void Prefix()
         {
         }
-        public static void Postfix()
+        public static void Postfix(MeetingHud __instance)
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
@@ -566,6 +482,61 @@ namespace SuperNewRoles.Patches
                 {
                     SyncSetting.CustomSyncSettings();
                 }, 3f, "StartMeeting CustomSyncSetting");
+            }
+            Roles.CrewMate.Knight.ProtectedPlayer = null;
+            Roles.CrewMate.Knight.GuardedPlayers = new();
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
+            {
+                CreateMeetingButton(__instance, "WerewolfKillButton", (int i, MeetingHud __instance) =>
+                {
+                    if (RoleClass.Werewolf.IsShooted || CachedPlayer.LocalPlayer.IsDead() || !Mode.Werewolf.Main.IsUseButton())
+                    {
+                        __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
+                        return;
+                    }
+
+                    RoleClass.Werewolf.IsShooted = true;
+
+                    if (Roles.CrewMate.Knight.GuardedPlayers.Contains((byte)i))
+                    {
+                        var Writer = RPCHelper.StartRPC(CustomRPC.KnightProtectClear);
+                        Writer.Write((byte)i);
+                        Writer.EndRPC();
+                        RPCProcedure.KnightProtectClear((byte)i);
+                        PlayerControl player = ModHelpers.PlayerById((byte)i);
+                        var Guard = GameObject.Instantiate<RoleEffectAnimation>(FastDestroyableSingleton<RoleManager>.Instance.protectAnim, player.transform);
+                        Guard.Play(player, null, player.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
+                        __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
+                        return;
+                    }
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.MeetingKill);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write((byte)i);
+                    writer.EndRPC();
+                    RPCProcedure.MeetingKill(CachedPlayer.LocalPlayer.PlayerId, (byte)i);
+                    __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
+                }, RoleClass.Cleaner.GetButtonSprite(), (PlayerControl player) => player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId);
+            }
+        }
+        public static void CreateMeetingButton(MeetingHud __instance, string ButtonName, Action<int, MeetingHud> OnClick, Sprite sprite, Func<PlayerControl, bool> CheckCanButton)
+        {
+            for (int i = 0; i < __instance.playerStates.Length; i++)
+            {
+                PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+                var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
+                if (CheckCanButton(player))
+                {
+                    GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
+                    GameObject targetBox = GameObject.Instantiate(template, playerVoteArea.transform);
+                    targetBox.name = ButtonName;
+                    targetBox.transform.localPosition = new(1, 0.03f, -1);
+                    SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
+                    renderer.sprite = sprite;
+                    PassiveButton button = targetBox.GetComponent<PassiveButton>();
+                    button.OnClick.RemoveAllListeners();
+                    int copiedIndex = player.PlayerId;
+                    button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClick(copiedIndex, __instance)));
+                }
             }
         }
     }

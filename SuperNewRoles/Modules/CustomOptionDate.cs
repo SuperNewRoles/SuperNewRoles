@@ -58,6 +58,7 @@ namespace SuperNewRoles.Modules
         public static CustomOption SoothSayerPlayerCount;
         public static CustomOption SoothSayerDisplayMode;
         public static CustomOption SoothSayerMaxCount;
+        public static CustomOption SoothSayerFirstWhiteOption;
 
         public static CustomRoleOption JesterOption;
         public static CustomOption JesterPlayerCount;
@@ -136,6 +137,7 @@ namespace SuperNewRoles.Modules
 
         public static CustomRoleOption SpiritMediumOption;
         public static CustomOption SpiritMediumPlayerCount;
+        public static CustomOption SpiritMediumIsAutoMode;
         public static CustomOption SpiritMediumDisplayMode;
         public static CustomOption SpiritMediumMaxCount;
 
@@ -844,6 +846,9 @@ namespace SuperNewRoles.Modules
         public static CustomOption DoppelgangerCoolTime;
         public static CustomOption DoppelgangerSucTime;
         public static CustomOption DoppelgangerNotSucTime;
+        
+        public static CustomRoleOption WerewolfOption;
+        public static CustomOption WerewolfPlayerCount;
 
         public static CustomRoleOption PavlovsownerOption;
         public static CustomOption PavlovsownerPlayerCount;
@@ -985,7 +990,8 @@ namespace SuperNewRoles.Modules
             SoothSayerOption = SetupCustomRoleOption(12, false, RoleId.SoothSayer);
             SoothSayerPlayerCount = Create(13, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
             SoothSayerDisplayMode = Create(14, false, CustomOptionType.Crewmate, "SoothSayerDisplaySetting", false, SoothSayerOption);
-            SoothSayerMaxCount = Create(15, false, CustomOptionType.Crewmate, "SoothSayerMaxCountSetting", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
+            SoothSayerMaxCount = Create(15, false, CustomOptionType.Crewmate, "SoothSayerMaxCountSetting", CrewPlayers[0] - 1, CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
+            SoothSayerFirstWhiteOption = Create(992, false, CustomOptionType.Crewmate, "SoothSayerFirstWhiteOption", false, SoothSayerOption);
 
             JesterOption = SetupCustomRoleOption(16, true, RoleId.Jester);
             JesterPlayerCount = Create(17, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JesterOption);
@@ -1056,6 +1062,7 @@ namespace SuperNewRoles.Modules
 
             SpiritMediumOption = SetupCustomRoleOption(70, false, RoleId.SpiritMedium);
             SpiritMediumPlayerCount = Create(71, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpiritMediumOption);
+            SpiritMediumIsAutoMode = Create(1004, false, CustomOptionType.Crewmate, "SpiritMediumIsAutoMode", false, SpiritMediumOption);
             SpiritMediumDisplayMode = Create(72, false, CustomOptionType.Crewmate, "SpiritMediumDisplaySetting", false, SpiritMediumOption);
             SpiritMediumMaxCount = Create(73, false, CustomOptionType.Crewmate, "SpiritMediumMaxCountSetting", 2f, 1f, 15f, 1f, SpiritMediumOption);
 
@@ -1725,6 +1732,11 @@ namespace SuperNewRoles.Modules
             DoppelgangerCoolTime = Create(989, true, CustomOptionType.Impostor, "DoppelgangerCoolDownSetting", 5f, 5f, 60f, 2.5f, DoppelgangerOption);
             DoppelgangerSucTime = Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
             DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
+
+            WerewolfOption = new(997, false, CustomOptionType.Impostor, "WerewolfName",RoleClass.Werewolf.color, 1);
+            WerewolfPlayerCount = Create(998, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
+
+            Roles.CrewMate.Knight.SetupCustomOptions();
 
             (PavlovsownerOption = new(1039, false, CustomOptionType.Neutral, "PavlovsdogsName", RoleClass.Pavlovsdogs.color, 1))
             .RoleId = RoleId.Pavlovsowner;

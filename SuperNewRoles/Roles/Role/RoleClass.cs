@@ -183,6 +183,8 @@ namespace SuperNewRoles.Roles
             NekoKabocha.ClearAndReload();
             WaveCannon.ClearAndReload();
             Doppelganger.ClearAndReload();
+            Werewolf.ClearAndReload();
+            CrewMate.Knight.ClearAndReload();
             Pavlovsdogs.ClearAndReload();
             Pavlovsowner.ClearAndReload();
             WaveCannonJackal.ClearAndReload();
@@ -201,6 +203,7 @@ namespace SuperNewRoles.Roles
             public static bool DisplayMode;
             public static int Count;
             public static Color32 color = new(190, 86, 235, byte.MaxValue);
+            public static bool CanFirstWhite;
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SoothSayerButton.png", 115f);
             public static void ClearAndReload()
             {
@@ -208,6 +211,7 @@ namespace SuperNewRoles.Roles
                 DisplayedPlayer = new();
                 DisplayMode = CustomOptions.SoothSayerDisplayMode.GetBool();
                 Count = CustomOptions.SoothSayerMaxCount.GetInt();
+                CanFirstWhite = CustomOptions.SoothSayerFirstWhiteOption.GetBool();
             }
         }
         public static class Jester
@@ -378,12 +382,14 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new(0, 191, 255, byte.MaxValue);
             public static bool DisplayMode;
             public static float MaxCount;
+            public static PlayerControl ExilePlayer;
 
             public static void ClearAndReload()
             {
                 SpiritMediumPlayer = new();
                 DisplayMode = CustomOptions.SpiritMediumDisplayMode.GetBool();
                 MaxCount = CustomOptions.SpiritMediumMaxCount.GetFloat();
+                ExilePlayer = null;
             }
         }
         public static class SpeedBooster
@@ -2850,6 +2856,17 @@ namespace SuperNewRoles.Roles
                 ButtonTimer = DateTime.Now;
                 IsCamouflage = false;
                 Duration = DurationTime;
+            }
+        }
+        public static class Werewolf
+        {
+            public static List<PlayerControl> WerewolfPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool IsShooted;
+            public static void ClearAndReload()
+            {
+                WerewolfPlayer = new();
+                IsShooted = false;
             }
         }
         //新ロールクラス
