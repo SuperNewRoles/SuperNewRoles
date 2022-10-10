@@ -224,7 +224,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
 
-            if (player.IsLovers())
+            if (player.IsLovers() &&
+                ((RoleClass.Camouflager.LoversMark && RoleClass.Camouflager.IsCamouflage) || !RoleClass.Camouflager.IsCamouflage))
             {
                 var suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
                 PlayerControl Side = player.GetOneSideLovers();
@@ -233,20 +234,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 else { ChangePlayers[Side.PlayerId] = ChangePlayers[Side.PlayerId] + suffix; }
                 MySuffix += suffix;
             }
-            if ((RoleClass.Camouflager.LoversMark && RoleClass.Camouflager.IsCamouflage) || !RoleClass.Camouflager.IsCamouflage)
-            {
-                var suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
-                PlayerControl Side = player.GetOneSideLovers();
-                string name = Side.GetDefaultName();
-                if (!ChangePlayers.ContainsKey(Side.PlayerId))
-                {
-                    if (!RoleClass.Camouflager.IsCamouflage) ChangePlayers.Add(Side.PlayerId, Side.GetDefaultName() + suffix);
-                    else ChangePlayers.Add(Side.PlayerId, suffix);
-                }
-                    else { ChangePlayers[Side.PlayerId] = ChangePlayers[Side.PlayerId] + suffix; }
-                    MySuffix += suffix;
-            }
-            if (player.IsQuarreled())
+            if (player.IsQuarreled() &&
+                ((RoleClass.Camouflager.QuarreledMark && RoleClass.Camouflager.IsCamouflage) || !RoleClass.Camouflager.IsCamouflage))
             {
                 var suffix = ModHelpers.Cs(RoleClass.Quarreled.color, "○");
                 PlayerControl Side = player.GetOneSideQuarreled();
@@ -255,20 +244,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 else { ChangePlayers[Side.PlayerId] = ChangePlayers[Side.PlayerId] + suffix; }
                 MySuffix += suffix;
             }
-            if ((RoleClass.Camouflager.QuarreledMark && RoleClass.Camouflager.IsCamouflage) || !RoleClass.Camouflager.IsCamouflage)
-            {
-                var suffix = ModHelpers.Cs(RoleClass.Quarreled.color, "○");
-                PlayerControl Side = player.GetOneSideQuarreled();
-                string name = Side.GetDefaultName();
-                if (!ChangePlayers.ContainsKey(Side.PlayerId))
-                {
-                    if (!RoleClass.Camouflager.IsCamouflage) ChangePlayers.Add(Side.PlayerId, Side.GetDefaultName() + suffix);
-                    else ChangePlayers.Add(Side.PlayerId, suffix);
-                }
-                else { ChangePlayers[Side.PlayerId] = ChangePlayers[Side.PlayerId] + suffix; }
-                MySuffix += suffix;
-            }
-
             if (player.IsRole(RoleId.Sheriff))
             {
                 if (RoleClass.Sheriff.KillCount.ContainsKey(player.PlayerId))
