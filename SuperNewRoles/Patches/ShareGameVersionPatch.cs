@@ -36,14 +36,14 @@ namespace SuperNewRoles.Patches
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[VersionShare]Version Shared!");
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareSNRVersion, SendOption.Reliable, -1);
-                    writer.WritePacked(SuperNewRolesPlugin.Version.Major);
-                    writer.WritePacked(SuperNewRolesPlugin.Version.Minor);
-                    writer.WritePacked(SuperNewRolesPlugin.Version.Build);
+                    writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Major);
+                    writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Minor);
+                    writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Build);
                     writer.WritePacked(AmongUsClient.Instance.ClientId);
-                    writer.Write((byte)(SuperNewRolesPlugin.Version.Revision < 0 ? 0xFF : SuperNewRolesPlugin.Version.Revision));
+                    writer.Write((byte)(SuperNewRolesPlugin.ThisVersion.Revision < 0 ? 0xFF : SuperNewRolesPlugin.ThisVersion.Revision));
                     writer.Write(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray());
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.ShareSNRversion(SuperNewRolesPlugin.Version.Major, SuperNewRolesPlugin.Version.Minor, SuperNewRolesPlugin.Version.Build, SuperNewRolesPlugin.Version.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
+                    RPCProcedure.ShareSNRversion(SuperNewRolesPlugin.ThisVersion.Major, SuperNewRolesPlugin.ThisVersion.Minor, SuperNewRolesPlugin.ThisVersion.Build, SuperNewRolesPlugin.ThisVersion.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
                 }
             }
         }
@@ -81,14 +81,14 @@ namespace SuperNewRoles.Patches
                 if (Proce >= 10)
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareSNRVersion, SendOption.Reliable, -1);
-                    writer.WritePacked(SuperNewRolesPlugin.Version.Major);
-                    writer.WritePacked(SuperNewRolesPlugin.Version.Minor);
-                    writer.WritePacked(SuperNewRolesPlugin.Version.Build);
+                    writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Major);
+                    writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Minor);
+                    writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Build);
                     writer.WritePacked(AmongUsClient.Instance.ClientId);
-                    writer.Write((byte)(SuperNewRolesPlugin.Version.Revision < 0 ? 0xFF : SuperNewRolesPlugin.Version.Revision));
+                    writer.Write((byte)(SuperNewRolesPlugin.ThisVersion.Revision < 0 ? 0xFF : SuperNewRolesPlugin.ThisVersion.Revision));
                     writer.Write(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray());
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.ShareSNRversion(SuperNewRolesPlugin.Version.Major, SuperNewRolesPlugin.Version.Minor, SuperNewRolesPlugin.Version.Build, SuperNewRolesPlugin.Version.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
+                    RPCProcedure.ShareSNRversion(SuperNewRolesPlugin.ThisVersion.Major, SuperNewRolesPlugin.ThisVersion.Minor, SuperNewRolesPlugin.ThisVersion.Build, SuperNewRolesPlugin.ThisVersion.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
                     Proce = 0;
                 }
                 string message = "";
@@ -130,7 +130,7 @@ namespace SuperNewRoles.Patches
                         {
                             var client = AmongUsClient.Instance.GetHost();
                             PlayerVersion PV = VersionPlayers[client.Id];
-                            int diff = SuperNewRolesPlugin.Version.CompareTo(PV.version);
+                            int diff = SuperNewRolesPlugin.ThisVersion.CompareTo(PV.version);
                             if (diff > 0)
                             {
                                 message += $"{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
@@ -160,7 +160,7 @@ namespace SuperNewRoles.Patches
                             else
                             {
                                 PlayerVersion PV = VersionPlayers[client.Id];
-                                int diff = SuperNewRolesPlugin.Version.CompareTo(PV.version);
+                                int diff = SuperNewRolesPlugin.ThisVersion.CompareTo(PV.version);
                                 if (diff > 0)
                                 {
                                     message += $"{string.Format(ModTranslation.GetString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n";
