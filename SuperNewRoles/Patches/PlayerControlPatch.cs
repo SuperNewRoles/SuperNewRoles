@@ -631,6 +631,11 @@ namespace SuperNewRoles.Patches
                             {
                                 SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
                                 if (target == null || RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                                if (target.IsImpostor())
+                                {
+                                    target.RpcMurderPlayer(target);
+                                    return false;
+                                }
                                 __instance.RpcShowGuardEffect(target);
                                 RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
                                 target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
