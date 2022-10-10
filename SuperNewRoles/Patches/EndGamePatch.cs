@@ -200,120 +200,67 @@ namespace SuperNewRoles.Patches
             textRenderer.text = "";
             var text = "";
             var RoleColor = Color.white;
-            switch (AdditionalTempData.winCondition)
+            Color32 HaisonColor = new(163, 163, 162, byte.MaxValue);
+            Dictionary<WinCondition, (string, Color32)> WinConditionDictionary = new() {
+                {WinCondition.HAISON,("HAISON",HaisonColor)},
+                {WinCondition.LoversWin,("LoversName",RoleClass.Lovers.color)},
+                {WinCondition.GodWin,("GodName",RoleClass.God.color)},
+                {WinCondition.JesterWin,("JesterName",RoleClass.Jester.color)},
+                {WinCondition.JackalWin,("JackalName",RoleClass.Jackal.color)},
+                {WinCondition.QuarreledWin,("QuarreledName",RoleClass.Quarreled.color)},
+                {WinCondition.EgoistWin,("EgoistName",RoleClass.Egoist.color)},
+                {WinCondition.WorkpersonWin,("WorkpersonName",RoleClass.Workperson.color)},
+                {WinCondition.FalseChargesWin,("FalseChargesName",RoleClass.FalseCharges.color)},
+                {WinCondition.FoxWin,("FoxName",RoleClass.Fox.color)},
+                {WinCondition.DemonWin,("DemonName",RoleClass.Demon.color)},
+                {WinCondition.ArsonistWin,("ArsonistName",RoleClass.Arsonist.color)},
+                {WinCondition.VultureWin,("VultureName",RoleClass.Vulture.color)},
+                {WinCondition.TunaWin,("TunaName",RoleClass.Tuna.color)},
+                {WinCondition.NeetWin,("NeetName",RoleClass.Neet.color)},
+                {WinCondition.RevolutionistWin,("RevolutionistName",RoleClass.Revolutionist.color)},
+                {WinCondition.SpelunkerWin,("SpelunkerName",RoleClass.Spelunker.color)},
+                {WinCondition.SuicidalIdeationWin,(  CustomOptions.SuicidalIdeationWinText.GetBool() ? "SuicidalIdeationWinText" : "SuicidalIdeationName",RoleClass.SuicidalIdeation.color)},
+                {WinCondition.HitmanWin,("HitmanName",RoleClass.Hitman.color)},
+                {WinCondition.PhotographerWin,("PhotographerName",RoleClass.Photographer.color)},
+                {WinCondition.StefinderWin,("StefinderName",RoleClass.Stefinder.color)},
+            };
+            if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
             {
-                case WinCondition.LoversWin:
-                    text = "LoversName";
-                    RoleColor = RoleClass.Lovers.color;
-                    break;
-                case WinCondition.GodWin:
-                    text = "GodName";
-                    RoleColor = RoleClass.God.color;
-                    break;
-                case WinCondition.HAISON:
-                    text = "HAISON";
-                    __instance.WinText.text = ModTranslation.GetString("HaisonName");
-                    Color32 HaisonColor = new(163, 163, 162, byte.MaxValue);
-                    __instance.WinText.color = HaisonColor;
-                    RoleColor = HaisonColor;
-                    break;
-                case WinCondition.JesterWin:
-                    text = "JesterName";
-                    RoleColor = RoleClass.Jester.color;
-                    break;
-                case WinCondition.JackalWin:
-                    text = "JackalName";
-                    RoleColor = RoleClass.Jackal.color;
-                    break;
-                case WinCondition.QuarreledWin:
-                    text = "QuarreledName";
-                    RoleColor = RoleClass.Quarreled.color;
-                    break;
-                case WinCondition.EgoistWin:
-                    text = "EgoistName";
-                    RoleColor = RoleClass.Egoist.color;
-                    break;
-                case WinCondition.WorkpersonWin:
-                    text = "WorkpersonName";
-                    RoleColor = RoleClass.Workperson.color;
-                    break;
-                case WinCondition.FalseChargesWin:
-                    text = "FalseChargesName";
-                    RoleColor = RoleClass.FalseCharges.color;
-                    break;
-                case WinCondition.FoxWin:
-                    text = "FoxName";
-                    RoleColor = RoleClass.Fox.color;
-                    break;
-                case WinCondition.DemonWin:
-                    text = "DemonName";
-                    RoleColor = RoleClass.Demon.color;
-                    break;
-                case WinCondition.ArsonistWin:
-                    text = "ArsonistName";
-                    RoleColor = RoleClass.Arsonist.color;
-                    break;
-                case WinCondition.VultureWin:
-                    text = "VultureName";
-                    RoleColor = RoleClass.Vulture.color;
-                    break;
-                case WinCondition.TunaWin:
-                    text = "TunaName";
-                    RoleColor = RoleClass.Tuna.color;
-                    break;
-                case WinCondition.NeetWin:
-                    text = "NeetName";
-                    RoleColor = RoleClass.Neet.color;
-                    break;
-                case WinCondition.RevolutionistWin:
-                    text = "RevolutionistName";
-                    RoleColor = RoleClass.Revolutionist.color;
-                    break;
-                case WinCondition.SpelunkerWin:
-                    text = "SpelunkerName";
-                    RoleColor = RoleClass.Spelunker.color;
-                    break;
-                case WinCondition.SuicidalIdeationWin:
-                    text = CustomOptions.SuicidalIdeationWinText.GetBool() ? "SuicidalIdeationWinText" : "SuicidalIdeationName";
-                    RoleColor = RoleClass.SuicidalIdeation.color;
-                    break;
-                case WinCondition.HitmanWin:
-                    text = "HitmanName";
-                    RoleColor = RoleClass.Hitman.color;
-                    break;
-                case WinCondition.PhotographerWin:
-                    text = "PhotographerName";
-                    RoleColor = RoleClass.Photographer.color;
-                    break;
-                case WinCondition.StefinderWin:
-                    text = "StefinderName";
-                    RoleColor = RoleClass.Stefinder.color;
-                    break;
-                default:
-                    switch (AdditionalTempData.gameOverReason)
-                    {
-                        case GameOverReason.HumansByTask:
-                        case GameOverReason.HumansByVote:
-                        case GameOverReason.HumansDisconnect:
-                            text = "CrewMateName";
-                            RoleColor = Palette.White;
-                            break;
-                        case GameOverReason.ImpostorByKill:
-                        case GameOverReason.ImpostorBySabotage:
-                        case GameOverReason.ImpostorByVote:
-                        case GameOverReason.ImpostorDisconnect:
-                        //MadJester勝利をインポスター勝利とみなした
-                        case (GameOverReason)CustomGameOverReason.MadJesterWin:
-                            text = "ImpostorName";
-                            RoleColor = RoleClass.ImpostorRed;
-                            break;
-                        case (GameOverReason)CustomGameOverReason.TaskerWin:
-                            text = "TaskerWinText";
-                            RoleColor = RoleClass.ImpostorRed;
-                            break;
-                    }
-                    break;
+                text = WinConditionDictionary[AdditionalTempData.winCondition].Item1;
+                RoleColor = WinConditionDictionary[AdditionalTempData.winCondition].Item2;
             }
+            else
+            {
+                switch (AdditionalTempData.gameOverReason)
+                {
+                    case GameOverReason.HumansByTask:
+                    case GameOverReason.HumansByVote:
+                    case GameOverReason.HumansDisconnect:
+                        text = "CrewMateName";
+                        RoleColor = Palette.White;
+                        break;
+                    case GameOverReason.ImpostorByKill:
+                    case GameOverReason.ImpostorBySabotage:
+                    case GameOverReason.ImpostorByVote:
+                    case GameOverReason.ImpostorDisconnect:
+                    //MadJester勝利をインポスター勝利とみなす
+                    case (GameOverReason)CustomGameOverReason.MadJesterWin:
+                        text = "ImpostorName";
+                        RoleColor = RoleClass.ImpostorRed;
+                        break;
+                    case (GameOverReason)CustomGameOverReason.TaskerWin:
+                        text = "TaskerWinText";
+                        RoleColor = RoleClass.ImpostorRed;
+                        break;
+                }
+            }
+            if (AdditionalTempData.winCondition == WinCondition.HAISON)
+            {
+                __instance.WinText.text = ModTranslation.GetString("HaisonName");
+                __instance.WinText.color = HaisonColor;
+            }
+
+
             textRenderer.color = AdditionalTempData.winCondition == WinCondition.HAISON ? Color.clear : RoleColor;
             __instance.BackgroundBar.material.SetColor("_Color", RoleColor);
             var haison = false;
