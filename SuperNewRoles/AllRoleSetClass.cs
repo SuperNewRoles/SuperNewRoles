@@ -463,6 +463,11 @@ namespace SuperNewRoles
                     }
                     Impoonepar.RemoveAt(SelectRoleDateIndex);
                 }
+                else if (Imponotonepar.Count <= 0)
+                {
+                    IsNotEndRandomSelect = false;
+                    break;
+                }
                 else
                 {
                     int SelectRoleDateIndex = ModHelpers.GetRandomIndex(Imponotonepar);
@@ -581,7 +586,7 @@ namespace SuperNewRoles
             bool IsRevolutionistAssigned = false;
             while (IsNotEndRandomSelect)
             {
-                if (Neutonepar.Count != 0)
+                if (Neutonepar.Count > 0)
                 {
                     int SelectRoleDateIndex = ModHelpers.GetRandomIndex(Neutonepar);
                     RoleId SelectRoleDate = Neutonepar[SelectRoleDateIndex];
@@ -622,6 +627,11 @@ namespace SuperNewRoles
                         }
                     }
                     Neutonepar.RemoveAt(SelectRoleDateIndex);
+                }
+                else if (Neutnotonepar.Count <= 0)
+                {
+                    IsNotEndRandomSelect = false;
+                    break;
                 }
                 else
                 {
@@ -680,7 +690,6 @@ namespace SuperNewRoles
             if (IsRevolutionistAssigned)
             {
                 int PlayerCount = (int)GetPlayerCount(RoleId.Dictator);
-                Logger.Info(PlayerCount.ToString(), "Dictator");
                 if (PlayerCount >= CrewMatePlayerNum)
                 {
                     for (int i = 1; i <= CrewMatePlayerNum; i++)
@@ -758,6 +767,11 @@ namespace SuperNewRoles
                         }
                     }
                     Crewonepar.RemoveAt(SelectRoleDateIndex);
+                }
+                else if (Crewnotonepar.Count <= 0)
+                {
+                    IsNotEndRandomSelect = false;
+                    break;
                 }
                 else
                 {
