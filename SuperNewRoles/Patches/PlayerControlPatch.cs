@@ -614,7 +614,6 @@ namespace SuperNewRoles.Patches
                                 if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
                                 __instance.RpcShowGuardEffect(target);
                                 RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
-                                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
                                 target.SetRoleRPC(RoleId.MadMate);//マッドにする
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                                 RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことにする
@@ -635,8 +634,7 @@ namespace SuperNewRoles.Patches
                                 RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
                                 if (!target.IsImpostor())
                                 {
-                                    target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
-                                    Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
+                                    Jackal.CreateJackalFriends(target);//守護天使にして クルーにして フレンズにする
                                 }
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                                 SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
