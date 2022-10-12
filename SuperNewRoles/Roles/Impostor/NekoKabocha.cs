@@ -47,7 +47,7 @@ namespace SuperNewRoles.Roles.Impostor
 
         public static void OnWrapUp(PlayerControl exiled)
         {
-            if (CanRevengeExile && exiled.IsRole(RoleId.NekoKabocha))
+            if (AmongUsClient.Instance.AmHost && CanRevengeExile && exiled.IsRole(RoleId.NekoKabocha))
             {
                 List<PlayerControl> targets = new();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
