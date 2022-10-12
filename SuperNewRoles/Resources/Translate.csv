@@ -1,3 +1,16 @@
+*This file is for mod translation
+*Lines with "*" as the first character are not recognized
+*Order is text in mod,English,Japanese,SChinese
+
+*このファイルはmodの翻訳をするためのファイルです
+*最初の文字が「*」の行は認識されません
+*順番はmod内のテキスト,英語,日本語,中国語
+
+*这个文件是用来翻译mod的
+*带有第一个字符 "*" 的行不被识别
+*秩序是文字的模样,英文,日文,中文
+
+
 rolemodname,SuperNewRoles,SuperNewRoles,SuperNewRoles
 StartLogText,Create By ykundesu\nThank You Play SuperNewRoles,作成:ykundesu\nSuperNewRolesをプレイしてくれてありがとうございます!!!!,模组作者：ykundesu\n感谢游玩本模组！
 second,Second,秒,秒
