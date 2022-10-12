@@ -470,11 +470,6 @@ namespace SuperNewRoles.Patches
                     Logger.Info("SHR", "CheckMurder");
                     if (RoleClass.Assassin.TriggerPlayer != null) return false;
                     Logger.Info("SHR-Assassin.TriggerPlayerを通過", "CheckMurder");
-                    if (target.IsRole(RoleId.NekoKabocha))
-                    {
-                        NekoKabocha.OnKill(__instance);
-                        return true;
-                    }
                     foreach (var p in Seer.Seers)
                     {
                         foreach (var p2 in p)
@@ -793,6 +788,10 @@ namespace SuperNewRoles.Patches
             }
             SuperNewRolesPlugin.Logger.LogInfo("i(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
             __instance.RpcMurderPlayer(target);
+            if (target.IsRole(RoleId.NekoKabocha))
+            {
+                NekoKabocha.OnKill(__instance);
+            }
             SuperNewRolesPlugin.Logger.LogInfo("j(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
         }
     }
