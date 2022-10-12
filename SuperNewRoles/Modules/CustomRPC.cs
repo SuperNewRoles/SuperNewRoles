@@ -260,7 +260,7 @@ namespace SuperNewRoles.Modules
             if (showerid != CachedPlayer.LocalPlayer.PlayerId) return;
             PlayerControl target = ModHelpers.PlayerById(targetid);
             if (target == null) return;
-            PlayerControl.LocalPlayer.ProtectPlayer(target);
+            PlayerControl.LocalPlayer.ProtectPlayer(target,0);
             PlayerControl.LocalPlayer.MurderPlayer(target);
         }
         public static void KnightProtectClear(byte Target)
