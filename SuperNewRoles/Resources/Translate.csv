@@ -1,6 +1,6 @@
 *This file is for mod translation
 *Lines with "*" as the first character are not recognized
-*Use "，" instead.
+*A one-byte comma "," may not be used except for delimitation.
 *Also, one-byte commas "," are not allowed.
 *Order is text in mod,English,Japanese,SChinese
 
@@ -12,7 +12,7 @@
 
 *这个文件是用来翻译mod的
 *带有第一个字符 "*" 的行不被识别
-*此外，不得使用一个字节的逗号","。
+*一个字节的逗号", "不得使用，除非用于划线。
 *用"，"代替。
 *秩序是文字的模样,英文,日文,中文
 
