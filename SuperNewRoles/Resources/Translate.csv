@@ -1,7 +1,7 @@
 *This file is for mod translation
 *Lines with "*" as the first character are not recognized
 *A one-byte comma "," may not be used except for delimitation.
-*Also, one-byte commas "," are not allowed.
+*So, please use a full-width comma "，".
 *Order is text in mod,English,Japanese,SChinese
 
 *このファイルはmodの翻訳をするためのファイルです
