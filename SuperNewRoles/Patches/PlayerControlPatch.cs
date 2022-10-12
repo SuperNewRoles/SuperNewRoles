@@ -614,6 +614,7 @@ namespace SuperNewRoles.Patches
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                                 RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことにする
                                 SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSHR]マッドを作ったよ");
+                                return false;
                             }
                             else
                             {
