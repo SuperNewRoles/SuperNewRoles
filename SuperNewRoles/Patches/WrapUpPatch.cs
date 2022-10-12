@@ -99,9 +99,10 @@ namespace SuperNewRoles.Patches
             Roles.Neutral.Photographer.WrapUp();
             Roles.Impostor.Cracker.WrapUp();
             if (exiled == null) return;
-            Roles.SoothSayer_Patch.WrapUp(exiled.Object);
+            SoothSayer_Patch.WrapUp(exiled.Object);
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();
             Nekomata.NekomataEnd(exiled);
+            Roles.Impostor.NekoKabocha.OnWrapUp(exiled.Object);
 
             exiled.Object.Exiled();
             exiled.IsDead = true;
