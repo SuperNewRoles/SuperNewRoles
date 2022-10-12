@@ -387,7 +387,7 @@ namespace SuperNewRoles.Modules
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         RoleId role = p.GetRole();
-                        if (p.IsJackalTeamJackal() || p.IsJackalTeamSidekick() || p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                        if ((p.IsJackalTeamJackal() || p.IsJackalTeamSidekick()) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                         {
                             SetNamesClass.SetPlayerRoleNames(p);
                             SetNamesClass.SetPlayerNameColors(p);
