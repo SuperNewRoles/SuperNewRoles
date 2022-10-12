@@ -36,6 +36,7 @@
     </Target>
 
     <ItemGroup>
+        <PackageReference Include="CsvHelper" Version="29.0.0" />
         <PackageReference Include="GitInfo" Version="2.0.20">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
