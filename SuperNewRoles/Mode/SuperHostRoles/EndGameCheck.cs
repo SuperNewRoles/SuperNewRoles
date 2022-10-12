@@ -18,7 +18,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
             if (CheckAndEndGameForSabotageWin(__instance)) return false;
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
-            if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
             return false;
         }
 
