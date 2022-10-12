@@ -205,8 +205,9 @@ namespace SuperNewRoles.Patches
                         if (AmongUsClient.Instance.AmHost)
                         {
                             RoleClass.Camouflager.Duration = RoleClass.Camouflager.DurationTime;
+                            RoleClass.Camouflager.ButtonTimer = DateTime.Now;
                             RoleClass.Camouflager.IsCamouflage = true;
-                            Roles.Impostor.Camouflager.Camouflage();
+                            Camouflager.CamouflageSHR();
                             SyncSetting.CustomSyncSettings(__instance);
                         }
                         return true;
