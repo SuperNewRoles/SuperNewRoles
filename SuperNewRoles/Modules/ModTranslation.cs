@@ -32,7 +32,7 @@ namespace SuperNewRoles.Modules {
                 string line = sr.ReadLine();
 
                 // 行が空白 戦闘が*なら次の行に
-                if (line == "" || line[0] == '*') continue;
+                if (line == "" || line[0] == '#') continue;
 
                 //カンマで配列の要素として分ける
                 string[] values = line.Split(',');

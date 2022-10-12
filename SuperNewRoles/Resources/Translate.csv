@@ -1,19 +1,19 @@
 Key,English,Japanese,SChinise
 
-*This file is for mod translation
-*Lines with "*" as the first character are not recognized
-*A one-byte comma "," may not be used except for delimitation.
-*So, please use a full-width comma "，".
+# This file is for mod translation
+# Lines with "#" as the first character are not recognized
+# A one-byte comma "," may not be used except for delimitation.
+# So, please use a full-width comma "，".
 
-*このファイルはmodの翻訳をするためのファイルです
-*最初の文字が「*」の行は認識されません
-*また、半角のカンマ「,」を用いることはできません。
-*代わりに「，」を使用してください。
+# このファイルはmodの翻訳をするためのファイルです
+# 最初の文字が「#」の行は認識されません
+# また、半角のカンマ「,」を用いることはできません。
+# 代わりに「，」を使用してください。
 
-*这个文件是用来翻译mod的
-*带有第一个字符 "*" 的行不被识别
-*一个字节的逗号", "不得使用，除非用于划线。
-*用"，"代替。
+# 这个文件是用来翻译mod的
+# 带有第一个字符 "#" 的行不被识别
+# 一个字节的逗号", "不得使用，除非用于划线。
+# 用"，"代替。
 
 
 rolemodname,SuperNewRoles,SuperNewRoles,SuperNewRoles
