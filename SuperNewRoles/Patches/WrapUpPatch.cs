@@ -39,6 +39,10 @@ namespace SuperNewRoles.Patches
         }
         public static void Prefix(GameData.PlayerInfo exiled)
         {
+            if (exiled != null && exiled.Object == null)
+            {
+                exiled = null;
+            }
             RoleClass.IsCoolTimeSetted = false;
             FalseCharges.WrapUp(exiled != null ? exiled.Object : null);
             if (ModeHandler.IsMode(ModeId.Default))
@@ -69,6 +73,11 @@ namespace SuperNewRoles.Patches
         }
         public static void Postfix(GameData.PlayerInfo exiled)
         {
+            if (exiled != null && exiled.Object == null)
+            {
+                exiled = null;
+            }
+
             Kunoichi.WrapUp();
             SerialKiller.WrapUp();
             Assassin.WrapUp();
