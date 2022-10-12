@@ -12,6 +12,11 @@ namespace SuperNewRoles.Modules {
 
             if (!dictionary.ContainsKey(key)) return key; // keyが辞書にないならkeyのまま返す
 
+            Logger.Info($"{dictionary[key].Length}","leng");
+            if (dictionary[key].Length < 4) { //中国語がない場合英語で返す
+                if (langId == SupportedLangs.SChinese)return dictionary[key][1];
+            }
+
             return langId switch {
                 SupportedLangs.English => dictionary[key][1], // 英語
                 SupportedLangs.Japanese => dictionary[key][2],// 日本語
