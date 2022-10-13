@@ -47,8 +47,15 @@ namespace SuperNewRoles.Patches
                 {
                     RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
                     RPCProcedure.SetHaison();
-                    ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
-                    MapUtilities.CachedShipStatus.enabled = false;
+                    if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                    {
+                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansDisconnect, false);
+                    }
+                    else
+                    {
+                        ShipStatus.RpcEndGame(GameOverReason.HumansDisconnect, false);
+                        MapUtilities.CachedShipStatus.enabled = false;
+                    }
                 }
             }
 
