@@ -26,7 +26,9 @@ namespace SuperNewRoles.Modules
         public static CustomOption neutralGhostRolesCountMax;
 
         public static CustomOption enableMirroMap;
+
         public static CustomOption enableAgartha;
+        public static CustomOption AgarthaRandomSpawn;
 
         public static CustomOption IsDebugMode;
         public static CustomOption DebugModeFastStart;
@@ -947,7 +949,9 @@ namespace SuperNewRoles.Modules
             impostorGhostRolesCountMax = Create(8, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
 
             enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false);
+
             enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
+            AgarthaRandomSpawn = Create(1073, false, CustomOptionType.Generic, "AgarthaRandomSpawn", true, enableAgartha);
 
             IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true);
 
