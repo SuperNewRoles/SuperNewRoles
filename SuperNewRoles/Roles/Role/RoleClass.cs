@@ -2856,6 +2856,7 @@ namespace SuperNewRoles.Roles
                 ButtonTimer = DateTime.Now;
                 IsCamouflage = false;
                 Duration = DurationTime;
+                Impostor.Camouflager.Attire = new();
             }
         }
         public static class Werewolf
