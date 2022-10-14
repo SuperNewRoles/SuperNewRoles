@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
-using System.Text.RegularExpressions;
 
 namespace SuperNewRoles
 {
@@ -42,10 +42,7 @@ namespace SuperNewRoles
                         var text = val[key]?.TryCast<JValue>().Value.ToString();
 
                         if (text != null && text.Length > 0)
-                        {
-                            if (text == blankText) strings[j] = "";
-                            else strings[j] = text;
-                        }
+                            strings[j] = text == blankText ? "" : text;
                     }
                     stringData[stringName] = strings;
                 }

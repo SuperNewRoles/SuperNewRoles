@@ -4,7 +4,7 @@ using InnerNet;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
-using static SuperNewRoles.Patch.ShareGameVersion;
+using static SuperNewRoles.Patches.ShareGameVersion;
 
 namespace SuperNewRoles
 {

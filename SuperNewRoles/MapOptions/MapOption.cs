@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptions;
 
@@ -78,9 +78,9 @@ namespace SuperNewRoles.MapOptions
                 WireTaskNum = WireTaskNumOption.GetInt();
                 UseDeadBodyReport = !NotUseReportDeadBody.GetBool();
                 UseMeetingButton = !NotUseMeetingButton.GetBool();
-                //SuperNewRoles.Patch.AdminPatch.ClearAndReload();
-                //SuperNewRoles.Patch.CameraPatch.ClearAndReload();
-                //SuperNewRoles.Patch.VitalsPatch.ClearAndReload();
+                //SuperNewRoles.Patches.AdminPatch.ClearAndReload();
+                //SuperNewRoles.Patches.CameraPatch.ClearAndReload();
+                //SuperNewRoles.Patches.VitalsPatch.ClearAndReload();
             }
             else
             {
@@ -175,7 +175,7 @@ namespace SuperNewRoles.MapOptions
             RandomMapPolus = CustomOption.Create(457, true, CustomOptionType.Generic, "RMPolusSetting", true, RandomMapOption);
             RandomMapAirship = CustomOption.Create(458, true, CustomOptionType.Generic, "RMAirshipSetting", true, RandomMapOption);
 
-            RandomSpawnOption = CustomOption.Create(955, false, CustomOptionType.Generic, "RandomSpawnOption", false, null);
+            RandomSpawnOption = CustomOption.Create(955, false, CustomOptionType.Generic, "RandomSpawnOption", false, MapOptionSetting);
 
             ReactorDurationOption = CustomOption.Create(468, true, CustomOptionType.Generic, "ReactorDurationSetting", false, MapOptionSetting);
             PolusReactorTimeLimit = CustomOption.Create(469, true, CustomOptionType.Generic, "PolusReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);

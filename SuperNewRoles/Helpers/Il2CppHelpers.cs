@@ -1,6 +1,8 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using UnhollowerBaseLib;
+using UnhollowerRuntimeLib;
 
 namespace SuperNewRoles
 {

@@ -1,7 +1,7 @@
 using System.Linq;
 using Hazel;
 using InnerNet;
-
+using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 using static MeetingHud;
 
@@ -38,6 +38,26 @@ namespace SuperNewRoles.Helpers
         {
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
         }
+        public static void SendSingleRpc(byte RPCId, uint NetId, PlayerControl SendTarget = null) => StartRPC(NetId, RPCId, SendTarget).EndRPC();
+        public static void SendSingleRpc(CustomRPC RPCId, uint NetId, PlayerControl SendTarget = null) => StartRPC(NetId, RPCId, SendTarget).EndRPC();
+        public static void SendSingleRpc(CustomRPC RPCId, PlayerControl SendTarget = null) => StartRPC(RPCId, SendTarget).EndRPC();
+
+        public static void SendSinglePlayerRpc(CustomRPC RPCId, byte Target, PlayerControl SendTarget = null)
+        {
+            var writer = StartRPC(RPCId, SendTarget);
+            writer.Write(Target);
+            writer.EndRPC();
+        }
+
+        //Source And Target
+        public static void SendSTRpc(CustomRPC RPCId, byte Source, byte Target, PlayerControl SendTarget = null)
+        {
+            var writer = StartRPC(RPCId, SendTarget);
+            writer.Write(Source);
+            writer.Write(Target);
+            writer.EndRPC();
+        }
+
         public static void RpcSetDoorway(byte id, bool Open)
         {
             ShipStatus.Instance.AllDoors.FirstOrDefault((a) => a.Id == id).SetDoorway(Open);
@@ -147,6 +167,13 @@ namespace SuperNewRoles.Helpers
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             TargetPlayer.Exiled();
         }
+        public static void RpcExiledUnchecked(this PlayerControl player)
+        {
+            MessageWriter RPCWriter = StartRPC(CustomRPC.ExiledRPC);
+            RPCWriter.Write(player.PlayerId);
+            RPCWriter.EndRPC();
+            RPCProcedure.ExiledRPC(player.PlayerId);
+        }
         public static void RPCSetColorModOnly(this PlayerControl player, byte color)
         {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)CustomRPC.UncheckedSetColor, SendOption.Reliable);
@@ -162,6 +189,17 @@ namespace SuperNewRoles.Helpers
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.UncheckedSetVanilaRole(player.PlayerId, (byte)roletype);
         }
+        /// <summary>
+        /// 役職をリセットし、新しい役職に変更します。
+        /// </summary>
+        /// <param name="target">役職が変更される対象(PlayerControl)</param>
+        /// <param name="RoleId">変更先の役職(RoleId)</param>
+        public static void ResetAndSetRole(this PlayerControl target, RoleId RoleId)
+        {
+            target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
+            target.SetRoleRPC(RoleId);
+            Logger.Info($"[{target.GetDefaultName()}] の役職を [{RoleId}] に変更しました。");
+        }
 
         public static void RpcResetAbilityCooldown(this PlayerControl target)
         {
@@ -176,6 +214,15 @@ namespace SuperNewRoles.Helpers
                 writer.Write(0);
                 writer.Write(0);
                 writer.EndRPC();
+            }
+        }
+
+        public static void RpcOpenToilet()
+        {
+            foreach (var i in new[] { 79, 80, 81, 82 })
+            {
+                Logger.Info($"amount:{i}", "RpcOpenToilet");
+                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, i);
             }
         }
     }

@@ -14,7 +14,6 @@ namespace SuperNewRoles.Roles
                 if (RoleClass.Vulture.Arrow == null)
                 {
                     Arrow arrow = new(RoleClass.Vulture.color);
-                    arrow.arrow.SetActive(false);
                     RoleClass.Vulture.Arrow = arrow;
                 }
                 float min_target_distance = float.MaxValue;
@@ -34,15 +33,11 @@ namespace SuperNewRoles.Roles
                         target = db;
                     }
                 }
-                if (RoleClass.Vulture.Arrow != null)
+                if (RoleClass.Vulture.Arrow != null && target != null)
                 {
                     RoleClass.Vulture.Arrow.Update(target.transform.position, color: RoleClass.Vulture.color);
                 }
-                if (!PlayerControl.LocalPlayer.IsAlive())
-                {
-                    Object.Destroy(RoleClass.Vulture.Arrow.arrow);
-                    return;
-                }
+                RoleClass.Vulture.Arrow.arrow.SetActive(target != null);
             }
         }
     }
