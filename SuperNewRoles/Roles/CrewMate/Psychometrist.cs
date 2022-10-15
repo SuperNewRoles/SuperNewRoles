@@ -6,7 +6,7 @@ using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using TMPro;
 using UnityEngine;
 

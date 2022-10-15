@@ -501,6 +501,24 @@ namespace SuperNewRoles
             var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
             return client;
         }
+        public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
+        {
+            List<T> newList = new();
+            foreach (T item in list)
+            {
+                newList.Add(item);
+            }
+            return newList;
+        }
+        public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this List<T> list)
+        {
+            Il2CppSystem.Collections.Generic.List<T> newList = new();
+            foreach (T item in list)
+            {
+                newList.Add(item);
+            }
+            return newList;
+        }
         public static Dictionary<string, AudioClip> CachedAudioClips = new();
         public static AudioClip loadAudioClipFromResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")
         {
@@ -627,12 +645,7 @@ namespace SuperNewRoles
         {
             return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptions.ToByte(c.r), CustomOptions.ToByte(c.g), CustomOptions.ToByte(c.b), CustomOptions.ToByte(c.a), s);
         }
-        public static T GetRandom<T>(List<T> list)
-        {
-            var indexdate = UnityEngine.Random.Range(0, list.Count);
-            return list[indexdate];
-        }
-        public static PlayerControl GetRandompc(List<PlayerControl> list)
+        public static T GetRandom<T>(this List<T> list)
         {
             var indexdate = UnityEngine.Random.Range(0, list.Count);
             return list[indexdate];

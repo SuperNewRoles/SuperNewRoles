@@ -5,7 +5,7 @@ using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles

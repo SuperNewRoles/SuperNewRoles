@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptions;
 
@@ -78,9 +78,9 @@ namespace SuperNewRoles.MapOptions
                 WireTaskNum = WireTaskNumOption.GetInt();
                 UseDeadBodyReport = !NotUseReportDeadBody.GetBool();
                 UseMeetingButton = !NotUseMeetingButton.GetBool();
-                //SuperNewRoles.Patch.AdminPatch.ClearAndReload();
-                //SuperNewRoles.Patch.CameraPatch.ClearAndReload();
-                //SuperNewRoles.Patch.VitalsPatch.ClearAndReload();
+                //SuperNewRoles.Patches.AdminPatch.ClearAndReload();
+                //SuperNewRoles.Patches.CameraPatch.ClearAndReload();
+                //SuperNewRoles.Patches.VitalsPatch.ClearAndReload();
             }
             else
             {
