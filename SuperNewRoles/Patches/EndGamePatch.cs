@@ -504,50 +504,50 @@ namespace SuperNewRoles.Patches
             // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
             List<PlayerControl> notWinners = new();
 
-            notWinners.AddRange(RoleClass.Jester.JesterPlayer);
-            notWinners.AddRange(RoleClass.MadMate.MadMatePlayer);
-            notWinners.AddRange(RoleClass.Jackal.JackalPlayer);
-            notWinners.AddRange(RoleClass.Jackal.SidekickPlayer);
-            notWinners.AddRange(RoleClass.JackalFriends.JackalFriendsPlayer);
-            notWinners.AddRange(RoleClass.God.GodPlayer);
-            notWinners.AddRange(RoleClass.Opportunist.OpportunistPlayer);
-            notWinners.AddRange(RoleClass.Truelover.trueloverPlayer);
-            notWinners.AddRange(RoleClass.Egoist.EgoistPlayer);
-            notWinners.AddRange(RoleClass.Workperson.WorkpersonPlayer);
-            notWinners.AddRange(RoleClass.Amnesiac.AmnesiacPlayer);
-            notWinners.AddRange(RoleClass.SideKiller.MadKillerPlayer);
-            notWinners.AddRange(RoleClass.MadMayor.MadMayorPlayer);
-            notWinners.AddRange(RoleClass.MadStuntMan.MadStuntManPlayer);
-            notWinners.AddRange(RoleClass.MadHawk.MadHawkPlayer);
-            notWinners.AddRange(RoleClass.MadJester.MadJesterPlayer);
-            notWinners.AddRange(RoleClass.MadSeer.MadSeerPlayer);
-            notWinners.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
-            notWinners.AddRange(RoleClass.Fox.FoxPlayer);
-            notWinners.AddRange(BotManager.AllBots);
-            notWinners.AddRange(RoleClass.MadMaker.MadMakerPlayer);
-            notWinners.AddRange(RoleClass.Demon.DemonPlayer);
-            notWinners.AddRange(RoleClass.SeerFriends.SeerFriendsPlayer);
-            notWinners.AddRange(RoleClass.JackalSeer.JackalSeerPlayer);
-            notWinners.AddRange(RoleClass.JackalSeer.SidekickSeerPlayer);
-            notWinners.AddRange(RoleClass.Arsonist.ArsonistPlayer);
-            notWinners.AddRange(RoleClass.Vulture.VulturePlayer);
-            notWinners.AddRange(RoleClass.MadCleaner.MadCleanerPlayer);
-            notWinners.AddRange(RoleClass.MayorFriends.MayorFriendsPlayer);
-            notWinners.AddRange(RoleClass.Tuna.TunaPlayer);
-            notWinners.AddRange(RoleClass.BlackCat.BlackCatPlayer);
-            notWinners.AddRange(RoleClass.Neet.NeetPlayer);
-            notWinners.AddRange(RoleClass.SatsumaAndImo.SatsumaAndImoPlayer);
-            notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
-            notWinners.AddRange(RoleClass.SuicidalIdeation.SuicidalIdeationPlayer);
-            notWinners.AddRange(RoleClass.Spelunker.SpelunkerPlayer);
-            notWinners.AddRange(RoleClass.Hitman.HitmanPlayer);
-
-            notWinners.AddRange(RoleClass.PartTimer.PartTimerPlayer);
-            notWinners.AddRange(RoleClass.Photographer.PhotographerPlayer);
-            notWinners.AddRange(RoleClass.Stefinder.StefinderPlayer);
-
-            notWinners.AddRange(RoleClass.Pavlovsdogs.PavlovsdogsPlayer);
-            notWinners.AddRange(RoleClass.Pavlovsowner.PavlovsownerPlayer);
+            notWinners.AddRanges(new[]{
+            RoleClass.Jester.JesterPlayer,
+            RoleClass.MadMate.MadMatePlayer,
+            RoleClass.Jackal.JackalPlayer,
+            RoleClass.Jackal.SidekickPlayer,
+            RoleClass.JackalFriends.JackalFriendsPlayer,
+            RoleClass.God.GodPlayer,
+            RoleClass.Opportunist.OpportunistPlayer,
+            RoleClass.Truelover.trueloverPlayer,
+            RoleClass.Egoist.EgoistPlayer,
+            RoleClass.Workperson.WorkpersonPlayer,
+            RoleClass.Amnesiac.AmnesiacPlayer,
+            RoleClass.SideKiller.MadKillerPlayer,
+            RoleClass.MadMayor.MadMayorPlayer,
+            RoleClass.MadStuntMan.MadStuntManPlayer,
+            RoleClass.MadHawk.MadHawkPlayer,
+            RoleClass.MadJester.MadJesterPlayer,
+            RoleClass.MadSeer.MadSeerPlayer,
+            RoleClass.FalseCharges.FalseChargesPlayer,
+            RoleClass.Fox.FoxPlayer,
+            BotManager.AllBots,
+            RoleClass.MadMaker.MadMakerPlayer,
+            RoleClass.Demon.DemonPlayer,
+            RoleClass.SeerFriends.SeerFriendsPlayer,
+            RoleClass.JackalSeer.JackalSeerPlayer,
+            RoleClass.JackalSeer.SidekickSeerPlayer,
+            RoleClass.Arsonist.ArsonistPlayer,
+            RoleClass.Vulture.VulturePlayer,
+            RoleClass.MadCleaner.MadCleanerPlayer,
+            RoleClass.MayorFriends.MayorFriendsPlayer,
+            RoleClass.Tuna.TunaPlayer,
+            RoleClass.BlackCat.BlackCatPlayer,
+            RoleClass.Neet.NeetPlayer,
+            RoleClass.SatsumaAndImo.SatsumaAndImoPlayer,
+            RoleClass.Revolutionist.RevolutionistPlayer,
+            RoleClass.SuicidalIdeation.SuicidalIdeationPlayer,
+            RoleClass.Spelunker.SpelunkerPlayer,
+            RoleClass.Hitman.HitmanPlayer,
+            RoleClass.PartTimer.PartTimerPlayer,
+            RoleClass.Photographer.PhotographerPlayer,
+            RoleClass.Stefinder.StefinderPlayer,
+            RoleClass.Pavlovsdogs.PavlovsdogsPlayer,
+            RoleClass.Pavlovsowner.PavlovsownerPlayer
+            });
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
