@@ -205,8 +205,9 @@ namespace SuperNewRoles.Patches
                         if (AmongUsClient.Instance.AmHost)
                         {
                             RoleClass.Camouflager.Duration = RoleClass.Camouflager.DurationTime;
+                            RoleClass.Camouflager.ButtonTimer = DateTime.Now;
                             RoleClass.Camouflager.IsCamouflage = true;
-                            Roles.Impostor.Camouflager.Camouflage();
+                            Camouflager.CamouflageSHR();
                             SyncSetting.CustomSyncSettings(__instance);
                         }
                         return true;
@@ -469,11 +470,6 @@ namespace SuperNewRoles.Patches
                     Logger.Info("SHR", "CheckMurder");
                     if (RoleClass.Assassin.TriggerPlayer != null) return false;
                     Logger.Info("SHR-Assassin.TriggerPlayerを通過", "CheckMurder");
-                    if (target.IsRole(RoleId.NekoKabocha))
-                    {
-                        NekoKabocha.OnKill(__instance);
-                        return true;
-                    }
                     foreach (var p in Seer.Seers)
                     {
                         foreach (var p2 in p)
@@ -614,11 +610,11 @@ namespace SuperNewRoles.Patches
                                 if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
                                 __instance.RpcShowGuardEffect(target);
                                 RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
-                                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
                                 target.SetRoleRPC(RoleId.MadMate);//マッドにする
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                                 RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことにする
                                 SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSHR]マッドを作ったよ");
+                                return false;
                             }
                             else
                             {
@@ -627,16 +623,17 @@ namespace SuperNewRoles.Patches
                             }
                             break;
                         case RoleId.Jackal:
-                            if (!RoleClass.Jackal.IsCreatedFriend && RoleClass.Jackal.CanCreateFriend)//まだ作ってなくて、設定が有効の時
+                            if (!RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId) && RoleClass.Jackal.CanCreateFriend)//まだ作ってなくて、設定が有効の時
                             {
                                 SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
                                 if (target == null || RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) return false;
                                 __instance.RpcShowGuardEffect(target);
                                 RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
-                                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
-                                Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
+                                if (!target.IsImpostor())
+                                {
+                                    Jackal.CreateJackalFriends(target);//守護天使にして クルーにして フレンズにする
+                                }
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
-                                RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
                                 SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
                                 return false;
                             }
@@ -644,7 +641,7 @@ namespace SuperNewRoles.Patches
                             {
                                 // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
                                 if (!RoleClass.Jackal.CanCreateFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] フレンズを作る設定ではない為 普通のキル");
-                                else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.IsCreatedFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 作ったので 普通のキル");
+                                else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 作ったので 普通のキル");
                                 else SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 不正なキル");
                             }
                             break;
@@ -792,6 +789,10 @@ namespace SuperNewRoles.Patches
             }
             SuperNewRolesPlugin.Logger.LogInfo("i(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
             __instance.RpcMurderPlayer(target);
+            if (target.IsRole(RoleId.NekoKabocha))
+            {
+                NekoKabocha.OnKill(__instance);
+            }
             SuperNewRolesPlugin.Logger.LogInfo("j(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
         }
     }
@@ -821,6 +822,15 @@ namespace SuperNewRoles.Patches
         public static bool resetToDead = false;
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
+            if (Roles.CrewMate.Knight.GuardedPlayers.Contains(target.PlayerId))
+            {
+                var Writer = RPCHelper.StartRPC(CustomRPC.KnightProtectClear);
+                Writer.Write(target.PlayerId);
+                Writer.EndRPC();
+                RPCProcedure.KnightProtectClear(target.PlayerId);
+                target.protectedByGuardian = true;
+                return false;
+            }
             EvilGambler.MurderPlayerPrefix(__instance, target);
             Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
             if (ModeHandler.IsMode(ModeId.Default))
@@ -902,6 +912,7 @@ namespace SuperNewRoles.Patches
 
             SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
+            Roles.CrewMate.KnightProtected_Patch.MurderPlayerPatch.Postfix(target);
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {

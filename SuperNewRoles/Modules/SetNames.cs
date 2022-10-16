@@ -158,11 +158,17 @@ namespace SuperNewRoles.Modules
                     roleColors = RoleClass.CrewmateWhite;
                 }
             }
-            else if (PlayerControl.LocalPlayer.IsRole(RoleId.Stefinder) && RoleClass.Stefinder.IsKill)
+            else if (role == RoleId.Stefinder && RoleClass.Stefinder.IsKill)
             {
                 var introdate = IntroDate.GetIntroDate(role);
                 roleNames = introdate.Name;
                 roleColors = RoleClass.ImpostorRed;
+            }
+            else if (p.IsPavlovsTeam())
+            {
+                var introdate = IntroDate.PavlovsdogsIntro;
+                roleNames = introdate.Name + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
+                roleColors = RoleClass.Pavlovsdogs.color;
             }
             else
             {
@@ -381,7 +387,7 @@ namespace SuperNewRoles.Modules
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         RoleId role = p.GetRole();
-                        if (p.IsJackalTeamJackal() || p.IsJackalTeamSidekick() || p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                        if ((p.IsJackalTeamJackal() || p.IsJackalTeamSidekick()) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                         {
                             SetNamesClass.SetPlayerRoleNames(p);
                             SetNamesClass.SetPlayerNameColors(p);
@@ -406,7 +412,7 @@ namespace SuperNewRoles.Modules
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
             }
-
+            
             //名前の奴
             if (RoleClass.Camouflager.IsCamouflage)
             {
@@ -421,6 +427,7 @@ namespace SuperNewRoles.Modules
             }
             else
             {
+                Roles.Neutral.Pavlovsdogs.SetNameUpdate();
                 SetNamesClass.ArsonistSet();
                 SetNamesClass.DemonSet();
                 SetNamesClass.CelebritySet();

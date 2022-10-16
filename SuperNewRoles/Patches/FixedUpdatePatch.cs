@@ -47,8 +47,15 @@ namespace SuperNewRoles.Patches
                 {
                     RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
                     RPCProcedure.SetHaison();
-                    ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
-                    MapUtilities.CachedShipStatus.enabled = false;
+                    if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                    {
+                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansDisconnect, false);
+                    }
+                    else
+                    {
+                        ShipStatus.RpcEndGame(GameOverReason.HumansDisconnect, false);
+                        MapUtilities.CachedShipStatus.enabled = false;
+                    }
                 }
             }
 
@@ -209,6 +216,9 @@ namespace SuperNewRoles.Patches
                                 break;
                             case RoleId.Doppelganger:
                                 Roles.Impostor.Doppelganger.FixedUpdate();
+                                break;
+                            case RoleId.Pavlovsowner:
+                                Roles.Neutral.Pavlovsdogs.OwnerFixedUpdate();
                                 break;
                             case RoleId.WaveCannonJackal:
                                 JackalSeer.JackalSeerFixedPatch.JackalSeerPlayerOutLineTarget();
