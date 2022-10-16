@@ -17,8 +17,7 @@ namespace SuperNewRoles.Roles
                 //もし 追放された役職が猫なら
                 if (__instance.Object.IsRole(RoleId.NiceNekomata) ||
                     __instance.Object.IsRole(RoleId.EvilNekomata) ||
-                    __instance.Object.IsRole(RoleId.BlackCat) ||
-                    (__instance.Object.IsRole(RoleId.NekoKabocha) && Impostor.NekoKabocha.CanRevengeExile))
+                    __instance.Object.IsRole(RoleId.BlackCat))
                 {
                     List<PlayerControl> p = new();//道連れにするプレイヤーの抽選リスト
                     foreach (PlayerControl p1 in CachedPlayer.AllPlayers)

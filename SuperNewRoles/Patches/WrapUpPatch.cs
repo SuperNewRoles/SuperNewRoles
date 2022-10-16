@@ -39,6 +39,10 @@ namespace SuperNewRoles.Patches
         }
         public static void Prefix(GameData.PlayerInfo exiled)
         {
+            if (exiled != null && exiled.Object == null)
+            {
+                exiled = null;
+            }
             RoleClass.IsCoolTimeSetted = false;
             FalseCharges.WrapUp(exiled != null ? exiled.Object : null);
             if (ModeHandler.IsMode(ModeId.Default))
@@ -69,6 +73,11 @@ namespace SuperNewRoles.Patches
         }
         public static void Postfix(GameData.PlayerInfo exiled)
         {
+            if (exiled != null && exiled.Object == null)
+            {
+                exiled = null;
+            }
+
             Kunoichi.WrapUp();
             SerialKiller.WrapUp();
             Assassin.WrapUp();
@@ -99,9 +108,10 @@ namespace SuperNewRoles.Patches
             Roles.Neutral.Photographer.WrapUp();
             Roles.Impostor.Cracker.WrapUp();
             if (exiled == null) return;
-            Roles.SoothSayer_Patch.WrapUp(exiled.Object);
+            SoothSayer_Patch.WrapUp(exiled.Object);
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();
             Nekomata.NekomataEnd(exiled);
+            Roles.Impostor.NekoKabocha.OnWrapUp(exiled.Object);
 
             exiled.Object.Exiled();
             exiled.IsDead = true;
