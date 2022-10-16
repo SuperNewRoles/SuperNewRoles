@@ -1033,13 +1033,7 @@ namespace SuperNewRoles.Patches
                 }
                 else
                 {
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                    {
-                        AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
-                        if (p.CurrentOutfit.ColorId == 1)
-                        {
-                        }
-                    }
+                    AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
                 }
             }
             if (HAISON)
