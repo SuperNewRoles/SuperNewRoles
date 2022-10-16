@@ -17,18 +17,26 @@ namespace SuperNewRoles.Roles.CrewMate
             {
                 if (!PlayerControl.LocalPlayer.IsRole(RoleId.HamburgerShop)
                     || !CustomOptions.HamburgerShopChangeTaskPrefab.GetBool()) return;
-                PlayerTask task = __instance.FindTask(CachedPlayer.LocalPlayer);
-                tempminigame = task.MinigamePrefab;
-                ShipStatus ship = PlayerControl.GameOptions.MapId == (int)MapNames.Airship ? ShipStatus.Instance : MapLoader.Airship;
-                task.MinigamePrefab = ship.NormalTasks.FirstOrDefault(x => x.TaskType == TaskTypes.MakeBurger).MinigamePrefab;
+                __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
+                if (canUse)
+                {
+                    PlayerTask task = __instance.FindTask(CachedPlayer.LocalPlayer);
+                    tempminigame = task.MinigamePrefab;
+                    ShipStatus ship = PlayerControl.GameOptions.MapId == (int)MapNames.Airship ? ShipStatus.Instance : MapLoader.Airship;
+                    task.MinigamePrefab = ship.NormalTasks.FirstOrDefault(x => x.TaskType == TaskTypes.MakeBurger).MinigamePrefab;
+                }
             }
             public static void Postfix(Console __instance)
             {
                 if (!PlayerControl.LocalPlayer.IsRole(RoleId.HamburgerShop)
                     || !CustomOptions.HamburgerShopChangeTaskPrefab.GetBool()) return;
-                PlayerTask task = __instance.FindTask(CachedPlayer.LocalPlayer);
-                task.MinigamePrefab = tempminigame;
-                tempminigame = null;
+                __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
+                if (canUse)
+                {
+                    PlayerTask task = __instance.FindTask(CachedPlayer.LocalPlayer);
+                    task.MinigamePrefab = tempminigame;
+                    tempminigame = null;
+                }
             }
         }
         public static List<byte> GenerateTasks(int count)
