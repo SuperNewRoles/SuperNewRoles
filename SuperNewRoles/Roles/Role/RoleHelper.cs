@@ -636,6 +636,9 @@ namespace SuperNewRoles
                 case RoleId.Camouflager:
                     RoleClass.Camouflager.CamouflagerPlayer.Add(player);
                     break;
+                case RoleId.HamburgerShop:
+                    RoleClass.HamburgerShop.HamburgerShopPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1090,6 +1093,9 @@ namespace SuperNewRoles
                     break;
                 case RoleId.Camouflager:
                     RoleClass.Camouflager.CamouflagerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.HamburgerShop:
+                    RoleClass.HamburgerShop.HamburgerShopPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1582,6 +1588,7 @@ namespace SuperNewRoles
                 else if (RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
                 else if (Conjurer.Player.IsCheckListPlayerControl(player)) return RoleId.Conjurer;
                 else if (RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player)) return RoleId.Camouflager;
+                else if (RoleClass.HamburgerShop.HamburgerShopPlayer.IsCheckListPlayerControl(player)) return RoleId.HamburgerShop;
                 //ロールチェック
             }
             catch (Exception e)

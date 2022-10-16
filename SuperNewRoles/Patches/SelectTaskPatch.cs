@@ -12,8 +12,9 @@ namespace SuperNewRoles.Patches
         class RpcSetTasksPatch
         {
             public static void Prefix(
-            [HarmonyArgument(0)] byte playerId,
-            [HarmonyArgument(1)] ref UnhollowerBaseLib.Il2CppStructArray<byte> taskTypeIds)
+                GameData __instance,
+                [HarmonyArgument(0)] byte playerId,
+                [HarmonyArgument(1)] ref UnhollowerBaseLib.Il2CppStructArray<byte> taskTypeIds)
             {
                 if (GameData.Instance.GetPlayerById(playerId).Object.IsBot() || taskTypeIds.Length == 0)
                 {
@@ -23,7 +24,7 @@ namespace SuperNewRoles.Patches
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Default, ModeId.CopsRobbers) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 {
                     var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
-                    var TasksList = ModHelpers.GenerateTasks(commont, shortt, longt);
+                    var TasksList = ModHelpers.GenerateTasks(__instance.GetPlayerById(playerId).Object, commont, shortt, longt);
                     taskTypeIds = new UnhollowerBaseLib.Il2CppStructArray<byte>(TasksList.Count);
                     for (int i = 0; i < TasksList.Count; i++)
                     {

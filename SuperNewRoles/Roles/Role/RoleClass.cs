@@ -190,6 +190,7 @@ namespace SuperNewRoles.Roles
             WaveCannonJackal.ClearAndReload();
             Conjurer.ClearAndReload();
             Camouflager.ClearAndReload();
+            HamburgerShop.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2868,6 +2869,16 @@ namespace SuperNewRoles.Roles
             {
                 WerewolfPlayer = new();
                 IsShooted = false;
+            }
+        }
+        public static class HamburgerShop
+        {
+            public static List<PlayerControl> HamburgerShopPlayer;
+            public static Color32 color = new Color32(255, 128, 64, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                HamburgerShopPlayer = new();
+                
             }
         }
         //新ロールクラス

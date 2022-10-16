@@ -168,6 +168,7 @@ namespace SuperNewRoles.Modules
         Pavlovsowner,
         Conjurer,
         Camouflager,
+        HamburgerShop,
         //RoleId
     }
 
