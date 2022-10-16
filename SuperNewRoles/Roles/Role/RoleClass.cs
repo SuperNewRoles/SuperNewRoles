@@ -2874,7 +2874,7 @@ namespace SuperNewRoles.Roles
         public static class HamburgerShop
         {
             public static List<PlayerControl> HamburgerShopPlayer;
-            public static Color32 color = new Color32(255, 128, 64, byte.MaxValue);
+            public static Color32 color = new(255, 128, 64, byte.MaxValue);
             public static void ClearAndReload()
             {
                 HamburgerShopPlayer = new();
