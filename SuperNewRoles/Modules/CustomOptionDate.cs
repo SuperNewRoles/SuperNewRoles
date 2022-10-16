@@ -331,6 +331,7 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption NiceRedRidingHoodOption;
         public static CustomOption NiceRedRidingHoodPlayerCount;
         public static CustomOption NiceRedRidingHoodCount;
+        public static CustomOption NiceRedRidinIsKillerDeathRevive;
 
         public static CustomRoleOption EvilEraserOption;
         public static CustomOption EvilEraserPlayerCount;
@@ -1234,6 +1235,7 @@ namespace SuperNewRoles.Modules
             NiceRedRidingHoodOption = SetupCustomRoleOption(214, false, RoleId.NiceRedRidingHood);
             NiceRedRidingHoodPlayerCount = Create(215, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceRedRidingHoodOption);
             NiceRedRidingHoodCount = Create(216, false, CustomOptionType.Crewmate, "NiceRedRidingHoodCount", 1f, 1f, 15f, 1f, NiceRedRidingHoodOption);
+            NiceRedRidinIsKillerDeathRevive = Create(1072, false, CustomOptionType.Crewmate, "NiceRedRidinIsKillerDeathRevive", true, NiceRedRidingHoodOption);
 
             EvilEraserOption = SetupCustomRoleOption(217, false, RoleId.EvilEraser);
             EvilEraserPlayerCount = Create(218, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilEraserOption);
