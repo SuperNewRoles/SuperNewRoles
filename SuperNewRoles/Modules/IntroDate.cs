@@ -32,7 +32,17 @@ namespace SuperNewRoles.Modules
         public string NameKey;
         public string Name;
         public Int16 TitleNum;
-        public string TitleDesc;
+        public string TitleDesc {
+            get
+            {
+                if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
+                {
+                    return _titleDesc;
+                }
+                return GetTitle(NameKey, TitleNum);
+            }
+        }
+        public string _titleDesc;
         public Color color;
         public RoleId RoleId;
         public string Description;
@@ -45,7 +55,7 @@ namespace SuperNewRoles.Modules
             this.Name = ModTranslation.GetString(NameKey + "Name");
             this.RoleId = RoleId;
             this.TitleNum = TitleNum;
-            this.TitleDesc = GetTitle(NameKey, TitleNum);
+            this._titleDesc = GetTitle(NameKey, TitleNum);
             this.Description = ModTranslation.GetString(NameKey + "Description");
             this.Team = team;
             this.IsGhostRole = IsGhostRole;
@@ -231,7 +241,7 @@ namespace SuperNewRoles.Modules
         public static IntroDate WaveCannonJackalIntro = new("WaveCannonJackal", RoleClass.WaveCannonJackal.color, 1, RoleId.WaveCannonJackal, TeamRoleType.Neutral);
         public static IntroDate ConjurerIntro = new("Conjurer", Conjurer.color, 1, RoleId.Conjurer, TeamRoleType.Impostor);
         public static IntroDate CamouflagerIntro = new("Camouflager", RoleClass.Camouflager.color, 1, RoleId.Camouflager, TeamRoleType.Impostor);
-        public static IntroDate HamburgerShopIntro = new("HamburgerShop", RoleClass.HamburgerShop.color, 1, RoleId.HamburgerShop, TeamRoleType.Crewmate);
+        public static IntroDate HamburgerShopIntro = new("HamburgerShop", RoleClass.HamburgerShop.color, 3, RoleId.HamburgerShop, TeamRoleType.Crewmate);
         //イントロオブジェ
     }
 }

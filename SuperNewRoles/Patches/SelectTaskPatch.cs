@@ -50,6 +50,7 @@ namespace SuperNewRoles.Patches
             taskData.Add(RoleId.TaskManager, (TaskManagerCommonTask.GetInt(), TaskManagerShortTask.GetInt(), TaskManagerLongTask.GetInt()));
             taskData.Add(RoleId.SuicidalIdeation, (SuicidalIdeationCommonTask.GetInt(), SuicidalIdeationLongTask.GetInt(), SuicidalIdeationShortTask.GetInt()));
             taskData.Add(RoleId.Tasker, (TaskerCommonTask.GetInt(), TaskerLongTask.GetInt(), TaskerShortTask.GetInt()));
+            taskData.Add(RoleId.HamburgerShop, (HamburgerShopCommonTask.GetInt(), HamburgerShopLongTask.GetInt(), HamburgerShopShortTask.GetInt()));
 
             //テンプレート
             //taskData.Add(RoleId, (CommonTask.GetInt(), LongTask.GetInt(), ShortTask.GetInt()));

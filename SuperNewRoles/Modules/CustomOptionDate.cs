@@ -887,6 +887,9 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption HamburgerShopOption;
         public static CustomOption HamburgerShopPlayerCount;
         public static CustomOption HamburgerShopChangeTaskPrefab;
+        public static CustomOption HamburgerShopCommonTask;
+        public static CustomOption HamburgerShopShortTask;
+        public static CustomOption HamburgerShopLongTask;
         //CustomOption
 
         public static CustomOption GMOption;
@@ -1808,6 +1811,10 @@ namespace SuperNewRoles.Modules
             HamburgerShopOption = SetupCustomRoleOption(1073, false, RoleId.HamburgerShop);
             HamburgerShopPlayerCount = Create(1074, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HamburgerShopOption);
             HamburgerShopChangeTaskPrefab = Create(1075, false, CustomOptionType.Crewmate, "HamburgerShopChangeTaskPrefab", true, HamburgerShopOption);
+            var HamburgerShopoption = SelectTask.TaskSetting(1076, 1077, 1078, HamburgerShopOption, CustomOptionType.Crewmate, false);
+            HamburgerShopCommonTask = HamburgerShopoption.Item1;
+            HamburgerShopShortTask = HamburgerShopoption.Item2;
+            HamburgerShopLongTask = HamburgerShopoption.Item3;
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
