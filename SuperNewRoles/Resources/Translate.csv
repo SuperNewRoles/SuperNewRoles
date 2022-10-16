@@ -855,7 +855,7 @@ RevolutionistAddWinIsAlive,Additional victory only when alive,生存時のみ追
 RevolutionistButtonName,Up to revolutionary possible,革命可能まで,时机已到，今日起兵！
 SidekickFriendsName,SidekickFriends,サイドキックフレンズ,牧狼人
 SidekickFriendsTitle1,Help Jackal.,ジャッカルを助けよう,帮助豺狼获得胜利
-SidekickFriendsDescription,It is judged as Cluemate， but is in the Jackal camp.\nIf the jackal wins, it can win. Sidekick Friends can be found from Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。サイドキックフレンズはジャッカルからわかります。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,规则上牧狼人被判定为船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则牧狼人一同获胜。\n豺狼能确认牧狼人是谁。牧狼人需要帮助豺狼以获得胜利。
+SidekickFriendsDescription,It is judged as Cluemate， but is in the Jackal camp.\nIf the jackal wins， it can win. Sidekick Friends can be found from Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。サイドキックフレンズはジャッカルからわかります。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,规则上牧狼人被判定为船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则牧狼人一同获胜。\n豺狼能确认牧狼人是谁。牧狼人需要帮助豺狼以获得胜利。
 SpelunkerName,Spelunker,スペランカー,倒霉蛋
 SpelunkerTitle1,It's so easy to die.,簡単に死んでしまう,死亡如风，常伴吾身
 SpelunkerVentDeathChance,Probability of vent death,ベント死の確率,倒霉蛋在管道口跌倒而死的概率
@@ -943,7 +943,7 @@ MadRolesCanFixComms,Mad roles can fix comms sabotage,マッド役職がコミュ
 MadRolesCanFixElectrical,Mad roles can fix electrical sabotage,マッド役職が停電を治せる,叛徒阵营玩家可以修理照明破坏
 MadRolesCanVentMove,Mad roles can vent move,マッド陣営がベント移動できる,叛徒阵营玩家可以在管道间移动
 DoppelgangerName,Doppelganger,ドッペルゲンガー,二重身
-DoppelgangerTitle1,\It seems that if you'll meet myself, you're dead\,同じ顔の人に出会うと死んじゃうんだって,“听说了吗，人在命不久矣的时候会见到另一个自己”
+DoppelgangerTitle1,\It seems that if you'll meet myself， you're dead\,同じ顔の人に出会うと死んじゃうんだって,“听说了吗，人在命不久矣的时候会见到另一个自己”
 DoppelgangerDescription,Doppelgangers can ShapeShift.\nIf a ShapeShifted target is killed during ShapeShift, the Kill Cool  is shorter.\nIf, instead, a non-shapeShifted target is killed or a non-shapeShifted target is killed, the Kill Cool will be longer.,ドッペルゲンガーはシェイプシフトができます\nシェイプシフトをした状態で、シェイプシフトの変身先をキルするとキルクールが短くなります。\nシェイプシフトの変身先以外をキルしたり、シェイプシフトをしない状態でキルすると、キルクールが長くなってします。,二重身可以化形。\n化形状态下的二重身击杀自己的化形对象后，二重身的下一次击杀冷却缩短。\n若二重身在化形状态下击杀了自己化形对象以外的玩家，或者在未化形的状态下进行击杀，下一次击杀冷却将延长。
 DoppelgangerDurationTimeSetting,Shapeshift Duration,シェイプシフトの持続時間,二重身化形持续时间
 DoppelgangerCoolDownSetting,Shapeshift Cooldown,シェイプシフトのクールタイム,二重身化形冷却
