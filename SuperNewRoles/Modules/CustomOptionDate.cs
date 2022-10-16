@@ -954,7 +954,7 @@ namespace SuperNewRoles.Modules
             enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false);
 
             enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
-            AgarthaRandomSpawn = Create(1073, false, CustomOptionType.Generic, "AgarthaRandomSpawn", true, enableAgartha);
+            AgarthaRandomSpawn = Create(1073, false, CustomOptionType.Generic, "RandomSpawnOption", true, enableAgartha);
             AgarthaRandomSpawnIsFirstSpawn = Create(1074, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsFirstSpawn", false, AgarthaRandomSpawn);
             AgarthaRandomSpawnIsAddSpawnWay = Create(1075, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
 
