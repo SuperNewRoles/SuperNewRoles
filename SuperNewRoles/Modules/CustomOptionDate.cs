@@ -29,6 +29,7 @@ namespace SuperNewRoles.Modules
 
         public static CustomOption enableAgartha;
         public static CustomOption AgarthaRandomSpawn;
+        public static CustomOption AgarthaRandomSpawnIsFirstSpawn;
 
         public static CustomOption IsDebugMode;
         public static CustomOption DebugModeFastStart;
@@ -952,6 +953,7 @@ namespace SuperNewRoles.Modules
 
             enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
             AgarthaRandomSpawn = Create(1073, false, CustomOptionType.Generic, "AgarthaRandomSpawn", true, enableAgartha);
+            AgarthaRandomSpawnIsFirstSpawn = Create(1074, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsFirstSpawn", false, enableAgartha);
 
             IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true);
 
