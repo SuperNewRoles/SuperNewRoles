@@ -20,20 +20,20 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             return degree;
         }
 
-        private static bool floatRange(float f1, float f, float f2) => f1 < f && f < f2;
+        private static bool FloatRange(float f1, float f, float f2) => f1 < f && f < f2;
 
 
-        public static string arrowAngleString()
+        public static string ArrowAngleString()
         {
             var angle = GetAngle(PlayerControl.LocalPlayer.GetTruePosition(), new Vector2(0, 0));
-            if (floatRange(337.5f, angle, 360f) || floatRange(0f, angle, 22.5f)) return strings[0];
-            if (floatRange(22.5f, angle, 67.5f)) return strings[1];
-            if (floatRange(67.5f, angle, 112.5f)) return strings[2];
-            if (floatRange(112.5f, angle, 157.5f)) return strings[3];
-            if (floatRange(157.5f, angle, 202.5f)) return strings[4];
-            if (floatRange(202.5f, angle, 247.5f)) return strings[5];
-            if (floatRange(247.5f, angle, 292.5f)) return strings[6];
-            if (floatRange(292.5f, angle, 337.5f)) return strings[7];
+            if (FloatRange(337.5f, angle, 360f) || FloatRange(0f, angle, 22.5f)) return strings[0];
+            if (FloatRange(22.5f, angle, 67.5f)) return strings[1];
+            if (FloatRange(67.5f, angle, 112.5f)) return strings[2];
+            if (FloatRange(112.5f, angle, 157.5f)) return strings[3];
+            if (FloatRange(157.5f, angle, 202.5f)) return strings[4];
+            if (FloatRange(202.5f, angle, 247.5f)) return strings[5];
+            if (FloatRange(247.5f, angle, 292.5f)) return strings[6];
+            if (FloatRange(292.5f, angle, 337.5f)) return strings[7];
             Logger.Info(angle.ToString(), "namearr");
             return "";
         }
