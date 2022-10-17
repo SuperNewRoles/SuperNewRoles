@@ -22,9 +22,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             return degree;
         }
 
-        private static bool floatRange(float f1 ,float f,float f2){
-            return f1<f&&f<f2;
-        }
+        private static bool floatRange(float f1 ,float f,float f2)=>f1<f&&f<f2;
+
 
         public static string arrowAngleString(){
             var angle =  GetAngle(PlayerControl.LocalPlayer.GetTruePosition(),new Vector2(0,0));
