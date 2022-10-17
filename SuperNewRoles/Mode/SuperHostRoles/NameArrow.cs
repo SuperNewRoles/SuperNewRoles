@@ -23,9 +23,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         private static bool FloatRange(float f1, float f, float f2) => f1 < f && f < f2;
 
 
-        public static string ArrowAngleString()
+        public static string ArrowAngleString(Vector2 from,Vector2 to)
         {
-            var angle = GetAngle(PlayerControl.LocalPlayer.GetTruePosition(), new Vector2(0, 0));
+            var angle = GetAngle(from, to);
             if (FloatRange(337.5f, angle, 360f) || FloatRange(0f, angle, 22.5f)) return strings[0];
             if (FloatRange(22.5f, angle, 67.5f)) return strings[1];
             if (FloatRange(67.5f, angle, 112.5f)) return strings[2];
