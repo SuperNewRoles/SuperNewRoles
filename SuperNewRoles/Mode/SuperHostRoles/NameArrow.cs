@@ -22,13 +22,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             return degree;
         }
 
-        static bool floatRange(float f1 ,float f,float f2){
+        private static bool floatRange(float f1 ,float f,float f2){
             return f1<f&&f<f2;
         }
 
         public static string arrowAngleString(){
             var angle =  GetAngle(PlayerControl.LocalPlayer.GetTruePosition(),new Vector2(0,0));
-            if (floatRange(337.5f,angle,22.5f))return strings[0];
+            if (floatRange(337.5f,angle,360f)||floatRange(0f,angle,22.5f))return strings[0];
             if (floatRange(22.5f,angle,67.5f)) return strings[1];
             if (floatRange(67.5f,angle,112.5f)) return strings[2];
             if (floatRange(112.5f,angle,157.5f)) return strings[3];
@@ -36,6 +36,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (floatRange(202.5f,angle,247.5f)) return strings[5];
             if (floatRange(247.5f,angle,292.5f)) return strings[6];
             if (floatRange(292.5f,angle,337.5f)) return strings[7];
+            Logger.Info(angle.ToString(),"namearr");
             return "";
         }
     }
