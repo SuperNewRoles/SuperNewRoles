@@ -1043,3 +1043,5 @@ Agartha_WareHouse,WareHouse,倉庫,仓库
 Agartha_ToolRoom,ToolRoom,工具室,工具室
 Agartha_WorkRoom,WorkRoom,仕事場,工坊
 AgarthaName,Agartha,アガルタ,雅各泰
+AgarthaRandomSpawnIsFirstSpawn,Applies to first spawn.,初スポーンにも適用される
+AgarthaRandomSpawnIsAddSpawnWay,Add spawn to the road,道へのスポーンを追加する
