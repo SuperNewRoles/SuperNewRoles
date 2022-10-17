@@ -190,6 +190,7 @@ namespace SuperNewRoles.Roles
             WaveCannonJackal.ClearAndReload();
             Conjurer.ClearAndReload();
             Camouflager.ClearAndReload();
+            Cupid.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2868,6 +2869,23 @@ namespace SuperNewRoles.Roles
             {
                 WerewolfPlayer = new();
                 IsShooted = false;
+            }
+        }
+        public static class Cupid
+        {
+            public static List<PlayerControl> CupidPlayer;
+            public static Color32 color = Lovers.color;
+            public static PlayerControl currentLovers;
+            public static PlayerControl currentTarget;
+            public static bool Created;
+            public static Dictionary<byte, byte> CupidLoverpea;
+            public static void ClearAndReload()
+            {
+                CupidPlayer = new();
+                currentLovers = null;
+                currentTarget = null;
+                Created = false;
+                CupidLoverpea = new();
             }
         }
         //新ロールクラス

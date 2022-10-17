@@ -168,6 +168,7 @@ namespace SuperNewRoles.Modules
         Pavlovsowner,
         Conjurer,
         Camouflager,
+        Cupid,
         //RoleId
     }
 
@@ -250,11 +251,17 @@ namespace SuperNewRoles.Modules
         PavlovsOwnerCreateDog,
         CrackerCrack,
         Camouflage,
-        ShowGuardEffect
+        ShowGuardEffect,
+        SetLoversCupid
     }
 
     public static class RPCProcedure
     {
+        public static void SetLoversCupid(byte sourceid, byte player1, byte player2)
+        {
+            RoleClass.Cupid.CupidLoverpea[sourceid] = player1;
+            SetLovers(player1, player2);
+        }
         public static void ShowGuardEffect(byte showerid, byte targetid)
         {
             if (showerid != CachedPlayer.LocalPlayer.PlayerId) return;
@@ -1424,6 +1431,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.ShowGuardEffect:
                             ShowGuardEffect(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetLoversCupid:
+                            SetLoversCupid(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }

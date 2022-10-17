@@ -636,6 +636,9 @@ namespace SuperNewRoles
                 case RoleId.Camouflager:
                     RoleClass.Camouflager.CamouflagerPlayer.Add(player);
                     break;
+                case RoleId.Cupid:
+                    RoleClass.Cupid.CupidPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1091,6 +1094,9 @@ namespace SuperNewRoles
                 case RoleId.Camouflager:
                     RoleClass.Camouflager.CamouflagerPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Cupid:
+                    RoleClass.Cupid.CupidPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -1154,7 +1160,8 @@ namespace SuperNewRoles
                 case RoleId.Pavlovsowner:
                 case RoleId.GM:
                 case RoleId.WaveCannonJackal:
-                    //タスククリアか
+                    case RoleId.Cupid:
+                //タスククリアか
                     IsTaskClear = true;
                     break;
                 case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
@@ -1329,8 +1336,9 @@ namespace SuperNewRoles
             RoleId.WaveCannonJackal or
             RoleId.Photographer or
             RoleId.Pavlovsdogs or
-            RoleId.Pavlovsowner;
-            //第三か
+            RoleId.Pavlovsowner or
+            RoleId.Cupid;
+                //第三か
         public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
         {
             RoleId MyRole;
@@ -1582,6 +1590,7 @@ namespace SuperNewRoles
                 else if (RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
                 else if (Conjurer.Player.IsCheckListPlayerControl(player)) return RoleId.Conjurer;
                 else if (RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player)) return RoleId.Camouflager;
+                else if (RoleClass.Cupid.CupidPlayer.IsCheckListPlayerControl(player)) return RoleId.Cupid;
                 //ロールチェック
             }
             catch (Exception e)
