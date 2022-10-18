@@ -21,7 +21,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static string ArrowAngleString(Vector2 from, Vector2 to)
         {
             var angle = GetAngle(from, to);
-            bool floatRange(float f1, float f, float f2) => f1 < f && f < f2;
+
+            static bool floatRange(float f1, float f, float f2) => f1 < f && f < f2;
             if (floatRange(337.5f, angle, 360f) || floatRange(0f, angle, 22.5f)) return "↑";
             if (floatRange(22.5f, angle, 67.5f)) return "↗";
             if (floatRange(67.5f, angle, 112.5f)) return "→";
