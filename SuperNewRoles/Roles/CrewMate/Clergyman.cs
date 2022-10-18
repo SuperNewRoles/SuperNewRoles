@@ -31,7 +31,7 @@ namespace SuperNewRoles.Roles
             return !RoleClass.Clergyman.IsLightOff
                 ? false
                 : (CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadMate)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.Madmate)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadMayor)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadJester)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadJester)

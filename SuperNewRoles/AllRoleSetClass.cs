@@ -846,7 +846,7 @@ namespace SuperNewRoles
                 RoleId.Vulture => CustomOptions.VulturePlayerCount.GetFloat(),
                 RoleId.NiceScientist => CustomOptions.NiceScientistPlayerCount.GetFloat(),
                 RoleId.Clergyman => CustomOptions.ClergymanPlayerCount.GetFloat(),
-                RoleId.MadMate => CustomOptions.MadMatePlayerCount.GetFloat(),
+                RoleId.Madmate => CustomOptions.MadmatePlayerCount.GetFloat(),
                 RoleId.Bait => CustomOptions.BaitPlayerCount.GetFloat(),
                 RoleId.HomeSecurityGuard => CustomOptions.HomeSecurityGuardPlayerCount.GetFloat(),
                 RoleId.StuntMan => CustomOptions.StuntManPlayerCount.GetFloat(),

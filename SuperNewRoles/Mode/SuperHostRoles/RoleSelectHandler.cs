@@ -109,7 +109,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             /*============エンジニアに役職設定============*/
             if (RoleClass.Jester.IsUseVent) SetVanillaRole(RoleClass.Jester.JesterPlayer, RoleTypes.Engineer);
             if (RoleClass.JackalFriends.IsUseVent) SetVanillaRole(RoleClass.JackalFriends.JackalFriendsPlayer, RoleTypes.Engineer);
-            if (RoleClass.MadMate.IsUseVent) SetVanillaRole(RoleClass.MadMate.MadMatePlayer, RoleTypes.Engineer);
+            if (RoleClass.Madmate.IsUseVent) SetVanillaRole(RoleClass.Madmate.MadmatePlayer, RoleTypes.Engineer);
             if (RoleClass.MadMayor.IsUseVent) SetVanillaRole(RoleClass.MadMayor.MadMayorPlayer, RoleTypes.Engineer);
             if (RoleClass.MadStuntMan.IsUseVent) SetVanillaRole(RoleClass.MadStuntMan.MadStuntManPlayer, RoleTypes.Engineer);
             if (RoleClass.MadJester.IsUseVent) SetVanillaRole(RoleClass.MadJester.MadJesterPlayer, RoleTypes.Engineer);

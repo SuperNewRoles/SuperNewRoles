@@ -9,7 +9,7 @@ namespace SuperNewRoles.Buttons
         {
             return player.GetRole() switch
             {
-                RoleId.FastMaker => !RoleClass.FastMaker.IsCreatedMadMate,
+                RoleId.FastMaker => !RoleClass.FastMaker.IsCreatedMadmate,
                 RoleId.SecretlyKiller or RoleId.DoubleKiller or RoleId.Smasher or RoleId.Conjurer => true,
                 RoleId.Tasker => !CustomOptions.TaskerCanKill.GetBool(),
                 //キルボタン無効か

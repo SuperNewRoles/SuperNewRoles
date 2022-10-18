@@ -46,7 +46,7 @@ namespace SuperNewRoles.Modules
         Vulture,
         NiceScientist,
         Clergyman,
-        MadMate,
+        Madmate,
         Bait,
         HomeSecurityGuard,
         StuntMan,

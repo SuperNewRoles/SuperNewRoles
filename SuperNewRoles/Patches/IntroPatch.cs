@@ -173,7 +173,7 @@ namespace SuperNewRoles.Patches
                 {
                     switch (PlayerControl.LocalPlayer.GetRole())
                     {
-                        case RoleId.MadMate:
+                        case RoleId.Madmate:
                         case RoleId.MadMayor:
                         case RoleId.MadJester:
                         case RoleId.MadSeer:
@@ -270,7 +270,7 @@ namespace SuperNewRoles.Patches
                 {
                     switch (PlayerControl.LocalPlayer.GetRole())
                     {
-                        case RoleId.MadMate:
+                        case RoleId.Madmate:
                         case RoleId.MadJester:
                         case RoleId.MadStuntMan:
                         case RoleId.MadMayor:

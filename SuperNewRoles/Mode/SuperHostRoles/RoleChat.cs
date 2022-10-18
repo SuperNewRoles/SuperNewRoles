@@ -68,7 +68,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 { ModTranslation.GetString("JesterName"), IntroDate.JesterIntro },
                 { ModTranslation.GetString("SheriffName"), IntroDate.SheriffIntro },
-                { ModTranslation.GetString("MadMateName"), IntroDate.MadMateIntro },
+                { ModTranslation.GetString("MadmateName"), IntroDate.MadmateIntro },
                 { ModTranslation.GetString("BaitName"), IntroDate.BaitIntro },
                 { ModTranslation.GetString("HomeSecurityGuardName"), IntroDate.HomeSecurityGuardIntro },
                 { ModTranslation.GetString("StuntmanName"), IntroDate.StuntManIntro },

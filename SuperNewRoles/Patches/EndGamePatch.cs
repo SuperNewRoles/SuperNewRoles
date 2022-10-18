@@ -561,7 +561,7 @@ namespace SuperNewRoles.Patches
             List<PlayerControl> notWinners = new();
 
             notWinners.AddRange(RoleClass.Jester.JesterPlayer);
-            notWinners.AddRange(RoleClass.MadMate.MadMatePlayer);
+            notWinners.AddRange(RoleClass.Madmate.MadmatePlayer);
             notWinners.AddRange(RoleClass.Jackal.JackalPlayer);
             notWinners.AddRange(RoleClass.Jackal.SidekickPlayer);
             notWinners.AddRange(RoleClass.JackalFriends.JackalFriendsPlayer);

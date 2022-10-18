@@ -111,7 +111,7 @@ namespace SuperNewRoles.Modules
         public static IntroDate VultureIntro = new("Vulture", RoleClass.Vulture.color, 1, RoleId.Vulture, TeamRoleType.Neutral);
         public static IntroDate NiceScientistIntro = new("NiceScientist", RoleClass.NiceScientist.color, 2, RoleId.NiceScientist);
         public static IntroDate ClergymanIntro = new("Clergyman", RoleClass.Clergyman.color, 2, RoleId.Clergyman);
-        public static IntroDate MadMateIntro = new("MadMate", RoleClass.MadMate.color, 1, RoleId.MadMate);
+        public static IntroDate MadmateIntro = new("Madmate", RoleClass.Madmate.color, 1, RoleId.Madmate);
         public static IntroDate BaitIntro = new("Bait", RoleClass.Bait.color, 1, RoleId.Bait);
         public static IntroDate HomeSecurityGuardIntro = new("HomeSecurityGuard", RoleClass.HomeSecurityGuard.color, 1, RoleId.HomeSecurityGuard);
         public static IntroDate StuntManIntro = new("StuntMan", RoleClass.StuntMan.color, 1, RoleId.StuntMan);

@@ -540,7 +540,7 @@ namespace SuperNewRoles.Patches
                                 __instance.RpcShowGuardEffect(target);
                                 RoleClass.MadMaker.CreatePlayers.Add(__instance.PlayerId);
                                 target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
-                                target.SetRoleRPC(RoleId.MadMate);
+                                target.SetRoleRPC(RoleId.Madmate);
                                 //__instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);
                             }
@@ -605,14 +605,14 @@ namespace SuperNewRoles.Patches
                             if (!Mafia.IsKillFlag()) return false;
                             break;
                         case RoleId.FastMaker:
-                            if (!RoleClass.FastMaker.IsCreatedMadMate)//まだ作ってなくて、設定が有効の時
+                            if (!RoleClass.FastMaker.IsCreatedMadmate)//まだ作ってなくて、設定が有効の時
                             {
                                 if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
                                 __instance.RpcShowGuardEffect(target);
                                 RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
-                                target.SetRoleRPC(RoleId.MadMate);//マッドにする
+                                target.SetRoleRPC(RoleId.Madmate);//マッドにする
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
-                                RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことにする
+                                RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことにする
                                 SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSHR]マッドを作ったよ");
                                 return false;
                             }

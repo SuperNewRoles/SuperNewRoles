@@ -21,7 +21,7 @@ In SHR mode, "everyone's sheriff" is not supported due to the specification that
 After the match starts, the crewmate is immediately judged the winner of the task.<br>
 (No one with a task = 0 tasks left for Crew.)<br>
 Please include one Team Crewposition that has a task.<br>
-(Adding a MadMate, JackalFriends, or Home Security Guard not help.)<br>
+(Adding a Madmate, JackalFriends, or Home Security Guard not help.)<br>
 
 ##  Equipment settings
 You can set up the admin, vitals, and other settings.<br>
@@ -573,7 +573,7 @@ The capacity is currently not functioning.
 | Impostor Down Vision. |     You can set the visibility during power outage.      |
 
 ----------------------- 
-## MadMate
+## Madmate
 ### Team Impostor
 The verdict is in on Crewmate. 
 This is a roll of the Impostor camp. <br> 

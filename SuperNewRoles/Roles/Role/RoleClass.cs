@@ -73,7 +73,7 @@ namespace SuperNewRoles.Roles
             Vulture.ClearAndReload();
             NiceScientist.ClearAndReload();
             Clergyman.ClearAndReload();
-            MadMate.ClearAndReload();
+            Madmate.ClearAndReload();
             Bait.ClearAndReload();
             HomeSecurityGuard.ClearAndReload();
             StuntMan.ClearAndReload();
@@ -620,9 +620,9 @@ namespace SuperNewRoles.Roles
                 currentMessage = null;
             }
         }
-        public static class MadMate
+        public static class Madmate
         {
-            public static List<PlayerControl> MadMatePlayer;
+            public static List<PlayerControl> MadmatePlayer;
             public static Color32 color = ImpostorRed;
             public static bool IsImpostorCheck;
             public static int ImpostorCheckTask;
@@ -630,13 +630,13 @@ namespace SuperNewRoles.Roles
             public static bool IsImpostorLight;
             public static void ClearAndReload()
             {
-                MadMatePlayer = new();
-                IsImpostorCheck = CustomOptions.MadMateIsCheckImpostor.GetBool();
-                IsUseVent = CustomOptions.MadMateIsUseVent.GetBool();
-                IsImpostorLight = CustomOptions.MadMateIsImpostorLight.GetBool();
-                int Common = CustomOptions.MadMateCommonTask.GetInt();
-                int Long = CustomOptions.MadMateLongTask.GetInt();
-                int Short = CustomOptions.MadMateShortTask.GetInt();
+                MadmatePlayer = new();
+                IsImpostorCheck = CustomOptions.MadmateIsCheckImpostor.GetBool();
+                IsUseVent = CustomOptions.MadmateIsUseVent.GetBool();
+                IsImpostorLight = CustomOptions.MadmateIsImpostorLight.GetBool();
+                int Common = CustomOptions.MadmateCommonTask.GetInt();
+                int Long = CustomOptions.MadmateLongTask.GetInt();
+                int Short = CustomOptions.MadmateShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -644,7 +644,7 @@ namespace SuperNewRoles.Roles
                     Long = PlayerControl.GameOptions.NumLongTasks;
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
-                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMateCheckImpostorTask.GetString().Replace("%", "")) / 100f));
+                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadmateCheckImpostorTask.GetString().Replace("%", "")) / 100f));
             }
         }
         public static class Bait
@@ -2260,12 +2260,12 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> FastMakerPlayer;
             public static Color32 color = ImpostorRed;
-            public static bool IsCreatedMadMate;
+            public static bool IsCreatedMadmate;
             public static List<int> CreatePlayers;
             public static void ClearAndReload()
             {
                 FastMakerPlayer = new();
-                IsCreatedMadMate = false;
+                IsCreatedMadmate = false;
                 CreatePlayers = new();
             }
         }

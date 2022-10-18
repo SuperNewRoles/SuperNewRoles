@@ -39,7 +39,7 @@ namespace SuperNewRoles
         public static bool IsMadRoles(this PlayerControl player)
         {
             return player.GetRole() is
-                RoleId.MadMate or
+                RoleId.Madmate or
                 RoleId.MadMayor or
                 RoleId.MadStuntMan or
                 RoleId.MadHawk or
@@ -280,8 +280,8 @@ namespace SuperNewRoles
                 case RoleId.Clergyman:
                     RoleClass.Clergyman.ClergymanPlayer.Add(player);
                     break;
-                case RoleId.MadMate:
-                    RoleClass.MadMate.MadMatePlayer.Add(player);
+                case RoleId.Madmate:
+                    RoleClass.Madmate.MadmatePlayer.Add(player);
                     break;
                 case RoleId.Bait:
                     RoleClass.Bait.BaitPlayer.Add(player);
@@ -740,8 +740,8 @@ namespace SuperNewRoles
                 case RoleId.Clergyman:
                     RoleClass.Clergyman.ClergymanPlayer.RemoveAll(ClearRemove);
                     break;
-                case RoleId.MadMate:
-                    RoleClass.MadMate.MadMatePlayer.RemoveAll(ClearRemove);
+                case RoleId.Madmate:
+                    RoleClass.Madmate.MadmatePlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.Bait:
                     RoleClass.Bait.BaitPlayer.RemoveAll(ClearRemove);
@@ -1114,7 +1114,7 @@ namespace SuperNewRoles
                 case RoleId.Sidekick:
                 case RoleId.Vulture:
                 case RoleId.HomeSecurityGuard:
-                case RoleId.MadMate:
+                case RoleId.Madmate:
                 case RoleId.JackalFriends:
                 case RoleId.Opportunist:
                 case RoleId.Researcher:
@@ -1182,7 +1182,7 @@ namespace SuperNewRoles
                 RoleId.Minimalist => RoleClass.Minimalist.UseVent,
                 RoleId.Samurai => RoleClass.Samurai.UseVent,
                 RoleId.Jester => RoleClass.Jester.IsUseVent,
-                RoleId.MadMate => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.MadMate.IsUseVent,
+                RoleId.Madmate => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.Madmate.IsUseVent,
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseVent,
                 RoleId.JackalFriends => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.JackalFriends.IsUseVent,
                 RoleId.Egoist => RoleClass.Egoist.UseVent,
@@ -1274,7 +1274,7 @@ namespace SuperNewRoles
                 : !ModeHandler.IsMode(ModeId.SuperHostRoles)
                 && role switch
                 {
-                    RoleId.MadMate => RoleClass.MadMate.IsImpostorLight,
+                    RoleId.Madmate => RoleClass.Madmate.IsImpostorLight,
                     RoleId.MadMayor => RoleClass.MadMayor.IsImpostorLight,
                     RoleId.MadStuntMan => RoleClass.MadStuntMan.IsImpostorLight,
                     RoleId.MadHawk => RoleClass.MadHawk.IsImpostorLight,
@@ -1455,7 +1455,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Vulture.VulturePlayer.IsCheckListPlayerControl(player)) return RoleId.Vulture;
                 else if (RoleClass.NiceScientist.NiceScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceScientist;
                 else if (RoleClass.Clergyman.ClergymanPlayer.IsCheckListPlayerControl(player)) return RoleId.Clergyman;
-                else if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player)) return RoleId.MadMate;
+                else if (RoleClass.Madmate.MadmatePlayer.IsCheckListPlayerControl(player)) return RoleId.Madmate;
                 else if (RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(player)) return RoleId.Bait;
                 else if (RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.IsCheckListPlayerControl(player)) return RoleId.HomeSecurityGuard;
                 else if (RoleClass.StuntMan.StuntManPlayer.IsCheckListPlayerControl(player)) return RoleId.StuntMan;
