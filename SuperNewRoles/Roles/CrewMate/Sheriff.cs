@@ -7,7 +7,7 @@ namespace SuperNewRoles.Roles
 {
     class Sheriff
     {
-        public static void ResetKillCoolDown()
+        public static void ResetKillCooldown()
         {
             if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
             {
@@ -80,7 +80,7 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            ResetKillCoolDown();
+            ResetKillCooldown();
         }
     }
 }

@@ -8,9 +8,9 @@ namespace SuperNewRoles.Roles.Neutral
 {
     class WaveCannonJackal
     {
-        public static void ResetCoolDowns()
+        public static void ResetCooldowns()
         {
-            HudManagerStartPatch.JackalKillButton.MaxTimer = CustomOptions.WaveCannonJackalKillCoolDown.GetFloat();
+            HudManagerStartPatch.JackalKillButton.MaxTimer = CustomOptions.WaveCannonJackalKillCooldown.GetFloat();
             HudManagerStartPatch.JackalKillButton.Timer = HudManagerStartPatch.JackalKillButton.MaxTimer;
         }
     }

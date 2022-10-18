@@ -7,7 +7,7 @@ namespace SuperNewRoles.Roles
 {
     class Clergyman
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
             HudManagerStartPatch.ClergymanLightOutButton.Timer = HudManagerStartPatch.ClergymanLightOutButton.MaxTimer;

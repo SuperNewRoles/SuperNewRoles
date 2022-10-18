@@ -323,7 +323,7 @@ namespace SuperNewRoles.Patches
                             FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, misfire ? FinalStatus.RemoteSheriffMisFire : (Target.IsRole(RoleId.HauntedWolf) ? FinalStatus.RemoteSheriffHauntedWolfKill : FinalStatus.RemoteSheriffKill));
                             RoleClass.RemoteSheriff.KillMaxCount--;
                         }
-                        Sheriff.ResetKillCoolDown();
+                        Sheriff.ResetKillCooldown();
                     };
                 }
                 __instance.Close();
@@ -797,7 +797,7 @@ namespace SuperNewRoles.Patches
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
-    static class PlayerControlSetCoolDownPatch
+    static class PlayerControlSetCooldownPatch
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] float time)
         {
@@ -809,7 +809,7 @@ namespace SuperNewRoles.Patches
             }
             if (__instance.Data.Role.CanUseKillButton && PlayerControl.GameOptions.KillCooldown > 0f)
             {
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(__instance.killTimer = time, RoleHelpers.GetEndMeetingKillCoolTime(__instance));
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCooldown(__instance.killTimer = time, RoleHelpers.GetEndMeetingKillCoolTime(__instance));
                 return false;
             }
             return true;

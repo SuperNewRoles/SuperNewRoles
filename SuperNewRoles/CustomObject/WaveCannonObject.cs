@@ -11,7 +11,8 @@ namespace SuperNewRoles.CustomObject
 {
     public class WaveCannonObject
     {
-        public enum RpcType{
+        public enum RpcType
+        {
             Spawn,
             Shoot
         }
@@ -111,7 +112,8 @@ namespace SuperNewRoles.CustomObject
             IsLoop = false;
             freamrate = 12;
             Playing = true;
-            OnPlayEnd = () => {
+            OnPlayEnd = () =>
+            {
                 IsLoop = true;
                 freamrate = 15;
                 Playing = true;
@@ -137,7 +139,7 @@ namespace SuperNewRoles.CustomObject
                             else
                             {
                                 if (CustomOptions.WaveCannonJackalIsSyncKillCoolTime.GetBool())
-                                    Roles.Neutral.WaveCannonJackal.ResetCoolDowns();
+                                    Roles.Neutral.WaveCannonJackal.ResetCooldowns();
                             }
                             CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
                             Camera.main.GetComponent<FollowerCamera>().Locked = false;
@@ -168,7 +170,8 @@ namespace SuperNewRoles.CustomObject
                 GameObject.Destroy(gameObject);
                 return;
             }
-            if (Owner != null && (Owner.IsDead() || !(Owner.GetRole() is RoleId.WaveCannon or RoleId.WaveCannonJackal))) {
+            if (Owner != null && (Owner.IsDead() || !(Owner.GetRole() is RoleId.WaveCannon or RoleId.WaveCannonJackal)))
+            {
                 GameObject.Destroy(this.gameObject);
                 if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
@@ -179,8 +182,9 @@ namespace SuperNewRoles.CustomObject
                     ChargeSound.Stop();
                 return;
             }
-            Logger.Info($"{OwnerPlayerId} : {Owner != null} : {OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId} : {CachedPlayer.LocalPlayer.PlayerId} : {PlayerControl.LocalPlayer.PlayerId} : {!RoleClass.IsMeeting} : {OwnerPos}","WaveCannonUpdate");
-            if (Owner != null && OwnerPlayerId == PlayerControl.LocalPlayer.PlayerId && !RoleClass.IsMeeting) {
+            Logger.Info($"{OwnerPlayerId} : {Owner != null} : {OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId} : {CachedPlayer.LocalPlayer.PlayerId} : {PlayerControl.LocalPlayer.PlayerId} : {!RoleClass.IsMeeting} : {OwnerPos}", "WaveCannonUpdate");
+            if (Owner != null && OwnerPlayerId == PlayerControl.LocalPlayer.PlayerId && !RoleClass.IsMeeting)
+            {
                 //Owner.transform.position = OwnerPos;
 
                 if (IsShootNow)

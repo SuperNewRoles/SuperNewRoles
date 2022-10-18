@@ -6,7 +6,7 @@ namespace SuperNewRoles.Roles
 {
     class SelfBomber
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.SelfBomberButton.MaxTimer = PlayerControl.GameOptions.KillCooldown;
             HudManagerStartPatch.SelfBomberButton.Timer = PlayerControl.GameOptions.KillCooldown;

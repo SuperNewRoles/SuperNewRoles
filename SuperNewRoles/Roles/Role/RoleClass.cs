@@ -333,7 +333,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> SidekickPlayer;
             public static List<PlayerControl> FakeSidekickPlayer;
             public static Color32 color = new(0, 255, 255, byte.MaxValue);
-            public static float KillCoolDown;
+            public static float KillCooldown;
             public static bool IsUseVent;
             public static bool IsUseSabo;
             public static bool IsImpostorLight;
@@ -349,7 +349,7 @@ namespace SuperNewRoles.Roles
                 JackalPlayer = new();
                 SidekickPlayer = new();
                 FakeSidekickPlayer = new();
-                KillCoolDown = CustomOptions.JackalKillCoolDown.GetFloat();
+                KillCooldown = CustomOptions.JackalKillCooldown.GetFloat();
                 IsUseVent = CustomOptions.JackalUseVent.GetBool();
                 IsUseSabo = CustomOptions.JackalUseSabo.GetBool();
                 IsImpostorLight = CustomOptions.JackalIsImpostorLight.GetBool();
@@ -562,7 +562,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 VulturePlayer = new();
-                CoolTime = CustomOptions.VultureCoolDown.GetFloat();
+                CoolTime = CustomOptions.VultureCooldown.GetFloat();
                 DeadBodyCount = CustomOptions.VultureDeadBodyMaxCount.GetInt();
                 IsUseVent = CustomOptions.VultureIsUseVent.GetBool();
                 ShowArrows = CustomOptions.VultureShowArrows.GetBool();
@@ -1649,7 +1649,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> TeleportingJackalPlayer;
             public static Color32 color = new(0, 255, 255, byte.MaxValue);
-            public static float KillCoolDown;
+            public static float KillCooldown;
             public static bool IsUseVent;
             public static bool IsUseSabo;
             public static bool IsImpostorLight;
@@ -1661,7 +1661,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 TeleportingJackalPlayer = new();
-                KillCoolDown = CustomOptions.TeleportingJackalKillCoolDown.GetFloat();
+                KillCooldown = CustomOptions.TeleportingJackalKillCooldown.GetFloat();
                 IsUseVent = CustomOptions.TeleportingJackalUseVent.GetBool();
                 IsUseSabo = CustomOptions.TeleportingJackalUseSabo.GetBool();
                 IsImpostorLight = CustomOptions.TeleportingJackalIsImpostorLight.GetBool();
@@ -1778,7 +1778,7 @@ namespace SuperNewRoles.Roles
             public static bool limitSoulDuration;
             public static int mode;
 
-            public static float KillCoolDown;
+            public static float KillCooldown;
             public static bool IsUseVent;
             public static bool IsUseSabo;
             public static bool IsImpostorLight;
@@ -1798,7 +1798,7 @@ namespace SuperNewRoles.Roles
                 soulDuration = CustomOptions.JackalSeerSoulDuration.GetFloat();
                 mode = CustomOptions.JackalSeerMode.GetSelection();
 
-                KillCoolDown = CustomOptions.JackalSeerKillCoolDown.GetFloat();
+                KillCooldown = CustomOptions.JackalSeerKillCooldown.GetFloat();
                 IsUseVent = CustomOptions.JackalSeerUseVent.GetBool();
                 IsUseSabo = CustomOptions.JackalSeerUseSabo.GetBool();
                 IsImpostorLight = CustomOptions.JackalSeerIsImpostorLight.GetBool();
@@ -1900,7 +1900,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 CleanerPlayer = new();
-                CoolTime = CustomOptions.CleanerCoolDown.GetFloat();
+                CoolTime = CustomOptions.CleanerCooldown.GetFloat();
                 KillCoolTime = CustomOptions.CleanerKillCoolTime.GetFloat();
             }
         }
@@ -1917,7 +1917,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MadCleanerPlayer = new();
-                CoolTime = CustomOptions.MadCleanerCoolDown.GetFloat();
+                CoolTime = CustomOptions.MadCleanerCooldown.GetFloat();
                 IsUseVent = CustomOptions.MadCleanerIsUseVent.GetBool();
                 IsImpostorLight = CustomOptions.MadCleanerIsImpostorLight.GetBool();
             }

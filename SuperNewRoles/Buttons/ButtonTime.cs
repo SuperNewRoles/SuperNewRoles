@@ -42,7 +42,7 @@ namespace SuperNewRoles.Buttons
                 if (HudManagerStartPatch.ScientistButton.Timer <= 0f)
                 {
                     Scientist.ScientistEnd();
-                    Scientist.ResetCoolDown();
+                    Scientist.ResetCooldown();
                     HudManagerStartPatch.ScientistButton.MaxTimer = cooltime;
                     RoleClass.NiceScientist.IsScientist = false;
                     HudManagerStartPatch.ScientistButton.actionButton.cooldownTimerText.color = Color.white;
@@ -122,7 +122,7 @@ namespace SuperNewRoles.Buttons
                 if (HudManagerStartPatch.LighterLightOnButton.Timer <= 0f)
                 {
                     Lighter.LightOutEnd();
-                    Lighter.ResetCoolDown();
+                    Lighter.ResetCooldown();
                     HudManagerStartPatch.LighterLightOnButton.MaxTimer = RoleClass.Lighter.CoolTime;
                     RoleClass.Lighter.IsLightOn = false;
                     HudManagerStartPatch.LighterLightOnButton.actionButton.cooldownTimerText.color = Color.white;
@@ -161,7 +161,7 @@ namespace SuperNewRoles.Buttons
                 if (HudManagerStartPatch.SpeedBoosterBoostButton.Timer <= 0f)
                 {
                     SpeedBooster.SpeedBoostEnd();
-                    SpeedBooster.ResetCoolDown();
+                    SpeedBooster.ResetCooldown();
                     HudManagerStartPatch.SpeedBoosterBoostButton.MaxTimer = RoleClass.SpeedBooster.CoolTime;
                     RoleClass.SpeedBooster.IsSpeedBoost = false;
                     HudManagerStartPatch.SpeedBoosterBoostButton.actionButton.cooldownTimerText.color = Color.white;
@@ -189,7 +189,7 @@ namespace SuperNewRoles.Buttons
                 if (HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer <= 0f)
                 {
                     EvilSpeedBooster.SpeedBoostEnd();
-                    EvilSpeedBooster.ResetCoolDown();
+                    EvilSpeedBooster.ResetCooldown();
                     HudManagerStartPatch.EvilSpeedBoosterBoostButton.MaxTimer = RoleClass.EvilSpeedBooster.CoolTime;
                     RoleClass.EvilSpeedBooster.IsSpeedBoost = false;
                     HudManagerStartPatch.EvilSpeedBoosterBoostButton.actionButton.cooldownTimerText.color = Color.white;

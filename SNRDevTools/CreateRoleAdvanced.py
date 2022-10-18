@@ -350,15 +350,15 @@ namespace SuperNewRoles.Roles."""+namedata+"""
             MainClass.WriteCodes("Buttons/Buttons.cs", "//カスタムなボタン達",
                                  """        public static CustomButton ROLENAMEKillButton""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             MainClass.WriteCodes("Buttons/Buttons.cs", "//クールダウンリセット",
-                                 """        ROLENAME.resetCoolDown();\n        //クールダウンリセット""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """        ROLENAME.resetCooldown();\n        //クールダウンリセット""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             # Roles/Role/ROLENAME.cs
             MainClass.WriteCodes("Roles/Role/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), "//ここにコードを書きこんでください",
-                                 """        public static void resetCoolDown() {
-            HudManagerStartPatch.ROLENAMEKillButton.MaxTimer = RoleClass.ROLENAME.KillCoolDown;
-            HudManagerStartPatch.ROLENAMEKillButton.Timer = RoleClass.ROLENAME.KillCoolDown;
+                                 """        public static void resetCooldown() {
+            HudManagerStartPatch.ROLENAMEKillButton.MaxTimer = RoleClass.ROLENAME.KillCooldown;
+            HudManagerStartPatch.ROLENAMEKillButton.Timer = RoleClass.ROLENAME.KillCooldown;
         }
         public static void EndMeeting() {
-            resetCoolDown();
+            resetCooldown();
         }\n        //ここにコードを書き込んでください""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # ベントボタン

@@ -8,20 +8,20 @@ namespace SuperNewRoles.Roles
 {
     public static class DoubleKiller
     {
-        public static void ResetMainCoolDown()
+        public static void ResetMainCooldown()
         {
             HudManagerStartPatch.DoubleKillerMainKillButton.MaxTimer = CustomOptions.MainKillCoolTime.GetFloat();
             HudManagerStartPatch.DoubleKillerMainKillButton.Timer = HudManagerStartPatch.DoubleKillerMainKillButton.MaxTimer;
         }
-        public static void ResetSubCoolDown()
+        public static void ResetSubCooldown()
         {
             HudManagerStartPatch.DoubleKillerSubKillButton.MaxTimer = CustomOptions.SubKillCoolTime.GetFloat();
             HudManagerStartPatch.DoubleKillerSubKillButton.Timer = HudManagerStartPatch.DoubleKillerSubKillButton.MaxTimer;
         }
         public static void EndMeeting()
         {
-            ResetSubCoolDown();
-            ResetMainCoolDown();
+            ResetSubCooldown();
+            ResetMainCooldown();
         }
         public class DoubleKillerFixedPatch
         {

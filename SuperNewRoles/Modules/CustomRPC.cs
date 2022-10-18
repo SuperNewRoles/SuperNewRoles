@@ -508,7 +508,7 @@ namespace SuperNewRoles.Modules
             SetRole(targetid, (byte)RoleId.Sheriff);
             if (targetid == CachedPlayer.LocalPlayer.PlayerId)
             {
-                Sheriff.ResetKillCoolDown();
+                Sheriff.ResetKillCooldown();
                 RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
             }
             UncheckedSetVanilaRole(targetid, (byte)RoleTypes.Crewmate);

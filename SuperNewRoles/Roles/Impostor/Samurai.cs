@@ -5,7 +5,7 @@ namespace SuperNewRoles.Roles
 {
     public class Samurai
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.SamuraiButton.MaxTimer = RoleClass.Samurai.SwordCoolTime;
             HudManagerStartPatch.SamuraiButton.Timer = RoleClass.Samurai.SwordCoolTime;

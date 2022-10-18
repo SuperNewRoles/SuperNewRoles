@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles.Impostor
         private const int OptionId = 992;
         public static CustomRoleOption NekoKabochaOption;
         public static CustomOption NekoKabochaPlayerCount;
-        public static CustomOption KillCoolDown;
+        public static CustomOption KillCooldown;
         private static CustomOption CanRevengeCrewmate;
         private static CustomOption CanRevengeNeutral;
         private static CustomOption CanRevengeImpostor;
@@ -23,7 +23,7 @@ namespace SuperNewRoles.Roles.Impostor
         {
             NekoKabochaOption = new(OptionId, true, CustomOptionType.Impostor, "NekoKabochaName", color, 1);
             NekoKabochaPlayerCount = Create(OptionId + 1, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], NekoKabochaOption);
-            KillCoolDown = Create(OptionId + 2, true, CustomOptionType.Impostor, "KillCoolDown", 40f, 0f, 120f, 2.5f, NekoKabochaOption, format: "unitSeconds");
+            KillCooldown = Create(OptionId + 2, true, CustomOptionType.Impostor, "KillCooldown", 40f, 0f, 120f, 2.5f, NekoKabochaOption, format: "unitSeconds");
             CanRevengeCrewmate = Create(OptionId + 3, true, CustomOptionType.Impostor, "CanRevengeCrewmate", true, NekoKabochaOption);
             CanRevengeNeutral = Create(OptionId + 4, true, CustomOptionType.Impostor, "CanRevengeNeutral", true, NekoKabochaOption);
             CanRevengeImpostor = Create(OptionId + 5, true, CustomOptionType.Impostor, "CanRevengeImpostor", true, NekoKabochaOption);

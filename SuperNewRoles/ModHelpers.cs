@@ -38,7 +38,7 @@ namespace SuperNewRoles
             if (max == float.NegativeInfinity) max = time;
 
             player.killTimer = time;
-            FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(time, max);
+            FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCooldown(time, max);
         }
 
         public static Sprite CreateSprite(string path, bool fromDisk = false)

@@ -140,7 +140,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             if (switchSystem2 != null && switchSystem2.IsActive) optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
                         }
                     }
-                    optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCoolDown);
+                    optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCooldown);
                     break;
                 case RoleId.Demon:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Demon.CoolTime);

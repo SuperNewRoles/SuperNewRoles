@@ -94,10 +94,10 @@ namespace SuperNewRoles.Buttons
 
         public static void SetCustomButtonCooldowns()
         {
-            Sheriff.ResetKillCoolDown();
-            Clergyman.ResetCoolDown();
-            Teleporter.ResetCoolDown();
-            Jackal.ResetCoolDown();
+            Sheriff.ResetKillCooldown();
+            Clergyman.ResetCooldown();
+            Teleporter.ResetCooldown();
+            Jackal.ResetCooldown();
             //クールダウンリセット
         }
 
@@ -796,7 +796,7 @@ namespace SuperNewRoles.Buttons
                             RPCProcedure.CreateSidekick(target.PlayerId, IsFakeSidekick);
                         }
                         RoleClass.Jackal.CanCreateSidekick = false;
-                        Jackal.ResetCoolDown();
+                        Jackal.ResetCooldown();
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick && CustomOptions.JackalCreateSidekick.GetBool(); },
@@ -834,7 +834,7 @@ namespace SuperNewRoles.Buttons
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                         RPCProcedure.CreateSidekickSeer(target_JS.PlayerId, IsFakeSidekickSeer);
                         RoleClass.JackalSeer.CanCreateSidekick = false;
-                        JackalSeer.ResetCoolDown();
+                        JackalSeer.ResetCooldown();
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.CanCreateSidekick && CustomOptions.JackalSeerCreateSidekick.GetBool(); },
@@ -868,16 +868,16 @@ namespace SuperNewRoles.Buttons
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Jackal:
-                                Jackal.ResetCoolDown();
+                                Jackal.ResetCooldown();
                                 break;
                             case RoleId.JackalSeer:
-                                JackalSeer.ResetCoolDown();
+                                JackalSeer.ResetCooldown();
                                 break;
                             case RoleId.TeleportingJackal:
-                                TeleportingJackal.ResetCoolDowns();
+                                TeleportingJackal.ResetCooldowns();
                                 break;
                             case RoleId.WaveCannonJackal:
-                                Roles.Neutral.WaveCannonJackal.ResetCoolDowns();
+                                Roles.Neutral.WaveCannonJackal.ResetCooldowns();
                                 break;
                         }
                     }
@@ -891,7 +891,7 @@ namespace SuperNewRoles.Buttons
                 {
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
                     else if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
-                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannonJackal)) { Roles.Neutral.WaveCannonJackal.ResetCoolDowns(); }
+                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannonJackal)) { Roles.Neutral.WaveCannonJackal.ResetCooldowns(); }
                 },
                 __instance.KillButton.graphic.sprite,
                 new Vector3(0, 1, 0),
@@ -919,7 +919,7 @@ namespace SuperNewRoles.Buttons
                 {
                     return PlayerControl.LocalPlayer.CanMove;
                 },
-                () => { SelfBomber.ResetCoolDown(); },
+                () => { SelfBomber.ResetCooldown(); },
                 RoleClass.SelfBomber.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
@@ -937,7 +937,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     Doorr.DoorrBtn();
-                    Doorr.ResetCoolDown();
+                    Doorr.ResetCooldown();
                 },
                 (bool isAlive, RoleId role) => { return isAlive && Doorr.IsDoorr(PlayerControl.LocalPlayer); },
                 () =>
@@ -965,7 +965,7 @@ namespace SuperNewRoles.Buttons
                     RoleClass.Clergyman.ButtonTimer = DateTime.Now;
                     TeleporterButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Teleporter.TeleportStart();
-                    Teleporter.ResetCoolDown();
+                    Teleporter.ResetCooldown();
                 },
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Teleporter || role == RoleId.TeleportingJackal || role == RoleId.NiceTeleporter || (role == RoleId.Levelinger && RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Teleporter))); },
                 () =>
@@ -994,7 +994,7 @@ namespace SuperNewRoles.Buttons
                     {
                         Moving.SetPostion();
                     }
-                    Moving.ResetCoolDown();
+                    Moving.ResetCooldown();
                 },
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Moving || role == RoleId.EvilMoving || RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Moving)) && !Moving.IsSetPostion(); },
                 () =>
@@ -1023,7 +1023,7 @@ namespace SuperNewRoles.Buttons
                     {
                         Moving.TP();
                     }
-                    Moving.ResetCoolDown();
+                    Moving.ResetCooldown();
                 },
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Moving || role == RoleId.EvilMoving || RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Moving)) && Moving.IsSetPostion(); },
                 () =>
@@ -1083,7 +1083,7 @@ namespace SuperNewRoles.Buttons
                             killWriter.Write(misfire);
                             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                             FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, misfire ? FinalStatus.SheriffMisFire : (Target.IsRole(RoleId.HauntedWolf) ? FinalStatus.SheriffHauntedWolfKill : FinalStatus.SheriffKill));
-                            Sheriff.ResetKillCoolDown();
+                            Sheriff.ResetKillCooldown();
                             RoleClass.Sheriff.KillMaxCount--;
                         }
                     }
@@ -1821,7 +1821,7 @@ namespace SuperNewRoles.Buttons
                 {
                     return PlayerControl.LocalPlayer.CanMove;
                 },
-                () => { Samurai.ResetCoolDown(); },
+                () => { Samurai.ResetCooldown(); },
                 RoleClass.Samurai.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
@@ -2009,7 +2009,7 @@ namespace SuperNewRoles.Buttons
 
                     PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(255F, 255F, 255F);
                     PositionSwapper.SwapStart();
-                    PositionSwapper.ResetCoolDown();
+                    PositionSwapper.ResetCooldown();
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.PositionSwapper; },
                 () =>
@@ -2044,7 +2044,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.SecretlyKiller.target);
-                    SecretlyKiller.MainResetCoolDown();
+                    SecretlyKiller.MainResetCooldown();
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SecretlyKiller; },
                 () =>
@@ -2081,7 +2081,7 @@ namespace SuperNewRoles.Buttons
                 {
                     RoleClass.SecretlyKiller.SecretlyKillLimit--;
                     SecretlyKiller.SecretlyKill();
-                    SecretlyKiller.SecretlyResetCoolDown();
+                    SecretlyKiller.SecretlyResetCooldown();
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SecretlyKiller; },
                 () =>
@@ -2167,10 +2167,10 @@ namespace SuperNewRoles.Buttons
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.DoubleKiller:
-                                DoubleKiller.ResetMainCoolDown();
+                                DoubleKiller.ResetMainCooldown();
                                 break;
                             case RoleId.Smasher:
-                                Smasher.ResetCoolDown();
+                                Smasher.ResetCooldown();
                                 break;
                         }
                     }
@@ -2206,10 +2206,10 @@ namespace SuperNewRoles.Buttons
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.DoubleKiller:
-                                DoubleKiller.ResetSubCoolDown();
+                                DoubleKiller.ResetSubCooldown();
                                 break;
                             case RoleId.Smasher:
-                                Smasher.ResetSmashCoolDown();
+                                Smasher.ResetSmashCooldown();
                                 break;
                         }
                     }
@@ -2771,7 +2771,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
-                    StefinderKillButton.MaxTimer = CustomOptions.StefinderKillCoolDown.GetFloat();
+                    StefinderKillButton.MaxTimer = CustomOptions.StefinderKillCooldown.GetFloat();
                     StefinderKillButton.Timer = StefinderKillButton.MaxTimer;
                 },
                 __instance.KillButton.graphic.sprite,

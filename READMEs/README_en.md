@@ -493,7 +493,7 @@ only at the beginning of the match. <br>
 ### Game Settings 
 | Name         |                   Description                   |
 | ------------ | :---------------------------------------------: |
-| KillCoolDown | You can set the kill cool time for the smasher. |
+| KillCooldown | You can set the kill cool time for the smasher. |
 
 ----------------------- 
 ## DoubleKiller
@@ -504,9 +504,9 @@ You can change in the settings whether you can use sabotage or not. <br>
 ### Game Settings 
 | Name             |                                         Description                                          |
 | ---------------- | :------------------------------------------------------------------------------------------: |
-| MainKillCoolDown | You can set the kill cool time for the main kill button, which is usually activated by the Q |
+| MainKillCooldown | You can set the kill cool time for the main kill button, which is usually activated by the Q |
 key. 
-| SubKillCoolDown | You can set the kill cool down time for the sub kill button operated by the F key. 
+| SubKillCooldown | You can set the kill cooldown time for the sub kill button operated by the F key. 
 | Use Sabotage | You can set whether double killers can use sabotage. 
 
 ----------------------- 
@@ -531,7 +531,7 @@ SuperHostRoles support
 ### Game Settings 
 | Name                    |                        Description                        |
 | ----------------------- | :-------------------------------------------------------: |
-| Kill Cooldown           |        Individual kill cool down time can be set.         |
+| Kill Cooldown           |         Individual kill cooldown time can be set.         |
 | Can Kill a Neutral      |     You can set whether you can kill the third camp.      |
 | Can Kill a Lovers       |         You can set whether Lovers can be killed.         |
 | Can Kill a MadRole      | You can set whether you can kill MAD & FRIENDS positions. |
@@ -1180,8 +1180,8 @@ If the corpse is erased, the killcool is reset to the specified value. <br>
 ### Game Settings 
 | Name          |                             Description                              |
 | ------------- | :------------------------------------------------------------------: |
-| Kill CoolDown |                      Kill Cool Down for Cleaner                      | Allows you to set individual kill cool time. |
-| CoolDown      | You can set the kill cooldown time for the ability to erase corpses. |
+| Kill Cooldown |                      Kill Cool Down for Cleaner                      | Allows you to set individual kill cool time. |
+| Cooldown      | You can set the kill cooldown time for the ability to erase corpses. |
 
 ----------------------- 
 ## Samurai
@@ -1257,7 +1257,7 @@ SHR compatible.<br>
 ### Game Settings 
 | Name                    |                        Description                        |
 | ----------------------- | :-------------------------------------------------------: |
-| Kill Cooldown           |        Individual kill cool down time can be set.         |
+| Kill Cooldown           |         Individual kill cooldown time can be set.         |
 | Can Kill a Neutral      |     You can set whether you can kill the third camp.      |
 | Can Kill a Lovers       |         You can set whether Lovers can be killed.         |
 | Can Kill a MadRole      | You can set whether you can kill MAD & FRIENDS positions. |
@@ -1297,7 +1297,7 @@ Trying to make an Impostor a sheriff is self-destructive.<br>
 ### Game Settings 
 | Name                    |                        Description                        |
 | ----------------------- | :-------------------------------------------------------: |
-| Kill Cooldown           |        Individual kill cool down time can be set.         |
+| Kill Cooldown           |         Individual kill cooldown time can be set.         |
 | Can Kill a Neutral      |     You can set whether you can kill the third camp.      |
 | Can Kill a Lovers       |         You can set whether Lovers can be killed.         |
 | Can Kill a MadRole      | You can set whether you can kill MAD & FRIENDS positions. |
@@ -1311,7 +1311,7 @@ Instead of being able to make corpses disappear, it does not have the fanatic ab
 ### Game Settings 
 | Name           |                              Description                              |
 | -------------- | :-------------------------------------------------------------------: |
-| CoolDown       | You can set the kill cooldown time for the ability to erase corpses.  |
+| Cooldown       | You can set the kill cooldown time for the ability to erase corpses.  |
 | Use Vent       |                  You will be able to put in a vent.                   |
 | Impostor Light | You can set whether the view will be the same as the Impostor's view. |
 
