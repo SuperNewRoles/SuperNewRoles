@@ -125,7 +125,6 @@ namespace SuperNewRoles.Patches
 
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
-                PlayerControl.LocalPlayer.RpcSetNamePrivate(NameArrow.ArrowAngleString(PlayerControl.LocalPlayer.GetTruePosition(),new(0,0)), PlayerControl.LocalPlayer);
                 var MyRole = PlayerControl.LocalPlayer.GetRole();
                 SetBasePlayerOutlines();
                 LadderDead.FixedUpdate();
