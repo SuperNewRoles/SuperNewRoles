@@ -4,7 +4,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     public static class NameArrow
     {
-        static float GetAngle(Vector2 start, Vector2 target)
+        private static float GetAngle(Vector2 start, Vector2 target)
         {
             Vector2 dt = target - start;
             float rad = Mathf.Atan2(dt.x, dt.y);
@@ -21,7 +21,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         private static bool FloatRange(float f1, float f, float f2) => f1 < f && f < f2;
 
 
-        public static string ArrowAngleString(Vector2 from,Vector2 to)
+        public static string ArrowAngleString(Vector2 from, Vector2 to)
         {
             var angle = GetAngle(from, to);
             if (FloatRange(337.5f, angle, 360f) || FloatRange(0f, angle, 22.5f)) return "↑";
