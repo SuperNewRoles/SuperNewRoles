@@ -85,7 +85,7 @@ namespace SuperNewRoles.Modules
             return ModTranslation.GetString(name + "Title" + r1.Next(1, num + 1).ToString());
         }
 
-        public static IntroDate CrewmateIntro = new("CrewMate", Color.white, 1, RoleId.DefaultRole);
+        public static IntroDate CrewmateIntro = new("Crewmate", Color.white, 1, RoleId.DefaultRole);
         public static IntroDate ImpostorIntro = new("Impostor", RoleClass.ImpostorRed, 1, RoleId.DefaultRole, TeamRoleType.Impostor);
         public static IntroDate SoothSayerIntro = new("SoothSayer", RoleClass.SoothSayer.color, 1, RoleId.SoothSayer);
         public static IntroDate JesterIntro = new("Jester", RoleClass.Jester.color, 1, RoleId.Jester, TeamRoleType.Neutral);
@@ -225,7 +225,7 @@ namespace SuperNewRoles.Modules
         public static IntroDate WaveCannonIntro = new("WaveCannon", RoleClass.WaveCannon.color, 1, RoleId.WaveCannon, TeamRoleType.Impostor);
         public static IntroDate DoppelgangerIntro = new("Doppelganger", RoleClass.Doppelganger.color, 1, RoleId.Doppelganger, TeamRoleType.Impostor);
         public static IntroDate WerewolfIntro = new("Werewolf", RoleClass.Werewolf.color, 1, RoleId.Werewolf, TeamRoleType.Impostor);
-        public static IntroDate KnightIntro = new("Knight", Roles.CrewMate.Knight.color, 1, RoleId.Knight, TeamRoleType.Crewmate);
+        public static IntroDate KnightIntro = new("Knight", Roles.Crewmate.Knight.color, 1, RoleId.Knight, TeamRoleType.Crewmate);
         public static IntroDate PavlovsdogsIntro = new("Pavlovsdogs", RoleClass.Pavlovsdogs.color, 1, RoleId.Pavlovsdogs, TeamRoleType.Neutral);
         public static IntroDate PavlovsownerIntro = new("Pavlovsowner", RoleClass.Pavlovsowner.color, 1, RoleId.Pavlovsowner, TeamRoleType.Neutral);
         public static IntroDate WaveCannonJackalIntro = new("WaveCannonJackal", RoleClass.WaveCannonJackal.color, 1, RoleId.WaveCannonJackal, TeamRoleType.Neutral);

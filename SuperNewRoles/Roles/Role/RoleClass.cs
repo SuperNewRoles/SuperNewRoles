@@ -184,7 +184,7 @@ namespace SuperNewRoles.Roles
             WaveCannon.ClearAndReload();
             Doppelganger.ClearAndReload();
             Werewolf.ClearAndReload();
-            CrewMate.Knight.ClearAndReload();
+            Crewmate.Knight.ClearAndReload();
             Pavlovsdogs.ClearAndReload();
             Pavlovsowner.ClearAndReload();
             WaveCannonJackal.ClearAndReload();
@@ -2550,9 +2550,9 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> PainterPlayer;
             public static Color32 color = new(170, 255, 0, byte.MaxValue);
-            public static Dictionary<CrewMate.Painter.ActionType, List<Vector2>> ActionDatas;
+            public static Dictionary<Crewmate.Painter.ActionType, List<Vector2>> ActionDatas;
             public static List<Footprint> Prints;
-            public static Dictionary<CrewMate.Painter.ActionType, bool> IsEnables;
+            public static Dictionary<Crewmate.Painter.ActionType, bool> IsEnables;
             public static bool IsLocalActionSend;
             public static bool IsDeathFootpointBig;
             public static bool IsFootprintMeetingDestroy;
@@ -2563,20 +2563,20 @@ namespace SuperNewRoles.Roles
                 PainterPlayer = new();
                 ActionDatas = new();
                 IsEnables = new();
-                foreach (CrewMate.Painter.ActionType type in Enum.GetValues(typeof(CrewMate.Painter.ActionType)))
+                foreach (Crewmate.Painter.ActionType type in Enum.GetValues(typeof(Crewmate.Painter.ActionType)))
                 {
                     ActionDatas[type] = new();
                 }
                 Prints = new();
                 CurrentTarget = null;
                 IsLocalActionSend = false;
-                IsEnables[CrewMate.Painter.ActionType.TaskComplete] = CustomOptions.PainterIsTaskCompleteFootprint.GetBool();
-                IsEnables[CrewMate.Painter.ActionType.SabotageRepair] = CustomOptions.PainterIsSabotageRepairFootprint.GetBool();
-                IsEnables[CrewMate.Painter.ActionType.InVent] = CustomOptions.PainterIsInVentFootprint.GetBool();
-                IsEnables[CrewMate.Painter.ActionType.ExitVent] = CustomOptions.PainterIsExitVentFootprint.GetBool();
-                IsEnables[CrewMate.Painter.ActionType.CheckVital] = CustomOptions.PainterIsCheckVitalFootprint.GetBool();
-                IsEnables[CrewMate.Painter.ActionType.CheckAdmin] = CustomOptions.PainterIsCheckAdminFootprint.GetBool();
-                IsEnables[CrewMate.Painter.ActionType.Death] = CustomOptions.PainterIsDeathFootprint.GetBool();
+                IsEnables[Crewmate.Painter.ActionType.TaskComplete] = CustomOptions.PainterIsTaskCompleteFootprint.GetBool();
+                IsEnables[Crewmate.Painter.ActionType.SabotageRepair] = CustomOptions.PainterIsSabotageRepairFootprint.GetBool();
+                IsEnables[Crewmate.Painter.ActionType.InVent] = CustomOptions.PainterIsInVentFootprint.GetBool();
+                IsEnables[Crewmate.Painter.ActionType.ExitVent] = CustomOptions.PainterIsExitVentFootprint.GetBool();
+                IsEnables[Crewmate.Painter.ActionType.CheckVital] = CustomOptions.PainterIsCheckVitalFootprint.GetBool();
+                IsEnables[Crewmate.Painter.ActionType.CheckAdmin] = CustomOptions.PainterIsCheckAdminFootprint.GetBool();
+                IsEnables[Crewmate.Painter.ActionType.Death] = CustomOptions.PainterIsDeathFootprint.GetBool();
                 IsDeathFootpointBig = CustomOptions.PainterIsDeathFootprintBig.GetBool();
                 IsFootprintMeetingDestroy = CustomOptions.PainterIsFootprintMeetingDestroy.GetBool();
             }

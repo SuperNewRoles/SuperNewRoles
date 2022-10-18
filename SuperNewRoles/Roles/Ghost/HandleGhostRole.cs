@@ -45,9 +45,9 @@ namespace SuperNewRoles.Roles
                     AllRoleSetClass.NeutralGhostRolePlayerNum--;
                     break;
                 case TeamRoleType.Crewmate:
-                    if (AllRoleSetClass.CrewMateGhostRolePlayerNum <= 0)
+                    if (AllRoleSetClass.CrewmateGhostRolePlayerNum <= 0)
                         return false;
-                    AllRoleSetClass.CrewMateGhostRolePlayerNum--;
+                    AllRoleSetClass.CrewmateGhostRolePlayerNum--;
                     break;
 
             }

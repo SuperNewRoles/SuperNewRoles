@@ -30,7 +30,7 @@ namespace SuperNewRoles.Roles
                 if (Target.IsImpostor()) namedate = "Impostor";
                 if (Target.IsHauntedWolf()) namedate = "Impostor";
                 else if (Target.IsNeutral()) namedate = "Neutral";
-                else if (Target.IsCrew()) namedate = "CrewMate";
+                else if (Target.IsCrew()) namedate = "Crewmate";
             }
             else
             {
@@ -85,7 +85,7 @@ namespace SuperNewRoles.Roles
                 if (Target.IsImpostor()) namedate = "Impostor";
                 if (Target.IsHauntedWolf()) namedate = "Impostor";
                 else if (Target.IsNeutral()) namedate = "Neutral";
-                else if (Target.IsCrew()) namedate = "CrewMate";
+                else if (Target.IsCrew()) namedate = "Crewmate";
             }
             else
             {

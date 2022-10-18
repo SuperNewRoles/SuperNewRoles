@@ -11,7 +11,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static bool Prefix(MapConsole __instance)
             {
-                Roles.CrewMate.Painter.HandleRpc(Roles.CrewMate.Painter.ActionType.CheckAdmin);
+                Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckAdmin);
                 bool IsUse = MapOption.UseAdmin;
                 return IsUse;
             }
@@ -103,7 +103,7 @@ namespace SuperNewRoles.MapOptions
         {
             static void Postfix(VitalsMinigame __instance)
             {
-                Roles.CrewMate.Painter.HandleRpc(Roles.CrewMate.Painter.ActionType.CheckVital);
+                Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckVital);
             }
         }
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Update))]

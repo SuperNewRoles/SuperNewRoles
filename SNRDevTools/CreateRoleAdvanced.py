@@ -198,7 +198,7 @@ class AllCheck:
             elif (MainClass.GetBool("Neut")):
                 namedata = "Neutral"
             elif (MainClass.GetBool("Crew")):
-                namedata = "CrewMate"
+                namedata = "Crewmate"
             with open(BasePath+"Roles/"+namedata+"/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), mode="x") as x:
                 x.write(
                     """using System;

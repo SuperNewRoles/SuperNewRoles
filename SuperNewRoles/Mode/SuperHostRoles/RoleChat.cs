@@ -50,7 +50,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (data == IntroDate.CrewmateIntro) return "";
 
             string team = "重複";
-            if (data.Team == TeamRoleType.Crewmate) team = ModTranslation.GetString("CrewMateName");
+            if (data.Team == TeamRoleType.Crewmate) team = ModTranslation.GetString("CrewmateName");
             else if (data.Team == TeamRoleType.Impostor) team = ModTranslation.GetString("ImpostorName");
             else if (data.Team == TeamRoleType.Neutral)
             {

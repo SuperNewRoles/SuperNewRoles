@@ -154,7 +154,7 @@ namespace SuperNewRoles.Modules
                 }
                 else
                 {
-                    roleNames = "CrewMateName";
+                    roleNames = "CrewmateName";
                     roleColors = RoleClass.CrewmateWhite;
                 }
             }
@@ -412,17 +412,17 @@ namespace SuperNewRoles.Modules
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
             }
-            
+
             //名前の奴
             if (RoleClass.Camouflager.IsCamouflage)
             {
-                if(RoleClass.Camouflager.ArsonistMark)
+                if (RoleClass.Camouflager.ArsonistMark)
                     SetNamesClass.ArsonistSet();
-                if(RoleClass.Camouflager.DemonMark)
+                if (RoleClass.Camouflager.DemonMark)
                     SetNamesClass.DemonSet();
-                if(RoleClass.Camouflager.LoversMark)
+                if (RoleClass.Camouflager.LoversMark)
                     SetNamesClass.LoversSet();
-                if(RoleClass.Camouflager.QuarreledMark)
+                if (RoleClass.Camouflager.QuarreledMark)
                     SetNamesClass.QuarreledSet();
             }
             else

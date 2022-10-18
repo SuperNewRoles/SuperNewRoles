@@ -5,7 +5,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.CrewMate;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 
 
@@ -1091,7 +1091,7 @@ namespace SuperNewRoles
                 case RoleId.Camouflager:
                     RoleClass.Camouflager.CamouflagerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1330,7 +1330,7 @@ namespace SuperNewRoles
             RoleId.Photographer or
             RoleId.Pavlovsdogs or
             RoleId.Pavlovsowner;
-            //第三か
+        //第三か
         public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
         {
             RoleId MyRole;

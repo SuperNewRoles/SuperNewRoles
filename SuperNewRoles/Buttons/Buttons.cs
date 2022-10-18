@@ -784,7 +784,7 @@ namespace SuperNewRoles.Buttons
                     {
                         if (RoleClass.Jackal.CanCreateFriend)
                         {
-                            Jackal.CreateJackalFriends (target); //クルーにして フレンズにする
+                            Jackal.CreateJackalFriends(target); //クルーにして フレンズにする
                         }
                         else
                         {
@@ -2676,7 +2676,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     if (RoleClass.IsMeeting) return;
-                    Roles.CrewMate.Psychometrist.ClickButton();
+                    Roles.Crewmate.Psychometrist.ClickButton();
                 }
             )
             {
@@ -2723,7 +2723,7 @@ namespace SuperNewRoles.Buttons
             PainterButton = new(
                 () =>
                 {
-                    Roles.CrewMate.Painter.SetTarget(SetTarget());
+                    Roles.Crewmate.Painter.SetTarget(SetTarget());
                     PainterButton.Timer = PainterButton.MaxTimer;
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Painter && RoleClass.Painter.CurrentTarget == null; },

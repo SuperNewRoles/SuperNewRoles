@@ -62,7 +62,7 @@ namespace SuperNewRoles.Roles.Impostor
             if (!ModHelpers.IsSucsessChance(ShiftActorRightChance.GetSelection() + 1))
             { // 確率を判定し、失敗なら「クルーメイト」のみ表示。
                 Logger.Info("失敗", "ShiftActor");
-                TargetRoleText = ModTranslation.GetString("CrewMateName");
+                TargetRoleText = ModTranslation.GetString("CrewmateName");
             }
             else
             {
@@ -74,12 +74,12 @@ namespace SuperNewRoles.Roles.Impostor
                     }
                     else
                     {
-                        TargetRoleText = ModTranslation.GetString("CrewMateName");
+                        TargetRoleText = ModTranslation.GetString("CrewmateName");
                     }
                 }
                 else if (target.IsRole(RoleId.Marine))
                 { // マーリンはクルーに
-                    TargetRoleText = ModTranslation.GetString("CrewMateName");
+                    TargetRoleText = ModTranslation.GetString("CrewmateName");
                 }
                 else
                 { // それ以外はGetRoleして各役職を表示

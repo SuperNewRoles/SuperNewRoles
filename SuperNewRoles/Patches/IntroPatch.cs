@@ -337,7 +337,7 @@ namespace SuperNewRoles.Patches
         {
             public static void Postfix()
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.SeeThroughPerson)) Roles.CrewMate.SeeThroughPerson.AwakePatch();
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.SeeThroughPerson)) Roles.Crewmate.SeeThroughPerson.AwakePatch();
             }
         }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]

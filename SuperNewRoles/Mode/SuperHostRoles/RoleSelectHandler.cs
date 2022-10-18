@@ -263,14 +263,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void CrewOrImpostorSet()
         {
-            AllRoleSetClass.CrewMatePlayers = new();
+            AllRoleSetClass.CrewmatePlayers = new();
             AllRoleSetClass.ImpostorPlayers = new();
             foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
                 if (Player.IsPlayer())
                 {
                     if (Player.IsImpostor()) AllRoleSetClass.ImpostorPlayers.Add(Player);
-                    else AllRoleSetClass.CrewMatePlayers.Add(Player);
+                    else AllRoleSetClass.CrewmatePlayers.Add(Player);
                 }
             }
         }
@@ -330,8 +330,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
 
             var Assassinselection = CustomOptions.AssassinAndMarineOption.GetSelection();
-            SuperNewRolesPlugin.Logger.LogInfo("[SHR] アサイン情報:" + Assassinselection + "、" + AllRoleSetClass.CrewMatePlayerNum + "、" + AllRoleSetClass.CrewMatePlayers.Count);
-            if (Assassinselection != 0 && AllRoleSetClass.CrewMatePlayerNum > 0 && AllRoleSetClass.CrewMatePlayers.Count > 0)
+            SuperNewRolesPlugin.Logger.LogInfo("[SHR] アサイン情報:" + Assassinselection + "、" + AllRoleSetClass.CrewmatePlayerNum + "、" + AllRoleSetClass.CrewmatePlayers.Count);
+            if (Assassinselection != 0 && AllRoleSetClass.CrewmatePlayerNum > 0 && AllRoleSetClass.CrewmatePlayers.Count > 0)
             {
                 if (Assassinselection == 10)
                 {

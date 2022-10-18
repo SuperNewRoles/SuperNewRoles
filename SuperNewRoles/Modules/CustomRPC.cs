@@ -12,7 +12,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
-using SuperNewRoles.Roles.CrewMate;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 using static SuperNewRoles.Patches.FinalStatusPatch;
@@ -260,7 +260,7 @@ namespace SuperNewRoles.Modules
             if (showerid != CachedPlayer.LocalPlayer.PlayerId) return;
             PlayerControl target = ModHelpers.PlayerById(targetid);
             if (target == null) return;
-            PlayerControl.LocalPlayer.ProtectPlayer(target,0);
+            PlayerControl.LocalPlayer.ProtectPlayer(target, 0);
             PlayerControl.LocalPlayer.MurderPlayer(target);
         }
         public static void KnightProtectClear(byte Target)
@@ -289,7 +289,8 @@ namespace SuperNewRoles.Modules
             if (IsSelfDeath)
             {
                 source.MurderPlayer(source);
-            } else
+            }
+            else
             {
                 FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
                 SetRole(targetid, (byte)RoleId.Pavlovsdogs);
@@ -822,9 +823,9 @@ namespace SuperNewRoles.Modules
         {
             PlayerControl Knight = ModHelpers.PlayerById(KnightId);
             PlayerControl Target = ModHelpers.PlayerById(TargetId);
-            Roles.CrewMate.Knight.GuardedPlayers.Add(TargetId); // 守護をかけられたプレイヤーを保存。
+            Roles.Crewmate.Knight.GuardedPlayers.Add(TargetId); // 守護をかけられたプレイヤーを保存。
             SuperNewRolesPlugin.Logger.LogInfo($"[KnightProtected]{Knight.GetDefaultName()}が{Target.GetDefaultName()}に護衛を使用しました。");
-            if (Roles.CrewMate.Knight.KnightCanAnnounceOfProtected.GetBool()) ProctedMessager.ScheduleProctedMessage(ModTranslation.GetString("TheKnightProtected"));
+            if (Roles.Crewmate.Knight.KnightCanAnnounceOfProtected.GetBool()) ProctedMessager.ScheduleProctedMessage(ModTranslation.GetString("TheKnightProtected"));
         }
         public static void CustomRPCKill(byte notTargetId, byte targetId)
         {

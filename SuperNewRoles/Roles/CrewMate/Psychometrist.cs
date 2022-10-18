@@ -10,7 +10,7 @@ using SuperNewRoles.Patches;
 using TMPro;
 using UnityEngine;
 
-namespace SuperNewRoles.Roles.CrewMate
+namespace SuperNewRoles.Roles.Crewmate
 {
     public static class Psychometrist
     {

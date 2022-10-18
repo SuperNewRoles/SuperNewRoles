@@ -135,7 +135,7 @@ namespace SuperNewRoles.Patches
                     SetNameUpdate.Postfix(__instance);
                     Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
-                    Roles.CrewMate.Psychometrist.FixedUpdate();
+                    Roles.Crewmate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
                     Roles.Neutral.PartTimer.FixedUpdate();
                     ReduceKillCooldown(__instance);
@@ -203,10 +203,10 @@ namespace SuperNewRoles.Patches
                                 Doctor.FixedUpdate();
                                 break;
                             case RoleId.Psychometrist:
-                                Roles.CrewMate.Psychometrist.PsychometristFixedUpdate();
+                                Roles.Crewmate.Psychometrist.PsychometristFixedUpdate();
                                 break;
                             case RoleId.SeeThroughPerson:
-                                Roles.CrewMate.SeeThroughPerson.FixedUpdate();
+                                Roles.Crewmate.SeeThroughPerson.FixedUpdate();
                                 break;
                             case RoleId.Hitman:
                                 Roles.Neutral.Hitman.FixedUpdate();

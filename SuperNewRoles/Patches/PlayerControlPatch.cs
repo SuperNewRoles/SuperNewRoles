@@ -822,7 +822,7 @@ namespace SuperNewRoles.Patches
         public static bool resetToDead = false;
         public static bool Prefix(PlayerControl __instance, PlayerControl target)
         {
-            if (Roles.CrewMate.Knight.GuardedPlayers.Contains(target.PlayerId))
+            if (Roles.Crewmate.Knight.GuardedPlayers.Contains(target.PlayerId))
             {
                 var Writer = RPCHelper.StartRPC(CustomRPC.KnightProtectClear);
                 Writer.Write(target.PlayerId);
@@ -912,7 +912,7 @@ namespace SuperNewRoles.Patches
 
             SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
-            Roles.CrewMate.KnightProtected_Patch.MurderPlayerPatch.Postfix(target);
+            Roles.Crewmate.KnightProtected_Patch.MurderPlayerPatch.Postfix(target);
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
@@ -950,7 +950,7 @@ namespace SuperNewRoles.Patches
                         HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
                     }
                 }
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.Death);
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.Death);
                 if (target.IsRole(RoleId.Assassin))
                 {
                     target.Revive();
@@ -970,7 +970,7 @@ namespace SuperNewRoles.Patches
                 }
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Psychometrist))
                 {
-                    Roles.CrewMate.Psychometrist.MurderPlayer(__instance, target);
+                    Roles.Crewmate.Psychometrist.MurderPlayer(__instance, target);
                 }
                 if (target.IsDead())
                 {
@@ -1030,7 +1030,7 @@ namespace SuperNewRoles.Patches
     {
         public static void Postfix(PlayerControl __instance, uint idx)
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.TaskComplete);
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.TaskComplete);
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Exiled))]

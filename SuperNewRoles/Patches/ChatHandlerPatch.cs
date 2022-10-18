@@ -44,7 +44,7 @@ namespace SuperNewRoles.Patches
     {
         static readonly string SNRCommander = $"<size=200%>{SuperNewRolesPlugin.ColorModName}</size>";
         public static string WelcomeToSuperNewRoles = $"<size=150%>Welcome To {SuperNewRolesPlugin.ColorModName}</size>";
-        
+
         public static bool Prefix(PlayerControl sourcePlayer, string chatText)
         {
             if (Mode.Werewolf.Main.IsChatBlock(sourcePlayer, chatText)) return false;
@@ -226,7 +226,7 @@ namespace SuperNewRoles.Patches
         {
             return type switch
             {
-                TeamRoleType.Crewmate => ModTranslation.GetString("CrewMateName"),
+                TeamRoleType.Crewmate => ModTranslation.GetString("CrewmateName"),
                 TeamRoleType.Impostor => ModTranslation.GetString("ImpostorName"),
                 TeamRoleType.Neutral => ModTranslation.GetString("NeutralName").Replace("陣営", ""),
                 _ => "",

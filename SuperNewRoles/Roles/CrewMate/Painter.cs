@@ -7,7 +7,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using UnityEngine;
 
-namespace SuperNewRoles.Roles.CrewMate
+namespace SuperNewRoles.Roles.Crewmate
 {
     public static class Painter
     {

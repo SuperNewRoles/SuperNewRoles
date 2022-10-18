@@ -301,7 +301,7 @@ namespace SuperNewRoles.Patches
                         case GameOverReason.HumansByTask:
                         case GameOverReason.HumansByVote:
                         case GameOverReason.HumansDisconnect:
-                            text = "CrewMateName";
+                            text = "CrewmateName";
                             RoleColor = Palette.White;
                             break;
                         case GameOverReason.ImpostorByKill:
@@ -1505,7 +1505,8 @@ namespace SuperNewRoles.Patches
                 PavlovsownerAlive = numPavlovsownerAlive;
                 PavlovsTeamAlive = numPavlovsTeamAlive;
                 HitmanAlive = numHitmanAlive;
-                if (!(IsGuardPavlovs = PavlovsDogAlive > 0)) {
+                if (!(IsGuardPavlovs = PavlovsDogAlive > 0))
+                {
                     foreach (PlayerControl p in RoleClass.Pavlovsowner.PavlovsownerPlayer)
                     {
                         if (p == null) continue;

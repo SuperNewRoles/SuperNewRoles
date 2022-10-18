@@ -99,7 +99,7 @@ SettingMaxImpoRole,Maximum Impostor Roles,インポスター役職人数,内鬼�
 SettingMiniImpoGhostRole,Minimum Impostor Ghost Roles,最小インポスター幽霊役職数,内鬼阵营最少死亡起效职业数
 SettingMaxImpoGhostRole,Maximum Impostor GhostRoles,インポスター幽霊役職人数,内鬼阵营最多死亡起效职业数
 SettingsHideSetting,Hide Setting,設定を隠す,隐藏房间设置
-SettingCrewMateTeamRolesName,Position setting of crewmate camp,クルーメイト陣営の役職設定,船员阵营职业设置
+SettingCrewmateTeamRolesName,Position setting of crewmate camp,クルーメイト陣営の役職設定,船员阵营职业设置
 SettingImpostorTeamRolesName,Impostor camp position setting,インポスター陣営の役職設定,内鬼阵营职业设置
 Setting,Setting up positions in the third camp,第三陣営の役職設定,独立阵营职业设置
 SettingAllOkRolesName,Setting up multiple positions,複数役職の設定,附加职业设置
@@ -124,8 +124,8 @@ CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピ�
 CustomProcessDown,Update Process Down,処理回数を減らす,更新进程已关闭
 CustomIsVersionErrorView,Show players Errors.,エラーを表示する,显示错误
 CustomHideTaskArrows,Hide Tasks Arrows,タスクの矢印を非表示にする,隐藏任务指向箭头
-SettingCrewmateRoles,CrewMate Setting,クルーメイトの人数設定,船员阵营职业设置
-SettingCrewmateGhostRoles,CrewMate GhostRole Setting,クルーメイトの幽霊役職の人数設定,船员阵营死后起效职业设置
+SettingCrewmateRoles,Crewmate Setting,クルーメイトの人数設定,船员阵营职业设置
+SettingCrewmateGhostRoles,Crewmate GhostRole Setting,クルーメイトの幽霊役職の人数設定,船员阵营死后起效职业设置
 SettingNeutralRoles,Neutral Setting,第三陣営の人数設定,独立阵营职业设置
 SettingNeutralGhostRoles,Neutral GhostRole Setting,第三陣営の幽霊役職の人数設定,独立阵营死后起效职业设置
 SettingImpostorRoles,Impostor Setting,インポスターの人数設定,内鬼阵营职业设置
@@ -291,9 +291,9 @@ CopsImpostorCome,Remaining until the Impostor arrives,インポスターが来�
 CopsSpawnLoading,Waiting for all players to spawn...\nLoading: {0} people remaining</color></size>,全プレイヤーのスポーンを待っています...\nロドー中:残り{0}人</color></size>,等待所有玩家进入行动阶段...\n载入中:还剩{0}人</color></size>
 CRHideNameSetting,Hide Name,名前を隠す,隐藏昵称
 IsOldMode,OldMode,オルドモード,怀旧模式
-CrewMateName,Crewmate,クルーメイト,船员
-CrewMateTitle1,Use Task,タスクを行う,找出内鬼
-CrewMateDescription,Default Crewmate.,通常のクルーメイトです。,普通船员。
+CrewmateName,Crewmate,クルーメイト,船员
+CrewmateTitle1,Use Task,タスクを行う,找出内鬼
+CrewmateDescription,Default Crewmate.,通常のクルーメイトです。,普通船员。
 ImpostorName,Impostor,インポスター,内鬼
 ImpostorTitle1,Use Sabotage & Vent,サボタージュ＆ベントを行う,破坏并杀死所有人
 ImpostorDescription,Default Impostor.,通常のインポスターです。,普通内鬼。
@@ -491,7 +491,7 @@ QuarreledName,Quarreled,クラード,福音天使
 QuarreledIntro,{0} and it's Quarreled!,{0}とクラードになりました！,{0} 和你是福音天使
 QuarreledTeamCountSetting,Max Teams,チーム数,福音天使最多对数
 QuarreledParSetting,Only Crewmate Team,排出される確率,福音天使生成概率
-QuarreledOnlyCrewMateSetting,Discharge probability,クルーメイト陣営のみ,只有船员可以成为福音天使
+QuarreledOnlyCrewmateSetting,Discharge probability,クルーメイト陣営のみ,只有船员可以成为福音天使
 QuarreledWinText,Quarreled{0}Win,クラード{0}勝利,他们狂傲，我看见便将他们除掉
 OpportunistName,Opportunist,オポチュニスト,投机者
 OpportunistTitle1,We'll survive.,生き残ろう,活下去
@@ -593,7 +593,7 @@ LoversIntro,I'm in love with {0}!,{0}と恋に落ちてしまった！,你和{0}
 LoversDescription,Lovers is a duplicate position given in addition to other positions. Lovers person will see a heart mark next to their name.,恋人は他の役職に重複して与えられ、恋人同士は名前の後のハートマークで確認することが出来ます。,恋人为一个附加职业，由两名玩家组成。\n恋人可以在他们的名字旁边看到爱心。
 LoversTeamCountSetting,Number of couples,カップル数,恋人存在对数
 LoversParSetting,Discharge probability,排出確率,恋人出现概率
-LoversOnlyCrewMateSetting,Chosen only by Cluemate,クルーメイトのみに選ばれる,恋人两方只能是船员阵营
+LoversOnlyCrewmateSetting,Chosen only by Cluemate,クルーメイトのみに選ばれる,恋人两方只能是船员阵营
 LoversSingleTeamSetting,Single camp,単独陣営,恋人是否作为独立阵营
 LoversSameDieSetting,Two people die at the same time,2人同時に死ぬ,恋人共死
 LoversAliveTaskCountSetting,Tasks are counted when surviving,生存時、タスクがカウントされる,恋人存活时任务进度计入船员总任务进度
@@ -1004,7 +1004,7 @@ ConnectKillerTitle1,Lets’ Connect!,通信サボタージュでベントを繋�
 NekoKabochaName,NekoKabocha,ネコカボチャ,复仇者
 NekoKabochaTitle1,Let me take you on the road.,道連れを起こそう,杀人偿命
 KillCoolDown,KillCoolDown,キルクールダウン,击杀冷却
-CanRevengeCrewMate,Can take crewmates on the road,クルーメイトを道連れ可,复仇者可以连带船员阵营玩家
+CanRevengeCrewmate,Can take crewmates on the road,クルーメイトを道連れ可,复仇者可以连带船员阵营玩家
 CanRevengeImpostor,Can take Impostor on the road,インポスターを道連れ可,复仇者可以连带内鬼阵营玩家
 CanRevengeNeutral,Can take a third camp,第三陣営を道連れ可,复仇者可以连带独立阵营玩家
 CanRevengeExiled,Can take a crewmate in exile,追放で道連れ可,复仇者被放逐时可以连带一名玩家

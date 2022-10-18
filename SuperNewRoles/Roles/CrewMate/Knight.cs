@@ -5,9 +5,9 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using System.Collections.Generic;
 using System.Linq;
 using static SuperNewRoles.Modules.CustomOptions;
-using static SuperNewRoles.Roles.CrewMate.Knight;
+using static SuperNewRoles.Roles.Crewmate.Knight;
 
-namespace SuperNewRoles.Roles.CrewMate
+namespace SuperNewRoles.Roles.Crewmate
 {
     public static class Knight
     {

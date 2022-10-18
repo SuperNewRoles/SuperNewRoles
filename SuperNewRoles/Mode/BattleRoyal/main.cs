@@ -112,7 +112,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             public static bool Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
             {
                 VentData[__instance.myPlayer.PlayerId] = null;
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.ExitVent);
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.ExitVent);
                 return true;
             }
         }
@@ -148,7 +148,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         return data;
                     }
                 }
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.InVent);
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.InVent);
                 VentData[__instance.myPlayer.PlayerId] = id;
                 return true;
             }
