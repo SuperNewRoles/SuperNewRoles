@@ -60,7 +60,7 @@ class ReturnClass:
     # 選択から色を返す
 
     def GetRoleColor(self):
-        if (MainClass.GetInput("ColorHash") != "ImposterRed"):
+        if (MainClass.GetInput("ColorHash") != "ImpostorRed"):
             Template = "new Color32(RGBCOLOR, byte.MaxValue)".replace(
                 "RGBCOLOR", str(MainClass.HashToRGB()))
             print("ハッシュを取得しました:", Template)
@@ -462,7 +462,7 @@ MainTab = psg.Tab("メイン", [
     [psg.Text("役職カラー:", key="ColorText"), psg.Radio("インポ色", "RoleColor", key="ImpoColor", default=True), psg.Radio(
         "ナイス緑色", "RoleColor", key="CrewColor"),  psg.ColorChooserButton("色選択", key="ColorButton", target="ColorHash")],
     [psg.Text("取得ハッシュ:", key="ColorHashText"),
-     psg.Input("ImposterRed", key="ColorHash")],
+     psg.Input("ImpostorRed", key="ColorHash")],
     [psg.Text()],
     [psg.Check("設定を追加する", key="AddSetting")],
     [psg.Text(), psg.Text("タブ:", key="SettingTabText"), psg.Radio("インポスター", group_id="OptionTab", key="TeamImpo"),
@@ -523,4 +523,3 @@ while True:
         MainClass.UpdateGUI("OptionNumberIDText", False)
         MainClass.UpdateGUI("OptionNumber", False)'''
 MainWindow.close()
-

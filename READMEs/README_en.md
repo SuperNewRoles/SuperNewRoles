@@ -241,7 +241,7 @@ Whether or not Nekomata are chained together can be changed by the Nice Nekomata
 ### Game Settings 
 | Name                                 |                                Description                                 |
 | ------------------------------------ | :------------------------------------------------------------------------: |
-| Not taking the Imposter off the road | Excludes the Impostor from being taken as a companion when he/she is hung. |
+| Not taking the Impostor off the road | Excludes the Impostor from being taken as a companion when he/she is hung. |
 ----------------------- 
 ## CountChanger
 ### Team Impostor
@@ -851,7 +851,7 @@ Note: The behavior of the settings for creating [Jackal Friends](#JackalFriends)
 
 - SHR:
   - It can be made with a first hand kill.
-  - When the imposter is targeted,<br>
+  - When the impostor is targeted,<br>
   the protective effect is triggered and the kill can be triggered thereafter At first glance,<br>
   it looks as if you have been able to make [Jackal Friends](#JackalFriends), but it is not.<br>
   [Jackal Friends](#JackalFriends) has not been converted.
@@ -1489,7 +1489,7 @@ SuperHostRoles support
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
 | Use Vent                                                       |                             You will be able to put in a vent.                              |
 | Impostor Light                                                 |            You can set whether the view will be the same as the Impostor's view.            |
-| Not taking the Imposter off the road                           |         Excludes the Impostor from being taken as a companion when he/she is hung.          |
+| Not taking the Impostor off the road                           |         Excludes the Impostor from being taken as a companion when he/she is hung.          |
 ----------------------- 
 ## ToiletFan
 ### Team Crew

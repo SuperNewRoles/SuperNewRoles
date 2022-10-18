@@ -100,7 +100,7 @@ SettingMiniImpoGhostRole,Minimum Impostor Ghost Roles,最小インポスター�
 SettingMaxImpoGhostRole,Maximum Impostor GhostRoles,インポスター幽霊役職人数,内鬼阵营最多死亡起效职业数
 SettingsHideSetting,Hide Setting,設定を隠す,隐藏房间设置
 SettingCrewMateTeamRolesName,Position setting of crewmate camp,クルーメイト陣営の役職設定,船员阵营职业设置
-SettingImpostorTeamRolesName,Imposter camp position setting,インポスター陣営の役職設定,内鬼阵营职业设置
+SettingImpostorTeamRolesName,Impostor camp position setting,インポスター陣営の役職設定,内鬼阵营职业设置
 Setting,Setting up positions in the third camp,第三陣営の役職設定,独立阵营职业设置
 SettingAllOkRolesName,Setting up multiple positions,複数役職の設定,附加职业设置
 Settingsonota,Other settings,その他の設定,其他设置
@@ -287,7 +287,7 @@ PlayerCountMessage,Players,人,名
 DebugModeOnText,DebugMode:ON,デバッグモードが有効です,启用调试模式
 BattleRoyalRemaining,Remaining until kills can be made,キルができるようになるまで残り,允许击杀时的剩余人数
 Player,Player,プレイヤー,玩家
-CopsImpostorCome,Remaining until the Imposter arrives,インポスターが来るまで残り,内鬼出现时的剩余人数
+CopsImpostorCome,Remaining until the Impostor arrives,インポスターが来るまで残り,内鬼出现时的剩余人数
 CopsSpawnLoading,Waiting for all players to spawn...\nLoading: {0} people remaining</color></size>,全プレイヤーのスポーンを待っています...\nロドー中:残り{0}人</color></size>,等待所有玩家进入行动阶段...\n载入中:还剩{0}人</color></size>
 CRHideNameSetting,Hide Name,名前を隠す,隐藏昵称
 IsOldMode,OldMode,オルドモード,怀旧模式
@@ -333,7 +333,7 @@ EvilScientistDurationSetting,Evil Scientist's Invisibility Duration,イビルサ
 SheriffName,Sheriff,シェリフ,警长
 SheriffTitle1,Kill the outsider!,人外をキルしよう,击杀敌人
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう,杀死敌人带领船员获得胜利
-SheriffDescription,Can shoot and kill an imposter if he is a crewmate. he will self-destruct.,インポスター陣営(設定により第三陣営など)をキルすることが出来、クルーだった場合、自爆します,警长可以击杀内鬼。\n但若警长尝试击杀船员，警长将以死谢罪。
+SheriffDescription,Can shoot and kill an impostor if he is a crewmate. he will self-destruct.,インポスター陣営(設定により第三陣営など)をキルすることが出来、クルーだった場合、自爆します,警长可以击杀内鬼。\n但若警长尝试击杀船员，警长将以死谢罪。
 SheriffCoolDownSetting,Kill Cooldown,キルクールタイム,击杀冷却
 SheriffIsKillNewtralSetting,Can Kill a Neutral,第三陣営をキルできる,可以击杀独立阵营玩家
 SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる,可以击杀恋人
@@ -355,7 +355,7 @@ MeetingSheriffNo,No,できない,否
 MeetingSheriffMaxKillCountSetting,Maximum number of Meeting Sheriff kills,ミーティングシェリフの最大キル数,执法官最大可击杀次数
 MeetingSheriffMeetingmultipleKillSetting,Can you get multiple kills in one meeting?,一会議中に複数キルできるか,执法官可以在一次会议中多次击杀
 JackalName,Jackal,ジャッカル,豺狼
-JackalTitle1,Try to kill Imposters and Crew Mates,インポスターとクルーメイトをキルしよう,杀死所有船员和内鬼
+JackalTitle1,Try to kill Impostors and Crew Mates,インポスターとクルーメイトをキルしよう,杀死所有船员和内鬼
 JackalTitle2,Kill the other team to win!,他陣営をキルして勝利しよう,把其他人全部杀死获得胜利
 JackalTitle3,Let's just kill them all.,全員ぶち殺そう,杀死所有人
 JackalCoolDownSetting,Jackal's kill cool time,ジャッカルのキルクールタイム,豺狼击杀冷却
@@ -390,7 +390,7 @@ SpeedBoosterPlusSpeedSetting,Double your speed,スピードの倍速,正义的�
 SpeedBoosterBoostButtonName,Speed\nBoost,スピード\nブースト,加速
 EvilSpeedBoosterName,Evil Speed Booster,イビルスピードブースター,邪恶的飞毛腿
 EvilSpeedBoosterTitle1,Make your speed faster!,スピードを速くしよう,飞一样的感觉！
-EvilSpeedBoosterTitle2,Use your super speed to lead your Imposter to victory!,スーパースピードでインポスターを勝利に導こう,利用自己飞快的速度带领内鬼走向胜利
+EvilSpeedBoosterTitle2,Use your super speed to lead your Impostor to victory!,スーパースピードでインポスターを勝利に導こう,利用自己飞快的速度带领内鬼走向胜利
 EvilSpeedBoosterTitle3,Get a kill with super speed!,スーパースピードでキルをしよう,击杀并迅速的离开案发现场
 EvilSpeedBoosterTitle4,Let's run around and kill everyone.,走りまくって皆を瞬殺しよう,利用自己飞快的速度击杀船员
 EvilSpeedBoosterCoolDownSetting,Speed Up Cooldown,スピードアップクールダウン,邪恶的飞毛腿技能冷却
@@ -399,14 +399,14 @@ EvilSpeedBoosterPlusSpeedSetting,Double Speed,スピードの倍速,邪恶的飞
 EvilSpeedBoosterIsNotSpeedBooster,If this position is selected the speed booster will not be selected.,この役職が選ばれるとスピードブースターが選ばれない,一局游戏中这个职业出场则正义的飞毛腿不会出场
 EvilSpeedBoosterBoostButtonName,Speed\nBoost,スピード\nブースト,加速
 TaskerName,Tasker,タスカー,任务大师
-TaskerTitle1,Finish the task and win the Imposter!,タスクを終わらせてインポスターを勝利させよう,完成任务以从内鬼手中夺回胜利
+TaskerTitle1,Finish the task and win the Impostor!,タスクを終わらせてインポスターを勝利させよう,完成任务以从内鬼手中夺回胜利
 TaskerTitle2,Try to finish the task!,タスクを頑張って終わらせよう,大师，任务还没完成，还不能休息哦
 TaskerIsKillCoolTaskNow,Kill cool time is saved during the task.,タスク中にキルクールタイムが貯まる
 TaskerCanKill,Killable,キルできる,任务大师可击杀
 TaskerWinText,Impostor Task,インポスタータスク
 DoorrName,Doorr,ドアー,门卫
 DoorrTitle1,Let's open and close the door.,ドアを開け閉めしよう,控制飞船上门的开关
-DoorrTitle2,Close the door to block the imposter!,ドアを閉めてインポスターを妨害しよう,关上门来拦截内鬼
+DoorrTitle2,Close the door to block the impostor!,ドアを閉めてインポスターを妨害しよう,关上门来拦截内鬼
 DoorrCoolTimeSetting,Door Cool Time,ドアクールタイム,门卫技能冷却
 DoorrButtonText,Door Open Or Close,ドアを開け閉めする,开/关门
 EvilDoorrName,Evil Doorr,イビルドアー,守门人
@@ -440,7 +440,7 @@ NiceGuesserTitle2,Guess the position of the outsider,人外の役職を当てよ
 GuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,正义的赌怪能否在一次会议中多次猜测
 GuesserShortMaxCountSetting,Number of times you can hit,打てる回数,正义的赌怪最大可猜测次数
 EvilGuesserName,Evil Guesser,イビルゲッサー,邪恶的赌怪
-EvilGuesserTitle1,Guess the position of the camp other than Imposter.,インポスター以外の陣営の役職を当てよう,刺杀其他玩家
+EvilGuesserTitle1,Guess the position of the camp other than Impostor.,インポスター以外の陣営の役職を当てよう,刺杀其他玩家
 EvilGuesserTitle2,Guess the position of the outsider,人外の役職を当てよう,在会议上猜测他人的身份
 EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,邪恶的赌怪能否在一次会议中多次猜测
 EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,邪恶的赌怪最大可猜测次数
@@ -464,9 +464,9 @@ ClergymanDownVisionSetting,Impostor Down Vision.,実行時の視界,牧师技能
 ClergymanLightOutButtonName,Light Down,ライトダウン,咏唱
 ClergymanLightOutMessage,The Clergyman is blocking my view!,聖職者が視界を妨害しています！,牧师正在破坏你的视野
 MadMateName,Mad Mate,マッドメイト,叛徒
-MadMateTitle1,Let's help the Imposter.,インポスターを助けよう,帮助内鬼获得胜利
-MadMateDescription,The decision is in the Crewmate camp but he is a companion of the Imposter.\nIf the Imposter wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。
-MadMateIsCheckImpostorSetting,You can check the Imposter.,インポスターが確認できる,叛徒可以得知内鬼是谁
+MadMateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助内鬼获得胜利
+MadMateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。
+MadMateIsCheckImpostorSetting,You can check the Impostor.,インポスターが確認できる,叛徒可以得知内鬼是谁
 MadMateCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量(全タスク内),确认身份需要完成的任务量
 MadMateUseVentSetting,Use Vent,ベントに入れる,可以进入管道
 MadMateVentMoveSetting,Move Vent,ベントで動ける,叛徒可以使用管道
@@ -483,7 +483,7 @@ StuntManTitle1,Guard Impostor Kill,インポスターのキルを防ごう,躲�
 StuntManDescription,It can prevent a set number of kills unconditionally.\nIf a kill is prevented a text will appear in the meeting stating that you were protected by a guardian angel.,無条件で設定回数だけキルを防げます。\nキルを防いだ場合、会議に守護天使に守られたというのテキストが表示されます。,杂技演员可以防止若干次对自己的击杀，但是不会收到提醒。\n如果一次行动阶段中杂技演员用这种方式防止了击杀，\n那轮会议阶段开始时杂技演员将收到自己被守护天使保护了的信息。
 StuntManGuardMaxCountSetting,Guard Max Count,ガードできる回数,杂技演员可以躲避击杀的次数
 MovingName,Moving,ムービング,正义的魔术师
-MovingTitle1,Let's run away from the Imposter.,インポスターから逃げよう,利用传送避免被内鬼杀害
+MovingTitle1,Let's run away from the Impostor.,インポスターから逃げよう,利用传送避免被内鬼杀害
 MovingCoolDownSetting,Teleportation Cool Time,テレポートクールタイム,正义的魔术师技能冷却
 MovingButtonSetName,Location Set,場所セット,标记
 MovingButtonTpName,Teleport,テレポート,瞬移
@@ -568,10 +568,10 @@ HawkDurationTimeSetting,Duration,継続時間,千里眼持续时间
 HawkButtonName,Hawk Eye,ホークアイ,千里眼
 EgoistName,Egotist,エゴイスト,野心家
 EgoistTitle1,We can survive this.,生き残ろう,忍时待机
-EgoistDescription,Imposter judgment.\nThe imposter appears to be a peer.\nIf all the Imposters are dead\nand the Imposter's victory condition is achieved (except Sabotage) the Egoist wins.,インポスター判定です。\nインポスターからは仲間に見えます。\nインポスターがすべて死んでいる状態で、\nインポスターの勝利条件を達成する(サボタージュ以外)とエゴイストの勝利です。,野心家规则上属于内鬼阵营。\n野心家与内鬼阵营玩家互认。\n其他内鬼阵营玩家全部死亡后，若内鬼阵营不通过紧急破坏获得胜利，\n并且野心家存活，则野心家单独获胜。
+EgoistDescription,Impostor judgment.\nThe impostor appears to be a peer.\nIf all the Impostors are dead\nand the Impostor's victory condition is achieved (except Sabotage) the Egoist wins.,インポスター判定です。\nインポスターからは仲間に見えます。\nインポスターがすべて死んでいる状態で、\nインポスターの勝利条件を達成する(サボタージュ以外)とエゴイストの勝利です。,野心家规则上属于内鬼阵营。\n野心家与内鬼阵营玩家互认。\n其他内鬼阵营玩家全部死亡后，若内鬼阵营不通过紧急破坏获得胜利，\n并且野心家存活，则野心家单独获胜。
 EgoistUseVentSetting,I can use Vent.,ベントを使える,野心家可以使用管道
 EgoistUseSaboSetting,Can use Sabotage,サボタージュが使える,野心家可以进行破坏
-EgoistImpostorLightSetting,Imposter's Vision,インポスターの視界,野心家拥有内鬼视野
+EgoistImpostorLightSetting,Impostor's Vision,インポスターの視界,野心家拥有内鬼视野
 EgoistUseKillSetting,Can use Kill,キルできる,野心家可以进行击杀
 NiceRedRidingHoodName,NiceRedRidingHood,ナイス赤ずきん,小红帽
 NiceRedRidingHoodTitle1,Come back to life,生き返ろう,杀死你的凶手死亡后你将会复活
@@ -642,13 +642,13 @@ MadKillerName,MadKiller,マッドキラー,喽啰
 MadKillerTitle1,Let's promote and kill!,昇格してキルをしよう,帮助头目完成杀戮，等待晋升机会
 SurvivorName,Survivor,サバイバー,苟活者
 SurvivorTitle1,Survive and Kill!,生き残りながらキルをしよう,这是为了活下来的，我的挣扎！
-SurvivorDescription,If you do not survive you will not win even if the imposter wins.,生き残っていないとインポスターが勝利しても勝利できません。,苟活者属于内鬼阵营。\n苟活者击杀冷却有所减少。\n苟活者在游戏结束时不存活则不能获胜。
+SurvivorDescription,If you do not survive you will not win even if the impostor wins.,生き残っていないとインポスターが勝利しても勝利できません。,苟活者属于内鬼阵营。\n苟活者击杀冷却有所减少。\n苟活者在游戏结束时不存活则不能获胜。
 SurvivorKillCoolTimeSetting,Kill Cool Time,キルクールタイム,苟活者击杀冷却
 MadMayorName,MadMayor,マッドメイヤー,背叛的市长
 MadMayorTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう,在会议上滥用票权
 MadMayorVoteCountSetting,MadMayer's vote count,マッドメイヤーの票数,背叛的市长投票的等价票数
-MadMayorDescription,The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmayor can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。インポスターが勝利すると、マッドメイヤーも勝利できます。,背叛的市长属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则背叛的市长一同获胜。
-MadMayorIsCheckImpostorSetting,You can check the Imposter.,インポスターが確認できる,背叛的市长可以确认内鬼阵营玩家
+MadMayorDescription,The decision is in the Crewmate camp but he is a companion of the Impostor. If the Impostor wins the Madmayor can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。インポスターが勝利すると、マッドメイヤーも勝利できます。,背叛的市长属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则背叛的市长一同获胜。
+MadMayorIsCheckImpostorSetting,You can check the Impostor.,インポスターが確認できる,背叛的市长可以确认内鬼阵营玩家
 MadMayorUseVentSetting,Use Vent,ベントを使える,背叛的市长可以进入管道
 MadMayorVentMoveSetting,Move Vent,ベントで動ける,背叛的市长可以使用管道
 MadMayorImpostorLightSetting,Impostor Light,インポスターの視界,背叛的市长拥有内鬼视野
@@ -668,8 +668,8 @@ MadStuntManImpostorLightSetting,Impostor Light,インポスターの視界,内�
 MadHawkName,MadHawk,マッドホーク,背叛的鹰眼
 MadHawkTitle1,See it all.,すべてを見渡そう,将一切尽收眼底
 MadJesterName,MadJester,マッドてるてる,傀儡小丑
-MadJesterTitle1,Get voted out and win with the Imposters!,投票で追放されてインポスターと勝利しよう,投票被放逐，与内鬼一同获胜
-MadJesterDescription,It is a crewmate decision. but it is in the Imposter camp. \nThe imposter wins by being expelled at the meeting.,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。,傀儡小丑规则上属于船员阵营，但是其为内鬼的同伙。\n傀儡小丑在会议中被放逐则内鬼阵营获胜。
+MadJesterTitle1,Get voted out and win with the Impostors!,投票で追放されてインポスターと勝利しよう,投票被放逐，与内鬼一同获胜
+MadJesterDescription,It is a crewmate decision. but it is in the Impostor camp. \nThe impostor wins by being expelled at the meeting.,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。,傀儡小丑规则上属于船员阵营，但是其为内鬼的同伙。\n傀儡小丑在会议中被放逐则内鬼阵营获胜。
 FalseChargesName,FalseCharges,冤罪師,冤罪师
 FalseChargesTitle1,Let the false accusations win!,冤罪をさせて勝利しよう,栽赃他人获取胜利
 FalseChargesDescription,You can make the opponent who presses the button kill you. \nYou will win if the opponent you have killed is expelled by the conference.,ボタンを押した相手に自分をキルさせることができます。\nキルさせた相手が会議で追放されたら勝利できます、,冤罪师属于独立阵营。\n冤罪师的技能为可以让附近的其他玩家击杀自己。\n这个技能发动后的指定轮数之内，若击杀冤罪师的凶手被放逐，则冤罪师独自获胜。
@@ -717,7 +717,7 @@ TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポ
 MadMakerName,MadMaker,マッドメーカー,走狗
 MadMakerTitle1,Let's get more lunatics!,狂人を増やそう！,让更多的人背叛
 DemonName,Demon,悪魔,恶魔
-DemonTitle1,Curse the Crew and Help the Imposter!,クルーを呪いながらインポスターを手助けせよ,诅咒船员并协助内鬼
+DemonTitle1,Curse the Crew and Help the Impostor!,クルーを呪いながらインポスターを手助けせよ,诅咒船员并协助内鬼
 DemonIsAliveWinSetting,You have to be alive to win.,生存していないと勝利できない,恶魔存活才能获胜
 DemonButtonName,Curse,呪う,诅咒
 TaskManagerName,TaskManager,タスクマネージャー,代理人
@@ -788,11 +788,11 @@ BlackCatName,Black Cat,黒猫,背叛的猎人
 BlackCatTitle1,Give your life for your master.,主人のために命を捧げよ,为内鬼献出生命
 MafiaName,Mafia,マフィア,黑手党
 MafiaTitle1,Let's avenge our fellow impostor,仲間の敵討ちをしよう,为同伴报仇
-MafiaDescription,When all the imposters except Mafia are dead the kill will be possible.\nThe kill cool time will continue to advance while no kills are made.,マフィア以外のインポスターが全員死亡するとキルできるようになります。\nキルが出来ない間もキルクールタイムは進みます。,黑手党属于内鬼阵营。\n除黑手党以外的内鬼阵营玩家全部死亡后，黑手党才能进行击杀。\n无法击杀时，击杀冷却也会照常减少
+MafiaDescription,When all the impostors except Mafia are dead the kill will be possible.\nThe kill cool time will continue to advance while no kills are made.,マフィア以外のインポスターが全員死亡するとキルできるようになります。\nキルが出来ない間もキルクールタイムは進みます。,黑手党属于内鬼阵营。\n除黑手党以外的内鬼阵营玩家全部死亡后，黑手党才能进行击杀。\n无法击杀时，击杀冷却也会照常减少
 RecordsAdminDestroySetting,Cannot Use Archive Admin,アーカイブのアドミンを使用不可にする,无法使用管理室地图
 SpyName,Spy,スパイ,卧底
-SpyTitle1,Deceive the Imposter and lead the Cluemate camp to victory!,インポスターを欺き、クルーメイト陣営を勝利に導こう,欺骗并找出内鬼，帮助船员取得胜利
-SpyDescription,Spies are crewmates but they look like friends to the Imposter.\n Spies are crewmates and have no special abilities.,スパイはクルーメイトですが、インポスターからは仲間に見えます。\nスパイはクルーメイトであり、特別な能力はありません。,卧底属于船员阵营。\n在内鬼看来卧底属于内鬼阵营。\n卧底没有其他特殊能力。
+SpyTitle1,Deceive the Impostor and lead the Cluemate camp to victory!,インポスターを欺き、クルーメイト陣営を勝利に導こう,欺骗并找出内鬼，帮助船员取得胜利
+SpyDescription,Spies are crewmates but they look like friends to the Impostor.\n Spies are crewmates and have no special abilities.,スパイはクルーメイトですが、インポスターからは仲間に見えます。\nスパイはクルーメイトであり、特別な能力はありません。,卧底属于船员阵营。\n在内鬼看来卧底属于内鬼阵营。\n卧底没有其他特殊能力。
 SpecimenVitalSetting,Move Vital to specimen (polus),標本室にバイタルを移動する(ポーラス),波鲁斯(Polus)：将生命监测仪移动至样本室
 CustomDownloadSuperNewNamePlates,Download custom hat,カスタムハットをダウンロードする,下载自定义帽子
 KunoichiName,Kunoichi,クノイチ,女忍
@@ -831,7 +831,7 @@ ToiletFanTitle1,A little faster...,少しでも早く...,要……要喷射了�
 ToiletCoolDownSetting,Toilet Cool Time,トイレクールタイム,开门
 ToiletName,DoorOpen,ドア開放,波鲁斯：使用随机出生地点
 PolusrandomSpawn,RandomSpawn,ランダムスポーン,未连带内鬼死亡
-NotImpostorExiled,Not taking the Imposter off the road,インポスターを道連れにしない,投出的不是内鬼
+NotImpostorExiled,Not taking the Impostor off the road,インポスターを道連れにしない,投出的不是内鬼
 NiceButtonerName,NiceButtoner,ナイスボタナー,正义的执钮人
 NiceButtonerTitle1,Let&apos;s a start meeting.,会議を開始しよう,召开会议
 EvilButtonerName,EvilButtoner,イビルボタナー,邪恶的执钮人
@@ -983,8 +983,8 @@ PavlovsdogsTitle1,Let us be of service.,お役に立ってみせましょう,我
 PavlovsownerTitle1,Be my dog!,私の犬になりなさい！,狗中毒.mp3
 PavlovsownerCreateDogCoolTime,Side Kick Cool Time,サイドキックのクールタイム,巴甫洛夫养狗冷却
 PavlovsownerCreateDogLimit,Number of times a side kick can be made in one match,1試合内にサイドキックできる回数,巴甫洛夫每局游戏可以养狗的次数
-PavlovsownerIsTargetImpostorDeath,Self-destruct if the opponent is an Imposter,相手がインポスターだと自爆する,巴甫洛夫在尝试养内鬼当狗的场合自杀
-PavlovsdogIsImpostorView,Pavlov's dog has a view of the imposter,パブロフの犬がインポスターの視界,巴甫洛夫的狗拥有内鬼视野
+PavlovsownerIsTargetImpostorDeath,Self-destruct if the opponent is an Impostor,相手がインポスターだと自爆する,巴甫洛夫在尝试养内鬼当狗的场合自杀
+PavlovsdogIsImpostorView,Pavlov's dog has a view of the impostor,パブロフの犬がインポスターの視界,巴甫洛夫的狗拥有内鬼视野
 PavlovsdogRunAwayKillCoolTime,Coold time when out of control,暴走時のクールタイム,巴甫洛夫的狗发狂时的击杀冷却
 PavlovsdogRunAwayDeathTime,Self-destruct time when out of control,暴走時の自爆タイム,巴甫洛夫的狗发狂时的自杀时限
 PavlovsdogRunAwayDeathTimeIsMeetingReset,Reset self-destruct time in a meeting,会議で自爆タイムをリセットする,会议后重置巴甫洛夫的狗的自杀时限
@@ -1005,7 +1005,7 @@ NekoKabochaName,NekoKabocha,ネコカボチャ,复仇者
 NekoKabochaTitle1,Let me take you on the road.,道連れを起こそう,杀人偿命
 KillCoolDown,KillCoolDown,キルクールダウン,击杀冷却
 CanRevengeCrewMate,Can take crewmates on the road,クルーメイトを道連れ可,复仇者可以连带船员阵营玩家
-CanRevengeImpostor,Can take Imposter on the road,インポスターを道連れ可,复仇者可以连带内鬼阵营玩家
+CanRevengeImpostor,Can take Impostor on the road,インポスターを道連れ可,复仇者可以连带内鬼阵营玩家
 CanRevengeNeutral,Can take a third camp,第三陣営を道連れ可,复仇者可以连带独立阵营玩家
 CanRevengeExiled,Can take a crewmate in exile,追放で道連れ可,复仇者被放逐时可以连带一名玩家
 GMName,GM,GM,管理员
