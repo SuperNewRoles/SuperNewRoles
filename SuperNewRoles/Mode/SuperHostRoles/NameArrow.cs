@@ -4,6 +4,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     public static class NameArrow
     {
+        /// <summary>
+        /// start-targetが形成する角度(0°~360°)
+        /// *時計回りなので注意すること。
+        /// </summary>
         private static float GetAngle(Vector2 start, Vector2 target)
         {
             Vector2 dt = target - start;
@@ -20,9 +24,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
         public static string ArrowAngleString(Vector2 from, Vector2 to)
         {
-            var angle = GetAngle(from, to);
+            var angle = GetAngle(from, to); // 角度を出す
 
-            static bool floatRange(float f1, float f, float f2) => f1 < f && f < f2;
+            static bool floatRange(float f1, float f, float f2) => f1 < f && f < f2; // f1<f<f2
+            // 8方向で判定。
+            // 45°ずつ。
             if (floatRange(337.5f, angle, 360f) || floatRange(0f, angle, 22.5f)) return "↑";
             if (floatRange(22.5f, angle, 67.5f)) return "↗";
             if (floatRange(67.5f, angle, 112.5f)) return "→";
@@ -31,7 +37,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (floatRange(202.5f, angle, 247.5f)) return "↙";
             if (floatRange(247.5f, angle, 292.5f)) return "←";
             if (floatRange(292.5f, angle, 337.5f)) return "↖";
-            Logger.Info(angle.ToString(), "namearr");
+            Logger.Error($"無効な角度です{angle}", "namearrow");
             return "";
         }
     }
