@@ -154,6 +154,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             SkinButton_Skin.gameObject.SetActive(false);
             //PetButton_Pet.gameObject.SetActive(false);
             VisorButton_Visor.Visible = false;
+            PlayerCustomizationMenu.Instance.itemName.gameObject.SetActive(true);
             //NamePlateButton_NamePlate.gameObject.SetActive(false);
         }
         public static void ClosetShow()
@@ -161,6 +162,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ResetShow();
             PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/ColorTab/ColorButton/Tab Background").GetComponent<SpriteRenderer>().enabled = true;
             IsCloset = true;
+            PlayerCustomizationMenu.Instance.itemName.gameObject.SetActive(false);
             HatText.gameObject.SetActive(true);
             VisorText.gameObject.SetActive(true);
             SkinText.gameObject.SetActive(true);
