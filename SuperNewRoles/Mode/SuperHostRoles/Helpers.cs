@@ -1,5 +1,6 @@
 using Hazel;
 using InnerNet;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -59,8 +60,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (shower.IsMod())
             {// mod導入者ならCustomRpcSenderを使用しなくても正しくRpcを送れる。
                 Logger.Info($"Mod導入者{shower.name}({shower.GetRole()})=>{target.name}({target.GetRole()})", "RpcShowGuardEffect");
-                shower.ProtectPlayer(target, 0);
-                shower.RpcMurderPlayer(target);
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ShowGuardEffect);
+                writer.Write(shower.PlayerId);
+                writer.Write(target.PlayerId);
+                writer.EndRPC();
+                RPCProcedure.ShowGuardEffect(shower.PlayerId, target.PlayerId);
             }
             else
             {

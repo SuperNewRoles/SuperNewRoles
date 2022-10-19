@@ -4,6 +4,8 @@ using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptions;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Roles.RoleClass;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles.Impostor
 {
@@ -41,6 +43,26 @@ namespace SuperNewRoles.Roles.Impostor
             CanRevengeNeut = CanRevengeNeutral.GetBool();
             CanRevengeImp = CanRevengeImpostor.GetBool();
             CanRevengeExile = CanRevengeExiled.GetBool();
+        }
+
+        public static void OnWrapUp(PlayerControl exiled)
+        {
+            if (AmongUsClient.Instance.AmHost && CanRevengeExile && exiled.IsRole(RoleId.NekoKabocha))
+            {
+                List<PlayerControl> targets = new();
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    if (p.IsDead()) continue;
+                    if (p.PlayerId == exiled.PlayerId) continue;
+                    if (p.IsBot()) continue;
+                    targets.Add(p);
+                }
+                if (targets.Count <= 0) return;
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                    targets.GetRandom().RpcInnerExiled();
+                else
+                    targets.GetRandom().RpcExiledUnchecked();
+            }
         }
 
         public static void OnKill(PlayerControl killer)

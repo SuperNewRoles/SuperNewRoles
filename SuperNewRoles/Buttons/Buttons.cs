@@ -168,6 +168,7 @@ namespace SuperNewRoles.Buttons
                     writer.Write(IsSelfDeath);
                     writer.EndRPC();
                     RPCProcedure.PavlovsOwnerCreateDog(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId, IsSelfDeath);
+                    RoleClass.Pavlovsowner.CurrentChildPlayer = target;
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsowner && RoleClass.Pavlovsowner.CanCreateDog; },
                 () =>
@@ -783,7 +784,7 @@ namespace SuperNewRoles.Buttons
                     {
                         if (RoleClass.Jackal.CanCreateFriend)
                         {
-                            target.ResetAndSetRole(RoleId.JackalFriends); //クルーにして フレンズにする
+                            Jackal.CreateJackalFriends (target); //クルーにして フレンズにする
                         }
                         else
                         {
