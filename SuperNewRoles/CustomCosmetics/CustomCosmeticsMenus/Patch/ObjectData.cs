@@ -63,6 +63,11 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ResetShow();
             IsShow = true;
             PlayerCustomizationMenu.Instance.transform.FindChild(obj).gameObject.SetActive(true);
+            if (obj is "NameplateGroup")
+            {
+                UpdatePatch.area.gameObject.SetActive(true);
+                UpdatePatch.area.transform.localPosition = new(3.5f, 0, -70.71f);
+            }
         }
         public static void ColorShow()
         {
