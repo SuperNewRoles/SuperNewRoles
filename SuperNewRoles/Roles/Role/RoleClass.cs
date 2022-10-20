@@ -39,7 +39,7 @@ namespace SuperNewRoles.Roles
             //Map.Data.ClearAndReloads();
             ElectricPatch.Reset();
             SabotageManager.ClearAndReloads();
-            Madmate.CheckedImpostor = new();
+            Roles.Madmate.CheckedImpostor = new();
             Roles.MadMayor.CheckedImpostor = new();
             Roles.MadSeer.CheckedImpostor = new();
             Roles.JackalFriends.CheckedJackal = new();

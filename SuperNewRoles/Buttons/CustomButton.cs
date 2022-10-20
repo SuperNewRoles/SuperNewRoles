@@ -267,7 +267,7 @@ namespace SuperNewRoles.Buttons
                 OnEffectEnds();
             }
 
-            actionButton.SetCooldown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
+            actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
             // Trigger OnClickEvent if the hotkey is being pressed down
             if ((hotkey.HasValue && Input.GetButtonDown(hotkey.Value.ToString())) || ConsoleJoystick.player.GetButtonDown(joystickkey)) OnClickEvent();
         }
