@@ -318,7 +318,7 @@ namespace SuperNewRoles
         public static void LoversRandomSelect()
         {
             if (!CustomOptions.LoversOption.GetBool() || (CustomOptions.LoversPar.GetString() == "0%")) return;
-            if (!(CustomOptions.LoversPar.GetString() == "100%"))
+            if (CustomOptions.LoversPar.GetString() != "100%")
             {
                 List<string> a = new();
                 var SucPar = int.Parse(CustomOptions.LoversPar.GetString().Replace("0%", ""));

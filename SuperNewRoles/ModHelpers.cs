@@ -200,7 +200,8 @@ namespace SuperNewRoles
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, killer))
                 {
                     bool IsSend = false;
-                    if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
+                    if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId) ||
+                    RoleClass.StuntMan.GuardCount[target.PlayerId] > 0)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
                         writer.Write(target.PlayerId);
@@ -209,19 +210,6 @@ namespace SuperNewRoles
                         writer.EndRPC();
                         RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
                         IsSend = true;
-                    }
-                    else
-                    {
-                        if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
-                        {
-                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
-                            writer.Write(target.PlayerId);
-                            writer.Write(target.PlayerId);
-                            writer.Write(0);
-                            writer.EndRPC();
-                            RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
-                            IsSend = true;
-                        }
                     }
                     if (IsSend)
                     {
@@ -237,7 +225,8 @@ namespace SuperNewRoles
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, killer))
                 {
                     bool IsSend = false;
-                    if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
+                    if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId)||
+                    RoleClass.MadStuntMan.GuardCount[target.PlayerId] > 0)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
                         writer.Write(target.PlayerId);
@@ -247,20 +236,6 @@ namespace SuperNewRoles
                         RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
                         IsSend = true;
                     }
-                    else
-                    {
-                        if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
-                        {
-                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
-                            writer.Write(target.PlayerId);
-                            writer.Write(target.PlayerId);
-                            writer.Write(0);
-                            writer.EndRPC();
-                            RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
-                            IsSend = true;
-                        }
-                    }
-
                     if (IsSend)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UseStuntmanCount);
@@ -284,7 +259,8 @@ namespace SuperNewRoles
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, killer))
                 {
                     bool IsSend = false;
-                    if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId))
+                    if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId)||
+                    RoleClass.Fox.KillGuard[target.PlayerId] > 0)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
                         writer.Write(target.PlayerId);
@@ -293,19 +269,6 @@ namespace SuperNewRoles
                         writer.EndRPC();
                         RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
                         IsSend = true;
-                    }
-                    else
-                    {
-                        if (!(RoleClass.Fox.KillGuard[target.PlayerId] <= 0))
-                        {
-                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
-                            writer.Write(target.PlayerId);
-                            writer.Write(target.PlayerId);
-                            writer.Write(0);
-                            writer.EndRPC();
-                            RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
-                            IsSend = true;
-                        }
                     }
                     if (IsSend)
                     {
