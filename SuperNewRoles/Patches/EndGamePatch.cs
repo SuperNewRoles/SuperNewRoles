@@ -401,7 +401,7 @@ namespace SuperNewRoles.Patches
                 roleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
 
                 var roleSummaryText = new StringBuilder();
-                roleSummaryText.AppendLine(ModTranslation.GetString("最終結果"));
+                roleSummaryText.AppendLine(ModTranslation.GetString("FinalResults"));
 
                 foreach (var datas in AdditionalTempData.playerRoles)
                 {

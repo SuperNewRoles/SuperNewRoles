@@ -245,6 +245,7 @@ HASSeekName,Seek,鬼,抓捕者
 HASDeathTaskSetting,Hide Death Clear Task,死亡するとタスクが終わる,死亡后?藏尸体并清除任?
 HASUseSaboSetting,Use Sabotage,サボタージュが使える,抓捕者可以造成?急破坏
 HASUseVentSetting,Use Vent,ベントが使える,抓捕者可以使用管道
+FinalResults,Final results,最終結果
 FinalStatusAlive,Survival,生存,存活
 FinalStatusKill,Kill,キル,被?
 FinalStatusExiled,Exiled,追放,流放

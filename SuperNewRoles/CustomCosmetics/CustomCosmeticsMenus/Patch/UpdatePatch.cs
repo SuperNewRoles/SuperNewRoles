@@ -32,14 +32,12 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     __instance.cubesTab.gameObject.SetActive(true);
                     PlayerCustomizationMenu.Instance.transform.FindChild("Background/RightPanel/CubeView").transform.localPosition = new Vector3(2.75f, -0.27f, 0);
                 }
-                if (area.gameObject.active) area.PreviewNameplate(SaveManager.LastNamePlate);
 
                 var panel = __instance.transform.FindChild("Background/RightPanel");
 
                 panel.FindChild("Gradient").gameObject.SetActive(false);
 
                 panel.localPosition = new Vector3(0, 0, -4.29f);
-                area.transform.localPosition = new Vector3(3.5f, 1.75f, -70.71f);
                 var colortab = __instance.transform.FindChild("Header/Tabs/ColorTab");
                 var closettab = __instance.transform.FindChild("Header/Tabs/HatsTab");
 
@@ -49,7 +47,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     __instance.PreviewArea.transform.localPosition = new Vector3(0, -1f, -3);
                     //__instance.PreviewArea.transform.localScale = new Vector3(1, 1, 1);
                     area.gameObject.SetActive(true);
-                    __instance.itemName.gameObject.SetActive(false);
+                    if (area.gameObject.active) area.PreviewNameplate(SaveManager.LastNamePlate);
+                    area.transform.localPosition = new Vector3(3.5f, 1.75f, -70.71f);
                 }
                 else
                 {

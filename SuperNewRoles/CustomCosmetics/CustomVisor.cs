@@ -10,6 +10,7 @@ namespace SuperNewRoles.CustomCosmetics
     public class CustomVisor
     {
         public static bool isAdded = false;
+        static List<VisorData> VisorDatas = new();
         [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetVisorById))]
         class UnlockedVisorPatch
         {
@@ -18,7 +19,7 @@ namespace SuperNewRoles.CustomCosmetics
                 if (isAdded || !DownLoadClassVisor.IsEndDownload) return;
                 isAdded = true;
                 SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み処理開始");
-                var AllPlates = __instance.allNamePlates;
+                var AllVisors = __instance.allVisors.ToList();
 
                 var plateDir = new DirectoryInfo("SuperNewRoles\\CustomVisorsChache");
                 if (!plateDir.Exists) plateDir.Create();
@@ -44,7 +45,7 @@ namespace SuperNewRoles.CustomCosmetics
                             ? ModHelpers.CreateSprite("SuperNewRoles\\CustomVisorsChache\\" + file.Name, true)
                             : LoadTex.loadSprite("SuperNewRoles\\CustomVisorsChache\\" + file.Name)
                         };
-                        __instance.allVisors.Add(plate);
+                        VisorDatas.Add(plate);
                         //SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み完了:" + file.Name);
                     }
                     catch (Exception e)
@@ -54,6 +55,8 @@ namespace SuperNewRoles.CustomCosmetics
                     }
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み処理終了");
+                AllVisors.AddRange(VisorDatas);
+                __instance.allVisors = AllVisors.ToArray();
             }
         }
     }

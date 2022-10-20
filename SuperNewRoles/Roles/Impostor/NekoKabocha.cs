@@ -54,6 +54,7 @@ namespace SuperNewRoles.Roles.Impostor
                 {
                     if (p.IsDead()) continue;
                     if (p.PlayerId == exiled.PlayerId) continue;
+                    if (p.IsBot()) continue;
                     targets.Add(p);
                 }
                 if (targets.Count <= 0) return;
