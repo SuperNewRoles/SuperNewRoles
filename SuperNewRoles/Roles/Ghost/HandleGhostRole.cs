@@ -56,12 +56,12 @@ namespace SuperNewRoles.Roles
         }
 
         //アサインする役職を決める
-        public static RoleId Assing(List<IntroDate> datas)
+        public static RoleId Assing(List<IntroDate> introData)
         {
             List<RoleId> Assigns = new();
             List<RoleId> Assignnos = new();
             ModeId mode = ModeHandler.GetMode();
-            foreach (IntroDate data in datas)
+            foreach (IntroDate data in introData)
             {
                 //その役職のプレイヤー数を取得
                 var count = AllRoleSetClass.GetPlayerCount(data.RoleId);

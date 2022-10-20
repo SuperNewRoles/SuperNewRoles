@@ -53,7 +53,7 @@ namespace SuperNewRoles.Roles.Crewmate
             }
             foreach (ActionType type in Enum.GetValues(typeof(ActionType)))
             {
-                RoleClass.Painter.ActionDatas[type] = new();
+                RoleClass.Painter.ActionData[type] = new();
             }
         }
         public static void DestroyPrints()
@@ -70,7 +70,7 @@ namespace SuperNewRoles.Roles.Crewmate
         public static void SpawnFootprints()
         {
             if (RoleClass.Painter.CurrentTarget == null) throw new Exception("RoleClass.Painter.CurrentTargetがnullです");
-            foreach (var data in RoleClass.Painter.ActionDatas)
+            foreach (var data in RoleClass.Painter.ActionData)
             {
                 Logger.Info($"{data.Key}の数は{data.Value.Count}です");
                 foreach (var pos in data.Value)
@@ -88,7 +88,7 @@ namespace SuperNewRoles.Roles.Crewmate
             if (RoleClass.Painter.CurrentTarget == null) return;
             Logger.Info($"ハンドル:{type}が通過");
             Vector2 pos = nullpos == null ? RoleClass.Painter.CurrentTarget.GetTruePosition() : (Vector2)nullpos;
-            RoleClass.Painter.ActionDatas[type].Add(pos);
+            RoleClass.Painter.ActionData[type].Add(pos);
         }
         public static void HandleRpc(ActionType type)
         {

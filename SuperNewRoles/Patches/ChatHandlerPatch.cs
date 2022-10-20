@@ -173,13 +173,13 @@ namespace SuperNewRoles.Patches
                 )
             {
                 PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
-                if (OnGameEndPatch.PlayerDatas == null)
+                if (OnGameEndPatch.PlayerData == null)
                 {
                     SendCommand(target, ModTranslation.GetString("WinnersNoneData"), SNRCommander);
                     return false;
                 }
                 StringBuilder builder = new();
-                foreach (var data in OnGameEndPatch.PlayerDatas)
+                foreach (var data in OnGameEndPatch.PlayerData)
                 {
                     if (data.IsWin) builder.Append("★");
                     else builder.Append("　");

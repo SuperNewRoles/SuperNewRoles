@@ -13,7 +13,7 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
     class SharePatch
     {
         public static Dictionary<int, string> PlayerUrl;
-        public static Dictionary<int, string> PlayerDatas;
+        public static Dictionary<int, string> PlayerData;
         public static Dictionary<int, CosmeticsObject> PlayerObjects;
 
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
@@ -36,7 +36,7 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
             {
                 ShareNamePlate.NamePlateSprites = new Dictionary<int, Sprite>();
                 PlayerUrl = new Dictionary<int, string>();
-                PlayerDatas = new Dictionary<int, string>();
+                PlayerData = new Dictionary<int, string>();
                 PlayerObjects = new Dictionary<int, CosmeticsObject>();
             }
         }

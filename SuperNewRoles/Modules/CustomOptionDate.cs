@@ -928,9 +928,9 @@ namespace SuperNewRoles.Modules
 
         public static void Load()
         {
-            List<string> Levedatas = new() { "optionOff", "LevelingerSettingKeep", "PursuerName", "TeleporterName", "SidekickName", "SpeedBoosterName", "MovingName" };
+            List<string> leveData = new() { "optionOff", "LevelingerSettingKeep", "PursuerName", "TeleporterName", "SidekickName", "SpeedBoosterName", "MovingName" };
             List<string> LeveTransed = new();
-            foreach (string data in Levedatas)
+            foreach (string data in leveData)
             {
                 LeveTransed.Add(ModTranslation.GetString(data));
             }

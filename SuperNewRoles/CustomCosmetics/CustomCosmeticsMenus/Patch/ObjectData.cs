@@ -239,7 +239,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         {
             btn.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => SetPreset(index)));
         }
-        public static Dictionary<int, ClosetPresetData> ClosetPresetDatas = new();
+        public static Dictionary<int, ClosetPresetData> ClosetPresetDataDictionary = new();
         public static ConfigEntry<int> SelectedPreset;
         public struct ClosetPresetData
         {
@@ -254,7 +254,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         {
             SelectedPreset.Value = index;
             SuperNewRolesPlugin.Logger.LogInfo("セットプリセット:" + index);
-            ClosetPresetData data = !ClosetPresetDatas.ContainsKey(index)
+            ClosetPresetData data = !ClosetPresetDataDictionary.ContainsKey(index)
                 ? (new()
                 {
                     BodyColor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "BodyColor", (byte)0),
@@ -264,7 +264,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     NamePlate = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "NamePlate", ""),
                     Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "")
                 })
-                : ClosetPresetDatas[index];
+                : ClosetPresetDataDictionary[index];
             SaveManager.BodyColor = data.BodyColor.Value;
             SaveManager.LastHat = data.Hat.Value;
             SaveManager.LastVisor = data.Visor.Value;

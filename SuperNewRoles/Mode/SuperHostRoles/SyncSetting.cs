@@ -276,7 +276,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             public static void Postfix()
             {
                 OptionData = PlayerControl.GameOptions.DeepCopy();
-                Patches.OnGameEndPatch.PlayerDatas = new();
+                Patches.OnGameEndPatch.PlayerData = new();
             }
         }
     }

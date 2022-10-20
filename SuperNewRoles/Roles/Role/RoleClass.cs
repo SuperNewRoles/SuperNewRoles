@@ -1689,7 +1689,7 @@ namespace SuperNewRoles.Roles
         public static class Demon
         {
             public static List<PlayerControl> DemonPlayer;
-            public static Dictionary<byte, List<PlayerControl>> CurseDatas;
+            public static Dictionary<byte, List<PlayerControl>> CurseData;
             public static Color32 color = new(110, 0, 165, byte.MaxValue);
             public static bool IsUseVent;
             public static bool IsCheckImpostor;
@@ -1700,7 +1700,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 DemonPlayer = new();
-                CurseDatas = new Dictionary<byte, List<PlayerControl>>();
+                CurseData = new Dictionary<byte, List<PlayerControl>>();
                 IsUseVent = CustomOptions.DemonIsUseVent.GetBool();
                 CoolTime = CustomOptions.DemonCoolTime.GetFloat();
                 IsCheckImpostor = CustomOptions.DemonIsCheckImpostor.GetBool();
@@ -1836,7 +1836,7 @@ namespace SuperNewRoles.Roles
         public static class Arsonist
         {
             public static List<PlayerControl> ArsonistPlayer;
-            public static Dictionary<byte, List<PlayerControl>> DouseDatas;
+            public static Dictionary<byte, List<PlayerControl>> DouseData;
             public static Color32 color = new(238, 112, 46, byte.MaxValue);
             public static bool IsUseVent;
             public static float CoolTime;
@@ -1851,7 +1851,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 ArsonistPlayer = new();
-                DouseDatas = new Dictionary<byte, List<PlayerControl>>();
+                DouseData = new Dictionary<byte, List<PlayerControl>>();
                 IsUseVent = CustomOptions.ArsonistIsUseVent.GetBool();
                 CoolTime = CustomOptions.ArsonistCoolTime.GetFloat();
                 DurationTime = CustomOptions.ArsonistDurationTime.GetFloat();
@@ -2501,35 +2501,35 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new(0, 255, 0, byte.MaxValue);
             public static int DeathDefaultTurn;
             public static int DeathTurn;
-            public static Dictionary<byte, byte> Datas;
-            public static bool IsLocalOn => Datas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
-            public static PlayerControl CurrentTarget => IsLocalOn ? ModHelpers.PlayerById(Datas[CachedPlayer.LocalPlayer.PlayerId]) : null;
+            public static Dictionary<byte, byte> Data;
+            public static bool IsLocalOn => Data.ContainsKey(CachedPlayer.LocalPlayer.PlayerId);
+            public static PlayerControl CurrentTarget => IsLocalOn ? ModHelpers.PlayerById(Data[CachedPlayer.LocalPlayer.PlayerId]) : null;
 
-            public static Dictionary<PlayerControl, PlayerControl> PlayerDatas
+            public static Dictionary<PlayerControl, PlayerControl> PlayerData
             {
                 get
                 {
                     //キャッシュ済みのプレイヤーリストとplayerByIdのリストの数が違ったらキャッシュを更新する
-                    if (_playerDatas.Count != Datas.Count)
+                    if (_playerData.Count != Data.Count)
                     {
                         Dictionary<PlayerControl, PlayerControl> newdic = new();
-                        foreach (var data in Datas)
+                        foreach (var data in Data)
                         {
                             newdic.Add(ModHelpers.PlayerById(data.Key), ModHelpers.PlayerById(data.Value));
                         }
-                        _playerDatas = newdic;
+                        _playerData = newdic;
                     }
-                    return _playerDatas;
+                    return _playerData;
                 }
             }
-            private static Dictionary<PlayerControl, PlayerControl> _playerDatas;
+            private static Dictionary<PlayerControl, PlayerControl> _playerData;
             public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PartTimerButton.png", 115f);
             public static void ClearAndReload()
             {
                 PartTimerPlayer = new();
                 DeathTurn = DeathDefaultTurn = CustomOptions.PartTimerDeathTurn.GetInt();
-                Datas = new();
-                _playerDatas = new();
+                Data = new();
+                _playerData = new();
             }
         }
 
@@ -2550,7 +2550,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> PainterPlayer;
             public static Color32 color = new(170, 255, 0, byte.MaxValue);
-            public static Dictionary<Crewmate.Painter.ActionType, List<Vector2>> ActionDatas;
+            public static Dictionary<Crewmate.Painter.ActionType, List<Vector2>> ActionData;
             public static List<Footprint> Prints;
             public static Dictionary<Crewmate.Painter.ActionType, bool> IsEnables;
             public static bool IsLocalActionSend;
@@ -2561,11 +2561,11 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 PainterPlayer = new();
-                ActionDatas = new();
+                ActionData = new();
                 IsEnables = new();
                 foreach (Crewmate.Painter.ActionType type in Enum.GetValues(typeof(Crewmate.Painter.ActionType)))
                 {
-                    ActionDatas[type] = new();
+                    ActionData[type] = new();
                 }
                 Prints = new();
                 CurrentTarget = null;

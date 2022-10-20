@@ -403,20 +403,20 @@ namespace SuperNewRoles.Patches
                 var roleSummaryText = new StringBuilder();
                 roleSummaryText.AppendLine(ModTranslation.GetString("FinalResults"));
 
-                foreach (var datas in AdditionalTempData.playerRoles)
+                foreach (var data in AdditionalTempData.playerRoles)
                 {
-                    var taskInfo = datas.TasksTotal > 0 ? $"<color=#FAD934FF>({datas.TasksCompleted}/{datas.TasksTotal})</color>" : "";
-                    string roleText = CustomOptions.Cs(datas.IntroDate.color, datas.IntroDate.NameKey + "Name");
-                    if (datas.GhostIntroDate.RoleId != RoleId.DefaultRole)
+                    var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>({data.TasksCompleted}/{data.TasksTotal})</color>" : "";
+                    string roleText = CustomOptions.Cs(data.IntroDate.color, data.IntroDate.NameKey + "Name");
+                    if (data.GhostIntroDate.RoleId != RoleId.DefaultRole)
                     {
-                        roleText += $" → {CustomOptions.Cs(datas.GhostIntroDate.color, datas.GhostIntroDate.NameKey + "Name")}";
+                        roleText += $" → {CustomOptions.Cs(data.GhostIntroDate.color, data.GhostIntroDate.NameKey + "Name")}";
                     }
-                    string result = $"{ModHelpers.Cs(Palette.PlayerColors[datas.ColorId], datas.PlayerName)}{datas.NameSuffix}{taskInfo} - {FinalStatusPatch.GetStatusText(datas.Status)} - {roleText}";
+                    string result = $"{ModHelpers.Cs(Palette.PlayerColors[data.ColorId], data.PlayerName)}{data.NameSuffix}{taskInfo} - {FinalStatusPatch.GetStatusText(data.Status)} - {roleText}";
                     if (ModeHandler.IsMode(ModeId.Zombie))
                     {
-                        roleText = datas.ColorId == 1 ? CustomOptions.Cs(Mode.Zombie.Main.Policecolor, "ZombiePoliceName") : CustomOptions.Cs(Mode.Zombie.Main.Zombiecolor, "ZombieZombieName");
-                        if (datas.ColorId == 2) taskInfo = "";
-                        result = $"{ModHelpers.Cs(Palette.PlayerColors[datas.ColorId], datas.PlayerName)}{taskInfo} : {roleText}";
+                        roleText = data.ColorId == 1 ? CustomOptions.Cs(Mode.Zombie.Main.Policecolor, "ZombiePoliceName") : CustomOptions.Cs(Mode.Zombie.Main.Zombiecolor, "ZombieZombieName");
+                        if (data.ColorId == 2) taskInfo = "";
+                        result = $"{ModHelpers.Cs(Palette.PlayerColors[data.ColorId], data.PlayerName)}{taskInfo} : {roleText}";
                     }
                     roleSummaryText.AppendLine(result);
                 }
@@ -488,7 +488,7 @@ namespace SuperNewRoles.Patches
     {
         public static PlayerControl WinnerPlayer;
         public static CustomGameOverReason? EndData = null;
-        public static List<CustomPlayerData> PlayerDatas = null;
+        public static List<CustomPlayerData> PlayerData = null;
         public static string WinText;
         public static void Prefix([HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
@@ -1034,7 +1034,7 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
-            foreach (var PartTimerData in RoleClass.PartTimer.PlayerDatas)//フリーター
+            foreach (var PartTimerData in RoleClass.PartTimer.PlayerData)//フリーター
             {
                 Logger.Info(PartTimerData.Key.Data.PlayerName);
                 if (TempData.winners.ToArray().Any(x => x.PlayerName == PartTimerData.Value.Data.PlayerName))
@@ -1116,7 +1116,7 @@ namespace SuperNewRoles.Patches
                 if (player.Object != null && player.Object.IsBot()) continue;
                 CustomPlayerData data = new(player, gameOverReason);
                 data.IsWin = TempData.winners.TrueForAll((Il2CppSystem.Predicate<WinningPlayerData>)(x => x.PlayerName == player.PlayerName));
-                PlayerDatas.Add(data);
+                PlayerData.Add(data);
             }
         }
     }
