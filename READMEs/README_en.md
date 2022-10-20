@@ -176,9 +176,9 @@ The number of people is omitted from the setup.
 By pressing the teleport button, the 
 Teleport everyone to one randomly selected person. 
 ### Game Settings 
-| Name      |    Description    |
-| --------- | :---------------: |
-| Cool Down | Button Cool Down. |
+| Name     |   Description    |
+| -------- | :--------------: |
+| Cooldown | Button Cooldown. |
 
 ----------------------- 
 ## EvilSpeedBooster
@@ -188,7 +188,7 @@ You can speed up your own speed for a certain period of time.
 ### Game Settings 
 | Name                                                                  |      Description       |
 | --------------------------------------------------------------------- | :--------------------: |
-| Cool Down                                                             |   Button Cool Down.    |
+| Cooldown                                                              |    Button Cooldown.    |
 | Duration Time                                                         | Speed Boost Duration.  |
 | Double the speed                                                      | Speed during boosting. |
 | If this position is selected, the speed booster will not be selected. |
@@ -201,9 +201,9 @@ Visit www.DeepL.com/profor more information.
 By clicking on the door button, the 
 The door can be opened and closed. There is a cool time. 
 ### Game Settings 
-| Name           |    Description    |
-| -------------- | :---------------: |
-| Door Cool Time | Button Cool Down. |
+| Name           |   Description    |
+| -------------- | :--------------: |
+| Door Cool Time | Button Cooldown. |
 
 ----------------------- 
 ## EvilGambler
@@ -1180,7 +1180,7 @@ If the corpse is erased, the killcool is reset to the specified value. <br>
 ### Game Settings 
 | Name          |                             Description                              |
 | ------------- | :------------------------------------------------------------------: |
-| Kill Cooldown |                      Kill Cool Down for Cleaner                      | Allows you to set individual kill cool time. |
+| Kill Cooldown |                      Kill Cooldown for Cleaner                       | Allows you to set individual kill cool time. |
 | Cooldown      | You can set the kill cooldown time for the ability to erase corpses. |
 
 ----------------------- 
@@ -1367,7 +1367,7 @@ The ability to sabotage can be changed in the settings. <br>
 | Amount of tasks that will be able to be checked (of all tasks) |  If the result of the calculation of the task amount is a fraction, it will be rounded down.  |
 | Use Vent                                                       |                              You will be able to put in a vent.                               |
 | Impostor Light                                                 |             You can set whether the view will be the same as the Impostor's view.             |
-| Cool Down                                                      |                                       Button Cool Down.                                       |
+| Cooldown                                                       |                                       Button Cooldown.                                        |
 | Time to be teleported                                          |
 
 ----------------------- 
