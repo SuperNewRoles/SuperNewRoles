@@ -295,13 +295,14 @@ namespace SuperNewRoles.Modules
         {
             try
             {
-                this.RoleId = IntroDate.IntroDatas.FirstOrDefault((_) =>
+                this.RoleId = IntroDate.IntroData.FirstOrDefault((_) =>
                 {
                     return _.NameKey + "Name" == name;
                 }).RoleId;
             }
-            catch {
-                Logger.Info("RoleId取得でエラーが発生しました:"+name,"CustomRoleOption");
+            catch
+            {
+                Logger.Info("RoleId取得でエラーが発生しました:" + name, "CustomRoleOption");
             }
             RoleOptions.Add(this);
             if (max > 1)

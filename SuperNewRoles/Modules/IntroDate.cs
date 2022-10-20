@@ -26,9 +26,9 @@ namespace SuperNewRoles.Modules
     }
     public class IntroDate
     {
-        public static List<IntroDate> IntroDatas = new();
-        public static Dictionary<RoleId, IntroDate> IntroDatasCache = new();
-        public static List<IntroDate> GhostRoleDatas = new();
+        public static List<IntroDate> IntroData = new();
+        public static Dictionary<RoleId, IntroDate> IntroDataCache = new();
+        public static List<IntroDate> GhostRoleData = new();
         public string NameKey;
         public string Name;
         public Int16 TitleNum;
@@ -52,9 +52,9 @@ namespace SuperNewRoles.Modules
 
             if (IsGhostRole)
             {
-                GhostRoleDatas.Add(this);
+                GhostRoleData.Add(this);
             }
-            IntroDatas.Add(this);
+            IntroData.Add(this);
         }
         public static IntroDate GetIntroDate(RoleId RoleId, PlayerControl p = null)
         {
@@ -64,13 +64,13 @@ namespace SuperNewRoles.Modules
             }
             try
             {
-                return IntroDatasCache[RoleId];
+                return IntroDataCache[RoleId];
             }
             catch
             {
-                var data = IntroDatas.FirstOrDefault((_) => _.RoleId == RoleId);
+                var data = IntroData.FirstOrDefault((_) => _.RoleId == RoleId);
                 if (data == null) data = CrewmateIntro;
-                IntroDatasCache[RoleId] = data;
+                IntroDataCache[RoleId] = data;
                 return data;
             }
         }

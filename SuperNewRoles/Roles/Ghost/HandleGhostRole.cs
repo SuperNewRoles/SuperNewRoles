@@ -25,7 +25,7 @@ namespace SuperNewRoles.Roles
             var Team = TeamRoleType.Error;
             Team = player.IsCrew() ? TeamRoleType.Crewmate : player.IsNeutral() ? TeamRoleType.Neutral : TeamRoleType.Impostor;
             List<IntroDate> GhostRoles = new();
-            foreach (IntroDate intro in IntroDate.GhostRoleDatas)
+            foreach (IntroDate intro in IntroDate.GhostRoleData)
             {
                 if (intro.Team != Team) continue;
                 GhostRoles.Add(intro);

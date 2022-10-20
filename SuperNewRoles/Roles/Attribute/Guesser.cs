@@ -167,7 +167,7 @@ namespace SuperNewRoles.Roles.Attribute
             }
 
             int ind = 0;
-            foreach (IntroDate roleInfo in IntroDate.IntroDatas)
+            foreach (IntroDate roleInfo in IntroDate.IntroData)
             {
                 if (roleInfo == null ||
                     roleInfo.RoleId == RoleId.Hunter ||

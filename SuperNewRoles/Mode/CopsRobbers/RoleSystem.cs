@@ -77,7 +77,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 }
                 catch { }
             }
-            NewName = "<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool() ? " " :  ModHelpers.Cs(introdate.color, Name));
+            NewName = "<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool() ? " " : ModHelpers.Cs(introdate.color, Name));
             player.RpcSetNamePrivate(NewName);
         }
         public static void AssignRole()
@@ -88,7 +88,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             AllRoleSetClass.Neutnotonepar = new();
             AllRoleSetClass.Crewonepar = new();
             AllRoleSetClass.Crewnotonepar = new();
-            foreach (IntroDate intro in IntroDate.IntroDatas)
+            foreach (IntroDate intro in IntroDate.IntroData)
             {
                 if (intro.RoleId is
                     RoleId.Workperson or RoleId.HomeSecurityGuard or RoleId.Tuna or RoleId.ToiletFan)
