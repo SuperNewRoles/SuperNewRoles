@@ -23,8 +23,8 @@
 　　・Intro/IntroData.cs 　　　　　　 →//イントロオブジェ　　　　一番下
 　　・Intro/IntroData.cs 　　　　　　 →//イントロ検知　　　　　　GetIntroDataの後ろ
 
-　　・CustomOption/CustomOptionData.cs→//CustomOption　　　　　　クラードの上(上に空行はいれない)
-　　・CustomOption/CustomOptionData.cs→//表示設定			下のほうのラバーズの上
+　　・CustomOption/CustomOptionHolder.cs→//CustomOption　　　　　　クラードの上(上に空行はいれない)
+　　・CustomOption/CustomOptionHolder.cs→//表示設定			下のほうのラバーズの上
 
 　　・Buttons/Button.cs　　　　　　　 →//カスタムなボタン達　　	CustomButtonの下
 　　・Buttons/Button.cs　　　　　　　 →//クールダウンリセット　　setCustomButtonCooldownsの下
