@@ -19,7 +19,7 @@ namespace SuperNewRoles.Roles.Crewmate
             foreach (var DeathTimeTextData in RoleClass.Psychometrist.DeathTimeTexts)
             {
                 string newtext = "";
-                if (CustomOptions.PsychometristIsCheckDeathReason.GetBool())
+                if (CustomOptionHolder.PsychometristIsCheckDeathReason.GetBool())
                 {
                     GameData.PlayerInfo p = ModHelpers.PlayerById(DeathTimeTextData.Item1.ParentId)?.Data;
                     var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
@@ -29,7 +29,7 @@ namespace SuperNewRoles.Roles.Crewmate
                         FinalStatus.Alive;
                     newtext += "死因:" + FinalStatusPatch.GetStatusText(finalStatus);
                 }
-                if (CustomOptions.PsychometristIsCheckDeathTime.GetBool())
+                if (CustomOptionHolder.PsychometristIsCheckDeathTime.GetBool())
                 {
                     DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == DeathTimeTextData.Item1.ParentId)?.FirstOrDefault();
                     int text = (int)(DateTime.UtcNow - deadPlayer.timeOfDeath).TotalSeconds + DeathTimeTextData.Item3;
@@ -67,11 +67,11 @@ namespace SuperNewRoles.Roles.Crewmate
         }
         public static void MurderPlayer(PlayerControl source, PlayerControl target)
         {
-            if (CustomOptions.PsychometristIsCheckFootprints.GetBool())
+            if (CustomOptionHolder.PsychometristIsCheckFootprints.GetBool())
             {
                 RoleClass.Psychometrist.FootprintsPosition[(source.PlayerId, target.PlayerId)] = (new(), true);
                 RoleClass.Psychometrist.FootprintObjects[(source.PlayerId, target.PlayerId)] = new();
-                RoleClass.Psychometrist.FootprintsDeathTime[(source.PlayerId, target.PlayerId)] = CustomOptions.PsychometristCanCheckFootprintsTime.GetFloat();
+                RoleClass.Psychometrist.FootprintsDeathTime[(source.PlayerId, target.PlayerId)] = CustomOptionHolder.PsychometristCanCheckFootprintsTime.GetFloat();
             }
         }
         public static void ClickButton()
@@ -80,19 +80,19 @@ namespace SuperNewRoles.Roles.Crewmate
             if (targetbody == null || !PlayerControl.LocalPlayer.CanMove) return;
             DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == targetbody.ParentId)?.FirstOrDefault();
             TextMeshPro DeathTimeText = GameObject.Instantiate(PlayerControl.LocalPlayer.NameText(), targetbody.transform);
-            int count = UnityEngine.Random.Range(CustomOptions.PsychometristDeathTimeDeviation.GetInt() * -1, CustomOptions.PsychometristDeathTimeDeviation.GetInt());
+            int count = UnityEngine.Random.Range(CustomOptionHolder.PsychometristDeathTimeDeviation.GetInt() * -1, CustomOptionHolder.PsychometristDeathTimeDeviation.GetInt());
             RoleClass.Psychometrist.DeathTimeTexts.Add((targetbody, DeathTimeText, count));
             DeathTimeText.transform.localPosition = new(-0.2f, 0.5f, 0);
             DeathTimeText.transform.localScale = new(1.5f, 1.5f, 1.5f);
             DeathTimeText.color = Color.white;
-            if (!CustomOptions.PsychometristIsReportCheckedDeadBody.GetBool())
+            if (!CustomOptionHolder.PsychometristIsReportCheckedDeadBody.GetBool())
             {
                 MessageWriter writer = RPCHelper.StartRPC(CustomRPC.BlockReportDeadBody);
                 writer.Write(targetbody.ParentId);
                 writer.EndRPC();
                 RPCProcedure.BlockReportDeadBody(targetbody.ParentId, false);
             }
-            if (CustomOptions.PsychometristIsCheckFootprints.GetBool())
+            if (CustomOptionHolder.PsychometristIsCheckFootprints.GetBool())
             {
                 var index = (deadPlayer.killerIfExisting.PlayerId, deadPlayer.player.PlayerId);
                 var Lists = RoleClass.Psychometrist.FootprintsPosition[index].Item1;
@@ -103,7 +103,7 @@ namespace SuperNewRoles.Roles.Crewmate
                 }
             }
             FixedUpdate();
-            HudManagerStartPatch.PsychometristButton.MaxTimer = CustomOptions.PsychometristCoolTime.GetFloat();
+            HudManagerStartPatch.PsychometristButton.MaxTimer = CustomOptionHolder.PsychometristCoolTime.GetFloat();
             HudManagerStartPatch.PsychometristButton.Timer = HudManagerStartPatch.PsychometristButton.MaxTimer;
         }
     }

@@ -295,7 +295,7 @@ namespace SuperNewRoles.Modules
         {
             try
             {
-                this.RoleId = IntroData.IntroList[.FirstOrDefault((_) =>
+                this.RoleId = IntroData.IntroList.FirstOrDefault((_) =>
                 {
                     return _.NameKey + "Name" == name;
                 }).RoleId;

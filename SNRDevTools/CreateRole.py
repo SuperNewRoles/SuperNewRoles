@@ -46,9 +46,9 @@ while True:
         temp = r.read()
         with open(baseurl+"AllRoleSetClass.cs", mode="w", encoding="utf-8") as f:
             temp = temp.replace("//セットクラス",
-                                """if (!(CustomOptions.ROLEID!!Option.GetString().Replace("0%", "") == ""))
+                                """if (!(CustomOptionHolder.ROLEID!!Option.GetString().Replace("0%", "") == ""))
             {
-                int OptionDate = int.Parse(CustomOptions.ROLEID!!Option.GetString().Replace("0%", ""));
+                int OptionDate = int.Parse(CustomOptionHolder.ROLEID!!Option.GetString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.ROLEID!!;
                 if (OptionDate == 10)
                 {
@@ -63,7 +63,7 @@ while True:
                 }
             }\n        //セットクラス""".replace("ROLEID!!", rolename).replace("TEAM", ARolename))
             temp = temp.replace(
-                "//プレイヤーカウント", """RoleId.ROLENAME => CustomOptions.ROLENAMEPlayerCount.GetFloat(),\n                //プレイヤーカウント""".replace("ROLENAME", rolename))
+                "//プレイヤーカウント", """RoleId.ROLENAME => CustomOptionHolder.ROLENAMEPlayerCount.GetFloat(),\n                //プレイヤーカウント""".replace("ROLENAME", rolename))
             f.write(temp)
     with open(baseurl+"Roles\Role\RoleHelper.cs", mode="r", encoding="utf-8") as r:
         temp = r.read()

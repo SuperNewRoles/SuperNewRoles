@@ -262,8 +262,8 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 EvilLighterPlayer = new();
-                //CoolTime = CustomOptions.EvilLighterCoolTime.GetFloat();
-                //DurationTime = CustomOptions.EvilLighterDurationTime.GetFloat();
+                //CoolTime = CustomOptionHolder.EvilLighterCoolTime.GetFloat();
+                //DurationTime = CustomOptionHolder.EvilLighterDurationTime.GetFloat();
             }
         }
         public static class EvilScientist
@@ -445,8 +445,8 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 TaskerPlayer = new();
-                //IsKill = CustomOptions.TaskerIsKill.GetBool();
-                //TaskCount = CustomOptions.TaskerAmount.GetFloat();
+                //IsKill = CustomOptionHolder.TaskerIsKill.GetBool();
+                //TaskCount = CustomOptionHolder.TaskerAmount.GetFloat();
             }
         }
         public static class Doorr
@@ -720,7 +720,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 NiceGamblerPlayer = new();
-                //Num = CustomOptions.NiceGamblerUseCount.GetInt();
+                //Num = CustomOptionHolder.NiceGamblerUseCount.GetInt();
             }
         }
         public static class EvilGambler

@@ -991,7 +991,7 @@ namespace SuperNewRoles
             Neutnotonepar = new();
             Crewonepar = new();
             Crewnotonepar = new();
-            foreach (IntroData intro in IntroData.IntroList[)
+            foreach (IntroData intro in IntroData.IntroList)
             {
                 if (intro.RoleId != RoleId.DefaultRole &&
                     (intro.RoleId != RoleId.Nun || (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship)

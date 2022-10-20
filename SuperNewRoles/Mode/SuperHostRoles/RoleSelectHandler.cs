@@ -283,7 +283,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             List<RoleId> Crewonepar = new();
             List<RoleId> Crewnotonepar = new();
 
-            foreach (IntroData intro in IntroData.IntroList[)
+            foreach (IntroData intro in IntroData.IntroList)
             {
                 if (intro.RoleId != RoleId.DefaultRole)
                 {

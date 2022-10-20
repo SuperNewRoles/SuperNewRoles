@@ -229,9 +229,9 @@ namespace SuperNewRoles.Roles."""+namedata+"""
 
         # AllRoleSetClass.cs
         '''MainClass.WriteCodes("AllRoleSetClass.cs", "//セットクラス",
-                                """if (!(CustomOptions.ROLEID!!Option.GetString().Replace("0%", "") == ""))
+                                """if (!(CustomOptionHolder.ROLEID!!Option.GetString().Replace("0%", "") == ""))
             {
-                int OptionDate = int.Parse(CustomOptions.ROLEID!!Option.GetString().Replace("0%", ""));
+                int OptionDate = int.Parse(CustomOptionHolder.ROLEID!!Option.GetString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.ROLEID!!;
                 if (OptionDate == 10)
                 {
@@ -247,7 +247,7 @@ namespace SuperNewRoles.Roles."""+namedata+"""
             }\n        //セットクラス""".replace("ROLEID!!",MainClass.GetInput("RoleName")).replace("TEAM",MainClass.GetTeam()))'''
 
         MainClass.WriteCodes("AllRoleSetClass.cs", "//プレイヤーカウント",
-                             """RoleId.ROLENAME => CustomOptions.ROLENAMEPlayerCount.GetFloat(),\n                //プレイヤーカウント""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                             """RoleId.ROLENAME => CustomOptionHolder.ROLENAMEPlayerCount.GetFloat(),\n                //プレイヤーカウント""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # Roles/Role/RoleHelper.cs
         if (not MainClass.GetBool("TeamGhost")):
@@ -403,7 +403,7 @@ namespace SuperNewRoles.Roles."""+namedata+"""
                 # Roles/Role/RoleHelper.cs
                 MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ベント設定可視化",
                 """case RoleId.ROLENAME:
-                    returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.ROLENAMEIsUseVent.GetString() + "\n";
+                    returntext = CustomOptionHolder.FoxIsUseVent.name + ":" + CustomOptionHolder.ROLENAMEIsUseVent.GetString() + "\n";
                     break;\n                //ベント設定可視化""".replace("ROLENAME", MainClass.GetInput("RoleName")))'''
         # インポの視界設定
         if (MainClass.GetBool("A_ImpoVisible")):
@@ -411,7 +411,7 @@ namespace SuperNewRoles.Roles."""+namedata+"""
             MainClass.WriteCodes("Roles/Role/RoleClass.cs", "//その他Option",
                                  """public static bool IsImpostorLight;\n            //その他Option""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             MainClass.WriteCodes("Roles/Role/RoleClass.cs", "//くりあぁあんどりろぉどぉ",
-                                 "IsImpostorLight = CustomOptions.MayorFriendsIsImpostorLight.GetBool();\n                //くりあぁあんどりろぉどぉ")
+                                 "IsImpostorLight = CustomOptionHolder.MayorFriendsIsImpostorLight.GetBool();\n                //くりあぁあんどりろぉどぉ")
             # Roles/Role/RoleHelper.cs
             MainClass.WriteCodes("Roles.RoleHelper.cs", "                //インポの視界",
                                  """case RoleId.ROLENAME:
