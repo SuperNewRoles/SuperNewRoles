@@ -89,10 +89,10 @@ while True:
                     break; 
                 //タスククリアか""".replace("ROLENAME", rolename))
             f.write(temp)
-    with open(baseurl+"Intro\\IntroDate.cs", mode="r", encoding="utf-8") as r:
+    with open(baseurl+"Intro\\IntroData.cs", mode="r", encoding="utf-8") as r:
         temp = r.read()
-        with open(baseurl+"Intro\\IntroDate.cs", mode="w", encoding="utf-8") as f:
-            temp = temp.replace("//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME);
+        with open(baseurl+"Intro\\IntroData.cs", mode="w", encoding="utf-8") as f:
+            temp = temp.replace("//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME);
         //イントロオブジェ""".replace("ROLENAME", rolename))
             temp = temp.replace("//イントロ検知", """case (RoleId.ROLENAME):
                     return ROLENAMEIntro;

@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles.Crewmate
     public static class Knight
     {
         private const int OptionId = 1052;// 設定のId
-        // CustomOptionDate
+        // CustomOptionData
         public static CustomRoleOption KnightOption;
         public static CustomOption KnightPlayerCount;
         public static CustomOption KnightCanAnnounceOfProtected;

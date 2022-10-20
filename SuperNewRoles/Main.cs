@@ -38,7 +38,7 @@ namespace SuperNewRoles
         public static int optionsPage = 1;
         public Harmony Harmony { get; } = new Harmony("jp.ykundesu.supernewroles");
         public static SuperNewRolesPlugin Instance;
-        public static Dictionary<string, Dictionary<int, string>> StringDATE;
+        public static Dictionary<string, Dictionary<int, string>> StringDATA;
         public static bool IsUpdate = false;
         public static string NewVersion = "";
         public static string thisname;
@@ -85,7 +85,7 @@ namespace SuperNewRoles
 
             var assembly = Assembly.GetExecutingAssembly();
 
-            StringDATE = new Dictionary<string, Dictionary<int, string>>();
+            StringDATA = new Dictionary<string, Dictionary<int, string>>();
             Harmony.PatchAll();
             SubmergedCompatibility.Initialize();
 

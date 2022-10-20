@@ -573,13 +573,13 @@ namespace SuperNewRoles
         }
         public static T GetRandom<T>(this List<T> list)
         {
-            var indexdate = UnityEngine.Random.Range(0, list.Count);
-            return list[indexdate];
+            var indexData = UnityEngine.Random.Range(0, list.Count);
+            return list[indexData];
         }
         public static int GetRandomIndex<T>(List<T> list)
         {
-            var indexdate = UnityEngine.Random.Range(0, list.Count);
-            return indexdate;
+            var indexData = UnityEngine.Random.Range(0, list.Count);
+            return indexData;
         }
 
         public static Dictionary<byte, SpriteRenderer> MyRendCache = new();
@@ -746,9 +746,9 @@ namespace SuperNewRoles
             return null;
         }
 
-        public static bool IsCheckListPlayerControl(this List<PlayerControl> ListDate, PlayerControl CheckPlayer)
+        public static bool IsCheckListPlayerControl(this List<PlayerControl> listData, PlayerControl CheckPlayer)
         {
-            foreach (PlayerControl Player in ListDate)
+            foreach (PlayerControl Player in listData)
             {
                 if (Player.PlayerId == CheckPlayer.PlayerId)
                 {

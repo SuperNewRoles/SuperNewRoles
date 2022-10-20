@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles.Impostor
     public static class ShiftActor
     {
         public const int OptionId = 894;// 設定のId
-        // CustomOptionDate
+        // CustomOptionData
         public static CustomRoleOption ShiftActorOption;
         public static CustomOption ShiftActorPlayerCount;
         public static CustomOption ShiftActorKillCool;

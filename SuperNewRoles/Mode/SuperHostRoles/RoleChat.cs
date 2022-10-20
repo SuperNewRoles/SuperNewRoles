@@ -43,7 +43,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             IntroData data = IntroData.CrewmateIntro;
             if (rolename != ModTranslation.GetString("LoversName"))
             {
-                data = GetNameIntroDate(rolename);
+                data = GetNameIntroData(rolename);
                 IntroDesc = data.TitleDesc;
                 Desc = data.Description;
             }
@@ -62,7 +62,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             returndata += data.Description;
             return "";
         }
-        public static IntroData GetNameIntroDate(string role)
+        public static IntroData GetNameIntroData(string role)
         {
             Dictionary<string, IntroData> NameData = new()
             {

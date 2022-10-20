@@ -127,8 +127,8 @@ namespace SuperNewRoles.Patches
             public int PlayerId { get; set; }
             public int ColorId { get; set; }
             public FinalStatus Status { get; internal set; }
-            public IntroData IntroDate { get; set; }
-            public IntroData GhostIntroDate { get; set; }
+            public IntroData IntroData { get; set; }
+            public IntroData GhostIntroData { get; set; }
         }
     }
     [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
@@ -191,7 +191,7 @@ namespace SuperNewRoles.Patches
                 {
                     Logger.Info(data.PlayerName + ":" + winningPlayerData2.PlayerName);
                     if (data.PlayerName != winningPlayerData2.PlayerName) continue;
-                    poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", ModHelpers.Cs(data.IntroDate.color, data.IntroDate.Name))}";
+                    poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", ModHelpers.Cs(data.IntroData.color, data.IntroData.Name))}";
                 }
             }
 
@@ -406,10 +406,10 @@ namespace SuperNewRoles.Patches
                 foreach (var data in AdditionalTempData.playerRoles)
                 {
                     var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>({data.TasksCompleted}/{data.TasksTotal})</color>" : "";
-                    string roleText = CustomOptions.Cs(data.IntroDate.color, data.IntroDate.NameKey + "Name");
-                    if (data.GhostIntroDate.RoleId != RoleId.DefaultRole)
+                    string roleText = CustomOptions.Cs(data.IntroData.color, data.IntroData.NameKey + "Name");
+                    if (data.GhostIntroData.RoleId != RoleId.DefaultRole)
                     {
-                        roleText += $" → {CustomOptions.Cs(data.GhostIntroDate.color, data.GhostIntroDate.NameKey + "Name")}";
+                        roleText += $" → {CustomOptions.Cs(data.GhostIntroData.color, data.GhostIntroData.NameKey + "Name")}";
                     }
                     string result = $"{ModHelpers.Cs(Palette.PlayerColors[data.ColorId], data.PlayerName)}{data.NameSuffix}{taskInfo} - {FinalStatusPatch.GetStatusText(data.Status)} - {roleText}";
                     if (ModeHandler.IsMode(ModeId.Zombie))
@@ -552,8 +552,8 @@ namespace SuperNewRoles.Patches
                         TasksTotal = tasksTotal,
                         TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
                         Status = finalStatus,
-                        IntroDate = roles,
-                        GhostIntroDate = ghostRoles
+                        IntroData = roles,
+                        GhostIntroData = ghostRoles
                     });
                 }
             }

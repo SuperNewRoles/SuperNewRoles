@@ -289,17 +289,17 @@ namespace SuperNewRoles.Roles."""+namedata+"""
             }
         }\n        //新ロールクラス""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("COLORS", MainClass.GetRoleColor()))
 
-        # Intro/IntroDate.cs
+        # Intro/IntroData.cs
         if (MainClass.GetBool("Impo")):
-            MainClass.WriteCodes("Modules/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Impostor);
+            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Impostor);
         //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         elif (MainClass.GetBool("Crew")):
-            MainClass.WriteCodes("Modules/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate);
+            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate);
         //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         elif (MainClass.GetBool("Neut")):
-            MainClass.WriteCodes("Modules/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Neutral);
+            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Neutral);
         //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-            '''MainClass.WriteCodes("Modules/IntroDate.cs", "//イントロ検知","""case (RoleId.ROLENAME):
+            '''MainClass.WriteCodes("Modules/IntroData.cs", "//イントロ検知","""case (RoleId.ROLENAME):
                     return ROLENAMEIntro;
                 //イントロ検知""".replace("ROLENAME",MainClass.GetInput("RoleName")))'''  # ⇐なにこれ？
         elif (MainClass.GetBool("TeamOne")):
@@ -307,24 +307,24 @@ namespace SuperNewRoles.Roles."""+namedata+"""
         elif (MainClass.GetBool("TeamTwo")):
             print()
         elif (MainClass.GetBool("TeamGhost")):
-            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate, true);
+            MainClass.WriteCodes("Intro/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new IntroData("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate, true);
         //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
-        # CustomOption/CustomOptionDate.cs
-        MainClass.WriteCodes("Modules/CustomOptionDate.cs", "//CustomOption",
+        # CustomOption/CustomOptionData.cs
+        MainClass.WriteCodes("Modules/CustomOptionData.cs", "//CustomOption",
                              """\n        public static CustomRoleOption ROLENAMEOption;
         public static CustomOption ROLENAMEPlayerCount;\n        //CustomOption""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("AddSetting")):
             if (MainClass.GetBool("TeamImpo") or MainClass.GetBool("TeamGhost")):
-                MainClass.WriteCodes("Modules/CustomOptionDate.cs", "//表示設定",
+                MainClass.WriteCodes("Modules/CustomOptionData.cs", "//表示設定",
                                      """\n            ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
             elif (MainClass.GetBool("TeamCrew")):
-                MainClass.WriteCodes("Modules/CustomOptionDate.cs", "//表示設定",
+                MainClass.WriteCodes("Modules/CustomOptionData.cs", "//表示設定",
                                      """\n            ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Crewmate, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
             elif (MainClass.GetBool("TeamNeut")):
-                MainClass.WriteCodes("Modules/CustomOptionDate.cs", "//表示設定",
+                MainClass.WriteCodes("Modules/CustomOptionData.cs", "//表示設定",
                                      """\n            ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Neutral, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
             elif (MainClass.GetBool("TeamOne")):
@@ -364,17 +364,17 @@ namespace SuperNewRoles.Roles."""+namedata+"""
         # ベントボタン
         if (MainClass.GetBool("A_CanVent")):
             if (MainClass.GetBool("A_CanVentOption")):
-                # CustomOption/CustomOptionDate.cs
-                MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//CustomOption",
+                # CustomOption/CustomOptionData.cs
+                MainClass.WriteCodes("CustomOption/CustomOptionData.cs", "//CustomOption",
                                      """public static CustomOption ROLENAMEIsUseVent;\n        //CustomOption""".replace("ROLENAME", MainClass.GetInput("RoleName")))
                 if (MainClass.GetBool("TeamImpo")):
-                    MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定",
+                    MainClass.WriteCodes("CustomOption/CustomOptionData.cs", "//表示設定",
                                          """ROLENAMEIsUseVent = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Impostor, "MadmateUseVentSetting", false, ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
                 elif (MainClass.GetBool("TeamCrew")):
-                    MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定",
+                    MainClass.WriteCodes("CustomOption/CustomOptionData.cs", "//表示設定",
                                          """ROLENAMEIsUseVent = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
                 elif (MainClass.GetInput("TeamNeut")):
-                    MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定",
+                    MainClass.WriteCodes("CustomOption/CustomOptionData.cs", "//表示設定",
                                          """ROLENAMEIsUseVent = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Neutral, "MadmateUseVentSetting", false, ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
                 # Roles/Role/RoleHelper.cs
                 if (MainClass.GetBool("TeamGhost")):

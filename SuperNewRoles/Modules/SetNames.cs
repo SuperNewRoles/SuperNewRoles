@@ -160,21 +160,21 @@ namespace SuperNewRoles.Modules
             }
             else if (role == RoleId.Stefinder && RoleClass.Stefinder.IsKill)
             {
-                var introdate = IntroData.GetIntroData(role);
-                roleNames = introdate.Name;
+                var introData = IntroData.GetIntroData(role);
+                roleNames = introData.Name;
                 roleColors = RoleClass.ImpostorRed;
             }
             else if (p.IsPavlovsTeam())
             {
-                var introdate = IntroData.PavlovsdogsIntro;
-                roleNames = introdate.Name + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
+                var introData = IntroData.PavlovsdogsIntro;
+                roleNames = introData.Name + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
                 roleColors = RoleClass.Pavlovsdogs.color;
             }
             else
             {
-                var introdate = IntroData.GetIntroData(role);
-                roleNames = introdate.Name;
-                roleColors = introdate.color;
+                var introData = IntroData.GetIntroData(role);
+                roleNames = introData.Name;
+                roleColors = introData.color;
             }
             var GhostRole = p.GetGhostRole();
             if (GhostRole != RoleId.DefaultRole)

@@ -1095,13 +1095,13 @@ namespace SuperNewRoles
             }
             ChacheManager.ResetMyRoleChache();
         }
-        public static void SetRoleRPC(this PlayerControl Player, RoleId SelectRoleDate)
+        public static void SetRoleRPC(this PlayerControl Player, RoleId selectRoleData)
         {
             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetRole, SendOption.Reliable, -1);
             killWriter.Write(Player.PlayerId);
-            killWriter.Write((byte)SelectRoleDate);
+            killWriter.Write((byte)selectRoleData);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-            RPCProcedure.SetRole(Player.PlayerId, (byte)SelectRoleDate);
+            RPCProcedure.SetRole(Player.PlayerId, (byte)selectRoleData);
         }
         public static bool IsClearTask(this PlayerControl player)
         {

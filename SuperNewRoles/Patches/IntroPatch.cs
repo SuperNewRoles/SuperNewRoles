@@ -303,10 +303,10 @@ namespace SuperNewRoles.Patches
                     var myrole = PlayerControl.LocalPlayer.GetRole();
                     if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                     {
-                        var date = IntroData.GetIntroData(myrole);
-                        color = date.color;
-                        TeamTitle = ModTranslation.GetString(date.NameKey + "Name");
-                        ImpostorText = date.TitleDesc;
+                        var data = IntroData.GetIntroData(myrole);
+                        color = data.color;
+                        TeamTitle = ModTranslation.GetString(data.NameKey + "Name");
+                        ImpostorText = data.TitleDesc;
                     }
                     if (PlayerControl.LocalPlayer.IsLovers())
                     {
@@ -406,12 +406,12 @@ namespace SuperNewRoles.Patches
                         var myrole = PlayerControl.LocalPlayer.GetRole();
                         if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                         {
-                            var date = IntroData.GetIntroData(myrole);
-                            __instance.YouAreText.color = date.color;
-                            __instance.RoleText.text = ModTranslation.GetString(date.NameKey + "Name");
-                            __instance.RoleText.color = date.color;
-                            __instance.RoleBlurbText.text = date.TitleDesc;
-                            __instance.RoleBlurbText.color = date.color;
+                            var data = IntroData.GetIntroData(myrole);
+                            __instance.YouAreText.color = data.color;
+                            __instance.RoleText.text = ModTranslation.GetString(data.NameKey + "Name");
+                            __instance.RoleText.color = data.color;
+                            __instance.RoleBlurbText.text = data.TitleDesc;
+                            __instance.RoleBlurbText.color = data.color;
                         }
                         if (PlayerControl.LocalPlayer.IsLovers())
                         {
