@@ -74,7 +74,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static ClosetPresetData GetData(int index = -1)
         {
             if (index == -1) index = SelectedPreset.Value;
-            ClosetPresetData data = !ClosetPresetData.ContainsKey(index)
+            ClosetPresetData data = !ClosetPresetDataDictionary.ContainsKey(index)
                 ? (new()
                 {
                     BodyColor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "BodyColor", (byte)0),
@@ -84,7 +84,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     NamePlate = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "NamePlate", ""),
                     Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "")
                 })
-                : ClosetPresetData[index];
+                : ClosetPresetDataDictionary[index];
             return data;
         }
     }
