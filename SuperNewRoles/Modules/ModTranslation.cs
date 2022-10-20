@@ -8,7 +8,7 @@ namespace SuperNewRoles.Modules {
         private static Dictionary<string, string[]> dictionary = new();
         public static string GetString(string key) {
             // アモアス側の言語読み込みが完了しているか ? 今の言語 : 日本語
-            SupportedLangs langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.Japanese;
+            SupportedLangs langId = (SupportedLangs)SaveManager.lastLanguage;
 
             if (!dictionary.ContainsKey(key)) return key; // keyが辞書にないならkeyのまま返す
 
@@ -42,7 +42,12 @@ namespace SuperNewRoles.Modules {
                 string[] values = line.Split(',');
 
                 // 配列から辞書に格納する
-                dictionary.Add(values[0],values);
+                List<string> valueslist = new();
+                foreach (string vl in values)
+                {
+                    valueslist.Add(vl.Replace("\\n","\n"));
+                }
+                dictionary.Add(values[0],valueslist.ToArray());
             }
         }
     }

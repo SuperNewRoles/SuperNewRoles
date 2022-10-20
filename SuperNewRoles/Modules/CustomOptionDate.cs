@@ -883,10 +883,17 @@ namespace SuperNewRoles.Modules
         public static CustomOption CamouflagerCamouflageQuarreled;
         public static CustomOption CamouflagerCamouflageChangeColor;
         public static CustomOption CamouflagerCamouflageColor;
-        
+
         public static CustomRoleOption CupidOption;
         public static CustomOption CupidPlayerCount;
         public static CustomOption CupidCoolTime;
+
+        public static CustomRoleOption HamburgerShopOption;
+        public static CustomOption HamburgerShopPlayerCount;
+        public static CustomOption HamburgerShopChangeTaskPrefab;
+        public static CustomOption HamburgerShopCommonTask;
+        public static CustomOption HamburgerShopShortTask;
+        public static CustomOption HamburgerShopLongTask;
         //CustomOption
 
         public static CustomOption GMOption;
@@ -1805,9 +1812,17 @@ namespace SuperNewRoles.Modules
             EvilGuesserShortMaxCount = Create(975, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
             EvilGuesserShortOneMeetingCount = Create(976, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
             
-            CupidOption = SetupCustomRoleOption(1076, false, RoleId.Cupid);
-            CupidPlayerCount = Create(1077, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CupidOption);
-            CupidCoolTime = Create(1078, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, CupidOption);
+            CupidOption = SetupCustomRoleOption(1079, false, RoleId.Cupid);
+            CupidPlayerCount = Create(1080, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CupidOption);
+            CupidCoolTime = Create(1081, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, CupidOption);
+
+            HamburgerShopOption = SetupCustomRoleOption(1073, false, RoleId.HamburgerShop);
+            HamburgerShopPlayerCount = Create(1074, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HamburgerShopOption);
+            HamburgerShopChangeTaskPrefab = Create(1075, false, CustomOptionType.Crewmate, "HamburgerShopChangeTaskPrefab", true, HamburgerShopOption);
+            var HamburgerShopoption = SelectTask.TaskSetting(1076, 1077, 1078, HamburgerShopOption, CustomOptionType.Crewmate, false);
+            HamburgerShopCommonTask = HamburgerShopoption.Item1;
+            HamburgerShopShortTask = HamburgerShopoption.Item2;
+            HamburgerShopLongTask = HamburgerShopoption.Item3;
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

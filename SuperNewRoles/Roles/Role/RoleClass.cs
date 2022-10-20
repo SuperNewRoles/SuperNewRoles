@@ -191,6 +191,7 @@ namespace SuperNewRoles.Roles
             Conjurer.ClearAndReload();
             Camouflager.ClearAndReload();
             Cupid.ClearAndReload();
+            HamburgerShop.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2871,6 +2872,7 @@ namespace SuperNewRoles.Roles
                 IsShooted = false;
             }
         }
+
         public static class Cupid
         {
             public static List<PlayerControl> CupidPlayer;
@@ -2886,6 +2888,16 @@ namespace SuperNewRoles.Roles
                 currentTarget = null;
                 Created = false;
                 CupidLoverpea = new();
+            }
+        }
+
+        public static class HamburgerShop
+        {
+            public static List<PlayerControl> HamburgerShopPlayer;
+            public static Color32 color = new(255, 128, 64, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                HamburgerShopPlayer = new();
             }
         }
         //新ロールクラス

@@ -169,6 +169,7 @@ namespace SuperNewRoles.Modules
         Conjurer,
         Camouflager,
         Cupid,
+        HamburgerShop,
         //RoleId
     }
 

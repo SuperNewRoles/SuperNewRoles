@@ -961,6 +961,7 @@ namespace SuperNewRoles
                 RoleId.Conjurer => Roles.Impostor.Conjurer.PlayerCount.GetFloat(),
                 RoleId.Camouflager => CustomOptions.CamouflagerPlayerCount.GetFloat(),
                 RoleId.Cupid => CustomOptions.CupidPlayerCount.GetFloat(),
+                RoleId.HamburgerShop => CustomOptions.HamburgerShopPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

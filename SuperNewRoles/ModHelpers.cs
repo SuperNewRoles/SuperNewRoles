@@ -322,7 +322,7 @@ namespace SuperNewRoles
         {
             if (player == null) return;
 
-            List<byte> taskTypeIds = GenerateTasks(numCommon, numShort, numLong);
+            List<byte> taskTypeIds = player.GenerateTasks(numCommon, numShort, numLong);
 
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetTasks, SendOption.Reliable, -1);
             writer.Write(player.PlayerId);
@@ -330,13 +330,16 @@ namespace SuperNewRoles
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.UncheckedSetTasks(player.PlayerId, taskTypeIds.ToArray());
         }
-        public static List<byte> GenerateTasks(int numCommon, int numShort, int numLong)
+        public static List<byte> GenerateTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
         {
             if (numCommon + numShort + numLong <= 0)
             {
                 numShort = 1;
             }
-
+            if (player.IsRole(RoleId.HamburgerShop) && !CustomOptions.HamburgerShopChangeTaskPrefab.GetBool())
+            {
+                return Roles.CrewMate.HamburgerShop.GenerateTasks(numCommon + numShort + numLong);
+            }
             var tasks = new Il2CppSystem.Collections.Generic.List<byte>();
             var hashSet = new Il2CppSystem.Collections.Generic.HashSet<TaskTypes>();
 
