@@ -291,7 +291,7 @@ namespace SuperNewRoles.Modules
         }
 
         public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15) :
-            base(id, isSHROn, type, CustomOptions.Cs(color, name), CustomOptions.rates, "", null, true, false, "")
+            base(id, isSHROn, type, CustomOptionHolder.Cs(color, name), CustomOptionHolder.rates, "", null, true, false, "")
         {
             try
             {
@@ -827,7 +827,7 @@ namespace SuperNewRoles.Modules
                     bool enabled = true;
                     var parent = option.parent;
 
-                    if (AmongUsClient.Instance?.AmHost == false && CustomOptions.hideSettings.GetBool())
+                    if (AmongUsClient.Instance?.AmHost == false && CustomOptionHolder.hideSettings.GetBool())
                     {
                         enabled = false;
                     }
@@ -996,7 +996,7 @@ namespace SuperNewRoles.Modules
         public static string DefaultResult = "";
         public static string ResultData()
         {
-            bool hideSettings = AmongUsClient.Instance?.AmHost == false && CustomOptions.hideSettings.GetBool();
+            bool hideSettings = AmongUsClient.Instance?.AmHost == false && CustomOptionHolder.hideSettings.GetBool();
             if (hideSettings)
             {
                 return DefaultResult;
@@ -1012,47 +1012,47 @@ namespace SuperNewRoles.Modules
             {
 
                 // First add the presets and the role counts
-                OptionToString(CustomOptions.presetSelection)
+                OptionToString(CustomOptionHolder.presetSelection)
             };
 
-            var optionName = CustomOptions.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingCrewmateRoles"));
-            var min = CustomOptions.crewmateRolesCountMax.GetSelection();
-            var max = CustomOptions.crewmateRolesCountMax.GetSelection();
+            var optionName = CustomOptionHolder.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingCrewmateRoles"));
+            var min = CustomOptionHolder.crewmateRolesCountMax.GetSelection();
+            var max = CustomOptionHolder.crewmateRolesCountMax.GetSelection();
             if (min > max) min = max;
             var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
 
-            optionName = CustomOptions.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingCrewmateGhostRoles"));
-            min = CustomOptions.crewmateGhostRolesCountMax.GetSelection();
-            max = CustomOptions.crewmateGhostRolesCountMax.GetSelection();
+            optionName = CustomOptionHolder.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingCrewmateGhostRoles"));
+            min = CustomOptionHolder.crewmateGhostRolesCountMax.GetSelection();
+            max = CustomOptionHolder.crewmateGhostRolesCountMax.GetSelection();
             if (min > max) min = max;
             optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
 
-            optionName = CustomOptions.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingNeutralRoles"));
-            min = CustomOptions.neutralRolesCountMax.GetSelection();
-            max = CustomOptions.neutralRolesCountMax.GetSelection();
+            optionName = CustomOptionHolder.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingNeutralRoles"));
+            min = CustomOptionHolder.neutralRolesCountMax.GetSelection();
+            max = CustomOptionHolder.neutralRolesCountMax.GetSelection();
             if (min > max) min = max;
             optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
 
-            optionName = CustomOptions.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingNeutralGhostRoles"));
-            min = CustomOptions.neutralGhostRolesCountMax.GetSelection();
-            max = CustomOptions.neutralGhostRolesCountMax.GetSelection();
+            optionName = CustomOptionHolder.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingNeutralGhostRoles"));
+            min = CustomOptionHolder.neutralGhostRolesCountMax.GetSelection();
+            max = CustomOptionHolder.neutralGhostRolesCountMax.GetSelection();
             if (min > max) min = max;
             optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
 
-            optionName = CustomOptions.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingImpostorRoles"));
-            min = CustomOptions.impostorRolesCountMax.GetSelection();
-            max = CustomOptions.impostorRolesCountMax.GetSelection();
+            optionName = CustomOptionHolder.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingImpostorRoles"));
+            min = CustomOptionHolder.impostorRolesCountMax.GetSelection();
+            max = CustomOptionHolder.impostorRolesCountMax.GetSelection();
             if (min > max) min = max;
             optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
 
-            optionName = CustomOptions.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingImpostorGhostRoles"));
-            min = CustomOptions.impostorGhostRolesCountMax.GetSelection();
-            max = CustomOptions.impostorGhostRolesCountMax.GetSelection();
+            optionName = CustomOptionHolder.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingImpostorGhostRoles"));
+            min = CustomOptionHolder.impostorGhostRolesCountMax.GetSelection();
+            max = CustomOptionHolder.impostorGhostRolesCountMax.GetSelection();
             if (min > max) min = max;
             optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
@@ -1073,14 +1073,14 @@ namespace SuperNewRoles.Modules
 
             foreach (CustomOption option in CustomOption.options)
             {
-                if ((option == CustomOptions.presetSelection) ||
-                    (option == CustomOptions.crewmateRolesCountMax) ||
-                    (option == CustomOptions.crewmateGhostRolesCountMax) ||
-                    (option == CustomOptions.neutralRolesCountMax) ||
-                    (option == CustomOptions.neutralGhostRolesCountMax) ||
-                    (option == CustomOptions.impostorRolesCountMax) ||
-                    (option == CustomOptions.impostorGhostRolesCountMax) ||
-                    (option == CustomOptions.hideSettings))
+                if ((option == CustomOptionHolder.presetSelection) ||
+                    (option == CustomOptionHolder.crewmateRolesCountMax) ||
+                    (option == CustomOptionHolder.crewmateGhostRolesCountMax) ||
+                    (option == CustomOptionHolder.neutralRolesCountMax) ||
+                    (option == CustomOptionHolder.neutralGhostRolesCountMax) ||
+                    (option == CustomOptionHolder.impostorRolesCountMax) ||
+                    (option == CustomOptionHolder.impostorGhostRolesCountMax) ||
+                    (option == CustomOptionHolder.hideSettings))
                 {
                     continue;
                 }

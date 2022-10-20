@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles.Neutral
     {
         public static void ResetCooldowns()
         {
-            HudManagerStartPatch.JackalKillButton.MaxTimer = CustomOptions.WaveCannonJackalKillCooldown.GetFloat();
+            HudManagerStartPatch.JackalKillButton.MaxTimer = CustomOptionHolder.WaveCannonJackalKillCooldown.GetFloat();
             HudManagerStartPatch.JackalKillButton.Timer = HudManagerStartPatch.JackalKillButton.MaxTimer;
         }
     }

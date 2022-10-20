@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using SuperNewRoles.Patches;
 using UnityEngine;
-using static SuperNewRoles.Modules.CustomOptions;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 using static SuperNewRoles.Roles.RoleClass;
 
 namespace SuperNewRoles.Roles.Impostor

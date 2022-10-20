@@ -296,7 +296,7 @@ namespace SuperNewRoles.Modules
                 SetRole(targetid, (byte)RoleId.Pavlovsdogs);
                 if (!RoleClass.Pavlovsowner.CountData.ContainsKey(sourceid))
                 {
-                    RoleClass.Pavlovsowner.CountData[sourceid] = CustomOptions.PavlovsownerCreateDogLimit.GetInt();
+                    RoleClass.Pavlovsowner.CountData[sourceid] = CustomOptionHolder.PavlovsownerCreateDogLimit.GetInt();
                 }
                 RoleClass.Pavlovsowner.CountData[sourceid]--;
             }
@@ -572,7 +572,7 @@ namespace SuperNewRoles.Modules
             {
                 if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(playerid))
                 {
-                    RoleClass.MadStuntMan.GuardCount[playerid] = CustomOptions.MadStuntManMaxGuardCount.GetInt() - 1;
+                    RoleClass.MadStuntMan.GuardCount[playerid] = CustomOptionHolder.MadStuntManMaxGuardCount.GetInt() - 1;
                 }
                 else
                 {
@@ -583,7 +583,7 @@ namespace SuperNewRoles.Modules
             {
                 if (!RoleClass.StuntMan.GuardCount.ContainsKey(playerid))
                 {
-                    RoleClass.StuntMan.GuardCount[playerid] = CustomOptions.StuntManMaxGuardCount.GetInt() - 1;
+                    RoleClass.StuntMan.GuardCount[playerid] = CustomOptionHolder.StuntManMaxGuardCount.GetInt() - 1;
                 }
                 else
                 {
@@ -677,7 +677,7 @@ namespace SuperNewRoles.Modules
             var source = ModHelpers.PlayerById(sourceid);
             var target = ModHelpers.PlayerById(targetid);
             if (source == null || target == null) return;
-            if (CustomOptions.CountChangerNextTurn.GetBool())
+            if (CustomOptionHolder.CountChangerNextTurn.GetBool())
             {
                 RoleClass.CountChanger.Setdata[source.PlayerId] = target.PlayerId;
             }
@@ -913,7 +913,7 @@ namespace SuperNewRoles.Modules
                     p.ClearRole();
                     p.SetRole(RoleId.JackalSeer);
                     //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                    RoleClass.JackalSeer.CanCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.GetBool();
+                    RoleClass.JackalSeer.CanCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
                 }
             }
             else
@@ -923,7 +923,7 @@ namespace SuperNewRoles.Modules
                     p.ClearRole();
                     p.SetRole(RoleId.Jackal);
                     //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                    RoleClass.Jackal.CanCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.GetBool();
+                    RoleClass.Jackal.CanCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
                 }
             }
             PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);

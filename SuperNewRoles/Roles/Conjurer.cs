@@ -6,7 +6,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using UnityEngine;
-using static SuperNewRoles.Modules.CustomOptions;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Roles.Impostor
 {

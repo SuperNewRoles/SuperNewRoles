@@ -91,12 +91,12 @@ namespace SuperNewRoles.Patches
 
         static void ReduceKillCooldown(PlayerControl __instance)
         {
-            if (CustomOptions.IsAlwaysReduceCooldown.GetBool())
+            if (CustomOptionHolder.IsAlwaysReduceCooldown.GetBool())
             {
                 // オプションがOFFの場合はベント内はクールダウン減少を止める
-                bool exceptInVent = !CustomOptions.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
+                bool exceptInVent = !CustomOptionHolder.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
                 // 配電盤タスク中はクールダウン減少を止める
-                bool exceptOnTask = !CustomOptions.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
+                bool exceptOnTask = !CustomOptionHolder.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
 
                 if (!__instance.Data.IsDead && !__instance.CanMove && !exceptInVent && !exceptOnTask)
                 {
@@ -104,7 +104,7 @@ namespace SuperNewRoles.Patches
                     return;
                 }
             }
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && CustomOptions.TaskerIsKillCoolTaskNow.GetBool())
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && CustomOptionHolder.TaskerIsKillCoolTaskNow.GetBool())
             {
                 if (!__instance.Data.IsDead && !__instance.CanMove && Minigame.Instance != null && Minigame.Instance.MyNormTask != null && Minigame.Instance.MyNormTask.Owner.AmOwner)
                     __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);

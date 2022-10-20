@@ -108,7 +108,7 @@ namespace SuperNewRoles.Patches
                                     if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
                                         RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
                                     else
-                                        RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = CustomOptions.RemoteSheriffKillMaxCount.GetInt() - 1;
+                                        RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.RemoteSheriffKillMaxCount.GetInt() - 1;
                                     if (RoleClass.RemoteSheriff.IsKillTeleport)
                                         __instance.RpcMurderPlayerCheck(target);
                                     else
@@ -128,7 +128,7 @@ namespace SuperNewRoles.Patches
                         {
                             if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
                             {
-                                if (SelfBomber.GetIsBomb(__instance, p, CustomOptions.SelfBomberScope.GetFloat()))
+                                if (SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SelfBomberScope.GetFloat()))
                                 {
                                     __instance.RpcMurderPlayerCheck(p);
                                     p.RpcSetFinalStatus(FinalStatus.BySelfBomberBomb);
@@ -145,7 +145,7 @@ namespace SuperNewRoles.Patches
                             {
                                 if (p.IsAlive() && p.PlayerId != __instance.PlayerId)
                                 {
-                                    if (SelfBomber.GetIsBomb(__instance, p, CustomOptions.SamuraiScope.GetFloat()))
+                                    if (SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SamuraiScope.GetFloat()))
                                     {
                                         __instance.RpcSetFinalStatus(FinalStatus.SamuraiKill);
                                         __instance.RpcMurderPlayerCheck(p);
@@ -189,7 +189,7 @@ namespace SuperNewRoles.Patches
                         if (RoleClass.NiceButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
                             RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId]--;
                         else
-                            RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptions.NiceButtonerCount.GetInt() - 1;
+                            RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptionHolder.NiceButtonerCount.GetInt() - 1;
                         if (RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1)
                             EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
                         return false;
@@ -197,7 +197,7 @@ namespace SuperNewRoles.Patches
                         if (RoleClass.EvilButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
                             RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId]--;
                         else
-                            RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptions.EvilButtonerCount.GetInt() - 1;
+                            RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptionHolder.EvilButtonerCount.GetInt() - 1;
                         if (RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1)
                             EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
                         return false;
@@ -524,7 +524,7 @@ namespace SuperNewRoles.Patches
                                     }
                                     else
                                     {
-                                        RoleClass.Sheriff.KillCount[__instance.PlayerId] = CustomOptions.SheriffKillMaxCount.GetInt() - 1;
+                                        RoleClass.Sheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.SheriffKillMaxCount.GetInt() - 1;
                                     }
                                     __instance.RpcMurderPlayerCheck(target);
                                     if (target.IsRole(RoleId.HauntedWolf)) __instance.RpcSetFinalStatus(FinalStatus.SheriffHauntedWolfKill);
@@ -666,7 +666,7 @@ namespace SuperNewRoles.Patches
                     {
                         if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
                         {
-                            RoleClass.StuntMan.GuardCount[target.PlayerId] = CustomOptions.StuntManMaxGuardCount.GetInt() - 1;
+                            RoleClass.StuntMan.GuardCount[target.PlayerId] = CustomOptionHolder.StuntManMaxGuardCount.GetInt() - 1;
                             __instance.RpcShowGuardEffect(target);
                             return false;
                         }
@@ -743,7 +743,7 @@ namespace SuperNewRoles.Patches
                 }, 0.5f, "RpcCheckExile Assassin Start Meeting");
                 new LateTask(() =>
                 {
-                    __instance.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroData.MarineIntro.NameKey + "Name")}は誰だ？</size>");
+                    __instance.RpcSetName($"<size=200%>{CustomOptionHolder.Cs(RoleClass.Marine.color, IntroData.MarineIntro.NameKey + "Name")}は誰だ？</size>");
                 }, 2f, "RpcCheckExile Who Marine Name");
                 new LateTask(() =>
                 {
@@ -775,7 +775,7 @@ namespace SuperNewRoles.Patches
                 }, 0.5f, "RpcMurderPlayerCheck Assassin Meeting");
                 new LateTask(() =>
                 {
-                    target.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroData.MarineIntro.NameKey + "Name")}は誰だ？</size>");
+                    target.RpcSetName($"<size=200%>{CustomOptionHolder.Cs(RoleClass.Marine.color, IntroData.MarineIntro.NameKey + "Name")}は誰だ？</size>");
                 }, 2f, "RpcMurderPlayerCheck Who Marine Name");
                 new LateTask(() =>
                 {
@@ -900,13 +900,13 @@ namespace SuperNewRoles.Patches
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
                 {
-                    if (CustomOptions.WaveCannonIsSyncKillCoolTime.GetBool())
-                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonCoolTime.GetFloat();
+                    if (CustomOptionHolder.WaveCannonIsSyncKillCoolTime.GetBool())
+                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptionHolder.WaveCannonCoolTime.GetFloat();
                 }
                 else
                 {
-                    if (CustomOptions.WaveCannonJackalIsSyncKillCoolTime.GetBool())
-                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptions.WaveCannonJackalCoolTime.GetFloat();
+                    if (CustomOptionHolder.WaveCannonJackalIsSyncKillCoolTime.GetBool())
+                        HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptionHolder.WaveCannonJackalCoolTime.GetFloat();
                 }
             }
 
@@ -944,9 +944,9 @@ namespace SuperNewRoles.Patches
                 }
                 if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Slugger))
                 {
-                    if (CustomOptions.SluggerIsKillCoolSync.GetBool())
+                    if (CustomOptionHolder.SluggerIsKillCoolSync.GetBool())
                     {
-                        HudManagerStartPatch.SluggerButton.MaxTimer = CustomOptions.SluggerCoolTime.GetFloat();
+                        HudManagerStartPatch.SluggerButton.MaxTimer = CustomOptionHolder.SluggerCoolTime.GetFloat();
                         HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
                     }
                 }

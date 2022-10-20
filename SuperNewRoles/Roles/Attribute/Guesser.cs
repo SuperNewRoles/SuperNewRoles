@@ -195,7 +195,7 @@ namespace SuperNewRoles.Roles.Attribute
                 int col = i[(int)roleInfo.Team] % 5;
                 buttonParent.localPosition = new Vector3(-3.47f + 1.75f * col, 1.5f - 0.45f * row, -200f);
                 buttonParent.localScale = new Vector3(0.55f, 0.55f, 1f);
-                label.text = CustomOptions.Cs(roleInfo.color, roleInfo.NameKey + "Name");
+                label.text = CustomOptionHolder.Cs(roleInfo.color, roleInfo.NameKey + "Name");
                 label.alignment = TMPro.TextAlignmentOptions.Center;
                 label.transform.localPosition = new Vector3(0, 0, label.transform.localPosition.z);
                 label.transform.localScale *= 1.6f;
@@ -235,10 +235,10 @@ namespace SuperNewRoles.Roles.Attribute
 
                         if (RoleClass.NiceGuesser.Count == -1)
                         {
-                            RoleClass.NiceGuesser.Count = PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser) ? CustomOptions.NiceGuesserShortMaxCount.GetInt() : CustomOptions.EvilGuesserShortMaxCount.GetInt();
+                            RoleClass.NiceGuesser.Count = PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser) ? CustomOptionHolder.NiceGuesserShortMaxCount.GetInt() : CustomOptionHolder.EvilGuesserShortMaxCount.GetInt();
                         }
                         RoleClass.NiceGuesser.Count--;
-                        if ((RoleClass.NiceGuesser.Count > 0) && dyingTarget != PlayerControl.LocalPlayer && (PlayerControl.LocalPlayer.IsImpostor() ? CustomOptions.EvilGuesserShortOneMeetingCount.GetBool() : CustomOptions.NiceGuesserShortOneMeetingCount.GetBool()))
+                        if ((RoleClass.NiceGuesser.Count > 0) && dyingTarget != PlayerControl.LocalPlayer && (PlayerControl.LocalPlayer.IsImpostor() ? CustomOptionHolder.EvilGuesserShortOneMeetingCount.GetBool() : CustomOptionHolder.NiceGuesserShortOneMeetingCount.GetBool()))
                         {
                             __instance.playerStates.ToList().ForEach(x => { if (x.TargetPlayerId == dyingTarget.PlayerId && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
                         }

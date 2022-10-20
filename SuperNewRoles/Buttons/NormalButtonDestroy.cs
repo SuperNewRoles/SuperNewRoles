@@ -11,7 +11,7 @@ namespace SuperNewRoles.Buttons
             {
                 RoleId.FastMaker => !RoleClass.FastMaker.IsCreatedMadmate,
                 RoleId.SecretlyKiller or RoleId.DoubleKiller or RoleId.Smasher or RoleId.Conjurer => true,
-                RoleId.Tasker => !CustomOptions.TaskerCanKill.GetBool(),
+                RoleId.Tasker => !CustomOptionHolder.TaskerCanKill.GetBool(),
                 //キルボタン無効か
                 _ => false
             };

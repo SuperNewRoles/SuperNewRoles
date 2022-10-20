@@ -93,7 +93,7 @@ namespace SuperNewRoles.Patches
             var IsDebugModeBool = false;
             if (ConfigRoles.DebugMode.Value)
             {
-                if (CustomOptions.IsDebugMode.GetBool())
+                if (CustomOptionHolder.IsDebugMode.GetBool())
                 {
                     IsDebugModeBool = true;
                 }

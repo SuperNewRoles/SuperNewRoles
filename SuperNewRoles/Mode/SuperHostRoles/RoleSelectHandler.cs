@@ -27,7 +27,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 int impostor = PlayerControl.GameOptions.NumImpostors;
                 int crewmate = 0;
                 //ジャッカルがいるなら
-                if (CustomOptions.JackalOption.GetSelection() != 0 || CustomOptions.JackalSeerOption.GetSelection() != 0)
+                if (CustomOptionHolder.JackalOption.GetSelection() != 0 || CustomOptionHolder.JackalSeerOption.GetSelection() != 0)
                 {
                     for (int i = 0; i < (PlayerControl.GameOptions.NumImpostors + 2); i++)
                     {
@@ -45,16 +45,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
                 else if (//bot出す
-                    CustomOptions.EgoistOption.GetSelection() != 0 ||
-                    CustomOptions.SheriffOption.GetSelection() != 0 ||
-                    CustomOptions.trueloverOption.GetSelection() != 0 ||
-                    CustomOptions.FalseChargesOption.GetSelection() != 0 ||
-                    CustomOptions.RemoteSheriffOption.GetSelection() != 0 ||
-                    CustomOptions.MadMakerOption.GetSelection() != 0 ||
-                    CustomOptions.SamuraiOption.GetSelection() != 0 ||
-                    CustomOptions.DemonOption.GetSelection() != 0 ||
-                    CustomOptions.ToiletFanOption.GetSelection() != 0 ||
-                    CustomOptions.NiceButtonerOption.GetSelection() != 0)
+                    CustomOptionHolder.EgoistOption.GetSelection() != 0 ||
+                    CustomOptionHolder.SheriffOption.GetSelection() != 0 ||
+                    CustomOptionHolder.trueloverOption.GetSelection() != 0 ||
+                    CustomOptionHolder.FalseChargesOption.GetSelection() != 0 ||
+                    CustomOptionHolder.RemoteSheriffOption.GetSelection() != 0 ||
+                    CustomOptionHolder.MadMakerOption.GetSelection() != 0 ||
+                    CustomOptionHolder.SamuraiOption.GetSelection() != 0 ||
+                    CustomOptionHolder.DemonOption.GetSelection() != 0 ||
+                    CustomOptionHolder.ToiletFanOption.GetSelection() != 0 ||
+                    CustomOptionHolder.NiceButtonerOption.GetSelection() != 0)
                 {
                     PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
                     bot1.RpcSetRole(RoleTypes.Impostor);
@@ -68,26 +68,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     crewmate++;
                     crewmate++;
                 }
-                else if (CustomOptions.AssassinAndMarineOption.GetSelection() != 0)
+                else if (CustomOptionHolder.AssassinAndMarineOption.GetSelection() != 0)
                 {
                     PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
                     bot1.RpcSetRole(RoleTypes.Crewmate);
                     crewmate++;
                 }
-                if (CustomOptions.SpyOption.GetSelection() != 0)
+                if (CustomOptionHolder.SpyOption.GetSelection() != 0)
                 {
-                    for (int i = 0; i < CustomOptions.SpyPlayerCount.GetFloat() - (crewmate - (impostor - PlayerControl.GameOptions.NumImpostors)) + 1; i++)
+                    for (int i = 0; i < CustomOptionHolder.SpyPlayerCount.GetFloat() - (crewmate - (impostor - PlayerControl.GameOptions.NumImpostors)) + 1; i++)
                     {
                         PlayerControl bot1 = BotManager.Spawn("暗転対策BOT");
                         bot1.RpcSetRole(RoleTypes.Crewmate);
                         crewmate++;
                     }
                 }
-                if (CustomOptions.BakeryOption.GetSelection() != 0)
+                if (CustomOptionHolder.BakeryOption.GetSelection() != 0)
                 {
                     BotManager.Spawn("パン屋BOT").Exiled();
                 }
-                else if (CustomOptions.AssassinAndMarineOption.GetSelection() != 0)
+                else if (CustomOptionHolder.AssassinAndMarineOption.GetSelection() != 0)
                 {
                     BotManager.Spawn(ModTranslation.GetString("AssassinAndMarineName") + "BOT").Exiled();
                 }
@@ -329,7 +329,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
 
-            var Assassinselection = CustomOptions.AssassinAndMarineOption.GetSelection();
+            var Assassinselection = CustomOptionHolder.AssassinAndMarineOption.GetSelection();
             SuperNewRolesPlugin.Logger.LogInfo("[SHR] アサイン情報:" + Assassinselection + "、" + AllRoleSetClass.CrewmatePlayerNum + "、" + AllRoleSetClass.CrewmatePlayers.Count);
             if (Assassinselection != 0 && AllRoleSetClass.CrewmatePlayerNum > 0 && AllRoleSetClass.CrewmatePlayers.Count > 0)
             {

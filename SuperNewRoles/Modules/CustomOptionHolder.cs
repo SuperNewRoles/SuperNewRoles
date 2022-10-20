@@ -6,7 +6,7 @@ using static SuperNewRoles.Modules.CustomOption;
 
 namespace SuperNewRoles.Modules
 {
-    public class CustomOptions
+    public class CustomOptionHolder
     {
         public static string[] rates = new string[] { "0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%" };
 

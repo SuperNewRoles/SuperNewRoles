@@ -134,7 +134,7 @@ namespace SuperNewRoles.Patches
 
                 if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hitman))
                 {
-                    RoleClass.Hitman.UpdateTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
+                    RoleClass.Hitman.UpdateTime = CustomOptionHolder.HitmanChangeTargetTime.GetFloat();
                     Roles.Neutral.Hitman.SetTarget();
                     Roles.Neutral.Hitman.DestroyIntroHandle(__instance);
                     if (FastDestroyableSingleton<HudManager>.Instance != null)

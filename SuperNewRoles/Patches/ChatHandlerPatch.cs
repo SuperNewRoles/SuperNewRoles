@@ -268,7 +268,7 @@ namespace SuperNewRoles.Patches
                 int PlayerCount = 0;
                 foreach (CustomOption opt in option.children)
                 {
-                    if (opt.GetName() == CustomOptions.SheriffPlayerCount.GetName())
+                    if (opt.GetName() == CustomOptionHolder.SheriffPlayerCount.GetName())
                     {
                         PlayerCount = (int)opt.GetFloat();
                         break;
@@ -293,7 +293,7 @@ namespace SuperNewRoles.Patches
             foreach (CustomRoleOption option in EnableOptions)
             {
                 string text = GetText(option);
-                string rolename = "<size=115%>\n" + CustomOptions.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
+                string rolename = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
                 SuperNewRolesPlugin.Logger.LogInfo(text);
                 Send(target, rolename, text, time);
                 time += SendTime;

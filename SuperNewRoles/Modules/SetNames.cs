@@ -126,10 +126,10 @@ namespace SuperNewRoles.Modules
             catch { }
             string playerInfoText = "";
             string meetingInfoText = "";
-            playerInfoText = $"{CustomOptions.Cs(roleColors, roleNames)}";
+            playerInfoText = $"{CustomOptionHolder.Cs(roleColors, roleNames)}";
             if (GhostRoleNames != "")
             {
-                playerInfoText = $"{CustomOptions.Cs((Color)GhostRoleColor, GhostRoleNames)}({playerInfoText})";
+                playerInfoText = $"{CustomOptionHolder.Cs((Color)GhostRoleColor, GhostRoleNames)}({playerInfoText})";
             }
             playerInfoText += TaskText;
             meetingInfoText = playerInfoText.Trim();
@@ -398,7 +398,7 @@ namespace SuperNewRoles.Modules
                 {
                     if (RoleClass.PartTimer.IsLocalOn)
                     {
-                        if (CustomOptions.PartTimerIsCheckTargetRole.GetBool())
+                        if (CustomOptionHolder.PartTimerIsCheckTargetRole.GetBool())
                         {
                             SetNamesClass.SetPlayerRoleNames(RoleClass.PartTimer.CurrentTarget);
                             SetNamesClass.SetPlayerNameColors(RoleClass.PartTimer.CurrentTarget);

@@ -10,12 +10,12 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetMainCooldown()
         {
-            HudManagerStartPatch.DoubleKillerMainKillButton.MaxTimer = CustomOptions.MainKillCoolTime.GetFloat();
+            HudManagerStartPatch.DoubleKillerMainKillButton.MaxTimer = CustomOptionHolder.MainKillCoolTime.GetFloat();
             HudManagerStartPatch.DoubleKillerMainKillButton.Timer = HudManagerStartPatch.DoubleKillerMainKillButton.MaxTimer;
         }
         public static void ResetSubCooldown()
         {
-            HudManagerStartPatch.DoubleKillerSubKillButton.MaxTimer = CustomOptions.SubKillCoolTime.GetFloat();
+            HudManagerStartPatch.DoubleKillerSubKillButton.MaxTimer = CustomOptionHolder.SubKillCoolTime.GetFloat();
             HudManagerStartPatch.DoubleKillerSubKillButton.Timer = HudManagerStartPatch.DoubleKillerSubKillButton.MaxTimer;
         }
         public static void EndMeeting()

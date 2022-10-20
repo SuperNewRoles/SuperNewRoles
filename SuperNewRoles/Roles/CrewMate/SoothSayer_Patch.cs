@@ -106,7 +106,7 @@ namespace SuperNewRoles.Roles
         }
         static void SpiritEvent(MeetingHud __instance)
         {
-            if (CustomOptions.SpiritMediumIsAutoMode.GetBool()) return;
+            if (CustomOptionHolder.SpiritMediumIsAutoMode.GetBool()) return;
             if (PlayerControl.LocalPlayer.IsRole(RoleId.SpiritMedium) && PlayerControl.LocalPlayer.IsAlive() && RoleClass.SpiritMedium.MaxCount >= 1)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
@@ -148,7 +148,7 @@ namespace SuperNewRoles.Roles
                 PlayerControl Target = WhitePlayers.GetRandom();
                 FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(CachedPlayer.LocalPlayer, Target.Data.PlayerName + ModTranslation.GetString("SoothSayerCrewmateText"));
             }
-            else if (PlayerControl.LocalPlayer.IsRole(RoleId.SpiritMedium) && CustomOptions.SpiritMediumIsAutoMode.GetBool())
+            else if (PlayerControl.LocalPlayer.IsRole(RoleId.SpiritMedium) && CustomOptionHolder.SpiritMediumIsAutoMode.GetBool())
             {
                 if (RoleClass.SpiritMedium.ExilePlayer == null) return;
                 string CrewText = RoleClass.SpiritMedium.ExilePlayer.IsCrew() ? ModTranslation.GetString("SoothSayerCrewmateText") : ModTranslation.GetString("SoothSayerNotCrewmateText");

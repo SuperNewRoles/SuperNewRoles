@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using static SuperNewRoles.Modules.CustomOptions;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Patches
 {

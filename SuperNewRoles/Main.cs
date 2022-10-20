@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace SuperNewRoles
 {
-    [BepInAutoPlugin("jp.ykundesu.supernewroles","SuperNewRoles")]
+    [BepInAutoPlugin("jp.ykundesu.supernewroles", "SuperNewRoles")]
     [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInProcess("Among Us.exe")]
     public partial class SuperNewRolesPlugin : BasePlugin
@@ -52,7 +52,7 @@ namespace SuperNewRoles
             ChacheManager.Load();
             CustomCosmetics.CustomColors.Load();
             ConfigRoles.Load();
-            CustomOptions.Load();
+            CustomOptionHolder.Load();
             Patches.FreeNamePatch.Initialize();
             // All Load() End
 

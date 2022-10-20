@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles
             {
                 if (p.IsAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {
-                    if (SelfBomber.GetIsBomb(PlayerControl.LocalPlayer, p, CustomOptions.SamuraiScope.GetFloat()))
+                    if (SelfBomber.GetIsBomb(PlayerControl.LocalPlayer, p, CustomOptionHolder.SamuraiScope.GetFloat()))
                     {
                         PlayerControl.LocalPlayer.UncheckedMurderPlayer(p, showAnimation: false);
                         PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SamuraiKill);

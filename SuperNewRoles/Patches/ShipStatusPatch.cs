@@ -50,14 +50,14 @@ namespace SuperNewRoles.Patches
 
             if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4) // 停電を直そうとした
             {
-                if (player.IsMadRoles() && !CustomOptions.MadRolesCanFixElectrical.GetBool())
+                if (player.IsMadRoles() && !CustomOptionHolder.MadRolesCanFixElectrical.GetBool())
                 {
                     return false;
                 }
             }
             if (systemType == SystemTypes.Comms && amount is 0 or 16 or 17) // コミュサボを直そうとした
             {
-                if (player.IsMadRoles() && !CustomOptions.MadRolesCanFixComms.GetBool())
+                if (player.IsMadRoles() && !CustomOptionHolder.MadRolesCanFixComms.GetBool())
                 {
                     return false;
                 }
@@ -157,7 +157,7 @@ namespace SuperNewRoles.Patches
         public static GameObject airship;
         public static void Prefix()
         {
-            if (AmongUsClient.Instance.GameMode != GameModes.FreePlay && CustomOptions.enableMirroMap.GetBool())
+            if (AmongUsClient.Instance.GameMode != GameModes.FreePlay && CustomOptionHolder.enableMirroMap.GetBool())
             {
                 if (PlayerControl.GameOptions.MapId == 0)
                 {
