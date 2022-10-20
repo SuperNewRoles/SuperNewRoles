@@ -60,7 +60,7 @@ namespace SuperNewRoles.MapOptions
                                 for (int j = 0; j < num; j++)
                                 {
                                     Collider2D collider2D = __instance.buffer[j];
-                                    if (!(collider2D.tag == "DeadBody"))
+                                    if (collider2D.tag != "DeadBody")
                                     {
                                         PlayerControl component = collider2D.GetComponent<PlayerControl>();
                                         if (!component || component.IsDead())
