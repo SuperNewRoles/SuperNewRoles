@@ -191,7 +191,7 @@ namespace SuperNewRoles.Patches
                     if (data.role == null)
                         builder.Append(ModTranslation.GetString("WinnerGetError"));
                     else
-                        builder.Append(ModTranslation.GetString(IntroDate.GetIntroDate((RoleId)data.role).NameKey + "Name"));
+                        builder.Append(ModTranslation.GetString(IntroData.GetIntroData((RoleId)data.role).NameKey + "Name"));
                     builder.AppendLine();
                 }
                 SendCommand(target, builder.ToString(), $"<size=200%>{OnGameEndPatch.WinText}</size>");
@@ -215,7 +215,7 @@ namespace SuperNewRoles.Patches
             }
             return text;
         }
-        static string GetOptionText(CustomRoleOption RoleOption, IntroDate intro)
+        static string GetOptionText(CustomRoleOption RoleOption, IntroData intro)
         {
             Logger.Info("GetOptionText", "ChatHandler");
             string text = "";
@@ -236,9 +236,9 @@ namespace SuperNewRoles.Patches
         {
             Logger.Info("GetText", "Chathandler");
             string text = "\n";
-            IntroDate intro = option.Intro;
+            IntroData intro = option.Intro;
             text += GetTeamText(intro.Team) + ModTranslation.GetString("Team") + "\n";
-            text += "「" + IntroDate.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
+            text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
             text += intro.Description + "\n";
             text += ModTranslation.GetString("MessageSettings") + ":\n";
             text += GetOptionText(option, intro);

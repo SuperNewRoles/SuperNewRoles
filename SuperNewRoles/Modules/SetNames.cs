@@ -160,26 +160,26 @@ namespace SuperNewRoles.Modules
             }
             else if (role == RoleId.Stefinder && RoleClass.Stefinder.IsKill)
             {
-                var introdate = IntroDate.GetIntroDate(role);
+                var introdate = IntroData.GetIntroData(role);
                 roleNames = introdate.Name;
                 roleColors = RoleClass.ImpostorRed;
             }
             else if (p.IsPavlovsTeam())
             {
-                var introdate = IntroDate.PavlovsdogsIntro;
+                var introdate = IntroData.PavlovsdogsIntro;
                 roleNames = introdate.Name + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
                 roleColors = RoleClass.Pavlovsdogs.color;
             }
             else
             {
-                var introdate = IntroDate.GetIntroDate(role);
+                var introdate = IntroData.GetIntroData(role);
                 roleNames = introdate.Name;
                 roleColors = introdate.color;
             }
             var GhostRole = p.GetGhostRole();
             if (GhostRole != RoleId.DefaultRole)
             {
-                var GhostIntro = IntroDate.GetIntroDate(GhostRole);
+                var GhostIntro = IntroData.GetIntroData(GhostRole);
                 GhostroleNames = GhostIntro.Name;
                 GhostroleColors = GhostIntro.color;
             }
@@ -189,7 +189,7 @@ namespace SuperNewRoles.Modules
         {
             var role = player.GetRole();
             if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && player.IsAlive())) return;
-            SetPlayerNameColor(player, IntroDate.GetIntroDate(role).color);
+            SetPlayerNameColor(player, IntroData.GetIntroData(role).color);
         }
         public static void SetPlayerRoleNames(PlayerControl player)
         {

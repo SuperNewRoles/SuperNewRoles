@@ -261,7 +261,7 @@ namespace SuperNewRoles.Patches
             {
                 if (PlayerControl.LocalPlayer.IsNeutral() && !PlayerControl.LocalPlayer.IsRole(RoleId.GM))
                 {
-                    IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
+                    IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole());
                     TeamTitle = ModTranslation.GetString("Neutral");
                     ImpostorText = ModTranslation.GetString("NeutralSubIntro");
                     color = new(127, 127, 127, byte.MaxValue);
@@ -283,7 +283,7 @@ namespace SuperNewRoles.Patches
                         case RoleId.MayorFriends:
                         case RoleId.SatsumaAndImo:
                         case RoleId.GM:
-                            IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
+                            IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole());
                             color = Intro.color;
                             TeamTitle = ModTranslation.GetString(Intro.NameKey + "Name");
                             ImpostorText = "";
@@ -303,7 +303,7 @@ namespace SuperNewRoles.Patches
                     var myrole = PlayerControl.LocalPlayer.GetRole();
                     if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                     {
-                        var date = IntroDate.GetIntroDate(myrole);
+                        var date = IntroData.GetIntroData(myrole);
                         color = date.color;
                         TeamTitle = ModTranslation.GetString(date.NameKey + "Name");
                         ImpostorText = date.TitleDesc;
@@ -406,7 +406,7 @@ namespace SuperNewRoles.Patches
                         var myrole = PlayerControl.LocalPlayer.GetRole();
                         if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                         {
-                            var date = IntroDate.GetIntroDate(myrole);
+                            var date = IntroData.GetIntroData(myrole);
                             __instance.YouAreText.color = date.color;
                             __instance.RoleText.text = ModTranslation.GetString(date.NameKey + "Name");
                             __instance.RoleText.color = date.color;

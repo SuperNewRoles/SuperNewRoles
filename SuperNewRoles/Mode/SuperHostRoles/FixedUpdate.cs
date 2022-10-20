@@ -93,7 +93,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             //必要がないなら処理しない
             if (player.IsMod() && DiePlayers.Count < 1 && (!IsHideAndSeek || !player.IsImpostor())) return;
 
-            var introdate = IntroDate.GetIntroDate(player.GetRole(), player);
+            var introdate = IntroData.GetIntroData(player.GetRole(), player);
 
             string Name = player.GetDefaultName();
             string NewName = "";

@@ -1405,7 +1405,7 @@ namespace SuperNewRoles
             return RoleId.DefaultRole;
         }
         public static bool IsGhostRole(this RoleId role) =>
-            IntroDate.GetIntroDate(role).IsGhostRole;
+            IntroData.GetIntroData(role).IsGhostRole;
 
         public static bool IsGhostRole(this PlayerControl p, RoleId role, bool IsChache = true)
         {

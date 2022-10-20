@@ -129,7 +129,7 @@ namespace SuperNewRoles.Roles
                     }, 10.5f, "Assassin Meet");
                     new LateTask(() =>
                     {
-                        exile.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}<color=white>は誰だ？</size>");
+                        exile.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroData.MarineIntro.NameKey + "Name")}<color=white>は誰だ？</size>");
                     }, 12f, "Assassin Name");
                     new LateTask(() =>
                     {

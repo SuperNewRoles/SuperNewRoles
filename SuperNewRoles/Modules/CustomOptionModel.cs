@@ -143,14 +143,14 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1)
         {
             if (type is CustomOptionType.Empty)
-                type = IntroDate.GetIntroDate(roleId).Team switch
+                type = IntroData.GetIntroData(roleId).Team switch
                 {
                     TeamRoleType.Impostor => CustomOptionType.Impostor,
                     TeamRoleType.Neutral => CustomOptionType.Neutral,
                     TeamRoleType.Crewmate => CustomOptionType.Crewmate,
                     _ => CustomOptionType.Generic
                 };
-            return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroDate.GetIntroDate(roleId).color, max);
+            return new CustomRoleOption(id, IsSHROn, type, $"{roleId}Name", IntroData.GetIntroData(roleId).color, max);
         }
 
         // Static behaviour
@@ -266,11 +266,11 @@ namespace SuperNewRoles.Modules
             }
         }
 
-        public IntroDate Intro
+        public IntroData Intro
         {
             get
             {
-                return IntroDate.GetIntroDate(RoleId);
+                return IntroData.GetIntroData(RoleId);
             }
         }
 
@@ -295,7 +295,7 @@ namespace SuperNewRoles.Modules
         {
             try
             {
-                this.RoleId = IntroDate.IntroData.FirstOrDefault((_) =>
+                this.RoleId = IntroData.IntroList[.FirstOrDefault((_) =>
                 {
                     return _.NameKey + "Name" == name;
                 }).RoleId;

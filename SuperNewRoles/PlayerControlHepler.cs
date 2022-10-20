@@ -41,7 +41,7 @@ namespace SuperNewRoles
         {
             if (player == null) return;
 
-            List<IntroDate> infos = new() { IntroDate.GetIntroDate(player.GetRole(), player) };
+            List<IntroData> infos = new() { IntroData.GetIntroData(player.GetRole(), player) };
 
             var toRemove = new List<PlayerTask>();
             var aaa = false;
@@ -71,7 +71,7 @@ namespace SuperNewRoles
             }
 
             // Add TextTask for remaining RoleInfos
-            foreach (IntroDate roleInfo in infos)
+            foreach (IntroData roleInfo in infos)
             {
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
@@ -83,7 +83,7 @@ namespace SuperNewRoles
                 }
                 if (!player.IsGhostRole(RoleId.DefaultRole))
                 {
-                    var GhostRoleInfo = IntroDate.GetIntroDate(player.GetGhostRole(), player);
+                    var GhostRoleInfo = IntroData.GetIntroData(player.GetGhostRole(), player);
                     task.Text += "\n" + CustomOptions.Cs(GhostRoleInfo.color, $"{ModTranslation.GetString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
                 }
 

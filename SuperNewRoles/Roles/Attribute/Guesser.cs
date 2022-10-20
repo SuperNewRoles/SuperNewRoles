@@ -167,12 +167,12 @@ namespace SuperNewRoles.Roles.Attribute
             }
 
             int ind = 0;
-            foreach (IntroDate roleInfo in IntroDate.IntroData)
+            foreach (IntroData roleInfo in IntroData.IntroList[)
             {
                 if (roleInfo == null ||
                     roleInfo.RoleId == RoleId.Hunter ||
                     roleInfo.RoleId is RoleId.Assassin or RoleId.Marine ||
-                    (roleInfo != IntroDate.CrewmateIntro && roleInfo != IntroDate.ImpostorIntro && IntroDate.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0))
+                    (roleInfo != IntroData.CrewmateIntro && roleInfo != IntroData.ImpostorIntro && IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0))
                 {
                     Logger.Info("continueになりました:" + roleInfo.RoleId, "Guesser");
                     continue; // Not guessable roles

@@ -283,11 +283,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             List<RoleId> Crewonepar = new();
             List<RoleId> Crewnotonepar = new();
 
-            foreach (IntroDate intro in IntroDate.IntroData)
+            foreach (IntroData intro in IntroData.IntroList[)
             {
                 if (intro.RoleId != RoleId.DefaultRole)
                 {
-                    var option = IntroDate.GetOption(intro.RoleId);
+                    var option = IntroData.GetOption(intro.RoleId);
                     if (option == null || !option.isSHROn) continue;
                     var selection = option.GetSelection();
                     if (selection != 0)

@@ -120,15 +120,15 @@ namespace SuperNewRoles.Patches
         {
             public string PlayerName { get; set; }
             public string NameSuffix { get; set; }
-            public List<IntroDate> Roles { get; set; }
+            public List<IntroData> Roles { get; set; }
             public string RoleString { get; set; }
             public int TasksCompleted { get; set; }
             public int TasksTotal { get; set; }
             public int PlayerId { get; set; }
             public int ColorId { get; set; }
             public FinalStatus Status { get; internal set; }
-            public IntroDate IntroDate { get; set; }
-            public IntroDate GhostIntroDate { get; set; }
+            public IntroData IntroDate { get; set; }
+            public IntroData GhostIntroDate { get; set; }
         }
     }
     [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
@@ -520,12 +520,12 @@ namespace SuperNewRoles.Patches
                 if (p != null && p.Object != null && p.Object.IsPlayer())
                 {
                     //var p = pc.Data;
-                    var roles = IntroDate.GetIntroDate(p.Object.GetRole(), p.Object);
+                    var roles = IntroData.GetIntroData(p.Object.GetRole(), p.Object);
                     if (RoleClass.Stefinder.IsKillPlayer.Contains(p.PlayerId))
                     {
-                        roles = IntroDate.StefinderIntro1;
+                        roles = IntroData.StefinderIntro1;
                     }
-                    var ghostRoles = IntroDate.GetIntroDate(p.Object.GetGhostRole(), p.Object);
+                    var ghostRoles = IntroData.GetIntroData(p.Object.GetGhostRole(), p.Object);
                     var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
                     if (p.Object.IsImpostor())
                     {
@@ -1136,7 +1136,7 @@ namespace SuperNewRoles.Patches
                     // Exile role text
                     if (id is StringNames.ExileTextPN or StringNames.ExileTextSN or StringNames.ExileTextPP or StringNames.ExileTextSP)
                     {
-                        __result = player.Data.PlayerName + " は " + ModTranslation.GetString(IntroDate.GetIntroDate(player.GetRole(), player).NameKey + "Name") + " だった！";
+                        __result = player.Data.PlayerName + " は " + ModTranslation.GetString(IntroData.GetIntroData(player.GetRole(), player).NameKey + "Name") + " だった！";
                     }
                 }
             }
