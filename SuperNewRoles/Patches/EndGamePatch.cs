@@ -915,7 +915,10 @@ namespace SuperNewRoles.Patches
                             TempData.winners.Add(new(player.Data));
                             if (RoleClass.Cupid.CupidLoverpea.ContainsValue(player.PlayerId))
                             {
-                                TempData.winners.Add(new(ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverpea.GetKey(player.PlayerId)).Data));
+
+                                PlayerControl cPlayer = ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverpea.GetKey(player.PlayerId));
+                                if (cPlayer != null && cPlayer.IsRole(RoleId.Cupid))
+                                    TempData.winners.Add(new(ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverpea.GetKey(player.PlayerId)).Data));
                             }
                             AdditionalTempData.winCondition = WinCondition.LoversWin;
                         }
@@ -1038,7 +1041,9 @@ namespace SuperNewRoles.Patches
                             TempData.winners.Add(new(player.Data));
                             if (RoleClass.Cupid.CupidLoverpea.ContainsValue(player.PlayerId))
                             {
-                                TempData.winners.Add(new(ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverpea.GetKey(player.PlayerId)).Data));
+                                PlayerControl cPlayer = ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverpea.GetKey(player.PlayerId));
+                                if (cPlayer != null && cPlayer.IsRole(RoleId.Cupid))
+                                    TempData.winners.Add(new(ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverpea.GetKey(player.PlayerId)).Data));
                             }
                         }
                     }

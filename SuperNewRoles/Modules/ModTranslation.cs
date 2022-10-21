@@ -8,7 +8,7 @@ namespace SuperNewRoles.Modules {
         private static Dictionary<string, string[]> dictionary = new();
         public static string GetString(string key) {
             // アモアス側の言語読み込みが完了しているか ? 今の言語 : 日本語
-            SupportedLangs langId = (SupportedLangs)SaveManager.lastLanguage;
+            SupportedLangs langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.Japanese;
 
             if (!dictionary.ContainsKey(key)) return key; // keyが辞書にないならkeyのまま返す
 
