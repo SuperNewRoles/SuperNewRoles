@@ -2659,6 +2659,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new(0, 255, 0, byte.MaxValue);
             public static List<byte> IsKillPlayer;
             public static bool IsKill;
+            public static Dictionary<byte, bool> IsKillSHR;
             public static PlayerControl target;
             public static DateTime ButtonTimer;
             public static void ClearAndReload()
@@ -2666,6 +2667,7 @@ namespace SuperNewRoles.Roles
                 StefinderPlayer = new();
                 IsKill = false;
                 IsKillPlayer = new();
+                IsKillSHR = new();
             }
         }
         public static class Slugger

@@ -99,6 +99,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             string NewName = "";
             string MySuffix = "";
             string RoleNameText = ModHelpers.Cs(introdate.color, introdate.Name);
+            string PlayerNameText = ModHelpers.Cs(introdate.color, Name + MySuffix);
             Dictionary<byte, string> ChangePlayers = new();
 
             foreach (PlayerControl CelebrityPlayer in RoleClass.Celebrity.CelebrityPlayer)
@@ -265,6 +266,19 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     RoleNameText += " (OK)";
                 }
             }
+            else if (player.IsRole(RoleId.Stefinder))
+            {
+                if (RoleClass.Stefinder.IsKillSHR.ContainsKey(player.PlayerId))
+                {
+                    RoleNameText = ModHelpers.Cs(RoleClass.ImpostorRed, introdate.Name);
+                    PlayerNameText = ModHelpers.Cs(RoleClass.ImpostorRed, Name + MySuffix);
+                }
+                else
+                {
+                    RoleNameText = ModHelpers.Cs(introdate.color, introdate.Name);
+                    PlayerNameText = ModHelpers.Cs(introdate.color, Name + MySuffix);
+                }
+            }
 
             string TaskText = "";
             if (!player.IsClearTask())
@@ -317,7 +331,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         IsArsonistVIew = true;
                     }
                 }
-                if (!RoleClass.Camouflager.IsCamouflage) NewName = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + ModHelpers.Cs(introdate.color, Name + MySuffix);
+                if (!RoleClass.Camouflager.IsCamouflage) NewName = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + PlayerNameText;
                 else NewName = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + ModHelpers.Cs(introdate.color, MySuffix);
                 SuperNewRolesPlugin.Logger.LogInfo(NewName);
             }

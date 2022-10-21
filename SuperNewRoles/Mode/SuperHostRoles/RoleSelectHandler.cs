@@ -103,6 +103,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetRoleDesync(RoleClass.FalseCharges.FalseChargesPlayer, RoleTypes.Impostor);
             SetRoleDesync(RoleClass.MadMaker.MadMakerPlayer, RoleTypes.Impostor);
             SetRoleDesync(RoleClass.JackalSeer.JackalSeerPlayer, RoleTypes.Impostor);
+            SetRoleDesync(RoleClass.Stefinder.StefinderPlayer, RoleTypes.Impostor);
             /*============インポスターにDesync============*/
 
 

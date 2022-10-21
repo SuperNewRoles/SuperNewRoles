@@ -2761,7 +2761,11 @@ namespace SuperNewRoles.Buttons
 
                     RPCProcedure.StefinderIsKilled(PlayerControl.LocalPlayer.PlayerId);
                     RoleClass.Stefinder.IsKill = true;
-                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.Stefinder.target);
+                    if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                    {
+                        PlayerControl.LocalPlayer.RpcMurderPlayerCheck(RoleClass.Stefinder.target);
+                    }
+                    else ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.Stefinder.target);
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Stefinder && !RoleClass.Stefinder.IsKill; },
                 () =>

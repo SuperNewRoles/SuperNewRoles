@@ -28,7 +28,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     || (!RoleClass.Minimalist.UseSabo && player.IsRole(RoleId.Minimalist))
                     || (!RoleClass.Samurai.UseSabo && player.IsRole(RoleId.Samurai))
                     || (!RoleClass.Egoist.UseSabo && player.IsRole(RoleId.Egoist))
-                    || (!RoleClass.JackalSeer.IsUseSabo && player.IsRole(RoleId.JackalSeer))) return false;
+                    || (!RoleClass.JackalSeer.IsUseSabo && player.IsRole(RoleId.JackalSeer))
+                    || (!CustomOptions.StefinderSabo.GetBool() && player.IsRole(RoleId.Stefinder))) return false;
             }
             if (PlayerControl.LocalPlayer.IsUseVent() && RoleHelpers.IsComms())
             {

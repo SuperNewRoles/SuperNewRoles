@@ -649,6 +649,15 @@ namespace SuperNewRoles.Patches
                             var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                             if (ma != null && !ma.IsActive) return false;
                             break;
+                        case RoleId.Stefinder:
+                            if (!RoleClass.Stefinder.IsKillSHR.ContainsKey(__instance.PlayerId))
+                            {
+                                __instance.RpcMurderPlayerCheck(target);
+                                RoleClass.Stefinder.IsKillSHR[__instance.PlayerId] = true;
+                                RoleClass.Stefinder.IsKillPlayer.Add(__instance.PlayerId);
+                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                            }
+                            return false;
                     }
                     break;
                 case ModeId.Detective:
