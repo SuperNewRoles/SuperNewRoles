@@ -1,4 +1,5 @@
 using System;
+using AmongUs.Data.Legacy;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
@@ -119,7 +120,7 @@ namespace SuperNewRoles.Patches
                 {
                     LobbyLimit = settings.MaxPlayers;
                     settings.MaxPlayers = 15; // Force 15 Player Lobby on Server
-                    SaveManager.ChatModeType = QuickChatModes.FreeChatOrQuickChat;
+                    /*LegacySaveManager.chatModeType = QuickChatModes.FreeChatOrQuickChat;*/
                 }
                 public static void Postfix([HarmonyArgument(0)] GameOptionsData settings)
                 {
@@ -131,7 +132,7 @@ namespace SuperNewRoles.Patches
             {
                 public static void Prefix()
                 {
-                    SaveManager.ChatModeType = QuickChatModes.FreeChatOrQuickChat;
+                    /*LegacySaveManager.ChatModeType = QuickChatModes.FreeChatOrQuickChat;*/
                 }
             }
             [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]

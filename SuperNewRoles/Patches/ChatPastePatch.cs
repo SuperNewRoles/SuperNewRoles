@@ -9,7 +9,7 @@ namespace SuperNewRoles.Patches
         {
             static void Postfix()
             {
-                if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && SaveManager.chatModeType == 1)
+                if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen)
                 {
                     if (ModHelpers.GetManyKeyDown(new[] { KeyCode.LeftControl, KeyCode.V }))
                     {

@@ -2319,6 +2319,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static int CheckMadmateKillCount;
             public static int KillCount;
+            public static Dictionary<byte, int> KillCountSHR;
             public static bool IsCheck
             {
                 get
@@ -2331,6 +2332,7 @@ namespace SuperNewRoles.Roles
                 FinderPlayer = new();
                 CheckMadmateKillCount = CustomOptions.FinderCheckMadmateSetting.GetInt();
                 KillCount = 0;
+                KillCountSHR = new();
             }
         }
         public static class Revolutionist

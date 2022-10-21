@@ -649,6 +649,20 @@ namespace SuperNewRoles.Patches
                             var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                             if (ma != null && !ma.IsActive) return false;
                             break;
+                        case RoleId.Finder:
+                            if (!RoleClass.Finder.KillCountSHR.ContainsKey(__instance.PlayerId) || RoleClass.Finder.KillCountSHR[__instance.PlayerId] >= 1)//KillCountが1以上または定義してなかったら
+                            {
+                                if (RoleClass.Finder.KillCountSHR.ContainsKey(__instance.PlayerId))
+                                {
+                                    RoleClass.Finder.KillCountSHR[__instance.PlayerId]--;
+                                }
+                                else
+                                {
+                                    RoleClass.Finder.KillCountSHR[__instance.PlayerId] = CustomOptions.FinderCheckMadmateSetting.GetInt() - 1;
+                                }
+                            }
+                            Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                            break;
                     }
                     break;
                 case ModeId.Detective:

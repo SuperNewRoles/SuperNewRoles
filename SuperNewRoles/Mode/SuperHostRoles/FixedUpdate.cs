@@ -223,6 +223,25 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
+            else if (player.IsRole(RoleId.Finder))
+            {
+                if (RoleClass.Finder.KillCountSHR.ContainsKey(player.PlayerId))
+                {
+                    if (RoleClass.Finder.KillCountSHR[player.PlayerId] <= 0)
+                    {
+                        foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
+                        {
+                            if (Impostor.IsMadRoles() && Impostor.IsPlayer())
+                            {
+                                if (!ChangePlayers.ContainsKey(Impostor.PlayerId))
+                                {
+                                    if (!RoleClass.Camouflager.IsCamouflage) ChangePlayers.Add(Impostor.PlayerId, ModHelpers.Cs(RoleClass.ImpostorRed, Impostor.GetDefaultName()));
+                                }// 　　↑多分これで大丈夫...?()
+                            }
+                        }
+                    }
+                }
+            }
 
             if (player.IsLovers() &&
                 ((RoleClass.Camouflager.LoversMark && RoleClass.Camouflager.IsCamouflage) || !RoleClass.Camouflager.IsCamouflage))
@@ -265,7 +284,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     RoleNameText += " (OK)";
                 }
             }
-
+            else if (player.IsRole(RoleId.Finder))
+            {
+                if (RoleClass.Finder.KillCountSHR.ContainsKey(player.PlayerId))
+                {
+                    RoleNameText = ModHelpers.Cs(introdate.color, introdate.Name + $"(あと{RoleClass.Finder.CheckMadmateKillCount - RoleClass.Finder.KillCountSHR[player.PlayerId]}キル)");
+                }
+            }
             string TaskText = "";
             if (!player.IsClearTask())
             {

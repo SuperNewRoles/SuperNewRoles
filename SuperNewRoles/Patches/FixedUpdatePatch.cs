@@ -123,18 +123,18 @@ namespace SuperNewRoles.Patches
             VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
             OldModeButtons.OldModeUpdate();
 
-            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+            // -- 以下ゲーム中のみ --
+            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+
+            SetBasePlayerOutlines();
+            LadderDead.FixedUpdate();
+            switch (ModeHandler.GetMode())
             {
-                var MyRole = PlayerControl.LocalPlayer.GetRole();
-                SetBasePlayerOutlines();
-                LadderDead.FixedUpdate();
-                var ThisMode = ModeHandler.GetMode();
-                if (ThisMode == ModeId.Default)
-                {
+                case ModeId.Default:
                     SabotageManager.Update();
                     SetNameUpdate.Postfix(__instance);
-                    Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
-                    JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
+                    Jackal.JackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
+                    JackalSeer.JackalSeerFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                     Roles.CrewMate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
                     Roles.Neutral.PartTimer.FixedUpdate();
@@ -144,7 +144,7 @@ namespace SuperNewRoles.Patches
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
                         if (PlayerControl.LocalPlayer.IsMadRoles()) { VentDataModules.MadmateVent(); }
                         NormalButtonDestroy.Postfix();
-                        switch (MyRole)
+                        switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Pursuer:
                                 Pursuer.PursureUpdate.Postfix();
@@ -231,13 +231,13 @@ namespace SuperNewRoles.Patches
                                 break;
                         }
                     }
-                    else
+                    else // -- 死亡時 --
                     {
                         if (MapOptions.MapOption.ClairvoyantZoom)
                         {
                             Clairvoyant.FixedUpdate.Postfix();
                         }
-                        switch (MyRole)
+                        switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Bait:
                                 if (!RoleClass.Bait.Reported)
@@ -265,35 +265,30 @@ namespace SuperNewRoles.Patches
                                 break;
                         }
                     }
-                }
-                else if (ThisMode == ModeId.SuperHostRoles)
-                {
+                    break;
+                case ModeId.SuperHostRoles:
                     Mode.SuperHostRoles.FixedUpdate.Update();
-                    switch (MyRole)
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Mafia))
                     {
-                        case RoleId.Mafia:
-                            Mafia.FixedUpdate();
-                            break;
+                        Mafia.FixedUpdate();
                     }
-                    SerialKiller.SHRFixedUpdate(MyRole);
+                    SerialKiller.SHRFixedUpdate(PlayerControl.LocalPlayer.GetRole());
                     Roles.Impostor.Camouflager.SHRFixedUpdate();
-                }
-                else if (ThisMode == ModeId.NotImpostorCheck)
-                {
+                    break;
+                case ModeId.NotImpostorCheck:
                     if (AmongUsClient.Instance.AmHost)
                     {
                         BlockTool.FixedUpdate();
                     }
                     Mode.NotImpostorCheck.NameSet.Postfix();
-                }
-                else
-                {
+                    break;
+                default:
                     if (AmongUsClient.Instance.AmHost)
                     {
                         BlockTool.FixedUpdate();
                     }
                     ModeHandler.FixedUpdate(__instance);
-                }
+                    break;
             }
         }
     }
