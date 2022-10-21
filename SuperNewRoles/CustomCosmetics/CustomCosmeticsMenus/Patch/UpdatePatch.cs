@@ -1,3 +1,4 @@
+using AmongUs.Data.Legacy;
 using HarmonyLib;
 using UnityEngine;
 
@@ -47,7 +48,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     __instance.PreviewArea.transform.localPosition = new Vector3(0, -1f, -3);
                     //__instance.PreviewArea.transform.localScale = new Vector3(1, 1, 1);
                     area.gameObject.SetActive(true);
-                    if (area.gameObject.active) area.PreviewNameplate(SaveManager.LastNamePlate);
+                    if (area.gameObject.active) area.PreviewNameplate(LegacySaveManager.LastNamePlate);
                     area.transform.localPosition = new Vector3(3.5f, 1.75f, -70.71f);
                 }
                 else
@@ -83,16 +84,16 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
 
                 if (!ObjectData.IsShow)
                 {
-                    ObjectData.ColorButton_SpriteRend.color = Palette.PlayerColors[SaveManager.BodyColor];
+                    ObjectData.ColorButton_SpriteRend.color = Palette.PlayerColors[LegacySaveManager.BodyColor];
                     ObjectData.ColorButton.transform.localScale = new Vector3(1.56f, 1.56f, 1.56f);
 
-                    ObjectData.HatButton_Hat.SetHat(SaveManager.lastHat, SaveManager.BodyColor);
+                    ObjectData.HatButton_Hat.SetHat(LegacySaveManager.lastHat, LegacySaveManager.BodyColor);
                     ObjectData.HatButton_Hat.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
 
-                    ObjectData.SkinButton_Skin.SetSkin(SaveManager.lastSkin, SaveManager.BodyColor, false);
+                    ObjectData.SkinButton_Skin.SetSkin(LegacySaveManager.lastSkin, LegacySaveManager.BodyColor, false);
                     ObjectData.SkinButton_Skin.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
 
-                    ObjectData.VisorButton_Visor.SetVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(SaveManager.LastVisor), SaveManager.BodyColor);
+                    ObjectData.VisorButton_Visor.SetVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(LegacySaveManager.LastVisor), LegacySaveManager.BodyColor);
                     ObjectData.VisorButton_Visor.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 }
             }
