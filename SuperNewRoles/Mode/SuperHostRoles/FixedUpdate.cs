@@ -313,7 +313,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (RoleClass.SatsumaAndImo.TeamNumber == 1) { MySuffix += ModHelpers.Cs(Palette.White, " (C)"); }
                     else { MySuffix += ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"); }
                 }
-                if (!RoleClass.Camouflager.IsCamouflage) NewName = "(<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.Cs(introdate.color, Name + MySuffix);
+                if (!RoleClass.Camouflager.IsCamouflage) NewName = "(<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>)" + PlayerNameText;
                 else NewName = "(<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.Cs(introdate.color, MySuffix);
             }
             else if (player.IsAlive() || IsUnchecked)
