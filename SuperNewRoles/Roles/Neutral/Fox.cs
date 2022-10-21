@@ -17,7 +17,7 @@ namespace SuperNewRoles.Roles
                     }
                     else
                     {
-                        if (!(RoleClass.Fox.KillGuard[target.PlayerId] <= 0))
+                        if (RoleClass.Fox.KillGuard[target.PlayerId] > 0)
                         {
                             RoleClass.Fox.KillGuard[target.PlayerId]--;
                             target.RpcProtectPlayer(target, 0);

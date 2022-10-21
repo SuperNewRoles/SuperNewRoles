@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AmongUs.Data.Legacy;
 using BepInEx.Configuration;
 using TMPro;
 using UnityEngine;
@@ -272,22 +273,23 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "")
                 })
                 : ClosetPresetDatas[index];
-            SaveManager.BodyColor = data.BodyColor.Value;
-            SaveManager.LastHat = data.Hat.Value;
-            SaveManager.LastVisor = data.Visor.Value;
-            SaveManager.LastSkin = data.Skin.Value;
-            SaveManager.LastNamePlate = data.NamePlate.Value;
-            SaveManager.LastPet = data.Pet.Value;
+            
+            AmongUs.Data.DataManager.Player.Customization.Color = data.BodyColor.Value;
+            AmongUs.Data.DataManager.Player.Customization.Hat = data.Hat.Value;
+            AmongUs.Data.DataManager.Player.Customization.Visor = data.Visor.Value;
+            AmongUs.Data.DataManager.Player.Customization.Skin = data.Skin.Value;
+            AmongUs.Data.DataManager.Player.Customization.NamePlate = data.NamePlate.Value;
+            AmongUs.Data.DataManager.Player.Customization.Pet = data.Pet.Value;
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
             {
-                PlayerControl.LocalPlayer.CmdCheckColor(SaveManager.BodyColor);
-                PlayerControl.LocalPlayer.RpcSetHat(SaveManager.LastHat);
-                PlayerControl.LocalPlayer.RpcSetVisor(SaveManager.LastVisor);
-                PlayerControl.LocalPlayer.RpcSetSkin(SaveManager.LastSkin);
-                PlayerControl.LocalPlayer.RpcSetNamePlate(SaveManager.LastNamePlate);
-                PlayerControl.LocalPlayer.RpcSetPet(SaveManager.LastPet);
+                PlayerControl.LocalPlayer.CmdCheckColor(LegacySaveManager.BodyColor);
+                PlayerControl.LocalPlayer.RpcSetHat(LegacySaveManager.LastHat);
+                PlayerControl.LocalPlayer.RpcSetVisor(LegacySaveManager.LastVisor);
+                PlayerControl.LocalPlayer.RpcSetSkin(LegacySaveManager.LastSkin);
+                PlayerControl.LocalPlayer.RpcSetNamePlate(LegacySaveManager.LastNamePlate);
+                PlayerControl.LocalPlayer.RpcSetPet(LegacySaveManager.LastPet);
             }
-            PlayerCustomizationMenu.Instance.PreviewArea.UpdateFromSaveManager(PlayerMaterial.MaskType.ComplexUI);
+            PlayerCustomizationMenu.Instance.PreviewArea.UpdateFromDataManager(PlayerMaterial.MaskType.ComplexUI);
         }
     }
 }

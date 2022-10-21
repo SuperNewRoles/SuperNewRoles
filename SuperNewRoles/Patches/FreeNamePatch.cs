@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.Data;
+using AmongUs.Data.Legacy;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,7 +29,7 @@ namespace SuperNewRoles.Patches
                 textBox.outputText.fontSize = 4f;
                 textBox.OnChange.AddListener((Action)(() =>
                 {
-                    SaveManager.PlayerName = textBox.text;
+                    DataManager.Player.Customization.Name = textBox.text;
                 }));
                 textBox.OnEnter = textBox.OnFocusLost = textBox.OnChange;
                 textBox.Pipe.GetComponent<TextMeshPro>().fontSize = 4f;

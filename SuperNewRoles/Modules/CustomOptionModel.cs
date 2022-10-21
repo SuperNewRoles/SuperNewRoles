@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using AmongUs.Data.Legacy;
 using BepInEx.Configuration;
 using HarmonyLib;
 using Hazel;
@@ -1145,26 +1146,6 @@ namespace SuperNewRoles.Modules
         {
             __result = PlayerControl.GameOptions.NumImpostors;
             return false;
-        }
-    }
-
-    [HarmonyPatch(typeof(SaveManager), "GameHostOptions", MethodType.Getter)]
-    public static class SaveManagerGameHostOptionsPatch
-    {
-        private static int numImpostors;
-        public static void Prefix()
-        {
-            if (SaveManager.hostOptionsData == null)
-            {
-                SaveManager.hostOptionsData = SaveManager.LoadGameOptions("gameHostOptions");
-            }
-
-            numImpostors = SaveManager.hostOptionsData.NumImpostors;
-        }
-
-        public static void Postfix(ref GameOptionsData __result)
-        {
-            __result.NumImpostors = numImpostors;
         }
     }
 
