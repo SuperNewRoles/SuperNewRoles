@@ -1,3 +1,4 @@
+using AmongUs.Data.Legacy;
 using HarmonyLib;
 using static SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch.ObjectData;
 
@@ -5,7 +6,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
 {
     class SelectPatch
     {
-        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.BodyColor), MethodType.Setter)]
+        [HarmonyPatch(typeof(LegacySaveManager), nameof(LegacySaveManager.BodyColor), MethodType.Setter)]
         public static class SelectColor
         {
             public static void Postfix(ref byte value)
@@ -16,7 +17,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 }
             }
         }
-        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastVisor), MethodType.Setter)]
+        [HarmonyPatch(typeof(LegacySaveManager), nameof(LegacySaveManager.LastVisor), MethodType.Setter)]
         public static class SelectVisor
         {
             public static void Postfix(ref string value)
@@ -27,7 +28,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 }
             }
         }
-        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastHat), MethodType.Setter)]
+        [HarmonyPatch(typeof(LegacySaveManager), nameof(LegacySaveManager.LastHat), MethodType.Setter)]
         public static class SelectHat
         {
             public static void Postfix(ref string value)
@@ -38,7 +39,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 }
             }
         }
-        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastSkin), MethodType.Setter)]
+        [HarmonyPatch(typeof(LegacySaveManager), nameof(LegacySaveManager.LastSkin), MethodType.Setter)]
         public static class SelectSkin
         {
             public static void Postfix(ref string value)
@@ -49,7 +50,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 }
             }
         }
-        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastNamePlate), MethodType.Setter)]
+        [HarmonyPatch(typeof(LegacySaveManager), nameof(LegacySaveManager.LastNamePlate), MethodType.Setter)]
         public static class SelectNamePlate
         {
             public static void Postfix(ref string value)
@@ -60,7 +61,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 }
             }
         }
-        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastPet), MethodType.Setter)]
+        [HarmonyPatch(typeof(LegacySaveManager), nameof(LegacySaveManager.LastPet), MethodType.Setter)]
         public static class SelectPet
         {
             public static void Postfix(ref string value)
