@@ -10,7 +10,7 @@ namespace SuperNewRoles.Patches
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.MakePublic))]
         class MakePublicPatch
         {
-            public static bool Prefix(GameStartManager __instance)
+            /*public static bool Prefix(GameStartManager __instance)
             {
                 bool NameIncludeMod = LegacySaveManager.PlayerName.ToLower().Contains("mod");
                 bool NameIncludeSNR = LegacySaveManager.PlayerName.ToUpper().Contains("SNR");
@@ -41,7 +41,7 @@ namespace SuperNewRoles.Patches
                     }
                 }
                 return true;
-            }
+            }*/
         }
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
         public static class LobbyCountDownTimer
