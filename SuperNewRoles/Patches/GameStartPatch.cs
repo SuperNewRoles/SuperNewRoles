@@ -1,3 +1,4 @@
+using AmongUs.Data.Legacy;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using UnityEngine;
@@ -9,11 +10,11 @@ namespace SuperNewRoles.Patches
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.MakePublic))]
         class MakePublicPatch
         {
-            public static bool Prefix(GameStartManager __instance)
+            /*public static bool Prefix(GameStartManager __instance)
             {
-                bool NameIncludeMod = SaveManager.PlayerName.ToLower().Contains("mod");
-                bool NameIncludeSNR = SaveManager.PlayerName.ToUpper().Contains("SNR");
-                bool NameIncludeSHR = SaveManager.PlayerName.ToUpper().Contains("SHR");
+                bool NameIncludeMod = LegacySaveManager.PlayerName.ToLower().Contains("mod");
+                bool NameIncludeSNR = LegacySaveManager.PlayerName.ToUpper().Contains("SNR");
+                bool NameIncludeSHR = LegacySaveManager.PlayerName.ToUpper().Contains("SHR");
                 if (AmongUsClient.Instance.AmHost)
                 {
                     if (NameIncludeMod && !NameIncludeSNR && !NameIncludeSHR)
@@ -40,7 +41,7 @@ namespace SuperNewRoles.Patches
                     }
                 }
                 return true;
-            }
+            }*/
         }
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
         public static class LobbyCountDownTimer

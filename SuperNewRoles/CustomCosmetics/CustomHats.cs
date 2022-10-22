@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using AmongUs.Data.Legacy;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
@@ -356,13 +357,13 @@ namespace SuperNewRoles.CustomCosmetics
                     float ypos = offset - (i2 / __instance.NumPerRow) * __instance.YOffset;
                     ColorChip colorChip = UnityEngine.Object.Instantiate<ColorChip>(__instance.ColorTabPrefab, __instance.scroller.Inner);
 
-                    int color = __instance.HasLocalPlayer() ? CachedPlayer.LocalPlayer.Data.DefaultOutfit.ColorId : SaveManager.BodyColor;
+                    int color = __instance.HasLocalPlayer() ? CachedPlayer.LocalPlayer.Data.DefaultOutfit.ColorId : LegacySaveManager.BodyColor;
 
                     colorChip.transform.localPosition = new Vector3(xpos, ypos, inventoryZ);
                     if (ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard)
                     {
                         colorChip.Button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(hat)));
-                        colorChip.Button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(DestroyableSingleton<HatManager>.Instance.GetHatById(SaveManager.LastHat))));
+                        colorChip.Button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(DestroyableSingleton<HatManager>.Instance.GetHatById(LegacySaveManager.LastHat))));
                         colorChip.Button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => __instance.ClickEquip()));
                     }
                     else
@@ -432,7 +433,7 @@ namespace SuperNewRoles.CustomCosmetics
                 }
 
                 __instance.scroller.ContentYBounds.max = -(YOffset + 3.0f + headerSize);
-                __instance.currentHat = FastDestroyableSingleton<HatManager>.Instance.GetHatById(SaveManager.LastHat);
+                __instance.currentHat = FastDestroyableSingleton<HatManager>.Instance.GetHatById(LegacySaveManager.LastHat);
                 return false;
             }
         }

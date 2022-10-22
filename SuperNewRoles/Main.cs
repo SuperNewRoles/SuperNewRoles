@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using AmongUs.Data;
 using BepInEx;
 using BepInEx.IL2CPP;
 using HarmonyLib;
@@ -105,13 +106,16 @@ namespace SuperNewRoles
         {
             public static void Prefix()
             {
-                SaveManager.chatModeType = 1;
-                SaveManager.isGuest = false;
+                /*
+                LegacySaveManager.chatModeType = 1;
+                LegacySaveManager.isGuest = false;*/
             }
             public static void Postfix(ChatController __instance)
             {
-                SaveManager.chatModeType = 1;
-                SaveManager.isGuest = false;
+                /*
+                LegacySaveManager.chatModeType = 1;
+                LegacySaveManager.isGuest = false;
+                */
 
                 if (Input.GetKeyDown(KeyCode.F1))
                 {
