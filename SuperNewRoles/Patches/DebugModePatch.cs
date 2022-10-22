@@ -100,5 +100,16 @@ namespace SuperNewRoles.Patches
             }
             return IsDebugModeBool;
         }
+        public static class ExileControllerWrapUpPatch
+        {
+            public static class MurderPlayerPatch
+            {
+                public static void Postfix([HarmonyArgument(0)] PlayerControl target)
+                {
+                    
+                }
+            }
+
+        }
     }
 }
