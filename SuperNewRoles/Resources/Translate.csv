@@ -592,6 +592,7 @@ EgoistUseKillSetting,Can use Kill,キルできる,野心家可以进行击杀
 NiceRedRidingHoodName,NiceRedRidingHood,ナイス赤ずきん,小红帽
 NiceRedRidingHoodTitle1,Come back to life,生き返ろう,杀死你的凶手死亡后你将会复活
 NiceRedRidingHoodCount,Maximum number of revives,最大生き返り回数,小红帽最大可复活次数
+NiceRedRidinIsKillerDeathRevive,Resurrects even if the killers die in the task turn,キル者がタスクターンに死亡した場合でも復活する
 EvilEraserName,Evil Eraser,イビルイレイサー,消除者
 EvilEraserTitle1,Let's wipe out their abilities.,能力を消し去ろう,消除别人的能力
 EvilEraserMaxCountSetting,Max Erase Count,最大削除回数,消除者最大消除次数
@@ -1027,7 +1028,6 @@ CanRevengeNeutral,Can take a third camp,第三陣営を道連れ可,复仇者可
 CanRevengeExiled,Can take a crewmate in exile,追放で道連れ可,复仇者被放逐时可以连带一名玩家
 GMName,GM,GM,管理员
 GMTitle1,You are Game Master,あなたはゲームマスター,你是管理员
-
 SuicidalIdeationName,Suicidal ideation,自殺願望者
 SuicidalIdeationTitle1,Finding no hope for life,生きる希望を見いだせない
 SuicidalIdeationWinTextSetting,Special Victory Letters,特殊勝利文字
