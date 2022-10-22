@@ -46,7 +46,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
 
                                 if (!BROption.IsKillCountViewSelfOnly.GetBool())
                                 {
-                                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                                    foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                                     {
                                         if (p2.PlayerId == p.PlayerId) continue;
                                         p.RpcSetNamePrivate(EndText, p2);

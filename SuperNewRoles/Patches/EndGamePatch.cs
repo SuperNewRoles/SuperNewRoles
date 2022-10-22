@@ -748,7 +748,7 @@ namespace SuperNewRoles.Patches
             {
                 if (WinnerPlayer == null)
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls) if (p.IsRole(RoleId.Hitman)) WinnerPlayer = p;
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers) if (p.IsRole(RoleId.Hitman)) WinnerPlayer = p;
                     if (WinnerPlayer == null)
                     {
                         Logger.Error("エラー:殺し屋が生存していませんでした", "HitmanWin");
@@ -766,7 +766,7 @@ namespace SuperNewRoles.Patches
             else if (PavlovsTeamWin)
             {
                 TempData.winners = new();
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.IsPavlovsTeam()) TempData.winners.Add(new(p.Data));
                 }

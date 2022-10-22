@@ -111,7 +111,7 @@ namespace SuperNewRoles
                 }
 
                 //サーバーの役職判定をだます
-                foreach (var pc in PlayerControl.AllPlayerControls)
+                foreach (var pc in CachedPlayer.AllPlayers)
                 {
                     sender.AutoStartRpc(pc.NetId, (byte)RpcCalls.SetRole)
                         .Write((ushort)RoleTypes.Shapeshifter)

@@ -29,7 +29,6 @@ namespace SuperNewRoles
         {
             return !player.IsRole(RoleId.Sheriff, RoleId.Sheriff) && player != null && player.Data.Role.IsImpostor;
         }
-
         public static bool IsHauntedWolf(this PlayerControl player)
         {
             return player.IsRole(RoleId.HauntedWolf);

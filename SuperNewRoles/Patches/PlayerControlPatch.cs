@@ -1124,7 +1124,7 @@ namespace SuperNewRoles.Patches
             }
             if (ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
-                foreach (var player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (player.IsRole(RoleId.Doppelganger))
                     {

@@ -355,7 +355,7 @@ namespace SuperNewRoles.Patches
                     }
                     if (Flag)
                     {
-                        List<PlayerControl> DictatorSubExileTargetList = PlayerControl.AllPlayerControls.ToArray().ToList();
+                        List<CachedPlayer> DictatorSubExileTargetList = CachedPlayer.AllPlayers.ToArray().ToList();
                         DictatorSubExileTargetList.RemoveAll(p =>
                         {
                             return p.IsDead() || p.PlayerId == exiledPlayer.PlayerId;

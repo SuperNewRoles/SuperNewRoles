@@ -40,7 +40,7 @@ namespace SuperNewRoles.Roles.Impostor
             public byte Color { get; set; }
             public string Skin { get; set; }
             public string Hat { get; set; }
-            public string Visor { get; set;}
+            public string Visor { get; set; }
             public string Pet { get; set; }
         }
         public static Dictionary<byte, AttireData> Attire;
@@ -81,7 +81,7 @@ namespace SuperNewRoles.Roles.Impostor
                 VisorId = "",
                 PetId = "",
             };
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p == null) continue;
                 if (p.Data.Disconnected) continue;
@@ -92,7 +92,7 @@ namespace SuperNewRoles.Roles.Impostor
         public static void ResetCamouflage()
         {
             RoleClass.Camouflager.IsCamouflage = false;
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p == null) continue;
                 if (p.Data.Disconnected) continue;
@@ -121,7 +121,7 @@ namespace SuperNewRoles.Roles.Impostor
                 Attire.Add(player.PlayerId, data);
             }
             //全プレイヤーのスキンを変更する部分
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
 
                 player.RpcSetName("<color=#00000000>" + player.GetDefaultName());
@@ -156,7 +156,7 @@ namespace SuperNewRoles.Roles.Impostor
 
         public static void ResetCamouflageSHR()
         {
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 ResetCamouflageSHR(player);
             }

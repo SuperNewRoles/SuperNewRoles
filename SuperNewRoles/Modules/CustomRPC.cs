@@ -1127,7 +1127,7 @@ namespace SuperNewRoles.Modules
                         10 => LeftReactorSpawn,
                         _ => InitialSpawnCenter,
                     };
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
                         if (player.Data.PlayerId == playerId)
                         {

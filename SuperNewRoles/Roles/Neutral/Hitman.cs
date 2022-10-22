@@ -111,7 +111,7 @@ namespace SuperNewRoles.Roles.Neutral
         }
         public static void SetTarget()
         {
-            List<PlayerControl> targets = PlayerControl.AllPlayerControls.ToArray().ToList();
+            List<CachedPlayer> targets = CachedPlayer.AllPlayers.ToArray().ToList();
             targets.RemoveAll(player =>
             {
                 return player.IsDead() || player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
