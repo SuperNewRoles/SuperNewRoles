@@ -54,7 +54,7 @@ namespace SuperNewRoles.Modules
             }
             if (IsUpdate.Value)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("IsUpdateが有効でした");
+                Logger.Info("IsUpdateが有効でした");
                 IsUpdated = true;
             }
             IsUpdate.Value = false;

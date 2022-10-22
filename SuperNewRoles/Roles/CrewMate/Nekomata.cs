@@ -31,9 +31,9 @@ namespace SuperNewRoles.Roles
                                 p.Add(p1);//道連れにするプレイヤーの抽選リストに追加する
                                 //Logへの記載
                                 if (__instance.Object.IsRole(RoleId.BlackCat))
-                                    SuperNewRolesPlugin.Logger.LogInfo("[SNR:黒猫Info]Impostorを道連れ対象から除外しました");
+                                    Logger.Info("[SNR:黒猫Info]Impostorを道連れ対象から除外しました");
                                 else if (__instance.Object.IsRole(RoleId.EvilNekomata))
-                                    SuperNewRolesPlugin.Logger.LogInfo("[SNR:イビル猫又Info]Impostorを道連れ対象から除外しました");
+                                    Logger.Info("[SNR:イビル猫又Info]Impostorを道連れ対象から除外しました");
                                 else
                                     SuperNewRolesPlugin.Logger.LogError("[SNR:猫又Error]&[SNR:イビル猫又Error][NotImpostorExiled == true] 異常な抽選リストです");
                             }
@@ -66,9 +66,9 @@ namespace SuperNewRoles.Roles
                                 p.Add(p1);//道連れにするプレイヤーの抽選リストに追加する
                                 //Logへの記載
                                 if (__instance.Object.IsRole(RoleId.BlackCat))
-                                    SuperNewRolesPlugin.Logger.LogInfo("[SNR:黒猫Info]Impostorを道連れ対象から除外しませんでした");
+                                    Logger.Info("[SNR:黒猫Info]Impostorを道連れ対象から除外しませんでした");
                                 else if (__instance.Object.IsRole(RoleId.EvilNekomata))
-                                    SuperNewRolesPlugin.Logger.LogInfo("[SNR:イビル猫又Info]Impostorを道連れ対象から除外しませんでした");
+                                    Logger.Info("[SNR:イビル猫又Info]Impostorを道連れ対象から除外しませんでした");
                                 else
                                     SuperNewRolesPlugin.Logger.LogError("[SNR:猫又Error]&[SNR:イビル猫又Error][NotImpostorExiled != true] 異常な抽選リストです");
                             }
@@ -86,7 +86,7 @@ namespace SuperNewRoles.Roles
         {
             var rdm = ModHelpers.GetRandomIndex(p);
             var random = p[rdm];
-            SuperNewRolesPlugin.Logger.LogInfo(random.NameText().text);
+            Logger.Info(random.NameText().text);
             if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.NekomataExiled, random))
             {
                 random.RpcExiledUnchecked();

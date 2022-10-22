@@ -25,17 +25,17 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
         {
             var dldata = await Download(url);
 
-            SuperNewRolesPlugin.Logger.LogInfo("DLDATA:" + dldata);
+            Logger.Info("DLDATA:" + dldata);
             SharePatch.PlayerDatas[id] = dldata;
-            SuperNewRolesPlugin.Logger.LogInfo("c");
+            Logger.Info("c");
             var ms = new MemoryStream(Encoding.UTF8.GetBytes(dldata));
-            SuperNewRolesPlugin.Logger.LogInfo("e");
+            Logger.Info("e");
             var serializer = new DataContractJsonSerializer(typeof(CosmeticsObject));
-            SuperNewRolesPlugin.Logger.LogInfo("f");
+            Logger.Info("f");
             var data = serializer.ReadObject(ms);
-            SuperNewRolesPlugin.Logger.LogInfo("g");
+            Logger.Info("g");
             SharePatch.PlayerObjects[id] = (CosmeticsObject)data;
-            SuperNewRolesPlugin.Logger.LogInfo("h");
+            Logger.Info("h");
             return false;
         }
     }

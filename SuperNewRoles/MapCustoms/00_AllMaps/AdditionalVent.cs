@@ -73,7 +73,7 @@ namespace SuperNewRoles.MapCustoms
             // AirShipにベントを追加する
             if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AirShipAdditionalVents.GetBool())
             {
-                SuperNewRolesPlugin.Logger.LogInfo("べんとおおおお");
+                Logger.Info("べんとおおおお");
                 AdditionalVents vents1 = new(new Vector3(23.5483f, -5.589f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 診察室
                 AdditionalVents vents2 = new(
                     new Vector3(CustomOptions.ConnectKillerOption.GetSelection() == 0 ? 24.8562f : 26.8562f, 5.2692f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // ラウンジ

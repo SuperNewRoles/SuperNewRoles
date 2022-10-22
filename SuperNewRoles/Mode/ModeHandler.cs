@@ -267,10 +267,10 @@ namespace SuperNewRoles.Mode
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     p.HideName();
-                    SuperNewRolesPlugin.Logger.LogInfo("[ModeHandler : HideName()]" + p.GetDefaultName() + "の名前を透明に変更しました");
+                    Logger.Info("[ModeHandler : HideName()]" + p.GetDefaultName() + "の名前を透明に変更しました");
                 }
             }
-            else SuperNewRolesPlugin.Logger.LogInfo("[ModeHandler : HideName()]" + PlayerControl.LocalPlayer.GetDefaultName() + "ホストでない為、名前を透明化する処理を飛ばしました。");
+            else Logger.Info("[ModeHandler : HideName()]" + PlayerControl.LocalPlayer.GetDefaultName() + "ホストでない為、名前を透明化する処理を飛ばしました。");
         }
     }
 }

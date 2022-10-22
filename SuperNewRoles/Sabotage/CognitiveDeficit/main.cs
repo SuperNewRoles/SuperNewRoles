@@ -14,7 +14,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
         public static void StartSabotage()
         {
             IsLocalEnd = false;
-            SuperNewRolesPlugin.Logger.LogInfo("スタートサボ！");
+            Logger.Info("スタートサボ！");
             SabotageManager.thisSabotage = SabotageManager.CustomSabotage.CognitiveDeficit;
             foreach (Arrow aw in ArrowDatas)
             {

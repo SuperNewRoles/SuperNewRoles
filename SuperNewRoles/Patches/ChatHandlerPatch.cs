@@ -44,7 +44,7 @@ namespace SuperNewRoles.Patches
     {
         static readonly string SNRCommander = $"<size=200%>{SuperNewRolesPlugin.ColorModName}</size>";
         public static string WelcomeToSuperNewRoles = $"<size=150%>Welcome To {SuperNewRolesPlugin.ColorModName}</size>";
-        
+
         public static bool Prefix(PlayerControl sourcePlayer, string chatText)
         {
             if (Mode.Werewolf.Main.IsChatBlock(sourcePlayer, chatText)) return false;
@@ -294,7 +294,7 @@ namespace SuperNewRoles.Patches
             {
                 string text = GetText(option);
                 string rolename = "<size=115%>\n" + CustomOptions.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
-                SuperNewRolesPlugin.Logger.LogInfo(text);
+                Logger.Info(text);
                 Send(target, rolename, text, time);
                 time += SendTime;
             }

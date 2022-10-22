@@ -56,7 +56,7 @@ namespace SuperNewRoles.Patches
 
             passiveCreditsButton.OnClick.AddListener((UnityEngine.Events.UnityAction)delegate
             {
-                SuperNewRolesPlugin.Logger.LogInfo("クリック");
+                Logger.Info("クリック");
                 if (CredentialsPatch.LogoPatch.CreditsPopup != null)
                 {
                     CredentialsPatch.LogoPatch.CreditsPopup.SetActive(true);

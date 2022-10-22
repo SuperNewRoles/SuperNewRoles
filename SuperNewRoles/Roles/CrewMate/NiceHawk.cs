@@ -24,7 +24,7 @@ namespace SuperNewRoles.Roles
                     var TimeSpanDate = new TimeSpan(0, 0, 0, 10);
                     RoleClass.NiceHawk.timer1 = (float)(RoleClass.NiceHawk.Timer2 + TimeSpanDate - DateTime.Now).TotalSeconds;
                     CachedPlayer.LocalPlayer.transform.localPosition = RoleClass.NiceHawk.Postion;
-                    SuperNewRolesPlugin.Logger.LogInfo(RoleClass.NiceHawk.timer1);
+                    Logger.Info(RoleClass.NiceHawk.timer1);
                 }
             }
         }

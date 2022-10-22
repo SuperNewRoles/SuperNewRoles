@@ -95,7 +95,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             HatsTab hatstab = PlayerCustomizationMenu.Instance.transform.FindChild("HatsGroup").GetComponent<HatsTab>();
             foreach (var data in CustomHats.HatsTabOnEnablePatch.Chips)
             {
-                SuperNewRolesPlugin.Logger.LogInfo(data + "をDestroy");
+                Logger.Info(data + "をDestroy");
                 GameObject.Destroy(data);
             }
             hatstab.ColorChips = new();
@@ -261,7 +261,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static void SetPreset(int index)
         {
             SelectedPreset.Value = index;
-            SuperNewRolesPlugin.Logger.LogInfo("セットプリセット:" + index);
+            Logger.Info("セットプリセット:" + index);
             ClosetPresetData data = !ClosetPresetDatas.ContainsKey(index)
                 ? (new()
                 {
@@ -273,7 +273,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "")
                 })
                 : ClosetPresetDatas[index];
-            
+
             AmongUs.Data.DataManager.Player.Customization.Color = data.BodyColor.Value;
             AmongUs.Data.DataManager.Player.Customization.Hat = data.Hat.Value;
             AmongUs.Data.DataManager.Player.Customization.Visor = data.Visor.Value;

@@ -18,7 +18,7 @@ namespace SuperNewRoles.CustomCosmetics
             {
                 if (isAdded || !DownLoadClassVisor.IsEndDownload) return;
                 isAdded = true;
-                SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み処理開始");
+                Logger.Info("[CustomVisor] バイザー読み込み処理開始");
                 var AllVisors = __instance.allVisors.ToList();
 
                 var plateDir = new DirectoryInfo("SuperNewRoles\\CustomVisorsChache");
@@ -46,7 +46,7 @@ namespace SuperNewRoles.CustomCosmetics
                             : LoadTex.loadSprite("SuperNewRoles\\CustomVisorsChache\\" + file.Name)
                         };
                         VisorDatas.Add(plate);
-                        //SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み完了:" + file.Name);
+                        //Logger.Info("[CustomVisor] バイザー読み込み完了:" + file.Name);
                     }
                     catch (Exception e)
                     {
@@ -54,7 +54,7 @@ namespace SuperNewRoles.CustomCosmetics
                         SuperNewRolesPlugin.Logger.LogError(file.FullName + "のエラー内容:" + e);
                     }
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み処理終了");
+                Logger.Info("[CustomVisor] バイザー読み込み処理終了");
                 AllVisors.AddRange(VisorDatas);
                 __instance.allVisors = AllVisors.ToArray();
             }

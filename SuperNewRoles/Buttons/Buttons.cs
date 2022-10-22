@@ -784,7 +784,7 @@ namespace SuperNewRoles.Buttons
                     {
                         if (RoleClass.Jackal.CanCreateFriend)
                         {
-                            Jackal.CreateJackalFriends (target); //クルーにして フレンズにする
+                            Jackal.CreateJackalFriends(target); //クルーにして フレンズにする
                         }
                         else
                         {
@@ -1415,7 +1415,7 @@ namespace SuperNewRoles.Buttons
                     ArsonistDouseButton.Timer = ArsonistDouseButton.MaxTimer;
                     ArsonistDouseButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     RoleClass.Arsonist.IsDouse = true;
-                    //SuperNewRolesPlugin.Logger.LogInfo("アーソニストが塗るボタンを押した");
+                    //Logger.Info("アーソニストが塗るボタンを押した");
                 },
                 (bool isAlive, RoleId role) => { return Arsonist.IsButton(); },
                 () =>
@@ -1455,7 +1455,7 @@ namespace SuperNewRoles.Buttons
                     Writer.Write((byte)CustomGameOverReason.ArsonistWin);
                     Writer.EndRPC();
                     RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
-                    //SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                    //Logger.Info("CheckAndEndGame");
                     var reason = (GameOverReason)CustomGameOverReason.ArsonistWin;
                     if (ModeHandler.IsMode(ModeId.SuperHostRoles)) reason = GameOverReason.ImpostorByKill;
                     if (AmongUsClient.Instance.AmHost)
@@ -1589,7 +1589,7 @@ namespace SuperNewRoles.Buttons
                                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                                     RPCProcedure.CleanBody(playerInfo.PlayerId);
                                     RoleClass.Vulture.DeadBodyCount--;
-                                    SuperNewRolesPlugin.Logger.LogInfo("DeadBodyCount:" + RoleClass.Vulture.DeadBodyCount);
+                                    Logger.Info("DeadBodyCount:" + RoleClass.Vulture.DeadBodyCount);
                                     VultureButton.Timer = VultureButton.MaxTimer;
                                     break;
                                 }
@@ -1695,7 +1695,7 @@ namespace SuperNewRoles.Buttons
                                     RPCProcedure.CleanBody(playerInfo.PlayerId);
                                     CleanerButton.Timer = CleanerButton.MaxTimer;
                                     RoleClass.Cleaner.CleanMaxCount--;
-                                    SuperNewRolesPlugin.Logger.LogInfo("DeadBodyCount:" + RoleClass.Cleaner.CleanMaxCount);
+                                    Logger.Info("DeadBodyCount:" + RoleClass.Cleaner.CleanMaxCount);
                                     CleanerButton.Timer = CleanerButton.MaxTimer;
 
                                     RoleClass.Cleaner.CoolTime = CleanerButton.Timer = CleanerButton.MaxTimer;
@@ -2275,7 +2275,7 @@ namespace SuperNewRoles.Buttons
                         PlayerControl.LocalPlayer.RpcShowGuardEffect(target); // 守護エフェクトの表示
                         Madmate.CreateMadMate(target);//くるぅにして、マッドにする
                         RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことに
-                        SuperNewRolesPlugin.Logger.LogInfo("[FastMakerButton]マッドを作ったから普通のキルボタンに戻すよ!");
+                        Logger.Info("[FastMakerButton]マッドを作ったから普通のキルボタンに戻すよ!");
                     }
                 },
                 //マッドを作った後はカスタムキルボタンを消去する

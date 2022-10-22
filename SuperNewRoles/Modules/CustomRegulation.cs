@@ -55,7 +55,7 @@ namespace SuperNewRoles.Modules
             }
             /* foreach (RegulationData data in RegulationData.Regulations)
             {
-                SuperNewRolesPlugin.Logger.LogInfo
+                Logger.Info
                     ("～～～～\n"
                     + data.title + "\n"
                     + data.id + "\n"

@@ -25,7 +25,7 @@ namespace SuperNewRoles.Roles.Neutral
                 Writer.Write((byte)CustomGameOverReason.HitmanWin);
                 Writer.EndRPC();
                 RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
-                //SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                //Logger.Info("CheckAndEndGame");
                 var reason = (GameOverReason)CustomGameOverReason.HitmanWin;
                 if (AmongUsClient.Instance.AmHost)
                 {

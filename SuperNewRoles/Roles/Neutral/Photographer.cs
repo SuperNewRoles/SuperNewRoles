@@ -69,7 +69,7 @@ namespace SuperNewRoles.Roles.Neutral
             Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
 
-            //SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+            //Logger.Info("CheckAndEndGame");
             var reason = (GameOverReason)CustomGameOverReason.PhotographerWin;
             if (AmongUsClient.Instance.AmHost)
             {

@@ -21,7 +21,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 DefaultName = new Dictionary<int, string>();
                 foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                 {
-                    //SuperNewRolesPlugin.Logger.LogInfo($"{pc.PlayerId}:{pc.name}:{pc.NameText().text}");
+                    //Logger.Info($"{pc.PlayerId}:{pc.name}:{pc.NameText().text}");
                     DefaultName[pc.PlayerId] = pc.Data.PlayerName;
                     pc.NameText().text = pc.Data.PlayerName;
                 }
@@ -47,7 +47,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             var callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
-            SuperNewRolesPlugin.Logger.LogInfo("[SHR:FixedUpdate]" + player.name + "への(IsCommsなしの)SetRoleNameが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+            Logger.Info("[SHR:FixedUpdate]" + player.name + "への(IsCommsなしの)SetRoleNameが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
             SetRoleName(player, RoleHelpers.IsComms(), IsUnchecked);
         }
 
@@ -67,7 +67,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             var callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
-            SuperNewRolesPlugin.Logger.LogInfo("[SHR: FixedUpdate]" + player.name + "へのSetRoleNameが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+            Logger.Info("[SHR: FixedUpdate]" + player.name + "へのSetRoleNameが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
 
             //if (UpdateTime.ContainsKey(player.PlayerId) && UpdateTime[player.PlayerId] > 0) return;
 
@@ -319,7 +319,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 if (!RoleClass.Camouflager.IsCamouflage) NewName = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + ModHelpers.Cs(introdate.color, Name + MySuffix);
                 else NewName = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + ModHelpers.Cs(introdate.color, MySuffix);
-                SuperNewRolesPlugin.Logger.LogInfo(NewName);
+                Logger.Info(NewName);
             }
             if (!player.IsMod())
             {
@@ -360,7 +360,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             var callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
-            SuperNewRolesPlugin.Logger.LogInfo("[SHR:FixedUpdate] SetRoleNamesが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+            Logger.Info("[SHR:FixedUpdate] SetRoleNamesが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
 
             bool commsActive = RoleHelpers.IsComms();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -436,7 +436,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             var callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
-            SuperNewRolesPlugin.Logger.LogInfo("SetDefaultNamesが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+            Logger.Info("SetDefaultNamesが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 p.RpcSetName(p.GetDefaultName());

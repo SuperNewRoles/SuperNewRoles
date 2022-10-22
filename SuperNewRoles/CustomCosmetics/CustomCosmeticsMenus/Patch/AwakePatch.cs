@@ -23,11 +23,11 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             var PresetTabButton = __instance.Tabs[1].Button.transform.parent;
             var ClosetTab = __instance.Tabs[0].Tab.transform;
             var PresetTab = __instance.Tabs[1].Tab.transform;
-            SuperNewRolesPlugin.Logger.LogInfo(ClosetTabButton.name + ":" + PresetTabButton.name);
+            Logger.Info(ClosetTabButton.name + ":" + PresetTabButton.name);
             int i = 0;
             foreach (TabButton button in __instance.Tabs)
             {
-                SuperNewRolesPlugin.Logger.LogInfo(button.Button.transform.parent.parent.name);
+                Logger.Info(button.Button.transform.parent.parent.name);
                 if (i > 1)
                 {
                     button.Button.transform.parent.parent.gameObject.SetActive(false);
@@ -153,7 +153,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 ObjectData.IsShow = false;
                 return true;
             }
-            SuperNewRolesPlugin.Logger.LogInfo(tab.name);
+            Logger.Info(tab.name);
             if (tab.name == "ColorGroup")
             {
                 ObjectData.ClosetShow();

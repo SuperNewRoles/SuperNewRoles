@@ -87,7 +87,7 @@ namespace SuperNewRoles.Patches
                     }
                 }, 0.1f, "TecExitVent");
             }
-            SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " => " + systemType + " : " + amount);
+            Logger.Info(player.Data.PlayerName + " => " + systemType + " : " + amount);
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 SyncSetting.CustomSyncSettings();

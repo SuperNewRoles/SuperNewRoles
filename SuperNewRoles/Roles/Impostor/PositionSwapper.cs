@@ -28,7 +28,7 @@ namespace SuperNewRoles.Roles
                 {
                     AlivePlayer.Add(p);
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:" + p.PlayerId + "\n生存:" + p.IsAlive());
+                Logger.Info("ポジションスワップ:" + p.PlayerId + "\n生存:" + p.IsAlive());
             }
             var RandomPlayer = ModHelpers.GetRandom<PlayerControl>(AlivePlayer);
             var PushSwapper = PlayerControl.LocalPlayer;
@@ -38,7 +38,7 @@ namespace SuperNewRoles.Roles
             Writer.Write(RandomPlayer.PlayerId);
             Writer.Write(PushSwapper.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
-            //SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:"+RandomPlayer.PlayerId+"\n生存:"+!RandomPlayer.IsDead());
+            //Logger.Info("ポジションスワップ:"+RandomPlayer.PlayerId+"\n生存:"+!RandomPlayer.IsDead());
         }
     }
 }

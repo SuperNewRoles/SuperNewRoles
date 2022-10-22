@@ -42,7 +42,7 @@ namespace SuperNewRoles.Mode.RandomColor
                         {
                             SetColor = 0;
                         }
-                        SuperNewRolesPlugin.Logger.LogInfo("[RandomColor] UPDATED!");
+                        Logger.Info("[RandomColor] UPDATED!");
                         if (!RoleClass.IsMeeting || (RoleClass.IsMeeting && IsRandomColorMeeting))
                         {
                             p.RpcSetColor(SetColor);

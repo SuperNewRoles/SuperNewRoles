@@ -90,13 +90,13 @@ namespace SuperNewRoles.Roles.CrewMate
             if (KnightSetTheUpperLimitOfTheGuarding.GetBool())
             {
                 Times--;
-                SuperNewRolesPlugin.Logger.LogInfo($"護衛残り回数は{Times}回です");
+                Logger.Info($"護衛残り回数は{Times}回です");
             }
             NumberOfShieldsRemaining++;
             ProtectedPlayer = Target;
 
             CanProtect = false;
-            SuperNewRolesPlugin.Logger.LogInfo($"[Knight] CanProtect = {CanProtect} : 護衛を使用済みに変更しました。");
+            Logger.Info($"[Knight] CanProtect = {CanProtect} : 護衛を使用済みに変更しました。");
             //もし 護衛可能な上限回数に達している時　または　護衛不可能な状態の場合
             if ((KnightSetTheUpperLimitOfTheGuarding.GetBool() && Times <= 0) || !CanProtect)
             {
@@ -126,7 +126,7 @@ namespace SuperNewRoles.Roles.CrewMate
                         button.OnClick.RemoveAllListeners();
                         int copiedIndex = player.PlayerId;
                         button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => KnightOnClick(copiedIndex, __instance)));
-                        SuperNewRolesPlugin.Logger.LogInfo($"[Knight]{player.GetDefaultName()}に護衛ボタンを表示します。");
+                        Logger.Info($"[Knight]{player.GetDefaultName()}に護衛ボタンを表示します。");
                     }
                 }
             }
@@ -141,7 +141,7 @@ namespace SuperNewRoles.Roles.CrewMate
         static void KnightProtectButtonDestroy(MeetingHud __instance)
         {
             __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("KnightProtectButton") != null) Object.Destroy(x.transform.FindChild("KnightProtectButton").gameObject); });
-            SuperNewRolesPlugin.Logger.LogInfo("[Knight] 護衛可能な条件を満たしていない為、護衛ボタンを消去しました。");
+            Logger.Info("[Knight] 護衛可能な条件を満たしていない為、護衛ボタンを消去しました。");
         }
         /// <summary>
         /// 騎士の護衛対象者がキルを受けた場合、シールドに関わる変数を初期化する。
@@ -154,10 +154,10 @@ namespace SuperNewRoles.Roles.CrewMate
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Knight) && ProtectedPlayer == target)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo($"[Knight] {ProtectedPlayer.GetDefaultName()}がキルを受けた為、シールドに関わる変数を初期化します。");
+                    Logger.Info($"[Knight] {ProtectedPlayer.GetDefaultName()}がキルを受けた為、シールドに関わる変数を初期化します。");
                     ProtectedPlayer = null;
                     NumberOfShieldsRemaining--;
-                    SuperNewRolesPlugin.Logger.LogInfo($"[Knight] rotectedPlayer = {ProtectedPlayer},NumberOfShieldsRemaining = {NumberOfShieldsRemaining} : 初期化しました。");
+                    Logger.Info($"[Knight] rotectedPlayer = {ProtectedPlayer},NumberOfShieldsRemaining = {NumberOfShieldsRemaining} : 初期化しました。");
                 }
             }
         }
@@ -171,7 +171,7 @@ namespace SuperNewRoles.Roles.CrewMate
             {
                 if (ProtectedPlayer != null)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo($"[Knight] 会議終了時に守護が残っている為付与し直します。");
+                    Logger.Info($"[Knight] 会議終了時に守護が残っている為付与し直します。");
                     var TargetID = ProtectedPlayer.PlayerId;
                     var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
@@ -181,10 +181,10 @@ namespace SuperNewRoles.Roles.CrewMate
                     ProtectWriter.Write(LocalID);
                     ProtectWriter.Write(TargetID);
                     AmongUsClient.Instance.FinishRpcImmediately(ProtectWriter);
-                    SuperNewRolesPlugin.Logger.LogInfo($"[Knight] 会議終了時に守護が残っていた為、{ModHelpers.PlayerById(TargetID).GetDefaultName()}に付与し直しました。");
+                    Logger.Info($"[Knight] 会議終了時に守護が残っていた為、{ModHelpers.PlayerById(TargetID).GetDefaultName()}に付与し直しました。");
                 }
                 CanProtect = true;
-                SuperNewRolesPlugin.Logger.LogInfo($"[Knight] CanProtect = {CanProtect} : 護衛可能な状態に戻し、シールド対象およびシールド枚数をリセットしました。");
+                Logger.Info($"[Knight] CanProtect = {CanProtect} : 護衛可能な状態に戻し、シールド対象およびシールド枚数をリセットしました。");
             }
         }
     }

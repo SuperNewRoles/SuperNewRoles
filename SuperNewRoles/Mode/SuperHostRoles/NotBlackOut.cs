@@ -20,7 +20,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }, delay, "Murder To Reset Cam");
             new LateTask(() =>
             {
-                SuperNewRolesPlugin.Logger.LogInfo("SetDesyncSabotage");
+                Logger.Info("SetDesyncSabotage");
                 MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
                 SabotageWriter.Write(reactorId);
                 MessageExtensions.WriteNetObject(SabotageWriter, pc);

@@ -33,7 +33,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-            catch (Exception e) { SuperNewRolesPlugin.Logger.LogInfo("[SHR:Intro] Intro Error:" + e); }
+            catch (Exception e) { Logger.Info("[SHR:Intro] Intro Error:" + e); }
             return Teams;
         }
 

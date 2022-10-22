@@ -25,7 +25,7 @@ namespace SuperNewRoles.Roles
                         }
                     }
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("[Pursuer]Target:" + target?.NameText().text);
+                Logger.Info("[Pursuer]Target:" + target?.NameText().text);
                 if (target != null)
                 {
                     try
@@ -34,7 +34,7 @@ namespace SuperNewRoles.Roles
                     }
                     catch (Exception e)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("[Pursuer]Error:" + e);
+                        Logger.Info("[Pursuer]Error:" + e);
                     }
                 }
             }

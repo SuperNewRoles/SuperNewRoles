@@ -91,7 +91,7 @@ namespace SuperNewRoles.Patches
                 {
                     var (isVoteEnd, voteFor, voteArea) = AssassinVoteState(__instance);
 
-                    SuperNewRolesPlugin.Logger.LogInfo(isVoteEnd + "、" + voteFor);
+                    Logger.Info(isVoteEnd + "、" + voteFor);
                     if (isVoteEnd)
                     {
                         //GameData.PlayerInfo exiled = Helper.Player.GetPlayerControlById(voteFor).Data;
@@ -167,7 +167,7 @@ namespace SuperNewRoles.Patches
                 {
                     var (isVoteEnd, voteFor, voteArea) = RevolutionistVoteState(__instance);
 
-                    SuperNewRolesPlugin.Logger.LogInfo(isVoteEnd + "、" + voteFor);
+                    Logger.Info(isVoteEnd + "、" + voteFor);
                     if (isVoteEnd)
                     {
                         //GameData.PlayerInfo exiled = Helper.Player.GetPlayerControlById(voteFor).Data;
@@ -371,7 +371,7 @@ namespace SuperNewRoles.Patches
             }
             catch (Exception ex)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("エラー:" + ex);
+                Logger.Info("エラー:" + ex);
                 throw;
             }
         }

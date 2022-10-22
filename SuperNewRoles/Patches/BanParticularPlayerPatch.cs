@@ -9,11 +9,11 @@ namespace SuperNewRoles.Patches
         //TOHより、ありがとうございます
         public static void Postfix([HarmonyArgument(0)] ClientData client)
         {
-            SuperNewRolesPlugin.Logger.LogInfo($"{client.PlayerName}(ClientID:{client.Id})が参加");
+            Logger.Info($"{client.PlayerName}(ClientID:{client.Id})が参加");
             if (FastDestroyableSingleton<FriendsListManager>.Instance.IsPlayerBlockedUsername(client.FriendCode) && AmongUsClient.Instance.AmHost)
             {
                 AmongUsClient.Instance.KickPlayer(client.Id, true);
-                SuperNewRolesPlugin.Logger.LogInfo($"ブロックされているプレイヤー{client?.PlayerName}({client.FriendCode})をBANしました");
+                Logger.Info($"ブロックされているプレイヤー{client?.PlayerName}({client.FriendCode})をBANしました");
             }
         }
     }

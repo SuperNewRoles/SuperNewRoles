@@ -11,8 +11,8 @@ namespace SuperNewRoles.Patches
         {
             public static void Postfix()
             {
-                SuperNewRolesPlugin.Logger.LogInfo(count);
-                SuperNewRolesPlugin.Logger.LogInfo(MapOptions.MapOption.Timer);
+                Logger.Info(count);
+                Logger.Info(MapOptions.MapOption.Timer);
                 if (MapOptions.MapOption.Timer >= 0.1 && !RoleClass.IsMeeting)
                 {
                     Camera.main.orthographicSize = MapOptions.MapOption.CameraDefault * 3f;

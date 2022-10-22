@@ -12,10 +12,10 @@ namespace SuperNewRoles.Roles
             if (!RoleClass.MadMayor.IsImpostorCheck) return false;
             if (!p.IsRole(RoleId.MadMayor)) return false;
             if (CheckedImpostor.Contains(p.PlayerId)) return true;
-            SuperNewRolesPlugin.Logger.LogInfo("有効か:" + (RoleClass.MadMayor.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1));
+            Logger.Info("有効か:" + (RoleClass.MadMayor.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1));
             if (RoleClass.MadMayor.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("有効を返しました");
+                Logger.Info("有効を返しました");
                 return true;
             }
             return false;

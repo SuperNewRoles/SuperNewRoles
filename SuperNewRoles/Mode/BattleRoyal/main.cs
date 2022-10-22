@@ -210,7 +210,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         }
                     }
                 }
-                catch { SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal:Error] Winners Erroe"); }
+                catch { Logger.Info("[BattleRoyal:Error] Winners Erroe"); }
                 __instance.enabled = false;
                 ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                 return true;
@@ -292,20 +292,20 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         var counttemp = target.Count;
                         for (int i = 0; i < counttemp; i++)
                         {
-                            SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] OneTeamCount:" + oneteamcount);
-                            SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Index:" + i);
+                            Logger.Info("[BattleRoyal] OneTeamCount:" + oneteamcount);
+                            Logger.Info("[BattleRoyal] Index:" + i);
                             if (target.Count > 0)
                             {
                                 var index = ModHelpers.GetRandomIndex(target);
                                 TempTeam.Add(target[index]);
                                 target.RemoveAt(index);
-                                SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Add");
-                                SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Template Team:" + TempTeam.Count);
+                                Logger.Info("[BattleRoyal] Add");
+                                Logger.Info("[BattleRoyal] Template Team:" + TempTeam.Count);
                                 if (TempTeam.Count >= oneteamcount)
                                 {
                                     Teams.Add(TempTeam);
                                     TempTeam = new();
-                                    SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Reset");
+                                    Logger.Info("[BattleRoyal] Reset");
                                 }
                             }
                         }
@@ -313,9 +313,9 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         {
                             Teams.Add(TempTeam);
                             TempTeam = new();
-                            SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Reset");
+                            Logger.Info("[BattleRoyal] Reset");
                         }
-                        SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Team Count:" + Teams.Count);
+                        Logger.Info("[BattleRoyal] Team Count:" + Teams.Count);
                         foreach (List<PlayerControl> teamlist in Teams)
                         {
                             foreach (PlayerControl p in teamlist)
@@ -326,7 +326,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                     {
                                         if (p2.PlayerId != 0)
                                         {
-                                            SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Within a Set Team");
+                                            Logger.Info("[BattleRoyal] Within a Set Team");
                                             p.RpcSetRoleDesync(RoleTypes.Impostor, p2);
                                         }
                                         else

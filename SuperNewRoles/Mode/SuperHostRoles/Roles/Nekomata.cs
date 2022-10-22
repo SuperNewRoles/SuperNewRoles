@@ -30,8 +30,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         p.Add(p1);//道連れにするプレイヤーの抽選リストに追加する
 
                         //Logへの記載
-                        if (exiled.Object.IsRole(RoleId.BlackCat)) SuperNewRolesPlugin.Logger.LogInfo("[SHR:黒猫Info]Impostorを道連れ対象から除外しました");
-                        else if (exiled.Object.IsRole(RoleId.EvilNekomata)) SuperNewRolesPlugin.Logger.LogInfo("[SHR:イビル猫又Info]Impostorを道連れ対象から除外しました");
+                        if (exiled.Object.IsRole(RoleId.BlackCat)) Logger.Info("[SHR:黒猫Info]Impostorを道連れ対象から除外しました");
+                        else if (exiled.Object.IsRole(RoleId.EvilNekomata)) Logger.Info("[SHR:イビル猫又Info]Impostorを道連れ対象から除外しました");
                         else SuperNewRolesPlugin.Logger.LogError("[SHR:猫又Error]&[SHR:イビル猫又Error][NotImpostorExiled == true] 異常な抽選リストです");
                     }
                 }
@@ -43,8 +43,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         p.Add(p1); //道連れにするプレイヤーの抽選リストに追加する
 
                         //Logへの記載
-                        if (exiled.Object.IsRole(RoleId.BlackCat)) SuperNewRolesPlugin.Logger.LogInfo("[SHR:黒猫Info]Impostorを道連れ対象から除外しませんでした");
-                        else if (exiled.Object.IsRole(RoleId.EvilNekomata)) SuperNewRolesPlugin.Logger.LogInfo("[SHR:イビル猫又Info]Impostorを道連れ対象から除外しませんでした");
+                        if (exiled.Object.IsRole(RoleId.BlackCat)) Logger.Info("[SHR:黒猫Info]Impostorを道連れ対象から除外しませんでした");
+                        else if (exiled.Object.IsRole(RoleId.EvilNekomata)) Logger.Info("[SHR:イビル猫又Info]Impostorを道連れ対象から除外しませんでした");
                         else SuperNewRolesPlugin.Logger.LogError("[SHR:猫又Error]&[SHR:イビル猫又Error][NotImpostorExiled != true ] 異常な抽選リストです");
                     }
                 }

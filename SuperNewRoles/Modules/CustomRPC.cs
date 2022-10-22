@@ -542,14 +542,14 @@ namespace SuperNewRoles.Modules
         }
         public static void SetBot(byte playerid)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("セットボット！！！！！！！！！");
+            Logger.Info("セットボット！！！！！！！！！");
             PlayerControl player = ModHelpers.PlayerById(playerid);
             if (player == null)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("nullなのでreturn");
+                Logger.Info("nullなのでreturn");
                 return;
             }
-            SuperNewRolesPlugin.Logger.LogInfo("通過:" + player.name);
+            Logger.Info("通過:" + player.name);
             if (BotManager.AllBots == null) BotManager.AllBots = new();
             BotManager.AllBots.Add(player);
 
@@ -824,7 +824,7 @@ namespace SuperNewRoles.Modules
             PlayerControl Knight = ModHelpers.PlayerById(KnightId);
             PlayerControl Target = ModHelpers.PlayerById(TargetId);
             Roles.CrewMate.Knight.GuardedPlayers.Add(TargetId); // 守護をかけられたプレイヤーを保存。
-            SuperNewRolesPlugin.Logger.LogInfo($"[KnightProtected]{Knight.GetDefaultName()}が{Target.GetDefaultName()}に護衛を使用しました。");
+            Logger.Info($"[KnightProtected]{Knight.GetDefaultName()}が{Target.GetDefaultName()}に護衛を使用しました。");
             if (Roles.CrewMate.Knight.KnightCanAnnounceOfProtected.GetBool()) ProctedMessager.ScheduleProctedMessage(ModTranslation.GetString("TheKnightProtected"));
         }
         public static void CustomRPCKill(byte notTargetId, byte targetId)
@@ -1067,7 +1067,7 @@ namespace SuperNewRoles.Modules
         }
         public static void PositionSwapperTP(byte SwapPlayerID, byte SwapperID)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("スワップ開始！");
+            Logger.Info("スワップ開始！");
 
             var SwapPlayer = ModHelpers.PlayerById(SwapPlayerID);
             var SwapperPlayer = ModHelpers.PlayerById(SwapperID);
@@ -1078,12 +1078,12 @@ namespace SuperNewRoles.Modules
             if (SwapperID == PlayerControl.LocalPlayer.PlayerId)
             {
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;
-                SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
+                Logger.Info("スワップ本体！");
             }
             else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId)
             {
                 CachedPlayer.LocalPlayer.transform.position = SwapperPosition;
-                SuperNewRolesPlugin.Logger.LogInfo("スワップランダム！");
+                Logger.Info("スワップランダム！");
                 if (rand.Next(1, 20) == 1)
                 {
                     new CustomMessage(string.Format(ModTranslation.GetString("PositionSwapperSwapText2")), 3);
@@ -1430,7 +1430,7 @@ namespace SuperNewRoles.Modules
                 }
                 catch (Exception e)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo((CustomRPC)callId + "でエラー:" + e);
+                    Logger.Info((CustomRPC)callId + "でエラー:" + e);
                 }
             }
         }

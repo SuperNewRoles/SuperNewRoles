@@ -32,7 +32,7 @@ namespace SuperNewRoles.CustomCosmetics
             IsEndDownload = false;
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\");
-            SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate:Download] ダウンロード開始");
+            Logger.Info("[CustomPlate:Download] ダウンロード開始");
             FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
             running = true;
         }
@@ -59,7 +59,7 @@ namespace SuperNewRoles.CustomCosmetics
         public static async Task<HttpStatusCode> FetchHats(string repo)
         {
             fetchs.Add(repo);
-            SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate:Download] ダウンロード開始:" + repo);
+            Logger.Info("[CustomPlate:Download] ダウンロード開始:" + repo);
             HttpClient http = new();
             http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
             var response = await http.GetAsync(new System.Uri($"{repo}/CustomNamePlates.json"), HttpCompletionOption.ResponseContentRead);
@@ -121,7 +121,7 @@ namespace SuperNewRoles.CustomCosmetics
                 SuperNewRolesPlugin.Instance.Log.LogError(ex.ToString());
                 System.Console.WriteLine(ex);
             }
-            SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate:Download] ダウンロード終了:" + repo);
+            Logger.Info("[CustomPlate:Download] ダウンロード終了:" + repo);
             fetchs.Remove(repo);
             if (fetchs.Count <= 0)
             {

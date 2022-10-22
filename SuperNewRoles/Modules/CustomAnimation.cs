@@ -16,7 +16,7 @@ namespace SuperNewRoles.Modules
                 {
                     countdata = i >= 100 ? "0" + i.ToString() : "00" + i.ToString();
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("パス:" + path + "_" + countdata + ".png");
+                Logger.Info("パス:" + path + "_" + countdata + ".png");
                 Sprites.Add(ModHelpers.LoadSpriteFromResources(path + "_" + countdata + ".png", 110f));
             }
             return Sprites.ToArray();

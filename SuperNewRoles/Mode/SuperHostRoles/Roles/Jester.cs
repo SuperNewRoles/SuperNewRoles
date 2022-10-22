@@ -41,7 +41,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                     }
                     catch (Exception e)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("[SHR:Error] Jester WrapUp Error:" + e);
+                        Logger.Info("[SHR:Error] Jester WrapUp Error:" + e);
                     }
                     EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByVote, false);
                 }
@@ -74,7 +74,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                     }
                     catch (Exception e)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("[SHR:Error] Mad Jester WrapUp Error:" + e);
+                        Logger.Info("[SHR:Error] Mad Jester WrapUp Error:" + e);
                     }
                     EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.ImpostorByVote, false);
                 }

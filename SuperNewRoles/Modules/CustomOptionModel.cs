@@ -112,7 +112,7 @@ namespace SuperNewRoles.Modules
                 selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
                 if (options.Any(x => x.id == id))
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("CustomOptionのId(" + id + ")が重複しています。");
+                    Logger.Info("CustomOptionのId(" + id + ")が重複しています。");
                 }
                 if (Max < id)
                 {
@@ -954,7 +954,7 @@ namespace SuperNewRoles.Modules
             }
             catch (Exception e)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
+                Logger.Info("エラー:" + e);
             }
             __result = __instance.settings.ToString();
             return false;

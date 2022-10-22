@@ -58,7 +58,7 @@ namespace SuperNewRoles.Modules
             Bot.RpcSetNamePlate("nameplate_NoPlate");
             Bot.RpcSetSkin("skin_None");
             GameData.Instance.RpcSetTasks(Bot.PlayerId, new byte[0]);
-            SuperNewRolesPlugin.Logger.LogInfo("botスポーン!\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
+            Logger.Info("botスポーン!\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
             AllBots.Add(Bot);
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetBot);
             writer.Write(Bot.PlayerId);
@@ -67,20 +67,20 @@ namespace SuperNewRoles.Modules
         }
         public static void Despawn(PlayerControl Bot)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("botデスポーン!\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
+            Logger.Info("botデスポーン!\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
             GameData.Instance.RemovePlayer(Bot.PlayerId);
             AmongUsClient.Instance.Despawn(Bot);
-            SuperNewRolesPlugin.Logger.LogInfo("完了！");
+            Logger.Info("完了！");
             AllBots.Remove(Bot);
         }
         public static void AllBotDespawn()
         {
             foreach (PlayerControl Bots in AllBots)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("botデスポーン!\nID:" + Bots.PlayerId + "\nBotName:" + Bots.name);
+                Logger.Info("botデスポーン!\nID:" + Bots.PlayerId + "\nBotName:" + Bots.name);
                 GameData.Instance.RemovePlayer(Bots.PlayerId);
                 Bots.Despawn();
-                SuperNewRolesPlugin.Logger.LogInfo("完了！");
+                Logger.Info("完了！");
             }
             AllBots = new();
         }

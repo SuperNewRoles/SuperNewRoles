@@ -126,7 +126,7 @@ namespace SuperNewRoles
                 }
                 catch (Exception e)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                    Logger.Info("RoleSelectError:" + e);
                 }
 
                 try
@@ -135,7 +135,7 @@ namespace SuperNewRoles
                 }
                 catch (Exception e)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                    Logger.Info("RoleSelectError:" + e);
                 }
                 FixedUpdate.SetRoleNames();
                 return false;
@@ -231,7 +231,7 @@ namespace SuperNewRoles
             }
             catch (Exception e)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                Logger.Info("RoleSelectError:" + e);
             }
 
             try
@@ -240,7 +240,7 @@ namespace SuperNewRoles
             }
             catch (Exception e)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                Logger.Info("RoleSelectError:" + e);
             }
 
             try
@@ -249,7 +249,7 @@ namespace SuperNewRoles
             }
             catch (Exception e)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                Logger.Info("RoleSelectError:" + e);
             }
             if (ModeHandler.IsMode(ModeId.Default))
             {
@@ -259,7 +259,7 @@ namespace SuperNewRoles
                 }
                 catch (Exception e)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                    Logger.Info("RoleSelectError:" + e);
                 }
 
                 try
@@ -268,14 +268,14 @@ namespace SuperNewRoles
                 }
                 catch (Exception e)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                    Logger.Info("RoleSelectError:" + e);
                 }
             }
         }
         public static void QuarreledRandomSelect()
         {
             if (!CustomOptions.QuarreledOption.GetBool()) return;
-            SuperNewRolesPlugin.Logger.LogInfo("クラードセレクト");
+            Logger.Info("クラードセレクト");
             List<PlayerControl> SelectPlayers = new();
             if (CustomOptions.QuarreledOnlyCrewMate.GetBool())
             {

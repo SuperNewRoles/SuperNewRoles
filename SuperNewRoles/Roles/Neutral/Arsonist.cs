@@ -108,7 +108,7 @@ namespace SuperNewRoles.Roles
                 {
                     RoleClass.Arsonist.IsDouse = false;
                     HudManagerStartPatch.ArsonistDouseButton.Timer = 0;
-                    SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗るのをやめた");
+                    Logger.Info("アーソ二ストが塗るのをやめた");
                     return;
                 }
                 if (HudManagerStartPatch.ArsonistDouseButton.Timer <= 0.1f)
@@ -117,7 +117,7 @@ namespace SuperNewRoles.Roles
                     HudManagerStartPatch.ArsonistDouseButton.Timer = HudManagerStartPatch.ArsonistDouseButton.MaxTimer;
                     HudManagerStartPatch.ArsonistDouseButton.actionButton.cooldownTimerText.color = Color.white;
                     RoleClass.Arsonist.DouseTarget.ArsonistDouse();
-                    SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗った:" + RoleClass.Arsonist.DouseTarget);
+                    Logger.Info("アーソ二ストが塗った:" + RoleClass.Arsonist.DouseTarget);
                 }
             }
         }
@@ -128,7 +128,7 @@ namespace SuperNewRoles.Roles
             {
                 if (IsWin(player))
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("アーソニストが勝利条件を達成");
+                    Logger.Info("アーソニストが勝利条件を達成");
                     return true;
                 }
             }
@@ -139,7 +139,7 @@ namespace SuperNewRoles.Roles
         {
             if (RoleClass.Arsonist.TriggerArsonistWin)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                Logger.Info("CheckAndEndGame");
                 __instance.enabled = false;
                 ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
                 return true;

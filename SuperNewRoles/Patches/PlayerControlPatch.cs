@@ -54,7 +54,7 @@ namespace SuperNewRoles.Patches
                 if (__instance.IsRole(RoleId.Doppelganger))
                 {
                     RoleClass.Doppelganger.Targets.Add(__instance.PlayerId, target);
-                    SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
+                    Logger.Info($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
                 }
             }
             if (__instance.PlayerId == target.PlayerId)
@@ -62,7 +62,7 @@ namespace SuperNewRoles.Patches
                 if (__instance.IsRole(RoleId.Doppelganger))
                 {
                     RoleClass.Doppelganger.Targets.Remove(__instance.PlayerId);
-                    SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲット、{target.Data.PlayerName}を削除");
+                    Logger.Info($"{__instance.Data.PlayerName}のターゲット、{target.Data.PlayerName}を削除");
                 }
                 if (ModeHandler.IsMode(ModeId.Default))
                 {
@@ -443,7 +443,7 @@ namespace SuperNewRoles.Patches
                                 }
                             }
                         }
-                        SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]LateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
+                        Logger.Info("[CheckMurder]LateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
                         isKill = true;
                         if (__instance.PlayerId != 0)
                         {
@@ -613,19 +613,19 @@ namespace SuperNewRoles.Patches
                                 target.SetRoleRPC(RoleId.MadMate);//マッドにする
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                                 RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことにする
-                                SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSHR]マッドを作ったよ");
+                                Logger.Info("[FastMakerSHR]マッドを作ったよ");
                                 return false;
                             }
                             else
                             {
                                 //作ってたら普通のキル(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                                SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSHR]作ったので普通のキル");
+                                Logger.Info("[FastMakerSHR]作ったので普通のキル");
                             }
                             break;
                         case RoleId.Jackal:
                             if (!RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId) && RoleClass.Jackal.CanCreateFriend)//まだ作ってなくて、設定が有効の時
                             {
-                                SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
+                                Logger.Info("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
                                 if (target == null || RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) return false;
                                 __instance.RpcShowGuardEffect(target);
                                 RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
@@ -634,15 +634,15 @@ namespace SuperNewRoles.Patches
                                     Jackal.CreateJackalFriends(target);//守護天使にして クルーにして フレンズにする
                                 }
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
-                                SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
+                                Logger.Info("[JackalSHR]フレンズを作ったよ");
                                 return false;
                             }
                             else
                             {
                                 // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                                if (!RoleClass.Jackal.CanCreateFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] フレンズを作る設定ではない為 普通のキル");
-                                else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 作ったので 普通のキル");
-                                else SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 不正なキル");
+                                if (!RoleClass.Jackal.CanCreateFriend) Logger.Info("[JackalSHR] フレンズを作る設定ではない為 普通のキル");
+                                else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) Logger.Info("[JackalSHR] 作ったので 普通のキル");
+                                else Logger.Info("[JackalSHR] 不正なキル");
                             }
                             break;
                         case RoleId.DarkKiller:
@@ -787,13 +787,13 @@ namespace SuperNewRoles.Patches
                 }, 2f, "RpcMurderPlayerCheck Default Name");
                 return;
             }
-            SuperNewRolesPlugin.Logger.LogInfo("i(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
+            Logger.Info("i(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
             __instance.RpcMurderPlayer(target);
             if (target.IsRole(RoleId.NekoKabocha))
             {
                 NekoKabocha.OnKill(__instance);
             }
-            SuperNewRolesPlugin.Logger.LogInfo("j(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
+            Logger.Info("j(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
@@ -889,7 +889,7 @@ namespace SuperNewRoles.Patches
         }
         public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
-            // SuperNewRolesPlugin.Logger.LogInfo("MurderPlayer発生！元:" + __instance.GetDefaultName() + "、ターゲット:" + target.GetDefaultName());
+            // Logger.Info("MurderPlayer発生！元:" + __instance.GetDefaultName() + "、ターゲット:" + target.GetDefaultName());
             // Collect dead player info
             Logger.Info("追加");
             DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);

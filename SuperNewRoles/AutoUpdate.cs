@@ -140,14 +140,14 @@ namespace SuperNewRoles
                 {
                     if (ConfigRoles.DebugMode.Value)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("最新バージョンです");
+                        Logger.Info("最新バージョンです");
                     }
                 }
                 else
                 {
                     if (ConfigRoles.DebugMode.Value)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("古いバージョンです");
+                        Logger.Info("古いバージョンです");
                     }
                     JToken assets = data["assets"];
                     if (!assets.HasValues)
@@ -174,7 +174,7 @@ namespace SuperNewRoles
             {
                 if (ConfigRoles.DebugMode.Value)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("Error:" + e);
+                    Logger.Info("Error:" + e);
                 }
                 return false;
             }

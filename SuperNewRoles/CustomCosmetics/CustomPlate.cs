@@ -18,7 +18,7 @@ namespace SuperNewRoles.CustomCosmetics
             {
                 if (isAdded || !DownLoadClass.IsEndDownload) return;
                 isAdded = true;
-                SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate] プレート読み込み処理開始");
+                Logger.Info("[CustomPlate] プレート読み込み処理開始");
                 var AllPlates = __instance.allNamePlates.ToList();
 
                 var plateDir = new DirectoryInfo("SuperNewRoles\\CustomPlatesChache");
@@ -46,7 +46,7 @@ namespace SuperNewRoles.CustomCosmetics
                         //CustomPlates.Add(plate);
                         //AllPlates.Add(plate);
                         NamePlateDatas.Add(plate);
-                        //SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate] プレート読み込み完了:" + file.Name);
+                        //Logger.Info("[CustomPlate] プレート読み込み完了:" + file.Name);
                     }
                     catch (Exception e)
                     {
@@ -54,7 +54,7 @@ namespace SuperNewRoles.CustomCosmetics
                         SuperNewRolesPlugin.Logger.LogError(file.FullName + "のエラー内容:" + e);
                     }
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate] プレート読み込み処理終了");
+                Logger.Info("[CustomPlate] プレート読み込み処理終了");
                 AllPlates.AddRange(NamePlateDatas);
                 __instance.allNamePlates = AllPlates.ToArray();
             }

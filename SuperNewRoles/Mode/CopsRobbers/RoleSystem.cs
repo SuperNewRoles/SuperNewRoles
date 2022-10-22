@@ -16,7 +16,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             var callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
-            SuperNewRolesPlugin.Logger.LogInfo("[CopsRobbers:FixedUpdate] SetRoleNamesが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+            Logger.Info("[CopsRobbers:FixedUpdate] SetRoleNamesが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
 
             bool commsActive = RoleHelpers.IsComms();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -77,7 +77,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 }
                 catch { }
             }
-            NewName = "<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool() ? " " :  ModHelpers.Cs(introdate.color, Name));
+            NewName = "<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool() ? " " : ModHelpers.Cs(introdate.color, Name));
             player.RpcSetNamePrivate(NewName);
         }
         public static void AssignRole()

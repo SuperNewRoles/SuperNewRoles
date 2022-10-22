@@ -494,7 +494,7 @@ namespace SuperNewRoles.CustomCosmetics
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\");
             hatDetails = new List<CustomHatOnline>();
             List<string> repos = new(hatRepos.Keys);
-            SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] フェチ");
+            Logger.Info("[CustomHats] フェチ");
             foreach (string repo in repos)
             {
                 Repos.Add(repo);
@@ -572,10 +572,10 @@ namespace SuperNewRoles.CustomCosmetics
             CustomHats.IsEnd = true;
             foreach (var repo in hatRepos)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] ハットスタート:" + repo.Key);
+                Logger.Info("[CustomHats] ハットスタート:" + repo.Key);
                 if (!ConfigRoles.DownloadSuperNewNamePlates.Value)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("ダウンロードをスキップしました:" + repo.Key);
+                    Logger.Info("ダウンロードをスキップしました:" + repo.Key);
                 }
                 else
                 {
@@ -585,7 +585,7 @@ namespace SuperNewRoles.CustomCosmetics
                         if (status != HttpStatusCode.OK)
                             System.Console.WriteLine($"Custom hats could not be loaded from repo: {repo.Key}\n");
                         else
-                            SuperNewRolesPlugin.Logger.LogInfo("ハット終了:" + repo.Key);
+                            Logger.Info("ハット終了:" + repo.Key);
                     }
                     catch (System.Exception e)
                     {
@@ -693,7 +693,7 @@ namespace SuperNewRoles.CustomCosmetics
                 foreach (var file in markedfordownload)
                 {
                     var hatFileResponse = await http.GetAsync($"{repo}/hats/{file}", HttpCompletionOption.ResponseContentRead);
-                    //SuperNewRolesPlugin.Logger.LogInfo(file);
+                    //Logger.Info(file);
                     if (hatFileResponse.StatusCode != HttpStatusCode.OK) continue;
                     using var responseStream = await hatFileResponse.Content.ReadAsStreamAsync();
                     using var fileStream = File.Create($"{filePath}\\{file}");

@@ -1731,7 +1731,7 @@ namespace SuperNewRoles.Modules
             DoppelgangerSucTime = Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
             DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
 
-            WerewolfOption = new(1057, false, CustomOptionType.Impostor, "WerewolfName",RoleClass.Werewolf.color, 1);
+            WerewolfOption = new(1057, false, CustomOptionType.Impostor, "WerewolfName", RoleClass.Werewolf.color, 1);
             WerewolfPlayerCount = Create(1051, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
 
             Roles.CrewMate.Knight.SetupCustomOptions();
@@ -1776,7 +1776,7 @@ namespace SuperNewRoles.Modules
             TaskerIsKillCoolTaskNow = Create(1011, false, CustomOptionType.Impostor, "TaskerIsKillCoolTaskNow", true, TaskerOption);
             TaskerCanKill = Create(1012, false, CustomOptionType.Impostor, "TaskerCanKill", true, TaskerOption);
 
-            CamouflagerOption =  SetupCustomRoleOption(1059, false, RoleId.Camouflager);
+            CamouflagerOption = SetupCustomRoleOption(1059, false, RoleId.Camouflager);
             CamouflagerPlayerCount = Create(1060, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CamouflagerOption);
             CamouflagerCoolTime = Create(1061, false, CustomOptionType.Impostor, "CamouflagerCoolTimeSetting", 30f, 0f, 60f, 2.5f, CamouflagerOption);
             CamouflagerDurationTime = Create(1062, false, CustomOptionType.Impostor, "CamouflagerDurationTimeSetting", 10f, 0f, 60f, 2.5f, CamouflagerOption);
@@ -1815,8 +1815,8 @@ namespace SuperNewRoles.Modules
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;
 
-            SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:" + Max);
-            SuperNewRolesPlugin.Logger.LogInfo("設定数:" + options.Count);
+            Logger.Info("設定のidのMax:" + Max);
+            Logger.Info("設定数:" + options.Count);
         }
     }
 }

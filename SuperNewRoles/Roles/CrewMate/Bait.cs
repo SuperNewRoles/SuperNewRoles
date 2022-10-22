@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix()
             {
-                SuperNewRolesPlugin.Logger.LogInfo(RoleClass.Bait.ReportTime);
+                Logger.Info(RoleClass.Bait.ReportTime);
                 RoleClass.Bait.ReportTime -= Time.fixedDeltaTime;
                 DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == CachedPlayer.LocalPlayer.PlayerId)?.FirstOrDefault();
 

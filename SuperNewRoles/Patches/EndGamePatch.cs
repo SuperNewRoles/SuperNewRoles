@@ -436,7 +436,7 @@ namespace SuperNewRoles.Patches
             }
             catch (Exception e)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
+                Logger.Info("エラー:" + e);
             }
             AdditionalTempData.Clear();
             OnGameEndPatch.WinText = ModHelpers.Cs(RoleColor, haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName")));
@@ -723,7 +723,7 @@ namespace SuperNewRoles.Patches
                 {
                     if (Arsonist.IsArsonistWinFlag())
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("アーソニストがEndGame");
+                        Logger.Info("アーソニストがEndGame");
                         TempData.winners.Add(new(WinnerPlayer.Data));
                     }
                 }

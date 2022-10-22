@@ -654,7 +654,7 @@ namespace SuperNewRoles
             {
                 PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
             }
-            SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
+            Logger.Info(player.Data.PlayerName + " >= " + role);
             PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(player.PlayerId);
             if (anim != null) anim.HandleAnim(RpcAnimationType.Stop);
         }
@@ -1091,7 +1091,7 @@ namespace SuperNewRoles
                 case RoleId.Camouflager:
                     RoleClass.Camouflager.CamouflagerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1330,7 +1330,7 @@ namespace SuperNewRoles
             RoleId.Photographer or
             RoleId.Pavlovsdogs or
             RoleId.Pavlovsowner;
-            //第三か
+        //第三か
         public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
         {
             RoleId MyRole;
@@ -1586,7 +1586,7 @@ namespace SuperNewRoles
             }
             catch (Exception e)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("[RoleHelper]Error:" + e);
+                Logger.Info("[RoleHelper]Error:" + e);
                 return RoleId.DefaultRole;
             }
             return RoleId.DefaultRole;

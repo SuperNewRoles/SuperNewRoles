@@ -99,11 +99,11 @@ namespace SuperNewRoles.Roles
             {
                 if (p.IsAlive())
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("パン屋が生きていると判定されました");
+                    Logger.Info("パン屋が生きていると判定されました");
                     return true;
                 }
             }
-            SuperNewRolesPlugin.Logger.LogInfo("パン屋が生きていないと判定されました");
+            Logger.Info("パン屋が生きていないと判定されました");
             return false;
         }
         public static string GetExileText()
@@ -122,7 +122,7 @@ namespace SuperNewRoles.Roles
             bool isBakeryAlive = BakeryAlive();                                                     //Boolの取得(生存判定)
             if (isBakeryAlive)                                                                      //if文(Bakeryが生きていたら実行)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("パン屋がパンを焼きました");                     //ログ
+                Logger.Info("パン屋がパンを焼きました");                     //ログ
                 if (PlayerControl.GameOptions.ConfirmImpostor) breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.4f, 0f);    //位置がエ
                 else breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.2f, 0f);
                 breadText.gameObject.SetActive(true);                                               //文字の表示

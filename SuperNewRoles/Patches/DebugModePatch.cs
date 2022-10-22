@@ -17,9 +17,9 @@ namespace SuperNewRoles.Patches
             {
                 if (ConfigRoles.DebugMode.Value)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("[DebugMode]Admin Coordinate(x):" + __instance.transform.position.x);
-                    SuperNewRolesPlugin.Logger.LogInfo("[DebugMode]Admin Coordinate(y):" + __instance.transform.position.y);
-                    SuperNewRolesPlugin.Logger.LogInfo("[DebugMode]Admin Coordinate(Z):" + __instance.transform.position.z);
+                    Logger.Info("[DebugMode]Admin Coordinate(x):" + __instance.transform.position.x);
+                    Logger.Info("[DebugMode]Admin Coordinate(y):" + __instance.transform.position.y);
+                    Logger.Info("[DebugMode]Admin Coordinate(Z):" + __instance.transform.position.z);
                 }
             }
         }
@@ -77,7 +77,7 @@ namespace SuperNewRoles.Patches
                 }
                 if (Input.GetKeyDown(KeyCode.F1))
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("new Vector2(" + (PlayerControl.LocalPlayer.transform.position.x - 12.63f) + "f, " + (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
+                    Logger.Info("new Vector2(" + (PlayerControl.LocalPlayer.transform.position.x - 12.63f) + "f, " + (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
                 }
             }
 

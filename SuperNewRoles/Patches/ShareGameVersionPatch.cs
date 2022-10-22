@@ -34,7 +34,7 @@ namespace SuperNewRoles.Patches
             {
                 if (PlayerControl.LocalPlayer != null)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("[VersionShare]Version Shared!");
+                    Logger.Info("[VersionShare]Version Shared!");
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareSNRVersion, SendOption.Reliable, -1);
                     writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Major);
                     writer.WritePacked(SuperNewRolesPlugin.ThisVersion.Minor);

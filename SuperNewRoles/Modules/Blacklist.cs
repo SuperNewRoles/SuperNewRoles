@@ -32,12 +32,12 @@ namespace SuperNewRoles.Modules
             // config.json を GoogleDriveなどに上げる
             var request = UnityWebRequest.Get("https://raw.githubusercontent.com/ykundesu/AmongUs_Blacklist/main/Blacklist.json");
             yield return request.SendWebRequest();
-            SuperNewRolesPlugin.Logger.LogInfo("前");
+            Logger.Info("前");
             if (request.isNetworkError || request.isHttpError)
             {
                 yield break;
             }
-            SuperNewRolesPlugin.Logger.LogInfo("通貨");
+            Logger.Info("通貨");
             var json = JObject.Parse(request.downloadHandler.text);
             for (var user = json["blockedUsers"].First; user != null; user = user.Next)
             {
@@ -47,7 +47,7 @@ namespace SuperNewRoles.Modules
                     Reason = user["Reason"]?.ToString(),
                     clientId = user["clientId"]?.ToString()
                 };
-                SuperNewRolesPlugin.Logger.LogInfo(player.FriendCode);
+                Logger.Info(player.FriendCode);
             }
         }
         public static IEnumerator Check(int clientId)
@@ -60,13 +60,13 @@ namespace SuperNewRoles.Modules
                                         .allClients
                                         .ToArray()
                                         .FirstOrDefault(client => client.Id == clientId);
-                SuperNewRolesPlugin.Logger.LogInfo(clientData);
+                Logger.Info(clientData.ToString());
             } while (clientData == null);
-            SuperNewRolesPlugin.Logger.LogInfo(clientData.FriendCode);
-            SuperNewRolesPlugin.Logger.LogInfo("回数:" + BlackPlayer.Players.Count);
+            Logger.Info(clientData.FriendCode);
+            Logger.Info("回数:" + BlackPlayer.Players.Count);
             foreach (var player in BlackPlayer.Players)
             {
-                SuperNewRolesPlugin.Logger.LogInfo(player.FriendCode + " : " + player.FriendCode);
+                Logger.Info(player.FriendCode + " : " + player.FriendCode);
                 if (player.FriendCode == clientData.FriendCode || player.clientId == clientId.ToString())
                 {
                     if (PlayerControl.LocalPlayer.PlayerId == clientData.Character.PlayerId)

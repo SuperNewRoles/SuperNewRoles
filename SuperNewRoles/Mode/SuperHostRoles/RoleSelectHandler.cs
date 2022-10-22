@@ -9,9 +9,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static CustomRpcSender RoleSelect(CustomRpcSender send)
         {
             sender = send;
-            SuperNewRolesPlugin.Logger.LogInfo("[SHR] ROLESELECT");
+            Logger.Info("[SHR] ROLESELECT");
             if (!AmongUsClient.Instance.AmHost) return null;
-            SuperNewRolesPlugin.Logger.LogInfo("[SHR] つうか");
+            Logger.Info("[SHR] つうか");
             CrewOrImpostorSet();
             OneOrNotListSet();
             AllRoleSetClass.AllRoleSet();
@@ -330,7 +330,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
 
             var Assassinselection = CustomOptions.AssassinAndMarineOption.GetSelection();
-            SuperNewRolesPlugin.Logger.LogInfo("[SHR] アサイン情報:" + Assassinselection + "、" + AllRoleSetClass.CrewMatePlayerNum + "、" + AllRoleSetClass.CrewMatePlayers.Count);
+            Logger.Info("[SHR] アサイン情報:" + Assassinselection + "、" + AllRoleSetClass.CrewMatePlayerNum + "、" + AllRoleSetClass.CrewMatePlayers.Count);
             if (Assassinselection != 0 && AllRoleSetClass.CrewMatePlayerNum > 0 && AllRoleSetClass.CrewMatePlayers.Count > 0)
             {
                 if (Assassinselection == 10)

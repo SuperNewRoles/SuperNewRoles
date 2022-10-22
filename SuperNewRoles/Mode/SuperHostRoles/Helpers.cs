@@ -33,7 +33,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (player == null) return;
             if (seer == null) seer = player;
             var clientId = seer.GetClientId();
-            SuperNewRolesPlugin.Logger.LogInfo("(Desync => " + seer.Data.PlayerName + " ) " + player.Data.PlayerName + " => " + role);
+            Logger.Info("(Desync => " + seer.Data.PlayerName + " ) " + player.Data.PlayerName + " => " + role);
             sender.StartMessage(clientId)
                 .StartRpc(player.NetId, RpcCalls.SetRole)
                 .Write((ushort)role)
@@ -42,7 +42,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void RpcSetRole(this PlayerControl player, CustomRpcSender sender, RoleTypes role)
         {
-            SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " => " + role);
+            Logger.Info(player.Data.PlayerName + " => " + role);
             if (player == null) return;
             sender.StartRpc(player.NetId, RpcCalls.SetRole);
             sender.Write((ushort)role);
@@ -99,7 +99,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (PlayerControl.GameOptions.MapId == 2) reactorId = 21;
 
             // ReactorサボをDesyncで発動
-            SuperNewRolesPlugin.Logger.LogInfo("SetDesyncSabotage");
+            Logger.Info("SetDesyncSabotage");
             MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
             SabotageWriter.Write(reactorId);
             MessageExtensions.WriteNetObject(SabotageWriter, shower);

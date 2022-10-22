@@ -9,8 +9,8 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix()
             {
-                SuperNewRolesPlugin.Logger.LogInfo(count);
-                SuperNewRolesPlugin.Logger.LogInfo(RoleClass.Hawk.Timer);
+                Logger.Info(count);
+                Logger.Info(RoleClass.Hawk.Timer);
                 if (RoleClass.Hawk.Timer >= 0.1 && !RoleClass.IsMeeting)
                 {
                     Camera.main.orthographicSize = RoleClass.Hawk.CameraDefault * 3f;

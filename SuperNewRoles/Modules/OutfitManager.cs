@@ -6,7 +6,7 @@ namespace SuperNewRoles.Modules
         {
             pc.Data.Outfits[PlayerOutfitType.Shapeshifted] = outfit;
             pc.CurrentOutfitType = PlayerOutfitType.Shapeshifted;
-            SuperNewRolesPlugin.Logger.LogInfo("チェンジ");
+            Logger.Info("チェンジ");
             pc.RawSetName(outfit.PlayerName);
             pc.RawSetHat(outfit.HatId, outfit.ColorId);
             pc.RawSetVisor(outfit.VisorId, outfit.ColorId);

@@ -144,7 +144,7 @@ namespace SuperNewRoles.Patches
                     {
                         if (response.StatusCode != HttpStatusCode.OK)
                         {
-                            SuperNewRolesPlugin.Logger.LogInfo("NOTOK!!!");
+                            Logger.Info("NOTOK!!!");
                             return response.StatusCode;
                         };
                         if (response.Content == null)
@@ -238,7 +238,7 @@ namespace SuperNewRoles.Patches
             {
                 while (true)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo(AutoUpdate.announcement);
+                    Logger.Info(AutoUpdate.announcement);
                     if (AutoUpdate.announcement == "None")
                         yield return null;
                     else
@@ -288,7 +288,7 @@ namespace SuperNewRoles.Patches
                 renderer.sprite = HorseModeOption.enableHorseMode ? horseBannerSprite : bannerSprite;
 
                 if (File.Exists(Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"))) return;
-                SuperNewRolesPlugin.Logger.LogInfo("[Submerged]Passage ahhhhhh!:" + Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"));
+                Logger.Info("[Submerged]Passage ahhhhhh!:" + Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"));
                 //サブマージド追加ボタン
 
                 /*サブマージドのダウンロードボタン隠しSTART 今日の日はさようならまた逢う日まで・・・
@@ -316,7 +316,7 @@ namespace SuperNewRoles.Patches
 
                 async void onClick()
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("[Submerged]Downloading Submerged!");
+                    Logger.Info("[Submerged]Downloading Submerged!");
                     showPopup(ModTranslation.GetString("ダウンロード中です。\nサブマージドのファイルは大きいため、時間がかかります。"));
                     await DownloadSubmarged();
                     button.SetActive(false);
