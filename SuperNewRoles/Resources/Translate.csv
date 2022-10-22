@@ -376,7 +376,7 @@ MeetingSheriffNo,No,できない,否
 MeetingSheriffMaxKillCountSetting,Maximum number of Meeting Sheriff kills,ミーティングシェリフの最大キル数,执法官最大可击杀次数
 MeetingSheriffMeetingmultipleKillSetting,Can you get multiple kills in one meeting?,一会議中に複数キルできるか,执法官可以在一次会议中多次击杀
 JackalName,Jackal,ジャッカル,豺狼
-JackalTitle1,Try to kill Impostors and Crew Mates,インポスターとクルーメイトをキルしよう,杀死所有船员和内鬼
+JackalTitle1,Try to kill Impostors and Crewmates,インポスターとクルーメイトをキルしよう,杀死所有船员和内鬼
 JackalTitle2,Kill the other team to win!,他陣営をキルして勝利しよう,把其他人全部杀死获得胜利
 JackalTitle3,Let's just kill them all.,全員ぶち殺そう,杀死所有人
 JackalCooldownSetting,Jackal's kill cool time,ジャッカルのキルクールタイム,豺狼击杀冷却

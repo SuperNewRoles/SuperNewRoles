@@ -36,7 +36,7 @@ All crewmates can also be Sheriffs, etc.!<br>
   - Due to the specification of Sheriff replacing Impostor, "Sheriff for all" is not supported with [Task Win] in the Crew win condition.
     - After the match starts, the Crew is immediately judged to have won the task. (No one with a task = 0 task remaining for Crew)
     - Please include one person in the Crew team position who has a task. (Adding a Madmate, Jackal Friends, or Home Guard will not help).
-- However, if "Duplicate Mode/No Task Wins Mode" is turned on, it is possible to set "All Crew Mates are Sheriffs" in SHR mode.
+- However, if "Duplicate Mode/No Task Wins Mode" is turned on, it is possible to set "All Crewmates are Sheriffs" in SHR mode.
   - Crew win conditions in this setting
     - Eradication of Impostor, Jackal, or other single victorious third team with a Sheriff kill.
     - Hang up the Impostor, Jackal, or other single victorious third camp.
@@ -607,7 +607,7 @@ SuperHostRoles support
 ## HomeSecurityGuard
 
 ### Team Crew
-Crew mate with no task. 
+Crewmate with no task. 
 SuperHostRoles support 
 
 ----------------------- 
@@ -1269,7 +1269,7 @@ SHR compatible.<br>
 ### Team Crew
 
 Finish the task and mount up!<br>
-A crew mate that allows you to set the number of tasks individually.<br>
+A Crewmate that allows you to set the number of tasks individually.<br>
 SHR compatible. <br>
 ### Game Settings 
 | Name         |                    Description                     |
