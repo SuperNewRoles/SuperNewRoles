@@ -934,6 +934,7 @@ PainterIsDeathFootprint,Leave a trace of the place of death,死亡場所の痕�
 PainterIsDeathFootprintBig,Increase the size of the trace at the place of death,死亡場所の痕跡を大きくする,目标死亡后留下的油漆痕迹变大
 PainterIsFootprintMeetingDestroy,Trace disappears at meeting,痕跡が会議で消える,油漆痕迹在会议结束后消失
 PainterButtonName,Paint,ペイント,油漆
+PainterIsTaskCompleteFootprint,Leave traces when tasks are completed,タスク完了時に痕跡を残す
 FinderName,Finder,ファインダー,接头人
 FinderTitle1,Get to know your peers.,仲間を知ろう,与叛徒取得联系
 FinderCheckMadmateSetting,Number of confirmed kills,確認できるキル数,接头人确认叛徒需要进行的击杀次数
