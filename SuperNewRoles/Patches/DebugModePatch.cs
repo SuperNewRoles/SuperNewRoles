@@ -107,7 +107,7 @@ namespace SuperNewRoles.Patches
             /// </summary>
             public static void Announce()
             {
-                
+                if (!(IsDebugMode() && CustomOptions.IsMurderPlayerAnnounce.GetBool())) return;
             }
         }
     }
