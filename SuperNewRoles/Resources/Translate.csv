@@ -250,6 +250,8 @@ HASSeekName,Seek,鬼,抓捕者
 HASDeathTaskSetting,Hide Death Clear Task,死亡するとタスクが終わる,死亡后隐藏尸体并清除任务
 HASUseSaboSetting,Use Sabotage,サボタージュが使える,抓捕者可以造成紧急破坏
 HASUseVentSetting,Use Vent,ベントが使える,抓捕者可以使用管道
+
+# FinalResults
 FinalResults,Final results,最終結果
 FinalStatusAlive,Survival,生存,存活
 FinalStatusKill,Kill,キル,被杀
@@ -263,6 +265,8 @@ FinalStatusSelfBomb,Self-destruct,自爆,自杀
 FinalStatusBySelfBomb,Self-destruct collateral damage,自爆巻き添え,恐袭
 FinalStatusDisconnected,amputation,切断,断连
 FinalStatusDead,Death,死亡,死亡
+
+# Sabotages
 FinalStatusSabotage,Sabotage,サボタージュ,破坏
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
 SabotageCognitiveDeficitSetting,Cognitive Deficit,認識障害,破坏时附带认知干扰
@@ -344,9 +348,12 @@ SheriffTitle1,Kill the outsider!,人外をキルしよう,击杀敌人
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう,杀死敌人带领船员获得胜利
 SheriffDescription,Can shoot and kill an imposter if he is a crewmate. he will self-destruct.,インポスター陣営(設定により第三陣営など)をキルすることが出来、クルーだった場合、自爆します,警长可以击杀内鬼。\n但若警长尝试击杀船员，警长将以死谢罪。
 SheriffCoolDownSetting,Kill Cooldown,キルクールタイム,击杀冷却
-SheriffIsKillNewtralSetting,Can Kill a Neutral,第三陣営をキルできる,可以击杀独立阵营玩家
-SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる,可以击杀恋人
-SheriffIsKillMadRoleSetting,Can Kill a MadRole,マッド系役職をキルできる,可以击杀叛徒职业
+SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可以击杀独立阵营玩家
+SheriffIsKillLoversSetting,Can kill lovers,ラバーズをキルできる,可以击杀恋人
+SheriffIsKillMadRoleSetting,Can kill mad roles,マッド系をキルできる,可以击杀叛徒职业
+SheriffIsKillImpostorSetting,Can kill impostors,インポスターをキルできる
+SheriffIsKillFriendsRoleSetting,Can kill jackal friend roles,ジャッカルフレンズ系をキルできる
+SheriffIsKillQuarreledSetting,Can kill quarreleds,クラードをキルできる
 SheriffYes,Yes,できる,是
 SheriffNo,No,できない,否
 SheriffMaxKillCountSetting,Maximum number of kills,最大キル数,最大可击杀次数
