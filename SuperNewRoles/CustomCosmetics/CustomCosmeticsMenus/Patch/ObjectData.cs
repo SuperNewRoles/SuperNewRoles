@@ -247,7 +247,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         {
             btn.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => SetPreset(index)));
         }
-        public static Dictionary<int, ClosetPresetData> ClosetPresetDatas = new();
+        public static Dictionary<int, ClosetPresetData> ClosetPresetDataDictionary = new();
         public static ConfigEntry<int> SelectedPreset;
         public struct ClosetPresetData
         {
@@ -262,7 +262,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         {
             SelectedPreset.Value = index;
             SuperNewRolesPlugin.Logger.LogInfo("セットプリセット:" + index);
-            ClosetPresetData data = !ClosetPresetDatas.ContainsKey(index)
+            ClosetPresetData data = !ClosetPresetDataDictionary.ContainsKey(index)
                 ? (new()
                 {
                     BodyColor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "BodyColor", (byte)0),
@@ -272,14 +272,15 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     NamePlate = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "NamePlate", ""),
                     Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "")
                 })
-                : ClosetPresetDatas[index];
-            
+                : ClosetPresetDataDictionary[index];
+
             AmongUs.Data.DataManager.Player.Customization.Color = data.BodyColor.Value;
             AmongUs.Data.DataManager.Player.Customization.Hat = data.Hat.Value;
             AmongUs.Data.DataManager.Player.Customization.Visor = data.Visor.Value;
             AmongUs.Data.DataManager.Player.Customization.Skin = data.Skin.Value;
             AmongUs.Data.DataManager.Player.Customization.NamePlate = data.NamePlate.Value;
             AmongUs.Data.DataManager.Player.Customization.Pet = data.Pet.Value;
+
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
             {
                 PlayerControl.LocalPlayer.CmdCheckColor(LegacySaveManager.BodyColor);

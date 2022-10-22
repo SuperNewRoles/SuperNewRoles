@@ -532,17 +532,17 @@ namespace SuperNewRoles
 
         public static string Cs(Color c, string s)
         {
-            return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptions.ToByte(c.r), CustomOptions.ToByte(c.g), CustomOptions.ToByte(c.b), CustomOptions.ToByte(c.a), s);
+            return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptionHolder.ToByte(c.r), CustomOptionHolder.ToByte(c.g), CustomOptionHolder.ToByte(c.b), CustomOptionHolder.ToByte(c.a), s);
         }
         public static T GetRandom<T>(this List<T> list)
         {
-            var indexdate = UnityEngine.Random.Range(0, list.Count);
-            return list[indexdate];
+            var indexData = UnityEngine.Random.Range(0, list.Count);
+            return list[indexData];
         }
         public static int GetRandomIndex<T>(List<T> list)
         {
-            var indexdate = UnityEngine.Random.Range(0, list.Count);
-            return indexdate;
+            var indexData = UnityEngine.Random.Range(0, list.Count);
+            return indexData;
         }
 
         public static Dictionary<byte, SpriteRenderer> MyRendCache = new();
@@ -709,9 +709,9 @@ namespace SuperNewRoles
             return null;
         }
 
-        public static bool IsCheckListPlayerControl(this List<PlayerControl> ListDate, PlayerControl CheckPlayer)
+        public static bool IsCheckListPlayerControl(this List<PlayerControl> listData, PlayerControl CheckPlayer)
         {
-            foreach (PlayerControl Player in ListDate)
+            foreach (PlayerControl Player in listData)
             {
                 if (Player.PlayerId == CheckPlayer.PlayerId)
                 {

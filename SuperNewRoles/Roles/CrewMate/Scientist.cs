@@ -13,9 +13,9 @@ namespace SuperNewRoles.Roles
         public static void EndMeeting()
         {
             ScientistEnd();
-            ResetCoolDown();
+            ResetCooldown();
         }
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             float CoolTime = PlayerControl.LocalPlayer.IsImpostor() ? RoleClass.EvilScientist.CoolTime : RoleClass.NiceScientist.CoolTime;
             HudManagerStartPatch.ScientistButton.MaxTimer = CoolTime;
@@ -29,7 +29,7 @@ namespace SuperNewRoles.Roles
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
-            SpeedBooster.ResetCoolDown();
+            SpeedBooster.ResetCooldown();
         }
         public static void ScientistEnd()
         {

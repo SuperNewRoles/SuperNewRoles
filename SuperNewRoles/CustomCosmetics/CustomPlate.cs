@@ -10,7 +10,7 @@ namespace SuperNewRoles.CustomCosmetics
     public class CustomPlate
     {
         public static bool isAdded = false;
-        static List<NamePlateData> NamePlateDatas = new();
+        static List<NamePlateData> namePlateData = new();
         [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetNamePlateById))]
         class UnlockedNamePlatesPatch
         {
@@ -45,7 +45,7 @@ namespace SuperNewRoles.CustomCosmetics
                         };
                         //CustomPlates.Add(plate);
                         //AllPlates.Add(plate);
-                        NamePlateDatas.Add(plate);
+                        namePlateData.Add(plate);
                         //SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate] プレート読み込み完了:" + file.Name);
                     }
                     catch (Exception e)
@@ -55,7 +55,7 @@ namespace SuperNewRoles.CustomCosmetics
                     }
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate] プレート読み込み処理終了");
-                AllPlates.AddRange(NamePlateDatas);
+                AllPlates.AddRange(namePlateData);
                 __instance.allNamePlates = AllPlates.ToArray();
             }
         }

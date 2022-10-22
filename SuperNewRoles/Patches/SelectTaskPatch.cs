@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using static SuperNewRoles.Modules.CustomOptions;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Patches
 {
@@ -35,7 +35,7 @@ namespace SuperNewRoles.Patches
         public static (int, int, int) GetTaskCount(this PlayerControl p)
         {
             Dictionary<RoleId, (int, int, int)> taskData = new();
-            if (MadMateCheckImpostorTask.GetBool()) taskData.Add(RoleId.MadMate, (MadMateCommonTask.GetInt(), MadMateShortTask.GetInt(), MadMateLongTask.GetInt()));
+            if (MadmateCheckImpostorTask.GetBool()) taskData.Add(RoleId.Madmate, (MadmateCommonTask.GetInt(), MadmateShortTask.GetInt(), MadmateLongTask.GetInt()));
             if (MadMayorIsCheckImpostor.GetBool()) taskData.Add(RoleId.MadMayor, (MadMayorCommonTask.GetInt(), MadMayorShortTask.GetInt(), MadMayorLongTask.GetInt()));
             if (MadSeerIsCheckImpostor.GetBool()) taskData.Add(RoleId.MadSeer, (MadSeerCommonTask.GetInt(), MadSeerShortTask.GetInt(), MadSeerLongTask.GetInt()));
             if (BlackCatIsCheckImpostor.GetBool()) taskData.Add(RoleId.BlackCat, (BlackCatCommonTask.GetInt(), BlackCatShortTask.GetInt(), BlackCatLongTask.GetInt()));

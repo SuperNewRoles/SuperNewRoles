@@ -93,7 +93,7 @@ namespace SuperNewRoles.Roles.Attribute
                 TeambuttonParent.localScale = new(0.55f, 0.55f, 1f);
                 Teamlabel.color = (TeamRoleType)index is TeamRoleType.Crewmate ? RoleClass.CrewmateWhite : ((TeamRoleType)index is TeamRoleType.Impostor ? RoleClass.ImpostorRed : new Color32(127, 127, 127, byte.MaxValue));
                 Logger.Info(Teamlabel.color.ToString(), ((TeamRoleType)index).ToString());
-                Teamlabel.text = ModTranslation.GetString(((TeamRoleType)index is TeamRoleType.Crewmate ? "CrewMate" : ((TeamRoleType)index).ToString()) + "Name");
+                Teamlabel.text = ModTranslation.GetString(((TeamRoleType)index is TeamRoleType.Crewmate ? "Crewmate" : ((TeamRoleType)index).ToString()) + "Name");
                 Teamlabel.alignment = TMPro.TextAlignmentOptions.Center;
                 Teamlabel.transform.localPosition = new Vector3(0, 0, Teamlabel.transform.localPosition.z);
                 Teamlabel.transform.localScale *= 1.6f;
@@ -167,12 +167,12 @@ namespace SuperNewRoles.Roles.Attribute
             }
 
             int ind = 0;
-            foreach (IntroDate roleInfo in IntroDate.IntroDatas)
+            foreach (IntroData roleInfo in IntroData.IntroList)
             {
                 if (roleInfo == null ||
                     roleInfo.RoleId == RoleId.Hunter ||
                     roleInfo.RoleId is RoleId.Assassin or RoleId.Marine ||
-                    (roleInfo != IntroDate.CrewmateIntro && roleInfo != IntroDate.ImpostorIntro && IntroDate.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0))
+                    (roleInfo != IntroData.CrewmateIntro && roleInfo != IntroData.ImpostorIntro && IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0))
                 {
                     Logger.Info("continueになりました:" + roleInfo.RoleId, "Guesser");
                     continue; // Not guessable roles
@@ -195,7 +195,7 @@ namespace SuperNewRoles.Roles.Attribute
                 int col = i[(int)roleInfo.Team] % 5;
                 buttonParent.localPosition = new Vector3(-3.47f + 1.75f * col, 1.5f - 0.45f * row, -200f);
                 buttonParent.localScale = new Vector3(0.55f, 0.55f, 1f);
-                label.text = CustomOptions.Cs(roleInfo.color, roleInfo.NameKey + "Name");
+                label.text = CustomOptionHolder.Cs(roleInfo.color, roleInfo.NameKey + "Name");
                 label.alignment = TMPro.TextAlignmentOptions.Center;
                 label.transform.localPosition = new Vector3(0, 0, label.transform.localPosition.z);
                 label.transform.localScale *= 1.6f;
@@ -235,10 +235,10 @@ namespace SuperNewRoles.Roles.Attribute
 
                         if (RoleClass.NiceGuesser.Count == -1)
                         {
-                            RoleClass.NiceGuesser.Count = PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser) ? CustomOptions.NiceGuesserShortMaxCount.GetInt() : CustomOptions.EvilGuesserShortMaxCount.GetInt();
+                            RoleClass.NiceGuesser.Count = PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser) ? CustomOptionHolder.NiceGuesserShortMaxCount.GetInt() : CustomOptionHolder.EvilGuesserShortMaxCount.GetInt();
                         }
                         RoleClass.NiceGuesser.Count--;
-                        if ((RoleClass.NiceGuesser.Count > 0) && dyingTarget != PlayerControl.LocalPlayer && (PlayerControl.LocalPlayer.IsImpostor() ? CustomOptions.EvilGuesserShortOneMeetingCount.GetBool() : CustomOptions.NiceGuesserShortOneMeetingCount.GetBool()))
+                        if ((RoleClass.NiceGuesser.Count > 0) && dyingTarget != PlayerControl.LocalPlayer && (PlayerControl.LocalPlayer.IsImpostor() ? CustomOptionHolder.EvilGuesserShortOneMeetingCount.GetBool() : CustomOptionHolder.NiceGuesserShortOneMeetingCount.GetBool()))
                         {
                             __instance.playerStates.ToList().ForEach(x => { if (x.TargetPlayerId == dyingTarget.PlayerId && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
                         }

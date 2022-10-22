@@ -134,7 +134,7 @@ namespace SuperNewRoles.Patches
 
                 if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hitman))
                 {
-                    RoleClass.Hitman.UpdateTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
+                    RoleClass.Hitman.UpdateTime = CustomOptionHolder.HitmanChangeTargetTime.GetFloat();
                     Roles.Neutral.Hitman.SetTarget();
                     Roles.Neutral.Hitman.DestroyIntroHandle(__instance);
                     if (FastDestroyableSingleton<HudManager>.Instance != null)
@@ -173,7 +173,7 @@ namespace SuperNewRoles.Patches
                 {
                     switch (PlayerControl.LocalPlayer.GetRole())
                     {
-                        case RoleId.MadMate:
+                        case RoleId.Madmate:
                         case RoleId.MadMayor:
                         case RoleId.MadJester:
                         case RoleId.MadSeer:
@@ -261,7 +261,7 @@ namespace SuperNewRoles.Patches
             {
                 if (PlayerControl.LocalPlayer.IsNeutral() && !PlayerControl.LocalPlayer.IsRole(RoleId.GM))
                 {
-                    IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
+                    IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole());
                     TeamTitle = ModTranslation.GetString("Neutral");
                     ImpostorText = ModTranslation.GetString("NeutralSubIntro");
                     color = new(127, 127, 127, byte.MaxValue);
@@ -270,7 +270,7 @@ namespace SuperNewRoles.Patches
                 {
                     switch (PlayerControl.LocalPlayer.GetRole())
                     {
-                        case RoleId.MadMate:
+                        case RoleId.Madmate:
                         case RoleId.MadJester:
                         case RoleId.MadStuntMan:
                         case RoleId.MadMayor:
@@ -283,7 +283,7 @@ namespace SuperNewRoles.Patches
                         case RoleId.MayorFriends:
                         case RoleId.SatsumaAndImo:
                         case RoleId.GM:
-                            IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
+                            IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole());
                             color = Intro.color;
                             TeamTitle = ModTranslation.GetString(Intro.NameKey + "Name");
                             ImpostorText = "";
@@ -303,10 +303,10 @@ namespace SuperNewRoles.Patches
                     var myrole = PlayerControl.LocalPlayer.GetRole();
                     if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                     {
-                        var date = IntroDate.GetIntroDate(myrole);
-                        color = date.color;
-                        TeamTitle = ModTranslation.GetString(date.NameKey + "Name");
-                        ImpostorText = date.TitleDesc;
+                        var data = IntroData.GetIntroData(myrole);
+                        color = data.color;
+                        TeamTitle = ModTranslation.GetString(data.NameKey + "Name");
+                        ImpostorText = data.TitleDesc;
                     }
                     if (PlayerControl.LocalPlayer.IsLovers())
                     {
@@ -337,7 +337,7 @@ namespace SuperNewRoles.Patches
         {
             public static void Postfix()
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.SeeThroughPerson)) Roles.CrewMate.SeeThroughPerson.AwakePatch();
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.SeeThroughPerson)) Roles.Crewmate.SeeThroughPerson.AwakePatch();
             }
         }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
@@ -406,12 +406,12 @@ namespace SuperNewRoles.Patches
                         var myrole = PlayerControl.LocalPlayer.GetRole();
                         if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                         {
-                            var date = IntroDate.GetIntroDate(myrole);
-                            __instance.YouAreText.color = date.color;
-                            __instance.RoleText.text = ModTranslation.GetString(date.NameKey + "Name");
-                            __instance.RoleText.color = date.color;
-                            __instance.RoleBlurbText.text = date.TitleDesc;
-                            __instance.RoleBlurbText.color = date.color;
+                            var data = IntroData.GetIntroData(myrole);
+                            __instance.YouAreText.color = data.color;
+                            __instance.RoleText.text = ModTranslation.GetString(data.NameKey + "Name");
+                            __instance.RoleText.color = data.color;
+                            __instance.RoleBlurbText.text = data.TitleDesc;
+                            __instance.RoleBlurbText.color = data.color;
                         }
                         if (PlayerControl.LocalPlayer.IsLovers())
                         {
