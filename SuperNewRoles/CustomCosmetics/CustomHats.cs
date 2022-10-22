@@ -273,7 +273,7 @@ namespace SuperNewRoles.CustomCosmetics
         {
             static void Postfix(ShipStatus __instance)
             {
-                if (DestroyableSingleton<TutorialManager>.InstanceExists)
+                if (FastDestroyableSingleton<TutorialManager>.InstanceExists)
                 {
                     string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\Test";
                     DirectoryInfo d = new(filePath);
@@ -363,7 +363,7 @@ namespace SuperNewRoles.CustomCosmetics
                     if (ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard)
                     {
                         colorChip.Button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(hat)));
-                        colorChip.Button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(DestroyableSingleton<HatManager>.Instance.GetHatById(LegacySaveManager.LastHat))));
+                        colorChip.Button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(FastDestroyableSingleton<HatManager>.Instance.GetHatById(LegacySaveManager.LastHat))));
                         colorChip.Button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => __instance.ClickEquip()));
                     }
                     else
@@ -386,7 +386,7 @@ namespace SuperNewRoles.CustomCosmetics
             {
                 CalcItemBounds(__instance);
 
-                HatData[] unlockedHats = DestroyableSingleton<HatManager>.Instance.GetUnlockedHats();
+                HatData[] unlockedHats = FastDestroyableSingleton<HatManager>.Instance.GetUnlockedHats();
                 Dictionary<string, List<System.Tuple<HatData, HatExtension>>> packages = new();
 
                 ModHelpers.DestroyList(hatsTabCustomTexts);
@@ -711,7 +711,7 @@ namespace SuperNewRoles.CustomCosmetics
             }
             catch (System.Exception ex)
             {
-                SuperNewRolesPlugin.Instance.Log.LogError("HatsError: "+ex.ToString());
+                SuperNewRolesPlugin.Instance.Log.LogError("HatsError: " + ex.ToString());
             }
             return HttpStatusCode.OK;
         }

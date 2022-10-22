@@ -26,7 +26,7 @@ namespace SuperNewRoles
         public static void SendInGame(string text, bool isAlways = false)
         {
             if (!isEnable) return;
-            if (DestroyableSingleton<HudManager>._instance) DestroyableSingleton<HudManager>.Instance.Notifier.AddItem(text);
+            if (FastDestroyableSingleton<HudManager>._instance) FastDestroyableSingleton<HudManager>.Instance.Notifier.AddItem(text);
         }
         private static void SendToFile(string text, string callerMember = "", LogLevel level = LogLevel.Info, string tag = "", int lineNumber = 0, string fileName = "")
         {

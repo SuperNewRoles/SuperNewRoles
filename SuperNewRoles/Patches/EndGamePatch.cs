@@ -1171,7 +1171,7 @@ namespace SuperNewRoles.Patches
         public static bool Prefix(ShipStatus __instance)
         {
             if (!GameData.Instance) return false;
-            if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
+            if (FastDestroyableSingleton<TutorialManager>.InstanceExists) return true;
             if (!RoleManagerSelectRolesPatch.IsSetRoleRPC) return false;
             if (DebugMode.IsDebugMode()) return false;
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
@@ -1505,7 +1505,8 @@ namespace SuperNewRoles.Patches
                 PavlovsownerAlive = numPavlovsownerAlive;
                 PavlovsTeamAlive = numPavlovsTeamAlive;
                 HitmanAlive = numHitmanAlive;
-                if (!(IsGuardPavlovs = PavlovsDogAlive > 0)) {
+                if (!(IsGuardPavlovs = PavlovsDogAlive > 0))
+                {
                     foreach (PlayerControl p in RoleClass.Pavlovsowner.PavlovsownerPlayer)
                     {
                         if (p == null) continue;
