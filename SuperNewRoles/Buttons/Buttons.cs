@@ -739,9 +739,9 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.Doctor.Vital == null)
                     {
                         var moto = CachedPlayer.LocalPlayer.PlayerControl.Data.Role.Role;
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Scientist);
+                        FastDestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Scientist);
                         CachedPlayer.LocalPlayer.Data.Role.TryCast<ScientistRole>().UseAbility();
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, moto);
+                        FastDestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, moto);
                         RoleClass.Doctor.Vital = GameObject.FindObjectOfType<VitalsMinigame>();
                     }
                     RoleClass.Doctor.MyPanelFlag = true;
@@ -1049,7 +1049,7 @@ namespace SuperNewRoles.Buttons
                 {
                     if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.RemoteSheriff))
                     {
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Shapeshifter);
+                        FastDestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Shapeshifter);
                         foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                         {
                             p.Data.Role.NameColor = Color.white;
@@ -1061,7 +1061,7 @@ namespace SuperNewRoles.Buttons
                                 p.Data.Role.NameColor = RoleClass.ImpostorRed;
                             }
                         }
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Crewmate);
+                        FastDestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Crewmate);
                     }
                     else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Sheriff))
                     {

@@ -123,7 +123,7 @@ namespace SuperNewRoles.Helpers
                 }
                 if (chatText.IndexOf("who", StringComparison.OrdinalIgnoreCase) >= 0)
                 {
-                    DestroyableSingleton<Telemetry>.Instance.SendWho();
+                    FastDestroyableSingleton<Telemetry>.Instance.SendWho();
                 }
                 MessageWriter obj = AmongUsClient.Instance.StartRpc(__instance.NetId, 13, SendOption.None);
                 obj.Write(chatText);

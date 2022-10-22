@@ -87,7 +87,7 @@ namespace SuperNewRoles.Roles.Attribute
                 Teambutton.FindChild("ControllerHighlight").gameObject.SetActive(false);
                 Transform TeambuttonMask = UnityEngine.Object.Instantiate(maskTemplate, TeambuttonParent);
                 TMPro.TextMeshPro Teamlabel = UnityEngine.Object.Instantiate(textTemplate, Teambutton);
-                Teambutton.GetComponent<SpriteRenderer>().sprite = DestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+                Teambutton.GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
                 RoleSelectButtons.Add((TeamRoleType)index, Teambutton.GetComponent<SpriteRenderer>());
                 TeambuttonParent.localPosition = new(-2.75f + (index * 1.75f), 2.225f, -200);
                 TeambuttonParent.localScale = new(0.55f, 0.55f, 1f);
@@ -141,7 +141,7 @@ namespace SuperNewRoles.Roles.Attribute
                 Pagebutton.FindChild("ControllerHighlight").gameObject.SetActive(false);
                 Transform PagebuttonMask = UnityEngine.Object.Instantiate(maskTemplate, PagebuttonParent);
                 TMPro.TextMeshPro Pagelabel = UnityEngine.Object.Instantiate(textTemplate, Pagebutton);
-                Pagebutton.GetComponent<SpriteRenderer>().sprite = DestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+                Pagebutton.GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
                 PagebuttonParent.localPosition = IsNext ? new(3.535f, -2.2f, -200) : new(-3.475f, -2.2f, -200);
                 PagebuttonParent.localScale = new(0.55f, 0.55f, 1f);
                 Pagelabel.color = Color.white;
@@ -184,7 +184,7 @@ namespace SuperNewRoles.Roles.Attribute
                 button.FindChild("ControllerHighlight").gameObject.SetActive(false);
                 Transform buttonMask = UnityEngine.Object.Instantiate(maskTemplate, buttonParent);
                 TMPro.TextMeshPro label = UnityEngine.Object.Instantiate(textTemplate, button);
-                button.GetComponent<SpriteRenderer>().sprite = DestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+                button.GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
                 if (!RoleButtons.ContainsKey(roleInfo.Team))
                 {
                     RoleButtons.Add(roleInfo.Team, new());

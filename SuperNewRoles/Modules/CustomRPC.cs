@@ -599,7 +599,7 @@ namespace SuperNewRoles.Modules
             target.ClearRole();
             RoleClass.SideKiller.MadKillerPlayer.Add(target);
             RoleClass.SideKiller.MadKillerPair.Add(source.PlayerId, target.PlayerId);
-            DestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
             ChacheManager.ResetMyRoleChache();
             PlayerControlHepler.RefreshRoleDescription(CachedPlayer.LocalPlayer.PlayerControl);
         }
@@ -607,7 +607,7 @@ namespace SuperNewRoles.Modules
         {
             var player = ModHelpers.PlayerById(playerid);
             if (player == null) return;
-            DestroyableSingleton<RoleManager>.Instance.SetRole(player, (RoleTypes)roletype);
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, (RoleTypes)roletype);
             player.Data.Role.Role = (RoleTypes)roletype;
         }
 
@@ -939,7 +939,7 @@ namespace SuperNewRoles.Modules
             }
             else
             {
-                DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
                 player.ClearRole();
                 RoleClass.Jackal.SidekickPlayer.Add(player);
                 PlayerControlHepler.RefreshRoleDescription(CachedPlayer.LocalPlayer.PlayerControl);
@@ -956,7 +956,7 @@ namespace SuperNewRoles.Modules
             }
             else
             {
-                DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
                 player.ClearRole();
                 RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
                 PlayerControlHepler.RefreshRoleDescription(CachedPlayer.LocalPlayer.PlayerControl);

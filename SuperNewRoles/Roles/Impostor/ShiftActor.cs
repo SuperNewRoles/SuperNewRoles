@@ -115,7 +115,7 @@ namespace SuperNewRoles.Roles.Impostor
             foreach (PlayerControl p in Player)
             {
                 Logger.Info("シェイプシフター割り当て", "ShiftActor");
-                DestroyableSingleton<RoleManager>.Instance.SetRole(p, RoleTypes.Shapeshifter);
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(p, RoleTypes.Shapeshifter);
             }
         }
     }
