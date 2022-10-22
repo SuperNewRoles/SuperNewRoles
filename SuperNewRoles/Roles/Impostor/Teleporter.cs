@@ -8,7 +8,7 @@ namespace SuperNewRoles.Roles
 {
     class Teleporter
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.TeleporterButton.MaxTimer = RoleClass.Teleporter.CoolTime;
             RoleClass.Teleporter.ButtonTimer = DateTime.Now;

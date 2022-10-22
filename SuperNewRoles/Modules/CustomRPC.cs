@@ -12,7 +12,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
-using SuperNewRoles.Roles.CrewMate;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 using static SuperNewRoles.Patches.FinalStatusPatch;
@@ -46,7 +46,7 @@ namespace SuperNewRoles.Modules
         Vulture,
         NiceScientist,
         Clergyman,
-        MadMate,
+        Madmate,
         Bait,
         HomeSecurityGuard,
         StuntMan,
@@ -296,7 +296,7 @@ namespace SuperNewRoles.Modules
                 SetRole(targetid, (byte)RoleId.Pavlovsdogs);
                 if (!RoleClass.Pavlovsowner.CountData.ContainsKey(sourceid))
                 {
-                    RoleClass.Pavlovsowner.CountData[sourceid] = CustomOptions.PavlovsownerCreateDogLimit.GetInt();
+                    RoleClass.Pavlovsowner.CountData[sourceid] = CustomOptionHolder.PavlovsownerCreateDogLimit.GetInt();
                 }
                 RoleClass.Pavlovsowner.CountData[sourceid]--;
             }
@@ -406,13 +406,13 @@ namespace SuperNewRoles.Modules
         public static void PainterPaintSet(byte target, byte ActionTypeId, byte[] buff)
         {
             Painter.ActionType type = (Painter.ActionType)ActionTypeId;
-            if (!RoleClass.Painter.ActionDatas.ContainsKey(type)) return;
+            if (!RoleClass.Painter.ActionData.ContainsKey(type)) return;
             if (!CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Painter)) return;
             if (RoleClass.Painter.CurrentTarget == null || RoleClass.Painter.CurrentTarget.PlayerId != target) return;
             Vector2 position = Vector2.zero;
             position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
             position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
-            RoleClass.Painter.ActionDatas[type].Add(position);
+            RoleClass.Painter.ActionData[type].Add(position);
         }
 
         public static void BlockReportDeadBody(byte TargetId, bool IsChangeReported)
@@ -453,7 +453,7 @@ namespace SuperNewRoles.Modules
         {
             PlayerControl source = ModHelpers.PlayerById(playerid);
             if (source == null) return;
-            RoleClass.PartTimer.Datas[source.PlayerId] = targetid;
+            RoleClass.PartTimer.Data[source.PlayerId] = targetid;
         }
         public static void UncheckedUsePlatform(byte playerid, bool IsMove)
         {
@@ -508,7 +508,7 @@ namespace SuperNewRoles.Modules
             SetRole(targetid, (byte)RoleId.Sheriff);
             if (targetid == CachedPlayer.LocalPlayer.PlayerId)
             {
-                Sheriff.ResetKillCoolDown();
+                Sheriff.ResetKillCooldown();
                 RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
             }
             UncheckedSetVanilaRole(targetid, (byte)RoleTypes.Crewmate);
@@ -523,10 +523,10 @@ namespace SuperNewRoles.Modules
             PlayerControl TargetPlayer = ModHelpers.PlayerById(target);
             PlayerControl SourcePlayer = ModHelpers.PlayerById(source);
             if (TargetPlayer == null || SourcePlayer == null) return;
-            if (!RoleClass.Arsonist.DouseDatas.ContainsKey(source)) RoleClass.Arsonist.DouseDatas[source] = new();
+            if (!RoleClass.Arsonist.DouseData.ContainsKey(source)) RoleClass.Arsonist.DouseData[source] = new();
             if (!Arsonist.IsDoused(SourcePlayer, TargetPlayer))
             {
-                RoleClass.Arsonist.DouseDatas[source].Add(TargetPlayer);
+                RoleClass.Arsonist.DouseData[source].Add(TargetPlayer);
             }
         }
         public static void DemonCurse(byte source, byte target)
@@ -534,10 +534,10 @@ namespace SuperNewRoles.Modules
             PlayerControl TargetPlayer = ModHelpers.PlayerById(target);
             PlayerControl SourcePlayer = ModHelpers.PlayerById(source);
             if (TargetPlayer == null || SourcePlayer == null) return;
-            if (!RoleClass.Demon.CurseDatas.ContainsKey(source)) RoleClass.Demon.CurseDatas[source] = new();
+            if (!RoleClass.Demon.CurseData.ContainsKey(source)) RoleClass.Demon.CurseData[source] = new();
             if (!Demon.IsCursed(SourcePlayer, TargetPlayer))
             {
-                RoleClass.Demon.CurseDatas[source].Add(TargetPlayer);
+                RoleClass.Demon.CurseData[source].Add(TargetPlayer);
             }
         }
         public static void SetBot(byte playerid)
@@ -572,7 +572,7 @@ namespace SuperNewRoles.Modules
             {
                 if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(playerid))
                 {
-                    RoleClass.MadStuntMan.GuardCount[playerid] = CustomOptions.MadStuntManMaxGuardCount.GetInt() - 1;
+                    RoleClass.MadStuntMan.GuardCount[playerid] = CustomOptionHolder.MadStuntManMaxGuardCount.GetInt() - 1;
                 }
                 else
                 {
@@ -583,7 +583,7 @@ namespace SuperNewRoles.Modules
             {
                 if (!RoleClass.StuntMan.GuardCount.ContainsKey(playerid))
                 {
-                    RoleClass.StuntMan.GuardCount[playerid] = CustomOptions.StuntManMaxGuardCount.GetInt() - 1;
+                    RoleClass.StuntMan.GuardCount[playerid] = CustomOptionHolder.StuntManMaxGuardCount.GetInt() - 1;
                 }
                 else
                 {
@@ -677,7 +677,7 @@ namespace SuperNewRoles.Modules
             var source = ModHelpers.PlayerById(sourceid);
             var target = ModHelpers.PlayerById(targetid);
             if (source == null || target == null) return;
-            if (CustomOptions.CountChangerNextTurn.GetBool())
+            if (CustomOptionHolder.CountChangerNextTurn.GetBool())
             {
                 RoleClass.CountChanger.Setdata[source.PlayerId] = target.PlayerId;
             }
@@ -823,9 +823,9 @@ namespace SuperNewRoles.Modules
         {
             PlayerControl Knight = ModHelpers.PlayerById(KnightId);
             PlayerControl Target = ModHelpers.PlayerById(TargetId);
-            Roles.CrewMate.Knight.GuardedPlayers.Add(TargetId); // 守護をかけられたプレイヤーを保存。
+            Roles.Crewmate.Knight.GuardedPlayers.Add(TargetId); // 守護をかけられたプレイヤーを保存。
             SuperNewRolesPlugin.Logger.LogInfo($"[KnightProtected]{Knight.GetDefaultName()}が{Target.GetDefaultName()}に護衛を使用しました。");
-            if (Roles.CrewMate.Knight.KnightCanAnnounceOfProtected.GetBool()) ProctedMessager.ScheduleProctedMessage(ModTranslation.GetString("TheKnightProtected"));
+            if (Roles.Crewmate.Knight.KnightCanAnnounceOfProtected.GetBool()) ProctedMessager.ScheduleProctedMessage(ModTranslation.GetString("TheKnightProtected"));
         }
         public static void CustomRPCKill(byte notTargetId, byte targetId)
         {
@@ -913,7 +913,7 @@ namespace SuperNewRoles.Modules
                     p.ClearRole();
                     p.SetRole(RoleId.JackalSeer);
                     //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                    RoleClass.JackalSeer.CanCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.GetBool();
+                    RoleClass.JackalSeer.CanCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
                 }
             }
             else
@@ -923,7 +923,7 @@ namespace SuperNewRoles.Modules
                     p.ClearRole();
                     p.SetRole(RoleId.Jackal);
                     //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                    RoleClass.Jackal.CanCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.GetBool();
+                    RoleClass.Jackal.CanCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
                 }
             }
             PlayerControlHepler.RefreshRoleDescription(CachedPlayer.LocalPlayer.PlayerControl);

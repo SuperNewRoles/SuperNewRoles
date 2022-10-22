@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles
             {
                 if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Workperson))
                 {
-                    CachedPlayer.LocalPlayer.PlayerControl.GenerateAndAssignTasks(CustomOptions.WorkpersonCommonTask.GetInt(), CustomOptions.WorkpersonShortTask.GetInt(), CustomOptions.WorkpersonLongTask.GetInt());
+                    CachedPlayer.LocalPlayer.PlayerControl.GenerateAndAssignTasks(CustomOptionHolder.WorkpersonCommonTask.GetInt(), CustomOptionHolder.WorkpersonShortTask.GetInt(), CustomOptionHolder.WorkpersonLongTask.GetInt());
                 }
             }
         }

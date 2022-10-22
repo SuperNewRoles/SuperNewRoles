@@ -31,13 +31,13 @@ namespace SuperNewRoles.Roles
 
         public static List<PlayerControl> GetDouseData(this PlayerControl player)
         {
-            return RoleClass.Arsonist.DouseDatas.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseDatas[player.PlayerId] : new();
+            return RoleClass.Arsonist.DouseData.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseData[player.PlayerId] : new();
         }
 
         public static List<PlayerControl> GetUntarget()
         {
-            return RoleClass.Arsonist.DouseDatas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId)
-                ? RoleClass.Arsonist.DouseDatas[CachedPlayer.LocalPlayer.PlayerId]
+            return RoleClass.Arsonist.DouseData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId)
+                ? RoleClass.Arsonist.DouseData[CachedPlayer.LocalPlayer.PlayerId]
                 : (new());
         }
 
@@ -45,9 +45,9 @@ namespace SuperNewRoles.Roles
         {
             if (source == null || source.Data.Disconnected || target == null || target.IsDead() || target.IsBot()) return true;
             if (source.PlayerId == target.PlayerId) return true;
-            if (RoleClass.Arsonist.DouseDatas.ContainsKey(source.PlayerId))
+            if (RoleClass.Arsonist.DouseData.ContainsKey(source.PlayerId))
             {
-                if (RoleClass.Arsonist.DouseDatas[source.PlayerId].IsCheckListPlayerControl(target))
+                if (RoleClass.Arsonist.DouseData[source.PlayerId].IsCheckListPlayerControl(target))
                 {
                     return true;
                 }
@@ -58,12 +58,12 @@ namespace SuperNewRoles.Roles
         public static List<PlayerControl> GetIconPlayers(PlayerControl player = null)
         {
             if (player == null) player = CachedPlayer.LocalPlayer.PlayerControl;
-            return RoleClass.Arsonist.DouseDatas.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseDatas[player.PlayerId] : (new());
+            return RoleClass.Arsonist.DouseData.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseData[player.PlayerId] : (new());
         }
         public static bool IsViewIcon(PlayerControl player)
         {
             if (player == null) return false;
-            foreach (var data in RoleClass.Arsonist.DouseDatas)
+            foreach (var data in RoleClass.Arsonist.DouseData)
             {
                 foreach (PlayerControl Player in data.Value)
                 {

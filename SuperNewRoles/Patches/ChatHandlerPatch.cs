@@ -173,13 +173,13 @@ namespace SuperNewRoles.Patches
                 )
             {
                 PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
-                if (OnGameEndPatch.PlayerDatas == null)
+                if (OnGameEndPatch.PlayerData == null)
                 {
                     SendCommand(target, ModTranslation.GetString("WinnersNoneData"), SNRCommander);
                     return false;
                 }
                 StringBuilder builder = new();
-                foreach (var data in OnGameEndPatch.PlayerDatas)
+                foreach (var data in OnGameEndPatch.PlayerData)
                 {
                     if (data.IsWin) builder.Append("★");
                     else builder.Append("　");
@@ -191,7 +191,7 @@ namespace SuperNewRoles.Patches
                     if (data.role == null)
                         builder.Append(ModTranslation.GetString("WinnerGetError"));
                     else
-                        builder.Append(ModTranslation.GetString(IntroDate.GetIntroDate((RoleId)data.role).NameKey + "Name"));
+                        builder.Append(ModTranslation.GetString(IntroData.GetIntroData((RoleId)data.role).NameKey + "Name"));
                     builder.AppendLine();
                 }
                 SendCommand(target, builder.ToString(), $"<size=200%>{OnGameEndPatch.WinText}</size>");
@@ -215,7 +215,7 @@ namespace SuperNewRoles.Patches
             }
             return text;
         }
-        static string GetOptionText(CustomRoleOption RoleOption, IntroDate intro)
+        static string GetOptionText(CustomRoleOption RoleOption, IntroData intro)
         {
             Logger.Info("GetOptionText", "ChatHandler");
             string text = "";
@@ -226,7 +226,7 @@ namespace SuperNewRoles.Patches
         {
             return type switch
             {
-                TeamRoleType.Crewmate => ModTranslation.GetString("CrewMateName"),
+                TeamRoleType.Crewmate => ModTranslation.GetString("CrewmateName"),
                 TeamRoleType.Impostor => ModTranslation.GetString("ImpostorName"),
                 TeamRoleType.Neutral => ModTranslation.GetString("NeutralName").Replace("陣営", ""),
                 _ => "",
@@ -236,9 +236,9 @@ namespace SuperNewRoles.Patches
         {
             Logger.Info("GetText", "Chathandler");
             string text = "\n";
-            IntroDate intro = option.Intro;
+            IntroData intro = option.Intro;
             text += GetTeamText(intro.Team) + ModTranslation.GetString("Team") + "\n";
-            text += "「" + IntroDate.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
+            text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
             text += intro.Description + "\n";
             text += ModTranslation.GetString("MessageSettings") + ":\n";
             text += GetOptionText(option, intro);
@@ -268,7 +268,7 @@ namespace SuperNewRoles.Patches
                 int PlayerCount = 0;
                 foreach (CustomOption opt in option.children)
                 {
-                    if (opt.GetName() == CustomOptions.SheriffPlayerCount.GetName())
+                    if (opt.GetName() == CustomOptionHolder.SheriffPlayerCount.GetName())
                     {
                         PlayerCount = (int)opt.GetFloat();
                         break;
@@ -293,7 +293,7 @@ namespace SuperNewRoles.Patches
             foreach (CustomRoleOption option in EnableOptions)
             {
                 string text = GetText(option);
-                string rolename = "<size=115%>\n" + CustomOptions.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
+                string rolename = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
                 SuperNewRolesPlugin.Logger.LogInfo(text);
                 Send(target, rolename, text, time);
                 time += SendTime;

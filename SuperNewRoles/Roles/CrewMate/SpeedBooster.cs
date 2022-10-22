@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles
 {
     class SpeedBooster
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.SpeedBoosterBoostButton.MaxTimer = RoleClass.SpeedBooster.CoolTime;
             RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
@@ -22,7 +22,7 @@ namespace SuperNewRoles.Roles
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.SetSpeedBoost(true, CachedPlayer.LocalPlayer.PlayerId);
-            ResetCoolDown();
+            ResetCooldown();
         }
         public static void ResetSpeed()
         {

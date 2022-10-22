@@ -138,7 +138,7 @@ namespace SuperNewRoles.Roles.Neutral
         };
         public static void AssignGM()
         {
-            if (CustomOptions.GMOption.GetBool())
+            if (CustomOptionHolder.GMOption.GetBool())
             {
                 CachedPlayer.LocalPlayer.PlayerControl.SetRoleRPC(RoleId.GM);
                 CachedPlayer.LocalPlayer.PlayerControl.RpcExiledUnchecked();

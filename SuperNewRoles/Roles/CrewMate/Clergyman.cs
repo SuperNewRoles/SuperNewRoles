@@ -7,7 +7,7 @@ namespace SuperNewRoles.Roles
 {
     class Clergyman
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
             HudManagerStartPatch.ClergymanLightOutButton.Timer = HudManagerStartPatch.ClergymanLightOutButton.MaxTimer;
@@ -31,7 +31,7 @@ namespace SuperNewRoles.Roles
             return !RoleClass.Clergyman.IsLightOff
                 ? false
                 : (CountChanger.GetRoleType(CachedPlayer.LocalPlayer.PlayerControl) == TeamRoleType.Impostor)
-                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.MadMate)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.Madmate)
                 || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.MadMayor)
                 || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.MadJester)
                 || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.MadJester)

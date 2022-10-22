@@ -42,12 +42,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             var myrole = CachedPlayer.LocalPlayer.PlayerControl.GetRole();
             if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
             {
-                var date = IntroDate.GetIntroDate(myrole);
-                __instance.YouAreText.color = date.color;
-                __instance.RoleText.text = ModTranslation.GetString(date.NameKey + "Name");
-                __instance.RoleText.color = date.color;
-                __instance.RoleBlurbText.text = date.TitleDesc;
-                __instance.RoleBlurbText.color = date.color;
+                var data = IntroData.GetIntroData(myrole);
+                __instance.YouAreText.color = data.color;
+                __instance.RoleText.text = ModTranslation.GetString(data.NameKey + "Name");
+                __instance.RoleText.color = data.color;
+                __instance.RoleBlurbText.text = data.TitleDesc;
+                __instance.RoleBlurbText.color = data.color;
             }
             if (CachedPlayer.LocalPlayer.PlayerControl.IsLovers()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), CachedPlayer.LocalPlayer.PlayerControl.GetOneSideLovers()?.GetDefaultName() ?? ""));
             if (CachedPlayer.LocalPlayer.PlayerControl.IsQuarreled()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), CachedPlayer.LocalPlayer.PlayerControl.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));

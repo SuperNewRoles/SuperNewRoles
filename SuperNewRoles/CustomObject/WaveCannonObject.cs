@@ -133,17 +133,17 @@ namespace SuperNewRoles.CustomObject
                         {
                             if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.WaveCannon))
                             {
-                                if (CustomOptions.WaveCannonIsSyncKillCoolTime.GetBool())
+                                if (CustomOptionHolder.WaveCannonIsSyncKillCoolTime.GetBool())
                                     CachedPlayer.LocalPlayer.PlayerControl.SetKillTimer(RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer.PlayerControl));
                             }
                             else
                             {
-                                if (CustomOptions.WaveCannonJackalIsSyncKillCoolTime.GetBool())
-                                    Roles.Neutral.WaveCannonJackal.ResetCoolDowns();
+                                if (CustomOptionHolder.WaveCannonJackalIsSyncKillCoolTime.GetBool())
+                                    Roles.Neutral.WaveCannonJackal.ResetCooldowns();
                             }
                             CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
                             Camera.main.GetComponent<FollowerCamera>().Locked = false;
-                            HudManagerStartPatch.WaveCannonButton.MaxTimer = CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.WaveCannon) ? CustomOptions.WaveCannonCoolTime.GetFloat() : CustomOptions.WaveCannonJackalCoolTime.GetFloat();
+                            HudManagerStartPatch.WaveCannonButton.MaxTimer = CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonCoolTime.GetFloat() : CustomOptionHolder.WaveCannonJackalCoolTime.GetFloat();
                             HudManagerStartPatch.WaveCannonButton.Timer = HudManagerStartPatch.WaveCannonButton.MaxTimer;
                             RoleClass.WaveCannon.CannotMurderPlayers = new();
                         }

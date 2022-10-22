@@ -91,12 +91,12 @@ namespace SuperNewRoles.Patches
 
         static void ReduceKillCooldown(PlayerControl __instance)
         {
-            if (CustomOptions.IsAlwaysReduceCooldown.GetBool())
+            if (CustomOptionHolder.IsAlwaysReduceCooldown.GetBool())
             {
                 // オプションがOFFの場合はベント内はクールダウン減少を止める
-                bool exceptInVent = !CustomOptions.IsAlwaysReduceCooldownExceptInVent.GetBool() && CachedPlayer.LocalPlayer.PlayerControl.inVent;
+                bool exceptInVent = !CustomOptionHolder.IsAlwaysReduceCooldownExceptInVent.GetBool() && CachedPlayer.LocalPlayer.PlayerControl.inVent;
                 // 配電盤タスク中はクールダウン減少を止める
-                bool exceptOnTask = !CustomOptions.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
+                bool exceptOnTask = !CustomOptionHolder.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
 
                 if (!__instance.Data.IsDead && !__instance.CanMove && !exceptInVent && !exceptOnTask)
                 {
@@ -104,7 +104,7 @@ namespace SuperNewRoles.Patches
                     return;
                 }
             }
-            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Tasker) && CustomOptions.TaskerIsKillCoolTaskNow.GetBool())
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Tasker) && CustomOptionHolder.TaskerIsKillCoolTaskNow.GetBool())
             {
                 if (!__instance.Data.IsDead && !__instance.CanMove && Minigame.Instance != null && Minigame.Instance.MyNormTask != null && Minigame.Instance.MyNormTask.Owner.AmOwner)
                     __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
@@ -135,7 +135,7 @@ namespace SuperNewRoles.Patches
                     SetNameUpdate.Postfix(__instance);
                     Jackal.JackalFixedPatch.Postfix(__instance, CachedPlayer.LocalPlayer.PlayerControl.GetRole());
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, CachedPlayer.LocalPlayer.PlayerControl.GetRole());
-                    Roles.CrewMate.Psychometrist.FixedUpdate();
+                    Roles.Crewmate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
                     Roles.Neutral.PartTimer.FixedUpdate();
                     ReduceKillCooldown(__instance);
@@ -203,10 +203,10 @@ namespace SuperNewRoles.Patches
                                 Doctor.FixedUpdate();
                                 break;
                             case RoleId.Psychometrist:
-                                Roles.CrewMate.Psychometrist.PsychometristFixedUpdate();
+                                Roles.Crewmate.Psychometrist.PsychometristFixedUpdate();
                                 break;
                             case RoleId.SeeThroughPerson:
-                                Roles.CrewMate.SeeThroughPerson.FixedUpdate();
+                                Roles.Crewmate.SeeThroughPerson.FixedUpdate();
                                 break;
                             case RoleId.Hitman:
                                 Roles.Neutral.Hitman.FixedUpdate();

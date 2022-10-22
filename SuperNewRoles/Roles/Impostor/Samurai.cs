@@ -5,7 +5,7 @@ namespace SuperNewRoles.Roles
 {
     public class Samurai
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.SamuraiButton.MaxTimer = RoleClass.Samurai.SwordCoolTime;
             HudManagerStartPatch.SamuraiButton.Timer = RoleClass.Samurai.SwordCoolTime;
@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles
             {
                 if (p.IsAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {
-                    if (SelfBomber.GetIsBomb(CachedPlayer.LocalPlayer.PlayerControl, p, CustomOptions.SamuraiScope.GetFloat()))
+                    if (SelfBomber.GetIsBomb(CachedPlayer.LocalPlayer.PlayerControl, p, CustomOptionHolder.SamuraiScope.GetFloat()))
                     {
                         CachedPlayer.LocalPlayer.PlayerControl.UncheckedMurderPlayer(p, showAnimation: false);
                         CachedPlayer.LocalPlayer.PlayerControl.RpcSetFinalStatus(FinalStatus.SamuraiKill);

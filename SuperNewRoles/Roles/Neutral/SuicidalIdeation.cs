@@ -17,7 +17,7 @@ namespace SuperNewRoles.Roles
             if (RoleClass.SuicidalIdeation.CompletedTask <= playerCompleted)
             {
                 RoleClass.SuicidalIdeation.CompletedTask += 1;
-                HudManagerStartPatch.SuicidalIdeationButton.Timer += CustomOptions.SuicidalIdeationAddTimeLeft.GetFloat();
+                HudManagerStartPatch.SuicidalIdeationButton.Timer += CustomOptionHolder.SuicidalIdeationAddTimeLeft.GetFloat();
             }
         }
     }

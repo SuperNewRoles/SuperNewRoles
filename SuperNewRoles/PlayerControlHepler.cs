@@ -41,7 +41,7 @@ namespace SuperNewRoles
         {
             if (player == null) return;
 
-            List<IntroDate> infos = new() { IntroDate.GetIntroDate(player.GetRole(), player) };
+            List<IntroData> infos = new() { IntroData.GetIntroData(player.GetRole(), player) };
 
             var toRemove = new List<PlayerTask>();
             var aaa = false;
@@ -71,20 +71,20 @@ namespace SuperNewRoles
             }
 
             // Add TextTask for remaining RoleInfos
-            foreach (IntroDate roleInfo in infos)
+            foreach (IntroData roleInfo in infos)
             {
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
 
-                task.Text = CustomOptions.Cs(roleInfo.color, $"{ModTranslation.GetString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
+                task.Text = CustomOptionHolder.Cs(roleInfo.color, $"{ModTranslation.GetString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
                 if (player.IsLovers())
                 {
                     task.Text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, ModTranslation.GetString("LoversName") + ": " + string.Format(ModTranslation.GetString("LoversIntro"), CachedPlayer.LocalPlayer.PlayerControl.GetOneSideLovers()?.Data?.PlayerName ?? ""));
                 }
                 if (!player.IsGhostRole(RoleId.DefaultRole))
                 {
-                    var GhostRoleInfo = IntroDate.GetIntroDate(player.GetGhostRole(), player);
-                    task.Text += "\n" + CustomOptions.Cs(GhostRoleInfo.color, $"{ModTranslation.GetString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
+                    var GhostRoleInfo = IntroData.GetIntroData(player.GetGhostRole(), player);
+                    task.Text += "\n" + CustomOptionHolder.Cs(GhostRoleInfo.color, $"{ModTranslation.GetString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
                 }
 
                 player.myTasks.Insert(0, task);

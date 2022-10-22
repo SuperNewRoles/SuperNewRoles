@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles
 {
     class Doorr
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.DoorrDoorButton.MaxTimer = CachedPlayer.LocalPlayer.Data.Role.IsImpostor ? RoleClass.EvilDoorr.CoolTime : RoleClass.Doorr.CoolTime;
             HudManagerStartPatch.DoorrDoorButton.Timer = HudManagerStartPatch.DoorrDoorButton.MaxTimer;

@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles.Neutral
     {
         public static void FixedUpdate()
         {
-            foreach (var data in RoleClass.PartTimer.PlayerDatas)
+            foreach (var data in RoleClass.PartTimer.PlayerData)
             {
                 if (data.Value.IsDead())
                 {
@@ -17,7 +17,7 @@ namespace SuperNewRoles.Roles.Neutral
                     {
                         RoleClass.PartTimer.DeathTurn = RoleClass.PartTimer.DeathDefaultTurn;
                     }
-                    RoleClass.PartTimer.Datas.Remove(data.Key.PlayerId);
+                    RoleClass.PartTimer.Data.Remove(data.Key.PlayerId);
                 }
             }
         }

@@ -150,7 +150,7 @@ namespace SuperNewRoles.Roles
                     }
                     else // 動き始めた時 & 動き続けている時は
                     {
-                        ResetCoolDown(); // 動いている時は「隠れる」ボタンのクールダウンを常にリセットする
+                        ResetCooldown(); // 動いている時は「隠れる」ボタンのクールダウンを常にリセットする
                         if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)//透明化していた場合
                         {
                             HideOff(); // 透明化を解除する
@@ -185,10 +185,10 @@ namespace SuperNewRoles.Roles
             //ボタン動作で行っている場合はクールダウンのリセットも行う
             if (RoleClass.Kunoichi.IsHideButton)
             {
-                ResetCoolDown();
+                ResetCooldown();
             }
         }
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             // [隠れる]ボタンのクールダウンをリセットする
             RoleClass.Kunoichi.IsHideButton = false;

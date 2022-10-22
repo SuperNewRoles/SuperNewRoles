@@ -4,15 +4,15 @@ using UnityEngine;
 using SuperNewRoles.Mode.SuperHostRoles;
 using System.Collections.Generic;
 using System.Linq;
-using static SuperNewRoles.Modules.CustomOptions;
-using static SuperNewRoles.Roles.CrewMate.Knight;
+using static SuperNewRoles.Modules.CustomOptionHolder;
+using static SuperNewRoles.Roles.Crewmate.Knight;
 
-namespace SuperNewRoles.Roles.CrewMate
+namespace SuperNewRoles.Roles.Crewmate
 {
     public static class Knight
     {
         private const int OptionId = 1052;// 設定のId
-        // CustomOptionDate
+        // CustomOptionHolder
         public static CustomRoleOption KnightOption;
         public static CustomOption KnightPlayerCount;
         public static CustomOption KnightCanAnnounceOfProtected;

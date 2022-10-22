@@ -10,7 +10,7 @@ namespace SuperNewRoles.Buttons
 {
     public static class OldModeButtons
     {
-        public static bool IsOldMode => AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && CustomOptions.IsOldMode.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles);
+        public static bool IsOldMode => AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && CustomOptionHolder.IsOldMode.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles);
         public static bool CanUseKeyboard => IsOldMode && false;
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
         static class MeetingHudStart

@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles
 {
     public class Speeder
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.SpeederButton.MaxTimer = RoleClass.Speeder.CoolTime;
             HudManagerStartPatch.SpeederButton.Timer = HudManagerStartPatch.SpeederButton.MaxTimer;
@@ -34,7 +34,7 @@ namespace SuperNewRoles.Roles
         public static void SpeedDownEnd()
         {
             ResetSpeed();
-            ResetCoolDown();
+            ResetCooldown();
         }
         public static bool IsSpeeder(PlayerControl Player)
         {
@@ -42,7 +42,7 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            ResetCoolDown();
+            ResetCooldown();
             ResetSpeed();
         }
         public static void HudUpdate()

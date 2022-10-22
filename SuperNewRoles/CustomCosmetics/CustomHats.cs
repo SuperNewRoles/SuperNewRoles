@@ -211,7 +211,7 @@ namespace SuperNewRoles.CustomCosmetics
                 AmongUsClient.Instance.StartCoroutine(LoadHat(__instance));
             }
 
-            static List<HatData> AddHatDatas = new();
+            static List<HatData> addHatData = new();
 
             static IEnumerator LoadHat(HatManager __instance)
             {
@@ -227,20 +227,20 @@ namespace SuperNewRoles.CustomCosmetics
                     List<CustomHat> customhats = CreateCustomHatDetails(hats);
                     foreach (CustomHat ch in customhats)
                     {
-                        AddHatDatas.Add(CreateHatData(ch));
+                        addHatData.Add(CreateHatData(ch));
                         yield return new WaitForSeconds(0.05f);
                     }
                 }
                 while (CustomHatLoader.hatDetails.Count > 0)
                 {
-                    AddHatDatas.Add(CreateHatData(CustomHatLoader.hatDetails[0]));
+                    addHatData.Add(CreateHatData(CustomHatLoader.hatDetails[0]));
                     CustomHatLoader.hatDetails.RemoveAt(0);
                     yield return new WaitForSeconds(0.05f);
                 }
                 LOADED = true;
                 IsLoadingnow = false;
                 var data = __instance.allHats.ToList();
-                data.AddRange(AddHatDatas);
+                data.AddRange(addHatData);
                 __instance.allHats = data.ToArray();
             }
         }
@@ -516,7 +516,7 @@ namespace SuperNewRoles.CustomCosmetics
                     if (jobj != null && jobj.HasValues)
                     {
 
-                        List<CustomHatOnline> hatdatas = new();
+                        List<CustomHatOnline> hatData = new();
 
                         for (JToken current = jobj.First; current != null; current = current.Next)
                         {
@@ -557,13 +557,13 @@ namespace SuperNewRoles.CustomCosmetics
                                 if (info.package == "Community Hats")
                                     info.package = "communityHats";
 
-                                hatdatas.Add(info);
+                                hatData.Add(info);
                             }
                         }
                         if (!CustomHats.Keys.Contains("InnerSloth"))
                             CustomHats.Keys.Add("InnerSloth");
 
-                        hatDetails.AddRange(hatdatas);
+                        hatDetails.AddRange(hatData);
                         CachedRepos.Add(repo);
                         Repos.Remove(repo);
                     }
@@ -629,7 +629,7 @@ namespace SuperNewRoles.CustomCosmetics
                 JToken jobj = JObject.Parse(json)["hats"];
                 if (!jobj.HasValues) return HttpStatusCode.ExpectationFailed;
 
-                List<CustomHatOnline> hatdatas = new();
+                List<CustomHatOnline> hatData = new();
 
                 for (JToken current = jobj.First; current != null; current = current.Next)
                 {
@@ -668,7 +668,7 @@ namespace SuperNewRoles.CustomCosmetics
                         if (info.package == "Community Hats")
                             info.package = "communityHats";
 
-                        hatdatas.Add(info);
+                        hatData.Add(info);
                     }
                 }
                 CustomHats.Keys.Add("InnerSloth");
@@ -676,7 +676,7 @@ namespace SuperNewRoles.CustomCosmetics
                 List<string> markedfordownload = new();
 
                 MD5 md5 = MD5.Create();
-                foreach (CustomHatOnline data in hatdatas)
+                foreach (CustomHatOnline data in hatData)
                 {
                     if (DoesResourceRequireDownload(filePath + data.resource, data.reshasha, md5))
                         markedfordownload.Add(data.resource);
@@ -701,7 +701,7 @@ namespace SuperNewRoles.CustomCosmetics
                 }
                 if (!CachedRepos.Contains(repo))
                 {
-                    hatDetails.AddRange(hatdatas);
+                    hatDetails.AddRange(hatData);
                     Repos.Remove(repo);
                     if (Repos.Count < 1)
                     {

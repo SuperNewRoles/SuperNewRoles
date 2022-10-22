@@ -6,7 +6,7 @@ namespace SuperNewRoles.Roles
 {
     class Lighter
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.LighterLightOnButton.MaxTimer = RoleClass.Lighter.CoolTime;
             RoleClass.Lighter.ButtonTimer = DateTime.Now;
