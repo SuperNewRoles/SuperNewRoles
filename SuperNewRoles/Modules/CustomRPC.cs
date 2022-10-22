@@ -706,7 +706,7 @@ namespace SuperNewRoles.Modules
             }
             catch (Exception e)
             {
-                SuperNewRolesPlugin.Logger.LogError("Error while deserializing options: " + e.Message);
+                Logger.Error("Error while deserializing options: " + e.Message,"Rpc");
             }
         }
         public static void ShareSNRversion(int major, int minor, int build, int revision, Guid guid, int clientId)

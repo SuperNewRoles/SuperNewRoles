@@ -184,7 +184,7 @@ namespace SuperNewRoles.Patches
                     }
                     catch (Exception e)
                     {
-                        SuperNewRolesPlugin.Logger.LogError(e);
+                        Logger.Error(e,"json fetch");
                     }
                 }
                 return HttpStatusCode.OK;

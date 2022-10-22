@@ -32,7 +32,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         //Logへの記載
                         if (exiled.Object.IsRole(RoleId.BlackCat)) Logger.Info("[SHR:黒猫Info]Impostorを道連れ対象から除外しました");
                         else if (exiled.Object.IsRole(RoleId.EvilNekomata)) Logger.Info("[SHR:イビル猫又Info]Impostorを道連れ対象から除外しました");
-                        else SuperNewRolesPlugin.Logger.LogError("[SHR:猫又Error]&[SHR:イビル猫又Error][NotImpostorExiled == true] 異常な抽選リストです");
+                        else Logger.Error("[NotImpostorExiled == true] 異常な抽選リストです","SHR:猫又&イビル猫又");
                     }
                 }
                 //それ以外なら(ナイス猫又・設定オフ)
@@ -45,7 +45,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         //Logへの記載
                         if (exiled.Object.IsRole(RoleId.BlackCat)) Logger.Info("[SHR:黒猫Info]Impostorを道連れ対象から除外しませんでした");
                         else if (exiled.Object.IsRole(RoleId.EvilNekomata)) Logger.Info("[SHR:イビル猫又Info]Impostorを道連れ対象から除外しませんでした");
-                        else SuperNewRolesPlugin.Logger.LogError("[SHR:猫又Error]&[SHR:イビル猫又Error][NotImpostorExiled != true ] 異常な抽選リストです");
+                        else Logger.Error("[NotImpostorExiled != true ] 異常な抽選リストです","SHR:猫又&イビル猫又");
                     }
                 }
             }

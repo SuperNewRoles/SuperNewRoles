@@ -35,7 +35,7 @@ namespace SuperNewRoles.Roles
                                 else if (__instance.Object.IsRole(RoleId.EvilNekomata))
                                     Logger.Info("[SNR:イビル猫又Info]Impostorを道連れ対象から除外しました");
                                 else
-                                    SuperNewRolesPlugin.Logger.LogError("[SNR:猫又Error]&[SNR:イビル猫又Error][NotImpostorExiled == true] 異常な抽選リストです");
+                                    Logger.Error("[NotImpostorExiled == true] 異常な抽選リストです","SNR:猫又&イビル猫又");
                             }
                         }
                         // 猫カボチャで。追放道連れにする
@@ -70,7 +70,7 @@ namespace SuperNewRoles.Roles
                                 else if (__instance.Object.IsRole(RoleId.EvilNekomata))
                                     Logger.Info("[SNR:イビル猫又Info]Impostorを道連れ対象から除外しませんでした");
                                 else
-                                    SuperNewRolesPlugin.Logger.LogError("[SNR:猫又Error]&[SNR:イビル猫又Error][NotImpostorExiled != true] 異常な抽選リストです");
+                                    Logger.Error("[NotImpostorExiled != true] 異常な抽選リストです","SNR:猫又イビル猫又Error");
                             }
                         }
                     }

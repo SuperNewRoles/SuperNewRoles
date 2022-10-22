@@ -638,7 +638,7 @@ namespace SuperNewRoles
                     break;
                 //ロールアド
                 default:
-                    SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
+                    Logger.Error($"No Method Found for Role id {role}","SetRole");
                     return;
             }
             bool flag = player.GetRole() != role && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;

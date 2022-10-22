@@ -50,8 +50,8 @@ namespace SuperNewRoles.CustomCosmetics
                     }
                     catch (Exception e)
                     {
-                        SuperNewRolesPlugin.Logger.LogError("[CustomVisor:Error] エラー:CustomVisorの読み込みに失敗しました:" + file.FullName);
-                        SuperNewRolesPlugin.Logger.LogError(file.FullName + "のエラー内容:" + e);
+                        Logger.Error("CustomVisorの読み込みに失敗しました:" + file.FullName,"CustomVisor");
+                        Logger.Error(file.FullName + "のエラー内容:" + e,"CustomVisor");
                     }
                 }
                 Logger.Info("[CustomVisor] バイザー読み込み処理終了");

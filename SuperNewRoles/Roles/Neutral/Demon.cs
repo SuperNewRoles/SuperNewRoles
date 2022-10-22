@@ -22,7 +22,7 @@ namespace SuperNewRoles.Roles
             }
             catch (Exception e)
             {
-                SuperNewRolesPlugin.Logger.LogError(e);
+                Logger.Error(e,"Demon");
             }
         }
 

@@ -50,8 +50,8 @@ namespace SuperNewRoles.CustomCosmetics
                     }
                     catch (Exception e)
                     {
-                        SuperNewRolesPlugin.Logger.LogError("[CustomPlate:Error] エラー:CustomNamePlateの読み込みに失敗しました:" + file.FullName);
-                        SuperNewRolesPlugin.Logger.LogError(file.FullName + "のエラー内容:" + e);
+                        Logger.Error("CustomNamePlateの読み込みに失敗しました:" + file.FullName,"CustomPlate");
+                        Logger.Error(file.FullName + "のエラー内容:" + e,"CustomPlate");
                     }
                 }
                 Logger.Info("[CustomPlate] プレート読み込み処理終了");

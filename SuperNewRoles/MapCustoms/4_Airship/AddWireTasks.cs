@@ -32,7 +32,7 @@ namespace SuperNewRoles.MapCustoms
 
             if (console == null)
             {
-                SuperNewRolesPlugin.Logger.LogError($"consoleName \"{consoleName}\" is null");
+                Logger.Error($"consoleName \"{consoleName}\" is null","wire task");
                 return null;
             }
 
@@ -50,7 +50,7 @@ namespace SuperNewRoles.MapCustoms
             GameObject obj = GameObject.Find(objectName);
             if (obj == null)
             {
-                SuperNewRolesPlugin.Logger.LogError($"Object \"{objectName}\" was not found!");
+                Logger.Error($"Object \"{objectName}\" was not found!","wire task");
                 return null;
             }
             obj.layer = LayerMask.NameToLayer("ShortObjects");
