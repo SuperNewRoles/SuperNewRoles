@@ -301,8 +301,9 @@ namespace SuperNewRoles.Modules
                     return _.NameKey + "Name" == name;
                 }).RoleId;
             }
-            catch {
-                Logger.Info("RoleId取得でエラーが発生しました:"+name,"CustomRoleOption");
+            catch
+            {
+                Logger.Info("RoleId取得でエラーが発生しました:" + name, "CustomRoleOption");
             }
             RoleOptions.Add(this);
             if (max > 1)
@@ -940,7 +941,7 @@ namespace SuperNewRoles.Modules
                     __instance.AppendItem(__instance.settings, StringNames.GameShortTasks, __instance.NumShortTasks);
                     if (__instance.gameType == GameType.Normal)
                     {
-                        RoleBehaviour[] allRoles = DestroyableSingleton<RoleManager>.Instance.AllRoles;
+                        RoleBehaviour[] allRoles = FastDestroyableSingleton<RoleManager>.Instance.AllRoles;
                         foreach (RoleBehaviour roleBehaviour in allRoles)
                         {
                             if (roleBehaviour.Role is not 0 and not RoleTypes.Impostor)

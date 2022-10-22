@@ -44,7 +44,7 @@ namespace SuperNewRoles.MapCustoms
 
             if (ShipStatus.Instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
             {
-                GameObject gapRoom = DestroyableSingleton<ShipStatus>.Instance.FastRooms[SystemTypes.GapRoom].gameObject;
+                GameObject gapRoom = FastDestroyableSingleton<ShipStatus>.Instance.FastRooms[SystemTypes.GapRoom].gameObject;
                 // ぬ～んを消す
                 if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AirshipDisableMovingPlatform.GetBool())
                 {

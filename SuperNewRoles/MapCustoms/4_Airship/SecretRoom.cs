@@ -595,9 +595,9 @@ namespace SuperNewRoles.MapCustoms.Airship
         static void ViewMinigame()
         {
             var moto = PlayerControl.LocalPlayer.Data.Role.Role;
-            DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
             CachedPlayer.LocalPlayer.Data.Role.TryCast<ScientistRole>().UseAbility();
-            DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, moto);
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, moto);
         }
         static Console ActivateConsole(GameObject obj, float Distance = 1.7f)
         {

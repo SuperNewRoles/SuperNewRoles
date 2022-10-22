@@ -1505,7 +1505,8 @@ namespace SuperNewRoles.Patches
                 PavlovsownerAlive = numPavlovsownerAlive;
                 PavlovsTeamAlive = numPavlovsTeamAlive;
                 HitmanAlive = numHitmanAlive;
-                if (!(IsGuardPavlovs = PavlovsDogAlive > 0)) {
+                if (!(IsGuardPavlovs = PavlovsDogAlive > 0))
+                {
                     foreach (PlayerControl p in RoleClass.Pavlovsowner.PavlovsownerPlayer)
                     {
                         if (p == null) continue;

@@ -38,7 +38,7 @@ namespace SuperNewRoles.Patches
                                 if (LobbyLimit != PlayerControl.GameOptions.MaxPlayers)
                                 {
                                     PlayerControl.GameOptions.MaxPlayers = LobbyLimit;
-                                    DestroyableSingleton<GameStartManager>.Instance.LastPlayerCount = LobbyLimit;
+                                    FastDestroyableSingleton<GameStartManager>.Instance.LastPlayerCount = LobbyLimit;
                                     CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
                                     __instance.AddChat(PlayerControl.LocalPlayer, $"ロビーの最大人数を{LobbyLimit}人に変更しました！");
                                 }

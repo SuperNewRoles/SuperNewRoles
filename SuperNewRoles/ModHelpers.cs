@@ -141,7 +141,7 @@ namespace SuperNewRoles
         }
         public static void SetSkinWithAnim(PlayerPhysics playerPhysics, string SkinId)
         {
-            SkinViewData nextSkin = DestroyableSingleton<HatManager>.Instance.GetSkinById(SkinId).viewData.viewData;
+            SkinViewData nextSkin = FastDestroyableSingleton<HatManager>.Instance.GetSkinById(SkinId).viewData.viewData;
             AnimationClip clip = null;
             var spriteAnim = playerPhysics.GetSkin().animator;
             var anim = spriteAnim.m_animator;

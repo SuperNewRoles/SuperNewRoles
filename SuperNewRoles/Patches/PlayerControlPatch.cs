@@ -347,7 +347,7 @@ namespace SuperNewRoles.Patches
                     {
                         if (__instance.isActiveAndEnabled && PlayerControl.LocalPlayer.IsAlive() && PlayerControl.LocalPlayer.CanMove && !__instance.isCoolingDown && RoleClass.RemoteSheriff.KillMaxCount > 0)
                         {
-                            DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                            FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
                             foreach (PlayerControl p in CachedPlayer.AllPlayers)
                             {
                                 p.Data.Role.NameColor = Color.white;
@@ -360,7 +360,7 @@ namespace SuperNewRoles.Patches
                                     p.Data.Role.NameColor = RoleClass.ImpostorRed;
                                 }
                             }
-                            DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                            FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
                             PlayerControl.LocalPlayer.killTimer = 0.001f;
                         }
                         return false;
@@ -1092,7 +1092,7 @@ namespace SuperNewRoles.Patches
                 MeetingRoomManager.Instance.AssignSelf(__instance, target);
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
+                    FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
                     __instance.RpcStartMeeting(target);
                 }
                 return false;
