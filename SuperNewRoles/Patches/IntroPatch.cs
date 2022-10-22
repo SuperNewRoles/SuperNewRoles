@@ -100,7 +100,7 @@ namespace SuperNewRoles.Patches
                                 button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
                                 {
                                     Roles.Neutral.GM.target = target;
-                                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
                                     foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                                     {
                                         p.Data.Role.NameColor = Color.white;
@@ -115,7 +115,7 @@ namespace SuperNewRoles.Patches
                                             p.Data.Role.NameColor = RoleClass.ImpostorRed;
                                         }
                                     }
-                                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
                                 }));
                             }
                             Create(button, p);

@@ -739,9 +739,9 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.Doctor.Vital == null)
                     {
                         var moto = PlayerControl.LocalPlayer.Data.Role.Role;
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
+                        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
                         CachedPlayer.LocalPlayer.Data.Role.TryCast<ScientistRole>().UseAbility();
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, moto);
+                        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, moto);
                         RoleClass.Doctor.Vital = GameObject.FindObjectOfType<VitalsMinigame>();
                     }
                     RoleClass.Doctor.MyPanelFlag = true;
@@ -1049,7 +1049,7 @@ namespace SuperNewRoles.Buttons
                 {
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
                     {
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
                         foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                         {
                             p.Data.Role.NameColor = Color.white;
@@ -1061,7 +1061,7 @@ namespace SuperNewRoles.Buttons
                                 p.Data.Role.NameColor = RoleClass.ImpostorRed;
                             }
                         }
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
                     }
                     else if (PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff))
                     {
