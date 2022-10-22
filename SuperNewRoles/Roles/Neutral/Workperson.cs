@@ -11,9 +11,9 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix()
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Workperson))
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Workperson))
                 {
-                    PlayerControl.LocalPlayer.GenerateAndAssignTasks(CustomOptions.WorkpersonCommonTask.GetInt(), CustomOptions.WorkpersonShortTask.GetInt(), CustomOptions.WorkpersonLongTask.GetInt());
+                    CachedPlayer.LocalPlayer.PlayerControl.GenerateAndAssignTasks(CustomOptions.WorkpersonCommonTask.GetInt(), CustomOptions.WorkpersonShortTask.GetInt(), CustomOptions.WorkpersonLongTask.GetInt());
                 }
             }
         }

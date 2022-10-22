@@ -118,7 +118,7 @@ namespace SuperNewRoles.Modules
             }
             CustomOptions.DisconnectNotPCOption.selection = 0;
 
-            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
         }
         public class RegulationData
         {

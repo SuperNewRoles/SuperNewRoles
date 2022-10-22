@@ -59,7 +59,7 @@ namespace SuperNewRoles.Patches
                     new LateTask(() => RoleClass.Tuna.IsMeetingEnd = true, 6);
                 }
                 // プレイヤーのアイコンを生成
-                if (PlayerControl.LocalPlayer != null && FastDestroyableSingleton<HudManager>.Instance != null)
+                if (CachedPlayer.LocalPlayer.PlayerControl != null && FastDestroyableSingleton<HudManager>.Instance != null)
                 {
                     Vector3 bottomLeft = new(-FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.x, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.y, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.z);
 
@@ -83,7 +83,7 @@ namespace SuperNewRoles.Patches
                             player.transform.localScale = Vector3.one * 0.4f;
                             player.gameObject.SetActive(false);
                         }
-                        else if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
+                        else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.GM))
                         {
                             player.gameObject.SetActive(false);
                             if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
@@ -100,7 +100,7 @@ namespace SuperNewRoles.Patches
                                 button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
                                 {
                                     Roles.Neutral.GM.target = target;
-                                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                                    DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Shapeshifter);
                                     foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                                     {
                                         p.Data.Role.NameColor = Color.white;
@@ -115,7 +115,7 @@ namespace SuperNewRoles.Patches
                                             p.Data.Role.NameColor = RoleClass.ImpostorRed;
                                         }
                                     }
-                                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                                    DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Crewmate);
                                 }));
                             }
                             Create(button, p);
@@ -154,12 +154,12 @@ namespace SuperNewRoles.Patches
             if (ModeHandler.IsMode(ModeId.Default))
             {
                 var newTeam2 = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
-                newTeam2.Add(PlayerControl.LocalPlayer);
+                newTeam2.Add(CachedPlayer.LocalPlayer.PlayerControl);
                 yourTeam = newTeam2;
-                if (PlayerControl.LocalPlayer.IsCrew())
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsCrew())
                 {
                     var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
-                    newTeam.Add(PlayerControl.LocalPlayer);
+                    newTeam.Add(CachedPlayer.LocalPlayer.PlayerControl);
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
@@ -171,17 +171,17 @@ namespace SuperNewRoles.Patches
                 }
                 else
                 {
-                    switch (PlayerControl.LocalPlayer.GetRole())
+                    switch (CachedPlayer.LocalPlayer.PlayerControl.GetRole())
                     {
                         case RoleId.MadMate:
                         case RoleId.MadMayor:
                         case RoleId.MadJester:
                         case RoleId.MadSeer:
                         case RoleId.BlackCat:
-                            if (Madmate.CheckImpostor(PlayerControl.LocalPlayer)) break;
+                            if (Madmate.CheckImpostor(CachedPlayer.LocalPlayer.PlayerControl)) break;
                             ImpostorIntroTeam:
                             Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
-                            ImpostorTeams.Add(PlayerControl.LocalPlayer);
+                            ImpostorTeams.Add(CachedPlayer.LocalPlayer.PlayerControl);
                             foreach (PlayerControl player in CachedPlayer.AllPlayers)
                             {
                                 if ((player.IsImpostor() || player.IsRole(RoleId.Spy)) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
@@ -194,10 +194,10 @@ namespace SuperNewRoles.Patches
                         case RoleId.SeerFriends:
                         case RoleId.MayorFriends:
                         case RoleId.JackalFriends:
-                            if (JackalFriends.CheckJackal(PlayerControl.LocalPlayer)) break;
+                            if (JackalFriends.CheckJackal(CachedPlayer.LocalPlayer.PlayerControl)) break;
                             JackalIntroTeam:
                             Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new();
-                            JackalTeams.Add(PlayerControl.LocalPlayer);
+                            JackalTeams.Add(CachedPlayer.LocalPlayer.PlayerControl);
                             foreach (PlayerControl player in CachedPlayer.AllPlayers)
                             {
                                 if (player.IsJackalTeamJackal() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
@@ -221,11 +221,11 @@ namespace SuperNewRoles.Patches
                             yourTeam = FoxTeams;
                             break;
                         default:
-                            if (PlayerControl.LocalPlayer.IsImpostor())
+                            if (CachedPlayer.LocalPlayer.PlayerControl.IsImpostor())
                             {
                                 goto ImpostorIntroTeam;
                             }
-                            else if (PlayerControl.LocalPlayer.IsJackalTeamJackal())
+                            else if (CachedPlayer.LocalPlayer.PlayerControl.IsJackalTeamJackal())
                             {
                                 goto JackalIntroTeam;
                             }
@@ -243,7 +243,7 @@ namespace SuperNewRoles.Patches
                 else
                 {
                     temp = new();
-                    temp.Add(PlayerControl.LocalPlayer);
+                    temp.Add(CachedPlayer.LocalPlayer.PlayerControl);
                     yourTeam = temp;
                 }
             }
@@ -259,16 +259,16 @@ namespace SuperNewRoles.Patches
             string ImpostorText = __instance.ImpostorText.text;
             if (ModeHandler.IsMode(ModeId.Default, ModeId.SuperHostRoles))
             {
-                if (PlayerControl.LocalPlayer.IsNeutral() && !PlayerControl.LocalPlayer.IsRole(RoleId.GM))
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsNeutral() && !CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.GM))
                 {
-                    IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
+                    IntroDate Intro = IntroDate.GetIntroDate(CachedPlayer.LocalPlayer.PlayerControl.GetRole());
                     TeamTitle = ModTranslation.GetString("Neutral");
                     ImpostorText = ModTranslation.GetString("NeutralSubIntro");
                     color = new(127, 127, 127, byte.MaxValue);
                 }
                 else
                 {
-                    switch (PlayerControl.LocalPlayer.GetRole())
+                    switch (CachedPlayer.LocalPlayer.PlayerControl.GetRole())
                     {
                         case RoleId.MadMate:
                         case RoleId.MadJester:
@@ -283,7 +283,7 @@ namespace SuperNewRoles.Patches
                         case RoleId.MayorFriends:
                         case RoleId.SatsumaAndImo:
                         case RoleId.GM:
-                            IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
+                            IntroDate Intro = IntroDate.GetIntroDate(CachedPlayer.LocalPlayer.PlayerControl.GetRole());
                             color = Intro.color;
                             TeamTitle = ModTranslation.GetString(Intro.NameKey + "Name");
                             ImpostorText = "";
@@ -300,7 +300,7 @@ namespace SuperNewRoles.Patches
             {
                 if (ModeHandler.IsMode(ModeId.Default))
                 {
-                    var myrole = PlayerControl.LocalPlayer.GetRole();
+                    var myrole = CachedPlayer.LocalPlayer.PlayerControl.GetRole();
                     if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                     {
                         var date = IntroDate.GetIntroDate(myrole);
@@ -308,13 +308,13 @@ namespace SuperNewRoles.Patches
                         TeamTitle = ModTranslation.GetString(date.NameKey + "Name");
                         ImpostorText = date.TitleDesc;
                     }
-                    if (PlayerControl.LocalPlayer.IsLovers())
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsLovers())
                     {
-                        ImpostorText += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                        ImpostorText += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), CachedPlayer.LocalPlayer.PlayerControl.GetOneSideLovers()?.Data?.PlayerName ?? ""));
                     }
-                    if (PlayerControl.LocalPlayer.IsQuarreled())
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsQuarreled())
                     {
-                        ImpostorText += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
+                        ImpostorText += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), CachedPlayer.LocalPlayer.PlayerControl.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
                     }
                 }
                 __instance.ImpostorText.gameObject.SetActive(true);
@@ -337,7 +337,7 @@ namespace SuperNewRoles.Patches
         {
             public static void Postfix()
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.SeeThroughPerson)) Roles.CrewMate.SeeThroughPerson.AwakePatch();
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.SeeThroughPerson)) Roles.CrewMate.SeeThroughPerson.AwakePatch();
             }
         }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
@@ -347,7 +347,7 @@ namespace SuperNewRoles.Patches
             {
                 float SetTime = 0;
                 bool Flag = true;
-                switch (PlayerControl.LocalPlayer.GetRole())
+                switch (CachedPlayer.LocalPlayer.PlayerControl.GetRole())
                 {
                     case RoleId.DarkKiller:
                         SetTime = RoleClass.DarkKiller.KillCoolTime;
@@ -359,7 +359,7 @@ namespace SuperNewRoles.Patches
                         SetTime = RoleClass.Samurai.KillCoolTime;
                         break;
                     case RoleId.HomeSecurityGuard:
-                        foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                        foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks)
                         {
                             task.Complete();
                         }
@@ -371,9 +371,9 @@ namespace SuperNewRoles.Patches
                 }
                 if (Flag)
                 {
-                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(SetTime);
+                    CachedPlayer.LocalPlayer.PlayerControl.SetKillTimerUnchecked(SetTime);
                 }
-                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+                PlayerControlHepler.RefreshRoleDescription(CachedPlayer.LocalPlayer.PlayerControl);
             }
         }
 
@@ -389,8 +389,8 @@ namespace SuperNewRoles.Patches
             {
                 while (true)
                 {
-                    if (PlayerControl.LocalPlayer == null) yield break;
-                    if (PlayerControl.LocalPlayer.myTasks.Count == (PlayerControl.GameOptions.NumCommonTasks + PlayerControl.GameOptions.NumShortTasks + PlayerControl.GameOptions.NumLongTasks)) yield break;
+                    if (CachedPlayer.LocalPlayer.PlayerControl == null) yield break;
+                    if (CachedPlayer.LocalPlayer.PlayerControl.myTasks.Count == (PlayerControl.GameOptions.NumCommonTasks + PlayerControl.GameOptions.NumShortTasks + PlayerControl.GameOptions.NumLongTasks)) yield break;
 
                     yield return null;
                 }
@@ -403,7 +403,7 @@ namespace SuperNewRoles.Patches
                     CustomButton.MeetingEndedUpdate();
                     if (ModeHandler.IsMode(ModeId.Default))
                     {
-                        var myrole = PlayerControl.LocalPlayer.GetRole();
+                        var myrole = CachedPlayer.LocalPlayer.PlayerControl.GetRole();
                         if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                         {
                             var date = IntroDate.GetIntroDate(myrole);
@@ -413,13 +413,13 @@ namespace SuperNewRoles.Patches
                             __instance.RoleBlurbText.text = date.TitleDesc;
                             __instance.RoleBlurbText.color = date.color;
                         }
-                        if (PlayerControl.LocalPlayer.IsLovers())
+                        if (CachedPlayer.LocalPlayer.PlayerControl.IsLovers())
                         {
-                            __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                            __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), CachedPlayer.LocalPlayer.PlayerControl.GetOneSideLovers()?.Data?.PlayerName ?? ""));
                         }
-                        if (PlayerControl.LocalPlayer.IsQuarreled())
+                        if (CachedPlayer.LocalPlayer.PlayerControl.IsQuarreled())
                         {
-                            __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
+                            __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), CachedPlayer.LocalPlayer.PlayerControl.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
                         }
                     }
                     else if (ModeHandler.IsMode(ModeId.SuperHostRoles))

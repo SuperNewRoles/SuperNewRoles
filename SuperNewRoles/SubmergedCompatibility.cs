@@ -147,7 +147,7 @@ namespace SuperNewRoles
         public static void ChangeFloor(bool toUpper)
         {
             if (!Loaded) return;
-            MonoBehaviour _floorHandler = ((Component)GetFloorHandlerMethod.Invoke(null, new object[] { PlayerControl.LocalPlayer })) as MonoBehaviour;
+            MonoBehaviour _floorHandler = ((Component)GetFloorHandlerMethod.Invoke(null, new object[] { CachedPlayer.LocalPlayer.PlayerControl })) as MonoBehaviour;
             RpcRequestChangeFloorMethod.Invoke(_floorHandler, new object[] { toUpper });
         }
 
@@ -161,7 +161,7 @@ namespace SuperNewRoles
         public static bool GetFloor()
         {
             if (!Loaded) return false;
-            MonoBehaviour _floorHandler = ((Component)GetFloorHandlerMethod.Invoke(null, new object[] { PlayerControl.LocalPlayer })) as MonoBehaviour;
+            MonoBehaviour _floorHandler = ((Component)GetFloorHandlerMethod.Invoke(null, new object[] { CachedPlayer.LocalPlayer.PlayerControl })) as MonoBehaviour;
             return (bool)OnUpperField.GetValue(_floorHandler);
         }
 
@@ -183,7 +183,7 @@ namespace SuperNewRoles
             try
             {
                 MapUtilities.CachedShipStatus.RpcRepairSystem((SystemTypes)130, 64);
-                RepairDamageMethod.Invoke(SubmarineOxygenSystemInstanceField.GetValue(null), new object[] { PlayerControl.LocalPlayer, 64 });
+                RepairDamageMethod.Invoke(SubmarineOxygenSystemInstanceField.GetValue(null), new object[] { CachedPlayer.LocalPlayer.PlayerControl, 64 });
             }
             catch (System.NullReferenceException)
             {

@@ -8,9 +8,9 @@ namespace SuperNewRoles.Roles
     {
         public static void ImpostorSetTarget()
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Kunoichi))
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Kunoichi))
             {
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControl.LocalPlayer);
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(CachedPlayer.LocalPlayer.PlayerControl);
                 return;
             }
             List<PlayerControl> untarget = new();

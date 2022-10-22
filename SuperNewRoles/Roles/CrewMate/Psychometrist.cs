@@ -77,9 +77,9 @@ namespace SuperNewRoles.Roles.CrewMate
         public static void ClickButton()
         {
             DeadBody targetbody = RoleClass.Psychometrist.CurrentTarget;
-            if (targetbody == null || !PlayerControl.LocalPlayer.CanMove) return;
+            if (targetbody == null || !CachedPlayer.LocalPlayer.PlayerControl.CanMove) return;
             DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == targetbody.ParentId)?.FirstOrDefault();
-            TextMeshPro DeathTimeText = GameObject.Instantiate(PlayerControl.LocalPlayer.NameText(), targetbody.transform);
+            TextMeshPro DeathTimeText = GameObject.Instantiate(CachedPlayer.LocalPlayer.PlayerControl.NameText(), targetbody.transform);
             int count = UnityEngine.Random.Range(CustomOptions.PsychometristDeathTimeDeviation.GetInt() * -1, CustomOptions.PsychometristDeathTimeDeviation.GetInt());
             RoleClass.Psychometrist.DeathTimeTexts.Add((targetbody, DeathTimeText, count));
             DeathTimeText.transform.localPosition = new(-0.2f, 0.5f, 0);

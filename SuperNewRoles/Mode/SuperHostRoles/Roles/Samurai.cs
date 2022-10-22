@@ -12,7 +12,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             public static void Postfix(HudManager __instance)
             {
                 if (!AmongUsClient.Instance.AmHost) return;
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Samurai))
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Samurai))
                 {
                     __instance.SabotageButton.ToggleVisible(visible: RoleClass.Samurai.UseSabo);
                     __instance.ImpostorVentButton.ToggleVisible(visible: RoleClass.Samurai.UseVent);

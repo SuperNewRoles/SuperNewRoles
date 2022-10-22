@@ -24,7 +24,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                     case "role":
                                         if (args.Length != 2)
                                         {
-                                            PlayerControl.LocalPlayer.RpcSendChat(GetRoleDes(args[3]));
+                                            CachedPlayer.LocalPlayer.PlayerControl.RpcSendChat(GetRoleDes(args[3]));
                                         }
                                         break;
                                 }

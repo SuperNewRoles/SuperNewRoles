@@ -11,7 +11,8 @@ namespace SuperNewRoles.CustomObject
 {
     public class WaveCannonObject
     {
-        public enum RpcType{
+        public enum RpcType
+        {
             Spawn,
             Shoot
         }
@@ -20,7 +21,7 @@ namespace SuperNewRoles.CustomObject
         {
             public static void Postfix(PlayerControl __instance)
             {
-                if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerControl.PlayerId)
                 {
                     AllFixedUpdate();
                 }
@@ -111,7 +112,8 @@ namespace SuperNewRoles.CustomObject
             IsLoop = false;
             freamrate = 12;
             Playing = true;
-            OnPlayEnd = () => {
+            OnPlayEnd = () =>
+            {
                 IsLoop = true;
                 freamrate = 15;
                 Playing = true;
@@ -129,10 +131,10 @@ namespace SuperNewRoles.CustomObject
                         GameObject.Destroy(this.gameObject);
                         if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                         {
-                            if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon))
+                            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.WaveCannon))
                             {
                                 if (CustomOptions.WaveCannonIsSyncKillCoolTime.GetBool())
-                                    PlayerControl.LocalPlayer.SetKillTimer(RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer));
+                                    CachedPlayer.LocalPlayer.PlayerControl.SetKillTimer(RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer.PlayerControl));
                             }
                             else
                             {
@@ -141,7 +143,7 @@ namespace SuperNewRoles.CustomObject
                             }
                             CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
                             Camera.main.GetComponent<FollowerCamera>().Locked = false;
-                            HudManagerStartPatch.WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptions.WaveCannonCoolTime.GetFloat() : CustomOptions.WaveCannonJackalCoolTime.GetFloat();
+                            HudManagerStartPatch.WaveCannonButton.MaxTimer = CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.WaveCannon) ? CustomOptions.WaveCannonCoolTime.GetFloat() : CustomOptions.WaveCannonJackalCoolTime.GetFloat();
                             HudManagerStartPatch.WaveCannonButton.Timer = HudManagerStartPatch.WaveCannonButton.MaxTimer;
                             RoleClass.WaveCannon.CannotMurderPlayers = new();
                         }
@@ -168,7 +170,8 @@ namespace SuperNewRoles.CustomObject
                 GameObject.Destroy(gameObject);
                 return;
             }
-            if (Owner != null && (Owner.IsDead() || !(Owner.GetRole() is RoleId.WaveCannon or RoleId.WaveCannonJackal))) {
+            if (Owner != null && (Owner.IsDead() || !(Owner.GetRole() is RoleId.WaveCannon or RoleId.WaveCannonJackal)))
+            {
                 GameObject.Destroy(this.gameObject);
                 if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
@@ -179,8 +182,9 @@ namespace SuperNewRoles.CustomObject
                     ChargeSound.Stop();
                 return;
             }
-            Logger.Info($"{OwnerPlayerId} : {Owner != null} : {OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId} : {CachedPlayer.LocalPlayer.PlayerId} : {PlayerControl.LocalPlayer.PlayerId} : {!RoleClass.IsMeeting} : {OwnerPos}","WaveCannonUpdate");
-            if (Owner != null && OwnerPlayerId == PlayerControl.LocalPlayer.PlayerId && !RoleClass.IsMeeting) {
+            Logger.Info($"{OwnerPlayerId} : {Owner != null} : {OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId} : {CachedPlayer.LocalPlayer.PlayerId} : {CachedPlayer.LocalPlayer.PlayerControl.PlayerId} : {!RoleClass.IsMeeting} : {OwnerPos}", "WaveCannonUpdate");
+            if (Owner != null && OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerControl.PlayerId && !RoleClass.IsMeeting)
+            {
                 //Owner.transform.position = OwnerPos;
 
                 if (IsShootNow)
@@ -210,12 +214,12 @@ namespace SuperNewRoles.CustomObject
                         writer.Write(player.PlayerId);
                         writer.Write((byte)0);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        float Timer = PlayerControl.LocalPlayer.killTimer;
+                        float Timer = CachedPlayer.LocalPlayer.PlayerControl.killTimer;
                         RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, player.PlayerId, 0);
-                        if (PlayerControl.LocalPlayer.IsImpostor())
+                        if (CachedPlayer.LocalPlayer.PlayerControl.IsImpostor())
                         {
-                            PlayerControl.LocalPlayer.killTimer = Timer;
-                            FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.text = PlayerControl.LocalPlayer.killTimer <= 0f ? "" : PlayerControl.LocalPlayer.killTimer.ToString();
+                            CachedPlayer.LocalPlayer.PlayerControl.killTimer = Timer;
+                            FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.text = CachedPlayer.LocalPlayer.PlayerControl.killTimer <= 0f ? "" : CachedPlayer.LocalPlayer.PlayerControl.killTimer.ToString();
                         }
                     }
                 }

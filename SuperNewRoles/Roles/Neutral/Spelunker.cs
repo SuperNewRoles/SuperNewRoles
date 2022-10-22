@@ -42,8 +42,8 @@ namespace SuperNewRoles.Roles.Neutral
                         RoleClass.Spelunker.IsVentChecked = true;
                         if (ModHelpers.IsSucsessChance(RoleClass.Spelunker.VentDeathChance))
                         {
-                            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                            PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SpelunkerVentDeath);
+                            CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
+                            CachedPlayer.LocalPlayer.PlayerControl.RpcSetFinalStatus(FinalStatus.SpelunkerVentDeath);
                         }
                     }
                 }
@@ -62,8 +62,8 @@ namespace SuperNewRoles.Roles.Neutral
                         RoleClass.Spelunker.CommsOrLightdownTime -= Time.fixedDeltaTime;
                         if (RoleClass.Spelunker.CommsOrLightdownTime <= 0)
                         {
-                            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                            PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SpelunkerCommsElecDeath);
+                            CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
+                            CachedPlayer.LocalPlayer.PlayerControl.RpcSetFinalStatus(FinalStatus.SpelunkerCommsElecDeath);
                         }
                     }
                 }
@@ -74,8 +74,8 @@ namespace SuperNewRoles.Roles.Neutral
             }
             if (DeathPosition != null && Vector2.Distance((Vector2)DeathPosition, CachedPlayer.LocalPlayer.transform.position) < 0.5f)
             {
-                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.NunDeath);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSetFinalStatus(FinalStatus.NunDeath);
             }
         }
         public static void WrapUp()
@@ -106,13 +106,13 @@ namespace SuperNewRoles.Roles.Neutral
         {
             public static void Postfix(DoorConsole __instance)
             {
-                __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
+                __instance.CanUse(CachedPlayer.LocalPlayer.PlayerControl.Data, out var canUse, out var _);
                 if (canUse)
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSucsessChance(RoleClass.Spelunker.DoorOpenChance))
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Spelunker) && ModHelpers.IsSucsessChance(RoleClass.Spelunker.DoorOpenChance))
                     {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                        PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SpelunkerOpenDoor);
+                        CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
+                        CachedPlayer.LocalPlayer.PlayerControl.RpcSetFinalStatus(FinalStatus.SpelunkerOpenDoor);
                     }
                 }
             }

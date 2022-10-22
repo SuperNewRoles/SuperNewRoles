@@ -84,13 +84,13 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     ModeHandler.HideName();
                     foreach (List<PlayerControl> team in Teams)
                     {
-                        if (team.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
+                        if (team.IsCheckListPlayerControl(CachedPlayer.LocalPlayer.PlayerControl))
                         {
                             foreach (PlayerControl p in team)
                             {
                                 if (p.PlayerId != 0)
                                 {
-                                    PlayerControl.LocalPlayer.RpcSetNamePrivate(ModHelpers.Cs(RoleClass.ImpostorRed, ModTranslation.GetString("Player")), p);
+                                    CachedPlayer.LocalPlayer.PlayerControl.RpcSetNamePrivate(ModHelpers.Cs(RoleClass.ImpostorRed, ModTranslation.GetString("Player")), p);
                                 }
                             }
                         }
@@ -112,7 +112,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             public static bool Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
             {
                 VentData[__instance.myPlayer.PlayerId] = null;
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.ExitVent);
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.ExitVent);
                 return true;
             }
         }
@@ -148,7 +148,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         return data;
                     }
                 }
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.InVent);
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.InVent);
                 VentData[__instance.myPlayer.PlayerId] = id;
                 return true;
             }
@@ -347,7 +347,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                 {
                                     p.SetRole(RoleTypes.Impostor);
                                     p.RpcSetRole(RoleTypes.Crewmate);
-                                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
+                                    DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Impostor);
                                     CachedPlayer.LocalPlayer.Data.Role.Role = RoleTypes.Impostor;
                                 }
                             }
@@ -375,7 +375,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                 p1.RpcSetRole(RoleTypes.Crewmate);
                             }
                         }
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Impostor);
                         CachedPlayer.LocalPlayer.Data.Role.Role = RoleTypes.Impostor;
                     }
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)

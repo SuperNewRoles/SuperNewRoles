@@ -17,7 +17,7 @@ namespace SuperNewRoles.Roles.Neutral
             if (RoleClass.Hitman.WinKillCount <= 0)
             {
                 RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
-                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                 Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(Writer);
 
@@ -33,7 +33,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
                 else
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
                     writer.Write((byte)reason);
                     writer.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -55,7 +55,7 @@ namespace SuperNewRoles.Roles.Neutral
                 LimitDown();
                 RoleClass.Hitman.UpdateTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
             }
-            if (PlayerControl.LocalPlayer.IsDead())
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsDead())
             {
                 if (RoleClass.Hitman.cooldownText != null)
                 {
@@ -105,7 +105,7 @@ namespace SuperNewRoles.Roles.Neutral
         }
         public static void WrapUp()
         {
-            if (!PlayerControl.LocalPlayer.IsRole(RoleId.Hitman)) return;
+            if (!CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hitman)) return;
             SetTarget();
             RoleClass.Hitman.UpdateTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
         }
@@ -127,7 +127,7 @@ namespace SuperNewRoles.Roles.Neutral
             RoleClass.Hitman.OutMissionLimit--;
             if (RoleClass.Hitman.OutMissionLimit <= 0)
             {
-                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
             }
         }
         public static void DestroyIntroHandle(IntroCutscene __instance)

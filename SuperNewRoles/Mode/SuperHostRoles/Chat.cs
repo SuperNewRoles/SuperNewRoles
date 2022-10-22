@@ -30,12 +30,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                         }
                         catch { }
-                        PlayerControl.LocalPlayer.RpcSendChat(string.Format(Template + "\n勝者:{1}", "神(God)", players));
+                        CachedPlayer.LocalPlayer.PlayerControl.RpcSendChat(string.Format(Template + "\n勝者:{1}", "神(God)", players));
                     }
-                    else if (WinCond == CustomGameOverReason.CrewmateWin) PlayerControl.LocalPlayer.RpcSendChat(string.Format(Template, "クルーメイト(Crewmate)"));
-                    else if (WinCond == CustomGameOverReason.ImpostorWin) PlayerControl.LocalPlayer.RpcSendChat(string.Format(Template, "インポスター(Impostor)"));
-                    else if (WinCond == CustomGameOverReason.JesterWin && Winner != null) PlayerControl.LocalPlayer.RpcSendChat(string.Format(Template + "\n勝者:{1}", "てるてる(Jester)", Winner[0].NameText().text));
-                    else if (WinCond == CustomGameOverReason.WorkpersonWin && Winner != null) PlayerControl.LocalPlayer.RpcSendChat(string.Format(Template + "\n勝者:{1}", "仕事人(Workperson)", Winner[0].NameText().text));
+                    else if (WinCond == CustomGameOverReason.CrewmateWin) CachedPlayer.LocalPlayer.PlayerControl.RpcSendChat(string.Format(Template, "クルーメイト(Crewmate)"));
+                    else if (WinCond == CustomGameOverReason.ImpostorWin) CachedPlayer.LocalPlayer.PlayerControl.RpcSendChat(string.Format(Template, "インポスター(Impostor)"));
+                    else if (WinCond == CustomGameOverReason.JesterWin && Winner != null) CachedPlayer.LocalPlayer.PlayerControl.RpcSendChat(string.Format(Template + "\n勝者:{1}", "てるてる(Jester)", Winner[0].NameText().text));
+                    else if (WinCond == CustomGameOverReason.WorkpersonWin && Winner != null) CachedPlayer.LocalPlayer.PlayerControl.RpcSendChat(string.Format(Template + "\n勝者:{1}", "仕事人(Workperson)", Winner[0].NameText().text));
                 }
                 IsOldSHR = false;
                 WinCond = null;

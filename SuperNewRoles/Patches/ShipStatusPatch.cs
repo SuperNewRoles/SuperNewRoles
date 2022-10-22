@@ -43,7 +43,7 @@ namespace SuperNewRoles.Patches
             {
                 if (systemType == SystemTypes.Comms || systemType == SystemTypes.Sabotage || systemType == SystemTypes.Electrical)
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == player.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.SabotageRepair);
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == player.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.SabotageRepair);
                 }
             }
             if ((ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.HideAndSeek) || ModeHandler.IsMode(ModeId.CopsRobbers)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
@@ -140,7 +140,7 @@ namespace SuperNewRoles.Patches
             SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
             float lerpValue = switchSystem.Value / 255f;
 
-            var LocalPlayer = PlayerControl.LocalPlayer;
+            var LocalPlayer = CachedPlayer.LocalPlayer.PlayerControl;
             if (LocalPlayer.IsRole(RoleId.Nocturnality))
             {
                 lerpValue = 1 - lerpValue;

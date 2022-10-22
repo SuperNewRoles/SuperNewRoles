@@ -17,7 +17,7 @@ namespace SuperNewRoles.Roles
             {
                 if (p.IsAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {
-                    if (GetIsBomb(PlayerControl.LocalPlayer, p, CustomOptions.SelfBomberScope.GetFloat()))
+                    if (GetIsBomb(CachedPlayer.LocalPlayer.PlayerControl, p, CustomOptions.SelfBomberScope.GetFloat()))
                     {
                         CachedPlayer.LocalPlayer.PlayerControl.UncheckedMurderPlayer(p, showAnimation: false);
                         p.RpcSetFinalStatus(FinalStatus.BySelfBomberBomb);

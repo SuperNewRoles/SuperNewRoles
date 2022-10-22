@@ -32,7 +32,7 @@ namespace SuperNewRoles.Patches
         {
             public static void Postfix()
             {
-                if (PlayerControl.LocalPlayer != null)
+                if (CachedPlayer.LocalPlayer.PlayerControl != null)
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[VersionShare]Version Shared!");
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareSNRVersion, SendOption.Reliable, -1);
@@ -201,7 +201,7 @@ namespace SuperNewRoles.Patches
                     RPCTimer -= Time.deltaTime;
                     if (RPCTimer <= 0)
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetRoomTimerRPC, SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SetRoomTimerRPC, SendOption.Reliable, -1);
                         int minutes2 = (int)timer / 60;
                         int seconds2 = (int)timer % 60;
                         writer.Write((byte)minutes2);

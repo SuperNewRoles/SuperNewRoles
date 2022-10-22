@@ -69,7 +69,7 @@ namespace SuperNewRoles.Modules
                 SuperNewRolesPlugin.Logger.LogInfo(player.FriendCode + " : " + player.FriendCode);
                 if (player.FriendCode == clientData.FriendCode || player.clientId == clientId.ToString())
                 {
-                    if (PlayerControl.LocalPlayer.PlayerId == clientData.Character.PlayerId)
+                    if (CachedPlayer.LocalPlayer.PlayerControl.PlayerId == clientData.Character.PlayerId)
                     {
                         Application.Quit();
                     }

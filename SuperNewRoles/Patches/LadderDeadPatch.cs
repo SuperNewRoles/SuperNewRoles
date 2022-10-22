@@ -16,15 +16,15 @@ namespace SuperNewRoles.Patches
         {
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                if (PlayerControl.LocalPlayer.IsDead()) return;
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsDead()) return;
                 if (TargetLadderData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))
                 {
                     if (Vector2.Distance(TargetLadderData[CachedPlayer.LocalPlayer.PlayerId], CachedPlayer.LocalPlayer.transform.position) < 0.5f)
                     {
-                        if (PlayerControl.LocalPlayer.moveable)
+                        if (CachedPlayer.LocalPlayer.PlayerControl.moveable)
                         {
-                            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                            PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.LadderDeath);
+                            CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
+                            CachedPlayer.LocalPlayer.PlayerControl.RpcSetFinalStatus(FinalStatus.LadderDeath);
                         }
                     }
                 }

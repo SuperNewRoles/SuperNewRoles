@@ -24,7 +24,7 @@ namespace SuperNewRoles.Roles.Impostor
             if (Is) IsTargetOn = false;
             if (__instance.Target == null)
             {
-                __instance.Target = PlayerControl.LocalPlayer;
+                __instance.Target = CachedPlayer.LocalPlayer.PlayerControl;
                 Is = true;
             }
             Vector3 val = (__instance.IsLeft ? __instance.LeftUsePosition : __instance.RightUsePosition);

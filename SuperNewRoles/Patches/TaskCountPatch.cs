@@ -37,7 +37,7 @@ namespace SuperNewRoles.Patches
             {
                 if (__instance.IsComplete && __instance.Arrow?.isActiveAndEnabled == true)
                     __instance.Arrow?.gameObject?.SetActive(false);
-                else if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && __instance.TaskStep > 0 && !__instance.IsComplete)
+                else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Tasker) && __instance.TaskStep > 0 && !__instance.IsComplete)
                     __instance.Arrow.gameObject.SetActive(true);
             }
         }

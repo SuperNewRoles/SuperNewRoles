@@ -46,7 +46,7 @@ namespace SuperNewRoles.Roles
             {
                 static void Postfix(VitalsMinigame __instance)
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Doctor))
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Doctor))
                     {
                         hackerTexts = new();
                         foreach (VitalsPanel panel in __instance.vitals)
@@ -67,7 +67,7 @@ namespace SuperNewRoles.Roles
             {
                 public static void Prefix(Minigame __instance)
                 {
-                    if (GameObject.FindObjectOfType<VitalsMinigame>() && PlayerControl.LocalPlayer.IsRole(RoleId.Doctor))
+                    if (GameObject.FindObjectOfType<VitalsMinigame>() && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Doctor))
                     {
                         new LateTask(() => RoleClass.Doctor.MyPanelFlag = false, 0.5f, "Doctor flag");
                     }
@@ -78,7 +78,7 @@ namespace SuperNewRoles.Roles
             {
                 static void Postfix(VitalsMinigame __instance)
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Doctor) && !RoleClass.Doctor.MyPanelFlag)
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Doctor) && !RoleClass.Doctor.MyPanelFlag)
                     {
                         for (int k = 0; k < __instance.vitals.Length; k++)
                         {
@@ -96,7 +96,7 @@ namespace SuperNewRoles.Roles
                             }
                         }
                     }
-                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.Doctor) && RoleClass.Doctor.MyPanelFlag)
+                    else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Doctor) && RoleClass.Doctor.MyPanelFlag)
                     {
                         if (!RoleClass.Doctor.IsChargingNow)
                         {

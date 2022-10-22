@@ -59,7 +59,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (Side.IsDead())
                     {
                         RPCProcedure.ShareWinner(exiled.Object.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(exiled.Object.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);

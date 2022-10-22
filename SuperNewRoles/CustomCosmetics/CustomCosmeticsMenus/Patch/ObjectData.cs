@@ -273,7 +273,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "")
                 })
                 : ClosetPresetDatas[index];
-            
+
             AmongUs.Data.DataManager.Player.Customization.Color = data.BodyColor.Value;
             AmongUs.Data.DataManager.Player.Customization.Hat = data.Hat.Value;
             AmongUs.Data.DataManager.Player.Customization.Visor = data.Visor.Value;
@@ -282,12 +282,12 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             AmongUs.Data.DataManager.Player.Customization.Pet = data.Pet.Value;
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
             {
-                PlayerControl.LocalPlayer.CmdCheckColor(LegacySaveManager.BodyColor);
-                PlayerControl.LocalPlayer.RpcSetHat(LegacySaveManager.LastHat);
-                PlayerControl.LocalPlayer.RpcSetVisor(LegacySaveManager.LastVisor);
-                PlayerControl.LocalPlayer.RpcSetSkin(LegacySaveManager.LastSkin);
-                PlayerControl.LocalPlayer.RpcSetNamePlate(LegacySaveManager.LastNamePlate);
-                PlayerControl.LocalPlayer.RpcSetPet(LegacySaveManager.LastPet);
+                CachedPlayer.LocalPlayer.PlayerControl.CmdCheckColor(LegacySaveManager.BodyColor);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSetHat(LegacySaveManager.LastHat);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSetVisor(LegacySaveManager.LastVisor);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSetSkin(LegacySaveManager.LastSkin);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSetNamePlate(LegacySaveManager.LastNamePlate);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSetPet(LegacySaveManager.LastPet);
             }
             PlayerCustomizationMenu.Instance.PreviewArea.UpdateFromDataManager(PlayerMaterial.MaskType.ComplexUI);
         }

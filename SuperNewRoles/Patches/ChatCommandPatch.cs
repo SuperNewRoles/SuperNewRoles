@@ -27,7 +27,7 @@ namespace SuperNewRoles.Patches
                             handled = true;
                             if (!TryParse(text[4..], out LobbyLimit))
                             {
-                                __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/mp {最大人数}");
+                                __instance.AddChat(CachedPlayer.LocalPlayer.PlayerControl, "使い方\n/mp {最大人数}");
                             }
                             else
                             {
@@ -40,11 +40,11 @@ namespace SuperNewRoles.Patches
                                     PlayerControl.GameOptions.MaxPlayers = LobbyLimit;
                                     DestroyableSingleton<GameStartManager>.Instance.LastPlayerCount = LobbyLimit;
                                     CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
-                                    __instance.AddChat(PlayerControl.LocalPlayer, $"ロビーの最大人数を{LobbyLimit}人に変更しました！");
+                                    __instance.AddChat(CachedPlayer.LocalPlayer.PlayerControl, $"ロビーの最大人数を{LobbyLimit}人に変更しました！");
                                 }
                                 else
                                 {
-                                    __instance.AddChat(PlayerControl.LocalPlayer, $"プレイヤー最小人数は {LobbyLimit}です。");
+                                    __instance.AddChat(CachedPlayer.LocalPlayer.PlayerControl, $"プレイヤー最小人数は {LobbyLimit}です。");
                                 }
                             }
                         }
@@ -54,12 +54,12 @@ namespace SuperNewRoles.Patches
                         if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.CanBan())
                         {
                             handled = true;
-                            if (!float.TryParse(text[4..], out var cooltime)) __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/kc {キルクールタイム}");
+                            if (!float.TryParse(text[4..], out var cooltime)) __instance.AddChat(CachedPlayer.LocalPlayer.PlayerControl, "使い方\n/kc {キルクールタイム}");
                             var settime = cooltime;
                             if (settime == 0) settime = 0.00001f;
                             PlayerControl.GameOptions.KillCooldown = settime;
                             CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
-                            __instance.AddChat(PlayerControl.LocalPlayer, $"キルクールタイムを{cooltime}秒に変更しました！");
+                            __instance.AddChat(CachedPlayer.LocalPlayer.PlayerControl, $"キルクールタイムを{cooltime}秒に変更しました！");
                         }
                     }
                     else if (text.ToLower().StartsWith("/rename "))
@@ -67,12 +67,12 @@ namespace SuperNewRoles.Patches
                         if (AmongUsClient.Instance.AmHost)
                         {
                             handled = true;
-                            PlayerControl.LocalPlayer.RpcSetName(text.ToLower().Replace("/rename ", ""));
+                            CachedPlayer.LocalPlayer.PlayerControl.RpcSetName(text.ToLower().Replace("/rename ", ""));
                         }
                         else //ゲスト時には使用不可能にする
                         {
                             handled = true;
-                            __instance.AddChat(PlayerControl.LocalPlayer, ModTranslation.GetString("CannotUseRenameMessage"));
+                            __instance.AddChat(CachedPlayer.LocalPlayer.PlayerControl, ModTranslation.GetString("CannotUseRenameMessage"));
                             SuperNewRolesPlugin.Logger.LogWarning($"ホストでない時に{text}を使用しました。ホストでない時は/renameは使用できません。");
                         }
                     }
@@ -81,7 +81,7 @@ namespace SuperNewRoles.Patches
                     {
                         if (text.ToLower().Equals("/murder"))
                         {
-                            PlayerControl.LocalPlayer.Exiled();
+                            CachedPlayer.LocalPlayer.PlayerControl.Exiled();
                             FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(CachedPlayer.LocalPlayer.Data, CachedPlayer.LocalPlayer.Data);
                             handled = true;
                         }
@@ -90,18 +90,18 @@ namespace SuperNewRoles.Patches
                             handled = true;
                             if (!TryParse(text[7..], out int col))
                             {
-                                __instance.AddChat(PlayerControl.LocalPlayer, "Unable to parse color id\nUsage: /color {id}");
+                                __instance.AddChat(CachedPlayer.LocalPlayer.PlayerControl, "Unable to parse color id\nUsage: /color {id}");
                             }
                             col = Math.Clamp(col, 0, Palette.PlayerColors.Length - 1);
-                            PlayerControl.LocalPlayer.SetColor(col);
-                            __instance.AddChat(PlayerControl.LocalPlayer, "Changed color succesfully");
+                            CachedPlayer.LocalPlayer.PlayerControl.SetColor(col);
+                            __instance.AddChat(CachedPlayer.LocalPlayer.PlayerControl, "Changed color succesfully");
                         }
                         else if (text.ToLower().StartsWith("/name "))
                         {
                             handled = true;
                             string col = text[6..];
-                            PlayerControl.LocalPlayer.SetName(col);
-                            __instance.AddChat(PlayerControl.LocalPlayer, "Changed name succesfully");
+                            CachedPlayer.LocalPlayer.PlayerControl.SetName(col);
+                            __instance.AddChat(CachedPlayer.LocalPlayer.PlayerControl, "Changed name succesfully");
                         }
                     }
                     if (handled)

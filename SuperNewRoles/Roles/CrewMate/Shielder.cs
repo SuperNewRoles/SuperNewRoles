@@ -10,9 +10,9 @@ namespace SuperNewRoles.Roles
     {
         public static void HudUpdate()
         {
-            if (HudManagerStartPatch.ShielderButton.Timer <= 0.1f && RoleClass.Shielder.IsShield[CachedPlayer.LocalPlayer.PlayerId] && PlayerControl.LocalPlayer.IsRole(RoleId.Shielder))
+            if (HudManagerStartPatch.ShielderButton.Timer <= 0.1f && RoleClass.Shielder.IsShield[CachedPlayer.LocalPlayer.PlayerId] && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Shielder))
             {
-                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetShielder, SendOption.Reliable, -1);
+                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SetShielder, SendOption.Reliable, -1);
                 Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 Writer.Write(false);
                 AmongUsClient.Instance.FinishRpcImmediately(Writer);

@@ -196,8 +196,9 @@ namespace SuperNewRoles.Mode.CopsRobbers
 
         public static void HudUpdate()
         {
-            if (!AmongUsClient.Instance.AmHost) {
-                if (PlayerControl.LocalPlayer.Data.PlayerName == PlayerControl.LocalPlayer.GetDefaultName())
+            if (!AmongUsClient.Instance.AmHost)
+            {
+                if (CachedPlayer.LocalPlayer.PlayerControl.Data.PlayerName == CachedPlayer.LocalPlayer.PlayerControl.GetDefaultName())
                 {
                     SetNameUpdate.Postfix(CachedPlayer.LocalPlayer);
                 }
@@ -269,7 +270,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 if (LastUpdate - ImpostorMoveTime >= 1)
                 {
                     //string name = "\n\n\n\n\n<size=300%><color=white>" + SuperNewRoles.Mode.ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>インポスターが来るまで残り5秒</size>";
-                    //PlayerControl.LocalPlayer.RpcSetName(name);
+                    //CachedPlayer.LocalPlayer.PlayerControl.RpcSetName(name);
                     LastUpdate = ImpostorMoveTime;
                     string name = "\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>" + ModTranslation.GetString("CopsImpostorCome") + ((int)(LastUpdate + 1)).ToString() + ModTranslation.GetString("second") + "</size>";
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)

@@ -37,7 +37,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                     }
                     else
                     {
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);//p.Data.Role.Role);
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Impostor);//p.Data.Role.Role);
                         foreach (var pc in CachedPlayer.AllPlayers)
                         {
                             if (pc.PlayerId != 0)
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                                 {
                                     p.RpcSetRoleDesync(RoleTypes.Impostor, pc);
                                 }
-                                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                                DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Crewmate);
                             }
                         }
                     }

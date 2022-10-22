@@ -25,7 +25,7 @@ namespace SuperNewRoles.Roles
         }
         public static void DoorrBtn()
         {
-            Logger.Info("ボタンクリック","DoorrBtn");
+            Logger.Info("ボタンクリック", "DoorrBtn");
             PlainDoor door = GetDoor();
             Logger.Info($"nullチェック:{door != null}", "DoorrBtn");
             if (door != null)
@@ -40,9 +40,10 @@ namespace SuperNewRoles.Roles
         }
         private static PlainDoor GetDoor()
         {
-            return GameObject.FindObjectsOfType<DoorConsole>().ToArray().FirstOrDefault(x => {
+            return GameObject.FindObjectsOfType<DoorConsole>().ToArray().FirstOrDefault(x =>
+            {
                 if (x.MyDoor == null) return false;
-                float num = Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), x.transform.position);
+                float num = Vector2.Distance(CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(), x.transform.position);
                 return num <= x.UsableDistance;
             })?.MyDoor;
         }

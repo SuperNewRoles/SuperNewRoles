@@ -65,7 +65,7 @@ namespace SuperNewRoles.Roles.CrewMate
             static void Postfix(MeetingHud __instance)
             {
                 //もし プレイヤーが騎士であり尚且つ死んでいる場合
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Knight) && PlayerControl.LocalPlayer.IsDead())
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Knight) && CachedPlayer.LocalPlayer.PlayerControl.IsDead())
                 {
                     KnightProtectButtonDestroy(__instance);
                 }
@@ -83,7 +83,7 @@ namespace SuperNewRoles.Roles.CrewMate
 
             RPCProcedure.KnightProtected(LocalID, TargetID);
 
-            MessageWriter ProtectWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.KnightProtected, SendOption.Reliable, -1);
+            MessageWriter ProtectWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.KnightProtected, SendOption.Reliable, -1);
             ProtectWriter.Write(LocalID);
             ProtectWriter.Write(TargetID);
             AmongUsClient.Instance.FinishRpcImmediately(ProtectWriter);
@@ -107,7 +107,7 @@ namespace SuperNewRoles.Roles.CrewMate
         {
             //もし　プレーヤーが護衛可能な状態の生きている[騎士]であり　且つ
             //護衛可能回数に上限がない状態　又は　護衛可能回数に条件があるが上限に達していない場合なら
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Knight) && PlayerControl.LocalPlayer.IsAlive() && CanProtect && (!KnightSetTheUpperLimitOfTheGuarding.GetBool() || (KnightSetTheUpperLimitOfTheGuarding.GetBool() && Times >= 1)))
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Knight) && CachedPlayer.LocalPlayer.PlayerControl.IsAlive() && CanProtect && (!KnightSetTheUpperLimitOfTheGuarding.GetBool() || (KnightSetTheUpperLimitOfTheGuarding.GetBool() && Times >= 1)))
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -152,7 +152,7 @@ namespace SuperNewRoles.Roles.CrewMate
             // 護衛時に記録した護衛対象者に、会議終了後護衛を張り直す制御をしている為、キル時に変数をリセットする必要がある。
             public static void Postfix([HarmonyArgument(0)] PlayerControl target)
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Knight) && ProtectedPlayer == target)
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Knight) && ProtectedPlayer == target)
                 {
                     SuperNewRolesPlugin.Logger.LogInfo($"[Knight] {ProtectedPlayer.GetDefaultName()}がキルを受けた為、シールドに関わる変数を初期化します。");
                     ProtectedPlayer = null;
@@ -167,7 +167,7 @@ namespace SuperNewRoles.Roles.CrewMate
         /// </summary>
         public static void WrapUp()
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Knight))
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Knight))
             {
                 if (ProtectedPlayer != null)
                 {
@@ -177,7 +177,7 @@ namespace SuperNewRoles.Roles.CrewMate
 
                     RPCProcedure.KnightProtected(LocalID, TargetID);
 
-                    MessageWriter ProtectWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.KnightProtected, SendOption.Reliable, -1);
+                    MessageWriter ProtectWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.KnightProtected, SendOption.Reliable, -1);
                     ProtectWriter.Write(LocalID);
                     ProtectWriter.Write(TargetID);
                     AmongUsClient.Instance.FinishRpcImmediately(ProtectWriter);

@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles
         {
             try
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.RemoteSheriff))
                 {
                     HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
                     HudManagerStartPatch.SheriffKillButton.Timer = RoleClass.RemoteSheriff.CoolTime;

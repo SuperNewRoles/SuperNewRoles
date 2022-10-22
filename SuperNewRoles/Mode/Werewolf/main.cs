@@ -9,21 +9,22 @@ namespace SuperNewRoles.Mode.Werewolf
 {
     class Main
     {
-        public static bool IsChatBlock(PlayerControl sourcePlayer,string text)
+        public static bool IsChatBlock(PlayerControl sourcePlayer, string text)
         {
             if (MeetingHud.Instance == null) return false;
             if (!ModeHandler.IsMode(ModeId.Werewolf)) return false;
             if (sourcePlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer) && text.EndsWith(ModTranslation.GetString("SoothSayerCrewmateText")))
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.SoothSayer) && text.EndsWith(ModTranslation.GetString("SoothSayerCrewmateText")))
                 {
                     return false;
-                } else if (PlayerControl.LocalPlayer.IsRole(RoleId.SpiritMedium) && (text.EndsWith(ModTranslation.GetString("SoothSayerCrewmateText")) || text.EndsWith(ModTranslation.GetString("SoothSayerNotCrewmateText"))))
+                }
+                else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.SpiritMedium) && (text.EndsWith(ModTranslation.GetString("SoothSayerCrewmateText")) || text.EndsWith(ModTranslation.GetString("SoothSayerNotCrewmateText"))))
                 {
                     return false;
                 }
             }
-            if (ModeHandler.IsMode(ModeId.Werewolf) && MeetingHud.Instance.CurrentState == MeetingHud.VoteStates.Discussion) return (!PlayerControl.LocalPlayer.IsImpostor() && PlayerControl.LocalPlayer.IsAlive()) || !sourcePlayer.IsImpostor();
+            if (ModeHandler.IsMode(ModeId.Werewolf) && MeetingHud.Instance.CurrentState == MeetingHud.VoteStates.Discussion) return (!CachedPlayer.LocalPlayer.PlayerControl.IsImpostor() && CachedPlayer.LocalPlayer.PlayerControl.IsAlive()) || !sourcePlayer.IsImpostor();
             return false;
         }
         public static bool IsUseButton()

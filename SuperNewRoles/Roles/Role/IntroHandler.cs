@@ -15,7 +15,7 @@ namespace SuperNewRoles.Roles
             {
                 RoleClass.IsStart = true;
             }, time, "IsStartOn");
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Pursuer))
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Pursuer))
             {
                 RoleClass.Pursuer.arrow.arrow.SetActive(true);
             }

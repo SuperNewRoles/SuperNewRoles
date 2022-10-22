@@ -95,7 +95,7 @@ namespace SuperNewRoles.Helpers
             {
                 if (!AmongUsClient.Instance.AmHost)
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
                     writer.Write(__instance.PlayerId);
                     writer.Write(target.PlayerId);
                     writer.Write(byte.MaxValue);

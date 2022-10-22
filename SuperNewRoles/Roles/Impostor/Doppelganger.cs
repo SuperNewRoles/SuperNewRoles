@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles.Impostor
             bool isShapeshift = false;
             foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.Targets)
             {
-                if (p.Key == PlayerControl.LocalPlayer.PlayerId)
+                if (p.Key == CachedPlayer.LocalPlayer.PlayerControl.PlayerId)
                 {
                     isShapeshift = true;
                     break;
@@ -21,20 +21,20 @@ namespace SuperNewRoles.Roles.Impostor
             }
             if (!isShapeshift)
             {
-                float nowKillCool = PlayerControl.LocalPlayer.killTimer;
-                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                float nowKillCool = CachedPlayer.LocalPlayer.PlayerControl.killTimer;
+                DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Shapeshifter);
                 CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
-                PlayerControl.LocalPlayer.SetKillTimerUnchecked(nowKillCool);
+                DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Impostor);
+                CachedPlayer.LocalPlayer.PlayerControl.SetKillTimerUnchecked(nowKillCool);
             }
-            else if (PlayerControl.LocalPlayer.inVent)
+            else if (CachedPlayer.LocalPlayer.PlayerControl.inVent)
             {
-                PlayerControl.LocalPlayer.RpcRevertShapeshift(false);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcRevertShapeshift(false);
             }
             else
             {
-                PlayerControl.LocalPlayer.NetTransform.Halt();
-                PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
+                CachedPlayer.LocalPlayer.PlayerControl.NetTransform.Halt();
+                CachedPlayer.LocalPlayer.PlayerControl.RpcRevertShapeshift(true);
             }
         }
         public static void ResetShapeCool()
@@ -48,7 +48,7 @@ namespace SuperNewRoles.Roles.Impostor
             bool shape = false;
             foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.Targets)
             {
-                if (p.Key == PlayerControl.LocalPlayer.PlayerId && p.Value != PlayerControl.LocalPlayer)
+                if (p.Key == CachedPlayer.LocalPlayer.PlayerControl.PlayerId && p.Value != CachedPlayer.LocalPlayer.PlayerControl)
                 {
                     shape = true;
                     break;
@@ -66,7 +66,7 @@ namespace SuperNewRoles.Roles.Impostor
             {
                 RoleClass.Doppelganger.DoppelgangerDurationText.text = "";
             }
-            if (shape && RoleClass.IsMeeting) PlayerControl.LocalPlayer.RpcRevertShapeshift(false);
+            if (shape && RoleClass.IsMeeting) CachedPlayer.LocalPlayer.PlayerControl.RpcRevertShapeshift(false);
         }
         public class KillCoolSetting
         {

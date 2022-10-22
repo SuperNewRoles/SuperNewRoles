@@ -21,7 +21,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsBlock(BlockTypes blocktype, PlayerControl player = null)
         {
-            if (player == null) player = PlayerControl.LocalPlayer;
+            if (player == null) player = CachedPlayer.LocalPlayer.PlayerControl;
             return player.IsRole(RoleId.EvilEraser)
 && (!RoleClass.EvilEraser.Counts.ContainsKey(player.PlayerId) || RoleClass.EvilEraser.Counts[player.PlayerId] > 0)
 && blocktype switch

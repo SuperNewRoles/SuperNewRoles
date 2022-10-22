@@ -36,9 +36,9 @@ namespace SuperNewRoles.Patches
                 // Spawn dummys
                 if (Input.GetKeyDown(KeyCode.G))
                 {
-                    PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text);
+                    PlayerControl bot = BotManager.Spawn(CachedPlayer.LocalPlayer.PlayerControl.NameText().text);
 
-                    bot.NetTransform.SnapTo(PlayerControl.LocalPlayer.transform.position);
+                    bot.NetTransform.SnapTo(CachedPlayer.LocalPlayer.PlayerControl.transform.position);
                     //new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
                     //new LateTask(() => { foreach (var pc in CachedPlayer.AllPlayers) pc.PlayerControl.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
                     //new LateTask(() => bot.Despawn(), 0.6f, "Bot Despawn Task");
@@ -64,7 +64,7 @@ namespace SuperNewRoles.Patches
                 }
                 if (Input.GetKeyDown(KeyCode.N))
                 {
-                    ModHelpers.PlayerById(1).RpcMurderPlayer(PlayerControl.LocalPlayer);//ModHelpers.PlayerById(2));
+                    ModHelpers.PlayerById(1).RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);//ModHelpers.PlayerById(2));
                 }
 
                 if (Input.GetKeyDown(KeyCode.F10))
@@ -77,7 +77,7 @@ namespace SuperNewRoles.Patches
                 }
                 if (Input.GetKeyDown(KeyCode.F1))
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("new Vector2(" + (PlayerControl.LocalPlayer.transform.position.x - 12.63f) + "f, " + (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
+                    SuperNewRolesPlugin.Logger.LogInfo("new Vector2(" + (CachedPlayer.LocalPlayer.PlayerControl.transform.position.x - 12.63f) + "f, " + (CachedPlayer.LocalPlayer.PlayerControl.transform.position.y + 3.46f) + "f), ");
                 }
             }
 

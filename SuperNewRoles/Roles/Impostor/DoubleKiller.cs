@@ -27,7 +27,7 @@ namespace SuperNewRoles.Roles
         {
             public static void SetOutline()
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.DoubleKiller))
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.DoubleKiller))
                 {
                     Patches.PlayerControlFixedUpdatePatch.SetPlayerOutline(Patches.PlayerControlFixedUpdatePatch.SetTarget(), RoleClass.DoubleKiller.color);
                 }

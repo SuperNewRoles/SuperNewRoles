@@ -752,7 +752,7 @@ namespace SuperNewRoles.Patches
                     if (WinnerPlayer == null)
                     {
                         Logger.Error("エラー:殺し屋が生存していませんでした", "HitmanWin");
-                        WinnerPlayer = PlayerControl.LocalPlayer;
+                        WinnerPlayer = CachedPlayer.LocalPlayer.PlayerControl;
                     }
                 }
                 (TempData.winners = new()).Add(new(WinnerPlayer.Data));
@@ -1150,7 +1150,7 @@ namespace SuperNewRoles.Patches
     {
         public static void SetCoolTime()
         {
-            PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer), RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer));
+            CachedPlayer.LocalPlayer.PlayerControl.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(CachedPlayer.LocalPlayer.PlayerControl), RoleHelpers.GetEndMeetingKillCoolTime(CachedPlayer.LocalPlayer.PlayerControl));
         }
         public static void WrapUpPostfix(GameData.PlayerInfo exiled)
         {
@@ -1377,7 +1377,7 @@ namespace SuperNewRoles.Patches
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             RPCProcedure.ShareWinner(p.PlayerId);
@@ -1401,7 +1401,7 @@ namespace SuperNewRoles.Patches
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             RPCProcedure.ShareWinner(p.PlayerId);
@@ -1505,7 +1505,8 @@ namespace SuperNewRoles.Patches
                 PavlovsownerAlive = numPavlovsownerAlive;
                 PavlovsTeamAlive = numPavlovsTeamAlive;
                 HitmanAlive = numHitmanAlive;
-                if (!(IsGuardPavlovs = PavlovsDogAlive > 0)) {
+                if (!(IsGuardPavlovs = PavlovsDogAlive > 0))
+                {
                     foreach (PlayerControl p in RoleClass.Pavlovsowner.PavlovsownerPlayer)
                     {
                         if (p == null) continue;

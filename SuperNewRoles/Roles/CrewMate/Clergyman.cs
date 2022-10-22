@@ -21,7 +21,7 @@ namespace SuperNewRoles.Roles
         }
         public static void LightOutStart()
         {
-            MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
+            MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
             RPCWriter.Write(true);
             AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
             RPCProcedure.RPCClergymanLightOut(true);
@@ -30,23 +30,23 @@ namespace SuperNewRoles.Roles
         {
             return !RoleClass.Clergyman.IsLightOff
                 ? false
-                : (CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadMate)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadMayor)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadJester)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadJester)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadHawk)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadSeer)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadMaker)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.Jackal)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.Sidekick)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.JackalFriends)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.SeerFriends)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.JackalSeer)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.JackalSeer)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.SidekickSeer)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.BlackCat)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.Hitman);
+                : (CountChanger.GetRoleType(CachedPlayer.LocalPlayer.PlayerControl) == TeamRoleType.Impostor)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.MadMate)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.MadMayor)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.MadJester)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.MadJester)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.MadHawk)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.MadSeer)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.MadMaker)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.Jackal)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.Sidekick)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.JackalFriends)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.SeerFriends)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.JackalSeer)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.JackalSeer)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.SidekickSeer)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.BlackCat)
+                || CountChanger.IsChange(CachedPlayer.LocalPlayer.PlayerControl, RoleId.Hitman);
         }
         public static void LightOutStartRPC()
         {

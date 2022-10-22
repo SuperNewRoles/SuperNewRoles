@@ -9,11 +9,11 @@ namespace SuperNewRoles.Roles
     {
         public static void Postfix()
         {
-            if (!PlayerControl.LocalPlayer.IsAlive()) return;
+            if (!CachedPlayer.LocalPlayer.PlayerControl.IsAlive()) return;
             //ボタンのカウントが0になったら自殺する
-            if (HudManagerStartPatch.SuicidalIdeationButton.Timer <= 0f) PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+            if (HudManagerStartPatch.SuicidalIdeationButton.Timer <= 0f) CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
             //タスクを完了したかを検知
-            var (playerCompleted, playerTotal) = TaskCount.TaskDate(PlayerControl.LocalPlayer.Data);
+            var (playerCompleted, playerTotal) = TaskCount.TaskDate(CachedPlayer.LocalPlayer.PlayerControl.Data);
             if (RoleClass.SuicidalIdeation.CompletedTask <= playerCompleted)
             {
                 RoleClass.SuicidalIdeation.CompletedTask += 1;

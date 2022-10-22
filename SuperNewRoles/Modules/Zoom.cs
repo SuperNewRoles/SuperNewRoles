@@ -29,7 +29,7 @@ namespace SuperNewRoles.Modules
                 }
                 if (Input.GetAxis("Mouse ScrollWheel") < 0)
                 {
-                    if (PlayerControl.LocalPlayer.Data.IsDead)
+                    if (CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead)
                     {
                         if (Camera.main.orthographicSize < 18.0f)
                         {
@@ -44,12 +44,12 @@ namespace SuperNewRoles.Modules
                     if (Camera.main.orthographicSize != 3.0f)
                     {
                         HudManager.Instance.TaskStuff.SetActive(false);
-                        if (!PlayerControl.LocalPlayer.Data.IsDead) __instance.ShadowQuad.gameObject.SetActive(false);
+                        if (!CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead) __instance.ShadowQuad.gameObject.SetActive(false);
                     }
                     else
                     {
                         HudManager.Instance.TaskStuff.SetActive(true);
-                        if (!PlayerControl.LocalPlayer.Data.IsDead) __instance.ShadowQuad.gameObject.SetActive(true);
+                        if (!CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead) __instance.ShadowQuad.gameObject.SetActive(true);
                     }
                 }
                 CreateFlag.NewFlag("Zoom");
@@ -63,7 +63,7 @@ namespace SuperNewRoles.Modules
                     HudManager.Instance.transform.localScale = Vector3.one;
                     if (MeetingHud.Instance != null) MeetingHud.Instance.transform.localScale = Vector3.one;
                     HudManager.Instance.Chat.transform.localScale = Vector3.one;
-                    if (!PlayerControl.LocalPlayer.Data.IsDead) __instance.ShadowQuad.gameObject.SetActive(true);
+                    if (!CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead) __instance.ShadowQuad.gameObject.SetActive(true);
                 }, "Zoom");
             }
         }

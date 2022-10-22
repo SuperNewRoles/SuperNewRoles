@@ -10,7 +10,7 @@ namespace SuperNewRoles.Modules
         {
             public static void Postfix(NormalPlayerTask __instance)
             {
-                bool showArrows = !TasksArrowsOption.hideTaskArrows && !__instance.IsComplete && __instance.TaskStep > 0 && !PlayerControl.LocalPlayer.IsImpostor() && !RoleHelpers.IsComms();
+                bool showArrows = !TasksArrowsOption.hideTaskArrows && !__instance.IsComplete && __instance.TaskStep > 0 && !CachedPlayer.LocalPlayer.PlayerControl.IsImpostor() && !RoleHelpers.IsComms();
                 __instance.Arrow?.gameObject?.SetActive(showArrows);
             }
         }
@@ -20,7 +20,7 @@ namespace SuperNewRoles.Modules
         {
             public static void Postfix(AirshipUploadTask __instance)
             {
-                bool showArrows = !TasksArrowsOption.hideTaskArrows && !__instance.IsComplete && __instance.TaskStep > 0 && !PlayerControl.LocalPlayer.IsImpostor() && !RoleHelpers.IsComms();
+                bool showArrows = !TasksArrowsOption.hideTaskArrows && !__instance.IsComplete && __instance.TaskStep > 0 && !CachedPlayer.LocalPlayer.PlayerControl.IsImpostor() && !RoleHelpers.IsComms();
                 __instance.Arrows?.DoIf(x => x != null, x => x.gameObject?.SetActive(showArrows));
             }
         }

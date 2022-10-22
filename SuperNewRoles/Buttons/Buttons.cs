@@ -112,7 +112,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     PlayerControl target = Roles.Neutral.Pavlovsdogs.SetTarget(false);
-                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, target);
+                    ModHelpers.CheckMuderAttemptAndKill(CachedPlayer.LocalPlayer.PlayerControl, target);
                     PavlovsdogKillButton.MaxTimer = RoleClass.Pavlovsdogs.IsOwnerDead ? CustomOptions.PavlovsdogRunAwayKillCoolTime.GetFloat() : CustomOptions.PavlovsdogKillCoolTime.GetFloat();
                     PavlovsdogKillButton.Timer = PavlovsdogKillButton.MaxTimer;
                     RoleClass.Pavlovsdogs.DeathTime = CustomOptions.PavlovsdogRunAwayDeathTime.GetFloat();
@@ -126,10 +126,10 @@ namespace SuperNewRoles.Buttons
                         PavlovsdogKillSelfText.text = RoleClass.Pavlovsdogs.DeathTime > 0 ? string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)RoleClass.Pavlovsdogs.DeathTime) + 1) : "";
                         if (RoleClass.Pavlovsdogs.DeathTime <= 0)
                         {
-                            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                            CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
                         }
                     }
-                    return Roles.Neutral.Pavlovsdogs.SetTarget(false) && PlayerControl.LocalPlayer.CanMove;
+                    return Roles.Neutral.Pavlovsdogs.SetTarget(false) && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -173,7 +173,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsowner && RoleClass.Pavlovsowner.CanCreateDog; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove && Roles.Neutral.Pavlovsdogs.SetTarget();
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove && Roles.Neutral.Pavlovsdogs.SetTarget();
                 },
                 () =>
                 {
@@ -212,14 +212,14 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role is RoleId.WaveCannon or RoleId.WaveCannonJackal; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
-                    WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptions.WaveCannonCoolTime.GetFloat() : CustomOptions.WaveCannonJackalCoolTime.GetFloat();
+                    WaveCannonButton.MaxTimer = CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.WaveCannon) ? CustomOptions.WaveCannonCoolTime.GetFloat() : CustomOptions.WaveCannonJackalCoolTime.GetFloat();
                     WaveCannonButton.Timer = WaveCannonButton.MaxTimer;
                     WaveCannonButton.effectCancellable = false;
-                    WaveCannonButton.EffectDuration = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptions.WaveCannonChargeTime.GetFloat() : CustomOptions.WaveCannonJackalChargeTime.GetFloat();
+                    WaveCannonButton.EffectDuration = CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.WaveCannon) ? CustomOptions.WaveCannonChargeTime.GetFloat() : CustomOptions.WaveCannonJackalChargeTime.GetFloat();
                     WaveCannonButton.HasEffect = true;
                 },
                 RoleClass.WaveCannon.GetButtonSprite(),
@@ -267,13 +267,13 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Slugger; },
                 () =>
                 {
-                    if (SluggerButton.isEffectActive && !PlayerControl.LocalPlayer.CanMove)
+                    if (SluggerButton.isEffectActive && !CachedPlayer.LocalPlayer.PlayerControl.CanMove)
                     {
                         var anim = PlayerAnimation.GetPlayerAnimation(CachedPlayer.LocalPlayer.PlayerId);
                         SluggerButton.isEffectActive = false;
                         anim.RpcAnimation(RpcAnimationType.Stop);
                     }
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -331,7 +331,7 @@ namespace SuperNewRoles.Buttons
                     SluggerButton.Timer = SluggerButton.MaxTimer;
                     if (CustomOptions.SluggerIsKillCoolSync.GetBool())
                     {
-                        PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer);
+                        CachedPlayer.LocalPlayer.PlayerControl.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer);
                     }
                 }
             )
@@ -355,7 +355,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Photographer; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove && Roles.Neutral.Photographer.SetTarget().Count > 0;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove && Roles.Neutral.Photographer.SetTarget().Count > 0;
                 },
                 () =>
                 {
@@ -378,7 +378,7 @@ namespace SuperNewRoles.Buttons
             KunoichiKunaiButton = new(
                 () => { RoleClass.Kunoichi.Kunai.kunai.SetActive(!RoleClass.Kunoichi.Kunai.kunai.active); },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Kunoichi; },
-                () => { return PlayerControl.LocalPlayer.CanMove; },
+                () => { return CachedPlayer.LocalPlayer.PlayerControl.CanMove; },
                 () =>
                 {
                     KunoichiKunaiButton.MaxTimer = 0f;
@@ -406,7 +406,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Kunoichi && RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { Kunoichi.HideOff(); },
                 RoleClass.Kunoichi.GetHideButtonSprite(),
@@ -436,7 +436,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Cracker && RoleClass.Cracker.TurnCount > 0 && RoleClass.Cracker.MaxTurnCount > 0; },
                 () =>
                 {
-                    return SetTarget(RoleClass.Cracker.CurrentCrackedPlayerControls) && PlayerControl.LocalPlayer.CanMove;
+                    return SetTarget(RoleClass.Cracker.CurrentCrackedPlayerControls) && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -460,17 +460,17 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     PlayerControl Target = SetTarget();
-                    if (Target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    if (Target && RoleHelpers.IsAlive(CachedPlayer.LocalPlayer.PlayerControl) && CachedPlayer.LocalPlayer.PlayerControl.CanMove)
                     {
                         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                         {
-                            PlayerControl.LocalPlayer.CmdCheckMurder(Target);
+                            CachedPlayer.LocalPlayer.PlayerControl.CmdCheckMurder(Target);
                         }
                         else
                         {
                             RoleClass.FalseCharges.FalseChargePlayer = Target.PlayerId;
-                            ModHelpers.UncheckedMurderPlayer(Target, PlayerControl.LocalPlayer);
-                            PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.FalseChargesFalseCharge);
+                            ModHelpers.UncheckedMurderPlayer(Target, CachedPlayer.LocalPlayer.PlayerControl);
+                            CachedPlayer.LocalPlayer.PlayerControl.RpcSetFinalStatus(FinalStatus.FalseChargesFalseCharge);
                             RoleClass.FalseCharges.Turns = RoleClass.FalseCharges.DefaultTurn;
                         }
                     }
@@ -478,7 +478,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FalseCharges; },
                 () =>
                 {
-                    return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return SetTarget() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -501,19 +501,19 @@ namespace SuperNewRoles.Buttons
             trueloverLoveButton = new(
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.CanMove && !RoleClass.Truelover.IsCreate && !PlayerControl.LocalPlayer.IsLovers())
+                    if (CachedPlayer.LocalPlayer.PlayerControl.CanMove && !RoleClass.Truelover.IsCreate && !CachedPlayer.LocalPlayer.PlayerControl.IsLovers())
                     {
                         var target = SetTarget();
                         if (target == null || target.IsLovers()) return;
                         RoleClass.Truelover.IsCreate = true;
-                        RoleHelpers.SetLovers(PlayerControl.LocalPlayer, target);
-                        RoleHelpers.SetLoversRPC(PlayerControl.LocalPlayer, target);
+                        RoleHelpers.SetLovers(CachedPlayer.LocalPlayer.PlayerControl, target);
+                        RoleHelpers.SetLoversRPC(CachedPlayer.LocalPlayer.PlayerControl, target);
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.truelover && !RoleClass.Truelover.IsCreate; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove && SetTarget();
                 },
                 () => { trueloverLoveButton.Timer = 0f; trueloverLoveButton.MaxTimer = 0f; },
                 RoleClass.Truelover.GetButtonSprite(),
@@ -532,9 +532,9 @@ namespace SuperNewRoles.Buttons
             MagazinerGetButton = new(
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.CanMove && RoleClass.Magaziner.MyPlayerCount >= 1 && FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown && RoleClass.Magaziner.IsOKSet)
+                    if (CachedPlayer.LocalPlayer.PlayerControl.CanMove && RoleClass.Magaziner.MyPlayerCount >= 1 && FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown && RoleClass.Magaziner.IsOKSet)
                     {
-                        PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Magaziner.SetTime);
+                        CachedPlayer.LocalPlayer.PlayerControl.SetKillTimerUnchecked(RoleClass.Magaziner.SetTime);
                         RoleClass.Magaziner.MyPlayerCount--;
                         if (RoleClass.Magaziner.SetTime != 0)
                         {
@@ -549,7 +549,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Magaziner; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove && FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown && RoleClass.Magaziner.MyPlayerCount >= 1;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove && FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown && RoleClass.Magaziner.MyPlayerCount >= 1;
                 },
                 () => { MagazinerGetButton.Timer = 0f; MagazinerGetButton.MaxTimer = 0f; },
                 RoleClass.Magaziner.GetGetButtonSprite(),
@@ -568,16 +568,16 @@ namespace SuperNewRoles.Buttons
             MagazinerAddButton = new(
                 () =>
                 {
-                    if (!FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown && PlayerControl.LocalPlayer.CanMove)
+                    if (!FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown && CachedPlayer.LocalPlayer.PlayerControl.CanMove)
                     {
-                        PlayerControl.LocalPlayer.SetKillTimerUnchecked(PlayerControl.GameOptions.KillCooldown);
+                        CachedPlayer.LocalPlayer.PlayerControl.SetKillTimerUnchecked(PlayerControl.GameOptions.KillCooldown);
                         RoleClass.Magaziner.MyPlayerCount++;
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Magaziner; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove && !FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove && !FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown;
                 },
                 () => { MagazinerAddButton.Timer = 0f; MagazinerAddButton.MaxTimer = 0f; },
                 RoleClass.Magaziner.GetAddButtonSprite(),
@@ -596,7 +596,7 @@ namespace SuperNewRoles.Buttons
             ScientistButton = new Buttons.CustomButton(
                 () =>
                 {
-                    if (!PlayerControl.LocalPlayer.CanMove) return;
+                    if (!CachedPlayer.LocalPlayer.PlayerControl.CanMove) return;
                     RoleClass.NiceScientist.ButtonTimer = DateTime.Now;
                     ScientistButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Scientist.Start();
@@ -604,7 +604,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.NiceScientist || role == RoleId.EvilScientist); },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { Scientist.EndMeeting(); },
                 RoleClass.NiceScientist.GetButtonSprite(),
@@ -623,16 +623,16 @@ namespace SuperNewRoles.Buttons
             HawkHawkEyeButton = new(
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.CanMove)
+                    if (CachedPlayer.LocalPlayer.PlayerControl.CanMove)
                     {
-                        if (PlayerControl.LocalPlayer.IsRole(RoleId.Hawk))
+                        if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hawk))
                         {
                             RoleClass.Hawk.Timer = RoleClass.Hawk.DurationTime;
                             RoleClass.Hawk.ButtonTimer = DateTime.Now;
                             HawkHawkEyeButton.MaxTimer = RoleClass.Hawk.CoolTime;
                             HawkHawkEyeButton.Timer = RoleClass.Hawk.CoolTime;
                         }
-                        if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceHawk))
+                        if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.NiceHawk))
                         {
                             RoleClass.NiceHawk.Timer = RoleClass.NiceHawk.DurationTime;
                             RoleClass.NiceHawk.ButtonTimer = DateTime.Now;
@@ -642,7 +642,7 @@ namespace SuperNewRoles.Buttons
                             RoleClass.NiceHawk.timer1 = 10;
                             RoleClass.NiceHawk.Timer2 = DateTime.Now;
                         }
-                        if (PlayerControl.LocalPlayer.IsRole(RoleId.MadHawk))
+                        if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.MadHawk))
                         {
                             RoleClass.MadHawk.Timer = RoleClass.MadHawk.DurationTime;
                             RoleClass.MadHawk.ButtonTimer = DateTime.Now;
@@ -658,21 +658,21 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Hawk || role == RoleId.NiceHawk || role == RoleId.MadHawk); },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Hawk))
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hawk))
                     {
                         HawkHawkEyeButton.MaxTimer = RoleClass.Hawk.CoolTime;
                         HawkHawkEyeButton.Timer = RoleClass.Hawk.CoolTime;
                     }
-                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceHawk))
+                    else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.NiceHawk))
                     {
                         HawkHawkEyeButton.MaxTimer = RoleClass.NiceHawk.CoolTime;
                         HawkHawkEyeButton.Timer = RoleClass.NiceHawk.CoolTime;
                     }
-                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.MadHawk))
+                    else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.MadHawk))
                     {
                         HawkHawkEyeButton.MaxTimer = RoleClass.MadHawk.CoolTime;
                         HawkHawkEyeButton.Timer = RoleClass.MadHawk.CoolTime;
@@ -695,7 +695,7 @@ namespace SuperNewRoles.Buttons
             CountChangerButton = new(
                 () =>
                 {
-                    if (RoleClass.CountChanger.Count >= 1 && SetTarget() && PlayerControl.LocalPlayer.CanMove)
+                    if (RoleClass.CountChanger.Count >= 1 && SetTarget() && CachedPlayer.LocalPlayer.PlayerControl.CanMove)
                     {
                         RoleClass.CountChanger.IsSet = true;
                         RoleClass.CountChanger.Count--;
@@ -704,7 +704,7 @@ namespace SuperNewRoles.Buttons
                         var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
                         RPCProcedure.CountChangerSetRPC(LocalID, TargetID);
-                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CountChangerSetRPC, SendOption.Reliable, -1);
+                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CountChangerSetRPC, SendOption.Reliable, -1);
                         killWriter.Write(LocalID);
                         killWriter.Write(TargetID);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
@@ -713,7 +713,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.CountChanger && !RoleClass.CountChanger.IsSet && RoleClass.CountChanger.Count >= 1; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove && PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true);
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove && PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true);
                 },
                 () =>
                 {
@@ -738,10 +738,10 @@ namespace SuperNewRoles.Buttons
                 {
                     if (RoleClass.Doctor.Vital == null)
                     {
-                        var moto = PlayerControl.LocalPlayer.Data.Role.Role;
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
+                        var moto = CachedPlayer.LocalPlayer.PlayerControl.Data.Role.Role;
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Scientist);
                         CachedPlayer.LocalPlayer.Data.Role.TryCast<ScientistRole>().UseAbility();
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, moto);
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, moto);
                         RoleClass.Doctor.Vital = GameObject.FindObjectOfType<VitalsMinigame>();
                     }
                     RoleClass.Doctor.MyPanelFlag = true;
@@ -760,7 +760,7 @@ namespace SuperNewRoles.Buttons
                         DoctorVitalsButton.MaxTimer = 0f;
                         DoctorVitalsButton.Timer = 0f;
                     }
-                    return (PlayerControl.LocalPlayer.CanMove && RoleClass.Doctor.Battery > 0) || RoleClass.Doctor.IsChargingNow;
+                    return (CachedPlayer.LocalPlayer.PlayerControl.CanMove && RoleClass.Doctor.Battery > 0) || RoleClass.Doctor.IsChargingNow;
                 },
                 () => { },
                 RoleClass.Doctor.GetVitalsSprite(),
@@ -780,16 +780,16 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target = PlayerControlFixedUpdatePatch.JackalSetTarget();
-                    if (target && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.CanCreateSidekick)
+                    if (target && CachedPlayer.LocalPlayer.PlayerControl.CanMove && RoleClass.Jackal.CanCreateSidekick)
                     {
                         if (RoleClass.Jackal.CanCreateFriend)
                         {
-                            Jackal.CreateJackalFriends (target); //クルーにして フレンズにする
+                            Jackal.CreateJackalFriends(target); //クルーにして フレンズにする
                         }
                         else
                         {
                             bool IsFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
-                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekick, SendOption.Reliable, -1);
+                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CreateSidekick, SendOption.Reliable, -1);
                             killWriter.Write(target.PlayerId);
                             killWriter.Write(IsFakeSidekick);
                             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
@@ -802,11 +802,11 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick && CustomOptions.JackalCreateSidekick.GetBool(); },
                 () =>
                 {
-                    return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return PlayerControlFixedUpdatePatch.JackalSetTarget() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
                 },
                 RoleClass.Jackal.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
@@ -825,10 +825,10 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target_JS = PlayerControlFixedUpdatePatch.JackalSetTarget();
-                    if (target_JS && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.JackalSeer.CanCreateSidekick)
+                    if (target_JS && RoleHelpers.IsAlive(CachedPlayer.LocalPlayer.PlayerControl) && CachedPlayer.LocalPlayer.PlayerControl.CanMove && RoleClass.JackalSeer.CanCreateSidekick)
                     {
                         bool IsFakeSidekickSeer = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSeerSidekick, target_JS);
-                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekickSeer, SendOption.Reliable, -1);
+                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CreateSidekickSeer, SendOption.Reliable, -1);
                         killWriter.Write(target_JS.PlayerId);
                         killWriter.Write(IsFakeSidekickSeer);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
@@ -840,11 +840,11 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.CanCreateSidekick && CustomOptions.JackalSeerCreateSidekick.GetBool(); },
                 () =>
                 {
-                    return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return PlayerControlFixedUpdatePatch.JackalSetTarget() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
                 },
                 RoleClass.Jackal.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
@@ -862,10 +862,10 @@ namespace SuperNewRoles.Buttons
             JackalKillButton = new(
                 () =>
                 {
-                    if (PlayerControlFixedUpdatePatch.JackalSetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    if (PlayerControlFixedUpdatePatch.JackalSetTarget() && RoleHelpers.IsAlive(CachedPlayer.LocalPlayer.PlayerControl) && CachedPlayer.LocalPlayer.PlayerControl.CanMove)
                     {
-                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.JackalSetTarget());
-                        switch (PlayerControl.LocalPlayer.GetRole())
+                        ModHelpers.CheckMuderAttemptAndKill(CachedPlayer.LocalPlayer.PlayerControl, PlayerControlFixedUpdatePatch.JackalSetTarget());
+                        switch (CachedPlayer.LocalPlayer.PlayerControl.GetRole())
                         {
                             case RoleId.Jackal:
                                 Jackal.ResetCoolDown();
@@ -885,13 +885,13 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Jackal || role == RoleId.TeleportingJackal || role == RoleId.JackalSeer || role == RoleId.WaveCannonJackal) && ModeHandler.IsMode(ModeId.Default); },
                 () =>
                 {
-                    return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return PlayerControlFixedUpdatePatch.JackalSetTarget() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
-                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
-                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannonJackal)) { Roles.Neutral.WaveCannonJackal.ResetCoolDowns(); }
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
+                    else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
+                    else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.WaveCannonJackal)) { Roles.Neutral.WaveCannonJackal.ResetCoolDowns(); }
                 },
                 __instance.KillButton.graphic.sprite,
                 new Vector3(0, 1, 0),
@@ -909,15 +909,15 @@ namespace SuperNewRoles.Buttons
             SelfBomberButton = new(
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.CanMove)
+                    if (CachedPlayer.LocalPlayer.PlayerControl.CanMove)
                     {
                         SelfBomber.SelfBomb();
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && ModeHandler.IsMode(ModeId.Default) && PlayerControl.LocalPlayer.IsRole(RoleId.SelfBomber); },
+                (bool isAlive, RoleId role) => { return isAlive && ModeHandler.IsMode(ModeId.Default) && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.SelfBomber); },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { SelfBomber.ResetCoolDown(); },
                 RoleClass.SelfBomber.GetButtonSprite(),
@@ -939,10 +939,10 @@ namespace SuperNewRoles.Buttons
                     Doorr.DoorrBtn();
                     Doorr.ResetCoolDown();
                 },
-                (bool isAlive, RoleId role) => { return isAlive && Doorr.IsDoorr(PlayerControl.LocalPlayer); },
+                (bool isAlive, RoleId role) => { return isAlive && Doorr.IsDoorr(CachedPlayer.LocalPlayer.PlayerControl); },
                 () =>
                 {
-                    return Doorr.CheckTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return Doorr.CheckTarget() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { Doorr.EndMeeting(); },
                 RoleClass.Doorr.GetButtonSprite(),
@@ -961,7 +961,7 @@ namespace SuperNewRoles.Buttons
             TeleporterButton = new(
                 () =>
                 {
-                    if (!PlayerControl.LocalPlayer.CanMove) return;
+                    if (!CachedPlayer.LocalPlayer.PlayerControl.CanMove) return;
                     RoleClass.Clergyman.ButtonTimer = DateTime.Now;
                     TeleporterButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Teleporter.TeleportStart();
@@ -970,7 +970,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Teleporter || role == RoleId.TeleportingJackal || role == RoleId.NiceTeleporter || (role == RoleId.Levelinger && RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Teleporter))); },
                 () =>
                 {
-                    return true && PlayerControl.LocalPlayer.CanMove;
+                    return true && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { Teleporter.EndMeeting(); },
                 RoleClass.Teleporter.GetButtonSprite(),
@@ -989,7 +989,7 @@ namespace SuperNewRoles.Buttons
             MovingSetButton = new(
                 () =>
                 {
-                    if (!PlayerControl.LocalPlayer.CanMove) return;
+                    if (!CachedPlayer.LocalPlayer.PlayerControl.CanMove) return;
                     if (!Moving.IsSetPostion())
                     {
                         Moving.SetPostion();
@@ -999,7 +999,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Moving || role == RoleId.EvilMoving || RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Moving)) && !Moving.IsSetPostion(); },
                 () =>
                 {
-                    return true && PlayerControl.LocalPlayer.CanMove;
+                    return true && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { Moving.EndMeeting(); },
                 RoleClass.Moving.GetNoSetButtonSprite(),
@@ -1018,7 +1018,7 @@ namespace SuperNewRoles.Buttons
             MovingTpButton = new Buttons.CustomButton(
                 () =>
                 {
-                    if (!PlayerControl.LocalPlayer.CanMove) return;
+                    if (!CachedPlayer.LocalPlayer.PlayerControl.CanMove) return;
                     if (Moving.IsSetPostion())
                     {
                         Moving.TP();
@@ -1028,7 +1028,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Moving || role == RoleId.EvilMoving || RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Moving)) && Moving.IsSetPostion(); },
                 () =>
                 {
-                    return true && PlayerControl.LocalPlayer.CanMove;
+                    return true && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { Moving.EndMeeting(); },
                 RoleClass.Moving.GetSetButtonSprite(),
@@ -1047,9 +1047,9 @@ namespace SuperNewRoles.Buttons
             SheriffKillButton = new(
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.RemoteSheriff))
                     {
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Shapeshifter);
                         foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                         {
                             p.Data.Role.NameColor = Color.white;
@@ -1061,9 +1061,9 @@ namespace SuperNewRoles.Buttons
                                 p.Data.Role.NameColor = RoleClass.ImpostorRed;
                             }
                         }
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Crewmate);
                     }
-                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff))
+                    else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Sheriff))
                     {
                         if (RoleClass.Sheriff.KillMaxCount > 0 && SetTarget())
                         {
@@ -1077,7 +1077,7 @@ namespace SuperNewRoles.Buttons
                             var TargetID = Target.PlayerId;
 
                             RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
-                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1);
+                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1);
                             killWriter.Write(LocalID);
                             killWriter.Write(TargetID);
                             killWriter.Write(misfire);
@@ -1088,20 +1088,20 @@ namespace SuperNewRoles.Buttons
                         }
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && ModeHandler.IsMode(ModeId.Default) && Sheriff.IsSheriffButton(PlayerControl.LocalPlayer); },
+                (bool isAlive, RoleId role) => { return isAlive && ModeHandler.IsMode(ModeId.Default) && Sheriff.IsSheriffButton(CachedPlayer.LocalPlayer.PlayerControl); },
                 () =>
                 {
                     float killcount = 0f;
                     bool flag = false;
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.RemoteSheriff))
                     {
                         killcount = RoleClass.RemoteSheriff.KillMaxCount;
                         flag = true;
                     }
-                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff))
+                    else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Sheriff))
                     {
                         killcount = RoleClass.Sheriff.KillMaxCount;
-                        flag = PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                        flag = PlayerControlFixedUpdatePatch.SetTarget() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                     }
                     sheriffNumShotsText.text = killcount > 0 ? string.Format(ModTranslation.GetString("SheriffNumTextName"), killcount) : "";
                     return flag;
@@ -1130,7 +1130,7 @@ namespace SuperNewRoles.Buttons
                     {
                         ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
                         ClergymanLightOutButton.Timer = ClergymanLightOutButton.MaxTimer;
-                        MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
+                        MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
                         RPCWriter.Write(false);
                         AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
                         RPCProcedure.RPCClergymanLightOut(false);
@@ -1144,7 +1144,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Clergyman; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { Clergyman.EndMeeting(); },
                 RoleClass.Clergyman.GetButtonSprite(),
@@ -1158,7 +1158,7 @@ namespace SuperNewRoles.Buttons
                 5f,
                 () =>
                 {
-                    MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
+                    MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
                     RPCWriter.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
                     RPCProcedure.RPCClergymanLightOut(false);
@@ -1255,7 +1255,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target = SetTarget(Crewmateonly: true);
-                    if (target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.Levelinger.IsCreateMadmate)
+                    if (target && RoleHelpers.IsAlive(CachedPlayer.LocalPlayer.PlayerControl) && CachedPlayer.LocalPlayer.PlayerControl.CanMove && !RoleClass.Levelinger.IsCreateMadmate)
                     {
                         target.SetRoleRPC(RoleId.MadMate);
                         RoleClass.Levelinger.IsCreateMadmate = true;
@@ -1264,7 +1264,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Levelinger && RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Sidekick) && !RoleClass.Levelinger.IsCreateMadmate; },
                 () =>
                 {
-                    return SetTarget(Crewmateonly: true) && PlayerControl.LocalPlayer.CanMove;
+                    return SetTarget(Crewmateonly: true) && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -1288,7 +1288,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target = SetTarget(Crewmateonly: true);
-                    if (target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.SideKiller.IsCreateMadKiller)
+                    if (target && RoleHelpers.IsAlive(CachedPlayer.LocalPlayer.PlayerControl) && CachedPlayer.LocalPlayer.PlayerControl.CanMove && !RoleClass.SideKiller.IsCreateMadKiller)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetMadKiller);
                         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
@@ -1296,13 +1296,13 @@ namespace SuperNewRoles.Buttons
                         writer.EndRPC();
                         RPCProcedure.SetMadKiller(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId);
                         RoleClass.SideKiller.IsCreateMadKiller = true;
-                        PlayerControl.LocalPlayer.killTimer = RoleClass.SideKiller.KillCoolTime;
+                        CachedPlayer.LocalPlayer.PlayerControl.killTimer = RoleClass.SideKiller.KillCoolTime;
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SideKiller && !RoleClass.SideKiller.IsCreateMadKiller; },
                 () =>
                 {
-                    return SetTarget(Crewmateonly: true) && PlayerControl.LocalPlayer.CanMove;
+                    return SetTarget(Crewmateonly: true) && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -1326,7 +1326,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target = SetTarget();
-                    if (!target.Data.Role.IsImpostor && target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.MadMaker.IsCreateMadmate)
+                    if (!target.Data.Role.IsImpostor && target && RoleHelpers.IsAlive(CachedPlayer.LocalPlayer.PlayerControl) && CachedPlayer.LocalPlayer.PlayerControl.CanMove && !RoleClass.MadMaker.IsCreateMadmate)
                     {
                         Madmate.CreateMadMate(target);
                         RoleClass.MadMaker.IsCreateMadmate = true;
@@ -1335,27 +1335,27 @@ namespace SuperNewRoles.Buttons
                     {
                         if (ModeHandler.IsMode(ModeId.Default))
                         {
-                            if (PlayerControl.LocalPlayer.IsRole(RoleId.MadMaker))
+                            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.MadMaker))
                             {
-                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
                                 writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                                 writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                                 writer.Write(byte.MaxValue);
                                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                                 RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, CachedPlayer.LocalPlayer.PlayerId, byte.MaxValue);
-                                PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.MadmakerMisSet);
+                                CachedPlayer.LocalPlayer.PlayerControl.RpcSetFinalStatus(FinalStatus.MadmakerMisSet);
                             }
                         }
                         else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                         {
-                            PlayerControl.LocalPlayer.CmdCheckMurder(target);
+                            CachedPlayer.LocalPlayer.PlayerControl.CmdCheckMurder(target);
                         }
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.MadMaker && ModeHandler.IsMode(ModeId.Default) && !RoleClass.MadMaker.IsCreateMadmate; },
                 () =>
                 {
-                    return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return SetTarget() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { },
                 RoleClass.Jackal.GetButtonSprite(),
@@ -1386,7 +1386,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return Demon.IsButton(); },
                 () =>
                 {
-                    return SetTarget(untarget: Demon.GetUntarget()) && PlayerControl.LocalPlayer.CanMove;
+                    return SetTarget(untarget: Demon.GetUntarget()) && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -1420,7 +1420,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return Arsonist.IsButton(); },
                 () =>
                 {
-                    return SetTarget(untarget: Arsonist.GetUntarget()) && PlayerControl.LocalPlayer.CanMove;
+                    return SetTarget(untarget: Arsonist.GetUntarget()) && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -1447,7 +1447,7 @@ namespace SuperNewRoles.Buttons
                     RoleClass.Arsonist.TriggerArsonistWin = true;
                     AdditionalTempData.winCondition = WinCondition.ArsonistWin;
                     RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
-                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                     Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
 
@@ -1464,7 +1464,7 @@ namespace SuperNewRoles.Buttons
                     }
                     else
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
                         writer.Write((byte)reason);
                         writer.Write(false);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -1473,7 +1473,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return Arsonist.IseveryButton(); },
                 () =>
                 {
-                    return Arsonist.IsWin(PlayerControl.LocalPlayer);
+                    return Arsonist.IsWin(CachedPlayer.LocalPlayer.PlayerControl);
                 },
                 () =>
                 {
@@ -1503,7 +1503,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Speeder; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { Speeder.EndMeeting(); },
                 RoleClass.Speeder.GetButtonSprite(),
@@ -1544,15 +1544,15 @@ namespace SuperNewRoles.Buttons
                         }
                         else
                         {
-                            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                            PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.ChiefMisSet);
+                            CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
+                            CachedPlayer.LocalPlayer.PlayerControl.RpcSetFinalStatus(FinalStatus.ChiefMisSet);
                         }
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Chief && ModeHandler.IsMode(ModeId.Default) && !RoleClass.Chief.IsCreateSheriff; },
                 () =>
                 {
-                    return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return SetTarget() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { },
                 RoleClass.Chief.GetButtonSprite(),
@@ -1571,20 +1571,20 @@ namespace SuperNewRoles.Buttons
             VultureButton = new(
                 () =>
                 {
-                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(), CachedPlayer.LocalPlayer.PlayerControl.MaxReportDistance, Constants.PlayersOnlyMask))
                     {
                         if (collider2D.tag == "DeadBody")
                         {
                             DeadBody component = collider2D.GetComponent<DeadBody>();
                             if (component && !component.Reported)
                             {
-                                Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                                Vector2 truePosition = CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition();
                                 Vector2 truePosition2 = component.TruePosition;
-                                if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                                if (Vector2.Distance(truePosition2, truePosition) <= CachedPlayer.LocalPlayer.PlayerControl.MaxReportDistance && CachedPlayer.LocalPlayer.PlayerControl.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
                                 {
                                     GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
 
-                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CleanBody, SendOption.Reliable, -1);
+                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CleanBody, SendOption.Reliable, -1);
                                     writer.Write(playerInfo.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                                     RPCProcedure.CleanBody(playerInfo.PlayerId);
@@ -1599,7 +1599,7 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.Vulture.DeadBodyCount < 0)
                     {
                         RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         if (AmongUsClient.Instance.AmHost)
@@ -1608,7 +1608,7 @@ namespace SuperNewRoles.Buttons
                         }
                         else
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
                             writer.Write((byte)CustomGameOverReason.VultureWin);
                             writer.Write(false);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -1618,7 +1618,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Vulture; },
                 () =>
                 {
-                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
+                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -1641,7 +1641,7 @@ namespace SuperNewRoles.Buttons
             ShielderButton = new(
                 () =>
                 {
-                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetShielder, SendOption.Reliable, -1);
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SetShielder, SendOption.Reliable, -1);
                     Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     Writer.Write(true);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -1653,7 +1653,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Shielder; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -1676,20 +1676,20 @@ namespace SuperNewRoles.Buttons
             CleanerButton = new(
                 () =>
                 {
-                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(), CachedPlayer.LocalPlayer.PlayerControl.MaxReportDistance, Constants.PlayersOnlyMask))
                     {
                         if (collider2D.tag == "DeadBody")
                         {
                             DeadBody component = collider2D.GetComponent<DeadBody>();
                             if (component && !component.Reported)
                             {
-                                Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                                Vector2 truePosition = CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition();
                                 Vector2 truePosition2 = component.TruePosition;
-                                if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                                if (Vector2.Distance(truePosition2, truePosition) <= CachedPlayer.LocalPlayer.PlayerControl.MaxReportDistance && CachedPlayer.LocalPlayer.PlayerControl.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
                                 {
                                     GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
 
-                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CleanBody, SendOption.Reliable, -1);
+                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CleanBody, SendOption.Reliable, -1);
                                     writer.Write(playerInfo.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                                     RPCProcedure.CleanBody(playerInfo.PlayerId);
@@ -1699,7 +1699,7 @@ namespace SuperNewRoles.Buttons
                                     CleanerButton.Timer = CleanerButton.MaxTimer;
 
                                     RoleClass.Cleaner.CoolTime = CleanerButton.Timer = CleanerButton.MaxTimer;
-                                    PlayerControl.LocalPlayer.killTimer = RoleClass.Cleaner.CoolTime;
+                                    CachedPlayer.LocalPlayer.PlayerControl.killTimer = RoleClass.Cleaner.CoolTime;
                                     break;
                                 }
                             }
@@ -1709,7 +1709,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Cleaner; },
                 () =>
                 {
-                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
+                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -1732,20 +1732,20 @@ namespace SuperNewRoles.Buttons
             MadCleanerButton = new(
                 () =>
                 {
-                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(), CachedPlayer.LocalPlayer.PlayerControl.MaxReportDistance, Constants.PlayersOnlyMask))
                     {
                         if (collider2D.tag == "DeadBody")
                         {
                             DeadBody component = collider2D.GetComponent<DeadBody>();
                             if (component && !component.Reported)
                             {
-                                Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                                Vector2 truePosition = CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition();
                                 Vector2 truePosition2 = component.TruePosition;
-                                if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                                if (Vector2.Distance(truePosition2, truePosition) <= CachedPlayer.LocalPlayer.PlayerControl.MaxReportDistance && CachedPlayer.LocalPlayer.PlayerControl.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
                                 {
                                     GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
 
-                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CleanBody, SendOption.Reliable, -1);
+                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CleanBody, SendOption.Reliable, -1);
                                     writer.Write(playerInfo.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                                     RPCProcedure.CleanBody(playerInfo.PlayerId);
@@ -1758,7 +1758,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.MadCleaner; },
                 () =>
                 {
-                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
+                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -1786,7 +1786,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Freezer; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { Freezer.EndMeeting(); },
                 RoleClass.Freezer.GetButtonSprite(),
@@ -1811,7 +1811,7 @@ namespace SuperNewRoles.Buttons
             SamuraiButton = new(
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.CanMove)
+                    if (CachedPlayer.LocalPlayer.PlayerControl.CanMove)
                     {
                         Samurai.SamuraiKill();
                     }
@@ -1819,7 +1819,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Samurai && ModeHandler.IsMode(ModeId.Default) && !RoleClass.Samurai.Sword; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { Samurai.ResetCoolDown(); },
                 RoleClass.Samurai.GetButtonSprite(),
@@ -1853,7 +1853,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.VentMaker && RoleClass.VentMaker.IsMakeVent; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { },
                 RoleClass.VentMaker.GetButtonSprite(),
@@ -1874,7 +1874,7 @@ namespace SuperNewRoles.Buttons
                 {
                     RoleClass.GhostMechanic.LimitCount--;
 
-                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                    foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks)
                     {
                         if (task.TaskType == TaskTypes.FixLights)
                         {
@@ -1910,11 +1910,11 @@ namespace SuperNewRoles.Buttons
                         GhostMechanicNumRepairText.text = "";
                     }
                 },
-                (bool isAlive, RoleId role) => { return !isAlive && PlayerControl.LocalPlayer.IsGhostRole(RoleId.GhostMechanic) && RoleClass.GhostMechanic.LimitCount > 0; },
+                (bool isAlive, RoleId role) => { return !isAlive && CachedPlayer.LocalPlayer.PlayerControl.IsGhostRole(RoleId.GhostMechanic) && RoleClass.GhostMechanic.LimitCount > 0; },
                 () =>
                 {
                     bool sabotageActive = false;
-                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                    foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks)
                         if (task.TaskType == TaskTypes.FixLights || task.TaskType == TaskTypes.RestoreOxy || task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic || task.TaskType == TaskTypes.FixComms || task.TaskType == TaskTypes.StopCharles
                             || (SubmergedCompatibility.isSubmerged() && task.TaskType == SubmergedCompatibility.RetrieveOxygenMask))
                         {
@@ -1922,7 +1922,7 @@ namespace SuperNewRoles.Buttons
                             break;
                         }
                     GhostMechanicNumRepairText.text = string.Format(ModTranslation.GetString("GhostMechanicCountText"), RoleClass.GhostMechanic.LimitCount);
-                    return sabotageActive && PlayerControl.LocalPlayer.CanMove;
+                    return sabotageActive && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { GhostMechanicRepairButton.MaxTimer = 0f; GhostMechanicRepairButton.Timer = 0f; },
                 RoleClass.GhostMechanic.GetButtonSprite(),
@@ -1952,7 +1952,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return role == RoleId.EvilHacker; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -1977,7 +1977,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target = SetTarget();
-                    if (!target.Data.Role.IsImpostor && target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.EvilHacker.IsCreateMadmate)
+                    if (!target.Data.Role.IsImpostor && target && RoleHelpers.IsAlive(CachedPlayer.LocalPlayer.PlayerControl) && CachedPlayer.LocalPlayer.PlayerControl.CanMove && RoleClass.EvilHacker.IsCreateMadmate)
                     {
                         Madmate.CreateMadMate(target);
                         RoleClass.EvilHacker.IsCreateMadmate = false;
@@ -1986,7 +1986,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.EvilHacker && ModeHandler.IsMode(ModeId.Default) && RoleClass.EvilHacker.IsCreateMadmate; },
                 () =>
                 {
-                    return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return SetTarget() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { },
                 RoleClass.Jackal.GetButtonSprite(),
@@ -2018,8 +2018,8 @@ namespace SuperNewRoles.Buttons
                     PositionSwapperNumText.text = swapcount > 0
                         ? string.Format(ModTranslation.GetString("PositionSwapperNumTextName"), swapcount)
                         : string.Format(ModTranslation.GetString("PositionSwapperNumTextName"), "0");
-                    return PlayerControl.LocalPlayer.CanMove
-&& RoleClass.PositionSwapper.SwapCount > 0 && true && PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove
+&& RoleClass.PositionSwapper.SwapCount > 0 && true && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { PositionSwapper.EndMeeting(); },
                 RoleClass.PositionSwapper.GetButtonSprite(),
@@ -2043,7 +2043,7 @@ namespace SuperNewRoles.Buttons
             SecretlyKillerMainButton = new(
                 () =>
                 {
-                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.SecretlyKiller.target);
+                    ModHelpers.CheckMuderAttemptAndKill(CachedPlayer.LocalPlayer.PlayerControl, RoleClass.SecretlyKiller.target);
                     SecretlyKiller.MainResetCoolDown();
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SecretlyKiller; },
@@ -2057,7 +2057,7 @@ namespace SuperNewRoles.Buttons
 
                     RoleClass.SecretlyKiller.target = SetTarget();
                     return RoleClass.SecretlyKiller.target != null
-&& !RoleClass.SecretlyKiller.target.IsImpostor() && PlayerControl.LocalPlayer.CanMove;
+&& !RoleClass.SecretlyKiller.target.IsImpostor() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { SecretlyKiller.EndMeeting(); },
                 __instance.KillButton.graphic.sprite,
@@ -2068,7 +2068,7 @@ namespace SuperNewRoles.Buttons
                 49,
                 () =>
                 {
-                    return !PlayerControl.LocalPlayer.CanMove;
+                    return !CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 }
             )
             {
@@ -2097,7 +2097,7 @@ namespace SuperNewRoles.Buttons
                     //メイン
                     RoleClass.SecretlyKiller.target = SetTarget();
                     return RoleClass.SecretlyKiller.target != null
-&& !RoleClass.SecretlyKiller.target.IsImpostor() && PlayerControl.LocalPlayer.CanMove;
+&& !RoleClass.SecretlyKiller.target.IsImpostor() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { SecretlyKiller.EndMeeting(); },
                 __instance.KillButton.graphic.sprite,
@@ -2109,7 +2109,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var ma = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                    return (ma == null || ma.IsActive) && (!RoleClass.SecretlyKiller.IsBlackOutKillCharge || !PlayerControl.LocalPlayer.CanMove);
+                    return (ma == null || ma.IsActive) && (!RoleClass.SecretlyKiller.IsBlackOutKillCharge || !CachedPlayer.LocalPlayer.PlayerControl.CanMove);
                 }
             );
             {
@@ -2125,7 +2125,7 @@ namespace SuperNewRoles.Buttons
             ClairvoyantButton = new(
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.CanMove)
+                    if (CachedPlayer.LocalPlayer.PlayerControl.CanMove)
                     {
                         MapOptions.MapOption.Timer = MapOptions.MapOption.DurationTime;
                         MapOptions.MapOption.ButtonTimer = DateTime.Now;
@@ -2134,10 +2134,10 @@ namespace SuperNewRoles.Buttons
                         MapOptions.MapOption.IsZoomOn = true;
                     }
                 },
-                (bool isAlive, RoleId role) => { return !PlayerControl.LocalPlayer.IsAlive() && MapOptions.MapOption.ClairvoyantZoom && ModeHandler.IsMode(ModeId.Default); },
+                (bool isAlive, RoleId role) => { return !CachedPlayer.LocalPlayer.PlayerControl.IsAlive() && MapOptions.MapOption.ClairvoyantZoom && ModeHandler.IsMode(ModeId.Default); },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -2161,10 +2161,10 @@ namespace SuperNewRoles.Buttons
             DoubleKillerMainKillButton = new(
                 () =>
                 {
-                    if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.IsAlive(CachedPlayer.LocalPlayer.PlayerControl) && CachedPlayer.LocalPlayer.PlayerControl.CanMove)
                     {
-                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
-                        switch (PlayerControl.LocalPlayer.GetRole())
+                        ModHelpers.CheckMuderAttemptAndKill(CachedPlayer.LocalPlayer.PlayerControl, PlayerControlFixedUpdatePatch.SetTarget());
+                        switch (CachedPlayer.LocalPlayer.PlayerControl.GetRole())
                         {
                             case RoleId.DoubleKiller:
                                 DoubleKiller.ResetMainCoolDown();
@@ -2178,11 +2178,11 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return (isAlive && (role == RoleId.DoubleKiller) && ModeHandler.IsMode(ModeId.Default)) || (isAlive && (role == RoleId.Smasher) && ModeHandler.IsMode(ModeId.Default)); },
                 () =>
                 {
-                    return PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return PlayerControlFixedUpdatePatch.SetTarget() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.DoubleKiller)) { DoubleKiller.EndMeeting(); }
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.DoubleKiller)) { DoubleKiller.EndMeeting(); }
                 },
                 __instance.KillButton.graphic.sprite,
                 new Vector3(0, 1, 0),
@@ -2200,10 +2200,10 @@ namespace SuperNewRoles.Buttons
             DoubleKillerSubKillButton = new(
                 () =>
                 {
-                    if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.IsAlive(CachedPlayer.LocalPlayer.PlayerControl) && CachedPlayer.LocalPlayer.PlayerControl.CanMove)
                     {
-                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
-                        switch (PlayerControl.LocalPlayer.GetRole())
+                        ModHelpers.CheckMuderAttemptAndKill(CachedPlayer.LocalPlayer.PlayerControl, PlayerControlFixedUpdatePatch.SetTarget());
+                        switch (CachedPlayer.LocalPlayer.PlayerControl.GetRole())
                         {
                             case RoleId.DoubleKiller:
                                 DoubleKiller.ResetSubCoolDown();
@@ -2213,7 +2213,7 @@ namespace SuperNewRoles.Buttons
                                 break;
                         }
                     }
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Smasher))
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Smasher))
                     {
                         RoleClass.Smasher.SmashOn = true;
                     }
@@ -2221,11 +2221,11 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return (isAlive && (role == RoleId.DoubleKiller) && ModeHandler.IsMode(ModeId.Default)) || (isAlive && (role == RoleId.Smasher) && ModeHandler.IsMode(ModeId.Default) && !RoleClass.Smasher.SmashOn); },
                 () =>
                 {
-                    return PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return PlayerControlFixedUpdatePatch.SetTarget() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.DoubleKiller)) { DoubleKiller.EndMeeting(); }
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.DoubleKiller)) { DoubleKiller.EndMeeting(); }
                 },
                 __instance.KillButton.graphic.sprite,
                 new Vector3(-1.8f, -0.06f, 0),
@@ -2243,8 +2243,8 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     //自殺
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                    PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
+                    CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
+                    CachedPlayer.LocalPlayer.PlayerControl.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SuicideWisher && ModeHandler.IsMode(ModeId.Default); },
                 () =>
@@ -2270,9 +2270,9 @@ namespace SuperNewRoles.Buttons
                 {
                     var target = SetTarget();
                     //マッド作ってないなら
-                    if (target && PlayerControl.LocalPlayer.CanMove && !RoleClass.FastMaker.IsCreatedMadMate)
+                    if (target && CachedPlayer.LocalPlayer.PlayerControl.CanMove && !RoleClass.FastMaker.IsCreatedMadMate)
                     {
-                        PlayerControl.LocalPlayer.RpcShowGuardEffect(target); // 守護エフェクトの表示
+                        CachedPlayer.LocalPlayer.PlayerControl.RpcShowGuardEffect(target); // 守護エフェクトの表示
                         Madmate.CreateMadMate(target);//くるぅにして、マッドにする
                         RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことに
                         SuperNewRolesPlugin.Logger.LogInfo("[FastMakerButton]マッドを作ったから普通のキルボタンに戻すよ!");
@@ -2282,7 +2282,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && !RoleClass.FastMaker.IsCreatedMadMate && ModeHandler.IsMode(ModeId.Default); },
                 () =>
                 {
-                    return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return SetTarget() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () => { },
                 __instance.KillButton.graphic.sprite,
@@ -2304,7 +2304,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.ToiletFan; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -2327,28 +2327,28 @@ namespace SuperNewRoles.Buttons
             ButtonerButton = new(
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner))
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilButtoner))
                         RoleClass.EvilButtoner.SkillCount--;
-                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner))
+                    else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.NiceButtoner))
                         RoleClass.NiceButtoner.SkillCount--;
                     else
                         return;
-                    EvilButtoner.EvilButtonerStartMeeting(PlayerControl.LocalPlayer);
+                    EvilButtoner.EvilButtonerStartMeeting(CachedPlayer.LocalPlayer.PlayerControl);
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role is RoleId.EvilButtoner or RoleId.NiceButtoner; },
                 () =>
                 {
-                    if (!PlayerControl.LocalPlayer.CanMove) return false;
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner)) return RoleClass.NiceButtoner.SkillCount != 0;
-                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner)) return RoleClass.EvilButtoner.SkillCount != 0;
+                    if (!CachedPlayer.LocalPlayer.PlayerControl.CanMove) return false;
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.NiceButtoner)) return RoleClass.NiceButtoner.SkillCount != 0;
+                    else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilButtoner)) return RoleClass.EvilButtoner.SkillCount != 0;
                     return false;
                 },
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount == 0) return;
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount == 0) return;
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.NiceButtoner) && RoleClass.NiceButtoner.SkillCount == 0) return;
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilButtoner) && RoleClass.EvilButtoner.SkillCount == 0) return;
                     //イビルボタナーなら
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilButtoner))
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilButtoner))
                     {
                         ButtonerButton.MaxTimer = RoleClass.EvilButtoner.CoolTime;
                         ButtonerButton.Timer = RoleClass.EvilButtoner.CoolTime;
@@ -2434,7 +2434,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     PlayerControl target = SetTarget();
-                    if (ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, target) == ModHelpers.MurderAttemptResult.PerformKill)
+                    if (ModHelpers.CheckMuderAttemptAndKill(CachedPlayer.LocalPlayer.PlayerControl, target) == ModHelpers.MurderAttemptResult.PerformKill)
                     {
                     }
                     if (RoleClass.Hitman.Target.PlayerId != target.PlayerId)
@@ -2453,7 +2453,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Hitman; },
                 () =>
                 {
-                    return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return SetTarget() && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -2483,17 +2483,17 @@ namespace SuperNewRoles.Buttons
                         MatryoshkaButton.Timer = MatryoshkaButton.MaxTimer;
                         return;
                     }
-                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(), CachedPlayer.LocalPlayer.PlayerControl.MaxReportDistance, Constants.PlayersOnlyMask))
                     {
                         if (collider2D.tag == "DeadBody")
                         {
                             DeadBody component = collider2D.GetComponent<DeadBody>();
-                            Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                            Vector2 truePosition = CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition();
                             Vector2 truePosition2 = component.TruePosition;
-                            Logger.Info((!component.Reported).ToString() + $"{truePosition2} : {truePosition} : {Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance} : {Vector2.Distance(truePosition2, truePosition)} : {PlayerControl.LocalPlayer.MaxReportDistance}");
+                            Logger.Info((!component.Reported).ToString() + $"{truePosition2} : {truePosition} : {Vector2.Distance(truePosition2, truePosition) <= CachedPlayer.LocalPlayer.PlayerControl.MaxReportDistance} : {Vector2.Distance(truePosition2, truePosition)} : {CachedPlayer.LocalPlayer.PlayerControl.MaxReportDistance}");
                             if (!component.Reported)
                             {
-                                if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                                if (Vector2.Distance(truePosition2, truePosition) <= CachedPlayer.LocalPlayer.PlayerControl.MaxReportDistance && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
                                 {
                                     if (RoleClass.Matryoshka.Data.Values.All(data =>
                                     {
@@ -2524,7 +2524,7 @@ namespace SuperNewRoles.Buttons
                         MatryoshkaButton.buttonText = ModTranslation.GetString("MatryoshkaPutOnButtonName");
                     }
                     MatryoshkaButton.HasEffect = __instance.ReportButton.graphic.color == Palette.EnabledColor;
-                    return (__instance.ReportButton.graphic.color == Palette.EnabledColor || RoleClass.Matryoshka.IsLocalOn) && PlayerControl.LocalPlayer.CanMove;
+                    return (__instance.ReportButton.graphic.color == Palette.EnabledColor || RoleClass.Matryoshka.IsLocalOn) && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -2576,7 +2576,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Nun; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -2602,16 +2602,16 @@ namespace SuperNewRoles.Buttons
             PsychometristButton = new(
                 () =>
                 {
-                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(), CachedPlayer.LocalPlayer.PlayerControl.MaxReportDistance, Constants.PlayersOnlyMask))
                     {
                         if (collider2D.tag == "DeadBody")
                         {
                             DeadBody component = collider2D.GetComponent<DeadBody>();
                             if (component && !component.Reported)
                             {
-                                Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                                Vector2 truePosition = CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition();
                                 Vector2 truePosition2 = component.TruePosition;
-                                if (Vector2.Distance(truePosition2 - new Vector2(0.15f, 0.2f), truePosition) <= RoleClass.Psychometrist.Distance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                                if (Vector2.Distance(truePosition2 - new Vector2(0.15f, 0.2f), truePosition) <= RoleClass.Psychometrist.Distance && CachedPlayer.LocalPlayer.PlayerControl.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
                                 {
                                     RoleClass.Psychometrist.CurrentTarget = component;
                                 }
@@ -2631,19 +2631,19 @@ namespace SuperNewRoles.Buttons
                             PsychometristButton.isEffectActive = false;
                         }
                     }
-                    bool Is = __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
+                    bool Is = __instance.ReportButton.graphic.color == Palette.EnabledColor && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                     if (!Is) return false;
                     Is = false;
-                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(), CachedPlayer.LocalPlayer.PlayerControl.MaxReportDistance, Constants.PlayersOnlyMask))
                     {
                         if (collider2D.tag == "DeadBody")
                         {
                             DeadBody component = collider2D.GetComponent<DeadBody>();
                             if (component && !component.Reported)
                             {
-                                Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                                Vector2 truePosition = CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition();
                                 Vector2 truePosition2 = component.TruePosition;
-                                if (Vector2.Distance(truePosition2 - new Vector2(0.15f, 0.2f), truePosition) <= RoleClass.Psychometrist.Distance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                                if (Vector2.Distance(truePosition2 - new Vector2(0.15f, 0.2f), truePosition) <= RoleClass.Psychometrist.Distance && CachedPlayer.LocalPlayer.PlayerControl.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
                                 {
                                     Is = true;
                                     break;
@@ -2697,7 +2697,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.PartTimer && !RoleClass.PartTimer.IsLocalOn; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove && SetTarget();
                 },
                 () =>
                 {
@@ -2729,7 +2729,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Painter && RoleClass.Painter.CurrentTarget == null; },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                    return CachedPlayer.LocalPlayer.PlayerControl.CanMove && SetTarget();
                 },
                 () =>
                 {
@@ -2755,19 +2755,19 @@ namespace SuperNewRoles.Buttons
             StefinderKillButton = new(
                 () =>
                 {
-                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.StefinderIsKilled, SendOption.Reliable, -1);
-                    Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.StefinderIsKilled, SendOption.Reliable, -1);
+                    Writer.Write(CachedPlayer.LocalPlayer.PlayerControl.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
 
-                    RPCProcedure.StefinderIsKilled(PlayerControl.LocalPlayer.PlayerId);
+                    RPCProcedure.StefinderIsKilled(CachedPlayer.LocalPlayer.PlayerControl.PlayerId);
                     RoleClass.Stefinder.IsKill = true;
-                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.Stefinder.target);
+                    ModHelpers.CheckMuderAttemptAndKill(CachedPlayer.LocalPlayer.PlayerControl, RoleClass.Stefinder.target);
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Stefinder && !RoleClass.Stefinder.IsKill; },
                 () =>
                 {
                     RoleClass.Stefinder.target = SetTarget();
-                    return RoleClass.Stefinder.target != null && PlayerControl.LocalPlayer.CanMove;
+                    return RoleClass.Stefinder.target != null && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
                 () =>
                 {
@@ -2782,7 +2782,7 @@ namespace SuperNewRoles.Buttons
                 8,
                 () =>
                 {
-                    return !PlayerControl.LocalPlayer.CanMove;
+                    return !CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 }
             )
             {
@@ -2793,7 +2793,7 @@ namespace SuperNewRoles.Buttons
             DoppelgangerButton = new(
                 () => { Roles.Impostor.Doppelganger.DoppelgangerShape(); },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Doppelganger && ModeHandler.IsMode(ModeId.Default); },
-                () => { return PlayerControl.LocalPlayer.CanMove; },
+                () => { return CachedPlayer.LocalPlayer.PlayerControl.CanMove; },
                 () =>
                 {
                     DoppelgangerButton.MaxTimer = RoleClass.Doppelganger.CoolTime;
@@ -2836,7 +2836,7 @@ namespace SuperNewRoles.Buttons
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Camouflager && ModeHandler.IsMode(ModeId.Default); },
-                () => { return PlayerControl.LocalPlayer.CanMove; },
+                () => { return CachedPlayer.LocalPlayer.PlayerControl.CanMove; },
                 () =>
                 {
                     CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
