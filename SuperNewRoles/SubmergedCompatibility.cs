@@ -185,9 +185,9 @@ namespace SuperNewRoles
                 MapUtilities.CachedShipStatus.RpcRepairSystem((SystemTypes)130, 64);
                 RepairDamageMethod.Invoke(SubmarineOxygenSystemInstanceField.GetValue(null), new object[] { PlayerControl.LocalPlayer, 64 });
             }
-            catch (System.NullReferenceException)
+            catch (NullReferenceException)
             {
-                SuperNewRolesPlugin.Logger.LogMessage("null reference in engineer oxygen fix");
+                Logger.Error("null reference in engineer oxygen fix", "Submerged");
             }
         }
 

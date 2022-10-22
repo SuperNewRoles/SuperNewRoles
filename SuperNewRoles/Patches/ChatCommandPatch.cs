@@ -73,7 +73,7 @@ namespace SuperNewRoles.Patches
                         {
                             handled = true;
                             __instance.AddChat(PlayerControl.LocalPlayer, ModTranslation.GetString("CannotUseRenameMessage"));
-                            SuperNewRolesPlugin.Logger.LogWarning($"ホストでない時に{text}を使用しました。ホストでない時は/renameは使用できません。");
+                            Logger.Info($"ホストでない時に{text}を使用しました。ホストでない時は/renameは使用できません。");
                         }
                     }
 

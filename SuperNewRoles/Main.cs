@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace SuperNewRoles
 {
-    [BepInAutoPlugin("jp.ykundesu.supernewroles","SuperNewRoles")]
+    [BepInAutoPlugin("jp.ykundesu.supernewroles", "SuperNewRoles")]
     [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInProcess("Among Us.exe")]
     public partial class SuperNewRolesPlugin : BasePlugin
@@ -82,7 +82,7 @@ namespace SuperNewRoles
             SuperNewRoles.Logger.Info(Version, nameof(Version));
             SuperNewRoles.Logger.Info(Application.version, "AmongUsVersion"); // アモングアス本体のバージョン
 
-            Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
+            SuperNewRoles.Logger.Info(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"), "StartLog");
 
             var assembly = Assembly.GetExecutingAssembly();
 
