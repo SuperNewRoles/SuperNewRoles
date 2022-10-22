@@ -56,7 +56,7 @@ namespace SuperNewRoles.CustomCosmetics
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み処理終了");
                 AllVisors.AddRange(VisorDatas);
-                __instance.allVisors = AllVisors.ToIl2CppList();
+                __instance.allVisors = AllVisors.ToArray();
             }
         }
     }

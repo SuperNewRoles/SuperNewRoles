@@ -272,7 +272,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     NamePlate = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "NamePlate", ""),
                     Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "")
                 })
-                : ClosetPresetDictionary[index];
+                : ClosetPresetDataDictionary[index];
 
             AmongUs.Data.DataManager.Player.Customization.Color = data.BodyColor.Value;
             AmongUs.Data.DataManager.Player.Customization.Hat = data.Hat.Value;

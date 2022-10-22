@@ -241,7 +241,7 @@ namespace SuperNewRoles.CustomCosmetics
                 IsLoadingnow = false;
                 var data = __instance.allHats.ToList();
                 data.AddRange(AddHatDatas);
-                __instance.allHats = data.ToIl2CppList();
+                __instance.allHats = data.ToArray();
             }
         }
 
