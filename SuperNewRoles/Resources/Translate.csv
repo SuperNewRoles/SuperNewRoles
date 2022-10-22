@@ -16,6 +16,7 @@ Key,English,Japanese,SChinese
 # 用"，"代替。
 
 
+# Main
 rolemodname,SuperNewRoles,SuperNewRoles,SuperNewRoles
 StartLogText,Create By ykundesu\nThank You Play SuperNewRoles,作成:ykundesu\nSuperNewRolesをプレイしてくれてありがとうございます!!!!,模组作者：ykundesu\n感谢游玩本模组！
 second,Second,秒,秒
@@ -36,6 +37,8 @@ Developer,Developer,開発者,开发者
 Sponsor,Sponsor,スポンサー,支持者
 Translator,Translator,翻訳,翻译
 DevAndSpnTitle,Developer & Sponsor,開発者&支援者,开发者与支持者
+
+# CustomColors
 colorSalmon,Salmon,サーモン,鲑鱼红
 colorBordeaux,Bordeaux,ボルドー,枣红
 colorOlive,Olive,オリーブ,橄榄绿
@@ -77,6 +80,8 @@ colorAshishreddishpurplecolor,Ashish reddish purple color,灰みの赤紫系の�
 colorMelon,Melon,メロン,瓜绿
 colorCrasyublue,Crasyu Blue,クラッシュブルー,深海蓝
 colorLightgreen,Light Green,ライトグリーン,亮绿
+
+# CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
 SecretRoom,(Airship)Secret Room,(エアーシップ)シークレットルーム,空艇：机密室
 enableMirroMap,enable MirroMap,反転マップを有効にする,启用镜像地图
@@ -264,6 +269,8 @@ SabotageCognitiveDeficitSetting,Cognitive Deficit,認識障害,破坏时附带�
 CognitiveDeficitSabotageOutfitUpdateTimeSetting,Figure Change Interval,姿変更間隔,认知干扰时其他玩家外貌变换间隔时间
 CognitiveDeficitSabotageReleaseTimeSetting,Release Time,解除時間,认知干扰持续时间
 CognitiveDeficitSabotageIsAllPlayerEndSabotageSetting,Cannot be sabotaged unless everyone is deactivated.,全員が解除しないとサボタージュできない,有玩家没有解除认知干扰则破坏不能发起
+
+# WereWolfMode
 WereWolfHunterText,Let's die with someone else.,誰かを道連れにしよう,来送别人上路吧
 WereWolf.WereWolf,Werewolf,人狼,狼人
 WereWolf.WereWolfText,Let's Eat Villager and Win!,市民を食べて勝利しよう,吃掉市民获得胜利
@@ -300,6 +307,8 @@ ImpostorDescription,Default Impostor.,通常のインポスターです。,普�
 Neutral,Neutral,第三陣営,独立阵营
 NeutralSubIntro,Let's work only for ourselves.Let's Take advantage of others.,自分の事だけ考えろ。他人の事は利用せよ。,你不属于船员或内鬼阵营，需要独自达成胜利条件。
 detecName,Detective,探偵,侦探
+
+# Roles
 SoothSayerName,Diviner,占い師,占卜师
 SoothSayerTitle1,Divine the player and find the outsider.,プレイヤーを占い人外を見つけよう,占卜并找出内鬼
 SoothSayerDisplaySetting,Position visibility,陣営表示にする,占卜师可得信息为阵营而非职业
@@ -1010,6 +1019,8 @@ CanRevengeNeutral,Can take a third camp,第三陣営を道連れ可,复仇者可
 CanRevengeExiled,Can take a crewmate in exile,追放で道連れ可,复仇者被放逐时可以连带一名玩家
 GMName,GM,GM,管理员
 GMTitle1,You are Game Master,あなたはゲームマスター,你是管理员
+
+# Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！
 WelcomeMessage2,You can play a variety of modes and different hard on any model with SuperNewRoles!,SuperNewRolesを使用することで、様々なモードや様々な役職をどの機種でも遊べます！,您可以在超新职业体验各种不同的模式和职业！
 WelcomeMessage3,Please visit the official wiki for a detailed description of the roles and modes!,役職やモードの詳しい説明については公式wikiを御覧ください！,有关模式和职业的详细描述请查看汉化组职业介绍！
@@ -1040,6 +1051,8 @@ NameIncludeMod,You cannot make a room public contains mod in your name.,modが�
 CannotUseRenameMessage,Cannot rename.\nThe /rename command can only be used on\navailable only when hosted.,名前を変更することができません。\n/renameコマンドは\nホスト時のみ使用可能です。,无法重命名。\n/rename命令仅房主可用。
 betatext1,\nThis is a beta version! Watch out for bugs!,\nベータ版です! バグには注意してください!,这是测试版本。请注意是否有bug。
 betatext2,\n~Information for developers~,\n～開発者用の情報～,\n~开发者信息~
+
+# Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库
 Agartha_ToolRoom,ToolRoom,工具室,工具室
 Agartha_WorkRoom,WorkRoom,仕事場,工坊
