@@ -954,6 +954,7 @@ SatsumaAndImoTitle1,Madmate And Crewmate,マッドメイト & クルーメイト
 ShiftActorName,Shift Actor,シフトアクター,模仿犯
 ShiftActorTitle1,Let's play it out perfectly,完璧に演じ切ろう,我会比你更像你自己
 CanWatchAttribute,Can watch attribute,重複役職を見れる,模仿犯可以确认模仿对象的附加职业
+RightChance,Probability of Success,成功確率
 ShiftActorText1,'s role is,の役職は,的职业是
 ShiftActorText2,.,です,。
 MadRolesCanFixComms,Mad roles can fix comms sabotage,マッド役職がコミュサボを治せる,叛徒阵营玩家可以修理通讯破坏
@@ -1026,6 +1027,16 @@ CanRevengeNeutral,Can take a third camp,第三陣営を道連れ可,复仇者可
 CanRevengeExiled,Can take a crewmate in exile,追放で道連れ可,复仇者被放逐时可以连带一名玩家
 GMName,GM,GM,管理员
 GMTitle1,You are Game Master,あなたはゲームマスター,你是管理员
+
+SuicidalIdeationName,Suicidal ideation,自殺願望者
+SuicidalIdeationTitle1,Finding no hope for life,生きる希望を見いだせない
+SuicidalIdeationWinTextSetting,Special Victory Letters,特殊勝利文字
+SuicidalIdeationTimeLeftSetting,Time Increased by Doing Tasks,自殺までの時間
+SuicidalIdeationAddTimeLeftSetting,Time to suicide,タスクをすると増える時間
+SuicidalIdeationFallProbabilitySetting,Probability of falling to death,転落死の確率
+SuicidalIdeationWinText,Try to live a little longer\nSuicidal person,もう少し生きてみようかな\n自殺願望者
+SuicidalIdeationButtonName,Time to suicide,自殺まで
+
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！
