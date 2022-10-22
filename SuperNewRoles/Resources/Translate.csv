@@ -16,6 +16,7 @@ Key,English,Japanese,SChinese
 # 用"，"代替。
 
 
+# Main
 rolemodname,SuperNewRoles,SuperNewRoles,SuperNewRoles
 StartLogText,Create By ykundesu\nThank You Play SuperNewRoles,作成:ykundesu\nSuperNewRolesをプレイしてくれてありがとうございます!!!!,模组作者：ykundesu\n感谢游玩本模组！
 second,Second,秒,秒
@@ -36,6 +37,8 @@ Developer,Developer,開発者,开发者
 Sponsor,Sponsor,スポンサー,支持者
 Translator,Translator,翻訳,翻译
 DevAndSpnTitle,Developer & Sponsor,開発者&支援者,开发者与支持者
+
+# CustomColors
 colorSalmon,Salmon,サーモン,鲑鱼红
 colorBordeaux,Bordeaux,ボルドー,枣红
 colorOlive,Olive,オリーブ,橄榄绿
@@ -77,6 +80,8 @@ colorAshishreddishpurplecolor,Ashish reddish purple color,灰みの赤紫系の�
 colorMelon,Melon,メロン,瓜绿
 colorCrasyublue,Crasyu Blue,クラッシュブルー,深海蓝
 colorLightgreen,Light Green,ライトグリーン,亮绿
+
+# CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
 SecretRoom,(Airship)Secret Room,(エアーシップ)シークレットルーム,空艇：机密室
 enableMirroMap,enable MirroMap,反転マップを有効にする,启用镜像地图
@@ -182,6 +187,11 @@ IsAlwaysReduceCooldownExceptInVent,Reduce Cooldown Except InVent,ベント内で
 IsAlwaysReduceCooldownExceptOnTask,Reduce Cooldown Except OnTask,停電修理中でも進む,击杀冷却会在修理紧急任务时停止计算
 IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家
+WireTaskIsRandom,Wire task random,配線タスクランダム
+WireTaskNum,Wire task num,配線タスク数
+
+
+# Modes
 ModeSetting,Mode Setting,モード設定,模式设置
 SettingMode,Mode,モード,游戏模式
 SettingHideAndSeekMode,Hide And Seek Mode,かくれんぼモードの設定,躲猫猫模式设置
@@ -245,6 +255,8 @@ HASSeekName,Seek,鬼,抓捕者
 HASDeathTaskSetting,Hide Death Clear Task,死亡するとタスクが終わる,死亡后隐藏尸体并清除任务
 HASUseSaboSetting,Use Sabotage,サボタージュが使える,抓捕者可以造成紧急破坏
 HASUseVentSetting,Use Vent,ベントが使える,抓捕者可以使用管道
+
+# FinalResults
 FinalResults,Final results,最終結果
 FinalStatusAlive,Survival,生存,存活
 FinalStatusKill,Kill,キル,被杀
@@ -258,12 +270,16 @@ FinalStatusSelfBomb,Self-destruct,自爆,自杀
 FinalStatusBySelfBomb,Self-destruct collateral damage,自爆巻き添え,恐袭
 FinalStatusDisconnected,amputation,切断,断连
 FinalStatusDead,Death,死亡,死亡
+
+# Sabotages
 FinalStatusSabotage,Sabotage,サボタージュ,破坏
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
 SabotageCognitiveDeficitSetting,Cognitive Deficit,認識障害,破坏时附带认知干扰
 CognitiveDeficitSabotageOutfitUpdateTimeSetting,Figure Change Interval,姿変更間隔,认知干扰时其他玩家外貌变换间隔时间
 CognitiveDeficitSabotageReleaseTimeSetting,Release Time,解除時間,认知干扰持续时间
 CognitiveDeficitSabotageIsAllPlayerEndSabotageSetting,Cannot be sabotaged unless everyone is deactivated.,全員が解除しないとサボタージュできない,有玩家没有解除认知干扰则破坏不能发起
+
+# WereWolfMode
 WereWolfHunterText,Let's die with someone else.,誰かを道連れにしよう,来送别人上路吧
 WereWolf.WereWolf,Werewolf,人狼,狼人
 WereWolf.WereWolfText,Let's Eat Villager and Win!,市民を食べて勝利しよう,吃掉市民获得胜利
@@ -300,6 +316,8 @@ ImpostorDescription,Default Impostor.,通常のインポスターです。,普�
 Neutral,Neutral,第三陣営,独立阵营
 NeutralSubIntro,Let's work only for ourselves.Let's Take advantage of others.,自分の事だけ考えろ。他人の事は利用せよ。,你不属于船员或内鬼阵营，需要独自达成胜利条件。
 detecName,Detective,探偵,侦探
+
+# Roles
 SoothSayerName,Diviner,占い師,占卜师
 SoothSayerTitle1,Divine the player and find the outsider.,プレイヤーを占い人外を見つけよう,占卜并找出内鬼
 SoothSayerDisplaySetting,Position visibility,陣営表示にする,占卜师可得信息为阵营而非职业
@@ -333,11 +351,14 @@ EvilScientistDurationSetting,Evil Scientist's Invisibility Duration,イビルサ
 SheriffName,Sheriff,シェリフ,警长
 SheriffTitle1,Kill the outsider!,人外をキルしよう,击杀敌人
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう,杀死敌人带领船员获得胜利
-SheriffDescription,Can shoot and kill an impostor if he is a crewmate. he will self-destruct.,インポスター陣営(設定により第三陣営など)をキルすることが出来、クルーだった場合、自爆します,警长可以击杀内鬼。\n但若警长尝试击杀船员，警长将以死谢罪。
-SheriffCooldownSetting,Kill Cooldown,キルクールタイム,击杀冷却
-SheriffIsKillNewtralSetting,Can Kill a Neutral,第三陣営をキルできる,可以击杀独立阵营玩家
-SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる,可以击杀恋人
-SheriffIsKillMadRoleSetting,Can Kill a MadRole,マッド系役職をキルできる,可以击杀叛徒职业
+SheriffDescription,Can shoot and kill an imposter if he is a crewmate. he will self-destruct.,インポスター陣営(設定により第三陣営など)をキルすることが出来、クルーだった場合、自爆します,警长可以击杀内鬼。\n但若警长尝试击杀船员，警长将以死谢罪。
+SheriffCoolDownSetting,Kill Cooldown,キルクールタイム,击杀冷却
+SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可以击杀独立阵营玩家
+SheriffIsKillLoversSetting,Can kill lovers,ラバーズをキルできる,可以击杀恋人
+SheriffIsKillMadRoleSetting,Can kill mad roles,マッド系をキルできる,可以击杀叛徒职业
+SheriffIsKillImpostorSetting,Can kill impostors,インポスターをキルできる
+SheriffIsKillFriendsRoleSetting,Can kill jackal friend roles,ジャッカルフレンズ系をキルできる
+SheriffIsKillQuarreledSetting,Can kill quarreleds,クラードをキルできる
 SheriffYes,Yes,できる,是
 SheriffNo,No,できない,否
 SheriffMaxKillCountSetting,Maximum number of kills,最大キル数,最大可击杀次数
@@ -576,6 +597,7 @@ EgoistUseKillSetting,Can use Kill,キルできる,野心家可以进行击杀
 NiceRedRidingHoodName,NiceRedRidingHood,ナイス赤ずきん,小红帽
 NiceRedRidingHoodTitle1,Come back to life,生き返ろう,杀死你的凶手死亡后你将会复活
 NiceRedRidingHoodCount,Maximum number of revives,最大生き返り回数,小红帽最大可复活次数
+NiceRedRidinIsKillerDeathRevive,Resurrects even if the killers die in the task turn,キル者がタスクターンに死亡した場合でも復活する
 EvilEraserName,Evil Eraser,イビルイレイサー,消除者
 EvilEraserTitle1,Let's wipe out their abilities.,能力を消し去ろう,消除别人的能力
 EvilEraserMaxCountSetting,Max Erase Count,最大削除回数,消除者最大消除次数
@@ -896,7 +918,8 @@ MatryoshkaWearTime,Coiling time,まとえる時間,恐怖套娃套娃持续时�
 MatryoshkaPutOnButtonName,Put On,着る,套娃
 MatryoshkaTakeOffButtonName,Take Off,脱ぐ,解除
 StefinderName,Stefinder,ステファインダー,二五仔
-StefinderKillCooldownSetting,KillCooldown,キルクールダウン,二五仔击杀冷却
+StefinderTitle1,Let's do one crime.,一回だけ犯罪しよう
+StefinderKillCoolDownSetting,KillCooldown,キルクールダウン,二五仔击杀冷却
 StefinderVentSetting,CanUseVent,ベントを使用できる,二五仔可以使用管道
 StefinderSaboSetting,CanUseSabotage,サボタージュを使用できる,二五仔可以造成破坏
 StefinderSoloWinSetting,SoloWin,単独勝利,二五仔可以单独获胜
@@ -917,6 +940,7 @@ PainterIsDeathFootprint,Leave a trace of the place of death,死亡場所の痕�
 PainterIsDeathFootprintBig,Increase the size of the trace at the place of death,死亡場所の痕跡を大きくする,目标死亡后留下的油漆痕迹变大
 PainterIsFootprintMeetingDestroy,Trace disappears at meeting,痕跡が会議で消える,油漆痕迹在会议结束后消失
 PainterButtonName,Paint,ペイント,油漆
+PainterIsTaskCompleteFootprint,Leave traces when tasks are completed,タスク完了時に痕跡を残す
 FinderName,Finder,ファインダー,接头人
 FinderTitle1,Get to know your peers.,仲間を知ろう,与叛徒取得联系
 FinderCheckMadmateSetting,Number of confirmed kills,確認できるキル数,接头人确认叛徒需要进行的击杀次数
@@ -938,11 +962,12 @@ SatsumaAndImoTitle1,Madmate And Crewmate,マッドメイト & クルーメイト
 ShiftActorName,Shift Actor,シフトアクター,模仿犯
 ShiftActorTitle1,Let's play it out perfectly,完璧に演じ切ろう,我会比你更像你自己
 CanWatchAttribute,Can watch attribute,重複役職を見れる,模仿犯可以确认模仿对象的附加职业
+RightChance,Probability of Success,成功確率
 ShiftActorText1,'s role is,の役職は,的职业是
 ShiftActorText2,.,です,。
 MadRolesCanFixComms,Mad roles can fix comms sabotage,マッド役職がコミュサボを治せる,叛徒阵营玩家可以修理通讯破坏
 MadRolesCanFixElectrical,Mad roles can fix electrical sabotage,マッド役職が停電を治せる,叛徒阵营玩家可以修理照明破坏
-MadRolesCanVentMove,Mad roles can vent move,マッド陣営がベント移動できる,叛徒阵营玩家可以在管道间移动
+MadRolesCanVentMove,Mad roles can vent move,マッド役職がベント移動できる,叛徒阵营玩家可以在管道间移动
 DoppelgangerName,Doppelganger,ドッペルゲンガー,二重身
 DoppelgangerTitle1,\It seems that if you'll meet myself， you're dead\,同じ顔の人に出会うと死んじゃうんだって,“听说了吗，人在命不久矣的时候会见到另一个自己”
 DoppelgangerDescription,Doppelgangers can ShapeShift.\nIf a ShapeShifted target is killed during ShapeShift, the Kill Cool  is shorter.\nIf, instead, a non-shapeShifted target is killed or a non-shapeShifted target is killed, the Kill Cool will be longer.,ドッペルゲンガーはシェイプシフトができます\nシェイプシフトをした状態で、シェイプシフトの変身先をキルするとキルクールが短くなります。\nシェイプシフトの変身先以外をキルしたり、シェイプシフトをしない状態でキルすると、キルクールが長くなってします。,二重身可以化形。\n化形状态下的二重身击杀自己的化形对象后，二重身的下一次击杀冷却缩短。\n若二重身在化形状态下击杀了自己化形对象以外的玩家，或者在未化形的状态下进行击杀，下一次击杀冷却将延长。
@@ -989,7 +1014,8 @@ PavlovsdogRunAwayKillCoolTime,Coold time when out of control,暴走時のクー�
 PavlovsdogRunAwayDeathTime,Self-destruct time when out of control,暴走時の自爆タイム,巴甫洛夫的狗发狂时的自杀时限
 PavlovsdogRunAwayDeathTimeIsMeetingReset,Reset self-destruct time in a meeting,会議で自爆タイムをリセットする,会议后重置巴甫洛夫的狗的自杀时限
 PavlovsTeamWinText,Pavlov's dog and owner,パブロフの犬とオーナー,巴甫洛夫团队
-KnightName,Knight,騎士の護衛が成功しました。,骑士
+PavlovsownerCreatedogButtonName,stenciling,刷り込み
+KnightName,Knight,騎士,骑士
 KnightTitle1,I will protect you according to my beliefs.,我が信念に沿って護衛しよう,举起正义之盾
 KnightDescription,During the conference phase, you can put up a shield to prevent one kill by using the protect button. If the protection is successful, a successful protection announcement will be played at the beginning of the next meeting phase.,会議フェイズ中に護衛ボタンを使用する事で、キルを一回防ぐシールドを張ることができます。 設定により護衛が成功した際、次の会議フェイズ開始時に護衛成功アナウンスが流れます。,会议阶段，骑士可以选择一名玩家，阻挡一次那名玩家在会议上遭受的击杀。根据房间设置，骑士守护成功的下一轮会议上，所有玩家可以收到骑士守护成功的信息。
 KnightCanAnnounceOfProtected,Play an announcement when the protection is successful?,護衛成功時にアナウンスを流すか,骑士守护成功后通知所有玩家
@@ -1010,6 +1036,17 @@ CanRevengeNeutral,Can take a third camp,第三陣営を道連れ可,复仇者可
 CanRevengeExiled,Can take a crewmate in exile,追放で道連れ可,复仇者被放逐时可以连带一名玩家
 GMName,GM,GM,管理员
 GMTitle1,You are Game Master,あなたはゲームマスター,你是管理员
+SuicidalIdeationName,Suicidal ideation,自殺願望者
+SuicidalIdeationTitle1,Finding no hope for life,生きる希望を見いだせない
+SuicidalIdeationWinTextSetting,Special Victory Letters,特殊勝利文字
+SuicidalIdeationTimeLeftSetting,Time Increased by Doing Tasks,自殺までの時間
+SuicidalIdeationAddTimeLeftSetting,Time to suicide,タスクをすると増える時間
+SuicidalIdeationFallProbabilitySetting,Probability of falling to death,転落死の確率
+SuicidalIdeationWinText,Try to live a little longer\nSuicidal person,もう少し生きてみようかな\n自殺願望者
+SuicidalIdeationButtonName,Time to suicide,自殺まで
+
+
+# Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！
 WelcomeMessage2,You can play a variety of modes and different hard on any model with SuperNewRoles!,SuperNewRolesを使用することで、様々なモードや様々な役職をどの機種でも遊べます！,您可以在超新职业体验各种不同的模式和职业！
 WelcomeMessage3,Please visit the official wiki for a detailed description of the roles and modes!,役職やモードの詳しい説明については公式wikiを御覧ください！,有关模式和职业的详细描述请查看汉化组职业介绍！
@@ -1040,6 +1077,8 @@ NameIncludeMod,You cannot make a room public contains mod in your name.,modが�
 CannotUseRenameMessage,Cannot rename.\nThe /rename command can only be used on\navailable only when hosted.,名前を変更することができません。\n/renameコマンドは\nホスト時のみ使用可能です。,无法重命名。\n/rename命令仅房主可用。
 betatext1,\nThis is a beta version! Watch out for bugs!,\nベータ版です! バグには注意してください!,这是测试版本。请注意是否有bug。
 betatext2,\n~Information for developers~,\n～開発者用の情報～,\n~开发者信息~
+
+# Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库
 Agartha_ToolRoom,ToolRoom,工具室,工具室
 Agartha_WorkRoom,WorkRoom,仕事場,工坊
