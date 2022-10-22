@@ -471,9 +471,6 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
     class MeetingHudStartPatch
     {
-        public static void Prefix()
-        {
-        }
         public static void Postfix(MeetingHud __instance)
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))

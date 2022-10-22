@@ -70,7 +70,7 @@ namespace SuperNewRoles.Buttons
                 }
                 if (Input.GetKeyDown(KeyCode.Tab))
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((MapBehaviour m) => 
+                    FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((MapBehaviour m) =>
                     {
                         m.ShowNormalMap();
                     }));
@@ -104,10 +104,6 @@ namespace SuperNewRoles.Buttons
                 Hud.UseButton.buttonLabelText.transform.localPosition = new(0, -0.45f, 0);
                 Hud.UseButton.buttonLabelText.transform.localScale = new(1.1f, 1.1f, 1.1f);
             }
-            foreach (CustomButton btn in CustomButton.currentButtons)
-            {
-
-            }
             Hud.AdminButton.gameObject.SetActive(false);
             //ベント
             Hud.ImpostorVentButton.transform.localPosition = new(4.45f, -2.1f, -9);
@@ -117,7 +113,7 @@ namespace SuperNewRoles.Buttons
             //通報
             Hud.ReportButton.transform.localPosition = new(4.425f, -0.5f, -9);
             Hud.ReportButton.transform.localScale = new(1.2f, 1.2f, 1.2f);
-            
+
             if (Hud.AbilityButton != null)
             {
                 Hud.AbilityButton.transform.localPosition = new(3f, Hud.KillButton.gameObject.active ? -0.5f : -2.1f, -9);

@@ -52,8 +52,5 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 FixedUpdate.SetDefaultNames();
             }, 5f, "SetMeetingName");
         }
-        public static void MeetingEnd()
-        {
-        }
     }
 }

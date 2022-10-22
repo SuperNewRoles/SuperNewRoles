@@ -74,8 +74,6 @@ namespace SuperNewRoles
             return this;
         }
 
-        public void Dispose()
-        {
-        }
+        public void Dispose() { }
     }
 }

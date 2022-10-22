@@ -461,10 +461,7 @@ namespace SuperNewRoles.Patches
             {
                 (CompleteTask, TotalTask) = TaskCount.TaskDate(p);
             }
-            catch
-            {
-
-            }
+            catch { }
             try
             {
                 role = p.Object.GetRole();
@@ -1146,16 +1143,6 @@ namespace SuperNewRoles.Patches
             }
         }
     }
-    public class WrapUpClass
-    {
-        public static void SetCoolTime()
-        {
-            PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer), RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer));
-        }
-        public static void WrapUpPostfix(GameData.PlayerInfo exiled)
-        {
-        }
-    }
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.ReEnableGameplay))]
     class ExileControllerReEnableGameplayPatch
     {
@@ -1505,7 +1492,8 @@ namespace SuperNewRoles.Patches
                 PavlovsownerAlive = numPavlovsownerAlive;
                 PavlovsTeamAlive = numPavlovsTeamAlive;
                 HitmanAlive = numHitmanAlive;
-                if (!(IsGuardPavlovs = PavlovsDogAlive > 0)) {
+                if (!(IsGuardPavlovs = PavlovsDogAlive > 0))
+                {
                     foreach (PlayerControl p in RoleClass.Pavlovsowner.PavlovsownerPlayer)
                     {
                         if (p == null) continue;
