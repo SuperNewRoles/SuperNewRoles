@@ -1171,7 +1171,7 @@ namespace SuperNewRoles.Patches
         public static bool Prefix(ShipStatus __instance)
         {
             if (!GameData.Instance) return false;
-            if (FastDestroyableSingleton<TutorialManager>.InstanceExists) return true;
+            if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
             if (!RoleManagerSelectRolesPatch.IsSetRoleRPC) return false;
             if (DebugMode.IsDebugMode()) return false;
             if (RoleClass.Assassin.TriggerPlayer != null) return false;

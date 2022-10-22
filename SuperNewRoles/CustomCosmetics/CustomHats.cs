@@ -273,7 +273,7 @@ namespace SuperNewRoles.CustomCosmetics
         {
             static void Postfix(ShipStatus __instance)
             {
-                if (FastDestroyableSingleton<TutorialManager>.InstanceExists)
+                if (DestroyableSingleton<TutorialManager>.InstanceExists)
                 {
                     string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\Test";
                     DirectoryInfo d = new(filePath);
