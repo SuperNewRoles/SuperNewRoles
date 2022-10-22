@@ -211,7 +211,7 @@ namespace SuperNewRoles.CustomCosmetics
                 AmongUsClient.Instance.StartCoroutine(LoadHat(__instance));
             }
 
-            static List<HatData> AddHatDatas = new();
+            static List<HatData> addHatData = new();
 
             static IEnumerator LoadHat(HatManager __instance)
             {
@@ -227,20 +227,20 @@ namespace SuperNewRoles.CustomCosmetics
                     List<CustomHat> customhats = CreateCustomHatDetails(hats);
                     foreach (CustomHat ch in customhats)
                     {
-                        AddHatDatas.Add(CreateHatData(ch));
+                        addHatData.Add(CreateHatData(ch));
                         yield return new WaitForSeconds(0.05f);
                     }
                 }
                 while (CustomHatLoader.hatDetails.Count > 0)
                 {
-                    AddHatDatas.Add(CreateHatData(CustomHatLoader.hatDetails[0]));
+                    addHatData.Add(CreateHatData(CustomHatLoader.hatDetails[0]));
                     CustomHatLoader.hatDetails.RemoveAt(0);
                     yield return new WaitForSeconds(0.05f);
                 }
                 LOADED = true;
                 IsLoadingnow = false;
                 var data = __instance.allHats.ToList();
-                data.AddRange(AddHatDatas);
+                data.AddRange(addHatData);
                 __instance.allHats = data.ToArray();
             }
         }
