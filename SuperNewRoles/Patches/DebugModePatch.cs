@@ -100,16 +100,15 @@ namespace SuperNewRoles.Patches
             }
             return IsDebugModeBool;
         }
-        public static class ExileControllerWrapUpPatch
+        public static class MurderPlayerPatch
         {
-            public static class MurderPlayerPatch
+            /// <summary>
+            /// MurderPlayerが発動した時に通知します。
+            /// </summary>
+            public static void Announce()
             {
-                public static void Postfix([HarmonyArgument(0)] PlayerControl target)
-                {
-                    
-                }
+                
             }
-
         }
     }
 }
