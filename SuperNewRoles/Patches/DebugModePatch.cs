@@ -88,6 +88,6 @@ namespace SuperNewRoles.Patches
                     .Select(s => s[random.Next(s.Length)]).ToArray());
             }
         }
-        public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptions.IsDebugMode.GetBool();
+        public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptionHolder.IsDebugMode.GetBool();
     }
 }

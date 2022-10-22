@@ -950,7 +950,7 @@ namespace SuperNewRoles.Patches
                         HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
                     }
                 }
-                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId) Roles.Crewmate.Painter.Handle(Roles.CrewMate.Painter.ActionType.Death);
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.Death);
 
                 if (target.IsRole(RoleId.Assassin))
                 {
@@ -1031,7 +1031,7 @@ namespace SuperNewRoles.Patches
     {
         public static void Postfix(PlayerControl __instance, uint idx)
         {
-            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.PlayerId) Roles.Crewmate.Painter.Handle(Roles.CrewMate.Painter.ActionType.TaskComplete);
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.TaskComplete);
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Exiled))]
