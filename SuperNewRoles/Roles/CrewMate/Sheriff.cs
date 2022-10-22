@@ -9,19 +9,23 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetKillCoolDown()
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
+            try
             {
-                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
-                HudManagerStartPatch.SheriffKillButton.Timer = RoleClass.RemoteSheriff.CoolTime;
-                RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
+                {
+                    HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
+                    HudManagerStartPatch.SheriffKillButton.Timer = RoleClass.RemoteSheriff.CoolTime;
+                    RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+                }
+                else
+                {
+                    HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Chief.SheriffPlayer.Contains(CachedPlayer.LocalPlayer.PlayerId)
+                        ? RoleClass.Chief.CoolTime
+                        : RoleClass.Sheriff.CoolTime;
+                    HudManagerStartPatch.SheriffKillButton.Timer = HudManagerStartPatch.SheriffKillButton.MaxTimer;
+                }
             }
-            else
-            {
-                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Chief.SheriffPlayer.Contains(CachedPlayer.LocalPlayer.PlayerId)
-                    ? RoleClass.Chief.CoolTime
-                    : RoleClass.Sheriff.CoolTime;
-                HudManagerStartPatch.SheriffKillButton.Timer = HudManagerStartPatch.SheriffKillButton.MaxTimer;
-            }
+            catch { }
         }
         public static bool IsSheriffKill(PlayerControl Target)
         {
