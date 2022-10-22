@@ -484,7 +484,7 @@ ClergymanDurationTimeSetting,Duration Time,継続時間,牧师技能持续时间
 ClergymanDownVisionSetting,Impostor Down Vision.,実行時の視界,牧师技能持续时间内的内鬼视野
 ClergymanLightOutButtonName,Light Down,ライトダウン,咏唱
 ClergymanLightOutMessage,The Clergyman is blocking my view!,聖職者が視界を妨害しています！,牧师正在破坏你的视野
-MadmateName,Mad Mate,マッドメイト,叛徒
+MadmateName,Madmate,マッドメイト,叛徒
 MadmateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助内鬼获得胜利
 MadmateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。
 MadmateIsCheckImpostorSetting,You can check the Impostor.,インポスターが確認できる,叛徒可以得知内鬼是谁
@@ -845,7 +845,7 @@ SuicideName,Suicide,自殺,自杀
 NeetName,Neet,ニート,废柴
 NeetTitle1,NeetLet others handle it.,他人に任せよう,今天也没什么干劲呢，明天再努力吧
 FastMakerName,Fast Maker,ファストメーカー,洗脑师
-FastMakerTitle1,Let's make Mad Mate with a light heart.,軽い気持ちでマッドメイトを作ろう,让船员背叛成为你的俘虏
+FastMakerTitle1,Let's make Madmate with a light heart.,軽い気持ちでマッドメイトを作ろう,让船员背叛成为你的俘虏
 KillName,KILL,キル,击杀
 JackalCreateFriendSetting,Can Create JackalFriends,ジャッカルフレンズを作れる,豺狼可以将一名玩家招募为狈
 ToiletFanName,Toilet Fan,トイレファン,腹泻者

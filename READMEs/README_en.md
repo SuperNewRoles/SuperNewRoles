@@ -35,7 +35,7 @@ All crewmates can also be Sheriffs, etc.!<br>
 - Note: SHR mode
   - Due to the specification of Sheriff replacing Impostor, "Sheriff for all" is not supported with [Task Win] in the Crew win condition.
     - After the match starts, the Crew is immediately judged to have won the task. (No one with a task = 0 task remaining for Crew)
-    - Please include one person in the Crew team position who has a task. (Adding a Mad Mate, Jackal Friends, or Home Guard will not help).
+    - Please include one person in the Crew team position who has a task. (Adding a Madmate, Jackal Friends, or Home Guard will not help).
 - However, if "Duplicate Mode/No Task Wins Mode" is turned on, it is possible to set "All Crew Mates are Sheriffs" in SHR mode.
   - Crew win conditions in this setting
     - Eradication of Impostor, Jackal, or other single victorious third team with a Sheriff kill.
@@ -445,7 +445,7 @@ Can commit suicide.
 ----------------------- 
 ## FastMaker
 ### Team Impostor
-The first kill can make a mad mate.<br> 
+The first kill can make a Madmate.<br> 
 The second and subsequent kills are normal kills. 
 ### Game Settings 
 | Name | Description |
@@ -1218,11 +1218,11 @@ A pair of vents can be made.<br>
 ### Team Impostor
 Impostor to see Admin anytime.<br> 
 When looking at the admins, they cannot move and do not accumulate any kill cool time.<br> 
-Possible to make side kick mad mate in settings.<br> 
+Possible to make side kick Madmate in settings.<br> 
 ### Game Settings 
-| Name                             |          Description           |
-| -------------------------------- | :----------------------------: |
-| Can an EvilHacker Make a Madmate | Can Evil Hackers Make Mad Mate |
+| Name                             |          Description          |
+| -------------------------------- | :---------------------------: |
+| Can an EvilHacker Make a Madmate | Can Evil Hackers Make Madmate |
 
 ----------------------- 
 ## Mad stuntman 
@@ -1281,7 +1281,7 @@ SHR compatible. <br>
 ----------------------- 
 ## Mudmaker 
 ### Team Impostor
-Mud Mate that can make mad mate.<br> 
+Mud Mate that can make Madmate.<br> 
 SHR compatible.<br> 
 ### Game Settings 
 | Name           |                              Description                              |
@@ -1477,7 +1477,7 @@ SuperHostRoles support
 ----------------------- 
 ## BlackCat 
 ### Team Impostor
-A [Mad Mate](#Mad Mate) version of [Nice Nekomata](#Nice Nekomata).<br> 
+A [Madmate](#Madmate) version of [Nice Nekomata](#Nice Nekomata).<br> 
 SuperHostRoles support 
 ### Game Settings 
 | Name                                                           |                                         Description                                         |
