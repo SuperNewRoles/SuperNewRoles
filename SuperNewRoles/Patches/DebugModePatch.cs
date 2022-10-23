@@ -89,5 +89,19 @@ namespace SuperNewRoles.Patches
             }
         }
         public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptionHolder.IsDebugMode.GetBool();
+
+        public static class MurderPlayerPatch
+        {
+            /// <summary>
+            /// MurderPlayerが発動した時に通知します。
+            /// </summary>
+            public static void Announce()
+            {
+                if (!(IsDebugMode() && CustomOptionHolder.IsMurderPlayerAnnounce.GetBool())) return;
+
+                new CustomMessage("MurderPlayerが発生しました", 5f);
+                Logger.Info("MurderPlayerが発生しました", "DebugMode");
+            }
+        }
     }
 }
