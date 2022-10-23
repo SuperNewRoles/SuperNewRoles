@@ -109,7 +109,7 @@ namespace SuperNewRoles.Patches
             {
                 if (!(IsDebugMode() && CustomOptions.IsMurderPlayerAnnounce.GetBool())) return;
 
-                new CustomMessage(ModTranslation.GetString("MurderPlayerAnnounceMessage"), 5f);
+                new CustomMessage("MurderPlayerが発生しました", 5f);
             }
         }
     }

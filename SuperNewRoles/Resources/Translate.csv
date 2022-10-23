@@ -291,8 +291,6 @@ CopsImpostorCome,Remaining until the Imposter arrives,インポスターが来�
 CopsSpawnLoading,Waiting for all players to spawn...\nLoading: {0} people remaining</color></size>,全プレイヤーのスポーンを待っています...\nロドー中:残り{0}人</color></size>,等待所有玩家进入行动阶段...\n载入中:还剩{0}人</color></size>
 CRHideNameSetting,Hide Name,名前を隠す,隐藏昵称
 IsOldMode,OldMode,オルドモード,怀旧模式
-IsMurderPlayerAnnounce,Notification when MurderPlayer occurs.,MurderPlayer発生時に通知を行う,当MurderPlayer发生时通知。
-MurderPlayerAnnounceMessage,MurderPlayer has occurred!,MurderPlayerが発生しました,发生了MurderPlayer。
 CrewMateName,Crewmate,クルーメイト,船员
 CrewMateTitle1,Use Task,タスクを行う,找出内鬼
 CrewMateDescription,Default Crewmate.,通常のクルーメイトです。,普通船员。
