@@ -168,6 +168,7 @@ namespace SuperNewRoles.Modules
         Pavlovsowner,
         Conjurer,
         Camouflager,
+        Penguin,
         //RoleId
     }
 
@@ -250,11 +251,19 @@ namespace SuperNewRoles.Modules
         PavlovsOwnerCreateDog,
         CrackerCrack,
         Camouflage,
-        ShowGuardEffect
+        ShowGuardEffect,
+        PenguinHikizuri,
     }
 
     public static class RPCProcedure
     {
+        public static void PenguinHikizuri(byte sourceId, byte targetId)
+        {
+            PlayerControl source = ModHelpers.PlayerById(sourceId);
+            PlayerControl target = ModHelpers.PlayerById(targetId);
+            if (source == null || target == null) return;
+            RoleClass.Penguin.PenguinData.Add(source, target);
+        }
         public static void ShowGuardEffect(byte showerid, byte targetid)
         {
             if (showerid != CachedPlayer.LocalPlayer.PlayerId) return;
@@ -1425,6 +1434,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.ShowGuardEffect:
                             ShowGuardEffect(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.PenguinHikizuri:
+                            PenguinHikizuri(reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }

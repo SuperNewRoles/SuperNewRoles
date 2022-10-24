@@ -85,6 +85,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton PavlovsownerCreatedogButton;
         public static CustomButton PavlovsdogKillButton;
         public static CustomButton CamouflagerButton;
+        public static CustomButton PenguinButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text PavlovsdogKillSelfText;
@@ -190,6 +191,48 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("PavlovsownerCreatedogButtonName"),
+                showButtonText = true
+            };
+
+            PenguinButton = new(
+                () =>
+                {
+                    PlayerControl Target = SetTarget(null, true);
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PenguinHikizuri);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write(Target.PlayerId);
+                    writer.EndRPC();
+                    RPCProcedure.PenguinHikizuri(CachedPlayer.LocalPlayer.PlayerId, Target.PlayerId);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Penguin; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove && SetTarget(null, true);
+                },
+                () =>
+                {
+                    PenguinButton.MaxTimer = CustomOptionHolder.PenguinCoolTime.GetFloat();
+                    PenguinButton.Timer = PenguinButton.MaxTimer;
+                    PenguinButton.effectCancellable = false;
+                    PenguinButton.EffectDuration = CustomOptionHolder.PenguinDurationTime.GetFloat();
+                    PenguinButton.HasEffect = true;
+                },
+                RoleClass.WaveCannon.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; },
+                true,
+                5f,
+                () =>
+                {
+                    PlayerControl.LocalPlayer.UncheckedMurderPlayer(RoleClass.Penguin.currentTarget);
+                }
+            )
+            {
+                buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
                 showButtonText = true
             };
 

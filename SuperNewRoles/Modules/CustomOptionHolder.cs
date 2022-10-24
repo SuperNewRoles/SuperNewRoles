@@ -883,6 +883,12 @@ namespace SuperNewRoles.Modules
         public static CustomOption CamouflagerCamouflageQuarreled;
         public static CustomOption CamouflagerCamouflageChangeColor;
         public static CustomOption CamouflagerCamouflageColor;
+        
+        public static CustomRoleOption PenguinOption;
+        public static CustomOption PenguinPlayerCount;
+        public static CustomOption PenguinCoolTime;
+        public static CustomOption PenguinDurationTime;
+        public static CustomOption PenguinCanDefaultKill;
         //CustomOption
 
         public static CustomOption GMOption;
@@ -1796,6 +1802,12 @@ namespace SuperNewRoles.Modules
             EvilGuesserPlayerCount = Create(974, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
             EvilGuesserShortMaxCount = Create(975, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
             EvilGuesserShortOneMeetingCount = Create(976, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
+            
+            PenguinOption = SetupCustomRoleOption(1073, false, RoleId.Penguin);
+            PenguinPlayerCount = Create(1074, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PenguinOption);
+            PenguinCoolTime = Create(1075, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, PenguinOption, format: "unitSeconds");
+            PenguinDurationTime = Create(1076, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
+            PenguinCanDefaultKill = Create(1077, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
