@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using AmongUs.Data.Legacy;
+using AmongUs.Data;
 using BepInEx.Configuration;
 using TMPro;
 using UnityEngine;
@@ -283,12 +283,12 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
 
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
             {
-                PlayerControl.LocalPlayer.CmdCheckColor(LegacySaveManager.BodyColor);
-                PlayerControl.LocalPlayer.RpcSetHat(LegacySaveManager.LastHat);
-                PlayerControl.LocalPlayer.RpcSetVisor(LegacySaveManager.LastVisor);
-                PlayerControl.LocalPlayer.RpcSetSkin(LegacySaveManager.LastSkin);
-                PlayerControl.LocalPlayer.RpcSetNamePlate(LegacySaveManager.LastNamePlate);
-                PlayerControl.LocalPlayer.RpcSetPet(LegacySaveManager.LastPet);
+                PlayerControl.LocalPlayer.CmdCheckColor(DataManager.Player.Customization.Color);
+                PlayerControl.LocalPlayer.RpcSetHat(DataManager.Player.Customization.Hat);
+                PlayerControl.LocalPlayer.RpcSetVisor(DataManager.Player.Customization.Visor);
+                PlayerControl.LocalPlayer.RpcSetSkin(DataManager.Player.Customization.Skin);
+                PlayerControl.LocalPlayer.RpcSetNamePlate(DataManager.Player.Customization.NamePlate);
+                PlayerControl.LocalPlayer.RpcSetPet(DataManager.Player.Customization.Pet);
             }
             PlayerCustomizationMenu.Instance.PreviewArea.UpdateFromDataManager(PlayerMaterial.MaskType.ComplexUI);
         }
