@@ -17,6 +17,7 @@ namespace SuperNewRoles.Modules
 
         public static CustomOption specialOptions;
         public static CustomOption hideSettings;
+        public static CustomOption IsSNROnlySearch;
 
         public static CustomOption crewmateRolesCountMax;
         public static CustomOption crewmateGhostRolesCountMax;
@@ -949,6 +950,8 @@ namespace SuperNewRoles.Modules
 
             enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false);
             enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
+
+            IsSNROnlySearch = Create(1073, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
             IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true);
 

@@ -8,6 +8,7 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patches;
 using UnityEngine;
 using UnityEngine.Events;
 using static SuperNewRoles.Modules.CustomRegulation;
@@ -706,7 +707,7 @@ namespace SuperNewRoles.Modules
             if (option == null)
             {
                 RegulationData Regulation = RegulationData.Regulations.FirstOrDefault(regulation => regulation.optionBehaviour == __instance);
-                if (Regulation != null)
+                if (Regulation == null)
                 {
                     bool isReset = true;
                     bool IsFirst = true;
@@ -905,7 +906,7 @@ namespace SuperNewRoles.Modules
                 {
                     num = __instance.NumImpostors;
                 }
-                int num2 = (__instance.MapId == 0 && Constants.ShouldFlipSkeld()) ? 3 : __instance.MapId;
+                int num2 = __instance.MapId > 5 ? SNROnlySearch.currentMapId : (__instance.MapId == 0 && Constants.ShouldFlipSkeld()) ? 3 : __instance.MapId;
                 string value = Constants.MapNames[num2];
                 __instance.AppendItem(__instance.settings, StringNames.GameMapName, value);
                 __instance.settings.Append($"{FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameNumImpostors)}: {__instance.NumImpostors}");
