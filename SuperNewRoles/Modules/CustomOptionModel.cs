@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using AmongUs.Data.Legacy;
 using BepInEx.Configuration;
 using HarmonyLib;
 using Hazel;
