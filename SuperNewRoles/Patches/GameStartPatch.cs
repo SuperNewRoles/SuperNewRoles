@@ -1,6 +1,4 @@
-using AmongUs.Data.Legacy;
 using HarmonyLib;
-using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches

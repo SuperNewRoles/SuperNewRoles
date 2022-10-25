@@ -106,16 +106,11 @@ namespace SuperNewRoles
         {
             public static void Prefix()
             {
-                /*
-                LegacySaveManager.chatModeType = 1;
-                LegacySaveManager.isGuest = false;*/
+                DataManager.Settings.Multiplayer.ChatMode = InnerNet.QuickChatModes.FreeChatOrQuickChat;
             }
             public static void Postfix(ChatController __instance)
             {
-                /*
-                LegacySaveManager.chatModeType = 1;
-                LegacySaveManager.isGuest = false;
-                */
+                DataManager.Settings.Multiplayer.ChatMode = InnerNet.QuickChatModes.FreeChatOrQuickChat;
 
                 if (Input.GetKeyDown(KeyCode.F1))
                 {
