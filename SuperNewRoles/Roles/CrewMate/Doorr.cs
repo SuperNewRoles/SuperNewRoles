@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles
 {
     class Doorr
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.DoorrDoorButton.MaxTimer = CachedPlayer.LocalPlayer.Data.Role.IsImpostor ? RoleClass.EvilDoorr.CoolTime : RoleClass.Doorr.CoolTime;
             HudManagerStartPatch.DoorrDoorButton.Timer = HudManagerStartPatch.DoorrDoorButton.MaxTimer;
@@ -25,7 +25,7 @@ namespace SuperNewRoles.Roles
         }
         public static void DoorrBtn()
         {
-            Logger.Info("ボタンクリック","DoorrBtn");
+            Logger.Info("ボタンクリック", "DoorrBtn");
             PlainDoor door = GetDoor();
             Logger.Info($"nullチェック:{door != null}", "DoorrBtn");
             if (door != null)
@@ -40,7 +40,8 @@ namespace SuperNewRoles.Roles
         }
         private static PlainDoor GetDoor()
         {
-            return GameObject.FindObjectsOfType<DoorConsole>().ToArray().FirstOrDefault(x => {
+            return GameObject.FindObjectsOfType<DoorConsole>().ToArray().FirstOrDefault(x =>
+            {
                 if (x.MyDoor == null) return false;
                 float num = Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), x.transform.position);
                 return num <= x.UsableDistance;

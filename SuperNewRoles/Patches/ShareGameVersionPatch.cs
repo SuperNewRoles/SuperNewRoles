@@ -95,7 +95,7 @@ namespace SuperNewRoles.Patches
                 bool blockStart = false;
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    if (CustomOptions.DisconnectNotPCOption.GetBool())
+                    if (CustomOptionHolder.DisconnectNotPCOption.GetBool())
                     {
                         foreach (InnerNet.ClientData p in AmongUsClient.Instance.allClients)
                         {
@@ -107,10 +107,10 @@ namespace SuperNewRoles.Patches
                     }
                     // アガルタ反映関係の警告文制御
                     if ((CustomMapNames)PlayerControl.GameOptions.MapId == CustomMapNames.Mira && //マップ設定がMiraである かつ
-                        CustomOptions.enableAgartha.GetBool() && //「アガルタ」が有効である かつ
+                        CustomOptionHolder.enableAgartha.GetBool() && //「アガルタ」が有効である かつ
                         !ModeHandler.IsMode(ModeId.Default, false) && //モードがデフォルトでない(特殊モードである) かつ
-                        !CustomOptions.DisconnectNotPCOption.GetBool() && //「PC以外キック」が無効(バニラをキックする状態)である かつ
-                        !CustomOptions.IsDebugMode.GetBool()) //Debugモードでない時
+                        !CustomOptionHolder.DisconnectNotPCOption.GetBool() && //「PC以外キック」が無効(バニラをキックする状態)である かつ
+                        !CustomOptionHolder.IsDebugMode.GetBool()) //Debugモードでない時
                     {
                         // 警告を表示する
                         message += $"\n{ModTranslation.GetString("IsSpecialModeOnAndVanillaKickOff")}\n";
