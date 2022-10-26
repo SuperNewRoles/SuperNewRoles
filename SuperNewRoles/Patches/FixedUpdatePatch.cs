@@ -49,7 +49,7 @@ namespace SuperNewRoles.Patches
                     RPCProcedure.SetHaison();
                     if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
-                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansDisconnect, false);
+                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
                     }
                     else
                     {
