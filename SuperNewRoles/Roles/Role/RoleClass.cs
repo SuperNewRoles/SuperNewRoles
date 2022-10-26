@@ -2056,7 +2056,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> TunaPlayer;
             public static Color32 color = new(0, 255, 255, byte.MaxValue);
-            public static Dictionary<byte, Vector3> Position;
+            public static Dictionary<byte, Vector2> Position;
             public static float Timer;
             public static float StoppingTime;
             public static bool IsUseVent;
@@ -2066,7 +2066,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 TunaPlayer = new();
-                Position = new Dictionary<byte, Vector3>();
+                Position = new();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers) Position[p.PlayerId] = new Vector3(9999f, 9999f, 9999f);
                 StoppingTime = CustomOptionHolder.TunaStoppingTime.GetFloat();
                 if (Mode.ModeHandler.IsMode(Mode.ModeId.Default)) Timer = StoppingTime;
