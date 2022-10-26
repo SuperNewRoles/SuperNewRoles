@@ -49,10 +49,13 @@ namespace SuperNewRoles.Patches
                     RPCProcedure.SetHaison();
                     if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
+                        Logger.Info("===================== 廃村 =====================", "End Game");
                         EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
+
                     }
                     else
                     {
+                        Logger.Info("===================== 廃村 =====================", "End Game");
                         ShipStatus.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
                         MapUtilities.CachedShipStatus.enabled = false;
                     }
@@ -124,7 +127,8 @@ namespace SuperNewRoles.Patches
             OldModeButtons.OldModeUpdate();
 
             // -- 以下ゲーム中のみ --
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) {
+            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
+            {
                 if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
                 {
                     SNROnlySearch.FixedUpdate();
