@@ -53,7 +53,7 @@ namespace SuperNewRoles.Patches
                     }
                     else
                     {
-                        ShipStatus.RpcEndGame(GameOverReason.HumansDisconnect, false);
+                        ShipStatus.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
                         MapUtilities.CachedShipStatus.enabled = false;
                     }
                 }
