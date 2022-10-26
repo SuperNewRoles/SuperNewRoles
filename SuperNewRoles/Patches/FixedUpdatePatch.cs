@@ -148,7 +148,6 @@ namespace SuperNewRoles.Patches
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
-                        if (PlayerControl.LocalPlayer.IsMadRoles()) { VentDataModules.MadmateVent(); }
                         NormalButtonDestroy.Postfix();
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
