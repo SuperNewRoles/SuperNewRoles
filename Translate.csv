@@ -1,0 +1,1094 @@
+Key,English,Japanese,SChinese
+
+# This file is for mod translation
+# Lines with "#" as the first character are not recognized
+# A one-byte comma "," may not be used except for delimitation.
+# So, please use a full-width comma "，".
+
+# このファイルはmodの翻訳をするためのファイルです
+# 最初の文字が「#」の行は認識されません
+# また、半角のカンマ「,」を用いることはできません。
+# 代わりに「，」を使用してください。
+
+# 这个文件是用来翻译mod的
+# 带有第一个字符 "#" 的行不会被识别
+# 一个字节的逗号", "不得使用，只能用作分隔符。
+# 使用全角逗号"，"作为代替。
+
+
+# Main
+rolemodname,SuperNewRoles,SuperNewRoles,超级新职业
+StartLogText,Create By ykundesu\nThank You Play SuperNewRoles,作成:ykundesu\nSuperNewRolesをプレイしてくれてありがとうございます!!!!,模组作者：ykundesu\n感谢游玩超级新职业模组！
+second,Second,秒,秒
+announcementUpdate,<size=125%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> NewData</size>\nVersion:{0}R\n{1}R,<size=200%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の最新情報</size>\n<size=150%>バージョン:{0}R</size>\n{1}R,<size=200%><color=#ffa500>超级</color><color=#ff0000>新</color><color=#00ff00>职业</color>的最新信息</size>\n<size=150%>版本:{0}重置版</size>\n{1}重置版
+GameCommonTasks,Common Tasks,通常タスク,普通任务
+GameShortTasks,Short Tasks,ショートタスク,长任务
+GameLongTasks,Long Tasks,ロングタスク,短任务
+Hat_SNR,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats,<color=#ffa500>超级</color><color=#ff0000>新</color><color=#00ff00>职业</color>帽子
+creditsMain,Create By ykundesu,Create By ykundesu,模组作者：ykundesu
+creditsFull,Create By ykundesu,Create By ykundesu,模组作者：ykundesu
+creditsVersion,SuperNewRoles v{0},SuperNewRoles v{0},超级新职业 v{0}
+vanillaOptionsText,VanilaOptions,バニラの設定,原版设置
+creditsUpdateOk,There is updated data. Please reboot. Latest Version:v{0},更新データがあります。再起動してください。最新バージョン:v{0},发现最新版本。 请重新启动。 最新版本:v{0}
+modOptionsText,Options,設定,设置
+moreOptionsText,Normal Setting&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings,通常設定&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定,常规设置与&<color=#ffa500>超级</color><color=#ff0000>新</color><color=#00ff00>职业</color>设置
+HaisonName,Haison,廃村,解散游戏
+Developer,Developer,開発者,开发者
+Sponsor,Sponsor,スポンサー,支持者
+Translator,Translator,翻訳,翻译
+DevAndSpnTitle,Developer & Sponsor,開発者&支援者,开发者与支持者
+
+# CustomColors
+colorSalmon,Salmon,サーモン,鲑鱼红
+colorBordeaux,Bordeaux,ボルドー,枣红
+colorOlive,Olive,オリーブ,橄榄绿
+colorTurqoise,Turqoise,ターコイズ,绿松石
+colorMint,Mint,ミント,薄荷绿
+colorLavender,Lavender,ラベンダー,薰衣紫
+colorNougat,Nougat,ヌガー,棕褐色
+colorPeach,Peach,ピーチ,桃红
+colorWasabi,Wasabi,ワサビ,芥末绿
+colorHotPink,Hot Pink,ホットピンク,热粉
+colorPetrol,Petrol Blue,ペトロールブルー,油画蓝
+colorLemon,Lemon,檸檬,柠檬黄
+colorSignalOrange,Signal Orange,シグナルオレンジ,信号橙
+colorTeal,Teal,ティール,蓝绿色
+colorBlurple,Blurple,ブラープル,蓝紫色
+colorSunrise,Sunrise,サンライズ,日出红
+colorIce,Ice,アイス,冰蓝色
+colorPitchBlack,Pitch Black,真っ黒,纯黑
+colorDarkmagenta,Dark Magenta,ダークマゼンタ,深品红
+colorMintcream,Mint Cream,ミントクリーム,奶油白
+colorLeaf,Leaf,若葉,叶绿色
+colorEmerald,Emerald,エメラルド,翡翠色
+colorBrightyellow,Bright yellow,山吹,嫩黄
+colorDarkaqua,Dark aqua,濃い水色,湖绿色
+colorMatcha,Matcha,抹茶,抹茶色
+colorPitchwhite,Pitch white,真っ白,纯白
+colorDarksky,Dark sky,雨空,乌云色
+colorIntenseblue,Intense blue,インスタントブルー,墨蓝
+colorBlueclosertoblack,Blue closer to black,黒寄りの青,黑蓝
+colorSunkengreenishblue,Sunken greenish blue,沈んだ緑みの青,绿蓝色
+colorAzi,Azi,アジ,深棕色
+colorPitchred,Pitch red,真っ赤,纯红
+colorPitchblue,Pitch blue,真っ青,纯蓝
+colorPitchgreen,Pitch green,真っ緑,纯绿
+colorPitchyellow,Pitch yellow,真っ黄色,纯黄
+colorBackblue,Back blue,影青,天蓝色
+colorMildpurple,Mild purple,穏やかな紫,淡紫色
+colorAshishreddishpurplecolor,Ashish reddish purple color,灰みの赤紫系の色,灰红色
+colorMelon,Melon,メロン,瓜绿色
+colorCrasyublue,Crasyu Blue,クラッシュブルー,深海蓝
+colorLightgreen,Light Green,ライトグリーン,亮绿
+
+# CustomOptions
+MapCustom,Map Custom,マップ改造,地图设置
+SecretRoom,(Airship)Secret Room,(エアーシップ)シークレットルーム,空艇：机密室
+enableMirroMap,enable MirroMap,反転マップを有効にする,启用镜像地图
+SettingpresetSelection,Preset,プリセット,预设
+SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定,<color=#ffa500>超 级</color> <color=#ff0000>新</color> <color=#00ff00>职 业</color> 设置
+SettingImpostor,<color=#ff0000>Impostor</color> Settings,<color=#ff0000>インポスター</color>の設定,<color=#ff0000>伪装者阵营</color>设置
+SettingNeutral,<color=#808080>Neutral</color> Settings,<color=#808080>第三陣営</color>の設定,<color=#808080>独立阵营</color>设置
+SettingCrewmate,<color=#a9ceec>Crewmate</color> Settings,<color=#00ffff>クルーメイト</color>の設定,<color=#00ffff>船员阵营</color>设置
+SettingRegulation,Regulation Settings,レギュレーション設定,常规设置
+SettingMiniCrewRole,Minimum Crewmate Roles,最小クルーメイト役職数,船员阵营最小职业数
+SettingMaxCrewRole,Maximum Crewmate Roles,クルーメイト役職人数,船员阵营最大职业数
+SettingMiniCrewGhostRole,Minimum Crewmate Ghost Roles,最小クルーメイト幽霊役職数,船员阵营最小灵魂职业数
+SettingMaxCrewGhostRole,Maximum Crewmate Ghost Roles,クルーメイト幽霊役職人数,船员阵营最大灵魂职业数
+SettingMiniNeutralRole,Minimum Neutral Roles,最小第三陣営役職数,独立阵营最小职业数
+SettingMaxNeutralRole,Maximum Neutral Roles,第三陣営役職人数,独立阵营最大职业数
+SettingMiniNeutralGhostRole,Minimum Neutral Ghost Roles,最小第三陣営幽霊役職数,独立阵营最少灵魂职业数
+SettingMaxNeutralGhostRole,Maximum Neutral Ghost Roles,第三陣営幽霊役職人数,独立阵营最多灵魂职业数
+SettingMiniImpoRole,Minimum Impostor Roles,最小インポスター役職数,伪装者阵营最小职业数
+SettingMaxImpoRole,Maximum Impostor Roles,インポスター役職人数,伪装者阵营最大职业数
+SettingMiniImpoGhostRole,Minimum Impostor Ghost Roles,最小インポスター幽霊役職数,伪装者阵营最小灵魂职业数
+SettingMaxImpoGhostRole,Maximum Impostor GhostRoles,インポスター幽霊役職人数,伪装者阵营最大灵魂职业数
+SettingsHideSetting,Hide Setting,設定を隠す,隐藏设置
+SettingCrewMateTeamRolesName,Position setting of crewmate camp,クルーメイト陣営の役職設定,船员阵营职业设置
+SettingImpostorTeamRolesName,Impostor camp position setting,インポスター陣営の役職設定,伪装者阵营职业设置
+Setting,Setting up positions in the third camp,第三陣営の役職設定,独立阵营职业设置
+SettingAllOkRolesName,Setting up multiple positions,複数役職の設定,附加职业设置
+Settingsonota,Other settings,その他の設定,其他设置
+optionOn,<color=#03ff0c>On</color>,<color=#03ff0c>オン</color>,<color=#03ff0c>开启</color>
+optionOff,<color=#f22f21>Off</color>,<color=#f22f21>オフ</color>,<color=#f22f21>关闭</color>
+preset1,Preset 1,プリセット1,预设1
+preset2,Preset 2,プリセット2,预设2
+preset3,Preset 3,プリセット3,预设3
+preset4,Preset 4,プリセット4,预设4
+preset5,Preset 5,プリセット5,预设5
+preset6,Preset 6,プリセット6,预设6
+preset7,Preset 7,プリセット7,预设7
+preset8,Preset 8,プリセット8,预设8
+preset9,Preset 9,プリセット9,预设9
+preset10,Preset 10,プリセット10,预设10
+unitSeconds,Seconds,秒,秒
+SettingPlayerCountName,Role Player,人数,人数
+CustomStremerMode,Hide Server Url,サーバーURLを非表示にする,直播模式
+CustomAutoUpdate,Auto Update,自動アップデート,自动更新
+CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピーする,自动复制房间代码
+CustomProcessDown,Update Process Down,処理回数を減らす,更新进程已关闭
+CustomIsVersionErrorView,Show players Errors.,エラーを表示する,显示错误
+CustomHideTaskArrows,Hide Tasks Arrows,タスクの矢印を非表示にする,隐藏任务指向箭头
+SettingCrewmateRoles,Crewmate Setting,クルーメイトの人数設定,船员阵营职业设置
+SettingCrewmateGhostRoles,Crewmate GhostRole Setting,クルーメイトの幽霊役職の人数設定,船员阵营灵魂职业设置
+SettingNeutralRoles,Neutral Setting,第三陣営の人数設定,独立阵营职业设置
+SettingNeutralGhostRoles,Neutral GhostRole Setting,第三陣営の幽霊役職の人数設定,独立阵营灵魂职业设置
+SettingImpostorRoles,Impostor Setting,インポスターの人数設定,伪装者阵营职业设置
+SettingImpostorGhostRoles,Impostor GhostRole Setting,インポスターの幽霊役職の人数設定,伪装者阵营灵魂职业设置
+SettingOptionOn,On,オン,开启
+SettingOptionOff,Off,オフ,关闭
+SettingPressTabForMore,Press Tab For More,Tabを押して詳細を表示,按Tab键查看更多...
+ErrorHostNoVersion,Your host does not have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストに<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>が入っていません。,主持人没有安装<color=#ffa500>超级</color><color=#ff0000>新</color><color=#00ff00>职业</color>模组
+ErrorHostChangeVersion,The host has a different version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストの<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のバージョンが違います。,主持人安装的<color=#ffa500>超级</color><color=#ff0000>新</color><color=#00ff00>职业</color>模组版本不同
+ErrorClientNoVersion,You don't have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0}.,{0}に<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>が入っていません。,{0}未安装<color=#ffa500>超级</color><color=#ff0000>新</color><color=#00ff00>职业</color>模组
+ErrorClientChangeVersion,The version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0} is wrong.,{0}の<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のバージョンが違います。,{0}安装的<color=#ffa500>超级</color><color=#ff0000>新</color><color=#00ff00>职业</color>模组版本不同
+IsSpecialModeOnAndVanillaKickOff,If <color=#2792c3>[Kick non-PCs]</color> is disabled， the\nmap will be selected for <color=#cd5c5c>MiraHQ</color>.\nIf you want to use<color=#a67646>Agartha</color>\nEnable <color=#2792c3>[Kick non-PCs]</color>.,<color=#2792c3>「PC以外をキックする」</color>が無効である場合、\nマップは<color=#cd5c5c>MiraHQ</color>に選択されます。\n<color=#a67646>Agartha</color>を使用したい場合は、\n<color=#2792c3>「PC以外をキックする」</color>を有効にしてください。,如果 “<color=#2792c3>踢出非电脑端玩家</color>”设置为否，\n地图将变为<color=#cd5c5c>米拉总部</color>。\n要启用<color=#a67646>雅各泰</color>地图，\n需要将“<color=#2792c3>踢出非电脑端玩家</color>”选项设置为是。
+RamdomMapSetting,RandomMap,ランダムマップ,随机地图
+RMSkeldSetting,Skeld,スケルドが有効,可随机到骷髅舰
+RMMiraSetting,Mira,ミラが有効,可随机到米拉总部
+RMPolusSetting,Polus,ポーラスが有効,可随机到波鲁斯
+RMAirshipSetting,AirShip,エアーシップが有効,可随机到飞艇
+RMSubmergedSetting,Submerged,サブマージドが有効,可随机到潜艇
+ADMINButton,ADMIN,アドミン,地图
+timeRemaining,Remaining: {0},残り{0},剩余：{0}秒
+restrictOutOfTime,Time up,時間切れ,超时
+RestrictDevicesSetting,Device Restrictions,機器の制限,设备限制
+RestrictAdminSetting,Admin Restrictions,アドミンの制限,管理地图限制
+RestrictCameraSetting,Camera Restrictions,カメラの制限,监控限制
+RestrictVitalSetting,Vital Restrictions,バイタルの制限,生命监测装置限制
+DeviceTimeSetting,Can use time,使用可能時間,设备可使用最大时间
+IsYkundesuBeplnExSetting,ykundesuBeplnEx,ykundesuBeplnEx,ykundesuBeplnEx
+restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnEx IS! VERY! VERY DELICIOUSSSSS!!!!!，isn't it?,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい,ykundesuBeplnEx是美味的!
+ReactorDurationSetting,Reactor Duration Time,リアクター継続時間の設定,反应堆破坏持续时间
+PolusReactorTime,Polus Reactor Duration Time,ポーラスでのリアクター時間,波鲁斯反应堆破坏持续时间
+MiraReactorTime,Mira Reactor Duration Time,ミラでのリアクター時間,米拉总部反应堆破坏持续时间
+AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリアクター時間,飞艇反应堆破坏持续时间
+VentMakerButtonName,Make Vent,設置,制作通风口
+AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する,米拉总部追加生命监测装置
+VentAnimation,No Vent Animation,ベントアニメーション無効化,禁用通风口动画
+MapRemodelingOptionSetting,Map Remodeling,マップ改造,地图改造
+AirShipAdditionalVents,AirShipAdditionalVents,エアーシップにベントを追加する,飞艇增加通风口
+PolusAdditionalVents,PolusAdditionalVents,ポーラスにベントを追加する,波鲁斯增加通风口
+MiraAdditionalVents,MiraAdditionalVents,ミラにベントを追加する,米拉总部增加通风口
+Zoomafterdeath,Zoom function after death,死後のズーム機能,死后视野缩放功能
+mousemode,Mouse wheel Mode,マウスホイールモード,鼠标滚轮模式
+clairvoyantmode,ClairvoyantMode,千里眼モード,千里眼模式
+clairvoyantCoolTime,ClairvoyantCoolTime,千里眼のクールダウン,千里眼冷却时间
+clairvoyantDurationTime,ClairvoyantDurationTime,千里眼の継続時間,千里眼持续时间
+ClairvoyantButtonName,Clairvoyant!,千里眼,千里眼
+LadderDead,Ladder Death,転落死,使用梯子可能摔死
+LadderDeadChance,Ladder Death Chance,転落死する確率,摔死概率
+MoveElecPadSetting,Move the switchboard.,配電盤を移動する,更改配电板位置
+AirshipDisableMovingPlatformSetting,Disable Moving Platform,昇降機のリフトを無効化する,禁用移动平台
+AddWireTaskSetting,Add Wire Task,配線タスクを追加する,追加接线任务
+RandomSpawnOption,Random Spawn,ランダムスポーン,启用随机出生
+IsAlwaysReduceCooldown,Reduce Cooldown,常にキルクールタイムが進む,技能冷却配置
+IsAlwaysReduceCooldownExceptInVent,Reduce Cooldown Except InVent,ベント内でも進む,在通风口中不计算技能冷却
+IsAlwaysReduceCooldownExceptOnTask,Reduce Cooldown Except OnTask,停電修理中でも進む,技能冷却在修理紧急任务时不计算
+IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更
+DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家
+WireTaskIsRandom,Wire task random,配線タスクランダム随机分配修复配线的任务地点,随机接线任务
+WireTaskNum,Wire task num,配線タスク数,接线任务总数
+IsSNROnlySearch,SNR Room Filter,SNRルームフィルター,SNR房间过滤
+
+# Modes
+ModeSetting,Mode Setting,モード設定,模式设置
+SettingMode,Mode,モード,游戏模式
+SettingHideAndSeekMode,Hide And Seek Mode,かくれんぼモードの設定,躲猫猫模式设置
+SettingBattleRoyalMode,Battle Royal Mode,バトルロイヤルモードの設定,皇室战争模式设置
+SettingSuperHostRolesMode,Super Host Roles Mode,SuperHostRolesの設定,超级主持人职业设置
+SettingZombieMode,Zombie Mode,ゾンビモードの設定,生化危机模式设置
+SettingRandomColorMode,Random Color Mode,ランダムカラーモードの設定,随机颜色模式设置
+SettingDetectiveMode,Detective Mode,探偵モードの設定,侦探模式设置
+HideAndSeekModeName,Hide And Seek,かくれんぼ,躲猫猫
+BattleRoyalModeName,Battle Royal,バトルロイヤル,皇室战争
+SuperHostRolesModeName,Super Host Roles,SuperHostRoles,超级主持人职业
+ZombieModeName,Zombie Mode,ゾンビモード,生化危机
+RandomColorModeName,Random Color Mode,ランダムカラー,随机颜色模式
+NotImpostorCheckModeName,Not Impostor Check Mode,インポスター視認不能モード,双盲伪装者模式
+CopsRobbersModeName,CopsRobbers,ケイドロ,警察抓小偷
+CopsRobbersModeCrewName,Thief,泥棒,小偷
+CopsRobbersModeCrewTitle1,Finish the task and win without getting caught by the police!,警察に捕まらないようにタスクを終わらせて勝利しよう,在不被警察抓到的前提下完成任务获得胜利
+CopsRobbersModeImpostorName,Police,警察,警察
+CopsRobbersModeImpostorTitle1,Catch all the thieves and win!,泥棒を全員捕まえて勝利しよう,逮捕所有小偷获得胜利
+DetectiveModeName,Detective Mode,探偵モード,侦探模式
+DetectiveModeIsWinNotCheckSetting,Not include the detective in the win condition determination.,探偵を勝利条件判定に入れない,侦探不计入胜利条件判定
+DetectiveModeIsNotTaskSetting,No tasks for detective,探偵にタスクがない,侦探没有任务
+DetectiveModeIsNotDetectiveVoteSetting,Non-Detective cannot vote,探偵以外は投票できない,除侦探外的玩家无法投票
+DetectiveModeIsNotDetectiveMeetingButtonSetting,Non-Detective cannot press the conference button,探偵以外が会議ボタンを押せない,除侦探外的玩家无法召开紧急会议
+DetectiveName,Detective,探偵,侦探
+DetectiveTitle1,Guess and win over your crewmates!,推理してクルーメイトを勝利させよう,通过推理帮助船员获胜
+BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り生存人数がわかる,所有玩家可见存活数
+BattleRoyalIsTeamBattle,Team competition,チーム戦,启用团队赛
+BattleRoyalTeamAmount,Number of teams,チーム数,团队数
+BattleRoyalIsKillCountView,null,null,查看击杀数
+BattleRoyalIsKillCountViewSelfOnly,null,null,仅查看自己击杀数
+BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数,游戏开始后多久可以击杀
+ZombieZombieName,Zombie,ゾンビ,僵尸
+ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよう,感染所有人获得胜利
+ZombiePoliceName,Police,警察,警察
+ZombiePoliceTitle1,Let's finish the task.,タスクを終わらせて勝利しよう,完成任务获得胜利
+ZombieTimerText,Zombies incoming! {0}s,ゾンビがやってくるまで残り{0}秒！,僵尸将在{0}秒后出现
+ZombieStartSecondSetting,Time until the zombies come.,ゾンビがやってくるまでの時間,僵尸出现倒计时
+ZombieZombieLightSetting,Zombie Visibility,ゾンビの視界,僵尸视野
+ZombieZombieSpeedSetting,Zombie Speed,ゾンビのスピード,僵尸速度
+ZombiePoliceLightSetting,Police visibility,警察の視界,警察视野
+ZombiePoliceSpeedSetting,Speed of police,警察のスピード,警察速度
+ZombieCommingLightSetting,Light before zombies,ゾンビがやってくる前の視界,僵尸出现前的视野
+ZombieCommingSpeedSetting,Speed before zombies,ゾンビがやってくる前のスピード,僵尸出现前的速度
+RandomColorHideNameSetting,Hide Name,名前を隠す,隐藏昵称
+RandomColorNameColorSetting,Change Name Color,名前の色も変える,昵称颜色改变
+RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する,会议中昵称颜色改变
+NeutralName,Neutral,第三陣営,独立阵营
+WinName,Win,勝利,胜利
+PlusModeSetting,Plus Mode,重複モード,附加模式
+SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード,伪装者禁用破坏
+SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船员禁用完成任务获胜
+SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点
+MapOptionSetting,Map Option,マップの設定,地图设置
+NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告
+NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议
+DeviceOptionsSetting,Device Options,機器の設定,设备设置
+DeviceUseAdminSetting,Use OK Admin,アドミンが使える,可以使用管理地图
+DeviceUseVitalOrDoorLogSetting,Use OK Vital Or DoorLog,バイタル・ドアログが使える,可以使用生命监测装置和通行日志
+DeviceUseCameraSetting,Use OK Camera,カメラが使える,可以使用监控
+HASHideName,Hide,逃,逃生者
+HASSeekName,Seek,鬼,屠夫
+HASDeathTaskSetting,Hide Death Clear Task,死亡するとタスクが終わる,死亡后隐藏尸体并清除任务
+HASUseSaboSetting,Use Sabotage,サボタージュが使える,屠夫可以造成紧急破坏
+HASUseVentSetting,Use Vent,ベントが使える,屠夫可以使用通风口
+
+# FinalResults
+FinalResults,Final results,最終結果
+FinalStatusAlive,Survival,生存,存活
+FinalStatusKill,Kill,キル,被杀
+FinalStatusExiled,Exiled,追放,放逐
+FinalStatusNekomataExiled,The Way of the Nekomata,猫又の道連れ,连带
+FinalStatusSheriffKill,Sheriff kill,シェリフキル,警长执法
+FinalStatusSheriffMisFire,Sheriff misfire,シェリフ誤爆,警长走火
+FinalStatusMeetingSheriffKill,Meeting Sheriff kill,ミーティングシェリフキル,执行官执法
+FinalStatusMeetingSheriffMisFire,Meeting Sheriff misfire,ミーティングシェリフ誤爆,执行官走火
+FinalStatusSelfBomb,Self-destruct,自爆,自杀
+FinalStatusBySelfBomb,Self-destruct collateral damage,自爆巻き添え,自爆
+FinalStatusDisconnected,amputation,切断,断连
+FinalStatusDead,Death,死亡,死亡
+
+# Sabotages
+FinalStatusSabotage,Sabotage,サボタージュ,破坏
+SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
+SabotageCognitiveDeficitSetting,Cognitive Deficit,認識障害,认知干扰
+CognitiveDeficitSabotageOutfitUpdateTimeSetting,Figure Change Interval,姿変更間隔,外貌变换间隔时间
+CognitiveDeficitSabotageReleaseTimeSetting,Release Time,解除時間,持续时间
+CognitiveDeficitSabotageIsAllPlayerEndSabotageSetting,Cannot be sabotaged unless everyone is deactivated.,全員が解除しないとサボタージュできない,有玩家没有解除认知干扰则不能继续破坏
+
+# WereWolfMode
+WereWolfHunterText,Let's die with someone else.,誰かを道連れにしよう,来送别人上路吧
+WereWolf.WereWolf,Werewolf,人狼,狼人
+WereWolf.WereWolfText,Let's Eat Villager and Win!,市民を食べて勝利しよう,吃掉村民获得胜利
+WareWolfMadman,Madmate,狂人,疯子
+WereWolfMadmanText,Help the werewolves and win!,人狼を助けて勝利しよう,帮助狼人获得胜利
+WareWolfVillager,Villager,市民,市民
+WereWolfVillagerText,Expel the werewolves in the debate and win!,議論で人狼を追放して勝利しよう,通过辩论放逐狼人获得胜利
+WareWolfFortuneTeller,FortuneTeller,占い師,占卜师
+WereWolfFortuneTellerText,Divination to discover the werewolf and win!,占って人狼を発見して勝利しよう,通过占卜找到狼人获得胜利
+WareWolfMedium,Medium,霊媒師,通灵师
+WereWolfMediumText,Search out the role of the dead and win!,死んだ人の役職を調べて勝利しよう,查清死者职业获得胜利
+WereWolfMeetingNormal,This is Meeting Time.,今回は会議タイムです。,本次会议时间
+WereWolfMeetingAbility,This is Use to Ability Time.,今回は能力使用タイムです。,本次能力使用时间
+WereWolfMediumAbilityText,{0}'s Role is {1}!,{0}の役職は{1}です!,{0}的职业是{1}!
+WerewolfModeName,Werewolf,人狼,狼人杀
+WerewolfAbilityTimeSetting,Ability Time,能力使用タイム,能力持续时间
+WerewolfAbilityTime,{0} seconds remaining until the end of the ability use time,能力使用タイムが終了するまで残り{0}秒,能力持续时间还剩{0}秒
+HauntedWolfName,HauntedWolf,狼憑き,幽灵狼
+HauntedWolfTitle1,Don't let the crew find out.,クルーにバレるな,别让其他船员起疑
+PlayerCountMessage,Players,人,名
+DebugModeOnText,DebugMode:ON,デバッグモードが有効です,启用调试模式
+BattleRoyalRemaining,Remaining until kills can be made,キルができるようになるまで残り,允许击杀时的剩余人数
+Player,Player,プレイヤー,玩家
+CopsImpostorCome,Remaining until the Imposter arrives,インポスターが来るまで残り,伪装者出现时的剩余人数
+CopsSpawnLoading,Waiting for all players to spawn...\nLoading: {0} people remaining</color></size>,全プレイヤーのスポーンを待っています...\nロドー中:残り{0}人</color></size>,等待所有玩家进入行动阶段...\n载入中:还剩{0}人</color></size>
+CRHideNameSetting,Hide Name,名前を隠す,隐藏昵称
+IsOldMode,OldMode,オルドモード,怀旧模式
+CrewMateName,Crewmate,クルーメイト,船员
+CrewMateTitle1,Use Task,タスクを行う,完成任务并找出伪装者
+CrewMateDescription,Default Crewmate.,通常のクルーメイトです。,普通船员。
+ImpostorName,Impostor,インポスター,伪装者
+ImpostorTitle1,Use Sabotage & Vent,サボタージュ＆ベントを行う,破坏并杀死所有人
+ImpostorDescription,Default Impostor.,通常のインポスターです。,普通伪装者。
+Neutral,Neutral,第三陣営,独立阵营
+NeutralSubIntro,Let's work only for ourselves.Let's Take advantage of others.,自分の事だけ考えろ。他人の事は利用せよ。,你不属于船员或内鬼阵营，需要独自达成胜利条件。
+detecName,Detective,探偵,侦探
+
+# Roles
+SoothSayerName,Diviner,占い師,占卜师
+SoothSayerTitle1,Divine the player and find the outsider.,プレイヤーを占い人外を見つけよう,占卜并找出伪装者
+SoothSayerDisplaySetting,Position visibility,陣営表示にする,占卜师可得信息为阵营而非职业
+SoothSayerDetailMode,Detail display,詳細表示,具体职业
+SoothSayerEncampMode,Camp indicator,陣営表示,所属阵营
+SoothSayerMaxCountSetting,Number of times you can divine,占える回数,占卜师最大占卜次数
+SoothSayerFirstWhiteOption,null,null,第一个白色选项
+SoothSayerGetChat,The Role of {0} is {1}.,{0}の役職は{1}です。,{0}的职业是{1}
+JesterName,Jester,てるてる,小丑
+JesterTitle1,Vote to get banned!,投票で追放されよう,想办法被投出去
+JesterDescription,If they are expelled at the meeting they win alone.,会議で追放されると、単独勝利します。,小丑在会议中被投出则小丑单独获胜。
+JesterIsVentSetting,I can put it in a vent.,ベントに入れる,可以进入通风口
+JesterIsSabotageSetting,You can sabotage it.,サボタージュができる,小丑可以破坏
+JesterIsWinClearTaskSetting,Jester was Clear Task Win,タスクを完了しないと勝利できない,小丑不完成任务不能获胜
+JesterWinText,Jester{0}Win!,てるてる{0}勝利,垂死梦中惊坐起\n小丑竟是为自己
+LighterName,Lighter,ライター,执灯人
+LighterTitle1,Let's brighten our vision,視界を明るくしよう,照亮自己的视野
+LigtherCoolDownSetting,Writer Cooldown,ライターのクールダウン,技能冷却时间
+LigtherDurationSetting,Lighter Duration,ライターの継続時間,技能持续时间
+LighterUpVisionSetting,View in light,ライト中の視界,技能期间视野范围
+LighterButtonName,Light!,ライト!,点灯！
+EvilLighterName,Evil Lighter,イビル ライター,邪恶的执灯人
+EvilLighterTitle1,Darken Vision,視界を暗くしよう,闪瞎其他人的视野
+EvilLighterTitle2,Create a blackout sabotage that can further reduce your vision!,視界をさらに狭くできる停電のサボタージュを発生させよう,破坏灯光，产生更恐怖的黑暗
+EvilLigtherCoolDownSetting,Evil Lighter Cooldown,イビルライターのクールダウン,技能冷却时间
+EvilLigtherDurationSetting,Duration of Evil Writer,イビルライターの継続時間,技能持续时间
+EvilScientistName,Evil Scientist,イビルサイエンティスト,邪恶的科学家
+EvilScientistTitle1,Become invisible and get kills!,透明になってキルをしよう,隐身并杀死其他船员！
+EvilScientistTitle2,Win with the power of science!,科学の力で勝利しよう,隐身，很神奇吧！
+EvilScientistCoolDownSetting,Evil Scientist Invisibility Cooldown,イビルサイエンティストの透明クールダウン,隐身冷却时间
+EvilScientistDurationSetting,Evil Scientist's Invisibility Duration,イビルサイエンティストの透明継続時間,隐身持续时间
+SheriffName,Sheriff,シェリフ,警长
+SheriffTitle1,Kill the outsider!,人外をキルしよう,执法除船员以为的人
+SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう,杀死伪装者带领船员获得胜利
+SheriffDescription,Can shoot and kill an imposter if he is a crewmate. he will self-destruct.,インポスター陣営(設定により第三陣営など)をキルすることが出来、クルーだった場合、自爆します,警长可以击杀伪装者。\n但若警长尝试击杀船员，警长将以死谢罪。
+SheriffCoolDownSetting,Kill Cooldown,キルクールタイム,击杀冷却时间
+SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可以击杀独立阵营
+SheriffIsKillLoversSetting,Can kill lovers,ラバーズをキルできる,可以击杀恋人阵营
+SheriffIsKillMadRoleSetting,Can kill mad roles,マッド系をキルできる,可以击杀叛徒职业
+SheriffIsKillImpostorSetting,Can kill impostors,インポスターをキルできる,可以击杀伪装者阵营
+SheriffIsKillFriendsRoleSetting,Can kill jackal friend roles,ジャッカルフレンズ系をキルできる,可以击杀狈族职业
+SheriffIsKillQuarreledSetting,Can kill quarreleds,クラードをキルできる,可以击杀恶魔天使
+SheriffYes,Yes,できる,是
+SheriffNo,No,できない,否
+SheriffMaxKillCountSetting,Maximum number of kills,最大キル数,最大执法杀次数
+SheriffKillButtonName,Kill,キル,击杀
+SheriffNumTextName,{0} shots remaining.,残り{0}発,还剩{0} 次
+MeetingSheriffName,Meeting Sheriff,ミーティング シェリフ,执行官
+MeetingSheriffTitle1,Kill an outsider in a meeting!,人外を会議でキルしよう,在会议中击杀敌人
+MeetingSheriffTitle2,Kill an outsider in a meeting and lead your crewmates to victory!,人外を会議でキルしてクルーメイトを勝利に導こう,在会议审判伪装者带领船员获得胜利
+MeetingSheriffTitle3,Kill an outsider in a meeting to prevent a power play,人外を会議でキルしてパワープレイを防ごう,在会议中审判伪装者以阻止伪装者能力的发动
+MeetingSheriffTitle4,Kill an outsider in a meeting to prevent a PP,人外を会議でキルしてPPを防ごう,在会议审判杀伪装者以阻止能力发动
+MeetingSheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる,执行官可以审判独立阵营
+MeetingSheriffIsKillMadRoleSetting,Can Kill a Madmate,マッド系役職をキルできる,执行官可以审判叛徒职业
+MeetingSheriffYes,Yes,できる,是
+MeetingSheriffNo,No,できない,否
+MeetingSheriffMaxKillCountSetting,Maximum number of Meeting Sheriff kills,ミーティングシェリフの最大キル数,最大审判次数
+MeetingSheriffMeetingmultipleKillSetting,Can you get multiple kills in one meeting?,一会議中に複数キルできるか,执行官可以连续审判
+JackalName,Jackal,ジャッカル,豺狼
+JackalTitle1,Try to kill Impostors and Crewmates,インポスターとクルーメイトをキルしよう,杀死所有船员和伪装者
+JackalTitle2,Kill the other team to win!,他陣営をキルして勝利しよう,把其他人全部杀死获得胜利
+JackalTitle3,Let's just kill them all.,全員ぶち殺そう,杀死所有人
+JackalCoolDownSetting,Jackal's kill cool time,ジャッカルのキルクールタイム,豺狼击杀冷却时间
+JackalUseVentSetting,Use Vent,ベントを使える,豺狼可以使用通风口
+JackalUseSaboSetting,Use Sabotage,サボタージュが使える,豺狼可以破坏
+JackalCreateSidekickSetting,Jackal can make a Sidekick,ジャッカルがサイドキックを作れる,豺狼可以招募跟班
+JackalNewJackalCreateSidekickSetting,New Jackal can make Sidekick,新ジャッカルがサイドキックを作れる,晋级的跟班可以招募
+JackalOn,On,オン,开启
+JackalOff,Off,オフ,关闭
+JackalCreateSidekickButtonName,Sidekick!,サイドキック！,招募
+SidekickName,Sidekick,サイドキック,跟班
+SidekickTitle1,Help Jackal,ジャッカルを助けよう,帮助豺狼获得胜利
+TeleporterName,Teleporter,テレポーター,传送师
+TeleporterTitle1,Let's get everyone together,みんなを集めよう,把所有人传送到一起
+TeleporterTitle2,Let's get everyone away from the corpse position.,みんなを死体位置から遠ざけよう,利用传送让其他人远离尸体
+TeleporterCoolDownSetting,Teleporter Sabotage Kill Cool Down,テレポーターサボタージュのキルクールダウン,紧急破坏期间击杀冷却时间
+TeleporterTeleportTimeSetting,Time to be teleported,テレポートされるまでの時間,技能冷却时间
+TeleporterTeleportButton,Teleport,テレポート！,传送
+TeleporterTPTextMessage,The teleporter teleported you to {0}!,テレポーターが{0}にテレポートさせた!,传送师把你传送到{0}！
+SpiritMediumName,Medium,霊媒師,通灵师
+SpiritMediumTitle1,Divine the dead person's position,やられた人を占い役職を調べよう,对死者的灵魂通灵知晓他们的职业
+SpiritMediumIsAutoMode,null,null,自动模式
+SpiritMediumDisplaySetting,Position visibility,陣営表示にする,信息看见性
+SpiritMediumDetailMode,Detail display,詳細表示,详细信息
+SpiritMediumEncampMode,Position Display,陣営表示,详细阵营
+SpiritMediumMaxCountSetting,Number of times you can divine,占える回数,通灵师最大可通灵次数
+SpeedBoosterName,Speed Booster,スピードブースター,增速师
+SpeedBoosterTitle1,Make your speed faster!,スピードを速くしよう,飞一样的感觉！
+SpeedBoosterTitle2,Lead your crew to victory with super speed!,スーパースピードでクルーを勝利に導こう,利用自己飞快的速度带领船员走向胜利
+SpeedBoosterCooldownSetting,Speed Up Cooldown,スピードアップクールダウン,技能冷却时间
+SpeedBoosterDurationSetting,Duration of speed-up,スピードアップの継続時間,技能持续时间
+SpeedBoosterPlusSpeedSetting,Double your speed,スピードの倍速,技能持续时间内速度增加的倍数
+SpeedBoosterBoostButtonName,Speed\nBoost,スピード\nブースト,速度\n加倍
+EvilSpeedBoosterName,Evil Speed Booster,イビルスピードブースター,邪恶的增速师
+EvilSpeedBoosterTitle1,Make your speed faster!,スピードを速くしよう,飞一样的感觉！
+EvilSpeedBoosterTitle2,Use your super speed to lead your Impostor to victory!,スーパースピードでインポスターを勝利に導こう,利用自己飞快的速度带领伪装者走向胜利
+EvilSpeedBoosterTitle3,Get a kill with super speed!,スーパースピードでキルをしよう,击杀并迅速的离开案发现场
+EvilSpeedBoosterTitle4,Let's run around and kill everyone.,走りまくって皆を瞬殺しよう,利用自己飞快的速度击杀船员
+EvilSpeedBoosterCoolDownSetting,Speed Up Cooldown,スピードアップクールダウン,技能冷却时间
+EvilSpeedBoosterDurationSetting,Speedup duration,スピードアップの継続時間,技能持续时间
+EvilSpeedBoosterPlusSpeedSetting,Double Speed,スピードの倍速,技能持续时间内速度增加的倍数
+EvilSpeedBoosterIsNotSpeedBooster,If this position is selected the speed booster will not be selected.,この役職が選ばれるとスピードブースターが選ばれない,一局游戏中这个职业出现则增速师不会出场
+EvilSpeedBoosterBoostButtonName,Speed\nBoost,スピード\nブースト,速度\n加倍
+TaskerName,Tasker,タスカー,特务
+TaskerTitle1,Finish the task and win the Impostor!,タスクを終わらせてインポスターを勝利させよう,完成任务以让伪装者夺得胜利
+TaskerTitle2,Try to finish the task!,タスクを頑張って終わらせよう,我就是大名鼎鼎的高级特务，代号-穿山甲！
+TaskerIsKillCoolTaskNow,Kill cool time is saved during the task.,タスク中にキルクールタイムが貯まる,做任务期间击杀冷却仍然倒计时
+TaskerCanKill,Killable,キルできる,可以击杀
+TaskerWinText,Impostor Task,インポスタータスク,伪装者任务
+DoorrName,Doorr,ドアー,门卫
+DoorrTitle1,Let's open and close the door.,ドアを開け閉めしよう,控制门的开关
+DoorrTitle2,Close the door to block the impostor!,ドアを閉めてインポスターを妨害しよう,关上门来拦截伪装者
+DoorrCoolTimeSetting,Door Cool Time,ドアクールタイム,技能冷却时间
+DoorrButtonText,Door Open Or Close,ドアを開け閉めする,开/关门
+EvilDoorrName,Evil Doorr,イビルドアー,邪恶的门卫
+EvilDoorrTitle1,Open and close doors!,ドアを開け閉めしよう,控制飞船上门的开关
+EvilDoorrTitle2,Try to sabotage your crewmates!,クルーメイトを妨害しよう,尝试妨碍船员
+EvilDoorrTitle3,Open and close the door immediately to block your crewmate!,すぐにドアを開け閉めしてクルーメイトを妨害しよう,快速操控门的开关来拦截船员
+EvilDoorrCoolTimeSetting,Door Cool Time,ドアクールタイム,技能冷却冷却
+ShielderName,Shielder,シールダー,盾牌手
+ShielderTitle1,Prevent outsider kills.,人外のキルを防ごう,抵挡敌人的攻击
+ShielderTitle2,Shield yourself!,自分にシールドを張ろう,保护好自己
+ShielderTitle3,Try to block a foreigner's kill!,人外のキルを妨害しよう,抵挡住来自敌人的击杀
+ShielderCoolTimeSetting,Shield Cool Time,シールドクールタイム,技能冷却时间
+ShielderDurationSetting,Shield duration,シールド継続時間,技能持续时间
+ShielderButtonName,Shield,シールド,防御
+FreezerName,Freezer,フリーザー,冰术师
+FreezerTitle1,Stop everyone and sabotage your crewmates!,みんなを止めてクルーメイトを妨害しよう,冻住所有人来妨碍船员
+FreezerTitle2,Try to stop everyone and sabotage the task!,みんなを止めてタスクの妨害をしよう,冻住所有人来阻碍任务的推进
+FreezerTitle3,Let's put them all on ice.,全員を氷漬けにしよう,冻住不许走！
+FreezerCoolTimeSetting,Freeze Cool Time,フリーズクールタイム,技能冷却时间
+FreezerDurationSetting,Freeze duration,フリーズ継続時間,技能持续时间
+FreezerButtonName,Freeze,フリーズ,冻结
+SpeederName,Speeder,スピーダー,缓速师
+SpeederTitle1,Slow everyone down and sabotage your crewmates!,みんなを遅くしてクルーメイトを妨害しよう,让所有人速度变慢以妨碍船员
+SpeederTitle2,Try to slow everyone down and sabotage the task!,みんなを遅くしてタスクの妨害をしよう,让所有人速度变慢以阻碍任务的推进
+SpeederCoolTimeSetting,Sabotage Cool Time,サボタージュクールタイム,技能冷却时间
+SpeederDurationTimeSetting,Sabotage duration,サボタージュ継続時間,技能持续时间
+SpeederButtonName,SpeedDown,スピードダウン,减速
+NiceGuesserName,Guesser,ゲッサー,正义的赌怪
+NiceGuesserTitle1,Let's punch out the outsider.,人外を打ち抜こう,生命就是豪赌
+NiceGuesserTitle2,Guess the position of the outsider,人外の役職を当てよう,在会议上猜测他人的身份
+GuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,可以连续猜测
+GuesserShortMaxCountSetting,Number of times you can hit,打てる回数,最大猜测次数
+EvilGuesserName,Evil Guesser,イビルゲッサー,邪恶的赌怪
+EvilGuesserTitle1,Guess the position of the camp other than Imposter.,インポスター以外の陣営の役職を当てよう,生命就是豪赌
+EvilGuesserTitle2,Guess the position of the outsider,人外の役職を当てよう,在会议上猜测他人的身份
+EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,可以连续猜测
+EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,最大猜测次数
+VultureName,Vulture,ヴァルチャー,秃鹫
+VultureTitle1,Let's eat a corpse.,死体を食べよう,吞噬尸体获得胜利
+VultureCoolDownSetting,Corpse cooldown,死体クールダウン,技能冷却时间
+VultureDeadBodyCountSetting,Victory corpse count,勝利死体数,胜利所需吞噬尸体数
+VultureShowArrowsSetting,Show arrows pointing to dead bodies,死体を指す矢印を表示する,可见指向尸体箭头
+NiceScientistName,Nice Scientist,ナイスサイエンティスト,正义的科学家
+NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう,通过隐身来找寻尸体
+NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう,隐身，很神奇吧
+NiceScientistCoolDownSetting,Cool Time,クールタイム,技能冷却时间
+NiceScientistDurationSetting,Duration Time,継続時間,技能持续时间
+ScientistButtonName,Hide,隠れる,隐身
+ClergymanName,Clergyman,聖職者,牧师
+ClergymanTitle1,Let's sabotage the outsider.,人外の妨害をしよう,妨碍伪装者行动
+ClergymanTitle2,Let's obstruct the outsider's view.,人外の視界を妨害しよう,让伪装者们也尝尝黑暗的滋味
+ClergymanCoolDownSetting,Cool Time,クールタイム,技能冷却时间
+ClergymanDurationTimeSetting,Duration Time,継続時間,技能持续时间
+ClergymanDownVisionSetting,Impostor Down Vision.,実行時の視界,技能持续时间内伪装者视野
+ClergymanLightOutButtonName,Light Down,ライトダウン,咏唱
+ClergymanLightOutMessage,The Clergyman is blocking my view!,聖職者が視界を妨害しています！,牧师正在破坏你的视野
+MadmateName,Madmate,マッドメイト,叛徒
+MadmateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助伪装者获得胜利
+MadmateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为伪装者的同伙。\n伪装者获胜则叛徒一同获胜。
+MadmateIsCheckImpostorSetting,You can check the Impostor.,インポスターが確認できる,叛徒可以得知伪装者是谁
+MadmateCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量(全タスク内),确认身份需要完成的任务量
+MadmateUseVentSetting,Use Vent,ベントに入れる,可以进入通风口
+MadmateVentMoveSetting,Move Vent,ベントで動ける,叛徒可以使用通风口
+MadmateImpostorLightSetting,Impostor Light,インポスターの視界,拥有伪装者视野
+BaitName,Bait,ベイト,诱饵
+BaitTitle1,Bait your enemies,相手に通報させよう,诱骗你的敌人
+BaitDescription,If you are killed you can force the person who killed you to report you.,自分がキルされると、キルしてきた相手に強制的に通報させることができます。,诱饵被杀死，则杀死诱饵的凶手将会在指定时间后强制报告诱饵的尸体。
+BaitReportTimeSetting,Report Time,通報までの時間,诱饵被杀后的强制报告延迟
+HomeSecurityGuardName,Home Security Guard,自宅警備員,“居家保安”
+HomeSecurityGuardTitle1,Guard My Home,自分たちの家を守ろう,我爱我的家
+HomeSecurityGuardDescription,It is a Crewmate with no tasks.,タスクがないクルーメイトです。,“居家保安”属于船员阵营，不需要做任务。
+StuntManName,Stunt Man,スタントマン,杂技演员
+StuntManTitle1,Guard Impostor Kill,インポスターのキルを防ごう,躲避伪装者的攻击
+StuntManDescription,It can prevent a set number of kills unconditionally.\nIf a kill is prevented a text will appear in the meeting stating that you were protected by a guardian angel.,無条件で設定回数だけキルを防げます。\nキルを防いだ場合、会議に守護天使に守られたというのテキストが表示されます。,杂技演员可以防止若干次对自己的击杀，但是不会收到提醒。\n如果一次行动阶段中杂技演员用这种方式防止了击杀，\n那轮会议阶段开始时杂技演员将收到自己被守护天使保护了的信息。
+StuntManGuardMaxCountSetting,Guard Max Count,ガードできる回数,杂技演员可以躲避击杀的次数
+MovingName,Moving,ムービング,移位师
+MovingTitle1,Let's run away from the Impostor.,インポスターから逃げよう,利用传送避免被伪装者杀害
+MovingCoolDownSetting,Teleportation Cool Time,テレポートクールタイム,技能冷却时间
+MovingButtonSetName,Location Set,場所セット,标记
+MovingButtonTpName,Teleport,テレポート,瞬移
+QuarreledName,Quarreled,クラード,邪恶天使
+QuarreledIntro,{0} and it's Quarreled!,{0}とクラードになりました！,{0}和你是邪恶天使！
+QuarreledTeamCountSetting,Max Teams,チーム数,最大对数
+QuarreledParSetting,Discharge probability,排出される確率,生成概率
+QuarreledOnlyCrewmateSetting,Only Crewmate Team,クルーメイト陣営のみ,只有船员可以成为邪恶天使
+QuarreledWinText,Quarreled{0}Win,クラード{0}勝利,一起“入眠”吧！
+OpportunistName,Opportunist,オポチュニスト,投机者
+OpportunistTitle1,We'll survive.,生き残ろう,活下去
+OpportunistTitle2,Let's try not to die.,死なないようにしよう,苟且偷生
+OpportunistDescription,If you are still alive by the end of the game you get an additional win.,ゲーム終了時までに生き残っていると、追加勝利できます。,投机者在游戏中活到最后则投机者和获胜阵营一起获胜。
+BestfalsechargeName,Best False Charge,ベスト冤罪ヤー,冤种
+BestfalsechargeTitle1,Lets' Task!,タスクをしよう,你已经死了，你的存在就是来凑数的
+BestfalsechargeDescription,After the first meeting it dies.,最初の会議が終わると死にます。,冤种属于船员阵营。\n在第一轮会议过后冤种就会死亡。
+NiceGamblerName,Nice Gambler,ナイスギャンブラー,正义的赌徒
+NiceGamblerTitle1,Lets' Gambler!,ギャンブルをしよう,搏一搏，单车变摩托！
+NiceGamblerUseCountSetting,Use Count,使える回数,赌博次数
+EvilGamblerName,Evil Gambler,イビルギャンブラー,邪恶的赌徒
+EvilGamblerTitle1,Lets' Kill!,キルをしよう,击杀冷却会根据你的每次击杀变化
+EvilGamblerDescription,Changes the kill rules every time you kill.,キルする毎にキルクールタイムが変化します,击杀冷却会伴随着你的每次击杀变化
+EvilGamblerSucTimeSetting,Kill cool time on success,成功時のキルクールタイム,赌赢时击杀冷却
+EvilGamblerNotSucTimeSetting,Kill Cool Time on Failure,失敗時のキルクールタイム,赌败时击杀冷却
+EvilGamblerSucParSetting,Success probability,成功確率,赌赢概率
+ResearcherName,Researcher,研究者,调查员
+ResearcherTitle1,Let's do some research.,研究をしよう,通过调查发现伪装者
+ResearcherOneTurnSetting,Maximum number of samples per turn,1ターンの最大サンプル数,一轮最多取样次数
+SelfBomberName,Self Bomber,自爆魔,自爆狂
+SelfBomberTitle1,Lets' Self Bomb!,自爆をしよう,我的任务完成啦！
+SelfBomberDescription,Shapeshifting causes self-destruction.\nIf you self-destruct you will die involving everyone around you.,シェイプシフトをすることで、自爆します。\n自爆をすると周りの人を巻き込んで死亡します。,自爆狂属于伪装者阵营，可以自爆。\n若自爆狂自爆，自爆者与周围一定范围的玩家都会死亡。
+SelfBomberScopeSetting,Range (radius),範囲(半径),范围（半径）
+SelfBomberButtonName,Self Bomb,自爆,自爆
+GodName,God,神,神
+GodTitle1,You Are God!!,あなたは神だ,我就是神！
+GodDescription,If you survive to the end you take away the win. Everyone's position is known.,最後まで生き残っていると、勝利を奪い取ります。全員の役職がわかります。,神存活到游戏结束则神单独获胜。\n所有玩家的职业对神可见。
+GodViewVoteSetting,I know who to vote for.,投票先がわかる,可以看见玩家投票
+GodIsEndTaskWinSetting,You have to finish the task to win.,タスクを終わらせないと勝利できない,不完成任务则不能获胜
+AllCleanerName,All Cleaner,オールクリーナー,清理者
+AllCleanerTitle1,Let's get rid of the corpse.,死体を消そう,杀人不留痕迹
+AllCleanerCountSetting,Number of times it can be used in one game,1試合中に使える回数,清理者最大可清理次数
+AllCleanerButtonName,Clean,クリーン,清理
+NiceNekomataName,Nice Nekomata,ナイス猫又,正义的猫又
+NiceNekomataTitle1,Let's take him on the road.,道連れにしよう,带人一起上路
+NiceNekomataTitle2,Let's have a human mess.,人外ガチャをしよう,被投出去的你会带走一个人
+NiceNekomataTitle3,Let's mess around!,ガチャしようぜ！,扰乱敌人的计划吧
+NiceNekomataDescription,If you are exiled at a meeting you take one of them with you on the road.,自分が会議で追放されると、誰か一人を道連れにします。,正义的猫又在会议中被放逐，则正义的猫又连带存活的随机一名玩家一同死亡。
+NiceNekomataIsChainSetting,Chain Nekomata,猫又同士が連鎖する,猫又之间连带时会继续连带
+EvilNekomataName,Evil Nekomata,イビル猫又,邪恶的猫又
+EvilNekomataTitle1,Let's take him on the road.,道連れにしよう,带人一起上路
+EvilNekomataDescription,If you are expelled from the meeting you will take one person with you including your friends.,自分が会議で追放されると、仲間含む誰か一人を道連れにします。,邪恶的猫又在会议中被放逐，则邪恶的猫又连带存活的随机一名玩家一同死亡。\n邪恶的猫又可能会连带其他伪装者阵营玩家。
+JackalFriendsName,Jackal Friends,ジャッカルフレンズ,狈
+JackalFriendsTitle1,Help Jackal.,ジャッカルを助けよう,帮助豺狼获得胜利
+JackalFriendsTitle2,I'll help you kill them all.,全員ぶち殺す手伝いをしよう,助豺狼一臂之力
+JackalFriendsDescription,It is judged as Crewmate.\nbut is in the Jackal camp.\nJackals can win if they win.\nJackal Friends is not recognized by Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。\nジャッカルフレンズはジャッカルからは分かりません。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,规则上狈被判定为船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则狈一同获胜。\n豺狼不能确认狈是谁。狈需要帮助豺狼以获得胜利。
+JackalFriendsIsCheckJackalSetting,Is Check Jackal,ジャッカルをチェックできる,可以确认豺狼是谁
+DoctorName,Doctor,ドクター,医生
+DoctorTitle1,Check Vitals,バイタルをチェックしよう,随时查看生命监测装置来确认船员的生死
+DoctorVitalName,Vital,バイタル,生命监测装置
+DoctorChargeTime,null,null,任务充电持续时间
+DoctorUseTime,null,null,使用持续时间
+CountChangerName,Count Changer,カウントチェンジャー,迷惑师
+CountChangerTitle1,Let's change it,変更しよう,迷惑他人
+CountChangerTitle2,Let's swap the judgment with the enemy.,敵と判定を入れ替えよう,变更他人的阵营判定
+CountChangerMaxCountSetting,Maximum count,最大回数,最大次数
+CountChangerNextTurnSetting,Reflected in next turn,次のターンに反映,巫师的技能效果在下一轮生效
+CountChangerButtonName,Change,チェンジ,迷惑
+PursuerName,Pursuer,追跡者,追猎者
+PursuerTitle1,Let's track the other camps.,他陣営を追跡しよう,追猎其他船员
+PursuerTitle2,Let's get our bearings.,位置を把握しよう,你将得知你附近船员的位置
+PursuerTitle3,Let's go after him and kill him.,後を追ってキルしよう,追杀吧
+MinimalistName,Minimalist,ミニマリスト,极简主义
+MinimalistTitle1,Let's Kill.,キルをしよう,进行一场大屠杀吧
+MinimalistTitle2,Get rid of unnecessary stuff and kill efficiently!,不必要なものを捨て、効率よくキルしよう,舍弃一切不必要的技能，高效杀人。
+MinimalistDescription,Instead of less kill cooling. some buttons are not available.,キルクールが少ない代わりに、一部のボタンが使えません。,极简主义的击杀冷却有所减少。\n作为代价，极简主义作为伪装者的一部分能力将无法使用。
+MinimalistKillCoolSetting,Minimalist Kill Cool Time,ミニマリストのキルクールタイムの設定,击杀冷却时间
+MinimalistVentSetting,Use Vent,ベントが使える,可以使用通风口
+MinimalistSaboSetting,Use Sabotage,サボタージュが使える,可以破坏
+MinimalistReportSetting,Use DeadBody Report,通報ができる,可以报告尸体
+HawkName,Hawk,ホーク,鹰
+HawkTitle1,Let's figure out what we're doing.,行動を把握しよう,一切都逃不出你的眼睛
+HawkCoolTimeSetting,Cool Time,クールタイム,技能冷却时间
+HawkDurationTimeSetting,Duration,継続時間,技能持续时间
+HawkButtonName,Hawk Eye,ホークアイ,千里眼
+EgoistName,Egotist,エゴイスト,野心家
+EgoistTitle1,We can survive this.,生き残ろう,等待时机
+EgoistDescription,Impostor judgment.\nThe impostor appears to be a peer.\nIf all the Impostors are dead\nand the Impostor's victory condition is achieved (except Sabotage) the Egoist wins.,インポスター判定です。\nインポスターからは仲間に見えます。\nインポスターがすべて死んでいる状態で、\nインポスターの勝利条件を達成する(サボタージュ以外)とエゴイストの勝利です。,野心家规则上属于伪装者阵营。\n野心家与伪装者阵营玩家互认。\n其他伪装者阵营玩家全部死亡后，若伪装者阵营不通过紧急破坏获得胜利，\n并且野心家存活，则野心家单独获胜。
+EgoistUseVentSetting,I can use Vent.,ベントを使える,可以使用通风口
+EgoistUseSaboSetting,Can use Sabotage,サボタージュが使える,可以破坏
+EgoistImpostorLightSetting,Impostor's Vision,インポスターの視界,拥有伪装者视野
+EgoistUseKillSetting,Can use Kill,キルできる,可以击杀
+NiceRedRidingHoodName,NiceRedRidingHood,ナイス赤ずきん,正义的小红帽
+NiceRedRidingHoodTitle1,Come back to life,生き返ろう,杀死你的凶手可以让你复活
+NiceRedRidingHoodCount,Maximum number of revives,最大生き返り回数,最大复活次数
+NiceRedRidinIsKillerDeathRevive,Resurrects even if the killers die in the task turn,キル者がタスクターンに死亡した場合でも復活する,当凶手在行动期间死亡时自动复活
+EvilEraserName,Evil Eraser,イビルイレイサー,抹除者
+EvilEraserTitle1,Let's wipe out their abilities.,能力を消し去ろう,抹除别人的能力
+EvilEraserMaxCountSetting,Max Erase Count,最大削除回数,最大抹除次数
+WorkpersonName,Work person,仕事人,工作狂
+WorkpersonTitle1,Let's do the work and win!,仕事をして勝利しよう,完成你的任务获得胜利
+WorkpersonDescription,Wins if you finish the task,タスクを終わらせることで勝利できます。,你在完成任务后获得胜利
+WorkpersonIsAliveWinSetting,You have to be alive to win,生存していないと勝利できない,工作狂只有在存活时才能胜利
+MagazinerName,Magaziner,マガジナー,快枪手
+MagazinerTitle1,Save your kills!,キルを貯めよう,存下子弹以备不时之需
+MagazinerSetTimeSetting,Kill cool time after magazine use,マガジン使用後のキルクールタイム,快枪手使用储存子弹后击杀冷却
+MagazinerAddButtonName,Save,貯める,储存
+MagazinerGetButtonName,Set,セット,使用
+LoversName,Lovers.,ラバーズ,恋人
+LoversIntro,I'm in love with {0}!,{0}と恋に落ちてしまった！,你和{0}坠入了爱河
+LoversDescription,Lovers is a duplicate position given in addition to other positions. Lovers person will see a heart mark next to their name.,恋人は他の役職に重複して与えられ、恋人同士は名前の後のハートマークで確認することが出来ます。,恋人为一个附加职业，由两名玩家组成。\n恋人可以在他们的名字旁边看到爱心。
+LoversTeamCountSetting,Number of couples,カップル数,恋人存在对数
+LoversParSetting,Discharge probability,排出確率,出现概率
+LoversOnlyCrewMateSetting,Chosen only by Cluemate,クルーメイトのみに選ばれる,恋人两方只能是船员阵营
+LoversSingleTeamSetting,Single camp,単独陣営,恋人是否独立
+LoversSameDieSetting,Two people die at the same time,2人同時に死ぬ,恋人共死
+LoversAliveTaskCountSetting,Tasks are counted when surviving,生存時、タスクがカウントされる,恋人存活时任务进度计入船员总任务进度
+LoversDuplicationQuarreledSetting,Does not overlap with Quarreled,クラードと重複しない,恋人中不能有玩家同时是邪恶天使
+MayorName,Mayor,メイヤー,市长
+MayorTitle1,Let's add our vote at the meeting.,会議で票を追加で入れよう,你的投票更有分量
+MayorDescription,Has more votes than usual when voting,票する時に通常よりも多くの票を持ちます。,投票阶段市长的一票算作多票。
+MayorVoteCountSetting,Mayer's vote count,メイヤーの票数,市长投票的等价票数
+trueloverName,True Lover,純愛者,单相思
+trueloverTitle1,Let's fall in love at first sight,一目惚れしよう,只为你而存在
+trueloverDescription,Can be Lovers with any person. wins if survives with Lovers,誰かを愛することが出来、愛する相手と生きていた場合、その相手と勝利します,单相思属于独立阵营，可以选择一名玩家与其成为恋人。\n游戏结束时单相思与自己的恋人一同存活则单相思跟随自己的恋人获得胜利。
+trueloverloveButtonName,Love,一目惚れ,表白
+TechnicianName,Technician,技術者,修理工
+TechnicianTitle1,Use technology to repair sabotage!,技術を駆使してサボタージュを修理しよう,维修船上的破坏
+TechnicianDescription,Can only enter the vent during sabotage,サボタージュの間のみベントに入れます,修理工在紧急破坏出现时可以使用通风口。
+SerialKillerName,Serial Killer,シリアルキラー,嗜血杀手
+SerialKillerTitle1,Kill and Survive!,キルをして生存しよう,你渴望鲜血
+SerialKillerDescription,If you don't get a kill within a certain amount of time you will self-destruct,設定された時間内にキルを出来なかった場合、自爆します,嗜血杀手的击杀冷却短于普通伪装者。\n若嗜血杀手不在限定时间内进行一次击杀则嗜血杀手自杀。
+SerialKillerSuicideTimeSetting,Time to suicide,自殺までの時間,自杀倒计时
+SerialKillerKillTimeSetting,Kill time,キルクールタイム,击杀冷却时间
+SerialKillerIsMeetingResetSetting,Resets when you enter a meeting.,会議に入るとリセットされる,会议结束重置自杀倒计时
+SerialKillerSuicideText,{0} seconds to suicide,自殺まで後{0}秒,{0}秒后自杀
+OverKillerName,OverKiller,オーバーキラー,欺诈师
+OverKillerTitle1,Let's cover up the other kills.,他のキルを隠蔽しよう,用假尸体来掩盖犯罪
+OverKillerDescription,A lot of corpses appear when you kill,キルした際に沢山の死体を作ります,你杀人时场上会多出数个尸体
+OverKillerKillCoolTimeSetting,OverKiller Kill Cool Time,オーバーキラーのキルクールタイム,击杀冷却时间
+OverKillerKillCountSetting,Number of bodies per,一回あたりの死体数,击杀时出现的尸体数
+LevelingerName,Levelinger,レベリンガー,修徒
+LevelingerTitle1,Save CP and raise your level!,経験値を貯めてレベルをあげよう,每次击杀都会使你的修为逐渐强大
+LevelingerOneKillXPSetting,XP gained from kills,キルで得られる経験値,每次击杀可获取的经验
+LevelingerUpLevelXPSetting,Number of experience levels gained,レベルがあがる経験値数,升级所需经验
+LevelingerGetPowerSetting,Abilities gained at level,レベルで得られる能力,升级后获得的能力
+LevelingerSettingKeep,Keep previous ability,前の能力をキープ,保留之前能力
+LevelingerSettingTwoVote,Increased by 1 vote,1投票数増加,票数增加一票
+LevelingerReviveXPSetting,Can be revived by spending XP.,経験値を消費して復活できる,可以消耗经验复活
+LevelingerUseXPReviveSetting,Amount of XP to use,使用する経験値量,复活所需经验值
+EvilMovingName,EvilMoving,イビルムービング,邪恶的移位师
+EvilMovingTitle1,Lets Teleport Kill!,テレポートをしてキルしよう,利用移位杀害船员
+AmnesiacName,Amnesiac,忘却者,失忆者
+AmnesiacTitle1,Let's call the cops and join them.,通報して仲間になろう,努力回想你的职业
+SideKillerName,SideKiller,サイドキラー,首领
+SideKillerTitle1,Make friends and win!,仲間を作って勝利しよう,招募小弟，获得胜利
+SideKillerKillCoolTimeSetting,SideKiller Kill Cool Time.,サイドキラーのキルクールタイム,首领击杀冷却时间
+SideKillerMadKillerKillCoolTimeSetting,MadKiller Kill Cool Time.,マッドキラーのキルクールタイム,小弟击杀冷却时间
+MadKillerName,MadKiller,マッドキラー,小弟
+MadKillerTitle1,Let's promote and kill!,昇格してキルをしよう,帮助首领完成杀戮，等待晋升机会
+SurvivorName,Survivor,サバイバー,求生者
+SurvivorTitle1,Survive and Kill!,生き残りながらキルをしよう,为了生存而挣扎！
+SurvivorDescription,If you do not survive you will not win even if the impostor wins.,生き残っていないとインポスターが勝利しても勝利できません。,求生者属于伪装者阵营。\n求生者击杀冷却有所减少。\n求生者在游戏结束时不存活则不能获胜。
+SurvivorKillCoolTimeSetting,Kill Cool Time,キルクールタイム,求生者击杀冷却
+MadMayorName,MadMayor,マッドメイヤー,背叛的市长
+MadMayorTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう,在会议上滥用票权
+MadMayorVoteCountSetting,MadMayer's vote count,マッドメイヤーの票数,投票的等价票数
+MadMayorDescription,The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmayor can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。インポスターが勝利すると、マッドメイヤーも勝利できます。,背叛的市长属于船员阵营，但是其为伪装者的同伙。\n伪装者获胜则背叛的市长一同获胜。
+MadMayorIsCheckImpostorSetting,You can check the Impostor.,インポスターが確認できる,可以确认伪装者阵营玩家
+MadMayorUseVentSetting,Use Vent,ベントを使える,可以进入通风口
+MadMayorVentMoveSetting,Move Vent,ベントで動ける,可以使用通风口
+MadMayorImpostorLightSetting,Impostor Light,インポスターの視界,拥有伪装者视野
+MadMayorCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量（全タスク内）,确认伪装者阵营需要完成的任务量
+NiceHawkName,NiceHawk,ナイスホーク,正义的鹰
+NiceHawkTitle1,See it all.,全てを見渡せ,将一切尽收眼底
+NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう,把犯人抓个现行
+BakeryName,Baker,パン屋,面包师
+BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？,想来一点新出炉的面包吗？
+BakeryExileText,Bakery baked some breads for crewmates.,パン屋によってパンが振舞われました。,面包师为船员烤了一些面包。
+BakeryExileText2,Bakery baked YOKINGDELICIOUSSSSSSSSS!!!!,パン屋ｧｧﾉｫｫﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｰｴｯｸｽｵｲｼｲ,面包师烤出了美味的面包
+MadStuntManName,MadStuntman,マッドスタントマン,背叛的杂技演员
+MadStuntManTitle1,Prevent kills and connect with impostors.,キルを防いでインポスターと繋がろう,躲避攻击并想办法与伪装者勾结
+MadStuntManDescription,Can prevent himself from being killed,自分自身へのキルを防ぐことが出来ます,可以阻止对自身进行的杀戮
+MadStuntManUseVentSetting,UseVent,ベントを使える,可以使用通风口
+MadStuntManImpostorLightSetting,Impostor Light,インポスターの視界,伪装者视野
+MadHawkName,MadHawk,マッドホーク,背叛的鹰
+MadHawkTitle1,See it all.,すべてを見渡そう,将一切尽收眼底
+MadJesterName,MadJester,マッドてるてる,叛徒小丑
+MadJesterTitle1,Get voted out and win with the Imposters!,投票で追放されてインポスターと勝利しよう,投票被放逐，与伪装者一同获胜
+MadJesterDescription,It is a crewmate decision. but it is in the Imposter camp. \nThe imposter wins by being expelled at the meeting.,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。,叛徒小丑规则上属于船员阵营，但是其为伪装者的同伙。\n叛徒小丑在会议中被放逐则伪装者阵营获胜。
+FalseChargesName,FalseCharges,冤罪師,冤罪师
+FalseChargesTitle1,Let the false accusations win!,冤罪をさせて勝利しよう,栽赃他人获取胜利
+FalseChargesDescription,You can make the opponent who presses the button kill you. \nYou will win if the opponent you have killed is expelled by the conference.,ボタンを押した相手に自分をキルさせることができます。\nキルさせた相手が会議で追放されたら勝利できます、,冤罪师属于独立阵营。\n冤罪师的技能为可以让附近的其他玩家击杀自己。\n这个技能发动后的指定轮数之内，若击杀冤罪师的凶手被放逐，则冤罪师独自获胜。
+FalseChargesExileTurn,Turn of the false accusation range,冤罪の範囲のターン,冤罪师栽赃后凶手被投出冤罪师可以获胜的会议轮数
+FalseChargesCoolTime,Cool Time,クールタイム,技能冷却时间
+FalseChargesButtonTitle,False Charge,冤罪,栽赃
+NiceTeleporterName,Nice Teleporter,ナイステレポーター,正义的传送师
+NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてインポスターを暴こう,通过远距离传送揭开伪装者的真面目
+NiceTeleporterCoolDownSetting,Teleport cooldown,テレポートのクールダウン,传送冷却时间
+CelebrityName,Celebrity,スター,明星
+CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！,你的名字无人不知无人不晓！
+CelebrityDescription,You can tell from all of them that you are the star.,全員から自分がスターと分かります。,明星属于船员阵营。\n所有其他玩家都能确认你是明星。
+CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる,因他人技能导致职业变更不影响明星效果
+NocturnalityName,Nocturnality,夜行性,夜行者
+NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている,昼伏夜出
+NocturnalityDescription,The view during power outage and normal view are opposite.,停電中と通常の視界が反対になっています。,夜行者属于船员阵营。\n夜行者的正常视野与熄灯时视野相反。
+ObserverName,Observer,選挙管理委員,观察者
+ObserverTitle1,Let's monitor everything.,すべてを監視しよう,监视一切吧
+ObserverDescription,You can see where everyone is voting during the meeting.,会議中に全員の投票先を確認できます。,观察者属于船员阵营。\n会议阶段，观察者可以确认所有玩家在召开会议前的所在位置。
+VampireName,Vampire,ヴァンパイア,吸血鬼
+VampireTitle1,Let's do a delayed kill.,遅延キルしよう,你的击杀会被延迟
+VampireKillDelay,Kill Delay,キル遅延,击杀延迟时间
+DarkKillerName,DarkKiller,ダークキラー,暗夜杀手
+DarkKillerTitle1,Let's kill in the dark,闇に紛れて殺そう,将你的杀戮隐藏于黑暗之中
+DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキルクールタイム,击杀冷却时间
+FoxName,Fox,妖狐,狐妖
+FoxTitle1,I am Fox!,私は狐です!,我是一只小狐狸！
+SeerName,Seer,シーア,灵媒
+SeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡
+SeerMode,Mode,モード,模式
+SeerModeBoth,Show Death Flash + Souls,死の点滅＆幽霊が見える,显示死亡闪光和灵魂
+SeerModeFlash,Show Death Flash,死の点滅が見える,显示死亡闪光
+SeerModeSouls,Show Souls,幽霊が見える,显示灵魂
+SeerLimitSoulDuration,Limit Soul Duration,時間経過で幽霊が消える,灵魂随时间的推移消失
+SeerSoulDuration,Soul Duration,幽霊が見える時間,灵魂从出现到消失经过的时间
+MadSeerName,MadSeer,マッドシーア,背叛的灵媒
+MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろう,感知伪装者的行动
+EvilSeerName,EvilSeer,イビルシーア,邪恶的灵媒
+EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡
+RemoteSheriffName,Remote Sheriff,リモートシェリフ,超能警长
+RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう,远距离进行执法
+RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート,执法时传送到被击杀者的位置
+TeleportingJackalName,TeleportingJackal,テレポートジャッカル,豺狼传送师
+TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう,传送并杀死所有人
+MadMakerName,MadMaker,マッドメーカー,叛徒制造者
+MadMakerTitle1,Let's get more lunatics!,狂人を増やそう！,让更多的人背叛
+DemonName,Demon,悪魔,恶魔
+DemonTitle1,Curse the Crew and Help the Impostor!,クルーを呪いながらインポスターを手助けせよ,诅咒船员并协助伪装者
+DemonIsAliveWinSetting,You have to be alive to win.,生存していないと勝利できない,恶魔存活才能获胜
+DemonButtonName,Curse,呪う,诅咒
+TaskManagerName,TaskManager,タスクマネージャー,代理人
+TaskManagerTitle1,Finish the task and mount up!,タスクを終わらせ、マウントを取ろう,帮助他人完成所有任务
+SeerFriendsName,SeerFriends,シーアフレンズ,狈族灵媒
+SeerFriendsTitle1,Let's feel the activity of Jackal,ジャッカルの活躍を感じ取ろう,感知豺狼的行动
+JackalSeerName,SeerJackal,ジャッカルシーア,豺狼灵媒
+JackalSeerTitle1,Detect the dead and bring victory to your camp!,死者を感知し自陣営に勝利をもたらせ!,感知死亡，为豺狼带来胜利
+SidekickSeerName,Sidekick(Seer),サイドキック(シーア),狼族灵媒学徒
+SidekickSeerTitle1,Let's help Jackal with the dead detection ability that we got,貰った死者感知能力でジャッカルを助けよう,用死亡感知能力来帮助豺狼
+AssassinAndMarineName,<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>,<color=#ff0000>アサシン</color>と<color=#AFDFE4>マーリン</color>,<color=#ff0000>刺客</color>与<color=#AFDFE4>林梅</color>
+AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=#ff0000>アサシン</color>の人数,<color=#ff0000>刺客</color>的人数
+MarineSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数
+AssassinName,Assassin,アサシン,刺客
+AssassinTitle1,<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!,<color=#AFDFE4>マーリン</color>を当てて逆転勝利しよう,找出<color=#AFDFE4>梅林</color>来获得胜利
+AssassinSucsess,was marine.,はマーリンだった,是梅林
+AssassinFail,was not marine.,はマーリンではなかった,不是梅林
+MarineName,Merine,マーリン,梅林
+MarineTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。,不要被<color=#ff0000>刺客</color>发现。
+MarineWhois,Who is Merine?,マーリンは誰だ？,谁是梅林？
+ArsonistName,Arsonist,アーソニスト,纵火犯
+ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ,燃烧吧
+ArsonistDurationTimeSetting,Douse Duration,塗り時間,涂油所需时间
+ArsonistDouseButtonName,Douse,塗る,涂油
+ArsonistIgniteButtonName,Ignite,燃やす,纵火
+ArsonistDescription,If you oil them all and burn them. you win alone.,油を全員に塗り燃やしたら単独勝利です。,纵火犯属于独立阵营。\n纵火犯给所有人涂油后按下点燃按钮则纵火犯独自获胜。
+ChiefName,Chief,村長,局长
+ChiefTitle1,Appoint a sheriff to help your crew.,シェリフを任命してクルーを助けよう,任命一位警长来帮助船员
+CleanerName,Cleaner,クリーナー,清理者
+CleanerTitle1,Let's destroy the evidence!,証拠を隠滅しよう!,毁尸灭迹
+CleanerButtonName,CleanButton,死体を消す!,清理
+CleanerCoolDownSetting,Cooldown,死体消しのクールダウン,清理者清理冷却
+MadCleanerName,MadCleaner,マッドクリーナー,清洁工
+MadCleanerTitle1,Destroy the evidence and help impostors to win!,証拠を隠滅してインポスターを勝利に導こう!,毁尸灭迹帮助伪装者走向胜利
+CleanerKillCoolTimeSetting,Kill Cooldown,クリーナーのキルクールダウン,清洁工击杀冷却
+SamuraiName,Samurai,侍,武士
+SamuraiTitle1,Let's cut through the crew!,クルーを切り裂こう!,让我试试刀吧！
+SamuraiKillCoolSetting,KillCoolTime,侍のキルクールダウン,击杀冷却时间
+SamuraiSwordCoolSetting,AttackCoolTime,必殺技のクールダウン,必杀技冷却时间
+SamuraiScopeSetting,SamuraiScope,必殺技が及ぶ範囲,武士必杀技范围
+SamuraiButtonName,UseSword!,必殺技!,必杀技！
+MayorFriendsName,MayorFriends,メイヤーフレンズ,狈族市长
+MayorFriendsTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう,在会议上滥用票权
+MayorFriendsDescription,It is judged as Crewmate.\nBut is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。メイヤーフレンズはジャッカルからは分かりません。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,狈族市长属于船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则狈族市长一同获胜。
+VentMakerName,VentMaker,ベントメーカー,通风口工
+VentMakerTitle1,Let's make a vent!,ベントを作ろう！,挖掘通风口
+GhostMechanicName,GhostMechanic,亡霊整備士,亡灵工程师
+GhostMechanicTitle1,Let's get rid of the loose ends that we couldn't fix the machine.,機械を治せなかった未練を解消しよう,弥补生前未能修好飞船的遗憾
+GhostMechanicRepairLimitSetting,Number of times sabotage can be repaired,サボタージュ修復可能回数,亡灵工程师可修复破坏次数
+GhostMechanicButtonName,Repair,修復,修复
+GhostMechanicCountText,GhostMechanic,残り{0}回,剩余{0}次
+EvilHackerName,EvilHacker,イビルハッカー,骇客
+EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船获取胜利
+EvilHackerMadmateSetting,Can an EvilHacker Make a Madmate,イビルハッカーがマッドメイトを作れるか,邪恶的黑客可以招募一个叛徒
+PositionSwapperName,Position Swapper,ポジションスワッパー,换位师
+PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换位迷惑他人
+SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数,最大换位次数
+SettingPositionSwapperSwapCoolTimeName,Swapping cooltime,スワップクールタイム,换位冷却时间
+PositionSwapperNumTextName,Limits:{0},残り{0}回,剩余{0}次
+PositionSwapperButtonName,PositionSwap,スワップ,换位
+PositionSwapperSwapText,Position swapper swapped you!,スワッパーによってスワップされました!,念动使交换了你的位置！
+PositionSwapperSwapText2,Position swapper swapped you!\nby the way，ykundesu is delicious，isn't it?,スワッパーによってスワップされました!\nところでﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽｵｲｼｲﾃﾞｽﾖﾈ,念动使交换了你的位置！\n 顺便一提ykundesu很好吃，不是吗?
+TunaName,Tuna,マグロ,金枪鱼
+TunaTitle1,Always move!,常に動け！,不要停下来……
+TunaStoppingTimeSetting,Stopping Time,止まれる時間,允许停下最大时间
+TunaAddWinSetting,Add Win,追加勝利,可以跟随胜利
+BlackCatName,Black Cat,黒猫,黑猫
+BlackCatTitle1,Give your life for your master.,主人のために命を捧げよ,为伪装者献出生命
+MafiaName,Mafia,マフィア,黑手党
+MafiaTitle1,Let's avenge our fellow impostor,仲間の敵討ちをしよう,为同伴报仇
+MafiaDescription,When all the impostors except Mafia are dead the kill will be possible.\nThe kill cool time will continue to advance while no kills are made.,マフィア以外のインポスターが全員死亡するとキルできるようになります。\nキルが出来ない間もキルクールタイムは進みます。,黑手党属于伪装者阵营。\n除黑手党以外的伪装者阵营玩家全部死亡后，黑手党才能进行击杀。\n无法击杀时，击杀冷却也会照常减少
+RecordsAdminDestroySetting,Cannot Use Archive Admin,アーカイブのアドミンを使用不可にする,无法使用管理室地图
+SpyName,Spy,スパイ,卧底
+SpyTitle1,Deceive the Impostor and lead the Cluemate camp to victory!,インポスターを欺き、クルーメイト陣営を勝利に導こう,欺骗并找出伪装者，帮助船员取得胜利
+SpyDescription,Spies are crewmates but they look like friends to the Impostor.\n Spies are crewmates and have no special abilities.,スパイはクルーメイトですが、インポスターからは仲間に見えます。\nスパイはクルーメイトであり、特別な能力はありません。,卧底属于船员阵营。\n在伪装者看来卧底属于伪装者阵营。\n卧底没有其他特殊能力。
+SpecimenVitalSetting,Move Vital to specimen (polus),標本室にバイタルを移動する(ポーラス),将生命监测仪移动至样本室（波鲁斯）
+CustomDownloadSuperNewNamePlates,Download custom hat,カスタムハットをダウンロードする,下载自定义帽子
+KunoichiName,Kunoichi,クノイチ,忍者
+KunoichiTitle1,Use your ninjutsu to deceive the village.,忍術を駆使して村を欺け,用你的忍术来欺骗船员
+KunoichiCoolTime,Kunai Cool Time,クナイのクールタイム,手里剑冷却时间
+KunoichiKillKunai,Number of kunai required for a kill,キルに必要なクナイ数,击杀所需要的手里剑数
+KunoichiIsHide,Transparency,透明化,隐身
+KunoichiIsWaitAndPressTheButtonToHide,null,null,不动时显示隐身按键
+KunoichiHideTime,Time required for transparency,透明化に必要な時間,隐身所需时间
+KunoichiKunai,Kunai,クナイ,手里剑
+KunoichiHideKunai,Can throw kunai during invisibility.,透明化中にクナイを投げれる,隐身时可以投掷手里剑
+SecretlyKillerName,Secretly Killer,シークレットリーキラー,谋杀者
+SecretlyKillerTitle1,Please be quiet during the power outage.,停電中はお静かに,只有死人才能守住秘密
+SettingCoolCharge,Same in kill buttons,キル時のクール同期,技能与击杀同步冷却
+SettingBlackoutCharge,Kill cool charge during power outage,停電中にクールをためる,熄灯时可以加快冷却
+SettingLimitName,Ability limit,制限回数,最大次数
+SecretlyKillButtonName,Secretly\nKill,シークレットリー\nキル,暗杀
+DoubleKillerName,DoubleKiller,ダブルキラー,双刀手
+MainCoolTimeSetting,MainKillCooldown,メインキルボタンのクールダウン,主击杀冷却时间
+SubCoolTimeSetting,SubKillCooldown,サブのキルボタンのクールダウン,副击杀冷却时间
+DoubleKillerSaboSetting,DoubleKillerCanUseSabotage,ダブルキラーがサボを使えるか,可以破坏
+SmasherName,Smasher,スマッシャー,粉碎者
+KillCoolTimeSetting,KillCooldown,キルクールダウン,击杀冷却时间
+DoubleKillerTitle1,Let's master the independent kill button!,独立したキルボタンを使いこなそう,拥有独立的击杀按钮！
+SmasherTitle1,Let's do continuous kills!,連続キルを行おう,杀个痛快！
+SuicideWisherName,Suicide Wisher,スーサイドウィッシャー‌,绝望者
+SuicideWisherTitle1,Let's just kill ourselves for now.,とりあえず自殺しよう,生而为伪装者，我很抱歉
+SuicideName,Suicide,自殺,自杀
+NeetName,Neet,ニート,尼特族
+NeetTitle1,NeetLet others handle it.,他人に任せよう,明天再说吧！
+FastMakerName,Fast Maker,ファストメーカー,邪教师
+FastMakerTitle1,Let's make Madmate with a light heart.,軽い気持ちでマッドメイトを作ろう,洗脑船员，成为你的俘虏
+KillName,KILL,キル,击杀
+JackalCreateFriendSetting,Can Create JackalFriends,ジャッカルフレンズを作れる,可以将玩家招募为狈
+ToiletFanName,Toilet Fan,トイレファン,厕友
+ToiletFanTitle1,A little faster...,少しでも早く...,在快一点...
+ToiletCoolDownSetting,Toilet Cool Time,トイレクールタイム,开门冷却时间
+ToiletName,DoorOpen,ドア開放,门开了
+PolusrandomSpawn,RandomSpawn,ランダムスポーン,随机出生点
+NotImpostorExiled,Not taking the Impostor off the road,インポスターを道連れにしない,不会连带伪装者阵营
+NiceButtonerName,NiceButtoner,ナイスボタナー,正义的执钮人
+NiceButtonerTitle1,Let&apos;s a start meeting.,会議を開始しよう,远程召开会议
+EvilButtonerName,EvilButtoner,イビルボタナー,邪恶的执钮人
+EvilButtonerTitle1,Let&apos;s a start meeting.,会議を開始しよう,远程召开会议
+ButtonerCoolDownSetting,Cooldown,クールタイム,技能冷却时间
+ButtonerCountSetting,Number of uses,使用回数,最大使用次数
+ButtonerButtonName,Meeting!,緊急会議！,召开
+RevolutionistName,Revolutionist,革命家,革命家
+RevolutionistTitle1,Let's start a revolution.,革命を起こそう,发起革命
+DictatorName,Dictator,独裁者,独裁者
+DictatorTitle1,Let's monopolize power,権力を独占しよう,掌握独裁的权力
+RevolutionistAndDictatorName,<color=#FF0033>Revolutionist</color>And<color=#336600>Dictator</color>,<color=#FF0033>革命家</color>と<color=#336600>独裁者</color>,<color=#FF0033>革命家</color>与<color=#336600>独裁者</color>
+SettingRevolutionistPlayerCountName,Number of <color=#FF0033>Revolutionist</color>,<color=#FF0033>革命家</color>の人数,<color=#FF0033>革命家</color>人数
+SettingDictatorPlayerCountName,Number of <color=#336600>Dictator</color>,<color=#336600>独裁者</color>の人数,<color=#336600>独裁者</color>人数
+DictatorSubExile,When exiled， exile another player.,追放時、別のプレイヤーを追放する,独裁者被放逐时将随机选一名玩家代为放逐
+DictatorSubExileLimit,Maximum number of substitutions,身代わりの最大回数,独裁者逃避放逐最大次数
+DictatorVoteCount,Dictatorial vote count,独裁者の票数,独裁者拥有票数
+RevolutionCoolTime,revolutionary cool time,革命クールタイム,发起革命冷却时间
+RevolutionTouchTime,Revolutionary contact hours,革命家の接触時間,革命家发动革命所需时间
+RevolutionistAddWin,Additional Victories for Revolutionist,革命家の追加勝利,革命家可以跟随胜利
+RevolutionistAddWinIsAlive,Additional victory only when alive,生存時のみ追加勝利,革命家仅存活时获得追加胜利
+RevolutionistButtonName,Up to revolutionary possible,革命可能まで,起义吧
+SidekickFriendsName,SidekickFriends,サイドキックフレンズ,狈族跟班
+SidekickFriendsTitle1,Help Jackal.,ジャッカルを助けよう,帮助豺狼获得胜利
+SidekickFriendsDescription,It is judged as Cluemate， but is in the Jackal camp.\nIf the jackal wins， it can win. Sidekick Friends can be found from Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。サイドキックフレンズはジャッカルからわかります。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,规则上狈族跟班被判定为船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则狈族跟班一同获胜。\n豺狼能确认狈族跟班是谁。狈族跟班需要帮助豺狼以获得胜利。
+SpelunkerName,Spelunker,スペランカー,倒霉鬼
+SpelunkerTitle1,It's so easy to die.,簡単に死んでしまう,一如既往的坏运气
+SpelunkerVentDeathChance,Probability of vent death,ベント死の確率,通风口口跌倒而死概率
+SpelunkerIsDeathCommsOrPowerdown,Power outage/community skipping death,停電/コミュサボ死,配电/通讯破坏期间失足而死
+SpelunkerDeathCommsOrPowerdownTime,Time to power outage/community sabotage death,停電/コミュサボ死までの時間,在配电/通讯破坏期间死亡所需时间
+SpelunkerLiftDeathChance,Probability of falling off the lift,昇降機リフトから転落する確率,从移动平台掉下摔死概率
+SpelunkerDoorOpenChance,Probability of death from pinched fingers in door opening,ドア開けの指挟み死の確率,开门时被门夹死概率
+HitmanName,Hitman,殺し屋,雇佣杀手
+HitmanTitle1,Kill the designated person.,指定された人をキルせよ,杀死你的目标
+HitmanChangeTargetTime,Time for target to reset,ターゲットがリセットされる時間,目标切换所需时间
+HitmanIsOutMission,If the mission cannot be accomplished， it will self-destruct.,任務が遂行できないと自爆する,在若干次击杀失败后自杀
+HitmanOutMissionLimit,Number of possible failures,失敗可能数,最大允许失败次数
+HitmanWinKillCount,Number of missions performed required to win,勝利に必要な任務遂行数,获胜需要成功击杀次数
+HitmanIsTargetArrow,Display arrow to target,ターゲットへ矢印を表示する,可通过箭头确认目标位置
+HitmanUpdateTargetArrowTime,Interval to update arrows,矢印を更新する間隔,箭头更新间隔时间
+NunName,Nun,ぬーん,捣蛋鬼
+NunTitle1,Nun,ぬーん,让大家用不了移动平台
+NunButtonName,Nun,ぬーん,捣蛋
+PsychometristName,Psychometrist,サイコメトラー,法医
+PsychometristTitle1,Let's read the situation of the corpse.,死体の状況をよみとろう,通过尸体来搜寻线索
+PsychometristReadTime,ReadTime,よみとり時間,验尸所需时间
+PsychometristIsCheckDeathTime,Estimated time of death is available.,死亡推定時間がわかる,可以验出死亡时间
+PsychometristDeathTimeDeviation,Maximum discrepancy in estimated time of death,死亡推定時刻の最大ズレ,验出死亡时间最大误差
+PsychometristIsCheckDeathReason,I know the cause of death.,死因がわかる,可以验出死因
+PsychometristIsCheckFootprints,I can see the killer's footprints.,犯人の足跡が見える,可以验出凶手足迹
+PsychometristCanCheckFootprintsTime,Time range within which footprints can be traced,足跡が追跡可能な時間範囲,凶手足迹可被探测最大范围
+PsychometristIsReportCheckedDeadBody,You can report it even after reading it.,よみとった後でも通報できる,被检验的尸体仍然可以被报告
+PsychometristButtonName,reading,よみとり,验尸
+SeeThroughPersonName,SeeThroughPerson,透視者,窥视者
+SeeThroughPersonTitle1,Witness the decisive moment!,決定的瞬間を目撃しよう,见证决定性的时刻!
+MatryoshkaName,Matryoshka,マトリョーシカ,蜘蛛人
+MatryoshkaTitle1,Cloak the corpse and move the corpse.,死体をまとって死体を移動させよう,把尸体包裹起来
+MatryoshkaWearLimit,Number of times you can wear it,纏える回数,最大缠绕次数
+MatryoshkaAddKillCoolTime,Increased kill-cool time time for corpse coats,死体まといの増加キルクールタイムタイム,每次缠绕追加击杀冷却时间
+MatryoshkaWearReport,can be called in while the body is still circled,まとい中でも通報可能,可以在缠绕状态下报告
+MatryoshkaWearTime,Coiling time,まとえる時間,包裹持续时间
+MatryoshkaPutOnButtonName,Put On,着る,缠绕
+MatryoshkaTakeOffButtonName,Take Off,脱ぐ,解除
+StefinderName,Stefinder,ステファインダー,寻觅者
+StefinderTitle1,Let's do one crime.,一回だけ犯罪しよう,当个罪人吧！
+StefinderKillCoolDownSetting,KillCooldown,キルクールダウン,击杀冷却冷却
+StefinderVentSetting,CanUseVent,ベントを使用できる,可以使用通风口
+StefinderSaboSetting,CanUseSabotage,サボタージュを使用できる,可以破坏
+StefinderSoloWinSetting,SoloWin,単独勝利,可以单独获胜
+PartTimerName,PartTimer,フリーター,打工狂
+PartTimerTitle1,If you want a part-time job...!,バイトするなら…！ ,工作工作工作...！
+PartTimerDeathTurn,Number of turns to die from unbited status,未バイトの状態から死亡するターン数,无业状态下穷死所需回合数
+PartTimerIsCheckTargetRole,I can see your part-time position.,バイト先の役職が見える,可以确认老板的职业
+PartTimerButtonName,PartTime,バイト,打工
+PainterName,Painter ,ペインター,油漆工
+PainterTitle1,Follow the traces of paint,絵具の痕跡をたどろう,通过油漆痕迹获得信息
+PainterIsTaskComplateFootprint,Leave a trace when completing a task,タスク完了時痕跡を残す,目标完成任务后留下油漆痕迹
+PainterIsSabotageRepairFootprint,Leave a trace when repairing a sabotage,サボタージュ修復時痕跡を残す,目标修复紧急破坏后留下油漆痕迹
+PainterIsInVentFootprint,Leave a trace when entering a vent,ベントに入った時痕跡を残す,目标进入通风口后留下油漆痕迹
+PainterIsExitVentFootprint,Leave a trace when exiting a vent,ベントから出た時痕跡を残す,目标离开通风口后留下油漆痕迹
+PainterIsCheckVitalFootprint,Leave a trace when checking vitals,バイタルチェック時痕跡を残す,目标观看生命监测仪后留下油漆痕迹
+PainterIsCheckAdminFootprint,Leave a trace when administering,アドミン時痕跡を残す,目标观看管理地图后留下油漆痕迹
+PainterIsDeathFootprint,Leave a trace of the place of death,死亡場所の痕跡を残す,目标死亡后留下油漆痕迹
+PainterIsDeathFootprintBig,Increase the size of the trace at the place of death,死亡場所の痕跡を大きくする,目标死亡后留下油漆痕迹变大
+PainterIsFootprintMeetingDestroy,Trace disappears at meeting,痕跡が会議で消える,油漆痕迹在会议结束后消失
+PainterButtonName,Paint,ペイント,刷漆
+PainterIsTaskCompleteFootprint,Leave traces when tasks are completed,タスク完了時に痕跡を残す,完成任务后留下油漆痕迹
+FinderName,Finder,ファインダー,中间人
+FinderTitle1,Get to know your peers.,仲間を知ろう,了解你的同行。
+FinderCheckMadmateSetting,Number of confirmed kills,確認できるキル数,确认叛徒击杀次数
+PhotographerName,Photographer,写真屋,摄影师
+PhotographerTitle1,Let's capture everyone on camera!,みんなの姿をカメラに収めよう ,不错的影像！
+PhotographerIsBonus,Bonuscooltime is valid,ボーナスクールタイムが有効,可以缩减冷却时间
+PhotographerBonusCount,Number of people to be photographed that will be Bonuscooltime.,ボーナスクールタイムになる撮影人数,缩减冷却时间所需拍摄人数
+PhotographerBonusCoolTime,Bonus Cool Time,ボーナスクールタイム,摄像冷却时间
+PhotographerIsImpostorVision,Impostor view,インポスターの視界,拥有伪装者视野
+PhotographerIsNotification,Notification of Shooting,撮影の通知,告知被拍摄玩家
+TacticianName,Tactician,戦術家,战术家
+SluggerName,Slugger,スラッガー,击球手
+SluggerTitle1,Lets’ Harisen Kill!,ハリセンでキルしよう,用全垒打把其他人击飞
+SluggerChargeTime,Charge Time,チャージ時間,充能时间
+SluggerIsMultiKill,Range kill possible,範囲キル可能,可以大范围击杀
+SluggerIsKillCoolSync,null,null,与击杀冷却时间同步
+SluggerButtonName,Harisen,ハリセン,击球
+SatsumaAndImoName,SatsumaAndImo,さつまといも,神经病
+SatsumaAndImoTitle1,Madmate And Crewmate,マッドメイト & クルーメイト,我究竟是谁？
+ShiftActorName,Shift Actor,シフトアクター,模仿大师
+ShiftActorTitle1,Let's play it out perfectly,完璧に演じ切ろう,完美地模仿出来
+CanWatchAttribute,Can watch attribute,重複役職を見れる,可以模仿附加职业
+RightChance,Probability of Success,成功確率,正确概率
+ShiftActorText1,'s role is,の役職は,的职业是
+ShiftActorText2,.,です,是
+MadRolesCanFixComms,Mad roles can fix comms sabotage,マッド役職がコミュサボを治せる,叛徒阵营可以修理通讯破坏
+MadRolesCanFixElectrical,Mad roles can fix electrical sabotage,マッド役職が停電を治せる,叛徒阵营可以修理照明破坏
+MadRolesCanVentMove,Mad roles can vent move,マッド陣営がベント移動できる,叛徒阵营可以在通风口间移动
+DoppelgangerName,Doppelganger,ドッペルゲンガー,迷失者
+DoppelgangerTitle1,\It seems that if you'll meet myself， you're dead\,同じ顔の人に出会うと死んじゃうんだって,“听说了吗，人在命不久矣的时候会见到另一个自己”
+DoppelgangerDescription,"Doppelgangers can ShapeShift.\nIf a ShapeShifted target is killed during ShapeShift, the Kill Cool  is shorter.\nIf, instead, a non-shapeShifted target is killed or a non-shapeShifted target is killed, the Kill Cool will be longer.",ドッペルゲンガーはシェイプシフトができます\nシェイプシフトをした状態で、シェイプシフトの変身先をキルするとキルクールが短くなります。\nシェイプシフトの変身先以外をキルしたり、シェイプシフトをしない状態でキルすると、キルクールが長くなってします。,迷失者可以化形。\n化形状态下的迷失者击杀自己的化形对象后，迷失者的下一次击杀冷却缩短。\n若迷失者在化形状态下击杀了自己化形对象以外的玩家，或者在未化形的状态下进行击杀，下一次击杀冷却将延长。
+DoppelgangerDurationTimeSetting,Shapeshift Duration,シェイプシフトの持続時間,化形持续时间
+DoppelgangerCoolDownSetting,Shapeshift Cooldown,シェイプシフトのクールタイム,化形冷却时间
+DoppelgangerSucTimeSetting,Kill Cool Time on Success,成功時のキルクール,成功击杀化形对象后击杀冷却时间
+DoppelgangerNotSucTimeSetting,Kill Cool Time on Failur,失敗時のキルクール,没能成功击杀化形对象后击杀冷却
+DoppelgangerButtonName,ShapeShift,シェイプシフト,化形
+DoppelgangerDurationTimerText,{0} seconds left to deactivate.,解除まで{0}秒,{0}秒后解除化形
+WaveCannonName,Wave Cannon,波動砲,重炮手
+WaveCannonTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,上天去吧！
+WaveCannonChargeTime,Charge Time,チャージ時間,充能时间
+IsSyncKillCoolTime,null,null,与击杀冷却时间同步
+WaveCannonButtonName,Wave Cannon,波動砲,开炮
+WaveCannonJackalName,Wave Cannon Jackal,波動砲ジャッカル,豺狼重炮手
+WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,上天去吧！
+CrackerName,Cracker,クラッカー,神隐者
+CrackerTitle1,Let's crack on and play God!,クラックして神隠しをしよう,让他人神隐
+CrackerIsAdminView,Counted by Admins,アドミンにカウントされる,被神隐玩家可以在地图上观测到
+CrackerIsVitalsView,Counted in Vitals,バイタルにカウントされる,被神隐玩家可以在生命监测装置上观测到
+CrackerOneTurnSelectCount,Number of times you can crack in one turn,1ターン内にクラックできる回数,每轮可以被神隐人数
+CrackerAllTurnSelectCount,Number of times you can crack during a match,試合中にクラックできる回数,每局游戏可以神隐人数
+CrackerIsSelfNone,Cracks are unrecognizable to the cracker,クラック者はクラックを認識できない,神隐者无法识别被神隐玩家
+CrackerButtonName,Crack!!!,クラック,神隐
+CamouflagerName,Camouflager,カモフラージャー,隐蔽者
+CamouflagerTitle1,Let's hide in the crowd.,人混みに隠れよう,隐匿于人群之中
+CamouflagerCoolTimeSetting,Camouflage Cooltime,カモフラージュのクールタイム,隐蔽冷却时间
+CamouflagerDurationTimeSetting,Camouflage Duration,カモフラージュの持続時間,隐蔽持续时间
+CamouflagerCamouflageArsonistSetting,Arsonists can still see mark while activating their skill,アーソニストがカモフラージュ中に塗った人がわかる,纵火犯不受隐蔽者技能影响
+CamouflagerCamouflageDemonSetting,Demon can still see mark while activating their skill,悪魔がカモフラージュ中に呪った人がわかる,恶魔不受隐蔽者技能影响
+CamouflagerCamouflageLoversSetting,Lovers can still see mark while activating their skill,ラバーズがカモフラージュ中に相方がわかる,恋人不受隐蔽者技能影响
+CamouflagerCamouflageQuarreledSetting,Quarreled can still mark while activating their skill,クラードがカモフラージュ中に相方がわかる,邪恶天使不受隐蔽者技能影响
+CamouflagerCamouflageChangeColorSetting,Change the color of camouflage,カモフラージュ中の色を変更する,自定义隐蔽色
+CamouflagerCamouflageColorSetting,Camouflage color,カモフラージュ中の色,隐蔽色
+CamouflagerButtonName,Camouflager,カモフラージュ,隐蔽
+PavlovsdogsName,Pavlov's dogs,パブロフの犬,巴甫洛夫之狗
+PavlovsownerName,Pavlov's owner,パブロフのオーナー,巴普洛夫之主
+PavlovsdogsTitle1,Let us be of service.,お役に立ってみせましょう,为我服务吧
+PavlovsownerTitle1,Be my dog!,私の犬になりなさい！,做我的狗吧!
+PavlovsownerCreateDogCoolTime,Side Kick Cool Time,サイドキックのクールタイム,驯养冷却时间
+PavlovsownerCreateDogLimit,Number of times a side kick can be made in one match,1試合内にサイドキックできる回数,每局游戏可以驯养次数
+PavlovsownerIsTargetImpostorDeath,Self-destruct if the opponent is an Impostor,相手がインポスターだと自爆する,在尝试驯养伪装者时自杀
+PavlovsdogIsImpostorView,Pavlov's dog has a view of the impostor,パブロフの犬がインポスターの視界,狗拥有伪装者视野
+PavlovsdogRunAwayKillCoolTime,Coold time when out of control,暴走時のクールタイム,狗发狂时击杀冷却时间
+PavlovsdogRunAwayDeathTime,Self-destruct time when out of control,暴走時の自爆タイム,狗发狂时自杀倒计时
+PavlovsdogRunAwayDeathTimeIsMeetingReset,Reset self-destruct time in a meeting,会議で自爆タイムをリセットする,会议后重置自杀倒计时
+PavlovsTeamWinText,Pavlov's dog and owner,パブロフの犬とオーナー,人与狗获胜
+PavlovsownerCreatedogButtonName,stenciling,刷り込み,驯养
+KnightName,Knight,騎士の護衛が成功しました。,骑士
+KnightTitle1,I will protect you according to my beliefs.,我が信念に沿って護衛しよう,举起正义之盾
+KnightDescription,"During the conference phase, you can put up a shield to prevent one kill by using the protect button. If the protection is successful, a successful protection announcement will be played at the beginning of the next meeting phase.",会議フェイズ中に護衛ボタンを使用する事で、キルを一回防ぐシールドを張ることができます。 設定により護衛が成功した際、次の会議フェイズ開始時に護衛成功アナウンスが流れます。,会议阶段，骑士可以选择一名玩家，阻挡一次那名玩家在会议上遭受的击杀。根据房间设置，骑士守护成功的下一轮会议上，所有玩家可以收到骑士守护成功的信息。
+KnightCanAnnounceOfProtected,Play an announcement when the protection is successful?,護衛成功時にアナウンスを流すか,守护成功后通知所有玩家
+KnightSetTheUpperLimitOfTheGuarding,Do you want to set a limit on the number of protections?,護衛回数に上限を設けるか,守护次数有上限
+KnightMaximumNumberOfTimes,Maximum number of times protection is possible.,護衛上限回数,每轮游戏最大守护次数
+TheKnightProtected,The knight's protection was successful.,騎士の護衛が成功しました。,骑士成功护卫了一名玩家。
+KnightProtectButton,Protect,護衛,保护
+WerewolfName,Werewolf,人狼,狼人
+WerewolfTitle1,Let's kill a villager!,村人をキルしよう,杀害村民
+ConnectKillerName,ConnectKiller,コネクトキラー,连接杀手
+ConnectKillerTitle1,Lets’ Connect!,通信サボタージュでベントを繋げよう,趁通讯破坏在通风口间穿行
+NekoKabochaName,NekoKabocha,ネコカボチャ,邪恶的猫又
+NekoKabochaTitle1,Let me take you on the road.,道連れを起こそう,唤醒那些执迷不悟的人。
+KillCooldown,KillCooldown,キルクールダウン,击杀冷却时间
+CanRevengeCrewmate,Can take crewmates on the road,クルーメイトを道連れ可,可以连带船员阵营
+CanRevengeImpostor,Can take Impostor on the road,インポスターを道連れ可,可以连带伪装者阵营
+CanRevengeNeutral,Can take a third camp,第三陣営を道連れ可,可以连带独立阵营
+CanRevengeExiled,Can take a crewmate in exile,追放で道連れ可,被放逐时可以连带一名玩家
+GMName,GM,GM,管理员
+GMTitle1,You are Game Master,あなたはゲームマスター,你是管理员
+SuicidalIdeationName,Suicidal ideation,自殺願望者,自杀幻想者
+SuicidalIdeationTitle1,Finding no hope for life,生きる希望を見いだせない,喝一杯咖啡，完成自己的任务，然后"睡一觉"吧
+SuicidalIdeationWinTextSetting,Special Victory Letters,特殊勝利文字,使用特殊胜利文本
+SuicidalIdeationTimeLeftSetting,Time Increased by Doing Tasks,自殺までの時間,自杀倒计时
+SuicidalIdeationAddTimeLeftSetting,Time to suicide,タスクをすると増える時間,每完成一个任务增加倒计时时间
+SuicidalIdeationFallProbabilitySetting,Probability of falling to death,転落死の確率,摔死概率
+SuicidalIdeationWinText,Try to live a little longer\nSuicidal person,もう少し生きてみようかな\n自殺願望者,人生不过如此\n再见这个世界...
+SuicidalIdeationButtonName,Time to suicide,自殺まで,自杀倒计时
+
+
+# Other
+WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩超级新职业！
+WelcomeMessage2,You can play a variety of modes and different hard on any model with SuperNewRoles!,SuperNewRolesRを使用することで、様々なモードや様々な役職をどの機種でも遊べます！,您可以在超级新职业体验各种不同的模式和职业！
+WelcomeMessage3,Please visit the official wiki for a detailed description of the roles and modes!,役職やモードの詳しい説明については公式wikiを御覧ください！,有关模式和职业的详细描述请查看官方Wiki介绍！
+WelcomeMessage4,SuperNewRoles Official Wiki,SuperNewRoles公式Wiki:,超级新职业职业介绍:
+WelcomeMessage5,https://wikiwiki.jp/amas-snr(Japanese),https://wikiwiki.jp/amas-snr,https://amonguscn.club（憨批官方模组下载链接非模组介绍），官方介绍:https://wikiwiki.jp/amas-snr(日文)
+WelcomeMessage6,You will get the information if you run the command.,コマンドを実行して、情報を取得できます。,你可以通过输入命令来获取信息。
+WelcomeMessage7,Send this command if you want to see a list of commands.,コマンド一覧を表示するにはこのコマンドを送信してください。,发送此命令以获取命令列表信息。
+WelcomeMessage8,[/commands] or [/cmd],/commands 又は /cmd,/commands 或者 /cmd
+CommandsMessage0,Commands in the command list:\n() are also possible.\nIt is not case sensitive.,コマンド一覧:\n()の中にあるコマンドでも可能です。\n大文字と小文字は区別されません。,命令列表:\n也可以发送()中的命令。\n不区分大小写。
+CommandsMessage1,/commands (/cmd) : \nDisplays a list of commands. (This command.),/commands (/cmd) : \nコマンド一覧を表示します。(このコマンドです),/commands (/cmd) : \n显示命令列表。(当前命令)
+CommandsMessage2,/version (/v) : \nShow SuperNewRoles Version.,/version (/v) ：\nバージョンを表示します。,/version (/v) ： \n显示模组版本号。
+CommandsMessage3,/discord (/dc) : \nShow the link to the Official Discord.,/discord (/dc) ：\n公式Discordへのリンクを表示します。,/discord (/dc) ： \n显示指向官方的Discord的链接。
+CommandsMessage4,/twitter (/tw) : \nShow the link to the Official Twitter.,/twitter (/tw) ：\n公式Twitterと開発状況Twitterへのリンクを表示します。,/twitter (/tw) ： \n显示指向官方Twitter和开发状态Twitter的链接。
+CommandsMessage5,/GetInRoles (/gr) ： Displays all activate roles.(Send to all player when you're hosts.),/GetInRoles (/gr) ： \n入っているすべての役職を表示します。(ホストの場合は全員に送信します),/GetInRoles (/gr) ： \n显示所有激活的职业。(如果你是主持人将推送给房间内所有玩家)
+CommandsMessage6,/GetInRoles myplayer ([/gr mp] or [/gr myp]) : \nDisplays all activate roles only you.(Send only to yourself even if you are the host.),/GetInRoles myplayer (/gr mp もしくは /gr myp) ： \n入っているすべての役職を表示します。(ホストでも自分のみに送信します),/GetInRoles myplayer (/gr mp 或者 /gr myp) ： \n显示所有激活的职业，仅自己可见。
+CommandsMessage7,/AllRoles (/ar) : \nDisplays all activate roles' description and settings.(Send to all player when you're hosts.)\nTransmitted at 1.5 second intervals.,/AllRoles (/ar) ： \n入っている全役職の説明と設定が確認できます。\n(ホストが実行すると全員に送信します)\n1.5秒間隔で送信されます。,/AllRoles (/ar) ： \n显示所有激活职业的职业描述和设置。\n(如果你是主持人将推送给房间内所有玩家)\n每1.5秒发送一个。
+CommandsMessage8,/AllRoles [transmission interval] (/ar [transmission interval]): \nAdditional transmission intervals can be specified for /AllRoles.,/AllRoles [送信間隔] (/ar [送信間隔]) ： \n/AllRolesに+で送信間隔を指定できます。,/AllRoles [发送间隔] (/ar [发送间隔]) ： \n你可以在/AllRoles后添加指定发送间隔时间
+CommandsMessage9,/AllRoles [send interval] myplayer (/ar [send interval] (mp or myp)): \nAdd to /AllRoles [send interval] and send only to yourself even if you are the host.,/AllRoles [送信間隔] myplayer (/ar [送信間隔] (mp もしくは myp)) ： \n/AllRoles [送信間隔]に+で、ホストでも自分のみに送信されます。,/AllRoles [发送间隔] myplayer (/ar [发送间隔] (mp 或者 myp)) ： \n你可以在/AllRoles [发送间隔]后添加指令发送，仅自己可见。
+SNROfficialDiscordMessage,Come here to visit the official SuperNewRoles Discord server.,SuperNewRoles公式Discordサーバーはこちらから:,超级新职业官方Discord服务器：
+SNROfficialTwitterMessage,Come here to visit the official SuperNewRoles Twitter Accounts.,SuperNewRoles公式Twitterはこちらから,在这里关注超级新职业官方Twitter
+TwitterOfficialLink,Official Account : https://twitter.com/SuperNewRoles,公式アカウント：https://twitter.com/SuperNewRoles,官方Twitter：https://twitter.com/SuperNewRoles
+TwitterDevLink,Development Information Account : https://twitter.com/SNRDevs,開発情報アカウント：https://twitter.com/SNRDevs,开发状况Twitter：https://twitter.com/SNRDevs
+Team,Team,陣営,阵营
+MessageSettings,Settings,設定,设置
+NowRolesMessage,Activate Roles,現在入っている役職,当前激活的职业
+TeamMessage,【Team:{0}】,【{0}陣営】,【{0}阵营】
+NameIncludeMod,You cannot make a room public contains mod in your name.,modが名前に含まれている状態では公開部屋にすることはできません。,不能在昵称里有“mod”时将房间状态设置为公开。
+CannotUseRenameMessage,Cannot rename.\nThe /rename command can only be used on\navailable only when hosted.,名前を変更することができません。\n/renameコマンドは\nホスト時のみ使用可能です。,无法重命名。\n/rename命令仅房主可用。
+betatext1,\nThis is a beta version! Watch out for bugs!,\nベータ版です! バグには注意してください!,这是测试版本。请注意是否有bug。
+betatext2,\n~Information for developers~,\n～開発者用の情報～,\n~开发者信息~
+
+# Agartha
+Agartha_WareHouse,WareHouse,倉庫,仓库
+Agartha_ToolRoom,ToolRoom,工具室,工具室
+Agartha_WorkRoom,WorkRoom,仕事場,工坊
+AgarthaName,Agartha,アガルタ,雅各泰
