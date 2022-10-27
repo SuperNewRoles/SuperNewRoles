@@ -27,7 +27,11 @@ namespace SuperNewRoles.Modules
         public static CustomOption neutralGhostRolesCountMax;
 
         public static CustomOption enableMirroMap;
+
         public static CustomOption enableAgartha;
+        public static CustomOption AgarthaRandomSpawn;
+        public static CustomOption AgarthaRandomSpawnIsFirstSpawn;
+        public static CustomOption AgarthaRandomSpawnIsAddSpawnWay;
 
         public static CustomOption IsDebugMode;
         public static CustomOption DebugModeFastStart;
@@ -967,9 +971,13 @@ namespace SuperNewRoles.Modules
             impostorGhostRolesCountMax = Create(8, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
 
             enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false);
-            enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
-            IsSNROnlySearch = Create(1073, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
+            enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
+            AgarthaRandomSpawn = Create(1084, false, CustomOptionType.Generic, "RandomSpawnOption", true, enableAgartha);
+            AgarthaRandomSpawnIsFirstSpawn = Create(1085, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsFirstSpawn", false, AgarthaRandomSpawn);
+            AgarthaRandomSpawnIsAddSpawnWay = Create(1086, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
+
+            IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
             IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true);
 
@@ -1823,7 +1831,7 @@ namespace SuperNewRoles.Modules
             CupidPlayerCount = Create(1080, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CupidOption);
             CupidCoolTime = Create(1081, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, CupidOption);
 
-            HamburgerShopOption = SetupCustomRoleOption(1073, false, RoleId.HamburgerShop);
+            HamburgerShopOption = SetupCustomRoleOption(1091, false, RoleId.HamburgerShop);
             HamburgerShopPlayerCount = Create(1074, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HamburgerShopOption);
             HamburgerShopChangeTaskPrefab = Create(1075, false, CustomOptionType.Crewmate, "HamburgerShopChangeTaskPrefab", true, HamburgerShopOption);
             var HamburgerShopoption = SelectTask.TaskSetting(1076, 1077, 1078, HamburgerShopOption, CustomOptionType.Crewmate, false);
@@ -1831,11 +1839,11 @@ namespace SuperNewRoles.Modules
             HamburgerShopShortTask = HamburgerShopoption.Item2;
             HamburgerShopLongTask = HamburgerShopoption.Item3;
 
-            PenguinOption = SetupCustomRoleOption(1073, false, RoleId.Penguin);
-            PenguinPlayerCount = Create(1074, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PenguinOption);
-            PenguinCoolTime = Create(1075, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, PenguinOption, format: "unitSeconds");
-            PenguinDurationTime = Create(1076, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
-            PenguinCanDefaultKill = Create(1077, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
+            PenguinOption = SetupCustomRoleOption(1082, false, RoleId.Penguin);
+            PenguinPlayerCount = Create(1087, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PenguinOption);
+            PenguinCoolTime = Create(1088, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, PenguinOption, format: "unitSeconds");
+            PenguinDurationTime = Create(1089, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
+            PenguinCanDefaultKill = Create(1090, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

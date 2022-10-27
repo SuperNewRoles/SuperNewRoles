@@ -47,8 +47,8 @@ namespace SuperNewRoles.Patches
                 //ここにデバッグ用のものを書いてね
                 if (ModHelpers.GetManyKeyDown(new[] { KeyCode.I, KeyCode.LeftControl }))
                 {
-                    foreach (PlayerControl p in Roles.RoleClass.Jackal.JackalPlayer)
-                        p.ShowReactorFlash();
+                    GUIUtility.systemCopyBuffer = $"\nnew({CachedPlayer.LocalPlayer.transform.position.x}f, {CachedPlayer.LocalPlayer.transform.position.y}f),";
+                    Logger.Info($"コピー完了: \nnew({CachedPlayer.LocalPlayer.transform.position.x}f, {CachedPlayer.LocalPlayer.transform.position.y}f),");
                 }
                 if (ModHelpers.GetManyKeyDown(new[] { KeyCode.K, KeyCode.LeftControl }))
                 {
