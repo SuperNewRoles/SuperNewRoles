@@ -22,9 +22,9 @@ namespace SuperNewRoles.Roles.Impostor
             if (!isShapeshift)
             {
                 float nowKillCool = PlayerControl.LocalPlayer.killTimer;
-                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
                 CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
                 PlayerControl.LocalPlayer.SetKillTimerUnchecked(nowKillCool);
             }
             else if (PlayerControl.LocalPlayer.inVent)

@@ -42,7 +42,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (RoleClass.SeerFriends.IsUseVent) return true;
                     break;
                 case RoleId.Stefinder:
-                    if (CustomOptions.StefinderVent.GetBool()) return true;
+                    if (CustomOptionHolder.StefinderVent.GetBool()) return true;
                     break;
                 case RoleId.RemoteSheriff:
                 case RoleId.Sheriff:

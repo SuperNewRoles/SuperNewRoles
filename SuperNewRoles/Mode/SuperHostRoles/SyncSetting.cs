@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -39,7 +40,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             switch (role)
             {
                 case RoleId.Sheriff:
-                    optdata.KillCooldown = KillCoolSet(CustomOptions.SheriffCoolTime.GetFloat());
+                    optdata.KillCooldown = KillCoolSet(CustomOptionHolder.SheriffCoolTime.GetFloat());
                     break;
                 case RoleId.Minimalist:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Minimalist.KillCoolTime);
@@ -140,7 +141,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             if (switchSystem2 != null && switchSystem2.IsActive) optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
                         }
                     }
-                    optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCoolDown);
+                    optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCooldown);
                     break;
                 case RoleId.Demon:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Demon.CoolTime);
@@ -171,7 +172,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Doppelganger.CoolTime;
                     break;
                 case RoleId.DarkKiller:
-                    optdata.killCooldown = KillCoolSet(CustomOptions.DarkKillerKillCoolTime.GetFloat());
+                    optdata.killCooldown = KillCoolSet(CustomOptionHolder.DarkKillerKillCoolTime.GetFloat());
                     break;
                 case RoleId.Camouflager:
                     optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Camouflager.CoolTime >= 5f ? RoleClass.Camouflager.CoolTime : 5f;
@@ -184,7 +185,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     break;
                 case RoleId.Stefinder:
-                    optdata.KillCooldown = KillCoolSet(CustomOptions.StefinderKillCoolDown.GetFloat());
+                    optdata.KillCooldown = KillCoolSet(CustomOptionHolder.StefinderKillCooldown.GetFloat());
                     break;
             }
             if (player.IsDead()) optdata.AnonymousVotes = false;
@@ -278,8 +279,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             public static void Postfix()
             {
+                if (CustomOptionHolder.IsSNROnlySearch.GetBool())
+                {
+                    PlayerControl.GameOptions.MapId = SNROnlySearch.currentMapId;
+                }
                 OptionData = PlayerControl.GameOptions.DeepCopy();
-                Patches.OnGameEndPatch.PlayerDatas = new();
+                OnGameEndPatch.PlayerData = new();
             }
         }
     }

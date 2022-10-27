@@ -96,7 +96,7 @@ namespace SuperNewRoles
             }
             return false;
         }
-        public static async Task<bool> checkForUpdate(TMPro.TextMeshPro setdate)
+        public static async Task<bool> checkForUpdate(TMPro.TextMeshPro setData)
         {
             Logger.Info("checkForUpdateが来ました");
             try
@@ -162,7 +162,7 @@ namespace SuperNewRoles
                             {
                                 updateURL = browser_download_url;
                                 await Update();
-                                setdate.SetText(ModTranslation.GetString("creditsMain") + "\n" + string.Format(ModTranslation.GetString("creditsUpdateOk"), SuperNewRolesPlugin.NewVersion));
+                                setData.SetText(ModTranslation.GetString("creditsMain") + "\n" + string.Format(ModTranslation.GetString("creditsUpdateOk"), SuperNewRolesPlugin.NewVersion));
                                 ConfigRoles.IsUpdate.Value = true;
                             }
                         }

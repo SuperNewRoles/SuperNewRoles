@@ -21,7 +21,7 @@ In SHR mode, "everyone's sheriff" is not supported due to the specification that
 After the match starts, the crewmate is immediately judged the winner of the task.<br>
 (No one with a task = 0 tasks left for Crew.)<br>
 Please include one Team Crewposition that has a task.<br>
-(Adding a MadMate, JackalFriends, or Home Security Guard not help.)<br>
+(Adding a Madmate, JackalFriends, or Home Security Guard not help.)<br>
 
 ##  Equipment settings
 You can set up the admin, vitals, and other settings.<br>
@@ -35,8 +35,8 @@ All crewmates can also be Sheriffs, etc.!<br>
 - Note: SHR mode
   - Due to the specification of Sheriff replacing Impostor, "Sheriff for all" is not supported with [Task Win] in the Crew win condition.
     - After the match starts, the Crew is immediately judged to have won the task. (No one with a task = 0 task remaining for Crew)
-    - Please include one person in the Crew team position who has a task. (Adding a Mad Mate, Jackal Friends, or Home Guard will not help).
-- However, if "Duplicate Mode/No Task Wins Mode" is turned on, it is possible to set "All Crew Mates are Sheriffs" in SHR mode.
+    - Please include one person in the Crew team position who has a task. (Adding a Madmate, Jackal Friends, or Home Guard will not help).
+- However, if "Duplicate Mode/No Task Wins Mode" is turned on, it is possible to set "All Crewmates are Sheriffs" in SHR mode.
   - Crew win conditions in this setting
     - Eradication of Impostor, Jackal, or other single victorious third team with a Sheriff kill.
     - Hang up the Impostor, Jackal, or other single victorious third camp.
@@ -176,9 +176,9 @@ The number of people is omitted from the setup.
 By pressing the teleport button, the 
 Teleport everyone to one randomly selected person. 
 ### Game Settings 
-| Name      |    Description    |
-| --------- | :---------------: |
-| Cool Down | Button Cool Down. |
+| Name     |   Description    |
+| -------- | :--------------: |
+| Cooldown | Button Cooldown. |
 
 ----------------------- 
 ## EvilSpeedBooster
@@ -188,7 +188,7 @@ You can speed up your own speed for a certain period of time.
 ### Game Settings 
 | Name                                                                  |      Description       |
 | --------------------------------------------------------------------- | :--------------------: |
-| Cool Down                                                             |   Button Cool Down.    |
+| Cooldown                                                              |    Button Cooldown.    |
 | Duration Time                                                         | Speed Boost Duration.  |
 | Double the speed                                                      | Speed during boosting. |
 | If this position is selected, the speed booster will not be selected. |
@@ -201,9 +201,9 @@ Visit www.DeepL.com/profor more information.
 By clicking on the door button, the 
 The door can be opened and closed. There is a cool time. 
 ### Game Settings 
-| Name           |    Description    |
-| -------------- | :---------------: |
-| Door Cool Time | Button Cool Down. |
+| Name           |   Description    |
+| -------------- | :--------------: |
+| Door Cool Time | Button Cooldown. |
 
 ----------------------- 
 ## EvilGambler
@@ -241,7 +241,7 @@ Whether or not Nekomata are chained together can be changed by the Nice Nekomata
 ### Game Settings 
 | Name                                 |                                Description                                 |
 | ------------------------------------ | :------------------------------------------------------------------------: |
-| Not taking the Imposter off the road | Excludes the Impostor from being taken as a companion when he/she is hung. |
+| Not taking the Impostor off the road | Excludes the Impostor from being taken as a companion when he/she is hung. |
 ----------------------- 
 ## CountChanger
 ### Team Impostor
@@ -445,7 +445,7 @@ Can commit suicide.
 ----------------------- 
 ## FastMaker
 ### Team Impostor
-The first kill can make a mad mate.<br> 
+The first kill can make a Madmate.<br> 
 The second and subsequent kills are normal kills. 
 ### Game Settings 
 | Name | Description |
@@ -493,7 +493,7 @@ only at the beginning of the match. <br>
 ### Game Settings 
 | Name         |                   Description                   |
 | ------------ | :---------------------------------------------: |
-| KillCoolDown | You can set the kill cool time for the smasher. |
+| KillCooldown | You can set the kill cool time for the smasher. |
 
 ----------------------- 
 ## DoubleKiller
@@ -504,9 +504,9 @@ You can change in the settings whether you can use sabotage or not. <br>
 ### Game Settings 
 | Name             |                                         Description                                          |
 | ---------------- | :------------------------------------------------------------------------------------------: |
-| MainKillCoolDown | You can set the kill cool time for the main kill button, which is usually activated by the Q |
+| MainKillCooldown | You can set the kill cool time for the main kill button, which is usually activated by the Q |
 key. 
-| SubKillCoolDown | You can set the kill cool down time for the sub kill button operated by the F key. 
+| SubKillCooldown | You can set the kill cooldown time for the sub kill button operated by the F key. 
 | Use Sabotage | You can set whether double killers can use sabotage. 
 
 ----------------------- 
@@ -531,7 +531,7 @@ SuperHostRoles support
 ### Game Settings 
 | Name                    |                        Description                        |
 | ----------------------- | :-------------------------------------------------------: |
-| Kill Cooldown           |        Individual kill cool down time can be set.         |
+| Kill Cooldown           |         Individual kill cooldown time can be set.         |
 | Can Kill a Neutral      |     You can set whether you can kill the third camp.      |
 | Can Kill a Lovers       |         You can set whether Lovers can be killed.         |
 | Can Kill a MadRole      | You can set whether you can kill MAD & FRIENDS positions. |
@@ -573,7 +573,7 @@ The capacity is currently not functioning.
 | Impostor Down Vision. |     You can set the visibility during power outage.      |
 
 ----------------------- 
-## MadMate
+## Madmate
 ### Team Impostor
 The verdict is in on Crewmate. 
 This is a roll of the Impostor camp. <br> 
@@ -607,7 +607,7 @@ SuperHostRoles support
 ## HomeSecurityGuard
 
 ### Team Crew
-Crew mate with no task. 
+Crewmate with no task. 
 SuperHostRoles support 
 
 ----------------------- 
@@ -851,7 +851,7 @@ Note: The behavior of the settings for creating [Jackal Friends](#JackalFriends)
 
 - SHR:
   - It can be made with a first hand kill.
-  - When the imposter is targeted,<br>
+  - When the impostor is targeted,<br>
   the protective effect is triggered and the kill can be triggered thereafter At first glance,<br>
   it looks as if you have been able to make [Jackal Friends](#JackalFriends), but it is not.<br>
   [Jackal Friends](#JackalFriends) has not been converted.
@@ -1180,8 +1180,8 @@ If the corpse is erased, the killcool is reset to the specified value. <br>
 ### Game Settings 
 | Name          |                             Description                              |
 | ------------- | :------------------------------------------------------------------: |
-| Kill CoolDown |                      Kill Cool Down for Cleaner                      | Allows you to set individual kill cool time. |
-| CoolDown      | You can set the kill cooldown time for the ability to erase corpses. |
+| Kill Cooldown |                      Kill Cooldown for Cleaner                       | Allows you to set individual kill cool time. |
+| Cooldown      | You can set the kill cooldown time for the ability to erase corpses. |
 
 ----------------------- 
 ## Samurai
@@ -1218,11 +1218,11 @@ A pair of vents can be made.<br>
 ### Team Impostor
 Impostor to see Admin anytime.<br> 
 When looking at the admins, they cannot move and do not accumulate any kill cool time.<br> 
-Possible to make side kick mad mate in settings.<br> 
+Possible to make side kick Madmate in settings.<br> 
 ### Game Settings 
-| Name                             |          Description           |
-| -------------------------------- | :----------------------------: |
-| Can an EvilHacker Make a Madmate | Can Evil Hackers Make Mad Mate |
+| Name                             |          Description          |
+| -------------------------------- | :---------------------------: |
+| Can an EvilHacker Make a Madmate | Can Evil Hackers Make Madmate |
 
 ----------------------- 
 ## Mad stuntman 
@@ -1257,7 +1257,7 @@ SHR compatible.<br>
 ### Game Settings 
 | Name                    |                        Description                        |
 | ----------------------- | :-------------------------------------------------------: |
-| Kill Cooldown           |        Individual kill cool down time can be set.         |
+| Kill Cooldown           |         Individual kill cooldown time can be set.         |
 | Can Kill a Neutral      |     You can set whether you can kill the third camp.      |
 | Can Kill a Lovers       |         You can set whether Lovers can be killed.         |
 | Can Kill a MadRole      | You can set whether you can kill MAD & FRIENDS positions. |
@@ -1269,7 +1269,7 @@ SHR compatible.<br>
 ### Team Crew
 
 Finish the task and mount up!<br>
-A crew mate that allows you to set the number of tasks individually.<br>
+A Crewmate that allows you to set the number of tasks individually.<br>
 SHR compatible. <br>
 ### Game Settings 
 | Name         |                    Description                     |
@@ -1281,7 +1281,7 @@ SHR compatible. <br>
 ----------------------- 
 ## Mudmaker 
 ### Team Impostor
-Mud Mate that can make mad mate.<br> 
+Mud Mate that can make Madmate.<br> 
 SHR compatible.<br> 
 ### Game Settings 
 | Name           |                              Description                              |
@@ -1297,7 +1297,7 @@ Trying to make an Impostor a sheriff is self-destructive.<br>
 ### Game Settings 
 | Name                    |                        Description                        |
 | ----------------------- | :-------------------------------------------------------: |
-| Kill Cooldown           |        Individual kill cool down time can be set.         |
+| Kill Cooldown           |         Individual kill cooldown time can be set.         |
 | Can Kill a Neutral      |     You can set whether you can kill the third camp.      |
 | Can Kill a Lovers       |         You can set whether Lovers can be killed.         |
 | Can Kill a MadRole      | You can set whether you can kill MAD & FRIENDS positions. |
@@ -1311,7 +1311,7 @@ Instead of being able to make corpses disappear, it does not have the fanatic ab
 ### Game Settings 
 | Name           |                              Description                              |
 | -------------- | :-------------------------------------------------------------------: |
-| CoolDown       | You can set the kill cooldown time for the ability to erase corpses.  |
+| Cooldown       | You can set the kill cooldown time for the ability to erase corpses.  |
 | Use Vent       |                  You will be able to put in a vent.                   |
 | Impostor Light | You can set whether the view will be the same as the Impostor's view. |
 
@@ -1367,7 +1367,7 @@ The ability to sabotage can be changed in the settings. <br>
 | Amount of tasks that will be able to be checked (of all tasks) |  If the result of the calculation of the task amount is a fraction, it will be rounded down.  |
 | Use Vent                                                       |                              You will be able to put in a vent.                               |
 | Impostor Light                                                 |             You can set whether the view will be the same as the Impostor's view.             |
-| Cool Down                                                      |                                       Button Cool Down.                                       |
+| Cooldown                                                       |                                       Button Cooldown.                                        |
 | Time to be teleported                                          |
 
 ----------------------- 
@@ -1477,7 +1477,7 @@ SuperHostRoles support
 ----------------------- 
 ## BlackCat 
 ### Team Impostor
-A [Mad Mate](#Mad Mate) version of [Nice Nekomata](#Nice Nekomata).<br> 
+A [Madmate](#Madmate) version of [Nice Nekomata](#Nice Nekomata).<br> 
 SuperHostRoles support 
 ### Game Settings 
 | Name                                                           |                                         Description                                         |
@@ -1489,7 +1489,7 @@ SuperHostRoles support
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
 | Use Vent                                                       |                             You will be able to put in a vent.                              |
 | Impostor Light                                                 |            You can set whether the view will be the same as the Impostor's view.            |
-| Not taking the Imposter off the road                           |         Excludes the Impostor from being taken as a companion when he/she is hung.          |
+| Not taking the Impostor off the road                           |         Excludes the Impostor from being taken as a companion when he/she is hung.          |
 ----------------------- 
 ## ToiletFan
 ### Team Crew

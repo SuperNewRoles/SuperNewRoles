@@ -29,7 +29,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     || (!RoleClass.Samurai.UseSabo && player.IsRole(RoleId.Samurai))
                     || (!RoleClass.Egoist.UseSabo && player.IsRole(RoleId.Egoist))
                     || (!RoleClass.JackalSeer.IsUseSabo && player.IsRole(RoleId.JackalSeer))
-                    || (!CustomOptions.StefinderSabo.GetBool() && player.IsRole(RoleId.Stefinder))) return false;
+                    || (!CustomOptionHolder.StefinderSabo.GetBool() && player.IsRole(RoleId.Stefinder))) return false;
             }
             if (PlayerControl.LocalPlayer.IsUseVent() && RoleHelpers.IsComms())
             {

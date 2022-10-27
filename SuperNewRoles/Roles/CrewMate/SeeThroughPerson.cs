@@ -5,7 +5,7 @@ using System.Text;
 using BepInEx.IL2CPP.Utils;
 using UnityEngine;
 
-namespace SuperNewRoles.Roles.CrewMate
+namespace SuperNewRoles.Roles.Crewmate
 {
     public static class SeeThroughPerson
     {
