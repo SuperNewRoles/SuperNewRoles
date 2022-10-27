@@ -483,8 +483,8 @@ namespace SuperNewRoles.Patches
                     SyncSetting.CustomSyncSettings();
                 }, 3f, "StartMeeting CustomSyncSetting");
             }
-            Roles.CrewMate.Knight.ProtectedPlayer = null;
-            Roles.CrewMate.Knight.GuardedPlayers = new();
+            Roles.Crewmate.Knight.ProtectedPlayer = null;
+            Roles.Crewmate.Knight.GuardedPlayers = new();
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
             {
                 CreateMeetingButton(__instance, "WerewolfKillButton", (int i, MeetingHud __instance) =>
@@ -497,7 +497,7 @@ namespace SuperNewRoles.Patches
 
                     RoleClass.Werewolf.IsShooted = true;
 
-                    if (Roles.CrewMate.Knight.GuardedPlayers.Contains((byte)i))
+                    if (Roles.Crewmate.Knight.GuardedPlayers.Contains((byte)i))
                     {
                         var Writer = RPCHelper.StartRPC(CustomRPC.KnightProtectClear);
                         Writer.Write((byte)i);

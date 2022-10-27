@@ -27,7 +27,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             return player.GetRole() switch
             {
-                RoleId.MadMate => RoleClass.MadMate.IsImpostorLight,
+                RoleId.Madmate => RoleClass.Madmate.IsImpostorLight,
                 RoleId.MadMayor => RoleClass.MadMayor.IsImpostorLight,
                 RoleId.MadStuntMan => RoleClass.MadStuntMan.IsImpostorLight,
                 RoleId.MadJester => RoleClass.MadJester.IsImpostorLight,
@@ -50,8 +50,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.Jester:
                     return RoleClass.Jester.IsUseVent;
-                case RoleId.MadMate:
-                    return RoleClass.MadMate.IsUseVent;
+                case RoleId.Madmate:
+                    return RoleClass.Madmate.IsUseVent;
                 case RoleId.MadMayor:
                     return RoleClass.MadMayor.IsUseVent;
                 case RoleId.MadStuntMan:

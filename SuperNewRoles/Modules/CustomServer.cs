@@ -15,7 +15,7 @@ namespace SuperNewRoles.Modules
 
         public static void Postfix(RegionMenu __instance)
         {
-            var template = DestroyableSingleton<JoinGameButton>.Instance;
+            var template = FastDestroyableSingleton<JoinGameButton>.Instance;
             var joinGameButtons = GameObject.FindObjectsOfType<JoinGameButton>();
             foreach (var t in joinGameButtons)
             {  // The correct button has a background, the other 2 dont
@@ -110,7 +110,7 @@ namespace SuperNewRoles.Modules
         public static IRegionInfo[] defaultRegions;
         public static void UpdateRegions()
         {
-            ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
+            ServerManager serverManager = FastDestroyableSingleton<ServerManager>.Instance;
             IRegionInfo[] regions = defaultRegions;
 
             var CustomRegion = new DnsRegionInfo(ConfigRoles.Ip.Value, "Custom", StringNames.NoTranslation, ConfigRoles.Ip.Value, ConfigRoles.Port.Value, false);

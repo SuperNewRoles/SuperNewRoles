@@ -158,7 +158,7 @@ namespace SuperNewRoles.Buttons
                     {
                         ImpostorVentButton.Show();
                     }
-                    if ((Input.GetKeyDown(KeyCode.V) || KeyboardJoystick.player.GetButtonDown(50)))
+                    if (Input.GetKeyDown(KeyCode.V) || KeyboardJoystick.player.GetButtonDown(50))
                     {
                         ImpostorVentButton.DoClick();
                     }
@@ -187,6 +187,15 @@ namespace SuperNewRoles.Buttons
                 }
             }
         }
+        [HarmonyPatch(typeof(Vent), nameof(Vent.SetButtons))]
+        public static class VentSetButtonsPatch
+        {
+            public static void Prefix(Vent __instance, ref bool enabled)
+            {
+                if (PlayerControl.LocalPlayer.IsMadRoles()) enabled = false;
+            }
+        }
+
         [HarmonyPatch(typeof(Vent), nameof(Vent.Use))]
         public static class VentUsePatch
         {
@@ -207,6 +216,7 @@ namespace SuperNewRoles.Buttons
                     PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(__instance.Id);
                 }
                 __instance.SetButtons(isEnter && canMoveInVents);
+
                 return false;
             }
         }

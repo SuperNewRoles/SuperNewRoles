@@ -26,7 +26,7 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
             var dldata = await Download(url);
 
             SuperNewRolesPlugin.Logger.LogInfo("DLDATA:" + dldata);
-            SharePatch.PlayerDatas[id] = dldata;
+            SharePatch.PlayerData[id] = dldata;
             SuperNewRolesPlugin.Logger.LogInfo("c");
             var ms = new MemoryStream(Encoding.UTF8.GetBytes(dldata));
             SuperNewRolesPlugin.Logger.LogInfo("e");

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using SuperNewRoles.Patches;
 using UnityEngine;
-using static SuperNewRoles.Modules.CustomOptions;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 using static SuperNewRoles.Roles.RoleClass;
 
 namespace SuperNewRoles.Roles.Impostor
@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles.Impostor
     public static class ShiftActor
     {
         public const int OptionId = 894;// 設定のId
-        // CustomOptionDate
+        // CustomOptionHolder
         public static CustomRoleOption ShiftActorOption;
         public static CustomOption ShiftActorPlayerCount;
         public static CustomOption ShiftActorKillCool;
@@ -20,7 +20,7 @@ namespace SuperNewRoles.Roles.Impostor
         {
             ShiftActorOption = new(OptionId, false, CustomOptionType.Impostor, "ShiftActorName", color, 1);
             ShiftActorPlayerCount = CustomOption.Create(OptionId + 1, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ShiftActorOption);
-            ShiftActorKillCool = CustomOption.Create(OptionId + 2, false, CustomOptionType.Impostor, "SheriffCoolDownSetting", 30f, 2.5f, 60f, 2.5f, ShiftActorOption, format: "unitSeconds");
+            ShiftActorKillCool = CustomOption.Create(OptionId + 2, false, CustomOptionType.Impostor, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, ShiftActorOption, format: "unitSeconds");
             ShiftActorShiftLimit = CustomOption.Create(OptionId + 3, false, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 5f, 1f, ShiftActorOption);
             ShiftActorRightChance = CustomOption.Create(OptionId + 4, false, CustomOptionType.Impostor, "RightChance", rates[1..], ShiftActorOption);
             ShiftActorCanWatchAttribute = CustomOption.Create(OptionId + 5, false, CustomOptionType.Impostor, "CanWatchAttribute", false, ShiftActorOption);
@@ -62,7 +62,7 @@ namespace SuperNewRoles.Roles.Impostor
             if (!ModHelpers.IsSucsessChance(ShiftActorRightChance.GetSelection() + 1))
             { // 確率を判定し、失敗なら「クルーメイト」のみ表示。
                 Logger.Info("失敗", "ShiftActor");
-                TargetRoleText = ModTranslation.GetString("CrewMateName");
+                TargetRoleText = ModTranslation.GetString("CrewmateName");
             }
             else
             {
@@ -74,12 +74,12 @@ namespace SuperNewRoles.Roles.Impostor
                     }
                     else
                     {
-                        TargetRoleText = ModTranslation.GetString("CrewMateName");
+                        TargetRoleText = ModTranslation.GetString("CrewmateName");
                     }
                 }
                 else if (target.IsRole(RoleId.Marine))
                 { // マーリンはクルーに
-                    TargetRoleText = ModTranslation.GetString("CrewMateName");
+                    TargetRoleText = ModTranslation.GetString("CrewmateName");
                 }
                 else
                 { // それ以外はGetRoleして各役職を表示
@@ -115,7 +115,7 @@ namespace SuperNewRoles.Roles.Impostor
             foreach (PlayerControl p in Player)
             {
                 Logger.Info("シェイプシフター割り当て", "ShiftActor");
-                DestroyableSingleton<RoleManager>.Instance.SetRole(p, RoleTypes.Shapeshifter);
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(p, RoleTypes.Shapeshifter);
             }
         }
     }

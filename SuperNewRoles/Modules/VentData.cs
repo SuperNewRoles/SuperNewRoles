@@ -135,19 +135,6 @@ namespace SuperNewRoles.Modules
                     break;
             }
         }
-        public static void MadmateVent()
-        {
-            if (!CustomOptions.MadRolesCanVentMove.GetBool())
-            {
-                if (Vent.currentVent != null) Vent.currentVent.Buttons.All(x => {
-                    if (x != null)
-                    {
-                        x.gameObject.SetActive(false);
-                    }
-                    return false;
-                });
-            }
-        }
     }
     public class VentData
     {
