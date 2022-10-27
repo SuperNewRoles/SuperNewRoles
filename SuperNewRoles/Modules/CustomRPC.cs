@@ -170,6 +170,7 @@ namespace SuperNewRoles.Modules
         Camouflager,
         Cupid,
         HamburgerShop,
+        Penguin,
         //RoleId
     }
 
@@ -255,6 +256,7 @@ namespace SuperNewRoles.Modules
         ShowGuardEffect,
         SetLoversCupid,
         SetMapId,
+        PenguinHikizuri,
     }
 
     public static class RPCProcedure
@@ -268,6 +270,14 @@ namespace SuperNewRoles.Modules
         public static void SetMapId(byte mapid)
         {
             SNROnlySearch.currentMapId = mapid;
+        }
+
+        public static void PenguinHikizuri(byte sourceId, byte targetId)
+        {
+            PlayerControl source = ModHelpers.PlayerById(sourceId);
+            PlayerControl target = ModHelpers.PlayerById(targetId);
+            if (source == null || target == null) return;
+            RoleClass.Penguin.PenguinData.Add(source, target);
         }
 
         public static void ShowGuardEffect(byte showerid, byte targetid)
@@ -1446,6 +1456,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.SetMapId:
                             SetMapId(reader.ReadByte());
+                            break;
+                        case CustomRPC.PenguinHikizuri:
+                            PenguinHikizuri(reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }

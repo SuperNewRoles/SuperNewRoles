@@ -642,6 +642,9 @@ namespace SuperNewRoles
                 case RoleId.HamburgerShop:
                     RoleClass.HamburgerShop.HamburgerShopPlayer.Add(player);
                     break;
+                case RoleId.Penguin:
+                    RoleClass.Penguin.PenguinPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1104,6 +1107,9 @@ namespace SuperNewRoles
                     RoleClass.HamburgerShop.HamburgerShopPlayer.RemoveAll(ClearRemove);
                     break;
                     //ロールリモベ
+                case RoleId.Penguin:
+                    RoleClass.Penguin.PenguinPlayer.RemoveAll(ClearRemove);
+                    break;
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1591,7 +1597,6 @@ namespace SuperNewRoles
                 else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
                 else if (RoleClass.Werewolf.WerewolfPlayer.IsCheckListPlayerControl(player)) return RoleId.Werewolf;
                 else if (Knight.Player.IsCheckListPlayerControl(player)) return RoleId.Knight;
-
                 else if (RoleClass.Pavlovsdogs.PavlovsdogsPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsdogs;
                 else if (RoleClass.Pavlovsowner.PavlovsownerPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsowner;
                 else if (RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
@@ -1599,6 +1604,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player)) return RoleId.Camouflager;
                 else if (RoleClass.Cupid.CupidPlayer.IsCheckListPlayerControl(player)) return RoleId.Cupid;
                 else if (RoleClass.HamburgerShop.HamburgerShopPlayer.IsCheckListPlayerControl(player)) return RoleId.HamburgerShop;
+                else if (RoleClass.Penguin.PenguinPlayer.IsCheckListPlayerControl(player)) return RoleId.Penguin;
                 //ロールチェック
             }
             catch (Exception e)

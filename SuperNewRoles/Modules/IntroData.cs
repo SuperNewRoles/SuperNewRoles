@@ -243,6 +243,7 @@ namespace SuperNewRoles.Modules
         public static IntroData CamouflagerIntro = new("Camouflager", RoleClass.Camouflager.color, 1, RoleId.Camouflager, TeamRoleType.Impostor);
         public static IntroData CupidIntro = new("Cupid", RoleClass.Cupid.color, 1, RoleId.Cupid, TeamRoleType.Neutral);
         public static IntroData HamburgerShopIntro = new("HamburgerShop", RoleClass.HamburgerShop.color, 3, RoleId.HamburgerShop, TeamRoleType.Crewmate);
+        public static IntroData PenguinIntro = new("Penguin", RoleClass.Penguin.color, 1, RoleId.Penguin, TeamRoleType.Impostor);
         //イントロオブジェ
     }
 }

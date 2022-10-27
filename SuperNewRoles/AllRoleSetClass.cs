@@ -962,6 +962,7 @@ namespace SuperNewRoles
                 RoleId.Camouflager => CustomOptionHolder.CamouflagerPlayerCount.GetFloat(),
                 RoleId.Cupid => CustomOptionHolder.CupidPlayerCount.GetFloat(),
                 RoleId.HamburgerShop => CustomOptionHolder.HamburgerShopPlayerCount.GetFloat(),
+                RoleId.Penguin => CustomOptionHolder.PenguinPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

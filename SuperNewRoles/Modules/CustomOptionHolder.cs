@@ -896,6 +896,12 @@ namespace SuperNewRoles.Modules
         public static CustomOption HamburgerShopCommonTask;
         public static CustomOption HamburgerShopShortTask;
         public static CustomOption HamburgerShopLongTask;
+        
+        public static CustomRoleOption PenguinOption;
+        public static CustomOption PenguinPlayerCount;
+        public static CustomOption PenguinCoolTime;
+        public static CustomOption PenguinDurationTime;
+        public static CustomOption PenguinCanDefaultKill;
         //CustomOption
 
         public static CustomOption GMOption;
@@ -1824,6 +1830,12 @@ namespace SuperNewRoles.Modules
             HamburgerShopCommonTask = HamburgerShopoption.Item1;
             HamburgerShopShortTask = HamburgerShopoption.Item2;
             HamburgerShopLongTask = HamburgerShopoption.Item3;
+
+            PenguinOption = SetupCustomRoleOption(1073, false, RoleId.Penguin);
+            PenguinPlayerCount = Create(1074, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PenguinOption);
+            PenguinCoolTime = Create(1075, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, PenguinOption, format: "unitSeconds");
+            PenguinDurationTime = Create(1076, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
+            PenguinCanDefaultKill = Create(1077, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

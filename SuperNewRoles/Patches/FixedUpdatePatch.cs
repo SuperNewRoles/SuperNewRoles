@@ -145,6 +145,7 @@ namespace SuperNewRoles.Patches
                     Roles.Impostor.Matryoshka.FixedUpdate();
                     Roles.Neutral.PartTimer.FixedUpdate();
                     ReduceKillCooldown(__instance);
+                    Roles.Impostor.Penguin.FixedUpdate();
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }

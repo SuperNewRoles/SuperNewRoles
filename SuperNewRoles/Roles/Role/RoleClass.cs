@@ -192,6 +192,7 @@ namespace SuperNewRoles.Roles
             Camouflager.ClearAndReload();
             Cupid.ClearAndReload();
             HamburgerShop.ClearAndReload();
+            Penguin.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2898,6 +2899,19 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 HamburgerShopPlayer = new();
+            }
+        }
+
+        public static class Penguin
+        {
+            public static List<PlayerControl> PenguinPlayer;
+            public static Color32 color = ImpostorRed;
+            public static Dictionary<PlayerControl, PlayerControl> PenguinData;
+            public static PlayerControl currentTarget => PenguinData.ContainsKey(CachedPlayer.LocalPlayer) ? PenguinData[CachedPlayer.LocalPlayer] : null;
+            public static void ClearAndReload()
+            {
+                PenguinPlayer = new();
+                PenguinData = new();
             }
         }
         //新ロールクラス
