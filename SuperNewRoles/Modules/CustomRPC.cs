@@ -250,11 +250,17 @@ namespace SuperNewRoles.Modules
         PavlovsOwnerCreateDog,
         CrackerCrack,
         Camouflage,
-        ShowGuardEffect
+        ShowGuardEffect,
+        SetMapId
     }
 
     public static class RPCProcedure
     {
+        public static void SetMapId(byte mapid)
+        {
+            SNROnlySearch.currentMapId = mapid;
+        }
+
         public static void ShowGuardEffect(byte showerid, byte targetid)
         {
             if (showerid != CachedPlayer.LocalPlayer.PlayerId) return;
@@ -1425,6 +1431,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.ShowGuardEffect:
                             ShowGuardEffect(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetMapId:
+                            SetMapId(reader.ReadByte());
                             break;
                     }
                 }

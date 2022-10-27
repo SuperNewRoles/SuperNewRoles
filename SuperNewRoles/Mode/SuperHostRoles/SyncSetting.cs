@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -275,8 +276,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             public static void Postfix()
             {
+                if (CustomOptionHolder.IsSNROnlySearch.GetBool())
+                {
+                    PlayerControl.GameOptions.MapId = SNROnlySearch.currentMapId;
+                }
                 OptionData = PlayerControl.GameOptions.DeepCopy();
-                Patches.OnGameEndPatch.PlayerData = new();
+                OnGameEndPatch.PlayerData = new();
             }
         }
     }

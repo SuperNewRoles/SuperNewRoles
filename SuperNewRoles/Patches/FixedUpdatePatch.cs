@@ -124,7 +124,13 @@ namespace SuperNewRoles.Patches
             OldModeButtons.OldModeUpdate();
 
             // -- 以下ゲーム中のみ --
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) {
+                if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
+                {
+                    SNROnlySearch.FixedUpdate();
+                }
+                return;
+            }
 
             SetBasePlayerOutlines();
             LadderDead.FixedUpdate();
@@ -142,7 +148,6 @@ namespace SuperNewRoles.Patches
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
-                        if (PlayerControl.LocalPlayer.IsMadRoles()) { VentDataModules.MadmateVent(); }
                         NormalButtonDestroy.Postfix();
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
