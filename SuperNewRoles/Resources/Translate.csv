@@ -190,6 +190,25 @@ DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩�
 WireTaskIsRandom,Wire task random,配線タスクランダム随机分配修复配线的任务地点
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数
 IsSNROnlySearch,SNR Room Filter,SNRルームフィルター
+# Achievement
+BestFalseChargesExiledName,,キ、キルしてないよ...!
+BestFalseChargesExiledDescription,,ベスト冤罪ヤーで死亡する
+BestFalseChargesExiledTitle,,追放された冤罪者
+BestFalseChargesGuardExiledName,,キルしてないって分かった？
+BestFalseChargesGuardExiledDescription,,ゲーム開始時にベスト冤罪ヤーでゲーム終了時まで生き残る
+BestFalseChargesGuardExiledTitle,,生き残った冤罪者
+SheriffKillName,,さあ、執行の時間だ
+SheriffKillDescription,,シェリフキルを成功させる
+SheriffKillTitle,,正義の執行者
+ChiefCreateSheriffName,,シェリフ、お願い！
+ChiefCreateSheriffDescription,,村長でシェリフを作る
+ChiefCreateSheriffTitle,,執行者を作った正義
+ByChiefCreateSheriffName,,村長、任せろ！
+ByChiefCreateSheriffDescription,,村長に任命されてシェリフになる
+ByChiefCreateSheriffTitle,,執行者になった村人
+ByChiefCreateSheriffNeutralName,,The Neutral Sheriff
+ByChiefCreateSheriffNeutralDescription,,村長に任命されて第三陣営からシェリフになる
+ByChiefCreateSheriffNeutralTitle,,更生した執行者
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置
