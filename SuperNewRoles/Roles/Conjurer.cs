@@ -6,7 +6,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using UnityEngine;
-using static SuperNewRoles.Modules.CustomOptions;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Roles.Impostor
 {
@@ -15,7 +15,7 @@ namespace SuperNewRoles.Roles.Impostor
         private const int Id = 999;
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
-        public static CustomOption CoolDown;
+        public static CustomOption Cooldown;
         public static CustomOption CanAddLength;
         public static CustomOption CanKillImpostor;
         public static CustomOption ShowFlash;
@@ -23,7 +23,7 @@ namespace SuperNewRoles.Roles.Impostor
         {/*
             Option = new(Id, false, CustomOptionType.Impostor, "ConjurerName", color, 1);
             PlayerCount = CustomOption.Create(Id + 1, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], Option);
-            CoolDown = CustomOption.Create(Id + 2, false, CustomOptionType.Impostor, "CoolDown", 10f, 1f, 30f, 0.5f, Option);
+            Cooldown = CustomOption.Create(Id + 2, false, CustomOptionType.Impostor, "Cooldown", 10f, 1f, 30f, 0.5f, Option);
             CanAddLength = CustomOption.Create(Id + 3, false, CustomOptionType.Impostor, "CanAddLength", 10f, 0.5f, 40f, 0.5f, Option);
             CanKillImpostor = CustomOption.Create(Id + 4, false, CustomOptionType.Impostor, "CanKillImpostor", false, Option);
             ShowFlash = CustomOption.Create(Id + 5, false, CustomOptionType.Impostor, "ShowFlash", false, Option);*/
@@ -128,12 +128,12 @@ namespace SuperNewRoles.Roles.Impostor
                     Count++;
                     Logger.Info($"Now:{Count}", "Conjurer Added");
 
-                    ResetCoolDown();
+                    ResetCooldown();
                 }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () => { return CanAddBeacon(); },
-            () => { ResetCoolDown(); },
+            () => { ResetCooldown(); },
             GetBeaconButtonSprite(),
             new Vector3(0, 1, 0),
             hm,
@@ -186,7 +186,7 @@ namespace SuperNewRoles.Roles.Impostor
                         RPCProcedure.ShowFlash();
                     }
                     Beacon.ClearBeacons();
-                    ResetCoolDown();
+                    ResetCooldown();
                     Count = 0;
                     //Round++; // 何週目かを増やす
                     //Logger.Info($"Beacon{Round}{Count}", "Beacons");
@@ -196,8 +196,8 @@ namespace SuperNewRoles.Roles.Impostor
             () => { return PlayerControl.LocalPlayer.CanMove && Count == 3; },
             () =>
             {
-                ResetCoolDown();
-                ResetStartCoolDown();
+                ResetCooldown();
+                ResetStartCooldown();
             },
             GetStartButtonSprite(),
             new Vector3(-1.8f, -0.06f, 0),
@@ -213,13 +213,13 @@ namespace SuperNewRoles.Roles.Impostor
             };
         }
 
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
-            BeaconButton.MaxTimer = CoolDown.GetFloat();
-            BeaconButton.Timer = CoolDown.GetFloat();
+            BeaconButton.MaxTimer = Cooldown.GetFloat();
+            BeaconButton.Timer = Cooldown.GetFloat();
         }
 
-        public static void ResetStartCoolDown()
+        public static void ResetStartCooldown()
         {
             StartButton.MaxTimer = 0;
             StartButton.Timer = 0;

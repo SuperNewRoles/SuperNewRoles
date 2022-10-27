@@ -269,7 +269,7 @@ namespace SuperNewRoles.Patches
 
                 //ViewBoosterPatch(__instance);
 
-                DestroyableSingleton<ModManager>.Instance.ShowModStamp();
+                FastDestroyableSingleton<ModManager>.Instance.ShowModStamp();
 
                 var amongUsLogo = GameObject.Find("bannerLogo_AmongUs");
                 if (amongUsLogo != null)
@@ -309,7 +309,7 @@ namespace SuperNewRoles.Patches
                     text.SetText(ModTranslation.GetString("サブマージドを適用する"));
                 })));
 
-                TwitchManager man = DestroyableSingleton<TwitchManager>.Instance;
+                TwitchManager man = FastDestroyableSingleton<TwitchManager>.Instance;
                 popup = UnityEngine.Object.Instantiate<GenericPopup>(man.TwitchPopup);
                 popup.TextAreaTMP.fontSize *= 0.7f;
                 popup.TextAreaTMP.enableAutoSizing = false;

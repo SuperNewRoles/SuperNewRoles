@@ -7,32 +7,36 @@ namespace SuperNewRoles.Roles
 {
     class Sheriff
     {
-        public static void ResetKillCoolDown()
+        public static void ResetKillCooldown()
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
+            try
             {
-                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
-                HudManagerStartPatch.SheriffKillButton.Timer = RoleClass.RemoteSheriff.CoolTime;
-                RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
+                {
+                    HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
+                    HudManagerStartPatch.SheriffKillButton.Timer = RoleClass.RemoteSheriff.CoolTime;
+                    RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+                }
+                else
+                {
+                    HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Chief.SheriffPlayer.Contains(CachedPlayer.LocalPlayer.PlayerId)
+                        ? RoleClass.Chief.CoolTime
+                        : RoleClass.Sheriff.CoolTime;
+                    HudManagerStartPatch.SheriffKillButton.Timer = HudManagerStartPatch.SheriffKillButton.MaxTimer;
+                }
             }
-            else
-            {
-                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Chief.SheriffPlayer.Contains(CachedPlayer.LocalPlayer.PlayerId)
-                    ? RoleClass.Chief.CoolTime
-                    : RoleClass.Sheriff.CoolTime;
-                HudManagerStartPatch.SheriffKillButton.Timer = HudManagerStartPatch.SheriffKillButton.MaxTimer;
-            }
+            catch { }
         }
         public static bool IsSheriffKill(PlayerControl Target)
         {
             var roledata = CountChanger.GetRoleType(Target);
             RoleId role = Target.GetRole();
 
-            if ((roledata == TeamRoleType.Impostor) || Target.IsRole(RoleId.HauntedWolf)) return CustomOptions.SheriffCanKillImpostor.GetBool();//インポスター、狼付きは設定がimp設定が有効な時切れる
+            if ((roledata == TeamRoleType.Impostor) || Target.IsRole(RoleId.HauntedWolf)) return CustomOptionHolder.SheriffCanKillImpostor.GetBool();//インポスター、狼付きは設定がimp設定が有効な時切れる
             if (RoleClass.Sheriff.IsLoversKill && Target.IsLovers()) return true;//ラバーズ
-            if (CustomOptions.SheriffQuarreledKill.GetBool() && Target.IsQuarreled()) return true;//クラード
+            if (CustomOptionHolder.SheriffQuarreledKill.GetBool() && Target.IsQuarreled()) return true;//クラード
             if (RoleClass.Sheriff.IsMadRoleKill && Target.IsMadRoles()) return true;
-            if (CustomOptions.SheriffFriendsRoleKill.GetBool() && Target.IsFriendRoles()) return true;
+            if (CustomOptionHolder.SheriffFriendsRoleKill.GetBool() && Target.IsFriendRoles()) return true;
             if (RoleClass.Sheriff.IsNeutralKill && Target.IsNeutral()) return true;
             return false;
         }
@@ -80,7 +84,7 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            ResetKillCoolDown();
+            ResetKillCooldown();
         }
     }
 }

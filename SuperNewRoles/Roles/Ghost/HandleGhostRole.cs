@@ -24,8 +24,8 @@ namespace SuperNewRoles.Roles
             //各役職にあったアサインをする
             var Team = TeamRoleType.Error;
             Team = player.IsCrew() ? TeamRoleType.Crewmate : player.IsNeutral() ? TeamRoleType.Neutral : TeamRoleType.Impostor;
-            List<IntroDate> GhostRoles = new();
-            foreach (IntroDate intro in IntroDate.GhostRoleDatas)
+            List<IntroData> GhostRoles = new();
+            foreach (IntroData intro in IntroData.GhostRoleData)
             {
                 if (intro.Team != Team) continue;
                 GhostRoles.Add(intro);
@@ -45,9 +45,9 @@ namespace SuperNewRoles.Roles
                     AllRoleSetClass.NeutralGhostRolePlayerNum--;
                     break;
                 case TeamRoleType.Crewmate:
-                    if (AllRoleSetClass.CrewMateGhostRolePlayerNum <= 0)
+                    if (AllRoleSetClass.CrewmateGhostRolePlayerNum <= 0)
                         return false;
-                    AllRoleSetClass.CrewMateGhostRolePlayerNum--;
+                    AllRoleSetClass.CrewmateGhostRolePlayerNum--;
                     break;
 
             }
@@ -56,17 +56,17 @@ namespace SuperNewRoles.Roles
         }
 
         //アサインする役職を決める
-        public static RoleId Assing(List<IntroDate> datas)
+        public static RoleId Assing(List<IntroData> introData)
         {
             List<RoleId> Assigns = new();
             List<RoleId> Assignnos = new();
             ModeId mode = ModeHandler.GetMode();
-            foreach (IntroDate data in datas)
+            foreach (IntroData data in introData)
             {
                 //その役職のプレイヤー数を取得
                 var count = AllRoleSetClass.GetPlayerCount(data.RoleId);
                 //設定を取得
-                var option = IntroDate.GetOption(data.RoleId);
+                var option = IntroData.GetOption(data.RoleId);
                 //確率を取得
                 var selection = option.GetSelection();
 

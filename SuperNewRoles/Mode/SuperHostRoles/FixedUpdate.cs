@@ -11,7 +11,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     public static class FixedUpdate
     {
         public static Dictionary<int, string> DefaultName = new();
-        private static int UpdateDate = 0;
+        private static int UpdateData = 0;
 
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.CoShowIntro))]
         class CoShowIntroPatch
@@ -93,13 +93,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             //必要がないなら処理しない
             if (player.IsMod() && DiePlayers.Count < 1 && (!IsHideAndSeek || !player.IsImpostor())) return;
 
-            var introdate = IntroDate.GetIntroDate(player.GetRole(), player);
+            var introData = IntroData.GetIntroData(player.GetRole(), player);
 
             string Name = player.GetDefaultName();
             string NewName = "";
             string MySuffix = "";
-            string RoleNameText = ModHelpers.Cs(introdate.color, introdate.Name);
-            string PlayerNameText = ModHelpers.Cs(introdate.color, Name + MySuffix);
+            string RoleNameText = ModHelpers.Cs(introData.color, introData.Name);
+            string PlayerNameText = ModHelpers.Cs(introData.color, Name + MySuffix);
             Dictionary<byte, string> ChangePlayers = new();
 
             foreach (PlayerControl CelebrityPlayer in RoleClass.Celebrity.CelebrityPlayer)
@@ -249,14 +249,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (RoleClass.Sheriff.KillCount.ContainsKey(player.PlayerId))
                 {
-                    RoleNameText += ModHelpers.Cs(introdate.color, $"{RoleClass.Sheriff.KillCount[player.PlayerId]}");
+                    RoleNameText += ModHelpers.Cs(introData.color, $"{RoleClass.Sheriff.KillCount[player.PlayerId]}");
                 }
             }
             else if (player.IsRole(RoleId.RemoteSheriff))
             {
                 if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId))
                 {
-                    RoleNameText += ModHelpers.Cs(introdate.color, $"{RoleClass.RemoteSheriff.KillCount[player.PlayerId]}");
+                    RoleNameText += ModHelpers.Cs(introData.color, $"{RoleClass.RemoteSheriff.KillCount[player.PlayerId]}");
                 }
             }
             else if (player.IsRole(RoleId.Mafia))
@@ -270,13 +270,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (RoleClass.Stefinder.IsKillSHR.ContainsKey(player.PlayerId))
                 {
-                    RoleNameText = ModHelpers.Cs(RoleClass.ImpostorRed, introdate.Name);
+                    RoleNameText = ModHelpers.Cs(RoleClass.ImpostorRed, introData.Name);
                     PlayerNameText = ModHelpers.Cs(RoleClass.ImpostorRed, Name + MySuffix);
                 }
                 else
                 {
-                    RoleNameText = ModHelpers.Cs(introdate.color, introdate.Name);
-                    PlayerNameText = ModHelpers.Cs(introdate.color, Name + MySuffix);
+                    RoleNameText = ModHelpers.Cs(introData.color, introData.Name);
+                    PlayerNameText = ModHelpers.Cs(introData.color, Name + MySuffix);
                 }
             }
 
@@ -313,8 +313,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (RoleClass.SatsumaAndImo.TeamNumber == 1) { MySuffix += ModHelpers.Cs(Palette.White, " (C)"); }
                     else { MySuffix += ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"); }
                 }
-                if (!RoleClass.Camouflager.IsCamouflage) NewName = "(<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>)" + PlayerNameText;
-                else NewName = "(<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.Cs(introdate.color, MySuffix);
+                if (!RoleClass.Camouflager.IsCamouflage) NewName = "(<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + TaskText + "</size>)" + PlayerNameText;
+                else NewName = "(<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + TaskText + "</size>)" + ModHelpers.Cs(introData.color, MySuffix);
             }
             else if (player.IsAlive() || IsUnchecked)
             {
@@ -332,7 +332,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
                 if (!RoleClass.Camouflager.IsCamouflage) NewName = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + PlayerNameText;
-                else NewName = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + ModHelpers.Cs(introdate.color, MySuffix);
+                else NewName = "<size=75%>" + RoleNameText + TaskText + "</size>\n" + ModHelpers.Cs(introData.color, MySuffix);
                 SuperNewRolesPlugin.Logger.LogInfo(NewName);
             }
             if (!player.IsMod())
@@ -423,15 +423,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
-                UpdateDate--;
+                UpdateData--;
                 RoleFixedUpdate();
 
                 if (AmongUsClient.Instance.AmHost)
                 {
                     BlockTool.FixedUpdate();
-                    if (UpdateDate <= 0)
+                    if (UpdateData <= 0)
                     {
-                        UpdateDate = 15;
+                        UpdateData = 15;
                         if (RoleClass.IsMeeting)
                         {
                             //SetDefaultNames();
