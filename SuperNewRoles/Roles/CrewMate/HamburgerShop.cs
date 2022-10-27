@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles.CrewMate
             public static void Prefix(Console __instance)
             {
                 if (!PlayerControl.LocalPlayer.IsRole(RoleId.HamburgerShop)
-                    || !CustomOptions.HamburgerShopChangeTaskPrefab.GetBool()) return;
+                    || !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool()) return;
                 __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
                 if (canUse)
                 {
@@ -29,7 +29,7 @@ namespace SuperNewRoles.Roles.CrewMate
             public static void Postfix(Console __instance)
             {
                 if (!PlayerControl.LocalPlayer.IsRole(RoleId.HamburgerShop)
-                    || !CustomOptions.HamburgerShopChangeTaskPrefab.GetBool()) return;
+                    || !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool()) return;
                 __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
                 if (canUse)
                 {

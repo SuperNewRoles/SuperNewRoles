@@ -46,9 +46,9 @@ namespace SuperNewRoles.Patches
                 Logger.Info("=================Other Data=================", "Intro Begin");
                 Logger.Info($"MapId:{PlayerControl.GameOptions.MapId} MapNames:{(MapNames)PlayerControl.GameOptions.MapId}", "Other Data");
                 Logger.Info($"Mode:{ModeHandler.GetMode()}", "Other Data");
-                foreach (IntroDate data in IntroDate.IntroDatas)
+                foreach (IntroData data in IntroData.IntroList)
                 {
-                    data._titleDesc = IntroDate.GetTitle(data.NameKey, data.TitleNum);
+                    data._titleDesc = IntroData.GetTitle(data.NameKey, data.TitleNum);
                 }
             }
         }
