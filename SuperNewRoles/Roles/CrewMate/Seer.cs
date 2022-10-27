@@ -42,7 +42,7 @@ namespace SuperNewRoles.Roles
                 renderer.enabled = true;
             }, duration * 4f + 0.5f, $"{duration * 4f + 0.5f}ShowFlashReset");
         }
-        public static void WrapUp_ShowFlash()
+        public static void ResetShowFlash()
         {
             // [enabled = false]のままにすると、以降リアクターのFlashが動かなくなる為、処理終了後trueに戻す為のLateTask
             // haomingさん　ありがとうございます!!
@@ -131,6 +131,7 @@ namespace SuperNewRoles.Roles
                         }
                     }
                 }
+                ResetShowFlash();
             }
 
             public static class MurderPlayerPatch
