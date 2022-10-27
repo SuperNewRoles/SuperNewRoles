@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles
 {
     public class Freezer
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.FreezerButton.MaxTimer = RoleClass.Freezer.CoolTime;
             HudManagerStartPatch.FreezerButton.Timer = HudManagerStartPatch.FreezerButton.MaxTimer;
@@ -36,7 +36,7 @@ namespace SuperNewRoles.Roles
         public static void SpeedDownEnd()
         {
             ResetSpeed();
-            ResetCoolDown();
+            ResetCooldown();
         }
         public static bool IsFreezer(PlayerControl Player)
         {
@@ -44,7 +44,7 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            ResetCoolDown();
+            ResetCooldown();
             ResetSpeed();
         }
     }

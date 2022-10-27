@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace SuperNewRoles
 {
-    [BepInAutoPlugin("jp.ykundesu.supernewroles","SuperNewRoles")]
+    [BepInAutoPlugin("jp.ykundesu.supernewroles", "SuperNewRoles")]
     [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInProcess("Among Us.exe")]
     public partial class SuperNewRolesPlugin : BasePlugin
@@ -39,7 +39,7 @@ namespace SuperNewRoles
         public static int optionsPage = 1;
         public Harmony Harmony { get; } = new Harmony("jp.ykundesu.supernewroles");
         public static SuperNewRolesPlugin Instance;
-        public static Dictionary<string, Dictionary<int, string>> StringDATE;
+        public static Dictionary<string, Dictionary<int, string>> StringDATA;
         public static bool IsUpdate = false;
         public static string NewVersion = "";
         public static string thisname;
@@ -53,7 +53,7 @@ namespace SuperNewRoles
             ChacheManager.Load();
             CustomCosmetics.CustomColors.Load();
             ConfigRoles.Load();
-            CustomOptions.Load();
+            CustomOptionHolder.Load();
             Patches.FreeNamePatch.Initialize();
             // All Load() End
 
@@ -86,7 +86,7 @@ namespace SuperNewRoles
 
             var assembly = Assembly.GetExecutingAssembly();
 
-            StringDATE = new Dictionary<string, Dictionary<int, string>>();
+            StringDATA = new Dictionary<string, Dictionary<int, string>>();
             Harmony.PatchAll();
             SubmergedCompatibility.Initialize();
 
@@ -106,16 +106,11 @@ namespace SuperNewRoles
         {
             public static void Prefix()
             {
-                /*
-                LegacySaveManager.chatModeType = 1;
-                LegacySaveManager.isGuest = false;*/
+                DataManager.Settings.Multiplayer.ChatMode = InnerNet.QuickChatModes.FreeChatOrQuickChat;
             }
             public static void Postfix(ChatController __instance)
             {
-                /*
-                LegacySaveManager.chatModeType = 1;
-                LegacySaveManager.isGuest = false;
-                */
+                DataManager.Settings.Multiplayer.ChatMode = InnerNet.QuickChatModes.FreeChatOrQuickChat;
 
                 if (Input.GetKeyDown(KeyCode.F1))
                 {

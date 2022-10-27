@@ -7,7 +7,7 @@ namespace SuperNewRoles.Roles
 {
     class EvilSpeedBooster
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.EvilSpeedBoosterBoostButton.MaxTimer = RoleClass.EvilSpeedBooster.CoolTime;
             RoleClass.EvilSpeedBooster.ButtonTimer = DateTime.Now;
@@ -20,7 +20,7 @@ namespace SuperNewRoles.Roles
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.SetSpeedBoost(true, CachedPlayer.LocalPlayer.PlayerId);
             RoleClass.EvilSpeedBooster.IsSpeedBoost = true;
-            ResetCoolDown();
+            ResetCooldown();
         }
         public static void ResetSpeed()
         {
@@ -40,7 +40,7 @@ namespace SuperNewRoles.Roles
         public static void SpeedBoostEnd()
         {
             ResetSpeed();
-            ResetCoolDown();
+            ResetCooldown();
         }
         public static bool IsEvilSpeedBooster(PlayerControl Player)
         {
