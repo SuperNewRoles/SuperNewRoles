@@ -17,8 +17,21 @@ namespace SuperNewRoles.Roles
             RoleClass.SeerFriends.SeerFriendsPlayer
         };
 
+        /** <summary>
+            画面を光らせる
+            </summary>
+
+            <param name="color">
+            (new Color("r値" / 255f, "g値" / 255f, "b値" / 255f))
+            あるいはUnityのcolorコード指定で色を選択
+            </param>
+
+            <param name="duration">
+            color色に画面を光らせはじめ、終わるまでの時間(duration/2秒時に指定色に光る)
+            </param>
+        **/
         public static void ShowFlash(Color color, float duration = 1f)
-        {//画面を光らせる
+        {
             var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
             if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
@@ -42,10 +55,11 @@ namespace SuperNewRoles.Roles
                 }
             })));
         }
+        /// <summary>
+        /// ShowFlashでReactorFlashや背景が無効化された物を有効化する
+        /// </summary>
         public static void ResetShowFlash()
         {
-            // [enabled = false]のままにすると、以降リアクターのFlashが動かなくなる為、処理終了後trueに戻す為のLateTask
-            // haomingさん　ありがとうございます!!
             var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
             renderer.enabled = true;
             renderer.color = Color.black;
