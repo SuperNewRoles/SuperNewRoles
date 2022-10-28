@@ -34,13 +34,13 @@ namespace SuperNewRoles.Roles
                 {
                     if (renderer != null)
                         renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
-                    if (p == 1f && renderer != null) renderer.enabled = false;
+                }
+                if (p == 1f && renderer != null)
+                {
+                    renderer.enabled = true;
+                    renderer.gameObject.SetActive(false);
                 }
             })));
-            new LateTask(() =>
-            {
-                renderer.enabled = true;
-            }, duration * 4f + 0.5f, $"{duration * 4f + 0.5f}ShowFlashReset");
         }
         public static void ResetShowFlash()
         {
