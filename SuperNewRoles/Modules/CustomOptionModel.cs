@@ -365,7 +365,7 @@ namespace SuperNewRoles.Modules
         {
             if (role is RoleTypes.Crewmate or RoleTypes.Impostor) return;
 
-            if (Mode.ModeHandler.IsBlockVanilaRole()) __result = 0;
+            if (Mode.ModeHandler.IsBlockVanillaRole()) __result = 0;
 
             if (role != RoleTypes.GuardianAngel) return;
 
