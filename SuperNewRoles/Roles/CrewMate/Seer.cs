@@ -140,7 +140,7 @@ namespace SuperNewRoles.Roles
                                     tmp.a = Mathf.Clamp01(1 - p);
                                     rend.color = tmp;
                                 }
-                                //if (p == 1f && rend != null && rend.gameObject != null) UnityEngine.Object.Destroy(rend.gameObject);
+                                if (p == 1f && rend != null && rend.gameObject != null) UnityEngine.Object.Destroy(rend.gameObject);
                             })));
                         }
                     }
