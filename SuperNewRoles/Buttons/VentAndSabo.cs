@@ -232,5 +232,17 @@ namespace SuperNewRoles.Buttons
                 return false;
             }
         }
+        [HarmonyPatch(typeof(Vent), nameof(Vent.SetOutline))]
+        class VentSetOutlinePatch
+        {
+            static void Postfix(Vent __instance)
+            {
+                // Vent outline set role color
+                var color = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer).color;
+                string[] outlines = new[] { "_OutlineColor", "_AddColor" };
+                foreach (var name in outlines)
+                    __instance.myRend.material.SetColor(name, color);
+            }
+        }
     }
 }
