@@ -206,7 +206,7 @@ namespace SuperNewRoles.Modules
         SetLovers,
         SetDeviceTime,
         UncheckedSetColor,
-        UncheckedSetVanilaRole,
+        UncheckedSetVanillaRole,
         SetMadKiller = 180,
         SetCustomSabotage,
         UseStuntmanCount,
@@ -517,7 +517,7 @@ namespace SuperNewRoles.Modules
                 Sheriff.ResetKillCooldown();
                 RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
             }
-            UncheckedSetVanilaRole(targetid, (byte)RoleTypes.Crewmate);
+            UncheckedSetVanillaRole(targetid, (byte)RoleTypes.Crewmate);
         }
         public static void FixLights()
         {
@@ -609,7 +609,7 @@ namespace SuperNewRoles.Modules
             ChacheManager.ResetMyRoleChache();
             PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
         }
-        public static void UncheckedSetVanilaRole(byte playerid, byte roletype)
+        public static void UncheckedSetVanillaRole(byte playerid, byte roletype)
         {
             var player = ModHelpers.PlayerById(playerid);
             if (player == null) return;
@@ -1292,8 +1292,8 @@ namespace SuperNewRoles.Modules
                         case CustomRPC.UncheckedSetColor:
                             __instance.SetColor(reader.ReadByte());
                             break;
-                        case CustomRPC.UncheckedSetVanilaRole:
-                            UncheckedSetVanilaRole(reader.ReadByte(), reader.ReadByte());
+                        case CustomRPC.UncheckedSetVanillaRole:
+                            UncheckedSetVanillaRole(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.SetMadKiller:
                             SetMadKiller(reader.ReadByte(), reader.ReadByte());

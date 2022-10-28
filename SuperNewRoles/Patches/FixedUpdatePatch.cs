@@ -152,7 +152,7 @@ namespace SuperNewRoles.Patches
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
-                        NormalButtonDestroy.Postfix();
+                        NormalButtonDestroy.SetActiveState();
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Pursuer:
