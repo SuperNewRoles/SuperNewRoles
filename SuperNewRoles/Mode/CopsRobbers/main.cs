@@ -196,7 +196,8 @@ namespace SuperNewRoles.Mode.CopsRobbers
 
         public static void HudUpdate()
         {
-            if (!AmongUsClient.Instance.AmHost) {
+            if (!AmongUsClient.Instance.AmHost)
+            {
                 if (PlayerControl.LocalPlayer.Data.PlayerName == PlayerControl.LocalPlayer.GetDefaultName())
                 {
                     SetNameUpdate.Postfix(CachedPlayer.LocalPlayer);

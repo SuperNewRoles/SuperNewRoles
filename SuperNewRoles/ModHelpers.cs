@@ -225,7 +225,7 @@ namespace SuperNewRoles
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, killer))
                 {
                     bool IsSend = false;
-                    if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId)||
+                    if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId) ||
                     RoleClass.MadStuntMan.GuardCount[target.PlayerId] > 0)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
@@ -259,7 +259,7 @@ namespace SuperNewRoles
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, killer))
                 {
                     bool IsSend = false;
-                    if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId)||
+                    if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId) ||
                     RoleClass.Fox.KillGuard[target.PlayerId] > 0)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);

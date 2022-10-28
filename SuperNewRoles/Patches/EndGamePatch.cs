@@ -1114,8 +1114,10 @@ namespace SuperNewRoles.Patches
             foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
             {
                 if (player.Object != null && player.Object.IsBot()) continue;
-                CustomPlayerData data = new(player, gameOverReason);
-                data.IsWin = TempData.winners.TrueForAll((Il2CppSystem.Predicate<WinningPlayerData>)(x => x.PlayerName == player.PlayerName));
+                CustomPlayerData data = new(player, gameOverReason)
+                {
+                    IsWin = TempData.winners.TrueForAll((Il2CppSystem.Predicate<WinningPlayerData>)(x => x.PlayerName == player.PlayerName))
+                };
                 PlayerData.Add(data);
             }
         }

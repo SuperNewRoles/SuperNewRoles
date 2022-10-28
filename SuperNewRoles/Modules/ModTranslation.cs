@@ -3,21 +3,26 @@ using System.IO;
 using System.Reflection;
 using AmongUs.Data;
 
-namespace SuperNewRoles.Modules {
-    public static class ModTranslation {
+namespace SuperNewRoles.Modules
+{
+    public static class ModTranslation
+    {
         // 一番左と一行全部
-        private static Dictionary<string, string[]> dictionary = new();
-        public static string GetString(string key) {
+        private static readonly Dictionary<string, string[]> dictionary = new();
+        public static string GetString(string key)
+        {
             // アモアス側の言語読み込みが完了しているか ? 今の言語 : 最後の言語
             SupportedLangs langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : DataManager.Settings.Language.CurrentLanguage;
 
             if (!dictionary.ContainsKey(key)) return key; // keyが辞書にないならkeyのまま返す
 
-            if (dictionary[key].Length < 4) { //中国語がない場合英語で返す
-                if (langId == SupportedLangs.SChinese)return dictionary[key][1];
+            if (dictionary[key].Length < 4)
+            { //中国語がない場合英語で返す
+                if (langId == SupportedLangs.SChinese) return dictionary[key][1];
             }
 
-            return langId switch {
+            return langId switch
+            {
                 SupportedLangs.English => dictionary[key][1], // 英語
                 SupportedLangs.Japanese => dictionary[key][2],// 日本語
                 SupportedLangs.SChinese => dictionary[key][3],// 中国語
@@ -25,14 +30,16 @@ namespace SuperNewRoles.Modules {
             };
         }
 
-        public static void LoadCsv() {
+        public static void LoadCsv()
+        {
             var fileName = Assembly.GetExecutingAssembly().GetManifestResourceStream("SuperNewRoles.Resources.Translate.csv");
 
             //csvを開く
             StreamReader sr = new(fileName);
 
             //1行ずつ処理
-            while (!sr.EndOfStream) {
+            while (!sr.EndOfStream)
+            {
                 // 行ごとの文字列
                 string line = sr.ReadLine();
 
@@ -43,7 +50,7 @@ namespace SuperNewRoles.Modules {
                 string[] values = line.Split(',');
 
                 // 配列から辞書に格納する
-                dictionary.Add(values[0],values);
+                dictionary.Add(values[0], values);
             }
         }
     }

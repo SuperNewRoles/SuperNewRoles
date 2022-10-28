@@ -214,7 +214,7 @@ namespace SuperNewRoles.Roles.Attribute
                     {
                         PlayerControl focusedTarget = ModHelpers.PlayerById(__instance.playerStates[buttonTarget].TargetPlayerId);
                         if (!(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted) || focusedTarget == null) return;
-                        if (RoleClass.NiceGuesser.Count != -1 && RoleClass.NiceGuesser.Count <= 0) return;
+                        if (RoleClass.NiceGuesser.Count is not (-1) and <= 0) return;
 
                         var Role = focusedTarget.GetRole();
 

@@ -27,10 +27,10 @@ namespace SuperNewRoles.Roles.Impostor
                 __instance.Target = PlayerControl.LocalPlayer;
                 Is = true;
             }
-            Vector3 val = (__instance.IsLeft ? __instance.LeftUsePosition : __instance.RightUsePosition);
-            Vector3 val2 = ((!__instance.IsLeft) ? __instance.LeftUsePosition : __instance.RightUsePosition);
-            Vector3 sourcePos = (__instance.IsLeft ? __instance.LeftPosition : __instance.RightPosition);
-            Vector3 targetPos = ((!__instance.IsLeft) ? __instance.LeftPosition : __instance.RightPosition);
+            Vector3 val = __instance.IsLeft ? __instance.LeftUsePosition : __instance.RightUsePosition;
+            Vector3 val2 = (!__instance.IsLeft) ? __instance.LeftUsePosition : __instance.RightUsePosition;
+            Vector3 sourcePos = __instance.IsLeft ? __instance.LeftPosition : __instance.RightPosition;
+            Vector3 targetPos = (!__instance.IsLeft) ? __instance.LeftPosition : __instance.RightPosition;
             Vector3 val3 = __instance.transform.parent.TransformPoint(val);
             Vector3 worldUseTargetPos = __instance.transform.parent.TransformPoint(val2);
             Vector3 worldSourcePos2 = __instance.transform.parent.TransformPoint(sourcePos);

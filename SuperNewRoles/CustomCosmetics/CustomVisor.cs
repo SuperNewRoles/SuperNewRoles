@@ -10,7 +10,7 @@ namespace SuperNewRoles.CustomCosmetics
     public class CustomVisor
     {
         public static bool isAdded = false;
-        static List<VisorData> visorData = new();
+        static readonly List<VisorData> visorData = new();
         [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetVisorById))]
         class UnlockedVisorPatch
         {

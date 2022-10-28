@@ -95,7 +95,8 @@ namespace SuperNewRoles.Patches
                         if (render.name != "IsSNROnlyRoom")
                             render.transform.parent.gameObject.SetActive(false);
                     IsSNROnlyRoomButtonRender.color = Color.white;
-                } else IsSNROnlyRoomButtonRender.color = Palette.DisabledGrey;
+                }
+                else IsSNROnlyRoomButtonRender.color = Palette.DisabledGrey;
                 (button = IsSNROnlyRoomButton.GetComponent<PassiveButton>()).OnClick.RemoveAllListeners();
                 button.OnClick.AddListener((UnityAction)(() =>
                 {
