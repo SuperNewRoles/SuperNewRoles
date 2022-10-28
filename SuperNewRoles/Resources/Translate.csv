@@ -189,7 +189,7 @@ IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家
 WireTaskIsRandom,Wire task random,配線タスクランダム随机分配修复配线的任务地点
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数
-IsSNROnlySearch,SNR Room Filter,SNRルームフィルター
+IsSNROnlySearch,SNR Room Filter,SNRルームフィルター,筛选SNR房间
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置
