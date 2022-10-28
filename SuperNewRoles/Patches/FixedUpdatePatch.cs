@@ -124,7 +124,8 @@ namespace SuperNewRoles.Patches
             OldModeButtons.OldModeUpdate();
 
             // -- 以下ゲーム中のみ --
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) {
+            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
+            {
                 if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
                 {
                     SNROnlySearch.FixedUpdate();
@@ -148,7 +149,7 @@ namespace SuperNewRoles.Patches
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
-                        NormalButtonDestroy.Postfix();
+                        NormalButtonDestroy.SetActiveState();
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Pursuer:

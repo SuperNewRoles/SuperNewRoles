@@ -184,11 +184,11 @@ namespace SuperNewRoles.Helpers
         }
         public static void RPCSetRoleUnchecked(this PlayerControl player, RoleTypes roletype)
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetVanilaRole, SendOption.Reliable);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetVanillaRole, SendOption.Reliable);
             writer.Write(player.PlayerId);
             writer.Write((byte)roletype);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.UncheckedSetVanilaRole(player.PlayerId, (byte)roletype);
+            RPCProcedure.UncheckedSetVanillaRole(player.PlayerId, (byte)roletype);
         }
         /// <summary>
         /// 役職をリセットし、新しい役職に変更します。
