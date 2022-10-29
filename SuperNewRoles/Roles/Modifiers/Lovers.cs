@@ -3,6 +3,7 @@ using HarmonyLib;
 using UnityEngine;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using Hazel;
 
 namespace SuperNewRoles.Roles
 {
@@ -79,5 +80,24 @@ namespace SuperNewRoles.Roles
             AliveTaskCount = CustomOptionHolder.LoversAliveTaskCount.GetBool();
             IsSingleTeam = CustomOptionHolder.LoversSingleTeam.GetBool();
         }
+
+        public static void SetLovers(PlayerControl player1, PlayerControl player2)
+        {
+            List<PlayerControl> sets = new() { player1, player2 };
+            Lovers.LoversPlayer.Add(sets);
+            if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            }
+            ChacheManager.ResetLoversChache();
+        }
+        public static void SetLoversRPC(PlayerControl player1, PlayerControl player2)
+        {
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetLovers, SendOption.Reliable, -1);
+            Writer.Write(player1.PlayerId);
+            Writer.Write(player2.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(Writer);
+        }
+
     }
 }

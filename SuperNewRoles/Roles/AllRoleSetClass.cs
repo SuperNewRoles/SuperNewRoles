@@ -374,8 +374,8 @@ namespace SuperNewRoles
                         listData.Add(SelectPlayers[player]);
                         SelectPlayers.RemoveAt(player);
                     }
-                    RoleHelpers.SetLovers(listData[0], listData[1]);
-                    RoleHelpers.SetLoversRPC(listData[0], listData[1]);
+                    Lovers.SetLovers(listData[0], listData[1]);
+                    Lovers.SetLoversRPC(listData[0], listData[1]);
                 }
             }
             ChacheManager.ResetLoversChache();

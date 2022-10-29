@@ -506,8 +506,8 @@ namespace SuperNewRoles.Buttons
                         var target = SetTarget();
                         if (target == null || target.IsLovers()) return;
                         RoleClass.Truelover.IsCreate = true;
-                        RoleHelpers.SetLovers(PlayerControl.LocalPlayer, target);
-                        RoleHelpers.SetLoversRPC(PlayerControl.LocalPlayer, target);
+                        Lovers.SetLovers(PlayerControl.LocalPlayer, target);
+                        Lovers.SetLoversRPC(PlayerControl.LocalPlayer, target);
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.truelover && !RoleClass.Truelover.IsCreate; },

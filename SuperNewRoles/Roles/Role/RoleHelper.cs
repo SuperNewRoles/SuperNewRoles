@@ -116,23 +116,7 @@ namespace SuperNewRoles
             Writer.Write(player2.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
         }
-        public static void SetLovers(PlayerControl player1, PlayerControl player2)
-        {
-            List<PlayerControl> sets = new() { player1, player2 };
-            Lovers.LoversPlayer.Add(sets);
-            if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
-            {
-                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            }
-            ChacheManager.ResetLoversChache();
-        }
-        public static void SetLoversRPC(PlayerControl player1, PlayerControl player2)
-        {
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetLovers, SendOption.Reliable, -1);
-            Writer.Write(player1.PlayerId);
-            Writer.Write(player2.PlayerId);
-            AmongUsClient.Instance.FinishRpcImmediately(Writer);
-        }
+
         public static void RemoveQuarreled(this PlayerControl player)
         {
             foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
@@ -165,6 +149,7 @@ namespace SuperNewRoles
             }
             return null;
         }
+
         public static PlayerControl GetOneSideLovers(this PlayerControl player, bool IsChache = true)
         {
             if (IsChache)

@@ -739,7 +739,7 @@ namespace SuperNewRoles.Modules
             => RoleHelpers.SetQuarreled(ModHelpers.PlayerById(playerid1), ModHelpers.PlayerById(playerid2));
 
         public static void SetLovers(byte playerid1, byte playerid2)
-            => RoleHelpers.SetLovers(ModHelpers.PlayerById(playerid1), ModHelpers.PlayerById(playerid2));
+            => Lovers.SetLovers(ModHelpers.PlayerById(playerid1), ModHelpers.PlayerById(playerid2));
 
         public static void SheriffKill(byte SheriffId, byte TargetId, bool MissFire)
         {

@@ -499,8 +499,8 @@ namespace SuperNewRoles.Patches
                                 if (target == null || target.IsLovers() || RoleClass.Truelover.CreatePlayers.Contains(__instance.PlayerId)) return false;
                                 __instance.RpcShowGuardEffect(target);
                                 RoleClass.Truelover.CreatePlayers.Add(__instance.PlayerId);
-                                RoleHelpers.SetLovers(__instance, target);
-                                RoleHelpers.SetLoversRPC(__instance, target);
+                                Lovers.SetLovers(__instance, target);
+                                Lovers.SetLoversRPC(__instance, target);
                                 //__instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
                                 Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);
