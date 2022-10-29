@@ -1159,9 +1159,10 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.ReEnableGameplay))]
     class ExileControllerReEnableGameplayPatch
     {
-        public static void Postfix(ExileController __instance)
+        public static void Postfix()
         {
             Buttons.CustomButton.MeetingEndedUpdate();
+            Modifier.allModifiers.Do(x => x.OnMeetingEnd());
         }
     }
 

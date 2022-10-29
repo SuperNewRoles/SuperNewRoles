@@ -6,7 +6,7 @@ using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
 {
-    class Lovers
+    class Lovers //: ModifierBase<Lovers>
     {
         [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
         class HandleDisconnectPatch

@@ -138,6 +138,7 @@ namespace SuperNewRoles.Patches
 
             SetBasePlayerOutlines();
             LadderDead.FixedUpdate();
+            Modifier.allModifiers.Do(x => x.FixedUpdate());
             switch (ModeHandler.GetMode())
             {
                 case ModeId.Default:

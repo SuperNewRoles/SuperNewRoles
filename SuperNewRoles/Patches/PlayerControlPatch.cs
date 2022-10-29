@@ -914,6 +914,7 @@ namespace SuperNewRoles.Patches
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
             DebugMode.MurderPlayerPatch.Announce();
             Roles.Crewmate.KnightProtected_Patch.MurderPlayerPatch.Postfix(target);
+            Modifier.allModifiers.DoIf(x => x.player == __instance, x => x.OnKill(target));
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
@@ -1024,6 +1025,7 @@ namespace SuperNewRoles.Patches
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance), RoleHelpers.GetCoolTime(__instance));
                 }
             }
+            Modifier.allModifiers.DoIf(x => x.player == target, x => x.OnDeath(__instance));
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CompleteTask))]
@@ -1081,6 +1083,7 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
+            Modifier.allModifiers.DoIf(x => x.player == __instance, x => x.OnDeath(null));
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody))]

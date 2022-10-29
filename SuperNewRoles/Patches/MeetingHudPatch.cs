@@ -13,6 +13,14 @@ using static MeetingHud;
 
 namespace SuperNewRoles.Patches
 {
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.OpenMeetingRoom))]
+    class OpenMeetingPatch
+    {
+        public static void Prefix(HudManager __instance)
+        {
+            Modifier.allModifiers.Do(x => x.OnMeetingStart());
+        }
+    }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
     class VotingComplete
     {
