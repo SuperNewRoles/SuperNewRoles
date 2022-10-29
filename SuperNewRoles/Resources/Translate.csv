@@ -568,6 +568,8 @@ JackalFriendsIsCheckJackalSetting,Is Check Jackal,ジャッカルをチェック
 DoctorName,Doctor,ドクター,医生
 DoctorTitle1,Check Vitals,バイタルをチェックしよう,随时查看生命监测装置来确认船员的生死
 DoctorVitalName,Vital,バイタル,生命监测装置
+DoctorChargeTime,Vital cool time,バイタルのクールタイム
+DoctorUseTime,Can use vital time,バイタルを見れる時間
 CountChangerName,Count Changer,カウントチェンジャー,巫师
 CountChangerTitle1,Let's change it,変更しよう,幻惑他人
 CountChangerTitle2,Let's swap the judgment with the enemy.,敵と判定を入れ替えよう,变更他人的阵营判定
@@ -829,6 +831,7 @@ KunoichiIsHide,Transparency,透明化,隐身
 KunoichiHideTime,Time required for transparency,透明化に必要な時間,女忍隐身所需要的时间
 KunoichiKunai,Kunai,クナイ,苦无
 KunoichiHideKunai,Can throw kunai during invisibility.,透明化中にクナイを投げれる,女忍隐身时可以投掷苦无
+KunoichiIsWaitAndPressTheButtonToHide,Transparency with a button,透明化をボタンで行う
 SecretlyKillerName,Secretly Killer,シークレットリーキラー,暗杀者
 SecretlyKillerTitle1,Please be quiet during the power outage.,停電中はお静かに,只有死人才能守住秘密
 SettingCoolCharge,Same in kill buttons,キル時のクール同期,暗杀者技能与击杀同步冷却
