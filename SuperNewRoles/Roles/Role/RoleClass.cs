@@ -2908,10 +2908,14 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static Dictionary<PlayerControl, PlayerControl> PenguinData;
             public static PlayerControl currentTarget => PenguinData.ContainsKey(CachedPlayer.LocalPlayer) ? PenguinData[CachedPlayer.LocalPlayer] : null;
+            private static Sprite _buttonSprite;
+            public static Sprite GetButtonSprite() => _buttonSprite;
             public static void ClearAndReload()
             {
                 PenguinPlayer = new();
                 PenguinData = new();
+                bool Is = ModHelpers.IsSucsessChance(4);
+                _buttonSprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.PenguinButton_{(Is ? 1 : 2)}.png", Is ? 87.5f : 110f);
             }
         }
         //新ロールクラス

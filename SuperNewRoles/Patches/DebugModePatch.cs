@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Agartha;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -47,8 +48,7 @@ namespace SuperNewRoles.Patches
                 //ここにデバッグ用のものを書いてね
                 if (ModHelpers.GetManyKeyDown(new[] { KeyCode.I, KeyCode.LeftControl }))
                 {
-                    GUIUtility.systemCopyBuffer = $"\nnew({CachedPlayer.LocalPlayer.transform.position.x}f, {CachedPlayer.LocalPlayer.transform.position.y}f),";
-                    Logger.Info($"コピー完了: \nnew({CachedPlayer.LocalPlayer.transform.position.x}f, {CachedPlayer.LocalPlayer.transform.position.y}f),");
+                    GameObject.Instantiate(MapLoader.Skeld);
                 }
                 if (ModHelpers.GetManyKeyDown(new[] { KeyCode.K, KeyCode.LeftControl }))
                 {

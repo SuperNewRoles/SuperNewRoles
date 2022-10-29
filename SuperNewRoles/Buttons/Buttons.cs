@@ -217,8 +217,9 @@ namespace SuperNewRoles.Buttons
                     PenguinButton.effectCancellable = false;
                     PenguinButton.EffectDuration = CustomOptionHolder.PenguinDurationTime.GetFloat();
                     PenguinButton.HasEffect = true;
+                    PenguinButton.Sprite = RoleClass.Penguin.GetButtonSprite();
                 },
-                RoleClass.WaveCannon.GetButtonSprite(),
+                RoleClass.Penguin.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -233,7 +234,7 @@ namespace SuperNewRoles.Buttons
                 }
             )
             {
-                buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
+                buttonText = "拉致",
                 showButtonText = true
             };
 
