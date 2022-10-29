@@ -506,6 +506,7 @@ namespace SuperNewRoles.Modules
         public static CustomOption EvilSeerModeSouls;
         public static CustomOption EvilSeerLimitSoulDuration;
         public static CustomOption EvilSeerSoulDuration;
+        public static CustomOption EvilSeerMadmateSetting;
 
         public static CustomRoleOption TeleportingJackalOption;
         public static CustomOption TeleportingJackalPlayerCount;
@@ -1393,6 +1394,7 @@ namespace SuperNewRoles.Modules
             EvilSeerMode = Create(336, false, CustomOptionType.Impostor, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, EvilSeerOption);
             EvilSeerLimitSoulDuration = Create(337, false, CustomOptionType.Impostor, "SeerLimitSoulDuration", false, EvilSeerOption);
             EvilSeerSoulDuration = Create(338, false, CustomOptionType.Impostor, "SeerSoulDuration", 15f, 0f, 120f, 5f, EvilSeerLimitSoulDuration, format: "unitCouples");
+            EvilSeerMadmateSetting = Create(1075, false, CustomOptionType.Impostor, "EvilSeerMadmateSetting", false, EvilSeerOption);
 
             TeleportingJackalOption = SetupCustomRoleOption(339, false, RoleId.TeleportingJackal);
             TeleportingJackalPlayerCount = Create(340, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TeleportingJackalOption);

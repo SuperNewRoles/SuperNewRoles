@@ -730,6 +730,7 @@ SeerSoulDuration,Soul Duration,幽霊が見える時間,灵魂从出现到消失
 MadSeerName,MadSeer,マッドシーア,背叛的灵媒
 MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろう,感知内鬼的行动
 EvilSeerName,EvilSeer,イビルシーア,邪恶的灵媒
+EvilSeerMadmateSetting,Can an EvilSeer Make a Madmate,イビルシーアがマッドメイトを作れるか,邪恶的灵媒可以招募一个叛徒
 EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡
 RemoteSheriffName,Remote Sheriff,リモートシェリフ,超能警长
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう,远距离进行执法
