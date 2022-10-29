@@ -745,8 +745,7 @@ namespace SuperNewRoles
             }
             else
             {
-                Logger.Info($"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}", "GetRPCNameFromByte");
-                str = callId.ToString();
+                str = $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}";
             }
             return str;
         }
