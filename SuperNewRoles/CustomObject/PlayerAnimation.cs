@@ -125,7 +125,7 @@ namespace SuperNewRoles.CustomObject
                 return;
             }
             updatetime -= Time.fixedDeltaTime;
-            OnFixedUpdate?.Invoke();
+            if (OnFixedUpdate != null) OnFixedUpdate();
             if (updatetime <= 0)
             {
                 index++;
@@ -139,7 +139,7 @@ namespace SuperNewRoles.CustomObject
                     {
                         Playing = false;
                         Logger.Info($"チェック:{OnAnimationEnd != null}");
-                        OnAnimationEnd?.Invoke();
+                        if(OnAnimationEnd != null) OnAnimationEnd();
                         return;
                     }
                 }
