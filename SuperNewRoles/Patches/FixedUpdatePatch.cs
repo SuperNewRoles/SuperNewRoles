@@ -49,11 +49,14 @@ namespace SuperNewRoles.Patches
                     RPCProcedure.SetHaison();
                     if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
-                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansDisconnect, false);
+                        Logger.Info("===================== Haison =====================", "End Game");
+                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
+
                     }
                     else
                     {
-                        ShipStatus.RpcEndGame(GameOverReason.HumansDisconnect, false);
+                        Logger.Info("===================== Haison =====================", "End Game");
+                        ShipStatus.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
                         MapUtilities.CachedShipStatus.enabled = false;
                     }
                 }
