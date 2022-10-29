@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Achievement;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
@@ -513,6 +514,8 @@ namespace SuperNewRoles.Patches
                 PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();
                 CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
             }
+            AchievementManagerSNR.WaitCompleteData.All(x => { AchievementManagerSNR.CompleteAchievement(x.TypeData, false); return false; });
+            AchievementManagerSNR.WaitCompleteData = new();
             var gameOverReason = AdditionalTempData.gameOverReason;
             AdditionalTempData.Clear();
             foreach (var p in GameData.Instance.AllPlayers)

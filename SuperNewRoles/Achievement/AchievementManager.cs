@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SuperNewRoles.Achievement
 {
-    class AchievementManage
+    class AchievementManagerSNR
     {
         public static List<AchievementData> AllAchievementData = new();
         public static List<AchievementData> CompletedAchievement = new();

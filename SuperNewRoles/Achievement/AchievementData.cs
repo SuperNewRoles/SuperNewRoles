@@ -26,9 +26,9 @@ namespace SuperNewRoles.Achievement
             Name = ModTranslation.GetString($"{NameKey}Name");
             Description = ModTranslation.GetString($"{NameKey}Description");
             Title = ModTranslation.GetString($"{NameKey}Title");
-            Complete = AchievementManager.currentData.Contains(Id+"\n");
+            Complete = AchievementManagerSNR.currentData.Contains(Id+"\n");
             Logger.Info($"{Name}が生成されました。{Complete}です。{Title} : {Description}");
-            AchievementManager.AllAchievementData.Add(this);
+            AchievementManagerSNR.AllAchievementData.Add(this);
         }
     }
 }

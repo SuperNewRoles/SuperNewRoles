@@ -23,9 +23,9 @@ namespace SuperNewRoles.Achievement
         }
         public static void ObjectCreate(string data)
         {
-            AchievementManager.AllAchievementData = new();
-            AchievementManager.currentData = data;
-            Logger.Info(AchievementManager.currentData);
+            AchievementManagerSNR.AllAchievementData = new();
+            AchievementManagerSNR.currentData = data;
+            Logger.Info(AchievementManagerSNR.currentData);
             foreach (AchievementType type in Enum.GetValues(typeof(AchievementType)))
             {
                 new AchievementData(type);
