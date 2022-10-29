@@ -326,6 +326,8 @@ SoothSayerEncampMode,Camp indicator,陣営表示,所属阵营
 SoothSayerMaxCountSetting,Number of times you can divine,占える回数,占卜师最大占卜次数
 SoothSayerGetChat,The Role of {0} is {1}.,{0}の役職は{1}です。,{0}的职业是{1}
 SoothSayerFirstWhiteOption,Can tell one person at the first meeting who is not an outsider.,最初の会議で一人だけ人外でない人がわかる
+SoothSayerCrewmateText,is crewmate,はクルーメイトです
+SoothSayerNotCrewmateText,is not crewmate,はクルーメイトではありません
 JesterName,Jester,てるてる,小丑
 JesterTitle1,Vote to get banned!,投票で追放されよう,想办法被投出去
 JesterDescription,If they are expelled at the meeting they win alone.,会議で追放されると、単独勝利します。,小丑在会议中被投出则小丑单独获胜。
