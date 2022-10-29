@@ -1172,7 +1172,7 @@ namespace SuperNewRoles.Modules
             }
             static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
             {
-                Logger.Info($"{ModHelpers.GetRPCNameFromByte(callId)}", "RPC");
+                Logger.Info(ModHelpers.GetRPCNameFromByte(callId), "RPC");
                 try
                 {
                     byte packetId = callId;
