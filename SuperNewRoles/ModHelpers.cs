@@ -732,22 +732,23 @@ namespace SuperNewRoles
         /// <summary>keyCodesが押されているか</summary>
         public static bool GetManyKeyDown(KeyCode[] keyCodes) =>
             keyCodes.All(x => Input.GetKey(x)) && keyCodes.Any(x => Input.GetKeyDown(x));
-        public static string GetRPCNameFromByte(byte callId) {
-            try {
-                string str;
-                if (Enum.GetName(typeof(RpcCalls), callId) != null) {
-                    str = Enum.GetName(typeof(RpcCalls), callId);
-                } else if (Enum.GetName(typeof(CustomRPC), callId) != null) {
-                    str = Enum.GetName(typeof(CustomRPC), callId);
-                } else {
-                    Logger.Info($"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}", "GetRPCNameFromByte");
-                    str = callId.ToString();
-                }
-                return str;
-            } catch {
-                Logger.Info($"callId:{callId}で例外が発生しました。", "GetRPCNameFromByte");
-                return "";
+        public static string GetRPCNameFromByte(byte callId)
+        {
+            string str;
+            if (Enum.GetName(typeof(RpcCalls), callId) != null)
+            {
+                str = Enum.GetName(typeof(RpcCalls), callId);
             }
+            else if (Enum.GetName(typeof(CustomRPC), callId) != null)
+            {
+                str = Enum.GetName(typeof(CustomRPC), callId);
+            }
+            else
+            {
+                Logger.Info($"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}", "GetRPCNameFromByte");
+                str = callId.ToString();
+            }
+            return str;
         }
     }
     public static class CreateFlag
