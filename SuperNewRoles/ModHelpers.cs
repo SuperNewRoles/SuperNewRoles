@@ -225,7 +225,7 @@ namespace SuperNewRoles
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, killer))
                 {
                     bool IsSend = false;
-                    if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId)||
+                    if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId) ||
                     RoleClass.MadStuntMan.GuardCount[target.PlayerId] > 0)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
@@ -259,7 +259,7 @@ namespace SuperNewRoles
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, killer))
                 {
                     bool IsSend = false;
-                    if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId)||
+                    if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId) ||
                     RoleClass.Fox.KillGuard[target.PlayerId] > 0)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
@@ -732,6 +732,23 @@ namespace SuperNewRoles
         /// <summary>keyCodesが押されているか</summary>
         public static bool GetManyKeyDown(KeyCode[] keyCodes) =>
             keyCodes.All(x => Input.GetKey(x)) && keyCodes.Any(x => Input.GetKeyDown(x));
+        public static string GetRPCNameFromByte(byte callId) {
+            try {
+                string str;
+                if (Enum.GetName(typeof(RpcCalls), callId) != null) {
+                    str = Enum.GetName(typeof(RpcCalls), callId);
+                } else if (Enum.GetName(typeof(CustomRPC), callId) != null) {
+                    str = Enum.GetName(typeof(CustomRPC), callId);
+                } else {
+                    Logger.Info($"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}", "GetRPCNameFromByte");
+                    str = callId.ToString();
+                }
+                return str;
+            } catch {
+                Logger.Info($"callId:{callId}で例外が発生しました。", "GetRPCNameFromByte");
+                return "";
+            }
+        }
     }
     public static class CreateFlag
     {
