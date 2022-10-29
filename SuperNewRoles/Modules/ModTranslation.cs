@@ -14,6 +14,10 @@ namespace SuperNewRoles.Modules {
             if (!dictionary.ContainsKey(key)) return key; // keyが辞書にないならkeyのまま返す
 
             if (dictionary[key].Length < 4) { //中国語がない場合英語で返す
+                var outputtedStr = new List<string>();
+                if (!outputtedStr.Contains(key))
+                    Logger.Info($"SChinese not found:{key}", "ModTranslation");
+                outputtedStr.Add(key);
                 if (langId == SupportedLangs.SChinese)return dictionary[key][1];
             }
 
