@@ -7,6 +7,7 @@ namespace SuperNewRoles.Modules {
     public static class ModTranslation {
         // 一番左と一行全部
         private static Dictionary<string, string[]> dictionary = new();
+        private static readonly List<string> outputtedStr = new();
         public static string GetString(string key) {
             // アモアス側の言語読み込みが完了しているか ? 今の言語 : 最後の言語
             SupportedLangs langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : DataManager.Settings.Language.CurrentLanguage;
@@ -14,7 +15,6 @@ namespace SuperNewRoles.Modules {
             if (!dictionary.ContainsKey(key)) return key; // keyが辞書にないならkeyのまま返す
 
             if (dictionary[key].Length < 4) { //中国語がない場合英語で返す
-                var outputtedStr = new List<string>();
                 if (!outputtedStr.Contains(key))
                     Logger.Info($"SChinese not found:{key}", "ModTranslation");
                 outputtedStr.Add(key);
