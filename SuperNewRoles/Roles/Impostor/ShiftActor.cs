@@ -91,7 +91,7 @@ namespace SuperNewRoles.Roles.Impostor
                 {
                     if (target.IsLovers())
                     {
-                        TargetRoleText += ModHelpers.Cs(RoleClass.Lovers.color, " ♥"); // ラバーズ
+                        TargetRoleText += ModHelpers.Cs(Lovers.color, " ♥"); // ラバーズ
                     }
                     else if (target.IsQuarreled())
                     {

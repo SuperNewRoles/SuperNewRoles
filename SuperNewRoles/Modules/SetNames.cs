@@ -223,7 +223,7 @@ namespace SuperNewRoles.Modules
         }
         public static void LoversSet()
         {
-            string suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
+            string suffix = ModHelpers.Cs(Lovers.color, " ♥");
             if (PlayerControl.LocalPlayer.IsLovers() && PlayerControl.LocalPlayer.IsAlive())
             {
                 PlayerControl side = PlayerControl.LocalPlayer.GetOneSideLovers();
@@ -231,9 +231,9 @@ namespace SuperNewRoles.Modules
                 if (!side.Data.Disconnected)
                     SetPlayerNameText(side, side.NameText().text + suffix);
             }
-            if ((PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
+            if ((PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God)) && Lovers.LoversPlayer != new List<List<PlayerControl>>())
             {
-                foreach (List<PlayerControl> ps in RoleClass.Lovers.LoversPlayer)
+                foreach (List<PlayerControl> ps in Lovers.LoversPlayer)
                 {
                     foreach (PlayerControl p in ps)
                     {

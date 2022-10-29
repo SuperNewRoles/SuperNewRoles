@@ -19,7 +19,7 @@ namespace SuperNewRoles.Roles
     {
         public static Dictionary<ModifierType, Type> allModTypes = new()
         {
-            //{ ModifierType.Lovers, typeof(ModifierBase<Lovers>) },
+            { ModifierType.Lovers, typeof(ModifierBase<Lovers>) },
         };
     }
 

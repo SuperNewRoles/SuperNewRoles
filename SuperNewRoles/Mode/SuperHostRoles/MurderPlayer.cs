@@ -50,7 +50,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-            if (RoleClass.Lovers.SameDie && target.IsLovers())
+            if (Lovers.SameDie && target.IsLovers())
             {
                 PlayerControl Side = target.GetOneSideLovers();
                 if (Side.IsAlive())

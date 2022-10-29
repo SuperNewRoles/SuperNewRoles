@@ -192,7 +192,6 @@ namespace SuperNewRoles.Roles
             Camouflager.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
-            Lovers.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
             ChacheManager.Load();
             Modifier.allModifiers.Do(x => x.ClearAndReload());
@@ -2880,21 +2879,6 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 QuarreledPlayer = new List<List<PlayerControl>>();
-            }
-        }
-        public static class Lovers
-        {
-            public static List<List<PlayerControl>> LoversPlayer;
-            public static Color32 color = new(255, 105, 180, byte.MaxValue);
-            public static bool SameDie;
-            public static bool AliveTaskCount;
-            public static bool IsSingleTeam;
-            public static void ClearAndReload()
-            {
-                LoversPlayer = new List<List<PlayerControl>>();
-                SameDie = CustomOptionHolder.LoversSameDie.GetBool();
-                AliveTaskCount = CustomOptionHolder.LoversAliveTaskCount.GetBool();
-                IsSingleTeam = CustomOptionHolder.LoversSingleTeam.GetBool();
             }
         }
     }

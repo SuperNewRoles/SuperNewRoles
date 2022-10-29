@@ -1807,7 +1807,7 @@ namespace SuperNewRoles.Modules
             QuarreledTeamCount = Create(433, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewmate = Create(434, true, CustomOptionType.Neutral, "QuarreledOnlyCrewmateSetting", false, QuarreledOption);
 
-            LoversOption = Create(435, true, CustomOptionType.Neutral, Cs(RoleClass.Lovers.color, "LoversName"), false, null, isHeader: true);
+            LoversOption = Create(435, true, CustomOptionType.Neutral, Cs(Lovers.color, "LoversName"), false, null, isHeader: true);
             LoversTeamCount = Create(436, true, CustomOptionType.Neutral, "LoversTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], LoversOption);
             LoversPar = Create(437, true, CustomOptionType.Neutral, "LoversParSetting", rates, LoversOption);
             LoversOnlyCrewmate = Create(438, true, CustomOptionType.Neutral, "LoversOnlyCrewmateSetting", false, LoversOption);

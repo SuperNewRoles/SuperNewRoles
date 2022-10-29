@@ -40,7 +40,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 exiled.Object.RpcSetRoleDesync(RoleTypes.GuardianAngel);
             }
-            if (RoleClass.Lovers.SameDie && exiled.Object.IsLovers())
+            if (Lovers.SameDie && exiled.Object.IsLovers())
             {
                 if (AmongUsClient.Instance.AmHost)
                 {

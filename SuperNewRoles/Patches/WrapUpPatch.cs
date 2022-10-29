@@ -120,7 +120,7 @@ namespace SuperNewRoles.Patches
             var Player = ModHelpers.PlayerById(exiled.PlayerId);
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                if (RoleClass.Lovers.SameDie && Player.IsLovers())
+                if (Lovers.SameDie && Player.IsLovers())
                 {
                     if (AmongUsClient.Instance.AmHost)
                     {

@@ -91,7 +91,7 @@ namespace SuperNewRoles
                 try { return ChacheManager.LoversChache[player.PlayerId] != null; }
                 catch { return false; }
             }
-            foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
+            foreach (List<PlayerControl> players in Lovers.LoversPlayer)
             {
                 foreach (PlayerControl p in players)
                 {
@@ -119,7 +119,7 @@ namespace SuperNewRoles
         public static void SetLovers(PlayerControl player1, PlayerControl player2)
         {
             List<PlayerControl> sets = new() { player1, player2 };
-            RoleClass.Lovers.LoversPlayer.Add(sets);
+            Lovers.LoversPlayer.Add(sets);
             if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
                 PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
@@ -171,7 +171,7 @@ namespace SuperNewRoles
             {
                 return ChacheManager.LoversChache[player.PlayerId] ?? null;
             }
-            foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
+            foreach (List<PlayerControl> players in Lovers.LoversPlayer)
             {
                 foreach (PlayerControl p in players)
                 {
@@ -1165,7 +1165,7 @@ namespace SuperNewRoles
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
                 player.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff, RoleId.ToiletFan, RoleId.NiceButtoner))
                 || player.IsQuarreled()
-                || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
+                || (!Lovers.AliveTaskCount && player.IsLovers())
                 || player.IsImpostor()))
             {
                 IsTaskClear = true;

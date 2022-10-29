@@ -206,7 +206,7 @@ namespace SuperNewRoles.Patches
             {
                 case WinCondition.LoversWin:
                     text = "LoversName";
-                    RoleColor = RoleClass.Lovers.color;
+                    RoleColor = Lovers.color;
                     break;
                 case WinCondition.GodWin:
                     text = "GodName";
@@ -348,7 +348,7 @@ namespace SuperNewRoles.Patches
             bool Temp1;
             if (!CustomOptionHolder.LoversSingleTeam.GetBool())
             {
-                foreach (List<PlayerControl> PlayerList in RoleClass.Lovers.LoversPlayer)
+                foreach (List<PlayerControl> PlayerList in Lovers.LoversPlayer)
                 {
                     Temp1 = false;
                     foreach (PlayerControl player in PlayerList)
@@ -362,7 +362,7 @@ namespace SuperNewRoles.Patches
                             if (!IsLovetexton && !haison)
                             {
                                 IsLovetexton = true;
-                                text = text + "&" + CustomOptionHolder.Cs(RoleClass.Lovers.color, "LoversName");
+                                text = text + "&" + CustomOptionHolder.Cs(Lovers.color, "LoversName");
                             }
                         }
                     }
@@ -541,7 +541,7 @@ namespace SuperNewRoles.Patches
                     string namesuffix = "";
                     if (p.Object.IsLovers())
                     {
-                        namesuffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
+                        namesuffix = ModHelpers.Cs(Lovers.color, " ♥");
                     }
                     AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
                     {
@@ -889,9 +889,9 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
-            foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
+            foreach (List<PlayerControl> plist in Lovers.LoversPlayer)
             {
-                if (RoleClass.Lovers.IsSingleTeam)
+                if (Lovers.IsSingleTeam)
                 {
                     bool IsWinLovers = false;
                     foreach (PlayerControl player in plist)
@@ -1013,9 +1013,9 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
-            foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
+            foreach (List<PlayerControl> plist in Lovers.LoversPlayer)
             {
-                if (!RoleClass.Lovers.IsSingleTeam)
+                if (!Lovers.IsSingleTeam)
                 {
                     bool IsWinLovers = false;
                     foreach (PlayerControl player in plist)

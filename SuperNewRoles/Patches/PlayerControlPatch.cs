@@ -982,7 +982,7 @@ namespace SuperNewRoles.Patches
                     }
                 }
                 Levelinger.MurderPlayer(__instance, target);
-                if (RoleClass.Lovers.SameDie && target.IsLovers())
+                if (Lovers.SameDie && target.IsLovers())
                 {
                     if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {
@@ -1068,7 +1068,7 @@ namespace SuperNewRoles.Patches
                 {
                     Roles.Neutral.Hitman.Death();
                 }
-                if (RoleClass.Lovers.SameDie && __instance.IsLovers())
+                if (Lovers.SameDie && __instance.IsLovers())
                 {
                     if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {

@@ -227,7 +227,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (player.IsLovers() &&
                 ((RoleClass.Camouflager.LoversMark && RoleClass.Camouflager.IsCamouflage) || !RoleClass.Camouflager.IsCamouflage))
             {
-                var suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
+                var suffix = ModHelpers.Cs(Lovers.color, " ♥");
                 PlayerControl Side = player.GetOneSideLovers();
                 string name = Side.GetDefaultName();
                 if (!ChangePlayers.ContainsKey(Side.PlayerId)) ChangePlayers.Add(Side.PlayerId, Side.GetPlayerName() + suffix);

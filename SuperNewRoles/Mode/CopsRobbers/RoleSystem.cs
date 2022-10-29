@@ -44,7 +44,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             /*
             if (player.IsLovers())
             {
-                var suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
+                var suffix = ModHelpers.Cs(Lovers.color, " ♥");
                 PlayerControl Side = player.GetOneSideLovers();
                 string name = Side.GetDefaultName();
                 if (!ChangePlayers.ContainsKey(Side.PlayerId)) ChangePlayers.Add(Side.PlayerId, Side.GetDefaultName() + suffix);
