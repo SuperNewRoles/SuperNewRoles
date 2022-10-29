@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using AmongUs.Data.Legacy;
+using AmongUs.Data;
 
 namespace SuperNewRoles.Modules {
     public static class ModTranslation {
@@ -9,7 +9,7 @@ namespace SuperNewRoles.Modules {
         private static Dictionary<string, string[]> dictionary = new();
         public static string GetString(string key) {
             // アモアス側の言語読み込みが完了しているか ? 今の言語 : 最後の言語
-            SupportedLangs langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : (SupportedLangs)LegacySaveManager.LastLanguage;
+            SupportedLangs langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : DataManager.Settings.Language.CurrentLanguage;
 
             if (!dictionary.ContainsKey(key)) return key; // keyが辞書にないならkeyのまま返す
 

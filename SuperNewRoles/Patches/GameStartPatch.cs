@@ -1,6 +1,4 @@
-using AmongUs.Data.Legacy;
 using HarmonyLib;
-using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches
@@ -52,7 +50,7 @@ namespace SuperNewRoles.Patches
                 {
                     GameStartManager.Instance.countDownTimer = 0;
                 }
-                if (CustomOptions.DebugModeFastStart != null && CustomOptions.DebugModeFastStart.GetBool() && CustomOptions.IsDebugMode.GetBool())//デバッグモードでデバッグ即開始が有効
+                if (CustomOptionHolder.DebugModeFastStart != null && CustomOptionHolder.DebugModeFastStart.GetBool() && CustomOptionHolder.IsDebugMode.GetBool())//デバッグモードでデバッグ即開始が有効
                 {//カウントダウン中
                     if (GameStartManager.InstanceExists && GameStartManager.Instance.startState == GameStartManager.StartingStates.Countdown)
                     {//カウント0

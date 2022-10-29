@@ -15,7 +15,7 @@ namespace SuperNewRoles.Roles.Impostor
             foreach (var Data in RoleClass.Matryoshka.Data)
             {
                 if (Data.Value == null) continue;
-                Data.Value.Reported = !CustomOptions.MatryoshkaWearReport.GetBool();
+                Data.Value.Reported = !CustomOptionHolder.MatryoshkaWearReport.GetBool();
                 Data.Value.bodyRenderer.enabled = false;
                 PlayerControl player = ModHelpers.PlayerById(Data.Key);
                 Data.Value.transform.position = player.transform.position;

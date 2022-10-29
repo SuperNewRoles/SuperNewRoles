@@ -16,17 +16,17 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
             IsLocalEnd = false;
             SuperNewRolesPlugin.Logger.LogInfo("スタートサボ！");
             SabotageManager.thisSabotage = SabotageManager.CustomSabotage.CognitiveDeficit;
-            foreach (Arrow aw in ArrowDatas)
+            foreach (Arrow aw in ArrowData)
             {
                 GameObject.Destroy(aw.arrow);
             }
-            ArrowDatas = new List<Arrow>();
+            ArrowData = new List<Arrow>();
             IsYellow = true;
-            foreach (Vector2 data in Datas)
+            foreach (Vector2 data in Data)
             {
                 Arrow arrow = new(Color.yellow);
                 arrow.arrow.SetActive(true);
-                ArrowDatas.Add(arrow);
+                ArrowData.Add(arrow);
             }
             UpdateTime = 0;// DefaultUpdateTime;
             DistanceTime = DefaultDistanceTime;
@@ -39,8 +39,8 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
         private static float DistanceTime;
         public static float DefaultDistanceTime = 5;
         private static bool IsYellow;
-        private static List<Arrow> ArrowDatas = new();
-        private static readonly Vector2[] Datas = new Vector2[] { new Vector2(-13.9f, -15.5f), new Vector2(-24.7f, -1f), new Vector2(10.6f, -15.5f) };
+        private static List<Arrow> ArrowData = new();
+        private static readonly Vector2[] Data = new Vector2[] { new Vector2(-13.9f, -15.5f), new Vector2(-24.7f, -1f), new Vector2(10.6f, -15.5f) };
         public static List<PlayerControl> OKPlayers;
         public static bool IsLocalEnd;
         public static bool IsAllEndSabotage;
@@ -116,13 +116,13 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                     }
                     ArrowUpdateColor = 0.25f;
                 }
-                foreach (Arrow arrow in ArrowDatas)
+                foreach (Arrow arrow in ArrowData)
                 {
-                    arrow.Update(Datas[arrowindex], SetColor);
+                    arrow.Update(Data[arrowindex], SetColor);
                     arrowindex++;
                 }
                 bool IsOK2 = false;
-                foreach (Vector2 data in Datas)
+                foreach (Vector2 data in Data)
                 {
                     if (!IsOK2)
                     {
@@ -180,11 +180,11 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                 {
                     TaskBar.Instance.gameObject.SetActive(IsLocalEnd);
                 }
-                foreach (Arrow aw in ArrowDatas)
+                foreach (Arrow aw in ArrowData)
                 {
                     GameObject.Destroy(aw.arrow);
                 }
-                ArrowDatas = new List<Arrow>();
+                ArrowData = new List<Arrow>();
                 foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                 {
                     p2.resetChange();

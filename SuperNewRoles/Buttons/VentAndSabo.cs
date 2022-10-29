@@ -158,7 +158,7 @@ namespace SuperNewRoles.Buttons
                     {
                         ImpostorVentButton.Show();
                     }
-                    if ((Input.GetKeyDown(KeyCode.V) || KeyboardJoystick.player.GetButtonDown(50)))
+                    if (Input.GetKeyDown(KeyCode.V) || KeyboardJoystick.player.GetButtonDown(50))
                     {
                         ImpostorVentButton.DoClick();
                     }
@@ -187,6 +187,15 @@ namespace SuperNewRoles.Buttons
                 }
             }
         }
+        [HarmonyPatch(typeof(Vent), nameof(Vent.SetButtons))]
+        public static class VentSetButtonsPatch
+        {
+            public static void Prefix(Vent __instance, ref bool enabled)
+            {
+                if (PlayerControl.LocalPlayer.IsMadRoles()) enabled = false;
+            }
+        }
+
         [HarmonyPatch(typeof(Vent), nameof(Vent.Use))]
         public static class VentUsePatch
         {
@@ -207,6 +216,7 @@ namespace SuperNewRoles.Buttons
                     PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(__instance.Id);
                 }
                 __instance.SetButtons(isEnter && canMoveInVents);
+
                 return false;
             }
         }
@@ -220,6 +230,18 @@ namespace SuperNewRoles.Buttons
 
                 FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                 return false;
+            }
+        }
+        [HarmonyPatch(typeof(Vent), nameof(Vent.SetOutline))]
+        class VentSetOutlinePatch
+        {
+            static void Postfix(Vent __instance)
+            {
+                // Vent outline set role color
+                var color = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer).color;
+                string[] outlines = new[] { "_OutlineColor", "_AddColor" };
+                foreach (var name in outlines)
+                    __instance.myRend.material.SetColor(name, color);
             }
         }
     }

@@ -49,11 +49,14 @@ namespace SuperNewRoles.Patches
                     RPCProcedure.SetHaison();
                     if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
-                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansDisconnect, false);
+                        Logger.Info("===================== Haison =====================", "End Game");
+                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
+
                     }
                     else
                     {
-                        ShipStatus.RpcEndGame(GameOverReason.HumansDisconnect, false);
+                        Logger.Info("===================== Haison =====================", "End Game");
+                        ShipStatus.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
                         MapUtilities.CachedShipStatus.enabled = false;
                     }
                 }
@@ -91,12 +94,12 @@ namespace SuperNewRoles.Patches
 
         static void ReduceKillCooldown(PlayerControl __instance)
         {
-            if (CustomOptions.IsAlwaysReduceCooldown.GetBool())
+            if (CustomOptionHolder.IsAlwaysReduceCooldown.GetBool())
             {
                 // オプションがOFFの場合はベント内はクールダウン減少を止める
-                bool exceptInVent = !CustomOptions.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
+                bool exceptInVent = !CustomOptionHolder.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
                 // 配電盤タスク中はクールダウン減少を止める
-                bool exceptOnTask = !CustomOptions.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
+                bool exceptOnTask = !CustomOptionHolder.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
 
                 if (!__instance.Data.IsDead && !__instance.CanMove && !exceptInVent && !exceptOnTask)
                 {
@@ -104,7 +107,7 @@ namespace SuperNewRoles.Patches
                     return;
                 }
             }
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && CustomOptions.TaskerIsKillCoolTaskNow.GetBool())
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && CustomOptionHolder.TaskerIsKillCoolTaskNow.GetBool())
             {
                 if (!__instance.Data.IsDead && !__instance.CanMove && Minigame.Instance != null && Minigame.Instance.MyNormTask != null && Minigame.Instance.MyNormTask.Owner.AmOwner)
                     __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
@@ -124,7 +127,14 @@ namespace SuperNewRoles.Patches
             OldModeButtons.OldModeUpdate();
 
             // -- 以下ゲーム中のみ --
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
+            {
+                if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
+                {
+                    SNROnlySearch.FixedUpdate();
+                }
+                return;
+            }
 
             SetBasePlayerOutlines();
             LadderDead.FixedUpdate();
@@ -135,15 +145,14 @@ namespace SuperNewRoles.Patches
                     SetNameUpdate.Postfix(__instance);
                     Jackal.JackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
-                    Roles.CrewMate.Psychometrist.FixedUpdate();
+                    Roles.Crewmate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
                     Roles.Neutral.PartTimer.FixedUpdate();
                     ReduceKillCooldown(__instance);
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
-                        if (PlayerControl.LocalPlayer.IsMadRoles()) { VentDataModules.MadmateVent(); }
-                        NormalButtonDestroy.Postfix();
+                        NormalButtonDestroy.SetActiveState();
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Pursuer:
@@ -203,10 +212,10 @@ namespace SuperNewRoles.Patches
                                 Doctor.FixedUpdate();
                                 break;
                             case RoleId.Psychometrist:
-                                Roles.CrewMate.Psychometrist.PsychometristFixedUpdate();
+                                Roles.Crewmate.Psychometrist.PsychometristFixedUpdate();
                                 break;
                             case RoleId.SeeThroughPerson:
-                                Roles.CrewMate.SeeThroughPerson.FixedUpdate();
+                                Roles.Crewmate.SeeThroughPerson.FixedUpdate();
                                 break;
                             case RoleId.Hitman:
                                 Roles.Neutral.Hitman.FixedUpdate();

@@ -5,27 +5,27 @@ namespace SuperNewRoles.Roles
     public static class SecretlyKiller
     {
         public static void EndMeeting()
-            => AllResetCoolDown();
+            => AllResetCooldown();
 
         //リセクール (by:Buttons.cs)
-        public static void MainResetCoolDown()
+        public static void MainResetCooldown()
         {
             //ノーマルリセット
             HudManagerStartPatch.SecretlyKillerMainButton.MaxTimer = RoleClass.SecretlyKiller.KillCoolTime;
             HudManagerStartPatch.SecretlyKillerMainButton.Timer = RoleClass.SecretlyKiller.KillCoolTime;
         }
-        public static void SecretlyResetCoolDown()
+        public static void SecretlyResetCooldown()
         {
             //シークレットリーリセット
             HudManagerStartPatch.SecretlyKillerSecretlyKillButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
             HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
         }
-        public static void AllResetCoolDown()
+        public static void AllResetCooldown()
         {
             //シークレットリーリセット
-            SecretlyResetCoolDown();
+            SecretlyResetCooldown();
             //ノーマルリセット
-            MainResetCoolDown();
+            MainResetCooldown();
         }
 
         //シークレットキル (by:Buttons.cs)
