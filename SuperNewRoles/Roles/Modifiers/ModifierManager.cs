@@ -29,6 +29,7 @@ namespace SuperNewRoles.Roles
         public PlayerControl player;
         public ModifierType modId;
 
+        public abstract void ClearAndReload();
         public abstract void OnMeetingStart();
         public abstract void OnMeetingEnd();
         public abstract void FixedUpdate();
@@ -36,7 +37,7 @@ namespace SuperNewRoles.Roles
         public abstract void OnDeath(PlayerControl killer = null);
         public abstract void HandleDisconnect(PlayerControl player, DisconnectReasons reason);
         public virtual void ResetModifier() { }
-        public virtual string modifyNameText(string nameText) { return nameText; }
+        public virtual string ModifyNameText(string nameText) { return nameText; }
 
         public static void ClearAll()
         {

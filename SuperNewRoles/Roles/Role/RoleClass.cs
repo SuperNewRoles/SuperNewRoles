@@ -195,6 +195,7 @@ namespace SuperNewRoles.Roles
             Lovers.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
             ChacheManager.Load();
+            Modifier.allModifiers.Do(x => x.ClearAndReload());
         }
         public static class SoothSayer
         {
