@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Sabotage;
@@ -752,7 +753,7 @@ namespace SuperNewRoles.Roles
                 {
                     a.Add("No");
                 }
-                return ModHelpers.GetRandom<string>(a) == "Suc";
+                return ListHelpers.GetRandom<string>(a) == "Suc";
             }
         }
         public static class Bestfalsecharge

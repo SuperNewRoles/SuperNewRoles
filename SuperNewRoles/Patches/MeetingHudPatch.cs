@@ -360,7 +360,7 @@ namespace SuperNewRoles.Patches
                         {
                             return p.IsDead() || p.PlayerId == exiledPlayer.PlayerId;
                         });
-                        exiledPlayer = ModHelpers.GetRandom(DictatorSubExileTargetList)?.Data;
+                        exiledPlayer = ListHelpers.GetRandom(DictatorSubExileTargetList)?.Data;
                     }
                 }
 

@@ -118,7 +118,7 @@ namespace SuperNewRoles.Roles.Neutral
             });
             if (targets.Count > 0)
             {
-                RoleClass.Hitman.Target = ModHelpers.GetRandom(targets);
+                RoleClass.Hitman.Target = ListHelpers.GetRandom(targets);
             }
         }
         public static void LimitDown()

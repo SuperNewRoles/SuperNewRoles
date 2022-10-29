@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Modules
 {
@@ -86,7 +87,7 @@ namespace SuperNewRoles.Modules
                     int index = -1;
                     while (Is)
                     {
-                        index = ModHelpers.GetRandomIndex(Color);
+                        index = ListHelpers.GetRandomIndex(Color);
                         if (!lists.Contains(index))
                         {
                             Is = false;

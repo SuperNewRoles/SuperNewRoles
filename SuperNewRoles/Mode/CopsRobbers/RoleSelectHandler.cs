@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Mode.CopsRobbers
 {
@@ -20,7 +21,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             {
                 if (SelectPlayers.Count >= 1)
                 {
-                    var newimpostor = ModHelpers.GetRandom(SelectPlayers);
+                    var newimpostor = ListHelpers.GetRandom(SelectPlayers);
                     impostors.Add(newimpostor);
                     SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
                 }

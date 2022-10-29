@@ -296,7 +296,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                             SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Index:" + i);
                             if (target.Count > 0)
                             {
-                                var index = ModHelpers.GetRandomIndex(target);
+                                var index = ListHelpers.GetRandomIndex(target);
                                 TempTeam.Add(target[index]);
                                 target.RemoveAt(index);
                                 SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Add");

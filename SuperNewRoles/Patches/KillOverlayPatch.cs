@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using HarmonyLib;
 using UnityEngine;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Patches
 {
@@ -18,7 +16,7 @@ namespace SuperNewRoles.Patches
                 if (killer.PlayerId == victim.PlayerId)
                 {
                     __state = __instance.KillAnims;
-                    int index = ModHelpers.GetRandomIndex(__state.ToList());
+                    int index = ListHelpers.GetRandomIndex(__state.ToList());
                     Logger.Info(__state.Length.ToString() + ":" + index.ToString());
                     //0を変えることで強制的にキルアニメーションが変わる
                     var anim = __state[3];

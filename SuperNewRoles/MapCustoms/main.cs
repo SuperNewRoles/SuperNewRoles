@@ -42,7 +42,7 @@ namespace SuperNewRoles.MapCustoms
             //配電盤を移動させる
             MoveElecPad.MoveElecPads();
 
-            if (ShipStatus.Instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
+            if (FastDestroyableSingleton<ShipStatus>.Instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
             {
                 GameObject gapRoom = FastDestroyableSingleton<ShipStatus>.Instance.FastRooms[SystemTypes.GapRoom].gameObject;
                 // ぬ～んを消す
@@ -52,20 +52,6 @@ namespace SuperNewRoles.MapCustoms
                     gapRoom.GetComponentsInChildren<PlatformConsole>().ForEach(x => x.gameObject.SetActive(false));
                 }
             }
-        }
-    }
-    public static class Extensions
-    {
-        public static void ForEach<T>(this IList<T> self, Action<T> todo)
-        {
-            for (int i = 0; i < self.Count; i++)
-            {
-                todo(self[i]);
-            }
-        }
-        public static T Random<T>(this IList<T> self)
-        {
-            return self.Count > 0 ? self[UnityEngine.Random.Range(0, self.Count)] : default;
         }
     }
 }

@@ -106,7 +106,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         (rightplayer != null && rightplayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId))
                     {
                         PlayerControl.LocalPlayer.moveable = true;
-                        PlayerControl.LocalPlayer.transform.position = ModHelpers.GetRandom(TeleportPositions);
+                        PlayerControl.LocalPlayer.transform.position = ListHelpers.GetRandom(TeleportPositions);
                     }
                     IsWait = false;
                     rightplayer = null;

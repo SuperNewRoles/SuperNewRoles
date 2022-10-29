@@ -4,6 +4,7 @@ using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.MapOptions;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Patches
 {
@@ -24,7 +25,7 @@ namespace SuperNewRoles.Patches
                 {
                     if (list.Count == 0)
                         list = new List<Console>(orgList);
-                    int index = ModHelpers.GetRandomIndex(list);
+                    int index = ListHelpers.GetRandomIndex(list);
                     __instance.Data[i] = (byte)list[index].ConsoleId;
                     list.RemoveAt(index);
                 }

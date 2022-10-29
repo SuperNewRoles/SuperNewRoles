@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
-
-using SuperNewRoles.Patches;
+using SuperNewRoles.Helpers;
 using UnityEngine;
 using static UnityEngine.UI.Button;
 
@@ -160,7 +159,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                         if (p.IsDead()) continue;
                         if (target.Count > 0)
                         {
-                            var index = ModHelpers.GetRandomIndex(target);
+                            var index = ListHelpers.GetRandomIndex(target);
                             OutfitManager.resetChange(p);
                             OutfitManager.changeToPlayer(p, target[index]);
                             target.RemoveAt(index);

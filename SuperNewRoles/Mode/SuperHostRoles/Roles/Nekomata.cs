@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 
@@ -53,7 +53,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         }
         public static void NekomataProc(List<PlayerControl> p)
         {
-            var rdm = ModHelpers.GetRandomIndex(p);
+            var rdm = ListHelpers.GetRandomIndex(p);
             var random = p[rdm];
             random.RpcCheckExile();
             if ((random.IsRole(RoleId.NiceNekomata) || random.IsRole(RoleId.EvilNekomata) || random.IsRole(RoleId.BlackCat)) && RoleClass.NiceNekomata.IsChain)

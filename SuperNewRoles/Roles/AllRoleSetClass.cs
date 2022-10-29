@@ -89,7 +89,7 @@ namespace SuperNewRoles
                 {
                     if (SelectPlayers.Count >= 1)
                     {
-                        var newimpostor = ModHelpers.GetRandom(SelectPlayers);
+                        var newimpostor = ListHelpers.GetRandom(SelectPlayers);
                         AllRoleSetClass.impostors.Add(newimpostor);
                         newimpostor.Data.Role.Role = RoleTypes.Impostor;
                         newimpostor.Data.Role.TeamType = RoleTeamTypes.Impostor;
@@ -304,7 +304,7 @@ namespace SuperNewRoles
                     List<PlayerControl> listData = new();
                     for (int i2 = 0; i2 < 2; i2++)
                     {
-                        var player = ModHelpers.GetRandomIndex<PlayerControl>(SelectPlayers);
+                        var player = ListHelpers.GetRandomIndex<PlayerControl>(SelectPlayers);
                         listData.Add(SelectPlayers[player]);
                         SelectPlayers.RemoveAt(player);
                     }
@@ -330,7 +330,7 @@ namespace SuperNewRoles
                 {
                     a.Add("No");
                 }
-                if (ModHelpers.GetRandom(a) == "No")
+                if (ListHelpers.GetRandom(a) == "No")
                 {
                     return;
                 }
@@ -370,7 +370,7 @@ namespace SuperNewRoles
                     List<PlayerControl> listData = new();
                     for (int i2 = 0; i2 < 2; i2++)
                     {
-                        var player = ModHelpers.GetRandomIndex(SelectPlayers);
+                        var player = ListHelpers.GetRandomIndex(SelectPlayers);
                         listData.Add(SelectPlayers[player]);
                         SelectPlayers.RemoveAt(player);
                     }
@@ -401,7 +401,7 @@ namespace SuperNewRoles
             {
                 if (Impoonepar.Count != 0)
                 {
-                    int selectRoleDataIndex = ModHelpers.GetRandomIndex(Impoonepar);
+                    int selectRoleDataIndex = ListHelpers.GetRandomIndex(Impoonepar);
                     RoleId selectRoleData = Impoonepar[selectRoleDataIndex];
 
                     if (selectRoleData == RoleId.EvilSpeedBooster)
@@ -435,7 +435,7 @@ namespace SuperNewRoles
                     {
                         for (int i = 1; i <= ImpostorPlayerNum; i++)
                         {
-                            PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
+                            PlayerControl p = ListHelpers.GetRandom(ImpostorPlayers);
                             p.SetRoleRPC(selectRoleData);
                             ImpostorPlayers.Remove(p);
                         }
@@ -456,7 +456,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= PlayerCount; i++)
                         {
                             ImpostorPlayerNum--;
-                            PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
+                            PlayerControl p = ListHelpers.GetRandom(ImpostorPlayers);
                             p.SetRoleRPC(selectRoleData);
                             ImpostorPlayers.Remove(p);
                         }
@@ -470,7 +470,7 @@ namespace SuperNewRoles
                 }
                 else
                 {
-                    int selectRoleDataIndex = ModHelpers.GetRandomIndex(Imponotonepar);
+                    int selectRoleDataIndex = ListHelpers.GetRandomIndex(Imponotonepar);
                     RoleId selectRoleData = Imponotonepar[selectRoleDataIndex];
 
                     if (selectRoleData == RoleId.EvilSpeedBooster)
@@ -504,7 +504,7 @@ namespace SuperNewRoles
                     {
                         for (int i = 1; i <= ImpostorPlayerNum; i++)
                         {
-                            PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
+                            PlayerControl p = ListHelpers.GetRandom(ImpostorPlayers);
                             p.SetRoleRPC(selectRoleData);
                             ImpostorPlayers.Remove(p);
                         }
@@ -524,7 +524,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= PlayerCount; i++)
                         {
                             ImpostorPlayerNum--;
-                            PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
+                            PlayerControl p = ListHelpers.GetRandom(ImpostorPlayers);
                             p.SetRoleRPC(selectRoleData);
                             ImpostorPlayers.Remove(p);
                         }
@@ -550,7 +550,7 @@ namespace SuperNewRoles
                 {
                     for (int i = 1; i <= CrewmatePlayerNum; i++)
                     {
-                        PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                        PlayerControl p = ListHelpers.GetRandom(CrewmatePlayers);
                         p.SetRoleRPC(RoleId.Marine);
                         CrewmatePlayers.Remove(p);
                     }
@@ -569,7 +569,7 @@ namespace SuperNewRoles
                     for (int i = 1; i <= PlayerCount; i++)
                     {
                         CrewmatePlayerNum--;
-                        PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                        PlayerControl p = ListHelpers.GetRandom(CrewmatePlayers);
                         p.SetRoleRPC(RoleId.Marine);
                         CrewmatePlayers.Remove(p);
                     }
@@ -588,7 +588,7 @@ namespace SuperNewRoles
             {
                 if (Neutonepar.Count > 0)
                 {
-                    int selectRoleDataIndex = ModHelpers.GetRandomIndex(Neutonepar);
+                    int selectRoleDataIndex = ListHelpers.GetRandomIndex(Neutonepar);
                     RoleId selectRoleData = Neutonepar[selectRoleDataIndex];
 
                     if (selectRoleData == RoleId.Revolutionist)
@@ -601,7 +601,7 @@ namespace SuperNewRoles
                     {
                         for (int i = 1; i <= NeutralPlayerNum; i++)
                         {
-                            PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                            PlayerControl p = ListHelpers.GetRandom(CrewmatePlayers);
                             p.SetRoleRPC(selectRoleData);
                             CrewmatePlayers.Remove(p);
                         }
@@ -621,7 +621,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= PlayerCount; i++)
                         {
                             NeutralPlayerNum--;
-                            PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                            PlayerControl p = ListHelpers.GetRandom(CrewmatePlayers);
                             p.SetRoleRPC(selectRoleData);
                             CrewmatePlayers.Remove(p);
                         }
@@ -635,7 +635,7 @@ namespace SuperNewRoles
                 }
                 else
                 {
-                    int selectRoleDataIndex = ModHelpers.GetRandomIndex(Neutnotonepar);
+                    int selectRoleDataIndex = ListHelpers.GetRandomIndex(Neutnotonepar);
                     RoleId selectRoleData = Neutnotonepar[selectRoleDataIndex];
 
                     if (selectRoleData == RoleId.Revolutionist)
@@ -648,7 +648,7 @@ namespace SuperNewRoles
                     {
                         for (int i = 1; i <= NeutralPlayerNum; i++)
                         {
-                            PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                            PlayerControl p = ListHelpers.GetRandom(CrewmatePlayers);
                             p.SetRoleRPC(selectRoleData);
                             CrewmatePlayers.Remove(p);
                         }
@@ -667,7 +667,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= PlayerCount; i++)
                         {
                             NeutralPlayerNum--;
-                            PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                            PlayerControl p = ListHelpers.GetRandom(CrewmatePlayers);
                             p.SetRoleRPC(selectRoleData);
                             CrewmatePlayers.Remove(p);
                         }
@@ -694,7 +694,7 @@ namespace SuperNewRoles
                 {
                     for (int i = 1; i <= CrewmatePlayerNum; i++)
                     {
-                        int index = ModHelpers.GetRandomIndex(CrewmatePlayers);
+                        int index = ListHelpers.GetRandomIndex(CrewmatePlayers);
                         PlayerControl p = CrewmatePlayers[index];
                         p.SetRoleRPC(RoleId.Dictator);
                         CrewmatePlayers.RemoveAt(index);
@@ -715,7 +715,7 @@ namespace SuperNewRoles
                     for (int i = 1; i <= PlayerCount; i++)
                     {
                         CrewmatePlayerNum--;
-                        int Index = ModHelpers.GetRandomIndex(CrewmatePlayers);
+                        int Index = ListHelpers.GetRandomIndex(CrewmatePlayers);
                         PlayerControl p = CrewmatePlayers[Index];
                         p.SetRoleRPC(RoleId.Dictator);
                         CrewmatePlayers.RemoveAt(Index);
@@ -734,14 +734,14 @@ namespace SuperNewRoles
             {
                 if (Crewonepar.Count > 0)
                 {
-                    int selectRoleDataIndex = ModHelpers.GetRandomIndex(Crewonepar);
+                    int selectRoleDataIndex = ListHelpers.GetRandomIndex(Crewonepar);
                     RoleId selectRoleData = Crewonepar[selectRoleDataIndex];
                     int PlayerCount = (int)GetPlayerCount(selectRoleData);
                     if (PlayerCount >= CrewmatePlayerNum)
                     {
                         for (int i = 1; i <= CrewmatePlayerNum; i++)
                         {
-                            PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                            PlayerControl p = ListHelpers.GetRandom(CrewmatePlayers);
                             p.SetRoleRPC(selectRoleData);
                             CrewmatePlayers.Remove(p);
                         }
@@ -761,7 +761,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= PlayerCount; i++)
                         {
                             CrewmatePlayerNum--;
-                            PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                            PlayerControl p = ListHelpers.GetRandom(CrewmatePlayers);
                             p.SetRoleRPC(selectRoleData);
                             CrewmatePlayers.Remove(p);
                         }
@@ -775,14 +775,14 @@ namespace SuperNewRoles
                 }
                 else
                 {
-                    int selectRoleDataIndex = ModHelpers.GetRandomIndex(Crewnotonepar);
+                    int selectRoleDataIndex = ListHelpers.GetRandomIndex(Crewnotonepar);
                     RoleId selectRoleData = Crewnotonepar[selectRoleDataIndex];
                     int PlayerCount = (int)GetPlayerCount(selectRoleData);
                     if (PlayerCount >= CrewmatePlayerNum)
                     {
                         for (int i = 1; i <= CrewmatePlayerNum; i++)
                         {
-                            PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                            PlayerControl p = ListHelpers.GetRandom(CrewmatePlayers);
                             p.SetRoleRPC(selectRoleData);
                             CrewmatePlayers.Remove(p);
                         }
@@ -801,7 +801,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= PlayerCount; i++)
                         {
                             CrewmatePlayerNum--;
-                            PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                            PlayerControl p = ListHelpers.GetRandom(CrewmatePlayers);
                             p.SetRoleRPC(selectRoleData);
                             CrewmatePlayers.Remove(p);
                         }

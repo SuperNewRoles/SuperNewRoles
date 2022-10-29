@@ -13,6 +13,7 @@ using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.CustomCosmetics
 {
@@ -288,7 +289,8 @@ namespace SuperNewRoles.CustomCosmetics
                         }
                     }
                 }
-                foreach (var data in CustomHatLoader.hatDetails) {
+                foreach (var data in CustomHatLoader.hatDetails)
+                {
                     var hat = GenereteHatData(data);
                     CreateHatSprite(hat.resource, true);
                     yield return new WaitForSeconds(0.0005f);
@@ -461,8 +463,8 @@ namespace SuperNewRoles.CustomCosmetics
                 HatData[] unlockedHats = FastDestroyableSingleton<HatManager>.Instance.GetUnlockedHats();
                 Dictionary<string, List<System.Tuple<HatData, HatExtension>>> packages = new();
 
-                ModHelpers.DestroyList(hatsTabCustomTexts);
-                ModHelpers.DestroyList(__instance.ColorChips);
+                ListHelpers.DestroyList(hatsTabCustomTexts);
+                ListHelpers.DestroyList(__instance.ColorChips);
 
                 hatsTabCustomTexts.Clear();
                 __instance.ColorChips.Clear();

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Buttons;
-
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles
 {
@@ -23,7 +23,7 @@ namespace SuperNewRoles.Roles
                     aliveplayers.Add(p);
                 }
             }
-            var player = ModHelpers.GetRandom(aliveplayers);
+            var player = ListHelpers.GetRandom(aliveplayers);
             RPCProcedure.TeleporterTP(player.PlayerId);
 
             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TeleporterTP, SendOption.Reliable, -1);

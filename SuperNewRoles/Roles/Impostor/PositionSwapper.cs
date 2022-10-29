@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Buttons;
-
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles
 {
@@ -30,7 +30,7 @@ namespace SuperNewRoles.Roles
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:" + p.PlayerId + "\n生存:" + p.IsAlive());
             }
-            var RandomPlayer = ModHelpers.GetRandom<PlayerControl>(AlivePlayer);
+            var RandomPlayer = ListHelpers.GetRandom<PlayerControl>(AlivePlayer);
             var PushSwapper = PlayerControl.LocalPlayer;
             RPCProcedure.PositionSwapperTP(RandomPlayer.PlayerId, PushSwapper.PlayerId);
 

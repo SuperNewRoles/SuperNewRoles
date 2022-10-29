@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles
 {
@@ -93,12 +94,12 @@ namespace SuperNewRoles.Roles
             //100%アサインリストの中身が0ではなかったらランダムに選んでアサイン
             if (Assigns.Count > 0)
             {
-                return ModHelpers.GetRandom(Assigns);
+                return ListHelpers.GetRandom(Assigns);
                 //100%ではない、アサインリストの中身が0ではなかったらランダムに選んでアサイン
             }
             else if (Assignnos.Count > 0)
             {
-                return ModHelpers.GetRandom(Assignnos);
+                return ListHelpers.GetRandom(Assignnos);
             }
             //どっちも中身が0だったら通常の役職(DefaultRole)を返す
             return RoleId.DefaultRole;

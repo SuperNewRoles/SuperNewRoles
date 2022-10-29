@@ -113,14 +113,14 @@ namespace SuperNewRoles.Mode.CopsRobbers
         {
             if (!SpawnPosition.ContainsKey(player.PlayerId))
             {
-                var type = ModHelpers.GetRandom(Rooms[GetMap()]);
+                var type = ListHelpers.GetRandom(Rooms[GetMap()]);
                 SpawnPosition[player.PlayerId] = type;
             }
             return (SystemTypes)SpawnPosition[player.PlayerId];
         }
         public static SystemTypes SetRandomArrestPosition(PlayerControl player)
         {
-            var type = ModHelpers.GetRandom(Rooms[GetMap()]);
+            var type = ListHelpers.GetRandom(Rooms[GetMap()]);
             ArrestPositions[player.PlayerId] = type;
             Arrest.Add(player.PlayerId);
             //player.MyPhysics.RpcClimbLadder(null);
@@ -196,7 +196,8 @@ namespace SuperNewRoles.Mode.CopsRobbers
 
         public static void HudUpdate()
         {
-            if (!AmongUsClient.Instance.AmHost) {
+            if (!AmongUsClient.Instance.AmHost)
+            {
                 if (PlayerControl.LocalPlayer.Data.PlayerName == PlayerControl.LocalPlayer.GetDefaultName())
                 {
                     SetNameUpdate.Postfix(CachedPlayer.LocalPlayer);

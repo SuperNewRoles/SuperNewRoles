@@ -5,8 +5,6 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using Hazel;
-
-
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using TMPro;
@@ -52,28 +50,6 @@ namespace SuperNewRoles
             texture.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
             sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
             return sprite;
-        }
-        public static void Shuffle<T>(this IList<T> self, int startAt = 0)
-        {
-            for (int i = startAt; i < self.Count - 1; i++)
-            {
-                T value = self[i];
-                int index = UnityEngine.Random.Range(i, self.Count);
-                self[i] = self[index];
-                self[index] = value;
-            }
-        }
-
-        // Token: 0x060002F4 RID: 756 RVA: 0x00013308 File Offset: 0x00011508
-        public static void Shuffle<T>(this System.Random r, IList<T> self)
-        {
-            for (int i = 0; i < self.Count; i++)
-            {
-                T value = self[i];
-                int index = r.Next(self.Count);
-                self[i] = self[index];
-                self[index] = value;
-            }
         }
         public static byte? GetKey(this Dictionary<byte, byte> dec, byte Value)
         {
@@ -173,22 +149,6 @@ namespace SuperNewRoles
             return res;
         }
 
-        public static void DestroyList<T>(Il2CppSystem.Collections.Generic.List<T> items) where T : UnityEngine.Object
-        {
-            if (items == null) return;
-            foreach (T item in items)
-            {
-                UnityEngine.Object.Destroy(item);
-            }
-        }
-        public static void DestroyList<T>(List<T> items) where T : UnityEngine.Object
-        {
-            if (items == null) return;
-            foreach (T item in items)
-            {
-                UnityEngine.Object.Destroy(item);
-            }
-        }
         public static MurderAttemptResult CheckMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
         {
             // Modified vanilla checks
@@ -390,24 +350,7 @@ namespace SuperNewRoles
             var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
             return client;
         }
-        public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
-        {
-            List<T> newList = new();
-            foreach (T item in list)
-            {
-                newList.Add(item);
-            }
-            return newList;
-        }
-        public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this List<T> list)
-        {
-            Il2CppSystem.Collections.Generic.List<T> newList = new();
-            foreach (T item in list)
-            {
-                newList.Add(item);
-            }
-            return newList;
-        }
+
         public static Dictionary<string, AudioClip> CachedAudioClips = new();
         public static AudioClip loadAudioClipFromResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")
         {
@@ -533,16 +476,6 @@ namespace SuperNewRoles
         public static string Cs(Color c, string s)
         {
             return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptionHolder.ToByte(c.r), CustomOptionHolder.ToByte(c.g), CustomOptionHolder.ToByte(c.b), CustomOptionHolder.ToByte(c.a), s);
-        }
-        public static T GetRandom<T>(this List<T> list)
-        {
-            var indexData = UnityEngine.Random.Range(0, list.Count);
-            return list[indexData];
-        }
-        public static int GetRandomIndex<T>(List<T> list)
-        {
-            var indexData = UnityEngine.Random.Range(0, list.Count);
-            return indexData;
         }
 
         public static Dictionary<byte, SpriteRenderer> MyRendCache = new();

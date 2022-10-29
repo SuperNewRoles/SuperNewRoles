@@ -33,7 +33,7 @@ namespace SuperNewRoles.Mode.Detective
                     selectplayers.Add(p);
                 }
             }
-            var random = ModHelpers.GetRandom(selectplayers);
+            var random = ListHelpers.GetRandom(selectplayers);
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDetective);
             writer.Write(random.PlayerId);
             writer.EndRPC();
