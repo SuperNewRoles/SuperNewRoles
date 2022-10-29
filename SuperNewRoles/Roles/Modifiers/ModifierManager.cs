@@ -58,62 +58,28 @@ namespace SuperNewRoles.Roles
             allModifiers.Add(this);
         }
 
-        public static T local
-        {
-            get
-            {
-                return players.FirstOrDefault(x => x.player == CachedPlayer.LocalPlayer.PlayerControl);
-            }
-        }
+        public static T Local { get { return players.FirstOrDefault(x => x.player == CachedPlayer.LocalPlayer.PlayerControl); } }
+        public static List<PlayerControl> AllPlayers { get { return players.Select(x => x.player).ToList(); } }
+        public static List<PlayerControl> LivingPlayers { get { return players.Select(x => x.player).Where(x => x.IsAlive()).ToList(); } }
+        public static List<PlayerControl> DeadPlayers { get { return players.Select(x => x.player).Where(x => !x.IsAlive()).ToList(); } }
+        public static bool Exists { get { return players.Count > 0; } }
 
-        public static List<PlayerControl> allPlayers
-        {
-            get
-            {
-                return players.Select(x => x.player).ToList();
-            }
-        }
-
-        public static List<PlayerControl> livingPlayers
-        {
-            get
-            {
-                return players.Select(x => x.player).Where(x => x.IsAlive()).ToList();
-            }
-        }
-
-        public static List<PlayerControl> deadPlayers
-        {
-            get
-            {
-                return players.Select(x => x.player).Where(x => !x.IsAlive()).ToList();
-            }
-        }
-
-        public static bool exists
-        {
-            get { return players.Count > 0; }
-        }
-
-        public static T getModifier(PlayerControl player = null)
+        public static T GetModifier(PlayerControl player = null)
         {
             player ??= CachedPlayer.LocalPlayer.PlayerControl;
             return players.FirstOrDefault(x => x.player == player);
         }
 
-        public static bool hasModifier(PlayerControl player)
-        {
-            return players.Any(x => x.player == player);
-        }
+        public static bool HasModifier(PlayerControl player) { return players.Any(x => x.player == player); }
 
-        public static T addModifier(PlayerControl player)
+        public static T AddModifier(PlayerControl player)
         {
             T mod = new();
             mod.Init(player);
             return mod;
         }
 
-        public static void eraseModifier(PlayerControl player, RoleId newRole = RoleId.DefaultRole)
+        public static void EraseModifier(PlayerControl player, RoleId newRole = RoleId.DefaultRole)
         {
             List<T> toRemove = new();
 
@@ -126,7 +92,7 @@ namespace SuperNewRoles.Roles
             allModifiers.RemoveAll(x => toRemove.Contains(x));
         }
 
-        public static void swapModifier(PlayerControl p1, PlayerControl p2)
+        public static void SwapModifier(PlayerControl p1, PlayerControl p2)
         {
             var index = players.FindIndex(x => x.player == p1);
             if (index >= 0)
@@ -139,39 +105,39 @@ namespace SuperNewRoles.Roles
 
     public static class ModifierHelpers
     {
-        public static bool hasModifier(this PlayerControl player, ModifierType mod)
+        public static bool HasModifier(this PlayerControl player, ModifierType mod)
         {
             foreach (var t in ModifierData.allModTypes)
             {
                 if (mod == t.Key)
                 {
-                    return (bool)t.Value.GetMethod("hasModifier", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
+                    return (bool)t.Value.GetMethod("HasModifier", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
                 }
             }
             return false;
         }
 
-        public static void addModifier(this PlayerControl player, ModifierType mod)
+        public static void AddModifier(this PlayerControl player, ModifierType mod)
         {
             foreach (var t in ModifierData.allModTypes)
             {
                 if (mod == t.Key)
                 {
-                    t.Value.GetMethod("addModifier", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
+                    t.Value.GetMethod("AddModifier", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
                     return;
                 }
             }
         }
 
-        public static void eraseModifier(this PlayerControl player, ModifierType mod)
+        public static void EraseModifier(this PlayerControl player, ModifierType mod)
         {
-            if (hasModifier(player, mod))
+            if (HasModifier(player, mod))
             {
                 foreach (var t in ModifierData.allModTypes)
                 {
                     if (mod == t.Key)
                     {
-                        t.Value.GetMethod("eraseModifier", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
+                        t.Value.GetMethod("EraseModifier", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
                         return;
                     }
                 }
@@ -179,21 +145,21 @@ namespace SuperNewRoles.Roles
             }
         }
 
-        public static void eraseAllModifiers(this PlayerControl player, RoleId newRole = RoleId.DefaultRole)
+        public static void EraseAllModifiers(this PlayerControl player, RoleId newRole = RoleId.DefaultRole)
         {
             foreach (var t in ModifierData.allModTypes)
             {
-                t.Value.GetMethod("eraseModifier", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player, newRole });
+                t.Value.GetMethod("EraseModifier", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player, newRole });
             }
         }
 
-        public static void swapModifiers(this PlayerControl player, PlayerControl target)
+        public static void SwapModifiers(this PlayerControl player, PlayerControl target)
         {
             foreach (var t in ModifierData.allModTypes)
             {
-                if (player.hasModifier(t.Key))
+                if (player.HasModifier(t.Key))
                 {
-                    t.Value.GetMethod("swapModifier", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player, target });
+                    t.Value.GetMethod("SwapModifier", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player, target });
                 }
             }
         }
