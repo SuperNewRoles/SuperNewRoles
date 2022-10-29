@@ -8,6 +8,7 @@ using AmongUs.Data;
 using BepInEx;
 using BepInEx.IL2CPP;
 using HarmonyLib;
+using SuperNewRoles.Achievement;
 using UnityEngine;
 
 namespace SuperNewRoles
@@ -72,6 +73,8 @@ namespace SuperNewRoles
             }
 
             // Old Delete End
+
+            AchievementLoader.OnLoad();
 
             SuperNewRoles.Logger.Info(ThisAssembly.Git.Branch, "Branch");
             SuperNewRoles.Logger.Info(ThisAssembly.Git.Commit, "Commit");
