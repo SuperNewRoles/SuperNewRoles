@@ -29,13 +29,46 @@ namespace SuperNewRoles.Roles
         public PlayerControl player;
         public ModifierType modId;
 
+        /// <summary>
+        /// RoleClassのクリアアンドリロード時に実行されます
+        /// </summary>
         public abstract void ClearAndReload();
+
+        /// <summary>
+        /// HudManager.OpenMeetingRoomのPrefixで実行されます
+        /// </summary>
         public abstract void OnMeetingStart();
+
+        /// <summary>
+        /// ExileController.ReEnableGameplayのPostfixで実行されます
+        /// </summary>
         public abstract void OnMeetingEnd();
+
+        /// <summary>
+        /// PlayerControl.FixedUpdateのPostfixで実行されます
+        /// </summary>
         public abstract void FixedUpdate();
+
+        /// <summary>
+        /// PlayerControl.MurderPlayerのPostfixで実行されます
+        /// </summary>
+        /// <param name="target"></param>
         public abstract void OnKill(PlayerControl target);
+
+        /// <summary>
+        /// PlayerControl.MurderPlayerのPostfixで実行されます
+        /// PlayerControl.Exiledでkillerがnullで実行されます
+        /// </summary>
+        /// <param name="killer"></param>
         public abstract void OnDeath(PlayerControl killer = null);
+
+        /// <summary>
+        /// GameData.HandleDisconnectのPostfixで実行されます
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="reason"></param>
         public abstract void HandleDisconnect(PlayerControl player, DisconnectReasons reason);
+
         public virtual void ResetModifier() { }
         public virtual string ModifyNameText(string nameText) { return nameText; }
 
