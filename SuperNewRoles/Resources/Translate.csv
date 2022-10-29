@@ -270,6 +270,13 @@ FinalStatusSelfBomb,Self-destruct,自爆,自杀
 FinalStatusBySelfBomb,Self-destruct collateral damage,自爆巻き添え,恐袭
 FinalStatusDisconnected,amputation,切断,断连
 FinalStatusDead,Death,死亡,死亡
+FinalStatusSluggerHarisen,Harisen,ハリセン
+FinalStatusRevenge,Revenge,復讐
+FinalStatusChiefMisSet,Misnaming,指名誤爆
+FinalStatusSpelunkerCommsElecDeath,CommsElec death,停電通信死
+FinalStatusSpelunkerSetRoleDeath,SetRole death,役職死
+FinalStatusSpelunkerVentDeath,Vent death,ベント死
+FinalStatusSpelunkerOpenDoor,Door death,ドア死
 
 # Sabotages
 FinalStatusSabotage,Sabotage,サボタージュ,破坏
