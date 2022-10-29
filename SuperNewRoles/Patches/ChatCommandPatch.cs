@@ -1,4 +1,5 @@
 using System;
+using AmongUs.Data;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
@@ -37,7 +38,7 @@ namespace SuperNewRoles.Patches
                                 if (LobbyLimit != PlayerControl.GameOptions.MaxPlayers)
                                 {
                                     PlayerControl.GameOptions.MaxPlayers = LobbyLimit;
-                                    DestroyableSingleton<GameStartManager>.Instance.LastPlayerCount = LobbyLimit;
+                                    FastDestroyableSingleton<GameStartManager>.Instance.LastPlayerCount = LobbyLimit;
                                     CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
                                     __instance.AddChat(PlayerControl.LocalPlayer, $"ロビーの最大人数を{LobbyLimit}人に変更しました！");
                                 }
@@ -119,7 +120,7 @@ namespace SuperNewRoles.Patches
                 {
                     LobbyLimit = settings.MaxPlayers;
                     settings.MaxPlayers = 15; // Force 15 Player Lobby on Server
-                    SaveManager.ChatModeType = QuickChatModes.FreeChatOrQuickChat;
+                    DataManager.Settings.Multiplayer.ChatMode = QuickChatModes.FreeChatOrQuickChat;
                 }
                 public static void Postfix([HarmonyArgument(0)] GameOptionsData settings)
                 {
@@ -131,7 +132,7 @@ namespace SuperNewRoles.Patches
             {
                 public static void Prefix()
                 {
-                    SaveManager.ChatModeType = QuickChatModes.FreeChatOrQuickChat;
+                    DataManager.Settings.Multiplayer.ChatMode = QuickChatModes.FreeChatOrQuickChat;
                 }
             }
             [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]

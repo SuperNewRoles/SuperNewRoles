@@ -11,7 +11,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static bool Prefix(MapConsole __instance)
             {
-                Roles.CrewMate.Painter.HandleRpc(Roles.CrewMate.Painter.ActionType.CheckAdmin);
+                Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckAdmin);
                 bool IsUse = MapOption.UseAdmin;
                 return IsUse;
             }
@@ -60,14 +60,14 @@ namespace SuperNewRoles.MapOptions
                                 for (int j = 0; j < num; j++)
                                 {
                                     Collider2D collider2D = __instance.buffer[j];
-                                    if (!(collider2D.tag == "DeadBody"))
+                                    if (collider2D.tag != "DeadBody")
                                     {
                                         PlayerControl component = collider2D.GetComponent<PlayerControl>();
                                         if (!component || component.IsDead())
                                         {
                                             num2--;
                                         }
-                                        else if (!CustomOptions.CrackerIsAdminView.GetBool() && RoleClass.Cracker.CrackedPlayers.Contains(component.PlayerId) && (component.PlayerId != CachedPlayer.LocalPlayer.PlayerId || !CustomOptions.CrackerIsSelfNone.GetBool()))
+                                        else if (!CustomOptionHolder.CrackerIsAdminView.GetBool() && RoleClass.Cracker.CrackedPlayers.Contains(component.PlayerId) && (component.PlayerId != CachedPlayer.LocalPlayer.PlayerId || !CustomOptionHolder.CrackerIsSelfNone.GetBool()))
                                         {
                                             num2--;
                                         }
@@ -103,7 +103,7 @@ namespace SuperNewRoles.MapOptions
         {
             static void Postfix(VitalsMinigame __instance)
             {
-                Roles.CrewMate.Painter.HandleRpc(Roles.CrewMate.Painter.ActionType.CheckVital);
+                Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckVital);
             }
         }
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Update))]

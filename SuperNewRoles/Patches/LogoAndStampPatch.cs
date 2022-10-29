@@ -269,7 +269,7 @@ namespace SuperNewRoles.Patches
 
                 //ViewBoosterPatch(__instance);
 
-                DestroyableSingleton<ModManager>.Instance.ShowModStamp();
+                FastDestroyableSingleton<ModManager>.Instance.ShowModStamp();
 
                 var amongUsLogo = GameObject.Find("bannerLogo_AmongUs");
                 if (amongUsLogo != null)
@@ -291,6 +291,8 @@ namespace SuperNewRoles.Patches
                 SuperNewRolesPlugin.Logger.LogInfo("[Submerged]Passage ahhhhhh!:" + Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"));
                 //サブマージド追加ボタン
 
+                /*サブマージドのダウンロードボタン隠しSTART 今日の日はさようならまた逢う日まで・・・
+
                 var template = GameObject.Find("ExitGameButton");
                 if (template == null) return;
 
@@ -307,7 +309,7 @@ namespace SuperNewRoles.Patches
                     text.SetText(ModTranslation.GetString("サブマージドを適用する"));
                 })));
 
-                TwitchManager man = DestroyableSingleton<TwitchManager>.Instance;
+                TwitchManager man = FastDestroyableSingleton<TwitchManager>.Instance;
                 popup = UnityEngine.Object.Instantiate<GenericPopup>(man.TwitchPopup);
                 popup.TextAreaTMP.fontSize *= 0.7f;
                 popup.TextAreaTMP.enableAutoSizing = false;
@@ -315,10 +317,12 @@ namespace SuperNewRoles.Patches
                 async void onClick()
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[Submerged]Downloading Submerged!");
-                    ShowPopup(ModTranslation.GetString("ダウンロード中です。\nサブマージドのファイルは大きいため、時間がかかります。"));
+                    showPopup(ModTranslation.GetString("ダウンロード中です。\nサブマージドのファイルは大きいため、時間がかかります。"));
                     await DownloadSubmarged();
                     button.SetActive(false);
                 }
+
+                サブマージドのダウンロードボタン隠し End　復活する際はSTARTとENDのコメント行を削除してください*/
             }
 
             private static IEnumerator Download()

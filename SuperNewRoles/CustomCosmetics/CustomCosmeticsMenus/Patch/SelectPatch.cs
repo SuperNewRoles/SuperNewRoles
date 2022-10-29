@@ -1,3 +1,5 @@
+using AmongUs.Data;
+using AmongUs.Data.Player;
 using HarmonyLib;
 using static SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch.ObjectData;
 
@@ -5,7 +7,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
 {
     class SelectPatch
     {
-        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.BodyColor), MethodType.Setter)]
+        [HarmonyPatch(typeof(PlayerCustomizationData), nameof(PlayerCustomizationData.Color), MethodType.Setter)]
         public static class SelectColor
         {
             public static void Postfix(ref byte value)
@@ -16,7 +18,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 }
             }
         }
-        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastVisor), MethodType.Setter)]
+        [HarmonyPatch(typeof(PlayerCustomizationData), nameof(PlayerCustomizationData.Visor), MethodType.Setter)]
         public static class SelectVisor
         {
             public static void Postfix(ref string value)
@@ -27,7 +29,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 }
             }
         }
-        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastHat), MethodType.Setter)]
+        [HarmonyPatch(typeof(PlayerCustomizationData), nameof(PlayerCustomizationData.Hat), MethodType.Setter)]
         public static class SelectHat
         {
             public static void Postfix(ref string value)
@@ -38,7 +40,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 }
             }
         }
-        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastSkin), MethodType.Setter)]
+        [HarmonyPatch(typeof(PlayerCustomizationData), nameof(PlayerCustomizationData.Skin), MethodType.Setter)]
         public static class SelectSkin
         {
             public static void Postfix(ref string value)
@@ -49,7 +51,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 }
             }
         }
-        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastNamePlate), MethodType.Setter)]
+        [HarmonyPatch(typeof(PlayerCustomizationData), nameof(PlayerCustomizationData.NamePlate), MethodType.Setter)]
         public static class SelectNamePlate
         {
             public static void Postfix(ref string value)
@@ -60,7 +62,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 }
             }
         }
-        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastPet), MethodType.Setter)]
+        [HarmonyPatch(typeof(PlayerCustomizationData), nameof(PlayerCustomizationData.Pet), MethodType.Setter)]
         public static class SelectPet
         {
             public static void Postfix(ref string value)
@@ -74,7 +76,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static ClosetPresetData GetData(int index = -1)
         {
             if (index == -1) index = SelectedPreset.Value;
-            ClosetPresetData data = !ClosetPresetDatas.ContainsKey(index)
+            ClosetPresetData data = !ClosetPresetDataDictionary.ContainsKey(index)
                 ? (new()
                 {
                     BodyColor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "BodyColor", (byte)0),
@@ -84,7 +86,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     NamePlate = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "NamePlate", ""),
                     Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "")
                 })
-                : ClosetPresetDatas[index];
+                : ClosetPresetDataDictionary[index];
             return data;
         }
     }

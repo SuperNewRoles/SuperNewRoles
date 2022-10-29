@@ -4,7 +4,7 @@ using HarmonyLib;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using UnityEngine;
-using static SuperNewRoles.Modules.CustomOptions;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.MapOptions
 {
@@ -106,8 +106,8 @@ namespace SuperNewRoles.MapOptions
             AirshipReactorTimeLimit.GetFloat();
 
             //千里眼・ズーム関連
-            ClairvoyantZoom = CustomOptions.ClairvoyantZoom.GetBool();
-            MouseZoom = CustomOptions.MouseZoom.GetBool();
+            ClairvoyantZoom = CustomOptionHolder.ClairvoyantZoom.GetBool();
+            MouseZoom = CustomOptionHolder.MouseZoom.GetBool();
             CoolTime = ZoomCoolTime.GetFloat();
             DurationTime = ZoomDurationTime.GetFloat();
             IsZoomOn = false;
@@ -187,8 +187,8 @@ namespace SuperNewRoles.MapOptions
             WireTaskIsRandomOption = CustomOption.Create(956, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
             WireTaskNumOption = CustomOption.Create(957, false, CustomOptionType.Generic, "WireTaskNum", 5f, 1f, 8f, 1f, WireTaskIsRandomOption);
 
-            CustomOptions.LadderDead = CustomOption.Create(637, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
-            LadderDeadChance = CustomOption.Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], CustomOptions.LadderDead);
+            CustomOptionHolder.LadderDead = CustomOption.Create(637, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
+            LadderDeadChance = CustomOption.Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], CustomOptionHolder.LadderDead);
         }
     }
 }

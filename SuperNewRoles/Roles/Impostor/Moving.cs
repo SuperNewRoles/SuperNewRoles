@@ -7,7 +7,7 @@ namespace SuperNewRoles.Roles
 {
     class Moving
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.MovingTpButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.EvilMoving) ? RoleClass.EvilMoving.CoolTime : RoleClass.Moving.CoolTime;
             RoleClass.Moving.ButtonTimer = DateTime.Now;

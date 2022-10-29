@@ -75,7 +75,7 @@ namespace SuperNewRoles.CustomCosmetics
                 JToken jobj = JObject.Parse(json)["nameplates"];
                 if (!jobj.HasValues) return HttpStatusCode.ExpectationFailed;
 
-                List<CustomPlates> platedatas = new();
+                List<CustomPlates> plateData = new();
 
                 for (JToken current = jobj.First; current != null; current = current.Next)
                 {
@@ -90,7 +90,7 @@ namespace SuperNewRoles.CustomCosmetics
                             continue;
                         info.author = current["author"]?.ToString();
                         info.reshasha = current["name"]?.ToString();
-                        platedatas.Add(info);
+                        plateData.Add(info);
                     }
                 }
 
@@ -98,7 +98,7 @@ namespace SuperNewRoles.CustomCosmetics
 
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\";
                 MD5 md5 = MD5.Create();
-                foreach (CustomPlates data in platedatas)
+                foreach (CustomPlates data in plateData)
                 {
                     if (DoesResourceRequireDownload(filePath + data.resource, data.reshasha, md5))
                         markedfordownload.Add(data.resource);
@@ -114,7 +114,7 @@ namespace SuperNewRoles.CustomCosmetics
                     responseStream.CopyTo(fileStream);
                 }
 
-                platedetails.AddRange(platedatas);
+                platedetails.AddRange(plateData);
             }
             catch (System.Exception ex)
             {

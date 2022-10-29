@@ -93,7 +93,7 @@ namespace SuperNewRoles.CustomCosmetics
                     }
                 };
 
-                List<CustomVisors> Visordatas = new();
+                List<CustomVisors> visorData = new();
 
                 for (JToken current = jobj.First; current != null; current = current.Next)
                 {
@@ -109,7 +109,7 @@ namespace SuperNewRoles.CustomCosmetics
                         info.IsTOP = IsTOP;
                         info.author = current["author"]?.ToString();
                         info.reshasha = current["name"]?.ToString();
-                        Visordatas.Add(info);
+                        visorData.Add(info);
                     }
                 }
 
@@ -117,7 +117,7 @@ namespace SuperNewRoles.CustomCosmetics
 
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomVisorsChache\";
                 MD5 md5 = MD5.Create();
-                foreach (CustomVisors data in Visordatas)
+                foreach (CustomVisors data in visorData)
                 {
                     if (DoesResourceRequireDownload(filePath + data.resource, data.reshasha, md5))
                         markedfordownload.Add(data.resource);
@@ -133,7 +133,7 @@ namespace SuperNewRoles.CustomCosmetics
                     responseStream.CopyTo(fileStream);
                 }
 
-                Visordetails.AddRange(Visordatas);
+                Visordetails.AddRange(visorData);
             }
             catch (System.Exception ex)
             {
