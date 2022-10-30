@@ -381,6 +381,13 @@ namespace SuperNewRoles.Patches
                     RoleClass.Vampire.target = __instance.currentTarget;
                     RoleClass.Vampire.KillTimer = DateTime.Now;
                     RoleClass.Vampire.Timer = RoleClass.Vampire.KillDelay;
+
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetVampireStatus);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write(RoleClass.Vampire.target.PlayerId);
+                    writer.Write(true);
+                    writer.EndRPC();
+                    RPCProcedure.SetVampireStatus(CachedPlayer.LocalPlayer.PlayerId, RoleClass.Vampire.target.PlayerId, true, false);
                     return false;
                 }
                 bool showAnimation = true;

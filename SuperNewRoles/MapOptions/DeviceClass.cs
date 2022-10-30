@@ -12,7 +12,7 @@ namespace SuperNewRoles.MapOptions
             public static bool Prefix(MapConsole __instance)
             {
                 Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckAdmin);
-                bool IsUse = MapOption.UseAdmin;
+                bool IsUse = MapOption.UseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents);
                 return IsUse;
             }
         }
@@ -21,7 +21,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static bool Prefix(MapCountOverlay __instance)
             {
-                bool IsUse = MapOption.UseAdmin || RoleClass.EvilHacker.IsMyAdmin;
+                bool IsUse = (MapOption.UseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) || RoleClass.EvilHacker.IsMyAdmin;
                 if (IsUse)
                 {
                     bool commsActive = false;
@@ -64,13 +64,11 @@ namespace SuperNewRoles.MapOptions
                                     {
                                         PlayerControl component = collider2D.GetComponent<PlayerControl>();
                                         if (!component || component.IsDead())
-                                        {
                                             num2--;
-                                        }
                                         else if (!CustomOptionHolder.CrackerIsAdminView.GetBool() && RoleClass.Cracker.CrackedPlayers.Contains(component.PlayerId) && (component.PlayerId != CachedPlayer.LocalPlayer.PlayerId || !CustomOptionHolder.CrackerIsSelfNone.GetBool()))
-                                        {
                                             num2--;
-                                        }
+                                        else if (component.IsRole(RoleId.Vampire, RoleId.Dependents))
+                                            num2--;
                                     }
                                 }
                                 if (num2 < 0) num2 = 0;
@@ -111,7 +109,7 @@ namespace SuperNewRoles.MapOptions
         {
             static void Postfix(VitalsMinigame __instance)
             {
-                if (!MapOption.UseVitalOrDoorLog)
+                if (!MapOption.UseVitalOrDoorLog || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire) || PlayerControl.LocalPlayer.IsRole(RoleId.Dependents))
                 {
                     __instance.Close();
                 }
@@ -122,7 +120,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static void Postfix(SurveillanceMinigame __instance)
             {
-                if (MapOption.UseCamera == false)
+                if (!MapOption.UseCamera || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
                 {
                     __instance.Close();
                 }
@@ -134,7 +132,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static void Postfix(PlanetSurveillanceMinigame __instance)
             {
-                if (MapOption.UseCamera == false)
+                if (!MapOption.UseCamera || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
                 {
                     __instance.Close();
                 }
@@ -146,7 +144,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static void Postfix(SecurityLogGame __instance)
             {
-                if (MapOption.UseVitalOrDoorLog == false)
+                if (!MapOption.UseVitalOrDoorLog || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
                 {
                     __instance.Close();
                 }

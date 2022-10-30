@@ -714,6 +714,9 @@ ObserverDescription,You can see where everyone is voting during the meeting.,会
 VampireName,Vampire,ヴァンパイア,吸血鬼
 VampireTitle1,Let's do a delayed kill.,遅延キルしよう,你的击杀会被延迟
 VampireKillDelay,Kill Delay,キル遅延,击杀延迟
+VampireViewBloodStainsTurn,Turn to see blood,血が見えるターン
+VampireCanCreateDependents,Dependents can be nominated,眷属を指名可能
+VampireCreateDependentsCoolTime,Cool time to nominate a Dependents member,眷属指名クールタイム
 DarkKillerName,DarkKiller,ダークキラー,暗夜杀手
 DarkKillerTitle1,Let's kill in the dark,闇に紛れて殺そう,将你的杀戮隐藏于黑暗之中
 DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキルクールタイム,击杀冷却时间
@@ -1044,7 +1047,6 @@ SuicidalIdeationAddTimeLeftSetting,Time to suicide,タスクをすると増え�
 SuicidalIdeationFallProbabilitySetting,Probability of falling to death,転落死の確率,绝望先生摔死的概率
 SuicidalIdeationWinText,Try to live a little longer\nSuicidal person,もう少し生きてみようかな\n自殺願望者,再见，绝望先生！\n绝望先生
 SuicidalIdeationButtonName,Time to suicide,自殺まで,自杀倒计时
-
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！

@@ -144,6 +144,7 @@ namespace SuperNewRoles.Patches
                     Roles.Crewmate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
                     Roles.Neutral.PartTimer.FixedUpdate();
+                    Vampire.FixedUpdate.AllClient();
                     ReduceKillCooldown(__instance);
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
@@ -182,7 +183,7 @@ namespace SuperNewRoles.Patches
                                 MadHawk.FixedUpdate.Postfix();
                                 break;
                             case RoleId.Vampire:
-                                Vampire.FixedUpdate.Postfix();
+                                Vampire.FixedUpdate.VampireOnly();
                                 break;
                             case RoleId.Vulture:
                                 Vulture.FixedUpdate.Postfix();

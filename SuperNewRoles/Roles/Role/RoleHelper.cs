@@ -636,6 +636,9 @@ namespace SuperNewRoles
                 case RoleId.Camouflager:
                     RoleClass.Camouflager.CamouflagerPlayer.Add(player);
                     break;
+                case RoleId.Dependents:
+                    RoleClass.Dependents.DependentsPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1091,7 +1094,10 @@ namespace SuperNewRoles
                 case RoleId.Camouflager:
                     RoleClass.Camouflager.CamouflagerPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case RoleId.Dependents:
+                    RoleClass.Dependents.DependentsPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1208,6 +1214,7 @@ namespace SuperNewRoles
                 RoleId.Stefinder => CustomOptionHolder.StefinderVent.GetBool(),
                 RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalUseVent.GetBool(),
                 RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerVent.GetBool(),
+                RoleId.Dependents => CustomOptionHolder.VampireDependentsCanVent.GetBool(),
                 _ => player.IsImpostor(),
             };
         }
@@ -1582,6 +1589,7 @@ namespace SuperNewRoles
                 else if (RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
                 else if (Conjurer.Player.IsCheckListPlayerControl(player)) return RoleId.Conjurer;
                 else if (RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player)) return RoleId.Camouflager;
+                else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;
                 //ロールチェック
             }
             catch (Exception e)
