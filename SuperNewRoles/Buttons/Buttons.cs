@@ -2004,7 +2004,7 @@ namespace SuperNewRoles.Buttons
                     return SetTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { },
-                RoleClass.Jackal.GetButtonSprite(),
+                RoleClass.EvilHacker.GetCreateMadmateButtonSprite(),
                 new Vector3(-2.7f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -2013,7 +2013,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.GetString("SidekickName"),
+                buttonText = ModTranslation.GetString("CreateMadmateButton"),
                 showButtonText = true
             };
 

@@ -794,6 +794,7 @@ GhostMechanicCountText,GhostMechanic,残り{0}回,剩余{0}次
 EvilHackerName,EvilHacker,イビルハッカー,骇客
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船获取胜利
 CreateMadmateSetting,Can Make a Madmate,マッドメイトを作れる,
+CreateMadmateButton,Drive Mad,狂わせる
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人
 SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数,念动使最大换位次数
