@@ -730,7 +730,6 @@ SeerSoulDuration,Soul Duration,幽霊が見える時間,灵魂从出现到消失
 MadSeerName,MadSeer,マッドシーア,背叛的灵媒
 MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろう,感知内鬼的行动
 EvilSeerName,EvilSeer,イビルシーア,邪恶的灵媒
-EvilSeerMadmateSetting,Can an EvilSeer Make a Madmate,イビルシーアがマッドメイトを作れるか,邪恶的灵媒可以招募一个叛徒
 EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡
 RemoteSheriffName,Remote Sheriff,リモートシェリフ,超能警长
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう,远距离进行执法
@@ -794,7 +793,7 @@ GhostMechanicButtonName,Repair,修復,修复
 GhostMechanicCountText,GhostMechanic,残り{0}回,剩余{0}次
 EvilHackerName,EvilHacker,イビルハッカー,骇客
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船获取胜利
-EvilHackerMadmateSetting,Can an EvilHacker Make a Madmate,イビルハッカーがマッドメイトを作れるか,邪恶的黑客可以招募一个叛徒
+CreateMadmateSetting,Can Make a Madmate,マッドメイトを作れるか,
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人
 SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数,念动使最大换位次数

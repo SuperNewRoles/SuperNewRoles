@@ -1394,7 +1394,7 @@ namespace SuperNewRoles.Modules
             EvilSeerMode = Create(336, false, CustomOptionType.Impostor, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, EvilSeerOption);
             EvilSeerLimitSoulDuration = Create(337, false, CustomOptionType.Impostor, "SeerLimitSoulDuration", false, EvilSeerOption);
             EvilSeerSoulDuration = Create(338, false, CustomOptionType.Impostor, "SeerSoulDuration", 15f, 0f, 120f, 5f, EvilSeerLimitSoulDuration, format: "unitCouples");
-            EvilSeerMadmateSetting = Create(1075, false, CustomOptionType.Impostor, "EvilSeerMadmateSetting", false, EvilSeerOption);
+            EvilSeerMadmateSetting = Create(1075, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilSeerOption);
 
             TeleportingJackalOption = SetupCustomRoleOption(339, false, RoleId.TeleportingJackal);
             TeleportingJackalPlayerCount = Create(340, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TeleportingJackalOption);
@@ -1504,7 +1504,7 @@ namespace SuperNewRoles.Modules
 
             EvilHackerOption = SetupCustomRoleOption(424, false, RoleId.EvilHacker);
             EvilHackerPlayerCount = Create(425, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
-            EvilHackerMadmateSetting = Create(426, false, CustomOptionType.Impostor, "EvilHackerMadmateSetting", false, EvilHackerOption);
+            EvilHackerMadmateSetting = Create(426, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
 
             GhostMechanicOption = SetupCustomRoleOption(427, false, RoleId.GhostMechanic);
             GhostMechanicPlayerCount = Create(428, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GhostMechanicOption);
