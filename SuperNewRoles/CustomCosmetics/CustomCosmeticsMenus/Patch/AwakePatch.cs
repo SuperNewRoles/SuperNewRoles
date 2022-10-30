@@ -21,14 +21,16 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             TabSelectPatch.IsFirst = false;
             var ClosetTabButton = __instance.Tabs[0].Button.transform.parent;
             var PresetTabButton = __instance.Tabs[1].Button.transform.parent;
+            var AchievementTabButton = __instance.Tabs[2].Button.transform.parent;
             var ClosetTab = __instance.Tabs[0].Tab.transform;
             var PresetTab = __instance.Tabs[1].Tab.transform;
-            SuperNewRolesPlugin.Logger.LogInfo(ClosetTabButton.name + ":" + PresetTabButton.name);
+            var AchievementTab = __instance.Tabs[2].Tab.transform;
+            SuperNewRolesPlugin.Logger.LogInfo(ClosetTabButton.name + ":" + PresetTabButton.name + ":" + AchievementTabButton.name);
             int i = 0;
             foreach (TabButton button in __instance.Tabs)
             {
                 SuperNewRolesPlugin.Logger.LogInfo(button.Button.transform.parent.parent.name);
-                if (i > 1)
+                if (i > 2)
                 {
                     button.Button.transform.parent.parent.gameObject.SetActive(false);
                 }
@@ -161,6 +163,10 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             else if (tab.name == "HatsGroup")
             {
                 ObjectData.PresetShow();
+            }
+            else if (tab.name == "SkinGroup")
+            {
+                ObjectData.AchievementShow();
             }
             return false;
         }

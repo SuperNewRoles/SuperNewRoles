@@ -12,6 +12,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         {
             var ClosetTab = __instance.Tabs[0].Tab.transform;
             var PresetTab = __instance.Tabs[1].Tab.transform;
+            var AchievementTab = __instance.Tabs[2].Tab.transform;
             ObjectData.CosmicubeMenuHolderTint.enabled = false;
             if (!ObjectData.IsShow)
             {
@@ -41,6 +42,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 panel.localPosition = new Vector3(0, 0, -4.29f);
                 var colortab = __instance.transform.FindChild("Header/Tabs/ColorTab");
                 var closettab = __instance.transform.FindChild("Header/Tabs/HatsTab");
+                var achievementtab = __instance.transform.FindChild("Header/Tabs/SkinsTab");
 
                 if (!ObjectData.IsShow)
                 {
@@ -80,7 +82,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 ObjectData.NamePlateButton.transform.localScale = new Vector3(8.498f, 2.145f, 2.145f);
 
                 colortab.localPosition = new Vector3(-0.5f, 0, -5);
-                closettab.localPosition = new Vector3(0.5f, 0, -5);
+                closettab.localPosition = new Vector3(0.25f, 0, -5);
+                achievementtab.localPosition = new Vector3(1f, 0, -5);
 
                 if (!ObjectData.IsShow)
                 {
@@ -116,7 +119,6 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                         outfit.SkinId = data.Skin.Value;
                         outfit.NamePlateId = data.NamePlate.Value;
                         outfit.PetId = data.Pet.Value;
-                        Logger.Info(outfit.PetId, "");
                         player.UpdateFromPlayerOutfit(outfit, PlayerMaterial.MaskType.ComplexUI, false, data.Pet.Value == "");
                         player.transform.FindChild("PetSlot").gameObject.SetActive(data.Pet.Value != "");
                         i++;

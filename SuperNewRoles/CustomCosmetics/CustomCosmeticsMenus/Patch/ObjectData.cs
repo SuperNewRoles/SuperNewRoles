@@ -117,12 +117,14 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         {
             ShowDefaultTabButton();
             PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/HatsTab/Hat Button/Tab Background").GetComponent<SpriteRenderer>().enabled = false;
+            PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/SkinsTab/Skin Button/Tab Background").GetComponent<SpriteRenderer>().enabled = false;
             PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/ColorTab/ColorButton/Tab Background").GetComponent<SpriteRenderer>().enabled = false;
             IsShow = false;
             IsCloset = false;
             IsCube = false;
             ClosetHide();
             PresetHide();
+            AchievementHide();
             ShowDefaultTabButton();
             foreach (TabButton button in PlayerCustomizationMenu.Instance.Tabs)
             {
@@ -242,6 +244,15 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             Presets = presets.ToArray();
             PresetAreas = presetplayers.ToArray();
             PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup").gameObject.SetActive(true);
+        }
+        public static void AchievementHide()
+        {
+
+        }
+        public static void AchievementShow()
+        {
+            ResetShow();
+            PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/SkinsTab/Skin Button/Tab Background").GetComponent<SpriteRenderer>().enabled = true;
         }
         static void Set(PassiveButton btn, int index)
         {
