@@ -193,6 +193,7 @@ namespace SuperNewRoles.Roles
             Cupid.ClearAndReload();
             HamburgerShop.ClearAndReload();
             Penguin.ClearAndReload();
+            Dependents.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1505,6 +1506,12 @@ namespace SuperNewRoles.Roles
             public static float KillDelay;
             public static float Timer;
             public static DateTime KillTimer;
+            public static Dictionary<PlayerControl, PlayerControl> Targets;
+            public static Dictionary<byte, List<BloodStain>> BloodStains;
+            public static List<BloodStain> WaitActiveBloodStains;
+            public static Dictionary<List<BloodStain>, int> NoActiveTurnWait;
+            public static bool CreatedDependents;
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VampireCreateDependentsButton.png", 115f);
             public static void ClearAndReload()
             {
                 VampirePlayer = new();
@@ -1512,6 +1519,11 @@ namespace SuperNewRoles.Roles
                 KillDelay = CustomOptionHolder.VampireKillDelay.GetFloat();
                 Timer = 0;
                 KillTimer = DateTime.Now;
+                Targets = new();
+                BloodStains = new();
+                WaitActiveBloodStains = new();
+                NoActiveTurnWait = new();
+                CreatedDependents = !CustomOptionHolder.VampireCanCreateDependents.GetBool();
             }
         }
         public static class Fox
@@ -2877,7 +2889,6 @@ namespace SuperNewRoles.Roles
                 IsShooted = false;
             }
         }
-
         public static class Cupid
         {
             public static List<PlayerControl> CupidPlayer;
@@ -2920,6 +2931,15 @@ namespace SuperNewRoles.Roles
                 PenguinData = new();
                 bool Is = ModHelpers.IsSucsessChance(4);
                 _buttonSprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.PenguinButton_{(Is ? 1 : 2)}.png", Is ? 87.5f : 110f);
+            }
+        }
+        public static class Dependents
+        {
+            public static List<PlayerControl> DependentsPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                DependentsPlayer = new();
             }
         }
         //新ロールクラス

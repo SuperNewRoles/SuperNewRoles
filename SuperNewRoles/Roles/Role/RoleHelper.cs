@@ -659,6 +659,9 @@ namespace SuperNewRoles
                 case RoleId.Penguin:
                     RoleClass.Penguin.PenguinPlayer.Add(player);
                     break;
+                case RoleId.Dependents:
+                    RoleClass.Dependents.DependentsPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1123,7 +1126,10 @@ namespace SuperNewRoles
                 case RoleId.Penguin:
                     RoleClass.Penguin.PenguinPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                case RoleId.Dependents:
+                    RoleClass.Dependents.DependentsPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1241,6 +1247,7 @@ namespace SuperNewRoles
                 RoleId.Stefinder => CustomOptionHolder.StefinderVent.GetBool(),
                 RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalUseVent.GetBool(),
                 RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerVent.GetBool(),
+                RoleId.Dependents => CustomOptionHolder.VampireDependentsCanVent.GetBool(),
                 _ => player.IsImpostor(),
             };
         }
@@ -1619,6 +1626,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Cupid.CupidPlayer.IsCheckListPlayerControl(player)) return RoleId.Cupid;
                 else if (RoleClass.HamburgerShop.HamburgerShopPlayer.IsCheckListPlayerControl(player)) return RoleId.HamburgerShop;
                 else if (RoleClass.Penguin.PenguinPlayer.IsCheckListPlayerControl(player)) return RoleId.Penguin;
+                else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;
                 //ロールチェック
             }
             catch (Exception e)

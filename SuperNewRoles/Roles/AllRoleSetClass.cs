@@ -963,6 +963,7 @@ namespace SuperNewRoles
                 RoleId.Cupid => CustomOptionHolder.CupidPlayerCount.GetFloat(),
                 RoleId.HamburgerShop => CustomOptionHolder.HamburgerShopPlayerCount.GetFloat(),
                 RoleId.Penguin => CustomOptionHolder.PenguinPlayerCount.GetFloat(),
+                RoleId.Dependents => CustomOptionHolder.DependentsPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

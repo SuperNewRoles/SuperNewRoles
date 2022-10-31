@@ -401,7 +401,21 @@ namespace SuperNewRoles.Modules
                         }
                     }
                 }
-                if (LocalRole == RoleId.PartTimer)
+                if (LocalRole == RoleId.Dependents)
+                {
+                    foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer)
+                    {
+                        SetNamesClass.SetPlayerNameColors(p);
+                    }
+                }
+                else if (LocalRole == RoleId.Vampire)
+                {
+                    foreach (PlayerControl p in RoleClass.Dependents.DependentsPlayer)
+                    {
+                        SetNamesClass.SetPlayerNameColors(p);
+                    }
+                }
+                else if (LocalRole == RoleId.PartTimer)
                 {
                     if (RoleClass.PartTimer.IsLocalOn)
                     {
