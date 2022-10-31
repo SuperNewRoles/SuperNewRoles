@@ -49,11 +49,14 @@ namespace SuperNewRoles.Patches
                     RPCProcedure.SetHaison();
                     if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
-                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansDisconnect, false);
+                        Logger.Info("===================== Haison =====================", "End Game");
+                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
+
                     }
                     else
                     {
-                        ShipStatus.RpcEndGame(GameOverReason.HumansDisconnect, false);
+                        Logger.Info("===================== Haison =====================", "End Game");
+                        ShipStatus.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
                         MapUtilities.CachedShipStatus.enabled = false;
                     }
                 }
@@ -124,7 +127,8 @@ namespace SuperNewRoles.Patches
             OldModeButtons.OldModeUpdate();
 
             // -- 以下ゲーム中のみ --
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) {
+            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
+            {
                 if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
                 {
                     SNROnlySearch.FixedUpdate();
@@ -148,8 +152,7 @@ namespace SuperNewRoles.Patches
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
-                        if (PlayerControl.LocalPlayer.IsMadRoles()) { VentDataModules.MadmateVent(); }
-                        NormalButtonDestroy.Postfix();
+                        NormalButtonDestroy.SetActiveState();
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Pursuer:

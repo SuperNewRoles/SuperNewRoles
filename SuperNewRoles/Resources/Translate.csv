@@ -28,7 +28,7 @@ Hat_SNR,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Rol
 creditsMain,Create By ykundesu,Create By ykundesu,模组作者：ykundesu
 creditsFull,Create By ykundesu,Create By ykundesu,模组作者：ykundesu
 creditsVersion,SuperNewRoles v{0},SuperNewRoles v{0},SuperNewRoles v{0}
-vanillaOptionsText,VanilaOptions,バニラの設定,原版设置
+vanillaOptionsText,VanillaOptions,バニラの設定,原版设置
 creditsUpdateOk,There is updated data. Please reboot. Latest Version:v{0},更新データがあります。再起動してください。最新バージョン:v{0},发现新版本。 请重新启动。 最新版本:v{0}
 modOptionsText,Options,設定,设置
 moreOptionsText,Normal Setting&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings,通常設定&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定,一般设置与&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>设置
@@ -187,9 +187,9 @@ IsAlwaysReduceCooldownExceptInVent,Reduce Cooldown Except InVent,ベント内で
 IsAlwaysReduceCooldownExceptOnTask,Reduce Cooldown Except OnTask,停電修理中でも進む,击杀冷却会在修理紧急任务时停止计算
 IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家
-WireTaskIsRandom,Wire task random,配線タスクランダム随机分配修复配线的任务地点
+WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数
-IsSNROnlySearch,SNR Room Filter,SNRルームフィルター
+IsSNROnlySearch,SNR Room Filter,SNRルームフィルター,筛选SNR房间
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置
@@ -352,7 +352,7 @@ SheriffName,Sheriff,シェリフ,警长
 SheriffTitle1,Kill the outsider!,人外をキルしよう,击杀敌人
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう,杀死敌人带领船员获得胜利
 SheriffDescription,Can shoot and kill an imposter if he is a crewmate. he will self-destruct.,インポスター陣営(設定により第三陣営など)をキルすることが出来、クルーだった場合、自爆します,警长可以击杀内鬼。\n但若警长尝试击杀船员，警长将以死谢罪。
-SheriffCoolDownSetting,Kill Cooldown,キルクールタイム,击杀冷却
+SheriffCooldownSetting,Kill Cooldown,キルクールタイム,击杀冷却
 SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可以击杀独立阵营玩家
 SheriffIsKillLoversSetting,Can kill lovers,ラバーズをキルできる,可以击杀恋人
 SheriffIsKillMadRoleSetting,Can kill mad roles,マッド系をキルできる,可以击杀叛徒系职业
