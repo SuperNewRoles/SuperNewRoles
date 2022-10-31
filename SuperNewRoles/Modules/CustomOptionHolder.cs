@@ -27,10 +27,15 @@ namespace SuperNewRoles.Modules
         public static CustomOption neutralGhostRolesCountMax;
 
         public static CustomOption enableMirroMap;
+
         public static CustomOption enableAgartha;
+        public static CustomOption AgarthaRandomSpawn;
+        public static CustomOption AgarthaRandomSpawnIsFirstSpawn;
+        public static CustomOption AgarthaRandomSpawnIsAddSpawnWay;
 
         public static CustomOption IsDebugMode;
         public static CustomOption DebugModeFastStart;
+        public static CustomOption IsMurderPlayerAnnounce;
 
         public static CustomOption DisconnectNotPCOption;
 
@@ -462,6 +467,11 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption VampireOption;
         public static CustomOption VampirePlayerCount;
         public static CustomOption VampireKillDelay;
+        public static CustomOption VampireViewBloodStainsTurn;
+        public static CustomOption VampireCanCreateDependents;
+        public static CustomOption VampireCreateDependentsCoolTime;
+        public static CustomOption VampireDependentsKillCoolTime;
+        public static CustomOption VampireDependentsCanVent;
 
         public static CustomRoleOption FoxOption;
         public static CustomOption FoxPlayerCount;
@@ -506,6 +516,7 @@ namespace SuperNewRoles.Modules
         public static CustomOption EvilSeerModeSouls;
         public static CustomOption EvilSeerLimitSoulDuration;
         public static CustomOption EvilSeerSoulDuration;
+        public static CustomOption EvilSeerMadmateSetting;
 
         public static CustomRoleOption TeleportingJackalOption;
         public static CustomOption TeleportingJackalPlayerCount;
@@ -884,6 +895,27 @@ namespace SuperNewRoles.Modules
         public static CustomOption CamouflagerCamouflageQuarreled;
         public static CustomOption CamouflagerCamouflageChangeColor;
         public static CustomOption CamouflagerCamouflageColor;
+        
+        public static CustomRoleOption CupidOption;
+        public static CustomOption CupidPlayerCount;
+        public static CustomOption CupidCoolTime;
+
+        public static CustomRoleOption HamburgerShopOption;
+        public static CustomOption HamburgerShopPlayerCount;
+        public static CustomOption HamburgerShopChangeTaskPrefab;
+        public static CustomOption HamburgerShopCommonTask;
+        public static CustomOption HamburgerShopShortTask;
+        public static CustomOption HamburgerShopLongTask;
+        
+        public static CustomRoleOption PenguinOption;
+        public static CustomOption PenguinPlayerCount;
+        public static CustomOption PenguinCoolTime;
+        public static CustomOption PenguinDurationTime;
+        public static CustomOption PenguinCanDefaultKill;
+        
+        public static CustomRoleOption DependentsOption;
+        public static CustomOption DependentsPlayerCount;
+        
         //CustomOption
 
         public static CustomOption GMOption;
@@ -949,9 +981,13 @@ namespace SuperNewRoles.Modules
             impostorGhostRolesCountMax = Create(8, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
 
             enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false);
-            enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
-            IsSNROnlySearch = Create(1073, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
+            enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
+            AgarthaRandomSpawn = Create(1084, false, CustomOptionType.Generic, "RandomSpawnOption", true, enableAgartha);
+            AgarthaRandomSpawnIsFirstSpawn = Create(1085, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsFirstSpawn", false, AgarthaRandomSpawn);
+            AgarthaRandomSpawnIsAddSpawnWay = Create(1086, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
+
+            IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
             IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true);
 
@@ -960,6 +996,7 @@ namespace SuperNewRoles.Modules
             {
                 IsDebugMode = Create(10, true, CustomOptionType.Generic, "デバッグモード", false, null, isHeader: true);
                 DebugModeFastStart = Create(681, true, CustomOptionType.Generic, "即開始", false, IsDebugMode);
+                IsMurderPlayerAnnounce = Create(1073, true, CustomOptionType.Generic, "MurderPlayer発生時に通知を行う", false, IsDebugMode);
             }
 
             DisconnectNotPCOption = Create(11, true, CustomOptionType.Generic, Cs(Color.white, "DisconnectNotPC"), true, null, isHeader: true);
@@ -1357,6 +1394,11 @@ namespace SuperNewRoles.Modules
             VampireOption = SetupCustomRoleOption(307, false, RoleId.Vampire);
             VampirePlayerCount = Create(308, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VampireOption);
             VampireKillDelay = Create(309, false, CustomOptionType.Impostor, "VampireKillDelay", 0f, 1f, 60f, 0.5f, VampireOption, format: "unitSeconds");
+            VampireViewBloodStainsTurn = Create(1074, false, CustomOptionType.Impostor, "VampireViewBloodStainsTurn", 1f, 1f, 15f, 1f, VampireOption, format: "unitSeconds");
+            VampireCanCreateDependents = Create(1075, false, CustomOptionType.Impostor, "VampireCanCreateDependents", true, VampireOption);
+            VampireCreateDependentsCoolTime = Create(1076, false, CustomOptionType.Impostor, "VampireCreateDependentsCoolTime", 30f, 2.5f, 120f, 2.5f, VampireCanCreateDependents);
+            VampireDependentsKillCoolTime = Create(1077, false, CustomOptionType.Impostor, "VampireDependentsKillCoolTime", 30f, 2.5f, 120f, 2.5f, VampireCanCreateDependents);
+            VampireDependentsCanVent = Create(1078, false, CustomOptionType.Impostor, "VampireDependentsCanVent", true, VampireCanCreateDependents);
 
             FoxOption = SetupCustomRoleOption(310, true, RoleId.Fox);
             FoxPlayerCount = Create(311, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FoxOption);
@@ -1393,6 +1435,7 @@ namespace SuperNewRoles.Modules
             EvilSeerMode = Create(336, false, CustomOptionType.Impostor, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, EvilSeerOption);
             EvilSeerLimitSoulDuration = Create(337, false, CustomOptionType.Impostor, "SeerLimitSoulDuration", false, EvilSeerOption);
             EvilSeerSoulDuration = Create(338, false, CustomOptionType.Impostor, "SeerSoulDuration", 15f, 0f, 120f, 5f, EvilSeerLimitSoulDuration, format: "unitCouples");
+            EvilSeerMadmateSetting = Create(1075, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilSeerOption);
 
             TeleportingJackalOption = SetupCustomRoleOption(339, false, RoleId.TeleportingJackal);
             TeleportingJackalPlayerCount = Create(340, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TeleportingJackalOption);
@@ -1502,7 +1545,7 @@ namespace SuperNewRoles.Modules
 
             EvilHackerOption = SetupCustomRoleOption(424, false, RoleId.EvilHacker);
             EvilHackerPlayerCount = Create(425, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
-            EvilHackerMadmateSetting = Create(426, false, CustomOptionType.Impostor, "EvilHackerMadmateSetting", false, EvilHackerOption);
+            EvilHackerMadmateSetting = Create(426, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
 
             GhostMechanicOption = SetupCustomRoleOption(427, false, RoleId.GhostMechanic);
             GhostMechanicPlayerCount = Create(428, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GhostMechanicOption);
@@ -1799,6 +1842,25 @@ namespace SuperNewRoles.Modules
             EvilGuesserPlayerCount = Create(974, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
             EvilGuesserShortMaxCount = Create(975, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
             EvilGuesserShortOneMeetingCount = Create(976, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
+            
+            CupidOption = SetupCustomRoleOption(1079, false, RoleId.Cupid);
+            CupidPlayerCount = Create(1080, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CupidOption);
+            CupidCoolTime = Create(1081, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, CupidOption);
+
+            HamburgerShopOption = SetupCustomRoleOption(1091, false, RoleId.HamburgerShop);
+            HamburgerShopPlayerCount = Create(1074, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HamburgerShopOption);
+            HamburgerShopChangeTaskPrefab = Create(1075, false, CustomOptionType.Crewmate, "HamburgerShopChangeTaskPrefab", true, HamburgerShopOption);
+            var HamburgerShopoption = SelectTask.TaskSetting(1076, 1077, 1078, HamburgerShopOption, CustomOptionType.Crewmate, false);
+            HamburgerShopCommonTask = HamburgerShopoption.Item1;
+            HamburgerShopShortTask = HamburgerShopoption.Item2;
+            HamburgerShopLongTask = HamburgerShopoption.Item3;
+
+            PenguinOption = SetupCustomRoleOption(1082, false, RoleId.Penguin);
+            PenguinPlayerCount = Create(1087, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PenguinOption);
+            PenguinCoolTime = Create(1088, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, PenguinOption, format: "unitSeconds");
+            PenguinDurationTime = Create(1089, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
+            PenguinCanDefaultKill = Create(1090, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
+
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

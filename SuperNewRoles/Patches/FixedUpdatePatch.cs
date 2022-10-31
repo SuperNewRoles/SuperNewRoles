@@ -49,11 +49,14 @@ namespace SuperNewRoles.Patches
                     RPCProcedure.SetHaison();
                     if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
-                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansDisconnect, false);
+                        Logger.Info("===================== Haison =====================", "End Game");
+                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
+
                     }
                     else
                     {
-                        ShipStatus.RpcEndGame(GameOverReason.HumansDisconnect, false);
+                        Logger.Info("===================== Haison =====================", "End Game");
+                        ShipStatus.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
                         MapUtilities.CachedShipStatus.enabled = false;
                     }
                 }
@@ -124,7 +127,8 @@ namespace SuperNewRoles.Patches
             OldModeButtons.OldModeUpdate();
 
             // -- 以下ゲーム中のみ --
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) {
+            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
+            {
                 if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
                 {
                     SNROnlySearch.FixedUpdate();
@@ -144,12 +148,13 @@ namespace SuperNewRoles.Patches
                     Roles.Crewmate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
                     Roles.Neutral.PartTimer.FixedUpdate();
+                    Vampire.FixedUpdate.AllClient();
                     ReduceKillCooldown(__instance);
+                    Roles.Impostor.Penguin.FixedUpdate();
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
-                        if (PlayerControl.LocalPlayer.IsMadRoles()) { VentDataModules.MadmateVent(); }
-                        NormalButtonDestroy.Postfix();
+                        NormalButtonDestroy.SetActiveState();
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Pursuer:
@@ -182,7 +187,7 @@ namespace SuperNewRoles.Patches
                                 MadHawk.FixedUpdate.Postfix();
                                 break;
                             case RoleId.Vampire:
-                                Vampire.FixedUpdate.Postfix();
+                                Vampire.FixedUpdate.VampireOnly();
                                 break;
                             case RoleId.Vulture:
                                 Vulture.FixedUpdate.Postfix();
@@ -234,6 +239,12 @@ namespace SuperNewRoles.Patches
                                 break;
                             case RoleId.ShiftActor:
                                 Roles.Impostor.ShiftActor.FixedUpdate();
+                                break;
+                            case RoleId.Cupid:
+                                Roles.Neutral.Cupid.FixedUpdate();
+                                break;
+                            case RoleId.Dependents:
+                                Vampire.FixedUpdate.DependentsOnly();
                                 break;
                         }
                     }

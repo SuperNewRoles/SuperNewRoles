@@ -28,7 +28,7 @@ Hat_SNR,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Rol
 creditsMain,Create By ykundesu,Create By ykundesu,模组作者：ykundesu
 creditsFull,Create By ykundesu,Create By ykundesu,模组作者：ykundesu
 creditsVersion,SuperNewRoles v{0},SuperNewRoles v{0},SuperNewRoles v{0}
-vanillaOptionsText,VanilaOptions,バニラの設定,原版设置
+vanillaOptionsText,VanillaOptions,バニラの設定,原版设置
 creditsUpdateOk,There is updated data. Please reboot. Latest Version:v{0},更新データがあります。再起動してください。最新バージョン:v{0},发现新版本。 请重新启动。 最新版本:v{0}
 modOptionsText,Options,設定,设置
 moreOptionsText,Normal Setting&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings,通常設定&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定,一般设置与&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>设置
@@ -187,9 +187,9 @@ IsAlwaysReduceCooldownExceptInVent,Reduce Cooldown Except InVent,ベント内で
 IsAlwaysReduceCooldownExceptOnTask,Reduce Cooldown Except OnTask,停電修理中でも進む,击杀冷却会在修理紧急任务时停止计算
 IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家
-WireTaskIsRandom,Wire task random,配線タスクランダム随机分配修复配线的任务地点
+WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数
-IsSNROnlySearch,SNR Room Filter,SNRルームフィルター
+IsSNROnlySearch,SNR Room Filter,SNRルームフィルター,筛选SNR房间
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置
@@ -352,7 +352,7 @@ SheriffName,Sheriff,シェリフ,警长
 SheriffTitle1,Kill the outsider!,人外をキルしよう,击杀敌人
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう,杀死敌人带领船员获得胜利
 SheriffDescription,Can shoot and kill an imposter if he is a crewmate. he will self-destruct.,インポスター陣営(設定により第三陣営など)をキルすることが出来、クルーだった場合、自爆します,警长可以击杀内鬼。\n但若警长尝试击杀船员，警长将以死谢罪。
-SheriffCoolDownSetting,Kill Cooldown,キルクールタイム,击杀冷却
+SheriffCooldownSetting,Kill Cooldown,キルクールタイム,击杀冷却
 SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可以击杀独立阵营玩家
 SheriffIsKillLoversSetting,Can kill lovers,ラバーズをキルできる,可以击杀恋人
 SheriffIsKillMadRoleSetting,Can kill mad roles,マッド系をキルできる,可以击杀叛徒系职业
@@ -714,6 +714,14 @@ ObserverDescription,You can see where everyone is voting during the meeting.,会
 VampireName,Vampire,ヴァンパイア,吸血鬼
 VampireTitle1,Let's do a delayed kill.,遅延キルしよう,你的击杀会被延迟
 VampireKillDelay,Kill Delay,キル遅延,击杀延迟
+VampireViewBloodStainsTurn,Turn to see blood,血が見えるターン
+VampireCanCreateDependents,Dependents can be nominated,眷属を指名可能
+VampireCreateDependentsCoolTime,Cool time to nominate a Dependents member,眷属指名クールタイム
+VampireDependentsKillCoolTime,Kill cool time for dependents,眷属のキルクールタイム
+VampireDependentsCanVent,Vent available for use by dependents,眷属がベント使用可能
+VampireDependentsButtonName,make Dependents,眷属にする
+DependentsName,Dependents,眷属
+DependentsTitle1,Help the vampire and win!,ヴァンパイアを助けて勝利しよう
 DarkKillerName,DarkKiller,ダークキラー,暗夜杀手
 DarkKillerTitle1,Let's kill in the dark,闇に紛れて殺そう,将你的杀戮隐藏于黑暗之中
 DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキルクールタイム,击杀冷却时间
@@ -793,7 +801,8 @@ GhostMechanicButtonName,Repair,修復,修复
 GhostMechanicCountText,GhostMechanic,残り{0}回,剩余{0}次
 EvilHackerName,EvilHacker,イビルハッカー,骇客
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船获取胜利
-EvilHackerMadmateSetting,Can an EvilHacker Make a Madmate,イビルハッカーがマッドメイトを作れるか,邪恶的黑客可以招募一个叛徒
+CreateMadmateSetting,Can Make a Madmate,マッドメイトを作れる,
+CreateMadmateButton,Drive Mad,狂わせる
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人
 SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数,念动使最大换位次数
@@ -1044,7 +1053,16 @@ SuicidalIdeationAddTimeLeftSetting,Time to suicide,タスクをすると増え�
 SuicidalIdeationFallProbabilitySetting,Probability of falling to death,転落死の確率,绝望先生摔死的概率
 SuicidalIdeationWinText,Try to live a little longer\nSuicidal person,もう少し生きてみようかな\n自殺願望者,再见，绝望先生！\n绝望先生
 SuicidalIdeationButtonName,Time to suicide,自殺まで,自杀倒计时
-
+CupidName,Cupid,キューピット
+CupidTitle,Let's make Lovers,ラバーズを作ろう
+HamburgerShopName,Hamburger Shop,ハンバーガー屋
+HamburgerShopTitle1,Let's make delicious，tasty burgers!,美味しい美味しいハンバーガーを作ろう
+HamburgerShopTitle2,Let's make lots of burgers!,ハンバーガーをたくさん作ろう
+HamburgerShopTitle3,Hamburger is Delicious,ハンバーガー is デリシャス
+HamburgerShopChangeTaskPrefab,Replace all tasks with hamburger tasks,全タスクをハンバーガータスクに置き換える
+PenguinName,Penguin,ペンギン
+PenguinTitle1,Let's drag and kill!,ぺちぺち！
+PenguinButtonName,Abduction,拉致
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！
@@ -1083,3 +1101,5 @@ Agartha_WareHouse,WareHouse,倉庫,仓库
 Agartha_ToolRoom,ToolRoom,工具室,工具室
 Agartha_WorkRoom,WorkRoom,仕事場,工坊
 AgarthaName,Agartha,アガルタ,雅各泰
+AgarthaRandomSpawnIsFirstSpawn,Applies to first spawn.,初スポーンにも適用される
+AgarthaRandomSpawnIsAddSpawnWay,Add spawn to the road,道へのスポーンを追加する
