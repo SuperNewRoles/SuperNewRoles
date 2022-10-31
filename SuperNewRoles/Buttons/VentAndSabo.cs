@@ -192,7 +192,7 @@ namespace SuperNewRoles.Buttons
         {
             public static void Prefix(Vent __instance, ref bool enabled)
             {
-                if (PlayerControl.LocalPlayer.IsMadRoles()) enabled = false;
+                if (PlayerControl.LocalPlayer.IsMadRoles() && !CustomOptionHolder.MadRolesCanVentMove.GetBool()) enabled = false;
             }
         }
 
