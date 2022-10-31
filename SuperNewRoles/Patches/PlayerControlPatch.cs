@@ -825,7 +825,7 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.Begin))]
     public static class SwitchMinigameBeginPatch
     {
-        public static bool Prfix()
+        public static bool Prefix()
         {
             return !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents);
         }
