@@ -1,68 +1,61 @@
-
+using System.Collections.Generic;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Buttons
 {
-    public static class DestroyPlayerList
-    {
-        public static bool IsDestroyKill(this PlayerControl player)
-        {
-            return player.GetRole() switch
-            {
-                RoleId.FastMaker => !RoleClass.FastMaker.IsCreatedMadmate,
-                RoleId.SecretlyKiller or RoleId.DoubleKiller or RoleId.Smasher or RoleId.Conjurer => true,
-                RoleId.Tasker => !CustomOptionHolder.TaskerCanKill.GetBool(),
-                //キルボタン無効か
-                _ => false
-            };
-        }
-        public static bool IsDestroyReport(this PlayerControl player)
-        {
-            return player.GetRole() switch
-            {
-                RoleId.Minimalist => !RoleClass.Minimalist.UseReport,
-                RoleId.Fox => !RoleClass.Fox.UseReport,
-                RoleId.Neet => true,
-                //通報ボタン無効か
-                _ => false
-            };
-        }
-        public static bool IsDestroyUse(this PlayerControl player)
-        {//使用ボタン消す役職少ないと思うのでswitch文にしときます
-         //役職増えたり複雑な条件増えてきたらreturn player.GetRole() switchにします
-            var IsDestroyUse = false;
-            switch (player.GetRole())
-            {
-                case RoleId.Neet:
-                    //使用ボタン無効か
-                    IsDestroyUse = true;
-                    break;
-            }
-            return IsDestroyUse;
-        }
-    }
     public class NormalButtonDestroy
     {
-        public static void Postfix()
+        private enum NormalButton
         {
-            PlayerControl player = CachedPlayer.LocalPlayer;
-            if (player.IsDestroyKill())
-                if (FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.active)
-                    FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
-            if (player.IsDestroyReport())
-                if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
-                {
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);//通報
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.SetActiveRecursively(false);
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.enabled = false;
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.enabled = false;
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.sprite = null;
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.enabled = false;
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
-                }
-            if (player.IsDestroyUse())
-                if (FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.active)//使うボタンが有効の時
-                    FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.SetActive(false);//使うボタンを無効化
+            KillButton,
+            ReportButton,
+            UseButton
+        }
+        private static readonly Dictionary<RoleId, (NormalButton, bool)> SetActiveDictionary = new() {
+            { RoleId.FastMaker, (NormalButton.KillButton, !RoleClass.FastMaker.IsCreatedMadmate) },
+            { RoleId.SecretlyKiller, (NormalButton.KillButton, true) },
+            { RoleId.DoubleKiller, (NormalButton.KillButton, true) },
+            { RoleId.Smasher, (NormalButton.KillButton, true) },
+            { RoleId.Conjurer, (NormalButton.KillButton, true) },
+            { RoleId.Tasker, (NormalButton.KillButton, !CustomOptionHolder.TaskerCanKill.GetBool()) },
+
+            { RoleId.Minimalist, (NormalButton.ReportButton, !RoleClass.Minimalist.UseReport) },
+            { RoleId.Fox, (NormalButton.ReportButton, !RoleClass.Fox.UseReport) },
+            { RoleId.Neet, (NormalButton.ReportButton, true) },
+
+            //{ RoleId.Neet, (NormalButton.UseButton, true) }, Key重複のため辞書に入れず直接パッチ
+        };
+        public static void SetActiveState()
+        {
+            // ニートの使用ボタン
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Neet) && FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.active)
+                FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.SetActive(false);// 使用ボタンを無効化
+
+            if (!SetActiveDictionary.ContainsKey(PlayerControl.LocalPlayer.GetRole())) return;
+            if (!SetActiveDictionary[PlayerControl.LocalPlayer.GetRole()].Item2) return;
+            switch (SetActiveDictionary[PlayerControl.LocalPlayer.GetRole()].Item1)
+            {
+                case NormalButton.KillButton: // キルボタン
+                    if (FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.active)
+                        FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+                    break;
+                case NormalButton.ReportButton: // 通報ボタン
+                    if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
+                    {
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);//通報
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.SetActiveRecursively(false);
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.enabled = false;
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.enabled = false;
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.sprite = null;
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.enabled = false;
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
+                    }
+                    break;
+                case NormalButton.UseButton: // 使用ボタン
+                    if (FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.active)
+                        FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.SetActive(false);
+                    break;
+            }
         }
     }
 }

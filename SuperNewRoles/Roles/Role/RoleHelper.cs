@@ -205,7 +205,21 @@ namespace SuperNewRoles
 
         public static void SetRole(this PlayerControl player, RoleId role)
         {
-            if (!Roles.Neutral.Spelunker.CheckSetRole(player, role)) return;
+            if (!Spelunker.CheckSetRole(player, role)) return;
+            if (player.IsRole(RoleId.Doppelganger) && role != RoleId.Doppelganger)
+            {
+                bool isShapeshift = false;
+                foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.Targets)
+                {
+                    if (p.Key == PlayerControl.LocalPlayer.PlayerId)
+                    {
+                        isShapeshift = true;
+                        break;
+                    }
+                }
+                if (isShapeshift)
+                    Doppelganger.DoppelgangerShape();
+            }
             switch (role)
             {
                 case RoleId.SoothSayer:

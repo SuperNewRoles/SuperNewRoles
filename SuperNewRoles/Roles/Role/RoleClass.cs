@@ -1612,6 +1612,7 @@ namespace SuperNewRoles.Roles
             public static float soulDuration;
             public static bool limitSoulDuration;
             public static int mode;
+            public static bool IsCreateMadmate;
             public static void ClearAndReload()
             {
                 EvilSeerPlayer = new();
@@ -1619,6 +1620,7 @@ namespace SuperNewRoles.Roles
                 limitSoulDuration = CustomOptionHolder.EvilSeerLimitSoulDuration.GetBool();
                 soulDuration = CustomOptionHolder.EvilSeerSoulDuration.GetFloat();
                 mode = CustomOptionHolder.EvilSeerMode.GetSelection();
+                IsCreateMadmate = CustomOptionHolder.EvilSeerMadmateSetting.GetBool();
             }
         }
         public static class RemoteSheriff
@@ -2013,6 +2015,8 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static bool IsCreateMadmate;
             public static bool IsMyAdmin;
+            public static Sprite GetCreateMadmateButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreateMadmateButton.png", 115f);
+
             public static Sprite GetButtonSprite()
             {
                 byte mapId = PlayerControl.GameOptions.MapId;

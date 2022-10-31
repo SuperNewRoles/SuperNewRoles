@@ -192,7 +192,7 @@ namespace SuperNewRoles.Buttons
         {
             public static void Prefix(Vent __instance, ref bool enabled)
             {
-                if (PlayerControl.LocalPlayer.IsMadRoles()) enabled = false;
+                if (PlayerControl.LocalPlayer.IsMadRoles() && !CustomOptionHolder.MadRolesCanVentMove.GetBool()) enabled = false;
             }
         }
 
@@ -230,6 +230,18 @@ namespace SuperNewRoles.Buttons
 
                 FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                 return false;
+            }
+        }
+        [HarmonyPatch(typeof(Vent), nameof(Vent.SetOutline))]
+        class VentSetOutlinePatch
+        {
+            static void Postfix(Vent __instance)
+            {
+                // Vent outline set role color
+                var color = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer).color;
+                string[] outlines = new[] { "_OutlineColor", "_AddColor" };
+                foreach (var name in outlines)
+                    __instance.myRend.material.SetColor(name, color);
             }
         }
     }
