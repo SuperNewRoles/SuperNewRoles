@@ -352,7 +352,7 @@ SheriffName,Sheriff,シェリフ,警长
 SheriffTitle1,Kill the outsider!,人外をキルしよう,击杀敌人
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう,杀死敌人带领船员获得胜利
 SheriffDescription,Can shoot and kill an imposter if he is a crewmate. he will self-destruct.,インポスター陣営(設定により第三陣営など)をキルすることが出来、クルーだった場合、自爆します,警长可以击杀内鬼。\n但若警长尝试击杀船员，警长将以死谢罪。
-SheriffCoolDownSetting,Kill Cooldown,キルクールタイム,击杀冷却
+SheriffCooldownSetting,Kill Cooldown,キルクールタイム,击杀冷却
 SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可以击杀独立阵营玩家
 SheriffIsKillLoversSetting,Can kill lovers,ラバーズをキルできる,可以击杀恋人
 SheriffIsKillMadRoleSetting,Can kill mad roles,マッド系をキルできる,可以击杀叛徒系职业
