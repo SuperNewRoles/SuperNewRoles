@@ -13,6 +13,13 @@ namespace SuperNewRoles.Roles
     {
         public static void WrapUp()
         {
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Dependents) && PlayerControl.LocalPlayer.IsAlive())
+            {
+                bool Is = true;
+                foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer) if (p.IsAlive()) Is = false;
+                if (Is)
+                    PlayerControl.LocalPlayer.RpcExiledUnchecked();
+            }
             foreach (var data in RoleClass.Vampire.NoActiveTurnWait.ToArray())
             {
                 RoleClass.Vampire.NoActiveTurnWait[data.Key]--;
