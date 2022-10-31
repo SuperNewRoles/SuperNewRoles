@@ -16,6 +16,7 @@ namespace SuperNewRoles.Roles
             List<PlayerControl> untarget = new();
             untarget.AddRange(RoleClass.SideKiller.MadKillerPlayer);
             untarget.AddRange(RoleClass.Spy.SpyPlayer);
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Vampire)) untarget.AddRange(RoleClass.Dependents.DependentsPlayer);
             FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.SetTarget(untargetablePlayers: untarget, onlyCrewmates: true));
         }
     }

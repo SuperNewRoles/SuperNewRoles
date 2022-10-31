@@ -85,6 +85,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton PavlovsownerCreatedogButton;
         public static CustomButton PavlovsdogKillButton;
         public static CustomButton CamouflagerButton;
+        public static CustomButton VampireCreateDependentsButton;
+        public static CustomButton DependentsKillButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text PavlovsdogKillSelfText;
@@ -108,6 +110,67 @@ namespace SuperNewRoles.Buttons
 
         public static void Postfix(HudManager __instance)
         {
+            DependentsKillButton = new(
+                () =>
+                {
+                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, SetTarget(untarget: RoleClass.Vampire.VampirePlayer));
+                    DependentsKillButton.MaxTimer = CustomOptionHolder.VampireDependentsKillCoolTime.GetFloat();
+                    DependentsKillButton.Timer = DependentsKillButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Dependents; },
+                () =>
+                {
+                    return SetTarget(untarget: RoleClass.Vampire.VampirePlayer) && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    DependentsKillButton.MaxTimer = CustomOptionHolder.VampireDependentsKillCoolTime.GetFloat();
+                    DependentsKillButton.Timer = DependentsKillButton.MaxTimer;
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
+                showButtonText = true
+            };
+
+            VampireCreateDependentsButton = new(
+                () =>
+                {
+                    var target = SetTarget(Crewmateonly:true);
+                    target.SetRoleRPC(RoleId.Dependents);
+                    target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
+                    RoleClass.Vampire.CreatedDependents = true;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Vampire && !RoleClass.Vampire.CreatedDependents; },
+                () =>
+                {
+                    return SetTarget(Crewmateonly:true) && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    VampireCreateDependentsButton.MaxTimer = CustomOptionHolder.VampireCreateDependentsCoolTime.GetFloat();
+                    VampireCreateDependentsButton.Timer = VampireCreateDependentsButton.MaxTimer;
+                },
+                RoleClass.Vampire.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("VampireDependentsButtonName"),
+                showButtonText = true
+            };
+
             PavlovsdogKillButton = new(
                 () =>
                 {

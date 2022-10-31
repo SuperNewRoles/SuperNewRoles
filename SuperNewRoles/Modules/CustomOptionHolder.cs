@@ -463,6 +463,11 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption VampireOption;
         public static CustomOption VampirePlayerCount;
         public static CustomOption VampireKillDelay;
+        public static CustomOption VampireViewBloodStainsTurn;
+        public static CustomOption VampireCanCreateDependents;
+        public static CustomOption VampireCreateDependentsCoolTime;
+        public static CustomOption VampireDependentsKillCoolTime;
+        public static CustomOption VampireDependentsCanVent;
 
         public static CustomRoleOption FoxOption;
         public static CustomOption FoxPlayerCount;
@@ -886,6 +891,9 @@ namespace SuperNewRoles.Modules
         public static CustomOption CamouflagerCamouflageQuarreled;
         public static CustomOption CamouflagerCamouflageChangeColor;
         public static CustomOption CamouflagerCamouflageColor;
+        
+        public static CustomRoleOption DependentsOption;
+        public static CustomOption DependentsPlayerCount;
         //CustomOption
 
         public static CustomOption GMOption;
@@ -1360,6 +1368,11 @@ namespace SuperNewRoles.Modules
             VampireOption = SetupCustomRoleOption(307, false, RoleId.Vampire);
             VampirePlayerCount = Create(308, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VampireOption);
             VampireKillDelay = Create(309, false, CustomOptionType.Impostor, "VampireKillDelay", 0f, 1f, 60f, 0.5f, VampireOption, format: "unitSeconds");
+            VampireViewBloodStainsTurn = Create(1074, false, CustomOptionType.Impostor, "VampireViewBloodStainsTurn", 1f, 1f, 15f, 1f, VampireOption, format: "unitSeconds");
+            VampireCanCreateDependents = Create(1075, false, CustomOptionType.Impostor, "VampireCanCreateDependents", true, VampireOption);
+            VampireCreateDependentsCoolTime = Create(1076, false, CustomOptionType.Impostor, "VampireCreateDependentsCoolTime", 30f, 2.5f, 120f, 2.5f, VampireCanCreateDependents);
+            VampireDependentsKillCoolTime = Create(1077, false, CustomOptionType.Impostor, "VampireDependentsKillCoolTime", 30f, 2.5f, 120f, 2.5f, VampireCanCreateDependents);
+            VampireDependentsCanVent = Create(1078, false, CustomOptionType.Impostor, "VampireDependentsCanVent", true, VampireCanCreateDependents);
 
             FoxOption = SetupCustomRoleOption(310, true, RoleId.Fox);
             FoxPlayerCount = Create(311, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FoxOption);
@@ -1803,6 +1816,7 @@ namespace SuperNewRoles.Modules
             EvilGuesserPlayerCount = Create(974, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
             EvilGuesserShortMaxCount = Create(975, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
             EvilGuesserShortOneMeetingCount = Create(976, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
+
             //表示設定
 
             QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

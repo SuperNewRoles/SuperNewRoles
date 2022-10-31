@@ -168,6 +168,7 @@ namespace SuperNewRoles.Modules
         Pavlovsowner,
         Conjurer,
         Camouflager,
+        Dependents,
         //RoleId
     }
 
@@ -251,11 +252,37 @@ namespace SuperNewRoles.Modules
         CrackerCrack,
         Camouflage,
         ShowGuardEffect,
-        SetMapId
+        SetMapId,
+        SetVampireStatus,
     }
 
     public static class RPCProcedure
     {
+        public static void SetVampireStatus(byte sourceId, byte targetId, bool IsOn, bool IsKillSuc)
+        {
+            PlayerControl source = ModHelpers.PlayerById(sourceId);
+            PlayerControl target = ModHelpers.PlayerById(targetId);
+            if (source == null || target == null) return;
+            if (IsOn)
+            {
+                RoleClass.Vampire.Targets.Add(source, target);
+            }
+            else
+            {
+                if (RoleClass.Vampire.BloodStains.ContainsKey(target.PlayerId))
+                {
+                    if (IsKillSuc)
+                    {
+                        BloodStain DeadBloodStain = new(target, target.transform.position);
+                        DeadBloodStain.BloodStainObject.transform.localScale *= 3f;
+                        RoleClass.Vampire.WaitActiveBloodStains.AddRange(RoleClass.Vampire.BloodStains[target.PlayerId]);
+                        RoleClass.Vampire.WaitActiveBloodStains.Add(DeadBloodStain);
+                    }
+                    RoleClass.Vampire.BloodStains.Remove(target.PlayerId);
+                    RoleClass.Vampire.Targets.Remove(source);
+                }
+            }
+        }
         public static void SetMapId(byte mapid)
         {
             SNROnlySearch.currentMapId = mapid;
@@ -1435,6 +1462,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.SetMapId:
                             SetMapId(reader.ReadByte());
+                            break;
+                        case CustomRPC.SetVampireStatus:
+                            SetVampireStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());
                             break;
                     }
                 }

@@ -605,6 +605,8 @@ namespace SuperNewRoles.Patches
             notWinners.AddRange(RoleClass.Pavlovsdogs.PavlovsdogsPlayer);
             notWinners.AddRange(RoleClass.Pavlovsowner.PavlovsownerPlayer);
 
+            notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
+
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
                 if (p.IsDead())
@@ -801,8 +803,7 @@ namespace SuperNewRoles.Patches
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
                 foreach (var cp in CachedPlayer.AllPlayers)
-                    if (cp.PlayerControl.IsMadRoles() || cp.PlayerControl.IsRole(RoleId.MadKiller)) TempData.winners.Add(new(cp.Data));
-
+                    if (cp.PlayerControl.IsMadRoles() || cp.PlayerControl.IsRole(RoleId.MadKiller, RoleId.Dependents)) TempData.winners.Add(new(cp.Data));
             }
 
 

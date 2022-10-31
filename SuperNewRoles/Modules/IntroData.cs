@@ -231,6 +231,7 @@ namespace SuperNewRoles.Modules
         public static IntroData WaveCannonJackalIntro = new("WaveCannonJackal", RoleClass.WaveCannonJackal.color, 1, RoleId.WaveCannonJackal, TeamRoleType.Neutral);
         public static IntroData ConjurerIntro = new("Conjurer", Conjurer.color, 1, RoleId.Conjurer, TeamRoleType.Impostor);
         public static IntroData CamouflagerIntro = new("Camouflager", RoleClass.Camouflager.color, 1, RoleId.Camouflager, TeamRoleType.Impostor);
+        public static IntroData DependentsIntro = new("Dependents", RoleClass.Dependents.color, 1, RoleId.Dependents, TeamRoleType.Crewmate);
         //イントロオブジェ
     }
 }
