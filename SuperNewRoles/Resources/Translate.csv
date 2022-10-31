@@ -1053,6 +1053,16 @@ SuicidalIdeationAddTimeLeftSetting,Time to suicide,タスクをすると増え�
 SuicidalIdeationFallProbabilitySetting,Probability of falling to death,転落死の確率,绝望先生摔死的概率
 SuicidalIdeationWinText,Try to live a little longer\nSuicidal person,もう少し生きてみようかな\n自殺願望者,再见，绝望先生！\n绝望先生
 SuicidalIdeationButtonName,Time to suicide,自殺まで,自杀倒计时
+CupidName,Cupid,キューピット
+CupidTitle,Let's make Lovers,ラバーズを作ろう
+HamburgerShopName,Hamburger Shop,ハンバーガー屋
+HamburgerShopTitle1,Let's make delicious，tasty burgers!,美味しい美味しいハンバーガーを作ろう
+HamburgerShopTitle2,Let's make lots of burgers!,ハンバーガーをたくさん作ろう
+HamburgerShopTitle3,Hamburger is Delicious,ハンバーガー is デリシャス
+HamburgerShopChangeTaskPrefab,Replace all tasks with hamburger tasks,全タスクをハンバーガータスクに置き換える
+PenguinName,Penguin,ペンギン
+PenguinTitle1,Let's drag and kill!,ぺちぺち！
+PenguinButtonName,Abduction,拉致
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！
@@ -1091,3 +1101,5 @@ Agartha_WareHouse,WareHouse,倉庫,仓库
 Agartha_ToolRoom,ToolRoom,工具室,工具室
 Agartha_WorkRoom,WorkRoom,仕事場,工坊
 AgarthaName,Agartha,アガルタ,雅各泰
+AgarthaRandomSpawnIsFirstSpawn,Applies to first spawn.,初スポーンにも適用される
+AgarthaRandomSpawnIsAddSpawnWay,Add spawn to the road,道へのスポーンを追加する

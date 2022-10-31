@@ -605,6 +605,7 @@ namespace SuperNewRoles.Patches
             notWinners.AddRange(RoleClass.Pavlovsdogs.PavlovsdogsPlayer);
             notWinners.AddRange(RoleClass.Pavlovsowner.PavlovsownerPlayer);
 
+            notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
             notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
@@ -912,6 +913,13 @@ namespace SuperNewRoles.Patches
                                 isDleted = true;
                             }
                             TempData.winners.Add(new(player.Data));
+                            if (RoleClass.Cupid.CupidLoverPair.ContainsValue(player.PlayerId))
+                            {
+
+                                PlayerControl cPlayer = ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId));
+                                if (cPlayer != null && cPlayer.IsRole(RoleId.Cupid))
+                                    TempData.winners.Add(new(ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId)).Data));
+                            }
                             AdditionalTempData.winCondition = WinCondition.LoversWin;
                         }
                     }
@@ -1031,11 +1039,17 @@ namespace SuperNewRoles.Patches
                         foreach (PlayerControl player in plist)
                         {
                             TempData.winners.Add(new(player.Data));
+                            if (RoleClass.Cupid.CupidLoverPair.ContainsValue(player.PlayerId))
+                            {
+                                PlayerControl cPlayer = ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId));
+                                if (cPlayer != null && cPlayer.IsRole(RoleId.Cupid))
+                                    TempData.winners.Add(new(ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId)).Data));
+                            }
                         }
                     }
                 }
             }
-            foreach (var PartTimerData in RoleClass.PartTimer.PlayerData)//フリーター
+            foreach (var PartTimerData in RoleClass.PartTimer.PlayerData) //フリーター
             {
                 Logger.Info(PartTimerData.Key.Data.PlayerName);
                 if (TempData.winners.ToArray().Any(x => x.PlayerName == PartTimerData.Value.Data.PlayerName))
@@ -1044,15 +1058,6 @@ namespace SuperNewRoles.Patches
                     TempData.winners.Add(wpd);
                 }
             }
-
-
-            notWinners = new();
-            winnersToRemove = new();
-            foreach (WinningPlayerData winner in TempData.winners)
-            {
-                if (notWinners.Any(x => x.Data.PlayerName == winner.PlayerName)) winnersToRemove.Add(winner);
-            }
-            foreach (var winner in winnersToRemove) TempData.winners.Remove(winner);
 
 
             if (ModeHandler.IsMode(ModeId.BattleRoyal))

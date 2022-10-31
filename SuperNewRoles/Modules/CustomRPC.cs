@@ -168,6 +168,9 @@ namespace SuperNewRoles.Modules
         Pavlovsowner,
         Conjurer,
         Camouflager,
+        Cupid,
+        HamburgerShop,
+        Penguin,
         Dependents,
         //RoleId
     }
@@ -252,12 +255,21 @@ namespace SuperNewRoles.Modules
         CrackerCrack,
         Camouflage,
         ShowGuardEffect,
+        SetLoversCupid,
+        SetMapId,
+        PenguinHikizuri,
         SetMapId,
         SetVampireStatus,
     }
 
     public static class RPCProcedure
     {
+        public static void SetLoversCupid(byte sourceid, byte player1, byte player2)
+        {
+            RoleClass.Cupid.CupidLoverPair[sourceid] = player1;
+            SetLovers(player1, player2);
+        }
+
         public static void SetVampireStatus(byte sourceId, byte targetId, bool IsOn, bool IsKillSuc)
         {
             PlayerControl source = ModHelpers.PlayerById(sourceId);
@@ -286,6 +298,14 @@ namespace SuperNewRoles.Modules
         public static void SetMapId(byte mapid)
         {
             SNROnlySearch.currentMapId = mapid;
+        }
+
+        public static void PenguinHikizuri(byte sourceId, byte targetId)
+        {
+            PlayerControl source = ModHelpers.PlayerById(sourceId);
+            PlayerControl target = ModHelpers.PlayerById(targetId);
+            if (source == null || target == null) return;
+            RoleClass.Penguin.PenguinData.Add(source, target);
         }
 
         public static void ShowGuardEffect(byte showerid, byte targetid)
@@ -1460,8 +1480,14 @@ namespace SuperNewRoles.Modules
                         case CustomRPC.ShowGuardEffect:
                             ShowGuardEffect(reader.ReadByte(), reader.ReadByte());
                             break;
+                        case CustomRPC.SetLoversCupid:
+                            SetLoversCupid(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                            break;
                         case CustomRPC.SetMapId:
                             SetMapId(reader.ReadByte());
+                            break;
+                        case CustomRPC.PenguinHikizuri:
+                            PenguinHikizuri(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.SetVampireStatus:
                             SetVampireStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());

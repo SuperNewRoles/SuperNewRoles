@@ -43,7 +43,12 @@ namespace SuperNewRoles.Modules {
                 string[] values = line.Split(',');
 
                 // 配列から辞書に格納する
-                dictionary.Add(values[0],values);
+                List<string> valueslist = new();
+                foreach (string vl in values)
+                {
+                    valueslist.Add(vl.Replace("\\n","\n"));
+                }
+                dictionary.Add(values[0],valueslist.ToArray());
             }
         }
     }

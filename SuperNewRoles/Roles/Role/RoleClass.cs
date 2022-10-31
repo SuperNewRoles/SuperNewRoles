@@ -190,6 +190,9 @@ namespace SuperNewRoles.Roles
             WaveCannonJackal.ClearAndReload();
             Conjurer.ClearAndReload();
             Camouflager.ClearAndReload();
+            Cupid.ClearAndReload();
+            HamburgerShop.ClearAndReload();
+            Penguin.ClearAndReload();
             Dependents.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -2886,6 +2889,50 @@ namespace SuperNewRoles.Roles
                 IsShooted = false;
             }
         }
+        public static class Cupid
+        {
+            public static List<PlayerControl> CupidPlayer;
+            public static Color32 color = Lovers.color;
+            public static PlayerControl currentLovers;
+            public static PlayerControl currentTarget;
+            public static bool Created;
+            public static Dictionary<byte, byte> CupidLoverPair;
+            public static void ClearAndReload()
+            {
+                CupidPlayer = new();
+                currentLovers = null;
+                currentTarget = null;
+                Created = false;
+                CupidLoverPair = new();
+            }
+        }
+
+        public static class HamburgerShop
+        {
+            public static List<PlayerControl> HamburgerShopPlayer;
+            public static Color32 color = new(255, 128, 64, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                HamburgerShopPlayer = new();
+            }
+        }
+
+        public static class Penguin
+        {
+            public static List<PlayerControl> PenguinPlayer;
+            public static Color32 color = ImpostorRed;
+            public static Dictionary<PlayerControl, PlayerControl> PenguinData;
+            public static PlayerControl currentTarget => PenguinData.ContainsKey(CachedPlayer.LocalPlayer) ? PenguinData[CachedPlayer.LocalPlayer] : null;
+            private static Sprite _buttonSprite;
+            public static Sprite GetButtonSprite() => _buttonSprite;
+            public static void ClearAndReload()
+            {
+                PenguinPlayer = new();
+                PenguinData = new();
+                bool Is = ModHelpers.IsSucsessChance(4);
+                _buttonSprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.PenguinButton_{(Is ? 1 : 2)}.png", Is ? 87.5f : 110f);
+            }
+        }
         public static class Dependents
         {
             public static List<PlayerControl> DependentsPlayer;
@@ -2893,7 +2940,6 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 DependentsPlayer = new();
-                
             }
         }
         //新ロールクラス

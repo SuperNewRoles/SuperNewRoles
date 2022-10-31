@@ -85,6 +85,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton PavlovsownerCreatedogButton;
         public static CustomButton PavlovsdogKillButton;
         public static CustomButton CamouflagerButton;
+        public static CustomButton CupidButton;
+        public static CustomButton PenguinButton;
         public static CustomButton VampireCreateDependentsButton;
         public static CustomButton DependentsKillButton;
 
@@ -253,6 +255,49 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("PavlovsownerCreatedogButtonName"),
+                showButtonText = true
+            };
+
+            PenguinButton = new(
+                () =>
+                {
+                    PlayerControl Target = SetTarget(null, true);
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PenguinHikizuri);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write(Target.PlayerId);
+                    writer.EndRPC();
+                    RPCProcedure.PenguinHikizuri(CachedPlayer.LocalPlayer.PlayerId, Target.PlayerId);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Penguin; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove && SetTarget(null, true);
+                },
+                () =>
+                {
+                    PenguinButton.MaxTimer = CustomOptionHolder.PenguinCoolTime.GetFloat();
+                    PenguinButton.Timer = PenguinButton.MaxTimer;
+                    PenguinButton.effectCancellable = false;
+                    PenguinButton.EffectDuration = CustomOptionHolder.PenguinDurationTime.GetFloat();
+                    PenguinButton.HasEffect = true;
+                    PenguinButton.Sprite = RoleClass.Penguin.GetButtonSprite();
+                },
+                RoleClass.Penguin.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; },
+                true,
+                5f,
+                () =>
+                {
+                    PlayerControl.LocalPlayer.UncheckedMurderPlayer(RoleClass.Penguin.currentTarget);
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("PenguinButtonName"),
                 showButtonText = true
             };
 
@@ -435,6 +480,62 @@ namespace SuperNewRoles.Buttons
                 )
             {
                 buttonText = ModTranslation.GetString("PhotographerButtonName"),
+                showButtonText = true
+            };
+
+            CupidButton = new(
+                () =>
+                {
+                    PlayerControl target = RoleClass.Cupid.currentTarget;
+                    if (target.IsLovers()) return;
+                    if (RoleClass.Cupid.currentLovers is null)
+                    {
+                        RoleClass.Cupid.currentLovers = target;
+                        CupidButton.MaxTimer = CustomOptionHolder.CupidCoolTime.GetFloat();
+                        CupidButton.Timer = CupidButton.MaxTimer;
+                    }
+                    else
+                    {
+                        MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.SetLoversCupid);
+                        Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                        Writer.Write(RoleClass.Cupid.currentLovers.PlayerId);
+                        Writer.Write(target.PlayerId);
+                        Writer.EndRPC();
+                        RPCProcedure.SetLoversCupid(CachedPlayer.LocalPlayer.PlayerId, RoleClass.Cupid.currentLovers.PlayerId, target.PlayerId);
+                        RoleClass.Cupid.Created = true;
+                    }
+                    RoleClass.Cupid.currentTarget = null;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Cupid && !RoleClass.Cupid.Created; },
+                () =>
+                {
+                    if (!RoleClass.Cupid.Created && RoleClass.Cupid.currentLovers != null && RoleClass.Cupid.currentLovers.IsDead())
+                    {
+                        RoleClass.Cupid.currentLovers = null;
+                    }
+                    if (!PlayerControl.LocalPlayer.CanMove) return false;
+                    List<PlayerControl> untarget = new();
+                    if (RoleClass.Cupid.currentLovers != null)
+                    {
+                        untarget.Add(RoleClass.Cupid.currentLovers);
+                    }
+                    return RoleClass.Cupid.currentTarget = SetTarget(untarget);
+                },
+                () =>
+                {
+                    CupidButton.MaxTimer = CustomOptionHolder.CupidCoolTime.GetFloat();
+                    CupidButton.Timer = CupidButton.MaxTimer;
+                },
+                RoleClass.Truelover.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+                )
+            {
+                buttonText = ModTranslation.GetString("CupidButtonName"),
                 showButtonText = true
             };
 
