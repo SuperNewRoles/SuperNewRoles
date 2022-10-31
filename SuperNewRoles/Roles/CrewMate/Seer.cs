@@ -17,14 +17,27 @@ namespace SuperNewRoles.Roles
             RoleClass.SeerFriends.SeerFriendsPlayer
         };
 
+        /** <summary>
+            画面を光らせる
+            </summary>
+
+            <param name="color">
+            (new Color("r値" / 255f, "g値" / 255f, "b値" / 255f))
+            あるいはUnityのcolorコード指定で色を選択
+            </param>
+
+            <param name="duration">
+            color色に画面を光らせはじめ、終わるまでの時間(duration/2秒時に指定色に光る)
+            </param>
+        **/
         public static void ShowFlash(Color color, float duration = 1f)
-        {//画面を光らせる
+        {
+            var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
             if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
             {
-                var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
                 if (p < 0.5)
                 {
                     if (renderer != null)
@@ -35,8 +48,22 @@ namespace SuperNewRoles.Roles
                     if (renderer != null)
                         renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
                 }
-                if (p == 1f && renderer != null) renderer.enabled = false;
+                if (p == 1f && renderer != null)
+                {
+                    renderer.enabled = true;
+                    renderer.gameObject.SetActive(false);
+                }
             })));
+        }
+        /// <summary>
+        /// ShowFlashでReactorFlashや背景が無効化された物を有効化する
+        /// </summary>
+        public static void ResetShowFlash()
+        {
+            var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
+            renderer.enabled = true;
+            renderer.color = Color.black;
+            renderer.gameObject.SetActive(false);
         }
         private static Sprite SoulSprite;
         public static Sprite GetSoulSprite()
@@ -118,6 +145,7 @@ namespace SuperNewRoles.Roles
                         }
                     }
                 }
+                ResetShowFlash();
             }
 
             public static class MurderPlayerPatch

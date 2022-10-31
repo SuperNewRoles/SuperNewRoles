@@ -95,6 +95,7 @@ namespace SuperNewRoles.Patches
             Roles.Impostor.Matryoshka.WrapUp();
             Roles.Neutral.PartTimer.WrapUp();
             Roles.Crewmate.KnightProtected_Patch.WrapUp();
+            RoleClass.Tuna.IsMeetingEnd = true;
             Bestfalsecharge.WrapUp();
             if (AmongUsClient.Instance.AmHost)
             {

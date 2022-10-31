@@ -2040,19 +2040,34 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target = SetTarget();
-                    if (!target.Data.Role.IsImpostor && target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.EvilHacker.IsCreateMadmate)
+                    if (!target.Data.Role.IsImpostor && target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
-                        Madmate.CreateMadmate(target);
-                        RoleClass.EvilHacker.IsCreateMadmate = false;
+                        switch (PlayerControl.LocalPlayer.GetRole())
+                        {
+                            case RoleId.EvilHacker:
+                                if (RoleClass.EvilHacker.IsCreateMadmate)
+                                {
+                                    Madmate.CreateMadmate(target);
+                                    RoleClass.EvilHacker.IsCreateMadmate = false;
+                                }
+                                break;
+                            case RoleId.EvilSeer:
+                                if (RoleClass.EvilSeer.IsCreateMadmate)
+                                {
+                                    Madmate.CreateMadmate(target);
+                                    RoleClass.EvilSeer.IsCreateMadmate = false;
+                                }
+                                break;
+                        }
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.EvilHacker && ModeHandler.IsMode(ModeId.Default) && RoleClass.EvilHacker.IsCreateMadmate; },
+                (bool isAlive, RoleId role) => { return isAlive && ((role == RoleId.EvilHacker && RoleClass.EvilHacker.IsCreateMadmate) || (role == RoleId.EvilSeer && RoleClass.EvilSeer.IsCreateMadmate)) && ModeHandler.IsMode(ModeId.Default); },
                 () =>
                 {
                     return SetTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { },
-                RoleClass.Jackal.GetButtonSprite(),
+                RoleClass.EvilHacker.GetCreateMadmateButtonSprite(),
                 new Vector3(-2.7f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -2061,7 +2076,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.GetString("SidekickName"),
+                buttonText = ModTranslation.GetString("CreateMadmateButton"),
                 showButtonText = true
             };
 

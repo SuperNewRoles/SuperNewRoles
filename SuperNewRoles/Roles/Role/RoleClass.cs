@@ -1621,6 +1621,7 @@ namespace SuperNewRoles.Roles
             public static float soulDuration;
             public static bool limitSoulDuration;
             public static int mode;
+            public static bool IsCreateMadmate;
             public static void ClearAndReload()
             {
                 EvilSeerPlayer = new();
@@ -1628,6 +1629,7 @@ namespace SuperNewRoles.Roles
                 limitSoulDuration = CustomOptionHolder.EvilSeerLimitSoulDuration.GetBool();
                 soulDuration = CustomOptionHolder.EvilSeerSoulDuration.GetFloat();
                 mode = CustomOptionHolder.EvilSeerMode.GetSelection();
+                IsCreateMadmate = CustomOptionHolder.EvilSeerMadmateSetting.GetBool();
             }
         }
         public static class RemoteSheriff
@@ -2022,6 +2024,8 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static bool IsCreateMadmate;
             public static bool IsMyAdmin;
+            public static Sprite GetCreateMadmateButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreateMadmateButton.png", 115f);
+
             public static Sprite GetButtonSprite()
             {
                 byte mapId = PlayerControl.GameOptions.MapId;
@@ -2068,7 +2072,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> TunaPlayer;
             public static Color32 color = new(0, 255, 255, byte.MaxValue);
-            public static Dictionary<byte, Vector3> Position;
+            public static Dictionary<byte, Vector2> Position;
             public static float Timer;
             public static float StoppingTime;
             public static bool IsUseVent;
@@ -2078,7 +2082,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 TunaPlayer = new();
-                Position = new Dictionary<byte, Vector3>();
+                Position = new();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers) Position[p.PlayerId] = new Vector3(9999f, 9999f, 9999f);
                 StoppingTime = CustomOptionHolder.TunaStoppingTime.GetFloat();
                 if (Mode.ModeHandler.IsMode(Mode.ModeId.Default)) Timer = StoppingTime;
