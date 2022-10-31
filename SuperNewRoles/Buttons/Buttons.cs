@@ -158,7 +158,7 @@ namespace SuperNewRoles.Buttons
                     VampireCreateDependentsButton.MaxTimer = CustomOptionHolder.VampireCreateDependentsCoolTime.GetFloat();
                     VampireCreateDependentsButton.Timer = VampireCreateDependentsButton.MaxTimer;
                 },
-                RoleClass.Jackal.GetButtonSprite(),
+                RoleClass.Vampire.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,

@@ -822,6 +822,14 @@ namespace SuperNewRoles.Patches
             return true;
         }
     }
+    [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.Begin))]
+    public static class SwitchMinigameBeginPatch
+    {
+        public static bool Prfix()
+        {
+            return !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents);
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
     public static class MurderPlayerPatch
     {
@@ -1021,6 +1029,7 @@ namespace SuperNewRoles.Patches
                 }
                 Minimalist.MurderPatch.Postfix(__instance);
             }
+            Vampire.OnMurderPlayer(__instance, target);
             if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && ModeHandler.IsMode(ModeId.Default))
             {
                 EvilGambler.MurderPlayerPostfix(__instance);

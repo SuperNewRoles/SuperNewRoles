@@ -1508,6 +1508,7 @@ namespace SuperNewRoles.Roles
             public static List<BloodStain> WaitActiveBloodStains;
             public static Dictionary<List<BloodStain>, int> NoActiveTurnWait;
             public static bool CreatedDependents;
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VampireCreateDependentsButton.png", 115f);
             public static void ClearAndReload()
             {
                 VampirePlayer = new();

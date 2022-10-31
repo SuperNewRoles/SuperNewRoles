@@ -717,6 +717,10 @@ VampireKillDelay,Kill Delay,キル遅延,击杀延迟
 VampireViewBloodStainsTurn,Turn to see blood,血が見えるターン
 VampireCanCreateDependents,Dependents can be nominated,眷属を指名可能
 VampireCreateDependentsCoolTime,Cool time to nominate a Dependents member,眷属指名クールタイム
+VampireDependentsKillCoolTime,Kill cool time for dependents,眷属のキルクールタイム
+VampireDependentsCanVent,Vent available for use by dependents,眷属がベント使用可能
+DependentsName,Dependents,眷属
+DependentsTitle1,Help the vampire and win!,ヴァンパイアを助けて勝利しよう
 DarkKillerName,DarkKiller,ダークキラー,暗夜杀手
 DarkKillerTitle1,Let's kill in the dark,闇に紛れて殺そう,将你的杀戮隐藏于黑暗之中
 DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキルクールタイム,击杀冷却时间

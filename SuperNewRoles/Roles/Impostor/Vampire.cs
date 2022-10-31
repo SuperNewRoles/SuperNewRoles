@@ -27,19 +27,12 @@ namespace SuperNewRoles.Roles
             RoleClass.Vampire.NoActiveTurnWait.Add(RoleClass.Vampire.WaitActiveBloodStains, CustomOptionHolder.VampireViewBloodStainsTurn.GetInt());
             RoleClass.Vampire.WaitActiveBloodStains = new();
         }
-        [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Update))]
-        class VitalsMinigameUpdatePatch
+        [HarmonyPatch(typeof(VitalsPanel), nameof(VitalsPanel.SetDead))]
+        class VitalsPanelSetDeadPatch
         {
-            static void Postfix(VitalsMinigame __instance)
+            static bool Prefix(VitalsPanel __instance)
             {
-                for (int k = 0; k < __instance.vitals.Length; k++)
-                {
-                    VitalsPanel vitalsPanel = __instance.vitals[k];
-                    GameData.PlayerInfo player = GameData.Instance.AllPlayers[k];
-                    if (player.Object.IsRole(RoleId.Vampire, RoleId.Dependents))
-                        if (vitalsPanel.IsDead)
-                            vitalsPanel.SetAlive();
-                }
+                return __instance.PlayerInfo.Object is null || !__instance.PlayerInfo.Object.IsRole(RoleId.Vampire, RoleId.Dependents);
             }
         }
         public static void OnMurderPlayer(PlayerControl source, PlayerControl target)
@@ -52,10 +45,15 @@ namespace SuperNewRoles.Roles
         public static class FixedUpdate
         {
             static int Count = 0;
+            public static void DependentsOnly()
+            {
+                foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer) if (p.IsAlive()) return;
+                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+            }
             public static void AllClient() {
                 Count--;
                 if (Count > 0) return;
-                Count = 5;
+                Count = 3;
                 foreach (var data in RoleClass.Vampire.Targets.ToArray()) {
                     if (data.Key == null || data.Value == null || !data.Key.IsRole(RoleId.Vampire) || data.Key.IsDead()|| data.Value.IsDead()) {
                         RoleClass.Vampire.Targets.Remove(data.Key);
@@ -70,6 +68,7 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.Vampire.target == null) return;
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
+                PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer);
                 var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Vampire.KillDelay);
                 RoleClass.Vampire.Timer = (float)((RoleClass.Vampire.KillTimer + TimeSpanDate - DateTime.Now).TotalSeconds);
                 SuperNewRolesPlugin.Logger.LogInfo("ヴァンパイア:" + RoleClass.Vampire.Timer);

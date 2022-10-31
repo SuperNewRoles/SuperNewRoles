@@ -236,6 +236,9 @@ namespace SuperNewRoles.Patches
                             case RoleId.ShiftActor:
                                 Roles.Impostor.ShiftActor.FixedUpdate();
                                 break;
+                            case RoleId.Dependents:
+                                Vampire.FixedUpdate.DependentsOnly();
+                                break;
                         }
                     }
                     else // -- 死亡時 --
