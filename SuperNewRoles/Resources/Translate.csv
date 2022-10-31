@@ -270,6 +270,13 @@ FinalStatusSelfBomb,Self-destruct,自爆,自杀
 FinalStatusBySelfBomb,Self-destruct collateral damage,自爆巻き添え,恐袭
 FinalStatusDisconnected,amputation,切断,断连
 FinalStatusDead,Death,死亡,死亡
+FinalStatusSluggerHarisen,Harisen,ハリセン
+FinalStatusRevenge,Revenge,復讐
+FinalStatusChiefMisSet,Misnaming,指名誤爆
+FinalStatusSpelunkerCommsElecDeath,CommsElec death,停電通信死
+FinalStatusSpelunkerSetRoleDeath,SetRole death,役職死
+FinalStatusSpelunkerVentDeath,Vent death,ベント死
+FinalStatusSpelunkerOpenDoor,Door death,ドア死
 
 # Sabotages
 FinalStatusSabotage,Sabotage,サボタージュ,破坏
@@ -325,6 +332,9 @@ SoothSayerDetailMode,Detail display,詳細表示,具体职业
 SoothSayerEncampMode,Camp indicator,陣営表示,所属阵营
 SoothSayerMaxCountSetting,Number of times you can divine,占える回数,占卜师最大占卜次数
 SoothSayerGetChat,The Role of {0} is {1}.,{0}の役職は{1}です。,{0}的职业是{1}
+SoothSayerFirstWhiteOption,Can tell one person at the first meeting who is not an outsider.,最初の会議で一人だけ人外でない人がわかる
+SoothSayerCrewmateText,is crewmate,はクルーメイトです
+SoothSayerNotCrewmateText,is not crewmate,はクルーメイトではありません
 JesterName,Jester,てるてる,小丑
 JesterTitle1,Vote to get banned!,投票で追放されよう,想办法被投出去
 JesterDescription,If they are expelled at the meeting they win alone.,会議で追放されると、単独勝利します。,小丑在会议中被投出则小丑单独获胜。
@@ -402,6 +412,7 @@ SpiritMediumDisplaySetting,Position visibility,陣営表示にする,通灵师�
 SpiritMediumDetailMode,Detail display,詳細表示,具体职业
 SpiritMediumEncampMode,Position Display,陣営表示,所属阵营
 SpiritMediumMaxCountSetting,Number of times you can divine,占える回数,通灵师最大可通灵次数
+SpiritMediumIsAutoMode,Automatic divination of the expelled,追放された人を自動で占う
 SpeedBoosterName,Speed Booster,スピードブースター,正义的飞毛腿
 SpeedBoosterTitle1,Make your speed faster!,スピードを速くしよう,飞一样的感觉！
 SpeedBoosterTitle2,Lead your crew to victory with super speed!,スーパースピードでクルーを勝利に導こう,利用自己飞快的速度带领船员走向胜利
@@ -564,6 +575,8 @@ JackalFriendsIsCheckJackalSetting,Is Check Jackal,ジャッカルをチェック
 DoctorName,Doctor,ドクター,医生
 DoctorTitle1,Check Vitals,バイタルをチェックしよう,随时查看生命监测装置来确认船员的生死
 DoctorVitalName,Vital,バイタル,生命监测装置
+DoctorChargeTime,Vital cool time,バイタルのクールタイム
+DoctorUseTime,Can use vital time,バイタルを見れる時間
 CountChangerName,Count Changer,カウントチェンジャー,巫师
 CountChangerTitle1,Let's change it,変更しよう,幻惑他人
 CountChangerTitle2,Let's swap the judgment with the enemy.,敵と判定を入れ替えよう,变更他人的阵营判定
@@ -825,6 +838,7 @@ KunoichiIsHide,Transparency,透明化,隐身
 KunoichiHideTime,Time required for transparency,透明化に必要な時間,女忍隐身所需要的时间
 KunoichiKunai,Kunai,クナイ,苦无
 KunoichiHideKunai,Can throw kunai during invisibility.,透明化中にクナイを投げれる,女忍隐身时可以投掷苦无
+KunoichiIsWaitAndPressTheButtonToHide,Transparency with a button,透明化をボタンで行う
 SecretlyKillerName,Secretly Killer,シークレットリーキラー,暗杀者
 SecretlyKillerTitle1,Please be quiet during the power outage.,停電中はお静かに,只有死人才能守住秘密
 SettingCoolCharge,Same in kill buttons,キル時のクール同期,暗杀者技能与击杀同步冷却
@@ -981,6 +995,7 @@ WaveCannonName,Wave Cannon,波動砲,重炮手
 WaveCannonTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！
 WaveCannonChargeTime,Charge Time,チャージ時間,重炮手充能所需时间
 WaveCannonButtonName,Wave Cannon,波動砲,开炮
+IsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクールタイムを同期
 WaveCannonJackalName,Wave Cannon Jackal,波動砲ジャッカル,狼族重炮手
 WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！
 CrackerName,Cracker,クラッカー,神隐者
