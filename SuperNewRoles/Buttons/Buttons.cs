@@ -167,7 +167,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.GetString("JackalCreateSidekickButtonName"),
+                buttonText = ModTranslation.GetString("VampireDependentsButtonName"),
                 showButtonText = true
             };
 

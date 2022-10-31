@@ -719,6 +719,7 @@ VampireCanCreateDependents,Dependents can be nominated,眷属を指名可能
 VampireCreateDependentsCoolTime,Cool time to nominate a Dependents member,眷属指名クールタイム
 VampireDependentsKillCoolTime,Kill cool time for dependents,眷属のキルクールタイム
 VampireDependentsCanVent,Vent available for use by dependents,眷属がベント使用可能
+VampireDependentsButtonName,make Dependents,眷属にする
 DependentsName,Dependents,眷属
 DependentsTitle1,Help the vampire and win!,ヴァンパイアを助けて勝利しよう
 DarkKillerName,DarkKiller,ダークキラー,暗夜杀手

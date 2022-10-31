@@ -35,6 +35,14 @@ namespace SuperNewRoles.Roles
                 return __instance.PlayerInfo.Object is null || !__instance.PlayerInfo.Object.IsRole(RoleId.Vampire, RoleId.Dependents);
             }
         }
+        [HarmonyPatch(typeof(VitalsPanel), nameof(VitalsPanel.SetDisconnected))]
+        class VitalsPanelSetDisconnectPatch
+        {
+            static bool Prefix(VitalsPanel __instance)
+            {
+                return __instance.PlayerInfo.Object is null || !__instance.PlayerInfo.Object.IsRole(RoleId.Vampire, RoleId.Dependents);
+            }
+        }
         public static void OnMurderPlayer(PlayerControl source, PlayerControl target)
         {
             if (source.IsRole(RoleId.Vampire) && PlayerControl.LocalPlayer.IsRole(RoleId.Dependents))
