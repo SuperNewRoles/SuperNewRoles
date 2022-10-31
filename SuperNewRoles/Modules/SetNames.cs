@@ -234,9 +234,9 @@ namespace SuperNewRoles.Modules
             else if (PlayerControl.LocalPlayer.IsRole(RoleId.Cupid) && RoleClass.Cupid.Created && RoleClass.Cupid.currentLovers != null)
             {
                 PlayerControl side = RoleClass.Cupid.currentLovers.GetOneSideLovers();
-                SetPlayerNameText(RoleClass.Cupid.currentLovers, RoleClass.Cupid.currentLovers.NameText().text + suffix);
+                SetPlayerNameText(RoleClass.Cupid.currentLovers, $"{RoleClass.Cupid.currentLovers.NameText().text}{suffix}");
                 if (!side.Data.Disconnected)
-                    SetPlayerNameText(side, side.NameText().text + suffix);
+                    SetPlayerNameText(side, $"{side.NameText().text}{suffix}");
             }
             else if ((PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
             {

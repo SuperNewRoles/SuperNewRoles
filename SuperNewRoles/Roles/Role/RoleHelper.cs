@@ -1106,10 +1106,10 @@ namespace SuperNewRoles
                 case RoleId.HamburgerShop:
                     RoleClass.HamburgerShop.HamburgerShopPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
                 case RoleId.Penguin:
                     RoleClass.Penguin.PenguinPlayer.RemoveAll(ClearRemove);
                     break;
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }

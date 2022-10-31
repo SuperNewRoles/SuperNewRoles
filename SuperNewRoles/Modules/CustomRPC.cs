@@ -263,7 +263,7 @@ namespace SuperNewRoles.Modules
     {
         public static void SetLoversCupid(byte sourceid, byte player1, byte player2)
         {
-            RoleClass.Cupid.CupidLoverpea[sourceid] = player1;
+            RoleClass.Cupid.CupidLoverPair[sourceid] = player1;
             SetLovers(player1, player2);
         }
 

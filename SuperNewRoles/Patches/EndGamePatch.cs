@@ -913,12 +913,12 @@ namespace SuperNewRoles.Patches
                                 isDleted = true;
                             }
                             TempData.winners.Add(new(player.Data));
-                            if (RoleClass.Cupid.CupidLoverpea.ContainsValue(player.PlayerId))
+                            if (RoleClass.Cupid.CupidLoverPair.ContainsValue(player.PlayerId))
                             {
 
-                                PlayerControl cPlayer = ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverpea.GetKey(player.PlayerId));
+                                PlayerControl cPlayer = ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId));
                                 if (cPlayer != null && cPlayer.IsRole(RoleId.Cupid))
-                                    TempData.winners.Add(new(ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverpea.GetKey(player.PlayerId)).Data));
+                                    TempData.winners.Add(new(ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId)).Data));
                             }
                             AdditionalTempData.winCondition = WinCondition.LoversWin;
                         }
@@ -1039,11 +1039,11 @@ namespace SuperNewRoles.Patches
                         foreach (PlayerControl player in plist)
                         {
                             TempData.winners.Add(new(player.Data));
-                            if (RoleClass.Cupid.CupidLoverpea.ContainsValue(player.PlayerId))
+                            if (RoleClass.Cupid.CupidLoverPair.ContainsValue(player.PlayerId))
                             {
-                                PlayerControl cPlayer = ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverpea.GetKey(player.PlayerId));
+                                PlayerControl cPlayer = ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId));
                                 if (cPlayer != null && cPlayer.IsRole(RoleId.Cupid))
-                                    TempData.winners.Add(new(ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverpea.GetKey(player.PlayerId)).Data));
+                                    TempData.winners.Add(new(ModHelpers.PlayerById((byte)RoleClass.Cupid.CupidLoverPair.GetKey(player.PlayerId)).Data));
                             }
                         }
                     }

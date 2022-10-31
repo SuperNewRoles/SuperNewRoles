@@ -234,7 +234,7 @@ namespace SuperNewRoles.Buttons
                 }
             )
             {
-                buttonText = "拉致",
+                buttonText = ModTranslation.GetString("PenguinButtonName"),
                 showButtonText = true
             };
 

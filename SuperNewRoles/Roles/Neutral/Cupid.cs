@@ -2,7 +2,6 @@ namespace SuperNewRoles.Roles.Neutral
 {
     public static class Cupid
     {
-        //ここにコードを書きこんでください
         public static void FixedUpdate()
         {
             if (RoleClass.Cupid.Created) {

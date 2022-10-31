@@ -2881,14 +2881,14 @@ namespace SuperNewRoles.Roles
             public static PlayerControl currentLovers;
             public static PlayerControl currentTarget;
             public static bool Created;
-            public static Dictionary<byte, byte> CupidLoverpea;
+            public static Dictionary<byte, byte> CupidLoverPair;
             public static void ClearAndReload()
             {
                 CupidPlayer = new();
                 currentLovers = null;
                 currentTarget = null;
                 Created = false;
-                CupidLoverpea = new();
+                CupidLoverPair = new();
             }
         }
 

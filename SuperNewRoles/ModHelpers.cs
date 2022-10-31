@@ -344,7 +344,7 @@ namespace SuperNewRoles
         {
             if (obj == null)
             {
-                SuperNewRolesPlugin.Logger.LogError($"ActivateConsole Object was not found!");
+                Logger.Error($"ActivateConsole Object was not found!","");
                 return null;
             }
             obj.layer = LayerMask.NameToLayer("ShortObjects");
@@ -379,7 +379,7 @@ namespace SuperNewRoles
         {
             if (obj == null)
             {
-                SuperNewRolesPlugin.Logger.LogError($"ActivateConsole Object was not found!");
+                Logger.Error($"ActivateConsole Object was not found!","");
                 return null;
             }
             obj.layer = LayerMask.NameToLayer("ShortObjects");
