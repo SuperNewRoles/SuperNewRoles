@@ -9,14 +9,14 @@ namespace SuperNewRoles.Roles
 {
     class Jackal
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
-            HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.Jackal.KillCoolDown;
-            HudManagerStartPatch.JackalKillButton.Timer = RoleClass.Jackal.KillCoolDown;
-            HudManagerStartPatch.JackalSidekickButton.MaxTimer = RoleClass.Jackal.KillCoolDown;
-            HudManagerStartPatch.JackalSidekickButton.Timer = RoleClass.Jackal.KillCoolDown;
+            HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.Jackal.KillCooldown;
+            HudManagerStartPatch.JackalKillButton.Timer = RoleClass.Jackal.KillCooldown;
+            HudManagerStartPatch.JackalSidekickButton.MaxTimer = RoleClass.Jackal.KillCooldown;
+            HudManagerStartPatch.JackalSidekickButton.Timer = RoleClass.Jackal.KillCooldown;
         }
-        public static void EndMeeting() => ResetCoolDown();
+        public static void EndMeeting() => ResetCooldown();
         public static void SetPlayerOutline(PlayerControl target, Color color)
         {
             if (target == null) return;
@@ -65,7 +65,6 @@ namespace SuperNewRoles.Roles
         public static void CreateJackalFriends(PlayerControl target)
         {
             target.ResetAndSetRole(RoleId.JackalFriends);
-            target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
         }
     }
 }

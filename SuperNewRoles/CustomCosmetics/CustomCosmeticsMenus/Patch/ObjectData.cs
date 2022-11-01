@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AmongUs.Data;
 using BepInEx.Configuration;
 using TMPro;
 using UnityEngine;
@@ -63,6 +64,11 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ResetShow();
             IsShow = true;
             PlayerCustomizationMenu.Instance.transform.FindChild(obj).gameObject.SetActive(true);
+            if (obj is "NameplateGroup")
+            {
+                UpdatePatch.area.gameObject.SetActive(true);
+                UpdatePatch.area.transform.localPosition = new(3.5f, 0, -70.71f);
+            }
         }
         public static void ColorShow()
         {
@@ -149,6 +155,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             SkinButton_Skin.gameObject.SetActive(false);
             //PetButton_Pet.gameObject.SetActive(false);
             VisorButton_Visor.Visible = false;
+            PlayerCustomizationMenu.Instance.itemName.gameObject.SetActive(true);
             //NamePlateButton_NamePlate.gameObject.SetActive(false);
         }
         public static void ClosetShow()
@@ -156,6 +163,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ResetShow();
             PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/ColorTab/ColorButton/Tab Background").GetComponent<SpriteRenderer>().enabled = true;
             IsCloset = true;
+            PlayerCustomizationMenu.Instance.itemName.gameObject.SetActive(false);
             HatText.gameObject.SetActive(true);
             VisorText.gameObject.SetActive(true);
             SkinText.gameObject.SetActive(true);
@@ -239,7 +247,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         {
             btn.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => SetPreset(index)));
         }
-        public static Dictionary<int, ClosetPresetData> ClosetPresetDatas = new();
+        public static Dictionary<int, ClosetPresetData> ClosetPresetDataDictionary = new();
         public static ConfigEntry<int> SelectedPreset;
         public struct ClosetPresetData
         {
@@ -254,7 +262,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         {
             SelectedPreset.Value = index;
             SuperNewRolesPlugin.Logger.LogInfo("セットプリセット:" + index);
-            ClosetPresetData data = !ClosetPresetDatas.ContainsKey(index)
+            ClosetPresetData data = !ClosetPresetDataDictionary.ContainsKey(index)
                 ? (new()
                 {
                     BodyColor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "BodyColor", (byte)0),
@@ -264,23 +272,25 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     NamePlate = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "NamePlate", ""),
                     Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "")
                 })
-                : ClosetPresetDatas[index];
-            SaveManager.BodyColor = data.BodyColor.Value;
-            SaveManager.LastHat = data.Hat.Value;
-            SaveManager.LastVisor = data.Visor.Value;
-            SaveManager.LastSkin = data.Skin.Value;
-            SaveManager.LastNamePlate = data.NamePlate.Value;
-            SaveManager.LastPet = data.Pet.Value;
+                : ClosetPresetDataDictionary[index];
+
+            AmongUs.Data.DataManager.Player.Customization.Color = data.BodyColor.Value;
+            AmongUs.Data.DataManager.Player.Customization.Hat = data.Hat.Value;
+            AmongUs.Data.DataManager.Player.Customization.Visor = data.Visor.Value;
+            AmongUs.Data.DataManager.Player.Customization.Skin = data.Skin.Value;
+            AmongUs.Data.DataManager.Player.Customization.NamePlate = data.NamePlate.Value;
+            AmongUs.Data.DataManager.Player.Customization.Pet = data.Pet.Value;
+
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
             {
-                PlayerControl.LocalPlayer.CmdCheckColor(SaveManager.BodyColor);
-                PlayerControl.LocalPlayer.RpcSetHat(SaveManager.LastHat);
-                PlayerControl.LocalPlayer.RpcSetVisor(SaveManager.LastVisor);
-                PlayerControl.LocalPlayer.RpcSetSkin(SaveManager.LastSkin);
-                PlayerControl.LocalPlayer.RpcSetNamePlate(SaveManager.LastNamePlate);
-                PlayerControl.LocalPlayer.RpcSetPet(SaveManager.LastPet);
+                PlayerControl.LocalPlayer.CmdCheckColor(DataManager.Player.Customization.Color);
+                PlayerControl.LocalPlayer.RpcSetHat(DataManager.Player.Customization.Hat);
+                PlayerControl.LocalPlayer.RpcSetVisor(DataManager.Player.Customization.Visor);
+                PlayerControl.LocalPlayer.RpcSetSkin(DataManager.Player.Customization.Skin);
+                PlayerControl.LocalPlayer.RpcSetNamePlate(DataManager.Player.Customization.NamePlate);
+                PlayerControl.LocalPlayer.RpcSetPet(DataManager.Player.Customization.Pet);
             }
-            PlayerCustomizationMenu.Instance.PreviewArea.UpdateFromSaveManager(PlayerMaterial.MaskType.ComplexUI);
+            PlayerCustomizationMenu.Instance.PreviewArea.UpdateFromDataManager(PlayerMaterial.MaskType.ComplexUI);
         }
     }
 }

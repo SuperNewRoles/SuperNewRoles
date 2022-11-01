@@ -1,6 +1,7 @@
 using System.Linq;
 using Hazel;
 using InnerNet;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 using static MeetingHud;
@@ -183,22 +184,27 @@ namespace SuperNewRoles.Helpers
         }
         public static void RPCSetRoleUnchecked(this PlayerControl player, RoleTypes roletype)
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetVanilaRole, SendOption.Reliable);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetVanillaRole, SendOption.Reliable);
             writer.Write(player.PlayerId);
             writer.Write((byte)roletype);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.UncheckedSetVanilaRole(player.PlayerId, (byte)roletype);
+            RPCProcedure.UncheckedSetVanillaRole(player.PlayerId, (byte)roletype);
         }
         /// <summary>
         /// 役職をリセットし、新しい役職に変更します。
         /// </summary>
         /// <param name="target">役職が変更される対象(PlayerControl)</param>
-        /// <param name="RoleId">変更先の役職(RoleId)</param>
-        public static void ResetAndSetRole(this PlayerControl target, RoleId RoleId)
+        /// <param name="Id">変更先の役職(RoleId)</param>
+        public static void ResetAndSetRole(this PlayerControl target, RoleId Id)
         {
             target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
-            target.SetRoleRPC(RoleId);
-            Logger.Info($"[{target.GetDefaultName()}] の役職を [{RoleId}] に変更しました。");
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にする
+                Logger.Info($"[{target.GetDefaultName()}] の役職を [守護天使] に変更しました。");
+            }
+            target.SetRoleRPC(Id);
+            Logger.Info($"[{target.GetDefaultName()}] の役職を [{Id}] に変更しました。");
         }
 
         public static void RpcResetAbilityCooldown(this PlayerControl target)

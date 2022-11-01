@@ -5,7 +5,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Impostor;
-using SuperNewRoles.Roles.CrewMate;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 
 
@@ -39,7 +39,7 @@ namespace SuperNewRoles
         public static bool IsMadRoles(this PlayerControl player)
         {
             return player.GetRole() is
-                RoleId.MadMate or
+                RoleId.Madmate or
                 RoleId.MadMayor or
                 RoleId.MadStuntMan or
                 RoleId.MadHawk or
@@ -205,7 +205,21 @@ namespace SuperNewRoles
 
         public static void SetRole(this PlayerControl player, RoleId role)
         {
-            if (!Roles.Neutral.Spelunker.CheckSetRole(player, role)) return;
+            if (!Spelunker.CheckSetRole(player, role)) return;
+            if (player.IsRole(RoleId.Doppelganger) && role != RoleId.Doppelganger)
+            {
+                bool isShapeshift = false;
+                foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.Targets)
+                {
+                    if (p.Key == PlayerControl.LocalPlayer.PlayerId)
+                    {
+                        isShapeshift = true;
+                        break;
+                    }
+                }
+                if (isShapeshift)
+                    Doppelganger.DoppelgangerShape();
+            }
             switch (role)
             {
                 case RoleId.SoothSayer:
@@ -280,8 +294,8 @@ namespace SuperNewRoles
                 case RoleId.Clergyman:
                     RoleClass.Clergyman.ClergymanPlayer.Add(player);
                     break;
-                case RoleId.MadMate:
-                    RoleClass.MadMate.MadMatePlayer.Add(player);
+                case RoleId.Madmate:
+                    RoleClass.Madmate.MadmatePlayer.Add(player);
                     break;
                 case RoleId.Bait:
                     RoleClass.Bait.BaitPlayer.Add(player);
@@ -636,6 +650,18 @@ namespace SuperNewRoles
                 case RoleId.Camouflager:
                     RoleClass.Camouflager.CamouflagerPlayer.Add(player);
                     break;
+                case RoleId.Cupid:
+                    RoleClass.Cupid.CupidPlayer.Add(player);
+                    break;
+                case RoleId.HamburgerShop:
+                    RoleClass.HamburgerShop.HamburgerShopPlayer.Add(player);
+                    break;
+                case RoleId.Penguin:
+                    RoleClass.Penguin.PenguinPlayer.Add(player);
+                    break;
+                case RoleId.Dependents:
+                    RoleClass.Dependents.DependentsPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -740,8 +766,8 @@ namespace SuperNewRoles
                 case RoleId.Clergyman:
                     RoleClass.Clergyman.ClergymanPlayer.RemoveAll(ClearRemove);
                     break;
-                case RoleId.MadMate:
-                    RoleClass.MadMate.MadMatePlayer.RemoveAll(ClearRemove);
+                case RoleId.Madmate:
+                    RoleClass.Madmate.MadmatePlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.Bait:
                     RoleClass.Bait.BaitPlayer.RemoveAll(ClearRemove);
@@ -1091,17 +1117,29 @@ namespace SuperNewRoles
                 case RoleId.Camouflager:
                     RoleClass.Camouflager.CamouflagerPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Cupid:
+                    RoleClass.Cupid.CupidPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.HamburgerShop:
+                    RoleClass.HamburgerShop.HamburgerShopPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Penguin:
+                    RoleClass.Penguin.PenguinPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Dependents:
+                    RoleClass.Dependents.DependentsPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
-        public static void SetRoleRPC(this PlayerControl Player, RoleId SelectRoleDate)
+        public static void SetRoleRPC(this PlayerControl Player, RoleId selectRoleData)
         {
             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetRole, SendOption.Reliable, -1);
             killWriter.Write(Player.PlayerId);
-            killWriter.Write((byte)SelectRoleDate);
+            killWriter.Write((byte)selectRoleData);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-            RPCProcedure.SetRole(Player.PlayerId, (byte)SelectRoleDate);
+            RPCProcedure.SetRole(Player.PlayerId, (byte)selectRoleData);
         }
         public static bool IsClearTask(this PlayerControl player)
         {
@@ -1114,7 +1152,7 @@ namespace SuperNewRoles
                 case RoleId.Sidekick:
                 case RoleId.Vulture:
                 case RoleId.HomeSecurityGuard:
-                case RoleId.MadMate:
+                case RoleId.Madmate:
                 case RoleId.JackalFriends:
                 case RoleId.Opportunist:
                 case RoleId.Researcher:
@@ -1154,7 +1192,8 @@ namespace SuperNewRoles
                 case RoleId.Pavlovsowner:
                 case RoleId.GM:
                 case RoleId.WaveCannonJackal:
-                    //タスククリアか
+                    case RoleId.Cupid:
+                //タスククリアか
                     IsTaskClear = true;
                     break;
                 case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
@@ -1182,7 +1221,7 @@ namespace SuperNewRoles
                 RoleId.Minimalist => RoleClass.Minimalist.UseVent,
                 RoleId.Samurai => RoleClass.Samurai.UseVent,
                 RoleId.Jester => RoleClass.Jester.IsUseVent,
-                RoleId.MadMate => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.MadMate.IsUseVent,
+                RoleId.Madmate => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.Madmate.IsUseVent,
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseVent,
                 RoleId.JackalFriends => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.JackalFriends.IsUseVent,
                 RoleId.Egoist => RoleClass.Egoist.UseVent,
@@ -1204,10 +1243,11 @@ namespace SuperNewRoles
                 RoleId.Tuna => RoleClass.Tuna.IsUseVent,
                 RoleId.BlackCat => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
-                RoleId.Pavlovsdogs => CustomOptions.PavlovsdogCanVent.GetBool(),
-                RoleId.Stefinder => CustomOptions.StefinderVent.GetBool(),
-                RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalUseVent.GetBool(),
-                RoleId.DoubleKiller => CustomOptions.DoubleKillerVent.GetBool(),
+                RoleId.Pavlovsdogs => CustomOptionHolder.PavlovsdogCanVent.GetBool(),
+                RoleId.Stefinder => CustomOptionHolder.StefinderVent.GetBool(),
+                RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalUseVent.GetBool(),
+                RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerVent.GetBool(),
+                RoleId.Dependents => CustomOptionHolder.VampireDependentsCanVent.GetBool(),
                 _ => player.IsImpostor(),
             };
         }
@@ -1258,10 +1298,10 @@ namespace SuperNewRoles
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
                 RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
                 RoleId.Egoist => RoleClass.Egoist.UseSabo,
-                RoleId.Stefinder => CustomOptions.StefinderSabo.GetBool(),
-                RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalUseSabo.GetBool(),
+                RoleId.Stefinder => CustomOptionHolder.StefinderSabo.GetBool(),
+                RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalUseSabo.GetBool(),
                 RoleId.Minimalist => RoleClass.Minimalist.UseSabo,
-                RoleId.DoubleKiller => CustomOptions.DoubleKillerSabo.GetBool(),
+                RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerSabo.GetBool(),
                 RoleId.Samurai => RoleClass.Samurai.UseSabo,
                 _ => player.IsImpostor(),
             };
@@ -1274,7 +1314,7 @@ namespace SuperNewRoles
                 : !ModeHandler.IsMode(ModeId.SuperHostRoles)
                 && role switch
                 {
-                    RoleId.MadMate => RoleClass.MadMate.IsImpostorLight,
+                    RoleId.Madmate => RoleClass.Madmate.IsImpostorLight,
                     RoleId.MadMayor => RoleClass.MadMayor.IsImpostorLight,
                     RoleId.MadStuntMan => RoleClass.MadStuntMan.IsImpostorLight,
                     RoleId.MadHawk => RoleClass.MadHawk.IsImpostorLight,
@@ -1290,9 +1330,9 @@ namespace SuperNewRoles
                     RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
                     RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
                     RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
-                    RoleId.Pavlovsdogs => CustomOptions.PavlovsdogIsImpostorView.GetBool(),
-                    RoleId.Photographer => CustomOptions.PhotographerIsImpostorVision.GetBool(),
-                    RoleId.WaveCannonJackal => CustomOptions.WaveCannonJackalIsImpostorLight.GetBool(),
+                    RoleId.Pavlovsdogs => CustomOptionHolder.PavlovsdogIsImpostorView.GetBool(),
+                    RoleId.Photographer => CustomOptionHolder.PhotographerIsImpostorVision.GetBool(),
+                    RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalIsImpostorLight.GetBool(),
                     _ => false,
                 };
         }
@@ -1329,8 +1369,10 @@ namespace SuperNewRoles
             RoleId.WaveCannonJackal or
             RoleId.Photographer or
             RoleId.Pavlovsdogs or
+            RoleId.Pavlovsowner or
+            RoleId.Cupid or
             RoleId.Pavlovsowner;
-            //第三か
+        //第三か
         public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
         {
             RoleId MyRole;
@@ -1405,7 +1447,7 @@ namespace SuperNewRoles
             return RoleId.DefaultRole;
         }
         public static bool IsGhostRole(this RoleId role) =>
-            IntroDate.GetIntroDate(role).IsGhostRole;
+            IntroData.GetIntroData(role).IsGhostRole;
 
         public static bool IsGhostRole(this PlayerControl p, RoleId role, bool IsChache = true)
         {
@@ -1455,7 +1497,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Vulture.VulturePlayer.IsCheckListPlayerControl(player)) return RoleId.Vulture;
                 else if (RoleClass.NiceScientist.NiceScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceScientist;
                 else if (RoleClass.Clergyman.ClergymanPlayer.IsCheckListPlayerControl(player)) return RoleId.Clergyman;
-                else if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player)) return RoleId.MadMate;
+                else if (RoleClass.Madmate.MadmatePlayer.IsCheckListPlayerControl(player)) return RoleId.Madmate;
                 else if (RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(player)) return RoleId.Bait;
                 else if (RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.IsCheckListPlayerControl(player)) return RoleId.HomeSecurityGuard;
                 else if (RoleClass.StuntMan.StuntManPlayer.IsCheckListPlayerControl(player)) return RoleId.StuntMan;
@@ -1576,12 +1618,15 @@ namespace SuperNewRoles
                 else if (RoleClass.Doppelganger.DoppelggerPlayer.IsCheckListPlayerControl(player)) return RoleId.Doppelganger;
                 else if (RoleClass.Werewolf.WerewolfPlayer.IsCheckListPlayerControl(player)) return RoleId.Werewolf;
                 else if (Knight.Player.IsCheckListPlayerControl(player)) return RoleId.Knight;
-
                 else if (RoleClass.Pavlovsdogs.PavlovsdogsPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsdogs;
                 else if (RoleClass.Pavlovsowner.PavlovsownerPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsowner;
                 else if (RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
                 else if (Conjurer.Player.IsCheckListPlayerControl(player)) return RoleId.Conjurer;
                 else if (RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player)) return RoleId.Camouflager;
+                else if (RoleClass.Cupid.CupidPlayer.IsCheckListPlayerControl(player)) return RoleId.Cupid;
+                else if (RoleClass.HamburgerShop.HamburgerShopPlayer.IsCheckListPlayerControl(player)) return RoleId.HamburgerShop;
+                else if (RoleClass.Penguin.PenguinPlayer.IsCheckListPlayerControl(player)) return RoleId.Penguin;
+                else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;
                 //ロールチェック
             }
             catch (Exception e)

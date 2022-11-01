@@ -43,21 +43,22 @@ namespace SuperNewRoles.Patches
             {
                 if (systemType == SystemTypes.Comms || systemType == SystemTypes.Sabotage || systemType == SystemTypes.Electrical)
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == player.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.SabotageRepair);
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == player.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.SabotageRepair);
                 }
             }
             if ((ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.HideAndSeek) || ModeHandler.IsMode(ModeId.CopsRobbers)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
 
             if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4) // 停電を直そうとした
             {
-                if (player.IsMadRoles() && !CustomOptions.MadRolesCanFixElectrical.GetBool())
+                if ((player.IsMadRoles() && !CustomOptionHolder.MadRolesCanFixElectrical.GetBool()) ||
+                    player.IsRole(RoleId.Vampire, RoleId.Dependents))
                 {
                     return false;
                 }
             }
             if (systemType == SystemTypes.Comms && amount is 0 or 16 or 17) // コミュサボを直そうとした
             {
-                if (player.IsMadRoles() && !CustomOptions.MadRolesCanFixComms.GetBool())
+                if (player.IsMadRoles() && !CustomOptionHolder.MadRolesCanFixComms.GetBool())
                 {
                     return false;
                 }
@@ -139,9 +140,8 @@ namespace SuperNewRoles.Patches
 
             SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
             float lerpValue = switchSystem.Value / 255f;
-
             var LocalPlayer = PlayerControl.LocalPlayer;
-            if (LocalPlayer.IsRole(RoleId.Nocturnality))
+            if (LocalPlayer.IsRole(RoleId.Nocturnality, RoleId.Dependents))
             {
                 lerpValue = 1 - lerpValue;
             }
@@ -157,7 +157,7 @@ namespace SuperNewRoles.Patches
         public static GameObject airship;
         public static void Prefix()
         {
-            if (AmongUsClient.Instance.GameMode != GameModes.FreePlay && CustomOptions.enableMirroMap.GetBool())
+            if (AmongUsClient.Instance.GameMode != GameModes.FreePlay && CustomOptionHolder.enableMirroMap.GetBool())
             {
                 if (PlayerControl.GameOptions.MapId == 0)
                 {

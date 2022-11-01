@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using static SuperNewRoles.Modules.CustomOptions;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Patches
 {
@@ -12,8 +12,9 @@ namespace SuperNewRoles.Patches
         class RpcSetTasksPatch
         {
             public static void Prefix(
-            [HarmonyArgument(0)] byte playerId,
-            [HarmonyArgument(1)] ref UnhollowerBaseLib.Il2CppStructArray<byte> taskTypeIds)
+                GameData __instance,
+                [HarmonyArgument(0)] byte playerId,
+                [HarmonyArgument(1)] ref UnhollowerBaseLib.Il2CppStructArray<byte> taskTypeIds)
             {
                 if (GameData.Instance.GetPlayerById(playerId).Object.IsBot() || taskTypeIds.Length == 0)
                 {
@@ -23,7 +24,7 @@ namespace SuperNewRoles.Patches
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Default, ModeId.CopsRobbers) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 {
                     var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
-                    var TasksList = ModHelpers.GenerateTasks(commont, shortt, longt);
+                    var TasksList = ModHelpers.GenerateTasks(__instance.GetPlayerById(playerId).Object, commont, shortt, longt);
                     taskTypeIds = new UnhollowerBaseLib.Il2CppStructArray<byte>(TasksList.Count);
                     for (int i = 0; i < TasksList.Count; i++)
                     {
@@ -35,7 +36,7 @@ namespace SuperNewRoles.Patches
         public static (int, int, int) GetTaskCount(this PlayerControl p)
         {
             Dictionary<RoleId, (int, int, int)> taskData = new();
-            if (MadMateCheckImpostorTask.GetBool()) taskData.Add(RoleId.MadMate, (MadMateCommonTask.GetInt(), MadMateShortTask.GetInt(), MadMateLongTask.GetInt()));
+            if (MadmateCheckImpostorTask.GetBool()) taskData.Add(RoleId.Madmate, (MadmateCommonTask.GetInt(), MadmateShortTask.GetInt(), MadmateLongTask.GetInt()));
             if (MadMayorIsCheckImpostor.GetBool()) taskData.Add(RoleId.MadMayor, (MadMayorCommonTask.GetInt(), MadMayorShortTask.GetInt(), MadMayorLongTask.GetInt()));
             if (MadSeerIsCheckImpostor.GetBool()) taskData.Add(RoleId.MadSeer, (MadSeerCommonTask.GetInt(), MadSeerShortTask.GetInt(), MadSeerLongTask.GetInt()));
             if (BlackCatIsCheckImpostor.GetBool()) taskData.Add(RoleId.BlackCat, (BlackCatCommonTask.GetInt(), BlackCatShortTask.GetInt(), BlackCatLongTask.GetInt()));
@@ -49,6 +50,7 @@ namespace SuperNewRoles.Patches
             taskData.Add(RoleId.TaskManager, (TaskManagerCommonTask.GetInt(), TaskManagerShortTask.GetInt(), TaskManagerLongTask.GetInt()));
             taskData.Add(RoleId.SuicidalIdeation, (SuicidalIdeationCommonTask.GetInt(), SuicidalIdeationLongTask.GetInt(), SuicidalIdeationShortTask.GetInt()));
             taskData.Add(RoleId.Tasker, (TaskerCommonTask.GetInt(), TaskerLongTask.GetInt(), TaskerShortTask.GetInt()));
+            taskData.Add(RoleId.HamburgerShop, (HamburgerShopCommonTask.GetInt(), HamburgerShopLongTask.GetInt(), HamburgerShopShortTask.GetInt()));
 
             //テンプレート
             //taskData.Add(RoleId, (CommonTask.GetInt(), LongTask.GetInt(), ShortTask.GetInt()));

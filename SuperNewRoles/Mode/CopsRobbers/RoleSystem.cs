@@ -62,7 +62,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             }
             */
 
-            var introdate = IntroDate.GetIntroDate(player.GetRole(), player);
+            var introData = IntroData.GetIntroData(player.GetRole(), player);
             string TaskText = "";
             if (!player.IsImpostor())
             {
@@ -77,7 +77,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 }
                 catch { }
             }
-            NewName = "<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool() ? " " :  ModHelpers.Cs(introdate.color, Name));
+            NewName = "<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + TaskText + "</size>\n" + (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool() ? " " : ModHelpers.Cs(introData.color, Name));
             player.RpcSetNamePrivate(NewName);
         }
         public static void AssignRole()
@@ -88,12 +88,12 @@ namespace SuperNewRoles.Mode.CopsRobbers
             AllRoleSetClass.Neutnotonepar = new();
             AllRoleSetClass.Crewonepar = new();
             AllRoleSetClass.Crewnotonepar = new();
-            foreach (IntroDate intro in IntroDate.IntroDatas)
+            foreach (IntroData intro in IntroData.IntroList)
             {
                 if (intro.RoleId is
                     RoleId.Workperson or RoleId.HomeSecurityGuard or RoleId.Tuna or RoleId.ToiletFan)
                 {
-                    var option = IntroDate.GetOption(intro.RoleId);
+                    var option = IntroData.GetOption(intro.RoleId);
                     if (option == null) continue;
                     var selection = option.GetSelection();
                     if (selection != 0)

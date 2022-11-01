@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
-        <Version>1.4.2.2</Version>
+        <Version>1.4.2.5</Version>
         <Description>SuperNewRoles</Description>
         <Authors>ykundesu</Authors>
         <AmongUs Condition=" '$(AmongUs)' == '' ">C:/Program Files/Epic Games/AmongUs_mymod</AmongUs>
@@ -29,10 +29,6 @@
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
         <Message Text="Second occurrence" />
         <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\netstandard2.1\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
-    </Target>
-
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="python &quot;$(SolutionDir)StartTranslate.py&quot;" />
     </Target>
 
     <ItemGroup>

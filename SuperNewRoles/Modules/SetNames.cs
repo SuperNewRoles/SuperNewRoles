@@ -126,10 +126,10 @@ namespace SuperNewRoles.Modules
             catch { }
             string playerInfoText = "";
             string meetingInfoText = "";
-            playerInfoText = $"{CustomOptions.Cs(roleColors, roleNames)}";
+            playerInfoText = $"{CustomOptionHolder.Cs(roleColors, roleNames)}";
             if (GhostRoleNames != "")
             {
-                playerInfoText = $"{CustomOptions.Cs((Color)GhostRoleColor, GhostRoleNames)}({playerInfoText})";
+                playerInfoText = $"{CustomOptionHolder.Cs((Color)GhostRoleColor, GhostRoleNames)}({playerInfoText})";
             }
             playerInfoText += TaskText;
             meetingInfoText = playerInfoText.Trim();
@@ -154,32 +154,32 @@ namespace SuperNewRoles.Modules
                 }
                 else
                 {
-                    roleNames = "CrewMateName";
+                    roleNames = "CrewmateName";
                     roleColors = RoleClass.CrewmateWhite;
                 }
             }
             else if (role == RoleId.Stefinder && RoleClass.Stefinder.IsKill)
             {
-                var introdate = IntroDate.GetIntroDate(role);
-                roleNames = introdate.Name;
+                var introData = IntroData.GetIntroData(role);
+                roleNames = introData.Name;
                 roleColors = RoleClass.ImpostorRed;
             }
             else if (p.IsPavlovsTeam())
             {
-                var introdate = IntroDate.PavlovsdogsIntro;
-                roleNames = introdate.Name + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
+                var introData = IntroData.PavlovsdogsIntro;
+                roleNames = introData.Name + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
                 roleColors = RoleClass.Pavlovsdogs.color;
             }
             else
             {
-                var introdate = IntroDate.GetIntroDate(role);
-                roleNames = introdate.Name;
-                roleColors = introdate.color;
+                var introData = IntroData.GetIntroData(role);
+                roleNames = introData.Name;
+                roleColors = introData.color;
             }
             var GhostRole = p.GetGhostRole();
             if (GhostRole != RoleId.DefaultRole)
             {
-                var GhostIntro = IntroDate.GetIntroDate(GhostRole);
+                var GhostIntro = IntroData.GetIntroData(GhostRole);
                 GhostroleNames = GhostIntro.Name;
                 GhostroleColors = GhostIntro.color;
             }
@@ -189,7 +189,7 @@ namespace SuperNewRoles.Modules
         {
             var role = player.GetRole();
             if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && player.IsAlive())) return;
-            SetPlayerNameColor(player, IntroDate.GetIntroDate(role).color);
+            SetPlayerNameColor(player, IntroData.GetIntroData(role).color);
         }
         public static void SetPlayerRoleNames(PlayerControl player)
         {
@@ -231,7 +231,14 @@ namespace SuperNewRoles.Modules
                 if (!side.Data.Disconnected)
                     SetPlayerNameText(side, side.NameText().text + suffix);
             }
-            if ((PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
+            else if (PlayerControl.LocalPlayer.IsRole(RoleId.Cupid) && RoleClass.Cupid.Created && RoleClass.Cupid.currentLovers != null)
+            {
+                PlayerControl side = RoleClass.Cupid.currentLovers.GetOneSideLovers();
+                SetPlayerNameText(RoleClass.Cupid.currentLovers, $"{RoleClass.Cupid.currentLovers.NameText().text}{suffix}");
+                if (!side.Data.Disconnected)
+                    SetPlayerNameText(side, $"{side.NameText().text}{suffix}");
+            }
+            else if ((PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
             {
                 foreach (List<PlayerControl> ps in RoleClass.Lovers.LoversPlayer)
                 {
@@ -387,18 +394,32 @@ namespace SuperNewRoles.Modules
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         RoleId role = p.GetRole();
-                        if (p.IsJackalTeamJackal() || p.IsJackalTeamSidekick() || p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                        if ((p.IsJackalTeamJackal() || p.IsJackalTeamSidekick()) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                         {
                             SetNamesClass.SetPlayerRoleNames(p);
                             SetNamesClass.SetPlayerNameColors(p);
                         }
                     }
                 }
-                if (LocalRole == RoleId.PartTimer)
+                if (LocalRole == RoleId.Dependents)
+                {
+                    foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer)
+                    {
+                        SetNamesClass.SetPlayerNameColors(p);
+                    }
+                }
+                else if (LocalRole == RoleId.Vampire)
+                {
+                    foreach (PlayerControl p in RoleClass.Dependents.DependentsPlayer)
+                    {
+                        SetNamesClass.SetPlayerNameColors(p);
+                    }
+                }
+                else if (LocalRole == RoleId.PartTimer)
                 {
                     if (RoleClass.PartTimer.IsLocalOn)
                     {
-                        if (CustomOptions.PartTimerIsCheckTargetRole.GetBool())
+                        if (CustomOptionHolder.PartTimerIsCheckTargetRole.GetBool())
                         {
                             SetNamesClass.SetPlayerRoleNames(RoleClass.PartTimer.CurrentTarget);
                             SetNamesClass.SetPlayerNameColors(RoleClass.PartTimer.CurrentTarget);
@@ -412,17 +433,17 @@ namespace SuperNewRoles.Modules
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
             }
-            
+
             //名前の奴
             if (RoleClass.Camouflager.IsCamouflage)
             {
-                if(RoleClass.Camouflager.ArsonistMark)
+                if (RoleClass.Camouflager.ArsonistMark)
                     SetNamesClass.ArsonistSet();
-                if(RoleClass.Camouflager.DemonMark)
+                if (RoleClass.Camouflager.DemonMark)
                     SetNamesClass.DemonSet();
-                if(RoleClass.Camouflager.LoversMark)
+                if (RoleClass.Camouflager.LoversMark)
                     SetNamesClass.LoversSet();
-                if(RoleClass.Camouflager.QuarreledMark)
+                if (RoleClass.Camouflager.QuarreledMark)
                     SetNamesClass.QuarreledSet();
             }
             else
@@ -436,9 +457,9 @@ namespace SuperNewRoles.Modules
             }
             SetNamesClass.SatsumaimoSet();
 
-            if (RoleClass.PartTimer.Datas.ContainsValue(CachedPlayer.LocalPlayer.PlayerId))
+            if (RoleClass.PartTimer.Data.ContainsValue(CachedPlayer.LocalPlayer.PlayerId))
             {
-                PlayerControl PartTimerTarget = ModHelpers.PlayerById((byte)RoleClass.PartTimer.Datas.GetKey(CachedPlayer.LocalPlayer.PlayerId));
+                PlayerControl PartTimerTarget = ModHelpers.PlayerById((byte)RoleClass.PartTimer.Data.GetKey(CachedPlayer.LocalPlayer.PlayerId));
                 SetNamesClass.SetPlayerRoleNames(PartTimerTarget);
                 SetNamesClass.SetPlayerNameColors(PartTimerTarget);
             }

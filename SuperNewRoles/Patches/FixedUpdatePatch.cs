@@ -47,8 +47,18 @@ namespace SuperNewRoles.Patches
                 {
                     RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
                     RPCProcedure.SetHaison();
-                    ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
-                    MapUtilities.CachedShipStatus.enabled = false;
+                    if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                    {
+                        Logger.Info("===================== Haison =====================", "End Game");
+                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
+
+                    }
+                    else
+                    {
+                        Logger.Info("===================== Haison =====================", "End Game");
+                        ShipStatus.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
+                        MapUtilities.CachedShipStatus.enabled = false;
+                    }
                 }
             }
 
@@ -84,12 +94,12 @@ namespace SuperNewRoles.Patches
 
         static void ReduceKillCooldown(PlayerControl __instance)
         {
-            if (CustomOptions.IsAlwaysReduceCooldown.GetBool())
+            if (CustomOptionHolder.IsAlwaysReduceCooldown.GetBool())
             {
                 // オプションがOFFの場合はベント内はクールダウン減少を止める
-                bool exceptInVent = !CustomOptions.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
+                bool exceptInVent = !CustomOptionHolder.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
                 // 配電盤タスク中はクールダウン減少を止める
-                bool exceptOnTask = !CustomOptions.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
+                bool exceptOnTask = !CustomOptionHolder.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
 
                 if (!__instance.Data.IsDead && !__instance.CanMove && !exceptInVent && !exceptOnTask)
                 {
@@ -97,7 +107,7 @@ namespace SuperNewRoles.Patches
                     return;
                 }
             }
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && CustomOptions.TaskerIsKillCoolTaskNow.GetBool())
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && CustomOptionHolder.TaskerIsKillCoolTaskNow.GetBool())
             {
                 if (!__instance.Data.IsDead && !__instance.CanMove && Minigame.Instance != null && Minigame.Instance.MyNormTask != null && Minigame.Instance.MyNormTask.Owner.AmOwner)
                     __instance.SetKillTimer(__instance.killTimer - Time.fixedDeltaTime);
@@ -116,28 +126,36 @@ namespace SuperNewRoles.Patches
             VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
             OldModeButtons.OldModeUpdate();
 
-            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+            // -- 以下ゲーム中のみ --
+            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
             {
-                var MyRole = PlayerControl.LocalPlayer.GetRole();
-                SetBasePlayerOutlines();
-                LadderDead.FixedUpdate();
-                var ThisMode = ModeHandler.GetMode();
-                if (ThisMode == ModeId.Default)
+                if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
                 {
+                    SNROnlySearch.FixedUpdate();
+                }
+                return;
+            }
+
+            SetBasePlayerOutlines();
+            LadderDead.FixedUpdate();
+            switch (ModeHandler.GetMode())
+            {
+                case ModeId.Default:
                     SabotageManager.Update();
                     SetNameUpdate.Postfix(__instance);
-                    Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
-                    JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
-                    Roles.CrewMate.Psychometrist.FixedUpdate();
+                    Jackal.JackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
+                    JackalSeer.JackalSeerFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
+                    Roles.Crewmate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
                     Roles.Neutral.PartTimer.FixedUpdate();
+                    Vampire.FixedUpdate.AllClient();
                     ReduceKillCooldown(__instance);
+                    Roles.Impostor.Penguin.FixedUpdate();
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
-                        if (PlayerControl.LocalPlayer.IsMadRoles()) { VentDataModules.MadmateVent(); }
-                        NormalButtonDestroy.Postfix();
-                        switch (MyRole)
+                        NormalButtonDestroy.SetActiveState();
+                        switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Pursuer:
                                 Pursuer.PursureUpdate.Postfix();
@@ -169,7 +187,7 @@ namespace SuperNewRoles.Patches
                                 MadHawk.FixedUpdate.Postfix();
                                 break;
                             case RoleId.Vampire:
-                                Vampire.FixedUpdate.Postfix();
+                                Vampire.FixedUpdate.VampireOnly();
                                 break;
                             case RoleId.Vulture:
                                 Vulture.FixedUpdate.Postfix();
@@ -196,10 +214,10 @@ namespace SuperNewRoles.Patches
                                 Doctor.FixedUpdate();
                                 break;
                             case RoleId.Psychometrist:
-                                Roles.CrewMate.Psychometrist.PsychometristFixedUpdate();
+                                Roles.Crewmate.Psychometrist.PsychometristFixedUpdate();
                                 break;
                             case RoleId.SeeThroughPerson:
-                                Roles.CrewMate.SeeThroughPerson.FixedUpdate();
+                                Roles.Crewmate.SeeThroughPerson.FixedUpdate();
                                 break;
                             case RoleId.Hitman:
                                 Roles.Neutral.Hitman.FixedUpdate();
@@ -222,15 +240,21 @@ namespace SuperNewRoles.Patches
                             case RoleId.ShiftActor:
                                 Roles.Impostor.ShiftActor.FixedUpdate();
                                 break;
+                            case RoleId.Cupid:
+                                Roles.Neutral.Cupid.FixedUpdate();
+                                break;
+                            case RoleId.Dependents:
+                                Vampire.FixedUpdate.DependentsOnly();
+                                break;
                         }
                     }
-                    else
+                    else // -- 死亡時 --
                     {
                         if (MapOptions.MapOption.ClairvoyantZoom)
                         {
                             Clairvoyant.FixedUpdate.Postfix();
                         }
-                        switch (MyRole)
+                        switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Bait:
                                 if (!RoleClass.Bait.Reported)
@@ -258,35 +282,30 @@ namespace SuperNewRoles.Patches
                                 break;
                         }
                     }
-                }
-                else if (ThisMode == ModeId.SuperHostRoles)
-                {
+                    break;
+                case ModeId.SuperHostRoles:
                     Mode.SuperHostRoles.FixedUpdate.Update();
-                    switch (MyRole)
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Mafia))
                     {
-                        case RoleId.Mafia:
-                            Mafia.FixedUpdate();
-                            break;
+                        Mafia.FixedUpdate();
                     }
-                    SerialKiller.SHRFixedUpdate(MyRole);
+                    SerialKiller.SHRFixedUpdate(PlayerControl.LocalPlayer.GetRole());
                     Roles.Impostor.Camouflager.SHRFixedUpdate();
-                }
-                else if (ThisMode == ModeId.NotImpostorCheck)
-                {
+                    break;
+                case ModeId.NotImpostorCheck:
                     if (AmongUsClient.Instance.AmHost)
                     {
                         BlockTool.FixedUpdate();
                     }
                     Mode.NotImpostorCheck.NameSet.Postfix();
-                }
-                else
-                {
+                    break;
+                default:
                     if (AmongUsClient.Instance.AmHost)
                     {
                         BlockTool.FixedUpdate();
                     }
                     ModeHandler.FixedUpdate(__instance);
-                }
+                    break;
             }
         }
     }

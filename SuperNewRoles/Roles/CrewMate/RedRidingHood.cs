@@ -18,9 +18,7 @@ namespace SuperNewRoles.Roles
                     if (deadPlayer.killerIfExisting == null) return;
                     var killer = PlayerControl.AllPlayerControls.ToArray().ToList().FirstOrDefault((PlayerControl a) => a.PlayerId == deadPlayer.killerIfExistingId);
 
-                    Logger.Info($"え:{killer.IsDead()} || {killer.PlayerId == player.Object.PlayerId}");
-
-                    if (killer != null && (killer.IsDead() || killer.PlayerId == player.Object.PlayerId))
+                    if (killer != null && ((CustomOptionHolder.NiceRedRidinIsKillerDeathRevive.GetBool() && killer.IsDead()) || (player != null && killer.PlayerId == player.Object.PlayerId)))
                     {
                         Logger.Info($"お:{!EvilEraser.IsBlock(EvilEraser.BlockTypes.RedRidingHoodRevive, killer)}");
                         if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.RedRidingHoodRevive, killer))

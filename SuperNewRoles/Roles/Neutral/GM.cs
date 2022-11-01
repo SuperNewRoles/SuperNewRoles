@@ -138,7 +138,7 @@ namespace SuperNewRoles.Roles.Neutral
         };
         public static void AssignGM()
         {
-            if (CustomOptions.GMOption.GetBool())
+            if (CustomOptionHolder.GMOption.GetBool())
             {
                 PlayerControl.LocalPlayer.SetRoleRPC(RoleId.GM);
                 PlayerControl.LocalPlayer.RpcExiledUnchecked();
@@ -211,7 +211,7 @@ namespace SuperNewRoles.Roles.Neutral
                     () => { },
                     ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GMZoomIn.png", 115f),
                     // position
-                    (Vector3.zero + Vector3.up * 3.75f + Vector3.right * 0.2f) + new Vector3(0.2f,0,0),
+                    (Vector3.zero + Vector3.up * 3.75f + Vector3.right * 0.2f) + new Vector3(0.2f, 0, 0),
                     // hudmanager
                     hm,
                     hm.UseButton,
