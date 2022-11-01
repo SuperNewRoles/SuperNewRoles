@@ -485,6 +485,7 @@ NiceScientistName,Nice Scientist,ナイスサイエンティスト,正义的隐�
 NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう,通过隐身来找寻尸体
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう,隐身，很神奇吧
 NiceScientistCooldownSetting,Cool Time,クールタイム,技能冷却
+NiceScientistCoolDownSetting,Cool Time,クールタイム,技能冷却
 NiceScientistDurationSetting,Duration Time,継続時間,技能持续时间
 ScientistButtonName,Hide,隠れる,隐身
 ClergymanName,Clergyman,聖職者,牧师
@@ -1069,7 +1070,8 @@ SuicidalIdeationFallProbabilitySetting,Probability of falling to death,転落死
 SuicidalIdeationWinText,Try to live a little longer\nSuicidal person,もう少し生きてみようかな\n自殺願望者,再见，绝望先生！\n绝望先生
 SuicidalIdeationButtonName,Time to suicide,自殺まで,自杀倒计时
 CupidName,Cupid,キューピット
-CupidTitle,Let's make Lovers,ラバーズを作ろう
+CupidTitle1,Let's tie the red thread of fate,運命の赤い糸を結ぼう
+CupidButtonName,Shoot the love arrows,恋の矢
 HamburgerShopName,Hamburger Shop,ハンバーガー屋
 HamburgerShopTitle1,Let's make delicious，tasty burgers!,美味しい美味しいハンバーガーを作ろう
 HamburgerShopTitle2,Let's make lots of burgers!,ハンバーガーをたくさん作ろう
