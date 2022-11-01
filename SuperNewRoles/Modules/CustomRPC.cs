@@ -258,7 +258,6 @@ namespace SuperNewRoles.Modules
         SetLoversCupid,
         SetMapId,
         PenguinHikizuri,
-        SetMapId,
         SetVampireStatus,
     }
 
