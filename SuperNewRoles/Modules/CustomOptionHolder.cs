@@ -1845,7 +1845,7 @@ namespace SuperNewRoles.Modules
 
             CupidOption = SetupCustomRoleOption(1079, false, RoleId.Cupid);
             CupidPlayerCount = Create(1080, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CupidOption);
-            CupidCoolTime = Create(1081, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, CupidOption);
+            CupidCoolTime = Create(1081, false, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 20f, 2.5f, 180f, 2.5f, CupidOption);
 
             HamburgerShopOption = SetupCustomRoleOption(1091, false, RoleId.HamburgerShop);
             HamburgerShopPlayerCount = Create(1074, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HamburgerShopOption);
