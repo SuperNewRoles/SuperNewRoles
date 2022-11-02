@@ -1192,7 +1192,8 @@ namespace SuperNewRoles
                 case RoleId.Pavlovsowner:
                 case RoleId.GM:
                 case RoleId.WaveCannonJackal:
-                    case RoleId.Cupid:
+                case RoleId.Cupid:
+                case RoleId.Dependents:
                 //タスククリアか
                     IsTaskClear = true;
                     break;
