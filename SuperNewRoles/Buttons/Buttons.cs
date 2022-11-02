@@ -145,7 +145,7 @@ namespace SuperNewRoles.Buttons
             VampireCreateDependentsButton = new(
                 () =>
                 {
-                    var target = SetTarget(Crewmateonly:true);
+                    var target = SetTarget(Crewmateonly: true);
                     target.SetRoleRPC(RoleId.Dependents);
                     target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
                     RoleClass.Vampire.CreatedDependents = true;
@@ -153,7 +153,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Vampire && !RoleClass.Vampire.CreatedDependents; },
                 () =>
                 {
-                    return SetTarget(Crewmateonly:true) && PlayerControl.LocalPlayer.CanMove;
+                    return SetTarget(Crewmateonly: true) && PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
@@ -526,7 +526,7 @@ namespace SuperNewRoles.Buttons
                     CupidButton.MaxTimer = CustomOptionHolder.CupidCoolTime.GetFloat();
                     CupidButton.Timer = CupidButton.MaxTimer;
                 },
-                RoleClass.Truelover.GetButtonSprite(),
+                RoleClass.Cupid.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
