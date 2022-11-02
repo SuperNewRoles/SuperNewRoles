@@ -895,7 +895,7 @@ namespace SuperNewRoles.Modules
         public static CustomOption CamouflagerCamouflageQuarreled;
         public static CustomOption CamouflagerCamouflageChangeColor;
         public static CustomOption CamouflagerCamouflageColor;
-        
+
         public static CustomRoleOption CupidOption;
         public static CustomOption CupidPlayerCount;
         public static CustomOption CupidCoolTime;
@@ -906,16 +906,16 @@ namespace SuperNewRoles.Modules
         public static CustomOption HamburgerShopCommonTask;
         public static CustomOption HamburgerShopShortTask;
         public static CustomOption HamburgerShopLongTask;
-        
+
         public static CustomRoleOption PenguinOption;
         public static CustomOption PenguinPlayerCount;
         public static CustomOption PenguinCoolTime;
         public static CustomOption PenguinDurationTime;
         public static CustomOption PenguinCanDefaultKill;
-        
+
         public static CustomRoleOption DependentsOption;
         public static CustomOption DependentsPlayerCount;
-        
+
         //CustomOption
 
         public static CustomOption GMOption;
@@ -1069,7 +1069,7 @@ namespace SuperNewRoles.Modules
             RemoteSheriffOption = SetupCustomRoleOption(44, true, RoleId.RemoteSheriff);
             RemoteSheriffPlayerCount = Create(45, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RemoteSheriffOption);
             RemoteSheriffCoolTime = Create(46, true, CustomOptionType.Crewmate, ModTranslation.GetString("SheriffCooldownSetting"), 30f, 2.5f, 60f, 2.5f, RemoteSheriffOption, format: "unitSeconds");
-            RemoteSheriffNeutralKill = Create(47, true, CustomOptionType.Crewmate, "SheriffIsKillNewtralSetting", false, RemoteSheriffOption);
+            RemoteSheriffNeutralKill = Create(47, true, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, RemoteSheriffOption);
             RemoteSheriffLoversKill = Create(48, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, RemoteSheriffOption);
             RemoteSheriffMadRoleKill = Create(49, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, RemoteSheriffOption);
             RemoteSheriffKillMaxCount = Create(50, true, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, RemoteSheriffOption, format: "unitSeconds");
@@ -1504,7 +1504,7 @@ namespace SuperNewRoles.Modules
             ChiefOption = SetupCustomRoleOption(394, false, RoleId.Chief);
             ChiefPlayerCount = Create(395, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
             ChiefSheriffCoolTime = Create(626, false, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, ChiefOption, format: "unitSeconds");
-            ChiefIsNeutralKill = Create(627, false, CustomOptionType.Crewmate, "SheriffIsKillNewtralSetting", false, ChiefOption);
+            ChiefIsNeutralKill = Create(627, false, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, ChiefOption);
             ChiefIsLoversKill = Create(628, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, ChiefOption);
             ChiefIsMadRoleKill = Create(629, false, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, ChiefOption);
             ChiefKillLimit = Create(630, false, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, ChiefOption, format: "unitSeconds");
@@ -1842,7 +1842,7 @@ namespace SuperNewRoles.Modules
             EvilGuesserPlayerCount = Create(974, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
             EvilGuesserShortMaxCount = Create(975, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
             EvilGuesserShortOneMeetingCount = Create(976, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
-            
+
             CupidOption = SetupCustomRoleOption(1079, false, RoleId.Cupid);
             CupidPlayerCount = Create(1080, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CupidOption);
             CupidCoolTime = Create(1081, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, CupidOption);
