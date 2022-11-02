@@ -485,6 +485,7 @@ NiceScientistName,Nice Scientist,ナイスサイエンティスト,正义的隐�
 NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう,通过隐身来找寻尸体
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう,隐身，很神奇吧
 NiceScientistCooldownSetting,Cool Time,クールタイム,技能冷却
+NiceScientistCoolDownSetting,Cool Time,クールタイム,技能冷却
 NiceScientistDurationSetting,Duration Time,継続時間,技能持续时间
 ScientistButtonName,Hide,隠れる,隐身
 ClergymanName,Clergyman,聖職者,牧师
@@ -942,7 +943,7 @@ MatryoshkaPutOnButtonName,Put On,着る,套娃
 MatryoshkaTakeOffButtonName,Take Off,脱ぐ,解除
 StefinderName,Stefinder,ステファインダー,二五仔
 StefinderTitle1,Let's do one crime.,一回だけ犯罪しよう,那么答案只有一个了！
-StefinderKillCoolDownSetting,KillCooldown,キルクールダウン,二五仔击杀冷却
+StefinderKillCooldownSetting,KillCooldown,キルクールダウン,二五仔击杀冷却
 StefinderVentSetting,CanUseVent,ベントを使用できる,二五仔可以使用管道
 StefinderSaboSetting,CanUseSabotage,サボタージュを使用できる,二五仔可以造成破坏
 StefinderSoloWinSetting,SoloWin,単独勝利,二五仔可以单独获胜
@@ -1069,7 +1070,8 @@ SuicidalIdeationFallProbabilitySetting,Probability of falling to death,転落死
 SuicidalIdeationWinText,Try to live a little longer\nSuicidal person,もう少し生きてみようかな\n自殺願望者,再见，绝望先生！\n绝望先生
 SuicidalIdeationButtonName,Time to suicide,自殺まで,自杀倒计时
 CupidName,Cupid,キューピット
-CupidTitle,Let's make Lovers,ラバーズを作ろう
+CupidTitle1,Let's tie the red thread of fate,運命の赤い糸を結ぼう
+CupidButtonName,Shoot the love arrows,恋の矢
 HamburgerShopName,Hamburger Shop,ハンバーガー屋
 HamburgerShopTitle1,Let's make delicious，tasty burgers!,美味しい美味しいハンバーガーを作ろう
 HamburgerShopTitle2,Let's make lots of burgers!,ハンバーガーをたくさん作ろう
@@ -1078,6 +1080,7 @@ HamburgerShopChangeTaskPrefab,Replace all tasks with hamburger tasks,全タス�
 PenguinName,Penguin,ペンギン
 PenguinTitle1,Let's drag and kill!,ぺちぺち！
 PenguinButtonName,Abduction,拉致
+PenguinCanDefaultKill,Can default kill,通常キルができる
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！
