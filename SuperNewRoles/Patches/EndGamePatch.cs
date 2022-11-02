@@ -461,10 +461,7 @@ namespace SuperNewRoles.Patches
             {
                 (CompleteTask, TotalTask) = TaskCount.TaskDate(p);
             }
-            catch
-            {
-
-            }
+            catch { }
             try
             {
                 role = p.Object.GetRole();
@@ -1150,16 +1147,6 @@ namespace SuperNewRoles.Patches
             {
                 // pass - Hopefully prevent leaving while exiling to softlock game
             }
-        }
-    }
-    public class WrapUpClass
-    {
-        public static void SetCoolTime()
-        {
-            PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer), RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer));
-        }
-        public static void WrapUpPostfix(GameData.PlayerInfo exiled)
-        {
         }
     }
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.ReEnableGameplay))]

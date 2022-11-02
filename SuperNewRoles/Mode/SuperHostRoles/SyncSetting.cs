@@ -270,10 +270,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
         public class StartGame
         {
-            public static void Prefix()
-            {
-                //   BotHandler.CreateBot();
-            }
             public static void Postfix()
             {
                 if (CustomOptionHolder.IsSNROnlySearch.GetBool())
