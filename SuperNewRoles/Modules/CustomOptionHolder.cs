@@ -1250,8 +1250,8 @@ namespace SuperNewRoles.Modules
 
             HawkOption = SetupCustomRoleOption(204, false, RoleId.Hawk);
             HawkPlayerCount = Create(205, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], HawkOption);
-            HawkCoolTime = Create(206, false, CustomOptionType.Impostor, "HawkCoolTimeSetting", 15f, 1f, 120f, 2.5f, HawkOption, format: "unitCouples");
-            HawkDurationTime = Create(207, false, CustomOptionType.Impostor, "HawkDurationTimeSetting", 5f, 1f, 60f, 2.5f, HawkOption, format: "unitCouples");
+            HawkCoolTime = Create(206, false, CustomOptionType.Impostor, "HawkCoolTimeSetting", 15f, 0f, 120f, 2.5f, HawkOption, format: "unitCouples");
+            HawkDurationTime = Create(207, false, CustomOptionType.Impostor, "HawkDurationTimeSetting", 5f, 0f, 60f, 1f, HawkOption, format: "unitCouples");
 
             EgoistOption = SetupCustomRoleOption(208, true, RoleId.Egoist);
             EgoistPlayerCount = Create(209, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], EgoistOption);
@@ -1343,8 +1343,8 @@ namespace SuperNewRoles.Modules
 
             NiceHawkOption = SetupCustomRoleOption(279, false, RoleId.NiceHawk);
             NiceHawkPlayerCount = Create(280, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceHawkOption);
-            NiceHawkCoolTime = Create(281, false, CustomOptionType.Crewmate, "HawkCoolTimeSetting", 15f, 1f, 120f, 2.5f, NiceHawkOption, format: "unitCouples");
-            NiceHawkDurationTime = Create(282, false, CustomOptionType.Crewmate, "HawkDurationTimeSetting", 5f, 0f, 60f, 2.5f, NiceHawkOption, format: "unitCouples");
+            NiceHawkCoolTime = Create(281, false, CustomOptionType.Crewmate, "HawkCoolTimeSetting", 15f, 0f, 120f, 2.5f, NiceHawkOption, format: "unitCouples");
+            NiceHawkDurationTime = Create(282, false, CustomOptionType.Crewmate, "HawkDurationTimeSetting", 5f, 0f, 60f, 1f, NiceHawkOption, format: "unitCouples");
 
             MadStuntManOption = SetupCustomRoleOption(283, false, RoleId.MadStuntMan);
             MadStuntManPlayerCount = Create(284, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadStuntManOption);
@@ -1353,8 +1353,8 @@ namespace SuperNewRoles.Modules
 
             MadHawkOption = SetupCustomRoleOption(287, false, RoleId.MadHawk);
             MadHawkPlayerCount = Create(289, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadHawkOption);
-            MadHawkCoolTime = Create(290, false, CustomOptionType.Crewmate, "HawkCoolTimeSetting", 15f, 1f, 120f, 2.5f, MadHawkOption, format: "unitCouples");
-            MadHawkDurationTime = Create(291, false, CustomOptionType.Crewmate, "HawkDurationTimeSetting", 5f, 0f, 60f, 2.5f, MadHawkOption, format: "unitCouples");
+            MadHawkCoolTime = Create(290, false, CustomOptionType.Crewmate, "HawkCoolTimeSetting", 15f, 0f, 120f, 2.5f, MadHawkOption, format: "unitCouples");
+            MadHawkDurationTime = Create(291, false, CustomOptionType.Crewmate, "HawkDurationTimeSetting", 5f, 0f, 60f, 1f, MadHawkOption, format: "unitCouples");
             MadHawkIsUseVent = Create(292, false, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadHawkOption);
             MadHawkIsImpostorLight = Create(293, false, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadHawkOption);
 
