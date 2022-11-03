@@ -796,6 +796,8 @@ namespace SuperNewRoles.Modules
             if (MissFire)
             {
                 sheriff.MurderPlayer(sheriff);
+                if(sheriff.IsRole(RoleId.Sheriff) && CustomOptionHolder.SheriffCanKillCrewmate.GetBool()) target.MurderPlayer(target);
+                else if(sheriff.IsRole(RoleId.RemoteSheriff) && CustomOptionHolder.RemoteSheriffCanKillCrewmate.GetBool()) target.MurderPlayer(target);
             }
             else
             {
