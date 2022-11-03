@@ -126,10 +126,10 @@ namespace SuperNewRoles.Modules
             catch { }
             string playerInfoText = "";
             string meetingInfoText = "";
-            playerInfoText = $"{CustomOptionHolder.Cs(roleColors, roleNames)}";
+            playerInfoText = $"{ModHelpers.Cs(roleColors, roleNames)}";
             if (GhostRoleNames != "")
             {
-                playerInfoText = $"{CustomOptionHolder.Cs((Color)GhostRoleColor, GhostRoleNames)}({playerInfoText})";
+                playerInfoText = $"{ModHelpers.Cs((Color)GhostRoleColor, GhostRoleNames)}({playerInfoText})";
             }
             playerInfoText += TaskText;
             meetingInfoText = playerInfoText.Trim();

@@ -362,7 +362,7 @@ namespace SuperNewRoles.Patches
                             if (!IsLovetexton && !haison)
                             {
                                 IsLovetexton = true;
-                                text = text + "&" + CustomOptionHolder.Cs(RoleClass.Lovers.color, "LoversName");
+                                text = text + "&" + ModHelpers.Cs(RoleClass.Lovers.color, "LoversName");
                             }
                         }
                     }
@@ -406,15 +406,15 @@ namespace SuperNewRoles.Patches
                 foreach (var data in AdditionalTempData.playerRoles)
                 {
                     var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>({data.TasksCompleted}/{data.TasksTotal})</color>" : "";
-                    string roleText = CustomOptionHolder.Cs(data.IntroData.color, data.IntroData.NameKey + "Name");
+                    string roleText = ModHelpers.Cs(data.IntroData.color, data.IntroData.NameKey + "Name");
                     if (data.GhostIntroData.RoleId != RoleId.DefaultRole)
                     {
-                        roleText += $" → {CustomOptionHolder.Cs(data.GhostIntroData.color, data.GhostIntroData.NameKey + "Name")}";
+                        roleText += $" → {ModHelpers.Cs(data.GhostIntroData.color, data.GhostIntroData.NameKey + "Name")}";
                     }
                     string result = $"{ModHelpers.Cs(Palette.PlayerColors[data.ColorId], data.PlayerName)}{data.NameSuffix}{taskInfo} - {FinalStatusPatch.GetStatusText(data.Status)} - {roleText}";
                     if (ModeHandler.IsMode(ModeId.Zombie))
                     {
-                        roleText = data.ColorId == 1 ? CustomOptionHolder.Cs(Mode.Zombie.Main.Policecolor, "ZombiePoliceName") : CustomOptionHolder.Cs(Mode.Zombie.Main.Zombiecolor, "ZombieZombieName");
+                        roleText = data.ColorId == 1 ? ModHelpers.Cs(Mode.Zombie.Main.Policecolor, "ZombiePoliceName") : ModHelpers.Cs(Mode.Zombie.Main.Zombiecolor, "ZombieZombieName");
                         if (data.ColorId == 2) taskInfo = "";
                         result = $"{ModHelpers.Cs(Palette.PlayerColors[data.ColorId], data.PlayerName)}{taskInfo} : {roleText}";
                     }

@@ -293,7 +293,7 @@ namespace SuperNewRoles.Patches
             foreach (CustomRoleOption option in EnableOptions)
             {
                 string text = GetText(option);
-                string rolename = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
+                string rolename = "<size=115%>\n" + ModHelpers.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
                 SuperNewRolesPlugin.Logger.LogInfo(text);
                 Send(target, rolename, text, time);
                 time += SendTime;
