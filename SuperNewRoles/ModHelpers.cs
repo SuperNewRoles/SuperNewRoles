@@ -189,7 +189,7 @@ namespace SuperNewRoles
                 UnityEngine.Object.Destroy(item);
             }
         }
-        public static MurderAttemptResult CheckMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
+        public static MurderAttemptResult CheckMurderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
         {
             // Modified vanilla checks
             if (AmongUsClient.Instance.IsGameOver) return MurderAttemptResult.SuppressKill;
@@ -344,7 +344,7 @@ namespace SuperNewRoles
         {
             if (obj == null)
             {
-                Logger.Error($"ActivateConsole Object was not found!","");
+                Logger.Error($"ActivateConsole Object was not found!", "");
                 return null;
             }
             obj.layer = LayerMask.NameToLayer("ShortObjects");
@@ -379,7 +379,7 @@ namespace SuperNewRoles
         {
             if (obj == null)
             {
-                Logger.Error($"ActivateConsole Object was not found!","");
+                Logger.Error($"ActivateConsole Object was not found!", "");
                 return null;
             }
             obj.layer = LayerMask.NameToLayer("ShortObjects");
@@ -410,14 +410,14 @@ namespace SuperNewRoles
             }
             return console;
         }
-        public static MurderAttemptResult CheckMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
+        public static MurderAttemptResult CheckMurderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
             // The local player checks for the validity of the kill and performs it afterwards (different to vanilla, where the host performs all the checks)
             // The kill attempt will be shared using a custom RPC, hence combining modded and unmodded versions is impossible
 
             tien = 0;
 
-            MurderAttemptResult murder = CheckMuderAttempt(killer, target, isMeetingStart);
+            MurderAttemptResult murder = CheckMurderAttempt(killer, target, isMeetingStart);
             if (murder == MurderAttemptResult.PerformKill)
             {
                 if (tien <= 0)
