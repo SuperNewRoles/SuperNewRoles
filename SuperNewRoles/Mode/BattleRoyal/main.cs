@@ -90,7 +90,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                             {
                                 if (p.PlayerId != 0)
                                 {
-                                    PlayerControl.LocalPlayer.RpcSetNamePrivate(ModHelpers.Cs(RoleClass.ImpostorRed, ModTranslation.GetString("Player")), p);
+                                    PlayerControl.LocalPlayer.RpcSetNamePrivate(ModHelpers.ColorString(RoleClass.ImpostorRed, ModTranslation.GetString("Player")), p);
                                 }
                             }
                         }

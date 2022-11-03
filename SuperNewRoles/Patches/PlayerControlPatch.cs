@@ -750,7 +750,7 @@ namespace SuperNewRoles.Patches
                 }, 0.5f, "RpcCheckExile Assassin Start Meeting");
                 new LateTask(() =>
                 {
-                    __instance.RpcSetName($"<size=200%>{ModHelpers.Cs(RoleClass.Marine.color, IntroData.MarineIntro.NameKey + "Name")}は誰だ？</size>");
+                    __instance.RpcSetName($"<size=200%>{ModHelpers.ColorString(RoleClass.Marine.color, IntroData.MarineIntro.NameKey + "Name")}は誰だ？</size>");
                 }, 2f, "RpcCheckExile Who Marine Name");
                 new LateTask(() =>
                 {
@@ -782,7 +782,7 @@ namespace SuperNewRoles.Patches
                 }, 0.5f, "RpcMurderPlayerCheck Assassin Meeting");
                 new LateTask(() =>
                 {
-                    target.RpcSetName($"<size=200%>{ModHelpers.Cs(RoleClass.Marine.color, IntroData.MarineIntro.NameKey + "Name")}は誰だ？</size>");
+                    target.RpcSetName($"<size=200%>{ModHelpers.ColorString(RoleClass.Marine.color, IntroData.MarineIntro.NameKey + "Name")}は誰だ？</size>");
                 }, 2f, "RpcMurderPlayerCheck Who Marine Name");
                 new LateTask(() =>
                 {

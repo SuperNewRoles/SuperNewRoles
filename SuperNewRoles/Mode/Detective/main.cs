@@ -38,8 +38,8 @@ namespace SuperNewRoles.Mode.Detective
             writer.Write(random.PlayerId);
             writer.EndRPC();
             RPCProcedure.SetDetective(random.PlayerId);
-            DetectivePlayer.RpcSetName(ModHelpers.Cs(DetectiveColor, DetectivePlayer.GetDefaultName()));
-            DetectivePlayer.SetName(ModHelpers.Cs(DetectiveColor, DetectivePlayer.GetDefaultName()));
+            DetectivePlayer.RpcSetName(ModHelpers.ColorString(DetectiveColor, DetectivePlayer.GetDefaultName()));
+            DetectivePlayer.SetName(ModHelpers.ColorString(DetectiveColor, DetectivePlayer.GetDefaultName()));
         }
     }
 }

@@ -191,7 +191,7 @@ namespace SuperNewRoles.Patches
                 {
                     Logger.Info(data.PlayerName + ":" + winningPlayerData2.PlayerName);
                     if (data.PlayerName != winningPlayerData2.PlayerName) continue;
-                    poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", ModHelpers.Cs(data.IntroData.color, data.IntroData.Name))}";
+                    poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", ModHelpers.ColorString(data.IntroData.color, data.IntroData.Name))}";
                 }
             }
 
@@ -340,7 +340,7 @@ namespace SuperNewRoles.Patches
                     if (!IsOpptexton && !haison)
                     {
                         IsOpptexton = true;
-                        text = text + "&" + ModHelpers.Cs(RoleClass.Opportunist.color, ModTranslation.GetString("OpportunistName"));
+                        text = text + "&" + ModHelpers.ColorString(RoleClass.Opportunist.color, ModTranslation.GetString("OpportunistName"));
                     }
                 }
             }
@@ -362,7 +362,7 @@ namespace SuperNewRoles.Patches
                             if (!IsLovetexton && !haison)
                             {
                                 IsLovetexton = true;
-                                text = text + "&" + ModHelpers.Cs(RoleClass.Lovers.color, "LoversName");
+                                text = text + "&" + ModHelpers.ColorString(RoleClass.Lovers.color, "LoversName");
                             }
                         }
                     }
@@ -406,17 +406,17 @@ namespace SuperNewRoles.Patches
                 foreach (var data in AdditionalTempData.playerRoles)
                 {
                     var taskInfo = data.TasksTotal > 0 ? $"<color=#FAD934FF>({data.TasksCompleted}/{data.TasksTotal})</color>" : "";
-                    string roleText = ModHelpers.Cs(data.IntroData.color, data.IntroData.NameKey + "Name");
+                    string roleText = ModHelpers.ColorString(data.IntroData.color, data.IntroData.NameKey + "Name");
                     if (data.GhostIntroData.RoleId != RoleId.DefaultRole)
                     {
-                        roleText += $" → {ModHelpers.Cs(data.GhostIntroData.color, data.GhostIntroData.NameKey + "Name")}";
+                        roleText += $" → {ModHelpers.ColorString(data.GhostIntroData.color, data.GhostIntroData.NameKey + "Name")}";
                     }
-                    string result = $"{ModHelpers.Cs(Palette.PlayerColors[data.ColorId], data.PlayerName)}{data.NameSuffix}{taskInfo} - {FinalStatusPatch.GetStatusText(data.Status)} - {roleText}";
+                    string result = $"{ModHelpers.ColorString(Palette.PlayerColors[data.ColorId], data.PlayerName)}{data.NameSuffix}{taskInfo} - {FinalStatusPatch.GetStatusText(data.Status)} - {roleText}";
                     if (ModeHandler.IsMode(ModeId.Zombie))
                     {
-                        roleText = data.ColorId == 1 ? ModHelpers.Cs(Mode.Zombie.Main.Policecolor, "ZombiePoliceName") : ModHelpers.Cs(Mode.Zombie.Main.Zombiecolor, "ZombieZombieName");
+                        roleText = data.ColorId == 1 ? ModHelpers.ColorString(Mode.Zombie.Main.Policecolor, "ZombiePoliceName") : ModHelpers.ColorString(Mode.Zombie.Main.Zombiecolor, "ZombieZombieName");
                         if (data.ColorId == 2) taskInfo = "";
-                        result = $"{ModHelpers.Cs(Palette.PlayerColors[data.ColorId], data.PlayerName)}{taskInfo} : {roleText}";
+                        result = $"{ModHelpers.ColorString(Palette.PlayerColors[data.ColorId], data.PlayerName)}{taskInfo} : {roleText}";
                     }
                     roleSummaryText.AppendLine(result);
                 }
@@ -439,7 +439,7 @@ namespace SuperNewRoles.Patches
                 SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
             }
             AdditionalTempData.Clear();
-            OnGameEndPatch.WinText = ModHelpers.Cs(RoleColor, haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName")));
+            OnGameEndPatch.WinText = ModHelpers.ColorString(RoleColor, haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName")));
             IsHaison = false;
         }
     }
@@ -538,7 +538,7 @@ namespace SuperNewRoles.Patches
                     string namesuffix = "";
                     if (p.Object.IsLovers())
                     {
-                        namesuffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
+                        namesuffix = ModHelpers.ColorString(RoleClass.Lovers.color, " ♥");
                     }
                     AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
                     {

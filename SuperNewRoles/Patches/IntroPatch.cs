@@ -314,11 +314,11 @@ namespace SuperNewRoles.Patches
                     }
                     if (PlayerControl.LocalPlayer.IsLovers())
                     {
-                        ImpostorText += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                        ImpostorText += "\n" + ModHelpers.ColorString(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
                     }
                     if (PlayerControl.LocalPlayer.IsQuarreled())
                     {
-                        ImpostorText += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
+                        ImpostorText += "\n" + ModHelpers.ColorString(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
                     }
                 }
                 __instance.ImpostorText.gameObject.SetActive(true);
@@ -419,11 +419,11 @@ namespace SuperNewRoles.Patches
                         }
                         if (PlayerControl.LocalPlayer.IsLovers())
                         {
-                            __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                            __instance.RoleBlurbText.text += "\n" + ModHelpers.ColorString(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
                         }
                         if (PlayerControl.LocalPlayer.IsQuarreled())
                         {
-                            __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
+                            __instance.RoleBlurbText.text += "\n" + ModHelpers.ColorString(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
                         }
                     }
                     else if (ModeHandler.IsMode(ModeId.SuperHostRoles))

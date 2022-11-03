@@ -957,17 +957,17 @@ namespace SuperNewRoles.Modules
                 LeveTransed.Add(ModTranslation.GetString(data));
             }
             LevelingerTexts = LeveTransed.ToArray();
-            presetSelection = Create(0, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingpresetSelection"), presets, null, true);
+            presetSelection = Create(0, true, CustomOptionType.Generic, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingpresetSelection"), presets, null, true);
 
             specialOptions = new CustomOptionBlank(null);
-            hideSettings = Create(2, true, CustomOptionType.Generic, Cs(Color.white, "SettingsHideSetting"), false, specialOptions);
+            hideSettings = Create(2, true, CustomOptionType.Generic, ColorString(Color.white, "SettingsHideSetting"), false, specialOptions);
 
-            crewmateRolesCountMax = Create(3, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewRole"), 0f, 0f, 15f, 1f);
-            crewmateGhostRolesCountMax = Create(4, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewGhostRole"), 0f, 0f, 15f, 1f);
-            neutralRolesCountMax = Create(5, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralRole"), 0f, 0f, 15f, 1f);
-            neutralGhostRolesCountMax = Create(6, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralGhostRole"), 0f, 0f, 15f, 1f);
-            impostorRolesCountMax = Create(7, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoRole"), 0f, 0f, 3f, 1f);
-            impostorGhostRolesCountMax = Create(8, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
+            crewmateRolesCountMax = Create(3, true, CustomOptionType.Generic, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewRole"), 0f, 0f, 15f, 1f);
+            crewmateGhostRolesCountMax = Create(4, true, CustomOptionType.Generic, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewGhostRole"), 0f, 0f, 15f, 1f);
+            neutralRolesCountMax = Create(5, true, CustomOptionType.Generic, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralRole"), 0f, 0f, 15f, 1f);
+            neutralGhostRolesCountMax = Create(6, true, CustomOptionType.Generic, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralGhostRole"), 0f, 0f, 15f, 1f);
+            impostorRolesCountMax = Create(7, true, CustomOptionType.Generic, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoRole"), 0f, 0f, 3f, 1f);
+            impostorGhostRolesCountMax = Create(8, true, CustomOptionType.Generic, ColorString(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
 
             enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false);
 
@@ -988,9 +988,9 @@ namespace SuperNewRoles.Modules
                 IsMurderPlayerAnnounce = Create(1073, true, CustomOptionType.Generic, "MurderPlayer発生時に通知を行う", false, IsDebugMode);
             }
 
-            DisconnectNotPCOption = Create(11, true, CustomOptionType.Generic, Cs(Color.white, "DisconnectNotPC"), true, null, isHeader: true);
+            DisconnectNotPCOption = Create(11, true, CustomOptionType.Generic, ColorString(Color.white, "DisconnectNotPC"), true, null, isHeader: true);
 
-            ZoomOption = Create(618, false, CustomOptionType.Generic, Cs(Color.white, "Zoomafterdeath"), true, null, isHeader: true);
+            ZoomOption = Create(618, false, CustomOptionType.Generic, ColorString(Color.white, "Zoomafterdeath"), true, null, isHeader: true);
             MouseZoom = Create(619, false, CustomOptionType.Generic, "mousemode", false, ZoomOption);
             ClairvoyantZoom = Create(620, false, CustomOptionType.Generic, "clairvoyantmode", false, ZoomOption);
             ZoomCoolTime = Create(621, false, CustomOptionType.Generic, "clairvoyantCoolTime", 15f, 1f, 120f, 2.5f, ClairvoyantZoom, format: "unitCouples");
@@ -1005,7 +1005,7 @@ namespace SuperNewRoles.Modules
 
             Sabotage.Options.Load();
 
-            GMOption = Create(1028, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
+            GMOption = Create(1028, false, CustomOptionType.Generic, ColorString(RoleClass.GM.color, "GMName"), false, isHeader: true);
 
             IsAlwaysReduceCooldown = Create(682, false, CustomOptionType.Generic, "IsAlwaysReduceCooldown", false, null, isHeader: true);
             IsAlwaysReduceCooldownExceptInVent = Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
@@ -1065,7 +1065,7 @@ namespace SuperNewRoles.Modules
             RemoteSheriffIsKillTeleportSetting = Create(51, true, CustomOptionType.Crewmate, "RemoteSheriffIsKillTeleportSetting", false, RemoteSheriffOption);
 
             MeetingSheriffOption = SetupCustomRoleOption(52, false, RoleId.MeetingSheriff);
-            MeetingSheriffPlayerCount = Create(53, false, CustomOptionType.Crewmate, Cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MeetingSheriffOption);
+            MeetingSheriffPlayerCount = Create(53, false, CustomOptionType.Crewmate, ColorString(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MeetingSheriffOption);
             MeetingSheriffNeutralKill = Create(54, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillNeutralSetting", false, MeetingSheriffOption);
             MeetingSheriffMadRoleKill = Create(55, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillMadRoleSetting", false, MeetingSheriffOption);
             MeetingSheriffKillMaxCount = Create(56, false, CustomOptionType.Crewmate, "MeetingSheriffMaxKillCountSetting", 1f, 1f, 20f, 1f, MeetingSheriffOption, format: "unitSeconds");
@@ -1852,11 +1852,11 @@ namespace SuperNewRoles.Modules
 
             //表示設定
 
-            QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
+            QuarreledOption = Create(432, true, CustomOptionType.Neutral, ColorString(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = Create(433, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewmate = Create(434, true, CustomOptionType.Neutral, "QuarreledOnlyCrewmateSetting", false, QuarreledOption);
 
-            LoversOption = Create(435, true, CustomOptionType.Neutral, Cs(RoleClass.Lovers.color, "LoversName"), false, null, isHeader: true);
+            LoversOption = Create(435, true, CustomOptionType.Neutral, ColorString(RoleClass.Lovers.color, "LoversName"), false, null, isHeader: true);
             LoversTeamCount = Create(436, true, CustomOptionType.Neutral, "LoversTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], LoversOption);
             LoversPar = Create(437, true, CustomOptionType.Neutral, "LoversParSetting", rates, LoversOption);
             LoversOnlyCrewmate = Create(438, true, CustomOptionType.Neutral, "LoversOnlyCrewmateSetting", false, LoversOption);

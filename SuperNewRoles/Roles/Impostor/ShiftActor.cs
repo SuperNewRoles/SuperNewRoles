@@ -91,11 +91,11 @@ namespace SuperNewRoles.Roles.Impostor
                 {
                     if (target.IsLovers())
                     {
-                        TargetRoleText += ModHelpers.Cs(RoleClass.Lovers.color, " ♥"); // ラバーズ
+                        TargetRoleText += ModHelpers.ColorString(RoleClass.Lovers.color, " ♥"); // ラバーズ
                     }
                     else if (target.IsQuarreled())
                     {
-                        TargetRoleText += ModHelpers.Cs(RoleClass.Quarreled.color, "○"); //　クラード
+                        TargetRoleText += ModHelpers.ColorString(RoleClass.Quarreled.color, "○"); //　クラード
                     }
                 }
             }

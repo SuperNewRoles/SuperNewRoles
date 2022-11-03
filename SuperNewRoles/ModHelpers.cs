@@ -344,7 +344,7 @@ namespace SuperNewRoles
         {
             if (obj == null)
             {
-                Logger.Error($"ActivateConsole Object was not found!","");
+                Logger.Error($"ActivateConsole Object was not found!", "");
                 return null;
             }
             obj.layer = LayerMask.NameToLayer("ShortObjects");
@@ -379,7 +379,7 @@ namespace SuperNewRoles
         {
             if (obj == null)
             {
-                Logger.Error($"ActivateConsole Object was not found!","");
+                Logger.Error($"ActivateConsole Object was not found!", "");
                 return null;
             }
             obj.layer = LayerMask.NameToLayer("ShortObjects");
@@ -607,10 +607,8 @@ namespace SuperNewRoles
             return null;
         }
 
-        public static string Cs(Color c, string s)
-        {
-            return $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.a):X2}>{s}</color>";
-        }
+        public static string ColorString(Color c, string s)
+            => $"<color=#{ToByte(c.r):X2}{ToByte(c.g):X2}{ToByte(c.b):X2}{ToByte(c.a):X2}>{s}</color>";
         public static byte ToByte(float f)
         {
             f = Mathf.Clamp01(f);

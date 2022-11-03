@@ -114,22 +114,22 @@ namespace SuperNewRoles.Modules
                     if (commsActive)
                     {
                         var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
-                        TaskText += ModHelpers.Cs(Color.yellow, "(?/" + all + ")");
+                        TaskText += ModHelpers.ColorString(Color.yellow, "(?/" + all + ")");
                     }
                     else
                     {
                         var (Complete, all) = TaskCount.TaskDateNoClearCheck(p.Data);
-                        TaskText += ModHelpers.Cs(Color.yellow, "(" + Complete + "/" + all + ")");
+                        TaskText += ModHelpers.ColorString(Color.yellow, "(" + Complete + "/" + all + ")");
                     }
                 }
             }
             catch { }
             string playerInfoText = "";
             string meetingInfoText = "";
-            playerInfoText = $"{ModHelpers.Cs(roleColors, roleNames)}";
+            playerInfoText = $"{ModHelpers.ColorString(roleColors, roleNames)}";
             if (GhostRoleNames != "")
             {
-                playerInfoText = $"{ModHelpers.Cs((Color)GhostRoleColor, GhostRoleNames)}({playerInfoText})";
+                playerInfoText = $"{ModHelpers.ColorString((Color)GhostRoleColor, GhostRoleNames)}({playerInfoText})";
             }
             playerInfoText += TaskText;
             meetingInfoText = playerInfoText.Trim();
@@ -197,7 +197,7 @@ namespace SuperNewRoles.Modules
         }
         public static void QuarreledSet()
         {
-            string suffix = ModHelpers.Cs(RoleClass.Quarreled.color, "○");
+            string suffix = ModHelpers.ColorString(RoleClass.Quarreled.color, "○");
             if (PlayerControl.LocalPlayer.IsQuarreled() && PlayerControl.LocalPlayer.IsAlive())
             {
                 PlayerControl side = PlayerControl.LocalPlayer.GetOneSideQuarreled();
@@ -223,7 +223,7 @@ namespace SuperNewRoles.Modules
         }
         public static void LoversSet()
         {
-            string suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
+            string suffix = ModHelpers.ColorString(RoleClass.Lovers.color, " ♥");
             if (PlayerControl.LocalPlayer.IsLovers() && PlayerControl.LocalPlayer.IsAlive())
             {
                 PlayerControl side = PlayerControl.LocalPlayer.GetOneSideLovers();
@@ -258,8 +258,8 @@ namespace SuperNewRoles.Modules
                 {
                     if (Demon.IsViewIcon(player))
                     {
-                        if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Demon.color, " ▲")))
-                            SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.Demon.color, " ▲"));
+                        if (!player.NameText().text.Contains(ModHelpers.ColorString(RoleClass.Demon.color, " ▲")))
+                            SetPlayerNameText(player, player.NameText().text + ModHelpers.ColorString(RoleClass.Demon.color, " ▲"));
                     }
                 }
             }
@@ -272,8 +272,8 @@ namespace SuperNewRoles.Modules
                 {
                     if (Arsonist.IsViewIcon(player))
                     {
-                        if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " §")))
-                            SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.Arsonist.color, " §"));
+                        if (!player.NameText().text.Contains(ModHelpers.ColorString(RoleClass.Arsonist.color, " §")))
+                            SetPlayerNameText(player, player.NameText().text + ModHelpers.ColorString(RoleClass.Arsonist.color, " §"));
                     }
                 }
             }
@@ -302,26 +302,26 @@ namespace SuperNewRoles.Modules
                 foreach (PlayerControl player in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
                 {
                     //クルーなら
-                    if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
+                    if (!player.NameText().text.Contains(ModHelpers.ColorString(RoleClass.Arsonist.color, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
                     {//名前に(C)をつける
-                        SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
+                        SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.ColorString(Palette.White, " (C)"));
                     }
-                    if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.ImpostorRed, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
+                    if (!player.NameText().text.Contains(ModHelpers.ColorString(RoleClass.ImpostorRed, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
                     {
-                        SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
+                        SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.ColorString(RoleClass.ImpostorRed, " (M)"));
                     }
                 }
             }
             else if (PlayerControl.LocalPlayer.IsRole(RoleId.SatsumaAndImo))
             {
                 PlayerControl player = PlayerControl.LocalPlayer;
-                if (!player.NameText().text.Contains(ModHelpers.Cs(Palette.White, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
+                if (!player.NameText().text.Contains(ModHelpers.ColorString(Palette.White, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
                 {//名前に(C)をつける
-                    SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(Palette.White, " (C)"));
+                    SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.ColorString(Palette.White, " (C)"));
                 }
-                else if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.ImpostorRed, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
+                else if (!player.NameText().text.Contains(ModHelpers.ColorString(RoleClass.ImpostorRed, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
                 {
-                    SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)"));
+                    SetNamesClass.SetPlayerNameText(player, player.NameText().text + ModHelpers.ColorString(RoleClass.ImpostorRed, " (M)"));
                 }
             }
         }
@@ -426,7 +426,7 @@ namespace SuperNewRoles.Modules
                         }
                         else
                         {
-                            SetNamesClass.SetPlayerNameText(RoleClass.PartTimer.CurrentTarget, RoleClass.PartTimer.CurrentTarget.NameText().text + ModHelpers.Cs(RoleClass.PartTimer.color, "◀"));
+                            SetNamesClass.SetPlayerNameText(RoleClass.PartTimer.CurrentTarget, RoleClass.PartTimer.CurrentTarget.NameText().text + ModHelpers.ColorString(RoleClass.PartTimer.color, "◀"));
                         }
                     }
                 }

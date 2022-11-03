@@ -68,16 +68,16 @@ namespace SuperNewRoles.Mode.CopsRobbers
             {
                 try
                 {
-                    if (commsActive) TaskText = ModHelpers.Cs(Color.yellow, "(?/" + TaskCount.TaskDateNoClearCheck(player.Data).Item2 + ")");
+                    if (commsActive) TaskText = ModHelpers.ColorString(Color.yellow, "(?/" + TaskCount.TaskDateNoClearCheck(player.Data).Item2 + ")");
                     else
                     {
                         var (Complete, all) = TaskCount.TaskDateNoClearCheck(player.Data);
-                        TaskText = ModHelpers.Cs(Color.yellow, "(" + Complete + "/" + all + ")");
+                        TaskText = ModHelpers.ColorString(Color.yellow, "(" + Complete + "/" + all + ")");
                     }
                 }
                 catch { }
             }
-            NewName = "<size=75%>" + ModHelpers.Cs(introData.color, introData.Name) + TaskText + "</size>\n" + (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool() ? " " : ModHelpers.Cs(introData.color, Name));
+            NewName = "<size=75%>" + ModHelpers.ColorString(introData.color, introData.Name) + TaskText + "</size>\n" + (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool() ? " " : ModHelpers.ColorString(introData.color, Name));
             player.RpcSetNamePrivate(NewName);
         }
         public static void AssignRole()
