@@ -393,7 +393,7 @@ namespace SuperNewRoles.Patches
                 bool showAnimation = true;
 
                 // Use an unchecked kill command, to allow shorter kill cooldowns etc. without getting kicked
-                MurderAttemptResult res = CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, __instance.currentTarget, showAnimation: showAnimation);
+                MurderAttemptResult res = CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, __instance.currentTarget, showAnimation: showAnimation);
                 // Handle blank kill
                 if (res == MurderAttemptResult.BlankKill)
                 {

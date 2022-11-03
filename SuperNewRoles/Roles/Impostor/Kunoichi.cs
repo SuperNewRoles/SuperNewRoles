@@ -99,7 +99,7 @@ namespace SuperNewRoles.Roles
                             RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId]++;
                             if (RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] >= RoleClass.Kunoichi.KillKunai)
                             {
-                                ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, p, showAnimation: false);
+                                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, p, showAnimation: false);
                                 RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] = 0;
                             }
                             RoleClass.Kunoichi.Kunais.Remove(kunai);
