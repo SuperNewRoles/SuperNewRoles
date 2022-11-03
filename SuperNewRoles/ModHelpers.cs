@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -809,6 +810,13 @@ namespace SuperNewRoles
         /// <summary>keyCodesが押されているか</summary>
         public static bool GetManyKeyDown(KeyCode[] keyCodes) =>
             keyCodes.All(x => Input.GetKey(x)) && keyCodes.Any(x => Input.GetKeyDown(x));
+
+        public static void AddRanges(this List<PlayerControl> list, List<PlayerControl>[] collections)
+        {
+            foreach (var c in collections)
+                list.AddRange(c);
+        }
+
         public static string GetRPCNameFromByte(byte callId) =>
             Enum.GetName(typeof(RpcCalls), callId) != null ? // RpcCallsに当てはまる
                 Enum.GetName(typeof(RpcCalls), callId) :
