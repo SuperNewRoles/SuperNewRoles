@@ -357,7 +357,7 @@ SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可
 SheriffIsKillLoversSetting,Can kill lovers,ラバーズをキルできる,可以击杀恋人
 SheriffIsKillMadRoleSetting,Can kill mad roles,マッド系をキルできる,可以击杀叛徒系职业
 SheriffIsKillImpostorSetting,Can kill impostors,インポスターをキルできる,可以击杀内鬼
-SheriffCanKillCrewmateSetting,,クルーメイトをキルして自殺する
+SheriffCommitsSuicideWhenHeMisfires,Suicide when misfiring.,誤射した時自殺する
 SheriffIsKillFriendsRoleSetting,Can kill jackal friend roles,ジャッカルフレンズ系をキルできる,可以击杀狈系职业
 SheriffIsKillQuarreledSetting,Can kill quarreleds,クラードをキルできる,可以击杀福音天使
 SheriffYes,Yes,できる,是
