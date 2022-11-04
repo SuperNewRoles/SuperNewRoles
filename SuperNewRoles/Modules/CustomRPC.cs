@@ -845,15 +845,15 @@ namespace SuperNewRoles.Modules
             }
             if (AlwaysKill)
             {
-                sheriff.Exiled();
-                if (PlayerControl.LocalPlayer == sheriff)
-                {
-                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, sheriff.Data);
-                }
                 target.Exiled();
                 if (PlayerControl.LocalPlayer == target)
                 {
                     FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, target.Data);
+                }
+                sheriff.Exiled();
+                if (PlayerControl.LocalPlayer == sheriff)
+                {
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, sheriff.Data);
                 }
             }
             else if (MissFire)
