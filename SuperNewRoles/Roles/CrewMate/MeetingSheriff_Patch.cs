@@ -105,15 +105,17 @@ namespace SuperNewRoles.Roles
         {
             var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
             var misfire = !IsMeetingSheriffKill(Target);
+            var AlwaysKill = !IsMeetingSheriffKill(Target) && CustomOptionHolder.MeetingSheriffKillOpponentWhenMisfiring.GetBool();
             var TargetID = Target.PlayerId;
             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
-            RPCProcedure.MeetingSheriffKill(LocalID, TargetID, misfire);
+            RPCProcedure.MeetingSheriffKill(LocalID, TargetID, misfire, AlwaysKill);
 
             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.MeetingSheriffKill, SendOption.Reliable, -1);
             killWriter.Write(LocalID);
             killWriter.Write(TargetID);
             killWriter.Write(misfire);
+            killWriter.Write(AlwaysKill);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
             FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, misfire ? FinalStatus.MeetingSheriffMisFire : (Target.IsRole(RoleId.HauntedWolf) ? FinalStatus.MeetingSheriffHauntedWolfKill : FinalStatus.MeetingSheriffKill));
             RoleClass.MeetingSheriff.KillMaxCount--;
