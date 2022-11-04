@@ -145,7 +145,7 @@ namespace SuperNewRoles.Buttons
             VampireCreateDependentsButton = new(
                 () =>
                 {
-                    var target = SetTarget(Crewmateonly:true);
+                    var target = SetTarget(Crewmateonly: true);
                     target.SetRoleRPC(RoleId.Dependents);
                     target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
                     RoleClass.Vampire.CreatedDependents = true;
@@ -153,7 +153,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Vampire && !RoleClass.Vampire.CreatedDependents; },
                 () =>
                 {
-                    return SetTarget(Crewmateonly:true) && PlayerControl.LocalPlayer.CanMove;
+                    return SetTarget(Crewmateonly: true) && PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
@@ -1238,13 +1238,19 @@ namespace SuperNewRoles.Buttons
                             {
                                 misfire = !Sheriff.IsChiefSheriffKill(Target);
                             }
+                            var AlwaysKill = !Sheriff.IsSheriffKill(Target) && CustomOptionHolder.SheriffKillOpponentWhenMisfiring.GetBool();
+                            if (RoleClass.Chief.SheriffPlayer.Contains(LocalID))
+                            {
+                                AlwaysKill = !Sheriff.IsChiefSheriffKill(Target) && CustomOptionHolder.ChiefSheriffKillOpponentWhenMisfiring.GetBool();
+                            }
                             var TargetID = Target.PlayerId;
 
-                            RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
+                            RPCProcedure.SheriffKill(LocalID, TargetID, misfire, AlwaysKill);
                             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1);
                             killWriter.Write(LocalID);
                             killWriter.Write(TargetID);
                             killWriter.Write(misfire);
+                            killWriter.Write(AlwaysKill);
                             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                             FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, misfire ? FinalStatus.SheriffMisFire : (Target.IsRole(RoleId.HauntedWolf) ? FinalStatus.SheriffHauntedWolfKill : FinalStatus.SheriffKill));
                             Sheriff.ResetKillCooldown();

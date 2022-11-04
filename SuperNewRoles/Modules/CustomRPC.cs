@@ -787,16 +787,19 @@ namespace SuperNewRoles.Modules
         public static void SetLovers(byte playerid1, byte playerid2)
             => RoleHelpers.SetLovers(ModHelpers.PlayerById(playerid1), ModHelpers.PlayerById(playerid2));
 
-        public static void SheriffKill(byte SheriffId, byte TargetId, bool MissFire)
+        public static void SheriffKill(byte SheriffId, byte TargetId, bool MissFire, bool AlwaysKill)
         {
             PlayerControl sheriff = ModHelpers.PlayerById(SheriffId);
             PlayerControl target = ModHelpers.PlayerById(TargetId);
             if (sheriff == null || target == null) return;
 
-            if (MissFire)
+            if (AlwaysKill)
             {
-                if (sheriff.IsRole(RoleId.Sheriff) && CustomOptionHolder.SheriffKillOpponentWhenMisfiring.GetBool()) target.MurderPlayer(target);
-                else if (sheriff.IsRole(RoleId.RemoteSheriff) && CustomOptionHolder.RemoteSheriffKillOpponentWhenMisfiring.GetBool()) target.MurderPlayer(target);
+                sheriff.MurderPlayer(target);
+                sheriff.MurderPlayer(sheriff);
+            }
+            else if (MissFire)
+            {
                 sheriff.MurderPlayer(sheriff);
             }
             else
@@ -1252,7 +1255,7 @@ namespace SuperNewRoles.Modules
                             SetRole(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.SheriffKill:
-                            SheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                            SheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());
                             break;
                         case CustomRPC.MeetingSheriffKill:
                             MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());

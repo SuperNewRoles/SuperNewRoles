@@ -309,16 +309,18 @@ namespace SuperNewRoles.Patches
                         {
                             var Target = player;
                             var misfire = !Sheriff.IsRemoteSheriffKill(Target);
+                            var AlwaysKill = !Sheriff.IsRemoteSheriffKill(Target) && CustomOptionHolder.RemoteSheriffKillOpponentWhenMisfiring.GetBool();
                             var TargetID = Target.PlayerId;
                             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
                             PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, true);
 
-                            RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
+                            RPCProcedure.SheriffKill(LocalID, TargetID, misfire, AlwaysKill);
                             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1);
                             killWriter.Write(LocalID);
                             killWriter.Write(TargetID);
                             killWriter.Write(misfire);
+                            killWriter.Write(AlwaysKill);
                             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                             FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, misfire ? FinalStatus.RemoteSheriffMisFire : (Target.IsRole(RoleId.HauntedWolf) ? FinalStatus.RemoteSheriffHauntedWolfKill : FinalStatus.RemoteSheriffKill));
                             RoleClass.RemoteSheriff.KillMaxCount--;
