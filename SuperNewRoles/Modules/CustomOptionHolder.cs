@@ -96,7 +96,7 @@ namespace SuperNewRoles.Modules
         public static CustomOption SheriffCoolTime;
         public static CustomOption SheriffKillMaxCount;
         public static CustomOption SheriffCanKillImpostor;
-        public static CustomOption SheriffCommitsSuicideWhenHeMisfires;
+        public static CustomOption SheriffKillOpponentWhenMisfiring;
         //=============================================
         public static CustomOption SheriffMadRoleKill;
         //シェリフマッドキル
@@ -114,7 +114,7 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption RemoteSheriffOption;
         public static CustomOption RemoteSheriffPlayerCount;
         public static CustomOption RemoteSheriffCoolTime;
-        public static CustomOption RemoteSheriffCommitsSuicideWhenHeMisfires;
+        public static CustomOption RemoteSheriffKillOpponentWhenMisfiring;
         public static CustomOption RemoteSheriffMadRoleKill;
         public static CustomOption RemoteSheriffNeutralKill;
         public static CustomOption RemoteSheriffLoversKill;
@@ -123,7 +123,7 @@ namespace SuperNewRoles.Modules
 
         public static CustomRoleOption MeetingSheriffOption;
         public static CustomOption MeetingSheriffPlayerCount;
-        public static CustomOption MeetingSheriffCommitsSuicideWhenHeMisfires;
+        public static CustomOption MeetingSheriffKillOpponentWhenMisfiring;
         public static CustomOption MeetingSheriffMadRoleKill;
         public static CustomOption MeetingSheriffNeutralKill;
         public static CustomOption MeetingSheriffKillMaxCount;
@@ -618,7 +618,7 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption ChiefOption;
         public static CustomOption ChiefPlayerCount;
         public static CustomOption ChiefSheriffCoolTime;
-        public static CustomOption ChiefSheriffCommitsSuicideWhenHeMisfires;
+        public static CustomOption ChiefSheriffKillOpponentWhenMisfiring;
         public static CustomOption ChiefSheriffCanKillNeutral;
         public static CustomOption ChiefSheriffCanKillLovers;
         public static CustomOption ChiefSheriffCanKillMadRole;
@@ -1064,7 +1064,7 @@ namespace SuperNewRoles.Modules
             SheriffCoolTime = Create(39, true, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
             SheriffKillMaxCount = Create(43, true, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, SheriffOption, format: "unitSeconds");
             SheriffCanKillImpostor = Create(731, true, CustomOptionType.Crewmate, "SheriffIsKillImpostorSetting", true, SheriffOption);
-            SheriffCommitsSuicideWhenHeMisfires = Create(732, true, CustomOptionType.Crewmate, "SheriffCommitsSuicideWhenHeMisfires", false, SheriffOption);
+            SheriffKillOpponentWhenMisfiring = Create(732, true, CustomOptionType.Crewmate, "SheriffKillOpponentWhenMisfiring", false, SheriffOption);
             SheriffMadRoleKill = Create(42, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, SheriffOption);
             SheriffFriendsRoleKill = Create(708, true, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, SheriffOption);
             SheriffNeutralKill = Create(40, true, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, SheriffOption);
@@ -1074,7 +1074,7 @@ namespace SuperNewRoles.Modules
             RemoteSheriffOption = SetupCustomRoleOption(44, true, RoleId.RemoteSheriff);
             RemoteSheriffPlayerCount = Create(45, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RemoteSheriffOption);
             RemoteSheriffCoolTime = Create(46, true, CustomOptionType.Crewmate, ModTranslation.GetString("SheriffCooldownSetting"), 30f, 2.5f, 60f, 2.5f, RemoteSheriffOption, format: "unitSeconds");
-            RemoteSheriffCommitsSuicideWhenHeMisfires = Create(733, true, CustomOptionType.Crewmate, "SheriffCommitsSuicideWhenHeMisfires", false, RemoteSheriffOption);
+            RemoteSheriffKillOpponentWhenMisfiring = Create(733, true, CustomOptionType.Crewmate, "SheriffKillOpponentWhenMisfiring", false, RemoteSheriffOption);
             RemoteSheriffNeutralKill = Create(47, true, CustomOptionType.Crewmate, "SheriffIsKillNewtralSetting", false, RemoteSheriffOption);
             RemoteSheriffLoversKill = Create(48, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, RemoteSheriffOption);
             RemoteSheriffMadRoleKill = Create(49, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, RemoteSheriffOption);
@@ -1083,7 +1083,7 @@ namespace SuperNewRoles.Modules
 
             MeetingSheriffOption = SetupCustomRoleOption(52, false, RoleId.MeetingSheriff);
             MeetingSheriffPlayerCount = Create(53, false, CustomOptionType.Crewmate, Cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MeetingSheriffOption);
-            MeetingSheriffCommitsSuicideWhenHeMisfires = Create(734, true, CustomOptionType.Crewmate, "SheriffCommitsSuicideWhenHeMisfires", false, MeetingSheriffOption);
+            MeetingSheriffKillOpponentWhenMisfiring = Create(734, true, CustomOptionType.Crewmate, "SheriffKillOpponentWhenMisfiring", false, MeetingSheriffOption);
             MeetingSheriffNeutralKill = Create(54, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillNeutralSetting", false, MeetingSheriffOption);
             MeetingSheriffMadRoleKill = Create(55, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillMadRoleSetting", false, MeetingSheriffOption);
             MeetingSheriffKillMaxCount = Create(56, false, CustomOptionType.Crewmate, "MeetingSheriffMaxKillCountSetting", 1f, 1f, 20f, 1f, MeetingSheriffOption, format: "unitSeconds");
@@ -1511,7 +1511,7 @@ namespace SuperNewRoles.Modules
             ChiefOption = SetupCustomRoleOption(394, false, RoleId.Chief);
             ChiefPlayerCount = Create(395, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
             ChiefSheriffCoolTime = Create(626, false, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, ChiefOption, format: "unitSeconds");
-            ChiefSheriffCommitsSuicideWhenHeMisfires = Create(732, true, CustomOptionType.Crewmate, "SheriffCommitsSuicideWhenHeMisfires", false, ChiefOption);
+            ChiefSheriffKillOpponentWhenMisfiring = Create(732, true, CustomOptionType.Crewmate, "SheriffKillOpponentWhenMisfiring", false, ChiefOption);
             ChiefSheriffCanKillNeutral = Create(627, false, CustomOptionType.Crewmate, "SheriffIsKillNewtralSetting", false, ChiefOption);
             ChiefSheriffCanKillLovers = Create(628, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, ChiefOption);
             ChiefSheriffCanKillMadRole = Create(629, false, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, ChiefOption);
