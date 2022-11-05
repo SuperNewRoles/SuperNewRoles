@@ -518,7 +518,17 @@ namespace SuperNewRoles.Patches
                         case RoleId.Sheriff:
                             if (!RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.Sheriff.KillCount[__instance.PlayerId] >= 1)
                             {
-                                if (!Sheriff.IsSheriffKill(target))
+                                if (!Sheriff.IsSheriffKill(target) && CustomOptionHolder.SheriffKillOpponentWhenMisfiring.GetBool())
+                                {
+                                    FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
+                                    __instance.RpcMurderPlayerCheck(target);
+                                    if (target.IsRole(RoleId.HauntedWolf)) __instance.RpcSetFinalStatus(FinalStatus.SheriffHauntedWolfKill);
+                                    else __instance.RpcSetFinalStatus(FinalStatus.SheriffKill);
+                                    FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
+                                    __instance.RpcMurderPlayer(__instance);
+                                    __instance.RpcSetFinalStatus(FinalStatus.SheriffMisFire);
+                                }
+                                else if (!Sheriff.IsSheriffKill(target))
                                 {
                                     FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
                                     __instance.RpcMurderPlayer(__instance);
