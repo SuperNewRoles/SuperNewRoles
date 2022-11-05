@@ -1238,19 +1238,19 @@ namespace SuperNewRoles.Buttons
                             {
                                 misfire = !Sheriff.IsChiefSheriffKill(Target);
                             }
-                            var AlwaysKill = !Sheriff.IsSheriffKill(Target) && CustomOptionHolder.SheriffKillOpponentWhenMisfiring.GetBool();
+                            var alwaysKill = !Sheriff.IsSheriffKill(Target) && CustomOptionHolder.SheriffKillOpponentWhenMisfiring.GetBool();
                             if (RoleClass.Chief.SheriffPlayer.Contains(LocalID))
                             {
-                                AlwaysKill = !Sheriff.IsChiefSheriffKill(Target) && CustomOptionHolder.ChiefSheriffKillOpponentWhenMisfiring.GetBool();
+                                alwaysKill = !Sheriff.IsChiefSheriffKill(Target) && CustomOptionHolder.ChiefSheriffKillOpponentWhenMisfiring.GetBool();
                             }
                             var TargetID = Target.PlayerId;
 
-                            RPCProcedure.SheriffKill(LocalID, TargetID, misfire, AlwaysKill);
+                            RPCProcedure.SheriffKill(LocalID, TargetID, misfire, alwaysKill);
                             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1);
                             killWriter.Write(LocalID);
                             killWriter.Write(TargetID);
                             killWriter.Write(misfire);
-                            killWriter.Write(AlwaysKill);
+                            killWriter.Write(alwaysKill);
                             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                             FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, misfire ? FinalStatus.SheriffMisFire : (Target.IsRole(RoleId.HauntedWolf) ? FinalStatus.SheriffHauntedWolfKill : FinalStatus.SheriffKill));
                             Sheriff.ResetKillCooldown();
