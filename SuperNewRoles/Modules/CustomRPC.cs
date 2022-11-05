@@ -881,6 +881,11 @@ namespace SuperNewRoles.Modules
                         pva.SetDead(pva.DidReport, true);
                         pva.Overlay.gameObject.SetActive(true);
                     }
+                    else if (pva.TargetPlayerId == TargetId && AlwaysKill)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
                     else if (pva.TargetPlayerId == TargetId && !MissFire)
                     {
                         pva.SetDead(pva.DidReport, true);
