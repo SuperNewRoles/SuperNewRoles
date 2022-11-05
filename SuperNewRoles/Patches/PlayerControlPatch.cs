@@ -95,31 +95,28 @@ namespace SuperNewRoles.Patches
                         {
                             if (!Sheriff.IsRemoteSheriffKill(target) || target.IsRole(RoleId.RemoteSheriff))
                             {
-                                if (!Sheriff.IsRemoteSheriffKill(target) || target.IsRole(RoleId.RemoteSheriff))
-                                {
-                                    FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
-                                    __instance.RpcMurderPlayer(__instance);
-                                    FinalStatusClass.RpcSetFinalStatus(__instance, FinalStatus.RemoteSheriffMisFire);
-                                    return true;
-                                }
+                                FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
+                                __instance.RpcMurderPlayer(__instance);
+                                FinalStatusClass.RpcSetFinalStatus(__instance, FinalStatus.RemoteSheriffMisFire);
+                                return true;
+                            }
+                            else
+                            {
+                                FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
+                                if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
+                                    RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
+                                else
+                                    RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.RemoteSheriffKillMaxCount.GetInt() - 1;
+                                if (RoleClass.RemoteSheriff.IsKillTeleport)
+                                    __instance.RpcMurderPlayerCheck(target);
                                 else
                                 {
-                                    FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
-                                    if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
-                                        RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
-                                    else
-                                        RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.RemoteSheriffKillMaxCount.GetInt() - 1;
-                                    if (RoleClass.RemoteSheriff.IsKillTeleport)
-                                        __instance.RpcMurderPlayerCheck(target);
-                                    else
-                                    {
-                                        target.RpcMurderPlayer(target);
-                                        __instance.RpcShowGuardEffect(__instance);
-                                    }
-                                    FinalStatusClass.RpcSetFinalStatus(target, target.IsRole(RoleId.HauntedWolf) ? FinalStatus.RemoteSheriffHauntedWolfKill : FinalStatus.RemoteSheriffKill);
-                                    Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
-                                    return true;
+                                    target.RpcMurderPlayer(target);
+                                    __instance.RpcShowGuardEffect(__instance);
                                 }
+                                FinalStatusClass.RpcSetFinalStatus(target, target.IsRole(RoleId.HauntedWolf) ? FinalStatus.RemoteSheriffHauntedWolfKill : FinalStatus.RemoteSheriffKill);
+                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                                return true;
                             }
                         }
                         return true;
