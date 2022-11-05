@@ -1083,7 +1083,7 @@ namespace SuperNewRoles.Modules
 
             MeetingSheriffOption = SetupCustomRoleOption(52, false, RoleId.MeetingSheriff);
             MeetingSheriffPlayerCount = Create(53, false, CustomOptionType.Crewmate, Cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MeetingSheriffOption);
-            MeetingSheriffKillOpponentWhenMisfiring = Create(734, true, CustomOptionType.Crewmate, "SheriffKillOpponentWhenMisfiring", false, MeetingSheriffOption);
+            MeetingSheriffKillOpponentWhenMisfiring = Create(734, false, CustomOptionType.Crewmate, "SheriffKillOpponentWhenMisfiring", false, MeetingSheriffOption);
             MeetingSheriffNeutralKill = Create(54, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillNeutralSetting", false, MeetingSheriffOption);
             MeetingSheriffMadRoleKill = Create(55, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillMadRoleSetting", false, MeetingSheriffOption);
             MeetingSheriffKillMaxCount = Create(56, false, CustomOptionType.Crewmate, "MeetingSheriffMaxKillCountSetting", 1f, 1f, 20f, 1f, MeetingSheriffOption, format: "unitSeconds");
