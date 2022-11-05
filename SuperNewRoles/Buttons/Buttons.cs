@@ -1238,10 +1238,10 @@ namespace SuperNewRoles.Buttons
                             {
                                 misfire = !Sheriff.IsChiefSheriffKill(Target);
                             }
-                            var alwaysKill = !Sheriff.IsSheriffKill(Target) && CustomOptionHolder.SheriffKillOpponentWhenMisfiring.GetBool();
+                            var alwaysKill = !Sheriff.IsSheriffKill(Target) && CustomOptionHolder.SheriffAlwaysKills.GetBool();
                             if (RoleClass.Chief.SheriffPlayer.Contains(LocalID))
                             {
-                                alwaysKill = !Sheriff.IsChiefSheriffKill(Target) && CustomOptionHolder.ChiefSheriffKillOpponentWhenMisfiring.GetBool();
+                                alwaysKill = !Sheriff.IsChiefSheriffKill(Target) && CustomOptionHolder.ChiefSheriffAlwaysKills.GetBool();
                             }
                             var TargetID = Target.PlayerId;
 

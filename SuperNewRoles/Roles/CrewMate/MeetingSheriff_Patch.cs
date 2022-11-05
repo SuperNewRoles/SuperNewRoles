@@ -105,7 +105,7 @@ namespace SuperNewRoles.Roles
         {
             var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
             var misfire = !IsMeetingSheriffKill(Target);
-            var alwaysKill = !IsMeetingSheriffKill(Target) && CustomOptionHolder.MeetingSheriffKillOpponentWhenMisfiring.GetBool();
+            var alwaysKill = !IsMeetingSheriffKill(Target) && CustomOptionHolder.MeetingSheriffAlwaysKills.GetBool();
             var TargetID = Target.PlayerId;
             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 

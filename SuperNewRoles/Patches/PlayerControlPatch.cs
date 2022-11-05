@@ -93,7 +93,7 @@ namespace SuperNewRoles.Patches
                         if (target.IsDead()) return true;
                         if (!RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] >= 1)
                         {
-                            if ((!Sheriff.IsRemoteSheriffKill(target) || target.IsRole(RoleId.RemoteSheriff)) && CustomOptionHolder.RemoteSheriffKillOpponentWhenMisfiring.GetBool())
+                            if ((!Sheriff.IsRemoteSheriffKill(target) || target.IsRole(RoleId.RemoteSheriff)) && CustomOptionHolder.RemoteSheriffAlwaysKills.GetBool())
                             {
                                 FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
                                 __instance.RpcMurderPlayerCheck(target);
@@ -316,7 +316,7 @@ namespace SuperNewRoles.Patches
                         {
                             var Target = player;
                             var misfire = !Sheriff.IsRemoteSheriffKill(Target);
-                            var alwaysKill = !Sheriff.IsRemoteSheriffKill(Target) && CustomOptionHolder.RemoteSheriffKillOpponentWhenMisfiring.GetBool();
+                            var alwaysKill = !Sheriff.IsRemoteSheriffKill(Target) && CustomOptionHolder.RemoteSheriffAlwaysKills.GetBool();
                             var TargetID = Target.PlayerId;
                             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
@@ -525,7 +525,7 @@ namespace SuperNewRoles.Patches
                         case RoleId.Sheriff:
                             if (!RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.Sheriff.KillCount[__instance.PlayerId] >= 1)
                             {
-                                if (!Sheriff.IsSheriffKill(target) && CustomOptionHolder.SheriffKillOpponentWhenMisfiring.GetBool())
+                                if (!Sheriff.IsSheriffKill(target) && CustomOptionHolder.SheriffAlwaysKills.GetBool())
                                 {
                                     FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
                                     __instance.RpcMurderPlayerCheck(target);
