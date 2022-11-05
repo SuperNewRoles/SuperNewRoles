@@ -829,18 +829,18 @@ namespace SuperNewRoles.Modules
             if (sheriff == null || target == null) return;
             if (!PlayerControl.LocalPlayer.IsAlive())
             {
-                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, $"{sheriff.name} は {target.name} をシェリフキルした！");
+                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat1"), target.name, sheriff.name));
                 if (AlwaysKill)
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, $"{target.name} をキルしたが誤射だった! {sheriff.name} は自責の念で自害した!");
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat2"), target.name, sheriff.name));
                 }
                 if (MissFire)
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は誤爆した！");
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat3"), sheriff.name));
                 }
                 else
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は成功した！");
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat4"), sheriff.name));
                 }
             }
             if (AlwaysKill)
