@@ -200,12 +200,10 @@ namespace SuperNewRoles.Patches
                                 break;
                             case RoleId.Kunoichi:
                                 Kunoichi.Update();
-                                if (PlayerControl.LocalPlayer.killTimer <= 0) //キルクールが0のとき
+                                //マウスが左クリックされたときKCTが0だったら
+                                if (Input.GetMouseButton(0) && PlayerControl.LocalPlayer.killTimer <= 0)
                                 {
-                                    if (Input.GetMouseButtonDown(0)) //左クリック取得
-                                    {
-                                        Kunoichi.KillButtonClick(); //クナイ飛ばすお
-                                    }
+                                    Kunoichi.KillButtonClick(); //クナイ飛ばすお
                                 }
                                 break;
                             case RoleId.Revolutionist:
