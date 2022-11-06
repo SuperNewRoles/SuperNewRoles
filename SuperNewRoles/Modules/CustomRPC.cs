@@ -787,6 +787,13 @@ namespace SuperNewRoles.Modules
         public static void SetLovers(byte playerid1, byte playerid2)
             => RoleHelpers.SetLovers(ModHelpers.PlayerById(playerid1), ModHelpers.PlayerById(playerid2));
 
+        /// <summary>
+        /// Sheriffのキルを制御
+        /// </summary>
+        /// <param name="SheriffId">SheriffのPlayerId</param>
+        /// <param name="TargetId">Sheriffのターゲットにされた人のPlayerId</param>
+        /// <param name="MissFire">誤爆したか</param>
+        /// <param name="alwaysKill">誤爆していて尚且つ誤爆時も対象を殺す設定が有効か</param>
         public static void SheriffKill(byte SheriffId, byte TargetId, bool MissFire, bool alwaysKill)
         {
             PlayerControl sheriff = ModHelpers.PlayerById(SheriffId);
@@ -821,6 +828,14 @@ namespace SuperNewRoles.Modules
                 }
             }
         }
+
+        /// <summary>
+        /// MeetingSheriffのキルを制御
+        /// </summary>
+        /// <param name="SheriffId">SheriffのPlayerId</param>
+        /// <param name="TargetId">Sheriffのターゲットにされた人のPlayerId</param>
+        /// <param name="MissFire">誤爆したか</param>
+        /// <param name="alwaysKill">誤爆していて尚且つ誤爆時も対象を殺す設定が有効か</param>
         public static void MeetingSheriffKill(byte SheriffId, byte TargetId, bool MissFire, bool alwaysKill)
         {
             PlayerControl sheriff = ModHelpers.PlayerById(SheriffId);
