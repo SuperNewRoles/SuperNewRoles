@@ -974,6 +974,7 @@ PhotographerBonusCount,Number of people to be photographed that will be Bonuscoo
 PhotographerBonusCoolTime,Bonus Cool Time,ボーナスクールタイム,摄影师一次拍摄多名玩家后的缩减冷却
 PhotographerIsImpostorVision,Impostor view,インポスターの視界,摄影师拥有内鬼视野
 PhotographerIsNotification,Notification of Shooting,撮影の通知,摄影将会被告知给被拍摄玩家
+PhotographerButtonName,Take a picture,撮影する
 TacticianName,Tactician,戦術家,战术家
 SluggerName,Slugger,スラッガー,击球手
 SluggerTitle1,Lets’ Harisen Kill!,ハリセンでキルしよう,用全垒打把其他人击飞
