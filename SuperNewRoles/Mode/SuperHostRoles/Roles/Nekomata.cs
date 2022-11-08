@@ -25,7 +25,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                 if ((exiled.Object.IsRole(RoleId.EvilNekomata) && RoleClass.EvilNekomata.NotImpostorExiled) || (exiled.Object.IsRole(RoleId.BlackCat) && RoleClass.BlackCat.NotImpostorExiled))
                 {
                     //もし 抜き出されたプレイヤーが　追放されたプレイヤーではない 生きている プレイヤーである ボットでない インポスターでないなら
-                    if (p1.Data.PlayerId != exiled.PlayerId && p1.IsAlive() && p1.IsPlayer() && !p1.IsBot() && !p1.IsImpostor())
+                    if (p1.Data.PlayerId != exiled.PlayerId && p1.IsAlive() && !p1.IsBot() && !p1.IsImpostor())
                     {
                         p.Add(p1);//道連れにするプレイヤーの抽選リストに追加する
 
@@ -38,7 +38,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                 //それ以外なら(ナイス猫又・設定オフ)
                 else
                 {
-                    if (p1.Data.PlayerId != exiled.PlayerId && p1.IsAlive() && p1.IsPlayer() && !p1.IsBot())
+                    if (p1.Data.PlayerId != exiled.PlayerId && p1.IsAlive() && !p1.IsBot())
                     {
                         p.Add(p1); //道連れにするプレイヤーの抽選リストに追加する
 
