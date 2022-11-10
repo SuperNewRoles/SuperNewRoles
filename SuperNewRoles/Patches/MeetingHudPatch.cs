@@ -113,7 +113,7 @@ namespace SuperNewRoles.Patches
                         }
                         GameData.PlayerInfo target = GameData.Instance.GetPlayerById(voteFor);
                         GameData.PlayerInfo exileplayer = null;
-                        if (target != null && target.Object.PlayerId != RoleClass.Assassin.TriggerPlayer.PlayerId && target.Object.IsPlayer())
+                        if (target != null && target.Object.PlayerId != RoleClass.Assassin.TriggerPlayer.PlayerId && !target.Object.IsBot())
                         {
                             var outfit = target.DefaultOutfit;
                             exileplayer = target;
@@ -189,7 +189,7 @@ namespace SuperNewRoles.Patches
                         }
                         GameData.PlayerInfo target = GameData.Instance.GetPlayerById(voteFor);
                         GameData.PlayerInfo exileplayer = null;
-                        if (target != null && target.Object.PlayerId != RoleClass.Revolutionist.MeetingTrigger.PlayerId && target.Object.IsPlayer())
+                        if (target != null && target.Object.PlayerId != RoleClass.Revolutionist.MeetingTrigger.PlayerId && !target.Object.IsBot())
                         {
                             var outfit = target.DefaultOutfit;
                             exileplayer = target;
@@ -204,7 +204,7 @@ namespace SuperNewRoles.Patches
                 {
                     foreach (var ps in __instance.playerStates)
                     {
-                        if (!(ps.AmDead || ps.DidVote) && ModHelpers.PlayerById(ps.TargetPlayerId) != null && ModHelpers.PlayerById(ps.TargetPlayerId).IsPlayer())//死んでいないプレイヤーが投票していない
+                        if (!(ps.AmDead || ps.DidVote) && ModHelpers.PlayerById(ps.TargetPlayerId) != null && !ModHelpers.PlayerById(ps.TargetPlayerId).IsBot())//死んでいないプレイヤーが投票していない
                             return false;
                     }
                 }
@@ -317,7 +317,7 @@ namespace SuperNewRoles.Patches
                                     exiledPlayer = p.Data;
                                     foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                                     {
-                                        if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
+                                        if (!p2.IsBot() && !p2.Data.Disconnected && !p2.IsMod())
                                         {
                                             p.RpcSetNamePrivate("<size=300%>" + ModTranslation.GetString("BakeryExileText") + "\n" + FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
                                         }
@@ -331,7 +331,7 @@ namespace SuperNewRoles.Patches
                         {
                             foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                             {
-                                if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
+                                if (!p2.IsBot() && !p2.Data.Disconnected && !p2.IsMod())
                                 {
                                     exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.GetString("BakeryExileText") + "\n" + exiledPlayer.Object.GetDefaultName(), p2);
                                 }
@@ -427,7 +427,7 @@ namespace SuperNewRoles.Patches
                 PlayerVoteArea ps = __instance.playerStates[i];
                 if (ps == null) continue;
                 if (AmongUsClient.Instance.GameMode == GameModes.FreePlay && ps.TargetPlayerId != CachedPlayer.LocalPlayer.PlayerId) continue;
-                if (ps != null && ModHelpers.PlayerById(ps.TargetPlayerId) != null && ps.VotedFor != 252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != 254 && ModHelpers.PlayerById(ps.TargetPlayerId).IsAlive() && ModHelpers.PlayerById(ps.TargetPlayerId).IsPlayer())
+                if (ps != null && ModHelpers.PlayerById(ps.TargetPlayerId) != null && ps.VotedFor != 252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != 254 && ModHelpers.PlayerById(ps.TargetPlayerId).IsAlive() && !ModHelpers.PlayerById(ps.TargetPlayerId).IsBot())
                 {
                     int VoteNum = 1;
                     if (CheckForEndVotingPatch.VoteCountDictionary.ContainsKey(ModHelpers.PlayerById(ps.TargetPlayerId).GetRole())) VoteNum = CheckForEndVotingPatch.VoteCountDictionary[ModHelpers.PlayerById(ps.TargetPlayerId).GetRole()];

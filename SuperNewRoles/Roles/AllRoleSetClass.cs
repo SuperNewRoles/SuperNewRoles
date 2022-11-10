@@ -80,7 +80,7 @@ namespace SuperNewRoles
                 AllRoleSetClass.impostors = new();
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
-                    if (!player.Data.Disconnected && player.IsPlayer())
+                    if (!player.Data.Disconnected && !player.IsBot())
                     {
                         SelectPlayers.Add(player);
                     }
@@ -281,7 +281,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.IsImpostor() && !p.IsNeutral() && p.IsPlayer())
+                    if (!p.IsImpostor() && !p.IsNeutral() && !p.IsBot())
                     {
                         SelectPlayers.Add(p);
                     }
@@ -291,7 +291,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (p.IsPlayer())
+                    if (!p.IsBot())
                     {
                         SelectPlayers.Add(p);
                     }
@@ -341,7 +341,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.IsImpostor() && !p.IsNeutral() && !p.IsRole(RoleId.truelover) && p.IsPlayer())
+                    if (!p.IsImpostor() && !p.IsNeutral() && !p.IsRole(RoleId.truelover) && !p.IsBot())
                     {
                         if (!IsQuarreledDup || !p.IsQuarreled())
                         {
@@ -354,7 +354,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!IsQuarreledDup || (!p.IsQuarreled() && p.IsPlayer()))
+                    if (!IsQuarreledDup || (!p.IsQuarreled() && !p.IsBot()))
                     {
                         if (!p.IsRole(RoleId.truelover))
                         {

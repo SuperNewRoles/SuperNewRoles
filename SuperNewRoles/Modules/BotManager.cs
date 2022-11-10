@@ -25,10 +25,6 @@ namespace SuperNewRoles.Modules
                 return false;
             }
         }
-        public static bool IsPlayer(this PlayerControl player)
-        {
-            return !IsBot(player);
-        }
         public static PlayerControl Spawn(string name = "Bot")
         {
             byte id = 0;
