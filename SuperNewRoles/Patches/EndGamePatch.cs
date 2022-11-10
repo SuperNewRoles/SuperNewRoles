@@ -458,7 +458,7 @@ namespace SuperNewRoles.Patches
             AdditionalTempData.Clear();
             foreach (var p in GameData.Instance.AllPlayers)
             {
-                if (p != null && p.Object != null && !p.Object.IsBot())
+                if (p != null && p.Object != null && p.Object.IsPlayer())
                 {
                     //var p = pc.Data;
                     var roles = IntroData.GetIntroData(p.Object.GetRole(), p.Object);
@@ -1043,7 +1043,7 @@ namespace SuperNewRoles.Patches
                 TempData.winners = new();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.IsBot())
+                    if (p.IsPlayer())
                     {
                         WinningPlayerData wpd = new(p.Data);
                         TempData.winners.Add(wpd);
@@ -1383,7 +1383,7 @@ namespace SuperNewRoles.Patches
                 for (int i = 0; i < GameData.Instance.PlayerCount; i++)
                 {
                     GameData.PlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
-                    if (!playerInfo.Disconnected && !playerInfo.Object.IsBot())
+                    if (!playerInfo.Disconnected && playerInfo.Object.IsPlayer())
                     {
                         if (playerInfo.Object.IsAlive())
                         {

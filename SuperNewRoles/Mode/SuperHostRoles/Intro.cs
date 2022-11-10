@@ -8,17 +8,17 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler(IntroCutscene __instance)
         {
-            Il2CppSystem.Collections.Generic.List<PlayerControl> teams = new();
-            teams.Add(PlayerControl.LocalPlayer);
+            Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new();
+            Teams.Add(PlayerControl.LocalPlayer);
             try
             {
                 if (PlayerControl.LocalPlayer.IsCrew())
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && !p.IsBot())
+                        if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && p.IsPlayer())
                         {
-                            teams.Add(p);
+                            Teams.Add(p);
                         }
                     }
                 }
@@ -26,23 +26,23 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if ((p.IsImpostor() || p.IsRole(RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && !p.IsBot())
+                        if ((p.IsImpostor() || p.IsRole(RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && p.IsPlayer())
                         {
-                            teams.Add(p);
+                            Teams.Add(p);
                         }
                     }
                 }
             }
             catch (Exception e) { SuperNewRolesPlugin.Logger.LogInfo("[SHR:Intro] Intro Error:" + e); }
-            return teams;
+            return Teams;
         }
 
         public static void RoleTextHandler(IntroCutscene __instance)
         {
-            var myRole = PlayerControl.LocalPlayer.GetRole();
-            if (myRole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
+            var myrole = PlayerControl.LocalPlayer.GetRole();
+            if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
             {
-                var data = IntroData.GetIntroData(myRole);
+                var data = IntroData.GetIntroData(myrole);
                 __instance.YouAreText.color = data.color;
                 __instance.RoleText.text = ModTranslation.GetString(data.NameKey + "Name");
                 __instance.RoleText.color = data.color;

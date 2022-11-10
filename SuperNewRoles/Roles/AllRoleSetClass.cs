@@ -76,24 +76,24 @@ namespace SuperNewRoles
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 CustomRpcSender sender = CustomRpcSender.Create("SelectRoles Sender", SendOption.Reliable);
-                List<PlayerControl> selectPlayers = new();
+                List<PlayerControl> SelectPlayers = new();
                 AllRoleSetClass.impostors = new();
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
-                    if (!player.Data.Disconnected && !player.IsBot())
+                    if (!player.Data.Disconnected && player.IsPlayer())
                     {
-                        selectPlayers.Add(player);
+                        SelectPlayers.Add(player);
                     }
                 }
                 for (int i = 0; i < PlayerControl.GameOptions.NumImpostors; i++)
                 {
-                    if (selectPlayers.Count >= 1)
+                    if (SelectPlayers.Count >= 1)
                     {
-                        var newImpostor = ModHelpers.GetRandom(selectPlayers);
-                        AllRoleSetClass.impostors.Add(newImpostor);
-                        newImpostor.Data.Role.Role = RoleTypes.Impostor;
-                        newImpostor.Data.Role.TeamType = RoleTeamTypes.Impostor;
-                        selectPlayers.RemoveAll(a => a.PlayerId == newImpostor.PlayerId);
+                        var newimpostor = ModHelpers.GetRandom(SelectPlayers);
+                        AllRoleSetClass.impostors.Add(newimpostor);
+                        newimpostor.Data.Role.Role = RoleTypes.Impostor;
+                        newimpostor.Data.Role.TeamType = RoleTeamTypes.Impostor;
+                        SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
                     }
                 }
                 sender = RoleSelectHandler.RoleSelect(sender);
@@ -281,7 +281,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.IsImpostor() && !p.IsNeutral() && !p.IsBot())
+                    if (!p.IsImpostor() && !p.IsNeutral() && p.IsPlayer())
                     {
                         SelectPlayers.Add(p);
                     }
@@ -291,7 +291,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.IsBot())
+                    if (p.IsPlayer())
                     {
                         SelectPlayers.Add(p);
                     }
@@ -341,7 +341,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.IsImpostor() && !p.IsNeutral() && !p.IsRole(RoleId.truelover) && !p.IsBot())
+                    if (!p.IsImpostor() && !p.IsNeutral() && !p.IsRole(RoleId.truelover) && p.IsPlayer())
                     {
                         if (!IsQuarreledDup || !p.IsQuarreled())
                         {
@@ -354,7 +354,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!IsQuarreledDup || (!p.IsQuarreled() && !p.IsBot()))
+                    if (!IsQuarreledDup || (!p.IsQuarreled() && p.IsPlayer()))
                     {
                         if (!p.IsRole(RoleId.truelover))
                         {

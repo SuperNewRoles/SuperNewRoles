@@ -265,11 +265,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             AllRoleSetClass.CrewmatePlayers = new();
             AllRoleSetClass.ImpostorPlayers = new();
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
-                if (!player.IsBot())
+                if (Player.IsPlayer())
                 {
-                    (player.IsImpostor() ? AllRoleSetClass.ImpostorPlayers : AllRoleSetClass.CrewmatePlayers).Add(player);
+                    if (Player.IsImpostor()) AllRoleSetClass.ImpostorPlayers.Add(Player);
+                    else AllRoleSetClass.CrewmatePlayers.Add(Player);
                 }
             }
         }

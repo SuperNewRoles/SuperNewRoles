@@ -256,7 +256,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (!p.Data.Disconnected && !p.IsBot())
+                if (!p.Data.Disconnected && p.IsPlayer())
                 {
                     CustomSyncSettings(p);
                 }

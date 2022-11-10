@@ -20,7 +20,14 @@ namespace SuperNewRoles.Modules
                 }
                 return false;
             }
-            catch { return false; }
+            catch
+            {
+                return false;
+            }
+        }
+        public static bool IsPlayer(this PlayerControl player)
+        {
+            return !IsBot(player);
         }
         public static PlayerControl Spawn(string name = "Bot")
         {
@@ -32,48 +39,48 @@ namespace SuperNewRoles.Modules
                     id = p.PlayerId;
                 }
             }
-            var bot = Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
+            var Bot = Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
 
             id++;
 
-            bot.PlayerId = id;
+            Bot.PlayerId = id;
             // Bot.PlayerId = BotPlayerId;
-            GameData.Instance.AddPlayer(bot);
-            AmongUsClient.Instance.Spawn(bot, -2, InnerNet.SpawnFlags.IsClientCharacter);
-            bot.transform.position = new Vector3(9999f, 9999f, 0);
-            bot.NetTransform.enabled = true;
+            GameData.Instance.AddPlayer(Bot);
+            AmongUsClient.Instance.Spawn(Bot, -2, InnerNet.SpawnFlags.IsClientCharacter);
+            Bot.transform.position = new Vector3(9999f, 9999f, 0);
+            Bot.NetTransform.enabled = true;
 
-            bot.RpcSetName(name);
-            bot.RpcSetColor(1);
-            bot.RpcSetHat("hat_NoHat");
-            bot.RpcSetPet("peet_EmptyPet");
-            bot.RpcSetVisor("visor_EmptyVisor");
-            bot.RpcSetNamePlate("nameplate_NoPlate");
-            bot.RpcSetSkin("skin_None");
-            GameData.Instance.RpcSetTasks(bot.PlayerId, new byte[0]);
-            Logger.Info($"botスポーン!\nID:{bot.PlayerId}\nBotName:{bot.name}", "Bot Manager");
-            AllBots.Add(bot);
+            Bot.RpcSetName(name);
+            Bot.RpcSetColor(1);
+            Bot.RpcSetHat("hat_NoHat");
+            Bot.RpcSetPet("peet_EmptyPet");
+            Bot.RpcSetVisor("visor_EmptyVisor");
+            Bot.RpcSetNamePlate("nameplate_NoPlate");
+            Bot.RpcSetSkin("skin_None");
+            GameData.Instance.RpcSetTasks(Bot.PlayerId, new byte[0]);
+            SuperNewRolesPlugin.Logger.LogInfo("botスポーン!\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
+            AllBots.Add(Bot);
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetBot);
-            writer.Write(bot.PlayerId);
+            writer.Write(Bot.PlayerId);
             new LateTask(() => writer.EndRPC(), 0.5f, "Bot Spawn-End");
-            return bot;
+            return Bot;
         }
-        public static void Despawn(PlayerControl bot)
+        public static void Despawn(PlayerControl Bot)
         {
-            Logger.Info($"botデスポーン!\nID:{bot.PlayerId}\nBotName:{bot.name}", "Bot Manager");
-            GameData.Instance.RemovePlayer(bot.PlayerId);
-            AmongUsClient.Instance.Despawn(bot);
-            Logger.Info("botデスポーン完了！", "Bot Manager");
-            AllBots.Remove(bot);
+            SuperNewRolesPlugin.Logger.LogInfo("botデスポーン!\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
+            GameData.Instance.RemovePlayer(Bot.PlayerId);
+            AmongUsClient.Instance.Despawn(Bot);
+            SuperNewRolesPlugin.Logger.LogInfo("完了！");
+            AllBots.Remove(Bot);
         }
         public static void AllBotDespawn()
         {
-            foreach (PlayerControl bots in AllBots)
+            foreach (PlayerControl Bots in AllBots)
             {
-                Logger.Info($"Allbotデスポーン!\nID:{bots.PlayerId}\nBotName:{bots.name}", "Bot Manager");
-                GameData.Instance.RemovePlayer(bots.PlayerId);
-                bots.Despawn();
-                Logger.Info("botデスポーン完了！", "Bot Manager");
+                SuperNewRolesPlugin.Logger.LogInfo("botデスポーン!\nID:" + Bots.PlayerId + "\nBotName:" + Bots.name);
+                GameData.Instance.RemovePlayer(Bots.PlayerId);
+                Bots.Despawn();
+                SuperNewRolesPlugin.Logger.LogInfo("完了！");
             }
             AllBots = new();
         }
