@@ -2244,7 +2244,7 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.KillButton,
                 KeyCode.Q,
-                49,
+                8,
                 () =>
                 {
                     return !PlayerControl.LocalPlayer.CanMove;
