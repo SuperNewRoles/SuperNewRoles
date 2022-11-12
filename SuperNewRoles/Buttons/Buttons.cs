@@ -577,8 +577,8 @@ namespace SuperNewRoles.Buttons
                 new Vector3(-2.7f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
-                KeyCode.L,
-                50,
+                null,
+                0,
                 () => { return false; }
             )
             {
