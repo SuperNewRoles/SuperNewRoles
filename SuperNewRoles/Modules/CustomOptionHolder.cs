@@ -662,6 +662,7 @@ namespace SuperNewRoles.Modules
 
         public static CustomRoleOption EvilHackerOption;
         public static CustomOption EvilHackerPlayerCount;
+        public static CustomOption EvilHackerCanMoveWhenUsesAdmin;
         public static CustomOption EvilHackerMadmateSetting;
 
         public static CustomRoleOption SecretlyKillerOption;
@@ -895,7 +896,7 @@ namespace SuperNewRoles.Modules
         public static CustomOption CamouflagerCamouflageQuarreled;
         public static CustomOption CamouflagerCamouflageChangeColor;
         public static CustomOption CamouflagerCamouflageColor;
-        
+
         public static CustomRoleOption CupidOption;
         public static CustomOption CupidPlayerCount;
         public static CustomOption CupidCoolTime;
@@ -906,16 +907,16 @@ namespace SuperNewRoles.Modules
         public static CustomOption HamburgerShopCommonTask;
         public static CustomOption HamburgerShopShortTask;
         public static CustomOption HamburgerShopLongTask;
-        
+
         public static CustomRoleOption PenguinOption;
         public static CustomOption PenguinPlayerCount;
         public static CustomOption PenguinCoolTime;
         public static CustomOption PenguinDurationTime;
         public static CustomOption PenguinCanDefaultKill;
-        
+
         public static CustomRoleOption DependentsOption;
         public static CustomOption DependentsPlayerCount;
-        
+
         //CustomOption
 
         public static CustomOption GMOption;
@@ -1545,6 +1546,7 @@ namespace SuperNewRoles.Modules
 
             EvilHackerOption = SetupCustomRoleOption(424, false, RoleId.EvilHacker);
             EvilHackerPlayerCount = Create(425, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
+            EvilHackerCanMoveWhenUsesAdmin = Create(1010, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
             EvilHackerMadmateSetting = Create(426, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
 
             GhostMechanicOption = SetupCustomRoleOption(427, false, RoleId.GhostMechanic);
@@ -1842,7 +1844,7 @@ namespace SuperNewRoles.Modules
             EvilGuesserPlayerCount = Create(974, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
             EvilGuesserShortMaxCount = Create(975, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
             EvilGuesserShortOneMeetingCount = Create(976, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
-            
+
             CupidOption = SetupCustomRoleOption(1079, false, RoleId.Cupid);
             CupidPlayerCount = Create(1080, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CupidOption);
             CupidCoolTime = Create(1081, false, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 20f, 2.5f, 180f, 2.5f, CupidOption);

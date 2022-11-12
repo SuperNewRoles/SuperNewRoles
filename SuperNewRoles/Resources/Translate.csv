@@ -801,6 +801,7 @@ GhostMechanicButtonName,Repair,修復,修复
 GhostMechanicCountText,GhostMechanic,残り{0}回,剩余{0}次
 EvilHackerName,EvilHacker,イビルハッカー,骇客
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船获取胜利
+CanMoveWhenUsesAdmin,Can be moved while using Admin,アドミン使用中に移動できる
 CreateMadmateSetting,Can Make a Madmate,マッドメイトを作れる,
 CreateMadmateButton,Drive Mad,狂わせる
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使
