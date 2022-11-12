@@ -14,6 +14,10 @@ namespace SuperNewRoles
 {
     [BepInAutoPlugin("jp.ykundesu.supernewroles", "SuperNewRoles")]
     [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInIncompatibility("com.emptybottle.townofhost")]
+    [BepInIncompatibility("me.eisbison.theotherroles")]
+    [BepInIncompatibility("me.yukieiji.extremeroles")]
+    [BepInIncompatibility("com.tugaru.TownOfPlus")]
     [BepInProcess("Among Us.exe")]
     public partial class SuperNewRolesPlugin : BasePlugin
     {

@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
             {
                 if (PlayerControl.LocalPlayer.IsAlive() && PlayerControl.LocalPlayer.IsRole(RoleId.Tuna) && RoleClass.Tuna.IsMeetingEnd)
                 {
-                    if (RoleClass.Tuna.Position[CachedPlayer.LocalPlayer.PlayerId] == CachedPlayer.LocalPlayer.transform.position)
+                    if (RoleClass.Tuna.Position[CachedPlayer.LocalPlayer.PlayerId] == (Vector2)CachedPlayer.LocalPlayer.transform.position)
                     {
                         if (RoleClass.Tuna.Timer <= 0.1f)
                         {
@@ -36,7 +36,7 @@ namespace SuperNewRoles.Roles
                 {
                     if (p.IsAlive() && RoleClass.Tuna.IsMeetingEnd)
                     {
-                        if (RoleClass.Tuna.Position[p.PlayerId] == p.transform.position)
+                        if (RoleClass.Tuna.Position[p.PlayerId] == (Vector2)p.transform.position)
                         {
                             RoleClass.Tuna.Timers[p.PlayerId] -= Time.deltaTime;
                             if (RoleClass.Tuna.Timers[p.PlayerId] <= 0)
@@ -52,11 +52,6 @@ namespace SuperNewRoles.Roles
                     }
                 }
             }
-        }
-        [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.OnDestroy))]
-        static void Prefix()
-        {
-            RoleClass.Tuna.IsMeetingEnd = true;
         }
     }
 }

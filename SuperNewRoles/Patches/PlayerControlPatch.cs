@@ -381,6 +381,13 @@ namespace SuperNewRoles.Patches
                     RoleClass.Vampire.target = __instance.currentTarget;
                     RoleClass.Vampire.KillTimer = DateTime.Now;
                     RoleClass.Vampire.Timer = RoleClass.Vampire.KillDelay;
+
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetVampireStatus);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write(RoleClass.Vampire.target.PlayerId);
+                    writer.Write(true);
+                    writer.EndRPC();
+                    RPCProcedure.SetVampireStatus(CachedPlayer.LocalPlayer.PlayerId, RoleClass.Vampire.target.PlayerId, true, false);
                     return false;
                 }
                 bool showAnimation = true;
@@ -650,12 +657,14 @@ namespace SuperNewRoles.Patches
                             if (ma != null && !ma.IsActive) return false;
                             break;
                         case RoleId.Finder:
-                            if (!RoleClass.Finder.KillCountSHR.ContainsKey(__instance.PlayerId) || RoleClass.Finder.KillCountSHR[__instance.PlayerId] >= 1)//KillCountが1以上または定義してなかったら
+                            if (!RoleClass.Finder.KillCountSHR.ContainsKey(__instance.PlayerId) || RoleClass.Finder.KillCountSHR[__instance.PlayerId] >= 1)//KillCountが1以上または辞書に含んでなかったら
                             {
+                                //辞書に含んだなら一個減らす
                                 if (RoleClass.Finder.KillCountSHR.ContainsKey(__instance.PlayerId))
                                 {
                                     RoleClass.Finder.KillCountSHR[__instance.PlayerId]--;
                                 }
+                                //辞書に含んでなかったらKillCountSHR[__instance.PlayerId]をマッドメイトを確認出来るキル数 - 1にする
                                 else
                                 {
                                     RoleClass.Finder.KillCountSHR[__instance.PlayerId] = CustomOptionHolder.FinderCheckMadmateSetting.GetInt() - 1;
@@ -829,6 +838,14 @@ namespace SuperNewRoles.Patches
             return true;
         }
     }
+    [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.Begin))]
+    public static class SwitchMinigameBeginPatch
+    {
+        public static bool Prefix()
+        {
+            return !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents);
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
     public static class MurderPlayerPatch
     {
@@ -926,6 +943,7 @@ namespace SuperNewRoles.Patches
 
             SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
+            DebugMode.MurderPlayerPatch.Announce();
             Roles.Crewmate.KnightProtected_Patch.MurderPlayerPatch.Postfix(target);
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
@@ -1028,6 +1046,7 @@ namespace SuperNewRoles.Patches
                 }
                 Minimalist.MurderPatch.Postfix(__instance);
             }
+            Vampire.OnMurderPlayer(__instance, target);
             if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && ModeHandler.IsMode(ModeId.Default))
             {
                 EvilGambler.MurderPlayerPostfix(__instance);
