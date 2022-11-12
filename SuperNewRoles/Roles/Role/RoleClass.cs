@@ -190,6 +190,10 @@ namespace SuperNewRoles.Roles
             WaveCannonJackal.ClearAndReload();
             Conjurer.ClearAndReload();
             Camouflager.ClearAndReload();
+            Cupid.ClearAndReload();
+            HamburgerShop.ClearAndReload();
+            Penguin.ClearAndReload();
+            Dependents.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1502,6 +1506,12 @@ namespace SuperNewRoles.Roles
             public static float KillDelay;
             public static float Timer;
             public static DateTime KillTimer;
+            public static Dictionary<PlayerControl, PlayerControl> Targets;
+            public static Dictionary<byte, List<BloodStain>> BloodStains;
+            public static List<BloodStain> WaitActiveBloodStains;
+            public static Dictionary<List<BloodStain>, int> NoActiveTurnWait;
+            public static bool CreatedDependents;
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VampireCreateDependentsButton.png", 115f);
             public static void ClearAndReload()
             {
                 VampirePlayer = new();
@@ -1509,6 +1519,11 @@ namespace SuperNewRoles.Roles
                 KillDelay = CustomOptionHolder.VampireKillDelay.GetFloat();
                 Timer = 0;
                 KillTimer = DateTime.Now;
+                Targets = new();
+                BloodStains = new();
+                WaitActiveBloodStains = new();
+                NoActiveTurnWait = new();
+                CreatedDependents = !CustomOptionHolder.VampireCanCreateDependents.GetBool();
             }
         }
         public static class Fox
@@ -1609,6 +1624,7 @@ namespace SuperNewRoles.Roles
             public static float soulDuration;
             public static bool limitSoulDuration;
             public static int mode;
+            public static bool IsCreateMadmate;
             public static void ClearAndReload()
             {
                 EvilSeerPlayer = new();
@@ -1616,6 +1632,7 @@ namespace SuperNewRoles.Roles
                 limitSoulDuration = CustomOptionHolder.EvilSeerLimitSoulDuration.GetBool();
                 soulDuration = CustomOptionHolder.EvilSeerSoulDuration.GetFloat();
                 mode = CustomOptionHolder.EvilSeerMode.GetSelection();
+                IsCreateMadmate = CustomOptionHolder.EvilSeerMadmateSetting.GetBool();
             }
         }
         public static class RemoteSheriff
@@ -2010,6 +2027,8 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static bool IsCreateMadmate;
             public static bool IsMyAdmin;
+            public static Sprite GetCreateMadmateButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreateMadmateButton.png", 115f);
+
             public static Sprite GetButtonSprite()
             {
                 byte mapId = PlayerControl.GameOptions.MapId;
@@ -2056,7 +2075,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> TunaPlayer;
             public static Color32 color = new(0, 255, 255, byte.MaxValue);
-            public static Dictionary<byte, Vector3> Position;
+            public static Dictionary<byte, Vector2> Position;
             public static float Timer;
             public static float StoppingTime;
             public static bool IsUseVent;
@@ -2066,7 +2085,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 TunaPlayer = new();
-                Position = new Dictionary<byte, Vector3>();
+                Position = new();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers) Position[p.PlayerId] = new Vector3(9999f, 9999f, 9999f);
                 StoppingTime = CustomOptionHolder.TunaStoppingTime.GetFloat();
                 if (Mode.ModeHandler.IsMode(Mode.ModeId.Default)) Timer = StoppingTime;
@@ -2870,6 +2889,59 @@ namespace SuperNewRoles.Roles
             {
                 WerewolfPlayer = new();
                 IsShooted = false;
+            }
+        }
+        public static class Cupid
+        {
+            public static List<PlayerControl> CupidPlayer;
+            public static Color32 color = Lovers.color;
+            public static PlayerControl currentLovers;
+            public static PlayerControl currentTarget;
+            public static bool Created;
+            public static Dictionary<byte, byte> CupidLoverPair;
+            public static void ClearAndReload()
+            {
+                CupidPlayer = new();
+                currentLovers = null;
+                currentTarget = null;
+                Created = false;
+                CupidLoverPair = new();
+            }
+        }
+
+        public static class HamburgerShop
+        {
+            public static List<PlayerControl> HamburgerShopPlayer;
+            public static Color32 color = new(255, 128, 64, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                HamburgerShopPlayer = new();
+            }
+        }
+
+        public static class Penguin
+        {
+            public static List<PlayerControl> PenguinPlayer;
+            public static Color32 color = ImpostorRed;
+            public static Dictionary<PlayerControl, PlayerControl> PenguinData;
+            public static PlayerControl currentTarget => PenguinData.ContainsKey(CachedPlayer.LocalPlayer) ? PenguinData[CachedPlayer.LocalPlayer] : null;
+            private static Sprite _buttonSprite;
+            public static Sprite GetButtonSprite() => _buttonSprite;
+            public static void ClearAndReload()
+            {
+                PenguinPlayer = new();
+                PenguinData = new();
+                bool Is = ModHelpers.IsSucsessChance(4);
+                _buttonSprite = ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.PenguinButton_{(Is ? 1 : 2)}.png", Is ? 87.5f : 110f);
+            }
+        }
+        public static class Dependents
+        {
+            public static List<PlayerControl> DependentsPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                DependentsPlayer = new();
             }
         }
         //新ロールクラス

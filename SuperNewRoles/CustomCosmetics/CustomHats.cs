@@ -353,6 +353,15 @@ namespace SuperNewRoles.CustomCosmetics
                     List<CustomHat> hats = CreateCustomHatDetails(filePaths, true);
                     if (hats.Count > 0)
                     {
+                        CreateHatSprite(hats[0].resource, true);
+                        if (hats[0].backresource != null)
+                            CreateHatSprite(hats[0].backresource, true);
+                        if (hats[0].climbresource != null)
+                            CreateHatSprite(hats[0].climbresource, true);
+                        if (hats[0].flipresource != null)
+                            CreateHatSprite(hats[0].flipresource, true);
+                        if (hats[0].backflipresource != null)
+                            CreateHatSprite(hats[0].backflipresource, true);
                         foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                         {
                             var color = pc.CurrentOutfit.ColorId;

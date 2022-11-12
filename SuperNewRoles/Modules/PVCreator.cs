@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace SuperNewRoles
+namespace SuperNewRoles.Modules
 {
     public static class PVCreator
     {
