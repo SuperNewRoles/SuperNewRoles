@@ -2554,9 +2554,7 @@ namespace SuperNewRoles.Buttons
             };
 
             RevolutionistButton = new(
-                () =>
-                {
-                },
+                () => { },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Revolutionist; },
                 () =>
                 {
@@ -2613,9 +2611,6 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     PlayerControl target = SetTarget();
-                    if (ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target) == ModHelpers.MurderAttemptResult.PerformKill)
-                    {
-                    }
                     if (RoleClass.Hitman.Target.PlayerId != target.PlayerId)
                     {
                         Roles.Neutral.Hitman.LimitDown();
