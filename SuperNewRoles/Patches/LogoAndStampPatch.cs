@@ -176,8 +176,6 @@ namespace SuperNewRoles.Patches
                             {
                                 TransData += current["name"]?.ToString() + "\n";
                             }
-                            {
-                            }
                         }
                     }
                     catch (Exception e)
