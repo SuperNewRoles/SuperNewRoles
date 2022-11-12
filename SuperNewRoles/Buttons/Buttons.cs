@@ -1596,7 +1596,7 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.Q,
-                49,
+                8,
                 () => { return false; }
             )
             {
