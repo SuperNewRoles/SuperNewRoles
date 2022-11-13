@@ -69,11 +69,11 @@ namespace SuperNewRoles.Patches
                     __instance.text.text = $"{baseCredentials}\n{__instance.text.text}";
                     try
                     {
-                        if (DebugMode.IsDebugMode())
+                        if (ModHelpers.IsDebugMode())
                         {
                             __instance.text.text += "\n" + ModTranslation.GetString("DebugModeOn");
                         }
-                        if (!ModeHandler.IsMode(Mode.ModeId.Default) || ModeHandler.IsMode(ModeId.HideAndSeek))
+                        if (!ModeHandler.IsMode(ModeId.Default) || ModeHandler.IsMode(ModeId.HideAndSeek))
                         {
                             __instance.text.text += "\n" + ModTranslation.GetString("SettingMode") + ":" + ModeHandler.GetThisModeIntro();
                         }
