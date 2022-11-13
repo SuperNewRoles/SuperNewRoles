@@ -96,7 +96,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                     if ((leftplayer != null && leftplayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId) ||
                         (rightplayer != null && rightplayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId))
                     {
-                        PlayerControl.LocalPlayer.moveable = false;
+                        CachedPlayer.LocalPlayer.PlayerControl.moveable = false;
                         LowerInfoText.text = "実験中...";
                     }
                     IsWait = true;
@@ -105,8 +105,8 @@ namespace SuperNewRoles.MapCustoms.Airship
                     if ((leftplayer != null && leftplayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId) ||
                         (rightplayer != null && rightplayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId))
                     {
-                        PlayerControl.LocalPlayer.moveable = true;
-                        PlayerControl.LocalPlayer.transform.position = ModHelpers.GetRandom(TeleportPositions);
+                        CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
+                        CachedPlayer.LocalPlayer.PlayerControl.transform.position = ModHelpers.GetRandom(TeleportPositions);
                     }
                     IsWait = false;
                     rightplayer = null;
@@ -267,7 +267,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                     __instance.Close();
                     return;
                 }
-                if (PlayerControl.LocalPlayer.PlayerId != UsePlayer.PlayerId) return;
+                if (CachedPlayer.LocalPlayer.PlayerControl.PlayerId != UsePlayer.PlayerId) return;
                 new LateTask(() =>
                 {
                     if (GameObject.FindObjectOfType<VitalsMinigame>() == null && onTask)
@@ -339,7 +339,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                 {
                     if (LowerInfoText == null)
                     {
-                        LowerInfoText = UnityEngine.Object.Instantiate(PlayerControl.LocalPlayer.NameText());
+                        LowerInfoText = UnityEngine.Object.Instantiate(CachedPlayer.LocalPlayer.PlayerControl.NameText());
                         LowerInfoText.transform.parent = HudManager.Instance.transform;
                         LowerInfoText.transform.localPosition = new Vector3(0, -1.5f, 0);
                         LowerInfoText.transform.localScale = new Vector3(2, 2f, 2);
@@ -350,7 +350,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         LowerInfoText.fontSizeMin = 2.0f;
                         LowerInfoText.fontSizeMax = 2.0f;
                     }
-                    __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
+                    __instance.CanUse(CachedPlayer.LocalPlayer.PlayerControl.Data, out var canUse, out var _);
                     if (canUse)
                     {
                         LowerInfoText.text = "Escで実験から抜ける";
@@ -371,7 +371,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         writer.Write(id);
                         RPCHelper.EndRPC(writer);
                         SetSecretRoomTeleportStatus(Status.Join, CachedPlayer.LocalPlayer.PlayerId, (byte)id);
-                        PlayerControl.LocalPlayer.moveable = false;
+                        CachedPlayer.LocalPlayer.PlayerControl.moveable = false;
                         //__instance.StartCoroutine(Move(__instance));
                         Coroutine move = __instance.StartCoroutine(Move2(__instance));
                         __instance.StartCoroutine(Escape(__instance, move));
@@ -380,7 +380,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                 }
                 else if (__instance.name == "secretroom_teleport-console")
                 {
-                    __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
+                    __instance.CanUse(CachedPlayer.LocalPlayer.PlayerControl.Data, out var canUse, out var _);
                     if (canUse)
                     {
                         if (RoleHelpers.IsComms()) return false;
@@ -399,7 +399,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         minigame.BatteryText.transform.FindChild("Sprite").gameObject.SetActive(false);
 
                         PoolablePlayer leftpool = GameObject.Instantiate(minigame.vitals[0].PlayerIcon, minigame.transform);
-                        leftpool.UpdateFromPlayerOutfit(PlayerControl.LocalPlayer.CurrentOutfit, PlayerMaterial.MaskType.ComplexUI, false, true);
+                        leftpool.UpdateFromPlayerOutfit(CachedPlayer.LocalPlayer.PlayerControl.CurrentOutfit, PlayerMaterial.MaskType.ComplexUI, false, true);
                         leftpool.transform.localPosition = new Vector3(-2f, 0.5f, 0f);
                         leftpool.transform.localScale = new Vector3(1, 1, 1);
                         //leftpool.UpdateFromLocalPlayer(PlayerMaterial.MaskType.ComplexUI);
@@ -411,9 +411,9 @@ namespace SuperNewRoles.MapCustoms.Airship
                         lefttext.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
                         left = leftpool;
 
-                        //rightplayer = PlayerControl.LocalPlayer;
+                        //rightplayer = CachedPlayer.LocalPlayer.PlayerControl;
                         PoolablePlayer rightpool = GameObject.Instantiate(minigame.vitals[0].PlayerIcon, minigame.transform);
-                        rightpool.UpdateFromPlayerOutfit(PlayerControl.LocalPlayer.CurrentOutfit, PlayerMaterial.MaskType.ComplexUI, false, true);
+                        rightpool.UpdateFromPlayerOutfit(CachedPlayer.LocalPlayer.PlayerControl.CurrentOutfit, PlayerMaterial.MaskType.ComplexUI, false, true);
                         rightpool.transform.localPosition = new Vector3(2f, 0.5f, 0f);
                         rightpool.transform.localScale = new Vector3(-1, 1, 1);
                         //rightpool.UpdateFromLocalPlayer(PlayerMaterial.MaskType.ComplexUI);
@@ -513,7 +513,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                             {
                                 __instance.StopCoroutine(coro);
                             }
-                            PlayerControl.LocalPlayer.moveable = true;
+                            CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
                             Camera.main.GetComponent<FollowerCamera>().Locked = false;
                             yield break;
                         }
@@ -530,7 +530,7 @@ namespace SuperNewRoles.MapCustoms.Airship
 
             static IEnumerator Move2(Console __instance)
             {
-                PlayerPhysics myPhysics = PlayerControl.LocalPlayer.MyPhysics;
+                PlayerPhysics myPhysics = CachedPlayer.LocalPlayer.PlayerControl.MyPhysics;
                 Vector2 worldPos = __instance.name.Contains("2") ? new Vector2(0.14f, -5.025f) : __instance.transform.position;
                 worldPos = __instance.transform.position;
                 Camera.main.GetComponent<FollowerCamera>().Locked = false;
@@ -549,7 +549,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                 __result = byte.MaxValue;
 
                 PlayerTask task = null;
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Tasker) && (task = __instance.FindTask(pc.Object)) != null)
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Tasker) && (task = __instance.FindTask(pc.Object)) != null)
                     foreach (Console console in task.FindConsoles())
                         console.AllowImpostor = true;
 
@@ -594,10 +594,10 @@ namespace SuperNewRoles.MapCustoms.Airship
         }
         static void ViewMinigame()
         {
-            var moto = PlayerControl.LocalPlayer.Data.Role.Role;
-            FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Scientist);
+            var moto = CachedPlayer.LocalPlayer.PlayerControl.Data.Role.Role;
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Scientist);
             CachedPlayer.LocalPlayer.Data.Role.TryCast<ScientistRole>().UseAbility();
-            FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, moto);
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, moto);
         }
         static Console ActivateConsole(GameObject obj, float Distance = 1.7f)
         {

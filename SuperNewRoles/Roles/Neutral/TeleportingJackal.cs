@@ -29,7 +29,7 @@ namespace SuperNewRoles.Roles
         {
             public static void SetOutline()
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.TeleportingJackal))
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.TeleportingJackal))
                 {
                     SetPlayerOutline(Patches.PlayerControlFixedUpdatePatch.JackalSetTarget(), RoleClass.TeleportingJackal.color);
                 }

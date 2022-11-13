@@ -60,12 +60,12 @@ namespace SuperNewRoles.Roles.Impostor
 
         private static bool CanAddBeacon()
         {
-            if (!PlayerControl.LocalPlayer.CanMove) return false;
+            if (!CachedPlayer.LocalPlayer.PlayerControl.CanMove) return false;
             if (Count == 0) return true;
 
             if (Count != 3)
             {
-                if (Vector2.Distance(PlayerControl.LocalPlayer.transform.position, Positions[Count - 1]) < CanAddLength.GetFloat())
+                if (Vector2.Distance(CachedPlayer.LocalPlayer.PlayerControl.transform.position, Positions[Count - 1]) < CanAddLength.GetFloat())
                 {
                     return true;
                 }
@@ -117,13 +117,13 @@ namespace SuperNewRoles.Roles.Impostor
                 {
                     Logger.Info($"Now:{Count}", "Conjurer Add");
                     byte[] buff = new byte[sizeof(float) * 2];
-                    Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                    Buffer.BlockCopy(BitConverter.GetBytes(PlayerControl.LocalPlayer.transform.position.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(CachedPlayer.LocalPlayer.PlayerControl.transform.position.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(CachedPlayer.LocalPlayer.PlayerControl.transform.position.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
                     AddBeacon(buff);
 
                     // PositionsのCount番目に現在の座標を保存する
-                    Positions[Count] = PlayerControl.LocalPlayer.transform.position;
+                    Positions[Count] = CachedPlayer.LocalPlayer.PlayerControl.transform.position;
 
                     Count++;
                     Logger.Info($"Now:{Count}", "Conjurer Added");
@@ -150,7 +150,7 @@ namespace SuperNewRoles.Roles.Impostor
             StartButton = new(
             () =>
             {
-                if (PlayerControl.LocalPlayer.CanMove && Count == 3)
+                if (CachedPlayer.LocalPlayer.PlayerControl.CanMove && Count == 3)
                 {
                     //Logger.Info($"Beacon{Round}{Count}", "Beacons");
                     foreach (PlayerControl pc in CachedPlayer.AllPlayers)
@@ -193,7 +193,7 @@ namespace SuperNewRoles.Roles.Impostor
                 }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
-            () => { return PlayerControl.LocalPlayer.CanMove && Count == 3; },
+            () => { return CachedPlayer.LocalPlayer.PlayerControl.CanMove && Count == 3; },
             () =>
             {
                 ResetCooldown();

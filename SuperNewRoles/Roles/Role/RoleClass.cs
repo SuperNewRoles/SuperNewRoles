@@ -1186,7 +1186,7 @@ namespace SuperNewRoles.Roles
             }
             public static LevelPowerTypes GetThisPower(int Level = 0, PlayerControl player = null)
             {
-                if (player == null) player = PlayerControl.LocalPlayer;
+                if (player == null) player = CachedPlayer.LocalPlayer.PlayerControl;
                 if (!player.IsRole(RoleId.Levelinger)) return LevelPowerTypes.None;
                 if (Level == 0)
                 {

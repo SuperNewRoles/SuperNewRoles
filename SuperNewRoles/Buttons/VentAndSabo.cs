@@ -64,7 +64,7 @@ namespace SuperNewRoles.Buttons
             {
                 if (!MeetingHud.Instance)
                 {
-                    if (PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsUseSabo() && !__instance.IsOpen)
                     {
                         __instance.Close();
                         FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
@@ -113,7 +113,7 @@ namespace SuperNewRoles.Buttons
                     switch (__instance.Id)
                     {
                         case 9:  // Cannot enter vent 9 (Engine Room Exit Only Vent)!
-                            if (PlayerControl.LocalPlayer.inVent) break;
+                            if (CachedPlayer.LocalPlayer.PlayerControl.inVent) break;
                             __result = float.MaxValue;
                             return canUse = couldUse = false;
                         case 14: // Lower Central
@@ -152,7 +152,7 @@ namespace SuperNewRoles.Buttons
             {
                 var ImpostorVentButton = FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton;
                 var ImpostorSabotageButton = FastDestroyableSingleton<HudManager>.Instance.SabotageButton;
-                if (PlayerControl.LocalPlayer.IsUseVent() && (MapBehaviour.Instance == null || !MapBehaviour.Instance.IsOpen))
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsUseVent() && (MapBehaviour.Instance == null || !MapBehaviour.Instance.IsOpen))
                 {
                     if (!ImpostorVentButton.gameObject.active)
                     {
@@ -171,7 +171,7 @@ namespace SuperNewRoles.Buttons
                     }
                 }
 
-                if (PlayerControl.LocalPlayer.IsUseSabo() && (MapBehaviour.Instance == null || !MapBehaviour.Instance.IsOpen))
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsUseSabo() && (MapBehaviour.Instance == null || !MapBehaviour.Instance.IsOpen))
                 {
                     if (!ImpostorSabotageButton.gameObject.active)
                     {
@@ -192,7 +192,7 @@ namespace SuperNewRoles.Buttons
         {
             public static void Prefix(Vent __instance, ref bool enabled)
             {
-                if (PlayerControl.LocalPlayer.IsMadRoles() && !CustomOptionHolder.MadRolesCanVentMove.GetBool()) enabled = false;
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsMadRoles() && !CustomOptionHolder.MadRolesCanVentMove.GetBool()) enabled = false;
             }
         }
 
@@ -202,18 +202,18 @@ namespace SuperNewRoles.Buttons
             public static bool Prefix(Vent __instance)
             {
                 __instance.CanUse(CachedPlayer.LocalPlayer.Data, out bool canUse, out bool couldUse);
-                bool canMoveInVents = !PlayerControl.LocalPlayer.IsRole(RoleId.NiceNekomata);
+                bool canMoveInVents = !CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.NiceNekomata);
                 if (!canUse) return false; // No need to execute the native method as using is disallowed anyways
 
-                bool isEnter = !PlayerControl.LocalPlayer.inVent;
+                bool isEnter = !CachedPlayer.LocalPlayer.PlayerControl.inVent;
 
                 if (isEnter)
                 {
-                    PlayerControl.LocalPlayer.MyPhysics.RpcEnterVent(__instance.Id);
+                    CachedPlayer.LocalPlayer.PlayerControl.MyPhysics.RpcEnterVent(__instance.Id);
                 }
                 else
                 {
-                    PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(__instance.Id);
+                    CachedPlayer.LocalPlayer.PlayerControl.MyPhysics.RpcExitVent(__instance.Id);
                 }
                 __instance.SetButtons(isEnter && canMoveInVents);
 
@@ -238,7 +238,7 @@ namespace SuperNewRoles.Buttons
             static void Postfix(Vent __instance)
             {
                 // Vent outline set role color
-                var color = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer).color;
+                var color = IntroData.GetIntroData(CachedPlayer.LocalPlayer.PlayerControl.GetRole(), CachedPlayer.LocalPlayer.PlayerControl).color;
                 string[] outlines = new[] { "_OutlineColor", "_AddColor" };
                 foreach (var name in outlines)
                     __instance.myRend.material.SetColor(name, color);

@@ -38,7 +38,7 @@ namespace SuperNewRoles.Roles.Neutral
                         }
                         if (IsFlag)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.StartRevolutionMeeting, SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.StartRevolutionMeeting, SendOption.Reliable, -1);
                             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                             RPCProcedure.StartRevolutionMeeting(CachedPlayer.LocalPlayer.PlayerId);
@@ -73,7 +73,7 @@ namespace SuperNewRoles.Roles.Neutral
                 {
                     if (RoleClass.Revolutionist.WinPlayer != null)
                     {
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(RoleClass.Revolutionist.WinPlayer.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RPCProcedure.ShareWinner(RoleClass.Revolutionist.WinPlayer.PlayerId);

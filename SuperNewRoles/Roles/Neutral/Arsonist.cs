@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles
         {
             try
             {
-                if (source == null) source = PlayerControl.LocalPlayer;
+                if (source == null) source = CachedPlayer.LocalPlayer.PlayerControl;
                 MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.ArsonistDouse);
                 Writer.Write(source.PlayerId);
                 Writer.Write(target.PlayerId);
@@ -57,7 +57,7 @@ namespace SuperNewRoles.Roles
 
         public static List<PlayerControl> GetIconPlayers(PlayerControl player = null)
         {
-            if (player == null) player = PlayerControl.LocalPlayer;
+            if (player == null) player = CachedPlayer.LocalPlayer.PlayerControl;
             return RoleClass.Arsonist.DouseData.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseData[player.PlayerId] : (new());
         }
         public static bool IsViewIcon(PlayerControl player)
@@ -78,12 +78,12 @@ namespace SuperNewRoles.Roles
 
         public static bool IsButton()
         {
-            return ModeHandler.IsMode(ModeId.Default) && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist);
+            return ModeHandler.IsMode(ModeId.Default) && RoleHelpers.IsAlive(CachedPlayer.LocalPlayer.PlayerControl) && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Arsonist);
         }
 
         public static bool IseveryButton()
         {
-            return (ModeHandler.IsMode(ModeId.SuperHostRoles) && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist)) || (ModeHandler.IsMode(ModeId.Default) && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist));
+            return (ModeHandler.IsMode(ModeId.SuperHostRoles) && RoleHelpers.IsAlive(CachedPlayer.LocalPlayer.PlayerControl) && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Arsonist)) || (ModeHandler.IsMode(ModeId.Default) && RoleHelpers.IsAlive(CachedPlayer.LocalPlayer.PlayerControl) && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Arsonist));
 
         }
 

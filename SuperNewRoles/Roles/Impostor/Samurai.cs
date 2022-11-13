@@ -16,10 +16,10 @@ namespace SuperNewRoles.Roles
             {
                 if (p.IsAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {
-                    if (SelfBomber.GetIsBomb(PlayerControl.LocalPlayer, p, CustomOptionHolder.SamuraiScope.GetFloat()))
+                    if (SelfBomber.GetIsBomb(CachedPlayer.LocalPlayer.PlayerControl, p, CustomOptionHolder.SamuraiScope.GetFloat()))
                     {
-                        PlayerControl.LocalPlayer.UncheckedMurderPlayer(p, showAnimation: false);
-                        PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SamuraiKill);
+                        CachedPlayer.LocalPlayer.PlayerControl.UncheckedMurderPlayer(p, showAnimation: false);
+                        CachedPlayer.LocalPlayer.PlayerControl.RpcSetFinalStatus(FinalStatus.SamuraiKill);
                     }
                 }
             }

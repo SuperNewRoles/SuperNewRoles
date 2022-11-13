@@ -44,7 +44,7 @@ namespace SuperNewRoles.Roles
             {
                 get
                 {
-                    return players.FirstOrDefault(x => x.player == PlayerControl.LocalPlayer);
+                    return players.FirstOrDefault(x => x.player == CachedPlayer.LocalPlayer.PlayerControl);
                 }
             }
 
@@ -79,7 +79,7 @@ namespace SuperNewRoles.Roles
 
             public static T GetRole(PlayerControl player = null)
             {
-                player ??= PlayerControl.LocalPlayer;
+                player ??= CachedPlayer.LocalPlayer.PlayerControl;
                 return players.FirstOrDefault(x => x.player == player);
             }
 

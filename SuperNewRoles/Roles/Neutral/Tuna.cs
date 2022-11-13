@@ -12,14 +12,14 @@ namespace SuperNewRoles.Roles
             if (RoleClass.IsMeeting) return;
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                if (PlayerControl.LocalPlayer.IsAlive() && PlayerControl.LocalPlayer.IsRole(RoleId.Tuna) && RoleClass.Tuna.IsMeetingEnd)
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsAlive() && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Tuna) && RoleClass.Tuna.IsMeetingEnd)
                 {
                     if (RoleClass.Tuna.Position[CachedPlayer.LocalPlayer.PlayerId] == (Vector2)CachedPlayer.LocalPlayer.transform.position)
                     {
                         if (RoleClass.Tuna.Timer <= 0.1f)
                         {
                             CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
-                            PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.TunaSelfDeath);
+                            CachedPlayer.LocalPlayer.PlayerControl.RpcSetFinalStatus(FinalStatus.TunaSelfDeath);
                         }
                         RoleClass.Tuna.Timer -= Time.deltaTime;
                     }

@@ -38,7 +38,7 @@ namespace SuperNewRoles.Roles
                 }
                 if (!RoleClass.IsMeeting)
                 {
-                    PlayerControl.LocalPlayer.SetKillTimer(PlayerControl.LocalPlayer.killTimer - Time.fixedDeltaTime);
+                    CachedPlayer.LocalPlayer.PlayerControl.SetKillTimer(CachedPlayer.LocalPlayer.PlayerControl.killTimer - Time.fixedDeltaTime);
                 }
             }
         }

@@ -49,13 +49,13 @@ namespace SuperNewRoles.CustomObject
             GameObject = new GameObject($"Beacon{Conjurer.Count}") { layer = 11 };
             GameObject.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
             Vector3 position = new(p.x, p.y, p.y / 1000f + 0.01f);
-            position += (Vector3)PlayerControl.LocalPlayer.Collider.offset; // Add collider offset that DoMove moves the player up at a valid position
-                                                                            // Create the marker
+            position += (Vector3)CachedPlayer.LocalPlayer.PlayerControl.Collider.offset; // Add collider offset that DoMove moves the player up at a valid position
+                                                                                         // Create the marker
             GameObject.transform.position = position;
             BeaconRenderer = GameObject.AddComponent<SpriteRenderer>();
             BeaconRenderer.sprite = GetBeaconAnimationSprite(0);
             // Only render the beacon for the conjurer
-            var playerIsTrickster = PlayerControl.LocalPlayer;
+            var playerIsTrickster = CachedPlayer.LocalPlayer.PlayerControl;
             GameObject.SetActive(playerIsTrickster);
 
             AllBeacons.Add(this);

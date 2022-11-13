@@ -133,7 +133,7 @@ namespace SuperNewRoles.Buttons
                     Hud.SabotageButton.transform.localScale = new();
                     IsViewUseButton = false;
                 }
-                else if (Hud.SabotageButton.gameObject.active && PlayerControl.LocalPlayer.CanMove)
+                else if (Hud.SabotageButton.gameObject.active && CachedPlayer.LocalPlayer.PlayerControl.CanMove)
                 {
                     Hud.ImpostorVentButton.transform.localScale = new();
                     IsViewUseButton = false;

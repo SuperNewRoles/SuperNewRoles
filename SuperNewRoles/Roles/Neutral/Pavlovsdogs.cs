@@ -24,7 +24,7 @@ namespace SuperNewRoles.Roles.Neutral
             PlayerControl result = null;
             float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
             if (!MapUtilities.CachedShipStatus) return result;
-            PlayerControl targetingPlayer = PlayerControl.LocalPlayer;
+            PlayerControl targetingPlayer = CachedPlayer.LocalPlayer.PlayerControl;
             if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
 
             Vector2 truePosition = targetingPlayer.GetTruePosition();
@@ -51,7 +51,7 @@ namespace SuperNewRoles.Roles.Neutral
         }
         public static void SetNameUpdate()
         {
-            if (PlayerControl.LocalPlayer.IsPavlovsTeam())
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsPavlovsTeam())
             {
                 foreach (PlayerControl p in RoleClass.Pavlovsdogs.PavlovsdogsPlayer)
                 {

@@ -12,7 +12,7 @@ namespace SuperNewRoles.MapOptions
             public static bool Prefix(MapConsole __instance)
             {
                 Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckAdmin);
-                bool IsUse = MapOption.UseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents);
+                bool IsUse = MapOption.UseAdmin && !CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Vampire, RoleId.Dependents);
                 return IsUse;
             }
         }
@@ -21,7 +21,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static bool Prefix(MapCountOverlay __instance)
             {
-                bool IsUse = (MapOption.UseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) || RoleClass.EvilHacker.IsMyAdmin;
+                bool IsUse = (MapOption.UseAdmin && !CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Vampire, RoleId.Dependents)) || RoleClass.EvilHacker.IsMyAdmin;
                 if (IsUse)
                 {
                     bool commsActive = false;
@@ -109,7 +109,7 @@ namespace SuperNewRoles.MapOptions
         {
             static void Postfix(VitalsMinigame __instance)
             {
-                if (!MapOption.UseVitalOrDoorLog || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire) || PlayerControl.LocalPlayer.IsRole(RoleId.Dependents))
+                if (!MapOption.UseVitalOrDoorLog || CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Vampire) || CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Dependents))
                 {
                     __instance.Close();
                 }
@@ -120,7 +120,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static void Postfix(SurveillanceMinigame __instance)
             {
-                if (!MapOption.UseCamera || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
+                if (!MapOption.UseCamera || CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Vampire, RoleId.Dependents))
                 {
                     __instance.Close();
                 }
@@ -132,7 +132,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static void Postfix(PlanetSurveillanceMinigame __instance)
             {
-                if (!MapOption.UseCamera || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
+                if (!MapOption.UseCamera || CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Vampire, RoleId.Dependents))
                 {
                     __instance.Close();
                 }
@@ -144,7 +144,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static void Postfix(SecurityLogGame __instance)
             {
-                if (!MapOption.UseVitalOrDoorLog || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
+                if (!MapOption.UseVitalOrDoorLog || CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Vampire, RoleId.Dependents))
                 {
                     __instance.Close();
                 }

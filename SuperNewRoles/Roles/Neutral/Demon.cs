@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles
         {
             try
             {
-                if (source == null) source = PlayerControl.LocalPlayer;
+                if (source == null) source = CachedPlayer.LocalPlayer.PlayerControl;
                 MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.DemonCurse);
                 Writer.Write(source.PlayerId);
                 Writer.Write(target.PlayerId);
@@ -54,7 +54,7 @@ namespace SuperNewRoles.Roles
 
         public static List<PlayerControl> GetIconPlayers(PlayerControl player = null)
         {
-            if (player == null) player = PlayerControl.LocalPlayer;
+            if (player == null) player = CachedPlayer.LocalPlayer.PlayerControl;
             return RoleClass.Demon.CurseData.ContainsKey(player.PlayerId) ? RoleClass.Demon.CurseData[player.PlayerId] : (new());
         }
         public static bool IsViewIcon(PlayerControl player)
@@ -75,7 +75,7 @@ namespace SuperNewRoles.Roles
 
         public static bool IsButton()
         {
-            return RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Demon) && ModeHandler.IsMode(ModeId.Default);
+            return RoleHelpers.IsAlive(CachedPlayer.LocalPlayer.PlayerControl) && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Demon) && ModeHandler.IsMode(ModeId.Default);
         }
 
         public static bool IsWin(PlayerControl Demon)

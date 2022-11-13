@@ -106,7 +106,7 @@ namespace SuperNewRoles.Roles.Attribute
                         ReloadPage();
                     }));
                 }
-                if (PlayerControl.LocalPlayer.IsAlive()) CreateTeamButton(Teambutton, (TeamRoleType)index);
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsAlive()) CreateTeamButton(Teambutton, (TeamRoleType)index);
             }
             static void ReloadPage()
             {
@@ -160,7 +160,7 @@ namespace SuperNewRoles.Roles.Attribute
                 }));
                 PageButtons.Add(Pagebutton.GetComponent<SpriteRenderer>());
             }
-            if (PlayerControl.LocalPlayer.IsAlive())
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsAlive())
             {
                 CreatePage(false, __instance, container);
                 CreatePage(true, __instance, container);
@@ -203,7 +203,7 @@ namespace SuperNewRoles.Roles.Attribute
                 int copiedIndex = i[(int)roleInfo.Team];
 
                 button.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
-                if (PlayerControl.LocalPlayer.IsAlive()) button.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() =>
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsAlive()) button.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() =>
                 {
                     if (selectedButton != button)
                     {
@@ -225,7 +225,7 @@ namespace SuperNewRoles.Roles.Attribute
                         }
                         else
                         {
-                            dyingTarget = PlayerControl.LocalPlayer;
+                            dyingTarget = CachedPlayer.LocalPlayer.PlayerControl;
                         }
 
 
@@ -235,10 +235,10 @@ namespace SuperNewRoles.Roles.Attribute
 
                         if (RoleClass.NiceGuesser.Count == -1)
                         {
-                            RoleClass.NiceGuesser.Count = PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser) ? CustomOptionHolder.NiceGuesserShortMaxCount.GetInt() : CustomOptionHolder.EvilGuesserShortMaxCount.GetInt();
+                            RoleClass.NiceGuesser.Count = CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.NiceGuesser) ? CustomOptionHolder.NiceGuesserShortMaxCount.GetInt() : CustomOptionHolder.EvilGuesserShortMaxCount.GetInt();
                         }
                         RoleClass.NiceGuesser.Count--;
-                        if ((RoleClass.NiceGuesser.Count > 0) && dyingTarget != PlayerControl.LocalPlayer && (PlayerControl.LocalPlayer.IsImpostor() ? CustomOptionHolder.EvilGuesserShortOneMeetingCount.GetBool() : CustomOptionHolder.NiceGuesserShortOneMeetingCount.GetBool()))
+                        if ((RoleClass.NiceGuesser.Count > 0) && dyingTarget != CachedPlayer.LocalPlayer.PlayerControl && (CachedPlayer.LocalPlayer.PlayerControl.IsImpostor() ? CustomOptionHolder.EvilGuesserShortOneMeetingCount.GetBool() : CustomOptionHolder.NiceGuesserShortOneMeetingCount.GetBool()))
                         {
                             __instance.playerStates.ToList().ForEach(x => { if (x.TargetPlayerId == dyingTarget.PlayerId && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
                         }
@@ -247,13 +247,13 @@ namespace SuperNewRoles.Roles.Attribute
                             __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
                         }
                         // Shoot player and send chat info if activated
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.GuesserShoot, SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.GuesserShoot, SendOption.Reliable, -1);
                         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         writer.Write(dyingTarget.PlayerId);
                         writer.Write(focusedTarget.PlayerId);
                         writer.Write((byte)roleInfo.RoleId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.GuesserShoot(PlayerControl.LocalPlayer.PlayerId, dyingTarget.PlayerId, focusedTarget.PlayerId, (byte)roleInfo.RoleId);
+                        RPCProcedure.GuesserShoot(CachedPlayer.LocalPlayer.PlayerControl.PlayerId, dyingTarget.PlayerId, focusedTarget.PlayerId, (byte)roleInfo.RoleId);
                     }
                 }));
                 i[(int)roleInfo.Team]++;
@@ -269,7 +269,7 @@ namespace SuperNewRoles.Roles.Attribute
         {
             static bool Prefix(MeetingHud __instance)
             {
-                return !(PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.IsRole(RoleId.NiceGuesser, RoleId.EvilGuesser) && guesserUI != null);
+                return !(CachedPlayer.LocalPlayer.PlayerControl != null && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.NiceGuesser, RoleId.EvilGuesser) && guesserUI != null);
             }
         }
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
@@ -277,7 +277,7 @@ namespace SuperNewRoles.Roles.Attribute
         {
             public static void Postfix(MeetingHud __instance)
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilGuesser, RoleId.NiceGuesser) && (RoleClass.NiceGuesser.Count > 0 || RoleClass.NiceGuesser.Count == -1))
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilGuesser, RoleId.NiceGuesser) && (RoleClass.NiceGuesser.Count > 0 || RoleClass.NiceGuesser.Count == -1))
                 {
                     createGuesserButton(__instance);
                 }
@@ -288,7 +288,7 @@ namespace SuperNewRoles.Roles.Attribute
             for (int i = 0; i < __instance.playerStates.Length; i++)
             {
                 PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                if (playerVoteArea.AmDead || playerVoteArea.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
+                if (playerVoteArea.AmDead || playerVoteArea.TargetPlayerId == CachedPlayer.LocalPlayer.PlayerControl.PlayerId) continue;
 
                 GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                 GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);

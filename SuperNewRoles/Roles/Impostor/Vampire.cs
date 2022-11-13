@@ -13,12 +13,12 @@ namespace SuperNewRoles.Roles
     {
         public static void WrapUp()
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Dependents) && PlayerControl.LocalPlayer.IsAlive())
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Dependents) && CachedPlayer.LocalPlayer.PlayerControl.IsAlive())
             {
                 bool Is = true;
                 foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer) if (p.IsAlive()) Is = false;
                 if (Is)
-                    PlayerControl.LocalPlayer.RpcExiledUnchecked();
+                    CachedPlayer.LocalPlayer.PlayerControl.RpcExiledUnchecked();
             }
             foreach (var data in RoleClass.Vampire.NoActiveTurnWait.ToArray())
             {
@@ -52,10 +52,10 @@ namespace SuperNewRoles.Roles
         }
         public static void OnMurderPlayer(PlayerControl source, PlayerControl target)
         {
-            if (source.IsRole(RoleId.Vampire) && PlayerControl.LocalPlayer.IsRole(RoleId.Dependents))
+            if (source.IsRole(RoleId.Vampire) && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Dependents))
                 HudManagerStartPatch.DependentsKillButton.Timer = HudManagerStartPatch.DependentsKillButton.MaxTimer;
-            else if (source.IsRole(RoleId.Dependents) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
-                PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer);
+            else if (source.IsRole(RoleId.Dependents) && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Vampire))
+                CachedPlayer.LocalPlayer.PlayerControl.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer);
         }
         public static class FixedUpdate
         {
@@ -63,14 +63,17 @@ namespace SuperNewRoles.Roles
             public static void DependentsOnly()
             {
                 foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer) if (p.IsAlive()) return;
-                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
             }
-            public static void AllClient() {
+            public static void AllClient()
+            {
                 Count--;
                 if (Count > 0) return;
                 Count = 3;
-                foreach (var data in RoleClass.Vampire.Targets.ToArray()) {
-                    if (data.Key == null || data.Value == null || !data.Key.IsRole(RoleId.Vampire) || data.Key.IsDead()|| data.Value.IsDead()) {
+                foreach (var data in RoleClass.Vampire.Targets.ToArray())
+                {
+                    if (data.Key == null || data.Value == null || !data.Key.IsRole(RoleId.Vampire) || data.Key.IsDead() || data.Value.IsDead())
+                    {
                         RoleClass.Vampire.Targets.Remove(data.Key);
                         continue;
                     }
@@ -83,7 +86,7 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.Vampire.target == null) return;
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
-                PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer);
+                CachedPlayer.LocalPlayer.PlayerControl.killTimer = RoleHelpers.GetCoolTime(CachedPlayer.LocalPlayer);
                 var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Vampire.KillDelay);
                 RoleClass.Vampire.Timer = (float)((RoleClass.Vampire.KillTimer + TimeSpanDate - DateTime.Now).TotalSeconds);
                 SuperNewRolesPlugin.Logger.LogInfo("ヴァンパイア:" + RoleClass.Vampire.Timer);

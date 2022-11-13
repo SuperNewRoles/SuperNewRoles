@@ -8,11 +8,12 @@ namespace SuperNewRoles.Roles
     {
         public static void ImpostorSetTarget()
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Kunoichi))
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Kunoichi))
             {
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControl.LocalPlayer);
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(CachedPlayer.LocalPlayer.PlayerControl);
                 return;
-            } else if (PlayerControl.LocalPlayer.IsRole(RoleId.Penguin) && !CustomOptionHolder.PenguinCanDefaultKill.GetBool() && RoleClass.Penguin.currentTarget is null)
+            }
+            else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Penguin) && !CustomOptionHolder.PenguinCanDefaultKill.GetBool() && RoleClass.Penguin.currentTarget is null)
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 return;
@@ -20,7 +21,7 @@ namespace SuperNewRoles.Roles
             List<PlayerControl> untarget = new();
             untarget.AddRange(RoleClass.SideKiller.MadKillerPlayer);
             untarget.AddRange(RoleClass.Spy.SpyPlayer);
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Vampire)) untarget.AddRange(RoleClass.Dependents.DependentsPlayer);
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Vampire)) untarget.AddRange(RoleClass.Dependents.DependentsPlayer);
             FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.SetTarget(untargetablePlayers: untarget, onlyCrewmates: true));
         }
     }

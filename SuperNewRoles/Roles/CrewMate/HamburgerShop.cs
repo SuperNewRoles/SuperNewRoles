@@ -15,9 +15,9 @@ namespace SuperNewRoles.Roles.CrewMate
             static Minigame tempminigame;
             public static void Prefix(Console __instance)
             {
-                if (!PlayerControl.LocalPlayer.IsRole(RoleId.HamburgerShop)
+                if (!CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.HamburgerShop)
                     || !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool()) return;
-                __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
+                __instance.CanUse(CachedPlayer.LocalPlayer.PlayerControl.Data, out var canUse, out var _);
                 if (canUse)
                 {
                     PlayerTask task = __instance.FindTask(CachedPlayer.LocalPlayer);
@@ -28,9 +28,9 @@ namespace SuperNewRoles.Roles.CrewMate
             }
             public static void Postfix(Console __instance)
             {
-                if (!PlayerControl.LocalPlayer.IsRole(RoleId.HamburgerShop)
+                if (!CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.HamburgerShop)
                     || !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool()) return;
-                __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
+                __instance.CanUse(CachedPlayer.LocalPlayer.PlayerControl.Data, out var canUse, out var _);
                 if (canUse)
                 {
                     PlayerTask task = __instance.FindTask(CachedPlayer.LocalPlayer);

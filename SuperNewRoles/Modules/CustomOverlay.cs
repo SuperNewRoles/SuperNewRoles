@@ -120,7 +120,7 @@ namespace SuperNewRoles.Patches
             if (overlayShown) return;
 
             HudManager hudManager = FastDestroyableSingleton<HudManager>.Instance;
-            if ((MapUtilities.CachedShipStatus == null || PlayerControl.LocalPlayer == null || hudManager == null || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed || PlayerControl.LocalPlayer.CanMove) && MeetingHud.Instance != null)
+            if ((MapUtilities.CachedShipStatus == null || CachedPlayer.LocalPlayer.PlayerControl == null || hudManager == null || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed || CachedPlayer.LocalPlayer.PlayerControl.CanMove) && MeetingHud.Instance != null)
                 return;
 
             if (!InitializeOverlays()) return;

@@ -92,7 +92,7 @@ namespace SuperNewRoles.Roles.Crewmate
         }
         public static void HandleRpc(ActionType type)
         {
-            if (RoleClass.Painter.IsLocalActionSend && PlayerControl.LocalPlayer.IsAlive())
+            if (RoleClass.Painter.IsLocalActionSend && CachedPlayer.LocalPlayer.PlayerControl.IsAlive())
             {
                 var pos = CachedPlayer.LocalPlayer.transform.position;
                 byte[] buff = new byte[sizeof(float) * 2];

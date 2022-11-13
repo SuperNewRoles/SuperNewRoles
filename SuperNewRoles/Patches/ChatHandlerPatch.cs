@@ -319,7 +319,7 @@ namespace SuperNewRoles.Patches
             {
                 if (target == null)
                 {
-                    string name = PlayerControl.LocalPlayer.GetDefaultName();
+                    string name = CachedPlayer.LocalPlayer.PlayerControl.GetDefaultName();
                     AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name));
                     return;
                 }
@@ -329,16 +329,16 @@ namespace SuperNewRoles.Patches
                 }
                 else
                 {
-                    string name = PlayerControl.LocalPlayer.GetDefaultName();
-                    PlayerControl.LocalPlayer.SetName(SNRCommander + "\n" + rolename);
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
-                    PlayerControl.LocalPlayer.SetName(name);
+                    string name = CachedPlayer.LocalPlayer.PlayerControl.GetDefaultName();
+                    CachedPlayer.LocalPlayer.PlayerControl.SetName(SNRCommander + "\n" + rolename);
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(CachedPlayer.LocalPlayer.PlayerControl, text);
+                    CachedPlayer.LocalPlayer.PlayerControl.SetName(name);
                 }
                 return;
             }
             else
             {
-                string name = PlayerControl.LocalPlayer.GetDefaultName();
+                string name = CachedPlayer.LocalPlayer.PlayerControl.GetDefaultName();
                 if (target == null)
                 {
                     AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name, time));
@@ -352,9 +352,9 @@ namespace SuperNewRoles.Patches
                 {
                     new LateTask(() =>
                     {
-                        PlayerControl.LocalPlayer.SetName(SNRCommander + rolename);
-                        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
-                        PlayerControl.LocalPlayer.SetName(name);
+                        CachedPlayer.LocalPlayer.PlayerControl.SetName(SNRCommander + rolename);
+                        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(CachedPlayer.LocalPlayer.PlayerControl, text);
+                        CachedPlayer.LocalPlayer.PlayerControl.SetName(name);
                     }, time, "Set SNR Name");
                 }
                 return;
@@ -392,19 +392,19 @@ namespace SuperNewRoles.Patches
                 yield return new WaitForSeconds(time);
             }
             var crs = CustomRpcSender.Create("AllSend");
-            crs.AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetName)
+            crs.AutoStartRpc(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)RpcCalls.SetName)
                 .Write(SendName)
                 .EndRpc()
-                .AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SendChat)
+                .AutoStartRpc(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)RpcCalls.SendChat)
                 .Write(command)
                 .EndRpc()
-                .AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetName)
+                .AutoStartRpc(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)RpcCalls.SetName)
                 .Write(name)
                 .EndRpc()
                 .SendMessage();
-            PlayerControl.LocalPlayer.SetName(SendName);
-            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, command);
-            PlayerControl.LocalPlayer.SetName(name);
+            CachedPlayer.LocalPlayer.PlayerControl.SetName(SendName);
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(CachedPlayer.LocalPlayer.PlayerControl, command);
+            CachedPlayer.LocalPlayer.PlayerControl.SetName(name);
         }
         static IEnumerator PrivateSend(PlayerControl target, string SendName, string command, float time = 0)
         {

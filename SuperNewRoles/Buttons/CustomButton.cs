@@ -14,7 +14,7 @@ namespace SuperNewRoles.Buttons
         {
             get
             {
-                RoleId Role = PlayerControl.LocalPlayer.GetRole();
+                RoleId Role = CachedPlayer.LocalPlayer.PlayerControl.GetRole();
                 bool IsAlive = CachedPlayer.LocalPlayer.IsAlive();
                 return buttons.FindAll(x => x.HasButton(IsAlive, Role));
             }
@@ -105,8 +105,8 @@ namespace SuperNewRoles.Buttons
         {
             buttons.RemoveAll(item => item.actionButton == null);
 
-            bool isAlive = PlayerControl.LocalPlayer.IsAlive();
-            RoleId role = PlayerControl.LocalPlayer.GetRole();
+            bool isAlive = CachedPlayer.LocalPlayer.PlayerControl.IsAlive();
+            RoleId role = CachedPlayer.LocalPlayer.PlayerControl.GetRole();
             foreach (CustomButton btn in buttons)
             {
                 try
@@ -123,8 +123,8 @@ namespace SuperNewRoles.Buttons
         public static void MeetingEndedUpdate()
         {
             buttons.RemoveAll(item => item.actionButton == null);
-            bool isAlive = PlayerControl.LocalPlayer.IsAlive();
-            RoleId role = PlayerControl.LocalPlayer.GetRole();
+            bool isAlive = CachedPlayer.LocalPlayer.PlayerControl.IsAlive();
+            RoleId role = CachedPlayer.LocalPlayer.PlayerControl.GetRole();
             foreach (CustomButton btn in buttons)
             {
                 try
@@ -180,7 +180,7 @@ namespace SuperNewRoles.Buttons
                 Vector3 pos = hudManager.UseButton.transform.localPosition;
                 if (mirror) pos = new Vector3(-pos.x, pos.y, pos.z);
                 actionButton.transform.localPosition = pos + PositionOffset;
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
+                if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.GM))
                 {
                     actionButton.transform.localScale = new(0.7f, 0.7f, 0.7f);
                 }

@@ -22,11 +22,11 @@ namespace SuperNewRoles.Roles
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 //自分自身は撃ち抜かれない
-                if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
+                if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerControl.PlayerId) continue;
 
                 if (player.IsDead()) continue;
 
-                pos = player.transform.position - PlayerControl.LocalPlayer.transform.position;
+                pos = player.transform.position - CachedPlayer.LocalPlayer.PlayerControl.transform.position;
                 pos = new Vector3(
                     pos.x * MathF.Cos(mouseAngle) + pos.y * MathF.Sin(mouseAngle),
                     pos.y * MathF.Cos(mouseAngle) - pos.x * MathF.Sin(mouseAngle));
@@ -42,7 +42,7 @@ namespace SuperNewRoles.Roles
         {
             if (!RoleClass.Kunoichi.Kunai.kunai.active) return;
             if (!RoleClass.Kunoichi.HideKunai && RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(CachedPlayer.LocalPlayer.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[CachedPlayer.LocalPlayer.PlayerId]) return;
-            PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Kunoichi.KillCoolTime, RoleClass.Kunoichi.KillCoolTime);
+            CachedPlayer.LocalPlayer.PlayerControl.SetKillTimerUnchecked(RoleClass.Kunoichi.KillCoolTime, RoleClass.Kunoichi.KillCoolTime);
             RoleClass.Kunoichi.SendKunai = RoleClass.Kunoichi.Kunai;
             RoleClass.Kunoichi.Kunai = new Kunai();
             RoleClass.Kunoichi.Kunai.kunai.transform.position = CachedPlayer.LocalPlayer.transform.position;
@@ -76,7 +76,7 @@ namespace SuperNewRoles.Roles
                     RoleClass.Kunoichi.Kunai.image.transform.localScale = new Vector3(1f, 1f);
             }
 
-            if (PlayerControl.LocalPlayer.inVent)
+            if (CachedPlayer.LocalPlayer.PlayerControl.inVent)
                 RoleClass.Kunoichi.Kunai.kunai.active = false;
             foreach (Kunai kunai in RoleClass.Kunoichi.Kunais.ToArray())
             {
@@ -94,13 +94,13 @@ namespace SuperNewRoles.Roles
                         if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
                         if (Vector2.Distance(p.GetTruePosition() + new Vector2(0, 0.4f), kunaipos) < 0.4f)
                         {
-                            if (!RoleClass.Kunoichi.HitCount.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId] = new();
-                            if (!RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId].ContainsKey(p.PlayerId)) RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] = 0;
-                            RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId]++;
-                            if (RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] >= RoleClass.Kunoichi.KillKunai)
+                            if (!RoleClass.Kunoichi.HitCount.ContainsKey(CachedPlayer.LocalPlayer.PlayerControl.PlayerId)) RoleClass.Kunoichi.HitCount[CachedPlayer.LocalPlayer.PlayerControl.PlayerId] = new();
+                            if (!RoleClass.Kunoichi.HitCount[CachedPlayer.LocalPlayer.PlayerControl.PlayerId].ContainsKey(p.PlayerId)) RoleClass.Kunoichi.HitCount[CachedPlayer.LocalPlayer.PlayerControl.PlayerId][p.PlayerId] = 0;
+                            RoleClass.Kunoichi.HitCount[CachedPlayer.LocalPlayer.PlayerControl.PlayerId][p.PlayerId]++;
+                            if (RoleClass.Kunoichi.HitCount[CachedPlayer.LocalPlayer.PlayerControl.PlayerId][p.PlayerId] >= RoleClass.Kunoichi.KillKunai)
                             {
-                                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, p, showAnimation: false);
-                                RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] = 0;
+                                ModHelpers.CheckMurderAttemptAndKill(CachedPlayer.LocalPlayer.PlayerControl, p, showAnimation: false);
+                                RoleClass.Kunoichi.HitCount[CachedPlayer.LocalPlayer.PlayerControl.PlayerId][p.PlayerId] = 0;
                             }
                             RoleClass.Kunoichi.Kunais.Remove(kunai);
                             GameObject.Destroy(kunai.kunai);
@@ -165,7 +165,7 @@ namespace SuperNewRoles.Roles
         {
             // 透明化する
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
                 writer.Write(true);
                 writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -176,7 +176,7 @@ namespace SuperNewRoles.Roles
         {
             // 透明化を解除する
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
                 writer.Write(false);
                 writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -251,7 +251,7 @@ namespace SuperNewRoles.Roles
                     var Scientist = __instance.myPlayer;
                     if (Scientist == null || Scientist.IsDead()) return;
                     var ison = RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(__instance.myPlayer.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[__instance.myPlayer.PlayerId];
-                    bool canSee = !ison || PlayerControl.LocalPlayer.IsDead() || __instance.myPlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
+                    bool canSee = !ison || CachedPlayer.LocalPlayer.PlayerControl.IsDead() || __instance.myPlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
 
                     var opacity = canSee ? 0.1f : 0.0f;
                     if (ison)

@@ -24,7 +24,7 @@ namespace SuperNewRoles.Mode.Detective
         }
         public static void RoleSelect()
         {
-            DetectivePlayer = PlayerControl.LocalPlayer;
+            DetectivePlayer = CachedPlayer.LocalPlayer.PlayerControl;
             List<PlayerControl> selectplayers = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {

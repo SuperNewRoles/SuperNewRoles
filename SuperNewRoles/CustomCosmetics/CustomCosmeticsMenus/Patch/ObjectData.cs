@@ -283,12 +283,12 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
 
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
             {
-                PlayerControl.LocalPlayer.CmdCheckColor(DataManager.Player.Customization.Color);
-                PlayerControl.LocalPlayer.RpcSetHat(DataManager.Player.Customization.Hat);
-                PlayerControl.LocalPlayer.RpcSetVisor(DataManager.Player.Customization.Visor);
-                PlayerControl.LocalPlayer.RpcSetSkin(DataManager.Player.Customization.Skin);
-                PlayerControl.LocalPlayer.RpcSetNamePlate(DataManager.Player.Customization.NamePlate);
-                PlayerControl.LocalPlayer.RpcSetPet(DataManager.Player.Customization.Pet);
+                CachedPlayer.LocalPlayer.PlayerControl.CmdCheckColor(DataManager.Player.Customization.Color);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSetHat(DataManager.Player.Customization.Hat);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSetVisor(DataManager.Player.Customization.Visor);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSetSkin(DataManager.Player.Customization.Skin);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSetNamePlate(DataManager.Player.Customization.NamePlate);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSetPet(DataManager.Player.Customization.Pet);
             }
             PlayerCustomizationMenu.Instance.PreviewArea.UpdateFromDataManager(PlayerMaterial.MaskType.ComplexUI);
         }

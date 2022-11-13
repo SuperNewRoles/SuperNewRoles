@@ -7,7 +7,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler()
         {
             Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new();
-            Teams.Add(PlayerControl.LocalPlayer);
+            Teams.Add(CachedPlayer.LocalPlayer.PlayerControl);
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.IsImpostor() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)

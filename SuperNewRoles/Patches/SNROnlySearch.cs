@@ -28,7 +28,7 @@ namespace SuperNewRoles.Patches
                     {
                         currentMapId = PlayerControl.GameOptions.MapId;
                         PlayerControl.GameOptions.MapId = 6;
-                        PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+                        CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
                     }
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetMapId);
                     writer.Write(currentMapId);
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Patches
                     {
                         currentMapId = 0;
                         PlayerControl.GameOptions.MapId = currentMapId;
-                        PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+                        CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
                     }
                 }
             }
@@ -95,7 +95,8 @@ namespace SuperNewRoles.Patches
                         if (render.name != "IsSNROnlyRoom")
                             render.transform.parent.gameObject.SetActive(false);
                     IsSNROnlyRoomButtonRender.color = Color.white;
-                } else IsSNROnlyRoomButtonRender.color = Palette.DisabledGrey;
+                }
+                else IsSNROnlyRoomButtonRender.color = Palette.DisabledGrey;
                 (button = IsSNROnlyRoomButton.GetComponent<PassiveButton>()).OnClick.RemoveAllListeners();
                 button.OnClick.AddListener((UnityAction)(() =>
                 {

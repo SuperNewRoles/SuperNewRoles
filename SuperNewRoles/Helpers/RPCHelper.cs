@@ -12,7 +12,7 @@ namespace SuperNewRoles.Helpers
     {
         public static MessageWriter StartRPC(RpcCalls RPCId, PlayerControl SendTarget = null)
         {
-            return StartRPC(PlayerControl.LocalPlayer.NetId, (byte)RPCId, SendTarget);
+            return StartRPC(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)RPCId, SendTarget);
         }
         public static MessageWriter StartRPC(uint NetId, RpcCalls RPCId, PlayerControl SendTarget = null)
         {
@@ -20,7 +20,7 @@ namespace SuperNewRoles.Helpers
         }
         public static MessageWriter StartRPC(CustomRPC RPCId, PlayerControl SendTarget = null)
         {
-            return StartRPC(PlayerControl.LocalPlayer.NetId, (byte)RPCId, SendTarget);
+            return StartRPC(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)RPCId, SendTarget);
         }
         public static MessageWriter StartRPC(uint NetId, CustomRPC RPCId, PlayerControl SendTarget = null)
         {
@@ -28,7 +28,7 @@ namespace SuperNewRoles.Helpers
         }
         public static MessageWriter StartRPC(byte RPCId, PlayerControl SendTarget = null)
         {
-            return StartRPC(PlayerControl.LocalPlayer.NetId, RPCId, SendTarget);
+            return StartRPC(CachedPlayer.LocalPlayer.PlayerControl.NetId, RPCId, SendTarget);
         }
         public static MessageWriter StartRPC(uint NetId, byte RPCId, PlayerControl SendTarget = null)
         {
@@ -73,7 +73,7 @@ namespace SuperNewRoles.Helpers
         }
         public static void RPCGameOptionsPrivate(GameOptionsData Data, PlayerControl target)
         {
-            MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, 2, SendOption.None, target.GetClientId());
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, 2, SendOption.None, target.GetClientId());
             messageWriter.WriteBytesAndSize(Data.ToBytes(5));
             messageWriter.EndMessage();
         }
@@ -184,7 +184,7 @@ namespace SuperNewRoles.Helpers
         }
         public static void RPCSetRoleUnchecked(this PlayerControl player, RoleTypes roletype)
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetVanillaRole, SendOption.Reliable);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.UncheckedSetVanillaRole, SendOption.Reliable);
             writer.Write(player.PlayerId);
             writer.Write((byte)roletype);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -210,9 +210,9 @@ namespace SuperNewRoles.Helpers
         public static void RpcResetAbilityCooldown(this PlayerControl target)
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            if (PlayerControl.LocalPlayer.PlayerId == target.PlayerId)
+            if (CachedPlayer.LocalPlayer.PlayerControl.PlayerId == target.PlayerId)
             {
-                PlayerControl.LocalPlayer.Data.Role.SetCooldown();
+                CachedPlayer.LocalPlayer.PlayerControl.Data.Role.SetCooldown();
             }
             else
             {

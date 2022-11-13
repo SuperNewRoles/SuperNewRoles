@@ -43,7 +43,7 @@ namespace SuperNewRoles.Roles
             return GameObject.FindObjectsOfType<DoorConsole>().ToArray().FirstOrDefault(x =>
             {
                 if (x.MyDoor == null) return false;
-                float num = Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), x.transform.position);
+                float num = Vector2.Distance(CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(), x.transform.position);
                 return num <= x.UsableDistance;
             })?.MyDoor;
         }

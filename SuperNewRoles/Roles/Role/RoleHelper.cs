@@ -111,7 +111,7 @@ namespace SuperNewRoles
         }
         public static void SetQuarreledRPC(PlayerControl player1, PlayerControl player2)
         {
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetQuarreled, SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SetQuarreled, SendOption.Reliable, -1);
             Writer.Write(player1.PlayerId);
             Writer.Write(player2.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -122,13 +122,13 @@ namespace SuperNewRoles
             RoleClass.Lovers.LoversPlayer.Add(sets);
             if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
-                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+                PlayerControlHepler.RefreshRoleDescription(CachedPlayer.LocalPlayer.PlayerControl);
             }
             ChacheManager.ResetLoversChache();
         }
         public static void SetLoversRPC(PlayerControl player1, PlayerControl player2)
         {
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetLovers, SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SetLovers, SendOption.Reliable, -1);
             Writer.Write(player1.PlayerId);
             Writer.Write(player2.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -211,7 +211,7 @@ namespace SuperNewRoles
                 bool isShapeshift = false;
                 foreach (KeyValuePair<byte, PlayerControl> p in RoleClass.Doppelganger.Targets)
                 {
-                    if (p.Key == PlayerControl.LocalPlayer.PlayerId)
+                    if (p.Key == CachedPlayer.LocalPlayer.PlayerControl.PlayerId)
                     {
                         isShapeshift = true;
                         break;
@@ -678,7 +678,7 @@ namespace SuperNewRoles
             }
             if (flag)
             {
-                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+                PlayerControlHepler.RefreshRoleDescription(CachedPlayer.LocalPlayer.PlayerControl);
             }
             SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
             PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(player.PlayerId);
@@ -1129,13 +1129,13 @@ namespace SuperNewRoles
                 case RoleId.Dependents:
                     RoleClass.Dependents.DependentsPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
         public static void SetRoleRPC(this PlayerControl Player, RoleId selectRoleData)
         {
-            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetRole, SendOption.Reliable, -1);
+            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SetRole, SendOption.Reliable, -1);
             killWriter.Write(Player.PlayerId);
             killWriter.Write((byte)selectRoleData);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
@@ -1194,7 +1194,7 @@ namespace SuperNewRoles
                 case RoleId.WaveCannonJackal:
                 case RoleId.Cupid:
                 case RoleId.Dependents:
-                //タスククリアか
+                    //タスククリアか
                     IsTaskClear = true;
                     break;
                 case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
@@ -1256,7 +1256,7 @@ namespace SuperNewRoles
         {
             try
             {
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks)
                     if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
                         return true;
             }
@@ -1267,7 +1267,7 @@ namespace SuperNewRoles
         {
             try
             {
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks)
                     if (task.TaskType == TaskTypes.FixComms)
                         return true;
             }
@@ -1281,7 +1281,7 @@ namespace SuperNewRoles
         {
             try
             {
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                foreach (PlayerTask task in CachedPlayer.LocalPlayer.PlayerControl.myTasks)
                     if (task.TaskType == TaskTypes.FixLights)
                         return true;
             }

@@ -312,8 +312,8 @@ namespace SuperNewRoles.Modules
             if (showerid != CachedPlayer.LocalPlayer.PlayerId) return;
             PlayerControl target = ModHelpers.PlayerById(targetid);
             if (target == null) return;
-            PlayerControl.LocalPlayer.ProtectPlayer(target, 0);
-            PlayerControl.LocalPlayer.MurderPlayer(target);
+            CachedPlayer.LocalPlayer.PlayerControl.ProtectPlayer(target, 0);
+            CachedPlayer.LocalPlayer.PlayerControl.MurderPlayer(target);
         }
         public static void KnightProtectClear(byte Target)
         {
@@ -459,7 +459,7 @@ namespace SuperNewRoles.Modules
         {
             Painter.ActionType type = (Painter.ActionType)ActionTypeId;
             if (!RoleClass.Painter.ActionData.ContainsKey(type)) return;
-            if (!PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) return;
+            if (!CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Painter)) return;
             if (RoleClass.Painter.CurrentTarget == null || RoleClass.Painter.CurrentTarget.PlayerId != target) return;
             Vector2 position = Vector2.zero;
             position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
@@ -653,7 +653,7 @@ namespace SuperNewRoles.Modules
             RoleClass.SideKiller.MadKillerPair.Add(source.PlayerId, target.PlayerId);
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
             ChacheManager.ResetMyRoleChache();
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHepler.RefreshRoleDescription(CachedPlayer.LocalPlayer.PlayerControl);
         }
         public static void UncheckedSetVanillaRole(byte playerid, byte roletype)
         {
@@ -822,7 +822,7 @@ namespace SuperNewRoles.Modules
             PlayerControl target = ModHelpers.PlayerById(TargetId);
             if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
             if (sheriff == null || target == null) return;
-            if (!PlayerControl.LocalPlayer.IsAlive())
+            if (!CachedPlayer.LocalPlayer.PlayerControl.IsAlive())
             {
                 FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は" + target.name + "をシェリフキルした！");
                 if (MissFire)
@@ -837,7 +837,7 @@ namespace SuperNewRoles.Modules
             if (MissFire)
             {
                 sheriff.Exiled();
-                if (PlayerControl.LocalPlayer == sheriff)
+                if (CachedPlayer.LocalPlayer.PlayerControl == sheriff)
                 {
                     FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, sheriff.Data);
                 }
@@ -845,7 +845,7 @@ namespace SuperNewRoles.Modules
             else
             {
                 target.Exiled();
-                if (PlayerControl.LocalPlayer == target)
+                if (CachedPlayer.LocalPlayer.PlayerControl == target)
                 {
                     FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, sheriff.Data);
                 }
@@ -978,7 +978,7 @@ namespace SuperNewRoles.Modules
                     RoleClass.Jackal.CanCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
                 }
             }
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHepler.RefreshRoleDescription(CachedPlayer.LocalPlayer.PlayerControl);
             ChacheManager.ResetMyRoleChache();
         }
         public static void CreateSidekick(byte playerid, bool IsFake)
@@ -994,7 +994,7 @@ namespace SuperNewRoles.Modules
                 FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
                 player.ClearRole();
                 RoleClass.Jackal.SidekickPlayer.Add(player);
-                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+                PlayerControlHepler.RefreshRoleDescription(CachedPlayer.LocalPlayer.PlayerControl);
                 ChacheManager.ResetMyRoleChache();
             }
         }
@@ -1011,7 +1011,7 @@ namespace SuperNewRoles.Modules
                 FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
                 player.ClearRole();
                 RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
-                PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+                PlayerControlHepler.RefreshRoleDescription(CachedPlayer.LocalPlayer.PlayerControl);
                 ChacheManager.ResetMyRoleChache();
             }
         }
@@ -1127,12 +1127,12 @@ namespace SuperNewRoles.Modules
             var SwapperPosition = SwapperPlayer.transform.position;
             //Text
             var rand = new System.Random();
-            if (SwapperID == PlayerControl.LocalPlayer.PlayerId)
+            if (SwapperID == CachedPlayer.LocalPlayer.PlayerControl.PlayerId)
             {
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;
                 SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
             }
-            else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId)
+            else if (SwapPlayerID == CachedPlayer.LocalPlayer.PlayerControl.PlayerId)
             {
                 CachedPlayer.LocalPlayer.transform.position = SwapperPosition;
                 SuperNewRolesPlugin.Logger.LogInfo("スワップランダム！");

@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles
             {
                 if (exiled != null)
                 {
-                    if (PlayerControl.LocalPlayer.IsRole(RoleId.FalseCharges) && PlayerControl.LocalPlayer.IsDead() && !CachedPlayer.LocalPlayer.Data.Disconnected && RoleClass.FalseCharges.Turns != 255)
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.FalseCharges) && CachedPlayer.LocalPlayer.PlayerControl.IsDead() && !CachedPlayer.LocalPlayer.Data.Disconnected && RoleClass.FalseCharges.Turns != 255)
                     {
                         if (RoleClass.FalseCharges.Turns <= 0) return;
                         if (exiled.PlayerId == RoleClass.FalseCharges.FalseChargePlayer)
@@ -31,7 +31,7 @@ namespace SuperNewRoles.Roles
                             }
                             else
                             {
-                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
                                 writer.Write((byte)CustomGameOverReason.FalseChargesWin);
                                 writer.Write(false);
                                 AmongUsClient.Instance.FinishRpcImmediately(writer);

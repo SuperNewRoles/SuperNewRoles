@@ -30,14 +30,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     || (!RoleClass.Egoist.UseSabo && player.IsRole(RoleId.Egoist))
                     || (!RoleClass.JackalSeer.IsUseSabo && player.IsRole(RoleId.JackalSeer))) return false;
             }
-            if (PlayerControl.LocalPlayer.IsUseVent() && RoleHelpers.IsComms())
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsUseVent() && RoleHelpers.IsComms())
             {
                 if (BattleRoyal.Main.VentData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))
                 {
                     var data = BattleRoyal.Main.VentData[CachedPlayer.LocalPlayer.PlayerId];
                     if (data != null)
                     {
-                        PlayerControl.LocalPlayer.MyPhysics.RpcExitVent((int)data);
+                        CachedPlayer.LocalPlayer.PlayerControl.MyPhysics.RpcExitVent((int)data);
                     }
                 }
             }

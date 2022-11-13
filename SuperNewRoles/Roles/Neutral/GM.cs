@@ -30,7 +30,7 @@ namespace SuperNewRoles.Roles.Neutral
                 "GMKill",
                 () =>
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             writer.Write(target.PlayerId);
             writer.Write(0);
@@ -43,7 +43,7 @@ namespace SuperNewRoles.Roles.Neutral
                 "GMRevive",
                 () =>
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ReviveRPC, SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ReviveRPC, SendOption.Reliable, -1);
                     writer.Write(target.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.ReviveRPC(target.PlayerId);
@@ -62,7 +62,7 @@ namespace SuperNewRoles.Roles.Neutral
                 "GMCleanDeadbody",//"死体削除",
                 () =>
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CleanBody, SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CleanBody, SendOption.Reliable, -1);
                     writer.Write(target.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.CleanBody(target.PlayerId);
@@ -73,7 +73,7 @@ namespace SuperNewRoles.Roles.Neutral
                 "GMStartMeeting",//"会議開始",
                 () =>
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedMeeting, SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.UncheckedMeeting, SendOption.Reliable, -1);
                     writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.UncheckedMeeting(CachedPlayer.LocalPlayer.PlayerId);
@@ -84,11 +84,11 @@ namespace SuperNewRoles.Roles.Neutral
                 "GMCleanDeadbodyAndRevive",//"死体を削除して復活",
                 () =>
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ReviveRPC, SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ReviveRPC, SendOption.Reliable, -1);
                     writer.Write(target.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.ReviveRPC(target.PlayerId);
-                    writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CleanBody, SendOption.Reliable, -1);
+                    writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CleanBody, SendOption.Reliable, -1);
                     writer.Write(target.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.CleanBody(target.PlayerId);
@@ -100,7 +100,7 @@ namespace SuperNewRoles.Roles.Neutral
                 () =>
                 {
                     bool IsAlive = target.IsAlive();
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
                     writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(target.PlayerId);
                     writer.Write(0);
@@ -108,7 +108,7 @@ namespace SuperNewRoles.Roles.Neutral
                     RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId, 0);
                     if (IsAlive)
                     {
-                        writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ReviveRPC, SendOption.Reliable, -1);
+                        writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ReviveRPC, SendOption.Reliable, -1);
                         writer.Write(target.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.ReviveRPC(target.PlayerId);
@@ -126,7 +126,7 @@ namespace SuperNewRoles.Roles.Neutral
                     }
                     else
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedMeeting, SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.UncheckedMeeting, SendOption.Reliable, -1);
                         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.UncheckedMeeting(CachedPlayer.LocalPlayer.PlayerId);
@@ -140,10 +140,10 @@ namespace SuperNewRoles.Roles.Neutral
         {
             if (CustomOptionHolder.GMOption.GetBool())
             {
-                PlayerControl.LocalPlayer.SetRoleRPC(RoleId.GM);
-                PlayerControl.LocalPlayer.RpcExiledUnchecked();
-                PlayerControl.LocalPlayer.Data.IsDead = true;
-                PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.Crewmate);
+                CachedPlayer.LocalPlayer.PlayerControl.SetRoleRPC(RoleId.GM);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcExiledUnchecked();
+                CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead = true;
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSetRole(RoleTypes.Crewmate);
             }
         }
         public static void CreateButton(HudManager hm)

@@ -45,9 +45,9 @@ namespace SuperNewRoles.MapCustoms
             //MiraHQにベントを追加する
             if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Mira) && MapCustom.MiraAdditionalVents.GetBool())
             {
-                AdditionalVents vents1 = new(new Vector3(11.3518f, 10.4786f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 研究室
-                AdditionalVents vents2 = new(new Vector3(12.1288f, 7.2f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // Y字下
-                AdditionalVents vents3 = new(new Vector3(19.574f, 17.3698f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // アドミン
+                AdditionalVents vents1 = new(new Vector3(11.3518f, 10.4786f, CachedPlayer.LocalPlayer.PlayerControl.transform.position.z + 1f)); // 研究室
+                AdditionalVents vents2 = new(new Vector3(12.1288f, 7.2f, CachedPlayer.LocalPlayer.PlayerControl.transform.position.z + 1f)); // Y字下
+                AdditionalVents vents3 = new(new Vector3(19.574f, 17.3698f, CachedPlayer.LocalPlayer.PlayerControl.transform.position.z + 1f)); // アドミン
                 vents1.vent.Left = vents3.vent; // 研究室 - アドミン
                 vents1.vent.Right = vents2.vent;// 研究室 - Y字下
                 vents2.vent.Center = vents3.vent; // Y字下- アドミン
@@ -59,9 +59,9 @@ namespace SuperNewRoles.MapCustoms
             // Polusにベントを追加する
             if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustom.PolusAdditionalVents.GetBool())
             {
-                AdditionalVents vents1 = new(new Vector3(36.54f, -21.77f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 標本室
-                AdditionalVents vents2 = new(new Vector3(11.5522f, -21.1158f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // ウェポン
-                AdditionalVents vents3 = new(new Vector3(26.67f, -17.54f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // バイタル
+                AdditionalVents vents1 = new(new Vector3(36.54f, -21.77f, CachedPlayer.LocalPlayer.PlayerControl.transform.position.z + 1f)); // 標本室
+                AdditionalVents vents2 = new(new Vector3(11.5522f, -21.1158f, CachedPlayer.LocalPlayer.PlayerControl.transform.position.z + 1f)); // ウェポン
+                AdditionalVents vents3 = new(new Vector3(26.67f, -17.54f, CachedPlayer.LocalPlayer.PlayerControl.transform.position.z + 1f)); // バイタル
                 vents1.vent.Left = vents3.vent; // 標本室 - バイタル
                 vents1.vent.Right = vents2.vent;// 標本室 - ウェポン
                 vents2.vent.Center = vents3.vent; // ウェポン- バイタル
@@ -74,18 +74,18 @@ namespace SuperNewRoles.MapCustoms
             if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AirShipAdditionalVents.GetBool())
             {
                 SuperNewRolesPlugin.Logger.LogInfo("べんとおおおお");
-                AdditionalVents vents1 = new(new Vector3(23.5483f, -5.589f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 診察室
+                AdditionalVents vents1 = new(new Vector3(23.5483f, -5.589f, CachedPlayer.LocalPlayer.PlayerControl.transform.position.z + 1f)); // 診察室
                 AdditionalVents vents2 = new(
-                    new Vector3(CustomOptionHolder.ConnectKillerOption.GetSelection() == 0 ? 24.8562f : 26.8562f, 5.2692f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // ラウンジ
-                AdditionalVents vents3 = new(new Vector3(5.9356f, 3.0133f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // メイン
+                    new Vector3(CustomOptionHolder.ConnectKillerOption.GetSelection() == 0 ? 24.8562f : 26.8562f, 5.2692f, CachedPlayer.LocalPlayer.PlayerControl.transform.position.z + 1f)); // ラウンジ
+                AdditionalVents vents3 = new(new Vector3(5.9356f, 3.0133f, CachedPlayer.LocalPlayer.PlayerControl.transform.position.z + 1f)); // メイン
                 vents1.vent.Right = vents2.vent;//診察-ラウンジ
                 vents2.vent.Left = vents1.vent;//ラウンジ-診察
                 vents2.vent.Right = vents3.vent;//ラウンジ-メイン
                 vents3.vent.Right = vents2.vent; // メイン-ラウンジ
 
-                AdditionalVents vents4 = new(new Vector3(6.7651f, -10.2f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // セキュ
-                AdditionalVents vents5 = new(new Vector3(18.1884f, -3.991f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // エレキ
-                AdditionalVents vents6 = new(new Vector3(21.1574f, -1.3543f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // シャワー
+                AdditionalVents vents4 = new(new Vector3(6.7651f, -10.2f, CachedPlayer.LocalPlayer.PlayerControl.transform.position.z + 1f)); // セキュ
+                AdditionalVents vents5 = new(new Vector3(18.1884f, -3.991f, CachedPlayer.LocalPlayer.PlayerControl.transform.position.z + 1f)); // エレキ
+                AdditionalVents vents6 = new(new Vector3(21.1574f, -1.3543f, CachedPlayer.LocalPlayer.PlayerControl.transform.position.z + 1f)); // シャワー
                 vents4.vent.Right = vents5.vent;//セキュ-エレキ
                 vents5.vent.Left = vents4.vent;//エレキ-セキュ
                 vents5.vent.Right = vents6.vent;//エレキ-シャワー

@@ -103,7 +103,7 @@ namespace SuperNewRoles.Mode
             else if (IsMode(ModeId.CopsRobbers))
             {
                 var Data = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
-                Data.Add(PlayerControl.LocalPlayer);
+                Data.Add(CachedPlayer.LocalPlayer.PlayerControl);
                 return Data;
             }
             return new Il2CppSystem.Collections.Generic.List<PlayerControl>();
@@ -145,7 +145,7 @@ namespace SuperNewRoles.Mode
         public static void FixedUpdate(PlayerControl __instance)
         {
             if (IsMode(ModeId.SuperHostRoles))
-                //PlayerControl.LocalPlayer.RpcSetName("<size=>次のターゲット:よッキング</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                //CachedPlayer.LocalPlayer.PlayerControl.RpcSetName("<size=>次のターゲット:よッキング</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                 SuperHostRoles.FixedUpdate.Update();
             else if (IsMode(ModeId.BattleRoyal)) BattleRoyal.Main.FixedUpdate();
             else if (IsMode(ModeId.Zombie)) Zombie.FixedUpdate.Update();
@@ -270,7 +270,7 @@ namespace SuperNewRoles.Mode
                     SuperNewRolesPlugin.Logger.LogInfo("[ModeHandler : HideName()]" + p.GetDefaultName() + "の名前を透明に変更しました");
                 }
             }
-            else SuperNewRolesPlugin.Logger.LogInfo("[ModeHandler : HideName()]" + PlayerControl.LocalPlayer.GetDefaultName() + "ホストでない為、名前を透明化する処理を飛ばしました。");
+            else SuperNewRolesPlugin.Logger.LogInfo("[ModeHandler : HideName()]" + CachedPlayer.LocalPlayer.PlayerControl.GetDefaultName() + "ホストでない為、名前を透明化する処理を飛ばしました。");
         }
     }
 }

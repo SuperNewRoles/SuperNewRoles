@@ -8,13 +8,13 @@ namespace SuperNewRoles.Mode.Zombie
         {
             Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new();
 
-            if (PlayerControl.LocalPlayer.IsZombie())
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsZombie())
             {
-                Teams.Add(PlayerControl.LocalPlayer);
+                Teams.Add(CachedPlayer.LocalPlayer.PlayerControl);
             }
             else
             {
-                Teams.Add(PlayerControl.LocalPlayer);
+                Teams.Add(CachedPlayer.LocalPlayer.PlayerControl);
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
@@ -35,7 +35,7 @@ namespace SuperNewRoles.Mode.Zombie
             Color backcolor = Main.Policecolor;
             string text = ModTranslation.GetString("ZombiePoliceName");
             string desc = ModTranslation.GetString("ZombiePoliceTitle1");
-            if (PlayerControl.LocalPlayer.IsZombie())
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsZombie())
             {
                 text = ModTranslation.GetString("ZombieZombieName");
                 desc = ModTranslation.GetString("ZombieZombieTitle1");

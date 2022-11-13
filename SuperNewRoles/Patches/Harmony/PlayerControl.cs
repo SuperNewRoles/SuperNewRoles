@@ -9,7 +9,7 @@ namespace SuperNewRoles.Patches.Harmony
     {
         private static void Postfix(PlayerControl __instance)
         {
-            var MyRole = PlayerControl.LocalPlayer.GetRole();
+            var MyRole = CachedPlayer.LocalPlayer.PlayerControl.GetRole();
             Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
             JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
         }

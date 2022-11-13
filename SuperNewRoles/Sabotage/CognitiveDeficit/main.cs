@@ -57,7 +57,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                 {
                     if (SabotageManager.InfectedOverlayInstance.CanUseSpecial)
                     {
-                        SabotageManager.CustomSabotageRPC(PlayerControl.LocalPlayer, SabotageManager.CustomSabotage.CognitiveDeficit, true);
+                        SabotageManager.CustomSabotageRPC(CachedPlayer.LocalPlayer.PlayerControl, SabotageManager.CustomSabotage.CognitiveDeficit, true);
                     }
                 }));
                 __instance.allButtons.AddItem(button);
@@ -83,7 +83,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                 if (p3.IsAlive() && !OKPlayers.IsCheckListPlayerControl(p3))
                 {
                     IsOK = false;
-                    if (PlayerControl.LocalPlayer.IsImpostor())
+                    if (CachedPlayer.LocalPlayer.PlayerControl.IsImpostor())
                     {
                         if (!(p3.IsImpostor() || p3.IsRole(RoleId.MadKiller)))
                         {
@@ -126,7 +126,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                 {
                     if (!IsOK2)
                     {
-                        if (Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), data) <= 1)
+                        if (Vector2.Distance(CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(), data) <= 1)
                         {
                             IsOK2 = true;
                         }
@@ -137,7 +137,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                     DistanceTime -= Time.fixedDeltaTime;
                     if (DistanceTime <= 0)
                     {
-                        SabotageManager.CustomSabotageRPC(PlayerControl.LocalPlayer, SabotageManager.CustomSabotage.CognitiveDeficit, false);
+                        SabotageManager.CustomSabotageRPC(CachedPlayer.LocalPlayer.PlayerControl, SabotageManager.CustomSabotage.CognitiveDeficit, false);
                     }
                 }
                 else

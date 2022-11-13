@@ -175,9 +175,9 @@ namespace SuperNewRoles.Modules
 
         public static void ShareOptionSelections()
         {
-            if (CachedPlayer.AllPlayers.Count <= 1 || (AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null)) return;
+            if (CachedPlayer.AllPlayers.Count <= 1 || (AmongUsClient.Instance?.AmHost == false && CachedPlayer.LocalPlayer.PlayerControl == null)) return;
 
-            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareOptions, SendOption.Reliable);
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareOptions, SendOption.Reliable);
             messageWriter.WritePacked((uint)CustomOption.options.Count);
             foreach (CustomOption option in CustomOption.options)
             {
@@ -230,7 +230,7 @@ namespace SuperNewRoles.Modules
                 stringOption.oldValue = stringOption.Value = selection;
                 stringOption.ValueText.text = GetString();
 
-                if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
+                if (AmongUsClient.Instance?.AmHost == true && CachedPlayer.LocalPlayer.PlayerControl)
                 {
                     if (id == 0) SwitchPreset(selection); // Switch presets
                     else if (entry != null && AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)

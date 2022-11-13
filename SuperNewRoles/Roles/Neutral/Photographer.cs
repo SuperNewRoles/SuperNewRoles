@@ -22,7 +22,7 @@ namespace SuperNewRoles.Roles.Neutral
 
                 float distMod = 1.025f;
                 float distance = Vector3.Distance(CachedPlayer.LocalPlayer.transform.position, p.transform.position);
-                bool anythingBetween = PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.GetTruePosition(), p.PlayerControl.GetTruePosition(), Constants.ShadowMask, false);
+                bool anythingBetween = PhysicsHelpers.AnythingBetween(CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(), p.PlayerControl.GetTruePosition(), Constants.ShadowMask, false);
 
                 if (!(distance > ShipStatus.Instance.CalculateLightRadius(CachedPlayer.LocalPlayer.Data) * distMod || anythingBetween)) players.Add(p.PlayerId);
             }
@@ -43,7 +43,7 @@ namespace SuperNewRoles.Roles.Neutral
 
                 float distMod = 1.025f;
                 float distance = Vector3.Distance(CachedPlayer.LocalPlayer.transform.position, p.transform.position);
-                bool anythingBetween = PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.GetTruePosition(), p.PlayerControl.GetTruePosition(), Constants.ShadowMask, false);
+                bool anythingBetween = PhysicsHelpers.AnythingBetween(CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(), p.PlayerControl.GetTruePosition(), Constants.ShadowMask, false);
 
                 if (!(distance > ShipStatus.Instance.CalculateLightRadius(CachedPlayer.LocalPlayer.Data) * distMod || anythingBetween))
                 {
@@ -65,7 +65,7 @@ namespace SuperNewRoles.Roles.Neutral
             }
 
             RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
             Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
 
@@ -77,7 +77,7 @@ namespace SuperNewRoles.Roles.Neutral
             }
             else
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
                 writer.Write((byte)reason);
                 writer.Write(false);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);

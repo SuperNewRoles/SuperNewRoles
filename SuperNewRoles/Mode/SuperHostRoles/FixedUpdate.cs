@@ -370,7 +370,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void Update()
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff))
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Sheriff))
             {
                 if (RoleClass.Sheriff.KillMaxCount >= 1)
                 {
@@ -389,7 +389,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 }
             }
-            else if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal, RoleId.MadMaker, RoleId.Egoist, RoleId.RemoteSheriff,
+            else if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Jackal, RoleId.MadMaker, RoleId.Egoist, RoleId.RemoteSheriff,
                 RoleId.Demon, RoleId.Arsonist)
                 )
             {
@@ -401,7 +401,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     FastDestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
                 }
             }
-            SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
+            SetNameUpdate.Postfix(CachedPlayer.LocalPlayer.PlayerControl);
             if (!AmongUsClient.Instance.AmHost) return;
             foreach (PlayerControl p in BotManager.AllBots)
             {

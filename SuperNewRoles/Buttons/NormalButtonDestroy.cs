@@ -28,12 +28,12 @@ namespace SuperNewRoles.Buttons
         public static void SetActiveState()
         {
             // ニートの使用ボタン
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Neet) && FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.active)
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Neet) && FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.active)
                 FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.SetActive(false);// 使用ボタンを無効化
 
-            if (!SetActiveDictionary.ContainsKey(PlayerControl.LocalPlayer.GetRole())) return;
-            if (!SetActiveDictionary[PlayerControl.LocalPlayer.GetRole()].Item2) return;
-            switch (SetActiveDictionary[PlayerControl.LocalPlayer.GetRole()].Item1)
+            if (!SetActiveDictionary.ContainsKey(CachedPlayer.LocalPlayer.PlayerControl.GetRole())) return;
+            if (!SetActiveDictionary[CachedPlayer.LocalPlayer.PlayerControl.GetRole()].Item2) return;
+            switch (SetActiveDictionary[CachedPlayer.LocalPlayer.PlayerControl.GetRole()].Item1)
             {
                 case NormalButton.KillButton: // キルボタン
                     if (FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.active)

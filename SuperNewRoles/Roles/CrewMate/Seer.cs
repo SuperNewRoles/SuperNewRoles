@@ -77,7 +77,7 @@ namespace SuperNewRoles.Roles
         {
             public static void WrapUpPostfix()
             {
-                var role = PlayerControl.LocalPlayer.GetRole();
+                var role = CachedPlayer.LocalPlayer.PlayerControl.GetRole();
                 if (role is RoleId.Seer or RoleId.MadSeer or RoleId.EvilSeer or RoleId.SeerFriends or RoleId.JackalSeer or RoleId.SidekickSeer)
                 {
                     List<Vector3> DeadBodyPositions = new();
@@ -152,7 +152,7 @@ namespace SuperNewRoles.Roles
             {
                 public static void Postfix([HarmonyArgument(0)] PlayerControl target)
                 {
-                    var role = PlayerControl.LocalPlayer.GetRole();
+                    var role = CachedPlayer.LocalPlayer.PlayerControl.GetRole();
                     if (role is RoleId.Seer or RoleId.MadSeer or RoleId.EvilSeer or RoleId.SeerFriends or RoleId.JackalSeer or RoleId.SidekickSeer)
                     {
                         bool ModeFlag = false;
@@ -180,7 +180,7 @@ namespace SuperNewRoles.Roles
                                 ModeFlag = RoleClass.JackalSeer.mode <= 1;
                                 break;
                         }
-                        if (PlayerControl.LocalPlayer.IsAlive() && CachedPlayer.LocalPlayer.PlayerId != target.PlayerId && ModeFlag)
+                        if (CachedPlayer.LocalPlayer.PlayerControl.IsAlive() && CachedPlayer.LocalPlayer.PlayerId != target.PlayerId && ModeFlag)
                         {
                             ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
                         }

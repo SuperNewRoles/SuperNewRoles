@@ -482,7 +482,7 @@ namespace SuperNewRoles.Patches
             }
             Roles.Crewmate.Knight.ProtectedPlayer = null;
             Roles.Crewmate.Knight.GuardedPlayers = new();
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
             {
                 CreateMeetingButton(__instance, "WerewolfKillButton", (int i, MeetingHud __instance) =>
                 {

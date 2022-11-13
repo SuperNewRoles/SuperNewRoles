@@ -58,29 +58,29 @@ namespace SuperNewRoles.Buttons
         }
         public static void HawkDuration()
         {
-            if (RoleClass.Hawk.Timer == 0 && PlayerControl.LocalPlayer.IsRole(RoleId.Hawk)) return;
-            if (RoleClass.NiceHawk.Timer == 0 && PlayerControl.LocalPlayer.IsRole(RoleId.NiceHawk)) return;
-            if (RoleClass.MadHawk.Timer == 0 && PlayerControl.LocalPlayer.IsRole(RoleId.MadHawk)) return;
+            if (RoleClass.Hawk.Timer == 0 && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hawk)) return;
+            if (RoleClass.NiceHawk.Timer == 0 && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.NiceHawk)) return;
+            if (RoleClass.MadHawk.Timer == 0 && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.MadHawk)) return;
             RoleClass.Hawk.IsHawkOn = true;
             var timeSpanData = new TimeSpan(0, 0, 0, (int)RoleClass.Hawk.DurationTime);
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceHawk))
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.NiceHawk))
             {
                 timeSpanData = new TimeSpan(0, 0, 0, (int)RoleClass.NiceHawk.DurationTime);
                 RoleClass.NiceHawk.Timer = (float)(RoleClass.NiceHawk.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
                 if (RoleClass.NiceHawk.Timer <= 0f) RoleClass.NiceHawk.Timer = 0f; RoleClass.Hawk.IsHawkOn = false; return;
             }
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.MadHawk))
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.MadHawk))
             {
                 timeSpanData = new TimeSpan(0, 0, 0, (int)RoleClass.MadHawk.DurationTime);
                 RoleClass.MadHawk.Timer = (float)(RoleClass.MadHawk.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
                 if (RoleClass.MadHawk.Timer <= 0f) RoleClass.MadHawk.Timer = 0f; RoleClass.Hawk.IsHawkOn = false; return;
             }
             RoleClass.Hawk.Timer = (float)(RoleClass.Hawk.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
-            if (RoleClass.Hawk.Timer <= 0f && PlayerControl.LocalPlayer.IsRole(RoleId.Hawk)) RoleClass.Hawk.Timer = 0f; RoleClass.Hawk.IsHawkOn = false; return;
+            if (RoleClass.Hawk.Timer <= 0f && CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hawk)) RoleClass.Hawk.Timer = 0f; RoleClass.Hawk.IsHawkOn = false; return;
         }
         public static void ClairvoyantDuration()
         {
-            if (MapOption.Timer == 0 && PlayerControl.LocalPlayer.Data.IsDead && MapOption.ClairvoyantZoom) return;
+            if (MapOption.Timer == 0 && CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead && MapOption.ClairvoyantZoom) return;
             MapOption.IsZoomOn = true;
             var timeSpanData = new TimeSpan(0, 0, 0, (int)MapOption.DurationTime);
             timeSpanData = new TimeSpan(0, 0, 0, (int)MapOption.DurationTime);
@@ -105,7 +105,7 @@ namespace SuperNewRoles.Buttons
                 RoleClass.Moving.ButtonTimer = DateTime.Now;
             }
             var timeSpanData = new TimeSpan(0, 0, 0, (int)RoleClass.Moving.CoolTime);
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilMoving))
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.EvilMoving))
             {
                 timeSpanData = new TimeSpan(0, 0, 0, (int)RoleClass.EvilMoving.CoolTime);
             }
@@ -147,7 +147,7 @@ namespace SuperNewRoles.Buttons
             {
                 RoleClass.Sheriff.ButtonTimer = DateTime.Now;
             }
-            var timeSpanData = new TimeSpan(0, 0, 0, PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff) ? (int)RoleClass.Sheriff.CoolTime : (int)RoleClass.RemoteSheriff.CoolTime);
+            var timeSpanData = new TimeSpan(0, 0, 0, CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Sheriff) ? (int)RoleClass.Sheriff.CoolTime : (int)RoleClass.RemoteSheriff.CoolTime);
             HudManagerStartPatch.SheriffKillButton.Timer = (float)(RoleClass.Sheriff.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
             if (HudManagerStartPatch.SheriffKillButton.Timer <= 0f) HudManagerStartPatch.SheriffKillButton.Timer = 0f; return;
         }
