@@ -666,6 +666,7 @@ namespace SuperNewRoles.Modules
 
         public static CustomRoleOption EvilHackerOption;
         public static CustomOption EvilHackerPlayerCount;
+        public static CustomOption EvilHackerCanMoveWhenUsesAdmin;
         public static CustomOption EvilHackerMadmateSetting;
 
         public static CustomRoleOption SecretlyKillerOption;
@@ -1553,6 +1554,7 @@ namespace SuperNewRoles.Modules
 
             EvilHackerOption = SetupCustomRoleOption(424, false, RoleId.EvilHacker);
             EvilHackerPlayerCount = Create(425, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
+            EvilHackerCanMoveWhenUsesAdmin = Create(1010, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
             EvilHackerMadmateSetting = Create(426, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
 
             GhostMechanicOption = SetupCustomRoleOption(427, false, RoleId.GhostMechanic);
