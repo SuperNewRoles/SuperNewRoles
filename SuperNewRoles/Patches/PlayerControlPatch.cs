@@ -569,7 +569,7 @@ namespace SuperNewRoles.Patches
                             __instance.RpcMurderPlayerCheck(target);
                             foreach (PlayerControl p in CachedPlayer.AllPlayers)
                             {
-                                if (!p.Data.Disconnected && p.PlayerId != target.PlayerId && p.IsPlayer())
+                                if (!p.Data.Disconnected && p.PlayerId != target.PlayerId && !p.IsBot())
                                 {
                                     if (p.PlayerId != 0)
                                     {

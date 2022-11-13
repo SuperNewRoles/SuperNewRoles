@@ -31,7 +31,7 @@ namespace SuperNewRoles.Patches
                     " " + "\n.";
                 new LateTask(() =>
                 {
-                    if (__instance.myPlayer.IsPlayer())
+                    if (!__instance.myPlayer.IsBot())
                     {
                         AddChatPatch.SendCommand(__instance.myPlayer, text, AddChatPatch.WelcomeToSuperNewRoles);
                     }
