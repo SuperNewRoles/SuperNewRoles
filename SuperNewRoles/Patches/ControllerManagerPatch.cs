@@ -52,10 +52,10 @@ namespace SuperNewRoles.Patches
                 if (MeetingHud.Instance != null)
                     MeetingHud.Instance.RpcClose();
             }
-            if (ConfigRoles.DebugMode.Value)
+            if (ConfigRoles.DebugMode.Value && Input.GetKey(KeyCode.LeftControl))
             {
                 // Spawn dummys
-                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.G, KeyCode.LeftControl }))
+                if (Input.GetKeyDown(KeyCode.G))
                 {
                     PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text);
 
@@ -66,35 +66,35 @@ namespace SuperNewRoles.Patches
                 }
 
                 //ここにデバッグ用のものを書いてね
-                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.I, KeyCode.LeftControl }))
+                if (Input.GetKeyDown(KeyCode.I))
                 {
                     GameObject.Instantiate(MapLoader.Skeld);
                 }
-                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.K, KeyCode.LeftControl }))
+                if (Input.GetKeyDown(KeyCode.K))
                 {
                     PVCreator.Start();
                 }
-                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.L, KeyCode.LeftControl }))
+                if (Input.GetKeyDown(KeyCode.L))
                 {
                     PVCreator.End();
                 }
-                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftControl }))
+                if (Input.GetKeyDown(KeyCode.M))
                 {
                     PVCreator.Start2();
                 }
-                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.N, KeyCode.LeftControl }))
+                if (Input.GetKeyDown(KeyCode.N))
                 {
                     ModHelpers.PlayerById(1).RpcMurderPlayer(PlayerControl.LocalPlayer);//ModHelpers.PlayerById(2));
                 }
-                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.F10, KeyCode.LeftControl }))
+                if (Input.GetKeyDown(KeyCode.F10))
                 {
                     BotManager.Spawn($"bot{(byte)GameData.Instance.GetAvailableId()}");
                 }
-                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.F11, KeyCode.LeftControl }))
+                if (Input.GetKeyDown(KeyCode.F11))
                 {
                     BotManager.AllBotDespawn();
                 }
-                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.F1, KeyCode.LeftControl }))
+                if (Input.GetKeyDown(KeyCode.F1))
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("new Vector2(" + (PlayerControl.LocalPlayer.transform.position.x - 12.63f) + "f, " + (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
                 }
