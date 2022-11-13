@@ -24,17 +24,17 @@ namespace SuperNewRoles.Roles
             {
                 if (!RoleClass.IsMeeting)
                 {
-                    if (!HudManager.Instance.KillButton.isActiveAndEnabled)
+                    if (!FastDestroyableSingleton<HudManager>.Instance.KillButton.isActiveAndEnabled)
                     {
-                        HudManager.Instance.KillButton.Show();
+                        FastDestroyableSingleton<HudManager>.Instance.KillButton.Show();
                     }
                 }
             }
             else
             {
-                if (HudManager.Instance.KillButton.isActiveAndEnabled)
+                if (FastDestroyableSingleton<HudManager>.Instance.KillButton.isActiveAndEnabled)
                 {
-                    HudManager.Instance.KillButton.Hide();
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.Hide();
                 }
                 if (!RoleClass.IsMeeting)
                 {

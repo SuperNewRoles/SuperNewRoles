@@ -340,7 +340,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                     if (LowerInfoText == null)
                     {
                         LowerInfoText = UnityEngine.Object.Instantiate(PlayerControl.LocalPlayer.NameText());
-                        LowerInfoText.transform.parent = HudManager.Instance.transform;
+                        LowerInfoText.transform.parent = FastDestroyableSingleton<HudManager>.Instance.transform;
                         LowerInfoText.transform.localPosition = new Vector3(0, -1.5f, 0);
                         LowerInfoText.transform.localScale = new Vector3(2, 2f, 2);
                         LowerInfoText.alignment = TextAlignmentOptions.Center;

@@ -33,7 +33,7 @@ namespace SuperNewRoles.CustomObject
             Beacon beacon = AllBeacons.FirstOrDefault((x) => x?.vent != null && x.vent.Id == ventId);
             if (beacon == null) return;
 
-            HudManager.Instance.StartCoroutine(Effects.Lerp(0.6f, new Action<float>((p) =>
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.6f, new Action<float>((p) =>
             {
                 beacon.BeaconRenderer.sprite = GetBeaconAnimationSprite((int)(p * beaconAnimationSprites.Length));
                 beacon.BeaconRenderer.sprite = GetBeaconAnimationSprite(0);
