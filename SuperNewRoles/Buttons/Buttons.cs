@@ -577,8 +577,8 @@ namespace SuperNewRoles.Buttons
                 new Vector3(-2.7f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
-                KeyCode.L,
-                50,
+                null,
+                0,
                 () => { return false; }
             )
             {
@@ -1596,7 +1596,7 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.Q,
-                49,
+                8,
                 () => { return false; }
             )
             {
@@ -2244,7 +2244,7 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.KillButton,
                 KeyCode.Q,
-                49,
+                8,
                 () =>
                 {
                     return !PlayerControl.LocalPlayer.CanMove;
