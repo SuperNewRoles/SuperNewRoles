@@ -148,7 +148,6 @@ RMSkeldSetting,Skeld,スケルドが有効,可随机游玩骷髅舰(Skeld)
 RMMiraSetting,Mira,ミラが有効,可随机游玩米拉总部(Mira)
 RMPolusSetting,Polus,ポーラスが有効,可随机游玩波鲁斯(Polus)
 RMAirshipSetting,AirShip,エアーシップが有効,可随机游玩飞艇(AirShip)
-RMSubmergedSetting,Submerged,サブマージドが有効,可随机游玩潜艇(Submerged)
 ADMINButton,ADMIN,アドミン,地图
 timeRemaining,Remaining: {0},残り{0},剩余：{0}秒
 restrictOutOfTime,Time up,時間切れ,超时

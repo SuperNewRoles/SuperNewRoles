@@ -21,7 +21,6 @@ namespace SuperNewRoles.MapOptions
         public static bool ValidationMira;
         public static bool ValidationPolus;
         public static bool ValidationAirship;
-        public static bool ValidationSubmerged;
         public static bool IsRestrict;
 
         public static bool RandomSpawn;
@@ -71,7 +70,6 @@ namespace SuperNewRoles.MapOptions
                     ValidationMira = false;
                     ValidationPolus = false;
                     ValidationAirship = false;
-                    ValidationSubmerged = false;
                 }
                 RandomSpawn = (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship && RandomSpawnOption.GetBool();
                 WireTaskIsRandom = WireTaskIsRandomOption.GetBool();
@@ -95,7 +93,6 @@ namespace SuperNewRoles.MapOptions
                 ValidationMira = false;
                 ValidationPolus = false;
                 ValidationAirship = false;
-                ValidationSubmerged = false;
                 WireTaskIsRandom = false;
             }
             BlockTool.OldDesyncCommsPlayers = new();
