@@ -4,6 +4,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using Agartha;
 
 namespace SuperNewRoles.Patches
 {
@@ -51,7 +52,53 @@ namespace SuperNewRoles.Patches
                 if (MeetingHud.Instance != null)
                     MeetingHud.Instance.RpcClose();
             }
+            if (ConfigRoles.DebugMode.Value)
+            {
+                // Spawn dummys
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.G, KeyCode.LeftControl }))
+                {
+                    PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text);
 
+                    bot.NetTransform.SnapTo(PlayerControl.LocalPlayer.transform.position);
+                    //new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
+                    //new LateTask(() => { foreach (var pc in CachedPlayer.AllPlayers) pc.PlayerControl.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
+                    //new LateTask(() => bot.Despawn(), 0.6f, "Bot Despawn Task");
+                }
+
+                //ここにデバッグ用のものを書いてね
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.I, KeyCode.LeftControl }))
+                {
+                    GameObject.Instantiate(MapLoader.Skeld);
+                }
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.K, KeyCode.LeftControl }))
+                {
+                    PVCreator.Start();
+                }
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.L, KeyCode.LeftControl }))
+                {
+                    PVCreator.End();
+                }
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftControl }))
+                {
+                    PVCreator.Start2();
+                }
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.N, KeyCode.LeftControl }))
+                {
+                    ModHelpers.PlayerById(1).RpcMurderPlayer(PlayerControl.LocalPlayer);//ModHelpers.PlayerById(2));
+                }
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.F10, KeyCode.LeftControl }))
+                {
+                    BotManager.Spawn($"bot{(byte)GameData.Instance.GetAvailableId()}");
+                }
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.F11, KeyCode.LeftControl }))
+                {
+                    BotManager.AllBotDespawn();
+                }
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.F1, KeyCode.LeftControl }))
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("new Vector2(" + (PlayerControl.LocalPlayer.transform.position.x - 12.63f) + "f, " + (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
+                }
+            }
             // 以下フリープレイのみ
             if (AmongUsClient.Instance.GameMode != GameModes.FreePlay) return;
             // エアーシップのトイレのドアを開ける
