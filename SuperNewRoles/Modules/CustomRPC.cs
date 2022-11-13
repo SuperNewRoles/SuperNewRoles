@@ -787,13 +787,25 @@ namespace SuperNewRoles.Modules
         public static void SetLovers(byte playerid1, byte playerid2)
             => RoleHelpers.SetLovers(ModHelpers.PlayerById(playerid1), ModHelpers.PlayerById(playerid2));
 
-        public static void SheriffKill(byte SheriffId, byte TargetId, bool MissFire)
+        /// <summary>
+        /// Sheriffのキルを制御
+        /// </summary>
+        /// <param name="SheriffId">SheriffのPlayerId</param>
+        /// <param name="TargetId">Sheriffのターゲットにされた人のPlayerId</param>
+        /// <param name="MissFire">誤爆したか</param>
+        /// <param name="alwaysKill">誤爆していて尚且つ誤爆時も対象を殺す設定が有効か</param>
+        public static void SheriffKill(byte SheriffId, byte TargetId, bool MissFire, bool alwaysKill)
         {
             PlayerControl sheriff = ModHelpers.PlayerById(SheriffId);
             PlayerControl target = ModHelpers.PlayerById(TargetId);
             if (sheriff == null || target == null) return;
 
-            if (MissFire)
+            if (alwaysKill)
+            {
+                sheriff.MurderPlayer(target);
+                sheriff.MurderPlayer(sheriff);
+            }
+            else if (MissFire)
             {
                 sheriff.MurderPlayer(sheriff);
             }
@@ -816,7 +828,15 @@ namespace SuperNewRoles.Modules
                 }
             }
         }
-        public static void MeetingSheriffKill(byte SheriffId, byte TargetId, bool MissFire)
+
+        /// <summary>
+        /// MeetingSheriffのキルを制御
+        /// </summary>
+        /// <param name="SheriffId">SheriffのPlayerId</param>
+        /// <param name="TargetId">Sheriffのターゲットにされた人のPlayerId</param>
+        /// <param name="MissFire">誤爆したか</param>
+        /// <param name="alwaysKill">誤爆していて尚且つ誤爆時も対象を殺す設定が有効か</param>
+        public static void MeetingSheriffKill(byte SheriffId, byte TargetId, bool MissFire, bool alwaysKill)
         {
             PlayerControl sheriff = ModHelpers.PlayerById(SheriffId);
             PlayerControl target = ModHelpers.PlayerById(TargetId);
@@ -824,17 +844,34 @@ namespace SuperNewRoles.Modules
             if (sheriff == null || target == null) return;
             if (!PlayerControl.LocalPlayer.IsAlive())
             {
-                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は" + target.name + "をシェリフキルした！");
+                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat1"), target.name, sheriff.name));
+                if (alwaysKill)
+                {
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat2"), target.name, sheriff.name));
+                }
                 if (MissFire)
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は誤爆した！");
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat3"), sheriff.name));
                 }
                 else
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は成功した！");
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat4"), sheriff.name));
                 }
             }
-            if (MissFire)
+            if (alwaysKill)
+            {
+                target.Exiled();
+                if (PlayerControl.LocalPlayer == target)
+                {
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, target.Data);
+                }
+                sheriff.Exiled();
+                if (PlayerControl.LocalPlayer == sheriff)
+                {
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, sheriff.Data);
+                }
+            }
+            else if (MissFire)
             {
                 sheriff.Exiled();
                 if (PlayerControl.LocalPlayer == sheriff)
@@ -847,7 +884,7 @@ namespace SuperNewRoles.Modules
                 target.Exiled();
                 if (PlayerControl.LocalPlayer == target)
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, sheriff.Data);
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, target.Data);
                 }
             }
             if (MeetingHud.Instance)
@@ -855,6 +892,11 @@ namespace SuperNewRoles.Modules
                 foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
                 {
                     if (pva.TargetPlayerId == SheriffId && MissFire)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                    else if (pva.TargetPlayerId == TargetId && alwaysKill)
                     {
                         pva.SetDead(pva.DidReport, true);
                         pva.Overlay.gameObject.SetActive(true);
@@ -1250,10 +1292,10 @@ namespace SuperNewRoles.Modules
                             SetRole(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.SheriffKill:
-                            SheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                            SheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());
                             break;
                         case CustomRPC.MeetingSheriffKill:
-                            MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                            MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());
                             break;
                         case CustomRPC.CustomRPCKill:
                             CustomRPCKill(reader.ReadByte(), reader.ReadByte());
