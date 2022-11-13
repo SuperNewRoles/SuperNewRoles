@@ -134,7 +134,6 @@ namespace SuperNewRoles.Patches
         }
         public static float GetNeutralLightRadius(ShipStatus shipStatus, bool isImpostor)
         {
-            if (SubmergedCompatibility.isSubmerged()) return SubmergedCompatibility.GetSubmergedNeutralLightRadius(isImpostor);
             if (Clergyman.IsLightOutVision()) return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision;
             if (isImpostor) return shipStatus.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
 

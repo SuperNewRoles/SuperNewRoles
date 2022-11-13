@@ -13,7 +13,6 @@ using UnityEngine;
 namespace SuperNewRoles
 {
     [BepInAutoPlugin("jp.ykundesu.supernewroles", "SuperNewRoles")]
-    [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInIncompatibility("com.emptybottle.townofhost")]
     [BepInIncompatibility("me.eisbison.theotherroles")]
     [BepInIncompatibility("me.yukieiji.extremeroles")]
@@ -92,7 +91,6 @@ namespace SuperNewRoles
 
             StringDATA = new Dictionary<string, Dictionary<int, string>>();
             Harmony.PatchAll();
-            SubmergedCompatibility.Initialize();
 
             assembly = Assembly.GetExecutingAssembly();
             string[] resourceNames = assembly.GetManifestResourceNames();
