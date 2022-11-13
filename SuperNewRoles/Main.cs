@@ -84,7 +84,7 @@ namespace SuperNewRoles
             SuperNewRoles.Logger.Info(ThisAssembly.Git.Tag, "Tag");
             SuperNewRoles.Logger.Info(VersionString, "VersionString");
             SuperNewRoles.Logger.Info(Version, nameof(Version));
-            SuperNewRoles.Logger.Info(Application.version, "AmongUsVersion"); // アモングアス本体のバージョン
+            SuperNewRoles.Logger.Info($"{Application.version}({Constants.GetPurchasingPlatformType()})", "AmongUsVersion"); // アモングアス本体のバージョン
 
             Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
 
