@@ -1062,10 +1062,6 @@ namespace SuperNewRoles.Modules
         {
             var p = ModHelpers.PlayerById(playerid);
             CachedPlayer.LocalPlayer.transform.position = p.transform.position;
-            if (SubmergedCompatibility.isSubmerged())
-            {
-                SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
-            }
             new CustomMessage(string.Format(ModTranslation.GetString("TeleporterTPTextMessage"), p.NameText().text), 3);
         }
         public static void SetWinCond(byte Cond)

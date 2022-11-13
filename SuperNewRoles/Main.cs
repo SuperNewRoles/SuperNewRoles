@@ -91,7 +91,6 @@ namespace SuperNewRoles
 
             StringDATA = new Dictionary<string, Dictionary<int, string>>();
             Harmony.PatchAll();
-            SubmergedCompatibility.Initialize();
 
             assembly = Assembly.GetExecutingAssembly();
             string[] resourceNames = assembly.GetManifestResourceNames();
