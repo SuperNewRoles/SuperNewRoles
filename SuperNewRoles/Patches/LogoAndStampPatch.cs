@@ -27,10 +27,6 @@ namespace SuperNewRoles.Patches
         [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
         private static class VersionShowerPatch
         {
-            static void Prefix()
-            {
-                //CustomPlate.UnlockedNamePlatesPatch.Postfix(HatManager.Instance);
-            }
             public static string modColor = "#a6d289";
             static void Postfix(VersionShower __instance)
             {

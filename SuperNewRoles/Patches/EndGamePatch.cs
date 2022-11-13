@@ -239,7 +239,7 @@ namespace SuperNewRoles.Patches
                     case GameOverReason.HumansByTask:
                     case GameOverReason.HumansByVote:
                     case GameOverReason.HumansDisconnect:
-                        text = "CrewMateName";
+                        text = "CrewmateName";
                         RoleColor = Palette.White;
                         break;
                     case GameOverReason.ImpostorByKill:
