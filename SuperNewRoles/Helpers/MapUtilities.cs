@@ -1,3 +1,5 @@
+// https://github.com/Eisbison/TheOtherRoles/blob/main/TheOtherRoles/Utilities/MapUtilities.cs
+
 using System.Collections.Generic;
 using HarmonyLib;
 using Il2CppSystem;
@@ -36,6 +38,26 @@ namespace SuperNewRoles
                 if (!systems.ContainsKey(systemTypes)) continue;
                 _systems[systemTypes] = systems[systemTypes].TryCast<Object>();
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Awake))]
+    public static class ShipStatus_Awake_Patch
+    {
+        [HarmonyPostfix, HarmonyPriority(Priority.Last)]
+        public static void Postfix(ShipStatus __instance)
+        {
+            MapUtilities.CachedShipStatus = __instance;
+        }
+    }
+    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.OnDestroy))]
+    public static class ShipStatus_OnDestroy_Patch
+    {
+        [HarmonyPostfix, HarmonyPriority(Priority.Last)]
+        public static void Postfix()
+        {
+            MapUtilities.CachedShipStatus = null;
+            MapUtilities.MapDestroyed();
         }
     }
 }
