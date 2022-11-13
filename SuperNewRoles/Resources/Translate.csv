@@ -271,31 +271,31 @@ FinalStatusDead,Death,死亡,死亡
 FinalStatusSabotage,Sabotage,サボタージュ,破坏
 FinalStatusNekomataExiled,The Way of the Nekomata,猫又の道連れ,连带
 FinalStatusSluggerHarisen,Harisen,ハリセン
-LoversBomb,
-KunaiKill,
-SamuraiKill,
+FinalStatusLoversBomb,
+FinalStatusKunaiKill,
+FinalStatusSamuraiKill,
 FinalStatusChiefMisSet,Misnaming,指名誤爆
-FalseChargesFalseCharge,
-SelfBomberBomb,
-BySelfBomberBomb,
-LadderDeath,
-NunDeath,
+FinalStatusFalseChargesFalseCharge,
+FinalStatusSelfBomberBomb,
+FinalStatusBySelfBomberBomb,
+FinalStatusLadderDeath,
+FinalStatusNunDeath,
 FinalStatusSpelunkerCommsElecDeath,CommsElec death,停電通信死
 FinalStatusSpelunkerSetRoleDeath,SetRole death,役職死
 FinalStatusSpelunkerVentDeath,Vent death,ベント死
 FinalStatusSpelunkerOpenDoor,Door death,ドア死
-TunaSelfDeath,
-BestFalseChargesFalseCharge,
-SheriffHauntedWolfKill,
-MeetingSheriffHauntedWolfKill,
-RemoteSheriffHauntedWolfKill,
-RemoteSheriffKill,
-RemoteSheriffMisFire,
-SerialKillerSelfDeath,
-VampireKill,
-OverKillerOverKill,
-SuicideWisherSelfDeath,
-MadmakerMisSet,
+FinalStatusTunaSelfDeath,
+FinalStatusBestFalseChargesFalseCharge,
+FinalStatusSheriffHauntedWolfKill,
+FinalStatusMeetingSheriffHauntedWolfKill,
+FinalStatusRemoteSheriffHauntedWolfKill,
+FinalStatusRemoteSheriffKill,
+FinalStatusRemoteSheriffMisFire,
+FinalStatusSerialKillerSelfDeath,
+FinalStatusVampireKill,
+FinalStatusOverKillerOverKill,
+FinalStatusSuicideWisherSelfDeath,
+FinalStatusMadmakerMisSet,
 FinalStatusRevenge,Revenge,復讐
 
 
