@@ -32,15 +32,13 @@ namespace SuperNewRoles.Patches
                 {
                     RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
                     RPCProcedure.SetHaison();
+                    Logger.Info("===================== Haison =====================", "End Game");
                     if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
-                        Logger.Info("===================== Haison =====================", "End Game");
                         EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
-
                     }
                     else
                     {
-                        Logger.Info("===================== Haison =====================", "End Game");
                         ShipStatus.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
                         MapUtilities.CachedShipStatus.enabled = false;
                     }
