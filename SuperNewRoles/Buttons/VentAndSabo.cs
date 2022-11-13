@@ -17,7 +17,7 @@ namespace SuperNewRoles.Buttons
                 Il2CppSystem.Collections.Generic.List<Vector2> locations = task.Locations;
                 for (int i = 0; i < locations.Count; i++)
                 {
-                    Vector3 localPosition = locations[i] / ShipStatus.Instance.MapScale;
+                    Vector3 localPosition = locations[i] / MapUtilities.CachedShipStatus.MapScale;
                     localPosition.z = -1f;
                     PooledMapIcon pooledMapIcon = __instance.icons.Get<PooledMapIcon>();
                     pooledMapIcon.transform.localScale = new Vector3(

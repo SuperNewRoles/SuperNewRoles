@@ -15,7 +15,7 @@ namespace SuperNewRoles.Patches
             static void Postfix(NormalPlayerTask __instance, TaskTypes taskType, byte[] consoleIds)
             {
                 if (taskType != TaskTypes.FixWiring || !MapOption.WireTaskIsRandom) return;
-                List<Console> orgList = ShipStatus.Instance.AllConsoles.Where((global::Console t) => t.TaskTypes.Contains(taskType)).ToList<global::Console>();
+                List<Console> orgList = MapUtilities.CachedShipStatus.AllConsoles.Where((global::Console t) => t.TaskTypes.Contains(taskType)).ToList<global::Console>();
                 List<Console> list = new(orgList);
 
                 __instance.MaxStep = MapOption.WireTaskNum;
