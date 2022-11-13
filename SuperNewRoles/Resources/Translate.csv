@@ -298,14 +298,6 @@ FinalStatusSuicideWisherSelfDeath,Suicide,自殺
 FinalStatusMadmakerMisSet,Misnaming,指名誤爆
 FinalStatusRevenge,Revenge,復讐
 
-
-
-# 微妙にtypoしてるやつら
-# FinalStatusSelfBomb,Self-destruct,自爆,自杀
-# FinalStatusBySelfBomb,Self-destruct collateral damage,自爆巻き添え,恐袭
-
-
-
 # Sabotages
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
 SabotageCognitiveDeficitSetting,Cognitive Deficit,認識障害,破坏时附带认知干扰
