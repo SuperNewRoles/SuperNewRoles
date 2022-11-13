@@ -33,7 +33,7 @@ namespace SuperNewRoles.MapCustoms
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
                         System.Random rand = new();
                         int randVal = rand.Next(0, 11);

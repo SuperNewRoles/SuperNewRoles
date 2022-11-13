@@ -21,7 +21,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                     if (p.PlayerId != 0)
                     {
                         p.RpcSetRoleDesync(RoleTypes.Impostor);//p.Data.Role.Role);
-                        foreach (var pc in CachedPlayer.AllPlayers)
+                        foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                         {
                             if (Main.Impostors.Contains(pc.PlayerId))
                             {
@@ -31,14 +31,14 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                             {
                                 p.RpcSetRoleDesync(RoleTypes.Impostor, pc);
                             }
-                            pc.PlayerControl.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            pc.RpcSetRoleDesync(RoleTypes.Scientist, p);
                             FastDestroyableSingleton<RoleManager>.Instance.SetRole(pc, RoleTypes.Crewmate);
                         }
                     }
                     else
                     {
                         FastDestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer.PlayerControl, RoleTypes.Impostor);//p.Data.Role.Role);
-                        foreach (var pc in CachedPlayer.AllPlayers)
+                        foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                         {
                             if (pc.PlayerId != 0)
                             {

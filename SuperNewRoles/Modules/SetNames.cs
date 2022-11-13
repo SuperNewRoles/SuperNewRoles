@@ -371,7 +371,7 @@ namespace SuperNewRoles.Modules
                 {
                     if (RoleClass.Finder.IsCheck)
                     {
-                        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                        foreach (PlayerControl player in CachedPlayer.AllPlayers)
                         {
                             if (player.IsMadRoles())
                             {

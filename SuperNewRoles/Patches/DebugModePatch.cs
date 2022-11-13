@@ -41,14 +41,14 @@ namespace SuperNewRoles.Patches
 
                     bot.NetTransform.SnapTo(CachedPlayer.LocalPlayer.PlayerControl.transform.position);
                     //new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
-                    //new LateTask(() => { foreach (var pc in CachedPlayer.AllPlayers) pc.PlayerControl.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
+                    //new LateTask(() => { foreach (PlayerControl pc in CachedPlayer.AllPlayers) pc.PlayerControl.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
                     //new LateTask(() => bot.Despawn(), 0.6f, "Bot Despawn Task");
                 }
 
                 //ここにデバッグ用のものを書いてね
                 if (ModHelpers.GetManyKeyDown(new[] { KeyCode.I, KeyCode.LeftControl }))
                 {
-                    GameObject.Instantiate(MapLoader.Skeld);
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers){p.RpcMurderPlayer(p);}
                 }
                 if (ModHelpers.GetManyKeyDown(new[] { KeyCode.K, KeyCode.LeftControl }))
                 {

@@ -46,7 +46,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
 
                                 if (!BROption.IsKillCountViewSelfOnly.GetBool())
                                 {
-                                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                                    foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                                     {
                                         if (p2.PlayerId == p.PlayerId) continue;
                                         p.RpcSetNamePrivate(EndText, p2);
@@ -387,9 +387,9 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     {
                         if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                         {
-                            foreach (var pc in CachedPlayer.AllPlayers)
+                            foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                             {
-                                pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
+                                pc.RpcSetRole(RoleTypes.Shapeshifter);
                             }
                         }
                     }, 3f, "SetImpostor");

@@ -111,7 +111,7 @@ namespace SuperNewRoles
                 }
 
                 //サーバーの役職判定をだます
-                foreach (var pc in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                 {
                     sender.AutoStartRpc(pc.NetId, (byte)RpcCalls.SetRole)
                         .Write((ushort)RoleTypes.Shapeshifter)
@@ -186,9 +186,9 @@ namespace SuperNewRoles
                 {
                     if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                     {
-                        foreach (var pc in CachedPlayer.AllPlayers)
+                        foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                         {
-                            pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
+                            pc.RpcSetRole(RoleTypes.Shapeshifter);
                         }
                     }
                 }, 3f, "SetImpostor");
