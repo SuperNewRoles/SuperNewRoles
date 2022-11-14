@@ -258,6 +258,7 @@ namespace SuperNewRoles.Modules
         SetMapId,
         PenguinHikizuri,
         SetVampireStatus,
+        SyncDeathMeeting
     }
 
     public static class RPCProcedure
@@ -317,6 +318,43 @@ namespace SuperNewRoles.Modules
         public static void KnightProtectClear(byte Target)
         {
             Knight.GuardedPlayers.Remove(Target);
+        }
+        public static void SyncDeathMeeting(byte TargetId)
+        {
+            if (!MeetingHud.Instance) return;
+
+            PlayerControl dyingTarget = ModHelpers.PlayerById(TargetId);
+            if (dyingTarget == null) return;
+
+            if (dyingTarget.IsAlive())
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == TargetId)
+                    {
+                        pva.SetDead(pva.DidReport, false);
+                        pva.Overlay.gameObject.SetActive(false);
+                    }
+                }
+            }
+            else
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == TargetId)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                    if (pva.VotedFor != TargetId) continue;
+                    pva.UnsetVote();
+                    var voteAreaPlayer = ModHelpers.PlayerById(pva.TargetPlayerId);
+                    if (!voteAreaPlayer.AmOwner) continue;
+                    MeetingHud.Instance.ClearVote();
+                }
+                if (AmongUsClient.Instance.AmHost)
+                    MeetingHud.Instance.CheckForEndVoting();
+            }
         }
         public static void MeetingKill(byte SourceId, byte TargetId)
         {
@@ -1485,6 +1523,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.SetVampireStatus:
                             SetVampireStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.SyncDeathMeeting:
+                            SyncDeathMeeting(reader.ReadByte());
                             break;
                     }
                 }

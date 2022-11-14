@@ -1079,6 +1079,15 @@ CanRevengeNeutral,Can take a third camp,第三陣営を道連れ可,复仇者可
 CanRevengeExiled,Can take a crewmate in exile,追放で道連れ可,复仇者被放逐时可以连带一名玩家
 GMName,GM,GM,管理员
 GMTitle1,You are Game Master,あなたはゲームマスター,你是管理员
+GMTeleport,Teleport,テレポート
+GMKill,Kill,キル
+GMRevive,Revive,復活
+GMExile,Exile(No Deadbody Kill),追放(死体なしキル)
+GMCleanDeadbody,Clean Deadbody,死体削除
+GMStartMeeting,Start Meeting,会議開始
+GMCleanDeadbodyAndRevive,Clean Deadbody And Revive,死体を削除して復活
+GMSpawnDeadbody,Spawn Deadbody,死体発生,
+GMEndMeeting,End Meeting,会議終了
 SuicidalIdeationName,Suicidal ideation,自殺願望者,绝望先生
 SuicidalIdeationTitle1,Finding no hope for life,生きる希望を見いだせない
 SuicidalIdeationWinTextSetting,Special Victory Letters,特殊勝利文字,绝望先生拥有特殊胜利文本
