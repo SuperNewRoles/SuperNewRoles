@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles.Crewmate
     {
         public static void AwakePatch()
         {
-            foreach (PlainDoor door in ShipStatus.Instance.AllDoors)
+            foreach (PlainDoor door in MapUtilities.CachedShipStatus.AllDoors)
             {
                 door.animator.Play(door.CloseDoorAnim);
                 new LateTask(() =>
@@ -29,7 +29,7 @@ namespace SuperNewRoles.Roles.Crewmate
         }
         public static void FixedUpdate()
         {
-            foreach (PlainDoor door in ShipStatus.Instance.AllDoors)
+            foreach (PlainDoor door in MapUtilities.CachedShipStatus.AllDoors)
             {
                 var obj = RoleClass.SeeThroughPerson.Objects.Find(data => data.name == "Door-SeeThroughPersonCollider-" + door.transform.position.x + "." + door.transform.position.y + "." + door.Id);
                 if (obj == null) continue;

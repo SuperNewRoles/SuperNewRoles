@@ -163,7 +163,7 @@ namespace SuperNewRoles.Modules
                     poss.Add(CachedPlayer.LocalPlayer.transform.position);
                     if (OldIsVent != CachedPlayer.LocalPlayer.PlayerControl.inVent)
                     {
-                        ventData.Add(((DateTime.UtcNow - starttime).TotalSeconds, Mode.BattleRoyal.Main.VentData[CachedPlayer.LocalPlayer.PlayerId] != null ? (int)Mode.BattleRoyal.Main.VentData[CachedPlayer.LocalPlayer.PlayerId] : ShipStatus.Instance.AllVents.FirstOrDefault(x => Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, x.transform.position) <= 0.5f).Id));
+                        ventData.Add(((DateTime.UtcNow - starttime).TotalSeconds, Mode.BattleRoyal.Main.VentData[CachedPlayer.LocalPlayer.PlayerId] != null ? (int)Mode.BattleRoyal.Main.VentData[CachedPlayer.LocalPlayer.PlayerId] : MapUtilities.CachedShipStatus.AllVents.FirstOrDefault(x => Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, x.transform.position) <= 0.5f).Id));
                         starttime = DateTime.UtcNow;
                     }
                     OldIsVent = CachedPlayer.LocalPlayer.PlayerControl.inVent;
@@ -198,13 +198,13 @@ namespace SuperNewRoles.Modules
                                 {
                                     Logger.Info("Exit");
                                     players[playerindex].MyPhysics.RpcExitVent(VentPos[playerindex][ventindex[playerindex]].Item2);
-                                    ShipStatus.Instance.AllVents.FirstOrDefault(x => x.Id == VentPos[playerindex][ventindex[playerindex]].Item2).ExitVent(players[playerindex]);
+                                    MapUtilities.CachedShipStatus.AllVents.FirstOrDefault(x => x.Id == VentPos[playerindex][ventindex[playerindex]].Item2).ExitVent(players[playerindex]);
                                 }
                                 else
                                 {
                                     Logger.Info("In");
                                     players[playerindex].MyPhysics.RpcEnterVent(VentPos[playerindex][ventindex[playerindex]].Item2);
-                                    ShipStatus.Instance.AllVents.FirstOrDefault(x => x.Id == VentPos[playerindex][ventindex[playerindex]].Item2).EnterVent(players[playerindex]);
+                                    MapUtilities.CachedShipStatus.AllVents.FirstOrDefault(x => x.Id == VentPos[playerindex][ventindex[playerindex]].Item2).EnterVent(players[playerindex]);
                                 }
                                 ventindex[playerindex]++;
                                 if (VentPos[playerindex].Count > ventindex[playerindex])

@@ -148,7 +148,6 @@ RMSkeldSetting,Skeld,スケルドが有効,可随机游玩骷髅舰(Skeld)
 RMMiraSetting,Mira,ミラが有効,可随机游玩米拉总部(Mira)
 RMPolusSetting,Polus,ポーラスが有効,可随机游玩波鲁斯(Polus)
 RMAirshipSetting,AirShip,エアーシップが有効,可随机游玩飞艇(AirShip)
-RMSubmergedSetting,Submerged,サブマージドが有効,可随机游玩潜艇(Submerged)
 ADMINButton,ADMIN,アドミン,地图
 timeRemaining,Remaining: {0},残り{0},剩余：{0}秒
 restrictOutOfTime,Time up,時間切れ,超时
@@ -261,25 +260,44 @@ FinalResults,Final results,最終結果
 FinalStatusAlive,Survival,生存,存活
 FinalStatusKill,Kill,キル,被杀
 FinalStatusExiled,Exiled,追放,流放
-FinalStatusNekomataExiled,The Way of the Nekomata,猫又の道連れ,连带
-FinalStatusSheriffKill,Sheriff kill,シェリフキル,警长击杀
+FinalStatusSheriffKill,Executing justice,正義執行
 FinalStatusSheriffMisFire,Sheriff misfire,シェリフ誤爆,警长走火
-FinalStatusMeetingSheriffKill,Meeting Sheriff kill,ミーティングシェリフキル,执法官击杀
+FinalStatusMeetingSheriffKill,Meeting Sheriff kill,Executing justice,正義執行
 FinalStatusMeetingSheriffMisFire,Meeting Sheriff misfire,ミーティングシェリフ誤爆,执法官走火
-FinalStatusSelfBomb,Self-destruct,自爆,自杀
-FinalStatusBySelfBomb,Self-destruct collateral damage,自爆巻き添え,恐袭
-FinalStatusDisconnected,amputation,切断,断连
+FinalStatusIgnite,Ignite,焼殺
+FinalStatusDisconnected,Amputation,切断,断连
 FinalStatusDead,Death,死亡,死亡
+FinalStatusSabotage,Sabotage,サボタージュ,破坏
+FinalStatusNekomataExiled,The Way of the Nekomata,猫又の道連れ,连带
 FinalStatusSluggerHarisen,Harisen,ハリセン
-FinalStatusRevenge,Revenge,復讐
+FinalStatusLoversBomb,Lovers suicide,心中
+FinalStatusKunaiKill,Kunai,クナイ
+FinalStatusSamuraiKill,Special sword,必殺剣
 FinalStatusChiefMisSet,Misnaming,指名誤爆
+FinalStatusFalseChargesFalseCharge,Self-determination for injustice,冤罪自決
+FinalStatusSelfBomberBomb,Bomb victim,自爆巻き添え
+FinalStatusBySelfBomberBomb,Suicide bomb attack,自爆特攻
+FinalStatusLadderDeath,Death by fall,転落死
+FinalStatusNunDeath,Death by fall from Nun,ぬーん転落死
 FinalStatusSpelunkerCommsElecDeath,CommsElec death,停電通信死
 FinalStatusSpelunkerSetRoleDeath,SetRole death,役職死
-FinalStatusSpelunkerVentDeath,Vent death,ベント死
-FinalStatusSpelunkerOpenDoor,Door death,ドア死
+FinalStatusSpelunkerVentDeath,Vent death,ベント転倒死
+FinalStatusSpelunkerOpenDoor,Door death,ドア指挟み死
+FinalStatusTunaSelfDeath,Heart Stop,心停止
+FinalStatusBestFalseChargesFalseCharge,False charge,冤罪追放
+FinalStatusSheriffHauntedWolfKill,Executing justice,正義執行
+FinalStatusMeetingSheriffHauntedWolfKill,Executing justice,正義執行
+FinalStatusRemoteSheriffHauntedWolfKill,Executing justice,正義執行
+FinalStatusRemoteSheriffKill,Executing justice,正義執行
+FinalStatusRemoteSheriffMisFire,Remote Sheriff MisFire,リモートシェリフ誤爆
+FinalStatusSerialKillerSelfDeath,Suicide of Serial Killer,シリアルキラー自殺
+FinalStatusVampireKill,Death by bloodsucking,吸血死
+FinalStatusOverKillerOverKill,Over Kill!,オーバーキル!
+FinalStatusSuicideWisherSelfDeath,Suicide,自殺
+FinalStatusMadmakerMisSet,Misnaming,指名誤爆
+FinalStatusRevenge,Revenge,復讐
 
 # Sabotages
-FinalStatusSabotage,Sabotage,サボタージュ,破坏
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
 SabotageCognitiveDeficitSetting,Cognitive Deficit,認識障害,破坏时附带认知干扰
 CognitiveDeficitSabotageOutfitUpdateTimeSetting,Figure Change Interval,姿変更間隔,认知干扰时其他玩家外貌变换间隔时间

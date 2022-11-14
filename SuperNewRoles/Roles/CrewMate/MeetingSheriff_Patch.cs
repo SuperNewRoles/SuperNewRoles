@@ -219,7 +219,7 @@ namespace SuperNewRoles.Roles
                 List<PlayerVoteArea> deadareas = new();
                 foreach (PlayerVoteArea area in __instance.playerStates)
                 {
-                    if (ModHelpers.PlayerById(area.TargetPlayerId).IsPlayer())
+                    if (!ModHelpers.PlayerById(area.TargetPlayerId).IsBot())
                     {
                         if (ModHelpers.PlayerById(area.TargetPlayerId).IsAlive())
                             newareas.Add(area);

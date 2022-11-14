@@ -241,9 +241,8 @@ namespace SuperNewRoles.Modules
         PlayPlayerAnimation,
         SluggerExile,
         PainterPaintSet,
-        SharePhotograph,
-        /* 210~214 is used Submerged Mod */
-        PainterSetTarget = 215,
+        SharePhotograph = 210,
+        PainterSetTarget = 220,
         SetFinalStatus,
         MeetingKill,
         KnightProtected,
@@ -253,7 +252,7 @@ namespace SuperNewRoles.Modules
         ShowFlash,
         PavlovsOwnerCreateDog,
         CrackerCrack,
-        Camouflage,
+        Camouflage = 230,
         ShowGuardEffect,
         SetLoversCupid,
         SetMapId,
@@ -327,6 +326,24 @@ namespace SuperNewRoles.Modules
             if (source == null || target == null) return;
             target.Exiled();
             FinalStatusData.FinalStatuses[source.PlayerId] = FinalStatus.Kill;
+            if (MeetingHud.Instance)
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == TargetId)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                    if (pva.VotedFor != TargetId) continue;
+                    pva.UnsetVote();
+                    var voteAreaPlayer = ModHelpers.PlayerById(pva.TargetPlayerId);
+                    if (!voteAreaPlayer.AmOwner) continue;
+                    MeetingHud.Instance.ClearVote();
+                }
+                if (AmongUsClient.Instance.AmHost)
+                    MeetingHud.Instance.CheckForEndVoting();
+            }
             if (CachedPlayer.LocalPlayer.PlayerId == target.PlayerId)
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, source.Data);
@@ -1062,10 +1079,6 @@ namespace SuperNewRoles.Modules
         {
             var p = ModHelpers.PlayerById(playerid);
             CachedPlayer.LocalPlayer.transform.position = p.transform.position;
-            if (SubmergedCompatibility.isSubmerged())
-            {
-                SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
-            }
             new CustomMessage(string.Format(ModTranslation.GetString("TeleporterTPTextMessage"), p.NameText().text), 3);
         }
         public static void SetWinCond(byte Cond)
@@ -1153,7 +1166,7 @@ namespace SuperNewRoles.Modules
             { // Delayed action
                 if (p == 1f)
                 {
-                    Vector2 InitialSpawnCenter = new(16.64f, -2.46f);
+                    FastDestroyableSingleton<HudManager>.InstancetialSpawnCenter = new(16.64f, -2.46f);
                     Vector2 MeetingSpawnCenter = new(17.4f, -16.286f);
                     Vector2 ElectricalSpawn = new(5.53f, -9.84f);
                     Vector2 O2Spawn = new(3.28f, -21.67f);

@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles
             if (RoleClass.Mafia.CachedIs) return true;
             foreach (CachedPlayer player in CachedPlayer.AllPlayers)
             {
-                if (player.PlayerControl.IsPlayer() && player.PlayerControl.IsAlive() && player.PlayerControl.IsImpostor() && !player.PlayerControl.IsRole(RoleId.Mafia) && !player.PlayerControl.IsRole(RoleId.Egoist))
+                if (!player.PlayerControl.IsBot() && player.PlayerControl.IsAlive() && player.PlayerControl.IsImpostor() && !player.PlayerControl.IsRole(RoleId.Mafia) && !player.PlayerControl.IsRole(RoleId.Egoist))
                 {
                     return false;
                 }
@@ -24,17 +24,17 @@ namespace SuperNewRoles.Roles
             {
                 if (!RoleClass.IsMeeting)
                 {
-                    if (!HudManager.Instance.KillButton.isActiveAndEnabled)
+                    if (!FastDestroyableSingleton<HudManager>.Instance.KillButton.isActiveAndEnabled)
                     {
-                        HudManager.Instance.KillButton.Show();
+                        FastDestroyableSingleton<HudManager>.Instance.KillButton.Show();
                     }
                 }
             }
             else
             {
-                if (HudManager.Instance.KillButton.isActiveAndEnabled)
+                if (FastDestroyableSingleton<HudManager>.Instance.KillButton.isActiveAndEnabled)
                 {
-                    HudManager.Instance.KillButton.Hide();
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.Hide();
                 }
                 if (!RoleClass.IsMeeting)
                 {

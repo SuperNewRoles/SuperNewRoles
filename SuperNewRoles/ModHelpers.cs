@@ -308,22 +308,22 @@ namespace SuperNewRoles
             var hashSet = new Il2CppSystem.Collections.Generic.HashSet<TaskTypes>();
 
             var commonTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(task);
+            foreach (var task in MapUtilities.CachedShipStatus.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(task);
 
             var shortTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(task);
+            foreach (var task in MapUtilities.CachedShipStatus.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(task);
 
             var longTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(task);
+            foreach (var task in MapUtilities.CachedShipStatus.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(task);
 
             int start = 0;
-            ShipStatus.Instance.AddTasksFromList(ref start, numCommon, tasks, hashSet, commonTasks);
+            MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numCommon, tasks, hashSet, commonTasks);
 
             start = 0;
-            ShipStatus.Instance.AddTasksFromList(ref start, numShort, tasks, hashSet, shortTasks);
+            MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numShort, tasks, hashSet, shortTasks);
 
             start = 0;
-            ShipStatus.Instance.AddTasksFromList(ref start, numLong, tasks, hashSet, longTasks);
+            MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numLong, tasks, hashSet, longTasks);
 
             return tasks.ToArray().ToList();
         }
@@ -359,14 +359,14 @@ namespace SuperNewRoles
                 console.usableDistance = 0.7f;
                 console.TaskTypes = new TaskTypes[0];
                 console.ValidTasks = new UnhollowerBaseLib.Il2CppReferenceArray<TaskSet>(0);
-                var list = ShipStatus.Instance.AllConsoles.ToList();
+                var list = MapUtilities.CachedShipStatus.AllConsoles.ToList();
                 list.Add(console);
-                ShipStatus.Instance.AllConsoles = new(list.ToArray());
+                MapUtilities.CachedShipStatus.AllConsoles = new(list.ToArray());
             }
             if (console.Image == null)
             {
                 console.Image = obj.GetComponent<SpriteRenderer>();
-                console.Image.material = new Material(ShipStatus.Instance.AllConsoles[0].Image.material);
+                console.Image.material = new Material(MapUtilities.CachedShipStatus.AllConsoles[0].Image.material);
             }
             if (!collider)
             {
@@ -394,14 +394,14 @@ namespace SuperNewRoles
                 console.usableDistance = 0.7f;
                 console.TaskTypes = new TaskTypes[0];
                 console.ValidTasks = new(0);
-                var list = ShipStatus.Instance.AllConsoles.ToList();
+                var list = MapUtilities.CachedShipStatus.AllConsoles.ToList();
                 list.Add(console);
-                ShipStatus.Instance.AllConsoles = new(list.ToArray());
+                MapUtilities.CachedShipStatus.AllConsoles = new(list.ToArray());
             }
             if (console.Image == null)
             {
                 console.Image = obj.GetComponent<SpriteRenderer>();
-                console.Image.material = new Material(ShipStatus.Instance.AllConsoles[0].Image.material);
+                console.Image.material = new Material(MapUtilities.CachedShipStatus.AllConsoles[0].Image.material);
             }
             if (!collider)
             {

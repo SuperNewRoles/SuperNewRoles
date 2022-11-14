@@ -17,7 +17,7 @@ namespace SuperNewRoles.Buttons
                 Il2CppSystem.Collections.Generic.List<Vector2> locations = task.Locations;
                 for (int i = 0; i < locations.Count; i++)
                 {
-                    Vector3 localPosition = locations[i] / ShipStatus.Instance.MapScale;
+                    Vector3 localPosition = locations[i] / MapUtilities.CachedShipStatus.MapScale;
                     localPosition.z = -1f;
                     PooledMapIcon pooledMapIcon = __instance.icons.Get<PooledMapIcon>();
                     pooledMapIcon.transform.localScale = new Vector3(
@@ -101,35 +101,6 @@ namespace SuperNewRoles.Buttons
                 bool roleCouldUse = @object.IsUseVent();
 
                 var usableDistance = __instance.UsableDistance;
-
-                if (SubmergedCompatibility.isSubmerged())
-                {
-                    // as submerged does, only change stuff for vents 9 and 14 of submerged. Code partially provided by AlexejheroYTB
-                    if (SubmergedCompatibility.getInTransition())
-                    {
-                        __result = float.MaxValue;
-                        return canUse = couldUse = false;
-                    }
-                    switch (__instance.Id)
-                    {
-                        case 9:  // Cannot enter vent 9 (Engine Room Exit Only Vent)!
-                            if (PlayerControl.LocalPlayer.inVent) break;
-                            __result = float.MaxValue;
-                            return canUse = couldUse = false;
-                        case 14: // Lower Central
-                            __result = float.MaxValue;
-                            couldUse = roleCouldUse && !pc.IsDead && (@object.CanMove || @object.inVent);
-                            canUse = couldUse;
-                            if (canUse)
-                            {
-                                Vector3 center = @object.Collider.bounds.center;
-                                Vector3 position = __instance.transform.position;
-                                __result = Vector2.Distance(center, position);
-                                canUse &= __result <= __instance.UsableDistance;
-                            }
-                            return false;
-                    }
-                }
 
                 couldUse = (@object.inVent || roleCouldUse) && !pc.IsDead && (@object.CanMove || @object.inVent);
                 canUse = couldUse;

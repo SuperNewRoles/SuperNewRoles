@@ -112,7 +112,7 @@ namespace SuperNewRoles.Roles
             // 透明化に必要な待機時間の取得と処理 (ボタン動作ではない時)
             if (!RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide && RoleClass.Kunoichi.HideTime != -1)
             {
-                if (!HudManager.Instance.IsIntroDisplayed)
+                if (!FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
                 {
                     if (RoleClass.Kunoichi.OldPosition == CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition()) //止まっている時 ((*1)で取得した位置情報と現在の位置情報が同じ時)
                     {
@@ -137,7 +137,7 @@ namespace SuperNewRoles.Roles
             // 透明化に必要な待機時間の取得と処理 (ボタン動作の時)
             if (RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide && RoleClass.Kunoichi.HideTime != -1)
             {
-                if (!HudManager.Instance.IsIntroDisplayed)
+                if (!FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
                 {
                     if (RoleClass.Kunoichi.OldPosition == CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition()) //止まっている時 ((*2)で取得した位置情報と現在の位置情報が同じ時)
                     {
