@@ -119,7 +119,7 @@ namespace SuperNewRoles.Roles
             RoleClass.MeetingSheriff.KillMaxCount--;
             if (RoleClass.MeetingSheriff.KillMaxCount <= 0 || !RoleClass.MeetingSheriff.OneMeetingMultiKill || misfire)
             {
-                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
             }
 
         }
