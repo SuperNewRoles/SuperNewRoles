@@ -1166,7 +1166,7 @@ namespace SuperNewRoles.Modules
             { // Delayed action
                 if (p == 1f)
                 {
-                    FastDestroyableSingleton<HudManager>.InstancetialSpawnCenter = new(16.64f, -2.46f);
+                    //ShipStatus.Instance.InitialSpawnCenter = new(16.64f, -2.46f);
                     Vector2 MeetingSpawnCenter = new(17.4f, -16.286f);
                     Vector2 ElectricalSpawn = new(5.53f, -9.84f);
                     Vector2 O2Spawn = new(3.28f, -21.67f);
@@ -1179,7 +1179,7 @@ namespace SuperNewRoles.Modules
                     Vector2 LeftReactorSpawn = new(4.6395f, -4.2884f);
                     var loc = locId switch
                     {
-                        0 => InitialSpawnCenter,
+                        0 => ShipStatus.Instance.InitialSpawnCenter,
                         1 => MeetingSpawnCenter,
                         2 => ElectricalSpawn,
                         3 => O2Spawn,
@@ -1190,7 +1190,7 @@ namespace SuperNewRoles.Modules
                         8 => MeetingSpawnUnder,
                         9 => LocketSpawn,
                         10 => LeftReactorSpawn,
-                        _ => InitialSpawnCenter,
+                        _ => ShipStatus.Instance.InitialSpawnCenter,
                     };
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {

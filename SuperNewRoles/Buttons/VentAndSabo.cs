@@ -60,8 +60,9 @@ namespace SuperNewRoles.Buttons
         [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
         class MapBehaviourPatch
         {
-            public static bool Prefix(MapBehaviour __instance)
+            public static bool Prefix(MapBehaviour __instance, ref bool __state)
             {
+                __state = false;
                 if (!MeetingHud.Instance)
                 {
                     if (PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
@@ -70,8 +71,18 @@ namespace SuperNewRoles.Buttons
                         FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                         return false;
                     }
+                    if (PlayerControl.LocalPlayer.IsImpostor() && !PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
+                    {
+                        PlayerControl.LocalPlayer.Data.Role.TeamType = RoleTeamTypes.Crewmate;
+                        __state = true;
+                        return true;
+                    }
                 }
                 return true;
+            }
+            public static void Postfix(ref bool __state)
+            {
+                if (__state) PlayerControl.LocalPlayer.Data.Role.TeamType = RoleTeamTypes.Impostor;
             }
         }
         [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent))]
