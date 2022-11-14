@@ -50,7 +50,8 @@ namespace SuperNewRoles.Patches
 
             if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4) // 停電を直そうとした
             {
-                if (player.IsMadRoles() && !CustomOptionHolder.MadRolesCanFixElectrical.GetBool())
+                if ((player.IsMadRoles() && !CustomOptionHolder.MadRolesCanFixElectrical.GetBool()) ||
+                    player.IsRole(RoleId.Vampire, RoleId.Dependents))
                 {
                     return false;
                 }
@@ -139,9 +140,8 @@ namespace SuperNewRoles.Patches
 
             SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
             float lerpValue = switchSystem.Value / 255f;
-
             var LocalPlayer = PlayerControl.LocalPlayer;
-            if (LocalPlayer.IsRole(RoleId.Nocturnality))
+            if (LocalPlayer.IsRole(RoleId.Nocturnality, RoleId.Dependents))
             {
                 lerpValue = 1 - lerpValue;
             }

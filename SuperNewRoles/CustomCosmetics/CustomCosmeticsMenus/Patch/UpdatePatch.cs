@@ -1,5 +1,6 @@
 using AmongUs.Data;
 using HarmonyLib;
+using SuperNewRoles.Achievement;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
@@ -100,8 +101,22 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     ObjectData.VisorButton_Visor.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 }
             }
-            else
+            else if (ObjectData.IsAchievement)
             {
+                ObjectData.AchievementName.transform.localPosition = new(3, 1f, -5);
+                ObjectData.AchievementDescription.transform.localPosition = new(3, 0.25f, -5);
+                ObjectData.AchievementTitle.transform.localPosition = new(3, -0.75f, -5);
+                ObjectData.AchievementName.transform.localScale = new(1.5f, 1.5f, 1.5f);
+                ObjectData.AchievementDescription.transform.localScale = new(1.25f,1.25f,1.25f);
+                ObjectData.AchievementTitle.transform.localScale = new(1.25f, 1.25f, 1.25f);
+                ObjectData.AchievementName.text = AchievementManagerSNR.AllAchievementData[1].Name;
+                ObjectData.AchievementDescription.text = ModHelpers.InsertCr(AchievementManagerSNR.AllAchievementData[1].Description,15);
+                ObjectData.AchievementTitle.text = AchievementManagerSNR.AllAchievementData[1].Title;
+                ObjectData.AchievementName.enableWordWrapping = false;
+                ObjectData.AchievementDescription.enableWordWrapping = false;
+                ObjectData.AchievementTitle.enableWordWrapping = false;
+            }
+            else { 
                 __instance.PreviewArea.transform.localPosition = new Vector3(4.25f, 0f, -3f);
                 __instance.itemName.gameObject.SetActive(true);
                 __instance.itemName.transform.localPosition = new Vector3(4.25f, -1.2f, -5);

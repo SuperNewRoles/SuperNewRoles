@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using HarmonyLib;
 using Hazel;
 
@@ -225,7 +226,7 @@ namespace SuperNewRoles
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, killer))
                 {
                     bool IsSend = false;
-                    if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId)||
+                    if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId) ||
                     RoleClass.MadStuntMan.GuardCount[target.PlayerId] > 0)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
@@ -259,7 +260,7 @@ namespace SuperNewRoles
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, killer))
                 {
                     bool IsSend = false;
-                    if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId)||
+                    if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId) ||
                     RoleClass.Fox.KillGuard[target.PlayerId] > 0)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
@@ -285,7 +286,7 @@ namespace SuperNewRoles
         {
             if (player == null) return;
 
-            List<byte> taskTypeIds = GenerateTasks(numCommon, numShort, numLong);
+            List<byte> taskTypeIds = player.GenerateTasks(numCommon, numShort, numLong);
 
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetTasks, SendOption.Reliable, -1);
             writer.Write(player.PlayerId);
@@ -293,13 +294,16 @@ namespace SuperNewRoles
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.UncheckedSetTasks(player.PlayerId, taskTypeIds.ToArray());
         }
-        public static List<byte> GenerateTasks(int numCommon, int numShort, int numLong)
+        public static List<byte> GenerateTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
         {
             if (numCommon + numShort + numLong <= 0)
             {
                 numShort = 1;
             }
-
+            if (player.IsRole(RoleId.HamburgerShop) && !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool())
+            {
+                return Roles.CrewMate.HamburgerShop.GenerateTasks(numCommon + numShort + numLong);
+            }
             var tasks = new Il2CppSystem.Collections.Generic.List<byte>();
             var hashSet = new Il2CppSystem.Collections.Generic.HashSet<TaskTypes>();
 
@@ -333,6 +337,94 @@ namespace SuperNewRoles
             player.cosmetics.nameText.color = new Color(player.cosmetics.nameText.color.r, player.cosmetics.nameText.color.g, player.cosmetics.nameText.color.b, alpha);
         }
 
+        public static Console ActivateConsole(Transform trf) => ActivateConsole(trf.gameObject);
+
+        public static AutoTaskConsole ActivateAutoTaskConsole(Transform trf) => ActivateAutoTaskConsole(trf.gameObject);
+
+        public static string InsertCr(string str, int InsertPos)
+        {
+            StringBuilder sb = new(str);
+            int insertPos = InsertPos;
+            while (insertPos < sb.Length)
+            {
+                sb.Insert(insertPos, "\n");
+                insertPos += "\n".Length + InsertPos;
+
+            }
+            return sb.ToString();
+        }
+
+
+        public static Console ActivateConsole(GameObject obj)
+        {
+            if (obj == null)
+            {
+                Logger.Error($"ActivateConsole Object was not found!","");
+                return null;
+            }
+            obj.layer = LayerMask.NameToLayer("ShortObjects");
+            Console console = obj.GetComponent<Console>();
+            PassiveButton button = obj.GetComponent<PassiveButton>();
+            CircleCollider2D collider = obj.GetComponent<CircleCollider2D>();
+            if (!console)
+            {
+                console = obj.AddComponent<Console>();
+                console.checkWalls = true;
+                console.usableDistance = 0.7f;
+                console.TaskTypes = new TaskTypes[0];
+                console.ValidTasks = new UnhollowerBaseLib.Il2CppReferenceArray<TaskSet>(0);
+                var list = ShipStatus.Instance.AllConsoles.ToList();
+                list.Add(console);
+                ShipStatus.Instance.AllConsoles = new(list.ToArray());
+            }
+            if (console.Image == null)
+            {
+                console.Image = obj.GetComponent<SpriteRenderer>();
+                console.Image.material = new Material(ShipStatus.Instance.AllConsoles[0].Image.material);
+            }
+            if (!collider)
+            {
+                collider = obj.AddComponent<CircleCollider2D>();
+                collider.radius = 0.4f;
+                collider.isTrigger = true;
+            }
+            return console;
+        }
+        public static AutoTaskConsole ActivateAutoTaskConsole(GameObject obj)
+        {
+            if (obj == null)
+            {
+                Logger.Error($"ActivateConsole Object was not found!","");
+                return null;
+            }
+            obj.layer = LayerMask.NameToLayer("ShortObjects");
+            AutoTaskConsole console = obj.GetComponent<AutoTaskConsole>();
+            PassiveButton button = obj.GetComponent<PassiveButton>();
+            CircleCollider2D collider = obj.GetComponent<CircleCollider2D>();
+            if (!console)
+            {
+                console = obj.AddComponent<AutoTaskConsole>();
+                console.checkWalls = true;
+                console.usableDistance = 0.7f;
+                console.TaskTypes = new TaskTypes[0];
+                console.ValidTasks = new(0);
+                var list = ShipStatus.Instance.AllConsoles.ToList();
+                list.Add(console);
+                ShipStatus.Instance.AllConsoles = new(list.ToArray());
+            }
+            if (console.Image == null)
+            {
+                console.Image = obj.GetComponent<SpriteRenderer>();
+                console.Image.material = new Material(ShipStatus.Instance.AllConsoles[0].Image.material);
+            }
+            if (!collider)
+            {
+                collider = obj.AddComponent<CircleCollider2D>();
+                collider.radius = 0.4f;
+                collider.isTrigger = true;
+            }
+            return console;
+        }
         public static MurderAttemptResult CheckMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
             // The local player checks for the validity of the kill and performs it afterwards (different to vanilla, where the host performs all the checks)
@@ -732,6 +824,13 @@ namespace SuperNewRoles
         /// <summary>keyCodesが押されているか</summary>
         public static bool GetManyKeyDown(KeyCode[] keyCodes) =>
             keyCodes.All(x => Input.GetKey(x)) && keyCodes.Any(x => Input.GetKeyDown(x));
+        public static string GetRPCNameFromByte(byte callId) =>
+            Enum.GetName(typeof(RpcCalls), callId) != null ? // RpcCallsに当てはまる
+                Enum.GetName(typeof(RpcCalls), callId) :
+            Enum.GetName(typeof(CustomRPC), callId) != null ? // CustomRPCに当てはまる
+                Enum.GetName(typeof(CustomRPC), callId) :
+            $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}";
+
     }
     public static class CreateFlag
     {

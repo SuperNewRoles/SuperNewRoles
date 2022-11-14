@@ -29,6 +29,8 @@ namespace SuperNewRoles.Achievement
             Complete = AchievementManagerSNR.currentData.Contains(Id+"\n");
             Logger.Info($"{Name}が生成されました。{Complete}です。{Title} : {Description}");
             AchievementManagerSNR.AllAchievementData.Add(this);
+            if (Complete)
+                AchievementManagerSNR.CompletedAchievement.Add(this);
         }
     }
 }

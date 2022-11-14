@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Agartha;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -34,7 +35,7 @@ namespace SuperNewRoles.Patches
                 if (!ConfigRoles.DebugMode.Value) return;
 
                 // Spawn dummys
-                if (Input.GetKeyDown(KeyCode.G))
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.G, KeyCode.LeftControl }))
                 {
                     PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text);
 
@@ -45,37 +46,36 @@ namespace SuperNewRoles.Patches
                 }
 
                 //ここにデバッグ用のものを書いてね
-                if (Input.GetKeyDown(KeyCode.I))
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.I, KeyCode.LeftControl }))
                 {
-                    foreach (PlayerControl p in Roles.RoleClass.Jackal.JackalPlayer)
-                        p.ShowReactorFlash();
+                    GameObject.Instantiate(MapLoader.Skeld);
                 }
-                if (Input.GetKeyDown(KeyCode.K))
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.K, KeyCode.LeftControl }))
                 {
                     PVCreator.Start();
                 }
-                if (Input.GetKeyDown(KeyCode.L))
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.L, KeyCode.LeftControl }))
                 {
                     PVCreator.End();
                 }
-                if (Input.GetKeyDown(KeyCode.M))
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftControl }))
                 {
                     PVCreator.Start2();
                 }
-                if (Input.GetKeyDown(KeyCode.N))
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.N, KeyCode.LeftControl }))
                 {
                     ModHelpers.PlayerById(1).RpcMurderPlayer(PlayerControl.LocalPlayer);//ModHelpers.PlayerById(2));
                 }
 
-                if (Input.GetKeyDown(KeyCode.F10))
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.F10, KeyCode.LeftControl }))
                 {
                     BotManager.Spawn($"bot{(byte)GameData.Instance.GetAvailableId()}");
                 }
-                if (Input.GetKeyDown(KeyCode.F11))
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.F11, KeyCode.LeftControl }))
                 {
                     BotManager.AllBotDespawn();
                 }
-                if (Input.GetKeyDown(KeyCode.F1))
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.F1, KeyCode.LeftControl }))
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("new Vector2(" + (PlayerControl.LocalPlayer.transform.position.x - 12.63f) + "f, " + (PlayerControl.LocalPlayer.transform.position.y + 3.46f) + "f), ");
                 }
@@ -89,5 +89,19 @@ namespace SuperNewRoles.Patches
             }
         }
         public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptionHolder.IsDebugMode.GetBool();
+
+        public static class MurderPlayerPatch
+        {
+            /// <summary>
+            /// MurderPlayerが発動した時に通知します。
+            /// </summary>
+            public static void Announce()
+            {
+                if (!(IsDebugMode() && CustomOptionHolder.IsMurderPlayerAnnounce.GetBool())) return;
+
+                new CustomMessage("MurderPlayerが発生しました", 5f);
+                Logger.Info("MurderPlayerが発生しました", "DebugMode");
+            }
+        }
     }
 }
