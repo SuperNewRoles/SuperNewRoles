@@ -43,6 +43,7 @@ namespace SuperNewRoles.Roles.Attribute
         static void guesserOnClick(int buttonTarget, MeetingHud __instance)
         {
             if (guesserUI != null || !(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted)) return;
+            if (__instance.playerStates[buttonTarget].AmDead) return;
             Page = 1;
             RoleButtons = new();
             RoleSelectButtons = new();
