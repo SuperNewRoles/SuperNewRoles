@@ -13,6 +13,7 @@ using static MeetingHud;
 
 namespace SuperNewRoles.Patches
 {
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Awake))] class AwakeMeetingPatch { public static void Postfix() => RoleClass.IsMeeting = true; }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
     class VotingComplete
     {

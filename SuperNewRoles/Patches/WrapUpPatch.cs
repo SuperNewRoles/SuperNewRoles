@@ -181,6 +181,7 @@ namespace SuperNewRoles.Patches
                 }
             }
             Mode.SuperHostRoles.Main.RealExiled = null;
+            RoleClass.IsMeeting = false;
         }
     }
 }

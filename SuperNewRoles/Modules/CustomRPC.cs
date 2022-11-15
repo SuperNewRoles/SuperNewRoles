@@ -258,6 +258,7 @@ namespace SuperNewRoles.Modules
         SetMapId,
         PenguinHikizuri,
         SetVampireStatus,
+        SyncDeathMeeting
     }
 
     public static class RPCProcedure
@@ -318,6 +319,43 @@ namespace SuperNewRoles.Modules
         {
             Knight.GuardedPlayers.Remove(Target);
         }
+        public static void SyncDeathMeeting(byte TargetId)
+        {
+            if (!MeetingHud.Instance) return;
+
+            PlayerControl dyingTarget = ModHelpers.PlayerById(TargetId);
+            if (dyingTarget == null) return;
+
+            if (dyingTarget.IsAlive())
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == TargetId)
+                    {
+                        pva.SetDead(pva.DidReport, false);
+                        pva.Overlay.gameObject.SetActive(false);
+                    }
+                }
+            }
+            else
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == TargetId)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                    if (pva.VotedFor != TargetId) continue;
+                    pva.UnsetVote();
+                    var voteAreaPlayer = ModHelpers.PlayerById(pva.TargetPlayerId);
+                    if (!voteAreaPlayer.AmOwner) continue;
+                    MeetingHud.Instance.ClearVote();
+                }
+                if (AmongUsClient.Instance.AmHost)
+                    MeetingHud.Instance.CheckForEndVoting();
+            }
+        }
         public static void MeetingKill(byte SourceId, byte TargetId)
         {
             PlayerControl source = ModHelpers.PlayerById(SourceId);
@@ -326,6 +364,24 @@ namespace SuperNewRoles.Modules
             if (source == null || target == null) return;
             target.Exiled();
             FinalStatusData.FinalStatuses[source.PlayerId] = FinalStatus.Kill;
+            if (MeetingHud.Instance)
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == TargetId)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                    if (pva.VotedFor != TargetId) continue;
+                    pva.UnsetVote();
+                    var voteAreaPlayer = ModHelpers.PlayerById(pva.TargetPlayerId);
+                    if (!voteAreaPlayer.AmOwner) continue;
+                    MeetingHud.Instance.ClearVote();
+                }
+                if (AmongUsClient.Instance.AmHost)
+                    MeetingHud.Instance.CheckForEndVoting();
+            }
             if (CachedPlayer.LocalPlayer.PlayerId == target.PlayerId)
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, source.Data);
@@ -1148,7 +1204,7 @@ namespace SuperNewRoles.Modules
             { // Delayed action
                 if (p == 1f)
                 {
-                    ShipStatus.Instance.InitialSpawnCenter = new(16.64f, -2.46f);
+                    //ShipStatus.Instance.InitialSpawnCenter = new(16.64f, -2.46f);
                     Vector2 MeetingSpawnCenter = new(17.4f, -16.286f);
                     Vector2 ElectricalSpawn = new(5.53f, -9.84f);
                     Vector2 O2Spawn = new(3.28f, -21.67f);
@@ -1485,6 +1541,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.SetVampireStatus:
                             SetVampireStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.SyncDeathMeeting:
+                            SyncDeathMeeting(reader.ReadByte());
                             break;
                     }
                 }
