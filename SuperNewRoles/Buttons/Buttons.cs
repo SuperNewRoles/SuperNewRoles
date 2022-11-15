@@ -115,7 +115,7 @@ namespace SuperNewRoles.Buttons
             DependentsKillButton = new(
                 () =>
                 {
-                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, SetTarget(untarget: RoleClass.Vampire.VampirePlayer));
+                    ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, SetTarget(untarget: RoleClass.Vampire.VampirePlayer));
                     DependentsKillButton.MaxTimer = CustomOptionHolder.VampireDependentsKillCoolTime.GetFloat();
                     DependentsKillButton.Timer = DependentsKillButton.MaxTimer;
                 },
@@ -145,7 +145,7 @@ namespace SuperNewRoles.Buttons
             VampireCreateDependentsButton = new(
                 () =>
                 {
-                    var target = SetTarget(Crewmateonly:true);
+                    var target = SetTarget(Crewmateonly: true);
                     target.SetRoleRPC(RoleId.Dependents);
                     target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
                     RoleClass.Vampire.CreatedDependents = true;
@@ -153,7 +153,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Vampire && !RoleClass.Vampire.CreatedDependents; },
                 () =>
                 {
-                    return SetTarget(Crewmateonly:true) && PlayerControl.LocalPlayer.CanMove;
+                    return SetTarget(Crewmateonly: true) && PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
@@ -177,7 +177,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     PlayerControl target = Roles.Neutral.Pavlovsdogs.SetTarget(false);
-                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, target);
+                    ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                     PavlovsdogKillButton.MaxTimer = RoleClass.Pavlovsdogs.IsOwnerDead ? CustomOptionHolder.PavlovsdogRunAwayKillCoolTime.GetFloat() : CustomOptionHolder.PavlovsdogKillCoolTime.GetFloat();
                     PavlovsdogKillButton.Timer = PavlovsdogKillButton.MaxTimer;
                     RoleClass.Pavlovsdogs.DeathTime = CustomOptionHolder.PavlovsdogRunAwayDeathTime.GetFloat();
@@ -526,7 +526,7 @@ namespace SuperNewRoles.Buttons
                     CupidButton.MaxTimer = CustomOptionHolder.CupidCoolTime.GetFloat();
                     CupidButton.Timer = CupidButton.MaxTimer;
                 },
-                RoleClass.Truelover.GetButtonSprite(),
+                RoleClass.Cupid.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -577,8 +577,8 @@ namespace SuperNewRoles.Buttons
                 new Vector3(-2.7f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
-                KeyCode.L,
-                50,
+                null,
+                0,
                 () => { return false; }
             )
             {
@@ -1028,7 +1028,7 @@ namespace SuperNewRoles.Buttons
                 {
                     if (PlayerControlFixedUpdatePatch.JackalSetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
-                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.JackalSetTarget());
+                        ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.JackalSetTarget());
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Jackal:
@@ -1596,7 +1596,7 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.Q,
-                49,
+                8,
                 () => { return false; }
             )
             {
@@ -2079,8 +2079,7 @@ namespace SuperNewRoles.Buttons
                 {
                     bool sabotageActive = false;
                     foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
-                        if (task.TaskType == TaskTypes.FixLights || task.TaskType == TaskTypes.RestoreOxy || task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic || task.TaskType == TaskTypes.FixComms || task.TaskType == TaskTypes.StopCharles
-                            || (SubmergedCompatibility.isSubmerged() && task.TaskType == SubmergedCompatibility.RetrieveOxygenMask))
+                        if (task.TaskType == TaskTypes.FixLights || task.TaskType == TaskTypes.RestoreOxy || task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic || task.TaskType == TaskTypes.FixComms || task.TaskType == TaskTypes.StopCharles)
                         {
                             sabotageActive = true;
                             break;
@@ -2222,7 +2221,7 @@ namespace SuperNewRoles.Buttons
             SecretlyKillerMainButton = new(
                 () =>
                 {
-                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.SecretlyKiller.target);
+                    ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.SecretlyKiller.target);
                     SecretlyKiller.MainResetCooldown();
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SecretlyKiller; },
@@ -2244,7 +2243,7 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.KillButton,
                 KeyCode.Q,
-                49,
+                8,
                 () =>
                 {
                     return !PlayerControl.LocalPlayer.CanMove;
@@ -2287,7 +2286,7 @@ namespace SuperNewRoles.Buttons
                 49,
                 () =>
                 {
-                    var ma = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                     return (ma == null || ma.IsActive) && (!RoleClass.SecretlyKiller.IsBlackOutKillCharge || !PlayerControl.LocalPlayer.CanMove);
                 }
             );
@@ -2342,7 +2341,7 @@ namespace SuperNewRoles.Buttons
                 {
                     if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
-                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
+                        ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.DoubleKiller:
@@ -2381,7 +2380,7 @@ namespace SuperNewRoles.Buttons
                 {
                     if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
-                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
+                        ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.DoubleKiller:
@@ -2554,9 +2553,7 @@ namespace SuperNewRoles.Buttons
             };
 
             RevolutionistButton = new(
-                () =>
-                {
-                },
+                () => { },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Revolutionist; },
                 () =>
                 {
@@ -2613,9 +2610,6 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     PlayerControl target = SetTarget();
-                    if (ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, target) == ModHelpers.MurderAttemptResult.PerformKill)
-                    {
-                    }
                     if (RoleClass.Hitman.Target.PlayerId != target.PlayerId)
                     {
                         Roles.Neutral.Hitman.LimitDown();
@@ -2940,7 +2934,7 @@ namespace SuperNewRoles.Buttons
 
                     RPCProcedure.StefinderIsKilled(PlayerControl.LocalPlayer.PlayerId);
                     RoleClass.Stefinder.IsKill = true;
-                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.Stefinder.target);
+                    ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.Stefinder.target);
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Stefinder && !RoleClass.Stefinder.IsKill; },
                 () =>

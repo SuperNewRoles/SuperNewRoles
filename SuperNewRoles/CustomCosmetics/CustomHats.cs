@@ -536,10 +536,6 @@ namespace SuperNewRoles.CustomCosmetics
                 }
                 return true;
             }
-
-            public static void Postfix(HatsTab __instance)
-            {
-            }
         }
     }
 

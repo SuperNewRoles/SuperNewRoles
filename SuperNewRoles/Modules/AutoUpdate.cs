@@ -34,9 +34,6 @@ namespace SuperNewRoles
         public static GenericPopup InfoPopup;
         private static bool IsLoad = false;
         public static string updateURL = null;
-        public static void Load()
-        {
-        }
         public static async Task<bool> Update()
         {
             try
@@ -133,7 +130,6 @@ namespace SuperNewRoles
                 }
                 if (!IsLoad)
                 {
-                    AutoUpdate.Load();
                     IsLoad = true;
                 }
                 if (newver == Version)

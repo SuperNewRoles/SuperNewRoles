@@ -148,7 +148,6 @@ RMSkeldSetting,Skeld,スケルドが有効,可随机游玩骷髅舰(Skeld)
 RMMiraSetting,Mira,ミラが有効,可随机游玩米拉总部(Mira)
 RMPolusSetting,Polus,ポーラスが有効,可随机游玩波鲁斯(Polus)
 RMAirshipSetting,AirShip,エアーシップが有効,可随机游玩飞艇(AirShip)
-RMSubmergedSetting,Submerged,サブマージドが有効,可随机游玩潜艇(Submerged)
 ADMINButton,ADMIN,アドミン,地图
 timeRemaining,Remaining: {0},残り{0},剩余：{0}秒
 restrictOutOfTime,Time up,時間切れ,超时
@@ -261,18 +260,44 @@ FinalResults,Final results,最終結果
 FinalStatusAlive,Survival,生存,存活
 FinalStatusKill,Kill,キル,被杀
 FinalStatusExiled,Exiled,追放,流放
-FinalStatusNekomataExiled,The Way of the Nekomata,猫又の道連れ,连带
-FinalStatusSheriffKill,Sheriff kill,シェリフキル,警长击杀
+FinalStatusSheriffKill,Executing justice,正義執行
 FinalStatusSheriffMisFire,Sheriff misfire,シェリフ誤爆,警长走火
-FinalStatusMeetingSheriffKill,Meeting Sheriff kill,ミーティングシェリフキル,执法官击杀
+FinalStatusMeetingSheriffKill,Meeting Sheriff kill,Executing justice,正義執行
 FinalStatusMeetingSheriffMisFire,Meeting Sheriff misfire,ミーティングシェリフ誤爆,执法官走火
-FinalStatusSelfBomb,Self-destruct,自爆,自杀
-FinalStatusBySelfBomb,Self-destruct collateral damage,自爆巻き添え,恐袭
-FinalStatusDisconnected,amputation,切断,断连
+FinalStatusIgnite,Ignite,焼殺
+FinalStatusDisconnected,Amputation,切断,断连
 FinalStatusDead,Death,死亡,死亡
+FinalStatusSabotage,Sabotage,サボタージュ,破坏
+FinalStatusNekomataExiled,The Way of the Nekomata,猫又の道連れ,连带
+FinalStatusSluggerHarisen,Harisen,ハリセン
+FinalStatusLoversBomb,Lovers suicide,心中
+FinalStatusKunaiKill,Kunai,クナイ
+FinalStatusSamuraiKill,Special sword,必殺剣
+FinalStatusChiefMisSet,Misnaming,指名誤爆
+FinalStatusFalseChargesFalseCharge,Self-determination for injustice,冤罪自決
+FinalStatusSelfBomberBomb,Bomb victim,自爆巻き添え
+FinalStatusBySelfBomberBomb,Suicide bomb attack,自爆特攻
+FinalStatusLadderDeath,Death by fall,転落死
+FinalStatusNunDeath,Death by fall from Nun,ぬーん転落死
+FinalStatusSpelunkerCommsElecDeath,CommsElec death,停電通信死
+FinalStatusSpelunkerSetRoleDeath,SetRole death,役職死
+FinalStatusSpelunkerVentDeath,Vent death,ベント転倒死
+FinalStatusSpelunkerOpenDoor,Door death,ドア指挟み死
+FinalStatusTunaSelfDeath,Heart Stop,心停止
+FinalStatusBestFalseChargesFalseCharge,False charge,冤罪追放
+FinalStatusSheriffHauntedWolfKill,Executing justice,正義執行
+FinalStatusMeetingSheriffHauntedWolfKill,Executing justice,正義執行
+FinalStatusRemoteSheriffHauntedWolfKill,Executing justice,正義執行
+FinalStatusRemoteSheriffKill,Executing justice,正義執行
+FinalStatusRemoteSheriffMisFire,Remote Sheriff MisFire,リモートシェリフ誤爆
+FinalStatusSerialKillerSelfDeath,Suicide of Serial Killer,シリアルキラー自殺
+FinalStatusVampireKill,Death by bloodsucking,吸血死
+FinalStatusOverKillerOverKill,Over Kill!,オーバーキル!
+FinalStatusSuicideWisherSelfDeath,Suicide,自殺
+FinalStatusMadmakerMisSet,Misnaming,指名誤爆
+FinalStatusRevenge,Revenge,復讐
 
 # Sabotages
-FinalStatusSabotage,Sabotage,サボタージュ,破坏
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
 SabotageCognitiveDeficitSetting,Cognitive Deficit,認識障害,破坏时附带认知干扰
 CognitiveDeficitSabotageOutfitUpdateTimeSetting,Figure Change Interval,姿変更間隔,认知干扰时其他玩家外貌变换间隔时间
@@ -325,6 +350,9 @@ SoothSayerDetailMode,Detail display,詳細表示,具体职业
 SoothSayerEncampMode,Camp indicator,陣営表示,所属阵营
 SoothSayerMaxCountSetting,Number of times you can divine,占える回数,占卜师最大占卜次数
 SoothSayerGetChat,The Role of {0} is {1}.,{0}の役職は{1}です。,{0}的职业是{1}
+SoothSayerFirstWhiteOption,Can tell one person at the first meeting who is not an outsider.,最初の会議で一人だけ人外でない人がわかる
+SoothSayerCrewmateText,is crewmate,はクルーメイトです
+SoothSayerNotCrewmateText,is not crewmate,はクルーメイトではありません
 JesterName,Jester,てるてる,小丑
 JesterTitle1,Vote to get banned!,投票で追放されよう,想办法被投出去
 JesterDescription,If they are expelled at the meeting they win alone.,会議で追放されると、単独勝利します。,小丑在会议中被投出则小丑单独获胜。
@@ -402,6 +430,7 @@ SpiritMediumDisplaySetting,Position visibility,陣営表示にする,通灵师�
 SpiritMediumDetailMode,Detail display,詳細表示,具体职业
 SpiritMediumEncampMode,Position Display,陣営表示,所属阵营
 SpiritMediumMaxCountSetting,Number of times you can divine,占える回数,通灵师最大可通灵次数
+SpiritMediumIsAutoMode,Automatic divination of the expelled,追放された人を自動で占う
 SpeedBoosterName,Speed Booster,スピードブースター,正义的飞毛腿
 SpeedBoosterTitle1,Make your speed faster!,スピードを速くしよう,飞一样的感觉！
 SpeedBoosterTitle2,Lead your crew to victory with super speed!,スーパースピードでクルーを勝利に導こう,利用自己飞快的速度带领船员走向胜利
@@ -564,6 +593,8 @@ JackalFriendsIsCheckJackalSetting,Is Check Jackal,ジャッカルをチェック
 DoctorName,Doctor,ドクター,医生
 DoctorTitle1,Check Vitals,バイタルをチェックしよう,随时查看生命监测装置来确认船员的生死
 DoctorVitalName,Vital,バイタル,生命监测装置
+DoctorChargeTime,Vital cool time,バイタルのクールタイム
+DoctorUseTime,Can use vital time,バイタルを見れる時間
 CountChangerName,Count Changer,カウントチェンジャー,巫师
 CountChangerTitle1,Let's change it,変更しよう,幻惑他人
 CountChangerTitle2,Let's swap the judgment with the enemy.,敵と判定を入れ替えよう,变更他人的阵营判定
@@ -712,7 +743,7 @@ ObserverName,Observer,選挙管理委員,窥视者
 ObserverTitle1,Let's monitor everything.,すべてを監視しよう,监视一切吧
 ObserverDescription,You can see where everyone is voting during the meeting.,会議中に全員の投票先を確認できます。,窥视者属于船员阵营。\n会议阶段，窥视者可以确认所有玩家的投票对象。
 VampireName,Vampire,ヴァンパイア,吸血鬼
-VampireTitle1,Let's do a delayed kill.,遅延キルしよう,你的击杀会被延迟
+VampireTitle1,Terrorise the Night King.,夜の王に恐怖せよ,
 VampireKillDelay,Kill Delay,キル遅延,击杀延迟
 VampireViewBloodStainsTurn,Turn to see blood,血が見えるターン
 VampireCanCreateDependents,Dependents can be nominated,眷属を指名可能
@@ -721,7 +752,7 @@ VampireDependentsKillCoolTime,Kill cool time for dependents,眷属のキルク�
 VampireDependentsCanVent,Vent available for use by dependents,眷属がベント使用可能
 VampireDependentsButtonName,make Dependents,眷属にする
 DependentsName,Dependents,眷属
-DependentsTitle1,Help the vampire and win!,ヴァンパイアを助けて勝利しよう
+DependentsTitle1,Trapped in the Night.,夜に囚われし者
 DarkKillerName,DarkKiller,ダークキラー,暗夜杀手
 DarkKillerTitle1,Let's kill in the dark,闇に紛れて殺そう,将你的杀戮隐藏于黑暗之中
 DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキルクールタイム,击杀冷却时间
@@ -834,6 +865,7 @@ KunoichiIsHide,Transparency,透明化,隐身
 KunoichiHideTime,Time required for transparency,透明化に必要な時間,女忍隐身所需要的时间
 KunoichiKunai,Kunai,クナイ,苦无
 KunoichiHideKunai,Can throw kunai during invisibility.,透明化中にクナイを投げれる,女忍隐身时可以投掷苦无
+KunoichiIsWaitAndPressTheButtonToHide,Transparency with a button,透明化をボタンで行う
 SecretlyKillerName,Secretly Killer,シークレットリーキラー,暗杀者
 SecretlyKillerTitle1,Please be quiet during the power outage.,停電中はお静かに,只有死人才能守住秘密
 SettingCoolCharge,Same in kill buttons,キル時のクール同期,暗杀者技能与击杀同步冷却
@@ -928,7 +960,7 @@ MatryoshkaPutOnButtonName,Put On,着る,套娃
 MatryoshkaTakeOffButtonName,Take Off,脱ぐ,解除
 StefinderName,Stefinder,ステファインダー,二五仔
 StefinderTitle1,Let's do one crime.,一回だけ犯罪しよう,那么答案只有一个了！
-StefinderKillCoolDownSetting,KillCooldown,キルクールダウン,二五仔击杀冷却
+StefinderKillCooldownSetting,KillCooldown,キルクールダウン,二五仔击杀冷却
 StefinderVentSetting,CanUseVent,ベントを使用できる,二五仔可以使用管道
 StefinderSaboSetting,CanUseSabotage,サボタージュを使用できる,二五仔可以造成破坏
 StefinderSoloWinSetting,SoloWin,単独勝利,二五仔可以单独获胜
@@ -960,6 +992,7 @@ PhotographerBonusCount,Number of people to be photographed that will be Bonuscoo
 PhotographerBonusCoolTime,Bonus Cool Time,ボーナスクールタイム,摄影师一次拍摄多名玩家后的缩减冷却
 PhotographerIsImpostorVision,Impostor view,インポスターの視界,摄影师拥有内鬼视野
 PhotographerIsNotification,Notification of Shooting,撮影の通知,摄影将会被告知给被拍摄玩家
+PhotographerButtonName,Take a picture,撮影する
 TacticianName,Tactician,戦術家,战术家
 SluggerName,Slugger,スラッガー,击球手
 SluggerTitle1,Lets’ Harisen Kill!,ハリセンでキルしよう,用全垒打把其他人击飞
@@ -990,6 +1023,7 @@ WaveCannonName,Wave Cannon,波動砲,重炮手
 WaveCannonTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！
 WaveCannonChargeTime,Charge Time,チャージ時間,重炮手充能所需时间
 WaveCannonButtonName,Wave Cannon,波動砲,开炮
+IsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクールタイムを同期
 WaveCannonJackalName,Wave Cannon Jackal,波動砲ジャッカル,狼族重炮手
 WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！
 CrackerName,Cracker,クラッカー,神隐者
@@ -1045,6 +1079,15 @@ CanRevengeNeutral,Can take a third camp,第三陣営を道連れ可,复仇者可
 CanRevengeExiled,Can take a crewmate in exile,追放で道連れ可,复仇者被放逐时可以连带一名玩家
 GMName,GM,GM,管理员
 GMTitle1,You are Game Master,あなたはゲームマスター,你是管理员
+GMTeleport,Teleport,テレポート
+GMKill,Kill,キル
+GMRevive,Revive,復活
+GMExile,Exile(No Deadbody Kill),追放(死体なしキル)
+GMCleanDeadbody,Clean Deadbody,死体削除
+GMStartMeeting,Start Meeting,会議開始
+GMCleanDeadbodyAndRevive,Clean Deadbody And Revive,死体を削除して復活
+GMSpawnDeadbody,Spawn Deadbody,死体発生,
+GMEndMeeting,End Meeting,会議終了
 SuicidalIdeationName,Suicidal ideation,自殺願望者,绝望先生
 SuicidalIdeationTitle1,Finding no hope for life,生きる希望を見いだせない
 SuicidalIdeationWinTextSetting,Special Victory Letters,特殊勝利文字,绝望先生拥有特殊胜利文本
@@ -1054,7 +1097,8 @@ SuicidalIdeationFallProbabilitySetting,Probability of falling to death,転落死
 SuicidalIdeationWinText,Try to live a little longer\nSuicidal person,もう少し生きてみようかな\n自殺願望者,再见，绝望先生！\n绝望先生
 SuicidalIdeationButtonName,Time to suicide,自殺まで,自杀倒计时
 CupidName,Cupid,キューピット
-CupidTitle,Let's make Lovers,ラバーズを作ろう
+CupidTitle1,Let's tie the red thread of fate,運命の赤い糸を結ぼう
+CupidButtonName,Shoot the love arrows,恋の矢
 HamburgerShopName,Hamburger Shop,ハンバーガー屋
 HamburgerShopTitle1,Let's make delicious，tasty burgers!,美味しい美味しいハンバーガーを作ろう
 HamburgerShopTitle2,Let's make lots of burgers!,ハンバーガーをたくさん作ろう
@@ -1063,6 +1107,7 @@ HamburgerShopChangeTaskPrefab,Replace all tasks with hamburger tasks,全タス�
 PenguinName,Penguin,ペンギン
 PenguinTitle1,Let's drag and kill!,ぺちぺち！
 PenguinButtonName,Abduction,拉致
+PenguinCanDefaultKill,Can default kill,通常キルができる
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！

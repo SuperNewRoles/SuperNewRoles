@@ -25,10 +25,10 @@ namespace SuperNewRoles.MapCustoms
             vent.EnterVentAnim = tmp.EnterVentAnim;
             vent.ExitVentAnim = tmp.ExitVentAnim;
             vent.Offset = new Vector3(0f, 0.25f, 0f);
-            vent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1; // Make sure we have a unique id
-            var allVentsList = ShipStatus.Instance.AllVents.ToList();
+            vent.Id = MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max() + 1; // Make sure we have a unique id
+            var allVentsList = MapUtilities.CachedShipStatus.AllVents.ToList();
             allVentsList.Add(vent);
-            ShipStatus.Instance.AllVents = allVentsList.ToArray();
+            MapUtilities.CachedShipStatus.AllVents = allVentsList.ToArray();
             vent.gameObject.SetActive(true);
             vent.name = "AdditionalVent_" + vent.Id;
             vent.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);

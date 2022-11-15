@@ -267,7 +267,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             AllRoleSetClass.ImpostorPlayers = new();
             foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
-                if (Player.IsPlayer())
+                if (!Player.IsBot())
                 {
                     if (Player.IsImpostor()) AllRoleSetClass.ImpostorPlayers.Add(Player);
                     else AllRoleSetClass.CrewmatePlayers.Add(Player);

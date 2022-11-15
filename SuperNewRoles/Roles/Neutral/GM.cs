@@ -29,15 +29,14 @@ namespace SuperNewRoles.Roles.Neutral
             {
                 "GMKill",
                 () =>
-        {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
-            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-            writer.Write(target.PlayerId);
-            writer.Write(0);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId, 0);
-            Minigame.Instance.Close();
-        }
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.MeetingKill, SendOption.Reliable, -1);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write(target.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.MeetingKill(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId);
+                    Minigame.Instance.Close();
+                }
             },
             {
                 "GMRevive",
@@ -47,19 +46,27 @@ namespace SuperNewRoles.Roles.Neutral
                     writer.Write(target.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.ReviveRPC(target.PlayerId);
+                    writer = RPCHelper.StartRPC(CustomRPC.SyncDeathMeeting);
+                    writer.Write(target.PlayerId);
+                    writer.EndRPC();
+                    RPCProcedure.SyncDeathMeeting(target.PlayerId);
                     Minigame.Instance.Close();
                 }
             },
             {
-                "GMExile",//"追放(死体なしキル)",
+                "GMExile",
                 () =>
                 {
                     target.RpcExiledUnchecked();
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SyncDeathMeeting);
+                    writer.Write(target.PlayerId);
+                    writer.EndRPC();
+                    RPCProcedure.SyncDeathMeeting(target.PlayerId);
                     Minigame.Instance.Close();
                 }
             },
             {
-                "GMCleanDeadbody",//"死体削除",
+                "GMCleanDeadbody",
                 () =>
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CleanBody, SendOption.Reliable, -1);
@@ -70,7 +77,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             },
             {
-                "GMStartMeeting",//"会議開始",
+                "GMStartMeeting",
                 () =>
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedMeeting, SendOption.Reliable, -1);
@@ -81,7 +88,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             },
             {
-                "GMCleanDeadbodyAndRevive",//"死体を削除して復活",
+                "GMCleanDeadbodyAndRevive",
                 () =>
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ReviveRPC, SendOption.Reliable, -1);
@@ -92,11 +99,15 @@ namespace SuperNewRoles.Roles.Neutral
                     writer.Write(target.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.CleanBody(target.PlayerId);
+                    writer = RPCHelper.StartRPC(CustomRPC.SyncDeathMeeting);
+                    writer.Write(target.PlayerId);
+                    writer.EndRPC();
+                    RPCProcedure.SyncDeathMeeting(target.PlayerId);
                     Minigame.Instance.Close();
                 }
             },
             {
-                "GMSpawnDeadBody",//"死体のみ発生",
+                "GMSpawnDeadBody",
                 () =>
                 {
                     bool IsAlive = target.IsAlive();
@@ -117,7 +128,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             },
             {
-                "GMEndMeeting",//"会議を終了",
+                "GMEndMeeting",
                 () =>
                 {
                     if (MeetingHud.Instance != null)
