@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
     [HarmonyPatch]
     public static class RoleClass
     {
-        public static bool IsMeeting => MeetingHud.Instance != null;
+        public static bool IsMeeting;
         public static bool IsCoolTimeSetted;
         public static System.Random rnd = new((int)DateTime.Now.Ticks);
         public static Color ImpostorRed = Palette.ImpostorRed;
@@ -26,6 +26,7 @@ namespace SuperNewRoles.Roles
         public static void ClearAndReloadRoles()
         {
             BlockPlayers = new();
+            IsMeeting = false;
             RandomSpawn.IsFirstSpawn = true;
             DeadPlayer.deadPlayers = new();
             AllRoleSetClass.Assigned = false;
