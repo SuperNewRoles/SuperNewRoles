@@ -184,6 +184,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                                                      : (3f + RoleClass.Camouflager.DurationTime);
                     }
                     break;
+                case RoleId.Penguin:
+                    optdata.killCooldown = KillCoolSet(CustomOptionHolder.PenguinCoolTime.GetFloat());
+                    break;
             }
             if (player.IsDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;

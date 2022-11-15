@@ -291,6 +291,7 @@ namespace SuperNewRoles.Patches
                     }
                     SerialKiller.SHRFixedUpdate(PlayerControl.LocalPlayer.GetRole());
                     Roles.Impostor.Camouflager.SHRFixedUpdate();
+                    Roles.Impostor.Penguin.SHRFixedUpdate();
                     break;
                 case ModeId.NotImpostorCheck:
                     if (AmongUsClient.Instance.AmHost)
