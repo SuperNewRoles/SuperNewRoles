@@ -190,6 +190,8 @@ DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩�
 WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数
 IsSNROnlySearch,SNR Room Filter,SNRルームフィルター,筛选SNR房间
+CanGhostSeeRole,,死亡者が全員の役職を確認できる
+OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置

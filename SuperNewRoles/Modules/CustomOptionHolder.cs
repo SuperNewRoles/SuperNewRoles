@@ -33,6 +33,9 @@ namespace SuperNewRoles.Modules
         public static CustomOption AgarthaRandomSpawnIsFirstSpawn;
         public static CustomOption AgarthaRandomSpawnIsAddSpawnWay;
 
+        public static CustomOption CanGhostSeeRole;
+        public static CustomOption OnlyImpostorGhostSeeRole;
+
         public static CustomOption IsDebugMode;
         public static CustomOption DebugModeFastStart;
         public static CustomOption IsMurderPlayerAnnounce;
@@ -991,6 +994,9 @@ namespace SuperNewRoles.Modules
             AgarthaRandomSpawn = Create(1084, false, CustomOptionType.Generic, "RandomSpawnOption", true, enableAgartha);
             AgarthaRandomSpawnIsFirstSpawn = Create(1085, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsFirstSpawn", false, AgarthaRandomSpawn);
             AgarthaRandomSpawnIsAddSpawnWay = Create(1086, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
+
+            CanGhostSeeRole = Create(1100, false, CustomOptionType.Generic, "CanGhostSeeRole", true, null, isHeader: true);
+            OnlyImpostorGhostSeeRole = Create(1101, false, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false,CanGhostSeeRole);
 
             IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
