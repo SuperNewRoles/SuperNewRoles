@@ -32,7 +32,7 @@ vanillaOptionsText,VanillaOptions,バニラの設定,原版设置
 creditsUpdateOk,There is updated data. Please reboot. Latest Version:v{0},更新データがあります。再起動してください。最新バージョン:v{0},发现新版本。 请重新启动。 最新版本:v{0}
 modOptionsText,Options,設定,设置
 moreOptionsText,Normal Setting&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings,通常設定&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定,一般设置与&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>设置
-HaisonName,Haison,廃村,解散游戏
+HaisonName,Called Game,廃村,解散游戏
 Developer,Developer,開発者,开发者
 Sponsor,Sponsor,スポンサー,支持者
 Translator,Translator,翻訳,翻译
