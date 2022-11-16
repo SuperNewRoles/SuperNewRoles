@@ -49,13 +49,13 @@ namespace SuperNewRoles.Patches
                     RPCProcedure.SetHaison();
                     if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
-                        if (CustomOptionHolder.IsChangeHaisonReason.GetBool()) EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByTask, false);
-                        else  EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
+                        if (!CustomOptionHolder.IsChangeHaisonReason.GetBool()) EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
+                        else  EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByTask, false);
                     }
                     else
                     {
-                        if (CustomOptionHolder.IsChangeHaisonReason.GetBool()) ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
-                        else ShipStatus.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
+                        if (!CustomOptionHolder.IsChangeHaisonReason.GetBool()) ShipStatus.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
+                        else ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                         MapUtilities.CachedShipStatus.enabled = false;
                     }
                     Logger.Info("===================== 廃村 ======================", "End Game");
