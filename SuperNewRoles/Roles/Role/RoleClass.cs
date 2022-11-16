@@ -2884,6 +2884,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> WerewolfPlayer;
             public static Color32 color = ImpostorRed;
             public static bool IsShooted;
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WereWolfButton.png", 200f);
             public static void ClearAndReload()
             {
                 WerewolfPlayer = new();
