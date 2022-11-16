@@ -185,6 +185,7 @@ IsAlwaysReduceCooldown,Reduce Cooldown,常にキルクールタイムが進む,�
 IsAlwaysReduceCooldownExceptInVent,Reduce Cooldown Except InVent,ベント内でも進む,击杀冷却会在进入管道期间停止计算
 IsAlwaysReduceCooldownExceptOnTask,Reduce Cooldown Except OnTask,停電修理中でも進む,击杀冷却会在修理紧急任务时停止计算
 IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更
+IsChangeHaisonReason,Change the sound and screen when a match called off the game.,廃村時の音及び非導入社視点の画面を変更する
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家
 WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数

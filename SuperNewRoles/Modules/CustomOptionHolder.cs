@@ -53,6 +53,8 @@ namespace SuperNewRoles.Modules
 
         public static CustomOption IsChangeTheWinCondition;
 
+        public static CustomOption IsChangeHaisonReason;
+
         public static CustomOption DetectiveRate;
         public static CustomOption DetectivePlayerCount;
 
@@ -1023,6 +1025,8 @@ namespace SuperNewRoles.Modules
             IsAlwaysReduceCooldownExceptOnTask = Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
 
             IsChangeTheWinCondition = Create(1005, true, CustomOptionType.Generic, "IsChangeTheWinCondition", true, null, isHeader: true);
+
+            IsChangeHaisonReason = Create(1005, true, CustomOptionType.Generic, "IsChangeHaisonReason", false, null, isHeader: true);
 
             MadRolesCanFixComms = Create(984, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
             MadRolesCanFixElectrical = Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
