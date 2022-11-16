@@ -49,16 +49,14 @@ namespace SuperNewRoles.Patches
                     RPCProcedure.SetHaison();
                     if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
-                        Logger.Info("===================== 廃村 ======================", "End Game");
                         EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
-
                     }
                     else
                     {
-                        Logger.Info("===================== 廃村 =====================", "End Game");
                         ShipStatus.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
                         MapUtilities.CachedShipStatus.enabled = false;
                     }
+                    Logger.Info("===================== 廃村 ======================", "End Game");
                 }
             }
 
