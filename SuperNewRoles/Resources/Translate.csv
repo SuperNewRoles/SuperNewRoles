@@ -190,6 +190,10 @@ DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩�
 WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数
 IsSNROnlySearch,SNR Room Filter,SNRルームフィルター,筛选SNR房间
+RestrictDevicesOption,Restrict Devices Option,機器の時間制限
+RestrictAdmin,Restrict Admin,アドミンの時間制限
+RestrictVital,Restrict Vital,バイタルの時間制限
+RestrictCamera,Restrict Camera,カメラの時間制限
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置

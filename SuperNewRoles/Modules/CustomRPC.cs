@@ -8,6 +8,7 @@ using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapOptions;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
@@ -259,10 +260,47 @@ namespace SuperNewRoles.Modules
         SetMapId,
         PenguinHikizuri,
         SetVampireStatus,
+        SetDeviceUseStatus,
     }
 
     public static class RPCProcedure
     {
+        public static void SetDeviceUseStatus(byte devicetype, byte playerId, bool Is, string time)
+        {
+            DeviceClass.DeviceType type = (DeviceClass.DeviceType)devicetype;
+            PlayerControl player = ModHelpers.PlayerById(playerId);
+            if (player == null) return;
+            if (!DeviceClass.DeviceUsePlayer.ContainsKey(type)) return;
+            if (Is)
+            {
+                DateTime dateTime;
+
+                if (!DateTime.TryParse(time, out dateTime)) return;
+                if (DeviceClass.DeviceUserUseTime[type] < dateTime && DeviceClass.DeviceUsePlayer[type] != null) return;
+                DeviceClass.DeviceUsePlayer[type] = player;
+                DeviceClass.DeviceUserUseTime[type] = dateTime;
+            } else
+            {
+                if (DeviceClass.DeviceUsePlayer[type] != null && DeviceClass.DeviceUsePlayer[type].PlayerId != playerId) return;
+                DeviceClass.DeviceUsePlayer[type] = null;
+                DeviceClass.DeviceUserUseTime[type] = DateTime.UtcNow;
+            }
+        }
+        public static void SetDeviceTime(byte devicetype, float time)
+        {
+            DeviceClass.DeviceType type = (DeviceClass.DeviceType)devicetype;
+            switch (type) {
+                case DeviceClass.DeviceType.Admin:
+                    DeviceClass.AdminTimer = time;
+                    break;
+                case DeviceClass.DeviceType.Camera:
+                    DeviceClass.CameraTimer = time;
+                    break;
+                case DeviceClass.DeviceType.Vital:
+                    DeviceClass.VitalTimer = time;
+                    break;
+            }
+        }
         public static void SetLoversCupid(byte sourceid, byte player1, byte player2)
         {
             RoleClass.Cupid.CupidLoverPair[sourceid] = player1;
@@ -663,21 +701,6 @@ namespace SuperNewRoles.Modules
             player.Data.Role.Role = (RoleTypes)roletype;
         }
 
-        public static void SetDeviceTime(float time, byte systemtype)
-        {
-            switch ((SystemTypes)systemtype)
-            {
-                case SystemTypes.Security:
-                    BlockTool.CameraTime = time;
-                    break;
-                case SystemTypes.Admin:
-                    BlockTool.AdminTime = time;
-                    break;
-                case SystemTypes.Medical:
-                    BlockTool.VitalTime = time;
-                    break;
-            }
-        }
         public static void UncheckedSetTasks(byte playerId, byte[] taskTypeIds)
         {
             var player = ModHelpers.PlayerById(playerId);
@@ -1375,9 +1398,6 @@ namespace SuperNewRoles.Modules
                         case CustomRPC.SetLovers:
                             SetLovers(reader.ReadByte(), reader.ReadByte());
                             break;
-                        case CustomRPC.SetDeviceTime:
-                            SetDeviceTime(reader.ReadSingle(), reader.ReadByte());
-                            break;
                         case CustomRPC.UncheckedSetColor:
                             __instance.SetColor(reader.ReadByte());
                             break;
@@ -1532,6 +1552,12 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.SetVampireStatus:
                             SetVampireStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.SetDeviceTime:
+                            SetDeviceTime(reader.ReadByte(), reader.ReadSingle());
+                            break;
+                        case CustomRPC.SetDeviceUseStatus:
+                            SetDeviceUseStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadString());
                             break;
                     }
                 }

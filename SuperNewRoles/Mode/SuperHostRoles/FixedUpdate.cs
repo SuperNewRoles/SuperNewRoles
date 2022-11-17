@@ -77,7 +77,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             List<PlayerControl> AlivePlayers = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.PlayerId != 0 && p.PlayerId != player.PlayerId && p.IsPlayer())
+                if (p.PlayerId != 0 && p.PlayerId != player.PlayerId && !p.IsBot())
                 {
                     if (p.IsDead() || p.IsRole(RoleId.God))
                     {
@@ -114,7 +114,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
                 {
-                    if (Impostor.IsImpostor() && Impostor.IsPlayer())
+                    if (Impostor.IsImpostor() && !Impostor.IsBot())
                     {
                         if (!ChangePlayers.ContainsKey(Impostor.PlayerId))
                         {
@@ -143,7 +143,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
                     {
-                        if (Impostor.IsImpostor() && Impostor.IsPlayer() && !RoleClass.Camouflager.IsCamouflage)
+                        if (Impostor.IsImpostor() && !Impostor.IsBot() && !RoleClass.Camouflager.IsCamouflage)
                         {
                             if (!ChangePlayers.ContainsKey(Impostor.PlayerId)) ChangePlayers.Add(Impostor.PlayerId, ModHelpers.Cs(RoleClass.ImpostorRed, Impostor.GetPlayerName()));
                             else ChangePlayers[Impostor.PlayerId] = ModHelpers.Cs(RoleClass.ImpostorRed, ChangePlayers[Impostor.PlayerId]);
@@ -152,7 +152,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 foreach (PlayerControl CursePlayer in Demon.GetIconPlayers(player))
                 {
-                    if (CursePlayer.IsPlayer())
+                    if (!CursePlayer.IsBot())
                     {
                         if (!ChangePlayers.ContainsKey(CursePlayer.PlayerId)) ChangePlayers.Add(CursePlayer.PlayerId, CursePlayer.GetPlayerName() + ModHelpers.Cs(RoleClass.Demon.color, " ▲"));
                         else ChangePlayers[CursePlayer.PlayerId] = ChangePlayers[CursePlayer.PlayerId] + ModHelpers.Cs(RoleClass.Demon.color, " ▲");
@@ -173,7 +173,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 foreach (PlayerControl DousePlayer in Arsonist.GetIconPlayers(player))
                 {
-                    if (DousePlayer.IsPlayer())
+                    if (!DousePlayer.IsBot())
                     {
                         if (!ChangePlayers.ContainsKey(DousePlayer.PlayerId)) ChangePlayers.Add(DousePlayer.PlayerId, DousePlayer.GetPlayerName() + ModHelpers.Cs(RoleClass.Arsonist.color, " §"));
                         else ChangePlayers[DousePlayer.PlayerId] = ChangePlayers[DousePlayer.PlayerId] + ModHelpers.Cs(RoleClass.Arsonist.color, " §");
@@ -194,7 +194,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 foreach (PlayerControl Player in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
                 {
-                    if (Player.IsPlayer())
+                    if (!Player.IsBot())
                     {
                         if (RoleClass.SatsumaAndImo.TeamNumber == 1)
                         {
