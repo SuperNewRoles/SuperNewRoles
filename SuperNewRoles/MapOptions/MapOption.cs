@@ -166,7 +166,7 @@ namespace SuperNewRoles.MapOptions
             NotUseReportDeadBody = CustomOption.Create(452, true, CustomOptionType.Generic, "NotUseReportSetting", false, MapOptionSetting);
             NotUseMeetingButton = CustomOption.Create(453, true, CustomOptionType.Generic, "NotUseMeetingSetting", false, MapOptionSetting);
 
-            RandomMapOption = CustomOption.Create(454, true, CustomOptionType.Generic, "RamdomMapSetting", true, MapOptionSetting);
+            RandomMapOption = CustomOption.Create(454, true, CustomOptionType.Generic, "RamdomMapSetting", false, MapOptionSetting);
             RandomMapSkeld = CustomOption.Create(455, true, CustomOptionType.Generic, "RMSkeldSetting", true, RandomMapOption);
             RandomMapMira = CustomOption.Create(456, true, CustomOptionType.Generic, "RMMiraSetting", true, RandomMapOption);
             RandomMapPolus = CustomOption.Create(457, true, CustomOptionType.Generic, "RMPolusSetting", true, RandomMapOption);
