@@ -55,16 +55,6 @@ namespace SuperNewRoles.Roles
                 }
             })));
         }
-        /// <summary>
-        /// ShowFlashでReactorFlashや背景が無効化された物を有効化する
-        /// </summary>
-        public static void ResetShowFlash()
-        {
-            var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
-            renderer.enabled = true;
-            renderer.color = Color.black;
-            renderer.gameObject.SetActive(false);
-        }
         private static Sprite SoulSprite;
         public static Sprite GetSoulSprite()
         {
@@ -145,7 +135,6 @@ namespace SuperNewRoles.Roles
                         }
                     }
                 }
-                ResetShowFlash();
             }
 
             public static class MurderPlayerPatch
