@@ -71,7 +71,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static void Postfix()
             {
-                if (IsAdminRestrict) AdminStartTime = DateTime.UtcNow;
+                if (IsAdminRestrict && !RoleClass.EvilHacker.IsMyAdmin) AdminStartTime = DateTime.UtcNow;
             }
         }
         [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.Update))]
@@ -79,7 +79,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static bool Prefix(MapCountOverlay __instance)
             {
-                if (IsAdminRestrict && AdminTimer <= 0)
+                if (IsAdminRestrict && !RoleClass.EvilHacker.IsMyAdmin && AdminTimer <= 0)
                 {
                     MapBehaviour.Instance.Close();
                     return false;
@@ -152,6 +152,7 @@ namespace SuperNewRoles.MapOptions
             }
             public static void Postfix(MapCountOverlay __instance)
             {
+                if (RoleClass.EvilHacker.IsMyAdmin) return;
                 if (!IsAdminRestrict) return;
                 if (AdminTimer <= 0)
                 {
@@ -197,6 +198,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static void Postfix()
             {
+                if (RoleClass.EvilHacker.IsMyAdmin) return;
                 RoleClass.EvilHacker.IsMyAdmin = false;
                 if (!IsAdminRestrict) return;
                 if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
@@ -218,7 +220,7 @@ namespace SuperNewRoles.MapOptions
         {
             static void Postfix(VitalsMinigame __instance)
             {
-                if (IsVitalRestrict) VitalStartTime = DateTime.UtcNow;
+                if (IsVitalRestrict && RoleClass.Doctor.Vital == null) VitalStartTime = DateTime.UtcNow;
                 Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckVital);
             }
         }
@@ -227,7 +229,7 @@ namespace SuperNewRoles.MapOptions
         {
             static void Postfix(Minigame __instance)
             {
-                if (__instance is VitalsMinigame && IsVitalRestrict)
+                if (__instance is VitalsMinigame && IsVitalRestrict && RoleClass.Doctor.Vital == null)
                 {
                     if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
                     if (VitalTimer <= 0) return;
@@ -253,7 +255,7 @@ namespace SuperNewRoles.MapOptions
                 {
                     __instance.Close();
                 }
-                if (!IsVitalRestrict) return;
+                if (!IsVitalRestrict || RoleClass.Doctor.Vital != null) return;
                 if (VitalTimer <= 0)
                 {
                     __instance.Close();
