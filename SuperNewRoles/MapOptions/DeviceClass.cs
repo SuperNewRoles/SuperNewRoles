@@ -199,7 +199,7 @@ namespace SuperNewRoles.MapOptions
             {
                 RoleClass.EvilHacker.IsMyAdmin = false;
                 if (!IsAdminRestrict) return;
-                if (TimeRemaining != null) TimeRemaining.gameObject.SetActive(false);
+                if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
                 if (AdminTimer <= 0) return;
                 if (DeviceUsePlayer[DeviceType.Admin] != null && DeviceUsePlayer[DeviceType.Admin].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
@@ -229,7 +229,7 @@ namespace SuperNewRoles.MapOptions
             {
                 if (__instance is VitalsMinigame && IsVitalRestrict)
                 {
-                    if (TimeRemaining != null) TimeRemaining.gameObject.SetActive(false);
+                    if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
                     if (VitalTimer <= 0) return;
                     if (DeviceUsePlayer[DeviceType.Vital] != null && DeviceUsePlayer[DeviceType.Vital].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {
@@ -310,7 +310,7 @@ namespace SuperNewRoles.MapOptions
         {
             if (!IsCameraRestrict) return;
             IsCameraCloseNow = true;
-            if (TimeRemaining != null) TimeRemaining.gameObject.SetActive(false);
+            if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
             if (CameraTimer <= 0) return;
             if (DeviceUsePlayer[DeviceType.Camera] != null && DeviceUsePlayer[DeviceType.Camera].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
