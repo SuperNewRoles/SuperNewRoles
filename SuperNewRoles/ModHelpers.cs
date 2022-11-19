@@ -815,14 +815,6 @@ namespace SuperNewRoles
             Enum.GetName(typeof(CustomRPC), callId) != null ? // CustomRPCに当てはまる
                 Enum.GetName(typeof(CustomRPC), callId) :
             $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}";
-
-        static bool IsNull<T>(this T obj) where T : class
-        {
-            var unityObj = obj as UnityEngine.Object;
-            if (!ReferenceEquals(unityObj, null))
-                return unityObj == null;
-            return obj == null;
-        }
     }
     public static class CreateFlag
     {
