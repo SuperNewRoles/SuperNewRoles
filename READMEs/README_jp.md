@@ -95,7 +95,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
 [くらと](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
 [null](https://github.com/ )<br>
-[NULL](https://github.com/ ) ([Twitter](https://twitter.com/ ))<br>
+[Sakurander](https://github.com/ )<br>
 
 ## スポンサー
 こんこるど様<br>

@@ -103,7 +103,7 @@ If the host includes this mod, the position will be available to all!<br>
 [Yking](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
 [Kurato](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
 [NULL](https://github.com/)<br>
-[null](https://github.com/) ([Twitter](https://twitter.com/))<br>
+[Sakurander](https://github.com/)<br>
 
 ## Sponsors
 Mr. Concorde<br>
