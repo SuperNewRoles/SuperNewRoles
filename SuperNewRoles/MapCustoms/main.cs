@@ -59,8 +59,9 @@ namespace SuperNewRoles.MapCustoms
             if (IsMapCustom(MapCustomId.Airship) && MapCustom.AntiTaskOverWall.GetBool())
             {
                 // シャワー 写真 全カチ トイレゴミ 医務室ゴミ 武器庫カチ
-                var array = new[] { "task_shower", "task_developphotos","panel_data","task_garbage5","task_garbage1","task_garbage2" };
-                foreach(var c in  GameObject.FindObjectsOfType<Console>()) {
+                var array = new[] { "task_shower", "task_developphotos", "panel_data", "task_garbage5", "task_garbage1", "task_garbage2" };
+                foreach (var c in GameObject.FindObjectsOfType<Console>())
+                {
                     if (c == null) continue;
                     if (array.Any(x => c.name == x)) c.checkWalls = true;
                 }
