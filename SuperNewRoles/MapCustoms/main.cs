@@ -58,8 +58,8 @@ namespace SuperNewRoles.MapCustoms
             // 壁越しにタスクを無効化する
             if (IsMapCustom(MapCustomId.Airship) && MapCustom.AntiTaskOverWall.GetBool())
             {
-                // シャワー 写真 全カチ トイレゴミ 医務室ゴミ 武器庫カチ
-                var array = new[] { "task_shower", "task_developphotos", "panel_data", "task_garbage5", "task_garbage1", "task_garbage2" };
+                // シャワー 写真 全カチ
+                var array = new[] { "task_shower", "task_developphotos", "panel_data", "task_garbage1", "task_garbage2", "task_garbage3", "task_garbage4", "task_garbage5" };
                 foreach (var c in GameObject.FindObjectsOfType<Console>())
                 {
                     if (c == null) continue;
