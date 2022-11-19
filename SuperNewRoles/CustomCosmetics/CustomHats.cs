@@ -288,7 +288,8 @@ namespace SuperNewRoles.CustomCosmetics
                         }
                     }
                 }
-                foreach (var data in CustomHatLoader.hatDetails) {
+                foreach (var data in CustomHatLoader.hatDetails)
+                {
                     var hat = GenereteHatData(data);
                     CreateHatSprite(hat.resource, true);
                     yield return new WaitForSeconds(0.0005f);
@@ -535,10 +536,6 @@ namespace SuperNewRoles.CustomCosmetics
                 }
                 return true;
             }
-
-            public static void Postfix(HatsTab __instance)
-            {
-            }
         }
     }
 
@@ -554,8 +551,6 @@ namespace SuperNewRoles.CustomCosmetics
 
             { "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master", "mememurahat" },
             { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },
-
-            { "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master", "TheOtherRolesGMHaoming"},
         };
 
         public static List<string> CachedRepos = new();

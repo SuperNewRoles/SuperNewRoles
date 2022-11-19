@@ -42,7 +42,7 @@ namespace SuperNewRoles.MapCustoms
             //配電盤を移動させる
             MoveElecPad.MoveElecPads();
 
-            if (ShipStatus.Instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
+            if (MapUtilities.CachedShipStatus.FastRooms.ContainsKey(SystemTypes.GapRoom))
             {
                 GameObject gapRoom = FastDestroyableSingleton<ShipStatus>.Instance.FastRooms[SystemTypes.GapRoom].gameObject;
                 // ぬ～んを消す

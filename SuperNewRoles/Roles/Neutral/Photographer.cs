@@ -24,7 +24,7 @@ namespace SuperNewRoles.Roles.Neutral
                 float distance = Vector3.Distance(CachedPlayer.LocalPlayer.transform.position, p.transform.position);
                 bool anythingBetween = PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.GetTruePosition(), p.PlayerControl.GetTruePosition(), Constants.ShadowMask, false);
 
-                if (!(distance > ShipStatus.Instance.CalculateLightRadius(CachedPlayer.LocalPlayer.Data) * distMod || anythingBetween)) players.Add(p.PlayerId);
+                if (!(distance > MapUtilities.CachedShipStatus.CalculateLightRadius(CachedPlayer.LocalPlayer.Data) * distMod || anythingBetween)) players.Add(p.PlayerId);
             }
             return players;
         }
@@ -45,7 +45,7 @@ namespace SuperNewRoles.Roles.Neutral
                 float distance = Vector3.Distance(CachedPlayer.LocalPlayer.transform.position, p.transform.position);
                 bool anythingBetween = PhysicsHelpers.AnythingBetween(PlayerControl.LocalPlayer.GetTruePosition(), p.PlayerControl.GetTruePosition(), Constants.ShadowMask, false);
 
-                if (!(distance > ShipStatus.Instance.CalculateLightRadius(CachedPlayer.LocalPlayer.Data) * distMod || anythingBetween))
+                if (!(distance > MapUtilities.CachedShipStatus.CalculateLightRadius(CachedPlayer.LocalPlayer.Data) * distMod || anythingBetween))
                 {
                     var rend = p.PlayerControl.MyRend();
                     if (p == null || p.PlayerControl == null || rend == null) continue;

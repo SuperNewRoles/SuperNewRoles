@@ -340,7 +340,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                     if (LowerInfoText == null)
                     {
                         LowerInfoText = UnityEngine.Object.Instantiate(PlayerControl.LocalPlayer.NameText());
-                        LowerInfoText.transform.parent = HudManager.Instance.transform;
+                        LowerInfoText.transform.parent = FastDestroyableSingleton<HudManager>.Instance.transform;
                         LowerInfoText.transform.localPosition = new Vector3(0, -1.5f, 0);
                         LowerInfoText.transform.localScale = new Vector3(2, 2f, 2);
                         LowerInfoText.alignment = TextAlignmentOptions.Center;
@@ -612,14 +612,14 @@ namespace SuperNewRoles.MapCustoms.Airship
                 console.usableDistance = Distance;
                 console.TaskTypes = new TaskTypes[0];
                 console.ValidTasks = new UnhollowerBaseLib.Il2CppReferenceArray<TaskSet>(0);
-                var list = ShipStatus.Instance.AllConsoles.ToList();
+                var list = MapUtilities.CachedShipStatus.AllConsoles.ToList();
                 list.Add(console);
-                ShipStatus.Instance.AllConsoles = new UnhollowerBaseLib.Il2CppReferenceArray<Console>(list.ToArray());
+                MapUtilities.CachedShipStatus.AllConsoles = new UnhollowerBaseLib.Il2CppReferenceArray<Console>(list.ToArray());
             }
             if (console.Image == null)
             {
                 console.Image = obj.GetComponent<SpriteRenderer>();
-                console.Image.material = new(ShipStatus.Instance.AllConsoles[0].Image.material);
+                console.Image.material = new(MapUtilities.CachedShipStatus.AllConsoles[0].Image.material);
             }
             if (!collider)
             {

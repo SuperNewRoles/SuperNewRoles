@@ -147,20 +147,19 @@ namespace SuperNewRoles
                     }
                     JToken assets = data["assets"];
                     if (!assets.HasValues)
+                    {
+                        Logger.Info("AssetsのValueがありませんでした。");
                         return false;
+                    }
                     for (JToken current = assets.First; current != null; current = current.Next)
                     {
                         string browser_download_url = current["browser_download_url"]?.ToString();
-                        if (browser_download_url != null && current["content_type"] != null)
+                        if (browser_download_url.EndsWith("SuperNewRoles.dll"))
                         {
-                            if (current["content_type"].ToString().Equals("application/x-msdownload") &&
-                                browser_download_url.EndsWith("SuperNewRoles.dll"))
-                            {
-                                updateURL = browser_download_url;
-                                await Update();
-                                setData.SetText(ModTranslation.GetString("creditsMain") + "\n" + string.Format(ModTranslation.GetString("creditsUpdateOk"), SuperNewRolesPlugin.NewVersion));
-                                ConfigRoles.IsUpdate.Value = true;
-                            }
+                            updateURL = browser_download_url;
+                            await Update();
+                            setData.SetText(ModTranslation.GetString("creditsMain") + "\n" + string.Format(ModTranslation.GetString("creditsUpdateOk"), SuperNewRolesPlugin.NewVersion));
+                            ConfigRoles.IsUpdate.Value = true;
                         }
                     }
                 }

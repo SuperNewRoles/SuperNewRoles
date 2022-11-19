@@ -45,7 +45,7 @@ namespace SuperNewRoles.Roles.Impostor
 
         public static void FixedUpdate()
         {
-            if (CachedPlayer.LocalPlayer.Data.Role == null || CachedPlayer.LocalPlayer.IsRole(RoleTypes.Shapeshifter))
+            if (CachedPlayer.LocalPlayer.Data.Role == null || !CachedPlayer.LocalPlayer.IsRole(RoleTypes.Shapeshifter))
             {
                 RoleManager.Instance.SetRole(CachedPlayer.LocalPlayer, RoleTypes.Shapeshifter);
             }

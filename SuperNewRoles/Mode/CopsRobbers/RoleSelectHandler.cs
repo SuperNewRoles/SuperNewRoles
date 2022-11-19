@@ -11,7 +11,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             List<PlayerControl> impostors = new();
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
-                if (!player.Data.Disconnected && player.IsPlayer())
+                if (!player.Data.Disconnected && !player.IsBot())
                 {
                     SelectPlayers.Add(player);
                 }
