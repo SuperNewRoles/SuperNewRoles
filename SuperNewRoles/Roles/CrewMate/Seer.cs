@@ -33,13 +33,9 @@ namespace SuperNewRoles.Roles
         public static void ShowFlash(Color color, float duration = 1f)
         {
             var renderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen);
-            Logger.Info("Seer1");
             if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
-            Logger.Info("Seer2");
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
-            Logger.Info("Seer3");
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
-            Logger.Info("Seer4");
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
             {
                 if (p < 0.5)
@@ -47,22 +43,17 @@ namespace SuperNewRoles.Roles
                     if (renderer != null)
                     {
                         renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
-                        Logger.Info("Seer5");
                     }
-                    Logger.Info("Seer6");
                 }
                 else
                 {
                     if (renderer != null)
                     {
                         renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
-                        Logger.Info("Seer7");
                     }
-                    Logger.Info("Seer8");
                 }
                 if (p == 1f && renderer != null)
                 {
-                    Logger.Info("Seer9");
                     GameObject.Destroy(renderer);
                 }
             })));
