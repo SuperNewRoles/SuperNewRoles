@@ -10,12 +10,12 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
-using SuperNewRoles.Roles.CrewMate;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
-using static SuperNewRoles.Patch.FinalStatusPatch;
+using static SuperNewRoles.Patches.FinalStatusPatch;
 
 namespace SuperNewRoles.Modules
 {
@@ -41,12 +41,12 @@ namespace SuperNewRoles.Modules
         Shielder,
         Speeder,
         Freezer,
-        Guesser,
+        NiceGuesser,
         EvilGuesser,
         Vulture,
         NiceScientist,
         Clergyman,
-        MadMate,
+        Madmate,
         Bait,
         HomeSecurityGuard,
         StuntMan,
@@ -156,9 +156,22 @@ namespace SuperNewRoles.Modules
         Slugger,
         ShiftActor,
         ConnectKiller,
+        GM,
+        Cracker,
+        WaveCannon,
+        WaveCannonJackal,
         NekoKabocha,
         Doppelganger,
+        Werewolf,
+        Knight,
+        Pavlovsdogs,
+        Pavlovsowner,
         Conjurer,
+        Camouflager,
+        Cupid,
+        HamburgerShop,
+        Penguin,
+        Dependents,
         //RoleId
     }
 
@@ -197,7 +210,7 @@ namespace SuperNewRoles.Modules
         SetLovers,
         SetDeviceTime,
         UncheckedSetColor,
-        UncheckedSetVanilaRole,
+        UncheckedSetVanillaRole,
         SetMadKiller = 180,
         SetCustomSabotage,
         UseStuntmanCount,
@@ -228,18 +241,249 @@ namespace SuperNewRoles.Modules
         PlayPlayerAnimation,
         SluggerExile,
         PainterPaintSet,
-        /* 210~214 is used Submerged Mod */
-        PainterSetTarget = 215,
-        SharePhotograph,
+        SharePhotograph = 210,
+        PainterSetTarget = 220,
+        SetFinalStatus,
+        MeetingKill,
+        KnightProtected,
+        KnightProtectClear,
+        GuesserShoot,
+        WaveCannon,
         ShowFlash,
-        SetFinalStatus
+        PavlovsOwnerCreateDog,
+        CrackerCrack,
+        Camouflage = 230,
+        ShowGuardEffect,
+        SetLoversCupid,
+        SetMapId,
+        PenguinHikizuri,
+        SetVampireStatus,
+        SyncDeathMeeting
     }
+
     public static class RPCProcedure
     {
+        public static void SetLoversCupid(byte sourceid, byte player1, byte player2)
+        {
+            RoleClass.Cupid.CupidLoverPair[sourceid] = player1;
+            SetLovers(player1, player2);
+        }
+
+        public static void SetVampireStatus(byte sourceId, byte targetId, bool IsOn, bool IsKillSuc)
+        {
+            PlayerControl source = ModHelpers.PlayerById(sourceId);
+            PlayerControl target = ModHelpers.PlayerById(targetId);
+            if (source == null || target == null) return;
+            if (IsOn)
+            {
+                RoleClass.Vampire.Targets.Add(source, target);
+            }
+            else
+            {
+                if (RoleClass.Vampire.BloodStains.ContainsKey(target.PlayerId))
+                {
+                    if (IsKillSuc)
+                    {
+                        BloodStain DeadBloodStain = new(target, target.transform.position);
+                        DeadBloodStain.BloodStainObject.transform.localScale *= 3f;
+                        RoleClass.Vampire.WaitActiveBloodStains.AddRange(RoleClass.Vampire.BloodStains[target.PlayerId]);
+                        RoleClass.Vampire.WaitActiveBloodStains.Add(DeadBloodStain);
+                    }
+                    RoleClass.Vampire.BloodStains.Remove(target.PlayerId);
+                    RoleClass.Vampire.Targets.Remove(source);
+                }
+            }
+        }
+        public static void SetMapId(byte mapid)
+        {
+            SNROnlySearch.currentMapId = mapid;
+        }
+
+        public static void PenguinHikizuri(byte sourceId, byte targetId)
+        {
+            PlayerControl source = ModHelpers.PlayerById(sourceId);
+            PlayerControl target = ModHelpers.PlayerById(targetId);
+            if (source == null || target == null) return;
+            RoleClass.Penguin.PenguinData.Add(source, target);
+        }
+
+        public static void ShowGuardEffect(byte showerid, byte targetid)
+        {
+            if (showerid != CachedPlayer.LocalPlayer.PlayerId) return;
+            PlayerControl target = ModHelpers.PlayerById(targetid);
+            if (target == null) return;
+            PlayerControl.LocalPlayer.ProtectPlayer(target, 0);
+            PlayerControl.LocalPlayer.MurderPlayer(target);
+        }
+        public static void KnightProtectClear(byte Target)
+        {
+            Knight.GuardedPlayers.Remove(Target);
+        }
+        public static void SyncDeathMeeting(byte TargetId)
+        {
+            if (!MeetingHud.Instance) return;
+
+            PlayerControl dyingTarget = ModHelpers.PlayerById(TargetId);
+            if (dyingTarget == null) return;
+
+            if (dyingTarget.IsAlive())
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == TargetId)
+                    {
+                        pva.SetDead(pva.DidReport, false);
+                        pva.Overlay.gameObject.SetActive(false);
+                    }
+                }
+            }
+            else
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == TargetId)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                    if (pva.VotedFor != TargetId) continue;
+                    pva.UnsetVote();
+                    var voteAreaPlayer = ModHelpers.PlayerById(pva.TargetPlayerId);
+                    if (!voteAreaPlayer.AmOwner) continue;
+                    MeetingHud.Instance.ClearVote();
+                }
+                if (AmongUsClient.Instance.AmHost)
+                    MeetingHud.Instance.CheckForEndVoting();
+            }
+        }
+        public static void MeetingKill(byte SourceId, byte TargetId)
+        {
+            PlayerControl source = ModHelpers.PlayerById(SourceId);
+            PlayerControl target = ModHelpers.PlayerById(TargetId);
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
+            if (source == null || target == null) return;
+            target.Exiled();
+            FinalStatusData.FinalStatuses[source.PlayerId] = FinalStatus.Kill;
+            if (MeetingHud.Instance)
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == TargetId)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                    if (pva.VotedFor != TargetId) continue;
+                    pva.UnsetVote();
+                    var voteAreaPlayer = ModHelpers.PlayerById(pva.TargetPlayerId);
+                    if (!voteAreaPlayer.AmOwner) continue;
+                    MeetingHud.Instance.ClearVote();
+                }
+                if (AmongUsClient.Instance.AmHost)
+                    MeetingHud.Instance.CheckForEndVoting();
+            }
+            if (CachedPlayer.LocalPlayer.PlayerId == target.PlayerId)
+            {
+                FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, source.Data);
+            }
+        }
+
+        public static void PavlovsOwnerCreateDog(byte sourceid, byte targetid, bool IsSelfDeath)
+        {
+            PlayerControl source = ModHelpers.PlayerById(sourceid);
+            PlayerControl target = ModHelpers.PlayerById(targetid);
+            if (source == null || target == null) return;
+            if (IsSelfDeath)
+            {
+                source.MurderPlayer(source);
+            }
+            else
+            {
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
+                SetRole(targetid, (byte)RoleId.Pavlovsdogs);
+                if (!RoleClass.Pavlovsowner.CountData.ContainsKey(sourceid))
+                {
+                    RoleClass.Pavlovsowner.CountData[sourceid] = CustomOptionHolder.PavlovsownerCreateDogLimit.GetInt();
+                }
+                RoleClass.Pavlovsowner.CountData[sourceid]--;
+            }
+        }
+        public static void Camouflage(bool Is)
+        {
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    if (Is) Roles.Impostor.Camouflager.CamouflageSHR();
+                    else Roles.Impostor.Camouflager.ResetCamouflageSHR();
+                }
+            }
+            else
+            {
+                if (Is) Roles.Impostor.Camouflager.Camouflage();
+                else Roles.Impostor.Camouflager.ResetCamouflage();
+            }
+        }
+
+        public static void GuesserShoot(byte killerId, byte dyingTargetId, byte guessedTargetId, byte guessedRoleId)
+        {
+            PlayerControl dyingTarget = ModHelpers.PlayerById(dyingTargetId);
+            if (dyingTarget == null) return;
+            dyingTarget.Exiled();
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.KillSfx, false, 0.8f);
+            if (MeetingHud.Instance)
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == dyingTargetId)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                    if (pva.VotedFor != dyingTargetId) continue;
+                    pva.UnsetVote();
+                    var voteAreaPlayer = ModHelpers.PlayerById(pva.TargetPlayerId);
+                    if (!voteAreaPlayer.AmOwner) continue;
+                    MeetingHud.Instance.ClearVote();
+                }
+                if (AmongUsClient.Instance.AmHost)
+                    MeetingHud.Instance.CheckForEndVoting();
+            }
+            PlayerControl guesser = ModHelpers.PlayerById(killerId);
+            if (FastDestroyableSingleton<HudManager>.Instance != null && guesser != null)
+                if (CachedPlayer.LocalPlayer.PlayerControl == dyingTarget)
+                {
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(guesser.Data, dyingTarget.Data);
+                    if (Roles.Attribute.Guesser.guesserUI != null) Roles.Attribute.Guesser.ExitButton.OnClick.Invoke();
+                }
+        }
+
+        public static void CrackerCrack(byte Target)
+        {
+            if (!RoleClass.Cracker.CrackedPlayers.Contains(Target)) RoleClass.Cracker.CrackedPlayers.Add(Target);
+        }
+
+        public static WaveCannonObject WaveCannon(byte Type, byte Id, bool IsFlipX, byte OwnerId, byte[] buff)
+        {
+            Logger.Info($"{(WaveCannonObject.RpcType)Type} : {Id} : {IsFlipX} : {OwnerId} : {buff.Length} : {(ModHelpers.PlayerById(OwnerId) == null ? -1 : ModHelpers.PlayerById(OwnerId).Data.PlayerName)}", "RpcWaveCannon");
+            switch ((WaveCannonObject.RpcType)Type)
+            {
+                case WaveCannonObject.RpcType.Spawn:
+                    Vector3 position = Vector3.zero;
+                    position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
+                    position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
+                    return new(position, IsFlipX, ModHelpers.PlayerById(OwnerId));
+                case WaveCannonObject.RpcType.Shoot:
+                    WaveCannonObject.Objects.FirstOrDefault(x => x.Owner != null && x.Owner.PlayerId == OwnerId && x.Id == Id).Shoot();
+                    break;
+            }
+            return null;
+        }
         public static void SetFinalStatus(byte targetId, FinalStatus Status)
         {
             FinalStatusData.FinalStatuses[targetId] = Status;
         }
+
         public static void SluggerExile(byte SourceId, List<byte> Targets)
         {
             Logger.Info("～SluggerExile～");
@@ -269,13 +513,13 @@ namespace SuperNewRoles.Modules
         public static void PainterPaintSet(byte target, byte ActionTypeId, byte[] buff)
         {
             Painter.ActionType type = (Painter.ActionType)ActionTypeId;
-            if (!RoleClass.Painter.ActionDatas.ContainsKey(type)) return;
+            if (!RoleClass.Painter.ActionData.ContainsKey(type)) return;
             if (!PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) return;
             if (RoleClass.Painter.CurrentTarget == null || RoleClass.Painter.CurrentTarget.PlayerId != target) return;
             Vector2 position = Vector2.zero;
             position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
             position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
-            RoleClass.Painter.ActionDatas[type].Add(position);
+            RoleClass.Painter.ActionData[type].Add(position);
         }
 
         public static void BlockReportDeadBody(byte TargetId, bool IsChangeReported)
@@ -316,7 +560,7 @@ namespace SuperNewRoles.Modules
         {
             PlayerControl source = ModHelpers.PlayerById(playerid);
             if (source == null) return;
-            RoleClass.PartTimer.Datas[source.PlayerId] = targetid;
+            RoleClass.PartTimer.Data[source.PlayerId] = targetid;
         }
         public static void UncheckedUsePlatform(byte playerid, bool IsMove)
         {
@@ -361,7 +605,7 @@ namespace SuperNewRoles.Modules
             }
         }
 
-        public static void ChiefSidekick(byte targetid,bool IsTaskClear)
+        public static void ChiefSidekick(byte targetid, bool IsTaskClear)
         {
             RoleClass.Chief.SheriffPlayer.Add(targetid);
             if (IsTaskClear)
@@ -371,10 +615,10 @@ namespace SuperNewRoles.Modules
             SetRole(targetid, (byte)RoleId.Sheriff);
             if (targetid == CachedPlayer.LocalPlayer.PlayerId)
             {
-                Sheriff.ResetKillCoolDown();
+                Sheriff.ResetKillCooldown();
                 RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
             }
-            UncheckedSetVanilaRole(targetid, (byte)RoleTypes.Crewmate);
+            UncheckedSetVanillaRole(targetid, (byte)RoleTypes.Crewmate);
         }
         public static void FixLights()
         {
@@ -386,10 +630,10 @@ namespace SuperNewRoles.Modules
             PlayerControl TargetPlayer = ModHelpers.PlayerById(target);
             PlayerControl SourcePlayer = ModHelpers.PlayerById(source);
             if (TargetPlayer == null || SourcePlayer == null) return;
-            if (!RoleClass.Arsonist.DouseDatas.ContainsKey(source)) RoleClass.Arsonist.DouseDatas[source] = new();
+            if (!RoleClass.Arsonist.DouseData.ContainsKey(source)) RoleClass.Arsonist.DouseData[source] = new();
             if (!Arsonist.IsDoused(SourcePlayer, TargetPlayer))
             {
-                RoleClass.Arsonist.DouseDatas[source].Add(TargetPlayer);
+                RoleClass.Arsonist.DouseData[source].Add(TargetPlayer);
             }
         }
         public static void DemonCurse(byte source, byte target)
@@ -397,10 +641,10 @@ namespace SuperNewRoles.Modules
             PlayerControl TargetPlayer = ModHelpers.PlayerById(target);
             PlayerControl SourcePlayer = ModHelpers.PlayerById(source);
             if (TargetPlayer == null || SourcePlayer == null) return;
-            if (!RoleClass.Demon.CurseDatas.ContainsKey(source)) RoleClass.Demon.CurseDatas[source] = new();
+            if (!RoleClass.Demon.CurseData.ContainsKey(source)) RoleClass.Demon.CurseData[source] = new();
             if (!Demon.IsCursed(SourcePlayer, TargetPlayer))
             {
-                RoleClass.Demon.CurseDatas[source].Add(TargetPlayer);
+                RoleClass.Demon.CurseData[source].Add(TargetPlayer);
             }
         }
         public static void SetBot(byte playerid)
@@ -435,7 +679,7 @@ namespace SuperNewRoles.Modules
             {
                 if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(playerid))
                 {
-                    RoleClass.MadStuntMan.GuardCount[playerid] = CustomOptions.MadStuntManMaxGuardCount.GetInt() - 1;
+                    RoleClass.MadStuntMan.GuardCount[playerid] = CustomOptionHolder.MadStuntManMaxGuardCount.GetInt() - 1;
                 }
                 else
                 {
@@ -446,7 +690,7 @@ namespace SuperNewRoles.Modules
             {
                 if (!RoleClass.StuntMan.GuardCount.ContainsKey(playerid))
                 {
-                    RoleClass.StuntMan.GuardCount[playerid] = CustomOptions.StuntManMaxGuardCount.GetInt() - 1;
+                    RoleClass.StuntMan.GuardCount[playerid] = CustomOptionHolder.StuntManMaxGuardCount.GetInt() - 1;
                 }
                 else
                 {
@@ -462,15 +706,15 @@ namespace SuperNewRoles.Modules
             target.ClearRole();
             RoleClass.SideKiller.MadKillerPlayer.Add(target);
             RoleClass.SideKiller.MadKillerPair.Add(source.PlayerId, target.PlayerId);
-            DestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
             ChacheManager.ResetMyRoleChache();
             PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
         }
-        public static void UncheckedSetVanilaRole(byte playerid, byte roletype)
+        public static void UncheckedSetVanillaRole(byte playerid, byte roletype)
         {
             var player = ModHelpers.PlayerById(playerid);
             if (player == null) return;
-            DestroyableSingleton<RoleManager>.Instance.SetRole(player, (RoleTypes)roletype);
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, (RoleTypes)roletype);
             player.Data.Role.Role = (RoleTypes)roletype;
         }
 
@@ -540,7 +784,7 @@ namespace SuperNewRoles.Modules
             var source = ModHelpers.PlayerById(sourceid);
             var target = ModHelpers.PlayerById(targetid);
             if (source == null || target == null) return;
-            if (CustomOptions.CountChangerNextTurn.GetBool())
+            if (CustomOptionHolder.CountChangerNextTurn.GetBool())
             {
                 RoleClass.CountChanger.Setdata[source.PlayerId] = target.PlayerId;
             }
@@ -681,6 +925,15 @@ namespace SuperNewRoles.Modules
             }
 
         }
+
+        public static void KnightProtected(byte KnightId, byte TargetId)
+        {
+            PlayerControl Knight = ModHelpers.PlayerById(KnightId);
+            PlayerControl Target = ModHelpers.PlayerById(TargetId);
+            Roles.Crewmate.Knight.GuardedPlayers.Add(TargetId); // 守護をかけられたプレイヤーを保存。
+            SuperNewRolesPlugin.Logger.LogInfo($"[KnightProtected]{Knight.GetDefaultName()}が{Target.GetDefaultName()}に護衛を使用しました。");
+            if (Roles.Crewmate.Knight.KnightCanAnnounceOfProtected.GetBool()) ProctedMessager.ScheduleProctedMessage(ModTranslation.GetString("TheKnightProtected"));
+        }
         public static void CustomRPCKill(byte notTargetId, byte targetId)
         {
             if (notTargetId == targetId)
@@ -767,7 +1020,7 @@ namespace SuperNewRoles.Modules
                     p.ClearRole();
                     p.SetRole(RoleId.JackalSeer);
                     //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                    RoleClass.JackalSeer.CanCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.GetBool();
+                    RoleClass.JackalSeer.CanCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
                 }
             }
             else
@@ -777,7 +1030,7 @@ namespace SuperNewRoles.Modules
                     p.ClearRole();
                     p.SetRole(RoleId.Jackal);
                     //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                    RoleClass.Jackal.CanCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.GetBool();
+                    RoleClass.Jackal.CanCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
                 }
             }
             PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
@@ -793,7 +1046,7 @@ namespace SuperNewRoles.Modules
             }
             else
             {
-                DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
                 player.ClearRole();
                 RoleClass.Jackal.SidekickPlayer.Add(player);
                 PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
@@ -810,7 +1063,7 @@ namespace SuperNewRoles.Modules
             }
             else
             {
-                DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
                 player.ClearRole();
                 RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
                 PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
@@ -822,6 +1075,7 @@ namespace SuperNewRoles.Modules
             var player = ModHelpers.PlayerById(playerid);
             if (player != null)
             {
+                player.Data.IsDead = true;
                 player.Exiled();
             }
         }
@@ -863,10 +1117,6 @@ namespace SuperNewRoles.Modules
         {
             var p = ModHelpers.PlayerById(playerid);
             CachedPlayer.LocalPlayer.transform.position = p.transform.position;
-            if (SubmergedCompatibility.isSubmerged())
-            {
-                SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
-            }
             new CustomMessage(string.Format(ModTranslation.GetString("TeleporterTPTextMessage"), p.NameText().text), 3);
         }
         public static void SetWinCond(byte Cond)
@@ -884,7 +1134,7 @@ namespace SuperNewRoles.Modules
             PlayerControl target = ModHelpers.PlayerById(targetId);
             if (target == null || source == null) return;
             source.ProtectPlayer(target, colorid);
-            PlayerControl.LocalPlayer.MurderPlayer(target);
+            source.MurderPlayer(target);
             source.ProtectPlayer(target, colorid);
             if (targetId == CachedPlayer.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
         }
@@ -954,7 +1204,7 @@ namespace SuperNewRoles.Modules
             { // Delayed action
                 if (p == 1f)
                 {
-                    Vector2 InitialSpawnCenter = new(16.64f, -2.46f);
+                    //ShipStatus.Instance.InitialSpawnCenter = new(16.64f, -2.46f);
                     Vector2 MeetingSpawnCenter = new(17.4f, -16.286f);
                     Vector2 ElectricalSpawn = new(5.53f, -9.84f);
                     Vector2 O2Spawn = new(3.28f, -21.67f);
@@ -967,7 +1217,7 @@ namespace SuperNewRoles.Modules
                     Vector2 LeftReactorSpawn = new(4.6395f, -4.2884f);
                     var loc = locId switch
                     {
-                        0 => InitialSpawnCenter,
+                        0 => ShipStatus.Instance.InitialSpawnCenter,
                         1 => MeetingSpawnCenter,
                         2 => ElectricalSpawn,
                         3 => O2Spawn,
@@ -978,7 +1228,7 @@ namespace SuperNewRoles.Modules
                         8 => MeetingSpawnUnder,
                         9 => LocketSpawn,
                         10 => LeftReactorSpawn,
-                        _ => InitialSpawnCenter,
+                        _ => ShipStatus.Instance.InitialSpawnCenter,
                     };
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
@@ -1019,6 +1269,7 @@ namespace SuperNewRoles.Modules
             }
             static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
             {
+                Logger.Info(ModHelpers.GetRPCNameFromByte(callId), "RPC");
                 try
                 {
                     byte packetId = callId;
@@ -1139,8 +1390,8 @@ namespace SuperNewRoles.Modules
                         case CustomRPC.UncheckedSetColor:
                             __instance.SetColor(reader.ReadByte());
                             break;
-                        case CustomRPC.UncheckedSetVanilaRole:
-                            UncheckedSetVanilaRole(reader.ReadByte(), reader.ReadByte());
+                        case CustomRPC.UncheckedSetVanillaRole:
+                            UncheckedSetVanillaRole(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.SetMadKiller:
                             SetMadKiller(reader.ReadByte(), reader.ReadByte());
@@ -1246,11 +1497,53 @@ namespace SuperNewRoles.Modules
                             }
                             SluggerExile(source, Targets);
                             break;
+                        case CustomRPC.MeetingKill:
+                            MeetingKill(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.KnightProtected:
+                            KnightProtected(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.KnightProtectClear:
+                            KnightProtectClear(reader.ReadByte());
+                            break;
+                        case CustomRPC.CrackerCrack:
+                            CrackerCrack(reader.ReadByte());
+                            break;
+                        case CustomRPC.WaveCannon:
+                            WaveCannon(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadByte(), reader.ReadBytesAndSize());
+                            break;
                         case CustomRPC.ShowFlash:
                             ShowFlash();
                             break;
                         case CustomRPC.SetFinalStatus:
                             SetFinalStatus(reader.ReadByte(), (FinalStatus)reader.ReadByte());
+                            break;
+                        case CustomRPC.PavlovsOwnerCreateDog:
+                            PavlovsOwnerCreateDog(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.Camouflage:
+                            Camouflage(reader.ReadBoolean());
+                            break;
+                        case CustomRPC.GuesserShoot:
+                            GuesserShoot(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.ShowGuardEffect:
+                            ShowGuardEffect(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetLoversCupid:
+                            SetLoversCupid(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetMapId:
+                            SetMapId(reader.ReadByte());
+                            break;
+                        case CustomRPC.PenguinHikizuri:
+                            PenguinHikizuri(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetVampireStatus:
+                            SetVampireStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.SyncDeathMeeting:
+                            SyncDeathMeeting(reader.ReadByte());
                             break;
                     }
                 }

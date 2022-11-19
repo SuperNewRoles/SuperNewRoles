@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles
 {
     public class Freezer
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.FreezerButton.MaxTimer = RoleClass.Freezer.CoolTime;
             HudManagerStartPatch.FreezerButton.Timer = HudManagerStartPatch.FreezerButton.MaxTimer;
@@ -17,6 +17,7 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.FreezerButton.effectCancellable = false;
             HudManagerStartPatch.FreezerButton.EffectDuration = RoleClass.Freezer.DurationTime;
             HudManagerStartPatch.FreezerButton.HasEffect = true;
+            HudManagerStartPatch.FreezerButton.isEffectActive = false;
         }
         public static void DownStart()
         {
@@ -35,7 +36,7 @@ namespace SuperNewRoles.Roles
         public static void SpeedDownEnd()
         {
             ResetSpeed();
-            ResetCoolDown();
+            ResetCooldown();
         }
         public static bool IsFreezer(PlayerControl Player)
         {
@@ -43,15 +44,8 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            ResetCoolDown();
+            ResetCooldown();
             ResetSpeed();
-        }
-        public static void HudUpdate()
-        {
-            if (HudManagerStartPatch.FreezerButton.Timer <= 0.1f && RoleClass.Freezer.IsSpeedDown)
-            {
-                SpeedDownEnd();
-            }
         }
     }
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
@@ -62,7 +56,7 @@ namespace SuperNewRoles.Roles
             if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                if (RoleClass.Freezer.IsSpeedDown)
+                if (RoleClass.Freezer.IsSpeedDown || RoleClass.WaveCannon.IsLocalOn)
                 {
                     __instance.body.velocity = new Vector2(0f, 0f);
                 }

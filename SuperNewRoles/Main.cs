@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using AmongUs.Data;
 using BepInEx;
 using BepInEx.IL2CPP;
 using HarmonyLib;
@@ -11,14 +12,16 @@ using UnityEngine;
 
 namespace SuperNewRoles
 {
-    [BepInPlugin(Id, "SuperNewRoles", VersionString)]
-    [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInAutoPlugin("jp.ykundesu.supernewroles", "SuperNewRoles")]
+    [BepInIncompatibility("com.emptybottle.townofhost")]
+    [BepInIncompatibility("me.eisbison.theotherroles")]
+    [BepInIncompatibility("me.yukieiji.extremeroles")]
+    [BepInIncompatibility("com.tugaru.TownOfPlus")]
     [BepInProcess("Among Us.exe")]
-    public class SuperNewRolesPlugin : BasePlugin
+    public partial class SuperNewRolesPlugin : BasePlugin
     {
-        public const string Id = "jp.ykundesu.supernewroles";
-        //バージョンと同時にIsBetaも変える
-        public const string VersionString = "1.4.2.1";
+        public static readonly string VersionString = $"{Assembly.GetExecutingAssembly().GetName().Version}";
+
         public static bool IsBeta = IsViewText && ThisAssembly.Git.Branch != MasterBranch;
 
         //プルリク時にfalseなら指摘してください
@@ -28,18 +31,18 @@ namespace SuperNewRoles
         public const string MasterBranch = "master";
         public const string ModName = "SuperNewRoles";
         public const string ColorModName = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
-        public const string DiscordServer = "https://discord.gg/6DjxfaDsAj";
+        public const string DiscordServer = "https://discord.gg/hXbDgQzSuK";
         public const string Twitter1 = "https://twitter.com/SNRDevs";
         public const string Twitter2 = "https://twitter.com/SuperNewRoles";
 
 
-        public static Version Version = Version.Parse(VersionString);
+        public static Version ThisVersion = System.Version.Parse($"{Assembly.GetExecutingAssembly().GetName().Version}");
         public static BepInEx.Logging.ManualLogSource Logger;
         public static Sprite ModStamp;
         public static int optionsPage = 1;
-        public Harmony Harmony { get; } = new Harmony(Id);
+        public Harmony Harmony { get; } = new Harmony("jp.ykundesu.supernewroles");
         public static SuperNewRolesPlugin Instance;
-        public static Dictionary<string, Dictionary<int, string>> StringDATE;
+        public static Dictionary<string, Dictionary<int, string>> StringDATA;
         public static bool IsUpdate = false;
         public static string NewVersion = "";
         public static string thisname;
@@ -49,11 +52,11 @@ namespace SuperNewRoles
             Logger = Log;
             Instance = this;
             // All Load() Start
-            ModTranslation.Load();
+            ModTranslation.LoadCsv();
             ChacheManager.Load();
             CustomCosmetics.CustomColors.Load();
             ConfigRoles.Load();
-            CustomOptions.Load();
+            CustomOptionHolder.Load();
             Patches.FreeNamePatch.Initialize();
             // All Load() End
 
@@ -79,15 +82,15 @@ namespace SuperNewRoles
             SuperNewRoles.Logger.Info(ThisAssembly.Git.BaseTag, "BaseTag");
             SuperNewRoles.Logger.Info(ThisAssembly.Git.Tag, "Tag");
             SuperNewRoles.Logger.Info(VersionString, "VersionString");
-            SuperNewRoles.Logger.Info(Application.version, "AmongUsVersion"); // アモングアス本体のバージョン
+            SuperNewRoles.Logger.Info(Version, nameof(Version));
+            SuperNewRoles.Logger.Info($"{Application.version}({Constants.GetPurchasingPlatformType()})", "AmongUsVersion"); // アモングアス本体のバージョン(プレイしているプラットフォーム)
 
             Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
 
             var assembly = Assembly.GetExecutingAssembly();
 
-            StringDATE = new Dictionary<string, Dictionary<int, string>>();
+            StringDATA = new Dictionary<string, Dictionary<int, string>>();
             Harmony.PatchAll();
-            SubmergedCompatibility.Initialize();
 
             assembly = Assembly.GetExecutingAssembly();
             string[] resourceNames = assembly.GetManifestResourceNames();
@@ -105,13 +108,11 @@ namespace SuperNewRoles
         {
             public static void Prefix()
             {
-                SaveManager.chatModeType = 1;
-                SaveManager.isGuest = false;
+                DataManager.Settings.Multiplayer.ChatMode = InnerNet.QuickChatModes.FreeChatOrQuickChat;
             }
             public static void Postfix(ChatController __instance)
             {
-                SaveManager.chatModeType = 1;
-                SaveManager.isGuest = false;
+                DataManager.Settings.Multiplayer.ChatMode = InnerNet.QuickChatModes.FreeChatOrQuickChat;
 
                 if (Input.GetKeyDown(KeyCode.F1))
                 {

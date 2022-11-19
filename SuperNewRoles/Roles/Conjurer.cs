@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
-using static SuperNewRoles.Modules.CustomOptions;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Roles.Impostor
 {
@@ -14,31 +15,32 @@ namespace SuperNewRoles.Roles.Impostor
         private const int Id = 999;
         public static CustomRoleOption Option;
         public static CustomOption PlayerCount;
-        public static CustomOption CoolDown;
+        public static CustomOption Cooldown;
         public static CustomOption CanAddLength;
         public static CustomOption CanKillImpostor;
         public static CustomOption ShowFlash;
         public static void SetupCustomOptions()
-        {
+        {/*
             Option = new(Id, false, CustomOptionType.Impostor, "ConjurerName", color, 1);
             PlayerCount = CustomOption.Create(Id + 1, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], Option);
-            CoolDown = CustomOption.Create(Id + 2, false, CustomOptionType.Impostor, "CoolDown", 10f, 1f, 30f, 0.5f, Option);
+            Cooldown = CustomOption.Create(Id + 2, false, CustomOptionType.Impostor, "Cooldown", 10f, 1f, 30f, 0.5f, Option);
             CanAddLength = CustomOption.Create(Id + 3, false, CustomOptionType.Impostor, "CanAddLength", 10f, 0.5f, 40f, 0.5f, Option);
             CanKillImpostor = CustomOption.Create(Id + 4, false, CustomOptionType.Impostor, "CanKillImpostor", false, Option);
-            ShowFlash = CustomOption.Create(Id + 5, false, CustomOptionType.Impostor, "ShowFlash", false, Option);
+            ShowFlash = CustomOption.Create(Id + 5, false, CustomOptionType.Impostor, "ShowFlash", false, Option);*/
         }
 
         public static List<PlayerControl> Player;
         public static Color32 color = RoleClass.ImpostorRed;
         public static int Count; // 何回設置したか
-        public static int Round; // 何週目か
+        //public static int Round; // 何週目か
         public static Vector2[] Positions;
         public static void ClearAndReload()
         {
             Player = new();
             Count = 0;
-            Round = 0;
+            //Round = 0;
             Positions = new Vector2[] { new(), new(), new() };
+            Beacon.AllBeacons = new();
         }
 
         private static Sprite AddbuttonSprite;
@@ -126,12 +128,12 @@ namespace SuperNewRoles.Roles.Impostor
                     Count++;
                     Logger.Info($"Now:{Count}", "Conjurer Added");
 
-                    ResetCoolDown();
+                    ResetCooldown();
                 }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () => { return CanAddBeacon(); },
-            () => { ResetCoolDown(); },
+            () => { ResetCooldown(); },
             GetBeaconButtonSprite(),
             new Vector3(0, 1, 0),
             hm,
@@ -150,7 +152,7 @@ namespace SuperNewRoles.Roles.Impostor
             {
                 if (PlayerControl.LocalPlayer.CanMove && Count == 3)
                 {
-                    Logger.Info($"Beacon{Round}{Count}", "Beacons");
+                    //Logger.Info($"Beacon{Round}{Count}", "Beacons");
                     foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                     {
                         // プレイヤーがPositionsで形成された三角形の中にいる
@@ -160,7 +162,20 @@ namespace SuperNewRoles.Roles.Impostor
                             {
                                 if ((!CanKillImpostor.GetBool() && !pc.IsImpostor()) || CanKillImpostor.GetBool())
                                 {
-                                    pc.RpcMurderPlayer(pc);
+                                    if (pc.IsRole(RoleId.Shielder) && RoleClass.Shielder.IsShield.ContainsKey(pc.PlayerId) && RoleClass.Shielder.IsShield[pc.PlayerId])
+                                    {
+                                        MessageWriter msgwriter = RPCHelper.StartRPC(CustomRPC.ShielderProtect);
+                                        msgwriter.Write(CachedPlayer.LocalPlayer.PlayerId);
+                                        msgwriter.Write(pc.PlayerId);
+                                        msgwriter.Write(0);
+                                        msgwriter.EndRPC();
+                                        RPCProcedure.ShielderProtect(CachedPlayer.LocalPlayer.PlayerId, pc.PlayerId, 0);
+                                        RoleClass.WaveCannon.CannotMurderPlayers.Add(pc.PlayerId);
+                                    }
+                                    else
+                                    {
+                                        pc.RpcMurderPlayer(pc);
+                                    }
                                 }
                             }
                         }
@@ -171,18 +186,18 @@ namespace SuperNewRoles.Roles.Impostor
                         RPCProcedure.ShowFlash();
                     }
                     Beacon.ClearBeacons();
-                    ResetCoolDown();
+                    ResetCooldown();
                     Count = 0;
-                    Round++; // 何週目かを増やす
-                    Logger.Info($"Beacon{Round}{Count}", "Beacons");
+                    //Round++; // 何週目かを増やす
+                    //Logger.Info($"Beacon{Round}{Count}", "Beacons");
                 }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Conjurer; },
             () => { return PlayerControl.LocalPlayer.CanMove && Count == 3; },
             () =>
             {
-                ResetCoolDown();
-                ResetStartCoolDown();
+                ResetCooldown();
+                ResetStartCooldown();
             },
             GetStartButtonSprite(),
             new Vector3(-1.8f, -0.06f, 0),
@@ -198,13 +213,13 @@ namespace SuperNewRoles.Roles.Impostor
             };
         }
 
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
-            BeaconButton.MaxTimer = CoolDown.GetFloat();
-            BeaconButton.Timer = CoolDown.GetFloat();
+            BeaconButton.MaxTimer = Cooldown.GetFloat();
+            BeaconButton.Timer = Cooldown.GetFloat();
         }
 
-        public static void ResetStartCoolDown()
+        public static void ResetStartCooldown()
         {
             StartButton.MaxTimer = 0;
             StartButton.Timer = 0;

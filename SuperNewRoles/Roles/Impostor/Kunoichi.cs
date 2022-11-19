@@ -99,7 +99,7 @@ namespace SuperNewRoles.Roles
                             RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId]++;
                             if (RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] >= RoleClass.Kunoichi.KillKunai)
                             {
-                                ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, p, showAnimation: false);
+                                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, p, showAnimation: false);
                                 RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] = 0;
                             }
                             RoleClass.Kunoichi.Kunais.Remove(kunai);
@@ -112,7 +112,7 @@ namespace SuperNewRoles.Roles
             // 透明化に必要な待機時間の取得と処理 (ボタン動作ではない時)
             if (!RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide && RoleClass.Kunoichi.HideTime != -1)
             {
-                if (!HudManager.Instance.IsIntroDisplayed)
+                if (!FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
                 {
                     if (RoleClass.Kunoichi.OldPosition == CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition()) //止まっている時 ((*1)で取得した位置情報と現在の位置情報が同じ時)
                     {
@@ -127,7 +127,7 @@ namespace SuperNewRoles.Roles
                     {
                         if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)//透明化していた場合
                         {
-                            HideOff(); ; // 透明化を解除する
+                            HideOff(); // 透明化を解除する
                         }
                         RoleClass.Kunoichi.StopTime = 0;//止まっている時間を 0 にする
                     }
@@ -137,7 +137,7 @@ namespace SuperNewRoles.Roles
             // 透明化に必要な待機時間の取得と処理 (ボタン動作の時)
             if (RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide && RoleClass.Kunoichi.HideTime != -1)
             {
-                if (!HudManager.Instance.IsIntroDisplayed)
+                if (!FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
                 {
                     if (RoleClass.Kunoichi.OldPosition == CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition()) //止まっている時 ((*2)で取得した位置情報と現在の位置情報が同じ時)
                     {
@@ -150,7 +150,7 @@ namespace SuperNewRoles.Roles
                     }
                     else // 動き始めた時 & 動き続けている時は
                     {
-                        ResetCoolDown(); // 動いている時は「隠れる」ボタンのクールダウンを常にリセットする
+                        ResetCooldown(); // 動いている時は「隠れる」ボタンのクールダウンを常にリセットする
                         if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)//透明化していた場合
                         {
                             HideOff(); // 透明化を解除する
@@ -185,10 +185,10 @@ namespace SuperNewRoles.Roles
             //ボタン動作で行っている場合はクールダウンのリセットも行う
             if (RoleClass.Kunoichi.IsHideButton)
             {
-                ResetCoolDown();
+                ResetCooldown();
             }
         }
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             // [隠れる]ボタンのクールダウンをリセットする
             RoleClass.Kunoichi.IsHideButton = false;

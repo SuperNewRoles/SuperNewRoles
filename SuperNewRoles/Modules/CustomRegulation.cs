@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine.Networking;
 
 namespace SuperNewRoles.Modules
@@ -116,7 +116,7 @@ namespace SuperNewRoles.Modules
                     Logger.Info(option.Key + "がnullでした");
                 }
             }
-            CustomOptions.DisconnectNotPCOption.selection = 0;
+            CustomOptionHolder.DisconnectNotPCOption.selection = 0;
 
             PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
         }

@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -10,7 +11,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void CustomSyncSettings(this PlayerControl player)
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers)) return;
             var role = player.GetRole();
             var optdata = OptionData.DeepCopy();
             if (player.IsCrewVision())
@@ -39,7 +40,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             switch (role)
             {
                 case RoleId.Sheriff:
-                    optdata.KillCooldown = KillCoolSet(CustomOptions.SheriffCoolTime.GetFloat());
+                    optdata.KillCooldown = KillCoolSet(CustomOptionHolder.SheriffCoolTime.GetFloat());
                     break;
                 case RoleId.Minimalist:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Minimalist.KillCoolTime);
@@ -140,7 +141,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             if (switchSystem2 != null && switchSystem2.IsActive) optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
                         }
                     }
-                    optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCoolDown);
+                    optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCooldown);
                     break;
                 case RoleId.Demon:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Demon.CoolTime);
@@ -171,7 +172,17 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Doppelganger.CoolTime;
                     break;
                 case RoleId.DarkKiller:
-                    optdata.killCooldown = KillCoolSet(CustomOptions.DarkKillerKillCoolTime.GetFloat());
+                    optdata.killCooldown = KillCoolSet(CustomOptionHolder.DarkKillerKillCoolTime.GetFloat());
+                    break;
+                case RoleId.Camouflager:
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Camouflager.CoolTime >= 5f ? RoleClass.Camouflager.CoolTime : 5f;
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
+                    if (RoleClass.Camouflager.IsCamouflage)
+                    {
+                        optdata.RoleOptions.ShapeshifterCooldown =
+                                RoleClass.Camouflager.CoolTime >= 5f ? (RoleClass.Camouflager.CoolTime + RoleClass.Camouflager.DurationTime - 2f)
+                                                                     : (3f + RoleClass.Camouflager.DurationTime);
+                    }
                     break;
             }
             if (player.IsDead()) optdata.AnonymousVotes = false;
@@ -223,11 +234,29 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             writer.WriteBytesAndSize(optdata.ToBytes(5));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
+        public static void DoppelgangerCool(PlayerControl player, PlayerControl target)
+        {
+            if (!AmongUsClient.Instance.AmHost) return;
+            var optdata = OptionData.DeepCopy();
+            optdata.RoleOptions.ShapeshifterDuration = RoleClass.Doppelganger.DurationTime;
+            optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Doppelganger.CoolTime;
+            if (RoleClass.Doppelganger.Targets.ContainsKey(player.PlayerId))
+            {
+                optdata.KillCooldown = KillCoolSet(RoleClass.Doppelganger.Targets[player.PlayerId].PlayerId == target.PlayerId ?
+                                                       RoleClass.Doppelganger.SucCool :
+                                                       RoleClass.Doppelganger.NotSucCool);
+            }
+            else optdata.KillCooldown = KillCoolSet(RoleClass.Doppelganger.NotSucCool);
+            if (player.AmOwner) PlayerControl.GameOptions = optdata;
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
+            writer.WriteBytesAndSize(optdata.ToBytes(5));
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
         public static void CustomSyncSettings()
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (!p.Data.Disconnected && p.IsPlayer())
+                if (!p.Data.Disconnected && !p.IsBot())
                 {
                     CustomSyncSettings(p);
                 }
@@ -241,13 +270,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
         public class StartGame
         {
-            public static void Prefix()
-            {
-                //   BotHandler.CreateBot();
-            }
             public static void Postfix()
             {
+                if (CustomOptionHolder.IsSNROnlySearch.GetBool())
+                {
+                    PlayerControl.GameOptions.MapId = SNROnlySearch.currentMapId;
+                }
                 OptionData = PlayerControl.GameOptions.DeepCopy();
+                OnGameEndPatch.PlayerData = new();
             }
         }
     }

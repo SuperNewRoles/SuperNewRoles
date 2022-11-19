@@ -1,25 +1,30 @@
 using Hazel;
 using SuperNewRoles.Buttons;
+using UnityEngine;
 using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles
 {
     class JackalSeer
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
-            HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.JackalSeer.KillCoolDown;
-            HudManagerStartPatch.JackalKillButton.Timer = RoleClass.JackalSeer.KillCoolDown;
-            HudManagerStartPatch.JackalSeerSidekickButton.MaxTimer = RoleClass.JackalSeer.KillCoolDown;
-            HudManagerStartPatch.JackalSeerSidekickButton.Timer = RoleClass.JackalSeer.KillCoolDown;
+            HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.JackalSeer.KillCooldown;
+            HudManagerStartPatch.JackalKillButton.Timer = RoleClass.JackalSeer.KillCooldown;
+            HudManagerStartPatch.JackalSeerSidekickButton.MaxTimer = RoleClass.JackalSeer.KillCooldown;
+            HudManagerStartPatch.JackalSeerSidekickButton.Timer = RoleClass.JackalSeer.KillCooldown;
         }
-        public static void EndMeeting()
+        public static void EndMeeting() => ResetCooldown();
+        public static void SetPlayerOutline(PlayerControl target, Color color)
         {
-            ResetCoolDown();
+            if (target == null || target.MyRend() == null) return;
+
+            target.MyRend().material.SetFloat("_Outline", 1f);
+            target.MyRend().material.SetColor("_OutlineColor", color);
         }
         public class JackalSeerFixedPatch
         {
-            static void JackalSeerPlayerOutLineTarget()
+            public static void JackalSeerPlayerOutLineTarget()
             {
                 SetPlayerOutline(JackalSetTarget(), RoleClass.JackalSeer.color);
             }

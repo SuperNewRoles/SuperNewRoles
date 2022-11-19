@@ -1,5 +1,5 @@
 using Hazel;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
 using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
@@ -77,7 +77,7 @@ namespace SuperNewRoles.Roles.Neutral
                         Writer.Write(RoleClass.Revolutionist.WinPlayer.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RPCProcedure.ShareWinner(RoleClass.Revolutionist.WinPlayer.PlayerId);
-                        ShipStatus.Instance.enabled = false;
+                        MapUtilities.CachedShipStatus.enabled = false;
                         CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.RevolutionistWin, false);
                     }
                 }

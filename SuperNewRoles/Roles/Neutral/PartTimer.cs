@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
 using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles.Neutral
@@ -6,15 +9,19 @@ namespace SuperNewRoles.Roles.Neutral
     {
         public static void FixedUpdate()
         {
-            foreach (var data in RoleClass.PartTimer.PlayerDatas)
+            foreach (var data in RoleClass.PartTimer.PlayerData)
             {
-                if (data.Value.IsDead())
+                if (!data.Key.IsRole(RoleId.PartTimer))
+                {
+                    RoleClass.PartTimer.Data.Remove(data.Key.PlayerId);
+                }
+                else if (data.Value.IsDead())
                 {
                     if (data.Key.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {
                         RoleClass.PartTimer.DeathTurn = RoleClass.PartTimer.DeathDefaultTurn;
                     }
-                    RoleClass.PartTimer.Datas.Remove(data.Key.PlayerId);
+                    RoleClass.PartTimer.Data.Remove(data.Key.PlayerId);
                 }
             }
         }

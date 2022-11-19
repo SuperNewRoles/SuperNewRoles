@@ -7,7 +7,7 @@ namespace SuperNewRoles.Roles
 {
     class Clergyman
     {
-        public static void ResetCoolDown()
+        public static void ResetCooldown()
         {
             HudManagerStartPatch.ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
             HudManagerStartPatch.ClergymanLightOutButton.Timer = HudManagerStartPatch.ClergymanLightOutButton.MaxTimer;
@@ -31,7 +31,7 @@ namespace SuperNewRoles.Roles
             return !RoleClass.Clergyman.IsLightOff
                 ? false
                 : (CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor)
-                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadMate)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.Madmate)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadMayor)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadJester)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadJester)
@@ -43,22 +43,20 @@ namespace SuperNewRoles.Roles
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.JackalFriends)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.SeerFriends)
                 || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.JackalSeer)
-                ? true
-                : CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.SidekickSeer) || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.BlackCat);
-        }
-        public static bool IsLightOutVisionNoTime()
-        {
-            return CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor;
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.JackalSeer)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.SidekickSeer)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.BlackCat)
+                || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.Hitman);
         }
         public static void LightOutStartRPC()
         {
-            if (IsLightOutVisionNoTime())
-            {
-                RoleClass.Clergyman.currentMessage = new(ModTranslation.GetString("ClergymanLightOutMessage"), RoleClass.Clergyman.DurationTime);
-            }
             if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.ClergymanLightOut))
             {
                 RoleClass.Clergyman.IsLightOff = true;
+            }
+            if (IsLightOutVision())
+            {
+                RoleClass.Clergyman.currentMessage = new(ModTranslation.GetString("ClergymanLightOutMessage"), RoleClass.Clergyman.DurationTime);
             }
         }
         public static void EndMeeting()
@@ -66,7 +64,7 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
             HudManagerStartPatch.ClergymanLightOutButton.Timer = HudManagerStartPatch.ClergymanLightOutButton.MaxTimer;
             HudManagerStartPatch.ClergymanLightOutButton.effectCancellable = true;
-            Logger.Info(RoleClass.Clergyman.DurationTime.ToString() ,"ClergymanDuration");
+            Logger.Info(RoleClass.Clergyman.DurationTime.ToString(), "ClergymanDuration");
             HudManagerStartPatch.ClergymanLightOutButton.EffectDuration = RoleClass.Clergyman.DurationTime;
             HudManagerStartPatch.ClergymanLightOutButton.HasEffect = true;
             RoleClass.Clergyman.IsLightOff = false;

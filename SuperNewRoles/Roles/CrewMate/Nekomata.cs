@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles
 {
@@ -17,8 +17,7 @@ namespace SuperNewRoles.Roles
                 //もし 追放された役職が猫なら
                 if (__instance.Object.IsRole(RoleId.NiceNekomata) ||
                     __instance.Object.IsRole(RoleId.EvilNekomata) ||
-                    __instance.Object.IsRole(RoleId.BlackCat) ||
-                    (__instance.Object.IsRole(RoleId.NekoKabocha) && Impostor.NekoKabocha.CanRevengeExile))
+                    __instance.Object.IsRole(RoleId.BlackCat))
                 {
                     List<PlayerControl> p = new();//道連れにするプレイヤーの抽選リスト
                     foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
@@ -99,7 +98,7 @@ namespace SuperNewRoles.Roles
                 }
                 if (random.IsRole(RoleId.Jester) || random.IsRole(RoleId.MadJester))
                 {
-                    if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
+                    if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
                     {
                         RPCProcedure.ShareWinner(random.PlayerId);
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
@@ -108,7 +107,7 @@ namespace SuperNewRoles.Roles
                         RoleClass.Jester.IsJesterWin = true;
                         ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
                     }
-                    if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
+                    if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
                     {
                         RPCProcedure.ShareWinner(random.PlayerId);
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);

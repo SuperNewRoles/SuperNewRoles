@@ -100,7 +100,7 @@ namespace SuperNewRoles.CustomObject
             {
                 transform.Rotate((Source.transform.position - Player.transform.position) * -1f);
             }
-            Renderer.sharedMaterial = DestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+            Renderer.sharedMaterial = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
             Renderer.maskInteraction = SpriteMaskInteraction.None;
             PlayerMaterial.SetColors(Player.Data.DefaultOutfit.ColorId, Renderer);
             PlayerMaterial.Properties Properties = new()

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using static SuperNewRoles.Helpers.RPCHelper;
 
 namespace SuperNewRoles.Roles
@@ -13,9 +13,9 @@ namespace SuperNewRoles.Roles
             int CheckTask = 0;
             switch (p.GetRole())
             {
-                case RoleId.MadMate:
-                    if (!RoleClass.MadMate.IsImpostorCheck) return false;
-                    CheckTask = RoleClass.MadMate.ImpostorCheckTask;
+                case RoleId.Madmate:
+                    if (!RoleClass.Madmate.IsImpostorCheck) return false;
+                    CheckTask = RoleClass.Madmate.ImpostorCheckTask;
                     break;
                 case RoleId.MadMayor:
                     if (!RoleClass.MadMayor.IsImpostorCheck) return false;
@@ -47,10 +47,10 @@ namespace SuperNewRoles.Roles
         /// <summary>
         /// (役職をリセットし、)マッドメイトに割り当てます。
         /// </summary>
-        /// <param name="target">役職がMadMateに変更される対象</param>
-        public static void CreateMadMate(PlayerControl target)
+        /// <param name="target">役職がMadmateに変更される対象</param>
+        public static void CreateMadmate(PlayerControl target)
         {
-            target.ResetAndSetRole(RoleId.MadMate);
+            target.ResetAndSetRole(RoleId.Madmate);
         }
     }
 }

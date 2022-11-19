@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -141,7 +142,7 @@ namespace SuperNewRoles
         }
         public static void SetSkinWithAnim(PlayerPhysics playerPhysics, string SkinId)
         {
-            SkinViewData nextSkin = DestroyableSingleton<HatManager>.Instance.GetSkinById(SkinId).viewData.viewData;
+            SkinViewData nextSkin = FastDestroyableSingleton<HatManager>.Instance.GetSkinById(SkinId).viewData.viewData;
             AnimationClip clip = null;
             var spriteAnim = playerPhysics.GetSkin().animator;
             var anim = spriteAnim.m_animator;
@@ -189,7 +190,7 @@ namespace SuperNewRoles
                 UnityEngine.Object.Destroy(item);
             }
         }
-        public static MurderAttemptResult CheckMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
+        public static MurderAttemptResult CheckMurderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
         {
             // Modified vanilla checks
             if (AmongUsClient.Instance.IsGameOver) return MurderAttemptResult.SuppressKill;
@@ -200,7 +201,8 @@ namespace SuperNewRoles
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, killer))
                 {
                     bool IsSend = false;
-                    if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
+                    if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId) ||
+                    RoleClass.StuntMan.GuardCount[target.PlayerId] > 0)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
                         writer.Write(target.PlayerId);
@@ -209,19 +211,6 @@ namespace SuperNewRoles
                         writer.EndRPC();
                         RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
                         IsSend = true;
-                    }
-                    else
-                    {
-                        if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
-                        {
-                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
-                            writer.Write(target.PlayerId);
-                            writer.Write(target.PlayerId);
-                            writer.Write(0);
-                            writer.EndRPC();
-                            RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
-                            IsSend = true;
-                        }
                     }
                     if (IsSend)
                     {
@@ -237,7 +226,8 @@ namespace SuperNewRoles
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, killer))
                 {
                     bool IsSend = false;
-                    if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
+                    if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId) ||
+                    RoleClass.MadStuntMan.GuardCount[target.PlayerId] > 0)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
                         writer.Write(target.PlayerId);
@@ -247,20 +237,6 @@ namespace SuperNewRoles
                         RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
                         IsSend = true;
                     }
-                    else
-                    {
-                        if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
-                        {
-                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
-                            writer.Write(target.PlayerId);
-                            writer.Write(target.PlayerId);
-                            writer.Write(0);
-                            writer.EndRPC();
-                            RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
-                            IsSend = true;
-                        }
-                    }
-
                     if (IsSend)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UseStuntmanCount);
@@ -284,7 +260,8 @@ namespace SuperNewRoles
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, killer))
                 {
                     bool IsSend = false;
-                    if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId))
+                    if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId) ||
+                    RoleClass.Fox.KillGuard[target.PlayerId] > 0)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
                         writer.Write(target.PlayerId);
@@ -293,19 +270,6 @@ namespace SuperNewRoles
                         writer.EndRPC();
                         RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
                         IsSend = true;
-                    }
-                    else
-                    {
-                        if (!(RoleClass.Fox.KillGuard[target.PlayerId] <= 0))
-                        {
-                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
-                            writer.Write(target.PlayerId);
-                            writer.Write(target.PlayerId);
-                            writer.Write(0);
-                            writer.EndRPC();
-                            RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
-                            IsSend = true;
-                        }
                     }
                     if (IsSend)
                     {
@@ -322,7 +286,7 @@ namespace SuperNewRoles
         {
             if (player == null) return;
 
-            List<byte> taskTypeIds = GenerateTasks(numCommon, numShort, numLong);
+            List<byte> taskTypeIds = player.GenerateTasks(numCommon, numShort, numLong);
 
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetTasks, SendOption.Reliable, -1);
             writer.Write(player.PlayerId);
@@ -330,33 +294,36 @@ namespace SuperNewRoles
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.UncheckedSetTasks(player.PlayerId, taskTypeIds.ToArray());
         }
-        public static List<byte> GenerateTasks(int numCommon, int numShort, int numLong)
+        public static List<byte> GenerateTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
         {
             if (numCommon + numShort + numLong <= 0)
             {
                 numShort = 1;
             }
-
+            if (player.IsRole(RoleId.HamburgerShop) && !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool())
+            {
+                return Roles.CrewMate.HamburgerShop.GenerateTasks(numCommon + numShort + numLong);
+            }
             var tasks = new Il2CppSystem.Collections.Generic.List<byte>();
             var hashSet = new Il2CppSystem.Collections.Generic.HashSet<TaskTypes>();
 
             var commonTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(task);
+            foreach (var task in MapUtilities.CachedShipStatus.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(task);
 
             var shortTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(task);
+            foreach (var task in MapUtilities.CachedShipStatus.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(task);
 
             var longTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(task);
+            foreach (var task in MapUtilities.CachedShipStatus.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(task);
 
             int start = 0;
-            ShipStatus.Instance.AddTasksFromList(ref start, numCommon, tasks, hashSet, commonTasks);
+            MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numCommon, tasks, hashSet, commonTasks);
 
             start = 0;
-            ShipStatus.Instance.AddTasksFromList(ref start, numShort, tasks, hashSet, shortTasks);
+            MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numShort, tasks, hashSet, shortTasks);
 
             start = 0;
-            ShipStatus.Instance.AddTasksFromList(ref start, numLong, tasks, hashSet, longTasks);
+            MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numLong, tasks, hashSet, longTasks);
 
             return tasks.ToArray().ToList();
         }
@@ -370,14 +337,88 @@ namespace SuperNewRoles
             player.cosmetics.nameText.color = new Color(player.cosmetics.nameText.color.r, player.cosmetics.nameText.color.g, player.cosmetics.nameText.color.b, alpha);
         }
 
-        public static MurderAttemptResult CheckMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
+        public static Console ActivateConsole(Transform trf) => ActivateConsole(trf.gameObject);
+
+        public static AutoTaskConsole ActivateAutoTaskConsole(Transform trf) => ActivateAutoTaskConsole(trf.gameObject);
+
+        public static Console ActivateConsole(GameObject obj)
+        {
+            if (obj == null)
+            {
+                Logger.Error($"ActivateConsole Object was not found!", "");
+                return null;
+            }
+            obj.layer = LayerMask.NameToLayer("ShortObjects");
+            Console console = obj.GetComponent<Console>();
+            PassiveButton button = obj.GetComponent<PassiveButton>();
+            CircleCollider2D collider = obj.GetComponent<CircleCollider2D>();
+            if (!console)
+            {
+                console = obj.AddComponent<Console>();
+                console.checkWalls = true;
+                console.usableDistance = 0.7f;
+                console.TaskTypes = new TaskTypes[0];
+                console.ValidTasks = new UnhollowerBaseLib.Il2CppReferenceArray<TaskSet>(0);
+                var list = MapUtilities.CachedShipStatus.AllConsoles.ToList();
+                list.Add(console);
+                MapUtilities.CachedShipStatus.AllConsoles = new(list.ToArray());
+            }
+            if (console.Image == null)
+            {
+                console.Image = obj.GetComponent<SpriteRenderer>();
+                console.Image.material = new Material(MapUtilities.CachedShipStatus.AllConsoles[0].Image.material);
+            }
+            if (!collider)
+            {
+                collider = obj.AddComponent<CircleCollider2D>();
+                collider.radius = 0.4f;
+                collider.isTrigger = true;
+            }
+            return console;
+        }
+        public static AutoTaskConsole ActivateAutoTaskConsole(GameObject obj)
+        {
+            if (obj == null)
+            {
+                Logger.Error($"ActivateConsole Object was not found!", "");
+                return null;
+            }
+            obj.layer = LayerMask.NameToLayer("ShortObjects");
+            AutoTaskConsole console = obj.GetComponent<AutoTaskConsole>();
+            PassiveButton button = obj.GetComponent<PassiveButton>();
+            CircleCollider2D collider = obj.GetComponent<CircleCollider2D>();
+            if (!console)
+            {
+                console = obj.AddComponent<AutoTaskConsole>();
+                console.checkWalls = true;
+                console.usableDistance = 0.7f;
+                console.TaskTypes = new TaskTypes[0];
+                console.ValidTasks = new(0);
+                var list = MapUtilities.CachedShipStatus.AllConsoles.ToList();
+                list.Add(console);
+                MapUtilities.CachedShipStatus.AllConsoles = new(list.ToArray());
+            }
+            if (console.Image == null)
+            {
+                console.Image = obj.GetComponent<SpriteRenderer>();
+                console.Image.material = new Material(MapUtilities.CachedShipStatus.AllConsoles[0].Image.material);
+            }
+            if (!collider)
+            {
+                collider = obj.AddComponent<CircleCollider2D>();
+                collider.radius = 0.4f;
+                collider.isTrigger = true;
+            }
+            return console;
+        }
+        public static MurderAttemptResult CheckMurderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
             // The local player checks for the validity of the kill and performs it afterwards (different to vanilla, where the host performs all the checks)
             // The kill attempt will be shared using a custom RPC, hence combining modded and unmodded versions is impossible
 
             tien = 0;
 
-            MurderAttemptResult murder = CheckMuderAttempt(killer, target, isMeetingStart);
+            MurderAttemptResult murder = CheckMurderAttempt(killer, target, isMeetingStart);
             if (murder == MurderAttemptResult.PerformKill)
             {
                 if (tien <= 0)
@@ -426,6 +467,24 @@ namespace SuperNewRoles
         {
             var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
             return client;
+        }
+        public static List<T> ToList<T>(this Il2CppSystem.Collections.Generic.List<T> list)
+        {
+            List<T> newList = new();
+            foreach (T item in list)
+            {
+                newList.Add(item);
+            }
+            return newList;
+        }
+        public static Il2CppSystem.Collections.Generic.List<T> ToIl2CppList<T>(this List<T> list)
+        {
+            Il2CppSystem.Collections.Generic.List<T> newList = new();
+            foreach (T item in list)
+            {
+                newList.Add(item);
+            }
+            return newList;
         }
         public static Dictionary<string, AudioClip> CachedAudioClips = new();
         public static AudioClip loadAudioClipFromResources(string path, string clipName = "UNNAMED_TOR_AUDIO_CLIP")
@@ -551,22 +610,17 @@ namespace SuperNewRoles
 
         public static string Cs(Color c, string s)
         {
-            return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptions.ToByte(c.r), CustomOptions.ToByte(c.g), CustomOptions.ToByte(c.b), CustomOptions.ToByte(c.a), s);
+            return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptionHolder.ToByte(c.r), CustomOptionHolder.ToByte(c.g), CustomOptionHolder.ToByte(c.b), CustomOptionHolder.ToByte(c.a), s);
         }
-        public static T GetRandom<T>(List<T> list)
+        public static T GetRandom<T>(this List<T> list)
         {
-            var indexdate = UnityEngine.Random.Range(0, list.Count);
-            return list[indexdate];
-        }
-        public static PlayerControl GetRandompc(List<PlayerControl> list)
-        {
-            var indexdate = UnityEngine.Random.Range(0, list.Count);
-            return list[indexdate];
+            var indexData = UnityEngine.Random.Range(0, list.Count);
+            return list[indexData];
         }
         public static int GetRandomIndex<T>(List<T> list)
         {
-            var indexdate = UnityEngine.Random.Range(0, list.Count);
-            return indexdate;
+            var indexData = UnityEngine.Random.Range(0, list.Count);
+            return indexData;
         }
 
         public static Dictionary<byte, SpriteRenderer> MyRendCache = new();
@@ -733,9 +787,9 @@ namespace SuperNewRoles
             return null;
         }
 
-        public static bool IsCheckListPlayerControl(this List<PlayerControl> ListDate, PlayerControl CheckPlayer)
+        public static bool IsCheckListPlayerControl(this List<PlayerControl> listData, PlayerControl CheckPlayer)
         {
-            foreach (PlayerControl Player in ListDate)
+            foreach (PlayerControl Player in listData)
             {
                 if (Player.PlayerId == CheckPlayer.PlayerId)
                 {
@@ -756,6 +810,21 @@ namespace SuperNewRoles
         /// <summary>keyCodesが押されているか</summary>
         public static bool GetManyKeyDown(KeyCode[] keyCodes) =>
             keyCodes.All(x => Input.GetKey(x)) && keyCodes.Any(x => Input.GetKeyDown(x));
+
+        public static void AddRanges(this List<PlayerControl> list, List<PlayerControl>[] collections)
+        {
+            foreach (var c in collections)
+                list.AddRange(c);
+        }
+
+        public static string GetRPCNameFromByte(byte callId) =>
+            Enum.GetName(typeof(RpcCalls), callId) != null ? // RpcCallsに当てはまる
+                Enum.GetName(typeof(RpcCalls), callId) :
+            Enum.GetName(typeof(CustomRPC), callId) != null ? // CustomRPCに当てはまる
+                Enum.GetName(typeof(CustomRPC), callId) :
+            $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}";
+        public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptionHolder.IsDebugMode.GetBool();
+
     }
     public static class CreateFlag
     {

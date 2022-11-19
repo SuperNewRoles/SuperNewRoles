@@ -25,10 +25,10 @@ namespace SuperNewRoles.MapCustoms
             vent.EnterVentAnim = tmp.EnterVentAnim;
             vent.ExitVentAnim = tmp.ExitVentAnim;
             vent.Offset = new Vector3(0f, 0.25f, 0f);
-            vent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1; // Make sure we have a unique id
-            var allVentsList = ShipStatus.Instance.AllVents.ToList();
+            vent.Id = MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max() + 1; // Make sure we have a unique id
+            var allVentsList = MapUtilities.CachedShipStatus.AllVents.ToList();
             allVentsList.Add(vent);
-            ShipStatus.Instance.AllVents = allVentsList.ToArray();
+            MapUtilities.CachedShipStatus.AllVents = allVentsList.ToArray();
             vent.gameObject.SetActive(true);
             vent.name = "AdditionalVent_" + vent.Id;
             vent.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
@@ -76,7 +76,7 @@ namespace SuperNewRoles.MapCustoms
                 SuperNewRolesPlugin.Logger.LogInfo("べんとおおおお");
                 AdditionalVents vents1 = new(new Vector3(23.5483f, -5.589f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 診察室
                 AdditionalVents vents2 = new(
-                    new Vector3(CustomOptions.ConnectKillerOption.GetSelection() == 0 ? 24.8562f : 26.8562f, 5.2692f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // ラウンジ
+                    new Vector3(CustomOptionHolder.ConnectKillerOption.GetSelection() == 0 ? 24.8562f : 26.8562f, 5.2692f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // ラウンジ
                 AdditionalVents vents3 = new(new Vector3(5.9356f, 3.0133f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // メイン
                 vents1.vent.Right = vents2.vent;//診察-ラウンジ
                 vents2.vent.Left = vents1.vent;//ラウンジ-診察

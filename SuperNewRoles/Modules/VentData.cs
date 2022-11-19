@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Agartha;
 using HarmonyLib;
@@ -15,7 +16,7 @@ namespace SuperNewRoles.Modules
             public static void Postfix()
             {
                 VentData.VentMap = new();
-                foreach (Vent vent in ShipStatus.Instance.AllVents)
+                foreach (Vent vent in MapUtilities.CachedShipStatus.AllVents)
                 {
                     VentData.VentMap.Add(vent.gameObject.name, new(vent));
                 }
@@ -132,20 +133,6 @@ namespace SuperNewRoles.Modules
                         ventMap["ShowersVent"].Vent.Center = connect ? ventMap["AdditionalVent_17"] : new Vent();
                     }
                     break;
-            }
-        }
-        public static void MadmateVent()
-        {
-            if (!CustomOptions.MadRolesCanVentMove.GetBool())
-            {
-                Dictionary<string, VentData> ventMap = VentData.VentMap;
-                foreach (var ventData in ventMap)
-                {
-                    var vent = ventData.Value.Vent;
-                    vent.Center = null;
-                    vent.Right = null;
-                    vent.Left = null;
-                }
             }
         }
     }

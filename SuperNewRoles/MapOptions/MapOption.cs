@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using UnityEngine;
-using static SuperNewRoles.Modules.CustomOptions;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.MapOptions
 {
@@ -21,7 +21,6 @@ namespace SuperNewRoles.MapOptions
         public static bool ValidationMira;
         public static bool ValidationPolus;
         public static bool ValidationAirship;
-        public static bool ValidationSubmerged;
         public static bool IsRestrict;
 
         public static bool RandomSpawn;
@@ -71,16 +70,15 @@ namespace SuperNewRoles.MapOptions
                     ValidationMira = false;
                     ValidationPolus = false;
                     ValidationAirship = false;
-                    ValidationSubmerged = false;
                 }
                 RandomSpawn = (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship && RandomSpawnOption.GetBool();
                 WireTaskIsRandom = WireTaskIsRandomOption.GetBool();
                 WireTaskNum = WireTaskNumOption.GetInt();
                 UseDeadBodyReport = !NotUseReportDeadBody.GetBool();
                 UseMeetingButton = !NotUseMeetingButton.GetBool();
-                //SuperNewRoles.Patch.AdminPatch.ClearAndReload();
-                //SuperNewRoles.Patch.CameraPatch.ClearAndReload();
-                //SuperNewRoles.Patch.VitalsPatch.ClearAndReload();
+                //SuperNewRoles.Patches.AdminPatch.ClearAndReload();
+                //SuperNewRoles.Patches.CameraPatch.ClearAndReload();
+                //SuperNewRoles.Patches.VitalsPatch.ClearAndReload();
             }
             else
             {
@@ -95,7 +93,6 @@ namespace SuperNewRoles.MapOptions
                 ValidationMira = false;
                 ValidationPolus = false;
                 ValidationAirship = false;
-                ValidationSubmerged = false;
                 WireTaskIsRandom = false;
             }
             BlockTool.OldDesyncCommsPlayers = new();
@@ -106,8 +103,8 @@ namespace SuperNewRoles.MapOptions
             AirshipReactorTimeLimit.GetFloat();
 
             //千里眼・ズーム関連
-            ClairvoyantZoom = CustomOptions.ClairvoyantZoom.GetBool();
-            MouseZoom = CustomOptions.MouseZoom.GetBool();
+            ClairvoyantZoom = CustomOptionHolder.ClairvoyantZoom.GetBool();
+            MouseZoom = CustomOptionHolder.MouseZoom.GetBool();
             CoolTime = ZoomCoolTime.GetFloat();
             DurationTime = ZoomDurationTime.GetFloat();
             IsZoomOn = false;
@@ -169,7 +166,7 @@ namespace SuperNewRoles.MapOptions
             NotUseReportDeadBody = CustomOption.Create(452, true, CustomOptionType.Generic, "NotUseReportSetting", false, MapOptionSetting);
             NotUseMeetingButton = CustomOption.Create(453, true, CustomOptionType.Generic, "NotUseMeetingSetting", false, MapOptionSetting);
 
-            RandomMapOption = CustomOption.Create(454, true, CustomOptionType.Generic, "RamdomMapSetting", true, MapOptionSetting);
+            RandomMapOption = CustomOption.Create(454, true, CustomOptionType.Generic, "RamdomMapSetting", false, MapOptionSetting);
             RandomMapSkeld = CustomOption.Create(455, true, CustomOptionType.Generic, "RMSkeldSetting", true, RandomMapOption);
             RandomMapMira = CustomOption.Create(456, true, CustomOptionType.Generic, "RMMiraSetting", true, RandomMapOption);
             RandomMapPolus = CustomOption.Create(457, true, CustomOptionType.Generic, "RMPolusSetting", true, RandomMapOption);
@@ -187,8 +184,8 @@ namespace SuperNewRoles.MapOptions
             WireTaskIsRandomOption = CustomOption.Create(956, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
             WireTaskNumOption = CustomOption.Create(957, false, CustomOptionType.Generic, "WireTaskNum", 5f, 1f, 8f, 1f, WireTaskIsRandomOption);
 
-            CustomOptions.LadderDead = CustomOption.Create(637, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
-            LadderDeadChance = CustomOption.Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], CustomOptions.LadderDead);
+            CustomOptionHolder.LadderDead = CustomOption.Create(637, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
+            LadderDeadChance = CustomOption.Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], CustomOptionHolder.LadderDead);
         }
     }
 }

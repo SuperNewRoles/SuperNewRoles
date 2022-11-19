@@ -11,6 +11,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
 {
     class Main
     {
+        public static Dictionary<byte, int> KillCount;
         public static void FixedUpdate()
         {
             if (!AmongUsClient.Instance.AmHost) return;
@@ -37,7 +38,22 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     {
                         if (!p.Data.Disconnected)
                         {
-                            p.RpcSetNamePrivate("(" + alives + "/" + allplayer + ")");
+                            string EndText = " ";
+                            if (BROption.IsKillCountView.GetBool())
+                            {
+                                if (KillCount.ContainsKey(p.PlayerId)) EndText += KillCount[p.PlayerId];
+                                else EndText += "0";
+
+                                if (!BROption.IsKillCountViewSelfOnly.GetBool())
+                                {
+                                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                                    {
+                                        if (p2.PlayerId == p.PlayerId) continue;
+                                        p.RpcSetNamePrivate(EndText, p2);
+                                    }
+                                }
+                            }
+                            p.RpcSetNamePrivate($"({alives}/{allplayer}){EndText}");
                         }
                     }
                     AlivePlayer = alives;
@@ -85,13 +101,18 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static int AlivePlayer;
         public static int AllPlayer;
         public static bool IsStart;
+        public static void MurderPlayer(PlayerControl source, PlayerControl target)
+        {
+            if (!KillCount.ContainsKey(source.PlayerId)) KillCount[source.PlayerId] = 0;
+            KillCount[source.PlayerId]++;
+        }
         [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoExitVent))]
         class CoExitVentPatch
         {
             public static bool Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
             {
                 VentData[__instance.myPlayer.PlayerId] = null;
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.ExitVent);
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.ExitVent);
                 return true;
             }
         }
@@ -127,7 +148,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         return data;
                     }
                 }
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.CrewMate.Painter.Handle(Roles.CrewMate.Painter.ActionType.InVent);
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == __instance.myPlayer.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.InVent);
                 VentData[__instance.myPlayer.PlayerId] = id;
                 return true;
             }
@@ -240,6 +261,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static void ClearAndReload()
         {
             IsViewAlivePlayer = BROption.IsViewAlivePlayer.GetBool();
+            KillCount = new();
             AlivePlayer = 0;
             AllPlayer = 0;
             IsStart = false;
@@ -325,7 +347,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                 {
                                     p.SetRole(RoleTypes.Impostor);
                                     p.RpcSetRole(RoleTypes.Crewmate);
-                                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
+                                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
                                     CachedPlayer.LocalPlayer.Data.Role.Role = RoleTypes.Impostor;
                                 }
                             }
@@ -337,7 +359,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         {
                             if (p1.PlayerId != 0)
                             {
-                                DestroyableSingleton<RoleManager>.Instance.SetRole(p1, RoleTypes.Crewmate);
+                                FastDestroyableSingleton<RoleManager>.Instance.SetRole(p1, RoleTypes.Crewmate);
                                 p1.RpcSetRoleDesync(RoleTypes.Impostor);
                                 foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                                 {
@@ -353,7 +375,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                 p1.RpcSetRole(RoleTypes.Crewmate);
                             }
                         }
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
+                        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
                         CachedPlayer.LocalPlayer.Data.Role.Role = RoleTypes.Impostor;
                     }
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)

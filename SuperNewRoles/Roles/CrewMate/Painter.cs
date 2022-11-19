@@ -7,7 +7,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using UnityEngine;
 
-namespace SuperNewRoles.Roles.CrewMate
+namespace SuperNewRoles.Roles.Crewmate
 {
     public static class Painter
     {
@@ -53,7 +53,7 @@ namespace SuperNewRoles.Roles.CrewMate
             }
             foreach (ActionType type in Enum.GetValues(typeof(ActionType)))
             {
-                RoleClass.Painter.ActionDatas[type] = new();
+                RoleClass.Painter.ActionData[type] = new();
             }
         }
         public static void DestroyPrints()
@@ -70,13 +70,14 @@ namespace SuperNewRoles.Roles.CrewMate
         public static void SpawnFootprints()
         {
             if (RoleClass.Painter.CurrentTarget == null) throw new Exception("RoleClass.Painter.CurrentTargetがnullです");
-            foreach (var data in RoleClass.Painter.ActionDatas)
+            foreach (var data in RoleClass.Painter.ActionData)
             {
                 Logger.Info($"{data.Key}の数は{data.Value.Count}です");
                 foreach (var pos in data.Value)
                 {
                     Footprint print = new(-1f, false, RoleClass.Painter.CurrentTarget, new(pos.x, pos.y, 0.01f));
-                    if (data.Key == ActionType.Death && RoleClass.Painter.IsDeathFootpointBig) print.footprint.transform.localScale *= 3f;
+                    print.footprint.transform.localScale *= 2;
+                    if (data.Key == ActionType.Death && RoleClass.Painter.IsDeathFootpointBig) print.footprint.transform.localScale *= 2f;
                     RoleClass.Painter.Prints.Add(print);
                 }
             }
@@ -88,7 +89,7 @@ namespace SuperNewRoles.Roles.CrewMate
             if (RoleClass.Painter.CurrentTarget == null) return;
             Logger.Info($"ハンドル:{type}が通過");
             Vector2 pos = nullpos == null ? RoleClass.Painter.CurrentTarget.GetTruePosition() : (Vector2)nullpos;
-            RoleClass.Painter.ActionDatas[type].Add(pos);
+            RoleClass.Painter.ActionData[type].Add(pos);
         }
         public static void HandleRpc(ActionType type)
         {
