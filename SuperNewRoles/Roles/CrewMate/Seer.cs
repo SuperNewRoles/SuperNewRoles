@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
-
 using UnityEngine;
+
 
 namespace SuperNewRoles.Roles
 {
@@ -16,6 +16,8 @@ namespace SuperNewRoles.Roles
             RoleClass.JackalSeer.JackalSeerPlayer,
             RoleClass.SeerFriends.SeerFriendsPlayer
         };
+
+        public static SpriteRenderer FullScreenRenderer;
 
         /** <summary>
             画面を光らせる
@@ -32,29 +34,30 @@ namespace SuperNewRoles.Roles
         **/
         public static void ShowFlash(Color color, float duration = 1f)
         {
-            var renderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen);
-            if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
-            FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
-            FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
-            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
+            var renderer = FastDestroyableSingleton<HudManager>.Instance;
+            FullScreenRenderer = GameObject.Instantiate(renderer.FullScreen, renderer.transform);
+            if (renderer == null || renderer.FullScreen == null) return;
+            FullScreenRenderer.gameObject.SetActive(true);
+            FullScreenRenderer.enabled = true;
+            renderer.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
             {
                 if (p < 0.5)
                 {
-                    if (renderer != null)
+                    if (FullScreenRenderer != null)
                     {
-                        renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
+                        FullScreenRenderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
                     }
                 }
                 else
                 {
-                    if (renderer != null)
+                    if (FullScreenRenderer != null)
                     {
-                        renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
+                        FullScreenRenderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
                     }
                 }
-                if (p == 1f && renderer != null)
+                if (p == 1f && FullScreenRenderer != null)
                 {
-                    GameObject.Destroy(renderer);
+                    GameObject.Destroy(FullScreenRenderer);
                 }
             })));
         }
