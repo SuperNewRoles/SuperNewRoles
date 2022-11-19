@@ -11,6 +11,12 @@ namespace SuperNewRoles.MapOptions
         {
             public static bool Prefix(MapConsole __instance)
             {
+                if (ConfigRoles.DebugMode.Value)
+                {
+                    Logger.Info($"Admin Coordinate(x):{__instance.transform.position.x}", "Debug Mode");
+                    Logger.Info($"Admin Coordinate(y):{__instance.transform.position.y}", "Debug Mode");
+                    Logger.Info($"Admin Coordinate(Z):{__instance.transform.position.z}", "Debug Mode");
+                }
                 Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckAdmin);
                 bool IsUse = MapOption.UseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents);
                 return IsUse;

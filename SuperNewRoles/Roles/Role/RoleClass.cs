@@ -322,7 +322,7 @@ namespace SuperNewRoles.Roles
             public static float KillMaxCount;
             public static bool OneMeetingMultiKill;
 
-            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MeetingSheriffKillButton.png", 200f);
             public static void ClearAndReload()
             {
                 MeetingSheriffPlayer = new();
@@ -2884,6 +2884,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> WerewolfPlayer;
             public static Color32 color = ImpostorRed;
             public static bool IsShooted;
+            public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WereWolfButton.png", 200f);
             public static void ClearAndReload()
             {
                 WerewolfPlayer = new();

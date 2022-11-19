@@ -31,53 +31,6 @@ namespace SuperNewRoles.Patches
         }
     }
 
-    [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
-    class ControllerManagerUpdate
-    {
-        static void Postfix()
-        {
-            // 以下ホストのみ
-            if (!AmongUsClient.Instance.AmHost) return;
-
-            //　ゲーム中
-            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
-            {
-                // 廃村
-                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift }))
-                {
-                    RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
-                    RPCProcedure.SetHaison();
-                    if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-                    {
-                        Logger.Info("===================== Haison =====================", "End Game");
-                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
-
-                    }
-                    else
-                    {
-                        Logger.Info("===================== Haison =====================", "End Game");
-                        ShipStatus.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
-                        MapUtilities.CachedShipStatus.enabled = false;
-                    }
-                }
-            }
-
-            // 会議を強制終了
-            if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
-            {
-                if (MeetingHud.Instance != null)
-                    MeetingHud.Instance.RpcClose();
-            }
-
-            // 以下フリープレイのみ
-            if (AmongUsClient.Instance.GameMode != GameModes.FreePlay) return;
-            // エアーシップのトイレのドアを開ける
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                RPCHelper.RpcOpenToilet();
-            }
-        }
-    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     public class FixedUpdate
     {
