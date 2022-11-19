@@ -76,7 +76,8 @@ namespace SuperNewRoles.Roles.Crewmate
                 foreach (var pos in data.Value)
                 {
                     Footprint print = new(-1f, false, RoleClass.Painter.CurrentTarget, new(pos.x, pos.y, 0.01f));
-                    if (data.Key == ActionType.Death && RoleClass.Painter.IsDeathFootpointBig) print.footprint.transform.localScale *= 3f;
+                    print.footprint.transform.localScale *= 2;
+                    if (data.Key == ActionType.Death && RoleClass.Painter.IsDeathFootpointBig) print.footprint.transform.localScale *= 2f;
                     RoleClass.Painter.Prints.Add(print);
                 }
             }
