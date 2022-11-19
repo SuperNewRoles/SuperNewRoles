@@ -58,12 +58,15 @@ namespace SuperNewRoles.MapCustoms
             // 壁越しにタスクを無効化する
             if (IsMapCustom(MapCustomId.Airship) && MapCustom.AntiTaskOverWall.GetBool())
             {
-                // シャワー 写真 全カチ
-                var array = new[] { "task_shower", "task_developphotos", "panel_data", "task_garbage1", "task_garbage2", "task_garbage3", "task_garbage4", "task_garbage5" };
+                // シャワー 写真
+                var array = new[] { "task_shower", "task_developphotos" };
                 foreach (var c in GameObject.FindObjectsOfType<Console>())
                 {
                     if (c == null) continue;
                     if (array.Any(x => c.name == x)) c.checkWalls = true;
+
+                    // 武器庫カチ メインカチ
+                    if (c.name == "DivertRecieve" && (c.Room == SystemTypes.Armory || c.Room == SystemTypes.MainHall)) c.checkWalls = true;
                 }
             }
         }
