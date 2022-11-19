@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using UnityEngine;
 using static PlayerControl;
+using static SuperNewRoles.MapCustoms.MapCustomHandler;
 
 namespace SuperNewRoles.MapCustoms
 {
@@ -50,6 +52,18 @@ namespace SuperNewRoles.MapCustoms
                 {
                     gapRoom.GetComponentInChildren<MovingPlatformBehaviour>().gameObject.SetActive(false);
                     gapRoom.GetComponentsInChildren<PlatformConsole>().ForEach(x => x.gameObject.SetActive(false));
+                }
+            }
+
+            // 壁越しにタスクを無効化する
+            if (IsMapCustom(MapCustomId.Airship) && MapCustom.AntiTaskOverWall.GetBool())
+            {
+                List<Console> list = new();
+                foreach (var cons in GameObject.FindObjectsOfType<Console>()) list.Add(cons);
+                // シャワー 写真 武器庫カチ トイレゴミ
+                var array = new[] { "task_shower", "task_developphotos","panel_data","task_garbage5" };
+                foreach(var c in list) {
+                    if (array.Any(x => c.name == x)) c.checkWalls = true;
                 }
             }
         }

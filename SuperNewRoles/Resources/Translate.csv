@@ -192,6 +192,7 @@ WireTaskNum,Wire task num,配線タスク数,修复配线任务总数
 IsSNROnlySearch,SNR Room Filter,SNRルームフィルター,筛选SNR房间
 CanGhostSeeRole,,死亡者が全員の役職を確認できる
 OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる
+AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置
