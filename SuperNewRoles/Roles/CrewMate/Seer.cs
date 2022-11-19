@@ -63,8 +63,6 @@ namespace SuperNewRoles.Roles
                 if (p == 1f && renderer != null)
                 {
                     Logger.Info("Seer9");
-                    renderer.enabled = true;
-                    renderer.gameObject.SetActive(false);
                     GameObject.Destroy(renderer);
                 }
             })));
