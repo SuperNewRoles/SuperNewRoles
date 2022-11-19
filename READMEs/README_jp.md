@@ -93,7 +93,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 ## 開発者
 [よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
-[くらと](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
+[月城蔵徒](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
 [null](https://github.com/ )<br>
 [Sakurander](https://github.com/ )<br>
 
