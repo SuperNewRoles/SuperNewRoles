@@ -745,7 +745,7 @@ ObserverName,Observer,選挙管理委員,窥视者
 ObserverTitle1,Let's monitor everything.,すべてを監視しよう,监视一切吧
 ObserverDescription,You can see where everyone is voting during the meeting.,会議中に全員の投票先を確認できます。,窥视者属于船员阵营。\n会议阶段，窥视者可以确认所有玩家的投票对象。
 VampireName,Vampire,ヴァンパイア,吸血鬼
-VampireTitle1,Terrorise the Night King.,夜の王に恐怖せよ,好想吸血吸到吐🎶
+VampireTitle1,Terrorise the Night King.,夜の王に恐怖せよ,好想吸血吸到吐
 VampireKillDelay,Kill Delay,キル遅延,击杀延迟
 VampireViewBloodStainsTurn,Turn to see blood,血が見えるターン,血渍可见需要经过的回合数
 VampireCanCreateDependents,Dependents can be nominated,眷属を指名可能,吸血鬼可以指定一名眷属
@@ -754,7 +754,7 @@ VampireDependentsKillCoolTime,Kill cool time for dependents,眷属のキルク�
 VampireDependentsCanVent,Vent available for use by dependents,眷属がベント使用可能,眷属可以使用管道
 VampireDependentsButtonName,make Dependents,眷属にする,眷属
 DependentsName,Dependents,眷属,眷属
-DependentsTitle1,Trapped in the Night.,夜に囚われし者,你也是吸血鬼了🎶
+DependentsTitle1,Trapped in the Night.,夜に囚われし者,你也是吸血鬼了
 DarkKillerName,DarkKiller,ダークキラー,暗夜杀手
 DarkKillerTitle1,Let's kill in the dark,闇に紛れて殺そう,将你的杀戮隐藏于黑暗之中
 DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキルクールタイム,击杀冷却时间
