@@ -590,11 +590,15 @@ JackalFriendsTitle1,Help Jackal.,ジャッカルを助けよう,帮助豺狼获�
 JackalFriendsTitle2,I'll help you kill them all.,全員ぶち殺す手伝いをしよう,助豺狼一臂之力
 JackalFriendsDescription,It is judged as Crewmate.\nbut is in the Jackal camp.\nJackals can win if they win.\nJackal Friends is not recognized by Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。\nジャッカルフレンズはジャッカルからは分かりません。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,规则上狈被判定为船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则狈一同获胜。\n豺狼不能确认狈是谁。狈需要帮助豺狼以获得胜利。
 JackalFriendsIsCheckJackalSetting,Is Check Jackal,ジャッカルをチェックできる,可以确认豺狼是谁
+
 DoctorName,Doctor,ドクター,医生
 DoctorTitle1,Check Vitals,バイタルをチェックしよう,随时查看生命监测装置来确认船员的生死
 DoctorVitalName,Vital,バイタル,生命监测装置
 DoctorChargeTime,Vital cool time,バイタルのクールタイム,医生装置冷却时间
 DoctorUseTime,Can use vital time,バイタルを見れる時間,医生装置最大使用时间
+DoctorChargeTime,Vital charge time,バイタルのチャージタイム,医生装置冷却时间
+DoctorUseTime,Can use vital time,バイタルを見れる時間,医生装置最大使用时间
+
 CountChangerName,Count Changer,カウントチェンジャー,巫师
 CountChangerTitle1,Let's change it,変更しよう,幻惑他人
 CountChangerTitle2,Let's swap the judgment with the enemy.,敵と判定を入れ替えよう,变更他人的阵营判定
