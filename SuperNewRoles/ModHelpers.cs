@@ -344,7 +344,7 @@ namespace SuperNewRoles
         {
             if (obj == null)
             {
-                Logger.Error($"ActivateConsole Object was not found!","");
+                Logger.Error($"ActivateConsole Object was not found!", "");
                 return null;
             }
             obj.layer = LayerMask.NameToLayer("ShortObjects");
@@ -379,7 +379,7 @@ namespace SuperNewRoles
         {
             if (obj == null)
             {
-                Logger.Error($"ActivateConsole Object was not found!","");
+                Logger.Error($"ActivateConsole Object was not found!", "");
                 return null;
             }
             obj.layer = LayerMask.NameToLayer("ShortObjects");
@@ -815,7 +815,6 @@ namespace SuperNewRoles
             Enum.GetName(typeof(CustomRPC), callId) != null ? // CustomRPCに当てはまる
                 Enum.GetName(typeof(CustomRPC), callId) :
             $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}";
-
     }
     public static class CreateFlag
     {
