@@ -1435,7 +1435,7 @@ namespace SuperNewRoles.Modules
             EvilSeerMode = Create(336, false, CustomOptionType.Impostor, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, EvilSeerOption);
             EvilSeerLimitSoulDuration = Create(337, false, CustomOptionType.Impostor, "SeerLimitSoulDuration", false, EvilSeerOption);
             EvilSeerSoulDuration = Create(338, false, CustomOptionType.Impostor, "SeerSoulDuration", 15f, 0f, 120f, 5f, EvilSeerLimitSoulDuration, format: "unitCouples");
-            EvilSeerMadmateSetting = Create(1075, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilSeerOption);
+            EvilSeerMadmateSetting = Create(1092, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilSeerOption);
 
             TeleportingJackalOption = SetupCustomRoleOption(339, false, RoleId.TeleportingJackal);
             TeleportingJackalPlayerCount = Create(340, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TeleportingJackalOption);
@@ -1848,9 +1848,9 @@ namespace SuperNewRoles.Modules
             CupidCoolTime = Create(1081, false, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 20f, 2.5f, 180f, 2.5f, CupidOption);
 
             HamburgerShopOption = SetupCustomRoleOption(1091, false, RoleId.HamburgerShop);
-            HamburgerShopPlayerCount = Create(1074, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HamburgerShopOption);
-            HamburgerShopChangeTaskPrefab = Create(1075, false, CustomOptionType.Crewmate, "HamburgerShopChangeTaskPrefab", true, HamburgerShopOption);
-            var HamburgerShopoption = SelectTask.TaskSetting(1076, 1077, 1078, HamburgerShopOption, CustomOptionType.Crewmate, false);
+            HamburgerShopPlayerCount = Create(1093, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HamburgerShopOption);
+            HamburgerShopChangeTaskPrefab = Create(1094, false, CustomOptionType.Crewmate, "HamburgerShopChangeTaskPrefab", true, HamburgerShopOption);
+            var HamburgerShopoption = SelectTask.TaskSetting(1095, 1096, 1097, HamburgerShopOption, CustomOptionType.Crewmate, false);
             HamburgerShopCommonTask = HamburgerShopoption.Item1;
             HamburgerShopShortTask = HamburgerShopoption.Item2;
             HamburgerShopLongTask = HamburgerShopoption.Item3;
