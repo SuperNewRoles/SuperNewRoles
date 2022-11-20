@@ -93,9 +93,7 @@ If the host includes this mod, the position will be available to all!<br>
 [ExtremeRoles](https://github.com/yukieiji/ExtremeRoles) - Used fix task in map,The idea for Assassin and Merine. Thanks to **yukieiji**！<br>
 
 ## Used custom cosmetics
-[SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)<br>
-[TheOtherHats](https://github.com/Eisbison/TheOtherHats)(TOR)Thanks to **Eisbison**！<br>
-[TheOtherHats-GM](https://github.com/yukinogatari/TheOtherHats-GM)(TORGM)Thanks to **yukinogatari**！<br>
+[SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)(Licences relating to costumes held independently by SNR are listed in this repository.)<br>
 [TheOtherHats](https://github.com/hinakkyu/TheOtherHats)(Me-Me-MuraSkins)Thanks to **hinakkyu**！<br>
 [TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)Thanks to **tugaru1975**and**Ujet222(Sakura_White)**！<br>
 

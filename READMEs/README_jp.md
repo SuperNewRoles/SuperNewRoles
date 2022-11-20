@@ -85,9 +85,9 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [Nebula On The Ship](https://github.com/Dolly1016/Nebula) - 全ベントに接続する処理などを参考にさせていただきました。**Dolly1016**さんありがとうございます！<br>
 
 ## 使用させて頂いているカスタムコスメティック
-[SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)<br>
-[TheOtherHats](https://github.com/Eisbison/TheOtherHats)(TOR)**Eisbison**さんありがとうございます！<br>
-[TheOtherHats-GM](https://github.com/yukinogatari/TheOtherHats-GM)(TORGM)**yukinogatari**さんありがとうございます！<br>
+[SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)
+(SNR独自コスメティックに関連するライセンスについては此方のリポジトリに記載しています。)<br>
+<br>
 [TheOtherHats](https://github.com/hinakkyu/TheOtherHats)(めめ村スキン)**hinakkyu**さんありがとうございます！<br>
 [TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)**tugaru1975**さん、**Ujet222(Sakura_White)**さんありがとうございます！<br>
 
