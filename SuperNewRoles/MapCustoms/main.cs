@@ -59,7 +59,7 @@ namespace SuperNewRoles.MapCustoms
             if (IsMapCustom(MapCustomId.Airship) && MapCustom.AntiTaskOverWall.GetBool())
             {
                 // シャワー 写真
-                var array = new[] { "task_shower", "task_developphotos" };
+                var array = new[] { "task_shower", "task_developphotos", "task_garbage1", "task_garbage2", "task_garbage3", "task_garbage4", "task_garbage5" };
                 foreach (var c in GameObject.FindObjectsOfType<Console>())
                 {
                     if (c == null) continue;
