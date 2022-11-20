@@ -1574,6 +1574,8 @@ namespace SuperNewRoles.Roles
                 limitSoulDuration = CustomOptionHolder.SeerLimitSoulDuration.GetBool();
                 soulDuration = CustomOptionHolder.SeerSoulDuration.GetFloat();
                 mode = CustomOptionHolder.SeerMode.GetSelection();
+
+                Roles.Seer.FullScreenRenderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen, FastDestroyableSingleton<HudManager>.Instance.transform);
             }
         }
         public static class MadSeer
