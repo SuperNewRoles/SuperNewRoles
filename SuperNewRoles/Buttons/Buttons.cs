@@ -1290,13 +1290,13 @@ namespace SuperNewRoles.Buttons
                 {
                     if (ClergymanLightOutButton.isEffectActive)
                     {
-                        ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
-                        ClergymanLightOutButton.Timer = ClergymanLightOutButton.MaxTimer;
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
                         writer.Write(false);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.RPCClergymanLightOut(false);
                         ClergymanLightOutButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                        ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
+                        ClergymanLightOutButton.Timer = ClergymanLightOutButton.MaxTimer;
                     }
                     else
                     {
@@ -1320,12 +1320,12 @@ namespace SuperNewRoles.Buttons
                 5f,
                 () =>
                 {
+                    ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
+                    ClergymanLightOutButton.Timer = ClergymanLightOutButton.MaxTimer;
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
                     writer.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.RPCClergymanLightOut(false);
-                    ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
-                    ClergymanLightOutButton.Timer = ClergymanLightOutButton.MaxTimer;
                 }
             )
             {
