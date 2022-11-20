@@ -7,7 +7,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
-
+using UnityEngine;
 
 namespace SuperNewRoles
 {
@@ -219,6 +219,15 @@ namespace SuperNewRoles
                 }
                 if (isShapeshift)
                     Doppelganger.DoppelgangerShape();
+            } else if (player.IsRole(RoleId.SeeThroughPerson) && role != RoleId.SeeThroughPerson && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                foreach (PlainDoor door in MapUtilities.CachedShipStatus.AllDoors)
+                {
+                    var obj = RoleClass.SeeThroughPerson.Objects.Find(data => data.name == "Door-SeeThroughPersonCollider-" + door.transform.position.x + "." + door.transform.position.y + "." + door.Id);
+                    if (obj == null) continue;
+                    door.myCollider.isTrigger = false;
+                    GameObject.Destroy(obj.gameObject);
+                }
             }
             switch (role)
             {
