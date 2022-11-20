@@ -824,7 +824,6 @@ namespace SuperNewRoles
                 Enum.GetName(typeof(CustomRPC), callId) :
             $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}";
         public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptionHolder.IsDebugMode.GetBool();
-
     }
     public static class CreateFlag
     {

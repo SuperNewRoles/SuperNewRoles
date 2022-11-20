@@ -113,16 +113,17 @@ namespace SuperNewRoles.MapOptions
             CameraDefault = Camera.main.orthographicSize;
             Default = FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize;
             playerIcons = new();
+            DeviceClass.ClearAndReload();
         }
         public static CustomOption MapOptionSetting;
         public static CustomOption DeviceOptions;
         public static CustomOption DeviceUseAdmin;
 
-        //public static CustomOption DeviceUseAdminTime;
+        public static CustomOption DeviceUseAdminTime;
         public static CustomOption DeviceUseVitalOrDoorLog;
-        //public static CustomOption DeviceUseVitalOrDoorLogTime;
+        public static CustomOption DeviceUseVitalOrDoorLogTime;
         public static CustomOption DeviceUseCamera;
-        //public static CustomOption DeviceUseCameraTime;
+        public static CustomOption DeviceUseCameraTime;
         public static CustomOption NotUseReportDeadBody;
         public static CustomOption NotUseMeetingButton;
         public static CustomOption RandomMapOption;
@@ -158,13 +159,18 @@ namespace SuperNewRoles.MapOptions
             MapOptionSetting = CustomOption.Create(527, true, CustomOptionType.Generic, "MapOptionSetting", false, null, isHeader: true);
             DeviceOptions = CustomOption.Create(528, true, CustomOptionType.Generic, "DeviceOptionsSetting", false, MapOptionSetting);
             DeviceUseAdmin = CustomOption.Create(446, true, CustomOptionType.Generic, "DeviceUseAdminSetting", true, DeviceOptions);
-            //DeviceUseAdminTime = CustomOption.Create(447, Cs(Color.white, "DeviceTimeSetting"), 10f, 0f, 60f, 1f, DeviceUseAdmin);
             DeviceUseVitalOrDoorLog = CustomOption.Create(448, true, CustomOptionType.Generic, "DeviceUseVitalOrDoorLogSetting", true, DeviceOptions);
-            //DeviceUseVitalOrDoorLogTime = CustomOption.Create(449, Cs(Color.white, "DeviceTimeSetting"), 10f, 0f, 60f, 1f, DeviceUseVitalOrDoorLog);
             DeviceUseCamera = CustomOption.Create(450, true, CustomOptionType.Generic, "DeviceUseCameraSetting", true, DeviceOptions);
-            //DeviceUseCameraTime = CustomOption.Create(451, Cs(Color.white, "DeviceTimeSetting"), 10f,0f,60f,1f, DeviceUseCamera);
             NotUseReportDeadBody = CustomOption.Create(452, true, CustomOptionType.Generic, "NotUseReportSetting", false, MapOptionSetting);
             NotUseMeetingButton = CustomOption.Create(453, true, CustomOptionType.Generic, "NotUseMeetingSetting", false, MapOptionSetting);
+
+            RestrictDevicesOption = CustomOption.Create(1105, false, CustomOptionType.Generic, "RestrictDevicesOption", false, MapOptionSetting);
+            RestrictAdmin = CustomOption.Create(1102, false, CustomOptionType.Generic, "RestrictAdmin", false, RestrictDevicesOption);
+            DeviceUseAdminTime = CustomOption.Create(447, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 120f, 1f, RestrictAdmin);
+            RestrictVital = CustomOption.Create(1103, false, CustomOptionType.Generic, "RestrictVital", false, RestrictDevicesOption);
+            DeviceUseVitalOrDoorLogTime = CustomOption.Create(449, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 120f, 1f, RestrictVital);
+            RestrictCamera = CustomOption.Create(1104, false, CustomOptionType.Generic, "RestrictCamera", false, RestrictDevicesOption);
+            DeviceUseCameraTime = CustomOption.Create(451, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 120f, 1f, RestrictCamera);
 
             RandomMapOption = CustomOption.Create(454, true, CustomOptionType.Generic, "RamdomMapSetting", false, MapOptionSetting);
             RandomMapSkeld = CustomOption.Create(455, true, CustomOptionType.Generic, "RMSkeldSetting", true, RandomMapOption);

@@ -33,6 +33,9 @@ namespace SuperNewRoles.Modules
         public static CustomOption AgarthaRandomSpawnIsFirstSpawn;
         public static CustomOption AgarthaRandomSpawnIsAddSpawnWay;
 
+        public static CustomOption CanGhostSeeRole;
+        public static CustomOption OnlyImpostorGhostSeeRole;
+
         public static CustomOption IsDebugMode;
         public static CustomOption DebugModeFastStart;
         public static CustomOption IsMurderPlayerAnnounce;
@@ -96,6 +99,7 @@ namespace SuperNewRoles.Modules
         public static CustomOption SheriffCoolTime;
         public static CustomOption SheriffKillMaxCount;
         public static CustomOption SheriffCanKillImpostor;
+        public static CustomOption SheriffAlwaysKills;
         //=============================================
         public static CustomOption SheriffMadRoleKill;
         //シェリフマッドキル
@@ -113,6 +117,7 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption RemoteSheriffOption;
         public static CustomOption RemoteSheriffPlayerCount;
         public static CustomOption RemoteSheriffCoolTime;
+        public static CustomOption RemoteSheriffAlwaysKills;
         public static CustomOption RemoteSheriffMadRoleKill;
         public static CustomOption RemoteSheriffNeutralKill;
         public static CustomOption RemoteSheriffLoversKill;
@@ -121,6 +126,7 @@ namespace SuperNewRoles.Modules
 
         public static CustomRoleOption MeetingSheriffOption;
         public static CustomOption MeetingSheriffPlayerCount;
+        public static CustomOption MeetingSheriffAlwaysKills;
         public static CustomOption MeetingSheriffMadRoleKill;
         public static CustomOption MeetingSheriffNeutralKill;
         public static CustomOption MeetingSheriffKillMaxCount;
@@ -615,10 +621,11 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption ChiefOption;
         public static CustomOption ChiefPlayerCount;
         public static CustomOption ChiefSheriffCoolTime;
-        public static CustomOption ChiefIsNeutralKill;
-        public static CustomOption ChiefIsLoversKill;
-        public static CustomOption ChiefIsMadRoleKill;
-        public static CustomOption ChiefKillLimit;
+        public static CustomOption ChiefSheriffAlwaysKills;
+        public static CustomOption ChiefSheriffCanKillNeutral;
+        public static CustomOption ChiefSheriffCanKillLovers;
+        public static CustomOption ChiefSheriffCanKillMadRole;
+        public static CustomOption ChiefSheriffKillLimit;
 
         public static CustomRoleOption CleanerOption;
         public static CustomOption CleanerPlayerCount;
@@ -662,6 +669,7 @@ namespace SuperNewRoles.Modules
 
         public static CustomRoleOption EvilHackerOption;
         public static CustomOption EvilHackerPlayerCount;
+        public static CustomOption EvilHackerCanMoveWhenUsesAdmin;
         public static CustomOption EvilHackerMadmateSetting;
 
         public static CustomRoleOption SecretlyKillerOption;
@@ -987,6 +995,9 @@ namespace SuperNewRoles.Modules
             AgarthaRandomSpawnIsFirstSpawn = Create(1085, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsFirstSpawn", false, AgarthaRandomSpawn);
             AgarthaRandomSpawnIsAddSpawnWay = Create(1086, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
 
+            CanGhostSeeRole = Create(1100, false, CustomOptionType.Generic, "CanGhostSeeRole", true, null, isHeader: true);
+            OnlyImpostorGhostSeeRole = Create(1101, false, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false,CanGhostSeeRole);
+
             IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
             IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true);
@@ -1060,6 +1071,7 @@ namespace SuperNewRoles.Modules
             SheriffCoolTime = Create(39, true, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
             SheriffKillMaxCount = Create(43, true, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, SheriffOption, format: "unitSeconds");
             SheriffCanKillImpostor = Create(731, true, CustomOptionType.Crewmate, "SheriffIsKillImpostorSetting", true, SheriffOption);
+            SheriffAlwaysKills = Create(732, true, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, SheriffOption);
             SheriffMadRoleKill = Create(42, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, SheriffOption);
             SheriffFriendsRoleKill = Create(708, true, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, SheriffOption);
             SheriffNeutralKill = Create(40, true, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, SheriffOption);
@@ -1069,6 +1081,7 @@ namespace SuperNewRoles.Modules
             RemoteSheriffOption = SetupCustomRoleOption(44, true, RoleId.RemoteSheriff);
             RemoteSheriffPlayerCount = Create(45, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RemoteSheriffOption);
             RemoteSheriffCoolTime = Create(46, true, CustomOptionType.Crewmate, ModTranslation.GetString("SheriffCooldownSetting"), 30f, 2.5f, 60f, 2.5f, RemoteSheriffOption, format: "unitSeconds");
+            RemoteSheriffAlwaysKills = Create(733, true, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, RemoteSheriffOption);
             RemoteSheriffNeutralKill = Create(47, true, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, RemoteSheriffOption);
             RemoteSheriffLoversKill = Create(48, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, RemoteSheriffOption);
             RemoteSheriffMadRoleKill = Create(49, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, RemoteSheriffOption);
@@ -1077,6 +1090,7 @@ namespace SuperNewRoles.Modules
 
             MeetingSheriffOption = SetupCustomRoleOption(52, false, RoleId.MeetingSheriff);
             MeetingSheriffPlayerCount = Create(53, false, CustomOptionType.Crewmate, Cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MeetingSheriffOption);
+            MeetingSheriffAlwaysKills = Create(734, false, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, MeetingSheriffOption);
             MeetingSheriffNeutralKill = Create(54, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillNeutralSetting", false, MeetingSheriffOption);
             MeetingSheriffMadRoleKill = Create(55, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillMadRoleSetting", false, MeetingSheriffOption);
             MeetingSheriffKillMaxCount = Create(56, false, CustomOptionType.Crewmate, "MeetingSheriffMaxKillCountSetting", 1f, 1f, 20f, 1f, MeetingSheriffOption, format: "unitSeconds");
@@ -1504,10 +1518,11 @@ namespace SuperNewRoles.Modules
             ChiefOption = SetupCustomRoleOption(394, false, RoleId.Chief);
             ChiefPlayerCount = Create(395, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
             ChiefSheriffCoolTime = Create(626, false, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, ChiefOption, format: "unitSeconds");
-            ChiefIsNeutralKill = Create(627, false, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, ChiefOption);
-            ChiefIsLoversKill = Create(628, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, ChiefOption);
-            ChiefIsMadRoleKill = Create(629, false, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, ChiefOption);
-            ChiefKillLimit = Create(630, false, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, ChiefOption, format: "unitSeconds");
+            ChiefSheriffAlwaysKills = Create(732, true, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, ChiefOption);
+            ChiefSheriffCanKillNeutral = Create(627, false, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, ChiefOption);
+            ChiefSheriffCanKillLovers = Create(628, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, ChiefOption);
+            ChiefSheriffCanKillMadRole = Create(629, false, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, ChiefOption);
+            ChiefSheriffKillLimit = Create(630, false, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, ChiefOption, format: "unitSeconds");
 
             CleanerOption = SetupCustomRoleOption(396, false, RoleId.Cleaner);
             CleanerPlayerCount = Create(397, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CleanerOption);
@@ -1545,6 +1560,7 @@ namespace SuperNewRoles.Modules
 
             EvilHackerOption = SetupCustomRoleOption(424, false, RoleId.EvilHacker);
             EvilHackerPlayerCount = Create(425, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
+            EvilHackerCanMoveWhenUsesAdmin = Create(1010, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
             EvilHackerMadmateSetting = Create(426, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
 
             GhostMechanicOption = SetupCustomRoleOption(427, false, RoleId.GhostMechanic);
