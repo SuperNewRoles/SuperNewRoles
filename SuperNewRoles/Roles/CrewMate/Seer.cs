@@ -17,7 +17,7 @@ namespace SuperNewRoles.Roles
             RoleClass.SeerFriends.SeerFriendsPlayer
         };
 
-        public static SpriteRenderer FullScreenRenderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen, FastDestroyableSingleton<HudManager>.Instance.transform);
+        public static SpriteRenderer FullScreenRenderer;
 
         /** <summary>
             画面を光らせる
@@ -35,7 +35,8 @@ namespace SuperNewRoles.Roles
         public static void ShowFlash(Color color, float duration = 1f)
         {
             var renderer = FastDestroyableSingleton<HudManager>.Instance;
-            if (renderer == null || FullScreenRenderer == null) return;
+            FullScreenRenderer = GameObject.Instantiate(renderer.FullScreen, renderer.transform);
+            if (renderer == null || renderer.FullScreen == null) return;
             FullScreenRenderer.gameObject.SetActive(true);
             FullScreenRenderer.enabled = true;
             renderer.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
@@ -56,8 +57,7 @@ namespace SuperNewRoles.Roles
                 }
                 if (p == 1f && FullScreenRenderer != null)
                 {
-                    FullScreenRenderer.enabled = true;
-                    FullScreenRenderer.gameObject.SetActive(false);
+                    GameObject.Destroy(FullScreenRenderer);
                 }
             })));
         }
