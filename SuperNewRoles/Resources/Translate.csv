@@ -594,8 +594,6 @@ JackalFriendsIsCheckJackalSetting,Is Check Jackal,ジャッカルをチェック
 DoctorName,Doctor,ドクター,医生
 DoctorTitle1,Check Vitals,バイタルをチェックしよう,随时查看生命监测装置来确认船员的生死
 DoctorVitalName,Vital,バイタル,生命监测装置
-DoctorChargeTime,Vital cool time,バイタルのクールタイム,医生装置冷却时间
-DoctorUseTime,Can use vital time,バイタルを見れる時間,医生装置最大使用时间
 DoctorChargeTime,Vital charge time,バイタルのチャージタイム,医生装置冷却时间
 DoctorUseTime,Can use vital time,バイタルを見れる時間,医生装置最大使用时间
 
