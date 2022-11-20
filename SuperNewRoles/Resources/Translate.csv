@@ -80,6 +80,8 @@ colorAshishreddishpurplecolor,Ashish reddish purple color,灰みの赤紫系の�
 colorMelon,Melon,メロン,瓜绿
 colorCrasyublue,Crasyu Blue,クラッシュブルー,深海蓝
 colorLightgreen,Light Green,ライトグリーン,亮绿
+colorAzuki,Azuki,小豆,赤小豆
+colorSnow,Snow,雪,雪
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -194,6 +196,9 @@ RestrictDevicesOption,Restrict Devices Option,機器の時間制限
 RestrictAdmin,Restrict Admin,アドミンの時間制限
 RestrictVital,Restrict Vital,バイタルの時間制限
 RestrictCamera,Restrict Camera,カメラの時間制限
+CanGhostSeeRole,,死亡者が全員の役職を確認できる
+OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる
+AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置
