@@ -618,7 +618,7 @@ namespace SuperNewRoles
                     break;
                 case RoleId.ShiftActor:
                     ShiftActor.Player.Add(player);
-                    RoleManager.Instance.SetRole(player, RoleTypes.Shapeshifter);
+                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Shapeshifter);
                     break;
                 case RoleId.ConnectKiller:
                     RoleClass.ConnectKiller.ConnectKillerPlayer.Add(player);

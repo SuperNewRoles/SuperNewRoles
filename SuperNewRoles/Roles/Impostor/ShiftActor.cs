@@ -47,7 +47,7 @@ namespace SuperNewRoles.Roles.Impostor
         {
             if (CachedPlayer.LocalPlayer.Data.Role == null || !CachedPlayer.LocalPlayer.IsRole(RoleTypes.Shapeshifter))
             {
-                RoleManager.Instance.SetRole(CachedPlayer.LocalPlayer, RoleTypes.Shapeshifter);
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer, RoleTypes.Shapeshifter);
             }
         }
 

@@ -48,18 +48,18 @@ namespace SuperNewRoles.Patches
             {
                 if (Input.GetKeyDown(KeyCode.F8) && GameStartManager._instance && AmongUsClient.Instance.AmHost)
                 {
-                    GameStartManager.Instance.countDownTimer = 0;
+                    FastDestroyableSingleton<GameStartManager>.Instance.countDownTimer = 0;
                 }
                 if (CustomOptionHolder.DebugModeFastStart != null && CustomOptionHolder.DebugModeFastStart.GetBool() && CustomOptionHolder.IsDebugMode.GetBool())//デバッグモードでデバッグ即開始が有効
                 {//カウントダウン中
-                    if (GameStartManager.InstanceExists && GameStartManager.Instance.startState == GameStartManager.StartingStates.Countdown)
+                    if (GameStartManager.InstanceExists && FastDestroyableSingleton<GameStartManager>.Instance.startState == GameStartManager.StartingStates.Countdown)
                     {//カウント0
-                        GameStartManager.Instance.countDownTimer = 0;
+                        FastDestroyableSingleton<GameStartManager>.Instance.countDownTimer = 0;
                     }
                 }
                 if (Input.GetKeyDown(KeyCode.F7) && GameStartManager._instance && AmongUsClient.Instance.AmHost)
                 {
-                    GameStartManager.Instance.ResetStartState();
+                    FastDestroyableSingleton<GameStartManager>.Instance.ResetStartState();
                 }
             }
         }
