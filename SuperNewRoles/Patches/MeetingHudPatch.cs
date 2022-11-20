@@ -29,7 +29,7 @@ namespace SuperNewRoles.Patches
     class CheckForEndVotingPatch
     {
         // Key:役職　Value:票数
-        public static Dictionary<RoleId, int> VoteCountDictionary = new() {
+        public static Dictionary<RoleId, int> VoteCountDictionary => new() {
             { RoleId.Mayor, RoleClass.Mayor.AddVote },
             { RoleId.MadMayor, RoleClass.MadMayor.AddVote },
             { RoleId.MayorFriends, RoleClass.MayorFriends.AddVote },
