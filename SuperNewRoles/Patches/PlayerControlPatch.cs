@@ -927,7 +927,11 @@ namespace SuperNewRoles.Patches
 
             SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
-            DebugMode.MurderPlayerPatch.Announce();
+            if (IsDebugMode() && CustomOptionHolder.IsMurderPlayerAnnounce.GetBool())
+            {
+                new CustomMessage("MurderPlayerが発生しました", 5f);
+                Logger.Info("MurderPlayerが発生しました", "DebugMode");
+            }
             Roles.Crewmate.KnightProtected_Patch.MurderPlayerPatch.Postfix(target);
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))

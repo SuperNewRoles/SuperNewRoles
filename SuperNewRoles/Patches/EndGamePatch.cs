@@ -1105,7 +1105,7 @@ namespace SuperNewRoles.Patches
             if (!GameData.Instance) return false;
             if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
             if (!RoleManagerSelectRolesPatch.IsSetRoleRPC) return false;
-            if (DebugMode.IsDebugMode()) return false;
+            if (ModHelpers.IsDebugMode()) return false;
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             if (RoleClass.Revolutionist.MeetingTrigger != null) return false;
             PlayerStatistics statistics = new(__instance);

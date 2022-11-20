@@ -29,7 +29,7 @@ namespace SuperNewRoles.Patches
     class CheckForEndVotingPatch
     {
         // Key:役職　Value:票数
-        public static Dictionary<RoleId, int> VoteCountDictionary = new() {
+        public static Dictionary<RoleId, int> VoteCountDictionary => new() {
             { RoleId.Mayor, RoleClass.Mayor.AddVote },
             { RoleId.MadMayor, RoleClass.MadMayor.AddVote },
             { RoleId.MayorFriends, RoleClass.MayorFriends.AddVote },
@@ -513,7 +513,7 @@ namespace SuperNewRoles.Patches
                     writer.EndRPC();
                     RPCProcedure.MeetingKill(CachedPlayer.LocalPlayer.PlayerId, (byte)i);
                     __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
-                }, RoleClass.Cleaner.GetButtonSprite(), (PlayerControl player) => player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId);
+                }, RoleClass.Werewolf.GetButtonSprite(), (PlayerControl player) => player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId);
             }
         }
         public static void CreateMeetingButton(MeetingHud __instance, string ButtonName, Action<int, MeetingHud> OnClick, Sprite sprite, Func<PlayerControl, bool> CheckCanButton)

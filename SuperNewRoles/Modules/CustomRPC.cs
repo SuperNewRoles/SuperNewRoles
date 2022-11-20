@@ -957,7 +957,7 @@ namespace SuperNewRoles.Modules
             }
             else
             {
-                if (RoleClass.Clergyman.currentMessage.text != null)
+                if (RoleClass.Clergyman.currentMessage?.text != null)
                 {
                     GameObject.Destroy(RoleClass.Clergyman.currentMessage.text.gameObject);
                 }

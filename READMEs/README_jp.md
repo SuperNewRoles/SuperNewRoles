@@ -80,23 +80,22 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [Among-Us-Love-Couple-Mod](https://github.com/Woodi-dev/Among-Us-Love-Couple-Mod) - Lovers(ラバーズ)のアイデアは、**Woodi-dev**から来ています。(TheOtherRolesから引用)<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Sheriffのアイデアは **Woodi-dev** から来ています。(TheOtherRolesから引用)<br>
 [au.libhalt.net](https://au.libhalt.net) - ナイス猫又/イビル猫又のアイデアは **au.libhalt.net** から来ています。<br>
-[TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - ベント追加、バイタル移動、昇降機のリフト削除、配線タスク追加、ランダムスポーンのコードを参考にさせていただきました！**Haoming37**さんありがとうございます！<br>
+[TheOtherRolesGMHaoming] <!--(https://github.com/haoming37/TheOtherRoles-GM-Haoming)--> - ベント追加、バイタル移動、昇降機のリフト削除、配線タスク追加、ランダムスポーンのコードを参考にさせていただきました！**Haoming37**さんありがとうございます！<br>
 [ExtremeRoles](https://github.com/yukieiji/ExtremeRoles) - マップのタスクが正常に動作しない問題の修正、アサシン&マーリンなどのアイデア元となりました！**yukieiji**さんありがとうございます！<br>
 [Nebula On The Ship](https://github.com/Dolly1016/Nebula) - 全ベントに接続する処理などを参考にさせていただきました。**Dolly1016**さんありがとうございます！<br>
 
 ## 使用させて頂いているカスタムコスメティック
-[SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)<br>
-[TheOtherHats](https://github.com/Eisbison/TheOtherHats)(TOR)**Eisbison**さんありがとうございます！<br>
-[TheOtherHats-GM](https://github.com/yukinogatari/TheOtherHats-GM)(TORGM)**yukinogatari**さんありがとうございます！<br>
+[SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)
+(SNR独自コスメティックに関連するライセンスについては此方のリポジトリに記載しています。)<br>
+<br>
 [TheOtherHats](https://github.com/hinakkyu/TheOtherHats)(めめ村スキン)**hinakkyu**さんありがとうございます！<br>
 [TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)**tugaru1975**さん、**Ujet222(Sakura_White)**さんありがとうございます！<br>
 
 ## 開発者
 [よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
-[漢方薬の人](https://github.com/UKON256)<br>
-[じゅきまぐろ](https://github.com/jukimaguro1) ([Twitter](https://twitter.com/jukimaguro))<br>
-[くらと](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
-[DekoKiyo](https://github.com/Dekokiyo) ([Twitter](https://twitter.com/kiyo_deko))<br>
+[月城蔵徒](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
+[Kuki](https://github.com/Kuki12345)<br>
+[Sakurander](https://github.com/Sakurander)<br>
 
 ## スポンサー
 こんこるど様<br>
