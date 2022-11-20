@@ -89,13 +89,11 @@ If the host includes this mod, the position will be available to all!<br>
 [Among-Us-Love-Couple-Mod](https://github.com/Woodi-dev/Among-Us-Love-Couple-Mod) - Idea for the Lovers role comes from **Woodi-dev**<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - The idea for Sheriff comes from **Woodi-dev**. (Taken from TheOtherRoles)<br>
 [au.libhalt.net](https://au.libhalt.net) - Nice Nekomata/Ivil Nekomata idea came from **au.libhalt.net**.<br>
-[TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - Used for Add Vents , Remove Lift , AddWireTasks and move vital. Thanks to **haoming37**!<br>
+[TheOtherRolesGMHaoming]<!--(https://github.com/haoming37/TheOtherRoles-GM-Haoming)--> - Used for Add Vents , Remove Lift , AddWireTasks and move vital. Thanks to **haoming37**!<br>
 [ExtremeRoles](https://github.com/yukieiji/ExtremeRoles) - Used fix task in map,The idea for Assassin and Merine. Thanks to **yukieiji**！<br>
 
 ## Used custom cosmetics
-[SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)<br>
-[TheOtherHats](https://github.com/Eisbison/TheOtherHats)(TOR)Thanks to **Eisbison**！<br>
-[TheOtherHats-GM](https://github.com/yukinogatari/TheOtherHats-GM)(TORGM)Thanks to **yukinogatari**！<br>
+[SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)(Licences relating to costumes held independently by SNR are listed in this repository.)<br>
 [TheOtherHats](https://github.com/hinakkyu/TheOtherHats)(Me-Me-MuraSkins)Thanks to **hinakkyu**！<br>
 [TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)Thanks to **tugaru1975**and**Ujet222(Sakura_White)**！<br>
 
