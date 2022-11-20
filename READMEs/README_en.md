@@ -99,10 +99,9 @@ If the host includes this mod, the position will be available to all!<br>
 
 ## Developers
 [Yking](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
-[UKON people](https://github.com/UKON256)<br>
-[juki maguro](https://github.com/jukimaguro1) ([Twitter](https://twitter.com/jukimaguro))<br>
-[Kurato](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
-[DekoKiyo](https://github.com/Dekokiyo) ([Twitter](https://twitter.com/kiyo_deko))<br>
+[Kurato_Tsukishiro](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
+[Kuki](https://github.com/Kuki12345)<br>
+[Sakurander](https://github.com/Sakurander)<br>
 
 ## Sponsors
 Mr. Concorde<br>
