@@ -29,7 +29,7 @@ namespace SuperNewRoles.Patches
     class CheckForEndVotingPatch
     {
         // Key:役職　Value:票数
-        public static Dictionary<RoleId, int> VoteCountDictionary = new() {
+        public static Dictionary<RoleId, int> VoteCountDictionary => new() {
             { RoleId.Mayor, RoleClass.Mayor.AddVote },
             { RoleId.MadMayor, RoleClass.MadMayor.AddVote },
             { RoleId.MayorFriends, RoleClass.MayorFriends.AddVote },
@@ -431,7 +431,7 @@ namespace SuperNewRoles.Patches
                 if (ps != null && ModHelpers.PlayerById(ps.TargetPlayerId) != null && ps.VotedFor != 252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != 254 && ModHelpers.PlayerById(ps.TargetPlayerId).IsAlive() && !ModHelpers.PlayerById(ps.TargetPlayerId).IsBot())
                 {
                     int VoteNum = 1;
-                    if (CheckForEndVotingPatch.VoteCountDictionary.ContainsKey(ModHelpers.PlayerById(ps.TargetPlayerId).GetRole())) VoteNum = CheckForEndVotingPatch.VoteCountDictionary[ModHelpers.PlayerById(ps.TargetPlayerId).GetRole()];
+                    if (CheckForEndVotingPatch.VoteCountDictionary.ContainsKey(ModHelpers.PlayerById(ps.TargetPlayerId).GetRole())) { VoteNum = CheckForEndVotingPatch.VoteCountDictionary[ModHelpers.PlayerById(ps.TargetPlayerId).GetRole()]; Logger.Info($"{CheckForEndVotingPatch.VoteCountDictionary[ModHelpers.PlayerById(ps.TargetPlayerId).GetRole()]}, {ModHelpers.PlayerById(ps.TargetPlayerId).name}"); }
                     dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out int num) ? VoteNum : num + VoteNum;
                 }
             }
