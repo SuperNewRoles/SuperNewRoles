@@ -593,7 +593,7 @@ JackalFriendsIsCheckJackalSetting,Is Check Jackal,ジャッカルをチェック
 DoctorName,Doctor,ドクター,医生
 DoctorTitle1,Check Vitals,バイタルをチェックしよう,随时查看生命监测装置来确认船员的生死
 DoctorVitalName,Vital,バイタル,生命监测装置
-DoctorChargeTime,Vital cool time,バイタルのクールタイム
+DoctorChargeTime,Vital charge time,バイタルのチャージタイム
 DoctorUseTime,Can use vital time,バイタルを見れる時間
 CountChangerName,Count Changer,カウントチェンジャー,巫师
 CountChangerTitle1,Let's change it,変更しよう,幻惑他人
