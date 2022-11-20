@@ -89,7 +89,7 @@ If the host includes this mod, the position will be available to all!<br>
 [Among-Us-Love-Couple-Mod](https://github.com/Woodi-dev/Among-Us-Love-Couple-Mod) - Idea for the Lovers role comes from **Woodi-dev**<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - The idea for Sheriff comes from **Woodi-dev**. (Taken from TheOtherRoles)<br>
 [au.libhalt.net](https://au.libhalt.net) - Nice Nekomata/Ivil Nekomata idea came from **au.libhalt.net**.<br>
-[TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - Used for Add Vents , Remove Lift , AddWireTasks and move vital. Thanks to **haoming37**!<br>
+[TheOtherRolesGMHaoming]<!--(https://github.com/haoming37/TheOtherRoles-GM-Haoming)--> - Used for Add Vents , Remove Lift , AddWireTasks and move vital. Thanks to **haoming37**!<br>
 [ExtremeRoles](https://github.com/yukieiji/ExtremeRoles) - Used fix task in map,The idea for Assassin and Merine. Thanks to **yukieiji**！<br>
 
 ## Used custom cosmetics
