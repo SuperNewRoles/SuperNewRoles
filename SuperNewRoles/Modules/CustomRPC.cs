@@ -259,7 +259,7 @@ namespace SuperNewRoles.Modules
         SetMapId,
         PenguinHikizuri,
         SetVampireStatus,
-        SyncDeathMeeting
+        SyncDeathMeeting,
         SetDeviceUseStatus,
     }
 
