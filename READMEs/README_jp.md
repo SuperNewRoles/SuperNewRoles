@@ -93,10 +93,9 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 ## 開発者
 [よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
-[漢方薬の人](https://github.com/UKON256)<br>
-[じゅきまぐろ](https://github.com/jukimaguro1) ([Twitter](https://twitter.com/jukimaguro))<br>
-[くらと](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
-[DekoKiyo](https://github.com/Dekokiyo) ([Twitter](https://twitter.com/kiyo_deko))<br>
+[月城蔵徒](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
+[Kuki](https://github.com/Kuki12345)<br>
+[Sakurander](https://github.com/Sakurander)<br>
 
 ## スポンサー
 こんこるど様<br>
