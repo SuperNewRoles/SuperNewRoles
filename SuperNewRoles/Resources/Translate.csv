@@ -80,8 +80,8 @@ colorAshishreddishpurplecolor,Ashish reddish purple color,灰みの赤紫系の�
 colorMelon,Melon,メロン,瓜绿
 colorCrasyublue,Crasyu Blue,クラッシュブルー,深海蓝
 colorLightgreen,Light Green,ライトグリーン,亮绿
-colorAzuki,Azuki,小豆,赤小豆
-colorSnow,Snow,雪,雪
+colorAzuki,Azuki,小豆,红豆
+colorSnow,Snow,雪,雪白
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -164,13 +164,13 @@ ReactorDurationSetting,Reactor Duration Time,リアクター継続時間の設�
 PolusReactorTime,Polus Reactor Duration Time,ポーラスでのリアクター時間,波鲁斯(Polus)核反应堆紧急破坏持续时间
 MiraReactorTime,Mira Reactor Duration Time,ミラでのリアクター時間,米拉总部(Mira)核反应堆紧急破坏持续时间
 AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリアクター時間,飞艇(AirShip)核反应堆紧急破坏持续时间
-VentMakerButtonName,Make Vent,設置,制造通风口
+VentMakerButtonName,Make Vent,設置,制造管道口
 AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する,米拉总部(Mira)：追加生命监测装置
-VentAnimation,No Vent Animation,ベントアニメーション無効化,禁用通风口动画
+VentAnimation,No Vent Animation,ベントアニメーション無効化,取消管道口动画
 MapRemodelingOptionSetting,Map Remodeling,マップ改造,地图改造
-AirShipAdditionalVents,AirShipAdditionalVents,エアーシップにベントを追加する,飞艇(AirShip)：增加通风管道
-PolusAdditionalVents,PolusAdditionalVents,ポーラスにベントを追加する,波鲁斯(Polus)：增加通风管道
-MiraAdditionalVents,MiraAdditionalVents,ミラにベントを追加する,米拉总部(Mira)：增加通风管道
+AirShipAdditionalVents,AirShipAdditionalVents,エアーシップにベントを追加する,飞艇(AirShip)：增加管道
+PolusAdditionalVents,PolusAdditionalVents,ポーラスにベントを追加する,波鲁斯(Polus)：增加管道
+MiraAdditionalVents,MiraAdditionalVents,ミラにベントを追加する,米拉总部(Mira)：增加管道
 Zoomafterdeath,Zoom function after death,死後のズーム機能,死亡玩家功能设定
 mousemode,Mouse wheel Mode,マウスホイールモード,鼠标滚轮模式
 clairvoyantmode,ClairvoyantMode,千里眼モード,千里眼模式
@@ -191,25 +191,25 @@ DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩�
 WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数
 IsSNROnlySearch,SNR Room Filter,SNRルームフィルター,筛选SNR房间
-RestrictDevicesOption,Restrict Devices Option,機器の時間制限
-RestrictAdmin,Restrict Admin,アドミンの時間制限
-RestrictVital,Restrict Vital,バイタルの時間制限
-RestrictCamera,Restrict Camera,カメラの時間制限
-CanGhostSeeRole,,死亡者が全員の役職を確認できる
-OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる
-AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない
+RestrictDevicesOption,Restrict Devices Option,機器の時間制限,飞船设备使用时间限制
+RestrictAdmin,Restrict Admin,アドミンの時間制限,管理师地图使用时间限制
+RestrictVital,Restrict Vital,バイタルの時間制限,生命监测装置使用时间限制
+RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
+CanGhostSeeRole,,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业
+OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる,只有死亡的内鬼阵营玩家可以确认所有玩家的职业
+AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置
 SettingMode,Mode,モード,游戏模式
 SettingHideAndSeekMode,Hide And Seek Mode,かくれんぼモードの設定,躲猫猫模式设置
-SettingBattleRoyalMode,Battle Royal Mode,バトルロイヤルモードの設定,皇室战争模式设置
+SettingBattleRoyalMode,Battle Royal Mode,バトルロイヤルモードの設定,大逃杀模式设置
 SettingSuperHostRolesMode,Super Host Roles Mode,SuperHostRolesの設定,SuperHostRoles设置
 SettingZombieMode,Zombie Mode,ゾンビモードの設定,生化危机模式设置
 SettingRandomColorMode,Random Color Mode,ランダムカラーモードの設定,随机颜色模式设置
 SettingDetectiveMode,Detective Mode,探偵モードの設定,侦探模式设置
 HideAndSeekModeName,Hide And Seek,かくれんぼ,躲猫猫
-BattleRoyalModeName,Battle Royal,バトルロイヤル,皇室战争
+BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀
 SuperHostRolesModeName,Super Host Roles,SuperHostRoles,SuperHostRoles
 ZombieModeName,Zombie Mode,ゾンビモード,生化危机
 RandomColorModeName,Random Color Mode,ランダムカラー,随机颜色模式
@@ -365,9 +365,9 @@ SoothSayerNotCrewmateText,is not crewmate,はクルーメイトではありま�
 JesterName,Jester,てるてる,小丑
 JesterTitle1,Vote to get banned!,投票で追放されよう,想办法被投出去
 JesterDescription,If they are expelled at the meeting they win alone.,会議で追放されると、単独勝利します。,小丑在会议中被投出则小丑单独获胜。
-JesterIsVentSetting,I can put it in a vent.,ベントに入れる,小丑可以进入管道
+JesterIsVentSetting,I can put it in a vent.,ベントに入れる,可以进入管道
 JesterIsSabotageSetting,You can sabotage it.,サボタージュができる,小丑可以破坏
-JesterIsWinClearTaskSetting,Jester was Clear Task Win,タスクを完了しないと勝利できない,小丑不完成任务不能获胜
+JesterIsWinClearTaskSetting,Jester was Clear Task Win,タスクを完了しないと勝利できない,不完成任务不能获胜
 JesterWinText,Jester{0}Win!,てるてる{0}勝利,小丑竟是我自己
 LighterName,Lighter,ライター,执灯人
 LighterTitle1,Let's brighten our vision,視界を明るくしよう,擦亮你的眼睛
@@ -394,7 +394,7 @@ SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可
 SheriffIsKillLoversSetting,Can kill lovers,ラバーズをキルできる,可以击杀恋人
 SheriffIsKillMadRoleSetting,Can kill mad roles,マッド系をキルできる,可以击杀叛徒系职业
 SheriffIsKillImpostorSetting,Can kill impostors,インポスターをキルできる,可以击杀内鬼
-SheriffAlwaysKills,Killing a target even when it is misfiring.,誤射した時も対象を殺す
+SheriffAlwaysKills,Killing a target even when it is misfiring.,誤射した時も対象を殺す,警长误杀时选择的对象也会死亡
 SheriffIsKillFriendsRoleSetting,Can kill jackal friend roles,ジャッカルフレンズ系をキルできる,可以击杀狈系职业
 SheriffIsKillQuarreledSetting,Can kill quarreleds,クラードをキルできる,可以击杀福音天使
 SheriffYes,Yes,できる,是
@@ -413,10 +413,10 @@ MeetingSheriffYes,Yes,できる,是
 MeetingSheriffNo,No,できない,否
 MeetingSheriffMaxKillCountSetting,Maximum number of Meeting Sheriff kills,ミーティングシェリフの最大キル数,执法官最大可击杀次数
 MeetingSheriffMeetingmultipleKillSetting,Can you get multiple kills in one meeting?,一会議中に複数キルできるか,执法官可以在一次会议中多次击杀
-MeetingSheriffkillChat1,{0} has sheriffkilled {1}!,{0} は {1} をシェリフキルした！
-MeetingSheriffkillChat2,{0} was killed，but it was a misfire! {1} killed himself in remorse!,{0} をキルしたが誤射だった! {1} は自責の念で自害した!
-MeetingSheriffkillChat3,{0} was a misfire!,{0} は誤爆した！
-MeetingSheriffkillChat4,{0} succeeded!,{0} は成功した！
+MeetingSheriffkillChat1,{0} has sheriffkilled {1}!,{0} は {1} をシェリフキルした！,{0}对{1}出警了！
+MeetingSheriffkillChat2,{0} was killed，but it was a misfire! {1} killed himself in remorse!,{0} をキルしたが誤射だった! {1} は自責の念で自害した!,{0}被杀害了，但他是被冤枉的！{1}以死谢罪了！
+MeetingSheriffkillChat3,{0} was a misfire!,{0} は誤爆した！,{0}的枪走火了！
+MeetingSheriffkillChat4,{0} succeeded!,{0} は成功した！{0}成功了！
 JackalName,Jackal,ジャッカル,豺狼
 JackalTitle1,Try to kill Impostors and Crewmates,インポスターとクルーメイトをキルしよう,杀死所有船员和内鬼
 JackalTitle2,Kill the other team to win!,他陣営をキルして勝利しよう,把其他人全部杀死获得胜利
@@ -460,7 +460,7 @@ EvilSpeedBoosterTitle4,Let's run around and kill everyone.,走りまくって皆
 EvilSpeedBoosterCooldownSetting,Speed Up Cooldown,スピードアップクールダウン,邪恶的飞毛腿技能冷却
 EvilSpeedBoosterDurationSetting,Speedup duration,スピードアップの継続時間,邪恶的飞毛腿技能持续时间
 EvilSpeedBoosterPlusSpeedSetting,Double Speed,スピードの倍速,邪恶的飞毛腿技能持续时间内速度增加的倍数
-EvilSpeedBoosterIsNotSpeedBooster,If this position is selected the speed booster will not be selected.,この役職が選ばれるとスピードブースターが選ばれない,该职业不能与正义的飞毛腿共存。
+EvilSpeedBoosterIsNotSpeedBooster,If this position is selected the speed booster will not be selected.,この役職が選ばれるとスピードブースターが選ばれない,不能与正义的飞毛腿共存
 EvilSpeedBoosterBoostButtonName,Speed\nBoost,スピード\nブースト,加速
 TaskerName,Tasker,タスカー,特务
 TaskerTitle1,Finish the task and win the Impostor!,タスクを終わらせてインポスターを勝利させよう,完成任务来让内鬼获得胜利
@@ -530,7 +530,7 @@ ClergymanLightOutMessage,The Clergyman is blocking my view!,聖職者が視界�
 MadmateName,Madmate,マッドメイト,叛徒
 MadmateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助内鬼获得胜利
 MadmateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。
-MadmateIsCheckImpostorSetting,You can check the Impostor.,インポスターが確認できる,叛徒可以得知内鬼是谁
+MadmateIsCheckImpostorSetting,You can check the Impostor.,インポスターが確認できる,可以得知内鬼是谁
 MadmateCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量(全タスク内),确认身份需要完成的任务量
 MadmateUseVentSetting,Use Vent,ベントに入れる,可以进入管道
 MadmateVentMoveSetting,Move Vent,ベントで動ける,叛徒可以使用管道
@@ -579,7 +579,7 @@ ResearcherOneTurnSetting,Maximum number of samples per turn,1ターンの最大�
 SelfBomberName,Self Bomber,自爆魔,恐怖分子
 SelfBomberTitle1,Lets' Self Bomb!,自爆をしよう,我的任务 完成啦！
 SelfBomberDescription,Shapeshifting causes self-destruction.\nIf you self-destruct you will die involving everyone around you.,シェイプシフトをすることで、自爆します。\n自爆をすると周りの人を巻き込んで死亡します。,恐怖分子属于内鬼阵营，可以自爆。\n若恐怖分子自爆，自爆者与周围一定范围的玩家都会死亡。
-SelfBomberScopeSetting,Range (radius),範囲(半径),范围（半径）
+SelfBomberScopeSetting,Range (radius),範囲(半径),爆炸范围（半径）
 SelfBomberButtonName,Self Bomb,自爆,自爆
 GodName,God,神,神
 GodTitle1,You Are God!!,あなたは神だ,新世界的卡密！
@@ -590,15 +590,15 @@ AllCleanerName,All Cleaner,オールクリーナー,清理者
 AllCleanerTitle1,Let's get rid of the corpse.,死体を消そう,杀人不留痕迹
 AllCleanerCountSetting,Number of times it can be used in one game,1試合中に使える回数,清理者最大可清理次数
 AllCleanerButtonName,Clean,クリーン,清理
-NiceNekomataName,Nice Nekomata,ナイス猫又,猎人
+NiceNekomataName,Nice Nekomata,ナイス猫又,正义的猎人
 NiceNekomataTitle1,Let's take him on the road.,道連れにしよう,带人一起上路
 NiceNekomataTitle2,Let's have a human mess.,人外ガチャをしよう,被投出去的你会带走一个人
 NiceNekomataTitle3,Let's mess around!,ガチャしようぜ！,扰乱敌人的计划吧
 NiceNekomataDescription,If you are exiled at a meeting you take one of them with you on the road.,自分が会議で追放されると、誰か一人を道連れにします。,猎人在会议中被放逐，则猎人连带存活的随机一名玩家一同死亡。
-NiceNekomataIsChainSetting,Chain Nekomata,猫又同士が連鎖する,猎人或复仇者被连带死亡会继续触发连带死亡
-EvilNekomataName,Evil Nekomata,イビル猫又,复仇者
+NiceNekomataIsChainSetting,Chain Nekomata,猫又同士が連鎖する,猎人被连带死亡会继续触发连带死亡
+EvilNekomataName,Evil Nekomata,イビル猫又,邪恶的猎人
 EvilNekomataTitle1,Let's take him on the road.,道連れにしよう,带人一起上路
-EvilNekomataDescription,If you are expelled from the meeting you will take one person with you including your friends.,自分が会議で追放されると、仲間含む誰か一人を道連れにします。,复仇者在会议中被放逐，则复仇者连带存活的随机一名玩家一同死亡。\n复仇者可能会连带其他内鬼阵营玩家。
+EvilNekomataDescription,If you are expelled from the meeting you will take one person with you including your friends.,自分が会議で追放されると、仲間含む誰か一人を道連れにします。,猎人在会议中被放逐，则猎人连带存活的随机一名玩家一同死亡。\n邪恶的猎人可能会连带其他内鬼阵营玩家。
 JackalFriendsName,Jackal Friends,ジャッカルフレンズ,狈
 JackalFriendsTitle1,Help Jackal.,ジャッカルを助けよう,帮助豺狼获得胜利
 JackalFriendsTitle2,I'll help you kill them all.,全員ぶち殺す手伝いをしよう,助豺狼一臂之力
@@ -626,9 +626,9 @@ MinimalistTitle1,Let's Kill.,キルをしよう,执行杀戮命令
 MinimalistTitle2,Get rid of unnecessary stuff and kill efficiently!,不必要なものを捨て、効率よくキルしよう,舍弃一切不必要的机能，服从于命令
 MinimalistDescription,Instead of less kill cooling. some buttons are not available.,キルクールが少ない代わりに、一部のボタンが使えません。,杀戮兵器的击杀冷却有所减少。\n作为代价，杀戮兵器作为内鬼的一部分能力将无法使用。
 MinimalistKillCoolSetting,Minimalist Kill Cool Time,ミニマリストのキルクールタイムの設定,杀戮兵器的击杀冷却
-MinimalistVentSetting,Use Vent,ベントが使える,杀戮兵器可以使用管道
-MinimalistSaboSetting,Use Sabotage,サボタージュが使える,杀戮兵器可以造成破坏
-MinimalistReportSetting,Use DeadBody Report,通報ができる,杀戮兵器可以报告尸体
+MinimalistVentSetting,Use Vent,ベントが使える,可以使用管道
+MinimalistSaboSetting,Use Sabotage,サボタージュが使える,可以造成破坏
+MinimalistReportSetting,Use DeadBody Report,通報ができる,可以报告尸体
 HawkName,Hawk,ホーク,靶眼
 HawkTitle1,Let's figure out what we're doing.,行動を把握しよう,一切都逃不出你的眼睛
 HawkCoolTimeSetting,Cool Time,クールタイム,千里眼冷却
@@ -748,10 +748,10 @@ FalseChargesButtonTitle,False Charge,冤罪,栽赃
 NiceTeleporterName,Nice Teleporter,ナイステレポーター,正义的传送师
 NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてインポスターを暴こう,通过远距离传送揭开内鬼的真面目
 NiceTeleporterCooldownSetting,Teleport cooldown,テレポートのクールダウン,正义的传送师传送冷却
-CelebrityName,Celebrity,スター,社会名流
+CelebrityName,Celebrity,スター,大明星
 CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！,你的名字无人不知无人不晓！
-CelebrityDescription,You can tell from all of them that you are the star.,全員から自分がスターと分かります。,社会名流属于船员阵营。\n所有其他玩家都能确认你是社会名流。
-CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる,社会名流因他人技能导致职业变更不会影响大明星的效果
+CelebrityDescription,You can tell from all of them that you are the star.,全員から自分がスターと分かります。,大明星属于船员阵营。\n所有其他玩家都能确认你是大明星。
+CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる,因他人技能导致职业变更不会影响大明星的效果
 NocturnalityName,Nocturnality,夜行性,夜猫子
 NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている,昼伏夜出
 NocturnalityDescription,The view during power outage and normal view are opposite.,停電中と通常の視界が反対になっています。,夜猫子属于船员阵营。\n夜猫子的正常视野与熄灯时视野相反。
@@ -836,9 +836,9 @@ SamuraiKillCoolSetting,KillCoolTime,侍のキルクールダウン,武士击杀�
 SamuraiSwordCoolSetting,AttackCoolTime,必殺技のクールダウン,武士拔刀斩冷却
 SamuraiScopeSetting,SamuraiScope,必殺技が及ぶ範囲,武士拔刀斩范围
 SamuraiButtonName,UseSword!,必殺技!,拔刀斩！
-MayorFriendsName,MayorFriends,メイヤーフレンズ,狼族市长
+MayorFriendsName,MayorFriends,メイヤーフレンズ,狈族市长
 MayorFriendsTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう,在会议上滥用票权
-MayorFriendsDescription,It is judged as Crewmate.\nBut is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。メイヤーフレンズはジャッカルからは分かりません。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,狼族市长属于船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则狼族市长一同获胜。
+MayorFriendsDescription,It is judged as Crewmate.\nBut is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。メイヤーフレンズはジャッカルからは分かりません。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,狈族市长属于船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则狈族市长一同获胜。
 VentMakerName,VentMaker,ベントメーカー,管道工
 VentMakerTitle1,Let's make a vent!,ベントを作ろう！,挖掘管道
 GhostMechanicName,GhostMechanic,亡霊整備士,亡灵工程师
@@ -849,9 +849,9 @@ GhostMechanicCountText,GhostMechanic,残り{0}回,剩余{0}次
 
 EvilHackerName,EvilHacker,イビルハッカー,骇客
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船获取胜利
-CanMoveWhenUsesAdmin,Can be moved while using Admin,アドミン使用中に移動できる
+CanMoveWhenUsesAdmin,Can be moved while using Admin,アドミン使用中に移動できる,骇客可以在观看地图时移动
 CreateMadmateSetting,Can Make a Madmate,マッドメイトを作れる,骇客可以把一名玩家变成叛徒
-CreateMadmateButton,Drive Mad,狂わせる
+CreateMadmateButton,Drive Mad,狂わせる,洗脑
 
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人
@@ -913,7 +913,7 @@ ToiletFanTitle1,A little faster...,少しでも早く...,要……要喷射了�
 ToiletCooldownSetting,Toilet Cool Time,トイレクールタイム,腹泻者开门冷却
 ToiletName,DoorOpen,ドア開放,开门
 PolusrandomSpawn,RandomSpawn,ランダムスポーン,出生点随机
-NotImpostorExiled,Not taking the Impostor off the road,インポスターを道連れにしない,投出的不是内鬼
+NotImpostorExiled,Not taking the Impostor off the road,インポスターを道連れにしない,邪恶的猎人不会连带内鬼阵营玩家死亡
 NiceButtonerName,NiceButtoner,ナイスボタナー,正义的执钮人
 NiceButtonerTitle1,Let&apos;s a start meeting.,会議を開始しよう,召开会议
 EvilButtonerName,EvilButtoner,イビルボタナー,邪恶的执钮人
