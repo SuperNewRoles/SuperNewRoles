@@ -11,7 +11,11 @@ namespace SuperNewRoles.Roles.Neutral
         {
             foreach (var data in RoleClass.PartTimer.PlayerData)
             {
-                if (data.Value.IsDead())
+                if (!data.Key.IsRole(RoleId.PartTimer))
+                {
+                    RoleClass.PartTimer.Data.Remove(data.Key.PlayerId);
+                }
+                else if (data.Value.IsDead())
                 {
                     if (data.Key.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {

@@ -43,7 +43,7 @@ namespace SuperNewRoles.Roles.CrewMate
         {
             var tasks = new List<byte>();
 
-            var task = ShipStatus.Instance.NormalTasks.FirstOrDefault(x => x.TaskType == TaskTypes.MakeBurger);
+            var task = MapUtilities.CachedShipStatus.NormalTasks.FirstOrDefault(x => x.TaskType == TaskTypes.MakeBurger);
 
             for (int i = 0; i < count; i++)
             {

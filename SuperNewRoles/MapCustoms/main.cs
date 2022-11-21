@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using UnityEngine;
 using static PlayerControl;
+using static SuperNewRoles.MapCustoms.MapCustomHandler;
 
 namespace SuperNewRoles.MapCustoms
 {
@@ -42,7 +44,7 @@ namespace SuperNewRoles.MapCustoms
             //配電盤を移動させる
             MoveElecPad.MoveElecPads();
 
-            if (ShipStatus.Instance.FastRooms.ContainsKey(SystemTypes.GapRoom))
+            if (MapUtilities.CachedShipStatus.FastRooms.ContainsKey(SystemTypes.GapRoom))
             {
                 GameObject gapRoom = FastDestroyableSingleton<ShipStatus>.Instance.FastRooms[SystemTypes.GapRoom].gameObject;
                 // ぬ～んを消す
@@ -50,6 +52,21 @@ namespace SuperNewRoles.MapCustoms
                 {
                     gapRoom.GetComponentInChildren<MovingPlatformBehaviour>().gameObject.SetActive(false);
                     gapRoom.GetComponentsInChildren<PlatformConsole>().ForEach(x => x.gameObject.SetActive(false));
+                }
+            }
+
+            // 壁越しにタスクを無効化する
+            if (IsMapCustom(MapCustomId.Airship) && MapCustom.AntiTaskOverWall.GetBool())
+            {
+                // シャワー 写真
+                var array = new[] { "task_shower", "task_developphotos", "task_garbage1", "task_garbage2", "task_garbage3", "task_garbage4", "task_garbage5" };
+                foreach (var c in GameObject.FindObjectsOfType<Console>())
+                {
+                    if (c == null) continue;
+                    if (array.Any(x => c.name == x)) c.checkWalls = true;
+
+                    // 武器庫カチ メインカチ
+                    if (c.name == "DivertRecieve" && (c.Room == SystemTypes.Armory || c.Room == SystemTypes.MainHall)) c.checkWalls = true;
                 }
             }
         }

@@ -16,7 +16,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && p.IsPlayer())
+                        if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && !p.IsBot())
                         {
                             Teams.Add(p);
                         }
@@ -26,7 +26,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if ((p.IsImpostor() || p.IsRole(RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && p.IsPlayer())
+                        if ((p.IsImpostor() || p.IsRole(RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && !p.IsBot())
                         {
                             Teams.Add(p);
                         }

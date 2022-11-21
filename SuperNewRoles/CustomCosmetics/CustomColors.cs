@@ -55,7 +55,9 @@ namespace SuperNewRoles.CustomCosmetics
             Ashishreddishpurplecolor,
             Melon,
             Crasyublue,
-            Lightgreen
+            Lightgreen,
+            Azuki,
+            Snow
         }
 
 
@@ -110,6 +112,8 @@ namespace SuperNewRoles.CustomCosmetics
             LighterColorData.Add(ColorType.Melon, new Color32[] { new(0, 225, 129, byte.MaxValue), new(24, 255, 81, byte.MaxValue) });
             NoLighterColorData.Add(ColorType.Crasyublue, new Color32[] { new(2, 38, 106, byte.MaxValue), new(64, 0, 111, byte.MaxValue) });
             LighterColorData.Add(ColorType.Lightgreen, new Color32[] { new(226, 255, 5, byte.MaxValue), new(192, 201, 10, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Azuki, new Color32[] { new(150, 81, 77, byte.MaxValue), new(115, 40, 35, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Snow, new Color32[] { new(229, 249, 255, byte.MaxValue), new(135, 226, 255, byte.MaxValue) });
 
 
             List<CustomColor> colors = new();
