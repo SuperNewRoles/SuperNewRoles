@@ -13,6 +13,7 @@ using static MeetingHud;
 
 namespace SuperNewRoles.Patches
 {
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Awake))] class AwakeMeetingPatch { public static void Postfix() => RoleClass.IsMeeting = true; }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
     class VotingComplete
     {
@@ -28,7 +29,7 @@ namespace SuperNewRoles.Patches
     class CheckForEndVotingPatch
     {
         // Key:役職　Value:票数
-        public static Dictionary<RoleId, int> VoteCountDictionary = new() {
+        public static Dictionary<RoleId, int> VoteCountDictionary => new() {
             { RoleId.Mayor, RoleClass.Mayor.AddVote },
             { RoleId.MadMayor, RoleClass.MadMayor.AddVote },
             { RoleId.MayorFriends, RoleClass.MayorFriends.AddVote },
@@ -113,7 +114,7 @@ namespace SuperNewRoles.Patches
                         }
                         GameData.PlayerInfo target = GameData.Instance.GetPlayerById(voteFor);
                         GameData.PlayerInfo exileplayer = null;
-                        if (target != null && target.Object.PlayerId != RoleClass.Assassin.TriggerPlayer.PlayerId && target.Object.IsPlayer())
+                        if (target != null && target.Object.PlayerId != RoleClass.Assassin.TriggerPlayer.PlayerId && !target.Object.IsBot())
                         {
                             var outfit = target.DefaultOutfit;
                             exileplayer = target;
@@ -189,7 +190,7 @@ namespace SuperNewRoles.Patches
                         }
                         GameData.PlayerInfo target = GameData.Instance.GetPlayerById(voteFor);
                         GameData.PlayerInfo exileplayer = null;
-                        if (target != null && target.Object.PlayerId != RoleClass.Revolutionist.MeetingTrigger.PlayerId && target.Object.IsPlayer())
+                        if (target != null && target.Object.PlayerId != RoleClass.Revolutionist.MeetingTrigger.PlayerId && !target.Object.IsBot())
                         {
                             var outfit = target.DefaultOutfit;
                             exileplayer = target;
@@ -204,7 +205,7 @@ namespace SuperNewRoles.Patches
                 {
                     foreach (var ps in __instance.playerStates)
                     {
-                        if (!(ps.AmDead || ps.DidVote) && ModHelpers.PlayerById(ps.TargetPlayerId) != null && ModHelpers.PlayerById(ps.TargetPlayerId).IsPlayer())//死んでいないプレイヤーが投票していない
+                        if (!(ps.AmDead || ps.DidVote) && ModHelpers.PlayerById(ps.TargetPlayerId) != null && !ModHelpers.PlayerById(ps.TargetPlayerId).IsBot())//死んでいないプレイヤーが投票していない
                             return false;
                     }
                 }
@@ -317,7 +318,7 @@ namespace SuperNewRoles.Patches
                                     exiledPlayer = p.Data;
                                     foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                                     {
-                                        if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
+                                        if (!p2.IsBot() && !p2.Data.Disconnected && !p2.IsMod())
                                         {
                                             p.RpcSetNamePrivate("<size=300%>" + ModTranslation.GetString("BakeryExileText") + "\n" + FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
                                         }
@@ -331,7 +332,7 @@ namespace SuperNewRoles.Patches
                         {
                             foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                             {
-                                if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
+                                if (!p2.IsBot() && !p2.Data.Disconnected && !p2.IsMod())
                                 {
                                     exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.GetString("BakeryExileText") + "\n" + exiledPlayer.Object.GetDefaultName(), p2);
                                 }
@@ -427,7 +428,7 @@ namespace SuperNewRoles.Patches
                 PlayerVoteArea ps = __instance.playerStates[i];
                 if (ps == null) continue;
                 if (AmongUsClient.Instance.GameMode == GameModes.FreePlay && ps.TargetPlayerId != CachedPlayer.LocalPlayer.PlayerId) continue;
-                if (ps != null && ModHelpers.PlayerById(ps.TargetPlayerId) != null && ps.VotedFor != 252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != 254 && ModHelpers.PlayerById(ps.TargetPlayerId).IsAlive() && ModHelpers.PlayerById(ps.TargetPlayerId).IsPlayer())
+                if (ps != null && ModHelpers.PlayerById(ps.TargetPlayerId) != null && ps.VotedFor != 252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != 254 && ModHelpers.PlayerById(ps.TargetPlayerId).IsAlive() && !ModHelpers.PlayerById(ps.TargetPlayerId).IsBot())
                 {
                     int VoteNum = 1;
                     if (CheckForEndVotingPatch.VoteCountDictionary.ContainsKey(ModHelpers.PlayerById(ps.TargetPlayerId).GetRole())) VoteNum = CheckForEndVotingPatch.VoteCountDictionary[ModHelpers.PlayerById(ps.TargetPlayerId).GetRole()];
@@ -471,9 +472,6 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
     class MeetingHudStartPatch
     {
-        public static void Prefix()
-        {
-        }
         public static void Postfix(MeetingHud __instance)
         {
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
@@ -515,7 +513,7 @@ namespace SuperNewRoles.Patches
                     writer.EndRPC();
                     RPCProcedure.MeetingKill(CachedPlayer.LocalPlayer.PlayerId, (byte)i);
                     __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
-                }, RoleClass.Cleaner.GetButtonSprite(), (PlayerControl player) => player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId);
+                }, RoleClass.Werewolf.GetButtonSprite(), (PlayerControl player) => player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId);
             }
         }
         public static void CreateMeetingButton(MeetingHud __instance, string ButtonName, Action<int, MeetingHud> OnClick, Sprite sprite, Func<PlayerControl, bool> CheckCanButton)

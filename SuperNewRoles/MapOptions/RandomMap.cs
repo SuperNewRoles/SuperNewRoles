@@ -15,7 +15,6 @@ namespace SuperNewRoles.MapOptions
                 if (MapOption.ValidationMira) RandomMaps.Add(1);
                 if (MapOption.ValidationPolus) RandomMaps.Add(2);
                 if (MapOption.ValidationAirship) RandomMaps.Add(4);
-                if (MapOption.ValidationSubmerged && SubmergedCompatibility.Loaded) RandomMaps.Add(5);
                 if (RandomMaps.Count <= 0)
                 {
                     return;

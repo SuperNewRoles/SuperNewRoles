@@ -706,7 +706,7 @@ namespace SuperNewRoles.Modules
             if (option == null)
             {
                 RegulationData Regulation = RegulationData.Regulations.FirstOrDefault(regulation => regulation.optionBehaviour == __instance);
-                if (Regulation == null)
+                if (Regulation != null)
                 {
                     bool isReset = true;
                     bool IsFirst = true;

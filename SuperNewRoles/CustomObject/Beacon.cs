@@ -33,7 +33,7 @@ namespace SuperNewRoles.CustomObject
             Beacon beacon = AllBeacons.FirstOrDefault((x) => x?.vent != null && x.vent.Id == ventId);
             if (beacon == null) return;
 
-            HudManager.Instance.StartCoroutine(Effects.Lerp(0.6f, new Action<float>((p) =>
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.6f, new Action<float>((p) =>
             {
                 beacon.BeaconRenderer.sprite = GetBeaconAnimationSprite((int)(p * beaconAnimationSprites.Length));
                 beacon.BeaconRenderer.sprite = GetBeaconAnimationSprite(0);
@@ -47,7 +47,6 @@ namespace SuperNewRoles.CustomObject
         public Beacon(Vector2 p)
         {
             GameObject = new GameObject($"Beacon{Conjurer.Count}") { layer = 11 };
-            GameObject.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
             Vector3 position = new(p.x, p.y, p.y / 1000f + 0.01f);
             position += (Vector3)PlayerControl.LocalPlayer.Collider.offset; // Add collider offset that DoMove moves the player up at a valid position
                                                                             // Create the marker
