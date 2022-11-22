@@ -20,6 +20,7 @@ namespace SuperNewRoles.Achievement
             }
             data = data.Replace("\r", "");
             ObjectCreate(data);
+            AchievementManagerSNR.SelectedData = AchievementManagerSNR.AllAchievementData[0];
         }
         public static void ObjectCreate(string data)
         {

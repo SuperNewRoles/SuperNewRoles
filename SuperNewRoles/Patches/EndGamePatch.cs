@@ -203,124 +203,68 @@ namespace SuperNewRoles.Patches
             textRenderer.text = "";
             var text = "";
             var RoleColor = Color.white;
-            switch (AdditionalTempData.winCondition)
+            Color32 HaisonColor = new(163, 163, 162, byte.MaxValue);
+            Dictionary<WinCondition, (string, Color32)> WinConditionDictionary = new() {
+                {WinCondition.HAISON,("HAISON",HaisonColor)},
+                {WinCondition.LoversWin,("LoversName",RoleClass.Lovers.color)},
+                {WinCondition.GodWin,("GodName",RoleClass.God.color)},
+                {WinCondition.JesterWin,("JesterName",RoleClass.Jester.color)},
+                {WinCondition.JackalWin,("JackalName",RoleClass.Jackal.color)},
+                {WinCondition.QuarreledWin,("QuarreledName",RoleClass.Quarreled.color)},
+                {WinCondition.EgoistWin,("EgoistName",RoleClass.Egoist.color)},
+                {WinCondition.WorkpersonWin,("WorkpersonName",RoleClass.Workperson.color)},
+                {WinCondition.FalseChargesWin,("FalseChargesName",RoleClass.FalseCharges.color)},
+                {WinCondition.FoxWin,("FoxName",RoleClass.Fox.color)},
+                {WinCondition.DemonWin,("DemonName",RoleClass.Demon.color)},
+                {WinCondition.ArsonistWin,("ArsonistName",RoleClass.Arsonist.color)},
+                {WinCondition.VultureWin,("VultureName",RoleClass.Vulture.color)},
+                {WinCondition.TunaWin,("TunaName",RoleClass.Tuna.color)},
+                {WinCondition.NeetWin,("NeetName",RoleClass.Neet.color)},
+                {WinCondition.RevolutionistWin,("RevolutionistName",RoleClass.Revolutionist.color)},
+                {WinCondition.SpelunkerWin,("SpelunkerName",RoleClass.Spelunker.color)},
+                {WinCondition.SuicidalIdeationWin,(CustomOptionHolder.SuicidalIdeationWinText.GetBool() ? "SuicidalIdeationWinText" : "SuicidalIdeationName",RoleClass.SuicidalIdeation.color)},
+                {WinCondition.HitmanWin,("HitmanName",RoleClass.Hitman.color)},
+                {WinCondition.PhotographerWin,("PhotographerName",RoleClass.Photographer.color)},
+                {WinCondition.StefinderWin,("StefinderName",RoleClass.Stefinder.color)},
+                {WinCondition.PavlovsTeamWin,("PavlovsTeamWinText",RoleClass.Pavlovsdogs.color)}
+            };
+            if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
             {
-                case WinCondition.LoversWin:
-                    text = "LoversName";
-                    RoleColor = RoleClass.Lovers.color;
-                    break;
-                case WinCondition.GodWin:
-                    text = "GodName";
-                    RoleColor = RoleClass.God.color;
-                    break;
-                case WinCondition.HAISON:
-                    text = "HAISON";
-                    __instance.WinText.text = ModTranslation.GetString("HaisonName");
-                    Color32 HaisonColor = new(163, 163, 162, byte.MaxValue);
-                    __instance.WinText.color = HaisonColor;
-                    RoleColor = HaisonColor;
-                    break;
-                case WinCondition.JesterWin:
-                    text = "JesterName";
-                    RoleColor = RoleClass.Jester.color;
-                    break;
-                case WinCondition.JackalWin:
-                    text = "JackalName";
-                    RoleColor = RoleClass.Jackal.color;
-                    break;
-                case WinCondition.QuarreledWin:
-                    text = "QuarreledName";
-                    RoleColor = RoleClass.Quarreled.color;
-                    break;
-                case WinCondition.EgoistWin:
-                    text = "EgoistName";
-                    RoleColor = RoleClass.Egoist.color;
-                    break;
-                case WinCondition.WorkpersonWin:
-                    text = "WorkpersonName";
-                    RoleColor = RoleClass.Workperson.color;
-                    break;
-                case WinCondition.FalseChargesWin:
-                    text = "FalseChargesName";
-                    RoleColor = RoleClass.FalseCharges.color;
-                    break;
-                case WinCondition.FoxWin:
-                    text = "FoxName";
-                    RoleColor = RoleClass.Fox.color;
-                    break;
-                case WinCondition.DemonWin:
-                    text = "DemonName";
-                    RoleColor = RoleClass.Demon.color;
-                    break;
-                case WinCondition.ArsonistWin:
-                    text = "ArsonistName";
-                    RoleColor = RoleClass.Arsonist.color;
-                    break;
-                case WinCondition.VultureWin:
-                    text = "VultureName";
-                    RoleColor = RoleClass.Vulture.color;
-                    break;
-                case WinCondition.TunaWin:
-                    text = "TunaName";
-                    RoleColor = RoleClass.Tuna.color;
-                    break;
-                case WinCondition.NeetWin:
-                    text = "NeetName";
-                    RoleColor = RoleClass.Neet.color;
-                    break;
-                case WinCondition.RevolutionistWin:
-                    text = "RevolutionistName";
-                    RoleColor = RoleClass.Revolutionist.color;
-                    break;
-                case WinCondition.SpelunkerWin:
-                    text = "SpelunkerName";
-                    RoleColor = RoleClass.Spelunker.color;
-                    break;
-                case WinCondition.SuicidalIdeationWin:
-                    text = CustomOptionHolder.SuicidalIdeationWinText.GetBool() ? "SuicidalIdeationWinText" : "SuicidalIdeationName";
-                    RoleColor = RoleClass.SuicidalIdeation.color;
-                    break;
-                case WinCondition.HitmanWin:
-                    text = "HitmanName";
-                    RoleColor = RoleClass.Hitman.color;
-                    break;
-                case WinCondition.PhotographerWin:
-                    text = "PhotographerName";
-                    RoleColor = RoleClass.Photographer.color;
-                    break;
-                case WinCondition.StefinderWin:
-                    text = "StefinderName";
-                    RoleColor = RoleClass.Stefinder.color;
-                    break;
-                case WinCondition.PavlovsTeamWin:
-                    text = "PavlovsTeamWinText";
-                    RoleColor = RoleClass.Pavlovsdogs.color;
-                    break;
-                default:
-                    switch (AdditionalTempData.gameOverReason)
-                    {
-                        case GameOverReason.HumansByTask:
-                        case GameOverReason.HumansByVote:
-                        case GameOverReason.HumansDisconnect:
-                            text = "CrewmateName";
-                            RoleColor = Palette.White;
-                            break;
-                        case GameOverReason.ImpostorByKill:
-                        case GameOverReason.ImpostorBySabotage:
-                        case GameOverReason.ImpostorByVote:
-                        case GameOverReason.ImpostorDisconnect:
-                        //MadJester勝利をインポスター勝利とみなした
-                        case (GameOverReason)CustomGameOverReason.MadJesterWin:
-                            text = "ImpostorName";
-                            RoleColor = RoleClass.ImpostorRed;
-                            break;
-                        case (GameOverReason)CustomGameOverReason.TaskerWin:
-                            text = "TaskerWinText";
-                            RoleColor = RoleClass.ImpostorRed;
-                            break;
-                    }
-                    break;
+                text = WinConditionDictionary[AdditionalTempData.winCondition].Item1;
+                RoleColor = WinConditionDictionary[AdditionalTempData.winCondition].Item2;
             }
+            else
+            {
+                switch (AdditionalTempData.gameOverReason)
+                {
+                    case GameOverReason.HumansByTask:
+                    case GameOverReason.HumansByVote:
+                    case GameOverReason.HumansDisconnect:
+                        text = "CrewmateName";
+                        RoleColor = Palette.White;
+                        break;
+                    case GameOverReason.ImpostorByKill:
+                    case GameOverReason.ImpostorBySabotage:
+                    case GameOverReason.ImpostorByVote:
+                    case GameOverReason.ImpostorDisconnect:
+                    //MadJester勝利をインポスター勝利とみなす
+                    case (GameOverReason)CustomGameOverReason.MadJesterWin:
+                        text = "ImpostorName";
+                        RoleColor = RoleClass.ImpostorRed;
+                        break;
+                    case (GameOverReason)CustomGameOverReason.TaskerWin:
+                        text = "TaskerWinText";
+                        RoleColor = RoleClass.ImpostorRed;
+                        break;
+                }
+            }
+            if (AdditionalTempData.winCondition == WinCondition.HAISON)
+            {
+                __instance.WinText.text = ModTranslation.GetString("HaisonName");
+                __instance.WinText.color = HaisonColor;
+            }
+
+
             textRenderer.color = AdditionalTempData.winCondition == WinCondition.HAISON ? Color.clear : RoleColor;
             __instance.BackgroundBar.material.SetColor("_Color", RoleColor);
             var haison = false;
@@ -462,10 +406,7 @@ namespace SuperNewRoles.Patches
             {
                 (CompleteTask, TotalTask) = TaskCount.TaskDate(p);
             }
-            catch
-            {
-
-            }
+            catch { }
             try
             {
                 role = p.Object.GetRole();
@@ -520,7 +461,7 @@ namespace SuperNewRoles.Patches
             AdditionalTempData.Clear();
             foreach (var p in GameData.Instance.AllPlayers)
             {
-                if (p != null && p.Object != null && p.Object.IsPlayer())
+                if (p != null && p.Object != null && !p.Object.IsBot())
                 {
                     //var p = pc.Data;
                     var roles = IntroData.GetIntroData(p.Object.GetRole(), p.Object);
@@ -563,50 +504,49 @@ namespace SuperNewRoles.Patches
             // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
             List<PlayerControl> notWinners = new();
 
-            notWinners.AddRange(RoleClass.Jester.JesterPlayer);
-            notWinners.AddRange(RoleClass.Madmate.MadmatePlayer);
-            notWinners.AddRange(RoleClass.Jackal.JackalPlayer);
-            notWinners.AddRange(RoleClass.Jackal.SidekickPlayer);
-            notWinners.AddRange(RoleClass.JackalFriends.JackalFriendsPlayer);
-            notWinners.AddRange(RoleClass.God.GodPlayer);
-            notWinners.AddRange(RoleClass.Opportunist.OpportunistPlayer);
-            notWinners.AddRange(RoleClass.Truelover.trueloverPlayer);
-            notWinners.AddRange(RoleClass.Egoist.EgoistPlayer);
-            notWinners.AddRange(RoleClass.Workperson.WorkpersonPlayer);
-            notWinners.AddRange(RoleClass.Amnesiac.AmnesiacPlayer);
-            notWinners.AddRange(RoleClass.SideKiller.MadKillerPlayer);
-            notWinners.AddRange(RoleClass.MadMayor.MadMayorPlayer);
-            notWinners.AddRange(RoleClass.MadStuntMan.MadStuntManPlayer);
-            notWinners.AddRange(RoleClass.MadHawk.MadHawkPlayer);
-            notWinners.AddRange(RoleClass.MadJester.MadJesterPlayer);
-            notWinners.AddRange(RoleClass.MadSeer.MadSeerPlayer);
-            notWinners.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
-            notWinners.AddRange(RoleClass.Fox.FoxPlayer);
-            notWinners.AddRange(BotManager.AllBots);
-            notWinners.AddRange(RoleClass.MadMaker.MadMakerPlayer);
-            notWinners.AddRange(RoleClass.Demon.DemonPlayer);
-            notWinners.AddRange(RoleClass.SeerFriends.SeerFriendsPlayer);
-            notWinners.AddRange(RoleClass.JackalSeer.JackalSeerPlayer);
-            notWinners.AddRange(RoleClass.JackalSeer.SidekickSeerPlayer);
-            notWinners.AddRange(RoleClass.Arsonist.ArsonistPlayer);
-            notWinners.AddRange(RoleClass.Vulture.VulturePlayer);
-            notWinners.AddRange(RoleClass.MadCleaner.MadCleanerPlayer);
-            notWinners.AddRange(RoleClass.MayorFriends.MayorFriendsPlayer);
-            notWinners.AddRange(RoleClass.Tuna.TunaPlayer);
-            notWinners.AddRange(RoleClass.BlackCat.BlackCatPlayer);
-            notWinners.AddRange(RoleClass.Neet.NeetPlayer);
-            notWinners.AddRange(RoleClass.SatsumaAndImo.SatsumaAndImoPlayer);
-            notWinners.AddRange(RoleClass.Revolutionist.RevolutionistPlayer);
-            notWinners.AddRange(RoleClass.SuicidalIdeation.SuicidalIdeationPlayer);
-            notWinners.AddRange(RoleClass.Spelunker.SpelunkerPlayer);
-            notWinners.AddRange(RoleClass.Hitman.HitmanPlayer);
-
-            notWinners.AddRange(RoleClass.PartTimer.PartTimerPlayer);
-            notWinners.AddRange(RoleClass.Photographer.PhotographerPlayer);
-            notWinners.AddRange(RoleClass.Stefinder.StefinderPlayer);
-
-            notWinners.AddRange(RoleClass.Pavlovsdogs.PavlovsdogsPlayer);
-            notWinners.AddRange(RoleClass.Pavlovsowner.PavlovsownerPlayer);
+            notWinners.AddRanges(new[]{RoleClass.Jester.JesterPlayer,
+            RoleClass.Madmate.MadmatePlayer,
+            RoleClass.Jackal.JackalPlayer,
+            RoleClass.Jackal.SidekickPlayer,
+            RoleClass.JackalFriends.JackalFriendsPlayer,
+            RoleClass.God.GodPlayer,
+            RoleClass.Opportunist.OpportunistPlayer,
+            RoleClass.Truelover.trueloverPlayer,
+            RoleClass.Egoist.EgoistPlayer,
+            RoleClass.Workperson.WorkpersonPlayer,
+            RoleClass.Amnesiac.AmnesiacPlayer,
+            RoleClass.SideKiller.MadKillerPlayer,
+            RoleClass.MadMayor.MadMayorPlayer,
+            RoleClass.MadStuntMan.MadStuntManPlayer,
+            RoleClass.MadHawk.MadHawkPlayer,
+            RoleClass.MadJester.MadJesterPlayer,
+            RoleClass.MadSeer.MadSeerPlayer,
+            RoleClass.FalseCharges.FalseChargesPlayer,
+            RoleClass.Fox.FoxPlayer,
+            BotManager.AllBots,
+            RoleClass.MadMaker.MadMakerPlayer,
+            RoleClass.Demon.DemonPlayer,
+            RoleClass.SeerFriends.SeerFriendsPlayer,
+            RoleClass.JackalSeer.JackalSeerPlayer,
+            RoleClass.JackalSeer.SidekickSeerPlayer,
+            RoleClass.Arsonist.ArsonistPlayer,
+            RoleClass.Vulture.VulturePlayer,
+            RoleClass.MadCleaner.MadCleanerPlayer,
+            RoleClass.MayorFriends.MayorFriendsPlayer,
+            RoleClass.Tuna.TunaPlayer,
+            RoleClass.BlackCat.BlackCatPlayer,
+            RoleClass.Neet.NeetPlayer,
+            RoleClass.SatsumaAndImo.SatsumaAndImoPlayer,
+            RoleClass.Revolutionist.RevolutionistPlayer,
+            RoleClass.SuicidalIdeation.SuicidalIdeationPlayer,
+            RoleClass.Spelunker.SpelunkerPlayer,
+            RoleClass.Hitman.HitmanPlayer,
+            RoleClass.PartTimer.PartTimerPlayer,
+            RoleClass.Photographer.PhotographerPlayer,
+            RoleClass.Stefinder.StefinderPlayer,
+            RoleClass.Pavlovsdogs.PavlovsdogsPlayer,
+            RoleClass.Pavlovsowner.PavlovsownerPlayer
+            });
 
             notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
             notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
@@ -1098,13 +1038,7 @@ namespace SuperNewRoles.Patches
                 }
                 else
                 {
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                    {
-                        AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
-                        if (p.CurrentOutfit.ColorId == 1)
-                        {
-                        }
-                    }
+                    AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
                 }
             }
             if (HAISON)
@@ -1112,7 +1046,7 @@ namespace SuperNewRoles.Patches
                 TempData.winners = new();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (p.IsPlayer())
+                    if (!p.IsBot())
                     {
                         WinningPlayerData wpd = new(p.Data);
                         TempData.winners.Add(wpd);
@@ -1123,8 +1057,10 @@ namespace SuperNewRoles.Patches
             foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
             {
                 if (player.Object != null && player.Object.IsBot()) continue;
-                CustomPlayerData data = new(player, gameOverReason);
-                data.IsWin = TempData.winners.TrueForAll((Il2CppSystem.Predicate<WinningPlayerData>)(x => x.PlayerName == player.PlayerName));
+                CustomPlayerData data = new(player, gameOverReason)
+                {
+                    IsWin = TempData.winners.TrueForAll((Il2CppSystem.Predicate<WinningPlayerData>)(x => x.PlayerName == player.PlayerName))
+                };
                 PlayerData.Add(data);
             }
         }
@@ -1155,16 +1091,6 @@ namespace SuperNewRoles.Patches
             }
         }
     }
-    public class WrapUpClass
-    {
-        public static void SetCoolTime()
-        {
-            PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer), RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer));
-        }
-        public static void WrapUpPostfix(GameData.PlayerInfo exiled)
-        {
-        }
-    }
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.ReEnableGameplay))]
     class ExileControllerReEnableGameplayPatch
     {
@@ -1182,7 +1108,7 @@ namespace SuperNewRoles.Patches
             if (!GameData.Instance) return false;
             if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
             if (!RoleManagerSelectRolesPatch.IsSetRoleRPC) return false;
-            if (DebugMode.IsDebugMode()) return false;
+            if (ModHelpers.IsDebugMode()) return false;
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             if (RoleClass.Revolutionist.MeetingTrigger != null) return false;
             PlayerStatistics statistics = new(__instance);
@@ -1460,7 +1386,7 @@ namespace SuperNewRoles.Patches
                 for (int i = 0; i < GameData.Instance.PlayerCount; i++)
                 {
                     GameData.PlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
-                    if (!playerInfo.Disconnected && playerInfo.Object.IsPlayer())
+                    if (!playerInfo.Disconnected && !playerInfo.Object.IsBot())
                     {
                         if (playerInfo.Object.IsAlive())
                         {

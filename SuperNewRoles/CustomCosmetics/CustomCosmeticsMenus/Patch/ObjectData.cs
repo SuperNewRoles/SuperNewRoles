@@ -5,6 +5,7 @@ using BepInEx.Configuration;
 using SuperNewRoles.Achievement;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
 {
@@ -254,7 +255,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             if (AchievementGroup == null)
             {
                 AchievementGroup = new GameObject("AchievementGroup").transform;
-                AchievementGroup.parent = PlayerCustomizationMenu.Instance.transform;
+                AchievementGroup.parent = PlayerCustomizationMenu.Instance?.transform;
                 AchievementGroup.localPosition = new(-3.31f, 1.78f, -5);
             }
             if (AchievementButtonGroup == null)
@@ -263,11 +264,10 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 AchievementButtonGroup.parent = AchievementGroup;
                 AchievementButtonGroup.localPosition = new(0,0,0);
             }
-            if (AchievementGroup != null)
-                AchievementGroup.gameObject.SetActive(false);
-            if (AchievementName?.gameObject != null) AchievementName.gameObject.SetActive(false);
-            if (AchievementDescription?.gameObject != null) AchievementDescription.gameObject.SetActive(false);
-            if (AchievementTitle?.gameObject != null) AchievementTitle.gameObject.SetActive(false);
+            if (AchievementGroup != null) AchievementGroup.gameObject.SetActive(false);
+            if (AchievementName != null) AchievementName.gameObject.SetActive(false);
+            if (AchievementDescription != null) AchievementDescription.gameObject.SetActive(false);
+            if (AchievementTitle != null) AchievementTitle.gameObject.SetActive(false);
         }
         public static TextMeshPro AchievementName;
         public static TextMeshPro AchievementDescription;
@@ -294,10 +294,18 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             AchievementScroller.Inner = AchievementButtonGroup;
             AchievementScroller.transform.parent = AchievementGroup;
         }
+        public static void SetAchievementText(AchievementData data = null)
+        {
+            if (data == null) data = AchievementManagerSNR.SelectedData;
+            AchievementName.text = data.Name;
+            AchievementDescription.text = ModHelpers.InsertCr(data.Description, 13);
+            AchievementTitle.text = data.Title;
+        }
+        public static AudioClip ClickSound;
         public static void AchievementShow()
         {
             ResetShow();
-            AchievementGroup.gameObject.SetActive(true);
+            if (AchievementGroup != null) AchievementGroup.gameObject.SetActive(true);
             IsAchievement = true;
             if (AchievementScroller == null)
                 CreateAchievementScroller();
@@ -316,21 +324,53 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     Transform obj = GameObject.Instantiate(AchievementButtonAsset, AchievementButtonGroup).transform;
                     obj.FindChild("Name").GetComponent<TextMeshPro>().text = data.Name;
                     obj.FindChild("Title").GetComponent<TextMeshPro>().text = data.Title;
-                    obj.localPosition = new(0.65f, -1.15f + (-1.01f * data.Id), 0);
+                    obj.localPosition = new(0.65f, -1.15f + (-1.05f * data.Id), 0);
+                    if (data.Complete) obj.FindChild("CompleteMark").gameObject.SetActive(true);
                     PassiveButton btn = obj.gameObject.AddComponent<PassiveButton>();
-                    btn.OnMouseOut = new();
+                    static void SetupButton(AchievementData data, PassiveButton btn)
+                    {
+                        MeshRenderer render = btn.GetComponent<MeshRenderer>();
+                        btn.OnMouseOut = new();
+                        btn.OnMouseOut.AddListener((UnityAction)(() =>
+                        {
+                            SetAchievementText();
+                            render.material.color = Color.white;
+                        }));
+                        btn.OnMouseOver = new();
+                        btn.OnMouseOver.AddListener((UnityAction)(() =>
+                        {
+                            Logger.Info("ヨシ！");
+                            SetAchievementText(data);
+                            render.material.color = Color.yellow;
+                        }));
+                        btn.OnClick = new();
+                        btn.OnClick.AddListener((UnityAction)(() =>
+                        {
+                            if (data.Complete)
+                            {
+                                AchievementManagerSNR.SelectedData = data;
+                                SetAchievementText();
+                                if (ClickSound == null) ClickSound = PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup/ColorButton").GetComponent<PassiveButton>().ClickSound;
+                                SoundManager.Instance.PlaySound(ClickSound, false);
+                            }
+                        }));
+                        btn.Colliders = new Collider2D[] { btn.GetComponent<BoxCollider2D>() };
+                    }
+                    SetupButton(data, btn);
                     AchievementButtons.Add(obj.gameObject);
                 }
             }
-            if (AchievementName is null) AchievementName = GameObject.Instantiate(PlayerCustomizationMenu.Instance.itemName, PlayerCustomizationMenu.Instance.itemName.transform.parent);
-            if (AchievementDescription is null) AchievementDescription = GameObject.Instantiate(PlayerCustomizationMenu.Instance.itemName, PlayerCustomizationMenu.Instance.itemName.transform.parent);
-            if (AchievementTitle is null) AchievementTitle = GameObject.Instantiate(PlayerCustomizationMenu.Instance.itemName, PlayerCustomizationMenu.Instance.itemName.transform.parent);
+            Logger.Info($"{PlayerCustomizationMenu.Instance?.itemName?.transform?.parent == null} || {PlayerCustomizationMenu.Instance?.itemName?.transform == null} || {PlayerCustomizationMenu.Instance?.itemName == null} || {PlayerCustomizationMenu.Instance == null}");
+            if (AchievementName == null) AchievementName = GameObject.Instantiate(PlayerCustomizationMenu.Instance.itemName, PlayerCustomizationMenu.Instance.itemName.transform.parent);
+            if (AchievementDescription == null) AchievementDescription = GameObject.Instantiate(PlayerCustomizationMenu.Instance.itemName, PlayerCustomizationMenu.Instance.itemName.transform.parent);
+            if (AchievementTitle == null) AchievementTitle = GameObject.Instantiate(PlayerCustomizationMenu.Instance.itemName, PlayerCustomizationMenu.Instance.itemName.transform.parent);
             AchievementName.gameObject.SetActive(true);
             AchievementDescription.gameObject.SetActive(true);
             AchievementTitle.gameObject.SetActive(true);
             AchievementName.name = "AchievementName";
             AchievementDescription.name = "AchievementDescription";
             AchievementTitle.name = "AchievementTitle";
+            SetAchievementText();
             PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/SkinsTab/Skin Button/Tab Background").GetComponent<SpriteRenderer>().enabled = true;
         }
         static void Set(PassiveButton btn, int index)

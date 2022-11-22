@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -190,7 +191,7 @@ namespace SuperNewRoles
                 UnityEngine.Object.Destroy(item);
             }
         }
-        public static MurderAttemptResult CheckMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
+        public static MurderAttemptResult CheckMurderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
         {
             // Modified vanilla checks
             if (AmongUsClient.Instance.IsGameOver) return MurderAttemptResult.SuppressKill;
@@ -308,22 +309,22 @@ namespace SuperNewRoles
             var hashSet = new Il2CppSystem.Collections.Generic.HashSet<TaskTypes>();
 
             var commonTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(task);
+            foreach (var task in MapUtilities.CachedShipStatus.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(task);
 
             var shortTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(task);
+            foreach (var task in MapUtilities.CachedShipStatus.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(task);
 
             var longTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(task);
+            foreach (var task in MapUtilities.CachedShipStatus.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(task);
 
             int start = 0;
-            ShipStatus.Instance.AddTasksFromList(ref start, numCommon, tasks, hashSet, commonTasks);
+            MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numCommon, tasks, hashSet, commonTasks);
 
             start = 0;
-            ShipStatus.Instance.AddTasksFromList(ref start, numShort, tasks, hashSet, shortTasks);
+            MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numShort, tasks, hashSet, shortTasks);
 
             start = 0;
-            ShipStatus.Instance.AddTasksFromList(ref start, numLong, tasks, hashSet, longTasks);
+            MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numLong, tasks, hashSet, longTasks);
 
             return tasks.ToArray().ToList();
         }
@@ -359,7 +360,7 @@ namespace SuperNewRoles
         {
             if (obj == null)
             {
-                Logger.Error($"ActivateConsole Object was not found!","");
+                Logger.Error($"ActivateConsole Object was not found!", "");
                 return null;
             }
             obj.layer = LayerMask.NameToLayer("ShortObjects");
@@ -373,14 +374,14 @@ namespace SuperNewRoles
                 console.usableDistance = 0.7f;
                 console.TaskTypes = new TaskTypes[0];
                 console.ValidTasks = new UnhollowerBaseLib.Il2CppReferenceArray<TaskSet>(0);
-                var list = ShipStatus.Instance.AllConsoles.ToList();
+                var list = MapUtilities.CachedShipStatus.AllConsoles.ToList();
                 list.Add(console);
-                ShipStatus.Instance.AllConsoles = new(list.ToArray());
+                MapUtilities.CachedShipStatus.AllConsoles = new(list.ToArray());
             }
             if (console.Image == null)
             {
                 console.Image = obj.GetComponent<SpriteRenderer>();
-                console.Image.material = new Material(ShipStatus.Instance.AllConsoles[0].Image.material);
+                console.Image.material = new Material(MapUtilities.CachedShipStatus.AllConsoles[0].Image.material);
             }
             if (!collider)
             {
@@ -394,7 +395,7 @@ namespace SuperNewRoles
         {
             if (obj == null)
             {
-                Logger.Error($"ActivateConsole Object was not found!","");
+                Logger.Error($"ActivateConsole Object was not found!", "");
                 return null;
             }
             obj.layer = LayerMask.NameToLayer("ShortObjects");
@@ -408,14 +409,14 @@ namespace SuperNewRoles
                 console.usableDistance = 0.7f;
                 console.TaskTypes = new TaskTypes[0];
                 console.ValidTasks = new(0);
-                var list = ShipStatus.Instance.AllConsoles.ToList();
+                var list = MapUtilities.CachedShipStatus.AllConsoles.ToList();
                 list.Add(console);
-                ShipStatus.Instance.AllConsoles = new(list.ToArray());
+                MapUtilities.CachedShipStatus.AllConsoles = new(list.ToArray());
             }
             if (console.Image == null)
             {
                 console.Image = obj.GetComponent<SpriteRenderer>();
-                console.Image.material = new Material(ShipStatus.Instance.AllConsoles[0].Image.material);
+                console.Image.material = new Material(MapUtilities.CachedShipStatus.AllConsoles[0].Image.material);
             }
             if (!collider)
             {
@@ -425,14 +426,14 @@ namespace SuperNewRoles
             }
             return console;
         }
-        public static MurderAttemptResult CheckMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
+        public static MurderAttemptResult CheckMurderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
             // The local player checks for the validity of the kill and performs it afterwards (different to vanilla, where the host performs all the checks)
             // The kill attempt will be shared using a custom RPC, hence combining modded and unmodded versions is impossible
 
             tien = 0;
 
-            MurderAttemptResult murder = CheckMuderAttempt(killer, target, isMeetingStart);
+            MurderAttemptResult murder = CheckMurderAttempt(killer, target, isMeetingStart);
             if (murder == MurderAttemptResult.PerformKill)
             {
                 if (tien <= 0)
@@ -824,13 +825,20 @@ namespace SuperNewRoles
         /// <summary>keyCodesが押されているか</summary>
         public static bool GetManyKeyDown(KeyCode[] keyCodes) =>
             keyCodes.All(x => Input.GetKey(x)) && keyCodes.Any(x => Input.GetKeyDown(x));
+
+        public static void AddRanges(this List<PlayerControl> list, List<PlayerControl>[] collections)
+        {
+            foreach (var c in collections)
+                list.AddRange(c);
+        }
+
         public static string GetRPCNameFromByte(byte callId) =>
             Enum.GetName(typeof(RpcCalls), callId) != null ? // RpcCallsに当てはまる
                 Enum.GetName(typeof(RpcCalls), callId) :
             Enum.GetName(typeof(CustomRPC), callId) != null ? // CustomRPCに当てはまる
                 Enum.GetName(typeof(CustomRPC), callId) :
             $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}";
-
+        public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptionHolder.IsDebugMode.GetBool();
     }
     public static class CreateFlag
     {

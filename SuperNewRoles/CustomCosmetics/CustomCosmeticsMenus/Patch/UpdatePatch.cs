@@ -109,12 +109,11 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 ObjectData.AchievementName.transform.localScale = new(1.5f, 1.5f, 1.5f);
                 ObjectData.AchievementDescription.transform.localScale = new(1.25f,1.25f,1.25f);
                 ObjectData.AchievementTitle.transform.localScale = new(1.25f, 1.25f, 1.25f);
-                ObjectData.AchievementName.text = AchievementManagerSNR.AllAchievementData[1].Name;
-                ObjectData.AchievementDescription.text = ModHelpers.InsertCr(AchievementManagerSNR.AllAchievementData[1].Description,15);
-                ObjectData.AchievementTitle.text = AchievementManagerSNR.AllAchievementData[1].Title;
                 ObjectData.AchievementName.enableWordWrapping = false;
                 ObjectData.AchievementDescription.enableWordWrapping = false;
                 ObjectData.AchievementTitle.enableWordWrapping = false;
+                __instance.PreviewArea.transform.localPosition = new(999,0,0);
+                __instance.itemName.gameObject.SetActive(false);
             }
             else { 
                 __instance.PreviewArea.transform.localPosition = new Vector3(4.25f, 0f, -3f);

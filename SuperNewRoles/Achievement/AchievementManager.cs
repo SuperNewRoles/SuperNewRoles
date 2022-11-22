@@ -12,6 +12,7 @@ namespace SuperNewRoles.Achievement
         public static List<AchievementData> CompletedAchievement = new();
         public static List<AchievementData> WaitCompleteData = new();
         public static string currentData;
+        public static AchievementData SelectedData;
         public static AchievementData GetAchievementData(AchievementType type)
         {
             return AllAchievementData.FirstOrDefault(x => x.TypeData == type);

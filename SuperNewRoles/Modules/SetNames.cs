@@ -207,7 +207,7 @@ namespace SuperNewRoles.Modules
                     SetPlayerNameText(side, side.NameText().text + suffix);
                 }
             }
-            if (!PlayerControl.LocalPlayer.IsAlive() && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
+            if ((PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor())) && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
             {
                 foreach (List<PlayerControl> ps in RoleClass.Quarreled.QuarreledPlayer)
                 {
@@ -238,7 +238,7 @@ namespace SuperNewRoles.Modules
                 if (!side.Data.Disconnected)
                     SetPlayerNameText(side, $"{side.NameText().text}{suffix}");
             }
-            else if ((PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
+            else if (((PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor())) || PlayerControl.LocalPlayer.IsRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
             {
                 foreach (List<PlayerControl> ps in RoleClass.Lovers.LoversPlayer)
                 {
@@ -252,7 +252,7 @@ namespace SuperNewRoles.Modules
         }
         public static void DemonSet()
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Demon) || PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Demon) || (PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor())) || PlayerControl.LocalPlayer.IsRole(RoleId.God))
             {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
@@ -266,7 +266,7 @@ namespace SuperNewRoles.Modules
         }
         public static void ArsonistSet()
         {
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist) || PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist) || (PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor())) || PlayerControl.LocalPlayer.IsRole(RoleId.God))
             {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
@@ -297,7 +297,7 @@ namespace SuperNewRoles.Modules
         }
         public static void SatsumaimoSet()
         {
-            if (PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+            if ((PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor())) || PlayerControl.LocalPlayer.IsRole(RoleId.God))
             {
                 foreach (PlayerControl player in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
                 {
@@ -332,7 +332,7 @@ namespace SuperNewRoles.Modules
         {
             SetNamesClass.ResetNameTagsAndColors();
             RoleId LocalRole = PlayerControl.LocalPlayer.GetRole();
-            if (PlayerControl.LocalPlayer.IsDead() && LocalRole != RoleId.NiceRedRidingHood)
+            if (PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor()) && LocalRole != RoleId.NiceRedRidingHood)
             {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {

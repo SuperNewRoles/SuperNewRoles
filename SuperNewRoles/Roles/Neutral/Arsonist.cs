@@ -118,6 +118,7 @@ namespace SuperNewRoles.Roles
                     HudManagerStartPatch.ArsonistDouseButton.actionButton.cooldownTimerText.color = Color.white;
                     RoleClass.Arsonist.DouseTarget.ArsonistDouse();
                     SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗った:" + RoleClass.Arsonist.DouseTarget);
+                    RoleClass.Arsonist.DouseTarget = null;
                 }
             }
         }
