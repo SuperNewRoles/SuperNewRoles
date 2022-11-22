@@ -80,6 +80,8 @@ colorAshishreddishpurplecolor,Ashish reddish purple color,灰みの赤紫系の�
 colorMelon,Melon,メロン,瓜绿
 colorCrasyublue,Crasyu Blue,クラッシュブルー,深海蓝
 colorLightgreen,Light Green,ライトグリーン,亮绿
+colorAzuki,Azuki,小豆,赤小豆
+colorSnow,Snow,雪,雪
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -189,6 +191,13 @@ DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩�
 WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数
 IsSNROnlySearch,SNR Room Filter,SNRルームフィルター,筛选SNR房间
+RestrictDevicesOption,Restrict Devices Option,機器の時間制限
+RestrictAdmin,Restrict Admin,アドミンの時間制限
+RestrictVital,Restrict Vital,バイタルの時間制限
+RestrictCamera,Restrict Camera,カメラの時間制限
+CanGhostSeeRole,,死亡者が全員の役職を確認できる
+OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる
+AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置
@@ -385,6 +394,7 @@ SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可
 SheriffIsKillLoversSetting,Can kill lovers,ラバーズをキルできる,可以击杀恋人
 SheriffIsKillMadRoleSetting,Can kill mad roles,マッド系をキルできる,可以击杀叛徒系职业
 SheriffIsKillImpostorSetting,Can kill impostors,インポスターをキルできる,可以击杀内鬼
+SheriffAlwaysKills,Killing a target even when it is misfiring.,誤射した時も対象を殺す
 SheriffIsKillFriendsRoleSetting,Can kill jackal friend roles,ジャッカルフレンズ系をキルできる,可以击杀狈系职业
 SheriffIsKillQuarreledSetting,Can kill quarreleds,クラードをキルできる,可以击杀福音天使
 SheriffYes,Yes,できる,是
@@ -403,6 +413,10 @@ MeetingSheriffYes,Yes,できる,是
 MeetingSheriffNo,No,できない,否
 MeetingSheriffMaxKillCountSetting,Maximum number of Meeting Sheriff kills,ミーティングシェリフの最大キル数,执法官最大可击杀次数
 MeetingSheriffMeetingmultipleKillSetting,Can you get multiple kills in one meeting?,一会議中に複数キルできるか,执法官可以在一次会议中多次击杀
+MeetingSheriffkillChat1,{0} has sheriffkilled {1}!,{0} は {1} をシェリフキルした！
+MeetingSheriffkillChat2,{0} was killed，but it was a misfire! {1} killed himself in remorse!,{0} をキルしたが誤射だった! {1} は自責の念で自害した!
+MeetingSheriffkillChat3,{0} was a misfire!,{0} は誤爆した！
+MeetingSheriffkillChat4,{0} succeeded!,{0} は成功した！
 JackalName,Jackal,ジャッカル,豺狼
 JackalTitle1,Try to kill Impostors and Crewmates,インポスターとクルーメイトをキルしよう,杀死所有船员和内鬼
 JackalTitle2,Kill the other team to win!,他陣営をキルして勝利しよう,把其他人全部杀死获得胜利
@@ -832,10 +846,13 @@ GhostMechanicTitle1,Let's get rid of the loose ends that we couldn't fix the mac
 GhostMechanicRepairLimitSetting,Number of times sabotage can be repaired,サボタージュ修復可能回数,亡灵工程师可修复破坏次数
 GhostMechanicButtonName,Repair,修復,修复
 GhostMechanicCountText,GhostMechanic,残り{0}回,剩余{0}次
+
 EvilHackerName,EvilHacker,イビルハッカー,骇客
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう,黑入飞船获取胜利
+CanMoveWhenUsesAdmin,Can be moved while using Admin,アドミン使用中に移動できる
 CreateMadmateSetting,Can Make a Madmate,マッドメイトを作れる,骇客可以把一名玩家变成叛徒
-CreateMadmateButton,Drive Mad,狂わせる,洗脑
+CreateMadmateButton,Drive Mad,狂わせる
+
 PositionSwapperName,Position Swapper,ポジションスワッパー,念动使
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ,移形换影迷惑他人
 SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数,念动使最大换位次数

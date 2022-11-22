@@ -27,7 +27,7 @@ namespace SuperNewRoles.MapCustoms
         public static CustomOption RecordsAdminDestroy;
         public static CustomOption MoveElecPad;
         public static CustomOption AddWireTask;
-
+        public static CustomOption AntiTaskOverWall;
 
         public static void CreateOption()
         {
@@ -55,6 +55,7 @@ namespace SuperNewRoles.MapCustoms
             RecordsAdminDestroy = CustomOption.Create(612, false, CustomOptionType.Generic, "RecordsAdminDestroySetting", false, AirshipSetting);
             MoveElecPad = CustomOption.Create(645, false, CustomOptionType.Generic, "MoveElecPadSetting", false, AirshipSetting);
             AddWireTask = CustomOption.Create(646, false, CustomOptionType.Generic, "AddWireTaskSetting", false, AirshipSetting);
+            AntiTaskOverWall = CustomOption.Create(1106, false, CustomOptionType.Generic, "AntiTaskOverWallSetting", false, AirshipSetting);
         }
     }
 }

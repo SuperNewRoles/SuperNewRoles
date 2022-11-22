@@ -1900,10 +1900,10 @@ namespace SuperNewRoles.Roles
                 NoTaskSheriffPlayer = new();
                 IsCreateSheriff = false;
                 CoolTime = CustomOptionHolder.ChiefSheriffCoolTime.GetFloat();
-                IsNeutralKill = CustomOptionHolder.ChiefIsNeutralKill.GetBool();
-                IsLoversKill = CustomOptionHolder.ChiefIsLoversKill.GetBool();
-                IsMadRoleKill = CustomOptionHolder.ChiefIsMadRoleKill.GetBool();
-                KillLimit = CustomOptionHolder.ChiefKillLimit.GetInt();
+                IsNeutralKill = CustomOptionHolder.ChiefSheriffCanKillNeutral.GetBool();
+                IsLoversKill = CustomOptionHolder.ChiefSheriffCanKillLovers.GetBool();
+                IsMadRoleKill = CustomOptionHolder.ChiefSheriffCanKillMadRole.GetBool();
+                KillLimit = CustomOptionHolder.ChiefSheriffKillLimit.GetInt();
             }
         }
         public static class Cleaner
