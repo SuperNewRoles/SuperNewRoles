@@ -16,7 +16,7 @@ namespace SuperNewRoles.Modules
             public static void Postfix()
             {
                 VentData.VentMap = new();
-                foreach (Vent vent in ShipStatus.Instance.AllVents)
+                foreach (Vent vent in MapUtilities.CachedShipStatus.AllVents)
                 {
                     VentData.VentMap.Add(vent.gameObject.name, new(vent));
                 }

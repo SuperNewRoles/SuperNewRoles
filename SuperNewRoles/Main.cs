@@ -13,7 +13,6 @@ using UnityEngine;
 namespace SuperNewRoles
 {
     [BepInAutoPlugin("jp.ykundesu.supernewroles", "SuperNewRoles")]
-    [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInIncompatibility("com.emptybottle.townofhost")]
     [BepInIncompatibility("me.eisbison.theotherroles")]
     [BepInIncompatibility("me.yukieiji.extremeroles")]
@@ -84,7 +83,7 @@ namespace SuperNewRoles
             SuperNewRoles.Logger.Info(ThisAssembly.Git.Tag, "Tag");
             SuperNewRoles.Logger.Info(VersionString, "VersionString");
             SuperNewRoles.Logger.Info(Version, nameof(Version));
-            SuperNewRoles.Logger.Info(Application.version, "AmongUsVersion"); // アモングアス本体のバージョン
+            SuperNewRoles.Logger.Info($"{Application.version}({Constants.GetPurchasingPlatformType()})", "AmongUsVersion"); // アモングアス本体のバージョン(プレイしているプラットフォーム)
 
             Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
 
@@ -92,7 +91,6 @@ namespace SuperNewRoles
 
             StringDATA = new Dictionary<string, Dictionary<int, string>>();
             Harmony.PatchAll();
-            SubmergedCompatibility.Initialize();
 
             assembly = Assembly.GetExecutingAssembly();
             string[] resourceNames = assembly.GetManifestResourceNames();

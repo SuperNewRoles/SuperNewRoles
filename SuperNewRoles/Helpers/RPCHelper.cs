@@ -61,7 +61,7 @@ namespace SuperNewRoles.Helpers
 
         public static void RpcSetDoorway(byte id, bool Open)
         {
-            ShipStatus.Instance.AllDoors.FirstOrDefault((a) => a.Id == id).SetDoorway(Open);
+            MapUtilities.CachedShipStatus.AllDoors.FirstOrDefault((a) => a.Id == id).SetDoorway(Open);
         }
         public static void RpcSetDoorway(this PlainDoor door, bool Open)
         {
@@ -228,7 +228,7 @@ namespace SuperNewRoles.Helpers
             foreach (var i in new[] { 79, 80, 81, 82 })
             {
                 Logger.Info($"amount:{i}", "RpcOpenToilet");
-                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, i);
+                MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Doors, i);
             }
         }
     }

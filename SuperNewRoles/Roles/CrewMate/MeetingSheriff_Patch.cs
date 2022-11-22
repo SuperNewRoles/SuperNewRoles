@@ -121,7 +121,7 @@ namespace SuperNewRoles.Roles
             RoleClass.MeetingSheriff.KillMaxCount--;
             if (RoleClass.MeetingSheriff.KillMaxCount <= 0 || !RoleClass.MeetingSheriff.OneMeetingMultiKill || misfire)
             {
-                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
             }
 
         }
@@ -221,7 +221,7 @@ namespace SuperNewRoles.Roles
                 List<PlayerVoteArea> deadareas = new();
                 foreach (PlayerVoteArea area in __instance.playerStates)
                 {
-                    if (ModHelpers.PlayerById(area.TargetPlayerId).IsPlayer())
+                    if (!ModHelpers.PlayerById(area.TargetPlayerId).IsBot())
                     {
                         if (ModHelpers.PlayerById(area.TargetPlayerId).IsAlive())
                             newareas.Add(area);

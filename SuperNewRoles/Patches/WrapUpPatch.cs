@@ -109,6 +109,7 @@ namespace SuperNewRoles.Patches
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Roles.Crewmate.Painter.WrapUp();
             Roles.Neutral.Photographer.WrapUp();
             Roles.Impostor.Cracker.WrapUp();
+            RoleClass.IsMeeting = false;
             if (exiled == null) return;
             SoothSayer_Patch.WrapUp(exiled.Object);
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix();

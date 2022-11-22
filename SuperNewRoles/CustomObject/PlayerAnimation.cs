@@ -180,6 +180,7 @@ namespace SuperNewRoles.CustomObject
                         }
                         Init(GetSprites("SuperNewRoles.Resources.harisen.tame_", 4), false, 12, new(() =>
                         {
+                            Playing = true;
                             SluggerChargeCreateAnimation();
                         }), new(() =>
                         {

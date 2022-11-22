@@ -210,7 +210,7 @@ namespace SuperNewRoles.Patches
         {
             public static void Postfix(KeyboardJoystick __instance)
             {
-                if (HudManager.Instance.Chat.IsOpen && overlayShown)
+                if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && overlayShown)
                     HideInfoOverlay();
                 if (Input.GetKeyDown(KeyCode.H) && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                 {
