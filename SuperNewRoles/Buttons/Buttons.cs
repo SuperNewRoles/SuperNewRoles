@@ -1909,6 +1909,7 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.CanMove)
                     {
                         Samurai.SamuraiKill();
+                        RoleClass.Samurai.Sword = true;
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Samurai && ModeHandler.IsMode(ModeId.Default) && !RoleClass.Samurai.Sword; },
