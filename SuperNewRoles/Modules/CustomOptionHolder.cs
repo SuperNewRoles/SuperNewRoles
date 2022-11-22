@@ -140,6 +140,7 @@ namespace SuperNewRoles.Modules
         public static CustomOption JackalIsImpostorLight;
         public static CustomOption JackalCreateFriend;
         public static CustomOption JackalCreateSidekick;
+        public static CustomOption JackalSKCooldown;
         public static CustomOption JackalNewJackalCreateSidekick;
 
         public static CustomRoleOption TeleporterOption;
@@ -612,6 +613,7 @@ namespace SuperNewRoles.Modules
         public static CustomOption JackalSeerUseSabo;
         public static CustomOption JackalSeerIsImpostorLight;
         public static CustomOption JackalSeerCreateSidekick;
+        public static CustomOption JackalSeerSKCooldown;
         public static CustomOption JackalSeerNewJackalCreateSidekick;
 
         public static CustomRoleOption AssassinAndMarineOption;
@@ -1104,6 +1106,7 @@ namespace SuperNewRoles.Modules
             JackalIsImpostorLight = Create(63, true, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, JackalOption);
             JackalCreateFriend = Create(666, true, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, JackalOption);
             JackalCreateSidekick = Create(64, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalOption);
+            JackalSKCooldown = Create(1108, true, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalCreateSidekick, format: "unitSeconds");
             JackalNewJackalCreateSidekick = Create(65, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalCreateSidekick);
 
             TeleporterOption = SetupCustomRoleOption(66, false, RoleId.Teleporter);
@@ -1503,6 +1506,7 @@ namespace SuperNewRoles.Modules
             JackalSeerUseSabo = Create(382, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalSeerOption);
             JackalSeerIsImpostorLight = Create(383, false, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, JackalSeerOption);
             JackalSeerCreateSidekick = Create(384, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalSeerOption);
+            JackalSeerSKCooldown = Create(1109, true, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalSeerCreateSidekick, format: "unitSeconds");
             JackalSeerNewJackalCreateSidekick = Create(385, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalSeerCreateSidekick);
 
             AssassinAndMarineOption = new(386, true, CustomOptionType.Impostor, "AssassinAndMarineName", Color.white, 1);
