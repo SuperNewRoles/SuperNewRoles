@@ -16,8 +16,8 @@ namespace SuperNewRoles.Roles
         {
             HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.JackalSeer.KillCooldown;
             HudManagerStartPatch.JackalKillButton.Timer = RoleClass.JackalSeer.KillCooldown;
-            HudManagerStartPatch.JackalSeerSidekickButton.MaxTimer = RoleClass.JackalSeer.KillCooldown;
-            HudManagerStartPatch.JackalSeerSidekickButton.Timer = RoleClass.JackalSeer.KillCooldown;
+            HudManagerStartPatch.JackalSeerSidekickButton.MaxTimer = CustomOptionHolder.JackalSeerSKCooldown.GetFloat();
+            HudManagerStartPatch.JackalSeerSidekickButton.Timer = CustomOptionHolder.JackalSeerSKCooldown.GetFloat();
         }
         public static void EndMeeting() => EndMeetingResetCooldown();
         public static void SetPlayerOutline(PlayerControl target, Color color)
