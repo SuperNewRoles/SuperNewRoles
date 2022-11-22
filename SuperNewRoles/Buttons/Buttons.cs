@@ -1236,14 +1236,20 @@ namespace SuperNewRoles.Buttons
                             {
                                 misfire = !Sheriff.IsChiefSheriffKill(target);
                             }
+                            var alwaysKill = !Sheriff.IsSheriffKill(target) && CustomOptionHolder.SheriffAlwaysKills.GetBool();
+                            if (RoleClass.Chief.SheriffPlayer.Contains(localId))
+                            {
+                                alwaysKill = !Sheriff.IsChiefSheriffKill(target) && CustomOptionHolder.ChiefSheriffAlwaysKills.GetBool();
+                            }
                             var targetId = target.PlayerId;
 
-                            RPCProcedure.SheriffKill(localId, targetId, misfire);
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1);
-                            writer.Write(localId);
-                            writer.Write(targetId);
-                            writer.Write(misfire);
-                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            RPCProcedure.SheriffKill(localId, targetId, misfire, alwaysKill);
+                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1);
+                            killWriter.Write(localId);
+                            killWriter.Write(targetId);
+                            killWriter.Write(misfire);
+                            killWriter.Write(alwaysKill);
+                            AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                             FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : target, misfire ? FinalStatus.SheriffMisFire : (target.IsRole(RoleId.HauntedWolf) ? FinalStatus.SheriffHauntedWolfKill : FinalStatus.SheriffKill));
                             Sheriff.ResetKillCooldown();
                             RoleClass.Sheriff.KillMaxCount--;
