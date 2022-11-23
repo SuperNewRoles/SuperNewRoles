@@ -13,10 +13,15 @@ namespace SuperNewRoles.Roles
         {
             HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.Jackal.KillCooldown;
             HudManagerStartPatch.JackalKillButton.Timer = RoleClass.Jackal.KillCooldown;
-            HudManagerStartPatch.JackalSidekickButton.MaxTimer = RoleClass.Jackal.KillCooldown;
-            HudManagerStartPatch.JackalSidekickButton.Timer = RoleClass.Jackal.KillCooldown;
         }
-        public static void EndMeeting() => ResetCooldown();
+        public static void EndMeetingResetCooldown()
+        {
+            HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.Jackal.KillCooldown;
+            HudManagerStartPatch.JackalKillButton.Timer = RoleClass.Jackal.KillCooldown;
+            HudManagerStartPatch.JackalSidekickButton.MaxTimer = CustomOptionHolder.JackalSKCooldown.GetFloat();
+            HudManagerStartPatch.JackalSidekickButton.Timer = CustomOptionHolder.JackalSKCooldown.GetFloat();
+        }
+        public static void EndMeeting() => EndMeetingResetCooldown();
         public static void SetPlayerOutline(PlayerControl target, Color color)
         {
             if (target == null) return;

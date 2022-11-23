@@ -77,7 +77,7 @@ namespace SuperNewRoles.MapOptions
         {
             public static void Postfix()
             {
-                if (IsAdminRestrict && !RoleClass.EvilHacker.IsMyAdmin) AdminStartTime = DateTime.UtcNow;
+                if (IsAdminRestrict && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.EvilHacker.IsMyAdmin) AdminStartTime = DateTime.UtcNow;
             }
         }
         [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.Update))]
@@ -160,6 +160,11 @@ namespace SuperNewRoles.MapOptions
             {
                 if (RoleClass.EvilHacker.IsMyAdmin) return;
                 if (!IsAdminRestrict) return;
+                if (CachedPlayer.LocalPlayer.IsDead())
+                {
+                    if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+                    return;
+                }
                 if (AdminTimer <= 0)
                 {
                     MapBehaviour.Instance.Close();
@@ -208,6 +213,7 @@ namespace SuperNewRoles.MapOptions
                 RoleClass.EvilHacker.IsMyAdmin = false;
                 if (!IsAdminRestrict) return;
                 if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+                if (CachedPlayer.LocalPlayer.IsDead()) return;
                 if (AdminTimer <= 0) return;
                 if (DeviceUsePlayer[DeviceType.Admin] != null && DeviceUsePlayer[DeviceType.Admin].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
@@ -226,7 +232,7 @@ namespace SuperNewRoles.MapOptions
         {
             static void Postfix(VitalsMinigame __instance)
             {
-                if (IsVitalRestrict && RoleClass.Doctor.Vital == null) VitalStartTime = DateTime.UtcNow;
+                if (IsVitalRestrict && CachedPlayer.LocalPlayer.IsAlive() && RoleClass.Doctor.Vital == null) VitalStartTime = DateTime.UtcNow;
                 Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckVital);
             }
         }
@@ -235,7 +241,7 @@ namespace SuperNewRoles.MapOptions
         {
             static void Postfix(Minigame __instance)
             {
-                if (__instance is VitalsMinigame && IsVitalRestrict && RoleClass.Doctor.Vital == null)
+                if (__instance is VitalsMinigame && IsVitalRestrict && CachedPlayer.LocalPlayer.IsAlive() && RoleClass.Doctor.Vital == null)
                 {
                     if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
                     if (VitalTimer <= 0) return;
@@ -262,6 +268,11 @@ namespace SuperNewRoles.MapOptions
                     __instance.Close();
                 }
                 if (!IsVitalRestrict || RoleClass.Doctor.Vital != null) return;
+                if (CachedPlayer.LocalPlayer.IsDead())
+                {
+                    if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+                    return;
+                }
                 if (VitalTimer <= 0)
                 {
                     __instance.Close();
@@ -316,7 +327,7 @@ namespace SuperNewRoles.MapOptions
         static bool IsCameraCloseNow;
         static void CameraClose()
         {
-            if (!IsCameraRestrict) return;
+            if (!IsCameraRestrict || CachedPlayer.LocalPlayer.IsDead()) return;
             IsCameraCloseNow = true;
             if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
             if (CameraTimer <= 0) return;
@@ -334,6 +345,11 @@ namespace SuperNewRoles.MapOptions
         static void CameraUpdate(Minigame __instance)
         {
             if (!IsCameraRestrict) return;
+            if (CachedPlayer.LocalPlayer.IsDead())
+            {
+                if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+                return;
+            }
             if (IsCameraCloseNow) return;
             if (CameraTimer <= 0)
             {

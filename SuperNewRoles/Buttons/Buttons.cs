@@ -958,7 +958,6 @@ namespace SuperNewRoles.Buttons
                             RPCProcedure.CreateSidekick(target.PlayerId, isFakeSidekick);
                         }
                         RoleClass.Jackal.CanCreateSidekick = false;
-                        Jackal.ResetCooldown();
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick && CustomOptionHolder.JackalCreateSidekick.GetBool(); },
@@ -996,7 +995,6 @@ namespace SuperNewRoles.Buttons
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                         RPCProcedure.CreateSidekickSeer(target.PlayerId, IsFakeSidekickSeer);
                         RoleClass.JackalSeer.CanCreateSidekick = false;
-                        JackalSeer.ResetCooldown();
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.CanCreateSidekick && CustomOptionHolder.JackalSeerCreateSidekick.GetBool(); },
@@ -1909,6 +1907,7 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.CanMove)
                     {
                         Samurai.SamuraiKill();
+                        RoleClass.Samurai.Sword = true;
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Samurai && ModeHandler.IsMode(ModeId.Default) && !RoleClass.Samurai.Sword; },
