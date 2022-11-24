@@ -154,7 +154,7 @@ namespace SuperNewRoles.Patches
                                 {
                                     if (SelfBomber.GetIsBomb(__instance, p, CustomOptionHolder.SamuraiScope.GetFloat()))
                                     {
-                                        __instance.RpcSetFinalStatus(FinalStatus.SamuraiKill);
+                                        p.RpcSetFinalStatus(FinalStatus.SamuraiKill);
                                         __instance.RpcMurderPlayerCheck(p);
                                     }
                                 }

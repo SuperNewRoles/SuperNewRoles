@@ -33,7 +33,7 @@ namespace SuperNewRoles.Patches
                 {
                     RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
                     RPCProcedure.SetHaison();
-                    Logger.Info("===================== Haison =====================", "End Game");
+                    Logger.Info("===================== 廃村 ======================", "End Game");
                     if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
                         EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorDisconnect, false);
