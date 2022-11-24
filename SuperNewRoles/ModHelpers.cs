@@ -829,10 +829,7 @@ namespace SuperNewRoles
         /// <remarks>半角の判定を正規表現で行います。半角カタカナは「ｦ」～半濁点を半角とみなします</remarks>
         /// <param name="target">対象の文字列</param>
         /// <returns>文字列が半角の場合はtrue、それ以外はfalse</returns>
-        public static bool IsOneByteOnlyString(string target)
-        {
-            return new Regex("^[\u0020-\u007E\uFF66-\uFF9F]+$").IsMatch(target);
-        }
+        public static bool IsOneByteOnlyString(string target) => new Regex("^[\u0020-\u007E\uFF66-\uFF9F]+$").IsMatch(target);
     }
     public static class CreateFlag
     {
