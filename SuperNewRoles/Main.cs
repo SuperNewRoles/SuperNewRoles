@@ -76,6 +76,7 @@ namespace SuperNewRoles
 
             // Old Delete End
 
+            SuperNewRoles.Logger.Info(DateTime.Now.ToString("U"), "DateTime Now"); // Thursday, November 24, 2022 18:16:00
             SuperNewRoles.Logger.Info(ThisAssembly.Git.Branch, "Branch");
             SuperNewRoles.Logger.Info(ThisAssembly.Git.Commit, "Commit");
             SuperNewRoles.Logger.Info(ThisAssembly.Git.Commits, "Commits");
