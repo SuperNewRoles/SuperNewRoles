@@ -752,6 +752,7 @@ CelebrityName,Celebrity,スター,大明星
 CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！,你的名字无人不知无人不晓！
 CelebrityDescription,You can tell from all of them that you are the star.,全員から自分がスターと分かります。,大明星属于船员阵营。\n所有其他玩家都能确认你是大明星。
 CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる,因他人技能导致职业变更不会影响大明星的效果
+CelebrityIsTaskPhaseFlashSetting,Does the screen light up when the Celebrity survives?,スターが生存時画面が光る
 NocturnalityName,Nocturnality,夜行性,夜猫子
 NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている,昼伏夜出
 NocturnalityDescription,The view during power outage and normal view are opposite.,停電中と通常の視界が反対になっています。,夜猫子属于船员阵营。\n夜猫子的正常视野与熄灯时视野相反。

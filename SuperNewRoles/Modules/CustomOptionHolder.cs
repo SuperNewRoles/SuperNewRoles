@@ -465,6 +465,8 @@ namespace SuperNewRoles.Modules
         public static CustomRoleOption CelebrityOption;
         public static CustomOption CelebrityPlayerCount;
         public static CustomOption CelebrityChangeRoleView;
+        public static CustomOption CelebrityIsTaskPhaseFlash;
+
         public static CustomRoleOption NocturnalityOption;
         public static CustomOption NocturnalityPlayerCount;
 
@@ -998,7 +1000,7 @@ namespace SuperNewRoles.Modules
             AgarthaRandomSpawnIsAddSpawnWay = Create(1086, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
 
             CanGhostSeeRole = Create(1100, false, CustomOptionType.Generic, "CanGhostSeeRole", true, null, isHeader: true);
-            OnlyImpostorGhostSeeRole = Create(1101, false, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false,CanGhostSeeRole);
+            OnlyImpostorGhostSeeRole = Create(1101, false, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanGhostSeeRole);
 
             IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
@@ -1401,6 +1403,7 @@ namespace SuperNewRoles.Modules
             CelebrityOption = SetupCustomRoleOption(525, true, RoleId.Celebrity);
             CelebrityPlayerCount = Create(301, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CelebrityOption);
             CelebrityChangeRoleView = Create(302, true, CustomOptionType.Crewmate, "CelebrityChangeRoleViewSetting", false, CelebrityOption);
+            CelebrityIsTaskPhaseFlash = Create(302, true, CustomOptionType.Crewmate, "CelebrityIsTaskPhaseFlashSetting", false, CelebrityOption);
 
             NocturnalityOption = SetupCustomRoleOption(303, true, RoleId.Nocturnality);
             NocturnalityPlayerCount = Create(304, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NocturnalityOption);
