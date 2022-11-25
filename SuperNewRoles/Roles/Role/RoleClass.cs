@@ -1478,7 +1478,7 @@ namespace SuperNewRoles.Roles
                 CelebrityPlayer = new();
                 ChangeRoleView = CustomOptionHolder.CelebrityChangeRoleView.GetBool();
                 ViewPlayers = new();
-                FlashTime = PlayerControl.GameOptions.KillCooldown * 1000;
+                FlashTime = PlayerControl.GameOptions.KillCooldown >= 5 ? PlayerControl.GameOptions.KillCooldown * 1000 : 5000;
             }
         }
         public static class Nocturnality

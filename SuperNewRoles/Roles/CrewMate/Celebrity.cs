@@ -18,7 +18,6 @@ namespace SuperNewRoles.Roles.Crewmate
             timer.AutoReset = true;
             timer.Enabled = true;
             Logger.Info($"{RoleClass.Celebrity.FlashTime}[ミリ秒]にタイマーセット ", "CelebrityFlash");
-
         }
 
         private static void TimerEvent(System.Object source, ElapsedEventArgs e)
