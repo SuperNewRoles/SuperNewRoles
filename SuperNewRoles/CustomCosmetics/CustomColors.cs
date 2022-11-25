@@ -64,7 +64,7 @@ namespace SuperNewRoles.CustomCosmetics
             SkyBlue,
             LightCyan,
             LightOrange,
-            Wakaba,
+            Sprout,
             Nega,
             Gold
         }
@@ -122,7 +122,7 @@ namespace SuperNewRoles.CustomCosmetics
             { ColorType.SkyBlue,(new(89, 210, 255, byte.MaxValue), new(37, 169, 232, byte.MaxValue), true) },
             { ColorType.LightCyan, (new(176, 255, 255, byte.MaxValue), new(114, 229, 229, byte.MaxValue), true) },
             { ColorType.LightOrange, (new(255, 215, 176, byte.MaxValue), new(240, 177, 124, byte.MaxValue), true) },
-            { ColorType.Wakaba, (new(187, 255, 120, byte.MaxValue), new(127, 208, 48, byte.MaxValue), true) },
+            { ColorType.Sprout, (new(187, 255, 120, byte.MaxValue), new(127, 208, 48, byte.MaxValue), true) },
             { ColorType.Nega, (new(0, 0, 0, byte.MaxValue), new(255, 255, 255, byte.MaxValue), false) },
             { ColorType.Gold, (new(255, 216, 70, byte.MaxValue), new(226, 168, 13, byte.MaxValue), true) },
         };
