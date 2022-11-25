@@ -675,6 +675,31 @@ namespace SuperNewRoles.Patches
                             var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                             if (ma != null && !ma.IsActive) return false;
                             break;
+                        case RoleId.Penguin:
+                            SuperNewRolesPlugin.Logger.LogInfo($"ペンギンがキルしました。 キル者 : {__instance.name}");
+                            if (RoleClass.Penguin.PenguinData.Any(x => x.Key.PlayerId != __instance.PlayerId) || RoleClass.Penguin.PenguinData.Count <= 0)
+                            {
+                                RoleClass.Penguin.PenguinData.Add(__instance, target);
+                                RoleClass.Penguin.PenguinTimer[__instance] = CustomOptionHolder.PenguinDurationTime.GetFloat();
+                                SuperNewRolesPlugin.Logger.LogInfo("RoleClass.Penguin.PenguinData[__instance]が無かった為追加しfalseを返しました");
+                                return false;
+                            }
+                            if (RoleClass.Penguin.PenguinData.Any(x => x.Key.PlayerId == __instance.PlayerId && x.Value == null))
+                            {
+                                RoleClass.Penguin.PenguinData[__instance] = target;
+                                RoleClass.Penguin.PenguinTimer[__instance] = CustomOptionHolder.PenguinDurationTime.GetFloat();
+                                SuperNewRolesPlugin.Logger.LogInfo("RoleClass.Penguin.PenguinData[__instance].Valueがnullだった為falseを返しました");
+                                return false;
+                            }
+                            if (RoleClass.Penguin.PenguinData.Any(x => x.Key.PlayerId == __instance.PlayerId && x.Value.PlayerId != target.PlayerId))
+                            {
+                                SuperNewRolesPlugin.Logger.LogInfo("RoleClass.Penguin.PenguinData[__instance].Value.PlayerIdがtarget.PlayerIdじゃなかった為falseを返しました");
+                                return false;
+                            }
+                            SuperNewRolesPlugin.Logger.LogInfo("能力発動中にキルされた為キルしました");
+                            RoleClass.Penguin.PenguinData.Remove(__instance);
+                            Penguin.RpcMurderPlayerPlus(__instance, target);
+                            return false;
                     }
                     break;
                 case ModeId.Detective:

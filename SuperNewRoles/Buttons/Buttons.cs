@@ -272,7 +272,7 @@ namespace SuperNewRoles.Buttons
                     writer.EndRPC();
                     RPCProcedure.PenguinHikizuri(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId);
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Penguin; },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Penguin && ModeHandler.IsMode(ModeId.Default); },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove && SetTarget(null, true);
