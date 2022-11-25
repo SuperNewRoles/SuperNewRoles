@@ -1403,7 +1403,7 @@ namespace SuperNewRoles.Modules
             CelebrityOption = SetupCustomRoleOption(525, true, RoleId.Celebrity);
             CelebrityPlayerCount = Create(301, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CelebrityOption);
             CelebrityChangeRoleView = Create(302, true, CustomOptionType.Crewmate, "CelebrityChangeRoleViewSetting", false, CelebrityOption);
-            CelebrityIsTaskPhaseFlash = Create(302, true, CustomOptionType.Crewmate, "CelebrityIsTaskPhaseFlashSetting", false, CelebrityOption);
+            CelebrityIsTaskPhaseFlash = Create(1110, false, CustomOptionType.Crewmate, "CelebrityIsTaskPhaseFlashSetting", false, CelebrityOption);
 
             NocturnalityOption = SetupCustomRoleOption(303, true, RoleId.Nocturnality);
             NocturnalityPlayerCount = Create(304, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NocturnalityOption);
