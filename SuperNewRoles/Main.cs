@@ -76,6 +76,7 @@ namespace SuperNewRoles
 
             // Old Delete End
 
+            SuperNewRoles.Logger.Info(DateTime.Now.ToString("D"), "DateTime Now"); // 2022年11月24日
             SuperNewRoles.Logger.Info(ThisAssembly.Git.Branch, "Branch");
             SuperNewRoles.Logger.Info(ThisAssembly.Git.Commit, "Commit");
             SuperNewRoles.Logger.Info(ThisAssembly.Git.Commits, "Commits");
@@ -84,6 +85,24 @@ namespace SuperNewRoles
             SuperNewRoles.Logger.Info(VersionString, "VersionString");
             SuperNewRoles.Logger.Info(Version, nameof(Version));
             SuperNewRoles.Logger.Info($"{Application.version}({Constants.GetPurchasingPlatformType()})", "AmongUsVersion"); // アモングアス本体のバージョン(プレイしているプラットフォーム)
+            try
+            {
+                var directoryPath = Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins";
+                SuperNewRoles.Logger.Info($"DirectoryPathが半角のみ:{ModHelpers.IsOneByteOnlyString(directoryPath)}", "IsOneByteOnly path"); // フォルダパスが半角のみで構成されているか
+                var di = new DirectoryInfo(directoryPath);
+                var pluginFiles = di.GetFiles();
+                foreach (var f in pluginFiles)
+                {
+                    var name = f.Name;
+                    SuperNewRoles.Logger.Info($"---------- {name} -----------", "Data");
+                    SuperNewRoles.Logger.Info(name, nameof(pluginFiles)); // ファイル名
+                    SuperNewRoles.Logger.Info($"{f.Length}MB", name); // サイズをバイト単位で取得
+                }
+            }
+            catch (Exception e)
+            {
+                SuperNewRoles.Logger.Error($"pluginFilesの取得時に例外発生{e.ToString()}", "pluginFiles");
+            }
 
             Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
 
