@@ -161,7 +161,7 @@ namespace SuperNewRoles.Modules
         public static IntroData MadMayorIntro = new("MadMayor", RoleClass.MadMayor.color, 1, RoleId.MadMayor);
         public static IntroData NiceHawkIntro = new("NiceHawk", RoleClass.NiceHawk.color, 2, RoleId.NiceHawk);
         public static IntroData BakeryIntro = new("Bakery", RoleClass.Bakery.color, 1, RoleId.Bakery);
-        public static IntroData MadStuntManIntro = new("MadStuntMan", RoleClass.MadStuntMan.color, 1, RoleId.MadStuntMan, TeamRoleType.Impostor);
+        public static IntroData MadStuntManIntro = new("MadStuntMan", RoleClass.MadStuntMan.color, 1, RoleId.MadStuntMan);
         public static IntroData MadHawkIntro = new("MadHawk", RoleClass.MadHawk.color, 1, RoleId.MadHawk);
         public static IntroData MadJesterIntro = new("MadJester", RoleClass.MadJester.color, 1, RoleId.MadJester);
         public static IntroData FalseChargesIntro = new("FalseCharges", RoleClass.FalseCharges.color, 1, RoleId.FalseCharges, TeamRoleType.Neutral);
