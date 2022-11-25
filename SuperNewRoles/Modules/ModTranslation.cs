@@ -54,7 +54,6 @@ namespace SuperNewRoles.Modules
                 string[] values = line.Split(',');
 
                 // 配列から辞書に格納する
-                dictionary.Add(val
                 List<string> valueslist = new();
                 foreach (string vl in values)
                 {
