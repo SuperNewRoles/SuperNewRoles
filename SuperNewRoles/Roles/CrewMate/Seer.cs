@@ -70,7 +70,7 @@ namespace SuperNewRoles.Roles
             return SoulSprite;
         }
 
-        public static class ExileControllerWrapUpPatch
+        public static class WrapUpPatch
         {
             public static void WrapUpPostfix()
             {
