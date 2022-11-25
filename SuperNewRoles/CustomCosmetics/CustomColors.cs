@@ -57,7 +57,16 @@ namespace SuperNewRoles.CustomCosmetics
             Crasyublue,
             Lightgreen,
             Azuki,
-            Snow
+            Snow,
+            LightMagenta,
+            PeachFlower,
+            Plum,
+            SkyBlue,
+            LightCyan,
+            LightOrange,
+            Wakaba,
+            Nega,
+            Gold
         }
 
         private const byte bmv = 255; // byte.MaxValue
@@ -107,14 +116,21 @@ namespace SuperNewRoles.CustomCosmetics
             { ColorType.Lightgreen, (new(226, 255, 5, bmv), new(192, 201, 10, bmv), true) },
             { ColorType.Azuki, (new(150, 81, 77, bmv), new(115, 40, 35, bmv), false) },
             { ColorType.Snow, (new(229, 249, 255, bmv), new(135, 226, 255, bmv), true) },
+            { ColorType.LightMagenta, (new(255, 199, 255, bmv), new(243, 151, 243, byte.MaxValue), true) },
+            { ColorType.PeachFlower, (new(255, 163, 186, byte.MaxValue), new(255, 129, 157, byte.MaxValue), true) },
+            { ColorType.Plum, (new(255, 230, 236, byte.MaxValue), new(255, 178, 195, byte.MaxValue), true) },
+            { ColorType.SkyBlue,(new(89, 210, 255, byte.MaxValue), new(37, 169, 232, byte.MaxValue), true) },
+            { ColorType.LightCyan, (new(176, 255, 255, byte.MaxValue), new(114, 229, 229, byte.MaxValue), true) },
+            { ColorType.LightOrange, (new(255, 215, 176, byte.MaxValue), new(240, 177, 124, byte.MaxValue), true) },
+            { ColorType.Wakaba, (new(187, 255, 120, byte.MaxValue), new(127, 208, 48, byte.MaxValue), true) },
+            { ColorType.Nega, (new(0, 0, 0, byte.MaxValue), new(255, 255, 255, byte.MaxValue), true) },
+            { ColorType.Gold, (new(255, 216, 70, byte.MaxValue), new(226, 168, 13, byte.MaxValue), true) },
         };
         public static void Load()
         {
             List<StringNames> longList = Enumerable.ToList(Palette.ColorNames);
             List<Color32> colorList = Enumerable.ToList(Palette.PlayerColors);
             List<Color32> shadowList = Enumerable.ToList(Palette.ShadowColors);
-
-
             List<CustomColor> colors = new();
             var noLighterColorTemp = new List<KeyValuePair<ColorType, (Color32, Color32, bool)>>();
             foreach (var dic in CustomColorData)
