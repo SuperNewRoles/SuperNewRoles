@@ -238,16 +238,6 @@ namespace SuperNewRoles.CustomCosmetics
             [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckColor))]
             private static class PlayerControlCheckColorPatch
             {
-                private static bool isTaken(PlayerControl player, uint color)
-                {
-                    foreach (GameData.PlayerInfo p in GameData.Instance.AllPlayers)
-                    {
-                        //Logger.Info($"{!p.Disconnected} は {p.PlayerId != player.PlayerId} は {p.DefaultOutfit.ColorId == color}", "isTaken");
-                        if (!p.Disconnected && p.PlayerId != player.PlayerId && p.DefaultOutfit.ColorId == color)
-                            return true;
-                    }
-                    return false;
-                }
                 public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte bodyColor)
                 { // Fix incorrect color assignment
                     uint color = (uint)bodyColor;
@@ -261,6 +251,16 @@ namespace SuperNewRoles.CustomCosmetics
                     }
                     //Logger.Info(color.ToString() + "をセット:" + isTaken(__instance, color).ToString()+":"+ (color >= Palette.PlayerColors.Length));
                     __instance.RpcSetColor((byte)color);
+                    return false;
+                }
+                private static bool isTaken(PlayerControl player, uint color)
+                {
+                    foreach (GameData.PlayerInfo p in GameData.Instance.AllPlayers)
+                    {
+                        //Logger.Info($"{!p.Disconnected} は {p.PlayerId != player.PlayerId} は {p.DefaultOutfit.ColorId == color}", "isTaken");
+                        if (!p.Disconnected && p.PlayerId != player.PlayerId && p.DefaultOutfit.ColorId == color)
+                            return true;
+                    }
                     return false;
                 }
             }
