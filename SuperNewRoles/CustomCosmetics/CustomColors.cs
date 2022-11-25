@@ -69,7 +69,7 @@ namespace SuperNewRoles.CustomCosmetics
             Gold
         }
 
-        private const byte bmv = 255; // byte.MaxValue
+        private const byte bmv = 255; // bmv
 
         // main, shadow, isLighter
         private static readonly Dictionary<ColorType, (Color32, Color32, bool)> CustomColorData = new() {
@@ -116,15 +116,15 @@ namespace SuperNewRoles.CustomCosmetics
             { ColorType.Lightgreen, (new(226, 255, 5, bmv), new(192, 201, 10, bmv), true) },
             { ColorType.Azuki, (new(150, 81, 77, bmv), new(115, 40, 35, bmv), false) },
             { ColorType.Snow, (new(229, 249, 255, bmv), new(135, 226, 255, bmv), true) },
-            { ColorType.LightMagenta, (new(255, 199, 255, bmv), new(243, 151, 243, byte.MaxValue), true) },
-            { ColorType.PeachFlower, (new(255, 163, 186, byte.MaxValue), new(255, 129, 157, byte.MaxValue), true) },
-            { ColorType.Plum, (new(255, 230, 236, byte.MaxValue), new(255, 178, 195, byte.MaxValue), true) },
-            { ColorType.SkyBlue,(new(89, 210, 255, byte.MaxValue), new(37, 169, 232, byte.MaxValue), true) },
-            { ColorType.LightCyan, (new(176, 255, 255, byte.MaxValue), new(114, 229, 229, byte.MaxValue), true) },
-            { ColorType.LightOrange, (new(255, 215, 176, byte.MaxValue), new(240, 177, 124, byte.MaxValue), true) },
-            { ColorType.Sprout, (new(187, 255, 120, byte.MaxValue), new(127, 208, 48, byte.MaxValue), true) },
-            { ColorType.Nega, (new(0, 0, 0, byte.MaxValue), new(255, 255, 255, byte.MaxValue), false) },
-            { ColorType.Gold, (new(255, 216, 70, byte.MaxValue), new(226, 168, 13, byte.MaxValue), true) },
+            { ColorType.LightMagenta, (new(255, 199, 255, bmv), new(243, 151, 243, bmv), true) },
+            { ColorType.PeachFlower, (new(255, 163, 186, bmv), new(255, 129, 157, bmv), true) },
+            { ColorType.Plum, (new(255, 230, 236, bmv), new(255, 178, 195, bmv), true) },
+            { ColorType.SkyBlue,(new(89, 210, 255, bmv), new(37, 169, 232, bmv), true) },
+            { ColorType.LightCyan, (new(176, 255, 255, bmv), new(114, 229, 229, bmv), true) },
+            { ColorType.LightOrange, (new(255, 215, 176, bmv), new(240, 177, 124, bmv), true) },
+            { ColorType.Sprout, (new(187, 255, 120, bmv), new(127, 208, 48, bmv), true) },
+            { ColorType.Nega, (new(0, 0, 0, bmv), new(255, 255, 255, bmv), false) },
+            { ColorType.Gold, (new(255, 216, 70, bmv), new(226, 168, 13, bmv), true) },
         };
         public static void Load()
         {
