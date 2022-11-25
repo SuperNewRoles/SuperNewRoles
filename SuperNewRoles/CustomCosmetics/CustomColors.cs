@@ -64,7 +64,7 @@ namespace SuperNewRoles.CustomCosmetics
             SkyBlue,
             LightCyan,
             LightOrange,
-            Wakaba,
+            Sprout,
             Nega,
             Gold
         }
@@ -129,7 +129,7 @@ namespace SuperNewRoles.CustomCosmetics
             LighterColorData.Add(ColorType.SkyBlue, new Color32[] { new(89, 210, 255, byte.MaxValue), new(37, 169, 232, byte.MaxValue) });
             LighterColorData.Add(ColorType.LightCyan, new Color32[] { new(176, 255, 255, byte.MaxValue), new(114, 229, 229, byte.MaxValue) });
             LighterColorData.Add(ColorType.LightOrange, new Color32[] { new(255, 215, 176, byte.MaxValue), new(240, 177, 124, byte.MaxValue) });
-            LighterColorData.Add(ColorType.Wakaba, new Color32[] { new(187, 255, 120, byte.MaxValue), new(127, 208, 48, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Sprout, new Color32[] { new(187, 255, 120, byte.MaxValue), new(127, 208, 48, byte.MaxValue) });
             NoLighterColorData.Add(ColorType.Nega, new Color32[] { new(0, 0, 0, byte.MaxValue), new(255, 255, 255, byte.MaxValue) });
             LighterColorData.Add(ColorType.Gold, new Color32[] { new(255, 216, 70, byte.MaxValue), new(226, 168, 13, byte.MaxValue) });
 
