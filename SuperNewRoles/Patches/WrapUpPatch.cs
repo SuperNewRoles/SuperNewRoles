@@ -110,9 +110,9 @@ namespace SuperNewRoles.Patches
             Roles.Neutral.Photographer.WrapUp();
             Roles.Impostor.Cracker.WrapUp();
             RoleClass.IsMeeting = false;
+            Seer.ExileControllerWrapUpPatch.WrapUpPostfix();
             if (exiled == null) return;
             SoothSayer_Patch.WrapUp(exiled.Object);
-            Seer.ExileControllerWrapUpPatch.WrapUpPostfix();
             Nekomata.NekomataEnd(exiled);
             Roles.Impostor.NekoKabocha.OnWrapUp(exiled.Object);
 
