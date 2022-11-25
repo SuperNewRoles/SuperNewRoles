@@ -184,7 +184,7 @@ namespace SuperNewRoles.CustomCosmetics
                 {
                     if ((int)name >= 50000)
                     {
-                        string text = CustomColors.ColorStrings[(int)name];
+                        string text = ColorStrings[(int)name];
                         if (text != null)
                         {
                             __result = ModTranslation.GetString(text) + " (MOD)";
@@ -231,7 +231,7 @@ namespace SuperNewRoles.CustomCosmetics
                 public static void Postfix()
                 {
                     if (!needsPatch) return;
-                    LegacySaveManager.colorConfig %= CustomColors.pickAbleColors;
+                    LegacySaveManager.colorConfig %= pickAbleColors;
                     needsPatch = false;
                 }
             }
@@ -254,9 +254,9 @@ namespace SuperNewRoles.CustomCosmetics
                     if (isTaken(__instance, color) || color >= Palette.PlayerColors.Length)
                     {
                         int num = 0;
-                        while (num++ < 50 && (color >= CustomColors.pickAbleColors || isTaken(__instance, color)))
+                        while (num++ < 50 && (color >= pickAbleColors || isTaken(__instance, color)))
                         {
-                            color = (color + 1) % CustomColors.pickAbleColors;
+                            color = (color + 1) % pickAbleColors;
                         }
                     }
                     //Logger.Info(color.ToString() + "をセット:" + isTaken(__instance, color).ToString()+":"+ (color >= Palette.PlayerColors.Length));
