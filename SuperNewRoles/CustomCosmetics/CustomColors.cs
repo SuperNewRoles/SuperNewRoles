@@ -55,7 +55,9 @@ namespace SuperNewRoles.CustomCosmetics
             Ashishreddishpurplecolor,
             Melon,
             Crasyublue,
-            Lightgreen
+            Lightgreen,
+            Azuki,
+            Snow
         }
 
 
@@ -79,7 +81,7 @@ namespace SuperNewRoles.CustomCosmetics
             LighterColorData.Add(ColorType.Peach, new Color32[] { new(255, 164, 119, byte.MaxValue), new(238, 128, 100, byte.MaxValue) });
             NoLighterColorData.Add(ColorType.Wasabi, new Color32[] { new(112, 143, 46, byte.MaxValue), new(72, 92, 29, byte.MaxValue) });
             LighterColorData.Add(ColorType.HotPink, new Color32[] { new(255, 51, 102, byte.MaxValue), new(232, 0, 58, byte.MaxValue) });
-            LighterColorData.Add(ColorType.Petrol, new Color32[] { new(0, 99, 105, byte.MaxValue), new(0, 61, 54, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Petrol, new Color32[] { new(0, 99, 105, byte.MaxValue), new(0, 61, 54, byte.MaxValue) });
             LighterColorData.Add(ColorType.Lemon, new Color32[] { new(0xDB, 0xFD, 0x2F, byte.MaxValue), new(0x74, 0xE5, 0x10, byte.MaxValue) });
             LighterColorData.Add(ColorType.SignalOrange, new Color32[] { new(0xF7, 0x44, 0x17, byte.MaxValue), new(0x9B, 0x2E, 0x0F, byte.MaxValue) });
             NoLighterColorData.Add(ColorType.Teal, new Color32[] { new(0x25, 0xB8, 0xBF, byte.MaxValue), new(0x12, 0x89, 0x86, byte.MaxValue) });
@@ -100,16 +102,18 @@ namespace SuperNewRoles.CustomCosmetics
             NoLighterColorData.Add(ColorType.Blueclosertoblack, new Color32[] { new(0, 0, 50, byte.MaxValue), new(0, 0, 25, byte.MaxValue) });
             LighterColorData.Add(ColorType.Sunkengreenishblue, new Color32[] { new(128, 156, 166, byte.MaxValue), new(115, 141, 153, byte.MaxValue) });
             NoLighterColorData.Add(ColorType.Azi, new Color32[] { new(100, 48, 0, byte.MaxValue), new(98, 5, 0, byte.MaxValue) });
-            LighterColorData.Add(ColorType.Pitchred, new Color32[] { new(255, 0, 0, byte.MaxValue), new(220, 20, 60, byte.MaxValue) });
-            LighterColorData.Add(ColorType.Pitchblue, new Color32[] { new(0, 0, 128, byte.MaxValue), new(0, 0, 112, byte.MaxValue) });
-            LighterColorData.Add(ColorType.Pitchgreen, new Color32[] { new(0, 128, 0, byte.MaxValue), new(0, 120, 0, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Pitchred, new Color32[] { new(255, 0, 0, byte.MaxValue), new(220, 20, 60, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Pitchblue, new Color32[] { new(0, 0, 128, byte.MaxValue), new(0, 0, 112, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Pitchgreen, new Color32[] { new(0, 128, 0, byte.MaxValue), new(0, 120, 0, byte.MaxValue) });
             LighterColorData.Add(ColorType.Pitchyellow, new Color32[] { new(255, 255, 0, byte.MaxValue), new(255, 235, 0, byte.MaxValue) });
             LighterColorData.Add(ColorType.Backblue, new Color32[] { new(0, 128, 255, byte.MaxValue), new(0, 85, 255, byte.MaxValue) });
-            LighterColorData.Add(ColorType.Mildpurple, new Color32[] { new(109, 83, 131, byte.MaxValue), new(109, 83, 131, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Mildpurple, new Color32[] { new(109, 83, 131, byte.MaxValue), new(109, 83, 131, byte.MaxValue) });
             NoLighterColorData.Add(ColorType.Ashishreddishpurplecolor, new Color32[] { new(139, 102, 118, byte.MaxValue), new(139, 102, 118, byte.MaxValue) });
             LighterColorData.Add(ColorType.Melon, new Color32[] { new(0, 225, 129, byte.MaxValue), new(24, 255, 81, byte.MaxValue) });
             NoLighterColorData.Add(ColorType.Crasyublue, new Color32[] { new(2, 38, 106, byte.MaxValue), new(64, 0, 111, byte.MaxValue) });
             LighterColorData.Add(ColorType.Lightgreen, new Color32[] { new(226, 255, 5, byte.MaxValue), new(192, 201, 10, byte.MaxValue) });
+            NoLighterColorData.Add(ColorType.Azuki, new Color32[] { new(150, 81, 77, byte.MaxValue), new(115, 40, 35, byte.MaxValue) });
+            LighterColorData.Add(ColorType.Snow, new Color32[] { new(229, 249, 255, byte.MaxValue), new(135, 226, 255, byte.MaxValue) });
 
 
             List<CustomColor> colors = new();

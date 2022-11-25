@@ -46,7 +46,7 @@ namespace SuperNewRoles.CustomObject
             if (footprintDuration > 0)
             {
                 footprints.Add(this);
-                HudManager.Instance.StartCoroutine(Effects.Lerp(footprintDuration, new Action<float>((p) =>
+                FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(footprintDuration, new Action<float>((p) =>
                 {
                     Color c = color;
 
@@ -85,7 +85,7 @@ namespace SuperNewRoles.CustomObject
 
             if (footprintDuration > 0)
             {
-                HudManager.Instance.StartCoroutine(Effects.Lerp(footprintDuration, new Action<float>((p) =>
+                FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(footprintDuration, new Action<float>((p) =>
                 {
                     Color c = this.color;
 

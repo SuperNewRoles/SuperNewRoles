@@ -19,7 +19,7 @@ namespace SuperNewRoles.Patches
             {
                 if (!scene.name.Equals("MMOnline")) return;
                 if (!TryMoveObjects()) return;
-                var editName = AccountManager.Instance.accountTab.editNameScreen;
+                var editName = FastDestroyableSingleton<AccountManager>.Instance.accountTab.editNameScreen;
                 var NameText = Object.Instantiate(editName.nameText.gameObject);
                 NameText.transform.localPosition += Vector3.up * 2.2f;
                 var textBox = NameText.GetComponent<TextBoxTMP>();

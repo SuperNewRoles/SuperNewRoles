@@ -323,7 +323,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                     {
                         PlayerControl pc = p.PlayerControl;
-                        if (!pc.IsImpostor() && pc.IsPlayer())
+                        if (!pc.IsImpostor() && !pc.IsBot())
                         {
                             if (p != null && !p.Data.Disconnected)
                             {

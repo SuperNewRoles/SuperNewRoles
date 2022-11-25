@@ -31,50 +31,6 @@ namespace SuperNewRoles.Patches
         }
     }
 
-    [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
-    class ControllerManagerUpdate
-    {
-        static void Postfix()
-        {
-            // 以下ホストのみ
-            if (!AmongUsClient.Instance.AmHost) return;
-
-            //　ゲーム中
-            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
-            {
-                // 廃村
-                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift }))
-                {
-                    RPCHelper.StartRPC(CustomRPC.SetHaison).EndRPC();
-                    RPCProcedure.SetHaison();
-                    if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-                    {
-                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansDisconnect, false);
-                    }
-                    else
-                    {
-                        ShipStatus.RpcEndGame(GameOverReason.HumansDisconnect, false);
-                        MapUtilities.CachedShipStatus.enabled = false;
-                    }
-                }
-            }
-
-            // 会議を強制終了
-            if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
-            {
-                if (MeetingHud.Instance != null)
-                    MeetingHud.Instance.RpcClose();
-            }
-
-            // 以下フリープレイのみ
-            if (AmongUsClient.Instance.GameMode != GameModes.FreePlay) return;
-            // エアーシップのトイレのドアを開ける
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                RPCHelper.RpcOpenToilet();
-            }
-        }
-    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     public class FixedUpdate
     {
@@ -145,11 +101,13 @@ namespace SuperNewRoles.Patches
                     Roles.Crewmate.Psychometrist.FixedUpdate();
                     Roles.Impostor.Matryoshka.FixedUpdate();
                     Roles.Neutral.PartTimer.FixedUpdate();
+                    Vampire.FixedUpdate.AllClient();
                     ReduceKillCooldown(__instance);
+                    Roles.Impostor.Penguin.FixedUpdate();
                     if (PlayerControl.LocalPlayer.IsAlive())
                     {
                         if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
-                        NormalButtonDestroy.Postfix();
+                        NormalButtonDestroy.SetActiveState();
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Pursuer:
@@ -182,7 +140,7 @@ namespace SuperNewRoles.Patches
                                 MadHawk.FixedUpdate.Postfix();
                                 break;
                             case RoleId.Vampire:
-                                Vampire.FixedUpdate.Postfix();
+                                Vampire.FixedUpdate.VampireOnly();
                                 break;
                             case RoleId.Vulture:
                                 Vulture.FixedUpdate.Postfix();
@@ -234,6 +192,12 @@ namespace SuperNewRoles.Patches
                                 break;
                             case RoleId.ShiftActor:
                                 Roles.Impostor.ShiftActor.FixedUpdate();
+                                break;
+                            case RoleId.Cupid:
+                                Roles.Neutral.Cupid.FixedUpdate();
+                                break;
+                            case RoleId.Dependents:
+                                Vampire.FixedUpdate.DependentsOnly();
                                 break;
                         }
                     }

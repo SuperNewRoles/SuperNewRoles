@@ -46,6 +46,10 @@ namespace SuperNewRoles.Patches
                 Logger.Info("=================Other Data=================", "Intro Begin");
                 Logger.Info($"MapId:{PlayerControl.GameOptions.MapId} MapNames:{(MapNames)PlayerControl.GameOptions.MapId}", "Other Data");
                 Logger.Info($"Mode:{ModeHandler.GetMode()}", "Other Data");
+                foreach (IntroData data in IntroData.IntroList)
+                {
+                    data._titleDesc = IntroData.GetTitle(data.NameKey, data.TitleNum);
+                }
             }
         }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]

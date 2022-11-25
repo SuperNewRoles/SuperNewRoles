@@ -108,10 +108,6 @@ namespace SuperNewRoles.Buttons
                 Hud.UseButton.buttonLabelText.transform.localPosition = new(0, -0.45f, 0);
                 Hud.UseButton.buttonLabelText.transform.localScale = new(1.1f, 1.1f, 1.1f);
             }
-            foreach (CustomButton btn in CustomButton.currentButtons)
-            {
-
-            }
             Hud.AdminButton.gameObject.SetActive(false);
             //ベント
             Hud.ImpostorVentButton.transform.localPosition = new(4.45f, -2.1f, -9);

@@ -246,13 +246,13 @@ namespace SuperNewRoles.Mode
             else if (IsMode(ModeId.CopsRobbers)) return CopsRobbers.CheckEndGame.EndGameCheck(__instance);
             return false;
         }
-        public static bool IsBlockVanilaRole()
+        public static bool IsBlockVanillaRole()
         {
             return !IsMode(ModeId.NotImpostorCheck) && !IsMode(ModeId.Detective) && !IsMode(ModeId.Default);
         }
         public static bool IsBlockGuardianAngelRole()
         {
-            return IsMode(ModeId.Default) || IsBlockVanilaRole();
+            return IsMode(ModeId.Default) || IsBlockVanillaRole();
         }
         public static void HideName(this PlayerControl p)
         {

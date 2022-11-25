@@ -8,6 +8,7 @@ using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.MapOptions;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
@@ -168,6 +169,10 @@ namespace SuperNewRoles.Modules
         Pavlovsowner,
         Conjurer,
         Camouflager,
+        Cupid,
+        HamburgerShop,
+        Penguin,
+        Dependents,
         //RoleId
     }
 
@@ -206,7 +211,7 @@ namespace SuperNewRoles.Modules
         SetLovers,
         SetDeviceTime,
         UncheckedSetColor,
-        UncheckedSetVanilaRole,
+        UncheckedSetVanillaRole,
         SetMadKiller = 180,
         SetCustomSabotage,
         UseStuntmanCount,
@@ -237,9 +242,8 @@ namespace SuperNewRoles.Modules
         PlayPlayerAnimation,
         SluggerExile,
         PainterPaintSet,
-        SharePhotograph,
-        /* 210~214 is used Submerged Mod */
-        PainterSetTarget = 215,
+        SharePhotograph = 210,
+        PainterSetTarget = 220,
         SetFinalStatus,
         MeetingKill,
         KnightProtected,
@@ -249,16 +253,96 @@ namespace SuperNewRoles.Modules
         ShowFlash,
         PavlovsOwnerCreateDog,
         CrackerCrack,
-        Camouflage,
+        Camouflage = 230,
         ShowGuardEffect,
-        SetMapId
+        SetLoversCupid,
+        SetMapId,
+        PenguinHikizuri,
+        SetVampireStatus,
+        SyncDeathMeeting,
+        SetDeviceUseStatus,
     }
 
     public static class RPCProcedure
     {
+        public static void SetDeviceUseStatus(byte devicetype, byte playerId, bool Is, string time)
+        {
+            DeviceClass.DeviceType type = (DeviceClass.DeviceType)devicetype;
+            PlayerControl player = ModHelpers.PlayerById(playerId);
+            if (player == null) return;
+            if (!DeviceClass.DeviceUsePlayer.ContainsKey(type)) return;
+            if (Is)
+            {
+                DateTime dateTime;
+
+                if (!DateTime.TryParse(time, out dateTime)) return;
+                if (DeviceClass.DeviceUserUseTime[type] < dateTime && DeviceClass.DeviceUsePlayer[type] != null) return;
+                DeviceClass.DeviceUsePlayer[type] = player;
+                DeviceClass.DeviceUserUseTime[type] = dateTime;
+            } else
+            {
+                if (DeviceClass.DeviceUsePlayer[type] != null && DeviceClass.DeviceUsePlayer[type].PlayerId != playerId) return;
+                DeviceClass.DeviceUsePlayer[type] = null;
+                DeviceClass.DeviceUserUseTime[type] = DateTime.UtcNow;
+            }
+        }
+        public static void SetDeviceTime(byte devicetype, float time)
+        {
+            DeviceClass.DeviceType type = (DeviceClass.DeviceType)devicetype;
+            switch (type) {
+                case DeviceClass.DeviceType.Admin:
+                    DeviceClass.AdminTimer = time;
+                    break;
+                case DeviceClass.DeviceType.Camera:
+                    DeviceClass.CameraTimer = time;
+                    break;
+                case DeviceClass.DeviceType.Vital:
+                    DeviceClass.VitalTimer = time;
+                    break;
+            }
+        }
+        public static void SetLoversCupid(byte sourceid, byte player1, byte player2)
+        {
+            RoleClass.Cupid.CupidLoverPair[sourceid] = player1;
+            SetLovers(player1, player2);
+        }
+
+        public static void SetVampireStatus(byte sourceId, byte targetId, bool IsOn, bool IsKillSuc)
+        {
+            PlayerControl source = ModHelpers.PlayerById(sourceId);
+            PlayerControl target = ModHelpers.PlayerById(targetId);
+            if (source == null || target == null) return;
+            if (IsOn)
+            {
+                RoleClass.Vampire.Targets.Add(source, target);
+            }
+            else
+            {
+                if (RoleClass.Vampire.BloodStains.ContainsKey(target.PlayerId))
+                {
+                    if (IsKillSuc)
+                    {
+                        BloodStain DeadBloodStain = new(target, target.transform.position);
+                        DeadBloodStain.BloodStainObject.transform.localScale *= 3f;
+                        RoleClass.Vampire.WaitActiveBloodStains.AddRange(RoleClass.Vampire.BloodStains[target.PlayerId]);
+                        RoleClass.Vampire.WaitActiveBloodStains.Add(DeadBloodStain);
+                    }
+                    RoleClass.Vampire.BloodStains.Remove(target.PlayerId);
+                    RoleClass.Vampire.Targets.Remove(source);
+                }
+            }
+        }
         public static void SetMapId(byte mapid)
         {
             SNROnlySearch.currentMapId = mapid;
+        }
+
+        public static void PenguinHikizuri(byte sourceId, byte targetId)
+        {
+            PlayerControl source = ModHelpers.PlayerById(sourceId);
+            PlayerControl target = ModHelpers.PlayerById(targetId);
+            if (source == null || target == null) return;
+            RoleClass.Penguin.PenguinData.Add(source, target);
         }
 
         public static void ShowGuardEffect(byte showerid, byte targetid)
@@ -273,6 +357,43 @@ namespace SuperNewRoles.Modules
         {
             Knight.GuardedPlayers.Remove(Target);
         }
+        public static void SyncDeathMeeting(byte TargetId)
+        {
+            if (!MeetingHud.Instance) return;
+
+            PlayerControl dyingTarget = ModHelpers.PlayerById(TargetId);
+            if (dyingTarget == null) return;
+
+            if (dyingTarget.IsAlive())
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == TargetId)
+                    {
+                        pva.SetDead(pva.DidReport, false);
+                        pva.Overlay.gameObject.SetActive(false);
+                    }
+                }
+            }
+            else
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == TargetId)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                    if (pva.VotedFor != TargetId) continue;
+                    pva.UnsetVote();
+                    var voteAreaPlayer = ModHelpers.PlayerById(pva.TargetPlayerId);
+                    if (!voteAreaPlayer.AmOwner) continue;
+                    MeetingHud.Instance.ClearVote();
+                }
+                if (AmongUsClient.Instance.AmHost)
+                    MeetingHud.Instance.CheckForEndVoting();
+            }
+        }
         public static void MeetingKill(byte SourceId, byte TargetId)
         {
             PlayerControl source = ModHelpers.PlayerById(SourceId);
@@ -281,6 +402,24 @@ namespace SuperNewRoles.Modules
             if (source == null || target == null) return;
             target.Exiled();
             FinalStatusData.FinalStatuses[source.PlayerId] = FinalStatus.Kill;
+            if (MeetingHud.Instance)
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == TargetId)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                    if (pva.VotedFor != TargetId) continue;
+                    pva.UnsetVote();
+                    var voteAreaPlayer = ModHelpers.PlayerById(pva.TargetPlayerId);
+                    if (!voteAreaPlayer.AmOwner) continue;
+                    MeetingHud.Instance.ClearVote();
+                }
+                if (AmongUsClient.Instance.AmHost)
+                    MeetingHud.Instance.CheckForEndVoting();
+            }
             if (CachedPlayer.LocalPlayer.PlayerId == target.PlayerId)
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, source.Data);
@@ -517,7 +656,7 @@ namespace SuperNewRoles.Modules
                 Sheriff.ResetKillCooldown();
                 RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
             }
-            UncheckedSetVanilaRole(targetid, (byte)RoleTypes.Crewmate);
+            UncheckedSetVanillaRole(targetid, (byte)RoleTypes.Crewmate);
         }
         public static void FixLights()
         {
@@ -609,7 +748,7 @@ namespace SuperNewRoles.Modules
             ChacheManager.ResetMyRoleChache();
             PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
         }
-        public static void UncheckedSetVanilaRole(byte playerid, byte roletype)
+        public static void UncheckedSetVanillaRole(byte playerid, byte roletype)
         {
             var player = ModHelpers.PlayerById(playerid);
             if (player == null) return;
@@ -617,21 +756,6 @@ namespace SuperNewRoles.Modules
             player.Data.Role.Role = (RoleTypes)roletype;
         }
 
-        public static void SetDeviceTime(float time, byte systemtype)
-        {
-            switch ((SystemTypes)systemtype)
-            {
-                case SystemTypes.Security:
-                    BlockTool.CameraTime = time;
-                    break;
-                case SystemTypes.Admin:
-                    BlockTool.AdminTime = time;
-                    break;
-                case SystemTypes.Medical:
-                    BlockTool.VitalTime = time;
-                    break;
-            }
-        }
         public static void UncheckedSetTasks(byte playerId, byte[] taskTypeIds)
         {
             var player = ModHelpers.PlayerById(playerId);
@@ -741,13 +865,25 @@ namespace SuperNewRoles.Modules
         public static void SetLovers(byte playerid1, byte playerid2)
             => RoleHelpers.SetLovers(ModHelpers.PlayerById(playerid1), ModHelpers.PlayerById(playerid2));
 
-        public static void SheriffKill(byte SheriffId, byte TargetId, bool MissFire)
+        /// <summary>
+        /// Sheriffのキルを制御
+        /// </summary>
+        /// <param name="SheriffId">SheriffのPlayerId</param>
+        /// <param name="TargetId">Sheriffのターゲットにされた人のPlayerId</param>
+        /// <param name="MissFire">誤爆したか</param>
+        /// <param name="alwaysKill">誤爆していて尚且つ誤爆時も対象を殺す設定が有効か</param>
+        public static void SheriffKill(byte SheriffId, byte TargetId, bool MissFire, bool alwaysKill)
         {
             PlayerControl sheriff = ModHelpers.PlayerById(SheriffId);
             PlayerControl target = ModHelpers.PlayerById(TargetId);
             if (sheriff == null || target == null) return;
 
-            if (MissFire)
+            if (alwaysKill)
+            {
+                sheriff.MurderPlayer(target);
+                sheriff.MurderPlayer(sheriff);
+            }
+            else if (MissFire)
             {
                 sheriff.MurderPlayer(sheriff);
             }
@@ -770,7 +906,15 @@ namespace SuperNewRoles.Modules
                 }
             }
         }
-        public static void MeetingSheriffKill(byte SheriffId, byte TargetId, bool MissFire)
+
+        /// <summary>
+        /// MeetingSheriffのキルを制御
+        /// </summary>
+        /// <param name="SheriffId">SheriffのPlayerId</param>
+        /// <param name="TargetId">Sheriffのターゲットにされた人のPlayerId</param>
+        /// <param name="MissFire">誤爆したか</param>
+        /// <param name="alwaysKill">誤爆していて尚且つ誤爆時も対象を殺す設定が有効か</param>
+        public static void MeetingSheriffKill(byte SheriffId, byte TargetId, bool MissFire, bool alwaysKill)
         {
             PlayerControl sheriff = ModHelpers.PlayerById(SheriffId);
             PlayerControl target = ModHelpers.PlayerById(TargetId);
@@ -778,17 +922,34 @@ namespace SuperNewRoles.Modules
             if (sheriff == null || target == null) return;
             if (!PlayerControl.LocalPlayer.IsAlive())
             {
-                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は" + target.name + "をシェリフキルした！");
+                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat1"), target.name, sheriff.name));
+                if (alwaysKill)
+                {
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat2"), target.name, sheriff.name));
+                }
                 if (MissFire)
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は誤爆した！");
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat3"), sheriff.name));
                 }
                 else
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は成功した！");
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, string.Format(ModTranslation.GetString("MeetingSheriffkillChat4"), sheriff.name));
                 }
             }
-            if (MissFire)
+            if (alwaysKill)
+            {
+                target.Exiled();
+                if (PlayerControl.LocalPlayer == target)
+                {
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, target.Data);
+                }
+                sheriff.Exiled();
+                if (PlayerControl.LocalPlayer == sheriff)
+                {
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, sheriff.Data);
+                }
+            }
+            else if (MissFire)
             {
                 sheriff.Exiled();
                 if (PlayerControl.LocalPlayer == sheriff)
@@ -801,7 +962,7 @@ namespace SuperNewRoles.Modules
                 target.Exiled();
                 if (PlayerControl.LocalPlayer == target)
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, sheriff.Data);
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, target.Data);
                 }
             }
             if (MeetingHud.Instance)
@@ -809,6 +970,11 @@ namespace SuperNewRoles.Modules
                 foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
                 {
                     if (pva.TargetPlayerId == SheriffId && MissFire)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                    else if (pva.TargetPlayerId == TargetId && alwaysKill)
                     {
                         pva.SetDead(pva.DidReport, true);
                         pva.Overlay.gameObject.SetActive(true);
@@ -856,7 +1022,7 @@ namespace SuperNewRoles.Modules
             }
             else
             {
-                if (RoleClass.Clergyman.currentMessage.text != null)
+                if (RoleClass.Clergyman.currentMessage?.text != null)
                 {
                     GameObject.Destroy(RoleClass.Clergyman.currentMessage.text.gameObject);
                 }
@@ -1016,10 +1182,6 @@ namespace SuperNewRoles.Modules
         {
             var p = ModHelpers.PlayerById(playerid);
             CachedPlayer.LocalPlayer.transform.position = p.transform.position;
-            if (SubmergedCompatibility.isSubmerged())
-            {
-                SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
-            }
             new CustomMessage(string.Format(ModTranslation.GetString("TeleporterTPTextMessage"), p.NameText().text), 3);
         }
         public static void SetWinCond(byte Cond)
@@ -1107,7 +1269,7 @@ namespace SuperNewRoles.Modules
             { // Delayed action
                 if (p == 1f)
                 {
-                    Vector2 InitialSpawnCenter = new(16.64f, -2.46f);
+                    //ShipStatus.Instance.InitialSpawnCenter = new(16.64f, -2.46f);
                     Vector2 MeetingSpawnCenter = new(17.4f, -16.286f);
                     Vector2 ElectricalSpawn = new(5.53f, -9.84f);
                     Vector2 O2Spawn = new(3.28f, -21.67f);
@@ -1120,7 +1282,7 @@ namespace SuperNewRoles.Modules
                     Vector2 LeftReactorSpawn = new(4.6395f, -4.2884f);
                     var loc = locId switch
                     {
-                        0 => InitialSpawnCenter,
+                        0 => ShipStatus.Instance.InitialSpawnCenter,
                         1 => MeetingSpawnCenter,
                         2 => ElectricalSpawn,
                         3 => O2Spawn,
@@ -1131,7 +1293,7 @@ namespace SuperNewRoles.Modules
                         8 => MeetingSpawnUnder,
                         9 => LocketSpawn,
                         10 => LeftReactorSpawn,
-                        _ => InitialSpawnCenter,
+                        _ => ShipStatus.Instance.InitialSpawnCenter,
                     };
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
@@ -1172,6 +1334,7 @@ namespace SuperNewRoles.Modules
             }
             static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
             {
+                Logger.Info(ModHelpers.GetRPCNameFromByte(callId), "RPC");
                 try
                 {
                     byte packetId = callId;
@@ -1203,10 +1366,10 @@ namespace SuperNewRoles.Modules
                             SetRole(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.SheriffKill:
-                            SheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                            SheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());
                             break;
                         case CustomRPC.MeetingSheriffKill:
-                            MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                            MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());
                             break;
                         case CustomRPC.CustomRPCKill:
                             CustomRPCKill(reader.ReadByte(), reader.ReadByte());
@@ -1286,14 +1449,11 @@ namespace SuperNewRoles.Modules
                         case CustomRPC.SetLovers:
                             SetLovers(reader.ReadByte(), reader.ReadByte());
                             break;
-                        case CustomRPC.SetDeviceTime:
-                            SetDeviceTime(reader.ReadSingle(), reader.ReadByte());
-                            break;
                         case CustomRPC.UncheckedSetColor:
                             __instance.SetColor(reader.ReadByte());
                             break;
-                        case CustomRPC.UncheckedSetVanilaRole:
-                            UncheckedSetVanilaRole(reader.ReadByte(), reader.ReadByte());
+                        case CustomRPC.UncheckedSetVanillaRole:
+                            UncheckedSetVanillaRole(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.SetMadKiller:
                             SetMadKiller(reader.ReadByte(), reader.ReadByte());
@@ -1432,8 +1592,26 @@ namespace SuperNewRoles.Modules
                         case CustomRPC.ShowGuardEffect:
                             ShowGuardEffect(reader.ReadByte(), reader.ReadByte());
                             break;
+                        case CustomRPC.SetLoversCupid:
+                            SetLoversCupid(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                            break;
                         case CustomRPC.SetMapId:
                             SetMapId(reader.ReadByte());
+                            break;
+                        case CustomRPC.PenguinHikizuri:
+                            PenguinHikizuri(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetVampireStatus:
+                            SetVampireStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.SyncDeathMeeting:
+                            SyncDeathMeeting(reader.ReadByte());
+                            break;
+                        case CustomRPC.SetDeviceTime:
+                            SetDeviceTime(reader.ReadByte(), reader.ReadSingle());
+                            break;
+                        case CustomRPC.SetDeviceUseStatus:
+                            SetDeviceUseStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadString());
                             break;
                     }
                 }

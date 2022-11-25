@@ -256,7 +256,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (!p.Data.Disconnected && p.IsPlayer())
+                if (!p.Data.Disconnected && !p.IsBot())
                 {
                     CustomSyncSettings(p);
                 }
@@ -270,10 +270,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
         public class StartGame
         {
-            public static void Prefix()
-            {
-                //   BotHandler.CreateBot();
-            }
             public static void Postfix()
             {
                 if (CustomOptionHolder.IsSNROnlySearch.GetBool())

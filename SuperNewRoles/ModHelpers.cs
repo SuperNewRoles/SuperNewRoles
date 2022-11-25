@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using HarmonyLib;
 using Hazel;
-
-
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using TMPro;
@@ -189,7 +188,7 @@ namespace SuperNewRoles
                 UnityEngine.Object.Destroy(item);
             }
         }
-        public static MurderAttemptResult CheckMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
+        public static MurderAttemptResult CheckMurderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
         {
             // Modified vanilla checks
             if (AmongUsClient.Instance.IsGameOver) return MurderAttemptResult.SuppressKill;
@@ -285,7 +284,7 @@ namespace SuperNewRoles
         {
             if (player == null) return;
 
-            List<byte> taskTypeIds = GenerateTasks(numCommon, numShort, numLong);
+            List<byte> taskTypeIds = player.GenerateTasks(numCommon, numShort, numLong);
 
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetTasks, SendOption.Reliable, -1);
             writer.Write(player.PlayerId);
@@ -293,33 +292,36 @@ namespace SuperNewRoles
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.UncheckedSetTasks(player.PlayerId, taskTypeIds.ToArray());
         }
-        public static List<byte> GenerateTasks(int numCommon, int numShort, int numLong)
+        public static List<byte> GenerateTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
         {
             if (numCommon + numShort + numLong <= 0)
             {
                 numShort = 1;
             }
-
+            if (player.IsRole(RoleId.HamburgerShop) && !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool())
+            {
+                return Roles.CrewMate.HamburgerShop.GenerateTasks(numCommon + numShort + numLong);
+            }
             var tasks = new Il2CppSystem.Collections.Generic.List<byte>();
             var hashSet = new Il2CppSystem.Collections.Generic.HashSet<TaskTypes>();
 
             var commonTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(task);
+            foreach (var task in MapUtilities.CachedShipStatus.CommonTasks.OrderBy(x => RoleClass.rnd.Next())) commonTasks.Add(task);
 
             var shortTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(task);
+            foreach (var task in MapUtilities.CachedShipStatus.NormalTasks.OrderBy(x => RoleClass.rnd.Next())) shortTasks.Add(task);
 
             var longTasks = new Il2CppSystem.Collections.Generic.List<NormalPlayerTask>();
-            foreach (var task in ShipStatus.Instance.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(task);
+            foreach (var task in MapUtilities.CachedShipStatus.LongTasks.OrderBy(x => RoleClass.rnd.Next())) longTasks.Add(task);
 
             int start = 0;
-            ShipStatus.Instance.AddTasksFromList(ref start, numCommon, tasks, hashSet, commonTasks);
+            MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numCommon, tasks, hashSet, commonTasks);
 
             start = 0;
-            ShipStatus.Instance.AddTasksFromList(ref start, numShort, tasks, hashSet, shortTasks);
+            MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numShort, tasks, hashSet, shortTasks);
 
             start = 0;
-            ShipStatus.Instance.AddTasksFromList(ref start, numLong, tasks, hashSet, longTasks);
+            MapUtilities.CachedShipStatus.AddTasksFromList(ref start, numLong, tasks, hashSet, longTasks);
 
             return tasks.ToArray().ToList();
         }
@@ -333,14 +335,88 @@ namespace SuperNewRoles
             player.cosmetics.nameText.color = new Color(player.cosmetics.nameText.color.r, player.cosmetics.nameText.color.g, player.cosmetics.nameText.color.b, alpha);
         }
 
-        public static MurderAttemptResult CheckMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
+        public static Console ActivateConsole(Transform trf) => ActivateConsole(trf.gameObject);
+
+        public static AutoTaskConsole ActivateAutoTaskConsole(Transform trf) => ActivateAutoTaskConsole(trf.gameObject);
+
+        public static Console ActivateConsole(GameObject obj)
+        {
+            if (obj == null)
+            {
+                Logger.Error($"ActivateConsole Object was not found!", "");
+                return null;
+            }
+            obj.layer = LayerMask.NameToLayer("ShortObjects");
+            Console console = obj.GetComponent<Console>();
+            PassiveButton button = obj.GetComponent<PassiveButton>();
+            CircleCollider2D collider = obj.GetComponent<CircleCollider2D>();
+            if (!console)
+            {
+                console = obj.AddComponent<Console>();
+                console.checkWalls = true;
+                console.usableDistance = 0.7f;
+                console.TaskTypes = new TaskTypes[0];
+                console.ValidTasks = new UnhollowerBaseLib.Il2CppReferenceArray<TaskSet>(0);
+                var list = MapUtilities.CachedShipStatus.AllConsoles.ToList();
+                list.Add(console);
+                MapUtilities.CachedShipStatus.AllConsoles = new(list.ToArray());
+            }
+            if (console.Image == null)
+            {
+                console.Image = obj.GetComponent<SpriteRenderer>();
+                console.Image.material = new Material(MapUtilities.CachedShipStatus.AllConsoles[0].Image.material);
+            }
+            if (!collider)
+            {
+                collider = obj.AddComponent<CircleCollider2D>();
+                collider.radius = 0.4f;
+                collider.isTrigger = true;
+            }
+            return console;
+        }
+        public static AutoTaskConsole ActivateAutoTaskConsole(GameObject obj)
+        {
+            if (obj == null)
+            {
+                Logger.Error($"ActivateConsole Object was not found!", "");
+                return null;
+            }
+            obj.layer = LayerMask.NameToLayer("ShortObjects");
+            AutoTaskConsole console = obj.GetComponent<AutoTaskConsole>();
+            PassiveButton button = obj.GetComponent<PassiveButton>();
+            CircleCollider2D collider = obj.GetComponent<CircleCollider2D>();
+            if (!console)
+            {
+                console = obj.AddComponent<AutoTaskConsole>();
+                console.checkWalls = true;
+                console.usableDistance = 0.7f;
+                console.TaskTypes = new TaskTypes[0];
+                console.ValidTasks = new(0);
+                var list = MapUtilities.CachedShipStatus.AllConsoles.ToList();
+                list.Add(console);
+                MapUtilities.CachedShipStatus.AllConsoles = new(list.ToArray());
+            }
+            if (console.Image == null)
+            {
+                console.Image = obj.GetComponent<SpriteRenderer>();
+                console.Image.material = new Material(MapUtilities.CachedShipStatus.AllConsoles[0].Image.material);
+            }
+            if (!collider)
+            {
+                collider = obj.AddComponent<CircleCollider2D>();
+                collider.radius = 0.4f;
+                collider.isTrigger = true;
+            }
+            return console;
+        }
+        public static MurderAttemptResult CheckMurderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
             // The local player checks for the validity of the kill and performs it afterwards (different to vanilla, where the host performs all the checks)
             // The kill attempt will be shared using a custom RPC, hence combining modded and unmodded versions is impossible
 
             tien = 0;
 
-            MurderAttemptResult murder = CheckMuderAttempt(killer, target, isMeetingStart);
+            MurderAttemptResult murder = CheckMurderAttempt(killer, target, isMeetingStart);
             if (murder == MurderAttemptResult.PerformKill)
             {
                 if (tien <= 0)
@@ -732,6 +808,27 @@ namespace SuperNewRoles
         /// <summary>keyCodesが押されているか</summary>
         public static bool GetManyKeyDown(KeyCode[] keyCodes) =>
             keyCodes.All(x => Input.GetKey(x)) && keyCodes.Any(x => Input.GetKeyDown(x));
+
+        public static void AddRanges(this List<PlayerControl> list, List<PlayerControl>[] collections)
+        {
+            foreach (var c in collections)
+                list.AddRange(c);
+        }
+
+        public static string GetRPCNameFromByte(byte callId) =>
+            Enum.GetName(typeof(RpcCalls), callId) != null ? // RpcCallsに当てはまる
+                Enum.GetName(typeof(RpcCalls), callId) :
+            Enum.GetName(typeof(CustomRPC), callId) != null ? // CustomRPCに当てはまる
+                Enum.GetName(typeof(CustomRPC), callId) :
+            $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}";
+        public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptionHolder.IsDebugMode.GetBool();
+        /// <summary>
+        /// 文字列が半角かどうかを判定します
+        /// </summary>
+        /// <remarks>半角の判定を正規表現で行います。半角カタカナは「ｦ」～半濁点を半角とみなします</remarks>
+        /// <param name="target">対象の文字列</param>
+        /// <returns>文字列が半角の場合はtrue、それ以外はfalse</returns>
+        public static bool IsOneByteOnlyString(string target) => new Regex("^[\u0020-\u007E\uFF66-\uFF9F]+$").IsMatch(target);
     }
     public static class CreateFlag
     {

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
-
 using UnityEngine;
+
 
 namespace SuperNewRoles.Roles
 {
@@ -17,25 +17,49 @@ namespace SuperNewRoles.Roles
             RoleClass.SeerFriends.SeerFriendsPlayer
         };
 
+        public static SpriteRenderer FullScreenRenderer;
+
+        /** <summary>
+            画面を光らせる
+            </summary>
+
+            <param name="color">
+            (new Color("r値" / 255f, "g値" / 255f, "b値" / 255f))
+            あるいはUnityのcolorコード指定で色を選択
+            </param>
+
+            <param name="duration">
+            color色に画面を光らせはじめ、終わるまでの時間(duration/2秒時に指定色に光る)
+            </param>
+        **/
         public static void ShowFlash(Color color, float duration = 1f)
-        {//画面を光らせる
-            if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
-            FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
-            FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
-            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
+        {
+            var renderer = FastDestroyableSingleton<HudManager>.Instance;
+            if (renderer == null || FullScreenRenderer == null) return;
+            FullScreenRenderer.gameObject.SetActive(true);
+            FullScreenRenderer.enabled = true;
+            renderer.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
             {
-                var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
                 if (p < 0.5)
                 {
-                    if (renderer != null)
-                        renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
+                    if (FullScreenRenderer != null)
+                    {
+                        FullScreenRenderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
+                    }
                 }
                 else
                 {
-                    if (renderer != null)
-                        renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
+                    if (FullScreenRenderer != null)
+                    {
+                        FullScreenRenderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
+                    }
                 }
-                if (p == 1f && renderer != null) renderer.enabled = false;
+                if (p == 1f && FullScreenRenderer != null)
+                {
+                    FullScreenRenderer.enabled = true;
+                    FullScreenRenderer.gameObject.SetActive(false);
+                    Logger.Info("発動待機状態に戻しました。", "SetActive(false)");
+                }
             })));
         }
         private static Sprite SoulSprite;

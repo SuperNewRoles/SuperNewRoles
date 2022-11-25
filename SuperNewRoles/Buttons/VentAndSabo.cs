@@ -17,7 +17,7 @@ namespace SuperNewRoles.Buttons
                 Il2CppSystem.Collections.Generic.List<Vector2> locations = task.Locations;
                 for (int i = 0; i < locations.Count; i++)
                 {
-                    Vector3 localPosition = locations[i] / ShipStatus.Instance.MapScale;
+                    Vector3 localPosition = locations[i] / MapUtilities.CachedShipStatus.MapScale;
                     localPosition.z = -1f;
                     PooledMapIcon pooledMapIcon = __instance.icons.Get<PooledMapIcon>();
                     pooledMapIcon.transform.localScale = new Vector3(
@@ -60,8 +60,9 @@ namespace SuperNewRoles.Buttons
         [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
         class MapBehaviourPatch
         {
-            public static bool Prefix(MapBehaviour __instance)
+            public static bool Prefix(MapBehaviour __instance, ref bool __state)
             {
+                __state = false;
                 if (!MeetingHud.Instance)
                 {
                     if (PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
@@ -70,8 +71,18 @@ namespace SuperNewRoles.Buttons
                         FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                         return false;
                     }
+                    if (PlayerControl.LocalPlayer.IsImpostor() && !PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
+                    {
+                        PlayerControl.LocalPlayer.Data.Role.TeamType = RoleTeamTypes.Crewmate;
+                        __state = true;
+                        return true;
+                    }
                 }
                 return true;
+            }
+            public static void Postfix(ref bool __state)
+            {
+                if (__state) PlayerControl.LocalPlayer.Data.Role.TeamType = RoleTeamTypes.Impostor;
             }
         }
         [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent))]
@@ -101,35 +112,6 @@ namespace SuperNewRoles.Buttons
                 bool roleCouldUse = @object.IsUseVent();
 
                 var usableDistance = __instance.UsableDistance;
-
-                if (SubmergedCompatibility.isSubmerged())
-                {
-                    // as submerged does, only change stuff for vents 9 and 14 of submerged. Code partially provided by AlexejheroYTB
-                    if (SubmergedCompatibility.getInTransition())
-                    {
-                        __result = float.MaxValue;
-                        return canUse = couldUse = false;
-                    }
-                    switch (__instance.Id)
-                    {
-                        case 9:  // Cannot enter vent 9 (Engine Room Exit Only Vent)!
-                            if (PlayerControl.LocalPlayer.inVent) break;
-                            __result = float.MaxValue;
-                            return canUse = couldUse = false;
-                        case 14: // Lower Central
-                            __result = float.MaxValue;
-                            couldUse = roleCouldUse && !pc.IsDead && (@object.CanMove || @object.inVent);
-                            canUse = couldUse;
-                            if (canUse)
-                            {
-                                Vector3 center = @object.Collider.bounds.center;
-                                Vector3 position = __instance.transform.position;
-                                __result = Vector2.Distance(center, position);
-                                canUse &= __result <= __instance.UsableDistance;
-                            }
-                            return false;
-                    }
-                }
 
                 couldUse = (@object.inVent || roleCouldUse) && !pc.IsDead && (@object.CanMove || @object.inVent);
                 canUse = couldUse;
@@ -192,7 +174,7 @@ namespace SuperNewRoles.Buttons
         {
             public static void Prefix(Vent __instance, ref bool enabled)
             {
-                if (PlayerControl.LocalPlayer.IsMadRoles()) enabled = false;
+                if (PlayerControl.LocalPlayer.IsMadRoles() && !CustomOptionHolder.MadRolesCanVentMove.GetBool()) enabled = false;
             }
         }
 

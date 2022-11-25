@@ -12,7 +12,7 @@ using UnityEngine.Events;
 
 namespace SuperNewRoles.Patches
 {
-    class SNROnlySearch
+    public static class SNROnlySearch
     {
         public static byte currentMapId;
         static KeyValueOption MapNameOption;

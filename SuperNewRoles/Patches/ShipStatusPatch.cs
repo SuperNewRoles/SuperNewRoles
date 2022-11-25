@@ -50,7 +50,8 @@ namespace SuperNewRoles.Patches
 
             if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4) // 停電を直そうとした
             {
-                if (player.IsMadRoles() && !CustomOptionHolder.MadRolesCanFixElectrical.GetBool())
+                if ((player.IsMadRoles() && !CustomOptionHolder.MadRolesCanFixElectrical.GetBool()) ||
+                    player.IsRole(RoleId.Vampire, RoleId.Dependents))
                 {
                     return false;
                 }
@@ -133,15 +134,13 @@ namespace SuperNewRoles.Patches
         }
         public static float GetNeutralLightRadius(ShipStatus shipStatus, bool isImpostor)
         {
-            if (SubmergedCompatibility.isSubmerged()) return SubmergedCompatibility.GetSubmergedNeutralLightRadius(isImpostor);
             if (Clergyman.IsLightOutVision()) return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision;
             if (isImpostor) return shipStatus.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
 
             SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
             float lerpValue = switchSystem.Value / 255f;
-
             var LocalPlayer = PlayerControl.LocalPlayer;
-            if (LocalPlayer.IsRole(RoleId.Nocturnality))
+            if (LocalPlayer.IsRole(RoleId.Nocturnality, RoleId.Dependents))
             {
                 lerpValue = 1 - lerpValue;
             }
@@ -163,24 +162,24 @@ namespace SuperNewRoles.Patches
                 {
                     skeld = GameObject.Find("SkeldShip(Clone)");
                     skeld.transform.localScale = new Vector3(-1.2f, 1.2f, 1.2f);
-                    ShipStatus.Instance.InitialSpawnCenter = new Vector2(0.8f, 0.6f);
-                    ShipStatus.Instance.MeetingSpawnCenter = new Vector2(0.8f, 0.6f);
+                    MapUtilities.CachedShipStatus.InitialSpawnCenter = new Vector2(0.8f, 0.6f);
+                    MapUtilities.CachedShipStatus.MeetingSpawnCenter = new Vector2(0.8f, 0.6f);
                 }
                 else if (PlayerControl.GameOptions.MapId == 1)
                 {
                     mira = GameObject.Find("MiraShip(Clone)");
                     mira.transform.localScale = new Vector3(-1f, 1f, 1f);
-                    ShipStatus.Instance.InitialSpawnCenter = new Vector2(4.4f, 2.2f);
-                    ShipStatus.Instance.MeetingSpawnCenter = new Vector2(-25.3921f, 2.5626f);
-                    ShipStatus.Instance.MeetingSpawnCenter2 = new Vector2(-25.3921f, 2.5626f);
+                    MapUtilities.CachedShipStatus.InitialSpawnCenter = new Vector2(4.4f, 2.2f);
+                    MapUtilities.CachedShipStatus.MeetingSpawnCenter = new Vector2(-25.3921f, 2.5626f);
+                    MapUtilities.CachedShipStatus.MeetingSpawnCenter2 = new Vector2(-25.3921f, 2.5626f);
                 }
                 else if (PlayerControl.GameOptions.MapId == 2)
                 {
                     polus = GameObject.Find("PolusShip(Clone)");
                     polus.transform.localScale = new Vector3(-1f, 1f, 1f);
-                    ShipStatus.Instance.InitialSpawnCenter = new Vector2(-16.7f, -2.1f);
-                    ShipStatus.Instance.MeetingSpawnCenter = new Vector2(-19.5f, -17f);
-                    ShipStatus.Instance.MeetingSpawnCenter2 = new Vector2(-19.5f, -17f);
+                    MapUtilities.CachedShipStatus.InitialSpawnCenter = new Vector2(-16.7f, -2.1f);
+                    MapUtilities.CachedShipStatus.MeetingSpawnCenter = new Vector2(-19.5f, -17f);
+                    MapUtilities.CachedShipStatus.MeetingSpawnCenter2 = new Vector2(-19.5f, -17f);
                 }
                 //airshipは選択スポーンシステムの対応ができてないため非表示
             }

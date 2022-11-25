@@ -61,7 +61,7 @@ namespace SuperNewRoles.Helpers
 
         public static void RpcSetDoorway(byte id, bool Open)
         {
-            ShipStatus.Instance.AllDoors.FirstOrDefault((a) => a.Id == id).SetDoorway(Open);
+            MapUtilities.CachedShipStatus.AllDoors.FirstOrDefault((a) => a.Id == id).SetDoorway(Open);
         }
         public static void RpcSetDoorway(this PlainDoor door, bool Open)
         {
@@ -184,11 +184,11 @@ namespace SuperNewRoles.Helpers
         }
         public static void RPCSetRoleUnchecked(this PlayerControl player, RoleTypes roletype)
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetVanilaRole, SendOption.Reliable);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedSetVanillaRole, SendOption.Reliable);
             writer.Write(player.PlayerId);
             writer.Write((byte)roletype);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.UncheckedSetVanilaRole(player.PlayerId, (byte)roletype);
+            RPCProcedure.UncheckedSetVanillaRole(player.PlayerId, (byte)roletype);
         }
         /// <summary>
         /// 役職をリセットし、新しい役職に変更します。
@@ -228,7 +228,7 @@ namespace SuperNewRoles.Helpers
             foreach (var i in new[] { 79, 80, 81, 82 })
             {
                 Logger.Info($"amount:{i}", "RpcOpenToilet");
-                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, i);
+                MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Doors, i);
             }
         }
     }

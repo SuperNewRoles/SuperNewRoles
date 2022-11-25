@@ -104,21 +104,23 @@ namespace SuperNewRoles.Roles
         {
             var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
             var misfire = !IsMeetingSheriffKill(Target);
+            var alwaysKill = !IsMeetingSheriffKill(Target) && CustomOptionHolder.MeetingSheriffAlwaysKills.GetBool();
             var TargetID = Target.PlayerId;
             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
-            RPCProcedure.MeetingSheriffKill(LocalID, TargetID, misfire);
+            RPCProcedure.MeetingSheriffKill(LocalID, TargetID, misfire, alwaysKill);
 
             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.MeetingSheriffKill, SendOption.Reliable, -1);
             killWriter.Write(LocalID);
             killWriter.Write(TargetID);
             killWriter.Write(misfire);
+            killWriter.Write(alwaysKill);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
             FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, misfire ? FinalStatus.MeetingSheriffMisFire : (Target.IsRole(RoleId.HauntedWolf) ? FinalStatus.MeetingSheriffHauntedWolfKill : FinalStatus.MeetingSheriffKill));
             RoleClass.MeetingSheriff.KillMaxCount--;
             if (RoleClass.MeetingSheriff.KillMaxCount <= 0 || !RoleClass.MeetingSheriff.OneMeetingMultiKill || misfire)
             {
-                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
             }
 
         }
@@ -218,7 +220,7 @@ namespace SuperNewRoles.Roles
                 List<PlayerVoteArea> deadareas = new();
                 foreach (PlayerVoteArea area in __instance.playerStates)
                 {
-                    if (ModHelpers.PlayerById(area.TargetPlayerId).IsPlayer())
+                    if (!ModHelpers.PlayerById(area.TargetPlayerId).IsBot())
                     {
                         if (ModHelpers.PlayerById(area.TargetPlayerId).IsAlive())
                             newareas.Add(area);

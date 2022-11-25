@@ -19,9 +19,5 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                 }
             }
         }
-        public static void IsSword()
-        {
-            RoleClass.Samurai.Sword = true;
-        }
     }
 }

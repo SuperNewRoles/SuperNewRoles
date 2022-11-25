@@ -43,6 +43,7 @@ namespace SuperNewRoles.Roles.Attribute
         static void guesserOnClick(int buttonTarget, MeetingHud __instance)
         {
             if (guesserUI != null || !(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted)) return;
+            if (__instance.playerStates[buttonTarget].AmDead) return;
             Page = 1;
             RoleButtons = new();
             RoleSelectButtons = new();
@@ -171,12 +172,20 @@ namespace SuperNewRoles.Roles.Attribute
             {
                 if (roleInfo == null ||
                     roleInfo.RoleId == RoleId.Hunter ||
-                    roleInfo.RoleId is RoleId.Assassin or RoleId.Marine ||
                     (roleInfo != IntroData.CrewmateIntro && roleInfo != IntroData.ImpostorIntro && IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0))
                 {
                     Logger.Info("continueになりました:" + roleInfo.RoleId, "Guesser");
                     continue; // Not guessable roles
                 }
+                CreateRole(roleInfo);
+            }
+            if (CustomOptionHolder.JackalOption.GetSelection() is not 0 && CustomOptionHolder.JackalCreateSidekick.GetBool()) CreateRole(IntroData.SidekickIntro);
+            if (CustomOptionHolder.JackalSeerOption.GetSelection() is not 0 && CustomOptionHolder.JackalSeerCreateSidekick.GetBool()) CreateRole(IntroData.SidekickSeerIntro);
+            if (CustomOptionHolder.PavlovsownerOption.GetSelection() is not 0) CreateRole(IntroData.PavlovsdogsIntro);
+            if (CustomOptionHolder.RevolutionistAndDictatorOption.GetSelection() is not 0) { CreateRole(IntroData.DictatorIntro); CreateRole(IntroData.RevolutionistIntro); }
+            if (CustomOptionHolder.AssassinAndMarineOption.GetSelection() is not 0) { CreateRole(IntroData.AssassinIntro); CreateRole(IntroData.MarineIntro); }
+            void CreateRole(IntroData roleInfo)
+            {
                 if (40 <= i[(int)roleInfo.Team]) i[(int)roleInfo.Team] = 0;
                 Transform buttonParent = new GameObject().transform;
                 buttonParent.SetParent(container);

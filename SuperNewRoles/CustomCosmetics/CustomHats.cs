@@ -354,6 +354,15 @@ namespace SuperNewRoles.CustomCosmetics
                     List<CustomHat> hats = CreateCustomHatDetails(filePaths, true);
                     if (hats.Count > 0)
                     {
+                        CreateHatSprite(hats[0].resource, true);
+                        if (hats[0].backresource != null)
+                            CreateHatSprite(hats[0].backresource, true);
+                        if (hats[0].climbresource != null)
+                            CreateHatSprite(hats[0].climbresource, true);
+                        if (hats[0].flipresource != null)
+                            CreateHatSprite(hats[0].flipresource, true);
+                        if (hats[0].backflipresource != null)
+                            CreateHatSprite(hats[0].backflipresource, true);
                         foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                         {
                             var color = pc.CurrentOutfit.ColorId;
@@ -527,10 +536,6 @@ namespace SuperNewRoles.CustomCosmetics
                 }
                 return true;
             }
-
-            public static void Postfix(HatsTab __instance)
-            {
-            }
         }
     }
 
@@ -546,8 +551,6 @@ namespace SuperNewRoles.CustomCosmetics
 
             { "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master", "mememurahat" },
             { "https://raw.githubusercontent.com/Ujet222/TOPHats/main", "YJ" },
-
-            { "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master", "TheOtherRolesGMHaoming"},
         };
 
         public static List<string> CachedRepos = new();
@@ -563,6 +566,7 @@ namespace SuperNewRoles.CustomCosmetics
 
         private static async Task LaunchHatFetcherAsync()
         {
+            if (ConfigRoles.DebugMode.Value) return;
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\");
             hatDetails = new List<CustomHatOnline>();

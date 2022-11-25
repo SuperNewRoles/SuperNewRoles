@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using SuperNewRoles.CustomObject;
 using UnityEngine;
+using Hazel;
+using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles
 {
@@ -38,6 +40,37 @@ namespace SuperNewRoles.Roles
                     RoleClass.Vulture.Arrow.Update(target.transform.position, color: RoleClass.Vulture.color);
                 }
                 RoleClass.Vulture.Arrow.arrow.SetActive(target != null);
+            }
+        }
+        public static void RpcCleanDeadBody(int? count)
+        {
+            foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+            {
+                if (collider2D.tag != "DeadBody") continue;
+
+                DeadBody component = collider2D.GetComponent<DeadBody>();
+                if (component && !component.Reported)
+                {
+                    Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                    Vector2 truePosition2 = component.TruePosition;
+                    if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance
+                        && PlayerControl.LocalPlayer.CanMove
+                        && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                    {
+                        GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
+
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CleanBody, SendOption.Reliable, -1);
+                        writer.Write(playerInfo.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        RPCProcedure.CleanBody(playerInfo.PlayerId);
+                        if (count != null)
+                        {
+                            count--;
+                            Logger.Info($"DeadBodyCount:{count}", "Vulture");
+                        }
+                        break;
+                    }
+                }
             }
         }
     }
