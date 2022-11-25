@@ -958,7 +958,6 @@ namespace SuperNewRoles.Buttons
                             RPCProcedure.CreateSidekick(target.PlayerId, isFakeSidekick);
                         }
                         RoleClass.Jackal.CanCreateSidekick = false;
-                        Jackal.ResetCooldown();
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick && CustomOptionHolder.JackalCreateSidekick.GetBool(); },
@@ -996,7 +995,6 @@ namespace SuperNewRoles.Buttons
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                         RPCProcedure.CreateSidekickSeer(target.PlayerId, IsFakeSidekickSeer);
                         RoleClass.JackalSeer.CanCreateSidekick = false;
-                        JackalSeer.ResetCooldown();
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.CanCreateSidekick && CustomOptionHolder.JackalSeerCreateSidekick.GetBool(); },
@@ -1236,14 +1234,20 @@ namespace SuperNewRoles.Buttons
                             {
                                 misfire = !Sheriff.IsChiefSheriffKill(target);
                             }
+                            var alwaysKill = !Sheriff.IsSheriffKill(target) && CustomOptionHolder.SheriffAlwaysKills.GetBool();
+                            if (RoleClass.Chief.SheriffPlayer.Contains(localId))
+                            {
+                                alwaysKill = !Sheriff.IsChiefSheriffKill(target) && CustomOptionHolder.ChiefSheriffAlwaysKills.GetBool();
+                            }
                             var targetId = target.PlayerId;
 
-                            RPCProcedure.SheriffKill(localId, targetId, misfire);
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1);
-                            writer.Write(localId);
-                            writer.Write(targetId);
-                            writer.Write(misfire);
-                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            RPCProcedure.SheriffKill(localId, targetId, misfire, alwaysKill);
+                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1);
+                            killWriter.Write(localId);
+                            killWriter.Write(targetId);
+                            killWriter.Write(misfire);
+                            killWriter.Write(alwaysKill);
+                            AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                             FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : target, misfire ? FinalStatus.SheriffMisFire : (target.IsRole(RoleId.HauntedWolf) ? FinalStatus.SheriffHauntedWolfKill : FinalStatus.SheriffKill));
                             Sheriff.ResetKillCooldown();
                             RoleClass.Sheriff.KillMaxCount--;
@@ -1290,13 +1294,13 @@ namespace SuperNewRoles.Buttons
                 {
                     if (ClergymanLightOutButton.isEffectActive)
                     {
-                        ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
-                        ClergymanLightOutButton.Timer = ClergymanLightOutButton.MaxTimer;
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
                         writer.Write(false);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.RPCClergymanLightOut(false);
                         ClergymanLightOutButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                        ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
+                        ClergymanLightOutButton.Timer = ClergymanLightOutButton.MaxTimer;
                     }
                     else
                     {
@@ -1320,12 +1324,12 @@ namespace SuperNewRoles.Buttons
                 5f,
                 () =>
                 {
+                    ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
+                    ClergymanLightOutButton.Timer = ClergymanLightOutButton.MaxTimer;
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCClergymanLightOut, SendOption.Reliable, -1);
                     writer.Write(false);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.RPCClergymanLightOut(false);
-                    ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
-                    ClergymanLightOutButton.Timer = ClergymanLightOutButton.MaxTimer;
                 }
             )
             {
@@ -1903,6 +1907,7 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.CanMove)
                     {
                         Samurai.SamuraiKill();
+                        RoleClass.Samurai.Sword = true;
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Samurai && ModeHandler.IsMode(ModeId.Default) && !RoleClass.Samurai.Sword; },

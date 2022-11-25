@@ -1,13 +1,11 @@
-using System.Collections.ObjectModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using HarmonyLib;
 using Hazel;
-
-
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using TMPro;
@@ -824,7 +822,13 @@ namespace SuperNewRoles
                 Enum.GetName(typeof(CustomRPC), callId) :
             $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}";
         public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptionHolder.IsDebugMode.GetBool();
-
+        /// <summary>
+        /// 文字列が半角かどうかを判定します
+        /// </summary>
+        /// <remarks>半角の判定を正規表現で行います。半角カタカナは「ｦ」～半濁点を半角とみなします</remarks>
+        /// <param name="target">対象の文字列</param>
+        /// <returns>文字列が半角の場合はtrue、それ以外はfalse</returns>
+        public static bool IsOneByteOnlyString(string target) => new Regex("^[\u0020-\u007E\uFF66-\uFF9F]+$").IsMatch(target);
     }
     public static class CreateFlag
     {

@@ -1,11 +1,61 @@
+using System;
+using System.Collections.Generic;
 using HarmonyLib;
+using Hazel;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
+using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.MapOptions
 {
-    public class DeviceClass
+    public static class DeviceClass
     {
+        public static bool IsAdminRestrict;
+        public static bool IsVitalRestrict;
+        public static bool IsCameraRestrict;
+        public static float AdminTimer;
+        public static float VitalTimer;
+        public static float CameraTimer;
+        public static DateTime AdminStartTime;
+        public static DateTime VitalStartTime;
+        public static DateTime CameraStartTime;
+        public static Dictionary<DeviceType, PlayerControl> DeviceUsePlayer;
+        public static Dictionary<DeviceType, DateTime> DeviceUserUseTime;
+        public static TextMeshPro TimeRemaining;
+        public enum DeviceType
+        {
+            Admin,
+            Camera,
+            Vital
+        }
+        
+        public static void ClearAndReload()
+        {
+            /*
+            IsAdminLimit = MapOption.Admin&& MapOption.IsAdminLimit.GetBool();
+            AdminTimer = MapOption.AdminTimerOption.GetFloat();
+            */
+            if (MapOption.RestrictDevicesOption.GetBool())
+            {
+                IsAdminRestrict = MapOption.RestrictAdmin.GetBool();
+                AdminTimer = IsAdminRestrict ? MapOption.DeviceUseAdminTime.GetFloat() : 0;
+                IsCameraRestrict = MapOption.RestrictCamera.GetBool();
+                CameraTimer = IsCameraRestrict ? MapOption.DeviceUseCameraTime.GetFloat() : 0;
+                IsVitalRestrict = MapOption.RestrictVital.GetBool();
+                VitalTimer = IsVitalRestrict ? MapOption.DeviceUseVitalOrDoorLogTime.GetFloat() : 0;
+            } else
+            {
+                IsAdminRestrict = false;
+                AdminTimer = 0;
+                IsCameraRestrict = false;
+                CameraTimer = 0;
+                IsVitalRestrict = false;
+                VitalTimer = 0;
+            }
+            DeviceUsePlayer = new() { { DeviceType.Admin, null}, { DeviceType.Camera, null }, { DeviceType.Vital, null } };
+            DeviceUserUseTime = new() { { DeviceType.Admin, new() }, { DeviceType.Camera, new() }, { DeviceType.Vital, new() } };
+        }
         [HarmonyPatch(typeof(MapConsole), nameof(MapConsole.Use))]
         public static class MapConsoleUsePatch
         {
@@ -22,11 +72,24 @@ namespace SuperNewRoles.MapOptions
                 return IsUse;
             }
         }
+        [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.Awake))]
+        class MapCountOverlayAwakePatch
+        {
+            public static void Postfix()
+            {
+                if (IsAdminRestrict && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.EvilHacker.IsMyAdmin) AdminStartTime = DateTime.UtcNow;
+            }
+        }
         [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.Update))]
         class MapCountOverlayUpdatePatch
         {
             public static bool Prefix(MapCountOverlay __instance)
             {
+                if (IsAdminRestrict && !RoleClass.EvilHacker.IsMyAdmin && AdminTimer <= 0)
+                {
+                    MapBehaviour.Instance.Close();
+                    return false;
+                }
                 bool IsUse = (MapOption.UseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) || RoleClass.EvilHacker.IsMyAdmin;
                 if (IsUse)
                 {
@@ -93,13 +156,75 @@ namespace SuperNewRoles.MapOptions
                 }
                 return false;
             }
+            public static void Postfix(MapCountOverlay __instance)
+            {
+                if (RoleClass.EvilHacker.IsMyAdmin) return;
+                if (!IsAdminRestrict) return;
+                if (CachedPlayer.LocalPlayer.IsDead())
+                {
+                    if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+                    return;
+                }
+                if (AdminTimer <= 0)
+                {
+                    MapBehaviour.Instance.Close();
+                    return;
+                }
+                MessageWriter writer;
+                if (DeviceUsePlayer[DeviceType.Admin] == null)
+                {
+                    string dateTimeString = AdminStartTime.ToString("yyyy/MM/dd HH:mm:ss");
+                    writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
+                    writer.Write((byte)DeviceType.Admin);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write(true);
+                    writer.Write(dateTimeString);
+                    writer.EndRPC();
+                    RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Admin, CachedPlayer.LocalPlayer.PlayerId, true, dateTimeString);
+                }
+                if (DeviceUsePlayer[DeviceType.Admin].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                {
+                    AdminTimer -= Time.deltaTime;
+                    writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
+                    writer.Write((byte)DeviceType.Admin);
+                    writer.Write(AdminTimer);
+                    writer.EndRPC();
+                    RPCProcedure.SetDeviceTime((byte)DeviceType.Admin, AdminTimer);
+                }
+                if (TimeRemaining == null)
+                {
+                    TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
+                    TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
+                    TimeRemaining.transform.position = Vector3.zero;
+                    TimeRemaining.transform.localPosition = new Vector3(3.25f, 5.25f);
+                    TimeRemaining.transform.localScale *= 2f;
+                    TimeRemaining.color = Palette.White;
+                }
+                TimeRemaining.text = TimeSpan.FromSeconds(AdminTimer).ToString(@"mm\:ss\.ff");
+                TimeRemaining.gameObject.SetActive(true);
+            }
         }
         [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnDisable))]
         class MapCountOverlayOnDisablePatch
         {
             public static void Postfix()
             {
+                if (RoleClass.EvilHacker.IsMyAdmin) return;
                 RoleClass.EvilHacker.IsMyAdmin = false;
+                if (!IsAdminRestrict) return;
+                if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+                if (CachedPlayer.LocalPlayer.IsDead()) return;
+                if (AdminTimer <= 0) return;
+                if (DeviceUsePlayer[DeviceType.Admin] != null && DeviceUsePlayer[DeviceType.Admin].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                {
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
+                    writer.Write((byte)DeviceType.Admin);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write(false);
+                    writer.Write("");
+                    writer.EndRPC();
+                    RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Admin, CachedPlayer.LocalPlayer.PlayerId, false, "");
+                }
             }
         }
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
@@ -107,7 +232,30 @@ namespace SuperNewRoles.MapOptions
         {
             static void Postfix(VitalsMinigame __instance)
             {
+                if (IsVitalRestrict && CachedPlayer.LocalPlayer.IsAlive() && RoleClass.Doctor.Vital == null) VitalStartTime = DateTime.UtcNow;
                 Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckVital);
+            }
+        }
+        [HarmonyPatch(typeof(Minigame), nameof(Minigame.Close), new Type[] { })]
+        class VitalCloseOpen
+        {
+            static void Postfix(Minigame __instance)
+            {
+                if (__instance is VitalsMinigame && IsVitalRestrict && CachedPlayer.LocalPlayer.IsAlive() && RoleClass.Doctor.Vital == null)
+                {
+                    if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+                    if (VitalTimer <= 0) return;
+                    if (DeviceUsePlayer[DeviceType.Vital] != null && DeviceUsePlayer[DeviceType.Vital].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                    {
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
+                        writer.Write((byte)DeviceType.Vital);
+                        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                        writer.Write(false);
+                        writer.Write("");
+                        writer.EndRPC();
+                        RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Vital, CachedPlayer.LocalPlayer.PlayerId, false, "");
+                    }
+                }
             }
         }
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Update))]
@@ -119,6 +267,49 @@ namespace SuperNewRoles.MapOptions
                 {
                     __instance.Close();
                 }
+                if (!IsVitalRestrict || RoleClass.Doctor.Vital != null) return;
+                if (CachedPlayer.LocalPlayer.IsDead())
+                {
+                    if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+                    return;
+                }
+                if (VitalTimer <= 0)
+                {
+                    __instance.Close();
+                    return;
+                }
+                MessageWriter writer;
+                if (DeviceUsePlayer[DeviceType.Vital] == null)
+                {
+                    string dateTimeString = VitalStartTime.ToString("yyyy/MM/dd HH:mm:ss");
+                    writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
+                    writer.Write((byte)DeviceType.Vital);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write(true);
+                    writer.Write(dateTimeString);
+                    writer.EndRPC();
+                    RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Vital, CachedPlayer.LocalPlayer.PlayerId, true, dateTimeString);
+                }
+                if (DeviceUsePlayer[DeviceType.Vital].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                {
+                    VitalTimer -= Time.deltaTime;
+                    writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
+                    writer.Write((byte)DeviceType.Vital);
+                    writer.Write(VitalTimer);
+                    writer.EndRPC();
+                    RPCProcedure.SetDeviceTime((byte)DeviceType.Vital, VitalTimer);
+                }
+                if (TimeRemaining == null)
+                {
+                    TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
+                    TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
+                    TimeRemaining.transform.position = Vector3.zero;
+                    TimeRemaining.transform.localPosition = new Vector3(1.7f, 4.45f);
+                    TimeRemaining.transform.localScale *= 1.8f;
+                    TimeRemaining.color = Palette.White;
+                }
+                TimeRemaining.text = TimeSpan.FromSeconds(VitalTimer).ToString(@"mm\:ss\.ff");
+                TimeRemaining.gameObject.SetActive(true);
             }
         }
         [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Update))]
@@ -130,7 +321,92 @@ namespace SuperNewRoles.MapOptions
                 {
                     __instance.Close();
                 }
+                CameraUpdate(__instance);
             }
+        }
+        static bool IsCameraCloseNow;
+        static void CameraClose()
+        {
+            if (!IsCameraRestrict || CachedPlayer.LocalPlayer.IsDead()) return;
+            IsCameraCloseNow = true;
+            if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+            if (CameraTimer <= 0) return;
+            if (DeviceUsePlayer[DeviceType.Camera] != null && DeviceUsePlayer[DeviceType.Camera].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
+                writer.Write((byte)DeviceType.Camera);
+                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                writer.Write(false);
+                writer.Write("");
+                writer.EndRPC();
+                RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Camera, CachedPlayer.LocalPlayer.PlayerId, false, "");
+            }
+        }
+        static void CameraUpdate(Minigame __instance)
+        {
+            if (!IsCameraRestrict) return;
+            if (CachedPlayer.LocalPlayer.IsDead())
+            {
+                if (TimeRemaining != null) GameObject.Destroy(TimeRemaining.gameObject);
+                return;
+            }
+            if (IsCameraCloseNow) return;
+            if (CameraTimer <= 0)
+            {
+                __instance.Close();
+                return;
+            }
+            MessageWriter writer;
+            if (DeviceUsePlayer[DeviceType.Camera] == null)
+            {
+                string dateTimeString = CameraStartTime.ToString("yyyy/MM/dd HH:mm:ss");
+                writer = RPCHelper.StartRPC(CustomRPC.SetDeviceUseStatus);
+                writer.Write((byte)DeviceType.Camera);
+                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                writer.Write(true);
+                writer.Write(dateTimeString);
+                writer.EndRPC();
+                RPCProcedure.SetDeviceUseStatus((byte)DeviceType.Camera, CachedPlayer.LocalPlayer.PlayerId, true, dateTimeString);
+            }
+            if (DeviceUsePlayer[DeviceType.Camera].PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                CameraTimer -= Time.deltaTime;
+                writer = RPCHelper.StartRPC(CustomRPC.SetDeviceTime);
+                writer.Write((byte)DeviceType.Camera);
+                writer.Write(CameraTimer);
+                writer.EndRPC();
+                RPCProcedure.SetDeviceTime((byte)DeviceType.Camera, CameraTimer);
+            }
+            if (TimeRemaining == null)
+            {
+                TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
+                TimeRemaining.alignment = TextAlignmentOptions.BottomRight;
+                TimeRemaining.transform.position = Vector3.zero;
+                TimeRemaining.transform.localPosition = new Vector3(0.95f, 4.45f);
+                TimeRemaining.transform.localScale *= 1.8f;
+                TimeRemaining.color = Palette.White;
+            }
+            TimeRemaining.text = TimeSpan.FromSeconds(CameraTimer).ToString(@"mm\:ss\.ff");
+            TimeRemaining.gameObject.SetActive(true);
+        }
+        [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Close))]
+        class PlanetSurveillanceMinigameClosePatch
+        {
+            public static void Postfix() => CameraClose();
+        }
+        [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Close))]
+        class SurveillanceMinigameClosePatch {
+            public static void Postfix() => CameraClose();
+        }
+        [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Begin))]
+        class PlanetSurveillanceMinigameBeginPatch
+        {
+            public static void Postfix() => IsCameraCloseNow = false;
+        }
+        [HarmonyPatch(typeof(SurveillanceMinigame), nameof(SurveillanceMinigame.Begin))]
+        class SurveillanceMinigameBeginPatch
+        {
+            public static void Postfix() => IsCameraCloseNow = false;
         }
 
         [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Update))]
@@ -142,6 +418,7 @@ namespace SuperNewRoles.MapOptions
                 {
                     __instance.Close();
                 }
+                CameraUpdate(__instance);
             }
         }
 
@@ -154,6 +431,7 @@ namespace SuperNewRoles.MapOptions
                 {
                     __instance.Close();
                 }
+                CameraUpdate(__instance);
             }
         }
     }
