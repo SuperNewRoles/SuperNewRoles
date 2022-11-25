@@ -11,7 +11,7 @@ namespace SuperNewRoles.CustomCosmetics
     {
         protected static Dictionary<int, string> ColorStrings = new();
         public static List<int> lighterColors = new() { 3, 4, 5, 7, 10, 11, 13, 14, 17 };
-        public static uint pickableColors = (uint)Palette.ColorNames.Length;
+        public static uint pickAbleColors = (uint)Palette.ColorNames.Length;
 
         public enum ColorType
         {
@@ -110,9 +110,9 @@ namespace SuperNewRoles.CustomCosmetics
         };
         public static void Load()
         {
-            List<StringNames> longlist = Enumerable.ToList(Palette.ColorNames);
-            List<Color32> colorlist = Enumerable.ToList(Palette.PlayerColors);
-            List<Color32> shadowlist = Enumerable.ToList(Palette.ShadowColors);
+            List<StringNames> longList = Enumerable.ToList(Palette.ColorNames);
+            List<Color32> colorList = Enumerable.ToList(Palette.PlayerColors);
+            List<Color32> shadowList = Enumerable.ToList(Palette.ShadowColors);
 
 
             List<CustomColor> colors = new();
@@ -126,7 +126,7 @@ namespace SuperNewRoles.CustomCosmetics
                 }
                 colors.Add(new CustomColor
                 {
-                    longname = $"color{dic.Key}",
+                    longName = $"color{dic.Key}",
                     color = dic.Value.Item1,
                     shadow = dic.Value.Item2,
                     isLighterColor = true
@@ -136,36 +136,36 @@ namespace SuperNewRoles.CustomCosmetics
             {
                 colors.Add(new CustomColor
                 {
-                    longname = $"color{dic.Key}",
+                    longName = $"color{dic.Key}",
                     color = dic.Value.Item1,
                     shadow = dic.Value.Item2,
                     isLighterColor = false
                 });
             }
-            pickableColors += (uint)colors.Count; // Colors to show in Tab
+            pickAbleColors += (uint)colors.Count; // Colors to show in Tab
             /** Hidden Colors **/
 
             /** Add Colors **/
             int id = 50000;
             foreach (CustomColor cc in colors)
             {
-                longlist.Add((StringNames)id);
-                ColorStrings[id++] = cc.longname;
-                colorlist.Add(cc.color);
-                shadowlist.Add(cc.shadow);
+                longList.Add((StringNames)id);
+                ColorStrings[id++] = cc.longName;
+                colorList.Add(cc.color);
+                shadowList.Add(cc.shadow);
                 if (cc.isLighterColor)
-                    lighterColors.Add(colorlist.Count - 1);
+                    lighterColors.Add(colorList.Count - 1);
             }
 
-            Palette.ColorNames = longlist.ToArray();
-            Palette.PlayerColors = colorlist.ToArray();
-            Palette.ShadowColors = shadowlist.ToArray();
+            Palette.ColorNames = longList.ToArray();
+            Palette.PlayerColors = colorList.ToArray();
+            Palette.ShadowColors = shadowList.ToArray();
         }
 
 
         protected internal struct CustomColor
         {
-            public string longname;
+            public string longName;
             public Color32 color;
             public Color32 shadow;
             public bool isLighterColor;
@@ -231,7 +231,7 @@ namespace SuperNewRoles.CustomCosmetics
                 public static void Postfix()
                 {
                     if (!needsPatch) return;
-                    LegacySaveManager.colorConfig %= CustomColors.pickableColors;
+                    LegacySaveManager.colorConfig %= CustomColors.pickAbleColors;
                     needsPatch = false;
                 }
             }
@@ -254,9 +254,9 @@ namespace SuperNewRoles.CustomCosmetics
                     if (isTaken(__instance, color) || color >= Palette.PlayerColors.Length)
                     {
                         int num = 0;
-                        while (num++ < 50 && (color >= CustomColors.pickableColors || isTaken(__instance, color)))
+                        while (num++ < 50 && (color >= CustomColors.pickAbleColors || isTaken(__instance, color)))
                         {
-                            color = (color + 1) % CustomColors.pickableColors;
+                            color = (color + 1) % CustomColors.pickAbleColors;
                         }
                     }
                     //Logger.Info(color.ToString() + "をセット:" + isTaken(__instance, color).ToString()+":"+ (color >= Palette.PlayerColors.Length));
