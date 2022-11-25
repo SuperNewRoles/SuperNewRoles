@@ -187,7 +187,7 @@ namespace SuperNewRoles.CustomCosmetics
                         string text = ColorStrings[(int)name];
                         if (text != null)
                         {
-                            __result = ModTranslation.GetString(text) + " (MOD)";
+                            __result = $"{ModTranslation.GetString(text)}(MOD)";
                             return false;
                         }
                     }
