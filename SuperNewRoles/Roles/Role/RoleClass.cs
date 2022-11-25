@@ -1472,11 +1472,13 @@ namespace SuperNewRoles.Roles
             public static Color32 color = Color.yellow;
             public static bool ChangeRoleView;
             public static List<PlayerControl> ViewPlayers;
+            public static float FlashTime;
             public static void ClearAndReload()
             {
                 CelebrityPlayer = new();
                 ChangeRoleView = CustomOptionHolder.CelebrityChangeRoleView.GetBool();
                 ViewPlayers = new();
+                FlashTime = PlayerControl.GameOptions.KillCooldown * 1000;
             }
         }
         public static class Nocturnality

@@ -78,6 +78,7 @@ namespace SuperNewRoles.Patches
                 exiled = null;
             }
 
+            Roles.Crewmate.Celebrity.WrapUp();
             Kunoichi.WrapUp();
             SerialKiller.WrapUp();
             Assassin.WrapUp();
