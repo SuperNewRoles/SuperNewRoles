@@ -1,3 +1,4 @@
+using System;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Achievement;
@@ -278,6 +279,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 writer.Write(AchievementManagerSNR.SelectedData.Id);
                 writer.EndRPC();
+                AchievementManagerSNR.GameStartTime = DateTime.UtcNow;
                 if (CustomOptionHolder.IsSNROnlySearch.GetBool())
                 {
                     PlayerControl.GameOptions.MapId = SNROnlySearch.currentMapId;

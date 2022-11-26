@@ -256,7 +256,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             {
                 AchievementGroup = new GameObject("AchievementGroup").transform;
                 AchievementGroup.parent = PlayerCustomizationMenu.Instance?.transform;
-                AchievementGroup.localPosition = new(-3.31f, 1.78f, -5);
+                AchievementGroup.position = new(AchievementGroup.position.x, AchievementGroup.position.y, -35);
+                AchievementGroup.localPosition = new(-3.6633f, 2, -5);
             }
             if (AchievementButtonGroup == null)
             {
@@ -273,7 +274,6 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static TextMeshPro AchievementDescription;
         public static TextMeshPro AchievementTitle;
         public static List<GameObject> AchievementButtons = new();
-        public static GameObject AchievementButtonAsset;
         public static Transform AchievementGroup;
         public static Transform AchievementButtonGroup;
         public static Scroller AchievementScroller;
@@ -309,22 +309,16 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             IsAchievement = true;
             if (AchievementScroller == null)
                 CreateAchievementScroller();
-            if (AchievementButtonAsset == null)
-            {
-                var resourceAudioAssetBundleStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SuperNewRoles.Resources.AchievementButton");
-                var assetBundleBundle = AssetBundle.LoadFromMemory(resourceAudioAssetBundleStream.ReadFully());
-                AchievementButtonAsset = assetBundleBundle.LoadAsset<GameObject>("AchievementButton.prefab").DontUnload();
-            }
             if (AchievementButtons.Count > 0 && AchievementButtons[0] == null)
                 AchievementButtons = new();
             if (AchievementButtons.Count <= 0)
             {
                 foreach (AchievementData data in AchievementManagerSNR.AllAchievementData)
                 {
-                    Transform obj = GameObject.Instantiate(AchievementButtonAsset, AchievementButtonGroup).transform;
+                    Transform obj = GameObject.Instantiate(AchievementManagerSNR.AchievementButtonAsset, AchievementButtonGroup).transform;
                     obj.FindChild("Name").GetComponent<TextMeshPro>().text = data.Name;
                     obj.FindChild("Title").GetComponent<TextMeshPro>().text = data.Title;
-                    obj.localPosition = new(0.65f, -1.15f + (-1.05f * data.Id), 0);
+                    obj.localPosition = new(0.65f, -1.15f + (-1.05f * data.Id), -2f);
                     if (data.Complete) obj.FindChild("CompleteMark").gameObject.SetActive(true);
                     PassiveButton btn = obj.gameObject.AddComponent<PassiveButton>();
                     static void SetupButton(AchievementData data, PassiveButton btn)

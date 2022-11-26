@@ -142,14 +142,13 @@ namespace SuperNewRoles.Patches
         {
             public static void Prefix()
             {
-                if (textRenderer != null)
-                {
-                    textRenderer.gameObject.SetActive(false);
-                }
+                if (AchievementManagerSNR.EndGamePopup != null) AchievementManagerSNR.EndGamePopup.gameObject.SetActive(false);
+                if (textRenderer != null) textRenderer.gameObject.SetActive(false);
             }
         }
         public static void Postfix(EndGameManager __instance)
         {
+            AchievementManagerSNR.OnEndGame(__instance, AdditionalTempData.winCondition);
             foreach (PoolablePlayer pb in __instance.transform.GetComponentsInChildren<PoolablePlayer>())
             {
                 UnityEngine.Object.Destroy(pb.gameObject);
@@ -455,8 +454,6 @@ namespace SuperNewRoles.Patches
                 PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();
                 CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
             }
-            AchievementManagerSNR.WaitCompleteData.All(x => { AchievementManagerSNR.CompleteAchievement(x.TypeData, false); return false; });
-            AchievementManagerSNR.WaitCompleteData = new();
             var gameOverReason = AdditionalTempData.gameOverReason;
             AdditionalTempData.Clear();
             foreach (var p in GameData.Instance.AllPlayers)
