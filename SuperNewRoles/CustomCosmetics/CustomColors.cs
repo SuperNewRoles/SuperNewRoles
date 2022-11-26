@@ -68,8 +68,8 @@ namespace SuperNewRoles.CustomCosmetics
             Nega,
             Gold
         }
-
-        private const byte bmv = 255; // bmv
+        
+        private const byte bmv = 255; // byte.MaxValue
 
         // main, shadow, isLighter
         private static readonly Dictionary<ColorType, (Color32, Color32, bool)> CustomColorData = new() {
