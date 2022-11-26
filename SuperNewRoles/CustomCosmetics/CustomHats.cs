@@ -133,7 +133,7 @@ namespace SuperNewRoles.CustomCosmetics
         {
             return HatSprites.ContainsKey(path) ? HatSprites[path] : null;
         }
-        static Dictionary<string, Sprite> HatSprites = new();
+        static readonly Dictionary<string, Sprite> HatSprites = new();
         private static HatData CreateHatData(CustomHat ch, bool fromDisk = false, bool testOnly = false)
         {
             if (hatShader == null && DestroyableSingleton<HatManager>.InstanceExists)
@@ -253,7 +253,7 @@ namespace SuperNewRoles.CustomCosmetics
                 }
             }
 
-            static List<HatData> addHatData = new();
+            static readonly List<HatData> addHatData = new();
 
             static IEnumerator LoadHatSprite()
             {

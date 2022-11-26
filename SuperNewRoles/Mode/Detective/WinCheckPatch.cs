@@ -5,12 +5,11 @@ namespace SuperNewRoles.Mode.Detective
         public static bool CheckEndGame(ShipStatus __instance)
         {
             PlayerStatistics statistics = new();
-            return CheckAndEndGameForSabotageWin(__instance)
-            || CheckAndEndGameForImpostorWin(__instance, statistics)
-            || CheckAndEndGameForCrewmateWin(__instance, statistics)
-                ? false
-                : (PlusModeHandler.IsMode(PlusModeId.NotTaskWin) || !CheckAndEndGameForTaskWin(__instance))
-&& CheckAndEndGameForDisconnectWin(__instance) && false;
+            return !CheckAndEndGameForSabotageWin(__instance)
+            && !CheckAndEndGameForImpostorWin(__instance, statistics)
+            && !CheckAndEndGameForCrewmateWin(__instance, statistics)
+            && (PlusModeHandler.IsMode(PlusModeId.NotTaskWin) || !CheckAndEndGameForTaskWin(__instance))
+            && CheckAndEndGameForDisconnectWin(__instance) && false;
         }
         public static void CustomEndGame(ShipStatus __instance, GameOverReason reason, bool showAd)
         {

@@ -10,12 +10,12 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
-using TMPro;
 using SuperNewRoles.Roles.Impostor;
+using TMPro;
 using UnityEngine;
+using static GameData;
 using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
-using static GameData;
 
 namespace SuperNewRoles.Patches
 {
@@ -1178,16 +1178,15 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
-            return (RoleClass.Assassin.TriggerPlayer != null)
-            || (!MapOptions.MapOption.UseDeadBodyReport && target != null)
-            || (!MapOptions.MapOption.UseMeetingButton && target == null)
-            || ModeHandler.IsMode(ModeId.BattleRoyal)
-            || ModeHandler.IsMode(ModeId.CopsRobbers)
-                ? false
-                : ModeHandler.IsMode(ModeId.SuperHostRoles)
+            return RoleClass.Assassin.TriggerPlayer == null
+            && (MapOptions.MapOption.UseDeadBodyReport || target == null)
+            && (MapOptions.MapOption.UseMeetingButton || target != null)
+            && !ModeHandler.IsMode(ModeId.BattleRoyal)
+            && !ModeHandler.IsMode(ModeId.CopsRobbers)
+&& (ModeHandler.IsMode(ModeId.SuperHostRoles)
                 ? Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target)
                 : !ModeHandler.IsMode(ModeId.Zombie)
-                && (!ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId);
+                && (!ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId));
         }
     }
     public static class PlayerControlFixedUpdatePatch

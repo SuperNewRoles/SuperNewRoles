@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using SuperNewRoles.Patches;
-using UnityEngine;
-using static SuperNewRoles.Modules.CustomOptionHolder;
-using static SuperNewRoles.Modules.CustomOption;
-using static SuperNewRoles.Roles.RoleClass;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patches;
+using UnityEngine;
+using static SuperNewRoles.Modules.CustomOption;
+using static SuperNewRoles.Modules.CustomOptionHolder;
+using static SuperNewRoles.Roles.RoleClass;
 
 namespace SuperNewRoles.Roles.Impostor
 {

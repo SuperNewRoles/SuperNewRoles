@@ -98,8 +98,7 @@ namespace SuperNewRoles.Roles
             return (roledata == TeamRoleType.Impostor)
                 || (Target.IsMadRoles() && RoleClass.MeetingSheriff.MadRoleKill)
                 || (Target.IsFriendRoles() && RoleClass.MeetingSheriff.MadRoleKill)
-                ? true
-                : (Target.IsNeutral() && RoleClass.MeetingSheriff.NeutralKill) || Target.IsRole(RoleId.HauntedWolf);
+                || (Target.IsNeutral() && RoleClass.MeetingSheriff.NeutralKill) || Target.IsRole(RoleId.HauntedWolf);
         }
         static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
         {

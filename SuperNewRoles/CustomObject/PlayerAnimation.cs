@@ -139,10 +139,7 @@ namespace SuperNewRoles.CustomObject
                     {
                         Playing = false;
                         Logger.Info($"チェック:{OnAnimationEnd != null}");
-                        if (OnAnimationEnd != null)
-                        {
-                            OnAnimationEnd();
-                        }
+                        if(OnAnimationEnd != null) OnAnimationEnd();
                         return;
                     }
                 }

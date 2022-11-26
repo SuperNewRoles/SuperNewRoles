@@ -10,9 +10,9 @@ namespace SuperNewRoles.CustomObject
         private static Sprite sprite;
         private Color color;
         public GameObject footprint;
-        private SpriteRenderer spriteRenderer;
-        private PlayerControl owner;
-        private bool anonymousFootprints;
+        private readonly SpriteRenderer spriteRenderer;
+        private readonly PlayerControl owner;
+        private readonly bool anonymousFootprints;
 
         public static Sprite getFootprintSprite()
         {
