@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles;
 using TMPro;
 using UnityEngine;
 
@@ -43,6 +44,12 @@ namespace SuperNewRoles.Achievement
         public static AchievementData _selectedData;
         public static Transform EndGamePopup;
         public static DateTime GameStartTime;
+        public static void OnEndGameCheck()
+        {
+            if (PlayerControl.LocalPlayer.IsAlive()) {
+                if (RoleClass.Bestfalsecharge.IsMyBestFalseCharge) CompleteAchievement(AchievementType.BestFalseChargesGuardExiled);
+            }
+        }
         public static void OnEndGame(EndGameManager __instance, WinCondition condition) {
             if (WaitCompleteData.Count <= 0) return;
             __instance.transform.FindChild("BackgroundLayer").localScale = new(10.6667f, 10, 1);
@@ -51,22 +58,22 @@ namespace SuperNewRoles.Achievement
             EndGamePopup.transform.localPosition = new(2.6f, 2.3f, -13.5f);
             if (condition == WinCondition.HAISON)
             {
-                EndGamePopup.FindChild("AchievementDescription").GetComponent<TextMeshPro>().text = $"廃村だったため、\n進捗を獲得できませんでした。";
+                EndGamePopup.FindChild("AchievementDescription").GetComponent<TextMeshPro>().text = ModTranslation.GetString("AchievementForceEndGame") + ModTranslation.GetString("AchievementEndText");
                 WaitCompleteData = new();
                 return;
             }
-            else if (((float)(GameStartTime + new TimeSpan(0, 0, 0, 90) - DateTime.UtcNow).TotalSeconds) > 0f)
+            else if (((float)(GameStartTime + new TimeSpan(0, 0, 0, 10) - DateTime.UtcNow).TotalSeconds) > 0f)
             {
                 ;
-                Logger.Info(((float)(GameStartTime + new TimeSpan(0, 0, 0, 90) - DateTime.UtcNow).TotalSeconds).ToString(),"Seconds");
-                EndGamePopup.FindChild("AchievementDescription").GetComponent<TextMeshPro>().text = $"ゲーム時間が短かったため、\n進捗を獲得できませんでした。";
+                Logger.Info(((float)(GameStartTime + new TimeSpan(0, 0, 0, 10) - DateTime.UtcNow).TotalSeconds).ToString(),"Seconds");
+                EndGamePopup.FindChild("AchievementDescription").GetComponent<TextMeshPro>().text = ModTranslation.GetString("AchievementShortGameTime") + ModTranslation.GetString("AchievementEndText");
                 WaitCompleteData = new();
                 return;
             }
             if (WaitCompleteData.Count == 1)
-                EndGamePopup.FindChild("AchievementDescription").GetComponent<TextMeshPro>().text = $"進捗「{GetAchievementData(WaitCompleteData[0]).Name}」\nを達成しました";
+                EndGamePopup.FindChild("AchievementDescription").GetComponent<TextMeshPro>().text = string.Format(ModTranslation.GetString("AchievementCompleteTextFirst"), GetAchievementData(WaitCompleteData[0]).Name) + ModTranslation.GetString("AchievementCompleteTextEnd");
             else
-                EndGamePopup.FindChild("AchievementDescription").GetComponent<TextMeshPro>().text = $"進捗「{GetAchievementData(WaitCompleteData[0]).Name}」\nとその他{WaitCompleteData.Count - 1}の進捗を達成しました。";
+                EndGamePopup.FindChild("AchievementDescription").GetComponent<TextMeshPro>().text = string.Format(ModTranslation.GetString("AchievementCompleteTextFirst"), GetAchievementData(WaitCompleteData[0]).Name) + ModTranslation.GetString("AchievementCompleteManyTextEnd") + ModTranslation.GetString("AchievementCompleteTextEnd");
             EndGamePopup.FindChild("CompleteMark").gameObject.SetActive(true);
             CompleteAchievement(WaitCompleteData.ToArray());
             WaitCompleteData = new();
@@ -82,6 +89,7 @@ namespace SuperNewRoles.Achievement
             if (data.Complete) return;
             if (EndGameComplete)
             {
+                Logger.Info($"{data.Name}がコンプリートとして登録されました。");
                 WaitCompleteData.Add(type);
                 return;
             }

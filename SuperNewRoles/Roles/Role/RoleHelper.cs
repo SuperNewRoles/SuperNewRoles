@@ -205,6 +205,10 @@ namespace SuperNewRoles
 
         public static void SetRole(this PlayerControl player, RoleId role)
         {
+            if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                if (role == RoleId.Bestfalsecharge) RoleClass.Bestfalsecharge.IsMyBestFalseCharge = true;
+            }
             if (!Spelunker.CheckSetRole(player, role)) return;
             if (player.IsRole(RoleId.Doppelganger) && role != RoleId.Doppelganger)
             {

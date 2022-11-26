@@ -4,6 +4,7 @@ using System.Linq;
 using Agartha;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Achievement;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
@@ -1253,6 +1254,7 @@ namespace SuperNewRoles.Buttons
                             FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : target, misfire ? FinalStatus.SheriffMisFire : (target.IsRole(RoleId.HauntedWolf) ? FinalStatus.SheriffHauntedWolfKill : FinalStatus.SheriffKill));
                             Sheriff.ResetKillCooldown();
                             RoleClass.Sheriff.KillMaxCount--;
+                            if (!misfire) AchievementManagerSNR.CompleteAchievement(AchievementType.SheriffKill);
                         }
                     }
                 },
@@ -1706,6 +1708,7 @@ namespace SuperNewRoles.Buttons
                             RPCHelper.EndRPC(writer);
                             RPCProcedure.ChiefSidekick(target.PlayerId, target.IsClearTask());
                             RoleClass.Chief.IsCreateSheriff = true;
+                            AchievementManagerSNR.CompleteAchievement(AchievementType.ChiefCreateSheriff);
                         }
                         else
                         {

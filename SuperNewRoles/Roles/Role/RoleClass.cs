@@ -763,12 +763,14 @@ namespace SuperNewRoles.Roles
         public static class Bestfalsecharge
         {
             public static List<PlayerControl> BestfalsechargePlayer;
+            public static bool IsMyBestFalseCharge;
             public static Color32 color = new(0, 255, 0, byte.MaxValue);
             public static bool IsOnMeeting;
             public static void ClearAndReload()
             {
                 BestfalsechargePlayer = new();
                 IsOnMeeting = false;
+                IsMyBestFalseCharge = true;
             }
         }
         public static class Researcher

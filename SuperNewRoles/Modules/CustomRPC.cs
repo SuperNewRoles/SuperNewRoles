@@ -658,11 +658,14 @@ namespace SuperNewRoles.Modules
             {
                 RoleClass.Chief.NoTaskSheriffPlayer.Add(targetid);
             }
+            bool IsNeutral = ModHelpers.PlayerById(targetid).IsNeutral();
             SetRole(targetid, (byte)RoleId.Sheriff);
             if (targetid == CachedPlayer.LocalPlayer.PlayerId)
             {
                 Sheriff.ResetKillCooldown();
                 RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
+                AchievementManagerSNR.CompleteAchievement(AchievementType.ByChiefCreateSheriff);
+                if (IsNeutral) AchievementManagerSNR.CompleteAchievement(AchievementType.ByChiefCreateSheriffNeutral);
             }
             UncheckedSetVanillaRole(targetid, (byte)RoleTypes.Crewmate);
         }

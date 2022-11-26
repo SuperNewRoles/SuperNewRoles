@@ -449,6 +449,7 @@ namespace SuperNewRoles.Patches
 
         public static void Postfix()
         {
+            AchievementManagerSNR.OnEndGameCheck();
             if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Zombie))
             {
                 PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();

@@ -318,7 +318,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     Transform obj = GameObject.Instantiate(AchievementManagerSNR.AchievementButtonAsset, AchievementButtonGroup).transform;
                     obj.FindChild("Name").GetComponent<TextMeshPro>().text = data.Name;
                     obj.FindChild("Title").GetComponent<TextMeshPro>().text = data.Title;
-                    obj.localPosition = new(0.65f, -1.15f + (-1.05f * data.Id), -2f);
+                    obj.localPosition = new(0.9f, -1.15f + (-1.05f * data.Id), -2f);
                     if (data.Complete) obj.FindChild("CompleteMark").gameObject.SetActive(true);
                     PassiveButton btn = obj.gameObject.AddComponent<PassiveButton>();
                     static void SetupButton(AchievementData data, PassiveButton btn)

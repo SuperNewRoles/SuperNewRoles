@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Achievement;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 
@@ -9,12 +10,19 @@ namespace SuperNewRoles.Roles
     {
         public static void WrapUp()
         {
-            if (ModeHandler.IsMode(ModeId.Default) && AmongUsClient.Instance.AmHost && !RoleClass.Bestfalsecharge.IsOnMeeting)
+            if (ModeHandler.IsMode(ModeId.Default) && !RoleClass.Bestfalsecharge.IsOnMeeting)
             {
-                foreach (PlayerControl p in RoleClass.Bestfalsecharge.BestfalsechargePlayer)
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Bestfalsecharge))
                 {
-                    p.RpcExiledUnchecked();
-                    p.RpcSetFinalStatus(FinalStatus.BestFalseChargesFalseCharge);
+                    AchievementManagerSNR.CompleteAchievement(AchievementType.BestFalseChargesExiled);
+                }
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    foreach (PlayerControl p in RoleClass.Bestfalsecharge.BestfalsechargePlayer)
+                    {
+                        p.RpcExiledUnchecked();
+                        p.RpcSetFinalStatus(FinalStatus.BestFalseChargesFalseCharge);
+                    }
                 }
                 RoleClass.Bestfalsecharge.IsOnMeeting = true;
             }
