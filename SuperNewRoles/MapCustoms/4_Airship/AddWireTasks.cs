@@ -64,14 +64,14 @@ namespace SuperNewRoles.MapCustoms
                 console.usableDistance = 0.7f;
                 console.TaskTypes = new TaskTypes[0];
                 console.ValidTasks = new UnhollowerBaseLib.Il2CppReferenceArray<TaskSet>(0);
-                var list = MapUtilities.CachedShipStatus.AllConsoles.ToList();
+                var list = ShipStatus.Instance.AllConsoles.ToList();
                 list.Add(console);
-                MapUtilities.CachedShipStatus.AllConsoles = new UnhollowerBaseLib.Il2CppReferenceArray<Console>(list.ToArray());
+                ShipStatus.Instance.AllConsoles = new UnhollowerBaseLib.Il2CppReferenceArray<Console>(list.ToArray());
             }
             if (console.Image == null)
             {
                 console.Image = obj.GetComponent<SpriteRenderer>();
-                console.Image.material = new Material(MapUtilities.CachedShipStatus.AllConsoles[0].Image.material);
+                console.Image.material = new Material(ShipStatus.Instance.AllConsoles[0].Image.material);
             }
             if (!button)
             {
