@@ -200,6 +200,14 @@ OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない
 
 # Achievement
+AchievementForceEndGame,,廃村だったため、
+AchievementShortGameTime,,ゲーム時間が短かったため、
+AchievementEndText,,\n進捗を獲得できませんでした。
+AchievementCompleteTextFirst,,進捗「{0}」\n
+AchievementCompleteTextEnd,,を達成しました。
+AchievementCompleteManyTextEnd,,とその他{WaitCompleteData.Count - 1}の進捗
+
+# AchievementData
 StartSuperNewRolesName,,ようこそ！
 StartSuperNewRolesDescription,,SuperNewRolesを起動する
 StartSuperNewRolesTitle,,SuperNewRolesプレイヤー
