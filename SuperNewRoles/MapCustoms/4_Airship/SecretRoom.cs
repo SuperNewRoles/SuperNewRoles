@@ -604,22 +604,31 @@ public static class SecretRoom
         if (obj == null) return null;
         obj.layer = LayerMask.NameToLayer("ShortObjects");
         Console console = obj.GetComponent<Console>();
+        PassiveButton button = obj.GetComponent<PassiveButton>();
         CircleCollider2D collider = obj.GetComponent<CircleCollider2D>();
         if (!console)
         {
             console = obj.AddComponent<Console>();
             console.checkWalls = true;
-            console.usableDistance = Distance;
+            console.usableDistance = 0.7f;
             console.TaskTypes = new TaskTypes[0];
             console.ValidTasks = new UnhollowerBaseLib.Il2CppReferenceArray<TaskSet>(0);
-            var list = MapUtilities.CachedShipStatus.AllConsoles.ToList();
+            var list = ShipStatus.Instance.AllConsoles.ToList();
             list.Add(console);
-            MapUtilities.CachedShipStatus.AllConsoles = new UnhollowerBaseLib.Il2CppReferenceArray<Console>(list.ToArray());
+            ShipStatus.Instance.AllConsoles = new UnhollowerBaseLib.Il2CppReferenceArray<Console>(list.ToArray());
         }
         if (console.Image == null)
         {
             console.Image = obj.GetComponent<SpriteRenderer>();
-            console.Image.material = new(MapUtilities.CachedShipStatus.AllConsoles[0].Image.material);
+            console.Image.material = new Material(ShipStatus.Instance.AllConsoles[0].Image.material);
+        }
+        if (!button)
+        {
+            button = obj.AddComponent<PassiveButton>();
+            button.OnMouseOut = new UnityEngine.Events.UnityEvent();
+            button.OnMouseOver = new UnityEngine.Events.UnityEvent();
+            button._CachedZ_k__BackingField = 0.1f;
+            button.CachedZ = 0.1f;
         }
         if (!collider)
         {
