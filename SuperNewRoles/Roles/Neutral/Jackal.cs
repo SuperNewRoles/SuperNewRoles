@@ -1,75 +1,73 @@
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 using static SuperNewRoles.Helpers.RPCHelper;
 using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
-namespace SuperNewRoles.Roles
+namespace SuperNewRoles.Roles;
+
+class Jackal
 {
-    class Jackal
+    public static void ResetCooldown()
     {
-        public static void ResetCooldown()
+        HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.Jackal.KillCooldown;
+        HudManagerStartPatch.JackalKillButton.Timer = RoleClass.Jackal.KillCooldown;
+    }
+    public static void EndMeetingResetCooldown()
+    {
+        HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.Jackal.KillCooldown;
+        HudManagerStartPatch.JackalKillButton.Timer = RoleClass.Jackal.KillCooldown;
+        HudManagerStartPatch.JackalSidekickButton.MaxTimer = CustomOptionHolder.JackalSKCooldown.GetFloat();
+        HudManagerStartPatch.JackalSidekickButton.Timer = CustomOptionHolder.JackalSKCooldown.GetFloat();
+    }
+    public static void EndMeeting() => EndMeetingResetCooldown();
+    public static void SetPlayerOutline(PlayerControl target, Color color)
+    {
+        if (target == null) return;
+        SpriteRenderer rend = target.MyRend();
+        if (rend == null) return;
+        rend.material.SetFloat("_Outline", 1f);
+        rend.material.SetColor("_OutlineColor", color);
+    }
+    public class JackalFixedPatch
+    {
+        static void JackalPlayerOutLineTarget()
+            => SetPlayerOutline(JackalSetTarget(), RoleClass.Jackal.color);
+        public static void Postfix(PlayerControl __instance, RoleId role)
         {
-            HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.Jackal.KillCooldown;
-            HudManagerStartPatch.JackalKillButton.Timer = RoleClass.Jackal.KillCooldown;
-        }
-        public static void EndMeetingResetCooldown()
-        {
-            HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.Jackal.KillCooldown;
-            HudManagerStartPatch.JackalKillButton.Timer = RoleClass.Jackal.KillCooldown;
-            HudManagerStartPatch.JackalSidekickButton.MaxTimer = CustomOptionHolder.JackalSKCooldown.GetFloat();
-            HudManagerStartPatch.JackalSidekickButton.Timer = CustomOptionHolder.JackalSKCooldown.GetFloat();
-        }
-        public static void EndMeeting() => EndMeetingResetCooldown();
-        public static void SetPlayerOutline(PlayerControl target, Color color)
-        {
-            if (target == null) return;
-            SpriteRenderer rend = target.MyRend();
-            if (rend == null) return;
-            rend.material.SetFloat("_Outline", 1f);
-            rend.material.SetColor("_OutlineColor", color);
-        }
-        public class JackalFixedPatch
-        {
-            static void JackalPlayerOutLineTarget()
-                => SetPlayerOutline(JackalSetTarget(), RoleClass.Jackal.color);
-            public static void Postfix(PlayerControl __instance, RoleId role)
+            if (AmongUsClient.Instance.AmHost)
             {
-                if (AmongUsClient.Instance.AmHost)
+                if (RoleClass.Jackal.SidekickPlayer.Count > 0)
                 {
-                    if (RoleClass.Jackal.SidekickPlayer.Count > 0)
+                    var upflag = true;
+                    foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer)
                     {
-                        var upflag = true;
-                        foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer)
+                        if (p.IsAlive())
                         {
-                            if (p.IsAlive())
-                            {
-                                upflag = false;
-                            }
-                        }
-                        if (upflag)
-                        {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SidekickPromotes, SendOption.Reliable, -1);
-                            writer.Write(false);
-                            AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RPCProcedure.SidekickPromotes(false);
+                            upflag = false;
                         }
                     }
-                }
-                if (role == RoleId.Jackal)
-                {
-                    JackalPlayerOutLineTarget();
+                    if (upflag)
+                    {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SidekickPromotes, SendOption.Reliable, -1);
+                        writer.Write(false);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        RPCProcedure.SidekickPromotes(false);
+                    }
                 }
             }
+            if (role == RoleId.Jackal)
+            {
+                JackalPlayerOutLineTarget();
+            }
         }
-        /// <summary>
-        /// (役職をリセットし、)ジャッカルフレンズに割り当てます。
-        /// </summary>
-        /// <param name="target">役職がJackalFriendsに変更される対象</param>
-        public static void CreateJackalFriends(PlayerControl target)
-        {
-            target.ResetAndSetRole(RoleId.JackalFriends);
-        }
+    }
+    /// <summary>
+    /// (役職をリセットし、)ジャッカルフレンズに割り当てます。
+    /// </summary>
+    /// <param name="target">役職がJackalFriendsに変更される対象</param>
+    public static void CreateJackalFriends(PlayerControl target)
+    {
+        target.ResetAndSetRole(RoleId.JackalFriends);
     }
 }

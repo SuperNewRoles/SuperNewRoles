@@ -1,105 +1,103 @@
 using System;
 using System.Collections.Generic;
 using Hazel;
-
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 
-namespace SuperNewRoles.Roles
+namespace SuperNewRoles.Roles;
+
+public static class Demon
 {
-    public static class Demon
+    public static void DemonCurse(this PlayerControl target, PlayerControl source = null)
     {
-        public static void DemonCurse(this PlayerControl target, PlayerControl source = null)
+        try
         {
-            try
+            if (source == null) source = PlayerControl.LocalPlayer;
+            MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.DemonCurse);
+            Writer.Write(source.PlayerId);
+            Writer.Write(target.PlayerId);
+            Writer.EndRPC();
+            RPCProcedure.DemonCurse(source.PlayerId, target.PlayerId);
+        }
+        catch (Exception e)
+        {
+            SuperNewRolesPlugin.Logger.LogError(e);
+        }
+    }
+
+    public static List<PlayerControl> GetCurseData(this PlayerControl player)
+    {
+        return RoleClass.Demon.CurseData.ContainsKey(player.PlayerId) ? RoleClass.Demon.CurseData[player.PlayerId] : new();
+    }
+
+    public static List<PlayerControl> GetUntarget()
+    {
+        return RoleClass.Demon.CurseData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId)
+            ? RoleClass.Demon.CurseData[CachedPlayer.LocalPlayer.PlayerId]
+            : (new());
+    }
+
+    public static bool IsCursed(this PlayerControl source, PlayerControl target)
+    {
+        if (source == null || source.Data.Disconnected || target == null || target.IsDead() || target.IsBot()) return true;
+        if (source.PlayerId == target.PlayerId) return true;
+        if (RoleClass.Demon.CurseData.ContainsKey(source.PlayerId))
+        {
+            if (RoleClass.Demon.CurseData[source.PlayerId].IsCheckListPlayerControl(target))
             {
-                if (source == null) source = PlayerControl.LocalPlayer;
-                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.DemonCurse);
-                Writer.Write(source.PlayerId);
-                Writer.Write(target.PlayerId);
-                Writer.EndRPC();
-                RPCProcedure.DemonCurse(source.PlayerId, target.PlayerId);
+                return true;
             }
-            catch (Exception e)
+        }
+        return false;
+    }
+
+    public static List<PlayerControl> GetIconPlayers(PlayerControl player = null)
+    {
+        if (player == null) player = PlayerControl.LocalPlayer;
+        return RoleClass.Demon.CurseData.ContainsKey(player.PlayerId) ? RoleClass.Demon.CurseData[player.PlayerId] : (new());
+    }
+    public static bool IsViewIcon(PlayerControl player)
+    {
+        if (player == null) return false;
+        foreach (var data in RoleClass.Demon.CurseData)
+        {
+            foreach (PlayerControl Player in data.Value)
             {
-                SuperNewRolesPlugin.Logger.LogError(e);
-            }
-        }
-
-        public static List<PlayerControl> GetCurseData(this PlayerControl player)
-        {
-            return RoleClass.Demon.CurseData.ContainsKey(player.PlayerId) ? RoleClass.Demon.CurseData[player.PlayerId] : new();
-        }
-
-        public static List<PlayerControl> GetUntarget()
-        {
-            return RoleClass.Demon.CurseData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId)
-                ? RoleClass.Demon.CurseData[CachedPlayer.LocalPlayer.PlayerId]
-                : (new());
-        }
-
-        public static bool IsCursed(this PlayerControl source, PlayerControl target)
-        {
-            if (source == null || source.Data.Disconnected || target == null || target.IsDead() || target.IsBot()) return true;
-            if (source.PlayerId == target.PlayerId) return true;
-            if (RoleClass.Demon.CurseData.ContainsKey(source.PlayerId))
-            {
-                if (RoleClass.Demon.CurseData[source.PlayerId].IsCheckListPlayerControl(target))
+                if (player.PlayerId == Player.PlayerId)
                 {
                     return true;
                 }
             }
-            return false;
         }
+        return false;
+    }
 
-        public static List<PlayerControl> GetIconPlayers(PlayerControl player = null)
+    public static bool IsButton()
+    {
+        return RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Demon) && ModeHandler.IsMode(ModeId.Default);
+    }
+
+    public static bool IsWin(PlayerControl Demon)
+    {
+        foreach (PlayerControl player in CachedPlayer.AllPlayers)
         {
-            if (player == null) player = PlayerControl.LocalPlayer;
-            return RoleClass.Demon.CurseData.ContainsKey(player.PlayerId) ? RoleClass.Demon.CurseData[player.PlayerId] : (new());
-        }
-        public static bool IsViewIcon(PlayerControl player)
-        {
-            if (player == null) return false;
-            foreach (var data in RoleClass.Demon.CurseData)
+            if (player.PlayerId != Demon.PlayerId && !IsCursed(Demon, player))
             {
-                foreach (PlayerControl Player in data.Value)
-                {
-                    if (player.PlayerId == Player.PlayerId)
-                    {
-                        return true;
-                    }
-                }
+                return false;
             }
-            return false;
         }
+        return !RoleClass.Demon.IsAliveWin || !Demon.IsDead();
+    }
 
-        public static bool IsButton()
+    public static bool IsDemonWinFlag()
+    {
+        foreach (PlayerControl player in RoleClass.Demon.DemonPlayer)
         {
-            return RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Demon) && ModeHandler.IsMode(ModeId.Default);
-        }
-
-        public static bool IsWin(PlayerControl Demon)
-        {
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            if (IsWin(player))
             {
-                if (player.PlayerId != Demon.PlayerId && !IsCursed(Demon, player))
-                {
-                    return false;
-                }
+                return true;
             }
-            return !RoleClass.Demon.IsAliveWin || !Demon.IsDead();
         }
-
-        public static bool IsDemonWinFlag()
-        {
-            foreach (PlayerControl player in RoleClass.Demon.DemonPlayer)
-            {
-                if (IsWin(player))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        return false;
     }
 }
