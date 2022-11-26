@@ -1,6 +1,7 @@
 using AmongUs.Data;
 using HarmonyLib;
 using SuperNewRoles.Achievement;
+using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
@@ -114,6 +115,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 ObjectData.AchievementTitle.enableWordWrapping = false;
                 __instance.PreviewArea.transform.localPosition = new(999,0,0);
                 __instance.itemName.gameObject.SetActive(false);
+                if (areatitle == null) areatitle = area.transform.FindChild("TitleText").GetComponent<TextMeshPro>();
+                areatitle.text = AchievementManagerSNR.SelectedData.Title;
             }
             else { 
                 __instance.PreviewArea.transform.localPosition = new Vector3(4.25f, 0f, -3f);
@@ -144,5 +147,6 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 }
             }
         }
+        static TextMeshPro areatitle;
     }
 }

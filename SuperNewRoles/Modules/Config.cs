@@ -24,6 +24,7 @@ namespace SuperNewRoles.Modules
         public static ConfigEntry<bool> DownloadOtherSkins { get; set; }
         public static ConfigEntry<bool> IsUpdate { get; set; }
         public static ConfigEntry<bool> IsDeleted { get; set; }
+        public static ConfigEntry<int> AchievementSelectedId { get; set; }
         public static bool IsUpdated = false;
         public static void Load()
         {
@@ -43,6 +44,7 @@ namespace SuperNewRoles.Modules
             Port = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server Port", (ushort)22023);
             IsUpdate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsUpdate", true);
             IsDeleted = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsDeleted", false);
+            AchievementSelectedId = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "AchievementSelectedId", 0);
             if (!IsDeleted.Value)
             {
                 if (Directory.Exists(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\") && Directory.Exists(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\"))

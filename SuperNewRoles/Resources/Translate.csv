@@ -200,6 +200,9 @@ OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない
 
 # Achievement
+StartSuperNewRolesName,,ようこそ！
+StartSuperNewRolesDescription,,SuperNewRolesを起動する
+StartSuperNewRolesTitle,,SuperNewRolesプレイヤー
 BestFalseChargesExiledName,,キ、キルしてないよ...!
 BestFalseChargesExiledDescription,,ベスト冤罪ヤーで死亡する
 BestFalseChargesExiledTitle,,追放された冤罪者

@@ -2,12 +2,13 @@ namespace SuperNewRoles.Achievement
 {
     //真ん中のやつを消すときは影響が出ないようにId指定してねー
     public enum AchievementType {
-        BestFalseChargesExiled = 0,
-        BestFalseChargesGuardExiled = 1,
-        SheriffKill = 2,
-        ChiefCreateSheriff = 3,
-        ByChiefCreateSheriff = 4,
-        ByChiefCreateSheriffNeutral = 5
+        StartSuperNewRoles = 0,
+        BestFalseChargesExiled = 1,
+        BestFalseChargesGuardExiled = 2,
+        SheriffKill = 3,
+        ChiefCreateSheriff = 4,
+        ByChiefCreateSheriff = 5,
+        ByChiefCreateSheriffNeutral = 6
     }
     public class AchievementData
     {

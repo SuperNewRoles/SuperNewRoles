@@ -1,5 +1,7 @@
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Achievement;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 
@@ -272,6 +274,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             public static void Postfix()
             {
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetAchievement);
+                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                writer.Write(AchievementManagerSNR.SelectedData.Id);
+                writer.EndRPC();
                 if (CustomOptionHolder.IsSNROnlySearch.GetBool())
                 {
                     PlayerControl.GameOptions.MapId = SNROnlySearch.currentMapId;

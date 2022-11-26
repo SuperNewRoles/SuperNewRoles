@@ -372,6 +372,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             AchievementTitle.name = "AchievementTitle";
             SetAchievementText();
             PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/SkinsTab/Skin Button/Tab Background").GetComponent<SpriteRenderer>().enabled = true;
+            UpdatePatch.area.gameObject.SetActive(true);
+            UpdatePatch.area.transform.localPosition = new(3, -1.75f, - 70.71f);
         }
         static void Set(PassiveButton btn, int index)
         {

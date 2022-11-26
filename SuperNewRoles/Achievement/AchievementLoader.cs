@@ -20,7 +20,11 @@ namespace SuperNewRoles.Achievement
             }
             data = data.Replace("\r", "");
             ObjectCreate(data);
-            AchievementManagerSNR.SelectedData = AchievementManagerSNR.AllAchievementData[0];
+            AchievementManagerSNR.SelectedData = AchievementManagerSNR.GetAchievementData((AchievementType)ConfigRoles.AchievementSelectedId.Value);
+            if (!AchievementManagerSNR.GetAchievementData(AchievementType.StartSuperNewRoles).Complete)
+            {
+                AchievementManagerSNR.CompleteAchievement(AchievementType.StartSuperNewRoles, false);
+            }
         }
         public static void ObjectCreate(string data)
         {

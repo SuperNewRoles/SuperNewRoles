@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using HarmonyLib;
+using SuperNewRoles.Achievement;
 using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -14,6 +15,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             public static void Postfix()
             {
+                AchievementManagerSNR.PlayerData = new();
                 if (!AmongUsClient.Instance.AmHost) return;
                 if (IsOldSHR && WinCond != null && AmongUsClient.Instance.AmHost)
                 {

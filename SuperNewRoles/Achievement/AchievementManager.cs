@@ -11,8 +11,20 @@ namespace SuperNewRoles.Achievement
         public static List<AchievementData> AllAchievementData = new();
         public static List<AchievementData> CompletedAchievement = new();
         public static List<AchievementData> WaitCompleteData = new();
+        public static Dictionary<byte, int> PlayerData = new();
         public static string currentData;
-        public static AchievementData SelectedData;
+        public static AchievementData SelectedData {
+            get
+            {
+                return _selectedData;
+            }
+            set
+            {
+                _selectedData = value;
+                ConfigRoles.AchievementSelectedId.Value = _selectedData.Id;
+            }
+        }
+        public static AchievementData _selectedData;
         public static AchievementData GetAchievementData(AchievementType type)
         {
             return AllAchievementData.FirstOrDefault(x => x.TypeData == type);
@@ -47,6 +59,11 @@ namespace SuperNewRoles.Achievement
                 data.Add(adata.Title);
             }
             return data;
+        }
+        public static AchievementData GetPlayerData(PlayerControl player)
+        {
+            if (player == null) return null;
+            return PlayerData.ContainsKey(player.PlayerId) ? GetAchievementData((AchievementType)PlayerData[player.PlayerId]) : null;
         }
     }
 }

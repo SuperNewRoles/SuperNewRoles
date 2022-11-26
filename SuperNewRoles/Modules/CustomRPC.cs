@@ -6,6 +6,7 @@ using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using SuperNewRoles.Achievement;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapOptions;
@@ -261,10 +262,17 @@ namespace SuperNewRoles.Modules
         SetVampireStatus,
         SyncDeathMeeting,
         SetDeviceUseStatus,
+        SetAchievement
     }
 
     public static class RPCProcedure
     {
+        public static void SetAchievement(byte playerId, int type)
+        {
+            PlayerControl player = ModHelpers.PlayerById(playerId);
+            if (player == null) return;
+            AchievementManagerSNR.PlayerData[playerId] = type;
+        }
         public static void SetDeviceUseStatus(byte devicetype, byte playerId, bool Is, string time)
         {
             DeviceClass.DeviceType type = (DeviceClass.DeviceType)devicetype;
@@ -1612,6 +1620,9 @@ namespace SuperNewRoles.Modules
                             break;
                         case CustomRPC.SetDeviceUseStatus:
                             SetDeviceUseStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadString());
+                            break;
+                        case CustomRPC.SetAchievement:
+                            SetAchievement(reader.ReadByte(), reader.ReadInt32());
                             break;
                     }
                 }
