@@ -55,9 +55,10 @@ namespace SuperNewRoles.Achievement
                 WaitCompleteData = new();
                 return;
             }
-            else if ((DateTime.UtcNow - GameStartTime).Seconds < 90f)
+            else if (((float)(GameStartTime + new TimeSpan(0, 0, 0, 90) - DateTime.UtcNow).TotalSeconds) > 0f)
             {
-                Logger.Info((DateTime.UtcNow - GameStartTime).Seconds.ToString(),"Seconds");
+                ;
+                Logger.Info(((float)(GameStartTime + new TimeSpan(0, 0, 0, 90) - DateTime.UtcNow).TotalSeconds).ToString(),"Seconds");
                 EndGamePopup.FindChild("AchievementDescription").GetComponent<TextMeshPro>().text = $"ゲーム時間が短かったため、\n進捗を獲得できませんでした。";
                 WaitCompleteData = new();
                 return;
