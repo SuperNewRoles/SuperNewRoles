@@ -19,7 +19,7 @@ namespace SuperNewRoles.Roles.Crewmate
                 Seer.ShowFlash(Color.yellow);
                 Logger.Info($"{RoleClass.Celebrity.FlashTime / 1000}s 経過した為発光しました。", "CelebrityFlash");
             };
-            timer.AutoReset = true;
+            timer.AutoReset = EnabledSetting();
             timer.Enabled = true;
             Logger.Info($"{RoleClass.Celebrity.FlashTime}[ミリ秒]にタイマーセット ", "CelebrityFlash");
         }
@@ -27,6 +27,11 @@ namespace SuperNewRoles.Roles.Crewmate
         public static void WrapUp()
         {
             CelebrityTimerSet();
+        }
+
+        public static bool EnabledSetting()
+        {
+            return true;
         }
     }
 }
