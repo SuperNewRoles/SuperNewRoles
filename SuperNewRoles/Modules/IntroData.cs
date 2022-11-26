@@ -247,4 +247,3 @@ public class IntroData
     public static IntroData DependentsIntro = new("Dependents", RoleClass.Dependents.color, 1, RoleId.Dependents);
     //イントロオブジェ
 }
-}

@@ -56,4 +56,3 @@ public enum FinalStatus
     MadmakerMisSet,
     Revenge,//猫カボチャの道連れ
 }
-}
