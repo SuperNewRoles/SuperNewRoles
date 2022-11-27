@@ -3,12 +3,11 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
-using Agartha;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 
-namespace SuperNewRoles
-{
+namespace SuperNewRoles;
+
     public class AutoUpdate
     {
         [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.UpdateAnnounceText))]
@@ -175,4 +174,3 @@ namespace SuperNewRoles
             }
         }
     }
-}

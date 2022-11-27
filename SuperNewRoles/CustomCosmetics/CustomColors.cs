@@ -5,74 +5,74 @@ using HarmonyLib;
 using UnhollowerBaseLib;
 using UnityEngine;
 
-namespace SuperNewRoles.CustomCosmetics
+namespace SuperNewRoles.CustomCosmetics;
+
+public class CustomColors
 {
-    public class CustomColors
+    protected static Dictionary<int, string> ColorStrings = new();
+    public static List<int> lighterColors = new() { 3, 4, 5, 7, 10, 11, 13, 14, 17 };
+    public static uint pickAbleColors = (uint)Palette.ColorNames.Length;
+
+    public enum ColorType
     {
-        protected static Dictionary<int, string> ColorStrings = new();
-        public static List<int> lighterColors = new() { 3, 4, 5, 7, 10, 11, 13, 14, 17 };
-        public static uint pickAbleColors = (uint)Palette.ColorNames.Length;
+        Salmon,
+        Bordeaux,
+        Olive,
+        Turqoise,
+        Mint,
+        Lavender,
+        Nougat,
+        Peach,
+        Wasabi,
+        HotPink,
+        Petrol,
+        Lemon,
+        SignalOrange,
+        Teal,
+        Blurple,
+        Sunrise,
+        Ice,
+        PitchBlack,
+        Darkmagenta,
+        Mintcream,
+        Leaf,
+        Emerald,
+        Brightyellow,
+        Darkaqua,
+        Matcha,
+        Pitchwhite,
+        Darksky,
+        Intenseblue,
+        Blueclosertoblack,
+        Sunkengreenishblue,
+        Azi,
+        Pitchred,
+        Pitchblue,
+        Pitchgreen,
+        Pitchyellow,
+        Backblue,
+        Mildpurple,
+        Ashishreddishpurplecolor,
+        Melon,
+        Crasyublue,
+        Lightgreen,
+        Azuki,
+        Snow,
+        LightMagenta,
+        PeachFlower,
+        Plum,
+        SkyBlue,
+        LightCyan,
+        LightOrange,
+        Sprout,
+        Nega,
+        Gold
+    }
 
-        public enum ColorType
-        {
-            Salmon,
-            Bordeaux,
-            Olive,
-            Turqoise,
-            Mint,
-            Lavender,
-            Nougat,
-            Peach,
-            Wasabi,
-            HotPink,
-            Petrol,
-            Lemon,
-            SignalOrange,
-            Teal,
-            Blurple,
-            Sunrise,
-            Ice,
-            PitchBlack,
-            Darkmagenta,
-            Mintcream,
-            Leaf,
-            Emerald,
-            Brightyellow,
-            Darkaqua,
-            Matcha,
-            Pitchwhite,
-            Darksky,
-            Intenseblue,
-            Blueclosertoblack,
-            Sunkengreenishblue,
-            Azi,
-            Pitchred,
-            Pitchblue,
-            Pitchgreen,
-            Pitchyellow,
-            Backblue,
-            Mildpurple,
-            Ashishreddishpurplecolor,
-            Melon,
-            Crasyublue,
-            Lightgreen,
-            Azuki,
-            Snow,
-            LightMagenta,
-            PeachFlower,
-            Plum,
-            SkyBlue,
-            LightCyan,
-            LightOrange,
-            Sprout,
-            Nega,
-            Gold
-        }
-        
-        private const byte bmv = 255; // byte.MaxValue
+    private const byte bmv = 255; // byte.MaxValue
 
-        // main, shadow, isLighter
-        private static readonly Dictionary<ColorType, (Color32, Color32, bool)> CustomColorData = new() {
+    // main, shadow, isLighter
+    private static readonly Dictionary<ColorType, (Color32, Color32, bool)> CustomColorData = new() {
             { ColorType.Salmon, (new(239, 191, 192, bmv), new(182, 119, 114, bmv), true) },
             { ColorType.Bordeaux, (new(109, 7, 26, bmv), new(54, 2, 11, bmv), false) },
             { ColorType.Olive, (new(154, 140, 61, bmv), new(104, 95, 40, bmv), false) },
@@ -126,159 +126,158 @@ namespace SuperNewRoles.CustomCosmetics
             { ColorType.Nega, (new(0, 0, 0, bmv), new(255, 255, 255, bmv), false) },
             { ColorType.Gold, (new(255, 216, 70, bmv), new(226, 168, 13, bmv), true) },
         };
-        public static void Load()
+    public static void Load()
+    {
+        List<StringNames> longList = Enumerable.ToList(Palette.ColorNames);
+        List<Color32> colorList = Enumerable.ToList(Palette.PlayerColors);
+        List<Color32> shadowList = Enumerable.ToList(Palette.ShadowColors);
+        List<CustomColor> colors = new();
+        var noLighterColorTemp = new List<KeyValuePair<ColorType, (Color32, Color32, bool)>>();
+        foreach (var dic in CustomColorData)
         {
-            List<StringNames> longList = Enumerable.ToList(Palette.ColorNames);
-            List<Color32> colorList = Enumerable.ToList(Palette.PlayerColors);
-            List<Color32> shadowList = Enumerable.ToList(Palette.ShadowColors);
-            List<CustomColor> colors = new();
-            var noLighterColorTemp = new List<KeyValuePair<ColorType, (Color32, Color32, bool)>>();
-            foreach (var dic in CustomColorData)
+            if (!dic.Value.Item3) // isLighterがfalseなら後ろに入れるため仮Listに追加して次ループ
             {
-                if (!dic.Value.Item3) // isLighterがfalseなら後ろに入れるため仮Listに追加して次ループ
-                {
-                    noLighterColorTemp.Add(dic);
-                    continue;
-                }
-                colors.Add(new CustomColor
-                {
-                    longName = $"color{dic.Key}",
-                    color = dic.Value.Item1,
-                    shadow = dic.Value.Item2,
-                    isLighterColor = true
-                });
+                noLighterColorTemp.Add(dic);
+                continue;
             }
-            foreach (var dic in noLighterColorTemp)
+            colors.Add(new CustomColor
             {
-                colors.Add(new CustomColor
-                {
-                    longName = $"color{dic.Key}",
-                    color = dic.Value.Item1,
-                    shadow = dic.Value.Item2,
-                    isLighterColor = false
-                });
-            }
-            pickAbleColors += (uint)colors.Count; // Colors to show in Tab
-            /** Hidden Colors **/
+                longName = $"color{dic.Key}",
+                color = dic.Value.Item1,
+                shadow = dic.Value.Item2,
+                isLighterColor = true
+            });
+        }
+        foreach (var dic in noLighterColorTemp)
+        {
+            colors.Add(new CustomColor
+            {
+                longName = $"color{dic.Key}",
+                color = dic.Value.Item1,
+                shadow = dic.Value.Item2,
+                isLighterColor = false
+            });
+        }
+        pickAbleColors += (uint)colors.Count; // Colors to show in Tab
+        /** Hidden Colors **/
 
-            /** Add Colors **/
-            int id = 50000;
-            foreach (CustomColor cc in colors)
-            {
-                longList.Add((StringNames)id);
-                ColorStrings[id++] = cc.longName;
-                colorList.Add(cc.color);
-                shadowList.Add(cc.shadow);
-                if (cc.isLighterColor)
-                    lighterColors.Add(colorList.Count - 1);
-            }
-
-            Palette.ColorNames = longList.ToArray();
-            Palette.PlayerColors = colorList.ToArray();
-            Palette.ShadowColors = shadowList.ToArray();
+        /** Add Colors **/
+        int id = 50000;
+        foreach (CustomColor cc in colors)
+        {
+            longList.Add((StringNames)id);
+            ColorStrings[id++] = cc.longName;
+            colorList.Add(cc.color);
+            shadowList.Add(cc.shadow);
+            if (cc.isLighterColor)
+                lighterColors.Add(colorList.Count - 1);
         }
 
+        Palette.ColorNames = longList.ToArray();
+        Palette.PlayerColors = colorList.ToArray();
+        Palette.ShadowColors = shadowList.ToArray();
+    }
 
-        protected internal struct CustomColor
-        {
-            public string longName;
-            public Color32 color;
-            public Color32 shadow;
-            public bool isLighterColor;
-        }
 
-        [HarmonyPatch]
-        public static class CustomColorPatches
-        {
-            [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new[] {
+    protected internal struct CustomColor
+    {
+        public string longName;
+        public Color32 color;
+        public Color32 shadow;
+        public bool isLighterColor;
+    }
+
+    [HarmonyPatch]
+    public static class CustomColorPatches
+    {
+        [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new[] {
                 typeof(StringNames),
                 typeof(Il2CppReferenceArray<Il2CppSystem.Object>)
             })]
-            private class ColorStringPatch
+        private class ColorStringPatch
+        {
+            public static bool Prefix(ref string __result, [HarmonyArgument(0)] StringNames name)
             {
-                public static bool Prefix(ref string __result, [HarmonyArgument(0)] StringNames name)
+                if ((int)name >= 50000)
                 {
-                    if ((int)name >= 50000)
+                    string text = ColorStrings[(int)name];
+                    if (text != null)
                     {
-                        string text = ColorStrings[(int)name];
-                        if (text != null)
-                        {
-                            __result = $"{ModTranslation.GetString(text)}(MOD)";
-                            return false;
-                        }
+                        __result = $"{ModTranslation.GetString(text)}(MOD)";
+                        return false;
                     }
-                    return true;
                 }
+                return true;
             }
-            [HarmonyPatch(typeof(PlayerTab), nameof(PlayerTab.OnEnable))]
-            private static class PlayerTabEnablePatch
-            {
-                public static void Postfix(PlayerTab __instance)
-                { // Replace instead
-                    Il2CppArrayBase<ColorChip> chips = __instance.ColorChips.ToArray();
+        }
+        [HarmonyPatch(typeof(PlayerTab), nameof(PlayerTab.OnEnable))]
+        private static class PlayerTabEnablePatch
+        {
+            public static void Postfix(PlayerTab __instance)
+            { // Replace instead
+                Il2CppArrayBase<ColorChip> chips = __instance.ColorChips.ToArray();
 
-                    int cols = 10; // TODO: Design an algorithm to dynamically position chips to optimally fill space
-                    for (int i = 0; i < Palette.PlayerColors.Count; i++)
-                    {
-                        ColorChip chip = chips[i];
-                        int row = i / cols, col = i % cols; // Dynamically do the positioningS
-                        chip.transform.localPosition = new Vector3(-1.5f + (col * 0.35f), 1.6f - (row * 0.45f), chip.transform.localPosition.z);
-                        chip.transform.localScale *= 0.6f;
-                    }
-                    for (int j = Palette.PlayerColors.Count; j < chips.Length; j++)
-                    { // If number isn't in order, hide it
-                        ColorChip chip = chips[j];
-                        chip.transform.localScale *= 0f;
-                        chip.enabled = false;
-                        chip.Button.enabled = false;
-                        chip.Button.OnClick.RemoveAllListeners();
-                    }
+                int cols = 10; // TODO: Design an algorithm to dynamically position chips to optimally fill space
+                for (int i = 0; i < Palette.PlayerColors.Count; i++)
+                {
+                    ColorChip chip = chips[i];
+                    int row = i / cols, col = i % cols; // Dynamically do the positioningS
+                    chip.transform.localPosition = new Vector3(-1.5f + (col * 0.35f), 1.6f - (row * 0.45f), chip.transform.localPosition.z);
+                    chip.transform.localScale *= 0.6f;
+                }
+                for (int j = Palette.PlayerColors.Count; j < chips.Length; j++)
+                { // If number isn't in order, hide it
+                    ColorChip chip = chips[j];
+                    chip.transform.localScale *= 0f;
+                    chip.enabled = false;
+                    chip.Button.enabled = false;
+                    chip.Button.OnClick.RemoveAllListeners();
                 }
             }
-            [HarmonyPatch(typeof(LegacySaveManager), nameof(LegacySaveManager.LoadPlayerPrefs))]
-            private static class LoadPlayerPrefsPatch
-            { // Fix Potential issues with broken colors
-                private static bool needsPatch = false;
-                public static void Prefix([HarmonyArgument(0)] bool overrideLoad)
-                {
-                    if (!LegacySaveManager.loaded || overrideLoad)
-                        needsPatch = true;
-                }
-                public static void Postfix()
-                {
-                    if (!needsPatch) return;
-                    LegacySaveManager.colorConfig %= pickAbleColors;
-                    needsPatch = false;
-                }
-            }
-            [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckColor))]
-            private static class PlayerControlCheckColorPatch
+        }
+        [HarmonyPatch(typeof(LegacySaveManager), nameof(LegacySaveManager.LoadPlayerPrefs))]
+        private static class LoadPlayerPrefsPatch
+        { // Fix Potential issues with broken colors
+            private static bool needsPatch = false;
+            public static void Prefix([HarmonyArgument(0)] bool overrideLoad)
             {
-                public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte bodyColor)
-                { // Fix incorrect color assignment
-                    uint color = (uint)bodyColor;
-                    if (isTaken(__instance, color) || color >= Palette.PlayerColors.Length)
-                    {
-                        int num = 0;
-                        while (num++ < 50 && (color >= pickAbleColors || isTaken(__instance, color)))
-                        {
-                            color = (color + 1) % pickAbleColors;
-                        }
-                    }
-                    //Logger.Info(color.ToString() + "をセット:" + isTaken(__instance, color).ToString()+":"+ (color >= Palette.PlayerColors.Length));
-                    __instance.RpcSetColor((byte)color);
-                    return false;
-                }
-                private static bool isTaken(PlayerControl player, uint color)
+                if (!LegacySaveManager.loaded || overrideLoad)
+                    needsPatch = true;
+            }
+            public static void Postfix()
+            {
+                if (!needsPatch) return;
+                LegacySaveManager.colorConfig %= pickAbleColors;
+                needsPatch = false;
+            }
+        }
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckColor))]
+        private static class PlayerControlCheckColorPatch
+        {
+            public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte bodyColor)
+            { // Fix incorrect color assignment
+                uint color = (uint)bodyColor;
+                if (isTaken(__instance, color) || color >= Palette.PlayerColors.Length)
                 {
-                    foreach (GameData.PlayerInfo p in GameData.Instance.AllPlayers)
+                    int num = 0;
+                    while (num++ < 50 && (color >= pickAbleColors || isTaken(__instance, color)))
                     {
-                        //Logger.Info($"{!p.Disconnected} は {p.PlayerId != player.PlayerId} は {p.DefaultOutfit.ColorId == color}", "isTaken");
-                        if (!p.Disconnected && p.PlayerId != player.PlayerId && p.DefaultOutfit.ColorId == color)
-                            return true;
+                        color = (color + 1) % pickAbleColors;
                     }
-                    return false;
                 }
+                //Logger.Info(color.ToString() + "をセット:" + isTaken(__instance, color).ToString()+":"+ (color >= Palette.PlayerColors.Length));
+                __instance.RpcSetColor((byte)color);
+                return false;
+            }
+            private static bool isTaken(PlayerControl player, uint color)
+            {
+                foreach (GameData.PlayerInfo p in GameData.Instance.AllPlayers)
+                {
+                    //Logger.Info($"{!p.Disconnected} は {p.PlayerId != player.PlayerId} は {p.DefaultOutfit.ColorId == color}", "isTaken");
+                    if (!p.Disconnected && p.PlayerId != player.PlayerId && p.DefaultOutfit.ColorId == color)
+                        return true;
+                }
+                return false;
             }
         }
     }

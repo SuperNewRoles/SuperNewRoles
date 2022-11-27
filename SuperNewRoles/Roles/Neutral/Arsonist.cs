@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
@@ -8,158 +7,157 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using UnityEngine;
 
-namespace SuperNewRoles.Roles
+namespace SuperNewRoles.Roles;
+
+public static class Arsonist
 {
-    public static class Arsonist
+    public static void ArsonistDouse(this PlayerControl target, PlayerControl source = null)
     {
-        public static void ArsonistDouse(this PlayerControl target, PlayerControl source = null)
+        try
         {
-            try
+            if (source == null) source = PlayerControl.LocalPlayer;
+            MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.ArsonistDouse);
+            Writer.Write(source.PlayerId);
+            Writer.Write(target.PlayerId);
+            Writer.EndRPC();
+            RPCProcedure.ArsonistDouse(source.PlayerId, target.PlayerId);
+        }
+        catch (Exception e)
+        {
+            SuperNewRolesPlugin.Logger.LogError(e);
+        }
+    }
+
+    public static List<PlayerControl> GetDouseData(this PlayerControl player)
+    {
+        return RoleClass.Arsonist.DouseData.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseData[player.PlayerId] : new();
+    }
+
+    public static List<PlayerControl> GetUntarget()
+    {
+        return RoleClass.Arsonist.DouseData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId)
+            ? RoleClass.Arsonist.DouseData[CachedPlayer.LocalPlayer.PlayerId]
+            : (new());
+    }
+
+    public static bool IsDoused(this PlayerControl source, PlayerControl target)
+    {
+        if (source == null || source.Data.Disconnected || target == null || target.IsDead() || target.IsBot()) return true;
+        if (source.PlayerId == target.PlayerId) return true;
+        if (RoleClass.Arsonist.DouseData.ContainsKey(source.PlayerId))
+        {
+            if (RoleClass.Arsonist.DouseData[source.PlayerId].IsCheckListPlayerControl(target))
             {
-                if (source == null) source = PlayerControl.LocalPlayer;
-                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.ArsonistDouse);
-                Writer.Write(source.PlayerId);
-                Writer.Write(target.PlayerId);
-                Writer.EndRPC();
-                RPCProcedure.ArsonistDouse(source.PlayerId, target.PlayerId);
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogError(e);
-            }
-        }
-
-        public static List<PlayerControl> GetDouseData(this PlayerControl player)
-        {
-            return RoleClass.Arsonist.DouseData.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseData[player.PlayerId] : new();
-        }
-
-        public static List<PlayerControl> GetUntarget()
-        {
-            return RoleClass.Arsonist.DouseData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId)
-                ? RoleClass.Arsonist.DouseData[CachedPlayer.LocalPlayer.PlayerId]
-                : (new());
-        }
-
-        public static bool IsDoused(this PlayerControl source, PlayerControl target)
-        {
-            if (source == null || source.Data.Disconnected || target == null || target.IsDead() || target.IsBot()) return true;
-            if (source.PlayerId == target.PlayerId) return true;
-            if (RoleClass.Arsonist.DouseData.ContainsKey(source.PlayerId))
-            {
-                if (RoleClass.Arsonist.DouseData[source.PlayerId].IsCheckListPlayerControl(target))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public static List<PlayerControl> GetIconPlayers(PlayerControl player = null)
-        {
-            if (player == null) player = PlayerControl.LocalPlayer;
-            return RoleClass.Arsonist.DouseData.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseData[player.PlayerId] : (new());
-        }
-        public static bool IsViewIcon(PlayerControl player)
-        {
-            if (player == null) return false;
-            foreach (var data in RoleClass.Arsonist.DouseData)
-            {
-                foreach (PlayerControl Player in data.Value)
-                {
-                    if (player.PlayerId == Player.PlayerId)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        public static bool IsButton()
-        {
-            return ModeHandler.IsMode(ModeId.Default) && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist);
-        }
-
-        public static bool IseveryButton()
-        {
-            return (ModeHandler.IsMode(ModeId.SuperHostRoles) && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist)) || (ModeHandler.IsMode(ModeId.Default) && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist));
-
-        }
-
-        public static bool IsWin(PlayerControl Arsonist)
-        {
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
-            {
-                if (player.PlayerId != Arsonist.PlayerId && !IsDoused(Arsonist, player))
-                {
-                    return false;
-                }
-            }
-            return !Arsonist.IsDead();
-        }
-
-        public static void HudUpdate()
-        {
-            if (RoleClass.Arsonist.DouseTarget == null) return;
-            if (RoleClass.Arsonist.IsDouse)
-            {
-                if (RoleClass.Arsonist.DouseTarget != HudManagerStartPatch.SetTarget(untarget: GetUntarget()))
-                {
-                    RoleClass.Arsonist.IsDouse = false;
-                    HudManagerStartPatch.ArsonistDouseButton.Timer = 0;
-                    SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗るのをやめた");
-                    return;
-                }
-                if (HudManagerStartPatch.ArsonistDouseButton.Timer <= 0.1f)
-                {
-                    HudManagerStartPatch.ArsonistDouseButton.MaxTimer = RoleClass.Arsonist.CoolTime;
-                    HudManagerStartPatch.ArsonistDouseButton.Timer = HudManagerStartPatch.ArsonistDouseButton.MaxTimer;
-                    HudManagerStartPatch.ArsonistDouseButton.actionButton.cooldownTimerText.color = Color.white;
-                    RoleClass.Arsonist.DouseTarget.ArsonistDouse();
-                    SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗った:" + RoleClass.Arsonist.DouseTarget);
-                    RoleClass.Arsonist.DouseTarget = null;
-                }
-            }
-        }
-
-        public static bool IsArsonistWinFlag()
-        {
-            foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
-            {
-                if (IsWin(player))
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("アーソニストが勝利条件を達成");
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public static bool CheckAndEndGameForArsonistWin(ShipStatus __instance)
-        {
-            if (RoleClass.Arsonist.TriggerArsonistWin)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
-                __instance.enabled = false;
-                ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
                 return true;
             }
-            return false;
         }
+        return false;
+    }
 
-        public static void SetWinArsonist()
+    public static List<PlayerControl> GetIconPlayers(PlayerControl player = null)
+    {
+        if (player == null) player = PlayerControl.LocalPlayer;
+        return RoleClass.Arsonist.DouseData.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseData[player.PlayerId] : (new());
+    }
+    public static bool IsViewIcon(PlayerControl player)
+    {
+        if (player == null) return false;
+        foreach (var data in RoleClass.Arsonist.DouseData)
         {
-            RoleClass.Arsonist.TriggerArsonistWin = true;
-        }
-        public static Dictionary<byte, float> ArsonistTimer = new();
-
-        public static void ArsonistFinalStatus(PlayerControl __instance)
-        {
-            if (RoleClass.Arsonist.TriggerArsonistWin)
+            foreach (PlayerControl Player in data.Value)
             {
-                FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Ignite;
+                if (player.PlayerId == Player.PlayerId)
+                {
+                    return true;
+                }
             }
+        }
+        return false;
+    }
+
+    public static bool IsButton()
+    {
+        return ModeHandler.IsMode(ModeId.Default) && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist);
+    }
+
+    public static bool IseveryButton()
+    {
+        return (ModeHandler.IsMode(ModeId.SuperHostRoles) && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist)) || (ModeHandler.IsMode(ModeId.Default) && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist));
+
+    }
+
+    public static bool IsWin(PlayerControl Arsonist)
+    {
+        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+        {
+            if (player.PlayerId != Arsonist.PlayerId && !IsDoused(Arsonist, player))
+            {
+                return false;
+            }
+        }
+        return !Arsonist.IsDead();
+    }
+
+    public static void HudUpdate()
+    {
+        if (RoleClass.Arsonist.DouseTarget == null) return;
+        if (RoleClass.Arsonist.IsDouse)
+        {
+            if (RoleClass.Arsonist.DouseTarget != HudManagerStartPatch.SetTarget(untarget: GetUntarget()))
+            {
+                RoleClass.Arsonist.IsDouse = false;
+                HudManagerStartPatch.ArsonistDouseButton.Timer = 0;
+                SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗るのをやめた");
+                return;
+            }
+            if (HudManagerStartPatch.ArsonistDouseButton.Timer <= 0.1f)
+            {
+                HudManagerStartPatch.ArsonistDouseButton.MaxTimer = RoleClass.Arsonist.CoolTime;
+                HudManagerStartPatch.ArsonistDouseButton.Timer = HudManagerStartPatch.ArsonistDouseButton.MaxTimer;
+                HudManagerStartPatch.ArsonistDouseButton.actionButton.cooldownTimerText.color = Color.white;
+                RoleClass.Arsonist.DouseTarget.ArsonistDouse();
+                SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗った:" + RoleClass.Arsonist.DouseTarget);
+                RoleClass.Arsonist.DouseTarget = null;
+            }
+        }
+    }
+
+    public static bool IsArsonistWinFlag()
+    {
+        foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
+        {
+            if (IsWin(player))
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("アーソニストが勝利条件を達成");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static bool CheckAndEndGameForArsonistWin(ShipStatus __instance)
+    {
+        if (RoleClass.Arsonist.TriggerArsonistWin)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+            __instance.enabled = false;
+            ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
+            return true;
+        }
+        return false;
+    }
+
+    public static void SetWinArsonist()
+    {
+        RoleClass.Arsonist.TriggerArsonistWin = true;
+    }
+    public static Dictionary<byte, float> ArsonistTimer = new();
+
+    public static void ArsonistFinalStatus(PlayerControl __instance)
+    {
+        if (RoleClass.Arsonist.TriggerArsonistWin)
+        {
+            FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Ignite;
         }
     }
 }

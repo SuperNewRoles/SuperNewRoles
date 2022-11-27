@@ -9,179 +9,178 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
 
-namespace SuperNewRoles.Patches
+namespace SuperNewRoles.Patches;
+
+class WrapUpPatch
 {
-    class WrapUpPatch
+    [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
+    public class ExileControllerWrapUpPatch
     {
-        [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
-        public class ExileControllerWrapUpPatch
+        public static void Prefix(ExileController __instance)
         {
-            public static void Prefix(ExileController __instance)
-            {
-                WrapUpPatch.Prefix(__instance.exiled);
-            }
-            public static void Postfix(ExileController __instance)
-            {
-                WrapUpPatch.Postfix(__instance.exiled);
-            }
+            WrapUpPatch.Prefix(__instance.exiled);
         }
-        [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
-        public class AirshipExileControllerWrapUpPatch
+        public static void Postfix(ExileController __instance)
         {
-            public static void Prefix(AirshipExileController __instance)
-            {
-                WrapUpPatch.Prefix(__instance.exiled);
-            }
-            public static void Postfix(AirshipExileController __instance)
-            {
-                WrapUpPatch.Postfix(__instance.exiled);
-            }
+            WrapUpPatch.Postfix(__instance.exiled);
         }
-        public static void Prefix(GameData.PlayerInfo exiled)
+    }
+    [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
+    public class AirshipExileControllerWrapUpPatch
+    {
+        public static void Prefix(AirshipExileController __instance)
         {
-            if (exiled != null && exiled.Object == null)
+            WrapUpPatch.Prefix(__instance.exiled);
+        }
+        public static void Postfix(AirshipExileController __instance)
+        {
+            WrapUpPatch.Postfix(__instance.exiled);
+        }
+    }
+    public static void Prefix(GameData.PlayerInfo exiled)
+    {
+        if (exiled != null && exiled.Object == null)
+        {
+            exiled = null;
+        }
+        RoleClass.IsCoolTimeSetted = false;
+        FalseCharges.WrapUp(exiled != null ? exiled.Object : null);
+        if (ModeHandler.IsMode(ModeId.Default))
+        {
+            if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.CognitiveDeficit)
             {
-                exiled = null;
-            }
-            RoleClass.IsCoolTimeSetted = false;
-            FalseCharges.WrapUp(exiled != null ? exiled.Object : null);
-            if (ModeHandler.IsMode(ModeId.Default))
-            {
-                if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.CognitiveDeficit)
+                if (!Sabotage.CognitiveDeficit.Main.IsLocalEnd)
                 {
-                    if (!Sabotage.CognitiveDeficit.Main.IsLocalEnd)
-                    {
-                        Sabotage.CognitiveDeficit.Main.UpdateTime = 0;
-                    }
-                }
-                if (exiled == null) return;
-                FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.Object.PlayerId] = FinalStatus.Exiled;
-                if (exiled.Object.PlayerId != CachedPlayer.LocalPlayer.PlayerId) return;
-                if (exiled.Object.IsRole(RoleId.SideKiller))
-                {
-                    var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
-                    if (sideplayer != null)
-                    {
-                        if (!RoleClass.SideKiller.IsUpMadKiller)
-                        {
-                            sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
-                            RoleClass.SideKiller.IsUpMadKiller = true;
-                        }
-                    }
+                    Sabotage.CognitiveDeficit.Main.UpdateTime = 0;
                 }
             }
-        }
-        public static void Postfix(GameData.PlayerInfo exiled)
-        {
-            if (exiled != null && exiled.Object == null)
-            {
-                exiled = null;
-            }
-
-            Kunoichi.WrapUp();
-            SerialKiller.WrapUp();
-            Assassin.WrapUp();
-            CountChanger.CountChangerPatch.WrapUpPatch();
-            CustomButton.MeetingEndedUpdate();
-
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
-            ModeHandler.Wrapup(exiled);
-            RedRidingHood.WrapUp(exiled);
-            Roles.Neutral.Revolutionist.WrapUp();
-            Roles.Neutral.Spelunker.WrapUp();
-            Roles.Neutral.Hitman.WrapUp();
-            Vampire.WrapUp(exiled.Object);
-            Roles.Impostor.Matryoshka.WrapUp();
-            Roles.Neutral.PartTimer.WrapUp();
-            Roles.Crewmate.KnightProtected_Patch.WrapUp();
-            RoleClass.Tuna.IsMeetingEnd = true;
-            Bestfalsecharge.WrapUp();
-            if (AmongUsClient.Instance.AmHost)
-            {
-                PlayerAnimation.PlayerAnimations.All(x =>
-                {
-                    x.RpcAnimation(RpcAnimationType.Stop);
-                    return false;
-                });
-            }
-            SecretRoom.Reset();
-            if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Roles.Crewmate.Painter.WrapUp();
-            Roles.Neutral.Photographer.WrapUp();
-            Roles.Impostor.Cracker.WrapUp();
-            RoleClass.IsMeeting = false;
-            Seer.WrapUpPatch.WrapUpPostfix();
             if (exiled == null) return;
-            SoothSayer_Patch.WrapUp(exiled.Object);
-            Nekomata.NekomataEnd(exiled);
-            Roles.Impostor.NekoKabocha.OnWrapUp(exiled.Object);
-
-            exiled.Object.Exiled();
-            exiled.IsDead = true;
-            FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
-            var Player = ModHelpers.PlayerById(exiled.PlayerId);
-            if (ModeHandler.IsMode(ModeId.Default))
+            FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.Object.PlayerId] = FinalStatus.Exiled;
+            if (exiled.Object.PlayerId != CachedPlayer.LocalPlayer.PlayerId) return;
+            if (exiled.Object.IsRole(RoleId.SideKiller))
             {
-                if (RoleClass.Lovers.SameDie && Player.IsLovers())
+                var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
+                if (sideplayer != null)
                 {
-                    if (AmongUsClient.Instance.AmHost)
+                    if (!RoleClass.SideKiller.IsUpMadKiller)
                     {
-                        PlayerControl SideLoverPlayer = Player.GetOneSideLovers();
-                        if (SideLoverPlayer.IsAlive())
-                        {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
-                            writer.Write(SideLoverPlayer.PlayerId);
-                            writer.Write(SideLoverPlayer.PlayerId);
-                            writer.Write(byte.MaxValue);
-                            AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
-                        }
-                    }
-                }
-                EvilEraser.IsWinGodGuard = false;
-                EvilEraser.IsWinFoxGuard = false;
-                if (RoleHelpers.IsQuarreled(Player))
-                {
-                    var Side = RoleHelpers.GetOneSideQuarreled(Player);
-                    if (Side.IsDead())
-                    {
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
-                        Writer.Write(Player.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        RPCProcedure.ShareWinner(Player.PlayerId);
-                        RoleClass.Quarreled.IsQuarreledWin = true;
-                        CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
-                    }
-                }
-
-                if (Player.IsRole(RoleId.Jester))
-                {
-
-                    if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patches.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
-                    {
-                        RPCProcedure.ShareWinner(Player.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
-                        Writer.Write(Player.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        RoleClass.Jester.IsJesterWin = true;
-                        CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
-                    }
-                }
-
-                if (Player.IsRole(RoleId.MadJester))
-                {
-                    if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
-                    {
-                        RPCProcedure.ShareWinner(Player.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
-                        Writer.Write(Player.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        RoleClass.MadJester.IsMadJesterWin = true;
-                        CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.MadJesterWin, false);
+                        sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
+                        RoleClass.SideKiller.IsUpMadKiller = true;
                     }
                 }
             }
-            Mode.SuperHostRoles.Main.RealExiled = null;
         }
+    }
+    public static void Postfix(GameData.PlayerInfo exiled)
+    {
+        if (exiled != null && exiled.Object == null)
+        {
+            exiled = null;
+        }
+
+        Kunoichi.WrapUp();
+        SerialKiller.WrapUp();
+        Assassin.WrapUp();
+        CountChanger.CountChangerPatch.WrapUpPatch();
+        CustomButton.MeetingEndedUpdate();
+
+        PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
+        ModeHandler.Wrapup(exiled);
+        RedRidingHood.WrapUp(exiled);
+        Roles.Neutral.Revolutionist.WrapUp();
+        Roles.Neutral.Spelunker.WrapUp();
+        Roles.Neutral.Hitman.WrapUp();
+        Vampire.WrapUp(exiled.Object);
+        Roles.Impostor.Matryoshka.WrapUp();
+        Roles.Neutral.PartTimer.WrapUp();
+        Roles.Crewmate.KnightProtected_Patch.WrapUp();
+        RoleClass.Tuna.IsMeetingEnd = true;
+        Bestfalsecharge.WrapUp();
+        if (AmongUsClient.Instance.AmHost)
+        {
+            PlayerAnimation.PlayerAnimations.All(x =>
+            {
+                x.RpcAnimation(RpcAnimationType.Stop);
+                return false;
+            });
+        }
+        SecretRoom.Reset();
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter)) Roles.Crewmate.Painter.WrapUp();
+        Roles.Neutral.Photographer.WrapUp();
+        Roles.Impostor.Cracker.WrapUp();
+        RoleClass.IsMeeting = false;
+        Seer.WrapUpPatch.WrapUpPostfix();
+        if (exiled == null) return;
+        SoothSayer_Patch.WrapUp(exiled.Object);
+        Nekomata.NekomataEnd(exiled);
+        Roles.Impostor.NekoKabocha.OnWrapUp(exiled.Object);
+
+        exiled.Object.Exiled();
+        exiled.IsDead = true;
+        FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
+        var Player = ModHelpers.PlayerById(exiled.PlayerId);
+        if (ModeHandler.IsMode(ModeId.Default))
+        {
+            if (RoleClass.Lovers.SameDie && Player.IsLovers())
+            {
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    PlayerControl SideLoverPlayer = Player.GetOneSideLovers();
+                    if (SideLoverPlayer.IsAlive())
+                    {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                        writer.Write(SideLoverPlayer.PlayerId);
+                        writer.Write(SideLoverPlayer.PlayerId);
+                        writer.Write(byte.MaxValue);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
+                    }
+                }
+            }
+            EvilEraser.IsWinGodGuard = false;
+            EvilEraser.IsWinFoxGuard = false;
+            if (RoleHelpers.IsQuarreled(Player))
+            {
+                var Side = RoleHelpers.GetOneSideQuarreled(Player);
+                if (Side.IsDead())
+                {
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                    Writer.Write(Player.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                    RPCProcedure.ShareWinner(Player.PlayerId);
+                    RoleClass.Quarreled.IsQuarreledWin = true;
+                    CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
+                }
+            }
+
+            if (Player.IsRole(RoleId.Jester))
+            {
+
+                if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patches.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
+                {
+                    RPCProcedure.ShareWinner(Player.PlayerId);
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                    Writer.Write(Player.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                    RoleClass.Jester.IsJesterWin = true;
+                    CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
+                }
+            }
+
+            if (Player.IsRole(RoleId.MadJester))
+            {
+                if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
+                {
+                    RPCProcedure.ShareWinner(Player.PlayerId);
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                    Writer.Write(Player.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                    RoleClass.MadJester.IsMadJesterWin = true;
+                    CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.MadJesterWin, false);
+                }
+            }
+        }
+        Mode.SuperHostRoles.Main.RealExiled = null;
     }
 }

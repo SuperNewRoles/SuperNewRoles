@@ -1,28 +1,27 @@
 using UnityEngine;
 
-namespace SuperNewRoles.CustomObject
+namespace SuperNewRoles.CustomObject;
+
+public class Kunai
 {
-    public class Kunai
+    public SpriteRenderer image;
+    public GameObject kunai;
+
+    private static Sprite sprite;
+    public static Sprite GetSprite()
     {
-        public SpriteRenderer image;
-        public GameObject kunai;
+        if (sprite) return sprite;
+        sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunai.png", 200f);
+        return sprite;
+    }
 
-        private static Sprite sprite;
-        public static Sprite GetSprite()
+    public Kunai()
+    {
+        kunai = new GameObject("Kunai")
         {
-            if (sprite) return sprite;
-            sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunai.png", 200f);
-            return sprite;
-        }
-
-        public Kunai()
-        {
-            kunai = new GameObject("Kunai")
-            {
-                layer = 5
-            };
-            image = kunai.AddComponent<SpriteRenderer>();
-            image.sprite = GetSprite();
-        }
+            layer = 5
+        };
+        image = kunai.AddComponent<SpriteRenderer>();
+        image.sprite = GetSprite();
     }
 }
