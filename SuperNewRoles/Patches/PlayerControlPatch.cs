@@ -945,7 +945,7 @@ public static class MurderPlayerPatch
         }
 
         SerialKiller.MurderPlayer(__instance, target);
-        Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
+        Seer.WrapUpPatch.MurderPlayerPatch.Postfix(target);
         if (IsDebugMode() && CustomOptionHolder.IsMurderPlayerAnnounce.GetBool())
         {
             new CustomMessage("MurderPlayerが発生しました", 5f);

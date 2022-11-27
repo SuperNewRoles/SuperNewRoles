@@ -21,12 +21,10 @@ class Seer
     /** <summary>
         画面を光らせる
         </summary>
-
         <param name="color">
         (new Color("r値" / 255f, "g値" / 255f, "b値" / 255f))
         あるいはUnityのcolorコード指定で色を選択
         </param>
-
         <param name="duration">
         color色に画面を光らせはじめ、終わるまでの時間(duration/2秒時に指定色に光る)
         </param>
@@ -69,7 +67,7 @@ class Seer
         return SoulSprite;
     }
 
-    public static class ExileControllerWrapUpPatch
+    public static class WrapUpPatch
     {
         public static void WrapUpPostfix()
         {
