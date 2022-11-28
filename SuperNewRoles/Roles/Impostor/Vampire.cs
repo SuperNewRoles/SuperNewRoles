@@ -10,6 +10,9 @@ namespace SuperNewRoles.Roles;
 
 class Vampire
 {
+    /// <summary>
+    /// ヴァンパイアの血痕処理
+    /// </summary>
     public static void WrapUp()
     {
         foreach (var data in RoleClass.Vampire.NoActiveTurnWait.ToArray())
@@ -27,6 +30,9 @@ class Vampire
         RoleClass.Vampire.WaitActiveBloodStains = new();
     }
 
+    /// <summary>
+    /// 眷属の心中処理
+    /// </summary>
     public static void ExileControllerWrapUpPatch(PlayerControl exiled)
     {
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Dependents) && PlayerControl.LocalPlayer.IsAlive())
