@@ -4,113 +4,112 @@ using HarmonyLib;
 
 
 //TODO:さつまいも、リファクタ
-namespace SuperNewRoles.Roles
+namespace SuperNewRoles.Roles;
+
+class RoleTemplate
 {
-    class RoleTemplate
+    public abstract class Role
     {
-        public abstract class Role
+        public static List<Role> allRoles = new();
+        public PlayerControl player;
+        public RoleId? roleId = null;
+
+        public abstract void OnMeetingStart();
+        public abstract void OnMeetingEnd();
+        public abstract void FixedUpdate();
+        public abstract void OnKill(PlayerControl target);
+        public abstract void OnDeath(PlayerControl killer = null);
+        public abstract void HandleDisconnect(PlayerControl player, DisconnectReasons reason);
+        public virtual void ReSetRole() { }
+
+        public static void ClearAll()
         {
-            public static List<Role> allRoles = new();
-            public PlayerControl player;
-            public RoleId? roleId = null;
+            allRoles = new List<Role>();
+        }
+    }
+    [HarmonyPatch]
+    public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
+    {
+        public static List<T> players = new();
+        public static RoleId? RoleType = null;
 
-            public abstract void OnMeetingStart();
-            public abstract void OnMeetingEnd();
-            public abstract void FixedUpdate();
-            public abstract void OnKill(PlayerControl target);
-            public abstract void OnDeath(PlayerControl killer = null);
-            public abstract void HandleDisconnect(PlayerControl player, DisconnectReasons reason);
-            public virtual void ReSetRole() { }
+        public void Init(PlayerControl player)
+        {
+            this.player = player;
+            players.Add((T)this);
+            allRoles.Add(this);
+        }
 
-            public static void ClearAll()
+        public static T local
+        {
+            get
             {
-                allRoles = new List<Role>();
+                return players.FirstOrDefault(x => x.player == PlayerControl.LocalPlayer);
             }
         }
-        [HarmonyPatch]
-        public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
+
+        public static List<PlayerControl> allPlayers
         {
-            public static List<T> players = new();
-            public static RoleId? RoleType = null;
-
-            public void Init(PlayerControl player)
+            get
             {
-                this.player = player;
-                players.Add((T)this);
-                allRoles.Add(this);
+                return players.Select(x => x.player).ToList();
             }
+        }
 
-            public static T local
+        public static List<PlayerControl> livingPlayers
+        {
+            get
             {
-                get
-                {
-                    return players.FirstOrDefault(x => x.player == PlayerControl.LocalPlayer);
-                }
+                return players.Select(x => x.player).Where(x => x.IsAlive()).ToList();
             }
+        }
 
-            public static List<PlayerControl> allPlayers
+        public static List<PlayerControl> deadPlayers
+        {
+            get
             {
-                get
-                {
-                    return players.Select(x => x.player).ToList();
-                }
+                return players.Select(x => x.player).Where(x => !x.IsAlive()).ToList();
             }
+        }
 
-            public static List<PlayerControl> livingPlayers
+        public static bool exists
+        {
+            get { return players.Count > 0; }
+        }
+
+        public static T GetRole(PlayerControl player = null)
+        {
+            player ??= PlayerControl.LocalPlayer;
+            return players.FirstOrDefault(x => x.player == player);
+        }
+
+        public static bool IsRole(PlayerControl player)
+        {
+            return players.Any(x => x.player == player);
+        }
+
+        public static void SetRole(PlayerControl player)
+        {
+            if (!IsRole(player))
             {
-                get
-                {
-                    return players.Select(x => x.player).Where(x => x.IsAlive()).ToList();
-                }
+                T role = new();
+                role.Init(player);
             }
+        }
 
-            public static List<PlayerControl> deadPlayers
-            {
-                get
-                {
-                    return players.Select(x => x.player).Where(x => !x.IsAlive()).ToList();
-                }
-            }
+        public static void eraseRole(PlayerControl player)
+        {
+            players.DoIf(x => x.player == player, x => x.ReSetRole());
+            players.RemoveAll(x => x.player == player && x.roleId == RoleType);
+            allRoles.RemoveAll(x => x.player == player && x.roleId == RoleType);
+        }
 
-            public static bool exists
+        public static void swapRole(PlayerControl p1, PlayerControl p2)
+        {
+            var index = players.FindIndex(x => x.player == p1);
+            if (index >= 0)
             {
-                get { return players.Count > 0; }
-            }
-
-            public static T GetRole(PlayerControl player = null)
-            {
-                player ??= PlayerControl.LocalPlayer;
-                return players.FirstOrDefault(x => x.player == player);
-            }
-
-            public static bool IsRole(PlayerControl player)
-            {
-                return players.Any(x => x.player == player);
-            }
-
-            public static void SetRole(PlayerControl player)
-            {
-                if (!IsRole(player))
-                {
-                    T role = new();
-                    role.Init(player);
-                }
-            }
-
-            public static void eraseRole(PlayerControl player)
-            {
-                players.DoIf(x => x.player == player, x => x.ReSetRole());
-                players.RemoveAll(x => x.player == player && x.roleId == RoleType);
-                allRoles.RemoveAll(x => x.player == player && x.roleId == RoleType);
-            }
-
-            public static void swapRole(PlayerControl p1, PlayerControl p2)
-            {
-                var index = players.FindIndex(x => x.player == p1);
-                if (index >= 0)
-                {
-                    players[index].player = p2;
-                }
+                players[index].player = p2;
             }
         }
     }

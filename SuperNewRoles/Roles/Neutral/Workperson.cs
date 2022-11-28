@@ -1,20 +1,17 @@
 using HarmonyLib;
 
+namespace SuperNewRoles.Roles;
 
-
-namespace SuperNewRoles.Roles
+class Workperson
 {
-    class Workperson
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
+    class BeginCrewmatePatch
     {
-        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
-        class BeginCrewmatePatch
+        public static void Postfix()
         {
-            public static void Postfix()
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Workperson))
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Workperson))
-                {
-                    PlayerControl.LocalPlayer.GenerateAndAssignTasks(CustomOptionHolder.WorkpersonCommonTask.GetInt(), CustomOptionHolder.WorkpersonShortTask.GetInt(), CustomOptionHolder.WorkpersonLongTask.GetInt());
-                }
+                PlayerControl.LocalPlayer.GenerateAndAssignTasks(CustomOptionHolder.WorkpersonCommonTask.GetInt(), CustomOptionHolder.WorkpersonShortTask.GetInt(), CustomOptionHolder.WorkpersonLongTask.GetInt());
             }
         }
     }
