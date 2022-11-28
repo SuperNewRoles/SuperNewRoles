@@ -1,32 +1,31 @@
 using UnityEngine;
 
-namespace SuperNewRoles.Patches
+namespace SuperNewRoles.Patches;
+
+class ChatPaste
 {
-    class ChatPaste
+    [HarmonyLib.HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
+    class Pastepatch
     {
-        [HarmonyLib.HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
-        class Pastepatch
+        static void Postfix()
         {
-            static void Postfix()
+            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen)
             {
-                if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen)
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.LeftControl, KeyCode.V }))
                 {
-                    if (ModHelpers.GetManyKeyDown(new[] { KeyCode.LeftControl, KeyCode.V }))
-                    {
-                        FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.SetText(FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.text + GUIUtility.systemCopyBuffer);
-                        FastDestroyableSingleton<HudManager>.Instance.Chat.quickChatMenu.ResetGlyphs();
-                    }
-                    if (ModHelpers.GetManyKeyDown(new[] { KeyCode.LeftControl, KeyCode.X }))
-                    {
-                        GUIUtility.systemCopyBuffer = FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.text;
-                        FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.Clear();
-                        FastDestroyableSingleton<HudManager>.Instance.Chat.quickChatMenu.ResetGlyphs();
-                    }
-                    if (ModHelpers.GetManyKeyDown(new[] { KeyCode.LeftControl, KeyCode.C }))
-                    {
-                        GUIUtility.systemCopyBuffer = FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.text;
-                        FastDestroyableSingleton<HudManager>.Instance.Chat.quickChatMenu.ResetGlyphs();
-                    }
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.SetText(FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.text + GUIUtility.systemCopyBuffer);
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.quickChatMenu.ResetGlyphs();
+                }
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.LeftControl, KeyCode.X }))
+                {
+                    GUIUtility.systemCopyBuffer = FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.text;
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.Clear();
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.quickChatMenu.ResetGlyphs();
+                }
+                if (ModHelpers.GetManyKeyDown(new[] { KeyCode.LeftControl, KeyCode.C }))
+                {
+                    GUIUtility.systemCopyBuffer = FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.text;
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.quickChatMenu.ResetGlyphs();
                 }
             }
         }

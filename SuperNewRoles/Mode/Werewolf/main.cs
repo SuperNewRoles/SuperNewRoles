@@ -9,7 +9,7 @@ namespace SuperNewRoles.Mode.Werewolf
 {
     class Main
     {
-        public static bool IsChatBlock(PlayerControl sourcePlayer,string text)
+        public static bool IsChatBlock(PlayerControl sourcePlayer, string text)
         {
             if (MeetingHud.Instance == null) return false;
             if (!ModeHandler.IsMode(ModeId.Werewolf)) return false;
@@ -18,7 +18,8 @@ namespace SuperNewRoles.Mode.Werewolf
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer) && text.EndsWith(ModTranslation.GetString("SoothSayerCrewmateText")))
                 {
                     return false;
-                } else if (PlayerControl.LocalPlayer.IsRole(RoleId.SpiritMedium) && (text.EndsWith(ModTranslation.GetString("SoothSayerCrewmateText")) || text.EndsWith(ModTranslation.GetString("SoothSayerNotCrewmateText"))))
+                }
+                else if (PlayerControl.LocalPlayer.IsRole(RoleId.SpiritMedium) && (text.EndsWith(ModTranslation.GetString("SoothSayerCrewmateText")) || text.EndsWith(ModTranslation.GetString("SoothSayerNotCrewmateText"))))
                 {
                     return false;
                 }

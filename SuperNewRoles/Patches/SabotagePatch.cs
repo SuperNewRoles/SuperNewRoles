@@ -3,98 +3,97 @@ using HarmonyLib;
 
 //参考=>https://github.com/Koke1024/Town-Of-Moss/blob/main/TownOfMoss/Patches/MeltDownBoost.cs
 
-namespace SuperNewRoles.Patches
-{
-    public static class ElectricPatch
-    {
-        public static void Reset()
-        {
-            onTask = false;
-        }
-        public static bool onTask = false;
-        public static bool done = false;
-        public static DateTime lastUpdate;
+namespace SuperNewRoles.Patches;
 
-        [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.Begin))]
-        class VitalsMinigameStartPatch
+public static class ElectricPatch
+{
+    public static void Reset()
+    {
+        onTask = false;
+    }
+    public static bool onTask = false;
+    public static bool done = false;
+    public static DateTime lastUpdate;
+
+    [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.Begin))]
+    class VitalsMinigameStartPatch
+    {
+        static void Postfix(VitalsMinigame __instance)
         {
-            static void Postfix(VitalsMinigame __instance)
-            {
-                onTask = true;
-                done = false;
-            }
-        }
-        [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.FixedUpdate))]
-        class SwitchMinigameClosePatch
-        {
-            static void Postfix(SwitchMinigame __instance)
-            {
-                lastUpdate = DateTime.UtcNow;
-                FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(1f, new Action<float>((p) =>
-                {
-                    if (p == 1f)
-                    {
-                        float diff = (float)((DateTime.UtcNow - lastUpdate).TotalMilliseconds);
-                        if (diff > 100 && !done)
-                        {
-                            done = true;
-                            onTask = false;
-                        }
-                    }
-                })));
-            }
+            onTask = true;
+            done = false;
         }
     }
-    [HarmonyPatch(typeof(ReactorSystemType), nameof(ReactorSystemType.Detoriorate))]
-    public static class MeltdownBooster
+    [HarmonyPatch(typeof(SwitchMinigame), nameof(SwitchMinigame.FixedUpdate))]
+    class SwitchMinigameClosePatch
     {
-        public static void Prefix(ReactorSystemType __instance, float deltaTime)
+        static void Postfix(SwitchMinigame __instance)
         {
-            if (MapOptions.MapOption.ReactorDurationOption.GetBool())
+            lastUpdate = DateTime.UtcNow;
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(1f, new Action<float>((p) =>
             {
-                if (!__instance.IsActive)
+                if (p == 1f)
                 {
-                    return;
-                }
-                if (MapUtilities.CachedShipStatus.Type == ShipStatus.MapType.Pb)
-                {
-                    if (__instance.Countdown >= MapOptions.MapOption.PolusReactorTimeLimit.GetFloat())
+                    float diff = (float)(DateTime.UtcNow - lastUpdate).TotalMilliseconds;
+                    if (diff > 100 && !done)
                     {
-                        __instance.Countdown = MapOptions.MapOption.PolusReactorTimeLimit.GetFloat();
+                        done = true;
+                        onTask = false;
                     }
-                    return;
                 }
-                if (MapUtilities.CachedShipStatus.Type == ShipStatus.MapType.Hq)
+            })));
+        }
+    }
+}
+[HarmonyPatch(typeof(ReactorSystemType), nameof(ReactorSystemType.Detoriorate))]
+public static class MeltdownBooster
+{
+    public static void Prefix(ReactorSystemType __instance, float deltaTime)
+    {
+        if (MapOptions.MapOption.ReactorDurationOption.GetBool())
+        {
+            if (!__instance.IsActive)
+            {
+                return;
+            }
+            if (MapUtilities.CachedShipStatus.Type == ShipStatus.MapType.Pb)
+            {
+                if (__instance.Countdown >= MapOptions.MapOption.PolusReactorTimeLimit.GetFloat())
                 {
-                    if (__instance.Countdown >= MapOptions.MapOption.MiraReactorTimeLimit.GetFloat())
-                    {
-                        __instance.Countdown = MapOptions.MapOption.MiraReactorTimeLimit.GetFloat();
-                    }
-                    return;
+                    __instance.Countdown = MapOptions.MapOption.PolusReactorTimeLimit.GetFloat();
                 }
                 return;
             }
+            if (MapUtilities.CachedShipStatus.Type == ShipStatus.MapType.Hq)
+            {
+                if (__instance.Countdown >= MapOptions.MapOption.MiraReactorTimeLimit.GetFloat())
+                {
+                    __instance.Countdown = MapOptions.MapOption.MiraReactorTimeLimit.GetFloat();
+                }
+                return;
+            }
+            return;
         }
     }
+}
 
-    [HarmonyPatch(typeof(HeliSabotageSystem), nameof(HeliSabotageSystem.Detoriorate))]
-    public static class HeliMeltdownBooster
+[HarmonyPatch(typeof(HeliSabotageSystem), nameof(HeliSabotageSystem.Detoriorate))]
+public static class HeliMeltdownBooster
+{
+    public static void Prefix(HeliSabotageSystem __instance)
     {
-        public static void Prefix(HeliSabotageSystem __instance)
+        if (MapOptions.MapOption.ReactorDurationOption.GetBool())
         {
-            if (MapOptions.MapOption.ReactorDurationOption.GetBool())
+            if (!__instance.IsActive)
             {
-                if (!__instance.IsActive)
-                {
-                    return;
-                }
+                return;
+            }
 
-                if (MapUtilities.CachedShipStatus != null)
+            if (MapUtilities.CachedShipStatus != null)
+            {
+                if (__instance.Countdown >= MapOptions.MapOption.AirshipReactorTimeLimit.GetFloat())
                 {
-                    if (__instance.Countdown >= MapOptions.MapOption.AirshipReactorTimeLimit.GetFloat())
-                    {
-                        __instance.Countdown = MapOptions.MapOption.AirshipReactorTimeLimit.GetFloat();
-                    }
+                    __instance.Countdown = MapOptions.MapOption.AirshipReactorTimeLimit.GetFloat();
                 }
             }
         }
