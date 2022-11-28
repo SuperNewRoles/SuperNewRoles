@@ -13,7 +13,7 @@ class Vampire
     /// <summary>
     /// ヴァンパイアの血痕処理
     /// </summary>
-    public static void WrapUp()
+    public static void SetActiveBloodStaiWrapUpPatch()
     {
         foreach (var data in RoleClass.Vampire.NoActiveTurnWait.ToArray())
         {
@@ -33,7 +33,7 @@ class Vampire
     /// <summary>
     /// 眷属の心中処理
     /// </summary>
-    public static void ExileControllerWrapUpPatch(PlayerControl exiled)
+    public static void DependentsExileWrapUpPatch(PlayerControl exiled)
     {
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Dependents) && PlayerControl.LocalPlayer.IsAlive())
         {
