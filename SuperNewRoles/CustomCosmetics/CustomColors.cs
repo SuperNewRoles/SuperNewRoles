@@ -178,7 +178,6 @@ public class CustomColors
         Palette.ShadowColors = shadowList.ToArray();
     }
 
-
     protected internal struct CustomColor
     {
         public string longName;
