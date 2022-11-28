@@ -91,7 +91,6 @@ class WrapUpPatch
         Roles.Neutral.Revolutionist.WrapUp();
         Roles.Neutral.Spelunker.WrapUp();
         Roles.Neutral.Hitman.WrapUp();
-        Vampire.WrapUp(exiled.Object);
         Roles.Impostor.Matryoshka.WrapUp();
         Roles.Neutral.PartTimer.WrapUp();
         Roles.Crewmate.KnightProtected_Patch.WrapUp();
@@ -112,6 +111,7 @@ class WrapUpPatch
         RoleClass.IsMeeting = false;
         Seer.WrapUpPatch.WrapUpPostfix();
         if (exiled == null) return;
+        Vampire.WrapUp(exiled.Object);
         SoothSayer_Patch.WrapUp(exiled.Object);
         Nekomata.NekomataEnd(exiled);
         Roles.Impostor.NekoKabocha.OnWrapUp(exiled.Object);
