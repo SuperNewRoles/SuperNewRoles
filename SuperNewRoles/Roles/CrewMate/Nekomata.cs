@@ -4,8 +4,8 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 
-namespace SuperNewRoles.Roles
-{
+namespace SuperNewRoles.Roles;
+
     class Nekomata
     {
         public static void NekomataEnd(GameData.PlayerInfo __instance)
@@ -120,4 +120,3 @@ namespace SuperNewRoles.Roles
             }
         }
     }
-}
