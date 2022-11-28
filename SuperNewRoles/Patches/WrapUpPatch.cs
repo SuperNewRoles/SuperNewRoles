@@ -110,8 +110,9 @@ class WrapUpPatch
         Roles.Impostor.Cracker.WrapUp();
         RoleClass.IsMeeting = false;
         Seer.WrapUpPatch.WrapUpPostfix();
+        Vampire.WrapUp();
         if (exiled == null) return;
-        Vampire.WrapUp(exiled.Object);
+        Vampire.ExileControllerWrapUpPatch(exiled.Object);
         SoothSayer_Patch.WrapUp(exiled.Object);
         Nekomata.NekomataEnd(exiled);
         Roles.Impostor.NekoKabocha.OnWrapUp(exiled.Object);
