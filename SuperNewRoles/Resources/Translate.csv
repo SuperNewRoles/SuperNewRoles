@@ -363,6 +363,7 @@ detecName,Detective,探偵,侦探
 # Roles
 SoothSayerName,Diviner,占い師,占卜师
 SoothSayerTitle1,Divine the player and find the outsider.,プレイヤーを占い人外を見つけよう,占卜并找出内鬼
+SoothSayerDescription,,会議中に生存者の役職を占い、情報を精査し、人外を特定しましょう。
 SoothSayerDisplaySetting,Position visibility,陣営表示にする,占卜师可得信息为阵营而非职业
 SoothSayerDetailMode,Detail display,詳細表示,具体职业
 SoothSayerEncampMode,Camp indicator,陣営表示,所属阵营
@@ -380,6 +381,7 @@ JesterIsWinClearTaskSetting,Jester was Clear Task Win,タスクを完了しな�
 JesterWinText,Jester{0}Win!,てるてる{0}勝利,小丑竟是我自己
 LighterName,Lighter,ライター,执灯人
 LighterTitle1,Let's brighten our vision,視界を明るくしよう,擦亮你的眼睛
+LighterDescription,,アクティブ能力[ライト!]を使用する事で、効果時間中設定した視界に変更します。\nその広い視野で多くの情報を取得し、時には油断した人外の現行犯を視認しましょう。
 LigtherCooldownSetting,Writer Cooldown,ライターのクールダウン,执灯人技能冷却
 LigtherDurationSetting,Lighter Duration,ライターの継続時間,执灯人技能持续时间
 LighterUpVisionSetting,View in light,ライト中の視界,执灯人技能持续时的视野
@@ -387,9 +389,11 @@ LighterButtonName,Light!,ライト!,点灯
 EvilLighterName,Evil Lighter,イビル ライター,邪恶的执灯人
 EvilLighterTitle1,Darken Vision,視界を暗くしよう,缩减他人视野
 EvilLighterTitle2,Create a blackout sabotage that can further reduce your vision!,視界をさらに狭くできる停電のサボタージュを発生させよう,用照明破坏制造更恐怖的黑暗
+EvilLighterDescription,,特殊停電を使用し村の情報量を減らして、暗躍しましょう。
 EvilLigtherCooldownSetting,Evil Lighter Cooldown,イビルライターのクールダウン,邪恶的执灯人技能冷却
 EvilLigtherDurationSetting,Duration of Evil Writer,イビルライターの継続時間,邪恶的执灯人技能持续时间
 EvilScientistName,Evil Scientist,イビルサイエンティスト,邪恶的隐身人
+EvilScientistDescription,,[隠れる]ボタンを使用することで透明化することができます。\n透明化能力を用いて、視認を欺き勝利しましょう!!
 EvilScientistTitle1,Become invisible and get kills!,透明になってキルをしよう,隐身并杀死其他船员
 EvilScientistTitle2,Win with the power of science!,科学の力で勝利しよう,隐身，很神奇吧
 EvilScientistCooldownSetting,Evil Scientist Invisibility Cooldown,イビルサイエンティストの透明クールダウン,邪恶的隐身人技能冷却
@@ -397,7 +401,7 @@ EvilScientistDurationSetting,Evil Scientist's Invisibility Duration,イビルサ
 SheriffName,Sheriff,シェリフ,警长
 SheriffTitle1,Kill the outsider!,人外をキルしよう,击杀敌人
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう,杀死敌人带领船员获得胜利
-SheriffDescription,Can shoot and kill an imposter if he is a crewmate. he will self-destruct.,インポスター陣営(設定により第三陣営など)をキルすることが出来、クルーだった場合、自爆します,警长可以击杀内鬼。\n但若警长尝试击杀船员，警长将以死谢罪。
+SheriffDescription,,キルが可能な陣営(役職)を設定により変更できるクルーメイト役職です。\nキルが不可能な陣営のクルーを対象に取りキルした場合、誤射となり自殺します(設定により誤射時も対象を殺す事ができます)。\n特性を生かして、情報を精査し人外を特定しましょう。
 SheriffCooldownSetting,Kill Cooldown,キルクールタイム,击杀冷却
 SheriffIsKillNeutralSetting,Can kill neutrala,第三陣営をキルできる,可以击杀独立阵营玩家
 SheriffIsKillLoversSetting,Can kill lovers,ラバーズをキルできる,可以击杀恋人
@@ -416,6 +420,7 @@ MeetingSheriffTitle1,Kill an outsider in a meeting!,人外を会議でキルし�
 MeetingSheriffTitle2,Kill an outsider in a meeting and lead your crewmates to victory!,人外を会議でキルしてクルーメイトを勝利に導こう,在会议中击杀敌人带领船员获得胜利
 MeetingSheriffTitle3,Kill an outsider in a meeting to prevent a power play,人外を会議でキルしてパワープレイを防ごう,在会议中击杀敌人以阻止敌人能力的发动
 MeetingSheriffTitle4,Kill an outsider in a meeting to prevent a PP,人外を会議でキルしてPPを防ごう,在会议中击杀敌人以阻止能力发动
+MeetingSheriffDescription,,キルが可能な陣営(役職)を設定により変更できるクルーメイト役職です。\nキルが不可能な陣営のクルーを対象に取りキルした場合、誤射となり自殺します(設定により誤射時も対象を殺す事ができます)。\n特性を生かして、情報を精査し人外を特定しましょう。時にはキルしてインポスターの勝利を覆しましょう。
 MeetingSheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる,执法官可以击杀独立阵营玩家
 MeetingSheriffIsKillMadRoleSetting,Can Kill a Madmate,マッド系役職をキルできる,执法官可以击杀叛徒系职业
 MeetingSheriffYes,Yes,できる,是
@@ -430,6 +435,7 @@ JackalName,Jackal,ジャッカル,豺狼
 JackalTitle1,Try to kill Impostors and Crewmates,インポスターとクルーメイトをキルしよう,杀死所有船员和内鬼
 JackalTitle2,Kill the other team to win!,他陣営をキルして勝利しよう,把其他人全部杀死获得胜利
 JackalTitle3,Let's just kill them all.,全員ぶち殺そう,杀死所有人
+JackalDescription,,インポスターとも対立するキル可能な第三陣営です。\nインポスターを利用し時には協力し、最終的には自陣営以外のキル可能陣営を全滅させ、キル不可能な陣営の人数を自陣営以下にして勝利しましょう。\nゲーム中にサイドキックやジャッカルフレンズという仲間を増やす事もできます。
 JackalCooldownSetting,Jackal's kill cool time,ジャッカルのキルクールタイム,豺狼击杀冷却
 JackalUseVentSetting,Use Vent,ベントを使える,豺狼可以使用管道
 JackalUseSaboSetting,Use Sabotage,サボタージュが使える,豺狼可以破坏
@@ -440,15 +446,18 @@ JackalOff,Off,オフ,关闭
 JackalCreateSidekickButtonName,Sidekick!,サイドキック！,招募
 SidekickName,Sidekick,サイドキック,跟班
 SidekickTitle1,Help Jackal,ジャッカルを助けよう,帮助豺狼获得胜利
+SidekickDescription,,ジャッカルにより指名されるジャッカルの仲間です。\n元の陣営を裏切り、元々の立場を生かしてジャッカル陣営の勝利に貢献しましょう\nジャッカルが死亡した場合、後を継ぎ次のジャッカルとなります。
 TeleporterName,Teleporter,テレポーター,邪恶的传送师
 TeleporterTitle1,Let's get everyone together,みんなを集めよう,把所有人传送到一起
 TeleporterTitle2,Let's get everyone away from the corpse position.,みんなを死体位置から遠ざけよう,利用传送让他人远离尸体
+TeleporterDescription,,集団行動をさせるインポスター役職です。
 TeleporterCooldownSetting,Teleporter Sabotage Kill Cooldown,テレポーターサボタージュのキルクールダウン,邪恶的传送师在紧急破坏发生时的击杀冷却
 TeleporterTeleportTimeSetting,Time to be teleported,テレポートされるまでの時間,邪恶的传送师技能冷却
 TeleporterTeleportButton,Teleport,テレポート！,传送
 TeleporterTPTextMessage,The teleporter teleported you to {0}!,テレポーターが{0}にテレポートさせた!,传送师把你传送到{0}
 SpiritMediumName,Medium,霊媒師,通灵师
 SpiritMediumTitle1,Divine the dead person's position,やられた人を占い役職を調べよう,对死者的灵魂通灵知晓他们的职业
+SpiritMediumDescription,,吊られたりキルされたりして死亡した人を占い役職を特定しましょう。\n吊った対象を調べることで真の情報を確定しましょう。\n又、切られた対象を占う事で生存しているキル可能陣営の推測をしましょう。
 SpiritMediumDisplaySetting,Position visibility,陣営表示にする,通灵师可得信息为阵营而非职业
 SpiritMediumDetailMode,Detail display,詳細表示,具体职业
 SpiritMediumEncampMode,Position Display,陣営表示,所属阵营
@@ -457,6 +466,7 @@ SpiritMediumIsAutoMode,Automatic divination of the expelled,追放された人�
 SpeedBoosterName,Speed Booster,スピードブースター,正义的飞毛腿
 SpeedBoosterTitle1,Make your speed faster!,スピードを速くしよう,飞一样的感觉！
 SpeedBoosterTitle2,Lead your crew to victory with super speed!,スーパースピードでクルーを勝利に導こう,利用自己飞快的速度带领船员走向胜利
+SpeedBoosterDescription,,加速することのできるクルーメイト役職です。\nその速度でタスクを制覇せよ! 多くの情報を取得せよ!
 SpeedBoosterCooldownSetting,Speed Up Cooldown,スピードアップクールダウン,正义的飞毛腿技能冷却
 SpeedBoosterDurationSetting,Duration of speed-up,スピードアップの継続時間,正义的飞毛腿技能持续时间
 SpeedBoosterPlusSpeedSetting,Double your speed,スピードの倍速,正义的飞毛腿技能持续时间内速度增加的倍数
@@ -466,6 +476,7 @@ EvilSpeedBoosterTitle1,Make your speed faster!,スピードを速くしよう,�
 EvilSpeedBoosterTitle2,Use your super speed to lead your Impostor to victory!,スーパースピードでインポスターを勝利に導こう,利用自己飞快的速度带领内鬼走向胜利
 EvilSpeedBoosterTitle3,Get a kill with super speed!,スーパースピードでキルをしよう,击杀并迅速的离开案发现场
 EvilSpeedBoosterTitle4,Let's run around and kill everyone.,走りまくって皆を瞬殺しよう,利用自己飞快的速度击杀船员
+EvilSpeedBoosterDescription,,加速する事ができるインポスター役職です。\nアクティブ能力[スピードブースト]とベントを使用し、遠距離キルをかまして場を錯乱せよ!!
 EvilSpeedBoosterCooldownSetting,Speed Up Cooldown,スピードアップクールダウン,邪恶的飞毛腿技能冷却
 EvilSpeedBoosterDurationSetting,Speedup duration,スピードアップの継続時間,邪恶的飞毛腿技能持续时间
 EvilSpeedBoosterPlusSpeedSetting,Double Speed,スピードの倍速,邪恶的飞毛腿技能持续时间内速度增加的倍数
@@ -474,15 +485,18 @@ EvilSpeedBoosterBoostButtonName,Speed\nBoost,スピード\nブースト,加速
 TaskerName,Tasker,タスカー,特务
 TaskerTitle1,Finish the task and win the Impostor!,タスクを終わらせてインポスターを勝利させよう,完成任务来让内鬼获得胜利
 TaskerTitle2,Try to finish the task!,タスクを頑張って終わらせよう,我就是大名鼎鼎的双料高级特工，代号：穿山甲！
+TaskerDescription,,タスクを完了させる事でもインポスターに勝利をもたらすことが可能な役職です。\nクルーメイトだった頃の意識がまだ抜けていないんでしょうね。\n・・・ただお前はもう浸食されている。\nタスクをして無駄な抵抗をした所で、お前は結局インポスターの一員でしかない。
 TaskerIsKillCoolTaskNow,Kill cool time is saved during the task.,タスク中にキルクールタイムが貯まる,特务在任务进程中击杀冷却减少
 TaskerCanKill,Killable,キルできる,特务可击杀
 TaskerWinText,Impostor Task,インポスタータスク,特务完成任务而
 DoorrName,Doorr,ドアー,门卫
 DoorrTitle1,Let's open and close the door.,ドアを開け閉めしよう,控制飞船上门的开关
 DoorrTitle2,Close the door to block the impostor!,ドアを閉めてインポスターを妨害しよう,关上门来拦截内鬼
+DoorrDescription,,ドアを一瞬で開けて、移動を効率化させましょう。ドアを能力で開けタスク遂行や死体探しに専念する事ができます。\n唯一の勝利方法がタスク完了のみになった時、ドアを閉めて、インポスターを撒き時には隠れ過ごし、仲間がタスクを完了させる時間を稼いでみましょう。
 DoorrCoolTimeSetting,Door Cool Time,ドアクールタイム,门卫技能冷却
 DoorrButtonText,Door Open Or Close,ドアを開け閉めする,开/关门
 EvilDoorrName,Evil Doorr,イビルドアー,守门人
+EvilDoorrDescription,,能力を用いる事により、サボタージュのクールに影響せずドアを閉める事ができます。\nドアによる情報精査にノイズを入れてみましょう。\nサボタージュクールに影響しない事を生かして、経路や死亡推定時刻を偽装してみましょう。
 EvilDoorrTitle1,Open and close doors!,ドアを開け閉めしよう,控制飞船上门的开关
 EvilDoorrTitle2,Try to sabotage your crewmates!,クルーメイトを妨害しよう,尝试妨碍船员
 EvilDoorrTitle3,Open and close the door immediately to block your crewmate!,すぐにドアを開け閉めしてクルーメイトを妨害しよう,快速操控门的开关来拦截船员
@@ -491,6 +505,7 @@ ShielderName,Shielder,シールダー,卫兵
 ShielderTitle1,Prevent outsider kills.,人外のキルを防ごう,抵挡敌人的攻击
 ShielderTitle2,Shield yourself!,自分にシールドを張ろう,保护好自己
 ShielderTitle3,Try to block a foreigner's kill!,人外のキルを妨害しよう,抵挡住来自敌人的击杀
+ShielderDescription,,守護天使の守護の様にキルを防ぐシールドを、自分のみを対象に張ることができます。\nシールド使用中にキルされた場合、相手のキルクをリセットします。\n又、シールドの破壊モーションによって相手がキルしてきた事を認識できます。
 ShielderCoolTimeSetting,Shield Cool Time,シールドクールタイム,卫兵技能冷却
 ShielderDurationSetting,Shield duration,シールド継続時間,卫兵技能持续时间
 ShielderButtonName,Shield,シールド,防御
@@ -498,16 +513,19 @@ FreezerName,Freezer,フリーザー,冻结者
 FreezerTitle1,Stop everyone and sabotage your crewmates!,みんなを止めてクルーメイトを妨害しよう,冻住所有人来妨碍船员
 FreezerTitle2,Try to stop everyone and sabotage the task!,みんなを止めてタスクの妨害をしよう,冻住所有人来阻碍任务的推进
 FreezerTitle3,Let's put them all on ice.,全員を氷漬けにしよう,冻住不许走！
+FreezerDescription,,全体を足止めし、味方の能力発動のサポートをしましょう。
 FreezerCoolTimeSetting,Freeze Cool Time,フリーズクールタイム,冻结者技能冷却
 FreezerDurationSetting,Freeze duration,フリーズ継続時間,冻结者技能持续时间
 FreezerButtonName,Freeze,フリーズ,冻结
 SpeederName,Speeder,スピーダー,缓速者
 SpeederTitle1,Slow everyone down and sabotage your crewmates!,みんなを遅くしてクルーメイトを妨害しよう,让所有人速度变慢以妨碍船员
 SpeederTitle2,Try to slow everyone down and sabotage the task!,みんなを遅くしてタスクの妨害をしよう,让所有人速度变慢以阻碍任务的推进
+SpeederDescription,,全体の速度を遅くすることで、キルクールや味方のアビリティクールを貯める時間を稼ぎましょう。
 SpeederCoolTimeSetting,Sabotage Cool Time,サボタージュクールタイム,缓速者技能冷却
 SpeederDurationTimeSetting,Sabotage duration,サボタージュ継続時間,缓速者技能持续时间
 SpeederButtonName,SpeedDown,スピードダウン,减速
 NiceGuesserName,Guesser,ゲッサー,正义的赌怪
+NiceGuesserDescription,,会議中、対象の役職を推測して指定し討つ事で対象を殺せます。誤射した場合は自殺します。\n「自分はクルーメイトです」等 対象のカミングアウトが真であるか精査してみましょう。
 NiceGuesserTitle1,Let's punch out the outsider.,人外を打ち抜こう,生命就是豪赌
 NiceGuesserTitle2,Guess the position of the outsider,人外の役職を当てよう,在会议上猜测他人的身份
 GuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,正义的赌怪能否在一次会议中多次猜测
@@ -515,10 +533,12 @@ GuesserShortMaxCountSetting,Number of times you can hit,打てる回数,正义�
 EvilGuesserName,Evil Guesser,イビルゲッサー,邪恶的赌怪
 EvilGuesserTitle1,Guess the position of the camp other than Impostor.,インポスター以外の陣営の役職を当てよう,刺杀其他玩家
 EvilGuesserTitle2,Guess the position of the outsider,人外の役職を当てよう,在会议上猜测他人的身份
+EvilGuesserDescription,,会議中、対象の役職を推測して指定し討つ事で対象を殺せます。誤射した場合は自殺します。\nクルーメイトの役職カミングアウトを抑制しましょう。時には討って情報を出される事を阻止しましょう。\n死人に口なし。
 EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,邪恶的赌怪能否在一次会议中多次猜测
 EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,邪恶的赌怪最大可猜测次数
 VultureName,Vulture,ヴァルチャー,秃鹫
 VultureTitle1,Let's eat a corpse.,死体を食べよう,吞噬尸体获得胜利
+VultureDescription,,死体を設定数食べることにより勝利します。設定により死体の方向を表す矢印が表示する事ができます。\n食べて、食べて、食べまくりましょう。・・・ごちそうさまでした。
 VultureCooldownSetting,Corpse cooldown,死体クールダウン,秃鹫技能冷却
 VultureDeadBodyCountSetting,Victory corpse count,勝利死体数,秃鹫胜利所需吞噬尸体数
 VultureShowArrowsSetting,Show arrows pointing to dead bodies,死体を指す矢印を表示する,秃鹫可见指向尸体的箭头
@@ -784,6 +804,7 @@ DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキ�
 FoxName,Fox,妖狐,妖狐
 FoxTitle1,I am Fox!,私は狐です!,我是一只小狐狸！
 SeerName,Seer,シーア,灵媒
+SeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いてインポスターを特定しましょう。
 SeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡
 SeerMode,Mode,モード,灵媒模式
 SeerModeBoth,Show Death Flash + Souls,死の点滅＆幽霊が見える,显示死亡闪光和灵魂
@@ -792,8 +813,10 @@ SeerModeSouls,Show Souls,幽霊が見える,显示灵魂
 SeerLimitSoulDuration,Limit Soul Duration,時間経過で幽霊が消える,灵魂随时间的推移消失
 SeerSoulDuration,Soul Duration,幽霊が見える時間,灵魂从出现到消失经过的时间
 MadSeerName,MadSeer,マッドシーア,叛变的灵媒
+MadSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。
 MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろう,感知内鬼的行动
 EvilSeerName,EvilSeer,イビルシーア,邪恶的灵媒
+EvilSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n相方の行動を把握しサポートに回りましょう。
 EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡
 RemoteSheriffName,Remote Sheriff,リモートシェリフ,超能警长
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう,远距离进行执法
@@ -810,10 +833,13 @@ TaskManagerName,TaskManager,タスクマネージャー,代理人
 TaskManagerTitle1,Finish the task and mount up!,タスクを終わらせ、マウントを取ろう,帮助他人完成所有任务
 SeerFriendsName,SeerFriends,シーアフレンズ,狈族灵媒
 SeerFriendsTitle1,Let's feel the activity of Jackal,ジャッカルの活躍を感じ取ろう,感知豺狼的行动
+SeerFriendsDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。
 JackalSeerName,SeerJackal,ジャッカルシーア,狼族灵媒
 JackalSeerTitle1,Detect the dead and bring victory to your camp!,死者を感知し自陣営に勝利をもたらせ!,感知死亡，为豺狼带来胜利
+JackalSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\nインポスターの行動を把握し、利用しましょう。
 SidekickSeerName,Sidekick(Seer),サイドキック(シーア),狼族灵媒学徒
 SidekickSeerTitle1,Let's help Jackal with the dead detection ability that we got,貰った死者感知能力でジャッカルを助けよう,用死亡感知能力来帮助豺狼
+SidekickSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて、親ジャッカルを守り、時には切り、貢献しましょう。
 AssassinAndMarineName,<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>,<color=#ff0000>アサシン</color>と<color=#AFDFE4>マーリン</color>,<color=#ff0000>阿</color>瓦<color=#AFDFE4>隆</color>
 AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=#ff0000>アサシン</color>の人数,<color=#ff0000>刺客</color>的人数
 MarineSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数
