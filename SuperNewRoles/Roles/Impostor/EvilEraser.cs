@@ -16,24 +16,26 @@ public static class EvilEraser
         JackalSidekick,
         JackalSeerSidekick,
         NekomataExiled,
-        FoxGuard
+        FoxGuard,
+        SquidGuard,
     }
     public static bool IsBlock(BlockTypes blocktype, PlayerControl player = null)
     {
         if (player == null) player = PlayerControl.LocalPlayer;
         return player.IsRole(RoleId.EvilEraser)
-&& (!RoleClass.EvilEraser.Counts.ContainsKey(player.PlayerId) || RoleClass.EvilEraser.Counts[player.PlayerId] > 0)
-&& blocktype switch
-{
-BlockTypes.StuntmanGuard => true,
-BlockTypes.ClergymanLightOut => true,
-BlockTypes.BaitReport => true,
-BlockTypes.RedRidingHoodRevive => true,
-BlockTypes.JackalSidekick => true,
-BlockTypes.NekomataExiled => true,
-BlockTypes.FoxGuard => true,
-_ => false,
-};
+            && (!RoleClass.EvilEraser.Counts.ContainsKey(player.PlayerId) || RoleClass.EvilEraser.Counts[player.PlayerId] > 0)
+            && blocktype switch
+            {
+                BlockTypes.StuntmanGuard => true,
+                BlockTypes.ClergymanLightOut => true,
+                BlockTypes.BaitReport => true,
+                BlockTypes.RedRidingHoodRevive => true,
+                BlockTypes.JackalSidekick => true,
+                BlockTypes.NekomataExiled => true,
+                BlockTypes.FoxGuard => true,
+                BlockTypes.SquidGuard => true,
+                _ => false,
+            };
     }
     public static bool IsBlockAndTryUse(BlockTypes blocktype, PlayerControl player = null)
     {

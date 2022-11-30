@@ -2,6 +2,7 @@ using System;
 using SuperNewRoles.MapOptions;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
@@ -18,6 +19,7 @@ class ButtonTime
         HawkDuration();
         ScientistButton();
         CamouflagerButton();
+        Squid.SquidButtonTimer();
     }
     public static void ScientistButton()
     {

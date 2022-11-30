@@ -5,6 +5,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 
@@ -104,6 +105,7 @@ public class FixedUpdate
                 Vampire.FixedUpdate.AllClient();
                 ReduceKillCooldown(__instance);
                 Roles.Impostor.Penguin.FixedUpdate();
+                Squid.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }

@@ -10,6 +10,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
@@ -2954,6 +2955,8 @@ static class HudManagerStartPatch
             buttonText = ModTranslation.GetString("CamouflagerButtonName"),
             showButtonText = true
         };
+
+        Squid.SetupCustomButton();
 
         SetCustomButtonCooldowns();
     }

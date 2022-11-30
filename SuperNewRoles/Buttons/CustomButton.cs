@@ -25,7 +25,7 @@ public class CustomButton
     public bool effectCancellable = false;
     private readonly Action OnClick;
     private readonly Action OnMeetingEnds;
-    private readonly Func<bool, RoleId, bool> HasButton;
+    public readonly Func<bool, RoleId, bool> HasButton;
     private readonly Func<bool> CouldUse;
     public readonly Action OnEffectEnds;
     public bool HasEffect;

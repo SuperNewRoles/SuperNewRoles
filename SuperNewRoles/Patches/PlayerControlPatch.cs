@@ -9,6 +9,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 using static GameData;
@@ -1061,6 +1062,12 @@ public static class MurderPlayerPatch
             if (__instance.IsImpostor())
             {
                 PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance), RoleHelpers.GetCoolTime(__instance));
+            }
+            if (Squid.IsKillGuard)
+            {
+                PlayerControl.LocalPlayer.SetKillTimerUnchecked(Squid.NotKillTime, Squid.NotKillTime);
+                Squid.SetKillTimer(Squid.NotKillTime);
+                Squid.IsKillGuard = false;
             }
         }
     }

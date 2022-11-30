@@ -173,6 +173,7 @@ public enum RoleId
     HamburgerShop,
     Penguin,
     Dependents,
+    Squid,
     //RoleId
 }
 
@@ -261,10 +262,22 @@ public enum CustomRPC
     SetVampireStatus,
     SyncDeathMeeting,
     SetDeviceUseStatus,
+    SetVigilance,
 }
 
 public static class RPCProcedure
 {
+    public static void SetVigilance(bool isVigilance, byte id)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        if (Squid.IsVigilance.ContainsKey(id) && Squid.IsVigilance[id] && player.AmOwner && !isVigilance)
+        {
+            Squid.ResetCooldown(false);
+            SuperNewRolesPlugin.Logger.LogInfo("イカの警戒が溶けたためクールをリセットしました");
+        }
+        Squid.IsVigilance[id] = isVigilance;
+    }
     public static void SetDeviceUseStatus(byte devicetype, byte playerId, bool Is, string time)
     {
         DeviceClass.DeviceType type = (DeviceClass.DeviceType)devicetype;
@@ -1040,6 +1053,10 @@ public static class RPCProcedure
         {
             RoleClass.EvilSpeedBooster.IsBoostPlayers[id] = Is;
         }
+        else if (player.IsRole(RoleId.Squid))
+        {
+            Squid.IsSpeedBoost = Is;
+        }
         else
         {
             RoleClass.SpeedBooster.IsBoostPlayers[id] = Is;
@@ -1614,6 +1631,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetDeviceUseStatus:
                         SetDeviceUseStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadString());
+                        break;
+                    case CustomRPC.SetVigilance:
+                        SetVigilance(reader.ReadBoolean(), reader.ReadByte());
                         break;
                 }
             }

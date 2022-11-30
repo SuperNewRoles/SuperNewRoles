@@ -8,6 +8,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using TMPro;
 using UnhollowerBaseLib;
 using UnityEngine;
@@ -276,6 +277,25 @@ public static class ModHelpers
                     writer.EndRPC();
                     RPCProcedure.UseStuntmanCount(target.PlayerId);
                 }
+            }
+        }
+        if (target.IsRole(RoleId.Squid) && !killer.IsRole(RoleId.OverKiller) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
+        {
+            if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.SquidGuard, killer))
+            {
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
+                writer.Write(target.PlayerId);
+                writer.Write(target.PlayerId);
+                writer.Write(0);
+                writer.EndRPC();
+                RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
+                Squid.SetVigilance(false, target);
+                RPCHelper.StartRPC(CustomRPC.ShowFlash, target).EndRPC();
+                Squid.SetSpeedBoost(true, target);
+                Squid.IsKillGuard = true;
+                Squid.IsDownVision = true;
+                PlayerControl.GameOptions.KillDistance = 0;
+                Squid.InkSet();
             }
         }
         return MurderAttemptResult.PerformKill;

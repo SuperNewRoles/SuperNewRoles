@@ -5,6 +5,7 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles.Crewmate;
 
 namespace SuperNewRoles;
 
@@ -961,6 +962,7 @@ class AllRoleSetClass
             RoleId.HamburgerShop => CustomOptionHolder.HamburgerShopPlayerCount.GetFloat(),
             RoleId.Penguin => CustomOptionHolder.PenguinPlayerCount.GetFloat(),
             RoleId.Dependents => CustomOptionHolder.DependentsPlayerCount.GetFloat(),
+            RoleId.Squid => Squid.SquidPlayerCount.GetFloat(),
             //プレイヤーカウント
             _ => 1,
         };
