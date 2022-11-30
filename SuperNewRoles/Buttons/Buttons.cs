@@ -1254,7 +1254,7 @@ static class HudManagerStartPatch
                     }
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && ModeHandler.IsMode(ModeId.Default); },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Sheriff && ModeHandler.IsMode(ModeId.Default); },
             () =>
             {
                 float killCount = 0f;
