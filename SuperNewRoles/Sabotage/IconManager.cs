@@ -1,15 +1,14 @@
 using UnityEngine;
 
-namespace SuperNewRoles.Sabotage
+namespace SuperNewRoles.Sabotage;
+
+public static class IconManager
 {
-    public static class IconManager
+    private static Sprite CognitiveDeficitbuttonSprite;
+    public static Sprite CognitiveDeficitGetButtonSprite()
     {
-        private static Sprite CognitiveDeficitbuttonSprite;
-        public static Sprite CognitiveDeficitGetButtonSprite()
-        {
-            if (CognitiveDeficitbuttonSprite) return CognitiveDeficitbuttonSprite;
-            CognitiveDeficitbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CognitiveDeficitButton.png", 115f);
-            return CognitiveDeficitbuttonSprite;
-        }
+        if (CognitiveDeficitbuttonSprite) return CognitiveDeficitbuttonSprite;
+        CognitiveDeficitbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CognitiveDeficitButton.png", 115f);
+        return CognitiveDeficitbuttonSprite;
     }
 }
