@@ -30,12 +30,20 @@ namespace SuperNewRoles.Roles.Crewmate
             CelebrityTimerSet();
         }
 
+        public static void EndMeeting()
+        {
+        }
+
         public static bool EnabledSetting()
         {
             if (RoleClass.Celebrity.ViewPlayers.Count <= 0) return false;
             if (!RoleClass.Celebrity.ChangeRoleView)
             {
                 if (RoleClass.Celebrity.CelebrityPlayer.Count <= 0) return false;
+            }
+            foreach (PlayerControl p in RoleClass.Celebrity.ViewPlayers)
+            {
+                if (p.IsDead()) return false;
             }
             return true;
         }
