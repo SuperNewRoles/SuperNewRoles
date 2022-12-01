@@ -582,6 +582,7 @@ MovingButtonSetName,Location Set,場所セット,标记
 MovingButtonTpName,Teleport,テレポート,瞬移
 QuarreledName,Quarreled,クラード,福音天使
 QuarreledIntro,{0} and it's Quarreled!,{0}とクラードになりました！,{0} 和你是福音天使
+QuarreledDescription,,二人一組の陣営です。\n二人とも死亡すると単独勝利勝利します。\n来世で仲直りしよう。
 QuarreledTeamCountSetting,Max Teams,チーム数,福音天使最多对数
 QuarreledParSetting,Only Crewmate Team,排出される確率,福音天使生成概率
 QuarreledOnlyCrewmateSetting,Discharge probability,クルーメイト陣営のみ,只有船员可以成为福音天使
@@ -589,7 +590,7 @@ QuarreledWinText,Quarreled{0}Win,クラード{0}勝利,他们狂傲，我看见�
 OpportunistName,Opportunist,オポチュニスト,投机者
 OpportunistTitle1,We'll survive.,生き残ろう,活下去
 OpportunistTitle2,Let's try not to die.,死なないようにしよう,我……不想死……
-OpportunistDescription,If you are still alive by the end of the game you get an additional win.,ゲーム終了時までに生き残っていると、追加勝利できます。,投机者在游戏中活到最后则投机者和获胜阵营一起获胜。
+OpportunistDescription,,最後まで生存しているとどんな陣営が勝っても追加勝利をします。\n上手く他陣営に取り入ってその勝利にぶら下がりましょう。
 BestfalsechargeName,Best False Charge,ベスト冤罪ヤー,冤种
 BestfalsechargeTitle1,Lets' Task!,タスクをしよう,你已经死了
 BestfalsechargeDescription,After the first meeting it dies.,最初の会議が終わると死にます。,冤种属于船员阵营。\n在第一轮会议过后冤种就会死亡。
@@ -612,7 +613,7 @@ SelfBomberScopeSetting,Range (radius),範囲(半径),爆炸范围（半径）
 SelfBomberButtonName,Self Bomb,自爆,自爆
 GodName,God,神,神
 GodTitle1,You Are God!!,あなたは神だ,新世界的卡密！
-GodDescription,If you survive to the end you take away the win. Everyone's position is known.,最後まで生き残っていると、勝利を奪い取ります。全員の役職がわかります。,神存活到游戏结束则神单独获胜。\n所有玩家的职业对神可见。
+GodDescription,,全員の役職がわかります。私は神だ。\n最後まで生存していると勝利を横取りして単独勝利します。\nその勝利を神に捧げなさい。
 GodViewVoteSetting,I know who to vote for.,投票先がわかる,神能看到所有人的投票情况
 GodIsEndTaskWinSetting,You have to finish the task to win.,タスクを終わらせないと勝利できない,神不完成所有任务则不能获胜
 AllCleanerName,All Cleaner,オールクリーナー,清理者
@@ -665,7 +666,7 @@ HawkDurationTimeSetting,Duration,継続時間,千里眼持续时间
 HawkButtonName,Hawk Eye,ホークアイ,千里眼
 EgoistName,Egotist,エゴイスト,野心家
 EgoistTitle1,We can survive this.,生き残ろう,忍时待机
-EgoistDescription,Impostor judgment.\nThe impostor appears to be a peer.\nIf all the Impostors are dead\nand the Impostor's victory condition is achieved (except Sabotage) the Egoist wins.,インポスター判定です。\nインポスターからは仲間に見えます。\nインポスターがすべて死んでいる状態で、\nインポスターの勝利条件を達成する(サボタージュ以外)とエゴイストの勝利です。,野心家规则上属于内鬼阵营。\n野心家与内鬼阵营玩家互认。\n其他内鬼阵营玩家全部死亡后，若内鬼阵营不通过紧急破坏获得胜利，\n并且野心家存活，则野心家单独获胜。
+EgoistDescription,,インポスターとしてカウントされる第三陣営です。\n自分からはインポスターが誰かはわかりませんが、インポスターからは味方として認識されます。\nインポスターがすべていなくなった状態でインポスター勝利を達成すると単独勝利します。
 EgoistUseVentSetting,I can use Vent.,ベントを使える,野心家可以使用管道
 EgoistUseSaboSetting,Can use Sabotage,サボタージュが使える,野心家可以进行破坏
 EgoistImpostorLightSetting,Impostor's Vision,インポスターの視界,野心家拥有内鬼视野
@@ -679,7 +680,7 @@ EvilEraserTitle1,Let's wipe out their abilities.,能力を消し去ろう,消除
 EvilEraserMaxCountSetting,Max Erase Count,最大削除回数,消除者最大消除次数
 WorkpersonName,Work person,仕事人,工作狂
 WorkpersonTitle1,Let's do the work and win!,仕事をして勝利しよう,完成你的任务获得胜利
-WorkpersonDescription,Wins if you finish the task,タスクを終わらせることで勝利できます。,工作狂完成所有任务后获得胜利。
+WorkpersonDescription,,タスクをすべて完了すると単独勝利します。\n仕事こそ我が生き甲斐。
 WorkpersonIsAliveWinSetting,You have to be alive to win,生存していないと勝利できない,工作狂只有在存活时才能获胜
 MagazinerName,Magaziner,マガジナー,快枪手
 MagazinerTitle1,Save your kills!,キルを貯めよう,存下子弹以备不时之需
@@ -702,7 +703,7 @@ MayorDescription,Has more votes than usual when voting,票する時に通常よ�
 MayorVoteCountSetting,Mayer's vote count,メイヤーの票数,市长投票的等价票数
 trueloverName,True Lover,純愛者,情种
 trueloverTitle1,Let's fall in love at first sight,一目惚れしよう,只因为在人群中多看了你一眼
-trueloverDescription,Can be Lovers with any person. wins if survives with Lovers,誰かを愛することが出来、愛する相手と生きていた場合、その相手と勝利します,情种属于独立阵营，可以选择一名玩家与其成为恋人。\n游戏结束时情种与自己的恋人一同存活则情种跟随自己的恋人获得胜利。
+trueloverDescription,,任意の人に[一目惚れ]してラバーズになれます。\n既にラバーズの人とはラバーズになれません。\n最後まで生存していると単独or追加勝利します(ラバーズの設定依存)。
 trueloverloveButtonName,Love,一目惚れ,求爱
 TechnicianName,Technician,技術者,修理工
 TechnicianTitle1,Use technology to repair sabotage!,技術を駆使してサボタージュを修理しよう,维修船上的破坏
@@ -732,6 +733,7 @@ EvilMovingName,EvilMoving,イビルムービング,邪恶的魔术师
 EvilMovingTitle1,Lets Teleport Kill!,テレポートをしてキルしよう,利用魔术杀害船员
 AmnesiacName,Amnesiac,忘却者,失忆者
 AmnesiacTitle1,Let's call the cops and join them.,通報して仲間になろう,努力回想你的职业
+AmnesiacDescription,,死体をレポートするとその死体の人の役職になる第三陣営です。\n勝利条件は変化先の役職に依存します。
 SideKillerName,SideKiller,サイドキラー,头目
 SideKillerTitle1,Make friends and win!,仲間を作って勝利しよう,招募喽啰，获得胜利
 SideKillerKillCoolTimeSetting,SideKiller Kill Cool Time.,サイドキラーのキルクールタイム,头目击杀冷却
@@ -770,7 +772,7 @@ MadJesterTitle1,Get voted out and win with the Impostors!,投票で追放され�
 MadJesterDescription,It is a crewmate decision. but it is in the Impostor camp. \nThe impostor wins by being expelled at the meeting.,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。,傀儡小丑规则上属于船员阵营，但是其为内鬼的同伙。\n傀儡小丑在会议中被放逐则内鬼阵营获胜。
 FalseChargesName,FalseCharges,冤罪師,冤罪师
 FalseChargesTitle1,Let the false accusations win!,冤罪をさせて勝利しよう,栽赃他人获取胜利
-FalseChargesDescription,You can make the opponent who presses the button kill you. \nYou will win if the opponent you have killed is expelled by the conference.,ボタンを押した相手に自分をキルさせることができます。\nキルさせた相手が会議で追放されたら勝利できます、,冤罪师属于独立阵营。\n冤罪师的技能为可以让附近的其他玩家击杀自己。\n这个技能发动后的指定轮数之内，若击杀冤罪师的凶手被放逐，则冤罪师独自获胜。
+FalseChargesDescription,,冤罪を吹っ掛けることが出来ます。\n冤罪を吹っ掛けると自身はキルされますが、設定ターン内にキルさせた相手が追放されれば単独勝利します。
 FalseChargesExileTurn,Turn of the false accusation range,冤罪の範囲のターン,冤罪师栽赃后可以获胜的会议轮数
 FalseChargesCoolTime,Cool Time,クールタイム,冤罪师栽赃冷却
 FalseChargesButtonTitle,False Charge,冤罪,栽赃
@@ -803,6 +805,7 @@ DarkKillerTitle1,Let's kill in the dark,闇に紛れて殺そう,将你的杀戮
 DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキルクールタイム,击杀冷却时间
 FoxName,Fox,妖狐,妖狐
 FoxTitle1,I am Fox!,私は狐です!,我是一只小狐狸！
+FoxDescription,,最後まで生存していると単独勝利します。\nキルされることはありません。\nそりゃあそこにいる私は私ではないからね。
 SeerName,Seer,シーア,灵媒
 SeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いてインポスターを特定しましょう。
 SeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡
@@ -827,6 +830,7 @@ MadMakerName,MadMaker,マッドメーカー,走狗
 MadMakerTitle1,Let's get more lunatics!,狂人を増やそう！,让更多的人叛变
 DemonName,Demon,悪魔,恶魔
 DemonTitle1,Curse the Crew and Help the Impostor!,クルーを呪いながらインポスターを手助けせよ,诅咒船员并协助内鬼
+DemonDescription,,呪いをかけることが出来ます。\n呪いをインポスター含め全員にかけた状態でインポスターが勝利すると、その勝利を横取りして単独勝利します。
 DemonIsAliveWinSetting,You have to be alive to win.,生存していないと勝利できない,恶魔存活才能获胜
 DemonButtonName,Curse,呪う,诅咒
 TaskManagerName,TaskManager,タスクマネージャー,代理人
@@ -855,7 +859,7 @@ ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ,燃烧吧
 ArsonistDurationTimeSetting,Douse Duration,塗り時間,纵火犯涂油所需时间
 ArsonistDouseButtonName,Douse,塗る,涂抹
 ArsonistIgniteButtonName,Ignite,燃やす,点燃
-ArsonistDescription,If you oil them all and burn them. you win alone.,油を全員に塗り燃やしたら単独勝利です。,纵火犯属于独立阵营。\n纵火犯给所有人涂油后按下点燃按钮则纵火犯独自获胜。
+ArsonistDescription,,油をかけることが出来ます。\n油をかける際は設定時間相手の近くにいなければいけません。\n油を全員にかけた状態で着火をすると生存者全員を焼殺して単独勝利します。
 ChiefName,Chief,村長,警察局长
 ChiefTitle1,Appoint a sheriff to help your crew.,シェリフを任命してクルーを助けよう,任命一位警长来帮助船员
 CleanerName,Cleaner,クリーナー,清理者
@@ -898,6 +902,7 @@ PositionSwapperSwapText,Position swapper swapped you!,スワッパーによっ�
 PositionSwapperSwapText2,Position swapper swapped you!\nby the way，ykundesu is delicious，isn't it?,スワッパーによってスワップされました!\nところでﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽｵｲｼｲﾃﾞｽﾖﾈ,念动使交换了你的位置！\n（这里是个彩蛋，但我不知道写啥好，就祝看到它的你身体健康吧）
 TunaName,Tuna,マグロ,铁华团团长
 TunaTitle1,Always move!,常に動け！,不要停下来啊……
+TunaDescription,,初手会議以降、設定秒数停止すると死亡します。\n最後まで生存していると勝利を横取りして単独勝利します。\n止まるな!死ぬぞ!!
 TunaStoppingTimeSetting,Stopping Time,止まれる時間,团长允许停下的最大时间
 TunaAddWinSetting,Add Win,追加勝利,团长的胜利作为追加胜利而非单独胜利
 BlackCatName,Black Cat,黒猫,叛变的猎人
@@ -939,6 +944,7 @@ SuicideWisherTitle1,Let's just kill ourselves for now.,とりあえず自殺し�
 SuicideName,Suicide,自殺,自杀
 NeetName,Neet,ニート,废柴
 NeetTitle1,NeetLet others handle it.,他人に任せよう,今天也没什么干劲呢，明天再努力吧
+NeetDescription,,ありとあらゆるボタンが存在しません。\n何も出来ません、だってニートだもの。\n最後まで生存していると単独or追加勝利します。
 FastMakerName,Fast Maker,ファストメーカー,洗脑师
 FastMakerTitle1,Let's make Madmate with a light heart.,軽い気持ちでマッドメイトを作ろう,让船员背叛成为你的俘虏
 KillName,KILL,キル,击杀
@@ -958,8 +964,10 @@ ButtonerCountSetting,Number of uses,使用回数,执钮人技能最大使用次�
 ButtonerButtonName,Meeting!,緊急会議！,召开
 RevolutionistName,Revolutionist,革命家,革命家
 RevolutionistTitle1,Let's start a revolution.,革命を起こそう,发起革命
+RevolutionistDescription,,独裁者とのコンビネーション役職です。\n生存者に近づくことで革命を広めることが出来ます。\n生存者全員に革命を広げると革命会議を起こすことが出来、そこで独裁者を追放出来ると単独勝利します。
 DictatorName,Dictator,独裁者,独裁者
 DictatorTitle1,Let's monopolize power,権力を独占しよう,掌握独裁的权力
+DictatorDescription,,革命家とのコンビネーション役職です。\n複数票投票することが出来ます。\nまた、追放されそうになったとき、設定回数だけ他の誰かを身代わりにすることが出来ます。
 RevolutionistAndDictatorName,<color=#FF0033>Revolutionist</color>And<color=#336600>Dictator</color>,<color=#FF0033>革命家</color>と<color=#336600>独裁者</color>,<color=#FF0033>大</color>革<color=#336600>命</color>
 SettingRevolutionistPlayerCountName,Number of <color=#FF0033>Revolutionist</color>,<color=#FF0033>革命家</color>の人数,<color=#FF0033>革命家</color>人数
 SettingDictatorPlayerCountName,Number of <color=#336600>Dictator</color>,<color=#336600>独裁者</color>の人数,<color=#336600>独裁者</color>人数
@@ -976,6 +984,7 @@ SidekickFriendsTitle1,Help Jackal.,ジャッカルを助けよう,帮助豺狼�
 SidekickFriendsDescription,It is judged as Cluemate， but is in the Jackal camp.\nIf the jackal wins， it can win. Sidekick Friends can be found from Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。サイドキックフレンズはジャッカルからわかります。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,规则上牧狼人被判定为船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则牧狼人一同获胜。\n豺狼能确认牧狼人是谁。牧狼人需要帮助豺狼以获得胜利。
 SpelunkerName,Spelunker,スペランカー,倒霉蛋
 SpelunkerTitle1,It's so easy to die.,簡単に死んでしまう,死亡如风，常伴吾身
+SpelunkerDescription,,ちょっとしたことで簡単に死ぬクソ雑魚です。\nベント、はしご、ドア、停電、通信妨害、昇降機リフト、全てが敵です。\n最後まで生存していると勝利を横取りして単独勝利します。\nさあ、生き残ろう。
 SpelunkerVentDeathChance,Probability of vent death,ベント死の確率,倒霉蛋在管道口跌倒而死的概率
 SpelunkerIsDeathCommsOrPowerdown,Power outage/community skipping death,停電/コミュサボ死,倒霉蛋会在照明或通讯破坏期间失足而死
 SpelunkerDeathCommsOrPowerdownTime,Time to power outage/community sabotage death,停電/コミュサボ死までの時間,倒霉蛋在照明或通讯期间死亡需要经过的时间
@@ -983,6 +992,7 @@ SpelunkerLiftDeathChance,Probability of falling off the lift,昇降機リフト�
 SpelunkerDoorOpenChance,Probability of death from pinched fingers in door opening,ドア開けの指挟み死の確率,倒霉蛋开门时被门夹死的概率
 HitmanName,Hitman,殺し屋,杀手
 HitmanTitle1,Kill the designated person.,指定された人をキルせよ,听着，所谓杀手……
+HitmanDescription,,設定数ターゲットをキルすると単独勝利します。\nただし、設定回数失敗すると自爆します。\n無能な殺し屋は要らないのだよ。
 HitmanChangeTargetTime,Time for target to reset,ターゲットがリセットされる時間,杀手目标切换的所需时间
 HitmanIsOutMission,If the mission cannot be accomplished， it will self-destruct.,任務が遂行できないと自爆する,杀手在若干次击杀失败后自杀
 HitmanOutMissionLimit,Number of possible failures,失敗可能数,杀手可被允许的最大失败次数
@@ -1014,12 +1024,14 @@ MatryoshkaPutOnButtonName,Put On,着る,套娃
 MatryoshkaTakeOffButtonName,Take Off,脱ぐ,解除
 StefinderName,Stefinder,ステファインダー,二五仔
 StefinderTitle1,Let's do one crime.,一回だけ犯罪しよう,那么答案只有一个了！
+StefinderDescription,,一度だけキルが出来ます。\nキルをしたらインポスター陣営、キルをしなければクルー陣営です。\n試合展開を見極めてどちらに付くか決めましょう。
 StefinderKillCooldownSetting,KillCooldown,キルクールダウン,二五仔击杀冷却
 StefinderVentSetting,CanUseVent,ベントを使用できる,二五仔可以使用管道
 StefinderSaboSetting,CanUseSabotage,サボタージュを使用できる,二五仔可以造成破坏
 StefinderSoloWinSetting,SoloWin,単独勝利,二五仔可以单独获胜
 PartTimerName,PartTimer,フリーター,打工仔
 PartTimerTitle1,If you want a part-time job...!,バイトするなら…！ ,打工人，打工魂，打工都是人上人！
+PartTimerDescription,,特定の誰かに就職することが出来ます。\n勝利条件は相手の役職に依存し、どんな陣営とでも勝利出来ます。\n就職先が死亡した場合、別の誰かに再就職しましょう。\n職無しでいると飢えて死ぬぞ。
 PartTimerDeathTurn,Number of turns to die from unbited status,未バイトの状態から死亡するターン数,无业状态下打工仔穷死经过的回合数
 PartTimerIsCheckTargetRole,I can see your part-time position.,バイト先の役職が見える,打工仔可以确认打工对象的职业
 PartTimerButtonName,PartTime,バイト,打工
@@ -1041,6 +1053,7 @@ FinderTitle1,Get to know your peers.,仲間を知ろう,与叛徒取得联系
 FinderCheckMadmateSetting,Number of confirmed kills,確認できるキル数,接头人确认叛徒需要进行的击杀次数
 PhotographerName,Photographer,写真屋,摄影师
 PhotographerTitle1,Let's capture everyone on camera!,みんなの姿をカメラに収めよう ,茄~子！
+PhotographerDescription,,視界内にいる人を撮影することが出来ます。\n生存者全員を写真に収めると単独勝利します。\nはい、チーズ。笑って？
 PhotographerIsBonus,Bonuscooltime is valid,ボーナスクールタイムが有効,摄影师一次拍摄多名玩家可以缩减冷却
 PhotographerBonusCount,Number of people to be photographed that will be Bonuscooltime.,ボーナスクールタイムになる撮影人数,摄影师缩减冷却需要拍摄的人数
 PhotographerBonusCoolTime,Bonus Cool Time,ボーナスクールタイム,摄影师一次拍摄多名玩家后的缩减冷却
@@ -1055,6 +1068,7 @@ SluggerIsMultiKill,Range kill possible,範囲キル可能,击球手可以大范�
 SluggerButtonName,Harisen,ハリセン,挥棒
 SatsumaAndImoName,SatsumaAndImo,さつまといも,人格分裂者
 SatsumaAndImoTitle1,Madmate And Crewmate,マッドメイト & クルーメイト,是我疯了，还是大家都疯了？
+SatsumaAndImoDescription,,会議を挟むごとにインポスター陣営とクルー陣営が入れ替わります。\n決着が付いた時の陣営で勝敗が決定します。\n手のひらくるくるしましょう。
 ShiftActorName,Shift Actor,シフトアクター,模仿犯
 ShiftActorTitle1,Let's play it out perfectly,完璧に演じ切ろう,我会比你更像你自己
 CanWatchAttribute,Can watch attribute,重複役職を見れる,模仿犯可以确认模仿对象的附加职业
@@ -1103,6 +1117,7 @@ PavlovsdogsName,Pavlov's dogs,パブロフの犬,巴甫洛夫的狗
 PavlovsownerName,Pavlov's owner,パブロフのオーナー,巴甫洛夫
 PavlovsdogsTitle1,Let us be of service.,お役に立ってみせましょう,我好想做巴甫洛夫先生的狗啊
 PavlovsownerTitle1,Be my dog!,私の犬になりなさい！,狗中毒.mp3
+PavlovsownerDescription,,オーナーと犬が存在します。\nオーナーは犬を指名する能力を持ちます。\n犬はキルボタンを持ちます。\n犬が生存した状態でキル能力を持たない生存者数が陣営数以下になれば勝利します。\nオーナーが死ぬと首輪が外れる。\n猛犬には気をつけなさい。
 PavlovsownerCreateDogCoolTime,Side Kick Cool Time,サイドキックのクールタイム,巴甫洛夫驯化冷却
 PavlovsownerCreateDogLimit,Number of times a side kick can be made in one match,1試合内にサイドキックできる回数,巴甫洛夫每局游戏可以驯化狗的次数
 PavlovsownerIsTargetImpostorDeath,Self-destruct if the opponent is an Impostor,相手がインポスターだと自爆する,巴甫洛夫在尝试驯化内鬼为狗的场合自杀
@@ -1144,6 +1159,7 @@ GMSpawnDeadBody,Spawn Deadbody,死体発生,生成尸体
 GMEndMeeting,End Meeting,会議終了,结束会议
 SuicidalIdeationName,Suicidal ideation,自殺願望者,绝望先生
 SuicidalIdeationTitle1,Finding no hope for life,生きる希望を見いだせない,找寻活着的意义
+SuicidalIdeationDescription,,タスクをすると時間が延びる自爆タイマーがあります。\n独自の転落死確率を持ちます。\n自爆する前にタスクを完了すると単独勝利します。\nまた、タスクを完了していなくても、生存していれば追加勝利します。
 SuicidalIdeationWinTextSetting,Special Victory Letters,特殊勝利文字,绝望先生拥有特殊胜利文本
 SuicidalIdeationTimeLeftSetting,Time Increased by Doing Tasks,自殺までの時間,绝望先生自杀倒计时
 SuicidalIdeationAddTimeLeftSetting,Time to suicide,タスクをすると増える時間,绝望先生完成一个任务后倒计时的增量
@@ -1152,6 +1168,7 @@ SuicidalIdeationWinText,Try to live a little longer\nSuicidal person,もう少�
 SuicidalIdeationButtonName,Time to suicide,自殺まで,自杀倒计时
 CupidName,Cupid,キューピット,丘比特
 CupidTitle1,Let's tie the red thread of fate,運命の赤い糸を結ぼう,牵起命运的红线
+CupidDescription,,ラバーズを指名することが出来ます。\n指名したラバーズがラバーズ勝利を達成すると同時に勝利します。
 CupidButtonName,Shoot the love arrows,恋の矢,爱之箭
 HamburgerShopName,Hamburger Shop,ハンバーガー屋,汉堡店店主
 HamburgerShopTitle1,Let's make delicious，tasty burgers!,美味しい美味しいハンバーガーを作ろう,做出美味的汉堡
