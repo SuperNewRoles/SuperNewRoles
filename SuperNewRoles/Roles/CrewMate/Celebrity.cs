@@ -27,16 +27,22 @@ namespace SuperNewRoles.Roles.Crewmate
 
         public static void WrapUp()
         {
+            // スターがアサインされていない時に、長くなってしまっている一連の処理を読まないようにreturnする
+            if (RoleClass.Celebrity.ViewPlayers.Count <= 0) return;
+            if (!CustomOptionHolder.CelebrityIsTaskPhaseFlash.GetBool()) return;
             CelebrityTimerSet();
         }
 
-        public static void EndMeeting()
+        public static void TimerStop()
         {
+            timer.Stop();
+            Logger.Info("発光用タイマーを止めました。", "CelebrityFlash");
         }
 
         public static bool EnabledSetting()
         {
-            if (RoleClass.Celebrity.ViewPlayers.Count <= 0) return false;
+            if (RoleClass.Celebrity.ViewPlayers.Count <= 0) return false; //この条件をWarapUpでも判断している為、必要なさそうな場合最後に消してください。
+            if (!CustomOptionHolder.CelebrityIsTaskPhaseFlash.GetBool()) return false; //この条件をWarapUpでも判断している為、必要なさそうな場合最後に消してください。
             if (!RoleClass.Celebrity.ChangeRoleView)
             {
                 if (RoleClass.Celebrity.CelebrityPlayer.Count <= 0) return false;
