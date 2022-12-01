@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles.Crewmate;
 public class Squid
 {
     // CustomOptionDate
-    private const int OptionId = 1106;// 設定のId
+    private const int OptionId = 1118;// 設定のId
     public static CustomRoleOption SquidOption;
     public static CustomOption SquidPlayerCount;
     public static CustomOption SquidCoolTime;
@@ -78,7 +78,6 @@ public class Squid
         SquidButton = new(
             () =>
             {
-                SuperNewRolesPlugin.Logger.LogInfo("イカのボタンが押されました");
                 ButtonTimer = DateTime.Now;
                 SetVigilance(true);
             },
@@ -183,6 +182,7 @@ public class Squid
             ink.layer = 5;
             var rend = ink.AddComponent<SpriteRenderer>();
             rend.sprite = GetInkSprite(random.Next(175, 275));
+            rend.color = new(20 / 255f, 10 / 255f, 25 / 255f);
             SuperNewRolesPlugin.Logger.LogInfo($"[イカインク] defaultPos : (X : {defaultPos.x}, Y : {defaultPos.y}, Z : {defaultPos.z}), inkSize : {rend.sprite.pixelsPerUnit}");
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(ObstructionTime, new Action<float>((p) =>
             {

@@ -17,7 +17,7 @@ public static class EvilEraser
         JackalSeerSidekick,
         NekomataExiled,
         FoxGuard,
-        SquidGuard,
+        SquidGuard
     }
     public static bool IsBlock(BlockTypes blocktype, PlayerControl player = null)
     {

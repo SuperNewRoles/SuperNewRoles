@@ -245,5 +245,6 @@ public class IntroData
     public static IntroData HamburgerShopIntro = new("HamburgerShop", RoleClass.HamburgerShop.color, 3, RoleId.HamburgerShop);
     public static IntroData PenguinIntro = new("Penguin", RoleClass.Penguin.color, 1, RoleId.Penguin, TeamRoleType.Impostor);
     public static IntroData DependentsIntro = new("Dependents", RoleClass.Dependents.color, 1, RoleId.Dependents);
+    public static IntroData SquidIntro = new("Squid", Roles.Crewmate.Squid.color, 2, RoleId.Squid);
     //イントロオブジェ
 }

@@ -2956,7 +2956,7 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
-        Squid.SetupCustomButton();
+        Squid.SetupCustomButton(__instance);
 
         SetCustomButtonCooldowns();
     }
