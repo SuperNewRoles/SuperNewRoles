@@ -274,7 +274,7 @@ public static class RPCProcedure
         if (Squid.IsVigilance.ContainsKey(id) && Squid.IsVigilance[id] && player.AmOwner && !isVigilance)
         {
             Squid.ResetCooldown(false);
-            SuperNewRolesPlugin.Logger.LogInfo("イカの警戒が解けたためクールをリセットしました");
+            Logger.Info("イカの警戒が解けたためクールをリセットしました");
         }
         Squid.IsVigilance[id] = isVigilance;
     }

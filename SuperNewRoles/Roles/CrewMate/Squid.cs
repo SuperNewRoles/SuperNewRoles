@@ -79,7 +79,7 @@ public class Squid
             () =>
             {
                 ButtonTimer = DateTime.Now;
-                SetVigilance(true);
+                SetVigilance(true, PlayerControl.LocalPlayer);
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Squid; },
             () => { return PlayerControl.LocalPlayer.CanMove; },
@@ -131,7 +131,7 @@ public class Squid
         SquidButton.MaxTimer = CoolTime;
         SquidButton.Timer = CoolTime;
         ButtonTimer = DateTime.Now;
-        if (vigilanceReset) SetVigilance(false);
+        if (vigilanceReset) SetVigilance(false, PlayerControl.LocalPlayer);
     }
 
     public static void SetKillTimer(float killCool)
@@ -152,13 +152,13 @@ public class Squid
             {
                 if (button.actionButton.name == "KillButton(Clone)" && button.HasButton(PlayerControl.LocalPlayer.IsAlive(), PlayerControl.LocalPlayer.GetRole()))
                 {
-                    if (button.Timer <= killCool || button.Timer >= (button.MaxTimer - 0.25f))
+                    if (button.Timer <= killCool || button.Timer >= (button.MaxTimer - 0.5f))
                     {
                         button.Timer = killCool;
                     }
                 }
             }
-        }, 0f, "Squid Set KillCool");
+        }, 0.25f, "Squid SetKillTime");
     }
 
     public static Sprite GetInkSprite(float size = 250f) => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SquidInk.png", size);
@@ -179,11 +179,11 @@ public class Squid
             Vector3 defaultPos = SetPosition($"Squid Ink{i + 1}");
             ink.name = $"Squid Ink{i + 1}";
             ink.transform.position = FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.transform.position + defaultPos;
-            ink.layer = 5;
+            ink.layer = 4;
             var rend = ink.AddComponent<SpriteRenderer>();
             rend.sprite = GetInkSprite(random.Next(175, 275));
             rend.color = new(20 / 255f, 10 / 255f, 25 / 255f);
-            SuperNewRolesPlugin.Logger.LogInfo($"[イカインク] defaultPos : (X : {defaultPos.x}, Y : {defaultPos.y}, Z : {defaultPos.z}), inkSize : {rend.sprite.pixelsPerUnit}");
+            Logger.Info($"[イカインク] defaultPos : (X : {defaultPos.x}, Y : {defaultPos.y}), inkSize : {rend.sprite.pixelsPerUnit}");
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(ObstructionTime, new Action<float>((p) =>
             {
                 if (rend != null)
@@ -219,28 +219,26 @@ public class Squid
                 })
                 {
                     repetitionCount++;
-                    SuperNewRolesPlugin.Logger.LogInfo($"{name}の位置が{allDefaultPosition.IndexOf(pos)}に近い為再実行しました, 距離 : {Vector3.Distance(position, pos)}");
+                    Logger.Info($"{name}の位置が{allDefaultPosition.IndexOf(pos)}に近い為再実行しました, 距離 : {Vector3.Distance(position, pos)}");
                     goto repetition;
                 }
             }
             allDefaultPosition.Add(position);
-            SuperNewRolesPlugin.Logger.LogInfo($"{name}の位置を{(repetitionCount >= 1 ? $"{repetitionCount}回目で" : "")}決定しました");
+            Logger.Info($"{name}の位置を{(repetitionCount >= 1 ? $"{repetitionCount}回目で" : "")}決定しました");
             return position;
         }
     }
 
-    public static void SetVigilance(bool isVigilance, PlayerControl player = null)
+    public static void SetVigilance(bool isVigilance, PlayerControl player)
     {
-        player ??= PlayerControl.LocalPlayer;
         var writer = RPCHelper.StartRPC(CustomRPC.SetVigilance);
         writer.Write(isVigilance);
         writer.Write(player.PlayerId);
         writer.EndRPC();
         RPCProcedure.SetVigilance(isVigilance, player.PlayerId);
     }
-    public static void SetSpeedBoost(bool isSpeedBoost, PlayerControl player = null)
+    public static void SetSpeedBoost(bool isSpeedBoost, PlayerControl player)
     {
-        player ??= PlayerControl.LocalPlayer;
         var writer = RPCHelper.StartRPC(CustomRPC.SetSpeedBoost, player);
         writer.Write(isSpeedBoost);
         writer.Write(player.PlayerId);
@@ -254,7 +252,7 @@ public class Squid
             SpeedBoostTimer -= Time.fixedDeltaTime;
             if (SpeedBoostTimer <= 0)
             {
-                SetSpeedBoost(false);
+                SetSpeedBoost(false, PlayerControl.LocalPlayer);
                 SpeedBoostTimer = BoostSpeedTime;
             }
         }

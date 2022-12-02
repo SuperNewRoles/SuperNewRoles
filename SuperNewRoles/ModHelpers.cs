@@ -295,6 +295,7 @@ public static class ModHelpers
                 Squid.IsKillGuard = true;
                 Squid.IsDownVision = true;
                 PlayerControl.GameOptions.KillDistance = 0;
+                Squid.ObstructionTimer = Squid.ObstructionTime;
                 Squid.InkSet();
             }
         }
