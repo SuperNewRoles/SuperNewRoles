@@ -791,6 +791,7 @@ ObserverTitle1,Let's monitor everything.,すべてを監視しよう,监视一�
 ObserverDescription,You can see where everyone is voting during the meeting.,会議中に全員の投票先を確認できます。,窥视者属于船员阵营。\n会议阶段，窥视者可以确认所有玩家的投票对象。
 VampireName,Vampire,ヴァンパイア,吸血鬼
 VampireTitle1,Terrorise the Night King.,夜の王に恐怖せよ,好想吸血吸到吐
+VampireDescription,,遅延キルをすることが出来ます。\n代わりに血痕は残りますし、停電は直す気はありません。\n情報機器には認識もされません。\nでも、人混みの中でこっそり噛みついたら、誰が殺ったかわからないよね。
 VampireKillDelay,Kill Delay,キル遅延,击杀延迟
 VampireViewBloodStainsTurn,Turn to see blood,血が見えるターン,血渍可见需要经过的回合数
 VampireCanCreateDependents,Dependents can be nominated,眷属を指名可能,吸血鬼可以指定一名眷属
@@ -800,6 +801,7 @@ VampireDependentsCanVent,Vent available for use by dependents,眷属がベント
 VampireDependentsButtonName,make Dependents,眷属にする,眷属
 DependentsName,Dependents,眷属,眷属
 DependentsTitle1,Trapped in the Night.,夜に囚われし者,你也是吸血鬼了
+DependentsDescription,,キルが出来るマッドメイトです。\nヴァンパイアとはキルクールが同期しています。\n明るいところは苦手ですが暗いところは得意です。\n夜からは、逃れられないのです。
 DarkKillerName,DarkKiller,ダークキラー,暗夜杀手
 DarkKillerTitle1,Let's kill in the dark,闇に紛れて殺そう,将你的杀戮隐藏于黑暗之中
 DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキルクールタイム,击杀冷却时间
@@ -918,6 +920,7 @@ SpecimenVitalSetting,Move Vital to specimen (polus),標本室にバイタルを�
 CustomDownloadSuperNewNamePlates,Download custom hat,カスタムハットをダウンロードする,下载自定义帽子
 KunoichiName,Kunoichi,クノイチ,女忍
 KunoichiTitle1,Use your ninjutsu to deceive the village.,忍術を駆使して村を欺け,用你的忍术来欺骗村子
+KunoichiDescription,,通常キルが出来ない代わりに自分以外には見えないクナイを投げることが出来ます。\nクナイを設定数当てるとキル出来ます。\n不可視のキルで村を混乱に陥れましょう。
 KunoichiCoolTime,Kunai Cool Time,クナイのクールタイム,女忍苦无冷却
 KunoichiKillKunai,Number of kunai required for a kill,キルに必要なクナイ数,女忍进行击杀所需要的苦无数
 KunoichiIsHide,Transparency,透明化,隐身
@@ -1016,6 +1019,7 @@ SeeThroughPersonName,SeeThroughPerson,透視者,目击者
 SeeThroughPersonTitle1,Witness the decisive moment!,決定的瞬間を目撃しよう,透过门缝目击决定性的瞬间
 MatryoshkaName,Matryoshka,マトリョーシカ,恐怖套娃
 MatryoshkaTitle1,Cloak the corpse and move the corpse.,死体をまとって死体を移動させよう,把尸体做成套娃
+MatryoshkaDescription,,死体を着て移動することが出来ます。\n死体を隠して自身も隠れましょう。\nそう、死体の陰に。
 MatryoshkaWearLimit,Number of times you can wear it,纏える回数,恐怖套娃最大套娃次数
 MatryoshkaAddKillCoolTime,Increased kill-cool time time for corpse coats,死体まといの増加キルクールタイムタイム,恐怖套娃每次套娃追加的击杀冷却
 MatryoshkaWearReport,can be called in while the body is still circled,まとい中でも通報可能,恐怖套娃可以在套娃状态下报告
