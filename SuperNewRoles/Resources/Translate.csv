@@ -1139,6 +1139,9 @@ PenguinTitle1,Let's drag and kill!,ぺちぺち！,绑架他人
 PenguinButtonName,Abduction,拉致,绑架
 PenguinCanDefaultKill,Can default kill,通常キルができる,绑匪可以进行通常击杀
 
+#ConfigRoles
+IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする
+
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！
 WelcomeMessage2,You can play a variety of modes and different hard on any model with SuperNewRoles!,SuperNewRolesを使用することで、様々なモードや様々な役職をどの機種でも遊べます！,您可以在超新职业体验各种不同的模式和职业！
