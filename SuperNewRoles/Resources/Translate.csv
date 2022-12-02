@@ -408,6 +408,7 @@ SheriffIsKillFriendsRoleSetting,Can kill jackal friend roles,ジャッカルフ�
 SheriffIsKillQuarreledSetting,Can kill quarreleds,クラードをキルできる,可以击杀福音天使
 SheriffYes,Yes,できる,是
 SheriffNo,No,できない,否
+CannotUse,Number of kills remaining: 0,キル残り回数:0
 SheriffMaxKillCountSetting,Maximum number of kills,最大キル数,最大可击杀次数
 SheriffKillButtonName,Kill,キル,击杀
 SheriffNumTextName,{0} shots remaining.,残り{0}発,还剩{0} 次
