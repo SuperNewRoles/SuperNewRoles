@@ -43,16 +43,6 @@ namespace SuperNewRoles.Achievement
         private static GameObject _achievementButtonAsset;
         public static AchievementData _selectedData;
         public static Transform EndGamePopup;
-        public static DateTime GameStartTime;
-        public static void OnEndGameCheck()
-        {
-            if (PlayerControl.LocalPlayer.IsAlive()) {
-                if (RoleClass.Bestfalsecharge.IsMyBestFalseCharge) CompleteAchievement(AchievementType.BestFalseChargesGuardExiled);
-            }
-        }
-        public static void OnUpdate() {
-            if (!AllAchievementData[AchievementType.PersonalCombat].Complete && (PlayerControl.LocalPlayer.IsImpostor() || PlayerControl.LocalPlayer.IsJackalTeamJackal())) if (PlayerControl.AllPlayerControls.FindAll((Il2CppSystem.Predicate<PlayerControl>)(x => x.IsAlive() && (x.IsImpostor() || x.IsJackalTeamJackal()))).Count == 2) CompleteAchievement(AchievementType.PersonalCombat);
-        }
         public static void OnEndGame(EndGameManager __instance, WinCondition condition) {
             if (WaitCompleteData.Count <= 0) return;
             __instance.transform.FindChild("BackgroundLayer").localScale = new(10.6667f, 10, 1);

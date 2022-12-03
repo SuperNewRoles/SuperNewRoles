@@ -16,6 +16,7 @@ using UnityEngine;
 using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
 using static GameData;
+using SuperNewRoles.Achievement;
 
 namespace SuperNewRoles.Patches
 {
@@ -929,6 +930,8 @@ namespace SuperNewRoles.Patches
             DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
+
+            AchievementChecker.OnMurderPlayer(__instance, target);
 
             if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId)
             {

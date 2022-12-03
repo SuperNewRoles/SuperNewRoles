@@ -449,7 +449,6 @@ namespace SuperNewRoles.Patches
 
         public static void Postfix()
         {
-            AchievementManagerSNR.OnEndGameCheck();
             if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Zombie))
             {
                 PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();
@@ -1061,6 +1060,7 @@ namespace SuperNewRoles.Patches
                 };
                 PlayerData.Add(data);
             }
+            AchievementChecker.OnEndGameCheck(TempData.winners.ToList(), AdditionalTempData.winCondition);
         }
     }
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]

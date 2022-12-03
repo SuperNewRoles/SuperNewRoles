@@ -76,7 +76,7 @@ namespace SuperNewRoles.Patches
             SluggerDeadbody.AllFixedUpdate();
             PlayerAnimation.FixedAllUpdate();
             PVCreator.FixedUpdate();
-            AchievementManagerSNR.OnUpdate();
+            AchievementChecker.OnUpdate();
             VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
             OldModeButtons.OldModeUpdate();
 

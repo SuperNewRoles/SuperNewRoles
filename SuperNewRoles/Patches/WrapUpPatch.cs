@@ -1,6 +1,7 @@
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Achievement;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
@@ -70,6 +71,7 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
+            AchievementChecker.OnWrapUpPrefix(exiled);
         }
         public static void Postfix(GameData.PlayerInfo exiled)
         {
@@ -78,6 +80,7 @@ namespace SuperNewRoles.Patches
                 exiled = null;
             }
 
+            AchievementChecker.OnWrapUpPostfix(exiled);
             Kunoichi.WrapUp();
             SerialKiller.WrapUp();
             Assassin.WrapUp();

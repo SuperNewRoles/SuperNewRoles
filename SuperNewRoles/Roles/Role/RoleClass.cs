@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.Achievement;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Impostor;
@@ -200,6 +201,7 @@ namespace SuperNewRoles.Roles
             Lovers.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
             ChacheManager.Load();
+            AchievementChecker.ClearAndReload();
         }
         public static class SoothSayer
         {
