@@ -6,8 +6,8 @@ class SelfBomber
 {
     public static void ResetCooldown()
     {
-        HudManagerStartPatch.SelfBomberButton.MaxTimer = CustomOptionHolder.SelfBomberBombCooltime.GetFloat();
-        HudManagerStartPatch.SelfBomberButton.Timer = CustomOptionHolder.SelfBomberBombCooltime.GetFloat();
+        HudManagerStartPatch.SelfBomberButton.MaxTimer = CustomOptionHolder.SelfBomberBombCoolTime.GetFloat();
+        HudManagerStartPatch.SelfBomberButton.Timer = CustomOptionHolder.SelfBomberBombCoolTime.GetFloat();
     }
     public static void SelfBomb()
     {
