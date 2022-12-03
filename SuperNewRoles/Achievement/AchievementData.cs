@@ -8,7 +8,42 @@ namespace SuperNewRoles.Achievement
         SheriffKill = 3,
         ChiefCreateSheriff = 4,
         ByChiefCreateSheriff = 5,
-        ByChiefCreateSheriffNeutral = 6
+        ByChiefCreateSheriffNeutral = 6,
+
+        ConcentratedEnergy = 7,
+        PersonalCombat = 8,
+        ImNotReady = 9,
+        AlwaysLoveYou = 10,
+        ParfectCrewGame = 11,
+        BestHitman = 12,
+        NeutralSheriff = 13,
+        Hitting = 14,
+        ForbiddenLove = 15,
+        LoveDeliver = 16,
+        FruitfulLove = 17,
+        HelloFromBelly = 18,
+        ThisIsTechnology = 19,
+        JobAccomplishment = 20,
+        ThisIsBasement = 21,
+        ThankyouBasement = 22,
+        ItsMagic = 23,
+        LetsBattle = 24,
+        ThisIsVictory = 25,
+        ILoveToilet = 26,
+        SoldOut = 27,
+        HowItWorks = 28,
+        InJeopardy = 29,
+        TimeForRevolution = 30,
+        TooManyKills = 31,
+        Bomb = 32,
+        NiceBomb = 33,
+        GotItSideKiller = 34,
+        ComeHere = 35,
+        YoImpostor = 36,
+        EvenWithoutTheseThings = 37,
+        TheSameFace = 38,
+        Preferably = 39,
+        UsurpationOfVictory = 40,
     }
     public class AchievementData
     {
@@ -29,7 +64,7 @@ namespace SuperNewRoles.Achievement
             Title = ModTranslation.GetString($"{NameKey}Title");
             Complete = AchievementManagerSNR.currentData.Contains(Id+"\n");
             Logger.Info($"{Name}が生成されました。{Complete}です。{Title} : {Description}");
-            AchievementManagerSNR.AllAchievementData.Add(this);
+            AchievementManagerSNR.AllAchievementData.Add(type, this);
             if (Complete)
                 AchievementManagerSNR.CompletedAchievement.Add(this);
         }

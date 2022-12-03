@@ -1,4 +1,5 @@
 using HarmonyLib;
+using SuperNewRoles.Achievement;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
@@ -75,7 +76,7 @@ namespace SuperNewRoles.Patches
             SluggerDeadbody.AllFixedUpdate();
             PlayerAnimation.FixedAllUpdate();
             PVCreator.FixedUpdate();
-
+            AchievementManagerSNR.OnUpdate();
             VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
             OldModeButtons.OldModeUpdate();
 

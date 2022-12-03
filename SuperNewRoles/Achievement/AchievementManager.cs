@@ -13,7 +13,7 @@ namespace SuperNewRoles.Achievement
 {
     class AchievementManagerSNR
     {
-        public static List<AchievementData> AllAchievementData = new();
+        public static Dictionary<AchievementType, AchievementData> AllAchievementData = new();
         public static List<AchievementData> CompletedAchievement = new();
         public static List<AchievementType> WaitCompleteData = new();
         public static Dictionary<byte, int> PlayerData = new();
@@ -50,6 +50,9 @@ namespace SuperNewRoles.Achievement
                 if (RoleClass.Bestfalsecharge.IsMyBestFalseCharge) CompleteAchievement(AchievementType.BestFalseChargesGuardExiled);
             }
         }
+        public static void OnUpdate() {
+            if (!AllAchievementData[AchievementType.PersonalCombat].Complete && (PlayerControl.LocalPlayer.IsImpostor() || PlayerControl.LocalPlayer.IsJackalTeamJackal())) if (PlayerControl.AllPlayerControls.FindAll((Il2CppSystem.Predicate<PlayerControl>)(x => x.IsAlive() && (x.IsImpostor() || x.IsJackalTeamJackal()))).Count == 2) CompleteAchievement(AchievementType.PersonalCombat);
+        }
         public static void OnEndGame(EndGameManager __instance, WinCondition condition) {
             if (WaitCompleteData.Count <= 0) return;
             __instance.transform.FindChild("BackgroundLayer").localScale = new(10.6667f, 10, 1);
@@ -80,7 +83,7 @@ namespace SuperNewRoles.Achievement
         }
         public static AchievementData GetAchievementData(AchievementType type)
         {
-            return AllAchievementData.FirstOrDefault(x => x.TypeData == type);
+            return AllAchievementData[type];
         }
         public static void CompleteAchievement(AchievementType type, bool EndGameComplete = true)
         {

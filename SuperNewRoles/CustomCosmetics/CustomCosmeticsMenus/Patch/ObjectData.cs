@@ -279,20 +279,6 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static Scroller AchievementScroller;
         private static void CreateAchievementScroller()
         {
-            AchievementScroller = new GameObject("AchievementScroller").AddComponent<Scroller>();
-            AchievementScroller.gameObject.layer = 5;
-
-            AchievementScroller.transform.localScale = Vector3.one;
-            AchievementScroller.allowX = false;
-            AchievementScroller.allowY = true;
-            AchievementScroller.active = true;
-            AchievementScroller.velocity = new Vector2(0, 0);
-            AchievementScroller.ScrollbarYBounds = new FloatRange(0, 0);
-            AchievementScroller.ContentXBounds = new FloatRange(0, 0);
-            AchievementScroller.enabled = true;
-
-            AchievementScroller.Inner = AchievementButtonGroup;
-            AchievementScroller.transform.parent = AchievementGroup;
         }
         public static void SetAchievementText(AchievementData data = null)
         {
@@ -313,13 +299,19 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 AchievementButtons = new();
             if (AchievementButtons.Count <= 0)
             {
-                foreach (AchievementData data in AchievementManagerSNR.AllAchievementData)
+                foreach (var data in AchievementManagerSNR.AllAchievementData)
                 {
                     Transform obj = GameObject.Instantiate(AchievementManagerSNR.AchievementButtonAsset, AchievementButtonGroup).transform;
-                    obj.FindChild("Name").GetComponent<TextMeshPro>().text = data.Name;
-                    obj.FindChild("Title").GetComponent<TextMeshPro>().text = data.Title;
-                    obj.localPosition = new(0.9f, -1.15f + (-1.05f * data.Id), -2f);
-                    if (data.Complete) obj.FindChild("CompleteMark").gameObject.SetActive(true);
+                    obj.FindChild("Name").GetComponent<TextMeshPro>().text = data.Value.Name;
+                    obj.FindChild("Title").GetComponent<TextMeshPro>().text = data.Value.Title;
+                    obj.gameObject.layer = 5;
+                    obj.FindChild("Name").gameObject.layer = 5;
+                    obj.FindChild("Title").gameObject.layer = 5;
+                    obj.localPosition = new(1.055f, -1.15f + (-1.05f * data.Value.Id), -2f);
+                    if (data.Value.Complete) {
+                        obj.FindChild("CompleteMark").gameObject.SetActive(true);
+                        obj.FindChild("CompleteMark").gameObject.layer = 5;
+                    }
                     PassiveButton btn = obj.gameObject.AddComponent<PassiveButton>();
                     static void SetupButton(AchievementData data, PassiveButton btn)
                     {
@@ -350,7 +342,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                         }));
                         btn.Colliders = new Collider2D[] { btn.GetComponent<BoxCollider2D>() };
                     }
-                    SetupButton(data, btn);
+                    SetupButton(data.Value, btn);
                     AchievementButtons.Add(obj.gameObject);
                 }
             }
@@ -371,7 +363,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         }
         static void Set(PassiveButton btn, int index)
         {
-            btn.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => SetPreset(index)));
+            btn.OnClick.AddListener((UnityAction)(() => SetPreset(index)));
         }
         public static Dictionary<int, ClosetPresetData> ClosetPresetDataDictionary = new();
         public static ConfigEntry<int> SelectedPreset;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Achievement;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
@@ -52,6 +53,7 @@ namespace SuperNewRoles.CustomObject
         private int DestroyIndex = 0;
         static Vector3 OwnerPos;
         static AudioSource ChargeSound;
+        int KillCount = 0;
 
         public WaveCannonObject(Vector3 pos, bool FlipX, PlayerControl _owner)
         {
@@ -168,6 +170,7 @@ namespace SuperNewRoles.CustomObject
                     ChargeSound.Stop();
                 GameObject.Destroy(effectGameObject);
                 GameObject.Destroy(gameObject);
+                if (OwnerPlayerId == CachedPlayer.LocalPlayer.PlayerId && KillCount >= 5) AchievementManagerSNR.CompleteAchievement(AchievementType.ConcentratedEnergy);
                 return;
             }
             if (Owner != null && (Owner.IsDead() || !(Owner.GetRole() is RoleId.WaveCannon or RoleId.WaveCannonJackal)))
@@ -177,6 +180,7 @@ namespace SuperNewRoles.CustomObject
                 {
                     CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
                     Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                    if (KillCount >= 5) AchievementManagerSNR.CompleteAchievement(AchievementType.ConcentratedEnergy);
                 }
                 if (ChargeSound != null)
                     ChargeSound.Stop();
@@ -216,6 +220,7 @@ namespace SuperNewRoles.CustomObject
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         float Timer = PlayerControl.LocalPlayer.killTimer;
                         RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, player.PlayerId, 0);
+                        KillCount++;
                         if (PlayerControl.LocalPlayer.IsImpostor())
                         {
                             PlayerControl.LocalPlayer.killTimer = Timer;

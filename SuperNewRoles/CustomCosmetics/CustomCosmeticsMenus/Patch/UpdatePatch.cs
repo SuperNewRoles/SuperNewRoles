@@ -117,6 +117,16 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 __instance.itemName.gameObject.SetActive(false);
                 if (areatitle == null) areatitle = area.transform.FindChild("TitleText").GetComponent<TextMeshPro>();
                 areatitle.text = AchievementManagerSNR.SelectedData.Title;
+                if (!(ObjectData.AchievementButtons[0].transform.localPosition.y <= -1.15f && (-Input.mouseScrollDelta.y) < 0) &&
+                    !(ObjectData.AchievementButtons[0].transform.localPosition.y >= (-3.15f + ObjectData.AchievementButtons.Count) && (-Input.mouseScrollDelta.y) > 0))
+                {
+                    foreach (GameObject obj in ObjectData.AchievementButtons)
+                    {
+                        obj.transform.localPosition += new Vector3(0, -Input.mouseScrollDelta.y, 0);
+                        obj.transform.SetAsLastSibling();
+                        obj.layer = 5;
+                    }
+                }
             }
             else { 
                 __instance.PreviewArea.transform.localPosition = new Vector3(4.25f, 0f, -3f);
