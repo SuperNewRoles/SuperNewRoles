@@ -591,6 +591,7 @@ SelfBomberTitle1,Lets' Self Bomb!,自爆をしよう,我的任务 完成啦！
 SelfBomberDescription,Shapeshifting causes self-destruction.\nIf you self-destruct you will die involving everyone around you.,シェイプシフトをすることで、自爆します。\n自爆をすると周りの人を巻き込んで死亡します。,恐怖分子属于内鬼阵营，可以自爆。\n若恐怖分子自爆，自爆者与周围一定范围的玩家都会死亡。
 SelfBomberScopeSetting,Range (radius),範囲(半径),爆炸范围（半径）
 SelfBomberButtonName,Self Bomb,自爆,自爆
+SelfBomberBombCoolTimeSettting,Ability of selfbomb cooldown time.,自爆能力のクールタイム
 GodName,God,神,神
 GodTitle1,You Are God!!,あなたは神だ,新世界的卡密！
 GodDescription,If you survive to the end you take away the win. Everyone's position is known.,最後まで生き残っていると、勝利を奪い取ります。全員の役職がわかります。,神存活到游戏结束则神单独获胜。\n所有玩家的职业对神可见。
