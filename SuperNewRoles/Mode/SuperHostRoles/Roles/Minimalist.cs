@@ -1,23 +1,21 @@
 using HarmonyLib;
-
 using SuperNewRoles.Roles;
 
-namespace SuperNewRoles.Mode.SuperHostRoles.Roles
+namespace SuperNewRoles.Mode.SuperHostRoles.Roles;
+
+class Minimalist
 {
-    class Minimalist
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive))]
+    class SetHudActivePatch
     {
-        [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive))]
-        class SetHudActivePatch
+        public static void Postfix(HudManager __instance)
         {
-            public static void Postfix(HudManager __instance)
+            if (!AmongUsClient.Instance.AmHost) return;
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Minimalist))
             {
-                if (!AmongUsClient.Instance.AmHost) return;
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Minimalist))
-                {
-                    __instance.ReportButton.ToggleVisible(visible: RoleClass.Minimalist.UseReport);
-                    __instance.SabotageButton.ToggleVisible(visible: RoleClass.Minimalist.UseSabo);
-                    __instance.ImpostorVentButton.ToggleVisible(visible: RoleClass.Minimalist.UseVent);
-                }
+                __instance.ReportButton.ToggleVisible(visible: RoleClass.Minimalist.UseReport);
+                __instance.SabotageButton.ToggleVisible(visible: RoleClass.Minimalist.UseSabo);
+                __instance.ImpostorVentButton.ToggleVisible(visible: RoleClass.Minimalist.UseVent);
             }
         }
     }

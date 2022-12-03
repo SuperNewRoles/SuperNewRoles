@@ -1,49 +1,46 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using UnhollowerBaseLib;
 using UnityEngine;
 
-namespace SuperNewRoles.Mode.Werewolf
+namespace SuperNewRoles.Mode.Werewolf;
+
+class Main
 {
-    class Main
+    public static bool IsChatBlock(PlayerControl sourcePlayer, string text)
     {
-        public static bool IsChatBlock(PlayerControl sourcePlayer, string text)
+        if (MeetingHud.Instance == null) return false;
+        if (!ModeHandler.IsMode(ModeId.Werewolf)) return false;
+        if (sourcePlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
         {
-            if (MeetingHud.Instance == null) return false;
-            if (!ModeHandler.IsMode(ModeId.Werewolf)) return false;
-            if (sourcePlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer) && text.EndsWith(ModTranslation.GetString("SoothSayerCrewmateText")))
             {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer) && text.EndsWith(ModTranslation.GetString("SoothSayerCrewmateText")))
-                {
-                    return false;
-                }
-                else if (PlayerControl.LocalPlayer.IsRole(RoleId.SpiritMedium) && (text.EndsWith(ModTranslation.GetString("SoothSayerCrewmateText")) || text.EndsWith(ModTranslation.GetString("SoothSayerNotCrewmateText"))))
-                {
-                    return false;
-                }
+                return false;
             }
-            if (ModeHandler.IsMode(ModeId.Werewolf) && MeetingHud.Instance.CurrentState == MeetingHud.VoteStates.Discussion) return (!PlayerControl.LocalPlayer.IsImpostor() && PlayerControl.LocalPlayer.IsAlive()) || !sourcePlayer.IsImpostor();
-            return false;
-        }
-        public static bool IsUseButton()
-        {
-            if (MeetingHud.Instance == null) return true;
-            if (!ModeHandler.IsMode(ModeId.Werewolf)) return true;
-            if (MeetingHud.Instance.CurrentState == MeetingHud.VoteStates.Discussion) return true;
-            return false;
-        }
-        [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
-        class TranslationControllerGetStringPatch
-        {
-            static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id, [HarmonyArgument(1)] Il2CppReferenceArray<Il2CppSystem.Object> parts)
+            else if (PlayerControl.LocalPlayer.IsRole(RoleId.SpiritMedium) && (text.EndsWith(ModTranslation.GetString("SoothSayerCrewmateText")) || text.EndsWith(ModTranslation.GetString("SoothSayerNotCrewmateText"))))
             {
-                if (id is StringNames.MeetingVotingBegins && ModeHandler.IsMode(ModeId.Werewolf, false))
-                {
-                    float num3 = (float)PlayerControl.GameOptions.DiscussionTime - MeetingHud.Instance.discussionTimer;
-                    __result = string.Format(ModTranslation.GetString("WerewolfAbilityTime"), Mathf.CeilToInt(num3));
-                }
+                return false;
+            }
+        }
+        if (ModeHandler.IsMode(ModeId.Werewolf) && MeetingHud.Instance.CurrentState == MeetingHud.VoteStates.Discussion) return (!PlayerControl.LocalPlayer.IsImpostor() && PlayerControl.LocalPlayer.IsAlive()) || !sourcePlayer.IsImpostor();
+        return false;
+    }
+    public static bool IsUseButton()
+    {
+        if (MeetingHud.Instance == null) return true;
+        if (!ModeHandler.IsMode(ModeId.Werewolf)) return true;
+        if (MeetingHud.Instance.CurrentState == MeetingHud.VoteStates.Discussion) return true;
+        return false;
+    }
+    [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
+    class TranslationControllerGetStringPatch
+    {
+        static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id, [HarmonyArgument(1)] Il2CppReferenceArray<Il2CppSystem.Object> parts)
+        {
+            if (id is StringNames.MeetingVotingBegins && ModeHandler.IsMode(ModeId.Werewolf, false))
+            {
+                float num3 = (float)PlayerControl.GameOptions.DiscussionTime - MeetingHud.Instance.discussionTimer;
+                __result = string.Format(ModTranslation.GetString("WerewolfAbilityTime"), Mathf.CeilToInt(num3));
             }
         }
     }
