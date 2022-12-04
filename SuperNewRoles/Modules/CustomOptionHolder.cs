@@ -11,8 +11,15 @@ public class CustomOptionHolder
     public static string[] rates = new string[] { "0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%" };
 
     public static string[] rates4 = new string[] { "0%", "25%", "50%", "75%", "100%" };
-
-    public static string[] presets = new string[] { "preset1", "preset2", "preset3", "preset4", "preset5", "preset6", "preset7", "preset8", "preset9", "preset10" };
+    private static List<string> presetList()
+    {
+        var tmp = new List<string>();
+        for (int i = 1; i < 11; i++) {
+            tmp.Add($"{ModTranslation.GetString("preset")}{i}");
+        }
+        return tmp;
+    }
+    public static string[] presets = presetList().ToArray();
     public static CustomOption presetSelection;
 
     public static CustomOption specialOptions;

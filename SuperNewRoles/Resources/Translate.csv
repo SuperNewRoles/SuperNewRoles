@@ -122,16 +122,7 @@ SettingAllOkRolesName,Setting up multiple positions,複数役職の設定,附加
 Settingsonota,Other settings,その他の設定,其他设置
 optionOn,<color=#03ff0c>On</color>,<color=#03ff0c>オン</color>,<color=#03ff0c>开启</color>
 optionOff,<color=#f22f21>Off</color>,<color=#f22f21>オフ</color>,<color=#f22f21>关闭</color>
-preset1,Preset 1,プリセット1,预设1
-preset2,Preset 2,プリセット2,预设2
-preset3,Preset 3,プリセット3,预设3
-preset4,Preset 4,プリセット4,预设4
-preset5,Preset 5,プリセット5,预设5
-preset6,Preset 6,プリセット6,预设6
-preset7,Preset 7,プリセット7,预设7
-preset8,Preset 8,プリセット8,预设8
-preset9,Preset 9,プリセット9,预设9
-preset10,Preset 10,プリセット10,预设10
+preset,Preset,プリセット,预设
 unitSeconds,Seconds,秒,秒
 SettingPlayerCountName,Role Player,人数,人数
 CustomStremerMode,Hide Server Url,サーバーURLを非表示にする,直播模式
