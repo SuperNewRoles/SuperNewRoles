@@ -88,7 +88,7 @@ public class CustomColors
             { ColorType.Sprout, (new(187, 255, 120, bmv), new(127, 208, 48, bmv), true) },
             { ColorType.Pitchgreen, (new(0, 255, 0, bmv), new(0, 187, 0, bmv), true) },
             { ColorType.Emerald, (new(98, 214, 133, bmv), new(82, 179, 111, bmv), true) },
-            { ColorType.Mintcream, (new(245, 255, 250, bmv), new(203, 248, 225, bmv), true) },
+            { ColorType.Mintcream, (new(245, 255, 250, bmv), new(182, 241, 210, bmv), true) },
             { ColorType.Mint, (new(111, 192, 156, bmv), new(65, 148, 111, bmv), true) },
             { ColorType.Melon, (new(11, 254, 148, bmv), new(0, 217, 96, bmv), true) },
             { ColorType.LightCyan, (new(176, 255, 255, bmv), new(114, 229, 229, bmv), true) },
