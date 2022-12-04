@@ -197,7 +197,7 @@ class ShareGameVersion
                 }
                 else if (blockStart)
                 {
-                    __instance.GameStartText.text = $"<color=#FF0000FF>Players With Different Versions:\n</color>" + message;
+                    message += $"<color=#FF0000FF>Players With Different Versions:\n</color>" + message;
                     __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
                 }
                 else
@@ -205,14 +205,14 @@ class ShareGameVersion
                     __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
                     if (__instance.startState != GameStartManager.StartingStates.Countdown && RPCTimer <= 0)
                     {
-                        __instance.GameStartText.text = String.Empty;
+                        message += String.Empty;
                     }
                     else
                     {
-                        __instance.GameStartText.text = $"Starting in {(int)RPCTimer + 1}";
+                        message += $"Starting in {(int)RPCTimer + 1}";
                         if (RPCTimer <= 0)
                         {
-                            __instance.GameStartText.text = String.Empty;
+                            message = String.Empty;
                         }
                     }
                 }
