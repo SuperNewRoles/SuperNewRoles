@@ -293,8 +293,8 @@ FinalStatusKunaiKill,Kunai,クナイ,苦无
 FinalStatusSamuraiKill,Farewell.,切り捨て御免,一刀两断
 FinalStatusChiefMisSet,Misnaming,指名誤爆,背刺
 FinalStatusFalseChargesFalseCharge,Self-determination for injustice,冤罪自決,冤案
-FinalStatusSelfBomberBomb,Bomb victim,自爆巻き添え,恐袭
-FinalStatusBySelfBomberBomb,Suicide bomb attack,自爆特攻,自爆
+FinalStatusSelfBomberBomb,Suicide bomb attack,自爆特攻,自爆
+FinalStatusBySelfBomberBomb,Bomb victim,自爆巻き添え,恐袭
 FinalStatusLadderDeath,Death by fall,転落死,坠落
 FinalStatusNunDeath,Death by fall from Nun,ぬーん転落死,鬼上身
 FinalStatusSpelunkerCommsElecDeath,CommsElec death,停電通信死,摔死
