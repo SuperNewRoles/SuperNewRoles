@@ -25,6 +25,7 @@ class ShareGameVersion
     public static bool IsRPCSend = false;
     public static float timer = 600;
     public static float RPCTimer = 1f;
+    private static float kickingTimer = 0f;
     private static bool notcreateroom;
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
     public class AmongUsClientOnPlayerJoinedPatch
@@ -175,6 +176,43 @@ class ShareGameVersion
                                 message += $"{string.Format(ModTranslation.GetString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n";
                                 blockStart = true;
                             }
+                        }
+                    }
+                }
+            }
+            if (!AmongUsClient.Instance.AmHost)
+            {//TheOtherRoles\Patches\GameStartManagerPatch.cs より
+                if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)|| SuperNewRolesPlugin.ThisVersion.CompareTo(VersionPlayers[AmongUsClient.Instance.HostId].version) != 0)
+                {
+                    kickingTimer += Time.deltaTime;
+                    if (kickingTimer > 10)
+                    {
+                        kickingTimer = 0;
+                        AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
+                        SceneChanger.ChangeScene("MainMenu");
+                    }
+
+                    message += String.Format(ModTranslation.GetString("KickReasonHostNoVersion"), Math.Round(10 - kickingTimer));
+                    __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
+                }
+                else if (blockStart)
+                {
+                    __instance.GameStartText.text = $"<color=#FF0000FF>Players With Different Versions:\n</color>" + message;
+                    __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
+                }
+                else
+                {
+                    __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
+                    if (__instance.startState != GameStartManager.StartingStates.Countdown && RPCTimer <= 0)
+                    {
+                        __instance.GameStartText.text = String.Empty;
+                    }
+                    else
+                    {
+                        __instance.GameStartText.text = $"Starting in {(int)RPCTimer + 1}";
+                        if (RPCTimer <= 0)
+                        {
+                            __instance.GameStartText.text = String.Empty;
                         }
                     }
                 }
