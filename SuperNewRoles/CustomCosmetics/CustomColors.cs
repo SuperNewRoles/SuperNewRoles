@@ -109,7 +109,7 @@ public class CustomColors
             { ColorType.Pitchgreen, (new(0, 255, 0, bmv), new(0, 187, 0, bmv), true) },
             { ColorType.Pitchyellow, (new(255, 255, 0, bmv), new(205, 185, 9, bmv), true) },
             { ColorType.Backblue, (new(0, 128, 255, bmv), new(0, 85, 255, bmv), true) },
-            { ColorType.Mildpurple, (new(109, 83, 131, bmv), new(80, 52, 103, bmv), false) },
+            { ColorType.Mildpurple, (new(109, 83, 131, bmv), new(82, 54, 105, bmv), false) },
             { ColorType.Ashishreddishpurplecolor, (new(139, 102, 118, bmv), new(114, 74, 91, bmv), false) },
             { ColorType.Melon, (new(11, 254, 148, bmv), new(0, 217, 96, bmv), true) },
             { ColorType.Crasyublue, (new(2, 38, 106, bmv), new(64, 0, 111, bmv), false) },
