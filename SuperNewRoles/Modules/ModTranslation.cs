@@ -60,7 +60,7 @@ public static class ModTranslation
                 List<string> valuesList = new();
                 foreach (string vl in values)
                 {
-                    valuesList.Add(vl.Replace("\\n", "\n"));
+                    valuesList.Add(vl.Replace("\\n", "\n").Replace("，", ","));
                 }
                 dictionary.Add(values[0], valuesList.ToArray());
                 i++;

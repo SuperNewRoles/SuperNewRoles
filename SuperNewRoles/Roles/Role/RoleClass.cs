@@ -25,6 +25,7 @@ public static class RoleClass
 
     public static void ClearAndReloadRoles()
     {
+        ModHelpers.IdControlDic = new();
         BlockPlayers = new();
         IsMeeting = false;
         RandomSpawn.IsFirstSpawn = true;

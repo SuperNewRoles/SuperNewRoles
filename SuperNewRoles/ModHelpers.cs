@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -777,20 +778,16 @@ public static class ModHelpers
         return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
     }
 
-    public static PlayerControl GetPlayerControl(this byte id)
-    {
-        return PlayerById(id);
-    }
+    internal static Dictionary<byte, PlayerControl> IdControlDic = new(); // ClearAndReloadで初期化されます
+    public static PlayerControl GetPlayerControl(this byte id) => PlayerById(id);
     public static PlayerControl PlayerById(byte id)
     {
-        foreach (CachedPlayer player in CachedPlayer.AllPlayers)
-        {
-            if (player.PlayerId == id)
-            {
-                return player;
+        if (!IdControlDic.ContainsKey(id)) { // idが辞書にない場合全プレイヤー分のループを回し、辞書に追加する
+            foreach (PlayerControl pc in CachedPlayer.AllPlayers) {
+                IdControlDic.Add(pc.PlayerId,pc);
             }
         }
-        return null;
+        return IdControlDic[id];
     }
 
     public static bool IsCheckListPlayerControl(this List<PlayerControl> listData, PlayerControl CheckPlayer)
