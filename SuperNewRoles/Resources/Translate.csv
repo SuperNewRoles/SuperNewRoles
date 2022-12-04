@@ -305,6 +305,8 @@ FinalStatusOverKillerOverKill,Over Kill!,オーバーキル!,肢解
 FinalStatusSuicideWisherSelfDeath,Suicide,自殺,自杀
 FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺
 FinalStatusRevenge,Revenge,復讐,仇杀
+FinalStatusHitmanKill,Mission accomplished.,任務遂行
+FinalStatusHitmanDead,Disposition.,処分
 
 # Sabotages
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置

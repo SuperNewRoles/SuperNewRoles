@@ -2534,6 +2534,8 @@ static class HudManagerStartPatch
                 {
                     Roles.Neutral.Hitman.KillSuc();
                 }
+                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
+                target.RpcSetFinalStatus(FinalStatus.HitmanKill);
                 RoleClass.Hitman.UpdateTime = CustomOptionHolder.HitmanChangeTargetTime.GetFloat();
                 RoleClass.Hitman.ArrowUpdateTime = 0;
                 Roles.Neutral.Hitman.SetTarget();
