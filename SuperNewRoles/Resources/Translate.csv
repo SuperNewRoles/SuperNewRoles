@@ -1169,6 +1169,11 @@ NameIncludeMod,You cannot make a room public contains mod in your name.,modが�
 CannotUseRenameMessage,Cannot rename.\nThe /rename command can only be used on\navailable only when hosted.,名前を変更することができません。\n/renameコマンドは\nホスト時のみ使用可能です。,无法重命名。\n/rename命令仅房主可用。
 betatext1,\nThis is a beta version! Watch out for bugs!,\nベータ版です! バグには注意してください!,这是测试版本。请注意是否有bug。
 betatext2,\n~Information for developers~,\n～開発者用の情報～,\n~开发者信息~
+ExitExperimentEsc,Exit from the experiment with Esc.,Escで実験から抜ける
+Experimenting...,Experimenting...,実験中...
+StartExperiment,Start experiment,実験を開始する
+Processing,Processing...,処理中...
+SuccessfulExperiment,Successful Experiment,実験成功
 
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库
