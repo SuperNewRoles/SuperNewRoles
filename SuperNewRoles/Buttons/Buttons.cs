@@ -944,6 +944,18 @@ static class HudManagerStartPatch
                 var target = PlayerControlFixedUpdatePatch.JackalSetTarget();
                 if (target && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.CanCreateSidekick)
                 {
+                    if (target.IsRole(RoleId.SideKiller)) // サイドキック相手がマッドキラーの場合
+                    {
+                        if (!RoleClass.SideKiller.IsUpMadKiller) // サイドキラーが未昇格の場合
+                        {
+                            var sidePlayer = RoleClass.SideKiller.GetSidePlayer(target); // targetのサイドキラーを取得
+                            if (sidePlayer != null) // null(作っていない)ならば処理しない
+                            {
+                                sidePlayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
+                                RoleClass.SideKiller.IsUpMadKiller = true;
+                            }
+                        }
+                    }
                     if (RoleClass.Jackal.CanCreateFriend)
                     {
                         Jackal.CreateJackalFriends(target); //クルーにして フレンズにする
@@ -988,6 +1000,18 @@ static class HudManagerStartPatch
                 var target = PlayerControlFixedUpdatePatch.JackalSetTarget();
                 if (target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.JackalSeer.CanCreateSidekick)
                 {
+                    if (target.IsRole(RoleId.SideKiller)) // サイドキック相手がマッドキラーの場合
+                    {
+                        if (!RoleClass.SideKiller.IsUpMadKiller) // サイドキラーが未昇格の場合
+                        {
+                            var sidePlayer = RoleClass.SideKiller.GetSidePlayer(target); // targetのサイドキラーを取得
+                            if (sidePlayer != null) // null(作っていない)ならば処理しない
+                            {
+                                sidePlayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
+                                RoleClass.SideKiller.IsUpMadKiller = true;
+                            }
+                        }
+                    }
                     bool IsFakeSidekickSeer = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSeerSidekick, target);
                     MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekickSeer, SendOption.Reliable, -1);
                     killWriter.Write(target.PlayerId);
