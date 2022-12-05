@@ -91,6 +91,10 @@ colorLightOrange,LightOrange,ライトオレンジ
 colorSprout,Sprout,新芽
 colorNega,Nega,ネガ
 colorGold,Gold,金色
+colorWineRed,WineRed,ワインレッド
+colorCrazyRed,CrazyRed,クレイジーレッド
+colorTokiwaGreen,TokiwaGreen,常磐緑
+colorPosi,Posi,ポジ
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
