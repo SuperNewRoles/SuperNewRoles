@@ -97,7 +97,7 @@ public static class SecretRoom
                     (rightplayer != null && rightplayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId))
                 {
                     PlayerControl.LocalPlayer.moveable = false;
-                    LowerInfoText.text = "Experimenting"; // 実験中...
+                    LowerInfoText.text = ModTranslation.GetString("Experimenting"); // 実験中...
                 }
                 IsWait = true;
                 break;
