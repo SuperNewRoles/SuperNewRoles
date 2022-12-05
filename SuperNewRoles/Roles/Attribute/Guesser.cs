@@ -145,7 +145,7 @@ class Guesser
             PagebuttonParent.localPosition = IsNext ? new(3.535f, -2.2f, -200) : new(-3.475f, -2.2f, -200);
             PagebuttonParent.localScale = new(0.55f, 0.55f, 1f);
             Pagelabel.color = Color.white;
-            Pagelabel.text = IsNext ? "次のページへ" : "前のページへ";
+            Pagelabel.text = ModTranslation.GetString(IsNext ? "NextPage" : "PreviousPage");
             Pagelabel.alignment = TMPro.TextAlignmentOptions.Center;
             Pagelabel.transform.localPosition = new Vector3(0, 0, Pagelabel.transform.localPosition.z);
             Pagelabel.transform.localScale *= 1.6f;

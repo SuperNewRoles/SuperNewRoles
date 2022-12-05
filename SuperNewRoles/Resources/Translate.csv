@@ -91,6 +91,10 @@ colorLightOrange,LightOrange,ライトオレンジ
 colorSprout,Sprout,新芽
 colorNega,Nega,ネガ
 colorGold,Gold,金色
+colorWineRed,WineRed,ワインレッド
+colorCrazyRed,CrazyRed,クレイジーレッド
+colorTokiwaGreen,TokiwaGreen,常磐緑
+colorPosi,Posi,ポジ
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -122,16 +126,7 @@ SettingAllOkRolesName,Setting up multiple positions,複数役職の設定,附加
 Settingsonota,Other settings,その他の設定,其他设置
 optionOn,<color=#03ff0c>On</color>,<color=#03ff0c>オン</color>,<color=#03ff0c>开启</color>
 optionOff,<color=#f22f21>Off</color>,<color=#f22f21>オフ</color>,<color=#f22f21>关闭</color>
-preset1,Preset 1,プリセット1,预设1
-preset2,Preset 2,プリセット2,预设2
-preset3,Preset 3,プリセット3,预设3
-preset4,Preset 4,プリセット4,预设4
-preset5,Preset 5,プリセット5,预设5
-preset6,Preset 6,プリセット6,预设6
-preset7,Preset 7,プリセット7,预设7
-preset8,Preset 8,プリセット8,预设8
-preset9,Preset 9,プリセット9,预设9
-preset10,Preset 10,プリセット10,预设10
+preset,Preset,プリセット,预设
 unitSeconds,Seconds,秒,秒
 SettingPlayerCountName,Role Player,人数,人数
 CustomStremerMode,Hide Server Url,サーバーURLを非表示にする,直播模式
@@ -151,8 +146,11 @@ SettingOptionOff,Off,オフ,关闭
 SettingPressTabForMore,Press Tab For More,Tabを押して詳細を表示,按Tab键查看更多...
 ErrorHostNoVersion,Your host does not have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストに<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>が入っていません。,房主没有安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组
 ErrorHostChangeVersion,The host has a different version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストの<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のバージョンが違います。,房主安装的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组版本不同
+ErrorHostGuidMatches,The host uses a different <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> dll file.,ホストの使用<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のdllファイルが異なります。
 ErrorClientNoVersion,You don't have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0}.,{0}に<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>が入っていません。,{0}未安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组
 ErrorClientChangeVersion,The version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0} is wrong.,{0}の<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のバージョンが違います。,{0}安装的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组版本不同
+ErrorClientGuidMatches,{0} uses a different <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> dll file.,{0}の使用<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のdllファイルが異なります。
+KickReasonHostNoVersion,The host has no or a different version of <color=#ffa500>SNR</color>\nYou will be kicked in {0}s,ホストが<color=#ffa500>SNR</color>を導入していない、又はバージョンが違う為、\nあと{0}秒でキックされます。
 IsSpecialModeOnAndVanillaKickOff,If <color=#2792c3>[Kick non-PCs]</color> is disabled， the\nmap will be selected for <color=#cd5c5c>MiraHQ</color>.\nIf you want to use<color=#a67646>Agartha</color>\nEnable <color=#2792c3>[Kick non-PCs]</color>.,<color=#2792c3>「PC以外をキックする」</color>が無効である場合、\nマップは<color=#cd5c5c>MiraHQ</color>に選択されます。\n<color=#a67646>Agartha</color>を使用したい場合は、\n<color=#2792c3>「PC以外をキックする」</color>を有効にしてください。,如果 “<color=#2792c3>踢出非电脑端玩家</color>”设置为否，\n地图将变为<color=#cd5c5c>米拉总部</color>。\n要启用<color=#a67646>雅各泰</color>地图，\n需要将“<color=#2792c3>踢出非电脑端玩家</color>”选项设置为是。
 RamdomMapSetting,RandomMap,ランダムマップ,随机地图
 RMSkeldSetting,Skeld,スケルドが有効,可随机游玩骷髅舰(Skeld)
@@ -207,6 +205,7 @@ RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
 CanGhostSeeRole,,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业
 OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる,只有死亡的内鬼阵营玩家可以确认所有玩家的职业
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务
+ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置
@@ -293,8 +292,8 @@ FinalStatusKunaiKill,Kunai,クナイ,苦无
 FinalStatusSamuraiKill,Farewell.,切り捨て御免,一刀两断
 FinalStatusChiefMisSet,Misnaming,指名誤爆,背刺
 FinalStatusFalseChargesFalseCharge,Self-determination for injustice,冤罪自決,冤案
-FinalStatusSelfBomberBomb,Bomb victim,自爆巻き添え,恐袭
-FinalStatusBySelfBomberBomb,Suicide bomb attack,自爆特攻,自爆
+FinalStatusSelfBomberBomb,Suicide bomb attack,自爆特攻,自爆
+FinalStatusBySelfBomberBomb,Bomb victim,自爆巻き添え,恐袭
 FinalStatusLadderDeath,Death by fall,転落死,坠落
 FinalStatusNunDeath,Death by fall from Nun,ぬーん転落死,鬼上身
 FinalStatusSpelunkerCommsElecDeath,CommsElec death,停電通信死,摔死
@@ -314,6 +313,8 @@ FinalStatusOverKillerOverKill,Over Kill!,オーバーキル!,肢解
 FinalStatusSuicideWisherSelfDeath,Suicide,自殺,自杀
 FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺
 FinalStatusRevenge,Revenge,復讐,仇杀
+FinalStatusHitmanKill,Mission accomplished.,任務遂行
+FinalStatusHitmanDead,Disposition.,処分
 
 # Sabotages
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
@@ -518,6 +519,8 @@ EvilGuesserTitle1,Guess the position of the camp other than Impostor.,インポ�
 EvilGuesserTitle2,Guess the position of the outsider,人外の役職を当てよう,在会议上猜测他人的身份
 EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,邪恶的赌怪能否在一次会议中多次猜测
 EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,邪恶的赌怪最大可猜测次数
+NextPage,Next Page,次のページへ
+PreviousPage,Previous Page,前のページへ
 VultureName,Vulture,ヴァルチャー,秃鹫
 VultureTitle1,Let's eat a corpse.,死体を食べよう,吞噬尸体获得胜利
 VultureCooldownSetting,Corpse cooldown,死体クールダウン,秃鹫技能冷却
@@ -591,6 +594,7 @@ SelfBomberTitle1,Lets' Self Bomb!,自爆をしよう,我的任务 完成啦！
 SelfBomberDescription,Shapeshifting causes self-destruction.\nIf you self-destruct you will die involving everyone around you.,シェイプシフトをすることで、自爆します。\n自爆をすると周りの人を巻き込んで死亡します。,恐怖分子属于内鬼阵营，可以自爆。\n若恐怖分子自爆，自爆者与周围一定范围的玩家都会死亡。
 SelfBomberScopeSetting,Range (radius),範囲(半径),爆炸范围（半径）
 SelfBomberButtonName,Self Bomb,自爆,自爆
+SelfBomberBombCoolTimeSettting,Ability of selfbomb cooldown time.,自爆能力のクールタイム
 GodName,God,神,神
 GodTitle1,You Are God!!,あなたは神だ,新世界的卡密！
 GodDescription,If you survive to the end you take away the win. Everyone's position is known.,最後まで生き残っていると、勝利を奪い取ります。全員の役職がわかります。,神存活到游戏结束则神单独获胜。\n所有玩家的职业对神可见。
@@ -1172,6 +1176,11 @@ NameIncludeMod,You cannot make a room public contains mod in your name.,modが�
 CannotUseRenameMessage,Cannot rename.\nThe /rename command can only be used on\navailable only when hosted.,名前を変更することができません。\n/renameコマンドは\nホスト時のみ使用可能です。,无法重命名。\n/rename命令仅房主可用。
 betatext1,\nThis is a beta version! Watch out for bugs!,\nベータ版です! バグには注意してください!,这是测试版本。请注意是否有bug。
 betatext2,\n~Information for developers~,\n～開発者用の情報～,\n~开发者信息~
+ExitExperimentEsc,Exit from the experiment with Esc.,Escで実験から抜ける
+Experimenting...,Experimenting...,実験中...
+StartExperiment,Start experiment,実験を開始する
+Processing,Processing...,処理中...
+SuccessfulExperiment,Successful Experiment,実験成功
 
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库
