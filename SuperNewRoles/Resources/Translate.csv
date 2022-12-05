@@ -91,6 +91,10 @@ colorLightOrange,LightOrange,ライトオレンジ
 colorSprout,Sprout,新芽
 colorNega,Nega,ネガ
 colorGold,Gold,金色
+colorWineRed,WineRed,ワインレッド
+colorCrazyRed,CrazyRed,クレイジーレッド
+colorTokiwaGreen,TokiwaGreen,常磐緑
+colorPosi,Posi,ポジ
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -201,6 +205,7 @@ RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
 CanGhostSeeRole,,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业
 OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる,只有死亡的内鬼阵营玩家可以确认所有玩家的职业
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务
+ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置
