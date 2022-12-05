@@ -33,7 +33,7 @@ class Sheriff
         if ((roledata == TeamRoleType.Impostor) || Target.IsRole(RoleId.HauntedWolf)) return CustomOptionHolder.SheriffCanKillImpostor.GetBool();//インポスター、狼付きは設定がimp設定が有効な時切れる
         if (RoleClass.Sheriff.IsLoversKill && Target.IsLovers()) return true;//ラバーズ
         if (CustomOptionHolder.SheriffQuarreledKill.GetBool() && Target.IsQuarreled()) return true;//クラード
-        if (RoleClass.Sheriff.IsMadRoleKill && Target.IsMadRoles()) return true;
+        if (RoleClass.Sheriff.IsMadRoleKill && (Target.IsMadRoles() || Target.IsRole(RoleId.MadKiller))) return true;
         if (CustomOptionHolder.SheriffFriendsRoleKill.GetBool() && Target.IsFriendRoles()) return true;
         if (RoleClass.Sheriff.IsNeutralKill && Target.IsNeutral()) return true;
         return false;
@@ -42,7 +42,7 @@ class Sheriff
     {
         var roledata = CountChanger.GetRoleType(Target);
         return (roledata == TeamRoleType.Impostor)
-        || (Target.IsMadRoles() && RoleClass.Chief.IsMadRoleKill)
+        || ((Target.IsMadRoles() || Target.IsRole(RoleId.MadKiller)) && RoleClass.Chief.IsMadRoleKill)
         || (Target.IsFriendRoles() && RoleClass.Chief.IsMadRoleKill)
         || (Target.IsNeutral() && RoleClass.Chief.IsNeutralKill)
         || (RoleClass.Chief.IsLoversKill && Target.IsLovers()) || Target.IsRole(RoleId.HauntedWolf);
@@ -51,7 +51,7 @@ class Sheriff
     {
         var roledata = CountChanger.GetRoleType(Target);
         return (roledata == TeamRoleType.Impostor)
-        || (Target.IsMadRoles() && RoleClass.RemoteSheriff.IsMadRoleKill)
+        || ((Target.IsMadRoles() || Target.IsRole(RoleId.MadKiller)) && RoleClass.RemoteSheriff.IsMadRoleKill)
         || (Target.IsFriendRoles() && RoleClass.RemoteSheriff.IsMadRoleKill)
         || (Target.IsNeutral() && RoleClass.RemoteSheriff.IsNeutralKill)
         || (RoleClass.RemoteSheriff.IsLoversKill && Target.IsLovers())
