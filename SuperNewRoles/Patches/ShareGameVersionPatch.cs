@@ -117,37 +117,67 @@ class ShareGameVersion
                     blockStart = true;
                 }
             }
-            if (ConfigRoles.IsVersionErrorView.Value)
+            if (!AmongUsClient.Instance.AmHost)
             {
-                if (!AmongUsClient.Instance.AmHost)
+                if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
                 {
-                    if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
+                    message += $"\n{ModTranslation.GetString("ErrorHostNoVersion")}\n";
+                    blockStart = true;
+                }
+                else
+                {
+                    var client = AmongUsClient.Instance.GetHost();
+                    PlayerVersion PV = VersionPlayers[client.Id];
+                    int diff = SuperNewRolesPlugin.ThisVersion.CompareTo(PV.version);
+                    if (diff > 0)
                     {
-                        message += $"\n{ModTranslation.GetString("ErrorHostNoVersion")}\n";
+                        message += $"{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
                         blockStart = true;
+                    }
+                    else if (diff < 0)
+                    {
+                        message += $"{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
+                        blockStart = true;
+                    }
+                    else if (!PV.GuidMatches())
+                    { // version presumably matches, check if Guid matches
+                        message += $"{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
+                        blockStart = true;
+                    }
+                }
+                //TheOtherRoles\Patches\GameStartManagerPatch.cs より
+                if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId) || SuperNewRolesPlugin.ThisVersion.CompareTo(VersionPlayers[AmongUsClient.Instance.HostId].version) != 0)
+                {
+                    kickingTimer += Time.deltaTime;
+                    if (kickingTimer > 10)
+                    {
+                        kickingTimer = 0;
+                        AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
+                        SceneChanger.ChangeScene("MainMenu");
+                    }
+
+                    message += String.Format(ModTranslation.GetString("KickReasonHostNoVersion"), Math.Round(10 - kickingTimer));
+                    __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
+                }
+                else
+                {
+                    __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
+                    if (__instance.startState != GameStartManager.StartingStates.Countdown && RPCTimer <= 0)
+                    {
+                        message += String.Empty;
                     }
                     else
                     {
-                        var client = AmongUsClient.Instance.GetHost();
-                        PlayerVersion PV = VersionPlayers[client.Id];
-                        int diff = SuperNewRolesPlugin.ThisVersion.CompareTo(PV.version);
-                        if (diff > 0)
+                        message += $"Starting in {(int)RPCTimer + 1}";
+                        if (RPCTimer <= 0)
                         {
-                            message += $"{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
-                            blockStart = true;
-                        }
-                        else if (diff < 0)
-                        {
-                            message += $"{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
-                            blockStart = true;
-                        }
-                        else if (!PV.GuidMatches())
-                        { // version presumably matches, check if Guid matches
-                            message += $"{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
-                            blockStart = true;
+                            message = String.Empty;
                         }
                     }
                 }
+            }
+            if (ConfigRoles.IsVersionErrorView.Value)
+            {
                 foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.ToArray())
                 {
                     if (client.Id != AmongUsClient.Instance.HostId)
@@ -176,43 +206,6 @@ class ShareGameVersion
                                 message += $"{string.Format(ModTranslation.GetString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n";
                                 blockStart = true;
                             }
-                        }
-                    }
-                }
-            }
-            if (!AmongUsClient.Instance.AmHost)
-            {//TheOtherRoles\Patches\GameStartManagerPatch.cs より
-                if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)|| SuperNewRolesPlugin.ThisVersion.CompareTo(VersionPlayers[AmongUsClient.Instance.HostId].version) != 0)
-                {
-                    kickingTimer += Time.deltaTime;
-                    if (kickingTimer > 10)
-                    {
-                        kickingTimer = 0;
-                        AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
-                        SceneChanger.ChangeScene("MainMenu");
-                    }
-
-                    message += String.Format(ModTranslation.GetString("KickReasonHostNoVersion"), Math.Round(10 - kickingTimer));
-                    __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
-                }
-                else if (blockStart)
-                {
-                    message += $"<color=#FF0000FF>Players With Different Versions:\n</color>" + message;
-                    __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
-                }
-                else
-                {
-                    __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
-                    if (__instance.startState != GameStartManager.StartingStates.Countdown && RPCTimer <= 0)
-                    {
-                        message += String.Empty;
-                    }
-                    else
-                    {
-                        message += $"Starting in {(int)RPCTimer + 1}";
-                        if (RPCTimer <= 0)
-                        {
-                            message = String.Empty;
                         }
                     }
                 }
