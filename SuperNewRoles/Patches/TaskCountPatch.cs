@@ -14,7 +14,7 @@ class TaskCount
     {
         static void Postfix(NormalPlayerTask __instance, TaskTypes taskType, byte[] consoleIds)
         {
-            if (taskType != TaskTypes.FixWiring || !MapOption.WireTaskIsRandom) return;
+            if (taskType != TaskTypes.FixWiring || !ModeHandler.IsMode(ModeId.Default) || !MapOption.WireTaskIsRandom) return;
             List<Console> orgList = MapUtilities.CachedShipStatus.AllConsoles.Where((global::Console t) => t.TaskTypes.Contains(taskType)).ToList<global::Console>();
             List<Console> list = new(orgList);
 
