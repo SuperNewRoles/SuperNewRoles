@@ -141,12 +141,12 @@ class ShareGameVersion
                     }
                     else if (!PV.GuidMatches())
                     { // version presumably matches, check if Guid matches
-                        message += $"{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
+                        message += $"{ModTranslation.GetString("ErrorHostGuidMatches")} (v{VersionPlayers[client.Id].version})\n (GUID:{VersionPlayers[client.Id].guid})\n";
                         blockStart = true;
                     }
                 }
                 //TheOtherRoles\Patches\GameStartManagerPatch.cs より
-                if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId) || SuperNewRolesPlugin.ThisVersion.CompareTo(VersionPlayers[AmongUsClient.Instance.HostId].version) != 0)
+                if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId) || SuperNewRolesPlugin.ThisVersion.CompareTo(VersionPlayers[AmongUsClient.Instance.HostId].version) != 0 || !VersionPlayers[AmongUsClient.Instance.HostId].GuidMatches())
                 {
                     kickingTimer += Time.deltaTime;
                     if (kickingTimer > 10)
@@ -203,7 +203,7 @@ class ShareGameVersion
                             }
                             else if (!PV.GuidMatches())
                             { // version presumably matches, check if Guid matches
-                                message += $"{string.Format(ModTranslation.GetString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n";
+                                message += $"{string.Format(ModTranslation.GetString("ErrorClientGuidMatches"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n (GUID:{VersionPlayers[client.Id].guid})\n";
                                 blockStart = true;
                             }
                         }
