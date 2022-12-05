@@ -136,7 +136,7 @@ class ShareGameVersion
                     }
                     else if (diff < 0)
                     {
-                        message += $"{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
+                        message += $"\n{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
                         blockStart = true;
                     }
                     else if (!PV.GuidMatches())
