@@ -141,7 +141,7 @@ class ShareGameVersion
                     }
                     else if (!PV.GuidMatches())
                     { // version presumably matches, check if Guid matches
-                        message += $"{ModTranslation.GetString("ErrorHostGuidMatches")} (v{VersionPlayers[client.Id].version})\n (GUID:{VersionPlayers[client.Id].guid})\n";
+                        message += $"{ModTranslation.GetString("ErrorHostGuidMatches")} (v{VersionPlayers[client.Id].version})\n";
                         blockStart = true;
                     }
                 }
@@ -203,7 +203,7 @@ class ShareGameVersion
                             }
                             else if (!PV.GuidMatches())
                             { // version presumably matches, check if Guid matches
-                                message += $"{string.Format(ModTranslation.GetString("ErrorClientGuidMatches"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n (GUID:{VersionPlayers[client.Id].guid})\n";
+                                message += $"{string.Format(ModTranslation.GetString("ErrorClientGuidMatches"), client.Character.Data.PlayerName)} \n";
                                 blockStart = true;
                             }
                         }
