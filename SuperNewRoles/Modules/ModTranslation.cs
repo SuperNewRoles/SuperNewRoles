@@ -41,25 +41,34 @@ public static class ModTranslation
         //csvを開く
         StreamReader sr = new(fileName);
 
+        var i = 0;
         //1行ずつ処理
         while (!sr.EndOfStream)
         {
-            // 行ごとの文字列
-            string line = sr.ReadLine();
-
-            // 行が空白 戦闘が*なら次の行に
-            if (line == "" || line[0] == '#') continue;
-
-            //カンマで配列の要素として分ける
-            string[] values = line.Split(',');
-
-            // 配列から辞書に格納する
-            List<string> valueslist = new();
-            foreach (string vl in values)
+            try
             {
-                valueslist.Add(vl.Replace("\\n", "\n").Replace("，", ","));
+                // 行ごとの文字列
+                string line = sr.ReadLine();
+
+                // 行が空白 戦闘が*なら次の行に
+                if (line == "" || line[0] == '#') continue;
+
+                //カンマで配列の要素として分ける
+                string[] values = line.Split(',');
+
+                // 配列から辞書に格納する
+                List<string> valuesList = new();
+                foreach (string vl in values)
+                {
+                    valuesList.Add(vl.Replace("\\n", "\n").Replace("，", ","));
+                }
+                dictionary.Add(values[0], valuesList.ToArray());
+                i++;
             }
-            dictionary.Add(values[0], valueslist.ToArray());
+            catch
+            {
+                Logger.Error($"Error: Loading Translate.csv Line:{i}", "ModTranslation");
+            }
         }
     }
 }
