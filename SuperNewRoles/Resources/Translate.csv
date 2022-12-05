@@ -514,6 +514,8 @@ EvilGuesserTitle1,Guess the position of the camp other than Impostor.,インポ�
 EvilGuesserTitle2,Guess the position of the outsider,人外の役職を当てよう,在会议上猜测他人的身份
 EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,邪恶的赌怪能否在一次会议中多次猜测
 EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,邪恶的赌怪最大可猜测次数
+NextPage,Next Page,次のページへ
+PreviousPage,Previous Page,前のページへ
 VultureName,Vulture,ヴァルチャー,秃鹫
 VultureTitle1,Let's eat a corpse.,死体を食べよう,吞噬尸体获得胜利
 VultureCooldownSetting,Corpse cooldown,死体クールダウン,秃鹫技能冷却
@@ -1169,6 +1171,11 @@ NameIncludeMod,You cannot make a room public contains mod in your name.,modが�
 CannotUseRenameMessage,Cannot rename.\nThe /rename command can only be used on\navailable only when hosted.,名前を変更することができません。\n/renameコマンドは\nホスト時のみ使用可能です。,无法重命名。\n/rename命令仅房主可用。
 betatext1,\nThis is a beta version! Watch out for bugs!,\nベータ版です! バグには注意してください!,这是测试版本。请注意是否有bug。
 betatext2,\n~Information for developers~,\n～開発者用の情報～,\n~开发者信息~
+ExitExperimentEsc,Exit from the experiment with Esc.,Escで実験から抜ける
+Experimenting...,Experimenting...,実験中...
+StartExperiment,Start experiment,実験を開始する
+Processing,Processing...,処理中...
+SuccessfulExperiment,Successful Experiment,実験成功
 
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库
