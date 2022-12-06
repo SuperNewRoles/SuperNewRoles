@@ -279,7 +279,7 @@ public static class ModHelpers
                 }
             }
         }
-        if (target.IsRole(RoleId.Squid) && !killer.IsRole(RoleId.OverKiller) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
+        if (target.IsRole(RoleId.Squid) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
         {
             if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.SquidGuard, killer))
             {

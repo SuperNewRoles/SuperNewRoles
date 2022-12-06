@@ -383,7 +383,7 @@ class KillButtonDoClickPatch
                 Kunoichi.KillButtonClick();
                 return false;
             }
-            if (!(__instance.currentTarget.IsRole(RoleId.Bait) || __instance.currentTarget.IsRole(RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
+            if (!__instance.currentTarget.IsRole(RoleId.Bait, RoleId.NiceRedRidingHood, RoleId.Squid) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
             {
                 PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer);
                 RoleClass.Vampire.target = __instance.currentTarget;
@@ -1151,6 +1151,7 @@ class ReportDeadBodyPatch
         {
             Roles.Impostor.Camouflager.ResetCamouflage();
         }
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Squid)) Squid.ResetCooldown();
         if (ModeHandler.IsMode(ModeId.Default))
         {
             if (__instance.IsRole(RoleId.EvilButtoner, RoleId.NiceButtoner) && target != null && target.PlayerId == __instance.PlayerId)

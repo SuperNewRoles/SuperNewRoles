@@ -193,7 +193,7 @@ public class Squid
                     rend.color = tmp;
                     rend.transform.position = FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.transform.position + defaultPos;
                 }
-                if ((p == 1f || RoleClass.IsMeeting) && rend != null && rend.gameObject != null) UnityEngine.Object.Destroy(rend.gameObject);
+                if (p == 1f && rend != null && rend.gameObject != null) UnityEngine.Object.Destroy(rend.gameObject);
             })));
         }
         Vector3 SetPosition(string name)
