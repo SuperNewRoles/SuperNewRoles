@@ -91,6 +91,10 @@ colorLightOrange,LightOrange,ライトオレンジ
 colorSprout,Sprout,新芽
 colorNega,Nega,ネガ
 colorGold,Gold,金色
+colorWineRed,WineRed,ワインレッド
+colorCrazyRed,CrazyRed,クレイジーレッド
+colorTokiwaGreen,TokiwaGreen,常磐緑
+colorPosi,Posi,ポジ
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -207,6 +211,7 @@ RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
 CanGhostSeeRole,,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业
 OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる,只有死亡的内鬼阵营玩家可以确认所有玩家的职业
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务
+ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置
@@ -408,6 +413,7 @@ SheriffIsKillFriendsRoleSetting,Can kill jackal friend roles,ジャッカルフ�
 SheriffIsKillQuarreledSetting,Can kill quarreleds,クラードをキルできる,可以击杀福音天使
 SheriffYes,Yes,できる,是
 SheriffNo,No,できない,否
+CannotUse,Number of kills remaining: 0,キル残り回数:0
 SheriffMaxKillCountSetting,Maximum number of kills,最大キル数,最大可击杀次数
 SheriffKillButtonName,Kill,キル,击杀
 SheriffNumTextName,{0} shots remaining.,残り{0}発,还剩{0} 次
@@ -1148,6 +1154,9 @@ SquidNotKillTimeSetting,Time when no kills can be made on successful counters,�
 SquidDownVisionSetting,Field of vision when vision is deprived,視界が奪われたときの視野
 SquidObstructionTimeSetting,Time to take away the view,視界を奪う時間
 SquidButtonName,Vigilance,警戒
+
+#ConfigRoles
+IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！

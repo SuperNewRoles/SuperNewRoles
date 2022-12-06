@@ -1255,7 +1255,7 @@ static class HudManagerStartPatch
                     }
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && ModeHandler.IsMode(ModeId.Default) && Sheriff.IsSheriffButton(PlayerControl.LocalPlayer); },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Sheriff && ModeHandler.IsMode(ModeId.Default); },
             () =>
             {
                 float killCount = 0f;
@@ -1270,7 +1270,8 @@ static class HudManagerStartPatch
                     killCount = RoleClass.Sheriff.KillMaxCount;
                     flag = PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
                 }
-                sheriffNumShotsText.text = killCount > 0 ? string.Format(ModTranslation.GetString("SheriffNumTextName"), killCount) : "";
+                if (!Sheriff.IsSheriffButton(PlayerControl.LocalPlayer)) flag = false;
+                sheriffNumShotsText.text = killCount > 0 ? string.Format(ModTranslation.GetString("SheriffNumTextName"), killCount) : ModTranslation.GetString("CannotUse");
                 return flag;
             },
             () => { Sheriff.EndMeeting(); },
