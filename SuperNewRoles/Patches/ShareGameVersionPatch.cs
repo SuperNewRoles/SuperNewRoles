@@ -218,8 +218,9 @@ class ShareGameVersion
                 if (blockStart)
                 {
                     message += $"{ModTranslation.GetString("ErrorClientCanNotPley")} \n";
-                    __instance.StartButton.color = __instance.startLabelText.color = Palette.DisabledClear;
+                    __instance.StartButton.enabled = __instance.startLabelText.enabled = false;
                 }
+                else __instance.StartButton.enabled = __instance.startLabelText.enabled = true;
             }
             if (blockStart || hostModeInVanilla)
             {
