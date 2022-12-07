@@ -15,7 +15,8 @@ public static class PlayerCountChange
 {
     public static void Prefix(GameStartManager __instance)
     {
-        __instance.MinPlayers = 1;
+        if (ShareGameVersion.GameStartManagerUpdatePatch.LastBlockStart ) __instance.MinPlayers = __instance.LastPlayerCount + 1;
+        else __instance.MinPlayers = 1;
     }
 }
 class ShareGameVersion
