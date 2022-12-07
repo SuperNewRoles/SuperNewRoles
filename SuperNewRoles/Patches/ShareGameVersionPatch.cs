@@ -93,6 +93,7 @@ class ShareGameVersion
             }
             string message = "";
             bool blockStart = false;
+            bool hostModeInVanilla = false;
             if (AmongUsClient.Instance.AmHost)
             {
                 if (CustomOptionHolder.DisconnectNotPCOption.GetBool())
@@ -176,7 +177,7 @@ class ShareGameVersion
                     }
                 }
             }
-            if (ConfigRoles.IsVersionErrorView.Value)
+            if (ConfigRoles.IsVersionErrorView.Value || AmongUsClient.Instance.AmHost)
             {
                 foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.ToArray())
                 {
@@ -184,8 +185,10 @@ class ShareGameVersion
                     {
                         if (!VersionPlayers.ContainsKey(client.Id))
                         {
-                            message += string.Format(ModTranslation.GetString("ErrorClientNoVersion"), client.PlayerName) + "\n";
-                            blockStart = true;
+                            if (ConfigRoles.IsVersionErrorView.Value || ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false))
+                                message += string.Format(ModTranslation.GetString("ErrorClientNoVersion"), client.PlayerName) + "\n";
+                            if (ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false)) blockStart = true;
+                            else hostModeInVanilla = true;
                         }
                         else
                         {
@@ -210,7 +213,15 @@ class ShareGameVersion
                     }
                 }
             }
-            if (blockStart)
+            if (AmongUsClient.Instance.AmHost)
+            {
+                if (blockStart)
+                {
+                    message += $"{ModTranslation.GetString("ErrorClientCanNotPley")} \n";
+                    __instance.StartButton.color = __instance.startLabelText.color = Palette.DisabledClear;
+                }
+            }
+            if (blockStart || hostModeInVanilla)
             {
                 __instance.GameStartText.text = message;
                 __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
