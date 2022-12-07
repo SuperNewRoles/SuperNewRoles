@@ -681,7 +681,9 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.truelover && !RoleClass.Truelover.IsCreate; },
             () =>
             {
-                return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                var Target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Truelover.color);
+                return PlayerControl.LocalPlayer.CanMove && Target;
             },
             () => { trueloverLoveButton.Timer = 0f; trueloverLoveButton.MaxTimer = 0f; },
             RoleClass.Truelover.GetButtonSprite(),
@@ -1818,7 +1820,9 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Shielder; },
             () =>
             {
-                return PlayerControl.LocalPlayer.CanMove;
+                var Target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Shielder.color);
+                return PlayerControl.LocalPlayer.CanMove && Target;
             },
             () =>
             {
@@ -2844,7 +2848,9 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Painter && RoleClass.Painter.CurrentTarget == null; },
             () =>
             {
-                return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                var Target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Painter.color);
+                return PlayerControl.LocalPlayer.CanMove && Target;
             },
             () =>
             {
