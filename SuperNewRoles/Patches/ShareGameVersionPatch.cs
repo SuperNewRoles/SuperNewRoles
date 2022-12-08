@@ -132,7 +132,7 @@ class ShareGameVersion
                     int diff = SuperNewRolesPlugin.ThisVersion.CompareTo(PV.version);
                     if (diff > 0)
                     {
-                        message += $"{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
+                        message += $"\n{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
                         blockStart = true;
                     }
                     else if (diff < 0)
@@ -142,7 +142,7 @@ class ShareGameVersion
                     }
                     else if (!PV.GuidMatches())
                     { // version presumably matches, check if Guid matches
-                        message += $"{ModTranslation.GetString("ErrorHostGuidMatches")} (v{VersionPlayers[client.Id].version})\n";
+                        message += $"\n{ModTranslation.GetString("ErrorHostGuidMatches")} (v{VersionPlayers[client.Id].version})\n";
                         blockStart = true;
                     }
                 }
@@ -157,24 +157,8 @@ class ShareGameVersion
                         SceneChanger.ChangeScene("MainMenu");
                     }
 
-                    message += $"{String.Format(ModTranslation.GetString("KickReasonHostNoVersion"), Math.Round(10 - kickingTimer))}\n";
+                    message += $"\n{String.Format(ModTranslation.GetString("KickReasonHostNoVersion"), Math.Round(10 - kickingTimer))}\n";
                     __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
-                }
-                else
-                {
-                    __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
-                    if (__instance.startState != GameStartManager.StartingStates.Countdown && RPCTimer <= 0)
-                    {
-                        message += String.Empty;
-                    }
-                    else
-                    {
-                        message += $"Starting in {(int)RPCTimer + 1}";
-                        if (RPCTimer <= 0)
-                        {
-                            message = String.Empty;
-                        }
-                    }
                 }
             }
             if (ConfigRoles.IsVersionErrorView.Value || AmongUsClient.Instance.AmHost)
@@ -186,7 +170,7 @@ class ShareGameVersion
                         if (!VersionPlayers.ContainsKey(client.Id))
                         {
                             if (ConfigRoles.IsVersionErrorView.Value || ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false))
-                                message += string.Format(ModTranslation.GetString("ErrorClientNoVersion"), client.PlayerName) + "\n";
+                                message += $"{string.Format(ModTranslation.GetString("ErrorClientNoVersion"), client.PlayerName)} \n";
                             if (ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false)) blockStart = true;
                             else hostModeInVanilla = true;
                         }
@@ -221,7 +205,7 @@ class ShareGameVersion
                 }
                 else
                 {
-                    message += $"{ModTranslation.GetString("ErrorClientCanNotPley")} \n";
+                    message = $"{ModTranslation.GetString("ErrorClientCanNotPley")} \n" + message;
                     __instance.ResetStartState();
                     if (__instance.StartButton.enabled != false) __instance.StartButton.enabled = __instance.startLabelText.enabled = false;
                 }
