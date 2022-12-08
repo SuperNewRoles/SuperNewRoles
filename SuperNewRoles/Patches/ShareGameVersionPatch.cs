@@ -223,7 +223,7 @@ class ShareGameVersion
                 {
                     message += $"{ModTranslation.GetString("ErrorClientCanNotPley")} \n";
                     __instance.ResetStartState();
-                    __instance.StartButton.enabled = __instance.startLabelText.enabled = false;
+                    if (__instance.StartButton.enabled == true) __instance.StartButton.enabled = __instance.startLabelText.enabled = false;
                 }
             }
             if (blockStart || hostModeInVanilla)
