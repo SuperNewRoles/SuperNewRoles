@@ -446,7 +446,7 @@ SidekickTitle1,Help Jackal,ジャッカルを助けよう,帮助豺狼获得胜�
 TeleporterName,Teleporter,テレポーター,邪恶的传送师
 TeleporterTitle1,Let's get everyone together,みんなを集めよう,把所有人传送到一起
 TeleporterTitle2,Let's get everyone away from the corpse position.,みんなを死体位置から遠ざけよう,利用传送让他人远离尸体
-TeleporterCooldownSetting,Teleporter Sabotage Kill Cooldown,テレポーターサボタージュのキルクールダウン,邪恶的传送师在紧急破坏发生时的击杀冷却
+TeleporterCooldownSetting,Teleporter Sabotage Kill Cooldown,テレポートのクールダウン,正义的传送师传送冷却
 TeleporterTeleportTimeSetting,Time to be teleported,テレポートされるまでの時間,邪恶的传送师技能冷却
 TeleporterTeleportButton,Teleport,テレポート！,传送
 TeleporterTPTextMessage,The teleporter teleported you to {0}!,テレポーターが{0}にテレポートさせた!,传送师把你传送到{0}
