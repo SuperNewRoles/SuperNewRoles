@@ -171,7 +171,11 @@ class ShareGameVersion
                         {
                             if (ConfigRoles.IsVersionErrorView.Value || ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false))
                                 message += $"{string.Format(ModTranslation.GetString("ErrorClientNoVersion"), client.PlayerName)} \n";
+
+                            // HostModeでないなら、バニラ参加者がいる場合開始不可能にする。
                             if (ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false)) blockStart = true;
+                            /*  そうではない(HostMode)ならば、
+                                vanilla参加者がいて且つエラーを表示する設定が有効である場合、Messageだけを表示できるようにする。*/
                             else hostModeInVanilla = true;
                         }
                         else
@@ -201,12 +205,16 @@ class ShareGameVersion
             {
                 if (!blockStart)
                 {
+                    // 参加者の導入状況に問題が無い時、開始ボタンと開始のテキストを表示する。(アップデート処理の負荷を下げる為、ifを使用)
                     if (__instance.StartButton.enabled != true) __instance.StartButton.enabled = __instance.startLabelText.enabled = true;
                 }
                 else
                 {
                     message = $"{ModTranslation.GetString("ErrorClientCanNotPley")} \n" + message;
+                    //開始ボタンを押せないようにする。
                     __instance.ResetStartState();
+
+                    // 参加者の導入状況に問題がある時、開始ボタンと開始のテキストを非表示にする。(アップデート処理の負荷を下げる為、ifを使用)
                     if (__instance.StartButton.enabled != false) __instance.StartButton.enabled = __instance.startLabelText.enabled = false;
                 }
             }
