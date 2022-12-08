@@ -158,7 +158,7 @@ class ShareGameVersion
                         SceneChanger.ChangeScene("MainMenu");
                     }
 
-                    message += String.Format(ModTranslation.GetString("KickReasonHostNoVersion"), Math.Round(10 - kickingTimer));
+                    message += $"{String.Format(ModTranslation.GetString("KickReasonHostNoVersion"), Math.Round(10 - kickingTimer))}\n";
                     __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
                 }
                 else
