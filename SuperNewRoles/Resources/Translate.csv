@@ -309,7 +309,7 @@ FinalStatusSuicideWisherSelfDeath,Suicide,自殺,自杀
 FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺
 FinalStatusRevenge,Revenge,復讐,仇杀
 FinalStatusHitmanKill,Mission accomplished.,任務遂行,遇刺
-FinalStatusHitmanDead,Disposition.,沉江
+FinalStatusHitmanDead,Disposition.,処分,沉江
 
 # Sabotages
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
