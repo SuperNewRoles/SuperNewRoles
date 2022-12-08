@@ -15,7 +15,7 @@ public static class PlayerCountChange
 {
     public static void Prefix(GameStartManager __instance)
     {
-        if (ShareGameVersion.GameStartManagerUpdatePatch.LastBlockStart ) __instance.MinPlayers = __instance.LastPlayerCount + 1;
+        if (ShareGameVersion.GameStartManagerUpdatePatch.LastBlockStart) __instance.MinPlayers = __instance.LastPlayerCount + 1;
         else __instance.MinPlayers = 1;
     }
 }
@@ -216,12 +216,15 @@ class ShareGameVersion
             }
             if (AmongUsClient.Instance.AmHost)
             {
-                if (blockStart)
+                if (!blockStart)
+                {
+                    if (__instance.StartButton.enabled == false) __instance.StartButton.enabled = __instance.startLabelText.enabled = true;
+                }
+                else
                 {
                     message += $"{ModTranslation.GetString("ErrorClientCanNotPley")} \n";
                     __instance.StartButton.enabled = __instance.startLabelText.enabled = false;
                 }
-                else __instance.StartButton.enabled = __instance.startLabelText.enabled = true;
             }
             if (blockStart || hostModeInVanilla)
             {
