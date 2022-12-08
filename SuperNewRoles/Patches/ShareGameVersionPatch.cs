@@ -217,13 +217,13 @@ class ShareGameVersion
             {
                 if (!blockStart)
                 {
-                    if (__instance.StartButton.enabled == false) __instance.StartButton.enabled = __instance.startLabelText.enabled = true;
+                    if (__instance.StartButton.enabled != true) __instance.StartButton.enabled = __instance.startLabelText.enabled = true;
                 }
                 else
                 {
                     message += $"{ModTranslation.GetString("ErrorClientCanNotPley")} \n";
                     __instance.ResetStartState();
-                    if (__instance.StartButton.enabled == true) __instance.StartButton.enabled = __instance.startLabelText.enabled = false;
+                    if (__instance.StartButton.enabled != false) __instance.StartButton.enabled = __instance.startLabelText.enabled = false;
                 }
             }
             if (blockStart || hostModeInVanilla)
