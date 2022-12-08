@@ -198,6 +198,8 @@ static class HudManagerStartPatch
                         PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
                     }
                 }
+                var Target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Pavlovsdogs.color);
                 return Roles.Neutral.Pavlovsdogs.SetTarget(false) && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
@@ -242,6 +244,8 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pavlovsowner && RoleClass.Pavlovsowner.CanCreateDog; },
             () =>
             {
+                var Target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Pavlovsdogs.color);
                 return PlayerControl.LocalPlayer.CanMove && Roles.Neutral.Pavlovsdogs.SetTarget();
             },
             () =>
@@ -646,7 +650,9 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FalseCharges; },
             () =>
             {
-                return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                var Target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.FalseCharges.color);
+                return PlayerControl.LocalPlayer.CanMove && Target;
             },
             () =>
             {
@@ -1579,7 +1585,9 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return Demon.IsButton(); },
             () =>
             {
-                return SetTarget(untarget: Demon.GetUntarget()) && PlayerControl.LocalPlayer.CanMove;
+                var Target = SetTarget(untarget: Demon.GetUntarget());
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Demon.color);
+                return PlayerControl.LocalPlayer.CanMove && Target;
             },
             () =>
             {
@@ -1613,7 +1621,9 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return Arsonist.IsButton(); },
             () =>
             {
-                return SetTarget(untarget: Arsonist.GetUntarget()) && PlayerControl.LocalPlayer.CanMove;
+                var Target = SetTarget(untarget: Arsonist.GetUntarget());
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Arsonist.color);
+                return PlayerControl.LocalPlayer.CanMove && Target;
             },
             () =>
             {
@@ -2572,7 +2582,9 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Hitman; },
             () =>
             {
-                return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                var Target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Hitman.color);
+                return PlayerControl.LocalPlayer.CanMove && Target;
             },
             () =>
             {
@@ -2816,7 +2828,9 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.PartTimer && !RoleClass.PartTimer.IsLocalOn; },
             () =>
             {
-                return PlayerControl.LocalPlayer.CanMove && SetTarget();
+                var Target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.PartTimer.color);
+                return PlayerControl.LocalPlayer.CanMove && Target;
             },
             () =>
             {
