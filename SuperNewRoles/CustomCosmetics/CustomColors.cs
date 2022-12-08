@@ -66,7 +66,11 @@ public class CustomColors
         LightOrange,
         Sprout,
         Nega,
-        Gold
+        Gold,
+        WineRed,
+        CrazyRed,
+        TokiwaGreen,
+        Posi
     }
 
     private const byte bmv = 255; // byte.MaxValue
@@ -75,6 +79,7 @@ public class CustomColors
     private static readonly Dictionary<ColorType, (Color32, Color32, bool)> CustomColorData = new() {
             //明るい色(V値が70/100以上、並びはH値順、同じH値の場合はS値が高い方が先、S値も同じ場合はV値が高い方が先)
             { ColorType.Pitchwhite, (new(255, 255, 255, bmv), new(240, 240, 240, bmv), true) }, //H000
+            { ColorType.Posi, (new(255, 255, 255, bmv), new(0, 0, 0, bmv), true) }, //H000
             { ColorType.Pitchred, (new(255, 0, 0, bmv), new(178, 0, 0, bmv), true) }, //H000
             { ColorType.SignalOrange, (new(0xF7, 0x44, 0x17, bmv), new(0x9B, 0x2E, 0x0F, bmv), true) }, //H012
             { ColorType.Peach, (new(255, 164, 119, bmv), new(238, 128, 100, bmv), true) }, //H020
@@ -111,13 +116,16 @@ public class CustomColors
             //暗い色(V値が70/100未満、並びはH値順、同じH値の場合はS値が高い方が先、S値も同じ場合はV値が高い方が先)
             { ColorType.PitchBlack, (new(0, 0, 0, bmv), new(0, 0, 0, bmv), false) }, //H000
             { ColorType.Nega, (new(0, 0, 0, bmv), new(255, 255, 255, bmv), false) }, //H000
+            { ColorType.WineRed, (new(142, 7, 7, bmv), new(109, 0, 0, bmv), false) }, //H000
             { ColorType.Azuki, (new(150, 81, 77, bmv), new(115, 40, 35, bmv), false) }, //H003
+            { ColorType.CrazyRed, (new(166, 20, 0, bmv), new(13, 45, 188, bmv), false) }, //H007
             { ColorType.Nougat, (new(160, 101, 56, bmv), new(115, 15, 78, bmv), false) }, //H026
             { ColorType.Azi, (new(100, 48, 0, bmv), new(98, 5, 0, bmv), false) }, //H029
             { ColorType.Olive, (new(154, 140, 61, bmv), new(104, 95, 40, bmv), false) }, //H051
             { ColorType.Wasabi, (new(112, 143, 46, bmv), new(72, 92, 29, bmv), false) }, //H079
             { ColorType.Leaf, (new(62, 90, 11, bmv), new(34, 50, 6, bmv), false) }, //H081
             { ColorType.Matcha, (new(52, 99, 23, bmv), new(34, 54, 19, bmv), false) }, //H097
+            { ColorType.TokiwaGreen, (new(0, 123, 67, bmv), new(0, 84, 83, bmv), false) }, //H153
             { ColorType.Petrol, (new(0, 99, 105, bmv), new(0, 61, 54, bmv), false) }, //H183
             { ColorType.Sunkengreenishblue, (new(128, 156, 166, bmv), new(115, 141, 153, bmv), false) }, //H196
             { ColorType.Turqoise, (new(22, 132, 176, bmv), new(15, 89, 117, bmv), false) }, //H197
