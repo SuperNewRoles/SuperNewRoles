@@ -15,8 +15,7 @@ public static class PlayerCountChange
 {
     public static void Prefix(GameStartManager __instance)
     {
-        if (ShareGameVersion.GameStartManagerUpdatePatch.LastBlockStart) __instance.MinPlayers = __instance.LastPlayerCount + 1;
-        else __instance.MinPlayers = 1;
+        __instance.MinPlayers = 1;
     }
 }
 class ShareGameVersion
@@ -223,6 +222,7 @@ class ShareGameVersion
                 else
                 {
                     message += $"{ModTranslation.GetString("ErrorClientCanNotPley")} \n";
+                    __instance.ResetStartState();
                     __instance.StartButton.enabled = __instance.startLabelText.enabled = false;
                 }
             }
