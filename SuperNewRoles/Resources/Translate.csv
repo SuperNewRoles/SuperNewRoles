@@ -82,15 +82,15 @@ colorCrasyublue,Crasyu Blue,クラッシュブルー,深海蓝
 colorLightgreen,Light Green,ライトグリーン,亮绿
 colorAzuki,Azuki,小豆,红豆
 colorSnow,Snow,雪,雪白
-colorLightMagenta,LightMagenta,ライトマゼンタ
-colorPeachFlower,PeachFlower,桃花
-colorPlum,Plum,梅
-colorSkyBlue,SkyBlue,青空
-colorLightCyan,LightCyan,ライトシアン
-colorLightOrange,LightOrange,ライトオレンジ
-colorSprout,Sprout,新芽
-colorNega,Nega,ネガ
-colorGold,Gold,金色
+colorLightMagenta,LightMagenta,ライトマゼンタ,浅品红
+colorPeachFlower,PeachFlower,桃花,桃红
+colorPlum,Plum,梅,梅花,梅红
+colorSkyBlue,SkyBlue,青空,天蓝
+colorLightCyan,LightCyan,ライトシアン,浅青
+colorLightOrange,LightOrange,ライトオレンジ,浅橙
+colorSprout,Sprout,新芽,芽绿
+colorNega,Nega,ネガ,负色
+colorGold,Gold,金色,金黄
 colorWineRed,WineRed,ワインレッド
 colorCrazyRed,CrazyRed,クレイジーレッド
 colorTokiwaGreen,TokiwaGreen,常磐緑
@@ -136,22 +136,22 @@ CustomProcessDown,Update Process Down,処理回数を減らす,更新进程已�
 CustomIsVersionErrorView,Show players Errors.,エラーを表示する,显示错误
 CustomHideTaskArrows,Hide Tasks Arrows,タスクの矢印を非表示にする,隐藏任务指向箭头
 SettingCrewmateRoles,Crewmate Setting,クルーメイトの人数設定,船员阵营职业设置
-SettingCrewmateGhostRoles,Crewmate GhostRole Setting,クルーメイトの幽霊役職の人数設定,船员阵营死后起效职业设置
+SettingCrewmateGhostRoles,Crewmate GhostRole Setting,クルーメイトの幽霊役職の人数設定,船员阵营幽灵职业设置
 SettingNeutralRoles,Neutral Setting,第三陣営の人数設定,独立阵营职业设置
-SettingNeutralGhostRoles,Neutral GhostRole Setting,第三陣営の幽霊役職の人数設定,独立阵营死后起效职业设置
+SettingNeutralGhostRoles,Neutral GhostRole Setting,第三陣営の幽霊役職の人数設定,独立阵营幽灵职业设置
 SettingImpostorRoles,Impostor Setting,インポスターの人数設定,内鬼阵营职业设置
-SettingImpostorGhostRoles,Impostor GhostRole Setting,インポスターの幽霊役職の人数設定,内鬼阵营死后起效职业设置
+SettingImpostorGhostRoles,Impostor GhostRole Setting,インポスターの幽霊役職の人数設定,内鬼阵营幽灵职业设置
 SettingOptionOn,On,オン,开启
 SettingOptionOff,Off,オフ,关闭
 SettingPressTabForMore,Press Tab For More,Tabを押して詳細を表示,按Tab键查看更多...
 ErrorHostNoVersion,Your host does not have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストに<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>が入っていません。,房主没有安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组
 ErrorHostChangeVersion,The host has a different version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストの<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のバージョンが違います。,房主安装的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组版本不同
-ErrorHostGuidMatches,The host uses a different <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> dll file.,ホストの使用<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のdllファイルが異なります。
+ErrorHostGuidMatches,The host uses a different <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> dll file.,ホストの使用<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のdllファイルが異なります。,房主的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>dll文件不同
 ErrorClientNoVersion,You don't have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0}.,{0}に<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>が入っていません。,{0}未安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组
 ErrorClientChangeVersion,The version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0} is wrong.,{0}の<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のバージョンが違います。,{0}安装的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组版本不同
-ErrorClientGuidMatches,{0} uses a different <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> dll file.,{0}の使用<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のdllファイルが異なります。
+ErrorClientGuidMatches,{0} uses a different <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> dll file.,{0}の使用<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のdllファイルが異なります。,{0}的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>dll文件不同
 ErrorClientCanNotPley,,プレイが不可能な状態のゲストがいる為、開始できません。\nホストと同じバージョンの<color=#ffa500>SNR</color>を導入してもらう、\nHostModeに変更する等の対応をお願いします。
-KickReasonHostNoVersion,The host has no or a different version of <color=#ffa500>SNR</color>\nYou will be kicked in {0}s,ホストが<color=#ffa500>SNR</color>を導入していない、又はバージョンが違う為、\nあと{0}秒でキックされます。
+KickReasonHostNoVersion,The host has no or a different version of <color=#ffa500>SNR</color>\nYou will be kicked in {0}s,ホストが<color=#ffa500>SNR</color>を導入していない、又はバージョンが違う為、\nあと{0}秒でキックされます。,房主没有安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组或模组版本不同\n您将在{0}秒内被踢出
 IsSpecialModeOnAndVanillaKickOff,If <color=#2792c3>[Kick non-PCs]</color> is disabled， the\nmap will be selected for <color=#cd5c5c>MiraHQ</color>.\nIf you want to use<color=#a67646>Agartha</color>\nEnable <color=#2792c3>[Kick non-PCs]</color>.,<color=#2792c3>「PC以外をキックする」</color>が無効である場合、\nマップは<color=#cd5c5c>MiraHQ</color>に選択されます。\n<color=#a67646>Agartha</color>を使用したい場合は、\n<color=#2792c3>「PC以外をキックする」</color>を有効にしてください。,如果 “<color=#2792c3>踢出非电脑端玩家</color>”设置为否，\n地图将变为<color=#cd5c5c>米拉总部</color>。\n要启用<color=#a67646>雅各泰</color>地图，\n需要将“<color=#2792c3>踢出非电脑端玩家</color>”选项设置为是。
 RamdomMapSetting,RandomMap,ランダムマップ,随机地图
 RMSkeldSetting,Skeld,スケルドが有効,可随机游玩骷髅舰(Skeld)
@@ -219,7 +219,7 @@ SettingRandomColorMode,Random Color Mode,ランダムカラーモードの設定
 SettingDetectiveMode,Detective Mode,探偵モードの設定,侦探模式设置
 HideAndSeekModeName,Hide And Seek,かくれんぼ,躲猫猫
 BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀
-SuperHostRolesModeName,Super Host Roles,SuperHostRoles,SuperHostRoles
+SuperHostRolesModeName,Super Host Roles,SuperHostRoles,Super Host Roles
 ZombieModeName,Zombie Mode,ゾンビモード,生化危机
 RandomColorModeName,Random Color Mode,ランダムカラー,随机颜色模式
 NotImpostorCheckModeName,Not Impostor Check Mode,インポスター視認不能モード,双盲内鬼模式
@@ -314,8 +314,8 @@ FinalStatusOverKillerOverKill,Over Kill!,オーバーキル!,肢解
 FinalStatusSuicideWisherSelfDeath,Suicide,自殺,自杀
 FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺
 FinalStatusRevenge,Revenge,復讐,仇杀
-FinalStatusHitmanKill,Mission accomplished.,任務遂行
-FinalStatusHitmanDead,Disposition.,処分
+FinalStatusHitmanKill,Mission accomplished.,任務遂行,遇刺
+FinalStatusHitmanDead,Disposition.,処分,沉江
 
 # Sabotages
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
@@ -595,7 +595,7 @@ SelfBomberTitle1,Lets' Self Bomb!,自爆をしよう,我的任务 完成啦！
 SelfBomberDescription,Shapeshifting causes self-destruction.\nIf you self-destruct you will die involving everyone around you.,シェイプシフトをすることで、自爆します。\n自爆をすると周りの人を巻き込んで死亡します。,恐怖分子属于内鬼阵营，可以自爆。\n若恐怖分子自爆，自爆者与周围一定范围的玩家都会死亡。
 SelfBomberScopeSetting,Range (radius),範囲(半径),爆炸范围（半径）
 SelfBomberButtonName,Self Bomb,自爆,自爆
-SelfBomberBombCoolTimeSettting,Ability of selfbomb cooldown time.,自爆能力のクールタイム
+SelfBomberBombCoolTimeSettting,Ability of selfbomb cooldown time.,自爆能力のクールタイム,恐怖分子自爆冷却
 GodName,God,神,神
 GodTitle1,You Are God!!,あなたは神だ,新世界的卡密！
 GodDescription,If you survive to the end you take away the win. Everyone's position is known.,最後まで生き残っていると、勝利を奪い取ります。全員の役職がわかります。,神存活到游戏结束则神单独获胜。\n所有玩家的职业对神可见。
@@ -651,7 +651,7 @@ HawkDurationTimeSetting,Duration,継続時間,千里眼持续时间
 HawkButtonName,Hawk Eye,ホークアイ,千里眼
 EgoistName,Egotist,エゴイスト,野心家
 EgoistTitle1,We can survive this.,生き残ろう,忍时待机
-EgoistDescription,Impostor judgment.\nThe impostor appears to be a peer.\nIf all the Impostors are dead\nand the Impostor's victory condition is achieved (except Sabotage) the Egoist wins.,インポスター判定です。\nインポスターからは仲間に見えます。\nインポスターがすべて死んでいる状態で、\nインポスターの勝利条件を達成する(サボタージュ以外)とエゴイストの勝利です。,野心家规则上属于内鬼阵营。\n野心家与内鬼阵营玩家互认。\n其他内鬼阵营玩家全部死亡后，若内鬼阵营不通过紧急破坏获得胜利，\n并且野心家存活，则野心家单独获胜。
+EgoistDescription,Impostor judgment.\nThe impostor appears to be a peer.\nIf all the Impostors are dead\nand the Impostor's victory condition is achieved (except Sabotage) the Egoist wins.,インポスター判定です。\nインポスターからは仲間に見えます。\nインポスターがすべて死んでいる状態で、\nインポスターの勝利条件を達成する(サボタージュ以外)とエゴイストの勝利です。,野心家规则上属于内鬼阵营。\n野心家与内鬼阵营玩家互认为同伴。\n其他内鬼阵营玩家全部死亡后，若内鬼阵营不通过紧急破坏获得胜利，\n并且野心家存活，则野心家单独获胜。
 EgoistUseVentSetting,I can use Vent.,ベントを使える,野心家可以使用管道
 EgoistUseSaboSetting,Can use Sabotage,サボタージュが使える,野心家可以进行破坏
 EgoistImpostorLightSetting,Impostor's Vision,インポスターの視界,野心家拥有内鬼视野
@@ -1144,7 +1144,7 @@ PenguinButtonName,Abduction,拉致,绑架
 PenguinCanDefaultKill,Can default kill,通常キルができる,绑匪可以进行通常击杀
 
 #ConfigRoles
-IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする
+IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！
@@ -1177,11 +1177,11 @@ NameIncludeMod,You cannot make a room public contains mod in your name.,modが�
 CannotUseRenameMessage,Cannot rename.\nThe /rename command can only be used on\navailable only when hosted.,名前を変更することができません。\n/renameコマンドは\nホスト時のみ使用可能です。,无法重命名。\n/rename命令仅房主可用。
 betatext1,\nThis is a beta version! Watch out for bugs!,\nベータ版です! バグには注意してください!,这是测试版本。请注意是否有bug。
 betatext2,\n~Information for developers~,\n～開発者用の情報～,\n~开发者信息~
-ExitExperimentEsc,Exit from the experiment with Esc.,Escで実験から抜ける
-Experimenting...,Experimenting...,実験中...
-StartExperiment,Start experiment,実験を開始する
-Processing,Processing...,処理中...
-SuccessfulExperiment,Successful Experiment,実験成功
+ExitExperimentEsc,Exit from the experiment with Esc.,Escで実験から抜ける,按Esc键退出测试
+Experimenting...,Experimenting...,実験中...,测试中...
+StartExperiment,Start experiment,実験を開始する,开始测试
+Processing,Processing...,処理中...,处理中...
+SuccessfulExperiment,Successful Experiment,実験成功,测试成功
 
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库
