@@ -1,17 +1,16 @@
 using System.Collections.Generic;
 
-namespace SuperNewRoles.Mode.SuperHostRoles
+namespace SuperNewRoles.Mode.SuperHostRoles;
+
+class Main
 {
-    class Main
+    public static void ClearAndReloads()
     {
-        public static void ClearAndReloads()
-        {
-            RealExiled = null;
-            Chat.WinCond = null;
-            // FixedUpdate.UpdateTime = new Dictionary<byte, float>();
-            Patches.OnGameEndPatch.EndData = null;
-            FixedUpdate.DefaultName = new Dictionary<int, string>();
-        }
-        public static PlayerControl RealExiled;
+        RealExiled = null;
+        Chat.WinCond = null;
+        // FixedUpdate.UpdateTime = new Dictionary<byte, float>();
+        Patches.OnGameEndPatch.EndData = null;
+        FixedUpdate.DefaultName = new Dictionary<int, string>();
     }
+    public static PlayerControl RealExiled;
 }

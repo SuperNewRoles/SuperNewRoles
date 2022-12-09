@@ -1,23 +1,21 @@
-
 using SuperNewRoles.Roles;
 
-namespace SuperNewRoles.Mode.SuperHostRoles.Roles
+namespace SuperNewRoles.Mode.SuperHostRoles.Roles;
+
+class Bait
 {
-    class Bait
+    public static void MurderPostfix(PlayerControl __instance, PlayerControl target)
     {
-        public static void MurderPostfix(PlayerControl __instance, PlayerControl target)
+        if (target.IsRole(RoleId.Bait) && (!__instance.IsRole(RoleId.Minimalist) || RoleClass.Minimalist.UseReport))
         {
-            if (target.IsRole(RoleId.Bait) && (!__instance.IsRole(RoleId.Minimalist) || RoleClass.Minimalist.UseReport))
+            new LateTask(() =>
             {
-                new LateTask(() =>
+                if (!(__instance.IsRole(RoleId.Minimalist) && !RoleClass.Minimalist.UseReport))
                 {
-                    if (!(__instance.IsRole(RoleId.Minimalist) && !RoleClass.Minimalist.UseReport))
-                    {
-                        RoleClass.Bait.ReportedPlayer.Add(target.PlayerId);
-                        __instance.CmdReportDeadBody(target.Data);
-                    }
-                }, RoleClass.Bait.ReportTime, "ReportBaitBody");
-            }
+                    RoleClass.Bait.ReportedPlayer.Add(target.PlayerId);
+                    __instance.CmdReportDeadBody(target.Data);
+                }
+            }, RoleClass.Bait.ReportTime, "ReportBaitBody");
         }
     }
 }
