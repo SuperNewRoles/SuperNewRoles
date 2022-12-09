@@ -40,9 +40,9 @@ class BlockTool
     private static readonly float UsableDistance = 1.5f;
     private static int Count = 0;
     public static bool IsCom;
-    public static float CameraTime;
-    public static float AdminTime;
-    public static float VitalTime;
+    public static float CameraTime = 0;
+    public static float AdminTime = 0;
+    public static float VitalTime = 0;
     public static void FixedUpdate()
     {
         Count--;
