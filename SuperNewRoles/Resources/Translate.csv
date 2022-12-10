@@ -1172,6 +1172,7 @@ TwitterDevLink,Development Information Account : https://twitter.com/SNRDevs,開
 Team,Team,陣営,阵营
 MessageSettings,Settings,設定,设置
 NowRolesMessage,Activate Roles,現在入っている役職,当前激活的职业
+Notassign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。
 TeamMessage,【Team:{0}】,【{0}陣営】,【{0}阵营】
 NameIncludeMod,You cannot make a room public contains mod in your name.,modが名前に含まれている状態では公開部屋にすることはできません。,不能在昵称里有“mod”时将房间状态设置为公开。
 CannotUseRenameMessage,Cannot rename.\nThe /rename command can only be used on\navailable only when hosted.,名前を変更することができません。\n/renameコマンドは\nホスト時のみ使用可能です。,无法重命名。\n/rename命令仅房主可用。
