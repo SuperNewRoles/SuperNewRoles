@@ -282,6 +282,11 @@ class AddChatPatch
     static void RoleCommand(PlayerControl target = null, float SendTime = 1.5f)
     {
         if (!AmongUsClient.Instance.AmHost) return;
+        if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.SuperHostRoles, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
+        {
+            SendCommand(target, ModTranslation.GetString("Notassign"));
+            return;
+        }
         List<CustomRoleOption> EnableOptions = new();
         foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
         {
@@ -302,6 +307,11 @@ class AddChatPatch
     static void GetInRoleCommand(PlayerControl target = null)
     {
         if (!AmongUsClient.Instance.AmHost) return;
+        if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.SuperHostRoles, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
+        {
+            SendCommand(target, ModTranslation.GetString("Notassign"));
+            return;
+        }
         List<CustomRoleOption> EnableOptions = new();
         foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
         {
