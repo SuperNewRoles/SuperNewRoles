@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -305,12 +306,10 @@ class AddChatPatch
         List<CustomRoleOption> EnableOptions = new();
         foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
         {
-            if (option.IsRoleEnable && option.isSHROn)
-            {
+            if (!option.IsRoleEnable) continue;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
                 EnableOptions.Add(option);
-            }
         }
-        SendCommand(target, GetInRole(EnableOptions));
     }
     static void Send(PlayerControl target, string rolename, string text, float time = 0)
     {
