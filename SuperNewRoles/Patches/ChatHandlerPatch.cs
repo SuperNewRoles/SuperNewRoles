@@ -309,6 +309,7 @@ class AddChatPatch
             if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
             EnableOptions.Add(option);
         }
+        SendCommand(target, GetInRole(EnableOptions));
     }
     static void Send(PlayerControl target, string rolename, string text, float time = 0)
     {
