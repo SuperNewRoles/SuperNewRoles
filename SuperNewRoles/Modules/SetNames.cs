@@ -87,7 +87,7 @@ public class SetNamesClass
         }
 
         // Set the position every time bc it sometimes ends up in the wrong place due to camoflauge
-        playerInfo.transform.localPosition = p.NameText().transform.localPosition + Vector3.up * 0.5f;
+        playerInfo.transform.localPosition = p.NameText().transform.localPosition + Vector3.up * 0.2f;
 
         PlayerVoteArea playerVoteArea = MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == p.PlayerId);
         TMPro.TextMeshPro meetingInfo = MeetingPlayerInfos.ContainsKey(p.PlayerId) ? MeetingPlayerInfos[p.PlayerId] : null;

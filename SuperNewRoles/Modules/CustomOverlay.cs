@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using UnityEngine;
 
@@ -62,7 +63,7 @@ public class CustomOverlays
 
         if (infoOverlayRules == null)
         {
-            infoOverlayRules = UnityEngine.Object.Instantiate(hudManager.TaskText, hudManager.transform);
+            infoOverlayRules = UnityEngine.Object.Instantiate(hudManager.TaskPanel.taskText, hudManager.transform);
             infoOverlayRules.fontSize = infoOverlayRules.fontSizeMin = infoOverlayRules.fontSizeMax = 1.15f;
             infoOverlayRules.autoSizeTextContainer = false;
             infoOverlayRules.enableWordWrapping = false;
@@ -142,7 +143,7 @@ public class CustomOverlays
         infoUnderlay.enabled = true;
 
         SuperNewRolesPlugin.optionsPage = 0;
-        GameOptionsData o = PlayerControl.GameOptions;
+        IGameOptions o = GameOptionsManager.Instance.CurrentGameOptions;
         List<string> gameOptions = o.ToString().Split("\n", StringSplitOptions.RemoveEmptyEntries).ToList().GetRange(2, 17);
         string text = "";
         text = GameOptionsDataPatch.ResultData();

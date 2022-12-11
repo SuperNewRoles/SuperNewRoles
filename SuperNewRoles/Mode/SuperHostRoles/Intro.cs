@@ -1,56 +1,54 @@
 using System;
-
 using SuperNewRoles.Roles;
 
-namespace SuperNewRoles.Mode.SuperHostRoles
-{
-    class Intro
-    {
-        public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler(IntroCutscene __instance)
-        {
-            Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new();
-            Teams.Add(PlayerControl.LocalPlayer);
-            try
-            {
-                if (PlayerControl.LocalPlayer.IsCrew())
-                {
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                    {
-                        if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && !p.IsBot())
-                        {
-                            Teams.Add(p);
-                        }
-                    }
-                }
-                else if (PlayerControl.LocalPlayer.IsImpostor())
-                {
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                    {
-                        if ((p.IsImpostor() || p.IsRole(RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && !p.IsBot())
-                        {
-                            Teams.Add(p);
-                        }
-                    }
-                }
-            }
-            catch (Exception e) { SuperNewRolesPlugin.Logger.LogInfo("[SHR:Intro] Intro Error:" + e); }
-            return Teams;
-        }
+namespace SuperNewRoles.Mode.SuperHostRoles;
 
-        public static void RoleTextHandler(IntroCutscene __instance)
+class Intro
+{
+    public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler(IntroCutscene __instance)
+    {
+        Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new();
+        Teams.Add(PlayerControl.LocalPlayer);
+        try
         {
-            var myrole = PlayerControl.LocalPlayer.GetRole();
-            if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
+            if (PlayerControl.LocalPlayer.IsCrew())
             {
-                var data = IntroData.GetIntroData(myrole);
-                __instance.YouAreText.color = data.color;
-                __instance.RoleText.text = ModTranslation.GetString(data.NameKey + "Name");
-                __instance.RoleText.color = data.color;
-                __instance.RoleBlurbText.text = data.TitleDesc;
-                __instance.RoleBlurbText.color = data.color;
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && !p.IsBot())
+                    {
+                        Teams.Add(p);
+                    }
+                }
             }
-            if (PlayerControl.LocalPlayer.IsLovers()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.GetDefaultName() ?? ""));
-            if (PlayerControl.LocalPlayer.IsQuarreled()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
+            else if (PlayerControl.LocalPlayer.IsImpostor())
+            {
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                {
+                    if ((p.IsImpostor() || p.IsRole(RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && !p.IsBot())
+                    {
+                        Teams.Add(p);
+                    }
+                }
+            }
         }
+        catch (Exception e) { SuperNewRolesPlugin.Logger.LogInfo("[SHR:Intro] Intro Error:" + e); }
+        return Teams;
+    }
+
+    public static void RoleTextHandler(IntroCutscene __instance)
+    {
+        var myrole = PlayerControl.LocalPlayer.GetRole();
+        if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
+        {
+            var data = IntroData.GetIntroData(myrole);
+            __instance.YouAreText.color = data.color;
+            __instance.RoleText.text = ModTranslation.GetString(data.NameKey + "Name");
+            __instance.RoleText.color = data.color;
+            __instance.RoleBlurbText.text = data.TitleDesc;
+            __instance.RoleBlurbText.color = data.color;
+        }
+        if (PlayerControl.LocalPlayer.IsLovers()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.GetDefaultName() ?? ""));
+        if (PlayerControl.LocalPlayer.IsQuarreled()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
     }
 }

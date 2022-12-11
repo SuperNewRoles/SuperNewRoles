@@ -3,7 +3,7 @@ using System.Linq;
 using HarmonyLib;
 using PowerTools;
 using SuperNewRoles.MapCustoms;
-using SuperNewRoles.MapOptions;
+using SuperNewRoles.MapOption;
 using TMPro;
 using UnhollowerBaseLib;
 using UnityEngine;
@@ -22,7 +22,7 @@ public static class RandomSpawn
     }
     static void SpawnAt(SpawnInMinigame __instance, Vector3 spawnAt)
     {
-        if (MapOption.RandomSpawn)
+        if (MapOption.MapOption.RandomSpawn)
         {
             if (IsFirstSpawn) resetButtons();
             if (__instance.amClosing != Minigame.CloseState.None)
@@ -39,7 +39,7 @@ public static class RandomSpawn
     }
     public static bool Prefix(SpawnInMinigame __instance, PlayerTask task)
     {
-        if (!MapOption.RandomSpawn) return true;
+        if (!MapOption.MapOption.RandomSpawn) return true;
         __instance.MyTask = task;
         __instance.MyNormTask = task as NormalPlayerTask;
         if (CachedPlayer.LocalPlayer.PlayerControl)

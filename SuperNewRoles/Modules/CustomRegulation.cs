@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using Newtonsoft.Json.Linq;
 using UnityEngine.Networking;
 
@@ -89,16 +90,16 @@ public static class CustomRegulation
             return;
         }
         RegulationData data = RegulationData.Regulations.FirstOrDefault(rd => rd.id == id);
-        PlayerControl.GameOptions.NumEmergencyMeetings = data.MeetingButtonNum;
-        PlayerControl.GameOptions.EmergencyCooldown = data.MeetingButtonCooldown;
-        PlayerControl.GameOptions.VotingTime = data.VoteTime;
-        PlayerControl.GameOptions.PlayerSpeedMod = data.PlayerSpeed;
-        PlayerControl.GameOptions.CrewLightMod = data.CrewVision;
-        PlayerControl.GameOptions.ImpostorLightMod = data.ImpostorVision;
-        PlayerControl.GameOptions.KillCooldown = data.KillCoolTime;
-        PlayerControl.GameOptions.NumCommonTasks = data.CommonTask;
-        PlayerControl.GameOptions.NumLongTasks = data.LongTask;
-        PlayerControl.GameOptions.NumShortTasks = data.ShortTask;
+        GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.NumEmergencyMeetings, data.MeetingButtonNum);
+        GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.EmergencyCooldown, data.MeetingButtonCooldown);
+        GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.VotingTime, data.VoteTime);
+        GameOptionsManager.Instance.CurrentGameOptions.SetFloat(FloatOptionNames.PlayerSpeedMod, data.PlayerSpeed);
+        GameOptionsManager.Instance.CurrentGameOptions.SetFloat(FloatOptionNames.CrewLightMod, data.CrewVision);
+        GameOptionsManager.Instance.CurrentGameOptions.SetFloat(FloatOptionNames.ImpostorLightMod, data.ImpostorVision);
+        GameOptionsManager.Instance.CurrentGameOptions.SetFloat(FloatOptionNames.KillCooldown, data.KillCoolTime);
+        GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.NumCommonTasks, data.CommonTask);
+        GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.NumLongTasks, data.LongTask);
+        GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.NumShortTasks, data.ShortTask);
         foreach (CustomOption options in CustomOption.options)
         {
             options.selection = options.defaultSelection;
@@ -117,7 +118,7 @@ public static class CustomRegulation
         }
         CustomOptionHolder.DisconnectNotPCOption.selection = 0;
 
-        PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+        PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
     }
     public class RegulationData
     {

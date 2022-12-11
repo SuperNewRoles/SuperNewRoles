@@ -128,7 +128,7 @@ class AwakePatch
         __instance.transform.FindChild("SkinGroup").gameObject.SetActive(true);
         __instance.transform.FindChild("SkinGroup").gameObject.SetActive(false);
 
-        ObjectData.HatButton_Hat = GameObject.Instantiate(__instance.PreviewArea.transform.FindChild("HatSlot").GetComponent<HatParent>(), ClosetTab);
+        ObjectData.HatButton_Hat = GameObject.Instantiate(__instance.PreviewArea.cosmetics.hat, ClosetTab);
         ObjectData.HatButton_Hat.transform.localPosition = new Vector3(4.85f, 0.6f, -1);
 
         ObjectData.SkinButton_Skin = GameObject.Instantiate(__instance.PreviewArea.cosmetics.skin, ClosetTab);

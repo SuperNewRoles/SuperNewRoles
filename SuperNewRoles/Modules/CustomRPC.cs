@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.MapOptions;
+using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
@@ -1050,6 +1051,7 @@ public static class RPCProcedure
         var player = ModHelpers.PlayerById(playerid);
         if (player == null) return;
         player.Revive();
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, player.IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate);
         DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == playerid);
         FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Alive;
     }

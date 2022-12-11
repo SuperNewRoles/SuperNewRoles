@@ -1010,8 +1010,8 @@ public class CustomOptionHolder
 
         IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
-        IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true);
-
+        IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true, isHidden:true);
+        IsOldMode.selection = 0;
 
         if (ConfigRoles.DebugMode.Value)
         {
@@ -1028,7 +1028,7 @@ public class CustomOptionHolder
         ZoomCoolTime = Create(621, false, CustomOptionType.Generic, "clairvoyantCoolTime", 15f, 1f, 120f, 2.5f, ClairvoyantZoom, format: "unitCouples");
         ZoomDurationTime = Create(622, false, CustomOptionType.Generic, "clairvoyantDurationTime", 5f, 1f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
 
-        MapOptions.MapOption.LoadOption();
+        MapOption.MapOption.LoadOption();
 
         //SoothSayerRate = Create(2, Cs(SoothSayer.color,"soothName"),rates, null, true);
         Mode.ModeHandler.OptionLoad();

@@ -1,20 +1,19 @@
 using UnityEngine;
 
-namespace SuperNewRoles.Mode.NotImpostorCheck
+namespace SuperNewRoles.Mode.NotImpostorCheck;
+
+class NameSet
 {
-    class NameSet
+    public static void Postfix()
     {
-        public static void Postfix()
+        int LocalId = CachedPlayer.LocalPlayer.PlayerId;
+        if (Main.Impostors.Contains(LocalId))
         {
-            int LocalId = CachedPlayer.LocalPlayer.PlayerId;
-            if (Main.Impostors.Contains(LocalId))
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                if (p.IsAlive() && p.PlayerId != LocalId)
                 {
-                    if (p.IsAlive() && p.PlayerId != LocalId)
-                    {
-                        p.NameText().color = Color.white;
-                    }
+                    p.NameText().color = Color.white;
                 }
             }
         }
