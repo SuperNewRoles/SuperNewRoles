@@ -9,6 +9,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnhollowerBaseLib;
 using UnityEngine;
+using static SuperNewRoles.Patches.CheckGameEndPatch;
 
 namespace SuperNewRoles.Patches;
 
@@ -93,9 +94,10 @@ class FinalStatusPatch
 public static class ShipStatusPatch
 {
     [HarmonyPostfix]
-    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.IsGameOverDueToDeath))]
-    public static void Postfix2(ShipStatus __instance, ref bool __result)
+    [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.IsGameOverDueToDeath))]
+    public static void Postfix2(ref bool __result)
     {
+        
         __result = false;
     }
 }
@@ -184,7 +186,7 @@ public class EndGameManagerSetUpPatch
 
             poolablePlayer.cosmetics.nameText.color = Color.white;
             poolablePlayer.cosmetics.nameText.transform.localScale = new Vector3(1f / vector.x, 1f / vector.y, 1f / vector.z);
-            poolablePlayer.cosmetics.nameText.transform.localPosition = new Vector3(poolablePlayer.cosmetics.nameText.transform.localPosition.x, poolablePlayer.cosmetics.nameText.transform.localPosition.y, -15f);
+            poolablePlayer.cosmetics.nameText.transform.localPosition = new Vector3(poolablePlayer.cosmetics.nameText.transform.localPosition.x, poolablePlayer.cosmetics.nameText.transform.localPosition.y - 0.8f, -15f);
             poolablePlayer.cosmetics.nameText.text = winningPlayerData2.PlayerName;
 
             foreach (var data in AdditionalTempData.playerRoles)
@@ -451,8 +453,8 @@ public static class OnGameEndPatch
     {
         if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Zombie))
         {
-            PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();
-            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
+            GameOptionsManager.Instance.CurrentGameOptions = SyncSetting.OptionData.DeepCopy();
+            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
         }
         var gameOverReason = AdditionalTempData.gameOverReason;
         AdditionalTempData.Clear();
@@ -1097,10 +1099,41 @@ class ExileControllerReEnableGameplayPatch
     }
 }
 
-[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CheckEndCriteria))]
+[HarmonyPatch(typeof(LogicGameFlowHnS), nameof(LogicGameFlowHnS.CheckEndCriteria))]
+public static class CheckGameEndHnSPatch
+{
+    public static bool Prefix()
+    {
+        if (!GameData.Instance) return false;
+        if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
+        if (!RoleManagerSelectRolesPatch.IsSetRoleRPC) return false;
+        if (ModHelpers.IsDebugMode()) return false;
+        ShipStatus __instance = ShipStatus.Instance;
+        PlayerStatistics statistics = new();
+        if (!ModeHandler.IsMode(ModeId.Default))
+        {
+            ModeHandler.EndGameCheckHnSs(__instance, statistics);
+        }
+        else
+        {
+            if (CheckAndEndGameForPavlovsWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForTaskerWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
+            if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
+            if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
+        }
+        return true;
+    }
+}
+
+[HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))]
 public static class CheckGameEndPatch
 {
-    public static bool Prefix(ShipStatus __instance)
+    public static bool Prefix()
     {
         if (!GameData.Instance) return false;
         if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
@@ -1108,7 +1141,8 @@ public static class CheckGameEndPatch
         if (ModHelpers.IsDebugMode()) return false;
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
         if (RoleClass.Revolutionist.MeetingTrigger != null) return false;
-        PlayerStatistics statistics = new(__instance);
+        ShipStatus __instance = ShipStatus.Instance;
+        PlayerStatistics statistics = new();
         if (!ModeHandler.IsMode(ModeId.Default))
         {
             ModeHandler.EndGameChecks(__instance, statistics);
@@ -1132,7 +1166,7 @@ public static class CheckGameEndPatch
     }
     public static void CustomEndGame(GameOverReason reason, bool showAd)
     {
-        ShipStatus.RpcEndGame(reason, showAd);
+        GameManager.Instance.RpcEndGame(reason, showAd);
     }
     public static bool CheckAndEndGameForSabotageWin(ShipStatus __instance)
     {
@@ -1364,7 +1398,7 @@ public static class CheckGameEndPatch
         public int PavlovsTeamAlive { get; set; }
         public int HitmanAlive { get; set; }
         public bool IsGuardPavlovs { get; set; }
-        public PlayerStatistics(ShipStatus __instance)
+        public PlayerStatistics()
         {
             GetPlayerCounts();
         }

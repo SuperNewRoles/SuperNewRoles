@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -21,7 +22,7 @@ public static class SelectTask
                 taskTypeIds = new byte[0];
                 return;
             }
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Default, ModeId.CopsRobbers) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Default, ModeId.CopsRobbers) && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
             {
                 var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
                 var TasksList = ModHelpers.GenerateTasks(__instance.GetPlayerById(playerId).Object, commont, shortt, longt);
@@ -71,7 +72,7 @@ public static class SelectTask
         {
             return (0, 0, 0);
         }
-        return (SyncSetting.OptionData.NumCommonTasks, SyncSetting.OptionData.NumShortTasks, SyncSetting.OptionData.NumLongTasks);
+        return (SyncSetting.OptionData.GetInt(Int32OptionNames.NumCommonTasks), SyncSetting.OptionData.GetInt(Int32OptionNames.NumShortTasks), SyncSetting.OptionData.GetInt(Int32OptionNames.NumLongTasks));
     }
     public static (CustomOption, CustomOption, CustomOption) TaskSetting(int commonid, int shortid, int longid, CustomOption Child = null, CustomOptionType type = CustomOptionType.Generic, bool IsSHROn = false)
     {

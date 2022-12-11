@@ -5,6 +5,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using Agartha;
+using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Patches;
 
@@ -40,7 +41,7 @@ class ControllerManagerUpdatePatch
                 }
                 else
                 {
-                    ShipStatus.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
+                    GameManager.Instance.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
                     MapUtilities.CachedShipStatus.enabled = false;
                 }
             }
@@ -69,7 +70,21 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                GameObject.Instantiate(MapLoader.Skeld);
+                GameOptionsManager.Instance.SwitchGameMode(GameModes.Normal);
+                PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
+            }
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                GameOptionsManager.Instance.SwitchGameMode(GameModes.HideNSeek);
+                PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
+            }
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByKill, false);
+            }
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.ImpostorGhost);
             }
             if (Input.GetKeyDown(KeyCode.K))
             {
@@ -101,7 +116,7 @@ class ControllerManagerUpdatePatch
             }
         }
         // 以下フリープレイのみ
-        if (AmongUsClient.Instance.GameMode != GameModes.FreePlay) return;
+        if (AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) return;
         // エアーシップのトイレのドアを開ける
         if (Input.GetKeyDown(KeyCode.T))
         {

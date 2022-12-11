@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
@@ -13,16 +14,16 @@ public static class SNROnlySearch
     public static bool IsSNRSearch = false;
     public static void FixedUpdate()
     {
-        //Logger.Info(PlayerControl.GameOptions.MapId.ToString());
+        //Logger.Info(GameOptionsManager.Instance.CurrentGameOptions.MapId.ToString());
         if (AmongUsClient.Instance.AmHost)
         {
             if (CustomOptionHolder.IsSNROnlySearch.GetBool())
             {
-                if (PlayerControl.GameOptions.MapId < 5)
+                if (GameOptionsManager.Instance.CurrentGameOptions.MapId < 5)
                 {
-                    currentMapId = PlayerControl.GameOptions.MapId;
-                    PlayerControl.GameOptions.MapId = 6;
-                    PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+                    currentMapId = GameOptionsManager.Instance.CurrentGameOptions.MapId;
+                    GameOptionsManager.Instance.CurrentGameOptions.SetByte(ByteOptionNames.MapId, 6);
+                    PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
                 }
                 MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetMapId);
                 writer.Write(currentMapId);
@@ -40,25 +41,25 @@ public static class SNROnlySearch
             }
             else
             {
-                if (PlayerControl.GameOptions.MapId > 5)
+                if (GameOptionsManager.Instance.CurrentGameOptions.MapId > 5)
                 {
                     currentMapId = 0;
-                    PlayerControl.GameOptions.MapId = currentMapId;
-                    PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+                    GameOptionsManager.Instance.CurrentGameOptions.SetByte(ByteOptionNames.MapId, currentMapId);
+                    PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
                 }
             }
         }
     }
-    [HarmonyPatch(typeof(GameOptionsData), nameof(GameOptionsData.ToggleMapFilter))]
+    [HarmonyPatch(typeof(IGameOptionsExtensions), "ToggleMapFilter")]
     public static class GameOptionsDataToggleMapFilterPatch
     {
-        public static bool Prefix(GameOptionsData __instance, [HarmonyArgument(0)] byte mapId)
+        public static bool Prefix(IGameOptions __instance, [HarmonyArgument(0)] byte mapId)
         {
             //Logger.Info(__instance.MapId.ToString(), "MapId1");
-            __instance.MapId = (byte)(__instance.MapId ^ (byte)(1 << (int)mapId));
-            if (__instance.MapId == 0)
+            __instance.SetByte(ByteOptionNames.MapId, (byte)(__instance.MapId ^ (byte)(1 << (int)mapId)));
+            if (__instance.GetByte(ByteOptionNames.MapId) == 0)
             {
-                __instance.MapId = (byte)(__instance.MapId ^ (byte)(1 << (int)mapId));
+                __instance.SetByte(ByteOptionNames.MapId, (byte)(__instance.MapId ^ (byte)(1 << (int)mapId)));
             }
             Logger.Info($"{mapId} : {__instance.MapId}", "MapId2");
             return false;
@@ -74,71 +75,75 @@ public static class SNROnlySearch
             Logger.Info($"Awake:{__instance.mode}");
             if (__instance.mode is not SettingsMode.Search)
             {
-                GameOptionsData.GameHostOptions.MapId = 0;
+                GameOptionsManager.Instance.currentHostOptions.SetByte(ByteOptionNames.MapId, 0);
                 return;
             }
             Transform temp;
             GameObject IsSNROnlyRoomButton;
             PassiveButton button;
-            (IsSNROnlyRoomButton = GameObject.Instantiate((temp = __instance.MapButtons[3].transform.parent).gameObject, temp.parent)).name = "IsSNROnlyRoom";
+            (IsSNROnlyRoomButton = GameObject.Instantiate((temp = __instance.MapMenu.MapButtons[3].transform.parent).gameObject, temp.parent)).name = "IsSNROnlyRoom";
             IsSNROnlyRoomButton.transform.position = new(2.96f, 2.04f, -20);
             (IsSNROnlyRoomButtonRender = IsSNROnlyRoomButton.transform.Find("4").GetComponent<SpriteRenderer>()).sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.banner.png", 450f);
-            if (GameOptionsData.GameSearchOptions.FilterContainsMap(6))
+            if (GameOptionsManager.Instance.GameSearchOptions.FilterContainsMap(6))
             {
-                foreach (SpriteRenderer render in __instance.MapButtons)
-                    if (render.name != "IsSNROnlyRoom")
-                        render.transform.parent.gameObject.SetActive(false);
+                foreach (MapFilterButton btn in __instance.MapMenu.MapButtons)
+                    if (btn.ButtonImage.name != "IsSNROnlyRoom")
+                        btn.transform.parent.gameObject.SetActive(false);
                 IsSNROnlyRoomButtonRender.color = Color.white;
             }
             else IsSNROnlyRoomButtonRender.color = Palette.DisabledGrey;
             (button = IsSNROnlyRoomButton.GetComponent<PassiveButton>()).OnClick.RemoveAllListeners();
             button.OnClick.AddListener((UnityAction)(() =>
             {
+                OnClick();
+            }));
+            void OnClick()
+            {
                 bool IsSNROn = false;
-                if (GameOptionsData.GameSearchOptions.FilterContainsMap(0))
+                if (GameOptionsManager.Instance.GameSearchOptions.FilterContainsMap(0))
                 {
-                    GameOptionsData.GameSearchOptions.ToggleMapFilter(0);
+                    GameOptionsManager.Instance.GameSearchOptions.ToggleMapFilter(0);
                     IsSNROn = true;
                 }
-                if (GameOptionsData.GameSearchOptions.FilterContainsMap(1))
+                if (GameOptionsManager.Instance.GameSearchOptions.FilterContainsMap(1))
                 {
-                    GameOptionsData.GameSearchOptions.ToggleMapFilter(1);
+                    GameOptionsManager.Instance.GameSearchOptions.ToggleMapFilter(1);
                     IsSNROn = true;
                 }
-                if (GameOptionsData.GameSearchOptions.FilterContainsMap(2))
+                if (GameOptionsManager.Instance.GameSearchOptions.FilterContainsMap(2))
                 {
-                    GameOptionsData.GameSearchOptions.ToggleMapFilter(2);
+                    GameOptionsManager.Instance.GameSearchOptions.ToggleMapFilter(2);
                     IsSNROn = true;
                 }
-                if (GameOptionsData.GameSearchOptions.FilterContainsMap(4))
-                    GameOptionsData.GameSearchOptions.ToggleMapFilter(4);
-                if (GameOptionsData.GameSearchOptions.FilterContainsMap(6))
-                    GameOptionsData.GameSearchOptions.ToggleMapFilter(6);
+                if (GameOptionsManager.Instance.GameSearchOptions.FilterContainsMap(4))
+                    GameOptionsManager.Instance.GameSearchOptions.ToggleMapFilter(4);
+                if (GameOptionsManager.Instance.GameSearchOptions.FilterContainsMap(6))
+                    GameOptionsManager.Instance.GameSearchOptions.ToggleMapFilter(6);
                 if (IsSNROn)
                 {
-                    foreach (SpriteRenderer render in __instance.MapButtons)
-                        if (render.name != "IsSNROnlyRoom")
-                            render.transform.parent.gameObject.SetActive(false);
+                    foreach (MapFilterButton btn in __instance.MapMenu.MapButtons)
+                        if (btn.ButtonImage.name != "IsSNROnlyRoom")
+                            btn.transform.parent.gameObject.SetActive(false);
                     //他MODで実装する場合はここのIdを変えてください。(同じMOD同士でマッチングするのを防ぐため)
                     //後、他の部分のIdも変えてね
                     __instance.SetMap(6);
                     IsSNROnlyRoomButtonRender.color = Color.white;
-                    Logger.Info(GameOptionsData.GameSearchOptions.MapId.ToString(), "現在のMapId:IsSNROn");
+                    Logger.Info(GameOptionsManager.Instance.GameSearchOptions.MapId.ToString(), "現在のMapId:IsSNROn");
                 }
                 else
                 {
-                    foreach (SpriteRenderer render in __instance.MapButtons)
-                        if (render.name != "IsSNROnlyRoom")
-                            render.transform.parent.gameObject.SetActive(true);
+                    foreach (MapFilterButton btn in __instance.MapMenu.MapButtons)
+                        if (btn.ButtonImage.name != "IsSNROnlyRoom")
+                            btn.transform.parent.gameObject.SetActive(false);
                     __instance.SetMap(0);
                     __instance.SetMap(1);
                     __instance.SetMap(2);
-                    if (!GameOptionsData.GameSearchOptions.FilterContainsMap(4))
+                    if (!GameOptionsManager.Instance.GameSearchOptions.FilterContainsMap(4))
                         __instance.SetMap(4);
                     IsSNROnlyRoomButtonRender.color = Palette.DisabledGrey;
-                    Logger.Info(GameOptionsData.GameSearchOptions.MapId.ToString(), "現在のMapId:IsSNROFF");
+                    Logger.Info(GameOptionsManager.Instance.GameSearchOptions.MapId.ToString(), "現在のMapId:IsSNROFF");
                 }
-            }));
+            }
         }
     }
 }

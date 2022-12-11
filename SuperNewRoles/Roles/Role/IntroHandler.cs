@@ -1,3 +1,5 @@
+using AmongUs.GameOptions;
+
 namespace SuperNewRoles.Roles;
 
 class IntroHandler
@@ -5,7 +7,7 @@ class IntroHandler
     public static void Handler()
     {
         float time = 2f;
-        if (PlayerControl.GameOptions.KillCooldown >= 10)
+        if (GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown) >= 10)
         {
             time = 7f;
         }

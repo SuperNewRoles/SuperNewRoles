@@ -12,22 +12,22 @@ public class Clairvoyant
         public static void Postfix()
         {
             SuperNewRolesPlugin.Logger.LogInfo(count);
-            SuperNewRolesPlugin.Logger.LogInfo(MapOptions.MapOption.Timer);
-            if (MapOptions.MapOption.Timer >= 0.1 && !RoleClass.IsMeeting)
+            SuperNewRolesPlugin.Logger.LogInfo(MapOption.MapOption.Timer);
+            if (MapOption.MapOption.Timer >= 0.1 && !RoleClass.IsMeeting)
             {
-                Camera.main.orthographicSize = MapOptions.MapOption.CameraDefault * 3f;
-                FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize = MapOptions.MapOption.Default * 3f;
+                Camera.main.orthographicSize = MapOption.MapOption.CameraDefault * 3f;
+                FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize = MapOption.MapOption.Default * 3f;
                 if (count == 0)
                 {
                     count = 1;
-                    MapOptions.MapOption.Timer = 0;
+                    MapOption.MapOption.Timer = 0;
                     return;
                 }
             }
             else
             {
-                Camera.main.orthographicSize = MapOptions.MapOption.CameraDefault;
-                FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize = MapOptions.MapOption.Default;
+                Camera.main.orthographicSize = MapOption.MapOption.CameraDefault;
+                FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize = MapOption.MapOption.Default;
             }
         }
     }

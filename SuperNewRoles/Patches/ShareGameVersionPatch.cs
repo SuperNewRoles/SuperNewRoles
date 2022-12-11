@@ -55,6 +55,7 @@ class ShareGameVersion
             timer = 600f;
             RPCTimer = 1f;
             notcreateroom = false;
+            kickingTimer = 0f;
             RoleClass.ClearAndReloadRoles();
             GameStartManagerUpdatePatch.Proce = 0;
             GameStartManagerUpdatePatch.LastBlockStart = false;
@@ -93,6 +94,7 @@ class ShareGameVersion
             }
             string message = "";
             bool blockStart = false;
+            bool hostModeInVanilla = false;
             if (AmongUsClient.Instance.AmHost)
             {
                 if (CustomOptionHolder.DisconnectNotPCOption.GetBool())
@@ -106,7 +108,7 @@ class ShareGameVersion
                     }
                 }
                 // アガルタ反映関係の警告文制御
-                if ((CustomMapNames)PlayerControl.GameOptions.MapId == CustomMapNames.Mira && //マップ設定がMiraである かつ
+                if ((CustomMapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == CustomMapNames.Mira && //マップ設定がMiraである かつ
                     CustomOptionHolder.enableAgartha.GetBool() && //「アガルタ」が有効である かつ
                     !ModeHandler.IsMode(ModeId.Default, false) && //モードがデフォルトでない(特殊モードである) かつ
                     !CustomOptionHolder.DisconnectNotPCOption.GetBool() && //「PC以外キック」が無効(バニラをキックする状態)である かつ
@@ -131,7 +133,7 @@ class ShareGameVersion
                     int diff = SuperNewRolesPlugin.ThisVersion.CompareTo(PV.version);
                     if (diff > 0)
                     {
-                        message += $"{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
+                        message += $"\n{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
                         blockStart = true;
                     }
                     else if (diff < 0)
@@ -141,7 +143,7 @@ class ShareGameVersion
                     }
                     else if (!PV.GuidMatches())
                     { // version presumably matches, check if Guid matches
-                        message += $"{ModTranslation.GetString("ErrorHostGuidMatches")} (v{VersionPlayers[client.Id].version})\n";
+                        message += $"\n{ModTranslation.GetString("ErrorHostGuidMatches")} (v{VersionPlayers[client.Id].version})\n";
                         blockStart = true;
                     }
                 }
@@ -156,27 +158,11 @@ class ShareGameVersion
                         SceneChanger.ChangeScene("MainMenu");
                     }
 
-                    message += String.Format(ModTranslation.GetString("KickReasonHostNoVersion"), Math.Round(10 - kickingTimer));
+                    message += $"\n{String.Format(ModTranslation.GetString("KickReasonHostNoVersion"), Math.Round(10 - kickingTimer))}\n";
                     __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
                 }
-                else
-                {
-                    __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
-                    if (__instance.startState != GameStartManager.StartingStates.Countdown && RPCTimer <= 0)
-                    {
-                        message += String.Empty;
-                    }
-                    else
-                    {
-                        message += $"Starting in {(int)RPCTimer + 1}";
-                        if (RPCTimer <= 0)
-                        {
-                            message = String.Empty;
-                        }
-                    }
-                }
             }
-            if (ConfigRoles.IsVersionErrorView.Value)
+            if (ConfigRoles.IsVersionErrorView.Value || AmongUsClient.Instance.AmHost)
             {
                 foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.ToArray())
                 {
@@ -184,8 +170,14 @@ class ShareGameVersion
                     {
                         if (!VersionPlayers.ContainsKey(client.Id))
                         {
-                            message += string.Format(ModTranslation.GetString("ErrorClientNoVersion"), client.PlayerName) + "\n";
-                            blockStart = true;
+                            if (ConfigRoles.IsVersionErrorView.Value || ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false))
+                                message += $"{string.Format(ModTranslation.GetString("ErrorClientNoVersion"), client.PlayerName)} \n";
+
+                            // HostModeでないなら、バニラ参加者がいる場合開始不可能にする。
+                            if (ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false)) blockStart = true;
+                            /*  そうではない(HostMode)ならば、
+                                vanilla参加者がいて且つエラーを表示する設定が有効である場合、Messageだけを表示できるようにする。*/
+                            else hostModeInVanilla = true;
                         }
                         else
                         {
@@ -210,7 +202,24 @@ class ShareGameVersion
                     }
                 }
             }
-            if (blockStart)
+            if (AmongUsClient.Instance.AmHost)
+            {
+                if (!blockStart)
+                {
+                    // 参加者の導入状況に問題が無い時、開始ボタンと開始のテキストを表示する。(アップデート処理の負荷を下げる為、ifを使用)
+                    if (__instance.StartButton.enabled != true) __instance.StartButton.enabled = __instance.startLabelText.enabled = true;
+                }
+                else
+                {
+                    message = $"{ModTranslation.GetString("ErrorClientCanNotPley")} \n" + message;
+                    //開始ボタンを押せないようにする。
+                    __instance.ResetStartState();
+
+                    // 参加者の導入状況に問題がある時、開始ボタンと開始のテキストを非表示にする。(アップデート処理の負荷を下げる為、ifを使用)
+                    if (__instance.StartButton.enabled != false) __instance.StartButton.enabled = __instance.startLabelText.enabled = false;
+                }
+            }
+            if (blockStart || hostModeInVanilla)
             {
                 __instance.GameStartText.text = message;
                 __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
