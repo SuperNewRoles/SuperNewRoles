@@ -1010,8 +1010,8 @@ public class CustomOptionHolder
 
         IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
-        IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true);
-
+        IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true, isHidden:true);
+        IsOldMode.selection = 0;
 
         if (ConfigRoles.DebugMode.Value)
         {

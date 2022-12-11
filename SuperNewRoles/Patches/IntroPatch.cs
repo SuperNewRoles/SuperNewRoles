@@ -112,6 +112,7 @@ public class IntroPatch
                                 CachedPlayer.LocalPlayer.Data.IsDead = false;
                                 CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
                                 CachedPlayer.LocalPlayer.Data.IsDead = true;
+                                FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.CrewmateGhost);
                                 foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                                 {
                                     if (p.PlayerControl.IsImpostor())
@@ -119,7 +120,6 @@ public class IntroPatch
                                         p.Data.Role.NameColor = RoleClass.ImpostorRed;
                                     }
                                 }
-                                FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
                             }));
                         }
                         Create(button, p);

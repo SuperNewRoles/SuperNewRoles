@@ -1051,6 +1051,7 @@ public static class RPCProcedure
         var player = ModHelpers.PlayerById(playerid);
         if (player == null) return;
         player.Revive();
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, player.IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate);
         DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == playerid);
         FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Alive;
     }

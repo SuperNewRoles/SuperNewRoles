@@ -164,7 +164,7 @@ public class CustomButton
             SetActive(false);
             return;
         }
-        SetActive(hudManager.UseButton.isActiveAndEnabled);
+        SetActive(hudManager.UseButton.isActiveAndEnabled || hudManager.PetButton.isActiveAndEnabled);
 
         actionButton.graphic.sprite = Sprite;
         if (showButtonText && buttonText != "")
