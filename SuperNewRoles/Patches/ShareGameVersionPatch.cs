@@ -55,6 +55,7 @@ class ShareGameVersion
             timer = 600f;
             RPCTimer = 1f;
             notcreateroom = false;
+            kickingTimer = 0f;
             RoleClass.ClearAndReloadRoles();
             GameStartManagerUpdatePatch.Proce = 0;
             GameStartManagerUpdatePatch.LastBlockStart = false;
