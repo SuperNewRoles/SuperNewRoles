@@ -1,4 +1,5 @@
 using System;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;

@@ -17,7 +17,7 @@ public class AmongUsClientOnPlayerJoinedPatch
 {
     public static void Postfix(PlayerPhysics __instance)
     {
-        if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
+        if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
         {
             string text =
                 ModTranslation.GetString("WelcomeMessage1") + "\n" +

@@ -1028,7 +1028,7 @@ public class CustomOptionHolder
         ZoomCoolTime = Create(621, false, CustomOptionType.Generic, "clairvoyantCoolTime", 15f, 1f, 120f, 2.5f, ClairvoyantZoom, format: "unitCouples");
         ZoomDurationTime = Create(622, false, CustomOptionType.Generic, "clairvoyantDurationTime", 5f, 1f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
 
-        MapOptions.MapOption.LoadOption();
+        MapOption.MapOption.LoadOption();
 
         //SoothSayerRate = Create(2, Cs(SoothSayer.color,"soothName"),rates, null, true);
         Mode.ModeHandler.OptionLoad();

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
@@ -171,7 +172,7 @@ class Main
             if (players.Count <= 0)
             {
                 __instance.enabled = false;
-                ShipStatus.RpcEndGame(GameOverReason.HumansByVote, false);
+                GameManager.Instance.RpcEndGame(GameOverReason.HumansByVote, false);
                 return true;
             }
             foreach (List<PlayerControl> teams in Teams)
@@ -211,7 +212,7 @@ class Main
             }
             catch { SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal:Error] Winners Erroe"); }
             __instance.enabled = false;
-            ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.HumansByTask, false);
             return true;
         }
         else
@@ -239,13 +240,13 @@ class Main
                         p.RpcSetRole(RoleTypes.GuardianAngel);
                     }
                 }
-                ShipStatus.RpcEndGame(GameOverReason.ImpostorByKill, false);
+                GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByKill, false);
                 return true;
             }
             else if (alives == 0)
             {
                 __instance.enabled = false;
-                ShipStatus.RpcEndGame(GameOverReason.HumansByVote, false);
+                GameManager.Instance.RpcEndGame(GameOverReason.HumansByVote, false);
                 return true;
             }
         }

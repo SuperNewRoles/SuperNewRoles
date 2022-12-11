@@ -18,13 +18,13 @@ public static class CheckEndGame
         if (impostorwin)
         {
             __instance.enabled = false;
-            ShipStatus.RpcEndGame(GameOverReason.ImpostorByKill, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByKill, false);
             return false;
         }
         else if (GameData.Instance.TotalTasks > 0 && GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
         {
             __instance.enabled = false;
-            ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.HumansByTask, false);
             return false;
         }
         else

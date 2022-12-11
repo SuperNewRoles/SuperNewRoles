@@ -1,6 +1,8 @@
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using UnityEngine;
+using UnityEngine.UI;
 
 //TOHより!
 namespace SuperNewRoles.Patches;
@@ -8,7 +10,7 @@ namespace SuperNewRoles.Patches;
 [HarmonyPatch(typeof(GameOptionsData), nameof(GameOptionsData.SetRecommendations))]
 public static class ChangeRecommendedSettingPatch
 {
-    public static bool Prefix(GameOptionsData __instance, int numPlayers, GameModes modes)
+    public static bool Prefix(GameOptionsData __instance, int numPlayers, bool isOnline)
     {
         //通常モードとSHRモード
         numPlayers = Mathf.Clamp(numPlayers, 4, 15);
@@ -20,26 +22,27 @@ public static class ChangeRecommendedSettingPatch
         __instance.NumLongTasks = 3;
         __instance.NumShortTasks = 5;
         __instance.NumEmergencyMeetings = 1;
-        __instance.TaskBarMode = TaskBarMode.Invisible;
-        if (modes != GameModes.OnlineGame)
+        __instance.TaskBarMode = AmongUs.GameOptions.TaskBarMode.Invisible;
+        if (!isOnline)
             __instance.NumImpostors = GameOptionsData.RecommendedImpostors[numPlayers];
         __instance.KillDistance = 0;
         __instance.DiscussionTime = 0;
         __instance.VotingTime = 150;
-        __instance.isDefaults = true;
+        __instance.IsDefaults = true;
         __instance.ConfirmImpostor = false;
         __instance.VisualTasks = false;
-        __instance.EmergencyCooldown = (int)__instance.killCooldown - 15; //キルクールより15秒短く
-        __instance.RoleOptions.ShapeshifterCooldown = 10f;
-        __instance.RoleOptions.ShapeshifterDuration = 30f;
-        __instance.RoleOptions.ShapeshifterLeaveSkin = false;
-        __instance.RoleOptions.ImpostorsCanSeeProtect = false;
-        __instance.RoleOptions.ScientistCooldown = 15f;
-        __instance.RoleOptions.ScientistBatteryCharge = 5f;
-        __instance.RoleOptions.GuardianAngelCooldown = 60f;
-        __instance.RoleOptions.ProtectionDurationSeconds = 10f;
-        __instance.RoleOptions.EngineerCooldown = 30f;
-        __instance.RoleOptions.EngineerInVentMaxTime = 15f;
+        __instance.EmergencyCooldown = (int)__instance.KillCooldown - 15; //キルクールより15秒短く
+
+        __instance.SetFloat(FloatOptionNames.ShapeshifterCooldown, 10f);
+        __instance.SetFloat(FloatOptionNames.ShapeshifterDuration, 30f);
+        __instance.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
+        __instance.SetBool(BoolOptionNames.ImpostorsCanSeeProtect, false);
+        __instance.SetFloat(FloatOptionNames.ScientistCooldown, 15f);
+        __instance.SetFloat(FloatOptionNames.ScientistBatteryCharge, 5f);
+        __instance.SetFloat(FloatOptionNames.GuardianAngelCooldown, 60f);
+        __instance.SetFloat(FloatOptionNames.ProtectionDurationSeconds, 10f);
+        __instance.SetFloat(FloatOptionNames.EngineerCooldown, 30f);
+        __instance.SetFloat(FloatOptionNames.EngineerInVentMaxTime, 15f);
         switch (ModeHandler.GetMode(false))
         {
             //ハイドアンドシーク
@@ -59,7 +62,7 @@ public static class ChangeRecommendedSettingPatch
                 __instance.PlayerSpeedMod = 1.75f;
                 __instance.ImpostorLightMod = 2f;
                 __instance.KillCooldown = 1f;
-                __instance.TaskBarMode = TaskBarMode.Invisible;
+                __instance.TaskBarMode = AmongUs.GameOptions.TaskBarMode.Invisible;
                 break;
             //ゾンビモード
             case ModeId.Zombie:

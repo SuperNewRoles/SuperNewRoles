@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
@@ -17,6 +18,12 @@ class EndGameCheck
         if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
         if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
         if (CheckAndEndGameForSabotageWin(__instance)) return false;
+        if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
+        return false;
+    }
+    public static bool CheckEndGameHnSs(ShipStatus __instance, PlayerStatistics statistics)
+    {
+        if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
         if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
         return false;
     }
@@ -82,7 +89,7 @@ class EndGameCheck
         }
         FixedUpdate.SetRoleNames(true);
         __instance.enabled = false;
-        ShipStatus.RpcEndGame(reason, showAd);
+        GameManager.Instance.RpcEndGame(reason, showAd);
     }
     public static bool CheckAndEndGameForSabotageWin(ShipStatus __instance)
     {

@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Patches;
@@ -7,7 +8,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles;
 
 public static class SyncSetting
 {
-    public static GameOptionsData OptionData;
+    public static IGameOptions OptionData;
     public static void CustomSyncSettings(this PlayerControl player)
     {
         if (!AmongUsClient.Instance.AmHost) return;
@@ -16,56 +17,56 @@ public static class SyncSetting
         var optdata = OptionData.DeepCopy();
         if (player.IsCrewVision())
         {
-            optdata.ImpostorLightMod = optdata.CrewLightMod;
+            optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
             var switchSystemToiletFan = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
             if (switchSystemToiletFan != null && switchSystemToiletFan.IsActive)
             {
-                optdata.ImpostorLightMod /= 5;
+                optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) / 5);
             }
         }
         if (player.IsImpostorVision())
         {
-            optdata.CrewLightMod = optdata.ImpostorLightMod;
+            optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
             var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
             if (switchSystem2 != null && switchSystem2.IsActive)
             {
-                optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
+                optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
             }
         }
         if (player.IsZeroCoolEngineer())
         {
-            optdata.RoleOptions.EngineerCooldown = 0f;
-            optdata.RoleOptions.EngineerInVentMaxTime = 0f;
+            optdata.SetFloat(FloatOptionNames.EngineerCooldown, 0f);
+            optdata.SetFloat(FloatOptionNames.EngineerInVentMaxTime, 0f);
         }
         switch (role)
         {
             case RoleId.Sheriff:
-                optdata.KillCooldown = KillCoolSet(CustomOptionHolder.SheriffCoolTime.GetFloat());
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(CustomOptionHolder.SheriffCoolTime.GetFloat()));
                 break;
             case RoleId.Minimalist:
-                optdata.KillCooldown = KillCoolSet(RoleClass.Minimalist.KillCoolTime);
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Minimalist.KillCoolTime));
                 break;
             case RoleId.Samurai:
-                optdata.KillCooldown = KillCoolSet(RoleClass.Samurai.KillCoolTime);
-                optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Samurai.SwordCoolTime;
-                optdata.RoleOptions.ShapeshifterDuration = 1f;
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Samurai.KillCoolTime));
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.Samurai.SwordCoolTime);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, RoleClass.Samurai.SwordCoolTime);
                 break;
             case RoleId.God:
-                optdata.AnonymousVotes = !RoleClass.God.IsVoteView;
+                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.God.IsVoteView);
                 break;
             case RoleId.Observer:
-                optdata.AnonymousVotes = !RoleClass.Observer.IsVoteView;
+                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Observer.IsVoteView);
                 break;
             case RoleId.MadMaker:
                 if (!player.IsMod())
                 {
                     if (!RoleClass.MadMaker.IsImpostorLight)
                     {
-                        optdata.ImpostorLightMod = optdata.CrewLightMod;
+                        optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
                         var switchSystemMadMaker = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                         if (switchSystemMadMaker != null && switchSystemMadMaker.IsActive)
                         {
-                            optdata.ImpostorLightMod /= 5;
+                            optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) / 5);
                         }
                     }
                 }
@@ -73,123 +74,123 @@ public static class SyncSetting
                 {
                     if (RoleClass.MadMaker.IsImpostorLight)
                     {
-                        optdata.CrewLightMod = optdata.ImpostorLightMod;
+                        optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
                         var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                         if (switchSystem2 != null && switchSystem2.IsActive)
                         {
-                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
+                            optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
                         }
                     }
                 }
-                optdata.KillCooldown = RoleClass.MadMaker.CreatePlayers.Contains(player.PlayerId) ? -1f : 0.001f;
+                optdata.SetFloat(FloatOptionNames.KillCooldown, RoleClass.MadMaker.CreatePlayers.Contains(player.PlayerId) ? -1f : 0.001f);
                 break;
             case RoleId.truelover:
-                optdata.KillCooldown = RoleClass.Truelover.CreatePlayers.Contains(player.PlayerId) ? -1f : 0.001f;
+                optdata.SetFloat(FloatOptionNames.KillCooldown, RoleClass.Truelover.CreatePlayers.Contains(player.PlayerId) ? -1f : 0.001f);
                 break;
             case RoleId.SerialKiller:
-                optdata.killCooldown = KillCoolSet(RoleClass.SerialKiller.KillTime);
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.SerialKiller.KillTime));
                 break;
             case RoleId.OverKiller:
-                optdata.killCooldown = KillCoolSet(RoleClass.OverKiller.KillCoolTime);
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.OverKiller.KillCoolTime));
                 break;
             case RoleId.FalseCharges:
-                optdata.killCooldown = KillCoolSet(RoleClass.FalseCharges.CoolTime);
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.FalseCharges.CoolTime));
                 break;
             case RoleId.RemoteSheriff:
-                optdata.RoleOptions.ShapeshifterDuration = 1f;
-                optdata.RoleOptions.ShapeshifterCooldown = KillCoolSet(RoleClass.RemoteSheriff.KillCoolTime);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, KillCoolSet(RoleClass.RemoteSheriff.KillCoolTime));
                 if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId) && RoleClass.RemoteSheriff.KillCount[player.PlayerId] < 1)
                 {
-                    optdata.RoleOptions.ShapeshifterDuration = 1f;
-                    optdata.RoleOptions.ShapeshifterCooldown = -1f;
+                    optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
+                    optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, -1f);
                 }
-                optdata.killCooldown = player.IsMod() ? KillCoolSet(RoleClass.RemoteSheriff.KillCoolTime) : -1f;
+                optdata.SetFloat(FloatOptionNames.KillCooldown, player.IsMod() ? KillCoolSet(RoleClass.RemoteSheriff.KillCoolTime) : -1f);
                 break;
             case RoleId.Arsonist:
-                optdata.RoleOptions.ShapeshifterCooldown = 1f;
-                optdata.RoleOptions.ShapeshifterDuration = 1f;
-                optdata.KillCooldown = KillCoolSet(RoleClass.Arsonist.CoolTime);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 1f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Arsonist.CoolTime));
                 break;
             case RoleId.Nocturnality:
                 var switchSystemNocturnality = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                if (switchSystemNocturnality == null || !switchSystemNocturnality.IsActive) optdata.CrewLightMod /= 5;
-                else optdata.CrewLightMod *= 5;
+                if (switchSystemNocturnality == null || !switchSystemNocturnality.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod) / 5);
+                else optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod) * 5);
                 break;
             case RoleId.SelfBomber:
-                optdata.RoleOptions.ShapeshifterCooldown = 0.000001f;
-                optdata.RoleOptions.ShapeshifterDuration = 0.000001f;
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0.000001f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 0.000001f);
                 break;
             case RoleId.Survivor:
-                optdata.killCooldown = KillCoolSet(RoleClass.Survivor.KillCoolTime);
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Survivor.KillCoolTime));
                 break;
             case RoleId.Jackal:
                 if (!player.IsMod())
                 {
                     if (!RoleClass.Jackal.IsImpostorLight)
                     {
-                        optdata.ImpostorLightMod = optdata.CrewLightMod;
+                        optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
                         var switchSystemJackal = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                        if (switchSystemJackal != null && switchSystemJackal.IsActive) optdata.ImpostorLightMod /= 5;
+                        if (switchSystemJackal != null && switchSystemJackal.IsActive) optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) / 5);
                     }
                 }
                 else
                 {
                     if (RoleClass.Jackal.IsImpostorLight)
                     {
-                        optdata.CrewLightMod = optdata.ImpostorLightMod;
+                        optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
                         var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                        if (switchSystem2 != null && switchSystem2.IsActive) optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
+                        if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
                     }
                 }
-                optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCooldown);
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Jackal.KillCooldown));
                 break;
             case RoleId.Demon:
-                optdata.KillCooldown = KillCoolSet(RoleClass.Demon.CoolTime);
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Demon.CoolTime));
                 break;
             case RoleId.ToiletFan:
-                optdata.RoleOptions.ShapeshifterCooldown = RoleClass.ToiletFan.ToiletCool;
-                optdata.RoleOptions.ShapeshifterDuration = 1f;
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.ToiletFan.ToiletCool);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
             case RoleId.SatsumaAndImo:
                 if (RoleClass.SatsumaAndImo.TeamNumber != 1)//クルーじゃないとき
                 {
-                    optdata.CrewLightMod = optdata.ImpostorLightMod;
+                    optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
                     var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                     if (switchSystem2 != null && switchSystem2.IsActive)
                     {
-                        optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
+                        if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
                     }
                 }
                 break;
             case RoleId.NiceButtoner:
-                optdata.RoleOptions.ShapeshifterDuration = 1f;
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
             case RoleId.EvilButtoner:
-                optdata.RoleOptions.ShapeshifterDuration = 1f;
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
             case RoleId.Doppelganger:
-                optdata.RoleOptions.ShapeshifterDuration = RoleClass.Doppelganger.DurationTime;
-                optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Doppelganger.CoolTime;
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.Doppelganger.CoolTime);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, RoleClass.Doppelganger.DurationTime);
                 break;
             case RoleId.DarkKiller:
-                optdata.killCooldown = KillCoolSet(CustomOptionHolder.DarkKillerKillCoolTime.GetFloat());
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(CustomOptionHolder.DarkKillerKillCoolTime.GetFloat()));
                 break;
             case RoleId.Camouflager:
-                optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Camouflager.CoolTime >= 5f ? RoleClass.Camouflager.CoolTime : 5f;
-                optdata.RoleOptions.ShapeshifterDuration = 1f;
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.Camouflager.CoolTime >= 5f ? RoleClass.Camouflager.CoolTime : 5f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 if (RoleClass.Camouflager.IsCamouflage)
                 {
-                    optdata.RoleOptions.ShapeshifterCooldown =
+                    optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown,
                             RoleClass.Camouflager.CoolTime >= 5f ? (RoleClass.Camouflager.CoolTime + RoleClass.Camouflager.DurationTime - 2f)
-                                                                 : (3f + RoleClass.Camouflager.DurationTime);
+                                                                 : (3f + RoleClass.Camouflager.DurationTime));
                 }
                 break;
         }
-        if (player.IsDead()) optdata.AnonymousVotes = false;
-        optdata.RoleOptions.ShapeshifterLeaveSkin = false;
-        if (player.AmOwner) PlayerControl.GameOptions = optdata;
+        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
+        optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
+        if (player.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
-        writer.WriteBytesAndSize(optdata.ToBytes(5));
+        writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static float KillCoolSet(float cool) { return cool <= 0 ? 0.001f : cool; }
@@ -203,24 +204,24 @@ public static class SyncSetting
         switch (role)
         {
             case RoleId.Demon:
-                optdata.KillCooldown = KillCoolSet(RoleClass.Demon.CoolTime) * 2;
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Demon.CoolTime) * 2);
                 break;
             case RoleId.Arsonist:
-                optdata.KillCooldown = KillCoolSet(RoleClass.Arsonist.CoolTime) * 2;
-                optdata.ImpostorLightMod = optdata.CrewLightMod;
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Arsonist.CoolTime) * 2);
+                optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
                 var switchSystemArsonist = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                if (switchSystemArsonist != null && switchSystemArsonist.IsActive) optdata.ImpostorLightMod /= 5;
-                optdata.RoleOptions.ShapeshifterCooldown = 1f;
-                optdata.RoleOptions.ShapeshifterDuration = 1f;
+                if (switchSystemArsonist != null && switchSystemArsonist.IsActive) optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) / 5);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 1f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
             default:
                 return;
         }
-        if (player.IsDead()) optdata.AnonymousVotes = false;
-        optdata.RoleOptions.ShapeshifterLeaveSkin = false;
-        if (player.AmOwner) PlayerControl.GameOptions = optdata;
+        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
+        optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
+        if (player.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
-        writer.WriteBytesAndSize(optdata.ToBytes(5));
+        writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static void GamblersetCool(PlayerControl p)
@@ -228,28 +229,28 @@ public static class SyncSetting
         if (!AmongUsClient.Instance.AmHost) return;
         var role = p.GetRole();
         var optdata = OptionData.DeepCopy();
-        optdata.KillCooldown = RoleClass.EvilGambler.GetSuc() ? KillCoolSet(RoleClass.EvilGambler.SucCool) : KillCoolSet(RoleClass.EvilGambler.NotSucCool);
-        if (p.AmOwner) PlayerControl.GameOptions = optdata;
+        optdata.SetFloat(FloatOptionNames.KillCooldown, RoleClass.EvilGambler.GetSuc() ? KillCoolSet(RoleClass.EvilGambler.SucCool) : KillCoolSet(RoleClass.EvilGambler.NotSucCool));
+        if (p.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, p.GetClientId());
-        writer.WriteBytesAndSize(optdata.ToBytes(5));
+        writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static void DoppelgangerCool(PlayerControl player, PlayerControl target)
     {
         if (!AmongUsClient.Instance.AmHost) return;
         var optdata = OptionData.DeepCopy();
-        optdata.RoleOptions.ShapeshifterDuration = RoleClass.Doppelganger.DurationTime;
-        optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Doppelganger.CoolTime;
+        optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, RoleClass.Doppelganger.DurationTime);
+        optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.Doppelganger.CoolTime);
         if (RoleClass.Doppelganger.Targets.ContainsKey(player.PlayerId))
         {
-            optdata.KillCooldown = KillCoolSet(RoleClass.Doppelganger.Targets[player.PlayerId].PlayerId == target.PlayerId ?
+            optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Doppelganger.Targets[player.PlayerId].PlayerId == target.PlayerId ?
                                                    RoleClass.Doppelganger.SucCool :
-                                                   RoleClass.Doppelganger.NotSucCool);
+                                                   RoleClass.Doppelganger.NotSucCool));
         }
-        else optdata.KillCooldown = KillCoolSet(RoleClass.Doppelganger.NotSucCool);
-        if (player.AmOwner) PlayerControl.GameOptions = optdata;
+        else optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Doppelganger.NotSucCool));
+        if (player.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
-        writer.WriteBytesAndSize(optdata.ToBytes(5));
+        writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static void CustomSyncSettings()
@@ -262,10 +263,10 @@ public static class SyncSetting
             }
         }
     }
-    public static GameOptionsData DeepCopy(this GameOptionsData opt)
+    public static IGameOptions DeepCopy(this IGameOptions opt)
     {
-        var optByte = opt.ToBytes(5);
-        return GameOptionsData.FromBytes(optByte);
+        var optByte = GameOptionsManager.Instance.gameOptionsFactory.ToBytes(opt);
+        return GameOptionsManager.Instance.gameOptionsFactory.FromBytes(optByte);
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
     public class StartGame
@@ -274,9 +275,9 @@ public static class SyncSetting
         {
             if (CustomOptionHolder.IsSNROnlySearch.GetBool())
             {
-                PlayerControl.GameOptions.MapId = SNROnlySearch.currentMapId;
+                GameOptionsManager.Instance.CurrentGameOptions.SetByte(ByteOptionNames.MapId, SNROnlySearch.currentMapId);
             }
-            OptionData = PlayerControl.GameOptions.DeepCopy();
+            OptionData = GameOptionsManager.Instance.CurrentGameOptions.DeepCopy();
             OnGameEndPatch.PlayerData = new();
         }
     }

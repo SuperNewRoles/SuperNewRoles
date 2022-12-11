@@ -141,7 +141,7 @@ public static class Arsonist
         {
             SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
             __instance.enabled = false;
-            ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
+            GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
             return true;
         }
         return false;

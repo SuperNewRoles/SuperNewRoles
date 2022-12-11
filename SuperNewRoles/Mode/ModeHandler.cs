@@ -189,7 +189,7 @@ public static class ModeHandler
     }
     public static bool IsMode(params ModeId[] modes)
     {
-        if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)))
+        if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay || (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)))
         {
             foreach (ModeId mode in modes)
             {
@@ -211,7 +211,7 @@ public static class ModeHandler
     }
     public static bool IsMode(ModeId mode, bool IsChache = true)
     {
-        if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || !PlayerControlHepler.IsMod(AmongUsClient.Instance.HostId))
+        if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay || !PlayerControlHepler.IsMod(AmongUsClient.Instance.HostId))
             return mode is ModeId.Default;
         if (mode is ModeId.HideAndSeek && IsChache)
             return IsMode(ModeId.HideAndSeek, false);
@@ -244,6 +244,11 @@ public static class ModeHandler
         else if (IsMode(ModeId.Detective)) return Detective.WinCheckPatch.CheckEndGame(__instance);
         else if (IsMode(ModeId.CopsRobbers)) return CopsRobbers.Main.EndGameCheck(__instance);
         else if (IsMode(ModeId.CopsRobbers)) return CopsRobbers.CheckEndGame.EndGameCheck(__instance);
+        return false;
+    }
+    public static bool EndGameCheckHnSs(ShipStatus __instance, PlayerStatistics statistics)
+    {
+        if (IsMode(ModeId.SuperHostRoles)) return EndGameCheck.CheckEndGameHnSs(__instance, statistics);
         return false;
     }
     public static bool IsBlockVanillaRole()
