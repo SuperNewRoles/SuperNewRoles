@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using SuperNewRoles.Mode.SuperHostRoles;
 
 namespace SuperNewRoles.Mode.NotImpostorCheck;

@@ -47,7 +47,7 @@ public static class Main
         };
     public static MapNames GetMap()
     {
-        int mapid = PlayerControl.GameOptions.MapId;
+        int mapid = GameOptionsManager.Instance.CurrentGameOptions.MapId;
         return (MapNames)mapid;
     }
     public static bool EndGameCheck(ShipStatus __instance)
@@ -68,19 +68,19 @@ public static class Main
         if (impostorwin)
         {
             __instance.enabled = false;
-            ShipStatus.RpcEndGame(GameOverReason.ImpostorByKill, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByKill, false);
             return true;
         }
         else if (GameData.Instance.TotalTasks > 0 && GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
         {
             __instance.enabled = false;
-            ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.HumansByTask, false);
             return true;
         }
         else if (ImpostorCount <= 0)
         {
             __instance.enabled = false;
-            ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
+            GameManager.Instance.RpcEndGame(GameOverReason.HumansByTask, false);
             return true;
         }
         else if (SuperHostRoles.EndGameCheck.CheckAndEndGameForWorkpersonWin(__instance))
@@ -209,7 +209,7 @@ public static class Main
             bool IsMoveOK = true;
             List<PlayerControl> players = new();
             int NotLoadedCount = 0;
-            if (PlayerControl.GameOptions.MapId == 4)
+            if (GameOptionsManager.Instance.CurrentGameOptions.MapId == 4)
             {
                 foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                 {
@@ -240,7 +240,7 @@ public static class Main
             int i = 0;
             foreach (PlayerControl p in players)
             {
-                if (PlayerControl.GameOptions.MapId == 4)
+                if (GameOptionsManager.Instance.CurrentGameOptions.MapId == 4)
                 {
                     p.RpcSnapTo(new Vector2(-30, 30));
                     i++;
@@ -287,7 +287,7 @@ public static class Main
             int i = 0;
             foreach (CachedPlayer p in CachedPlayer.AllPlayers)
             {
-                if (PlayerControl.GameOptions.MapId == 4 && p.PlayerControl.IsImpostor())
+                if (GameOptionsManager.Instance.CurrentGameOptions.MapId == 4 && p.PlayerControl.IsImpostor())
                 {
                     p.PlayerControl.RpcSnapTo(new Vector2(-30, 30));
                     i++;
@@ -299,7 +299,7 @@ public static class Main
                 {
                     p.RpcSetName(p.GetDefaultName());
                     if (CopsRobbersOptions.CRHideName.GetBool() && CopsRobbersOptions.CopsRobbersMode.GetBool()) ModeHandler.HideName();
-                    if (PlayerControl.GameOptions.MapId == 4 && p.IsImpostor())
+                    if (GameOptionsManager.Instance.CurrentGameOptions.MapId == 4 && p.IsImpostor())
                     {
                         p.RpcSnapTo(GetPosition(GetRandomSpawnPosition(p)));
                     }

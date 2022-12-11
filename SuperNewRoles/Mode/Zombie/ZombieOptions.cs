@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Mode.SuperHostRoles;
 
@@ -28,13 +29,13 @@ public class ZombieOptions
     public static void FirstChangeSettings()
     {
         var optdata = SyncSetting.OptionData.DeepCopy();
-        optdata.CrewLightMod = GetSpeed(ZombieCommingLightOption.GetFloat());
-        optdata.ImpostorLightMod = GetSpeed(ZombieCommingSpeedOption.GetFloat());
+        optdata.SetFloat(FloatOptionNames.CrewLightMod, GetSpeed(ZombieCommingLightOption.GetFloat()));
+        optdata.SetFloat(FloatOptionNames.ImpostorLightMod, GetSpeed(ZombieCommingSpeedOption.GetFloat()));
         foreach (PlayerControl player in CachedPlayer.AllPlayers)
         {
-            if (player.AmOwner) PlayerControl.GameOptions = optdata;
+            if (player.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
-            writer.WriteBytesAndSize(optdata.ToBytes(5));
+            writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
     }
@@ -44,19 +45,19 @@ public class ZombieOptions
 
         if (player.IsZombie())
         {
-            optdata.ImpostorLightMod = GetSpeed(ZombieLight);
-            optdata.PlayerSpeedMod = GetSpeed(ZombieSpeed);
-            optdata.CrewLightMod = GetSpeed(ZombieLight);
-            optdata.PlayerSpeedMod = GetSpeed(ZombieSpeed);
+            optdata.SetFloat(FloatOptionNames.ImpostorLightMod, GetSpeed(ZombieLight));
+            optdata.SetFloat(FloatOptionNames.PlayerSpeedMod, GetSpeed(ZombieSpeed));
+            optdata.SetFloat(FloatOptionNames.CrewLightMod, GetSpeed(ZombieLight));
+            optdata.SetFloat(FloatOptionNames.PlayerSpeedMod, GetSpeed(ZombieSpeed));
         }
         else
         {
-            optdata.CrewLightMod = GetSpeed(PoliceLight);
-            optdata.PlayerSpeedMod = GetSpeed(PoliceSpeed);
+            optdata.SetFloat(FloatOptionNames.CrewLightMod, GetSpeed(PoliceLight));
+            optdata.SetFloat(FloatOptionNames.PlayerSpeedMod, GetSpeed(PoliceSpeed));
         }
-        if (player.AmOwner) PlayerControl.GameOptions = optdata;
+        if (player.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
-        writer.WriteBytesAndSize(optdata.ToBytes(5));
+        writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static float ZombieLight;

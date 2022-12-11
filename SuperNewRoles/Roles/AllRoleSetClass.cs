@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
@@ -82,7 +83,7 @@ class RoleManagerSelectRolesPatch
                     SelectPlayers.Add(player);
                 }
             }
-            for (int i = 0; i < PlayerControl.GameOptions.NumImpostors; i++)
+            for (int i = 0; i < GameOptionsManager.Instance.CurrentGameOptions.NumImpostors; i++)
             {
                 if (SelectPlayers.Count >= 1)
                 {
@@ -995,7 +996,7 @@ class AllRoleSetClass
         foreach (IntroData intro in IntroData.IntroList)
         {
             if (intro.RoleId != RoleId.DefaultRole &&
-                (intro.RoleId != RoleId.Nun || (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship)
+                (intro.RoleId != RoleId.Nun || (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Airship)
                 && !intro.IsGhostRole
                 && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))
                 && intro.RoleId is not RoleId.GM

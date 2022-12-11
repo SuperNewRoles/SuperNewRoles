@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using SuperNewRoles.Mode.SuperHostRoles;
 
 namespace SuperNewRoles.Mode.CopsRobbers;
@@ -16,7 +17,7 @@ public class RoleSelectHandler
                 SelectPlayers.Add(player);
             }
         }
-        for (int i = 0; i < PlayerControl.GameOptions.NumImpostors; i++)
+        for (int i = 0; i < GameOptionsManager.Instance.CurrentGameOptions.NumImpostors; i++)
         {
             if (SelectPlayers.Count >= 1)
             {

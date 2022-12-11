@@ -7,7 +7,7 @@ namespace SuperNewRoles.Roles;
 
 class HandleGhostRole
 {
-    [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.TryAssignRoleOnDeath))]
+    [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.AssignRoleOnDeath))]
     class AssignRole
     {
         public static bool Prefix([HarmonyArgument(0)] PlayerControl player)

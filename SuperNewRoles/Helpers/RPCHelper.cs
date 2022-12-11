@@ -1,4 +1,5 @@
 using System.Linq;
+using AmongUs.GameOptions;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.Mode;
@@ -71,10 +72,10 @@ public static class RPCHelper
         writer.Write(Open);
         writer.EndRPC();
     }
-    public static void RPCGameOptionsPrivate(GameOptionsData Data, PlayerControl target)
+    public static void RPCGameOptionsPrivate(IGameOptions Data, PlayerControl target)
     {
         MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, 2, SendOption.None, target.GetClientId());
-        messageWriter.WriteBytesAndSize(Data.ToBytes(5));
+        messageWriter.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(Data));
         messageWriter.EndMessage();
     }
     /// <summary>
@@ -107,7 +108,7 @@ public static class RPCHelper
             __instance.NetTransform.SnapTo(position, minSid);
         }
         MessageWriter val = AmongUsClient.Instance.StartRpc(__instance.NetTransform.NetId, 21, SendOption.None);
-        __instance.NetTransform.WriteVector2(position, val);
+        //val.Write(position);
         val.Write(__instance.NetTransform.lastSequenceId);
         val.EndMessage();
     }

@@ -64,7 +64,7 @@ public class CustomButton
         PassiveButton button = actionButton.GetComponent<PassiveButton>();
         button.OnClick = new Button.ButtonClickedEvent();
         button.Colliders = new Collider2D[] { button.GetComponent<BoxCollider2D>() };
-
+        if (actionButton.usesRemainingText != null) actionButton.usesRemainingText.transform.parent.gameObject.SetActive(false);
         button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClickEvent()));
 
         LocalScale = actionButton.transform.localScale;
@@ -164,7 +164,7 @@ public class CustomButton
             SetActive(false);
             return;
         }
-        SetActive(hudManager.UseButton.isActiveAndEnabled);
+        SetActive(hudManager.UseButton.isActiveAndEnabled || hudManager.PetButton.isActiveAndEnabled);
 
         actionButton.graphic.sprite = Sprite;
         if (showButtonText && buttonText != "")
@@ -175,9 +175,7 @@ public class CustomButton
 
         if (hudManager.UseButton != null)
         {
-            Vector3 pos = hudManager.UseButton.transform.localPosition;
-            if (mirror) pos = new Vector3(-pos.x, pos.y, pos.z);
-            actionButton.transform.localPosition = pos + PositionOffset;
+            actionButton.transform.localPosition = PositionOffset;
             if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
             {
                 actionButton.transform.localScale = new(0.7f, 0.7f, 0.7f);

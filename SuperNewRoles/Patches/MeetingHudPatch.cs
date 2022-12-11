@@ -217,7 +217,7 @@ class CheckForEndVotingPatch
             for (var i = 0; i < __instance.playerStates.Length; i++)
             {
                 PlayerVoteArea ps = __instance.playerStates[i];
-                if (AmongUsClient.Instance.GameMode != GameModes.FreePlay || ps.TargetPlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                if (AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay || ps.TargetPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
                     if (!ModeHandler.IsMode(ModeId.BattleRoyal))
                     {
@@ -427,7 +427,7 @@ static class ExtendedMeetingHud
         {
             PlayerVoteArea ps = __instance.playerStates[i];
             if (ps == null) continue;
-            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay && ps.TargetPlayerId != CachedPlayer.LocalPlayer.PlayerId) continue;
+            if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay && ps.TargetPlayerId != CachedPlayer.LocalPlayer.PlayerId) continue;
             if (ps != null && ModHelpers.PlayerById(ps.TargetPlayerId) != null && ps.VotedFor != 252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != 254 && ModHelpers.PlayerById(ps.TargetPlayerId).IsAlive() && !ModHelpers.PlayerById(ps.TargetPlayerId).IsBot())
             {
                 int VoteNum = 1;

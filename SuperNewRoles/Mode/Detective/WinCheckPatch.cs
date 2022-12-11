@@ -14,7 +14,7 @@ class WinCheckPatch
     public static void CustomEndGame(ShipStatus __instance, GameOverReason reason, bool showAd)
     {
         __instance.enabled = false;
-        ShipStatus.RpcEndGame(reason, showAd);
+        GameManager.Instance.RpcEndGame(reason, showAd);
     }
     public static bool CheckAndEndGameForSabotageWin(ShipStatus __instance)
     {
