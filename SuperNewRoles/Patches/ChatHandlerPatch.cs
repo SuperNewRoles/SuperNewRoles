@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -281,13 +282,17 @@ class AddChatPatch
     static void RoleCommand(PlayerControl target = null, float SendTime = 1.5f)
     {
         if (!AmongUsClient.Instance.AmHost) return;
+        if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.SuperHostRoles, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
+        {
+            SendCommand(target, ModTranslation.GetString("Notassign"));
+            return;
+        }
         List<CustomRoleOption> EnableOptions = new();
         foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
         {
-            if (option.IsRoleEnable && option.isSHROn)
-            {
-                EnableOptions.Add(option);
-            }
+            if (!option.IsRoleEnable) continue;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
+            EnableOptions.Add(option);
         }
         float time = 0;
         foreach (CustomRoleOption option in EnableOptions)
@@ -302,13 +307,17 @@ class AddChatPatch
     static void GetInRoleCommand(PlayerControl target = null)
     {
         if (!AmongUsClient.Instance.AmHost) return;
+        if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.SuperHostRoles, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
+        {
+            SendCommand(target, ModTranslation.GetString("Notassign"));
+            return;
+        }
         List<CustomRoleOption> EnableOptions = new();
         foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
         {
-            if (option.IsRoleEnable && option.isSHROn)
-            {
-                EnableOptions.Add(option);
-            }
+            if (!option.IsRoleEnable) continue;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
+            EnableOptions.Add(option);
         }
         SendCommand(target, GetInRole(EnableOptions));
     }
