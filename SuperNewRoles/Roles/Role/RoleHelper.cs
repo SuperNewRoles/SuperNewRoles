@@ -1227,6 +1227,7 @@ public static class RoleHelpers
     {
         RoleId role = player.GetRole();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && IsComms() && !player.IsImpostor()) return false;
+        if (ModeHandler.IsMode(ModeId.VanilaHns)) return false;
         return role switch
         {
             RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,
