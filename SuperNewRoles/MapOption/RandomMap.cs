@@ -18,8 +18,8 @@ public static class RandomMap
             if (MapOption.ValidationAirship) RandomMaps.Add(4);
             if (RandomMaps.Count <= 0) { return; }
             var MapsId = RandomMaps[rand.Next(RandomMaps.Count)];
-            GameOptionsManager.Instance.CurrentGameOptions.SetByte(ByteOptionNames.MapId, MapsId);
-            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
+            GameManager.Instance.LogicOptions.currentGameOptions.SetByte(ByteOptionNames.MapId, MapsId);
+            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions));
         }
         return;
     }

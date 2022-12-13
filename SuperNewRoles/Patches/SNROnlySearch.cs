@@ -14,16 +14,16 @@ public static class SNROnlySearch
     public static bool IsSNRSearch = false;
     public static void FixedUpdate()
     {
-        //Logger.Info(GameOptionsManager.Instance.CurrentGameOptions.MapId.ToString());
+        //Logger.Info(GameManager.Instance.LogicOptions.currentGameOptions.MapId.ToString());
         if (AmongUsClient.Instance.AmHost)
         {
             if (CustomOptionHolder.IsSNROnlySearch.GetBool())
             {
-                if (GameOptionsManager.Instance.CurrentGameOptions.MapId < 5)
+                if (GameManager.Instance.LogicOptions.currentGameOptions.MapId < 5)
                 {
-                    currentMapId = GameOptionsManager.Instance.CurrentGameOptions.MapId;
-                    GameOptionsManager.Instance.CurrentGameOptions.SetByte(ByteOptionNames.MapId, 6);
-                    PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
+                    currentMapId = GameManager.Instance.LogicOptions.currentGameOptions.MapId;
+                    GameManager.Instance.LogicOptions.currentGameOptions.SetByte(ByteOptionNames.MapId, 6);
+                    PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions));
                 }
                 MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetMapId);
                 writer.Write(currentMapId);
@@ -41,11 +41,11 @@ public static class SNROnlySearch
             }
             else
             {
-                if (GameOptionsManager.Instance.CurrentGameOptions.MapId > 5)
+                if (GameManager.Instance.LogicOptions.currentGameOptions.MapId > 5)
                 {
                     currentMapId = 0;
-                    GameOptionsManager.Instance.CurrentGameOptions.SetByte(ByteOptionNames.MapId, currentMapId);
-                    PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
+                    GameManager.Instance.LogicOptions.currentGameOptions.SetByte(ByteOptionNames.MapId, currentMapId);
+                    PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions));
                 }
             }
         }

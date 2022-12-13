@@ -126,7 +126,7 @@ public static class SecretRoom
     }
     public static void ShipStatusAwake(ShipStatus __instance)
     {
-        if (GameOptionsManager.Instance.CurrentGameOptions.MapId != (int)MapNames.Airship) return;
+        if (GameManager.Instance.LogicOptions.currentGameOptions.MapId != (int)MapNames.Airship) return;
         if (__instance.Type == ShipStatus.MapType.Ship && MapCustomOption.GetBool() && AirshipSetting.GetBool() && SecretRoomOption.GetBool())
         {
             Transform room = __instance.transform.FindChild("HallwayPortrait");

@@ -188,9 +188,9 @@ public static class SyncSetting
         }
         if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
-        if (player.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
+        if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
-        writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
+        writer.Write(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static float KillCoolSet(float cool) { return cool <= 0 ? 0.001f : cool; }
@@ -219,7 +219,7 @@ public static class SyncSetting
         }
         if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
-        if (player.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
+        if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
         writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
         AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -230,7 +230,7 @@ public static class SyncSetting
         var role = p.GetRole();
         var optdata = OptionData.DeepCopy();
         optdata.SetFloat(FloatOptionNames.KillCooldown, RoleClass.EvilGambler.GetSuc() ? KillCoolSet(RoleClass.EvilGambler.SucCool) : KillCoolSet(RoleClass.EvilGambler.NotSucCool));
-        if (p.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
+        if (p.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, p.GetClientId());
         writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
         AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -248,7 +248,7 @@ public static class SyncSetting
                                                    RoleClass.Doppelganger.NotSucCool));
         }
         else optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Doppelganger.NotSucCool));
-        if (player.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
+        if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
         writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
         AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -275,9 +275,9 @@ public static class SyncSetting
         {
             if (CustomOptionHolder.IsSNROnlySearch.GetBool())
             {
-                GameOptionsManager.Instance.CurrentGameOptions.SetByte(ByteOptionNames.MapId, SNROnlySearch.currentMapId);
+                GameManager.Instance.LogicOptions.currentGameOptions.SetByte(ByteOptionNames.MapId, SNROnlySearch.currentMapId);
             }
-            OptionData = GameOptionsManager.Instance.CurrentGameOptions.DeepCopy();
+            OptionData = GameManager.Instance.LogicOptions.currentGameOptions.DeepCopy();
             OnGameEndPatch.PlayerData = new();
         }
     }

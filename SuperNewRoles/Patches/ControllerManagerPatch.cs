@@ -70,13 +70,16 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                GameOptionsManager.Instance.SwitchGameMode(GameModes.Normal);
-                PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
+                GameManager.Instance.LogicOptions.currentGameOptions.SetFloat(FloatOptionNames.PlayerSpeedMod, 5f);
+                Logger.Info(GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "a");
+                Logger.Info(GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "b");
+                Logger.Info(GameOptionsManager.Instance.currentNormalGameOptions.PlayerSpeedMod.ToString(), "c");
+                GameManager.Instance.LogicOptions.SyncOptions();
             }
             if (Input.GetKeyDown(KeyCode.P))
             {
                 GameOptionsManager.Instance.SwitchGameMode(GameModes.HideNSeek);
-                PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
+                PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions));
             }
             if (Input.GetKeyDown(KeyCode.G))
             {

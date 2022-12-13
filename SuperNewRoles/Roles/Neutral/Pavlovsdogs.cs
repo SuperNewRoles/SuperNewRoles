@@ -20,7 +20,7 @@ public static class Pavlovsdogs
     public static PlayerControl SetTarget(bool IsPavlovsTeamTarget = false)
     {
         PlayerControl result = null;
-        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
         if (!MapUtilities.CachedShipStatus) return result;
         PlayerControl targetingPlayer = PlayerControl.LocalPlayer;
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;

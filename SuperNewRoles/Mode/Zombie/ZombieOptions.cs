@@ -33,7 +33,7 @@ public class ZombieOptions
         optdata.SetFloat(FloatOptionNames.ImpostorLightMod, GetSpeed(ZombieCommingSpeedOption.GetFloat()));
         foreach (PlayerControl player in CachedPlayer.AllPlayers)
         {
-            if (player.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
+            if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
             writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -55,7 +55,7 @@ public class ZombieOptions
             optdata.SetFloat(FloatOptionNames.CrewLightMod, GetSpeed(PoliceLight));
             optdata.SetFloat(FloatOptionNames.PlayerSpeedMod, GetSpeed(PoliceSpeed));
         }
-        if (player.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
+        if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
         writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
         AmongUsClient.Instance.FinishRpcImmediately(writer);

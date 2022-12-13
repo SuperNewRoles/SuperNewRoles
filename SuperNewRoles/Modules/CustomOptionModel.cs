@@ -637,7 +637,7 @@ public class KeyValueOptionEnablePatch
 {
     public static void Postfix(KeyValueOption __instance)
     {
-        IGameOptions gameOptions = GameOptionsManager.Instance.CurrentGameOptions;
+        IGameOptions gameOptions = GameManager.Instance.LogicOptions.currentGameOptions;
         if (__instance.Title == StringNames.GameMapName)
         {
             __instance.Selected = gameOptions.MapId;
@@ -1088,7 +1088,7 @@ public static class GameOptionsGetAdjustedNumImpostorsPatch
 {
     public static bool Prefix(ref int __result)
     {
-        __result = GameOptionsManager.Instance.CurrentGameOptions.NumImpostors;
+        __result = GameManager.Instance.LogicOptions.currentGameOptions.NumImpostors;
         return false;
     }
 }

@@ -13,7 +13,7 @@ public static class TaskBar
         public static void Postfix(ProgressTracker __instance)
         {
             Instance = __instance;
-            if (GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.TaskBarMode) != (int)TaskBarMode.Invisible)
+            if (GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.TaskBarMode) != (int)TaskBarMode.Invisible)
             {
                 
                 if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.CognitiveDeficit)
