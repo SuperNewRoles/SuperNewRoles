@@ -83,10 +83,6 @@ public class FixedUpdate
         // -- 以下ゲーム中のみ --
         if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
         {
-            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
-            {
-                SNROnlySearch.FixedUpdate();
-            }
             return;
         }
 
