@@ -44,7 +44,7 @@ public class IntroPatch
                 Logger.Info($"{p.name}=>{p.GetRole()}({p.GetRoleType()}){(p.IsLovers() ? "[♥]" : "")}{(p.IsQuarreled() ? "[○]" : "")}", "Role Data");
             }
             Logger.Info("=================Other Data=================", "Intro Begin");
-            Logger.Info($"MapId:{GameOptionsManager.Instance.CurrentGameOptions.MapId} MapNames:{(MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId}", "Other Data");
+            Logger.Info($"MapId:{GameManager.Instance.LogicOptions.currentGameOptions.MapId} MapNames:{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}", "Other Data");
             Logger.Info($"Mode:{ModeHandler.GetMode()}", "Other Data");
             foreach (IntroData data in IntroData.IntroList)
             {
@@ -394,7 +394,7 @@ public class IntroPatch
             while (true)
             {
                 if (PlayerControl.LocalPlayer == null) yield break;
-                if (PlayerControl.LocalPlayer.myTasks.Count == (GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks) + GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks) + GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks))) yield break;
+                if (PlayerControl.LocalPlayer.myTasks.Count == (GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumCommonTasks) + GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumShortTasks) + GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumLongTasks))) yield break;
 
                 yield return null;
             }

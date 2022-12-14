@@ -97,7 +97,7 @@ public static class Helpers
         int clientId = shower.GetClientId();
 
         byte reactorId = 3;
-        if (GameOptionsManager.Instance.CurrentGameOptions.MapId == 2) reactorId = 21;
+        if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 2) reactorId = 21;
 
         // ReactorサボをDesyncで発動
         SuperNewRolesPlugin.Logger.LogInfo("SetDesyncSabotage");
@@ -116,7 +116,7 @@ public static class Helpers
             AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
         }, 0.1f + duration, "Fix Desync Reactor");
 
-        if (GameOptionsManager.Instance.CurrentGameOptions.MapId == 4) //Airship用
+        if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4) //Airship用
             new LateTask(() =>
             { // Reactorサボを修理
                 MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);

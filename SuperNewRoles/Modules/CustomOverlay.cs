@@ -143,7 +143,7 @@ public class CustomOverlays
         infoUnderlay.enabled = true;
 
         SuperNewRolesPlugin.optionsPage = 0;
-        IGameOptions o = GameOptionsManager.Instance.CurrentGameOptions;
+        IGameOptions o = GameManager.Instance.LogicOptions.currentGameOptions;
         List<string> gameOptions = o.ToString().Split("\n", StringSplitOptions.RemoveEmptyEntries).ToList().GetRange(2, 17);
         string text = "";
         text = GameOptionsDataPatch.ResultData();

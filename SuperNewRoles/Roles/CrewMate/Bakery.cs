@@ -123,7 +123,7 @@ public class Bakery
         if (isBakeryAlive)                                                                      //if文(Bakeryが生きていたら実行)
         {
             SuperNewRolesPlugin.Logger.LogInfo("パン屋がパンを焼きました");                     //ログ
-            if (GameOptionsManager.Instance.CurrentGameOptions.GetBool(BoolOptionNames.ConfirmImpostor)) breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.4f, 0f);    //位置がエ
+            if (GameManager.Instance.LogicOptions.currentGameOptions.GetBool(BoolOptionNames.ConfirmImpostor)) breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.4f, 0f);    //位置がエ
             else breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.2f, 0f);
             breadText.gameObject.SetActive(true);                                               //文字の表示
         }

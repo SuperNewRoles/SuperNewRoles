@@ -23,14 +23,14 @@ public static class RoleSelectHandler
     }
     public static void SpawnBots()
     {
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !ModeHandler.IsMode(ModeId.HideAndSeek))
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !ModeHandler.IsMode(ModeId.HideAndSeek, ModeId.VanillaHns))
         {
-            int impostor = GameOptionsManager.Instance.CurrentGameOptions.NumImpostors;
+            int impostor = GameManager.Instance.LogicOptions.currentGameOptions.NumImpostors;
             int crewmate = 0;
             //ジャッカルがいるなら
             if (CustomOptionHolder.JackalOption.GetSelection() != 0 || CustomOptionHolder.JackalSeerOption.GetSelection() != 0)
             {
-                for (int i = 0; i < (GameOptionsManager.Instance.CurrentGameOptions.NumImpostors + 2); i++)
+                for (int i = 0; i < (GameManager.Instance.LogicOptions.currentGameOptions.NumImpostors + 2); i++)
                 {
                     PlayerControl bot = BotManager.Spawn("[SHR] 暗転対策BOT" + (i + 1));
                     if (i == 0)
@@ -77,7 +77,7 @@ public static class RoleSelectHandler
             }
             if (CustomOptionHolder.SpyOption.GetSelection() != 0)
             {
-                for (int i = 0; i < CustomOptionHolder.SpyPlayerCount.GetFloat() - (crewmate - (impostor - GameOptionsManager.Instance.CurrentGameOptions.NumImpostors)) + 1; i++)
+                for (int i = 0; i < CustomOptionHolder.SpyPlayerCount.GetFloat() - (crewmate - (impostor - GameManager.Instance.LogicOptions.currentGameOptions.NumImpostors)) + 1; i++)
                 {
                     PlayerControl bot1 = BotManager.Spawn("暗転対策BOT");
                     bot1.RpcSetRole(RoleTypes.Crewmate);

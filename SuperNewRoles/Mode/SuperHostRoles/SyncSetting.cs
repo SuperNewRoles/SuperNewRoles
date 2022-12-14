@@ -1,6 +1,7 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 
@@ -114,7 +115,7 @@ public static class SyncSetting
             case RoleId.Nocturnality:
                 var switchSystemNocturnality = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                 if (switchSystemNocturnality == null || !switchSystemNocturnality.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod) / 5);
-                else optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod) * 5);
+                else optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod) * 3f);
                 break;
             case RoleId.SelfBomber:
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0.000001f);
@@ -188,10 +189,8 @@ public static class SyncSetting
         }
         if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
-        if (player.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
-        writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
+        optdata.RpcSyncOption(player.GetClientId());
     }
     public static float KillCoolSet(float cool) { return cool <= 0 ? 0.001f : cool; }
     public static void MurderSyncSetting(PlayerControl player)
@@ -219,10 +218,8 @@ public static class SyncSetting
         }
         if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
-        if (player.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
-        writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
+        optdata.RpcSyncOption(player.GetClientId());
     }
     public static void GamblersetCool(PlayerControl p)
     {
@@ -230,10 +227,8 @@ public static class SyncSetting
         var role = p.GetRole();
         var optdata = OptionData.DeepCopy();
         optdata.SetFloat(FloatOptionNames.KillCooldown, RoleClass.EvilGambler.GetSuc() ? KillCoolSet(RoleClass.EvilGambler.SucCool) : KillCoolSet(RoleClass.EvilGambler.NotSucCool));
-        if (p.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, p.GetClientId());
-        writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        if (p.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
+        optdata.RpcSyncOption(p.GetClientId());
     }
     public static void DoppelgangerCool(PlayerControl player, PlayerControl target)
     {
@@ -248,13 +243,16 @@ public static class SyncSetting
                                                    RoleClass.Doppelganger.NotSucCool));
         }
         else optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Doppelganger.NotSucCool));
-        if (player.AmOwner) GameOptionsManager.Instance.CurrentGameOptions = optdata;
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
-        writer.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(optdata));
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
+        optdata.RpcSyncOption(player.GetClientId());
     }
     public static void CustomSyncSettings()
     {
+        var caller = new System.Diagnostics.StackFrame(1, false);
+        var callerMethod = caller.GetMethod();
+        string callerMethodName = callerMethod.Name;
+        string callerClassName = callerMethod.DeclaringType.FullName;
+        SuperNewRolesPlugin.Logger.LogInfo("[SHR:SyncSettings] CustomSyncSettingsが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
             if (!p.Data.Disconnected && !p.IsBot())
