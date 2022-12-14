@@ -73,7 +73,7 @@ class TaskCount
         int CompletedTasks = 0;
         if (!playerInfo.Disconnected && playerInfo.Tasks != null &&
             playerInfo.Object &&
-            (GameOptionsManager.Instance.CurrentGameOptions.GetBool(BoolOptionNames.GhostsDoTasks) || !playerInfo.IsDead) &&
+            (GameManager.Instance.LogicOptions.currentGameOptions.GetBool(BoolOptionNames.GhostsDoTasks) || !playerInfo.IsDead) &&
             playerInfo.Role && playerInfo.Role.TasksCountTowardProgress
             )
         {

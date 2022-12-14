@@ -829,13 +829,13 @@ static class PlayerControlSetCooldownPatch
 {
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] float time)
     {
-        if (GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown) == time && !RoleClass.IsCoolTimeSetted)
+        if (GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown) == time && !RoleClass.IsCoolTimeSetted)
         {
             __instance.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(__instance), RoleHelpers.GetEndMeetingKillCoolTime(__instance));
             RoleClass.IsCoolTimeSetted = true;
             return false;
         }
-        if (__instance.Data.Role.CanUseKillButton && GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown) > 0f)
+        if (__instance.Data.Role.CanUseKillButton && GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown) > 0f)
         {
             FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(__instance.killTimer = time, RoleHelpers.GetEndMeetingKillCoolTime(__instance));
             return false;
@@ -1194,7 +1194,7 @@ public static class PlayerControlFixedUpdatePatch
     public static PlayerControl SetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
     {
         PlayerControl result = null;
-        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
         if (!MapUtilities.CachedShipStatus) return result;
         if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
@@ -1234,7 +1234,7 @@ public static class PlayerControlFixedUpdatePatch
     public static PlayerControl JackalSetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
     {
         PlayerControl result = null;
-        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
         if (!MapUtilities.CachedShipStatus) return result;
         if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;

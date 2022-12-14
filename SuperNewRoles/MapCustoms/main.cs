@@ -16,10 +16,10 @@ public class MapCustomHandler
     {
         return mapCustomId switch
         {
-            MapCustomId.Skeld => GameOptionsManager.Instance.CurrentGameOptions.GetByte(ByteOptionNames.MapId) == 0 && MapCustom.MapCustomOption.GetBool() && MapCustom.SkeldSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
-            MapCustomId.Mira => GameOptionsManager.Instance.CurrentGameOptions.GetByte(ByteOptionNames.MapId) == 1 && MapCustom.MapCustomOption.GetBool() && MapCustom.MiraSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
-            MapCustomId.Polus => GameOptionsManager.Instance.CurrentGameOptions.GetByte(ByteOptionNames.MapId) == 2 && MapCustom.MapCustomOption.GetBool() && MapCustom.PolusSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
-            MapCustomId.Airship => GameOptionsManager.Instance.CurrentGameOptions.GetByte(ByteOptionNames.MapId) == 4 && MapCustom.MapCustomOption.GetBool() && MapCustom.AirshipSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
+            MapCustomId.Skeld => GameManager.Instance.LogicOptions.currentGameOptions.GetByte(ByteOptionNames.MapId) == 0 && MapCustom.MapCustomOption.GetBool() && MapCustom.SkeldSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
+            MapCustomId.Mira => GameManager.Instance.LogicOptions.currentGameOptions.GetByte(ByteOptionNames.MapId) == 1 && MapCustom.MapCustomOption.GetBool() && MapCustom.MiraSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
+            MapCustomId.Polus => GameManager.Instance.LogicOptions.currentGameOptions.GetByte(ByteOptionNames.MapId) == 2 && MapCustom.MapCustomOption.GetBool() && MapCustom.PolusSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
+            MapCustomId.Airship => GameManager.Instance.LogicOptions.currentGameOptions.GetByte(ByteOptionNames.MapId) == 4 && MapCustom.MapCustomOption.GetBool() && MapCustom.AirshipSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
             _ => false,
         };
     }

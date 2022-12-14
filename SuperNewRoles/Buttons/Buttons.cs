@@ -747,7 +747,7 @@ static class HudManagerStartPatch
             {
                 if (!FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown && PlayerControl.LocalPlayer.CanMove)
                 {
-                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown));
+                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown));
                     RoleClass.Magaziner.MyPlayerCount++;
                 }
             },
@@ -888,8 +888,8 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                CountChangerButton.MaxTimer = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
-                CountChangerButton.Timer = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+                CountChangerButton.MaxTimer = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+                CountChangerButton.Timer = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
             },
             RoleClass.CountChanger.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
@@ -1468,8 +1468,8 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                ImpostorSidekickButton.MaxTimer = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
-                ImpostorSidekickButton.Timer = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+                ImpostorSidekickButton.MaxTimer = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+                ImpostorSidekickButton.Timer = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
             },
             RoleClass.Jackal.GetButtonSprite(),
             new Vector3(-2f, 1, 0),

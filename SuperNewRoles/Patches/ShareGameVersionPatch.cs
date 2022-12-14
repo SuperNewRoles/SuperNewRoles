@@ -108,7 +108,7 @@ class ShareGameVersion
                     }
                 }
                 // アガルタ反映関係の警告文制御
-                if ((CustomMapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == CustomMapNames.Mira && //マップ設定がMiraである かつ
+                if ((CustomMapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == CustomMapNames.Mira && //マップ設定がMiraである かつ
                     CustomOptionHolder.enableAgartha.GetBool() && //「アガルタ」が有効である かつ
                     !ModeHandler.IsMode(ModeId.Default, false) && //モードがデフォルトでない(特殊モードである) かつ
                     !CustomOptionHolder.DisconnectNotPCOption.GetBool() && //「PC以外キック」が無効(バニラをキックする状態)である かつ

@@ -36,11 +36,11 @@ public static class DynamicLobbies
                             {
                                 LobbyLimit = Math.Clamp(LobbyLimit, 4, 15);
                             }
-                            if (LobbyLimit != GameOptionsManager.Instance.CurrentGameOptions.MaxPlayers)
+                            if (LobbyLimit != GameManager.Instance.LogicOptions.currentGameOptions.MaxPlayers)
                             {
-                                GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.MaxPlayers, LobbyLimit);
+                                GameManager.Instance.LogicOptions.currentGameOptions.SetInt(Int32OptionNames.MaxPlayers, LobbyLimit);
                                 FastDestroyableSingleton<GameStartManager>.Instance.LastPlayerCount = LobbyLimit;
-                                CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
+                                CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions));
                                 __instance.AddChat(PlayerControl.LocalPlayer, $"ロビーの最大人数を{LobbyLimit}人に変更しました！");
                             }
                             else
@@ -58,8 +58,8 @@ public static class DynamicLobbies
                         if (!float.TryParse(text[4..], out var cooltime)) __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/kc {キルクールタイム}");
                         var settime = cooltime;
                         if (settime == 0) settime = 0.00001f;
-                        GameOptionsManager.Instance.CurrentGameOptions.SetFloat(FloatOptionNames.KillCooldown, settime);
-                        CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
+                        GameManager.Instance.LogicOptions.currentGameOptions.SetFloat(FloatOptionNames.KillCooldown, settime);
+                        CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions));
                         __instance.AddChat(PlayerControl.LocalPlayer, $"キルクールタイムを{cooltime}秒に変更しました！");
                     }
                 }
