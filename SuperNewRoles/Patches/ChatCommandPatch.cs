@@ -4,6 +4,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using SuperNewRoles.Helpers;
 using static System.Int32;
 
 namespace SuperNewRoles.Patches;
@@ -40,7 +41,7 @@ public static class DynamicLobbies
                             {
                                 GameManager.Instance.LogicOptions.currentGameOptions.SetInt(Int32OptionNames.MaxPlayers, LobbyLimit);
                                 FastDestroyableSingleton<GameStartManager>.Instance.LastPlayerCount = LobbyLimit;
-                                CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions));
+                                RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
                                 __instance.AddChat(PlayerControl.LocalPlayer, $"ロビーの最大人数を{LobbyLimit}人に変更しました！");
                             }
                             else
@@ -59,7 +60,7 @@ public static class DynamicLobbies
                         var settime = cooltime;
                         if (settime == 0) settime = 0.00001f;
                         GameManager.Instance.LogicOptions.currentGameOptions.SetFloat(FloatOptionNames.KillCooldown, settime);
-                        CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions));
+                        RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
                         __instance.AddChat(PlayerControl.LocalPlayer, $"キルクールタイムを{cooltime}秒に変更しました！");
                     }
                 }

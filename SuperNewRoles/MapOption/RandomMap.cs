@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.MapOption;
 
@@ -19,7 +20,7 @@ public static class RandomMap
             if (RandomMaps.Count <= 0) { return; }
             var MapsId = RandomMaps[rand.Next(RandomMaps.Count)];
             GameManager.Instance.LogicOptions.currentGameOptions.SetByte(ByteOptionNames.MapId, MapsId);
-            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions));
+            RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
         }
         return;
     }

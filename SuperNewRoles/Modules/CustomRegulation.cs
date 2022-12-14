@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using Newtonsoft.Json.Linq;
+using SuperNewRoles.Helpers;
 using UnityEngine.Networking;
 
 namespace SuperNewRoles.Modules;
@@ -118,7 +119,7 @@ public static class CustomRegulation
         }
         CustomOptionHolder.DisconnectNotPCOption.selection = 0;
 
-        PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions));
+        RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
     }
     public class RegulationData
     {

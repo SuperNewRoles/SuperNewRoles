@@ -9,6 +9,12 @@ using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Patches;
 
+[HarmonyPatch(typeof(GameManager), nameof(GameManager.Serialize))]
+class ControllerManagerUpdatePatcha
+{
+    public static bool Prefix() => AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started;
+}
+
 [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
 class ControllerManagerUpdatePatch
 {
@@ -70,16 +76,14 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                GameManager.Instance.LogicOptions.currentGameOptions.SetFloat(FloatOptionNames.PlayerSpeedMod, 5f);
-                Logger.Info(GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "a");
-                Logger.Info(GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString(), "b");
-                Logger.Info(GameOptionsManager.Instance.currentNormalGameOptions.PlayerSpeedMod.ToString(), "c");
-                GameManager.Instance.LogicOptions.SyncOptions();
+                PlayerControl.LocalPlayer.Data.IsDead = true;
+                PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.ImpostorGhost);
+                PlayerControl.LocalPlayer.Data.IsDead = false;
             }
             if (Input.GetKeyDown(KeyCode.P))
             {
                 GameOptionsManager.Instance.SwitchGameMode(GameModes.HideNSeek);
-                PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions));
+                RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
             }
             if (Input.GetKeyDown(KeyCode.G))
             {

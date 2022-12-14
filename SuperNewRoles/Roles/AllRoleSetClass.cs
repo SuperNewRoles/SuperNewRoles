@@ -83,7 +83,7 @@ class RoleManagerSelectRolesPatch
                     SelectPlayers.Add(player);
                 }
             }
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < GameManager.Instance.LogicOptions.NumImpostors; i++)
             {
                 if (SelectPlayers.Count >= 1)
                 {
