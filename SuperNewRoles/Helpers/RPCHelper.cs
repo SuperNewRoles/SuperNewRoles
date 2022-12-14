@@ -2,9 +2,11 @@ using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
 using InnerNet;
+using Steamworks;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
+using UnityEngine.UIElements.StyleSheets;
 using static MeetingHud;
 
 namespace SuperNewRoles.Helpers;
@@ -72,12 +74,6 @@ public static class RPCHelper
         writer.Write(Open);
         writer.EndRPC();
     }
-    public static void RPCGameOptionsPrivate(IGameOptions Data, PlayerControl target)
-    {
-        MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, 2, SendOption.None, target.GetClientId());
-        messageWriter.WriteBytesAndSize(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(Data));
-        messageWriter.EndMessage();
-    }
     /// <summary>
     /// 特定のプレイヤーから見て、特定のプレイヤーの名前を変更する関数
     /// </summary>
@@ -107,12 +103,45 @@ public static class RPCHelper
         {
             __instance.NetTransform.SnapTo(position, minSid);
         }
-        MessageWriter val = AmongUsClient.Instance.StartRpc(__instance.NetTransform.NetId, 21, SendOption.None);
-        //val.Write(position);
+        MessageWriter val = AmongUsClient.Instance.StartRpc(__instance.NetTransform.NetId, (byte)RpcCalls.SnapTo, SendOption.None);
+        NetHelpers.WriteVector2(position, val);
         val.Write(__instance.NetTransform.lastSequenceId);
         val.EndMessage();
     }
+    public static void RpcSyncOption(this IGameOptions gameOptions, int TargetClientId = -1)
+    {
+        GameManager gm = NormalGameManager.Instance;
+        MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+        // 書き込み {}は読みやすさのためです。
+        if (TargetClientId < 0)
+        {
+            writer.StartMessage(5);
+            writer.Write(AmongUsClient.Instance.GameId);
+            return;
+        }
+        else
+        {
+            writer.StartMessage(6);
+            writer.Write(AmongUsClient.Instance.GameId);
+            if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
+            writer.WritePacked(TargetClientId);
+        }
+        Logger.Info($"共有なうーーー:{TargetClientId} : {gameOptions.GetFloat(FloatOptionNames.CrewLightMod)}");
+        {
+            writer.StartMessage(1); //0x01 Data
+            {
+                writer.WritePacked(gm.NetId);
+                        writer.StartMessage((byte)4);
+                        writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(gameOptions));
+                        writer.EndMessage();
+            }
+            writer.EndMessage();
+        }
+        writer.EndMessage();
 
+        AmongUsClient.Instance.SendOrDisconnect(writer);
+        writer.Recycle();
+    }
     public static void RpcProtectPlayerPrivate(this PlayerControl SourcePlayer, PlayerControl target, int colorId, PlayerControl SeePlayer = null)
     {
         if (SourcePlayer == null || target == null || !AmongUsClient.Instance.AmHost) return;

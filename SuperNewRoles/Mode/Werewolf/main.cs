@@ -40,7 +40,7 @@ class Main
         {
             if (id is StringNames.MeetingVotingBegins && ModeHandler.IsMode(ModeId.Werewolf, false))
             {
-                float num3 = (float)GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.DiscussionTime) - MeetingHud.Instance.discussionTimer;
+                float num3 = (float)GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.DiscussionTime) - MeetingHud.Instance.discussionTimer;
                 __result = string.Format(ModTranslation.GetString("WerewolfAbilityTime"), Mathf.CeilToInt(num3));
             }
         }

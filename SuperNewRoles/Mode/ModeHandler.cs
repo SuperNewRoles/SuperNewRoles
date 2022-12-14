@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
@@ -23,7 +24,8 @@ public enum ModeId
     NotImpostorCheck,
     Detective,
     Werewolf,
-    CopsRobbers
+    CopsRobbers,
+    VanillaHns
 }
 public static class ModeHandler
 {
@@ -211,6 +213,8 @@ public static class ModeHandler
     }
     public static bool IsMode(ModeId mode, bool IsChache = true)
     {
+        if (mode is ModeId.VanillaHns)
+            return GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek;
         if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay || !PlayerControlHepler.IsMod(AmongUsClient.Instance.HostId))
             return mode is ModeId.Default;
         if (mode is ModeId.HideAndSeek && IsChache)

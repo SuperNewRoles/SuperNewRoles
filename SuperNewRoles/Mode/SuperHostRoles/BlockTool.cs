@@ -71,13 +71,13 @@ class BlockTool
                             if (AdminDistance <= UsableDistance) IsGuard = true;
                         }
                         //Polus用のアドミンチェック。Polusはアドミンが2つあるから
-                        if (!IsGuard && GameOptionsManager.Instance.CurrentGameOptions.MapId == 2 && !MapOption.MapOption.UseAdmin)
+                        if (!IsGuard && GameManager.Instance.LogicOptions.currentGameOptions.MapId == 2 && !MapOption.MapOption.UseAdmin)
                         {
                             var AdminDistance = Vector2.Distance(playerposition, new Vector2(24.66107f, -21.523f));
                             if (AdminDistance <= UsableDistance) IsGuard = true;
                         }
                         //AirShip(アーカイブ)用のアドミンチェック。AirShipはアドミンが2つあるから
-                        if ((!IsGuard && GameOptionsManager.Instance.CurrentGameOptions.MapId == 4 && !MapOption.MapOption.UseAdmin) || (!IsGuard && GameOptionsManager.Instance.CurrentGameOptions.MapId == 4 && MapCustoms.MapCustom.RecordsAdminDestroy.GetBool() && MapOption.MapOption.MapOptionSetting.GetBool()))
+                        if ((!IsGuard && GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4 && !MapOption.MapOption.UseAdmin) || (!IsGuard && GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4 && MapCustoms.MapCustom.RecordsAdminDestroy.GetBool() && MapOption.MapOption.MapOptionSetting.GetBool()))
                         {
                             var AdminDistance = Vector2.Distance(playerposition, new Vector2(19.9f, 12.9f));
                             if (AdminDistance <= UsableDistance) IsGuard = true;
@@ -86,7 +86,7 @@ class BlockTool
                         if (!IsGuard && !MapOption.MapOption.UseVitalOrDoorLog)
                         {
                             float distance = UsableDistance;
-                            if (GameOptionsManager.Instance.CurrentGameOptions.MapId == 2) distance += 0.5f;
+                            if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 2) distance += 0.5f;
                             var AdminDistance = Vector2.Distance(playerposition, GetVitalOrDoorLogTransform());
                             if (AdminDistance <= distance) IsGuard = true;
                         }
@@ -110,7 +110,7 @@ class BlockTool
                                 SabotageFixWriter.Write((byte)16);
                                 AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
 
-                                if (GameOptionsManager.Instance.CurrentGameOptions.MapId == 4)
+                                if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4)
                                 {
                                     SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cid);
                                     SabotageFixWriter.Write((byte)SystemTypes.Comms);
@@ -131,7 +131,7 @@ class BlockTool
     }
     public static Vector2 GetAdminTransform()
     {
-        return GameOptionsManager.Instance.CurrentGameOptions.MapId switch
+        return GameManager.Instance.LogicOptions.currentGameOptions.MapId switch
         {
             0 => new(3.48f, -8.624401f),
             1 => new(21.024f, 19.095f),
@@ -144,7 +144,7 @@ class BlockTool
 
     public static Vector2 GetCameraTransform()
     {
-        return GameOptionsManager.Instance.CurrentGameOptions.MapId switch
+        return GameManager.Instance.LogicOptions.currentGameOptions.MapId switch
         {
             0 => new(-12.93658f, -2.790947f),
             2 => new(-12.93658f, -2.790947f),
@@ -155,7 +155,7 @@ class BlockTool
     }
     public static Vector2 GetVitalOrDoorLogTransform()
     {
-        return GameOptionsManager.Instance.CurrentGameOptions.MapId switch
+        return GameManager.Instance.LogicOptions.currentGameOptions.MapId switch
         {
             1 => new Vector2(15.51107f, -2.897387f),
             2 => new Vector2(26.20935f, -16.04406f),

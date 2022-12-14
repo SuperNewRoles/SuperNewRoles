@@ -7,7 +7,7 @@ class IntroHandler
     public static void Handler()
     {
         float time = 2f;
-        if (GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown) >= 10)
+        if (GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown) >= 10)
         {
             time = 7f;
         }

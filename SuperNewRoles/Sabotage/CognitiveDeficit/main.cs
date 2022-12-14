@@ -175,7 +175,7 @@ public static class Main
         if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
         {
             IsLocalEnd = true;
-            if (GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.TaskBarMode) != (int)TaskBarMode.Invisible)
+            if (GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.TaskBarMode) != (int)TaskBarMode.Invisible)
             {
                 TaskBar.Instance.gameObject.SetActive(IsLocalEnd);
             }
