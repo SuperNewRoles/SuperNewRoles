@@ -1,6 +1,8 @@
+using AmongUs.Data;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
+using InnerNet;
 using SuperNewRoles.Helpers;
 using UnityEngine;
 using UnityEngine.Events;
@@ -50,98 +52,30 @@ public static class SNROnlySearch
             }
         }
     }
-    [HarmonyPatch(typeof(IGameOptionsExtensions), "ToggleMapFilter")]
-    public static class GameOptionsDataToggleMapFilterPatch
+    [HarmonyPatch(typeof(FilterTagsMenu), nameof(FilterTagsMenu.Open))]
+    public static class FilterTagsMenuOpenPatch
     {
-        public static bool Prefix(IGameOptions __instance, [HarmonyArgument(0)] byte mapId)
-        {
-            //Logger.Info(__instance.MapId.ToString(), "MapId1");
-            __instance.SetByte(ByteOptionNames.MapId, (byte)(__instance.MapId ^ (byte)(1 << (int)mapId)));
-            if (__instance.GetByte(ByteOptionNames.MapId) == 0)
-            {
-                __instance.SetByte(ByteOptionNames.MapId, (byte)(__instance.MapId ^ (byte)(1 << (int)mapId)));
-            }
-            Logger.Info($"{mapId} : {__instance.MapId}", "MapId2");
-            return false;
-        }
+        public static void Prefix() => DataManager.Settings.Multiplayer.ValidGameFilterOptions.FilterTags.Add("SNR");
     }
-
-    [HarmonyPatch(typeof(CreateOptionsPicker), nameof(CreateOptionsPicker.Awake))]
-    public static class CreateOptionsPicker_Awake_Patch
+    [HarmonyPatch(typeof(FilterTagsMenu), nameof(FilterTagsMenu.ChooseOption))]
+    public static class FilterTagsMenuChooseOptionPatch
     {
-        static SpriteRenderer IsSNROnlyRoomButtonRender;
-        public static void Prefix(CreateOptionsPicker __instance)
+        public static void Postfix(FilterTagsMenu __instance, ChatLanguageButton button, string filter)
         {
-            Logger.Info($"Awake:{__instance.mode}");
-            if (__instance.mode is not SettingsMode.Search)
+            if (__instance.targetOpts.FilterTags.Contains("SNR"))
             {
-                GameOptionsManager.Instance.currentHostOptions.SetByte(ByteOptionNames.MapId, 0);
-                return;
-            }
-            Transform temp;
-            GameObject IsSNROnlyRoomButton;
-            PassiveButton button;
-            (IsSNROnlyRoomButton = GameObject.Instantiate((temp = __instance.MapMenu.MapButtons[3].transform.parent).gameObject, temp.parent)).name = "IsSNROnlyRoom";
-            IsSNROnlyRoomButton.transform.position = new(2.96f, 2.04f, -20);
-            (IsSNROnlyRoomButtonRender = IsSNROnlyRoomButton.transform.Find("4").GetComponent<SpriteRenderer>()).sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.banner.png", 450f);
-            if (GameOptionsManager.Instance.GameSearchOptions.FilterContainsMap(6))
-            {
-                foreach (MapFilterButton btn in __instance.MapMenu.MapButtons)
-                    if (btn.ButtonImage.name != "IsSNROnlyRoom")
-                        btn.transform.parent.gameObject.SetActive(false);
-                IsSNROnlyRoomButtonRender.color = Color.white;
-            }
-            else IsSNROnlyRoomButtonRender.color = Palette.DisabledGrey;
-            (button = IsSNROnlyRoomButton.GetComponent<PassiveButton>()).OnClick.RemoveAllListeners();
-            button.OnClick.AddListener((UnityAction)(() =>
-            {
-                OnClick();
-            }));
-            void OnClick()
-            {
-                bool IsSNROn = false;
-                if (GameOptionsManager.Instance.GameSearchOptions.FilterContainsMap(0))
+                if (filter == "SNR")
                 {
-                    GameOptionsManager.Instance.GameSearchOptions.ToggleMapFilter(0);
-                    IsSNROn = true;
-                }
-                if (GameOptionsManager.Instance.GameSearchOptions.FilterContainsMap(1))
-                {
-                    GameOptionsManager.Instance.GameSearchOptions.ToggleMapFilter(1);
-                    IsSNROn = true;
-                }
-                if (GameOptionsManager.Instance.GameSearchOptions.FilterContainsMap(2))
-                {
-                    GameOptionsManager.Instance.GameSearchOptions.ToggleMapFilter(2);
-                    IsSNROn = true;
-                }
-                if (GameOptionsManager.Instance.GameSearchOptions.FilterContainsMap(4))
-                    GameOptionsManager.Instance.GameSearchOptions.ToggleMapFilter(4);
-                if (GameOptionsManager.Instance.GameSearchOptions.FilterContainsMap(6))
-                    GameOptionsManager.Instance.GameSearchOptions.ToggleMapFilter(6);
-                if (IsSNROn)
-                {
-                    foreach (MapFilterButton btn in __instance.MapMenu.MapButtons)
-                        if (btn.ButtonImage.name != "IsSNROnlyRoom")
-                            btn.transform.parent.gameObject.SetActive(false);
-                    //他MODで実装する場合はここのIdを変えてください。(同じMOD同士でマッチングするのを防ぐため)
-                    //後、他の部分のIdも変えてね
-                    __instance.SetMap(6);
-                    IsSNROnlyRoomButtonRender.color = Color.white;
-                    Logger.Info(GameOptionsManager.Instance.GameSearchOptions.MapId.ToString(), "現在のMapId:IsSNROn");
+                    __instance.targetOpts.FilterTags = new();
+                    __instance.targetOpts.FilterTags.Add("SNR");
+                    //foreach (var a in __instance.controllerSelectable.)
+                    {
+
+                    }
                 }
                 else
                 {
-                    foreach (MapFilterButton btn in __instance.MapMenu.MapButtons)
-                        if (btn.ButtonImage.name != "IsSNROnlyRoom")
-                            btn.transform.parent.gameObject.SetActive(false);
-                    __instance.SetMap(0);
-                    __instance.SetMap(1);
-                    __instance.SetMap(2);
-                    if (!GameOptionsManager.Instance.GameSearchOptions.FilterContainsMap(4))
-                        __instance.SetMap(4);
-                    IsSNROnlyRoomButtonRender.color = Palette.DisabledGrey;
-                    Logger.Info(GameOptionsManager.Instance.GameSearchOptions.MapId.ToString(), "現在のMapId:IsSNROFF");
+                    __instance.targetOpts.FilterTags.Remove("SNR");
                 }
             }
         }
