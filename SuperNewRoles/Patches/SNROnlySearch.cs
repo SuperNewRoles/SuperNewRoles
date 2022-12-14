@@ -23,7 +23,7 @@ public static class SNROnlySearch
                 {
                     currentMapId = GameManager.Instance.LogicOptions.currentGameOptions.MapId;
                     GameManager.Instance.LogicOptions.currentGameOptions.SetByte(ByteOptionNames.MapId, 6);
-                    PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions));
+                    RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
                 }
                 MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetMapId);
                 writer.Write(currentMapId);
@@ -45,7 +45,7 @@ public static class SNROnlySearch
                 {
                     currentMapId = 0;
                     GameManager.Instance.LogicOptions.currentGameOptions.SetByte(ByteOptionNames.MapId, currentMapId);
-                    PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions.currentGameOptions));
+                    RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
                 }
             }
         }
