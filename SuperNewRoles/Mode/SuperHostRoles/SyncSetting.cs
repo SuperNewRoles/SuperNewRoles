@@ -273,10 +273,6 @@ public static class SyncSetting
     {
         public static void Postfix()
         {
-            if (CustomOptionHolder.IsSNROnlySearch.GetBool())
-            {
-                GameOptionsManager.Instance.CurrentGameOptions.SetByte(ByteOptionNames.MapId, SNROnlySearch.currentMapId);
-            }
             OptionData = GameOptionsManager.Instance.CurrentGameOptions.DeepCopy();
             OnGameEndPatch.PlayerData = new();
         }

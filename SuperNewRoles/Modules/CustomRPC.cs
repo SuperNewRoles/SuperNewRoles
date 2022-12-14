@@ -257,7 +257,6 @@ public enum CustomRPC
     Camouflage = 230,
     ShowGuardEffect,
     SetLoversCupid,
-    SetMapId,
     PenguinHikizuri,
     SetVampireStatus,
     SyncDeathMeeting,
@@ -334,10 +333,6 @@ public static class RPCProcedure
                 RoleClass.Vampire.Targets.Remove(source);
             }
         }
-    }
-    public static void SetMapId(byte mapid)
-    {
-        SNROnlySearch.currentMapId = mapid;
     }
 
     public static void PenguinHikizuri(byte sourceId, byte targetId)
@@ -1598,9 +1593,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetLoversCupid:
                         SetLoversCupid(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SetMapId:
-                        SetMapId(reader.ReadByte());
                         break;
                     case CustomRPC.PenguinHikizuri:
                         PenguinHikizuri(reader.ReadByte(), reader.ReadByte());
