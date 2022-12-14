@@ -502,7 +502,7 @@ static class CheckMurderPatch
                     case RoleId.ToiletFan:
                     case RoleId.NiceButtoner:
                     case RoleId.Madmate:
-                    case RoleId.JackalFriends;
+                    case RoleId.JackalFriends:
                         return false;
                     case RoleId.Egoist:
                         if (!RoleClass.Egoist.UseKill) return false;
