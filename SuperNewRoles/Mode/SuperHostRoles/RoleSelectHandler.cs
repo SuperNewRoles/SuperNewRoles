@@ -23,7 +23,7 @@ public static class RoleSelectHandler
     }
     public static void SpawnBots()
     {
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !ModeHandler.IsMode(ModeId.HideAndSeek, ModeId.VanilaHns))
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !ModeHandler.IsMode(ModeId.HideAndSeek, ModeId.VanillaHns))
         {
             int impostor = GameManager.Instance.LogicOptions.currentGameOptions.NumImpostors;
             int crewmate = 0;
