@@ -11,7 +11,7 @@ public static class NotBlackOut
         int clientId = pc.GetClientId();
 
         byte reactorId = 3;
-        if (GameOptionsManager.Instance.CurrentGameOptions.MapId == 2) reactorId = 21;
+        if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 2) reactorId = 21;
         new LateTask(() =>
         {
             MessageWriter MurderWriter = AmongUsClient.Instance.StartRpcImmediately(pc.NetId, (byte)RpcCalls.MurderPlayer, SendOption.Reliable, clientId);
@@ -36,7 +36,7 @@ public static class NotBlackOut
             AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
         }, 0.1f + delay, "Fix Desync Reactor");
 
-        if (GameOptionsManager.Instance.CurrentGameOptions.MapId == 4) //Airship用
+        if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4) //Airship用
             new LateTask(() =>
             {
                 MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);

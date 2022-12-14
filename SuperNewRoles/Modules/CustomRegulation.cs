@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using Newtonsoft.Json.Linq;
+using SuperNewRoles.Helpers;
 using UnityEngine.Networking;
 
 namespace SuperNewRoles.Modules;
@@ -90,16 +91,16 @@ public static class CustomRegulation
             return;
         }
         RegulationData data = RegulationData.Regulations.FirstOrDefault(rd => rd.id == id);
-        GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.NumEmergencyMeetings, data.MeetingButtonNum);
-        GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.EmergencyCooldown, data.MeetingButtonCooldown);
-        GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.VotingTime, data.VoteTime);
-        GameOptionsManager.Instance.CurrentGameOptions.SetFloat(FloatOptionNames.PlayerSpeedMod, data.PlayerSpeed);
-        GameOptionsManager.Instance.CurrentGameOptions.SetFloat(FloatOptionNames.CrewLightMod, data.CrewVision);
-        GameOptionsManager.Instance.CurrentGameOptions.SetFloat(FloatOptionNames.ImpostorLightMod, data.ImpostorVision);
-        GameOptionsManager.Instance.CurrentGameOptions.SetFloat(FloatOptionNames.KillCooldown, data.KillCoolTime);
-        GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.NumCommonTasks, data.CommonTask);
-        GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.NumLongTasks, data.LongTask);
-        GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.NumShortTasks, data.ShortTask);
+        GameManager.Instance.LogicOptions.currentGameOptions.SetInt(Int32OptionNames.NumEmergencyMeetings, data.MeetingButtonNum);
+        GameManager.Instance.LogicOptions.currentGameOptions.SetInt(Int32OptionNames.EmergencyCooldown, data.MeetingButtonCooldown);
+        GameManager.Instance.LogicOptions.currentGameOptions.SetInt(Int32OptionNames.VotingTime, data.VoteTime);
+        GameManager.Instance.LogicOptions.currentGameOptions.SetFloat(FloatOptionNames.PlayerSpeedMod, data.PlayerSpeed);
+        GameManager.Instance.LogicOptions.currentGameOptions.SetFloat(FloatOptionNames.CrewLightMod, data.CrewVision);
+        GameManager.Instance.LogicOptions.currentGameOptions.SetFloat(FloatOptionNames.ImpostorLightMod, data.ImpostorVision);
+        GameManager.Instance.LogicOptions.currentGameOptions.SetFloat(FloatOptionNames.KillCooldown, data.KillCoolTime);
+        GameManager.Instance.LogicOptions.currentGameOptions.SetInt(Int32OptionNames.NumCommonTasks, data.CommonTask);
+        GameManager.Instance.LogicOptions.currentGameOptions.SetInt(Int32OptionNames.NumLongTasks, data.LongTask);
+        GameManager.Instance.LogicOptions.currentGameOptions.SetInt(Int32OptionNames.NumShortTasks, data.ShortTask);
         foreach (CustomOption options in CustomOption.options)
         {
             options.selection = options.defaultSelection;
@@ -118,7 +119,7 @@ public static class CustomRegulation
         }
         CustomOptionHolder.DisconnectNotPCOption.selection = 0;
 
-        PlayerControl.LocalPlayer.RpcSyncSettings(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
+        RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
     }
     public class RegulationData
     {

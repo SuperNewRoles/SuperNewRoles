@@ -17,7 +17,7 @@ public class RoleSelectHandler
                 SelectPlayers.Add(player);
             }
         }
-        for (int i = 0; i < GameOptionsManager.Instance.CurrentGameOptions.NumImpostors; i++)
+        for (int i = 0; i < GameManager.Instance.LogicOptions.currentGameOptions.NumImpostors; i++)
         {
             if (SelectPlayers.Count >= 1)
             {
