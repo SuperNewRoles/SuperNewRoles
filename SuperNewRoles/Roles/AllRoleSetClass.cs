@@ -100,7 +100,7 @@ class RoleManagerSelectRolesPatch
             {
                 sender.RpcSetRole(player, RoleTypes.Impostor);
             }
-            RoleTypes CrewRoleTypes = ModeHandler.IsMode(ModeId.VanilaHns) ? RoleTypes.Engineer : RoleTypes.Crewmate;
+            RoleTypes CrewRoleTypes = ModeHandler.IsMode(ModeId.VanillaHns) ? RoleTypes.Engineer : RoleTypes.Crewmate;
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (!player.Data.Disconnected && !player.IsImpostor())

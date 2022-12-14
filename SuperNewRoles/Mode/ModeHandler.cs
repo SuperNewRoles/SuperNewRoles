@@ -25,7 +25,7 @@ public enum ModeId
     Detective,
     Werewolf,
     CopsRobbers,
-    VanilaHns
+    VanillaHns
 }
 public static class ModeHandler
 {
@@ -213,7 +213,7 @@ public static class ModeHandler
     }
     public static bool IsMode(ModeId mode, bool IsChache = true)
     {
-        if (mode is ModeId.VanilaHns)
+        if (mode is ModeId.VanillaHns)
             return GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek;
         if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay || !PlayerControlHepler.IsMod(AmongUsClient.Instance.HostId))
             return mode is ModeId.Default;
