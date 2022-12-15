@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 
@@ -1889,6 +1890,8 @@ public class CustomOptionHolder
         PenguinCoolTime = Create(1088, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, PenguinOption, format: "unitSeconds");
         PenguinDurationTime = Create(1089, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
         PenguinCanDefaultKill = Create(1090, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
+
+        Squid.SetupCustomOptions();
 
         //表示設定
 

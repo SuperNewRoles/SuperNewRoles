@@ -164,6 +164,7 @@ It is already on the Discord server.
 |                                         | [GhostMechanic](#GhostMechanic)           |
 |                                         | [ToiletFan](#ToiletFan)                   |
 |                                         | [Knight](#Knight)                         |
+|                                         | [Squid](#Squid)                           |
 
 # Position Details 
 ## Attention. 
@@ -1524,6 +1525,32 @@ If the protection is successful, a successful protection announcement will be pl
 | Maximum number of times protection is possible.          | If an upper limit is set, set the maximum number of times the protection can be used. This set number of times will be the number of times the protection ability can be used in one match. |
 |                                                          |
 ----------------------- 
+## Squid
+### Team Crew
+#### Intro
+- Use ink to survive
+- Let's use ink to get away with it
+#### Description
+You can be on alert for a certain period of time.<br>
+If you are about to be killed while on alert, you can prevent the kill, take away your opponent's vision, and increase your own movement speed for a certain period of time.
+
+#### Ability
+- It has an alert button, which can be activated to alert.
+- If you are killed while on alert, you can prevent the kill.
+- Furthermore, it temporarily reduces the opponent's field of view, displays black ink, and temporarily shortens the kill range.
+- And it temporarily increases its own movement speed.
+
+### Game Settings
+| Name | Description |
+| --- |:---:|
+| Cool time for vigilance mode | You can set the cool time of the ability |
+| Duration of vigilance mode | You can set the duration of the capability |
+| Movement speed on successful counters | You can set the speed of movement when you are killed while on alert |
+| Time to increase movement speed on successful counters | You can set the duration of the movement speed when you are killed while on alert |
+| Time when no kills can be made on successful counters | You can set the opponent's kill cool when you are killed while on alert |
+| Field of vision when vision is deprived | You can set your opponent's field of view when you are killed while on alert |
+| Time to take away the view | Set the duration of your opponent's vision, summing, and kill range change when you are killed while on alert. |
+---
 ## Quarreled
 ### overlapping camps 
 This roll will be in pairs. <br> 

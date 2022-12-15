@@ -5,6 +5,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Sabotage;
 using TMPro;
@@ -197,6 +198,7 @@ public static class RoleClass
         HamburgerShop.ClearAndReload();
         Penguin.ClearAndReload();
         Dependents.ClearAndReload();
+        Squid.ClearAndReload();
         //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

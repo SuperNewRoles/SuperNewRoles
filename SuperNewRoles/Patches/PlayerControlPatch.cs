@@ -10,6 +10,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 using static GameData;
@@ -383,7 +384,7 @@ class KillButtonDoClickPatch
                 Kunoichi.KillButtonClick();
                 return false;
             }
-            if (!(__instance.currentTarget.IsRole(RoleId.Bait) || __instance.currentTarget.IsRole(RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
+            if (!__instance.currentTarget.IsRole(RoleId.Bait, RoleId.NiceRedRidingHood, RoleId.Squid) && PlayerControl.LocalPlayer.IsRole(RoleId.Vampire))
             {
                 PlayerControl.LocalPlayer.killTimer = RoleHelpers.GetCoolTime(PlayerControl.LocalPlayer);
                 RoleClass.Vampire.target = __instance.currentTarget;
@@ -1066,6 +1067,12 @@ public static class MurderPlayerPatch
             {
                 PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance), RoleHelpers.GetCoolTime(__instance));
             }
+            if (Squid.IsKillGuard)
+            {
+                PlayerControl.LocalPlayer.SetKillTimerUnchecked(Squid.NotKillTime, Squid.NotKillTime);
+                Squid.SetKillTimer(Squid.NotKillTime);
+                Squid.IsKillGuard = false;
+            }
         }
     }
 }
@@ -1148,6 +1155,7 @@ class ReportDeadBodyPatch
         {
             Roles.Impostor.Camouflager.ResetCamouflage();
         }
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Squid)) Squid.ResetCooldown();
         if (ModeHandler.IsMode(ModeId.Default))
         {
             if (__instance.IsRole(RoleId.EvilButtoner, RoleId.NiceButtoner) && target != null && target.PlayerId == __instance.PlayerId)

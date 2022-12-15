@@ -1142,6 +1142,18 @@ PenguinName,Penguin,ペンギン,绑匪
 PenguinTitle1,Let's drag and kill!,ぺちぺち！,绑架他人
 PenguinButtonName,Abduction,拉致,绑架
 PenguinCanDefaultKill,Can default kill,通常キルができる,绑匪可以进行通常击杀
+SquidName,Squid,イカ
+SquidTitle1,Use ink to survive,墨を使って生き延びろ
+SquidTitle2,Let's use ink to get away with it,墨を使って逃げ切ろう
+SquidDescription,You can be on alert for a certain period of time.\nIf you are about to be killed while on alert， you can prevent the kill， take away your opponent's vision， and increase your own movement speed for a certain period of time.,一定時間警戒することが出来ます。\n警戒中にキルされそうになると、そのキルを防ぎ相手の視界を奪い、一定時間自身の移動速度が上昇します。
+SquidCoolTimeSetting,Cool time for vigilance mode,警戒モードのクールタイム
+SquidDurationTimeSetting,Duration of vigilance mode,警戒モードの持続時間
+SquidBoostSpeedSetting,Movement speed on successful counters,カウンター成功時の移動速度
+SquidBoostSpeedTimeSetting,Time to increase movement speed on successful counters,カウンター成功時の移動速度が上がる時間
+SquidNotKillTimeSetting,Time when no kills can be made on successful counters,カウンター成功時のキルが出来ない時間
+SquidDownVisionSetting,Field of vision when vision is deprived,視界が奪われたときの視野
+SquidObstructionTimeSetting,Time to take away the view,視界を奪う時間
+SquidButtonName,Vigilance,警戒
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

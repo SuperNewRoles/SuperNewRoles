@@ -673,6 +673,9 @@ public static class RoleHelpers
             case RoleId.Dependents:
                 RoleClass.Dependents.DependentsPlayer.Add(player);
                 break;
+            case RoleId.Squid:
+                Squid.SquidPlayer.Add(player);
+                break;
             //ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1140,7 +1143,10 @@ public static class RoleHelpers
             case RoleId.Dependents:
                 RoleClass.Dependents.DependentsPlayer.RemoveAll(ClearRemove);
                 break;
-                //ロールリモベ
+            case RoleId.Squid:
+                Squid.SquidPlayer.RemoveAll(ClearRemove);
+                break;
+            //ロールリモベ
         }
         ChacheManager.ResetMyRoleChache();
     }
@@ -1640,6 +1646,7 @@ public static class RoleHelpers
             else if (RoleClass.HamburgerShop.HamburgerShopPlayer.IsCheckListPlayerControl(player)) return RoleId.HamburgerShop;
             else if (RoleClass.Penguin.PenguinPlayer.IsCheckListPlayerControl(player)) return RoleId.Penguin;
             else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;
+            else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
             //ロールチェック
         }
         catch (Exception e)
