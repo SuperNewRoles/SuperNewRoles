@@ -765,8 +765,8 @@ public class StringOptionDecreasePatch
     }
 }
 
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSyncSettings))]
-public class RpcSyncSettingsPatch
+[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoSpawnPlayer))]
+public class AmongUsClientOnPlayerJoinedPatch
 {
     public static void Postfix()
     {
