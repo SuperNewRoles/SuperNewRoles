@@ -527,6 +527,7 @@ VultureTitle1,Let's eat a corpse.,死体を食べよう,吞噬尸体获得胜利
 VultureCooldownSetting,Corpse cooldown,死体クールダウン,秃鹫技能冷却
 VultureDeadBodyCountSetting,Victory corpse count,勝利死体数,秃鹫胜利所需吞噬尸体数
 VultureShowArrowsSetting,Show arrows pointing to dead bodies,死体を指す矢印を表示する,秃鹫可见指向尸体的箭头
+VultureButtonName,Eat,食らう
 NiceScientistName,Nice Scientist,ナイスサイエンティスト,正义的隐身人
 NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう,通过隐身来找寻尸体
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう,隐身，很神奇吧
