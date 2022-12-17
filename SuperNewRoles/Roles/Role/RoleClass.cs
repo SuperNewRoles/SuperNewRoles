@@ -256,7 +256,7 @@ public static class RoleClass
             CoolTime = CustomOptionHolder.LighterCoolTime.GetFloat();
             DurationTime = CustomOptionHolder.LighterDurationTime.GetFloat();
             UpVision = CustomOptionHolder.LighterUpVision.GetFloat();
-            DefaultCrewVision = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.CrewLightMod);
+            DefaultCrewVision = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.CrewLightMod);
         }
     }
     public static class EvilLighter
@@ -621,7 +621,7 @@ public static class RoleClass
             DurationTime = CustomOptionHolder.ClergymanDurationTime.GetFloat();
             IsLightOff = false;
             DownImpoVision = CustomOptionHolder.ClergymanDownVision.GetFloat();
-            DefaultImpoVision = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.ImpostorLightMod);
+            DefaultImpoVision = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.ImpostorLightMod);
             OldButtonTimer = DateTime.Now;
             OldButtonTime = 0;
             currentMessage = null;
@@ -647,9 +647,9 @@ public static class RoleClass
             int AllTask = Common + Long + Short;
             if (AllTask == 0)
             {
-                Common = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
+                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
+                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
+                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
             ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MadmateCheckImpostorTask.GetString().Replace("%", "")) / 100f));
         }
@@ -794,7 +794,7 @@ public static class RoleClass
             ResearcherPlayer = new();
             OKSamplePlayers = new();
             GetSamplePlayers = new();
-            //SamplePosition = SamplePoss[GameManager.Instance.LogicOptions.currentGameOptions.MapId];
+            //SamplePosition = SamplePoss[GameOptionsManager.Instance.CurrentGameOptions.MapId];
             MySample = 0;
         }
     }
@@ -874,9 +874,9 @@ public static class RoleClass
             int AllTask = Common + Long + Short;
             if (AllTask == 0)
             {
-                Common = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
+                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
+                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
+                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
             JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.JackalFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
             Roles.JackalFriends.CheckedJackal = new();
@@ -1311,9 +1311,9 @@ public static class RoleClass
             int AllTask = Common + Long + Short;
             if (AllTask == 0)
             {
-                Common = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
+                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
+                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
+                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
             ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MadMayorCheckImpostorTask.GetString().Replace("%", "")) / 100f));
             Roles.MadMayor.CheckedImpostor = new();
@@ -1425,9 +1425,9 @@ public static class RoleClass
             int AllTask = Common + Long + Short;
             if (AllTask == 0)
             {
-                Common = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
+                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
+                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
+                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
         }
     }
@@ -1612,9 +1612,9 @@ public static class RoleClass
             int AllTask = Common + Long + Short;
             if (AllTask == 0)
             {
-                Common = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
+                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
+                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
+                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
             ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MadSeerCheckImpostorTask.GetString().Replace("%", "")) / 100f));
             Roles.MadSeer.CheckedImpostor = new();
@@ -1742,9 +1742,9 @@ public static class RoleClass
             int AllTask = Common + Long + Short;
             if (AllTask == 0)
             {
-                Common = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
+                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
+                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
+                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
         }
     }
@@ -1781,9 +1781,9 @@ public static class RoleClass
             int AllTask = Common + Long + Short;
             if (AllTask == 0)
             {
-                Common = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
+                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
+                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
+                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
             JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.SeerFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
         }
@@ -1988,9 +1988,9 @@ public static class RoleClass
             int AllTask = Common + Long + Short;
             if (AllTask == 0)
             {
-                Common = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
+                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
+                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
+                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
             JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MayorFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
             AddVote = CustomOptionHolder.MayorFriendsVoteCount.GetInt();
@@ -2036,7 +2036,7 @@ public static class RoleClass
 
         public static Sprite GetButtonSprite()
         {
-            byte mapId = GameManager.Instance.LogicOptions.currentGameOptions.MapId;
+            byte mapId = GameOptionsManager.Instance.CurrentGameOptions.MapId;
             UseButtonSettings button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.PolusAdminButton]; // Polus
             if (mapId is 0 or 3) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
             else if (mapId == 1) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
@@ -2137,9 +2137,9 @@ public static class RoleClass
             int AllTask = Common + Long + Short;
             if (AllTask == 0)
             {
-                Common = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
+                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
+                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
+                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
             ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.BlackCatCheckImpostorTask.GetString().Replace("%", "")) / 100f));
         }
@@ -2506,7 +2506,7 @@ public static class RoleClass
             WearLimit = CustomOptionHolder.MatryoshkaWearLimit.GetInt();
             WearTime = 0;
             Data = new();
-            MyKillCoolTime = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+            MyKillCoolTime = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         }
     }
     public static class Nun
@@ -2785,7 +2785,7 @@ public static class RoleClass
             NotSucCool = CustomOptionHolder.DoppelgangerNotSucTime.GetFloat();
             Duration = DurationTime + 1.1f;
             Targets = new();
-            CurrentCool = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+            CurrentCool = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         }
     }
     public static class WaveCannonJackal
