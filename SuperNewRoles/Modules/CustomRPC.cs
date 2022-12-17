@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.MapOptions;
+using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
@@ -256,7 +257,6 @@ public enum CustomRPC
     Camouflage = 230,
     ShowGuardEffect,
     SetLoversCupid,
-    SetMapId,
     PenguinHikizuri,
     SetVampireStatus,
     SyncDeathMeeting,
@@ -333,10 +333,6 @@ public static class RPCProcedure
                 RoleClass.Vampire.Targets.Remove(source);
             }
         }
-    }
-    public static void SetMapId(byte mapid)
-    {
-        SNROnlySearch.currentMapId = mapid;
     }
 
     public static void PenguinHikizuri(byte sourceId, byte targetId)
@@ -1050,6 +1046,7 @@ public static class RPCProcedure
         var player = ModHelpers.PlayerById(playerid);
         if (player == null) return;
         player.Revive();
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, player.IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate);
         DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == playerid);
         FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Alive;
     }
@@ -1596,9 +1593,6 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetLoversCupid:
                         SetLoversCupid(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SetMapId:
-                        SetMapId(reader.ReadByte());
                         break;
                     case CustomRPC.PenguinHikizuri:
                         PenguinHikizuri(reader.ReadByte(), reader.ReadByte());

@@ -1010,8 +1010,8 @@ public class CustomOptionHolder
 
         IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
-        IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true);
-
+        IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true, isHidden:true);
+        IsOldMode.selection = 0;
 
         if (ConfigRoles.DebugMode.Value)
         {
@@ -1028,7 +1028,7 @@ public class CustomOptionHolder
         ZoomCoolTime = Create(621, false, CustomOptionType.Generic, "clairvoyantCoolTime", 15f, 1f, 120f, 2.5f, ClairvoyantZoom, format: "unitCouples");
         ZoomDurationTime = Create(622, false, CustomOptionType.Generic, "clairvoyantDurationTime", 5f, 1f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
 
-        MapOptions.MapOption.LoadOption();
+        MapOption.MapOption.LoadOption();
 
         //SoothSayerRate = Create(2, Cs(SoothSayer.color,"soothName"),rates, null, true);
         Mode.ModeHandler.OptionLoad();
@@ -1224,7 +1224,7 @@ public class CustomOptionHolder
         SelfBomberOption = SetupCustomRoleOption(161, true, RoleId.SelfBomber);
         SelfBomberPlayerCount = Create(162, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SelfBomberOption);
         SelfBomberScope = Create(163, true, CustomOptionType.Impostor, "SelfBomberScopeSetting", 1f, 0.5f, 3f, 0.5f, SelfBomberOption);
-        SelfBomberBombCoolTime = Create(504, true, CustomOptionType.Impostor, "SelfBomberBombCoolTimeSettting", 10f, 2.5f, 90f, 2.5f, SelfBomberOption);
+        SelfBomberBombCoolTime = Create(1111, true, CustomOptionType.Impostor, "SelfBomberBombCoolTimeSettting", 10f, 2.5f, 90f, 2.5f, SelfBomberOption);
 
         GodOption = SetupCustomRoleOption(164, true, RoleId.God);
         GodPlayerCount = Create(165, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GodOption);

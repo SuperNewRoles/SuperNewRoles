@@ -25,7 +25,7 @@ public static class VentDataModules
     public static void ConnectAllVent(bool connect)
     {
         Dictionary<string, VentData> ventMap = VentData.VentMap;
-        switch (PlayerControl.GameOptions.MapId)
+        switch (GameManager.Instance.LogicOptions.currentGameOptions.MapId)
         {
             case 0:
                 //Skeld

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using UnityEngine;
@@ -174,7 +175,7 @@ public static class Main
         if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
         {
             IsLocalEnd = true;
-            if (PlayerControl.GameOptions.TaskBarMode != TaskBarMode.Invisible)
+            if (GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.TaskBarMode) != (int)TaskBarMode.Invisible)
             {
                 TaskBar.Instance.gameObject.SetActive(IsLocalEnd);
             }

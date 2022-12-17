@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
@@ -125,7 +126,7 @@ public static class SecretRoom
     }
     public static void ShipStatusAwake(ShipStatus __instance)
     {
-        if (PlayerControl.GameOptions.MapId != (int)MapNames.Airship) return;
+        if (GameManager.Instance.LogicOptions.currentGameOptions.MapId != (int)MapNames.Airship) return;
         if (__instance.Type == ShipStatus.MapType.Ship && MapCustomOption.GetBool() && AirshipSetting.GetBool() && SecretRoomOption.GetBool())
         {
             Transform room = __instance.transform.FindChild("HallwayPortrait");
@@ -479,7 +480,7 @@ public static class SecretRoom
         {
             while (true)
             {
-                if (RoleClass.IsMeeting || (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started && AmongUsClient.Instance.GameMode != GameModes.FreePlay))
+                if (RoleClass.IsMeeting || (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay))
                 {
                     yield break;
                 }
@@ -488,7 +489,7 @@ public static class SecretRoom
                 {
                     while (IsWait)
                     {
-                        if (RoleClass.IsMeeting || (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started && AmongUsClient.Instance.GameMode != GameModes.FreePlay))
+                        if (RoleClass.IsMeeting || (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay))
                         {
                             LowerInfoText.text = "";
                             yield break;

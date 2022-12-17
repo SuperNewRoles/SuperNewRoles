@@ -5,8 +5,15 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using Agartha;
+using AmongUs.GameOptions;
 
 namespace SuperNewRoles.Patches;
+
+[HarmonyPatch(typeof(GameManager), nameof(GameManager.Serialize))]
+class ControllerManagerUpdatePatcha
+{
+    public static bool Prefix() => AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started;
+}
 
 [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
 class ControllerManagerUpdatePatch
@@ -40,7 +47,7 @@ class ControllerManagerUpdatePatch
                 }
                 else
                 {
-                    ShipStatus.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
+                    GameManager.Instance.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
                     MapUtilities.CachedShipStatus.enabled = false;
                 }
             }
@@ -69,7 +76,22 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                GameObject.Instantiate(MapLoader.Skeld);
+                PlayerControl.LocalPlayer.Data.IsDead = true;
+                PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.ImpostorGhost);
+                PlayerControl.LocalPlayer.Data.IsDead = false;
+            }
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                GameOptionsManager.Instance.SwitchGameMode(GameModes.HideNSeek);
+                RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
+            }
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByKill, false);
+            }
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.ImpostorGhost);
             }
             if (Input.GetKeyDown(KeyCode.K))
             {
@@ -101,7 +123,7 @@ class ControllerManagerUpdatePatch
             }
         }
         // 以下フリープレイのみ
-        if (AmongUsClient.Instance.GameMode != GameModes.FreePlay) return;
+        if (AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) return;
         // エアーシップのトイレのドアを開ける
         if (Input.GetKeyDown(KeyCode.T))
         {

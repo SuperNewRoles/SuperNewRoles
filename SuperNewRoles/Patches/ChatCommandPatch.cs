@@ -1,8 +1,10 @@
 using System;
 using AmongUs.Data;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using SuperNewRoles.Helpers;
 using static System.Int32;
 
 namespace SuperNewRoles.Patches;
@@ -35,11 +37,11 @@ public static class DynamicLobbies
                             {
                                 LobbyLimit = Math.Clamp(LobbyLimit, 4, 15);
                             }
-                            if (LobbyLimit != PlayerControl.GameOptions.MaxPlayers)
+                            if (LobbyLimit != GameManager.Instance.LogicOptions.currentGameOptions.MaxPlayers)
                             {
-                                PlayerControl.GameOptions.MaxPlayers = LobbyLimit;
+                                GameManager.Instance.LogicOptions.currentGameOptions.SetInt(Int32OptionNames.MaxPlayers, LobbyLimit);
                                 FastDestroyableSingleton<GameStartManager>.Instance.LastPlayerCount = LobbyLimit;
-                                CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
+                                RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
                                 __instance.AddChat(PlayerControl.LocalPlayer, $"ロビーの最大人数を{LobbyLimit}人に変更しました！");
                             }
                             else
@@ -57,8 +59,8 @@ public static class DynamicLobbies
                         if (!float.TryParse(text[4..], out var cooltime)) __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/kc {キルクールタイム}");
                         var settime = cooltime;
                         if (settime == 0) settime = 0.00001f;
-                        PlayerControl.GameOptions.KillCooldown = settime;
-                        CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
+                        GameManager.Instance.LogicOptions.currentGameOptions.SetFloat(FloatOptionNames.KillCooldown, settime);
+                        RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
                         __instance.AddChat(PlayerControl.LocalPlayer, $"キルクールタイムを{cooltime}秒に変更しました！");
                     }
                 }
@@ -77,7 +79,7 @@ public static class DynamicLobbies
                     }
                 }
 
-                if (AmongUsClient.Instance.GameMode == GameModes.FreePlay)
+                if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay)
                 {
                     if (text.ToLower().Equals("/murder"))
                     {
@@ -116,15 +118,15 @@ public static class DynamicLobbies
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.HostGame))]
         public static class InnerNetClientHostPatch
         {
-            public static void Prefix([HarmonyArgument(0)] GameOptionsData settings)
+            public static void Prefix([HarmonyArgument(0)] IGameOptions settings)
             {
                 LobbyLimit = settings.MaxPlayers;
-                settings.MaxPlayers = 15; // Force 15 Player Lobby on Server
+                GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.MaxPlayers, 15); // Force 15 Player Lobby on Server
                 DataManager.Settings.Multiplayer.ChatMode = QuickChatModes.FreeChatOrQuickChat;
             }
-            public static void Postfix([HarmonyArgument(0)] GameOptionsData settings)
+            public static void Postfix([HarmonyArgument(0)] IGameOptions settings)
             {
-                settings.MaxPlayers = LobbyLimit;
+                GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.MaxPlayers, LobbyLimit);
             }
         }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.JoinGame))]

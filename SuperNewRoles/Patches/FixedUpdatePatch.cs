@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
@@ -15,7 +16,7 @@ public class StartGame
 {
     public static void Postfix()
     {
-        MapOptions.RandomMap.Prefix();
+        MapOption.RandomMap.Prefix();
         FixedUpdate.IsProDown = ConfigRoles.CustomProcessDown.Value;
     }
 }
@@ -82,10 +83,6 @@ public class FixedUpdate
         // -- 以下ゲーム中のみ --
         if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
         {
-            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
-            {
-                SNROnlySearch.FixedUpdate();
-            }
             return;
         }
 
@@ -203,7 +200,7 @@ public class FixedUpdate
                 }
                 else // -- 死亡時 --
                 {
-                    if (MapOptions.MapOption.ClairvoyantZoom)
+                    if (MapOption.MapOption.ClairvoyantZoom)
                     {
                         Clairvoyant.FixedUpdate.Postfix();
                     }

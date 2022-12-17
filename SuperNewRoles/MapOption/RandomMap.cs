@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using AmongUs.GameOptions;
+using SuperNewRoles.Helpers;
 
-namespace SuperNewRoles.MapOptions;
+namespace SuperNewRoles.MapOption;
 
 public static class RandomMap
 {
@@ -17,8 +19,8 @@ public static class RandomMap
             if (MapOption.ValidationAirship) RandomMaps.Add(4);
             if (RandomMaps.Count <= 0) { return; }
             var MapsId = RandomMaps[rand.Next(RandomMaps.Count)];
-            PlayerControl.GameOptions.MapId = MapsId;
-            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
+            GameManager.Instance.LogicOptions.currentGameOptions.SetByte(ByteOptionNames.MapId, MapsId);
+            RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
         }
         return;
     }

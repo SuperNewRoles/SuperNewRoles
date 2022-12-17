@@ -20,7 +20,7 @@ public static class HamburgerShop
             {
                 PlayerTask task = __instance.FindTask(CachedPlayer.LocalPlayer);
                 tempminigame = task.MinigamePrefab;
-                ShipStatus ship = PlayerControl.GameOptions.MapId == (int)MapNames.Airship ? ShipStatus.Instance : MapLoader.Airship;
+                ShipStatus ship = GameManager.Instance.LogicOptions.currentGameOptions.MapId == (int)MapNames.Airship ? ShipStatus.Instance : MapLoader.Airship;
                 task.MinigamePrefab = ship.NormalTasks.FirstOrDefault(x => x.TaskType == TaskTypes.MakeBurger).MinigamePrefab;
             }
         }

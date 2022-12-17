@@ -1,5 +1,5 @@
 using System;
-using SuperNewRoles.MapOptions;
+using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -79,12 +79,12 @@ class ButtonTime
     }
     public static void ClairvoyantDuration()
     {
-        if (MapOption.Timer == 0 && PlayerControl.LocalPlayer.Data.IsDead && MapOption.ClairvoyantZoom) return;
-        MapOption.IsZoomOn = true;
-        var timeSpanData = new TimeSpan(0, 0, 0, (int)MapOption.DurationTime);
-        timeSpanData = new TimeSpan(0, 0, 0, (int)MapOption.DurationTime);
-        MapOption.Timer = (float)(MapOption.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
-        if (MapOption.Timer <= 0f) MapOption.Timer = 0f; MapOption.IsZoomOn = false; return;
+        if (MapOption.MapOption.Timer == 0 && PlayerControl.LocalPlayer.Data.IsDead && MapOption.MapOption.ClairvoyantZoom) return;
+        MapOption.MapOption.IsZoomOn = true;
+        var timeSpanData = new TimeSpan(0, 0, 0, (int)MapOption.MapOption.DurationTime);
+        timeSpanData = new TimeSpan(0, 0, 0, (int)MapOption.MapOption.DurationTime);
+        MapOption.MapOption.Timer = (float)(MapOption.MapOption.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
+        if (MapOption.MapOption.Timer <= 0f) MapOption.MapOption.Timer = 0f; MapOption.MapOption.IsZoomOn = false; return;
     }
     public static void TeleporterButton()
     {

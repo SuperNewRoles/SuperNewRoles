@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
@@ -82,7 +83,7 @@ class RoleManagerSelectRolesPatch
                     SelectPlayers.Add(player);
                 }
             }
-            for (int i = 0; i < PlayerControl.GameOptions.NumImpostors; i++)
+            for (int i = 0; i < GameManager.Instance.LogicOptions.NumImpostors; i++)
             {
                 if (SelectPlayers.Count >= 1)
                 {
@@ -99,11 +100,12 @@ class RoleManagerSelectRolesPatch
             {
                 sender.RpcSetRole(player, RoleTypes.Impostor);
             }
+            RoleTypes CrewRoleTypes = ModeHandler.IsMode(ModeId.VanillaHns) ? RoleTypes.Engineer : RoleTypes.Crewmate;
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (!player.Data.Disconnected && !player.IsImpostor())
                 {
-                    sender.RpcSetRole(player, RoleTypes.Crewmate);
+                    sender.RpcSetRole(player, CrewRoleTypes);
                 }
             }
 
@@ -995,7 +997,7 @@ class AllRoleSetClass
         foreach (IntroData intro in IntroData.IntroList)
         {
             if (intro.RoleId != RoleId.DefaultRole &&
-                (intro.RoleId != RoleId.Nun || (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship)
+                (intro.RoleId != RoleId.Nun || (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship)
                 && !intro.IsGhostRole
                 && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))
                 && intro.RoleId is not RoleId.GM

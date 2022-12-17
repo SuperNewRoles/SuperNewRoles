@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
@@ -1226,6 +1227,7 @@ public static class RoleHelpers
     {
         RoleId role = player.GetRole();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && IsComms() && !player.IsImpostor()) return false;
+        if (ModeHandler.IsMode(ModeId.VanillaHns)) return false;
         return role switch
         {
             RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,
@@ -1413,7 +1415,7 @@ public static class RoleHelpers
     public static bool IsRole(this CachedPlayer player, RoleTypes roleTypes) => player.Data.Role.Role == roleTypes;
     public static float GetCoolTime(PlayerControl __instance)
     {
-        float addition = PlayerControl.GameOptions.killCooldown;
+        float addition = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         if (ModeHandler.IsMode(ModeId.Default))
         {
             addition = __instance.GetRole() switch
@@ -1432,14 +1434,14 @@ public static class RoleHelpers
                 RoleId.ShiftActor => ShiftActor.KillCool,
                 RoleId.EvilGambler => RoleClass.EvilGambler.currentCool,
                 RoleId.Doppelganger => RoleClass.Doppelganger.CurrentCool,
-                _ => PlayerControl.GameOptions.killCooldown
+                _ => GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown)
             };
         }
         return addition;
     }
     public static float GetEndMeetingKillCoolTime(PlayerControl p)
     {
-        if (p.IsRole(RoleId.EvilGambler, RoleId.Doppelganger)) return PlayerControl.GameOptions.KillCooldown;
+        if (p.IsRole(RoleId.EvilGambler, RoleId.Doppelganger)) return GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         return GetCoolTime(p);
     }
     public static RoleId GetGhostRole(this PlayerControl player, bool IsChache = true)

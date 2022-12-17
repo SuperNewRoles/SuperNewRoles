@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
-using SuperNewRoles.MapOptions;
+using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Patches;
@@ -14,12 +15,12 @@ class TaskCount
     {
         static void Postfix(NormalPlayerTask __instance, TaskTypes taskType, byte[] consoleIds)
         {
-            if (taskType != TaskTypes.FixWiring || !ModeHandler.IsMode(ModeId.Default) || !MapOption.WireTaskIsRandom) return;
+            if (taskType != TaskTypes.FixWiring || !ModeHandler.IsMode(ModeId.Default) || !MapOption.MapOption.WireTaskIsRandom) return;
             List<Console> orgList = MapUtilities.CachedShipStatus.AllConsoles.Where((global::Console t) => t.TaskTypes.Contains(taskType)).ToList<global::Console>();
             List<Console> list = new(orgList);
 
-            __instance.MaxStep = MapOption.WireTaskNum;
-            __instance.Data = new byte[MapOption.WireTaskNum];
+            __instance.MaxStep = MapOption.MapOption.WireTaskNum;
+            __instance.Data = new byte[MapOption.MapOption.WireTaskNum];
             for (int i = 0; i < __instance.Data.Length; i++)
             {
                 if (list.Count == 0)
@@ -72,7 +73,7 @@ class TaskCount
         int CompletedTasks = 0;
         if (!playerInfo.Disconnected && playerInfo.Tasks != null &&
             playerInfo.Object &&
-            (PlayerControl.GameOptions.GhostsDoTasks || !playerInfo.IsDead) &&
+            (GameManager.Instance.LogicOptions.currentGameOptions.GetBool(BoolOptionNames.GhostsDoTasks) || !playerInfo.IsDead) &&
             playerInfo.Role && playerInfo.Role.TasksCountTowardProgress
             )
         {

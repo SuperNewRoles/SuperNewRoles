@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using AmongUs.GameOptions;
 using BepInEx.Configuration;
 using HarmonyLib;
 using Hazel;
@@ -374,6 +375,16 @@ class RoleOptionsDataGetNumPerGamePatch
     }
 }
 
+[HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Start))]
+class GameSettingMenuStartPatch2
+{
+    public static void Postfix(GameSettingMenu __instance)
+    {
+        __instance.Tabs.SetActive(true);
+
+    }
+}
+
 [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Start))]
 class GameOptionsMenuStartPatch
 {
@@ -405,9 +416,10 @@ class GameOptionsMenuStartPatch
             return;
         }
         // Setup TOR tab
-        var template = UnityEngine.Object.FindObjectsOfType<StringOption>().FirstOrDefault();
+        StringOption template = GameObject.Find("Main Camera/PlayerOptionsMenu(Clone)/Game Settings/GameGroup/SliderInner/KillDistance").GetComponent<StringOption>();
+        Logger.Info($"{template == null}","nullチェック");
         if (template == null) return;
-        var gameSettings = GameObject.Find("Game Settings");
+        var gameSettings = GameObject.Find("Main Camera/PlayerOptionsMenu(Clone)/Game Settings/");
         var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
 
         var snrSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
@@ -481,6 +493,7 @@ class GameOptionsMenuStartPatch
             {
                 gameSettingMenu.RegularGameSettings.SetActive(false);
                 gameSettingMenu.RolesSettings.gameObject.SetActive(false);
+                gameSettingMenu.HideNSeekSettings.gameObject.SetActive(false);
                 snrSettings.gameObject.SetActive(false);
                 impostorSettings.gameObject.SetActive(false);
                 neutralSettings.gameObject.SetActive(false);
@@ -495,7 +508,10 @@ class GameOptionsMenuStartPatch
                 RegulationTabHighlight.enabled = false;
                 if (copiedIndex == 0)
                 {
-                    gameSettingMenu.RegularGameSettings.SetActive(true);
+                    if (GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek)
+                        gameSettingMenu.HideNSeekSettings.gameObject.SetActive(true);
+                    else
+                        gameSettingMenu.RegularGameSettings.SetActive(true);
                     gameSettingMenu.GameSettingsHightlight.enabled = true;
                 }
                 else if (copiedIndex == 1)
@@ -621,7 +637,7 @@ public class KeyValueOptionEnablePatch
 {
     public static void Postfix(KeyValueOption __instance)
     {
-        GameOptionsData gameOptions = PlayerControl.GameOptions;
+        IGameOptions gameOptions = GameManager.Instance.LogicOptions.currentGameOptions;
         if (__instance.Title == StringNames.GameMapName)
         {
             __instance.Selected = gameOptions.MapId;
@@ -780,7 +796,7 @@ static class GameOptionsMenuUpdatePatch
     public static void Postfix(GameOptionsMenu __instance)
     {
         var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
-        if (gameSettingMenu.RegularGameSettings.active || gameSettingMenu.RolesSettings.gameObject.active) return;
+        if (gameSettingMenu.RegularGameSettings.active || gameSettingMenu.RolesSettings.gameObject.active || gameSettingMenu.HideNSeekSettings.gameObject.active) return;
 
         timer += Time.deltaTime;
         if (timer < 0.1f) return;
@@ -887,79 +903,6 @@ class GameSettingMenuStartPatch
     }
 }
 
-[HarmonyPatch(typeof(GameOptionsData), nameof(GameOptionsData.ToHudString))]
-class Tohudstring
-{
-    public static bool Prefix(ref string __result, GameOptionsData __instance, [HarmonyArgument(0)] int numPlayers)
-    {
-        __instance.settings.Length = 0;
-        try
-        {
-            __instance.settings.AppendLine(FastDestroyableSingleton<TranslationController>.Instance.GetString(__instance.isDefaults ? StringNames.GameRecommendedSettings : StringNames.GameCustomSettings));
-            int num = 0;
-            try
-            {
-                num = GameOptionsData.MaxImpostors[numPlayers];
-            }
-            catch
-            {
-                num = __instance.NumImpostors;
-            }
-            int num2 = __instance.MapId > 5 ? SNROnlySearch.currentMapId : (__instance.MapId == 0 && Constants.ShouldFlipSkeld()) ? 3 : __instance.MapId;
-            string value = Constants.MapNames[num2];
-            __instance.AppendItem(__instance.settings, StringNames.GameMapName, value);
-            __instance.settings.Append($"{FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameNumImpostors)}: {__instance.NumImpostors}");
-            if (__instance.NumImpostors > num)
-            {
-                __instance.settings.Append($" ({FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Limit)}: {num})");
-            }
-            __instance.settings.AppendLine();
-            if (__instance.gameType == GameType.Normal)
-            {
-                __instance.AppendItem(__instance.settings, StringNames.GameConfirmImpostor, __instance.ConfirmImpostor);
-                __instance.AppendItem(__instance.settings, StringNames.GameNumMeetings, __instance.NumEmergencyMeetings);
-                __instance.AppendItem(__instance.settings, StringNames.GameAnonymousVotes, __instance.AnonymousVotes);
-                __instance.AppendItem(__instance.settings, StringNames.GameEmergencyCooldown, string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.EmergencyCooldown));
-                __instance.AppendItem(__instance.settings, StringNames.GameDiscussTime, string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.DiscussionTime));
-                if (__instance.VotingTime > 0)
-                {
-                    __instance.AppendItem(__instance.settings, StringNames.GameVotingTime, string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.VotingTime));
-                }
-                else
-                {
-                    __instance.AppendItem(__instance.settings, StringNames.GameVotingTime, FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev, "∞"));
-                }
-                __instance.AppendItem(__instance.settings, StringNames.GamePlayerSpeed, __instance.PlayerSpeedMod, "x");
-                __instance.AppendItem(__instance.settings, StringNames.GameCrewLight, __instance.CrewLightMod, "x");
-                __instance.AppendItem(__instance.settings, StringNames.GameImpostorLight, __instance.ImpostorLightMod, "x");
-                __instance.AppendItem(__instance.settings, StringNames.GameKillCooldown, string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.KillCooldown));
-                __instance.AppendItem(__instance.settings, StringNames.GameKillDistance, FastDestroyableSingleton<TranslationController>.Instance.GetString((StringNames)(204 + __instance.KillDistance)));
-                __instance.AppendItem(__instance.settings, StringNames.GameTaskBarMode, FastDestroyableSingleton<TranslationController>.Instance.GetString((StringNames)(277 + __instance.TaskBarMode)));
-                __instance.AppendItem(__instance.settings, StringNames.GameVisualTasks, __instance.VisualTasks);
-                __instance.AppendItem(__instance.settings, StringNames.GameCommonTasks, __instance.NumCommonTasks);
-                __instance.AppendItem(__instance.settings, StringNames.GameLongTasks, __instance.NumLongTasks);
-                __instance.AppendItem(__instance.settings, StringNames.GameShortTasks, __instance.NumShortTasks);
-                if (__instance.gameType == GameType.Normal)
-                {
-                    RoleBehaviour[] allRoles = FastDestroyableSingleton<RoleManager>.Instance.AllRoles;
-                    foreach (RoleBehaviour roleBehaviour in allRoles)
-                    {
-                        if (roleBehaviour.Role is not 0 and not RoleTypes.Impostor)
-                        {
-                            __instance.AppendItem(__instance.settings, FastDestroyableSingleton<TranslationController>.Instance.GetString(roleBehaviour.StringName) + ": " + string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.RoleChanceAndQuantity), __instance.RoleOptions.GetNumPerGame(roleBehaviour.Role), __instance.RoleOptions.GetChancePerGame(roleBehaviour.Role)));
-                        }
-                    }
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
-        }
-        __result = __instance.settings.ToString();
-        return false;
-    }
-}
 [HarmonyPatch]
 class GameOptionsDataPatch
 {
@@ -970,7 +913,7 @@ class GameOptionsDataPatch
 
     private static IEnumerable<MethodBase> TargetMethods()
     {
-        return typeof(GameOptionsData).GetMethods().Where(x => x.ReturnType == typeof(string) && x.GetParameters().Length == 1 && x.GetParameters()[0].ParameterType == typeof(int));
+        return typeof(IGameOptionsExtensions).GetMethods().Where(x => x.ReturnType == typeof(string) && x.GetParameters().Length == 2 && x.GetParameters()[1].ParameterType == typeof(int));
     }
 
     public static string OptionToString(CustomOption option)
@@ -1140,12 +1083,12 @@ class GameOptionsDataPatch
     }
 }
 
-[HarmonyPatch(typeof(GameOptionsData), nameof(GameOptionsData.GetAdjustedNumImpostors))]
+[HarmonyPatch(typeof(IGameOptionsExtensions), "GetAdjustedNumImpostors")]
 public static class GameOptionsGetAdjustedNumImpostorsPatch
 {
-    public static bool Prefix(GameOptionsData __instance, ref int __result)
+    public static bool Prefix(ref int __result)
     {
-        __result = PlayerControl.GameOptions.NumImpostors;
+        __result = GameManager.Instance.LogicOptions.currentGameOptions.NumImpostors;
         return false;
     }
 }

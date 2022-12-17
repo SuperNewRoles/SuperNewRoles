@@ -12,6 +12,7 @@ using SuperNewRoles.Roles;
 using TMPro;
 using UnhollowerBaseLib;
 using UnityEngine;
+using AmongUs.GameOptions;
 
 namespace SuperNewRoles;
 
@@ -147,18 +148,18 @@ public static class ModHelpers
         var anim = spriteAnim.m_animator;
         var skinLayer = playerPhysics.GetSkin();
 
-        var currentPhysicsAnim = playerPhysics.Animator.GetCurrentAnimation();
-        clip = currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.RunAnim
+        var currentPhysicsAnim = playerPhysics.Animations.Animator.GetCurrentAnimation();
+        clip = currentPhysicsAnim == playerPhysics.Animations.group.RunAnim
             ? nextSkin.RunAnim
-            : currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.SpawnAnim
+            : currentPhysicsAnim == playerPhysics.Animations.group.SpawnAnim
             ? nextSkin.SpawnAnim
-            : currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.EnterVentAnim
+            : currentPhysicsAnim == playerPhysics.Animations.group.EnterVentAnim
             ? nextSkin.EnterVentAnim
-            : currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.ExitVentAnim
+            : currentPhysicsAnim == playerPhysics.Animations.group.ExitVentAnim
             ? nextSkin.ExitVentAnim
-            : currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.IdleAnim ? nextSkin.IdleAnim : nextSkin.IdleAnim;
+            : currentPhysicsAnim == playerPhysics.Animations.group.IdleAnim ? nextSkin.IdleAnim : nextSkin.IdleAnim;
 
-        float progress = playerPhysics.Animator.m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        float progress = playerPhysics.Animations.Animator.m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         skinLayer.skin = nextSkin;
 
         spriteAnim.Play(clip, 1f);
@@ -641,113 +642,44 @@ public static class ModHelpers
     }
     public static TextMeshPro NameText(this PoolablePlayer player)
     {
-        return player.transform.FindChild("NameText_TMP").GetComponent<TextMeshPro>();
+        return player.cosmetics.nameText;
     }
     public static SpriteRenderer MyRend(this PlayerControl player)
     {
-        bool Isnull = true;
-        if (MyRendCache.ContainsKey(player.PlayerId))
-        {
-            Isnull = MyRendCache[player.PlayerId] == null;
-        }
-        if (Isnull)
-        {
-            MyRendCache[player.PlayerId] = player.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
-        }
-        return MyRendCache[player.PlayerId];
+        return player.cosmetics.currentBodySprite.BodySprite;
     }
     public static SpriteRenderer Rend(this PlayerPhysics player)
     {
-        byte PlayerId = player.myPlayer.PlayerId;
-        bool Isnull = true;
-        if (MyRendCache.ContainsKey(PlayerId))
-        {
-            Isnull = MyRendCache[PlayerId] == null;
-        }
-        if (Isnull)
-        {
-            MyRendCache[PlayerId] = player.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
-        }
-        return MyRendCache[PlayerId];
+        return player.myPlayer.cosmetics.currentBodySprite.BodySprite;
     }
     public static SkinLayer GetSkin(this PlayerControl player)
     {
-        byte PlayerId = player.PlayerId;
-        bool Isnull = true;
-        if (SkinLayerCache.ContainsKey(PlayerId))
-        {
-            Isnull = SkinLayerCache[PlayerId] == null;
-        }
-        if (Isnull)
-        {
-            SkinLayerCache[PlayerId] = player.transform.FindChild("Skin").GetComponent<SkinLayer>();
-        }
-        return SkinLayerCache[PlayerId];
+        return player.cosmetics.skin;
     }
     public static SkinLayer GetSkin(this PlayerPhysics player)
     {
-        byte PlayerId = player.myPlayer.PlayerId;
-        bool Isnull = true;
-        if (SkinLayerCache.ContainsKey(PlayerId))
-        {
-            Isnull = SkinLayerCache[PlayerId] == null;
-        }
-        if (Isnull)
-        {
-            SkinLayerCache[PlayerId] = player.transform.FindChild("Skin").GetComponent<SkinLayer>();
-        }
-        return SkinLayerCache[PlayerId];
+        return player.myPlayer.cosmetics.skin;
     }
     public static HatParent HatRenderer(this PlayerControl player)
     {
-        byte PlayerId = player.PlayerId;
-        bool Isnull = true;
-        if (HatRendererCache.ContainsKey(PlayerId))
-        {
-            Isnull = HatRendererCache[PlayerId] == null;
-        }
-        if (Isnull)
-        {
-            HatRendererCache[PlayerId] = player.transform.FindChild("Sprite/Hat").GetComponent<HatParent>();
-        }
-        return HatRendererCache[PlayerId];
+        return player.cosmetics.hat;
     }
     public static SpriteRenderer HatRend(this PlayerControl player)
     {
-        byte PlayerId = player.PlayerId;
-        bool Isnull = true;
-        if (HatRendCache.ContainsKey(PlayerId))
-        {
-            Isnull = HatRendCache[PlayerId] == null;
-        }
-        if (Isnull)
-        {
-            HatRendCache[PlayerId] = player.transform.FindChild("Sprite/Hat").GetComponent<SpriteRenderer>();
-        }
-        return HatRendCache[PlayerId];
+        return player.cosmetics.hat.Parent;
     }
     public static VisorLayer VisorSlot(this PlayerControl player)
     {
-        byte PlayerId = player.PlayerId;
-        bool Isnull = true;
-        if (VisorSlotCache.ContainsKey(PlayerId))
-        {
-            Isnull = VisorSlotCache[PlayerId] == null;
-        }
-        if (Isnull)
-        {
-            VisorSlotCache[PlayerId] = player.transform.FindChild("Sprite/Visor").GetComponent<VisorLayer>();
-        }
-        return VisorSlotCache[PlayerId];
+        return player.cosmetics.visor;
     }
 
     public static HatParent HatSlot(this PoolablePlayer player)
     {
-        return player.transform.FindChild("HatSlot").GetComponent<HatParent>();
+        return player.cosmetics.hat;
     }
     public static VisorLayer VisorSlot(this PoolablePlayer player)
     {
-        return player.transform.FindChild("Visor").GetComponent<VisorLayer>();
+        return player.cosmetics.visor;
     }
 
     public static Texture2D LoadTextureFromDisk(string path)

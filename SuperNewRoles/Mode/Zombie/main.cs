@@ -6,114 +6,112 @@ using SuperNewRoles.Patches;
 using UnityEngine;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
 
-namespace SuperNewRoles.Mode.Zombie
+namespace SuperNewRoles.Mode.Zombie;
+
+static class Main
 {
-    static class Main
+    public static Color Zombiecolor = new Color32(143, 188, 143, byte.MaxValue);
+    public static Color Policecolor = Color.blue;
+    public static List<int> ZombiePlayers;
+    public static bool IsZombie(this PlayerControl player)
     {
-        public static Color Zombiecolor = new Color32(143, 188, 143, byte.MaxValue);
-        public static Color Policecolor = Color.blue;
-        public static List<int> ZombiePlayers;
-        public static bool IsZombie(this PlayerControl player)
+        try
         {
-            try
-            {
-                return player.Data.Disconnected || player.Data.Role.IsImpostor || ZombiePlayers.Contains(player.PlayerId);
-            }
-            catch { return false; }
+            return player.Data.Disconnected || player.Data.Role.IsImpostor || ZombiePlayers.Contains(player.PlayerId);
         }
-        public static void CountTaskZombie(GameData __instance)
+        catch { return false; }
+    }
+    public static void CountTaskZombie(GameData __instance)
+    {
+        __instance.TotalTasks = 0;
+        __instance.CompletedTasks = 0;
+        for (int i = 0; i < __instance.AllPlayers.Count; i++)
         {
-            __instance.TotalTasks = 0;
-            __instance.CompletedTasks = 0;
-            for (int i = 0; i < __instance.AllPlayers.Count; i++)
+            GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
+            if (!playerInfo.Object.IsZombie())
             {
-                GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
-                if (!playerInfo.Object.IsZombie())
-                {
-                    var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);
-                    __instance.TotalTasks += playerTotal;
-                    __instance.CompletedTasks += playerCompleted;
-                }
+                var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);
+                __instance.TotalTasks += playerTotal;
+                __instance.CompletedTasks += playerCompleted;
             }
         }
-        public static void SetZombie(this PlayerControl player)
-        {
-            player.RpcSetColor(2);
+    }
+    public static void SetZombie(this PlayerControl player)
+    {
+        player.RpcSetColor(2);
 
-            foreach (PlayerTask task in player.myTasks)
+        foreach (PlayerTask task in player.myTasks)
+        {
+            task.Complete();
+        }
+        if (!ZombiePlayers.Contains(player.PlayerId)) ZombiePlayers.Add(player.PlayerId);
+        ZombieOptions.ChengeSetting(player);
+    }
+    public static void SetNotZombie(this PlayerControl player)
+    {
+        if (ZombiePlayers.Contains(player.PlayerId)) ZombiePlayers.Remove(player.PlayerId);
+    }
+    public static bool EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)
+    {
+        bool IsZombieWin = true;
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        {
+            if (!ZombiePlayers.Contains(p.PlayerId) && p.IsAlive())
             {
-                task.Complete();
+                IsZombieWin = false;
             }
-            if (!ZombiePlayers.Contains(player.PlayerId)) ZombiePlayers.Add(player.PlayerId);
-            ZombieOptions.ChengeSetting(player);
         }
-        public static void SetNotZombie(this PlayerControl player)
+        if (IsZombieWin)
         {
-            if (ZombiePlayers.Contains(player.PlayerId)) ZombiePlayers.Remove(player.PlayerId);
+            __instance.enabled = false;
+            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByKill, false);
+            return true;
         }
-        public static bool EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)
+        if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
         {
-            bool IsZombieWin = true;
+            __instance.enabled = false;
+            GameManager.Instance.RpcEndGame(GameOverReason.HumansByVote, false);
+            return true;
+        }
+        return false;
+    }
+    public static void ClearAndReload()
+    {
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        {
+            p.SetHat("", 0);
+        }
+
+        SyncSetting.OptionData = GameManager.Instance.LogicOptions.currentGameOptions;
+        ZombieOptions.ZombieLight = ZombieOptions.ZombieLightOption.GetFloat();
+        ZombieOptions.ZombieSpeed = ZombieOptions.ZombieSpeedOption.GetFloat();
+        ZombieOptions.PoliceLight = ZombieOptions.PoliceLightOption.GetFloat();
+        ZombieOptions.PoliceSpeed = ZombieOptions.PoliceSpeedOption.GetFloat();
+        if (!AmongUsClient.Instance.AmHost) return;
+        ZombiePlayers = new();
+        if (AmongUsClient.Instance.AmHost)
+        {
+            FixedUpdate.IsStart = false;
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (!ZombiePlayers.Contains(p.PlayerId) && p.IsAlive())
-                {
-                    IsZombieWin = false;
-                }
+                p.GetDefaultName();
             }
-            if (IsZombieWin)
-            {
-                __instance.enabled = false;
-                ShipStatus.RpcEndGame(GameOverReason.ImpostorByKill, false);
-                return true;
-            }
-            if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
-            {
-                __instance.enabled = false;
-                ShipStatus.RpcEndGame(GameOverReason.HumansByVote, false);
-                return true;
-            }
-            return false;
         }
-        public static void ClearAndReload()
+        ZombieOptions.FirstChangeSettings();
+    }
+    public static void SetTimer()
+    {
+        FixedUpdate.IsStart = true;
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
             {
-                p.SetHat("", 0);
-            }
-
-            SyncSetting.OptionData = PlayerControl.GameOptions;
-            ZombieOptions.ZombieLight = ZombieOptions.ZombieLightOption.GetFloat();
-            ZombieOptions.ZombieSpeed = ZombieOptions.ZombieSpeedOption.GetFloat();
-            ZombieOptions.PoliceLight = ZombieOptions.PoliceLightOption.GetFloat();
-            ZombieOptions.PoliceSpeed = ZombieOptions.PoliceSpeedOption.GetFloat();
-            if (!AmongUsClient.Instance.AmHost) return;
-            ZombiePlayers = new();
-            if (AmongUsClient.Instance.AmHost)
-            {
-                FixedUpdate.IsStart = false;
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                if (p2.PlayerId != p.PlayerId)
                 {
-                    p.GetDefaultName();
-
+                    p2.RpcSetNamePrivate("Playing on SuperNewRoles!", p);
                 }
             }
-            ZombieOptions.FirstChangeSettings();
         }
-        public static void SetTimer()
-        {
-            FixedUpdate.IsStart = true;
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
-            {
-                foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
-                {
-                    if (p2.PlayerId != p.PlayerId)
-                    {
-                        p2.RpcSetNamePrivate("Playing on SuperNewRoles!", p);
-                    }
-                }
-            }
-            FixedUpdate.NameChangeTimer = ZombieOptions.StartSecondOption.GetFloat();
-        }
+        FixedUpdate.NameChangeTimer = ZombieOptions.StartSecondOption.GetFloat();
     }
 }

@@ -1,16 +1,15 @@
 using System.Collections.Generic;
 
-namespace SuperNewRoles.Mode.NotImpostorCheck
+namespace SuperNewRoles.Mode.NotImpostorCheck;
+
+class Main
 {
-    class Main
+    public static List<int> Impostors;
+    public static void ClearAndReload()
     {
-        public static List<int> Impostors;
-        public static void ClearAndReload()
+        if (AmongUsClient.Instance.AmHost)
         {
-            if (AmongUsClient.Instance.AmHost)
-            {
-                Impostors = new();
-            }
+            Impostors = new();
         }
     }
 }
