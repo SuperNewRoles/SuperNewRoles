@@ -2953,16 +2953,17 @@ public static class RoleClass
         }
     }
     public static class LoversBreaker
+    {
+        public static List<PlayerControl> LoversBreakerPlayer;
+        public static Color32 color = new(224, 82, 0, byte.MaxValue);
+        public static int BreakCount;
+        public static void ClearAndReload()
         {
-            public static List<PlayerControl> LoversBreakerPlayer;
-            public static Color32 color = new Color32(224, 82, 0, byte.MaxValue);
-            public static void ClearAndReload()
-            {
-                LoversBreakerPlayer = new();
-                
-            }
+            LoversBreakerPlayer = new();
+            BreakCount = CustomOptionHolder.LoversBreakerBreakCount.GetInt();
         }
-        //新ロールクラス
+    }
+    //新ロールクラス
     public static class Quarreled
     {
         public static List<List<PlayerControl>> QuarreledPlayer;

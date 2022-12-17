@@ -936,6 +936,7 @@ public class CustomOptionHolder
 
     public static CustomRoleOption LoversBreakerOption;
     public static CustomOption LoversBreakerPlayerCount;
+    public static CustomOption LoversBreakerBreakCount;
     //CustomOption
 
     public static CustomOption GMOption;
@@ -1892,6 +1893,10 @@ public class CustomOptionHolder
         PenguinDurationTime = Create(1089, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
         PenguinCanDefaultKill = Create(1090, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
 
+        LoversBreakerOption = SetupCustomRoleOption(1132, false, RoleId.LoversBreaker);
+        LoversBreakerPlayerCount = Create(1133, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LoversBreakerOption);
+        LoversBreakerBreakCount = Create(1134, false, CustomOptionType.Neutral, "LoversBreakerBreakCount", 1f, 1f, 5f, 1f, LoversBreakerOption);
+
         //表示設定
 
         QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
@@ -1910,11 +1915,6 @@ public class CustomOptionHolder
         LoversCommonTask = loversoption.Item1;
         LoversShortTask = loversoption.Item2;
         LoversLongTask = loversoption.Item3;
-
-        LoversBreakerOption = SetupCustomRoleOption(1132, false, RoleId.LoversBreaker);
-        Logger.Info($"{LoversBreakerOption == null}");
-        Logger.Info($"{LoversBreakerOption.type} {LoversBreakerOption.IsHidden()} {LoversBreakerOption.GetName()}");
-        LoversBreakerPlayerCount = Create(1133, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LoversBreakerOption);
 
         SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:" + Max);
         SuperNewRolesPlugin.Logger.LogInfo("設定数:" + options.Count);

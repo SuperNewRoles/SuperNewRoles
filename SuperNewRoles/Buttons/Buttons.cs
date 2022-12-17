@@ -91,6 +91,7 @@ static class HudManagerStartPatch
     public static CustomButton PenguinButton;
     public static CustomButton VampireCreateDependentsButton;
     public static CustomButton DependentsKillButton;
+    public static CustomButton LoversBreakerButton;
     #endregion
 
     #region Texts
@@ -117,6 +118,57 @@ static class HudManagerStartPatch
 
     public static void Postfix(HudManager __instance)
     {
+        LoversBreakerButton = new(
+            () =>
+            {
+                PlayerControl Target = SetTarget();
+                if (Target.IsLovers() || Target.IsRole(RoleId.truelover, RoleId.Cupid))
+                {
+                    RoleClass.LoversBreaker.BreakCount--;
+                    if (RoleClass.LoversBreaker.BreakCount <= 0)
+                    {
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.LoversBreakerWin, false);
+                        }
+                        else
+                        {
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                            writer.Write((byte)CustomGameOverReason.LoversBreakerWin);
+                            writer.Write(false);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        }
+                    }
+                }
+                else
+                {
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
+                }
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.LoversBreaker; },
+            () =>
+            {
+                return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+            },
+            () =>
+            {
+                VampireCreateDependentsButton.MaxTimer = CustomOptionHolder.VampireCreateDependentsCoolTime.GetFloat();
+                VampireCreateDependentsButton.Timer = VampireCreateDependentsButton.MaxTimer;
+            },
+            RoleClass.Vampire.GetButtonSprite(),
+            new Vector3(-2f, 1, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.F,
+            49,
+            () => { return false; }
+        )
+        {
+            buttonText = ModTranslation.GetString("VampireDependentsButtonName"),
+            showButtonText = true
+        };
+
         DependentsKillButton = new(
             () =>
             {

@@ -42,6 +42,7 @@ public enum CustomGameOverReason
     StefinderWin,
     PavlovsTeamWin,
     TaskerWin,
+    LoversBreakerWin,
     BugEnd
 }
 enum WinCondition
@@ -71,6 +72,7 @@ enum WinCondition
     StefinderWin,
     PavlovsTeamWin,
     TaskerWin,
+    LoversBreakerWin,
     BugEnd
 }
 class FinalStatusPatch

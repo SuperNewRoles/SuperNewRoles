@@ -791,7 +791,7 @@ static class GameOptionsMenuUpdatePatch
     }
     public static bool IsHidden(this CustomOption option)
     {
-        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false));
+        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false));// || ((option == CustomOptionHolder.LoversBreakerOption) && DateTime.UtcNow < new DateTime(2022,12,23,12,0,0));
     }
     public static void Postfix(GameOptionsMenu __instance)
     {
