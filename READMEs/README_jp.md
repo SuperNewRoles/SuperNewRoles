@@ -95,6 +95,9 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
 [月城蔵徒](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
 [Kuki](https://github.com/Kuki12345)<br>
+[Glaceon](https://github.com/Glaceon-471)<br>
+[~~漢方薬の人~~](https://github.com/UKON256)<br>
+[~~Sakurander~~](https://github.com/Sakurander)<br>
 
 ## スポンサー
 こんこるど様<br>
