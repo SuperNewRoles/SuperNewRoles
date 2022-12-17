@@ -934,6 +934,8 @@ public class CustomOptionHolder
     public static CustomRoleOption DependentsOption;
     public static CustomOption DependentsPlayerCount;
 
+    public static CustomRoleOption LoversBreakerOption;
+    public static CustomOption LoversBreakerPlayerCount;
     //CustomOption
 
     public static CustomOption GMOption;
@@ -1908,6 +1910,11 @@ public class CustomOptionHolder
         LoversCommonTask = loversoption.Item1;
         LoversShortTask = loversoption.Item2;
         LoversLongTask = loversoption.Item3;
+
+        LoversBreakerOption = SetupCustomRoleOption(1132, false, RoleId.LoversBreaker);
+        Logger.Info($"{LoversBreakerOption == null}");
+        Logger.Info($"{LoversBreakerOption.type} {LoversBreakerOption.IsHidden()} {LoversBreakerOption.GetName()}");
+        LoversBreakerPlayerCount = Create(1133, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LoversBreakerOption);
 
         SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:" + Max);
         SuperNewRolesPlugin.Logger.LogInfo("設定数:" + options.Count);

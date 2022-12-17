@@ -197,7 +197,8 @@ public static class RoleClass
         HamburgerShop.ClearAndReload();
         Penguin.ClearAndReload();
         Dependents.ClearAndReload();
-        //ロールクリア
+        LoversBreaker.ClearAndReload();
+            //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();
@@ -2951,7 +2952,17 @@ public static class RoleClass
             DependentsPlayer = new();
         }
     }
-    //新ロールクラス
+    public static class LoversBreaker
+        {
+            public static List<PlayerControl> LoversBreakerPlayer;
+            public static Color32 color = new Color32(224, 82, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                LoversBreakerPlayer = new();
+                
+            }
+        }
+        //新ロールクラス
     public static class Quarreled
     {
         public static List<List<PlayerControl>> QuarreledPlayer;

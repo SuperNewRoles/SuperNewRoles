@@ -174,7 +174,8 @@ public enum RoleId
     HamburgerShop,
     Penguin,
     Dependents,
-    //RoleId
+    LoversBreaker,
+        //RoleId
 }
 
 public enum CustomRPC

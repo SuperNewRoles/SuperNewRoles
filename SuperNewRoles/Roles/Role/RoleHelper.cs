@@ -673,7 +673,10 @@ public static class RoleHelpers
             case RoleId.Dependents:
                 RoleClass.Dependents.DependentsPlayer.Add(player);
                 break;
-            //ロールアド
+            case RoleId.LoversBreaker:
+                    RoleClass.LoversBreaker.LoversBreakerPlayer.Add(player);
+                    break;
+                //ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
                 return;
@@ -1140,6 +1143,9 @@ public static class RoleHelpers
             case RoleId.Dependents:
                 RoleClass.Dependents.DependentsPlayer.RemoveAll(ClearRemove);
                 break;
+                case RoleId.LoversBreaker:
+                    RoleClass.LoversBreaker.LoversBreakerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
         }
         ChacheManager.ResetMyRoleChache();
@@ -1205,6 +1211,7 @@ public static class RoleHelpers
             case RoleId.WaveCannonJackal:
             case RoleId.Cupid:
             case RoleId.Dependents:
+                case RoleId.LoversBreaker:
                 //タスククリアか
                 IsTaskClear = true;
                 break;
@@ -1384,8 +1391,9 @@ public static class RoleHelpers
         RoleId.Pavlovsdogs or
         RoleId.Pavlovsowner or
         RoleId.Cupid or
-        RoleId.Pavlovsowner;
-    //第三か
+        RoleId.Pavlovsowner or
+        RoleId.LoversBreaker;
+                //第三か
     public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
     {
         RoleId MyRole;
@@ -1640,7 +1648,8 @@ public static class RoleHelpers
             else if (RoleClass.HamburgerShop.HamburgerShopPlayer.IsCheckListPlayerControl(player)) return RoleId.HamburgerShop;
             else if (RoleClass.Penguin.PenguinPlayer.IsCheckListPlayerControl(player)) return RoleId.Penguin;
             else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;
-            //ロールチェック
+            else if (RoleClass.LoversBreaker.LoversBreakerPlayer.IsCheckListPlayerControl(player)) return RoleId.LoversBreaker;
+                //ロールチェック
         }
         catch (Exception e)
         {
