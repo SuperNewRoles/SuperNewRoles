@@ -197,7 +197,9 @@ public static class RoleClass
         HamburgerShop.ClearAndReload();
         Penguin.ClearAndReload();
         Dependents.ClearAndReload();
-        //ロールクリア
+        LoversBreaker.ClearAndReload();
+            Jumbo.ClearAndReload();
+            //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();
@@ -2951,6 +2953,30 @@ public static class RoleClass
             DependentsPlayer = new();
         }
     }
+    public static class LoversBreaker
+    {
+        public static List<PlayerControl> LoversBreakerPlayer;
+        public static Color32 color = new(224, 82, 0, byte.MaxValue);
+        public static int BreakCount;
+        public static List<byte> CanEndGamePlayers;
+        public static void ClearAndReload()
+        {
+            LoversBreakerPlayer = new();
+            BreakCount = CustomOptionHolder.LoversBreakerBreakCount.GetInt();
+            CanEndGamePlayers = new();
+        }
+    }
+    public static class Jumbo
+    {
+        public static List<PlayerControl> JumboPlayer;
+        public static Color32 color = ImpostorRed;
+        public static Dictionary<byte, float> JumboSize;
+        public static void ClearAndReload()
+        {
+            JumboPlayer = new();
+            JumboSize = new();
+        }
+    }
     //新ロールクラス
     public static class Quarreled
     {
@@ -2969,9 +2995,13 @@ public static class RoleClass
         public static bool SameDie;
         public static bool AliveTaskCount;
         public static bool IsSingleTeam;
+        public static List<List<PlayerControl>> FakeLoverPlayers;
+        public static List<byte> FakeLovers;
         public static void ClearAndReload()
         {
-            LoversPlayer = new List<List<PlayerControl>>();
+            LoversPlayer = new();
+            FakeLoverPlayers = new();
+            FakeLovers = new();
             SameDie = CustomOptionHolder.LoversSameDie.GetBool();
             AliveTaskCount = CustomOptionHolder.LoversAliveTaskCount.GetBool();
             IsSingleTeam = CustomOptionHolder.LoversSingleTeam.GetBool();

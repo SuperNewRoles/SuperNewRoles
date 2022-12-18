@@ -363,6 +363,8 @@ NeutralSubIntro,Let's work only for ourselves.Let's Take advantage of others.,�
 detecName,Detective,探偵,侦探
 
 # Roles
+NiceName,Nice,ナイス
+EvilName,Evil,イビル
 SoothSayerName,Diviner,占い師,占卜师
 SoothSayerTitle1,Divine the player and find the outsider.,プレイヤーを占い人外を見つけよう,占卜并找出内鬼
 SoothSayerDisplaySetting,Position visibility,陣営表示にする,占卜师可得信息为阵营而非职业

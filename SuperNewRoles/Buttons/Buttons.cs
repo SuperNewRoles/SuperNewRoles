@@ -91,6 +91,7 @@ static class HudManagerStartPatch
     public static CustomButton PenguinButton;
     public static CustomButton VampireCreateDependentsButton;
     public static CustomButton DependentsKillButton;
+    public static CustomButton LoversBreakerButton;
     #endregion
 
     #region Texts
@@ -117,6 +118,81 @@ static class HudManagerStartPatch
 
     public static void Postfix(HudManager __instance)
     {
+        LoversBreakerButton = new(
+            () =>
+            {
+                PlayerControl Target = SetTarget();
+                if (Target.IsLovers() || Target.IsRole(RoleId.truelover, RoleId.Cupid))
+                {
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(Target);
+                    if (Target.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(Target.PlayerId)) return;
+                    RoleClass.LoversBreaker.BreakCount--;
+                    if (RoleClass.LoversBreaker.BreakCount <= 0)
+                    {
+                        bool IsAliveLovers = false;
+                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        {
+                            if (p.IsLovers() && p.IsAlive())
+                            {
+                                IsAliveLovers = true;
+                                break;
+                            }
+                        }
+                        if (!IsAliveLovers)
+                        {
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                            RPCProcedure.ShareWinner(PlayerControl.LocalPlayer.PlayerId);
+                            if (AmongUsClient.Instance.AmHost)
+                            {
+                                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.LoversBreakerWin, false);
+                            }
+                            else
+                            {
+                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                                writer.Write((byte)CustomGameOverReason.LoversBreakerWin);
+                                writer.Write(false);
+                                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            }
+                        } else
+                        {
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetLoversBreakerWinner);
+                            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            writer.EndRPC();
+                            RPCProcedure.SetLoversBreakerWinner(PlayerControl.LocalPlayer.PlayerId);
+                        }
+                    }
+                }
+                else
+                {
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
+                }
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.LoversBreaker; },
+            () =>
+            {
+                return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+            },
+            () =>
+            {
+                LoversBreakerButton.MaxTimer = CustomOptionHolder.LoversBreakerCoolTime.GetFloat();
+                LoversBreakerButton.Timer = LoversBreakerButton.MaxTimer;
+            },
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.LoversBreakerButton.png", 115f),
+            new Vector3(-2f, 1, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.F,
+            49,
+            () => { return false; }
+        )
+        {
+            buttonText = ModTranslation.GetString("LoversBreakerButtonName"),
+            showButtonText = true
+        };
+
         DependentsKillButton = new(
             () =>
             {
@@ -496,7 +572,7 @@ static class HudManagerStartPatch
             () =>
             {
                 PlayerControl target = RoleClass.Cupid.currentTarget;
-                if (target.IsLovers()) return;
+                if (target.IsLovers() || target.IsRole(RoleId.LoversBreaker)) return;
                 if (RoleClass.Cupid.currentLovers is null)
                 {
                     RoleClass.Cupid.currentLovers = target;
@@ -679,7 +755,7 @@ static class HudManagerStartPatch
                 if (PlayerControl.LocalPlayer.CanMove && !RoleClass.Truelover.IsCreate && !PlayerControl.LocalPlayer.IsLovers())
                 {
                     var target = SetTarget();
-                    if (target == null || target.IsLovers()) return;
+                    if (target == null || target.IsLovers() || target.IsRole(RoleId.LoversBreaker)) return;
                     RoleClass.Truelover.IsCreate = true;
                     RoleHelpers.SetLovers(PlayerControl.LocalPlayer, target);
                     RoleHelpers.SetLoversRPC(PlayerControl.LocalPlayer, target);

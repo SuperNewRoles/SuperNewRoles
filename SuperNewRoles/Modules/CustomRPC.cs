@@ -174,7 +174,9 @@ public enum RoleId
     HamburgerShop,
     Penguin,
     Dependents,
-    //RoleId
+    LoversBreaker,
+        Jumbo,
+        //RoleId
 }
 
 public enum CustomRPC
@@ -261,6 +263,7 @@ public enum CustomRPC
     SetVampireStatus,
     SyncDeathMeeting,
     SetDeviceUseStatus,
+    SetLoversBreakerWinner,
 }
 
 public static class RPCProcedure
@@ -1310,6 +1313,9 @@ public static class RPCProcedure
     {
         Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
     }
+
+    public static void SetLoversBreakerWinner(byte playerid) => RoleClass.LoversBreaker.CanEndGamePlayers.Add(playerid);
+
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
     class RPCHandlerPatch
     {
@@ -1608,6 +1614,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetDeviceUseStatus:
                         SetDeviceUseStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadString());
+                        break;
+                    case CustomRPC.SetLoversBreakerWinner:
+                        SetLoversBreakerWinner(reader.ReadByte());
                         break;
                 }
             }

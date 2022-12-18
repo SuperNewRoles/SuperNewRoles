@@ -224,6 +224,26 @@ class AllRoleSetClass
             CrewOrImpostorSet();
             OneOrNotListSet();
         }
+        if (ModeHandler.IsMode(ModeId.Default))
+        {
+            try
+            {
+                QuarreledRandomSelect();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+            }
+
+            try
+            {
+                LoversRandomSelect();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+            }
+        }
         try
         {
             ImpostorRandomSelect();
@@ -249,26 +269,6 @@ class AllRoleSetClass
         catch (Exception e)
         {
             SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
-        }
-        if (ModeHandler.IsMode(ModeId.Default))
-        {
-            try
-            {
-                QuarreledRandomSelect();
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
-            }
-
-            try
-            {
-                LoversRandomSelect();
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
-            }
         }
     }
     public static void QuarreledRandomSelect()
@@ -582,7 +582,15 @@ class AllRoleSetClass
             return;
         }
         bool IsNotEndRandomSelect = true;
+        //各役職のフラグ
         bool IsRevolutionistAssigned = false;
+
+        bool CanAssignLoversBreaker = false;
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls) if (p.IsLovers()) CanAssignLoversBreaker = true;
+        bool IsCanAssignLoversBreaker_onepar = Neutonepar.Contains(RoleId.LoversBreaker);
+        bool IsCanAssignLoversBreaker_notonepar = Neutnotonepar.Contains(RoleId.LoversBreaker);
+        if (!CanAssignLoversBreaker){ Neutnotonepar.Remove(RoleId.LoversBreaker); Neutonepar.RemoveAll(x => x == RoleId.LoversBreaker); Neutonepar.RemoveAll(x => x == RoleId.LoversBreaker); }
+
         while (IsNotEndRandomSelect)
         {
             if (Neutonepar.Count > 0)
@@ -601,6 +609,7 @@ class AllRoleSetClass
                     for (int i = 1; i <= NeutralPlayerNum; i++)
                     {
                         PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                        if (p.IsLovers() && selectRoleData == RoleId.LoversBreaker) continue;
                         p.SetRoleRPC(selectRoleData);
                         CrewmatePlayers.Remove(p);
                     }
@@ -610,6 +619,7 @@ class AllRoleSetClass
                 {
                     foreach (PlayerControl Player in CrewmatePlayers)
                     {
+                        if (Player.IsLovers() && selectRoleData == RoleId.LoversBreaker) continue;
                         NeutralPlayerNum--;
                         Player.SetRoleRPC(selectRoleData);
                     }
@@ -621,11 +631,17 @@ class AllRoleSetClass
                     {
                         NeutralPlayerNum--;
                         PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                        if (p.IsLovers() && selectRoleData == RoleId.LoversBreaker) continue;
                         p.SetRoleRPC(selectRoleData);
                         CrewmatePlayers.Remove(p);
                     }
                 }
                 Neutonepar.RemoveAt(selectRoleDataIndex);
+                if (!CanAssignLoversBreaker && selectRoleData is RoleId.Cupid or RoleId.truelover)
+                {
+                    if (IsCanAssignLoversBreaker_notonepar) Neutnotonepar.Add(RoleId.LoversBreaker);
+                    if (IsCanAssignLoversBreaker_onepar) Neutonepar.Add(RoleId.LoversBreaker);
+                }
             }
             else if (Neutnotonepar.Count <= 0)
             {
@@ -648,6 +664,7 @@ class AllRoleSetClass
                     for (int i = 1; i <= NeutralPlayerNum; i++)
                     {
                         PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                        if (p.IsLovers() && selectRoleData == RoleId.LoversBreaker) continue;
                         p.SetRoleRPC(selectRoleData);
                         CrewmatePlayers.Remove(p);
                     }
@@ -657,6 +674,7 @@ class AllRoleSetClass
                 {
                     foreach (PlayerControl Player in CrewmatePlayers)
                     {
+                        if (Player.IsLovers() && selectRoleData == RoleId.LoversBreaker) continue;
                         Player.SetRoleRPC(selectRoleData);
                     }
                     IsNotEndRandomSelect = false;
@@ -667,6 +685,7 @@ class AllRoleSetClass
                     {
                         NeutralPlayerNum--;
                         PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                        if (p.IsLovers() && selectRoleData == RoleId.LoversBreaker) continue;
                         p.SetRoleRPC(selectRoleData);
                         CrewmatePlayers.Remove(p);
                     }
@@ -680,6 +699,11 @@ class AllRoleSetClass
                             Neutnotonepar.RemoveAt(i - 1);
                         }
                     }
+                }
+                if (!CanAssignLoversBreaker && selectRoleData is RoleId.Cupid or RoleId.truelover)
+                {
+                    if (IsCanAssignLoversBreaker_notonepar) Neutnotonepar.Add(RoleId.LoversBreaker);
+                    if (IsCanAssignLoversBreaker_onepar) Neutonepar.Add(RoleId.LoversBreaker);
                 }
             }
         }
@@ -963,7 +987,9 @@ class AllRoleSetClass
             RoleId.HamburgerShop => CustomOptionHolder.HamburgerShopPlayerCount.GetFloat(),
             RoleId.Penguin => CustomOptionHolder.PenguinPlayerCount.GetFloat(),
             RoleId.Dependents => CustomOptionHolder.DependentsPlayerCount.GetFloat(),
-            //プレイヤーカウント
+            RoleId.LoversBreaker => CustomOptionHolder.LoversBreakerPlayerCount.GetFloat(),
+                RoleId.Jumbo => CustomOptionHolder.JumboPlayerCount.GetFloat(),
+                //プレイヤーカウント
             _ => 1,
         };
     }
@@ -1001,7 +1027,8 @@ class AllRoleSetClass
                 && !intro.IsGhostRole
                 && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))
                 && intro.RoleId is not RoleId.GM
-                && intro.RoleId != RoleId.Pavlovsdogs)
+                && intro.RoleId != RoleId.Pavlovsdogs
+                && intro.RoleId != RoleId.Jumbo)
             {
                 var option = IntroData.GetOption(intro.RoleId);
                 if (option == null) continue;
@@ -1044,6 +1071,7 @@ class AllRoleSetClass
                 }
             }
         }
+        SetJumboTicket();
         var Assassinselection = CustomOptionHolder.AssassinAndMarineOption.GetSelection();
         if (Assassinselection != 0 && CrewmatePlayerNum > 0 && CrewmatePlayers.Count > 0)
         {
@@ -1070,6 +1098,27 @@ class AllRoleSetClass
                 for (int i = 1; i <= CustomOptionHolder.RevolutionistAndDictatorOption.GetSelection(); i++)
                 {
                     Neutnotonepar.Add(RoleId.Revolutionist);
+                }
+            }
+        }
+    }
+    public static void SetJumboTicket()
+    {
+        int JumboSelection = CustomOptionHolder.JumboOption.GetSelection();
+        bool IsCrewmate = ModHelpers.IsSucsessChance(CustomOptionHolder.JumboCrewmateChance.GetSelection());
+        if (JumboSelection != 0)
+        {
+            if (JumboSelection == 10)
+            {
+                if (IsCrewmate) Crewonepar.Add(RoleId.Jumbo);
+                else Impoonepar.Add(RoleId.Jumbo);
+            }
+            else
+            {
+                for (int i = 1; i <= JumboSelection; i++)
+                {
+                    if (IsCrewmate) Crewnotonepar.Add(RoleId.Jumbo);
+                    else Imponotonepar.Add(RoleId.Jumbo);
                 }
             }
         }
