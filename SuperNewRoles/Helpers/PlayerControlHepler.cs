@@ -76,7 +76,7 @@ public static class PlayerControlHepler
             task.transform.SetParent(player.transform, false);
 
             task.Text = CustomOptionHolder.Cs(roleInfo.color, $"{ModTranslation.GetString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
-            if (player.IsLovers())
+            if (player.IsLovers() || player.IsFakeLovers())
             {
                 task.Text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, ModTranslation.GetString("LoversName") + ": " + string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
             }

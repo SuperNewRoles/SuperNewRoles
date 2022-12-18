@@ -2957,10 +2957,12 @@ public static class RoleClass
         public static List<PlayerControl> LoversBreakerPlayer;
         public static Color32 color = new(224, 82, 0, byte.MaxValue);
         public static int BreakCount;
+        public static List<byte> CanEndGamePlayers;
         public static void ClearAndReload()
         {
             LoversBreakerPlayer = new();
             BreakCount = CustomOptionHolder.LoversBreakerBreakCount.GetInt();
+            CanEndGamePlayers = new();
         }
     }
     //新ロールクラス
@@ -2981,9 +2983,13 @@ public static class RoleClass
         public static bool SameDie;
         public static bool AliveTaskCount;
         public static bool IsSingleTeam;
+        public static List<List<PlayerControl>> FakeLoverPlayers;
+        public static List<byte> FakeLovers;
         public static void ClearAndReload()
         {
-            LoversPlayer = new List<List<PlayerControl>>();
+            LoversPlayer = new();
+            FakeLoverPlayers = new();
+            FakeLovers = new();
             SameDie = CustomOptionHolder.LoversSameDie.GetBool();
             AliveTaskCount = CustomOptionHolder.LoversAliveTaskCount.GetBool();
             IsSingleTeam = CustomOptionHolder.LoversSingleTeam.GetBool();

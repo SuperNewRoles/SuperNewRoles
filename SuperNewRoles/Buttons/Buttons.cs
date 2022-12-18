@@ -129,20 +129,38 @@ static class HudManagerStartPatch
                     RoleClass.LoversBreaker.BreakCount--;
                     if (RoleClass.LoversBreaker.BreakCount <= 0)
                     {
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
-                        Writer.Write(Target.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        RPCProcedure.ShareWinner(Target.PlayerId);
-                        if (AmongUsClient.Instance.AmHost)
+                        bool IsAliveLovers = false;
+                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
-                            GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.LoversBreakerWin, false);
+                            if (p.IsLovers() && p.IsAlive())
+                            {
+                                IsAliveLovers = true;
+                                break;
+                            }
                         }
-                        else
+                        if (!IsAliveLovers)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
-                            writer.Write((byte)CustomGameOverReason.LoversBreakerWin);
-                            writer.Write(false);
-                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                            RPCProcedure.ShareWinner(PlayerControl.LocalPlayer.PlayerId);
+                            if (AmongUsClient.Instance.AmHost)
+                            {
+                                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.LoversBreakerWin, false);
+                            }
+                            else
+                            {
+                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                                writer.Write((byte)CustomGameOverReason.LoversBreakerWin);
+                                writer.Write(false);
+                                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            }
+                        } else
+                        {
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetLoversBreakerWinner);
+                            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            writer.EndRPC();
+                            RPCProcedure.SetLoversBreakerWinner(PlayerControl.LocalPlayer.PlayerId);
                         }
                     }
                 }
@@ -159,10 +177,10 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                VampireCreateDependentsButton.MaxTimer = CustomOptionHolder.VampireCreateDependentsCoolTime.GetFloat();
-                VampireCreateDependentsButton.Timer = VampireCreateDependentsButton.MaxTimer;
+                LoversBreakerButton.MaxTimer = CustomOptionHolder.LoversBreakerCoolTime.GetFloat();
+                LoversBreakerButton.Timer = LoversBreakerButton.MaxTimer;
             },
-            RoleClass.Vampire.GetButtonSprite(),
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.LoversBreakerButton.png", 115f),
             new Vector3(-2f, 1, 0),
             __instance,
             __instance.AbilityButton,
@@ -171,7 +189,7 @@ static class HudManagerStartPatch
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("VampireDependentsButtonName"),
+            buttonText = ModTranslation.GetString("LoversBreakerButtonName"),
             showButtonText = true
         };
 

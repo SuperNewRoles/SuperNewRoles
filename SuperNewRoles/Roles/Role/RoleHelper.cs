@@ -104,6 +104,31 @@ public static class RoleHelpers
         }
         return false;
     }
+    public static bool IsFakeLoversFake(this PlayerControl player)
+    {
+        if (player == null) return false;
+        return RoleClass.Lovers.FakeLovers.Contains(player.PlayerId);
+    }
+    public static bool IsFakeLovers(this PlayerControl player, bool IsChache = true)
+    {
+        if (player.IsBot()) return false;
+        if (IsChache)
+        {
+            try { return ChacheManager.FakeLoversChache[player.PlayerId] != null; }
+            catch { return false; }
+        }
+        foreach (List<PlayerControl> players in RoleClass.Lovers.FakeLoverPlayers)
+        {
+            foreach (PlayerControl p in players)
+            {
+                if (p == player)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public static void SetQuarreled(PlayerControl player1, PlayerControl player2)
     {
         List<PlayerControl> sets = new() { player1, player2 };
@@ -120,7 +145,12 @@ public static class RoleHelpers
     public static void SetLovers(PlayerControl player1, PlayerControl player2)
     {
         List<PlayerControl> sets = new() { player1, player2 };
-        RoleClass.Lovers.LoversPlayer.Add(sets);
+        if (player1.IsRole(RoleId.LoversBreaker) || player2.IsRole(RoleId.LoversBreaker)) {
+            if (player1.IsRole(RoleId.LoversBreaker)) RoleClass.Lovers.FakeLovers.Add(player1.PlayerId);
+            else RoleClass.Lovers.FakeLovers.Add(player2.PlayerId);
+            RoleClass.Lovers.FakeLoverPlayers.Add(sets);
+        }
+        else RoleClass.Lovers.LoversPlayer.Add(sets);
         if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
         {
             PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
@@ -173,6 +203,24 @@ public static class RoleHelpers
             return ChacheManager.LoversChache[player.PlayerId] ?? null;
         }
         foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
+        {
+            foreach (PlayerControl p in players)
+            {
+                if (p == player)
+                {
+                    return p == players[0] ? players[1] : players[0];
+                }
+            }
+        }
+        return null;
+    }
+    public static PlayerControl GetOneSideFakeLovers(this PlayerControl player, bool IsChache = true)
+    {
+        if (IsChache)
+        {
+            return ChacheManager.FakeLoversChache[player.PlayerId] ?? null;
+        }
+        foreach (List<PlayerControl> players in RoleClass.Lovers.FakeLoverPlayers)
         {
             foreach (PlayerControl p in players)
             {

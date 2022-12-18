@@ -937,6 +937,7 @@ public class CustomOptionHolder
     public static CustomRoleOption LoversBreakerOption;
     public static CustomOption LoversBreakerPlayerCount;
     public static CustomOption LoversBreakerBreakCount;
+    public static CustomOption LoversBreakerCoolTime;
     //CustomOption
 
     public static CustomOption GMOption;
@@ -1895,8 +1896,8 @@ public class CustomOptionHolder
 
         LoversBreakerOption = SetupCustomRoleOption(1132, false, RoleId.LoversBreaker);
         LoversBreakerPlayerCount = Create(1133, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LoversBreakerOption);
-        LoversBreakerBreakCount = Create(1134, false, CustomOptionType.Neutral, "LoversBreakerBreakCount", 1f, 1f, 5f, 1f, LoversBreakerOption);
-
+        LoversBreakerBreakCount = Create(1134, false, CustomOptionType.Neutral, "LoversBreakerBreakCount", 1f, 1f, 7f, 1f, LoversBreakerOption);
+        LoversBreakerCoolTime = Create(1135, false, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, LoversBreakerOption, format: "unitSeconds");
         //表示設定
 
         QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

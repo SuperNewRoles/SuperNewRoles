@@ -224,9 +224,10 @@ public class SetNamesClass
     public static void LoversSet()
     {
         string suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
-        if (PlayerControl.LocalPlayer.IsLovers() && PlayerControl.LocalPlayer.IsAlive())
+        if ((PlayerControl.LocalPlayer.IsLovers() || (PlayerControl.LocalPlayer.IsFakeLovers() && !PlayerControl.LocalPlayer.IsFakeLoversFake())) && PlayerControl.LocalPlayer.IsAlive())
         {
             PlayerControl side = PlayerControl.LocalPlayer.GetOneSideLovers();
+            if (side == null) side = PlayerControl.LocalPlayer.GetOneSideFakeLovers();
             SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.NameText().text + suffix);
             if (!side.Data.Disconnected)
                 SetPlayerNameText(side, side.NameText().text + suffix);
