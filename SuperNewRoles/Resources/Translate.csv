@@ -95,6 +95,8 @@ colorWineRed,WineRed,ワインレッド,酒红
 colorCrazyRed,CrazyRed,クレイジーレッド,大红
 colorTokiwaGreen,TokiwaGreen,常磐緑,常青绿
 colorPosi,Posi,ポジ,正片滤镜
+colorXmasRed,X'masRed,クリスマスレッド
+colorXmasGreen,X'masGreen,クリスマスグリーン
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
