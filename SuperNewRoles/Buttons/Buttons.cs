@@ -121,9 +121,11 @@ static class HudManagerStartPatch
         LoversBreakerButton = new(
             () =>
             {
-                PlayerControl Target = SetTarget();
-                if (Target.IsLovers() || Target.IsRole(RoleId.truelover, RoleId.Cupid))
-                {
+            PlayerControl Target = SetTarget();
+            if (Target.IsLovers() || Target.IsRole(RoleId.truelover, RoleId.Cupid))
+            {
+                PlayerControl.LocalPlayer.RpcMurderPlayer(Target);
+                    if (Target.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(Target.PlayerId)) return;
                     RoleClass.LoversBreaker.BreakCount--;
                     if (RoleClass.LoversBreaker.BreakCount <= 0)
                     {
@@ -548,7 +550,7 @@ static class HudManagerStartPatch
             () =>
             {
                 PlayerControl target = RoleClass.Cupid.currentTarget;
-                if (target.IsLovers()) return;
+                if (target.IsLovers() || target.IsRole(RoleId.LoversBreaker)) return;
                 if (RoleClass.Cupid.currentLovers is null)
                 {
                     RoleClass.Cupid.currentLovers = target;
@@ -731,7 +733,7 @@ static class HudManagerStartPatch
                 if (PlayerControl.LocalPlayer.CanMove && !RoleClass.Truelover.IsCreate && !PlayerControl.LocalPlayer.IsLovers())
                 {
                     var target = SetTarget();
-                    if (target == null || target.IsLovers()) return;
+                    if (target == null || target.IsLovers() || target.IsRole(RoleId.LoversBreaker)) return;
                     RoleClass.Truelover.IsCreate = true;
                     RoleHelpers.SetLovers(PlayerControl.LocalPlayer, target);
                     RoleHelpers.SetLoversRPC(PlayerControl.LocalPlayer, target);

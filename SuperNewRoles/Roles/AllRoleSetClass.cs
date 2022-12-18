@@ -224,6 +224,26 @@ class AllRoleSetClass
             CrewOrImpostorSet();
             OneOrNotListSet();
         }
+        if (ModeHandler.IsMode(ModeId.Default))
+        {
+            try
+            {
+                QuarreledRandomSelect();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+            }
+
+            try
+            {
+                LoversRandomSelect();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+            }
+        }
         try
         {
             ImpostorRandomSelect();
@@ -249,26 +269,6 @@ class AllRoleSetClass
         catch (Exception e)
         {
             SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
-        }
-        if (ModeHandler.IsMode(ModeId.Default))
-        {
-            try
-            {
-                QuarreledRandomSelect();
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
-            }
-
-            try
-            {
-                LoversRandomSelect();
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
-            }
         }
     }
     public static void QuarreledRandomSelect()
@@ -582,7 +582,15 @@ class AllRoleSetClass
             return;
         }
         bool IsNotEndRandomSelect = true;
+        //各役職のフラグ
         bool IsRevolutionistAssigned = false;
+
+        bool CanAssignLoversBreaker = false;
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls) if (p.IsLovers()) CanAssignLoversBreaker = true;
+        bool IsCanAssignLoversBreaker_onepar = Neutonepar.Contains(RoleId.LoversBreaker);
+        bool IsCanAssignLoversBreaker_notonepar = Neutnotonepar.Contains(RoleId.LoversBreaker);
+        if (!CanAssignLoversBreaker){ Neutnotonepar.Remove(RoleId.LoversBreaker); Neutonepar.RemoveAll(x => x == RoleId.LoversBreaker); Neutonepar.RemoveAll(x => x == RoleId.LoversBreaker); }
+
         while (IsNotEndRandomSelect)
         {
             if (Neutonepar.Count > 0)
@@ -626,6 +634,11 @@ class AllRoleSetClass
                     }
                 }
                 Neutonepar.RemoveAt(selectRoleDataIndex);
+                if (!CanAssignLoversBreaker && selectRoleData is RoleId.Cupid or RoleId.truelover)
+                {
+                    if (IsCanAssignLoversBreaker_notonepar) Neutnotonepar.Add(RoleId.LoversBreaker);
+                    if (IsCanAssignLoversBreaker_onepar) Neutonepar.Add(RoleId.LoversBreaker);
+                }
             }
             else if (Neutnotonepar.Count <= 0)
             {
@@ -680,6 +693,11 @@ class AllRoleSetClass
                             Neutnotonepar.RemoveAt(i - 1);
                         }
                     }
+                }
+                if (!CanAssignLoversBreaker && selectRoleData is RoleId.Cupid or RoleId.truelover)
+                {
+                    if (IsCanAssignLoversBreaker_notonepar) Neutnotonepar.Add(RoleId.LoversBreaker);
+                    if (IsCanAssignLoversBreaker_onepar) Neutonepar.Add(RoleId.LoversBreaker);
                 }
             }
         }
