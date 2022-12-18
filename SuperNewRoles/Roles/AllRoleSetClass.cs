@@ -1027,7 +1027,8 @@ class AllRoleSetClass
                 && !intro.IsGhostRole
                 && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))
                 && intro.RoleId is not RoleId.GM
-                && intro.RoleId != RoleId.Pavlovsdogs)
+                && intro.RoleId != RoleId.Pavlovsdogs
+                && intro.RoleId != RoleId.Jumbo)
             {
                 var option = IntroData.GetOption(intro.RoleId);
                 if (option == null) continue;
@@ -1070,6 +1071,7 @@ class AllRoleSetClass
                 }
             }
         }
+        SetJumboTicket();
         var Assassinselection = CustomOptionHolder.AssassinAndMarineOption.GetSelection();
         if (Assassinselection != 0 && CrewmatePlayerNum > 0 && CrewmatePlayers.Count > 0)
         {
@@ -1096,6 +1098,27 @@ class AllRoleSetClass
                 for (int i = 1; i <= CustomOptionHolder.RevolutionistAndDictatorOption.GetSelection(); i++)
                 {
                     Neutnotonepar.Add(RoleId.Revolutionist);
+                }
+            }
+        }
+    }
+    public static void SetJumboTicket()
+    {
+        int JumboSelection = CustomOptionHolder.JumboOption.GetSelection();
+        bool IsCrewmate = ModHelpers.IsSucsessChance(CustomOptionHolder.JumboCrewmateChance.GetSelection());
+        if (JumboSelection != 0)
+        {
+            if (JumboSelection == 10)
+            {
+                if (IsCrewmate) Crewonepar.Add(RoleId.Jumbo);
+                else Impoonepar.Add(RoleId.Jumbo);
+            }
+            else
+            {
+                for (int i = 1; i <= JumboSelection; i++)
+                {
+                    if (IsCrewmate) Crewnotonepar.Add(RoleId.Jumbo);
+                    else Imponotonepar.Add(RoleId.Jumbo);
                 }
             }
         }

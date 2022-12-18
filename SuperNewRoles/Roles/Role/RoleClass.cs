@@ -2967,16 +2967,17 @@ public static class RoleClass
         }
     }
     public static class Jumbo
+    {
+        public static List<PlayerControl> JumboPlayer;
+        public static Color32 color = ImpostorRed;
+        public static Dictionary<byte, float> JumboSize;
+        public static void ClearAndReload()
         {
-            public static List<PlayerControl> JumboPlayer;
-            public static Color32 color = ImpostorRed;
-            public static void ClearAndReload()
-            {
-                JumboPlayer = new();
-                
-            }
+            JumboPlayer = new();
+            JumboSize = new();
         }
-        //新ロールクラス
+    }
+    //新ロールクラス
     public static class Quarreled
     {
         public static List<List<PlayerControl>> QuarreledPlayer;

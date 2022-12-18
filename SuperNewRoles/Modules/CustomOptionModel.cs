@@ -177,7 +177,7 @@ public class CustomOption
 
     public static void ShareOptionSelections()
     {
-        if (CachedPlayer.AllPlayers.Count <= 1 || (AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null)) return;
+        if (CachedPlayer.AllPlayers.Count <= 1 || AmongUsClient.Instance?.AmHost == false || PlayerControl.LocalPlayer == null) return;
 
         int count = 0;
         MessageWriter messageWriter;
@@ -782,13 +782,12 @@ public class StringOptionDecreasePatch
     }
 }
 
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Start))]
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Awake))]
 public class AmongUsClientOnPlayerJoinedPatch
 {
     public static void Postfix(PlayerControl __instance)
     {
-        if (__instance.isNew)
-            CustomOption.ShareOptionSelections();
+        CustomOption.ShareOptionSelections();
     }
 }
 
@@ -809,7 +808,7 @@ static class GameOptionsMenuUpdatePatch
     }
     public static bool IsHidden(this CustomOption option)
     {
-        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false));// || ((option == CustomOptionHolder.LoversBreakerOption) && DateTime.UtcNow < new DateTime(2022,12,23,12,0,0));
+        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false)) || option == CustomOptionHolder.LoversBreakerOption || option == CustomOptionHolder.JumboOption;// || ((option == CustomOptionHolder.LoversBreakerOption) && DateTime.UtcNow < new DateTime(2022,12,23,12,0,0));
     }
     public static void Postfix(GameOptionsMenu __instance)
     {

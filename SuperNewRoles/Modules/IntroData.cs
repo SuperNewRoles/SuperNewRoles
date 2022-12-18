@@ -68,9 +68,12 @@ public class IntroData
     }
     public static IntroData GetIntroData(RoleId RoleId, PlayerControl p = null)
     {
-        if (RoleId == RoleId.DefaultRole)
+        if (RoleId is RoleId.DefaultRole)
         {
             return p != null && p.IsImpostor() ? ImpostorIntro : CrewmateIntro;
+        } else if(RoleId is RoleId.Jumbo)
+        {
+            return p == null ? JumboIntro : p.IsImpostor() ? EvilJumboIntro : NiceJumboIntro;
         }
         try
         {
@@ -246,6 +249,8 @@ public class IntroData
     public static IntroData PenguinIntro = new("Penguin", RoleClass.Penguin.color, 1, RoleId.Penguin, TeamRoleType.Impostor);
     public static IntroData DependentsIntro = new("Dependents", RoleClass.Dependents.color, 1, RoleId.Dependents);
     public static IntroData LoversBreakerIntro = new("LoversBreaker", RoleClass.LoversBreaker.color, 1, RoleId.LoversBreaker, TeamRoleType.Neutral);
-        public static IntroData JumboIntro = new("Jumbo", RoleClass.Jumbo.color, 1, RoleId.Jumbo, TeamRoleType.Impostor);
-        //イントロオブジェ
+    public static IntroData JumboIntro = new("Jumbo", RoleClass.Jumbo.color, 1, RoleId.Jumbo, TeamRoleType.Impostor);
+    public static IntroData NiceJumboIntro = new("NiceJumbo", CrewmateIntro.color, 1, RoleId.Jumbo, TeamRoleType.Crewmate);
+    public static IntroData EvilJumboIntro = new("EvilJumbo", ImpostorIntro.color, 1, RoleId.Jumbo, TeamRoleType.Impostor);
+    //イントロオブジェ
 }
