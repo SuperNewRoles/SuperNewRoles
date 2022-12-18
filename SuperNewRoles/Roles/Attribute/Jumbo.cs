@@ -16,7 +16,7 @@ public static class Jumbo
             p.cosmetics.transform.localScale = Vector3.one * ((RoleClass.Jumbo.JumboSize[p.PlayerId] + 1f) * 0.5f);
             p.transform.FindChild("BodyForms").localScale = Vector3.one * (RoleClass.Jumbo.JumboSize[p.PlayerId] + 1f);
             p.transform.FindChild("Animations").localScale = Vector3.one * (RoleClass.Jumbo.JumboSize[p.PlayerId] + 1f);
-            if (RoleClass.Jumbo.JumboSize[p.PlayerId] <= 7.2f)
+            if (RoleClass.Jumbo.JumboSize[p.PlayerId] <= 2.4f)
             {
                 Logger.Info((Time.deltaTime * 0.01f).ToString());
                 RoleClass.Jumbo.JumboSize[p.PlayerId] += Time.deltaTime * 0.01f;
