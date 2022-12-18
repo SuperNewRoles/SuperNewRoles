@@ -7,6 +7,7 @@ using AmongUs.GameOptions;
 using BepInEx.Configuration;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using UnityEngine;
@@ -178,14 +179,30 @@ public class CustomOption
     {
         if (CachedPlayer.AllPlayers.Count <= 1 || (AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null)) return;
 
-        MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareOptions, SendOption.Reliable);
-        messageWriter.WritePacked((uint)CustomOption.options.Count);
-        foreach (CustomOption option in CustomOption.options)
+        int count = 0;
+        MessageWriter messageWriter;
+        while (true)
         {
-            messageWriter.WritePacked((uint)option.id);
-            messageWriter.WritePacked((uint)Convert.ToUInt32(option.selection));
+            messageWriter = RPCHelper.StartRPC(CustomRPC.ShareOptions);
+            if ((options.Count - count) <= 200)
+            {
+                messageWriter.WritePacked((uint)(options.Count - count));
+            }
+            else
+            {
+                messageWriter.WritePacked((uint)200);
+            }
+            for (int i = 0; i < 200; i++)
+            {
+                if (options.Count <= count) break;
+                CustomOption option = options[count];
+                messageWriter.WritePacked((uint)option.id);
+                messageWriter.WritePacked(Convert.ToUInt32(option.selection));
+                count++;
+            }
+            messageWriter.EndRPC();
+            if (options.Count <= count) break;
         }
-        messageWriter.EndMessage();
     }
 
     // Getter
@@ -765,12 +782,13 @@ public class StringOptionDecreasePatch
     }
 }
 
-[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoSpawnPlayer))]
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Start))]
 public class AmongUsClientOnPlayerJoinedPatch
 {
-    public static void Postfix()
+    public static void Postfix(PlayerControl __instance)
     {
-        CustomOption.ShareOptionSelections();
+        if (__instance.isNew)
+            CustomOption.ShareOptionSelections();
     }
 }
 

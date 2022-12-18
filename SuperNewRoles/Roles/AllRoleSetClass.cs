@@ -609,6 +609,7 @@ class AllRoleSetClass
                     for (int i = 1; i <= NeutralPlayerNum; i++)
                     {
                         PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                        if (p.IsLovers() && selectRoleData == RoleId.LoversBreaker) continue;
                         p.SetRoleRPC(selectRoleData);
                         CrewmatePlayers.Remove(p);
                     }
@@ -618,6 +619,7 @@ class AllRoleSetClass
                 {
                     foreach (PlayerControl Player in CrewmatePlayers)
                     {
+                        if (Player.IsLovers() && selectRoleData == RoleId.LoversBreaker) continue;
                         NeutralPlayerNum--;
                         Player.SetRoleRPC(selectRoleData);
                     }
@@ -629,6 +631,7 @@ class AllRoleSetClass
                     {
                         NeutralPlayerNum--;
                         PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                        if (p.IsLovers() && selectRoleData == RoleId.LoversBreaker) continue;
                         p.SetRoleRPC(selectRoleData);
                         CrewmatePlayers.Remove(p);
                     }
@@ -661,6 +664,7 @@ class AllRoleSetClass
                     for (int i = 1; i <= NeutralPlayerNum; i++)
                     {
                         PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                        if (p.IsLovers() && selectRoleData == RoleId.LoversBreaker) continue;
                         p.SetRoleRPC(selectRoleData);
                         CrewmatePlayers.Remove(p);
                     }
@@ -670,6 +674,7 @@ class AllRoleSetClass
                 {
                     foreach (PlayerControl Player in CrewmatePlayers)
                     {
+                        if (Player.IsLovers() && selectRoleData == RoleId.LoversBreaker) continue;
                         Player.SetRoleRPC(selectRoleData);
                     }
                     IsNotEndRandomSelect = false;
@@ -680,6 +685,7 @@ class AllRoleSetClass
                     {
                         NeutralPlayerNum--;
                         PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                        if (p.IsLovers() && selectRoleData == RoleId.LoversBreaker) continue;
                         p.SetRoleRPC(selectRoleData);
                         CrewmatePlayers.Remove(p);
                     }
