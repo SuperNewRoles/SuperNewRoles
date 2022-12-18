@@ -724,6 +724,9 @@ public static class RoleHelpers
             case RoleId.LoversBreaker:
                     RoleClass.LoversBreaker.LoversBreakerPlayer.Add(player);
                     break;
+                case RoleId.Jumbo:
+                    RoleClass.Jumbo.JumboPlayer.Add(player);
+                    break;
                 //ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1193,6 +1196,9 @@ public static class RoleHelpers
                 break;
                 case RoleId.LoversBreaker:
                     RoleClass.LoversBreaker.LoversBreakerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Jumbo:
+                    RoleClass.Jumbo.JumboPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
         }
@@ -1697,6 +1703,7 @@ public static class RoleHelpers
             else if (RoleClass.Penguin.PenguinPlayer.IsCheckListPlayerControl(player)) return RoleId.Penguin;
             else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;
             else if (RoleClass.LoversBreaker.LoversBreakerPlayer.IsCheckListPlayerControl(player)) return RoleId.LoversBreaker;
+                else if (RoleClass.Jumbo.JumboPlayer.IsCheckListPlayerControl(player)) return RoleId.Jumbo;
                 //ロールチェック
         }
         catch (Exception e)

@@ -198,6 +198,7 @@ public static class RoleClass
         Penguin.ClearAndReload();
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
+            Jumbo.ClearAndReload();
             //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
@@ -2965,7 +2966,17 @@ public static class RoleClass
             CanEndGamePlayers = new();
         }
     }
-    //新ロールクラス
+    public static class Jumbo
+        {
+            public static List<PlayerControl> JumboPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                JumboPlayer = new();
+                
+            }
+        }
+        //新ロールクラス
     public static class Quarreled
     {
         public static List<List<PlayerControl>> QuarreledPlayer;

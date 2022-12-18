@@ -175,6 +175,7 @@ public enum RoleId
     Penguin,
     Dependents,
     LoversBreaker,
+        Jumbo,
         //RoleId
 }
 

@@ -246,5 +246,6 @@ public class IntroData
     public static IntroData PenguinIntro = new("Penguin", RoleClass.Penguin.color, 1, RoleId.Penguin, TeamRoleType.Impostor);
     public static IntroData DependentsIntro = new("Dependents", RoleClass.Dependents.color, 1, RoleId.Dependents);
     public static IntroData LoversBreakerIntro = new("LoversBreaker", RoleClass.LoversBreaker.color, 1, RoleId.LoversBreaker, TeamRoleType.Neutral);
+        public static IntroData JumboIntro = new("Jumbo", RoleClass.Jumbo.color, 1, RoleId.Jumbo, TeamRoleType.Impostor);
         //イントロオブジェ
 }
