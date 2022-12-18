@@ -89,12 +89,12 @@ colorSkyBlue,SkyBlue,青空,天蓝
 colorLightCyan,LightCyan,ライトシアン,浅青
 colorLightOrange,LightOrange,ライトオレンジ,浅橙
 colorSprout,Sprout,新芽,芽绿
-colorNega,Nega,ネガ,负色
+colorNega,Nega,ネガ,负片滤镜
 colorGold,Gold,金色,金黄
-colorWineRed,WineRed,ワインレッド
-colorCrazyRed,CrazyRed,クレイジーレッド
-colorTokiwaGreen,TokiwaGreen,常磐緑
-colorPosi,Posi,ポジ
+colorWineRed,WineRed,ワインレッド,酒红
+colorCrazyRed,CrazyRed,クレイジーレッド,大红
+colorTokiwaGreen,TokiwaGreen,常磐緑,常青绿
+colorPosi,Posi,ポジ,正片滤镜
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -206,7 +206,7 @@ RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
 CanGhostSeeRole,,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业
 OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる,只有死亡的内鬼阵营玩家可以确认所有玩家的职业
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务
-ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする
+ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置
@@ -520,14 +520,14 @@ EvilGuesserTitle1,Guess the position of the camp other than Impostor.,インポ�
 EvilGuesserTitle2,Guess the position of the outsider,人外の役職を当てよう,在会议上猜测他人的身份
 EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,邪恶的赌怪能否在一次会议中多次猜测
 EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,邪恶的赌怪最大可猜测次数
-NextPage,Next Page,次のページへ
-PreviousPage,Previous Page,前のページへ
+NextPage,Next Page,次のページへ,下一页
+PreviousPage,Previous Page,前のページへ,上一页
 VultureName,Vulture,ヴァルチャー,秃鹫
 VultureTitle1,Let's eat a corpse.,死体を食べよう,吞噬尸体获得胜利
 VultureCooldownSetting,Corpse cooldown,死体クールダウン,秃鹫技能冷却
 VultureDeadBodyCountSetting,Victory corpse count,勝利死体数,秃鹫胜利所需吞噬尸体数
 VultureShowArrowsSetting,Show arrows pointing to dead bodies,死体を指す矢印を表示する,秃鹫可见指向尸体的箭头
-VultureButtonName,Eat,食らう
+VultureButtonName,Eat,食らう,吞噬
 NiceScientistName,Nice Scientist,ナイスサイエンティスト,正义的隐身人
 NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう,通过隐身来找寻尸体
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう,隐身，很神奇吧
@@ -607,8 +607,8 @@ AllCleanerTitle1,Let's get rid of the corpse.,死体を消そう,杀人不留痕
 AllCleanerCountSetting,Number of times it can be used in one game,1試合中に使える回数,清理者最大可清理次数
 AllCleanerButtonName,Clean,クリーン,清理
 NiceNekomataName,Nice Nekomata,ナイス猫又,正义的猎人
-NiceNekomataTitle1,Let's take him on the road.,道連れにしよう,带人一起上路
-NiceNekomataTitle2,Let's have a human mess.,人外ガチャをしよう,被投出去的你会带走一个人
+NiceNekomataTitle1,Let's take him on the road.,道連れにしよう,带其他人一起上路
+NiceNekomataTitle2,Let's have a human mess.,人外ガチャをしよう,带敌人一起上路
 NiceNekomataTitle3,Let's mess around!,ガチャしようぜ！,扰乱敌人的计划吧
 NiceNekomataDescription,If you are exiled at a meeting you take one of them with you on the road.,自分が会議で追放されると、誰か一人を道連れにします。,猎人在会议中被放逐，则猎人连带存活的随机一名玩家一同死亡。
 NiceNekomataIsChainSetting,Chain Nekomata,猫又同士が連鎖する,猎人被连带死亡会继续触发连带死亡
@@ -834,7 +834,7 @@ MarineWhois,Who is Merine?,マーリンは誰だ？,谁是梅林？
 ArsonistName,Arsonist,アーソニスト,纵火犯
 ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ,燃烧吧
 ArsonistDurationTimeSetting,Douse Duration,塗り時間,纵火犯涂油所需时间
-ArsonistDouseButtonName,Douse,塗る,涂抹
+ArsonistDouseButtonName,Douse,塗る,涂油
 ArsonistIgniteButtonName,Ignite,燃やす,点燃
 ArsonistDescription,If you oil them all and burn them. you win alone.,油を全員に塗り燃やしたら単独勝利です。,纵火犯属于独立阵营。\n纵火犯给所有人涂油后按下点燃按钮则纵火犯独自获胜。
 ChiefName,Chief,村長,警察局长
@@ -1173,7 +1173,7 @@ TwitterDevLink,Development Information Account : https://twitter.com/SNRDevs,開
 Team,Team,陣営,阵营
 MessageSettings,Settings,設定,设置
 NowRolesMessage,Activate Roles,現在入っている役職,当前激活的职业
-Notassign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。
+Notassign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。,目前还没有激活任何职业。
 TeamMessage,【Team:{0}】,【{0}陣営】,【{0}阵营】
 NameIncludeMod,You cannot make a room public contains mod in your name.,modが名前に含まれている状態では公開部屋にすることはできません。,不能在昵称里有“mod”时将房间状态设置为公开。
 CannotUseRenameMessage,Cannot rename.\nThe /rename command can only be used on\navailable only when hosted.,名前を変更することができません。\n/renameコマンドは\nホスト時のみ使用可能です。,无法重命名。\n/rename命令仅房主可用。
