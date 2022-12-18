@@ -104,6 +104,31 @@ public static class RoleHelpers
         }
         return false;
     }
+    public static bool IsFakeLoversFake(this PlayerControl player)
+    {
+        if (player == null) return false;
+        return RoleClass.Lovers.FakeLovers.Contains(player.PlayerId);
+    }
+    public static bool IsFakeLovers(this PlayerControl player, bool IsChache = true)
+    {
+        if (player.IsBot()) return false;
+        if (IsChache)
+        {
+            try { return ChacheManager.FakeLoversChache[player.PlayerId] != null; }
+            catch { return false; }
+        }
+        foreach (List<PlayerControl> players in RoleClass.Lovers.FakeLoverPlayers)
+        {
+            foreach (PlayerControl p in players)
+            {
+                if (p == player)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public static void SetQuarreled(PlayerControl player1, PlayerControl player2)
     {
         List<PlayerControl> sets = new() { player1, player2 };
@@ -120,7 +145,12 @@ public static class RoleHelpers
     public static void SetLovers(PlayerControl player1, PlayerControl player2)
     {
         List<PlayerControl> sets = new() { player1, player2 };
-        RoleClass.Lovers.LoversPlayer.Add(sets);
+        if (player1.IsRole(RoleId.LoversBreaker) || player2.IsRole(RoleId.LoversBreaker)) {
+            if (player1.IsRole(RoleId.LoversBreaker)) RoleClass.Lovers.FakeLovers.Add(player1.PlayerId);
+            else RoleClass.Lovers.FakeLovers.Add(player2.PlayerId);
+            RoleClass.Lovers.FakeLoverPlayers.Add(sets);
+        }
+        else RoleClass.Lovers.LoversPlayer.Add(sets);
         if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
         {
             PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
@@ -173,6 +203,24 @@ public static class RoleHelpers
             return ChacheManager.LoversChache[player.PlayerId] ?? null;
         }
         foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
+        {
+            foreach (PlayerControl p in players)
+            {
+                if (p == player)
+                {
+                    return p == players[0] ? players[1] : players[0];
+                }
+            }
+        }
+        return null;
+    }
+    public static PlayerControl GetOneSideFakeLovers(this PlayerControl player, bool IsChache = true)
+    {
+        if (IsChache)
+        {
+            return ChacheManager.FakeLoversChache[player.PlayerId] ?? null;
+        }
+        foreach (List<PlayerControl> players in RoleClass.Lovers.FakeLoverPlayers)
         {
             foreach (PlayerControl p in players)
             {
@@ -673,7 +721,13 @@ public static class RoleHelpers
             case RoleId.Dependents:
                 RoleClass.Dependents.DependentsPlayer.Add(player);
                 break;
-            //ロールアド
+            case RoleId.LoversBreaker:
+                    RoleClass.LoversBreaker.LoversBreakerPlayer.Add(player);
+                    break;
+                case RoleId.Jumbo:
+                    RoleClass.Jumbo.JumboPlayer.Add(player);
+                    break;
+                //ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
                 return;
@@ -1140,6 +1194,12 @@ public static class RoleHelpers
             case RoleId.Dependents:
                 RoleClass.Dependents.DependentsPlayer.RemoveAll(ClearRemove);
                 break;
+                case RoleId.LoversBreaker:
+                    RoleClass.LoversBreaker.LoversBreakerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Jumbo:
+                    RoleClass.Jumbo.JumboPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
         }
         ChacheManager.ResetMyRoleChache();
@@ -1205,6 +1265,7 @@ public static class RoleHelpers
             case RoleId.WaveCannonJackal:
             case RoleId.Cupid:
             case RoleId.Dependents:
+                case RoleId.LoversBreaker:
                 //タスククリアか
                 IsTaskClear = true;
                 break;
@@ -1384,8 +1445,9 @@ public static class RoleHelpers
         RoleId.Pavlovsdogs or
         RoleId.Pavlovsowner or
         RoleId.Cupid or
-        RoleId.Pavlovsowner;
-    //第三か
+        RoleId.Pavlovsowner or
+        RoleId.LoversBreaker;
+                //第三か
     public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
     {
         RoleId MyRole;
@@ -1640,7 +1702,9 @@ public static class RoleHelpers
             else if (RoleClass.HamburgerShop.HamburgerShopPlayer.IsCheckListPlayerControl(player)) return RoleId.HamburgerShop;
             else if (RoleClass.Penguin.PenguinPlayer.IsCheckListPlayerControl(player)) return RoleId.Penguin;
             else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;
-            //ロールチェック
+            else if (RoleClass.LoversBreaker.LoversBreakerPlayer.IsCheckListPlayerControl(player)) return RoleId.LoversBreaker;
+                else if (RoleClass.Jumbo.JumboPlayer.IsCheckListPlayerControl(player)) return RoleId.Jumbo;
+                //ロールチェック
         }
         catch (Exception e)
         {

@@ -24,6 +24,7 @@ class HudManagerPatch
             Tuna.HudUpdate();
             Arsonist.HudUpdate();
             Shielder.HudUpdate();
+            Roles.Attribute.Jumbo.FixedUpdate();
             Zoom.HudUpdate(__instance);
         }
     }
