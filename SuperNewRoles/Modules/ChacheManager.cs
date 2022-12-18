@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Modules;
 
@@ -7,12 +8,14 @@ class ChacheManager
     public static Dictionary<int, RoleId> MyRoleChache;
     public static Dictionary<int, RoleId> MyGhostRoleChache;
     public static Dictionary<int, PlayerControl> LoversChache;
+    public static Dictionary<int, PlayerControl> FakeLoversChache;
     public static Dictionary<int, PlayerControl> QuarreledChache;
     public static void Load()
     {
         MyRoleChache = new Dictionary<int, RoleId>();
         MyGhostRoleChache = new Dictionary<int, RoleId>();
         LoversChache = new Dictionary<int, PlayerControl>();
+        FakeLoversChache = new();
         QuarreledChache = new Dictionary<int, PlayerControl>();
     }
     public static void ResetChache()
@@ -34,6 +37,7 @@ class ChacheManager
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
             LoversChache[p.PlayerId] = p.IsLovers(false) ? p.GetOneSideLovers(false) : null;
+            FakeLoversChache[p.PlayerId] = p.IsFakeLovers(false) ? p.GetOneSideFakeLovers(false) : null;
         }
     }
     public static void ResetMyRoleChache()
