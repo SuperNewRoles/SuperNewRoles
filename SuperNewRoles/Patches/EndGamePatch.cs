@@ -230,7 +230,8 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.HitmanWin,("HitmanName",RoleClass.Hitman.color)},
                 {WinCondition.PhotographerWin,("PhotographerName",RoleClass.Photographer.color)},
                 {WinCondition.StefinderWin,("StefinderName",RoleClass.Stefinder.color)},
-                {WinCondition.PavlovsTeamWin,("PavlovsTeamWinText",RoleClass.Pavlovsdogs.color)}
+                {WinCondition.PavlovsTeamWin,("PavlovsTeamWinText",RoleClass.Pavlovsdogs.color)},
+                {WinCondition.LoversBreakerWin,("LoversBreakerName",RoleClass.LoversBreaker.color)}
             };
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {
@@ -547,7 +548,8 @@ public static class OnGameEndPatch
             RoleClass.Photographer.PhotographerPlayer,
             RoleClass.Stefinder.StefinderPlayer,
             RoleClass.Pavlovsdogs.PavlovsdogsPlayer,
-            RoleClass.Pavlovsowner.PavlovsownerPlayer
+            RoleClass.Pavlovsowner.PavlovsownerPlayer,
+            RoleClass.LoversBreaker.LoversBreakerPlayer,
             });
 
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
@@ -589,6 +591,7 @@ public static class OnGameEndPatch
         bool HitmanWin = gameOverReason == (GameOverReason)CustomGameOverReason.HitmanWin;
         bool PhotographerWin = gameOverReason == (GameOverReason)CustomGameOverReason.PhotographerWin;
         bool PavlovsTeamWin = gameOverReason == (GameOverReason)CustomGameOverReason.PavlovsTeamWin;
+        bool LoversBreakerWin = gameOverReason == (GameOverReason)CustomGameOverReason.LoversBreakerWin;
         bool CrewmateWin = gameOverReason is (GameOverReason)CustomGameOverReason.CrewmateWin or GameOverReason.HumansByVote or GameOverReason.HumansByTask or GameOverReason.ImpostorDisconnect;
         bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers) && EndData != null)
@@ -744,6 +747,11 @@ public static class OnGameEndPatch
         else if (TaskerWin)
         {
             AdditionalTempData.winCondition = WinCondition.TaskerWin;
+        }
+        else if (LoversBreakerWin)
+        {
+            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
+            AdditionalTempData.winCondition = WinCondition.LoversBreakerWin;
         }
 
         if (TempData.winners.ToArray().Any(x => x.IsImpostor))

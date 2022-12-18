@@ -121,14 +121,18 @@ static class HudManagerStartPatch
         LoversBreakerButton = new(
             () =>
             {
-            PlayerControl Target = SetTarget();
-            if (Target.IsLovers() || Target.IsRole(RoleId.truelover, RoleId.Cupid))
-            {
-                PlayerControl.LocalPlayer.RpcMurderPlayer(Target);
+                PlayerControl Target = SetTarget();
+                if (Target.IsLovers() || Target.IsRole(RoleId.truelover, RoleId.Cupid))
+                {
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(Target);
                     if (Target.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(Target.PlayerId)) return;
                     RoleClass.LoversBreaker.BreakCount--;
                     if (RoleClass.LoversBreaker.BreakCount <= 0)
                     {
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        Writer.Write(Target.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        RPCProcedure.ShareWinner(Target.PlayerId);
                         if (AmongUsClient.Instance.AmHost)
                         {
                             GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.LoversBreakerWin, false);
