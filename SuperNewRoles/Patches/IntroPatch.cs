@@ -265,7 +265,7 @@ public class IntroPatch
         {
             if (PlayerControl.LocalPlayer.IsNeutral() && !PlayerControl.LocalPlayer.IsRole(RoleId.GM))
             {
-                IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole());
+                IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
                 TeamTitle = ModTranslation.GetString("Neutral");
                 ImpostorText = ModTranslation.GetString("NeutralSubIntro");
                 color = new(127, 127, 127, byte.MaxValue);
@@ -287,7 +287,7 @@ public class IntroPatch
                     case RoleId.MayorFriends:
                     case RoleId.SatsumaAndImo:
                     case RoleId.GM:
-                        IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole());
+                        IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
                         color = Intro.color;
                         TeamTitle = ModTranslation.GetString(Intro.NameKey + "Name");
                         ImpostorText = "";
@@ -307,7 +307,7 @@ public class IntroPatch
                 var myrole = PlayerControl.LocalPlayer.GetRole();
                 if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                 {
-                    var data = IntroData.GetIntroData(myrole);
+                    var data = IntroData.GetIntroData(myrole, PlayerControl.LocalPlayer);
                     color = data.color;
                     TeamTitle = ModTranslation.GetString(data.NameKey + "Name");
                     ImpostorText = data.TitleDesc;
