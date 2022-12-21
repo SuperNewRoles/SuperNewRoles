@@ -1214,6 +1214,15 @@ public static class CheckGameEndPatch
 
     public static bool CheckAndEndGameForLoversBreakerWin(ShipStatus __instance, PlayerStatistics statistics)
     {
+        if (!CustomOptionHolder.LoversBreakerIsDeathWin.GetBool()) {
+            foreach (byte playerId in RoleClass.LoversBreaker.CanEndGamePlayers.ToArray())
+            {
+                if (ModHelpers.PlayerById(playerId).IsDead())
+                {
+                    RoleClass.LoversBreaker.CanEndGamePlayers.Remove(playerId);
+                }
+            }
+        }
         if (RoleClass.LoversBreaker.CanEndGamePlayers.Count > 0 && statistics.LoversAlive <= 0)
         {
             __instance.enabled = false;
