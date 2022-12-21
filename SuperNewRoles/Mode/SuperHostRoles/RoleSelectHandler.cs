@@ -182,12 +182,19 @@ public static class RoleSelectHandler
                     if (pc.PlayerId == Player.PlayerId) continue;
                     sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
                 }
+            }
+            else
+            {
+                if (Player.PlayerId != 0) sender.RpcSetRole(Player, RoleTypes.Crewmate, Player.GetClientId());
+                else Player.SetRole(RoleTypes.Crewmate);
+            }
+            if (ModeHandler.GetMode() == ModeId.SuperHostRoles)
+            {
                 //他視点で科学者にするループ
                 foreach (var pc in PlayerControl.AllPlayerControls)
                 {
                     if (pc.PlayerId == Player.PlayerId) continue;
-                    if (pc.IsMod()) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
-                    else
+                    if (!pc.IsMod()) 
                     {
                         if (pc.IsImpostor() || pc.IsRole(RoleId.Spy))
                         {
@@ -199,11 +206,6 @@ public static class RoleSelectHandler
                         }
                     }
                 }
-            }
-            else
-            {
-                if (Player.PlayerId != 0) sender.RpcSetRole(Player, RoleTypes.Crewmate, Player.GetClientId());
-                else Player.SetRole(RoleTypes.Crewmate);
             }
         }
         return;
