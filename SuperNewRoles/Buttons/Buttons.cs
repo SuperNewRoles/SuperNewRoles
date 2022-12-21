@@ -169,6 +169,8 @@ static class HudManagerStartPatch
                     PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
                     PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
                 }
+                LoversBreakerButton.MaxTimer = CustomOptionHolder.LoversBreakerCoolTime.GetFloat();
+                LoversBreakerButton.Timer = LoversBreakerButton.MaxTimer;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.LoversBreaker; },
             () =>
