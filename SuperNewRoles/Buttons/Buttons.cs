@@ -125,7 +125,7 @@ static class HudManagerStartPatch
                 if (Target.IsLovers() || Target.IsRole(RoleId.truelover, RoleId.Cupid))
                 {
                     PlayerControl.LocalPlayer.RpcMurderPlayer(Target);
-                    if (Target.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(Target.PlayerId)) return;
+                    if (Target.IsRole(RoleId.Cupid)) return;
                     RoleClass.LoversBreaker.BreakCount--;
                     if (RoleClass.LoversBreaker.BreakCount <= 0)
                     {
