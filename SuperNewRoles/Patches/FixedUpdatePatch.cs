@@ -241,6 +241,11 @@ public class FixedUpdate
                 }
                 SerialKiller.SHRFixedUpdate(PlayerControl.LocalPlayer.GetRole());
                 Roles.Impostor.Camouflager.SHRFixedUpdate();
+                if (PlayerControl.LocalPlayer.IsAlive())
+                {
+                    if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
+                }
+
                 break;
             case ModeId.NotImpostorCheck:
                 if (AmongUsClient.Instance.AmHost)
