@@ -1214,7 +1214,7 @@ public static class CheckGameEndPatch
 
     public static bool CheckAndEndGameForLoversBreakerWin(ShipStatus __instance, PlayerStatistics statistics)
     {
-        if (RoleClass.LoversBreaker.LoversBreakerPlayer.Count > 0 && statistics.LoversAlive <= 0)
+        if (RoleClass.LoversBreaker.CanEndGamePlayers.Count > 0 && statistics.LoversAlive <= 0)
         {
             __instance.enabled = false;
             CustomEndGame((GameOverReason)CustomGameOverReason.LoversBreakerWin, false);
