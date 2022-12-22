@@ -1234,6 +1234,7 @@ public static class CheckGameEndPatch
                 }
             }
         }
+        Logger.Info($"{statistics.LoversAlive}", "Checker");
         if (RoleClass.LoversBreaker.CanEndGamePlayers.Count > 0 && statistics.LoversAlive <= 0)
         {
             __instance.enabled = false;
@@ -1503,7 +1504,6 @@ public static class CheckGameEndPatch
                                 numPavlovsTeamAlive++;
                             }
                         }
-                        Logger.Info($"{playerInfo.PlayerName} : {playerInfo.Object.IsLovers()} : {playerInfo.Object.IsRole(RoleId.truelover)} : {playerInfo.Object.IsRole(RoleId.Cupid)}");
                         if (playerInfo.Object.IsLovers() || playerInfo.Object.IsRole(RoleId.truelover) || (playerInfo.Object.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(playerInfo.Object.PlayerId))) numLoversAlive++;
                     }
                 }
@@ -1519,6 +1519,7 @@ public static class CheckGameEndPatch
             PavlovsTeamAlive = numPavlovsTeamAlive;
             HitmanAlive = numHitmanAlive;
             LoversAlive = numLoversAlive;
+            Logger.Info($"{numLoversAlive} : {LoversAlive},"numLoversAlive");
             if (!(IsGuardPavlovs = PavlovsDogAlive > 0))
             {
                 foreach (PlayerControl p in RoleClass.Pavlovsowner.PavlovsownerPlayer)

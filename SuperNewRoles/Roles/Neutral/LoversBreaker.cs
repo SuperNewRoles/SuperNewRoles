@@ -21,7 +21,7 @@ namespace SuperNewRoles.Roles.Neutral
             }
             IsNotSetted = true;
             if (IsViewd) return;
-            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) return;
+            if (AmongUsClient.Instance != null && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) return;
             if (DateTime.UtcNow >= new DateTime(2022, 12, 23, 12, 0, 0))
             {
                 IsViewd = true;
@@ -32,7 +32,7 @@ namespace SuperNewRoles.Roles.Neutral
                 TextMeshPro Title = GameObject.Instantiate(Popup.TextAreaTMP, Popup.transform);
                 Popup.TextAreaTMP.transform.localPosition = new(-2, 1.8f, -0.5f);
                 Popup.TextAreaTMP.transform.localScale = Vector3.one * 1.5f;
-                Popup.TextAreaTMP.text = "メリークリスマス！\n明日はクリスマスイブですね！\n皆さんにクリスマスプレゼントを用意しました！\n";
+                Popup.TextAreaTMP.text = "メリークリスマス！\n皆さんに2つの新役職のプレゼントを用意しました！\n「爆ぜ師」と「ジャンボ」です！\n詳しくはTwitterをチェック！\n\n\n@SNRDevs";
             }
         }
     }
