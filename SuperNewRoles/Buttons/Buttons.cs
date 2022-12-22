@@ -19,6 +19,7 @@ namespace SuperNewRoles.Buttons;
 static class HudManagerStartPatch
 {
     #region Buttons
+    public static CustomButton DebuggerButton;
     public static CustomButton SheriffKillButton;
     public static CustomButton ClergymanLightOutButton;
     public static CustomButton SpeedBoosterBoostButton;
@@ -118,6 +119,33 @@ static class HudManagerStartPatch
 
     public static void Postfix(HudManager __instance)
     {
+        DebuggerButton = new(
+            () =>
+            {
+
+            },
+            (bool isAlive, RoleId role) => { return RoleClass.Debugger.AmDebugger; },
+            () =>
+            {
+                return PlayerControl.LocalPlayer.CanMove;
+            },
+            () =>
+            {
+            },
+            RoleClass.Debugger.GetButtonSprite(),
+            new Vector3(0, -0.06f, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.K,
+            49,         //** ここコントローラだと問題起きるけどデバッグ用だしいいよね **//
+            () => { return false; },
+            mirror:true
+        )
+        {
+            buttonText = ModTranslation.GetString("DebuggerButtonName"),
+            showButtonText = true
+        };
+
         LoversBreakerButton = new(
             () =>
             {

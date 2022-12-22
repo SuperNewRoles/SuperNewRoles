@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,8 @@ public static class RoleClass
         MapCustoms.SpecimenVital.ClearAndReload();
         MapCustoms.MoveElecPad.ClearAndReload();
         Beacon.ClearBeacons();
+
+        Debugger.ClearAndReload();
         SoothSayer.ClearAndReload();
         Jester.ClearAndReload();
         Lighter.ClearAndReload();
@@ -205,6 +208,19 @@ public static class RoleClass
         MapOption.MapOption.ClearAndReload();
         ChacheManager.Load();
     }
+
+    public static class Debugger
+    {
+        public static bool AmDebugger;
+        public static Color32 color = Palette.DisabledGrey;
+        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
+
+        public static void ClearAndReload()
+        {
+            AmDebugger = AmongUsClient.Instance.AmHost && CustomOptionHolder.DebuggerOption.GetBool();
+        }
+    }
+
     public static class SoothSayer
     {
         public static List<PlayerControl> SoothSayerPlayer;
