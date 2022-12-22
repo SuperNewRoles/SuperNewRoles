@@ -134,7 +134,7 @@ static class HudManagerStartPatch
                         bool IsAliveLovers = false;
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
-                            if (p.IsAlive() && (p.IsLovers() || p.IsRole(RoleId.truelover) || (p.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(pPlayerId))))
+                            if (p.IsAlive() && (p.IsLovers() || p.IsRole(RoleId.truelover) || (p.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(p.PlayerId))))
                             {
                                 IsAliveLovers = true;
                                 break;
