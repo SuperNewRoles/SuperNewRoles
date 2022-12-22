@@ -1519,7 +1519,7 @@ public static class CheckGameEndPatch
             PavlovsTeamAlive = numPavlovsTeamAlive;
             HitmanAlive = numHitmanAlive;
             LoversAlive = numLoversAlive;
-            Logger.Info($"{numLoversAlive} : {LoversAlive},"numLoversAlive");
+            Logger.Info($"{numLoversAlive} : {LoversAlive}", "numLoversAlive");
             if (!(IsGuardPavlovs = PavlovsDogAlive > 0))
             {
                 foreach (PlayerControl p in RoleClass.Pavlovsowner.PavlovsownerPlayer)
