@@ -175,7 +175,9 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.LoversBreaker; },
             () =>
             {
-                return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                PlayerControl Target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.LoversBreaker.color);
+                return Target && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
