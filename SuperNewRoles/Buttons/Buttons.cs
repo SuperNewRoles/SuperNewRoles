@@ -127,7 +127,7 @@ static class HudManagerStartPatch
                     PlayerControl.LocalPlayer.RpcMurderPlayer(Target);
                     LoversBreakerButton.MaxTimer = CustomOptionHolder.LoversBreakerCoolTime.GetFloat();
                     LoversBreakerButton.Timer = LoversBreakerButton.MaxTimer;
-                    if (Target.IsRole(RoleId.Cupid)) return;
+                    if (Target.IsRole(RoleId.Cupid) && !Target.IsLovers()) return;
                     RoleClass.LoversBreaker.BreakCount--;
                     if (RoleClass.LoversBreaker.BreakCount <= 0)
                     {

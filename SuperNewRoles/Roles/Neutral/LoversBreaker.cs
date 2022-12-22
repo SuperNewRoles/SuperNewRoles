@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SuperNewRoles.Roles.Neutral
 {
@@ -21,7 +22,7 @@ namespace SuperNewRoles.Roles.Neutral
             }
             IsNotSetted = true;
             if (IsViewd) return;
-            if (AmongUsClient.Instance != null && AmongUsClient.Instance.GameState is InnerNet.InnerNetClient.GameStates.Started or InnerNet.InnerNetClient.GameStates.Ended) return;
+            if ((AmongUsClient.Instance != null && AmongUsClient.Instance.GameState is InnerNet.InnerNetClient.GameStates.Started or InnerNet.InnerNetClient.GameStates.Ended) || SceneManager.GetActiveScene().name == "EndGame") return;
             if (DateTime.UtcNow >= new DateTime(2022, 12, 23, 12, 0, 0))
             {
                 IsViewd = true;
