@@ -434,7 +434,7 @@ class GameOptionsMenuStartPatch
         }
         // Setup TOR tab
         StringOption template = GameObject.Find("Main Camera/PlayerOptionsMenu(Clone)/Game Settings/GameGroup/SliderInner/KillDistance").GetComponent<StringOption>();
-        Logger.Info($"{template == null}","nullチェック");
+        Logger.Info($"{template == null}", "nullチェック");
         if (template == null) return;
         var gameSettings = GameObject.Find("Main Camera/PlayerOptionsMenu(Clone)/Game Settings/");
         var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
@@ -808,7 +808,9 @@ static class GameOptionsMenuUpdatePatch
     }
     public static bool IsHidden(this CustomOption option)
     {
-        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false)) || option == CustomOptionHolder.LoversBreakerOption;// || ((option == CustomOptionHolder.LoversBreakerOption) && DateTime.UtcNow < new DateTime(2022,12,23,12,0,0));
+        return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false))
+        || option == CustomOptionHolder.LoversBreakerOption
+        || ((option == CustomOptionHolder.LoversBreakerOption) && DateTime.UtcNow < new DateTime(2022, 12, 23, 12, 0, 0));
     }
     public static void Postfix(GameOptionsMenu __instance)
     {

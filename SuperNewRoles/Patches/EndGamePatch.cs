@@ -764,7 +764,18 @@ public static class OnGameEndPatch
         }
         else if (LoversBreakerWin)
         {
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
+            if (WinnerPlayer is not null)
+            {
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
+            }
+            else
+            {
+                TempData.winners = new();
+                foreach (byte playerId in RoleClass.LoversBreaker.CanEndGamePlayers)
+                {
+                    TempData.winners.Add(new(ModHelpers.PlayerById(playerId).Data));
+                }
+            }
             AdditionalTempData.winCondition = WinCondition.LoversBreakerWin;
         }
 
@@ -1177,6 +1188,7 @@ public static class CheckGameEndPatch
         }
         else
         {
+            if (CheckAndEndGameForLoversBreakerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
             if (CheckAndEndGameForSabotageWin(__instance)) return false;
             if (CheckAndEndGameForPavlovsWin(__instance, statistics)) return false;
@@ -1188,7 +1200,6 @@ public static class CheckGameEndPatch
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
             if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
             if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
-            if (CheckAndEndGameForLoversBreakerWin(__instance, statistics)) return false;
             if (!PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
         }
         return false;
@@ -1231,7 +1242,16 @@ public static class CheckGameEndPatch
 
     public static bool CheckAndEndGameForLoversBreakerWin(ShipStatus __instance, PlayerStatistics statistics)
     {
-        if (RoleClass.LoversBreaker.LoversBreakerPlayer.Count > 0 && statistics.LoversAlive <= 0)
+        if (!CustomOptionHolder.LoversBreakerIsDeathWin.GetBool()) {
+            foreach (byte playerId in RoleClass.LoversBreaker.CanEndGamePlayers.ToArray())
+            {
+                if (ModHelpers.PlayerById(playerId).IsDead())
+                {
+                    RoleClass.LoversBreaker.CanEndGamePlayers.Remove(playerId);
+                }
+            }
+        }
+        if (RoleClass.LoversBreaker.CanEndGamePlayers.Count > 0 && statistics.LoversAlive <= 0)
         {
             __instance.enabled = false;
             CustomEndGame((GameOverReason)CustomGameOverReason.LoversBreakerWin, false);
@@ -1500,7 +1520,7 @@ public static class CheckGameEndPatch
                                 numPavlovsTeamAlive++;
                             }
                         }
-                        if (playerInfo.Object.IsLovers()) numLoversAlive++;
+                        if (playerInfo.Object.IsLovers() || playerInfo.Object.IsRole(RoleId.truelover) || (playerInfo.Object.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(playerInfo.Object.PlayerId))) numLoversAlive++;
                     }
                 }
             }

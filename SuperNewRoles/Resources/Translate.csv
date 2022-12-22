@@ -1147,6 +1147,10 @@ PenguinName,Penguin,ペンギン,绑匪
 PenguinTitle1,Let's drag and kill!,ぺちぺち！,绑架他人
 PenguinButtonName,Abduction,拉致,绑架
 PenguinCanDefaultKill,Can default kill,通常キルができる,绑匪可以进行通常击杀
+LoversBreakerName,LoversBreaker,爆ぜ師
+LoversBreakerTitle,fulfilling life explosion!!fulfilling life explosion!!,リア充爆発！！リア充爆発！！
+LoversBreakerBreakCount,Number of explosions needed to win,勝利に必要な爆破数
+LoversBreakerIsDeathWin,You can win even if you are dead.,死亡していても勝利できる
 JumboName,Jumbo,ジャンボ
 JumboTitle1,Wow!?Jumbo!!!,ワオ、ジャンボ！！！
 NiceJumboName,NiceJumbo,ナイスジャンボ
