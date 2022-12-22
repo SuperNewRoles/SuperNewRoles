@@ -37,7 +37,7 @@ namespace SuperNewRoles.Roles.Neutral
                 Title.transform.localScale = Vector3.one * 4.5f;
                 Popup.TextAreaTMP.transform.localPosition = new(0, 0.5f, -0.5f);
                 Popup.TextAreaTMP.transform.localScale = Vector3.one * 2.3f;
-                Popup.TextAreaTMP.text = "メリークリスマス！\n皆さんに2つの新役職のプレゼントを用意しました！\n「爆ぜ師」と「ジャンボ」です！\n詳しくはTwitterをチェック！\n\n\n<link=\"https://twitter.com/SNRDevs\">@SNRDevs</link>";
+                Popup.TextAreaTMP.text = "メリークリスマス！\n皆さんに2つの新役職のプレゼントを用意しました！\n「爆ぜ師」と「ジャンボ」です！\n詳しくはTwitterをチェック！\n\n※SHRには対応していません\n\n<link=\"https://twitter.com/SNRDevs\">@SNRDevs</link>";
                 Popup.destroyOnClose = true;
             }
         }
