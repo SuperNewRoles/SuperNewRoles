@@ -21,7 +21,7 @@ namespace SuperNewRoles.Roles.Neutral
             }
             IsNotSetted = true;
             if (IsViewd) return;
-            if (AmongUsClient.Instance != null && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) return;
+            if (AmongUsClient.Instance != null && AmongUsClient.Instance.GameState is InnerNet.InnerNetClient.GameStates.Started or InnerNet.InnerNetClient.GameStates.Ended) return;
             if (DateTime.UtcNow >= new DateTime(2022, 12, 23, 12, 0, 0))
             {
                 IsViewd = true;
