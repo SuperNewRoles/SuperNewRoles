@@ -160,7 +160,7 @@ public class SetNamesClass
         }
         else if (role == RoleId.Stefinder && RoleClass.Stefinder.IsKill)
         {
-            var introData = IntroData.GetIntroData(role);
+            var introData = IntroData.GetIntroData(role, p);
             roleNames = introData.Name;
             roleColors = RoleClass.ImpostorRed;
         }
@@ -172,14 +172,14 @@ public class SetNamesClass
         }
         else
         {
-            var introData = IntroData.GetIntroData(role);
+            var introData = IntroData.GetIntroData(role, p);
             roleNames = introData.Name;
             roleColors = introData.color;
         }
         var GhostRole = p.GetGhostRole();
         if (GhostRole != RoleId.DefaultRole)
         {
-            var GhostIntro = IntroData.GetIntroData(GhostRole);
+            var GhostIntro = IntroData.GetIntroData(GhostRole, p);
             GhostroleNames = GhostIntro.Name;
             GhostroleColors = GhostIntro.color;
         }
