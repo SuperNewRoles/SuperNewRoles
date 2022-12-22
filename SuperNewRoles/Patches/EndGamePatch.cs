@@ -1149,7 +1149,6 @@ public static class CheckGameEndHnSPatch
             if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
             if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
             if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
-            if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
             if (CheckAndEndGameForTaskerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
             if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;

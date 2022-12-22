@@ -25,7 +25,9 @@ public static class Jumbo
                 {
                     if (RoleClass.Jumbo.PlaySound[p.PlayerId] <= 0f)
                     {
-                        if (Vector3.Distance(PlayerControl.LocalPlayer.transform.position, p.transform.position) <= (ShipStatus.Instance.CalculateLightRadius(p.Data)) * 1.5f)
+                        float Light = ShipStatus.Instance.CalculateLightRadius(p.Data);
+                        if (GameManager.Instance.LogicOptions.currentGameOptions.GameMode == GameModes.HideNSeek) Light = 6f;
+                        if (Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), p.GetTruePosition()) <= Light)
                         {
                             Transform AudioObject = p.transform.FindChild("JumboAudio");
                             if (AudioObject == null)
