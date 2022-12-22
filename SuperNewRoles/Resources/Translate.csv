@@ -1158,6 +1158,10 @@ NiceJumboName,NiceJumbo,ナイスジャンボ
 NiceJumboTitle1,Big Crewmate Team!!!,大きいクルーメイトの味方
 EvilJumboName,EvilJumbo,イビルジャンボ
 EvilJumboTitle1,Let's overwhelm the crew with the size of this thing.,この大きさでクルーを圧倒しよう
+JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボになる確率
+JumboMaxSize,Maximum size,最大サイズ
+JumboSpeedUpSize,Growth speed,成長スピード
+JumboWalkSoundSize,Loudness of footsteps,足音の大きさ
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示
