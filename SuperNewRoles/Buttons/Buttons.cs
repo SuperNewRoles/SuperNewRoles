@@ -125,6 +125,8 @@ static class HudManagerStartPatch
                 if (Target.IsLovers() || Target.IsRole(RoleId.truelover, RoleId.Cupid))
                 {
                     PlayerControl.LocalPlayer.RpcMurderPlayer(Target);
+                    LoversBreakerButton.MaxTimer = CustomOptionHolder.LoversBreakerCoolTime.GetFloat();
+                    LoversBreakerButton.Timer = LoversBreakerButton.MaxTimer;
                     if (Target.IsRole(RoleId.Cupid)) return;
                     RoleClass.LoversBreaker.BreakCount--;
                     if (RoleClass.LoversBreaker.BreakCount <= 0)
@@ -169,8 +171,6 @@ static class HudManagerStartPatch
                     PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
                     PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
                 }
-                LoversBreakerButton.MaxTimer = CustomOptionHolder.LoversBreakerCoolTime.GetFloat();
-                LoversBreakerButton.Timer = LoversBreakerButton.MaxTimer;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.LoversBreaker; },
             () =>
