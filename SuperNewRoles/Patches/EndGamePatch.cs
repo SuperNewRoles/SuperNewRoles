@@ -1234,7 +1234,6 @@ public static class CheckGameEndPatch
                 }
             }
         }
-        Logger.Info($"{statistics.LoversAlive}", "Checker");
         if (RoleClass.LoversBreaker.CanEndGamePlayers.Count > 0 && statistics.LoversAlive <= 0)
         {
             __instance.enabled = false;
@@ -1519,7 +1518,6 @@ public static class CheckGameEndPatch
             PavlovsTeamAlive = numPavlovsTeamAlive;
             HitmanAlive = numHitmanAlive;
             LoversAlive = numLoversAlive;
-            Logger.Info($"{numLoversAlive} : {LoversAlive}", "numLoversAlive");
             if (!(IsGuardPavlovs = PavlovsDogAlive > 0))
             {
                 foreach (PlayerControl p in RoleClass.Pavlovsowner.PavlovsownerPlayer)
