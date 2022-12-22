@@ -750,7 +750,18 @@ public static class OnGameEndPatch
         }
         else if (LoversBreakerWin)
         {
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
+            if (WinnerPlayer is not null)
+            {
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
+            }
+            else
+            {
+                TempData.winners = new();
+                foreach (byte playerId in RoleClass.LoversBreaker.CanEndGamePlayers)
+                {
+                    TempData.winners.Add(new(ModHelpers.PlayerById(playerId).Data));
+                }
+            }
             AdditionalTempData.winCondition = WinCondition.LoversBreakerWin;
         }
 
@@ -1492,6 +1503,7 @@ public static class CheckGameEndPatch
                                 numPavlovsTeamAlive++;
                             }
                         }
+                        Logger.Info($"{playerInfo.PlayerName} : {playerInfo.Object.IsLovers()} : {playerInfo.Object.IsRole(RoleId.truelover)} : {playerInfo.Object.IsRole(RoleId.Cupid)}");
                         if (playerInfo.Object.IsLovers() || playerInfo.Object.IsRole(RoleId.truelover) || (playerInfo.Object.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(playerInfo.Object.PlayerId))) numLoversAlive++;
                     }
                 }
