@@ -93,6 +93,9 @@ static class HudManagerStartPatch
     public static CustomButton DependentsKillButton;
     public static CustomButton LoversBreakerButton;
     public static CustomButton JumboKillButton;
+    public static CustomButton WorshiperKillButton;
+    public static CustomButton WorshiperSuicideButton;
+
     #endregion
 
     #region Texts
@@ -123,16 +126,17 @@ static class HudManagerStartPatch
             () =>
             {
                 float killTimer = PlayerControl.LocalPlayer.killTimer;
-                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, SetTarget(Crewmateonly:true));
+                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, SetTarget(Crewmateonly: true));
                 RoleClass.Jumbo.Killed = true;
                 PlayerControl.LocalPlayer.killTimer = killTimer;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jumbo && PlayerControl.LocalPlayer.IsImpostor() && !RoleClass.Jumbo.Killed && RoleClass.Jumbo.JumboSize.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && RoleClass.Jumbo.JumboSize[PlayerControl.LocalPlayer.PlayerId] >= (CustomOptionHolder.JumboMaxSize.GetFloat() / 10); },
             () =>
             {
-                return SetTarget(Crewmateonly:true) && PlayerControl.LocalPlayer.CanMove;
+                return SetTarget(Crewmateonly: true) && PlayerControl.LocalPlayer.CanMove;
             },
-            () => {
+            () =>
+            {
                 JumboKillButton.MaxTimer = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
                 JumboKillButton.Timer = JumboKillButton.MaxTimer;
             },
@@ -188,7 +192,8 @@ static class HudManagerStartPatch
                                 writer.Write(false);
                                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                             }
-                        } else
+                        }
+                        else
                         {
                             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetLoversBreakerWinner);
                             writer.Write(PlayerControl.LocalPlayer.PlayerId);
@@ -3113,6 +3118,32 @@ static class HudManagerStartPatch
         )
         {
             buttonText = ModTranslation.GetString("CamouflagerButtonName"),
+            showButtonText = true
+        };
+
+        WorshiperSuicideButton = new(
+            () =>
+            {
+                //自殺
+                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Worshiper && ModeHandler.IsMode(ModeId.Default); },
+            () =>
+            {
+                return true;
+            },
+            () => { },
+            RoleClass.SuicideWisher.GetButtonSprite(),
+            new Vector3(-2f, 1, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.F,
+            49,
+            () => { return false; }
+        )
+        {
+            buttonText = ModTranslation.GetString("WorshiperSuicide"),
             showButtonText = true
         };
 
