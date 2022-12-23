@@ -113,6 +113,11 @@ class WrapUpPatch
         Seer.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
         if (exiled == null) return;
+        if (exiled.Object.IsRole(RoleId.Jumbo) && exiled.Object.IsCrew())
+        {
+            GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.NoWinner, false);
+            return;
+        }
         Vampire.DependentsExileWrapUpPatch(exiled.Object);
         SoothSayer_Patch.WrapUp(exiled.Object);
         Nekomata.NekomataEnd(exiled);

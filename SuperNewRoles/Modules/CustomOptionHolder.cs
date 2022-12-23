@@ -938,10 +938,14 @@ public class CustomOptionHolder
     public static CustomOption LoversBreakerPlayerCount;
     public static CustomOption LoversBreakerBreakCount;
     public static CustomOption LoversBreakerCoolTime;
+    public static CustomOption LoversBreakerIsDeathWin;
 
     public static CustomRoleOption JumboOption;
     public static CustomOption JumboPlayerCount;
     public static CustomOption JumboCrewmateChance;
+    public static CustomOption JumboMaxSize;
+    public static CustomOption JumboSpeedUpSize;
+    public static CustomOption JumboWalkSoundSize;
     //CustomOption
 
     public static CustomOption GMOption;
@@ -1902,10 +1906,14 @@ public class CustomOptionHolder
         LoversBreakerPlayerCount = Create(1133, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LoversBreakerOption);
         LoversBreakerBreakCount = Create(1134, false, CustomOptionType.Neutral, "LoversBreakerBreakCount", 1f, 1f, 7f, 1f, LoversBreakerOption);
         LoversBreakerCoolTime = Create(1135, false, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, LoversBreakerOption, format: "unitSeconds");
+        LoversBreakerIsDeathWin = Create(1141, false, CustomOptionType.Neutral, "LoversBreakerIsDeathWin", true, LoversBreakerOption);
 
         JumboOption = SetupCustomRoleOption(1137, false, RoleId.Jumbo, type:CustomOptionType.Neutral);
         JumboPlayerCount = Create(1138, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JumboOption);
         JumboCrewmateChance = Create(1139, false, CustomOptionType.Neutral, "JumboCrewmateChance", rates, JumboOption);
+        JumboMaxSize = Create(1140, false, CustomOptionType.Neutral, "JumboMaxSize", 24f, 1f, 48f, 1f, JumboOption);
+        JumboSpeedUpSize = Create(1141, false, CustomOptionType.Neutral, "JumboSpeedUpSize", 300f, 10f, 600f, 10f, JumboOption);
+        JumboWalkSoundSize = Create(1142, false, CustomOptionType.Neutral, "JumboWalkSoundSize", rates, JumboOption);
         //表示設定
 
         QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
