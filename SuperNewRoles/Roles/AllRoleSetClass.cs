@@ -966,8 +966,9 @@ class AllRoleSetClass
             RoleId.Penguin => CustomOptionHolder.PenguinPlayerCount.GetFloat(),
             RoleId.Dependents => CustomOptionHolder.DependentsPlayerCount.GetFloat(),
             RoleId.LoversBreaker => CustomOptionHolder.LoversBreakerPlayerCount.GetFloat(),
-                RoleId.Jumbo => CustomOptionHolder.JumboPlayerCount.GetFloat(),
-                //プレイヤーカウント
+            RoleId.Jumbo => CustomOptionHolder.JumboPlayerCount.GetFloat(),
+            RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.WorshiperPlayerCount.GetFloat(),
+            //プレイヤーカウント
             _ => 1,
         };
     }

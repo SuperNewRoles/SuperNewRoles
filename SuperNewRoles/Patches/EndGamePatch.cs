@@ -102,7 +102,7 @@ public static class ShipStatusPatch
     [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.IsGameOverDueToDeath))]
     public static void Postfix2(ref bool __result)
     {
-        
+
         __result = false;
     }
 }
@@ -563,6 +563,7 @@ public static class OnGameEndPatch
             RoleClass.Pavlovsdogs.PavlovsdogsPlayer,
             RoleClass.Pavlovsowner.PavlovsownerPlayer,
             RoleClass.LoversBreaker.LoversBreakerPlayer,
+            Roles.Impostor.MadRole.Worshiper.WorshiperPlayer,
             });
 
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
@@ -1088,7 +1089,8 @@ public static class OnGameEndPatch
                 }
             }
             AdditionalTempData.winCondition = WinCondition.HAISON;
-        } else if (NoWinner)
+        }
+        else if (NoWinner)
         {
             TempData.winners = new();
             AdditionalTempData.winCondition = WinCondition.NoWinner;
@@ -1242,7 +1244,8 @@ public static class CheckGameEndPatch
 
     public static bool CheckAndEndGameForLoversBreakerWin(ShipStatus __instance, PlayerStatistics statistics)
     {
-        if (!CustomOptionHolder.LoversBreakerIsDeathWin.GetBool()) {
+        if (!CustomOptionHolder.LoversBreakerIsDeathWin.GetBool())
+        {
             foreach (byte playerId in RoleClass.LoversBreaker.CanEndGamePlayers.ToArray())
             {
                 if (ModHelpers.PlayerById(playerId).IsDead())

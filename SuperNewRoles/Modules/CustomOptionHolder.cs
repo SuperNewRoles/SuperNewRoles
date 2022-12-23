@@ -947,17 +947,6 @@ public class CustomOptionHolder
     public static CustomOption JumboMaxSize;
     public static CustomOption JumboSpeedUpSize;
     public static CustomOption JumboWalkSoundSize;
-
-    public static CustomRoleOption WorshiperOption;
-    public static CustomOption WorshiperPlayerCount;
-    public static CustomOption WorshiperIsCheckImpostor;
-    public static CustomOption WorshiperCommonTask;
-    public static CustomOption WorshiperShortTask;
-    public static CustomOption WorshiperLongTask;
-    public static CustomOption WorshiperCheckImpostorTask;
-    public static CustomOption WorshiperIsUseVent;
-    public static CustomOption WorshiperIsImpostorLight;
-
     //CustomOption
 
     public static CustomOption GMOption;
@@ -1927,16 +1916,7 @@ public class CustomOptionHolder
         JumboSpeedUpSize = Create(1141, false, CustomOptionType.Neutral, "JumboSpeedUpSize", 300f, 10f, 600f, 10f, JumboOption);
         JumboWalkSoundSize = Create(1142, false, CustomOptionType.Neutral, "JumboWalkSoundSize", rates, JumboOption);
 
-        WorshiperOption = SetupCustomRoleOption(1143, true, RoleId.Worshiper);
-        WorshiperPlayerCount = Create(1144, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WorshiperOption);
-        WorshiperIsUseVent = Create(1145, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, WorshiperOption);
-        WorshiperIsImpostorLight = Create(1146, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, WorshiperOption);
-        WorshiperIsCheckImpostor = Create(1147, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, WorshiperOption);
-        var Worshiperoption = SelectTask.TaskSetting(1148, 1149, 1150, WorshiperIsCheckImpostor, CustomOptionType.Crewmate, true);
-        WorshiperCommonTask = Worshiperoption.Item1;
-        WorshiperShortTask = Worshiperoption.Item2;
-        WorshiperLongTask = Worshiperoption.Item3;
-        WorshiperCheckImpostorTask = Create(1151, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, WorshiperIsCheckImpostor);
+        Roles.Impostor.MadRole.Worshiper.SetupCustomOptions();
         //表示設定
 
         QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

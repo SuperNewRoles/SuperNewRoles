@@ -43,8 +43,6 @@ public static class RoleClass
         ElectricPatch.Reset();
         SabotageManager.ClearAndReloads();
         Roles.Madmate.CheckedImpostor = new();
-        Roles.MadMayor.CheckedImpostor = new();
-        Roles.MadSeer.CheckedImpostor = new();
         Roles.JackalFriends.CheckedJackal = new();
         Mode.BattleRoyal.Main.VentData = new();
         FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
@@ -198,8 +196,9 @@ public static class RoleClass
         Penguin.ClearAndReload();
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
-            Jumbo.ClearAndReload();
-            //ロールクリア
+        Jumbo.ClearAndReload();
+        Impostor.MadRole.Worshiper.ClearAndReload();
+        //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();
