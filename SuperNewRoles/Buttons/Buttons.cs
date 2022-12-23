@@ -122,26 +122,27 @@ static class HudManagerStartPatch
         DebuggerButton = new(
             () =>
             {
-
+                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
             },
             (bool isAlive, RoleId role) => { return RoleClass.Debugger.AmDebugger; },
             () =>
             {
                 return PlayerControl.LocalPlayer.CanMove;
             },
-            () =>
-            {
-            },
+            () => {},
             RoleClass.Debugger.GetButtonSprite(),
-            new Vector3(0, -0.06f, 0),
+            new Vector3(-9.2f, 0, 0),
             __instance,
             __instance.AbilityButton,
-            KeyCode.K,
+            null,
             49,         //** ここコントローラだと問題起きるけどデバッグ用だしいいよね **//
-            () => { return false; },
-            mirror:true
+            () => { return false; }
         )
         {
+            Timer = 0f,
+            MaxTimer = 0f,
             buttonText = ModTranslation.GetString("DebuggerButtonName"),
             showButtonText = true
         };

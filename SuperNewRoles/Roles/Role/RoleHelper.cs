@@ -1448,6 +1448,7 @@ public static class RoleHelpers
         RoleId.Pavlovsowner or
         RoleId.LoversBreaker;
                 //第三か
+
     public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
     {
         RoleId MyRole;
