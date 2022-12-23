@@ -242,6 +242,7 @@ class ShapeshifterMinigameBeginPatch
             SuperNewRoles.Roles.Attribute.Debugger.CreateDebugMenu(__instance);
         }
 
+        //デバッガー + GMだと問題起こりそうですがそうそうないと思うのでﾖｼｯ!
         //** GMの処理 **//
         if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
         {
