@@ -14,7 +14,8 @@ public class CustomOptionHolder
     private static List<string> presetList()
     {
         var tmp = new List<string>();
-        for (int i = 1; i < 11; i++) {
+        for (int i = 1; i < 11; i++)
+        {
             tmp.Add($"{ModTranslation.GetString("preset")}{i}");
         }
         return tmp;
@@ -946,6 +947,17 @@ public class CustomOptionHolder
     public static CustomOption JumboMaxSize;
     public static CustomOption JumboSpeedUpSize;
     public static CustomOption JumboWalkSoundSize;
+
+    public static CustomRoleOption WorshiperOption;
+    public static CustomOption WorshiperPlayerCount;
+    public static CustomOption WorshiperIsCheckImpostor;
+    public static CustomOption WorshiperCommonTask;
+    public static CustomOption WorshiperShortTask;
+    public static CustomOption WorshiperLongTask;
+    public static CustomOption WorshiperCheckImpostorTask;
+    public static CustomOption WorshiperIsUseVent;
+    public static CustomOption WorshiperIsImpostorLight;
+
     //CustomOption
 
     public static CustomOption GMOption;
@@ -1022,7 +1034,7 @@ public class CustomOptionHolder
 
         IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
-        IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true, isHidden:true);
+        IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true, isHidden: true);
         IsOldMode.selection = 0;
 
         if (ConfigRoles.DebugMode.Value)
@@ -1908,12 +1920,23 @@ public class CustomOptionHolder
         LoversBreakerCoolTime = Create(1135, false, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, LoversBreakerOption, format: "unitSeconds");
         LoversBreakerIsDeathWin = Create(1141, false, CustomOptionType.Neutral, "LoversBreakerIsDeathWin", true, LoversBreakerOption);
 
-        JumboOption = SetupCustomRoleOption(1137, false, RoleId.Jumbo, type:CustomOptionType.Neutral);
+        JumboOption = SetupCustomRoleOption(1137, false, RoleId.Jumbo, type: CustomOptionType.Neutral);
         JumboPlayerCount = Create(1138, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JumboOption);
         JumboCrewmateChance = Create(1139, false, CustomOptionType.Neutral, "JumboCrewmateChance", rates, JumboOption);
         JumboMaxSize = Create(1140, false, CustomOptionType.Neutral, "JumboMaxSize", 24f, 1f, 48f, 1f, JumboOption);
         JumboSpeedUpSize = Create(1141, false, CustomOptionType.Neutral, "JumboSpeedUpSize", 300f, 10f, 600f, 10f, JumboOption);
         JumboWalkSoundSize = Create(1142, false, CustomOptionType.Neutral, "JumboWalkSoundSize", rates, JumboOption);
+
+        WorshiperOption = SetupCustomRoleOption(1143, true, RoleId.Worshiper);
+        WorshiperPlayerCount = Create(1144, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WorshiperOption);
+        WorshiperIsUseVent = Create(1145, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, WorshiperOption);
+        WorshiperIsImpostorLight = Create(1146, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, WorshiperOption);
+        WorshiperIsCheckImpostor = Create(1147, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, WorshiperOption);
+        var Worshiperoption = SelectTask.TaskSetting(1148, 1149, 1150, WorshiperIsCheckImpostor, CustomOptionType.Crewmate, true);
+        WorshiperCommonTask = Worshiperoption.Item1;
+        WorshiperShortTask = Worshiperoption.Item2;
+        WorshiperLongTask = Worshiperoption.Item3;
+        WorshiperCheckImpostorTask = Create(1151, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, WorshiperIsCheckImpostor);
         //表示設定
 
         QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

@@ -1162,6 +1162,10 @@ JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボにな
 JumboMaxSize,Maximum size,最大サイズ
 JumboSpeedUpSize,Growth speed,成長スピード
 JumboWalkSoundSize,Loudness of footsteps,足音の大きさ
+WorshiperName,Worshiper,崇拝者
+WorshiperTitle1,If I can help them，I will spare my life.,あなた方の力になれるのなら 私の命など惜しくはない。
+WorshiperTitle2,,嗚呼、ご主人。私の命は貴方の為に・・・ 
+WorshiperDescription,,2つの自決する能力を持つ役職です。\n1つ目の能力、SHR時はシェイプシフト、SNR時は[自決]能力を使用する事で、その場で自殺します。\n2つ目の能力、キルボタンを使用する事でシェリフ誤爆のような形で自殺します。\n嗚呼、ご主人。私の意思は貴方の物であり、私の命は貴方の為にあるのです・・・ さあ、ご主人願望をかなえましょうぞ。
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示
