@@ -4,6 +4,9 @@ using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 using static SuperNewRoles.Roles.RoleClass;
 using SuperNewRoles.Patches;
+using System;
+using Hazel;
+using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles.Impostor.MadRole;
 
@@ -14,6 +17,7 @@ public static class Worshiper
     // CustomOptionHolder
     public static CustomRoleOption WorshiperOption;
     public static CustomOption WorshiperPlayerCount;
+    public static CustomOption WorshiperSuicideCoolTime;
     public static CustomOption WorshiperIsCheckImpostor;
     public static CustomOption WorshiperCommonTask;
     public static CustomOption WorshiperShortTask;
@@ -26,26 +30,30 @@ public static class Worshiper
     {
         WorshiperOption = new(optionId, false, CustomOptionType.Crewmate, "WorshiperName", color, 1);
         WorshiperPlayerCount = CustomOption.Create(optionId + 1, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WorshiperOption);
-        WorshiperIsUseVent = CustomOption.Create(optionId + 2, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, WorshiperOption);
-        WorshiperIsImpostorLight = CustomOption.Create(optionId + 3, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, WorshiperOption);
-        WorshiperIsCheckImpostor = CustomOption.Create(optionId + 4, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, WorshiperOption);
-        var Worshiperoption = SelectTask.TaskSetting(optionId + 5, optionId + 6, optionId + 7, WorshiperIsCheckImpostor, CustomOptionType.Crewmate, true);
+        WorshiperSuicideCoolTime = CustomOption.Create(optionId + 2, true, CustomOptionType.Crewmate, "WorshiperSuicideCooldownSetting", 30f, 2.5f, 60f, 2.5f, WorshiperOption, format: "unitSeconds");
+        WorshiperIsUseVent = CustomOption.Create(optionId + 3, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, WorshiperOption);
+        WorshiperIsImpostorLight = CustomOption.Create(optionId + 4, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, WorshiperOption);
+        WorshiperIsCheckImpostor = CustomOption.Create(optionId + 5, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, WorshiperOption);
+        var Worshiperoption = SelectTask.TaskSetting(optionId + 6, optionId + 7, optionId + 8, WorshiperIsCheckImpostor, CustomOptionType.Crewmate, true);
         WorshiperCommonTask = Worshiperoption.Item1;
         WorshiperShortTask = Worshiperoption.Item2;
         WorshiperLongTask = Worshiperoption.Item3;
-        WorshiperCheckImpostorTask = CustomOption.Create(optionId + 8, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, WorshiperIsCheckImpostor);
+        WorshiperCheckImpostorTask = CustomOption.Create(optionId + 9, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, WorshiperIsCheckImpostor);
     }
 
     // RoleClass
     public static List<PlayerControl> WorshiperPlayer;
     public static Color32 color = ImpostorRed;
-
     public static List<byte> CheckedImpostor;
     public static bool IsImpostorCheck;
     public static int ImpostorCheckTask;
+    private static float coolTime;
+    private static DateTime buttonTimer;
     public static void ClearAndReload()
     {
         WorshiperPlayer = new();
+
+        coolTime = WorshiperSuicideCoolTime.GetFloat();
 
         IsImpostorCheck = WorshiperIsCheckImpostor.GetBool();
         int Common = WorshiperCommonTask.GetInt();
@@ -60,5 +68,14 @@ public static class Worshiper
         }
         ImpostorCheckTask = (int)(AllTask * (int.Parse(WorshiperCheckImpostorTask.GetString().Replace("%", "")) / 100f));
         CheckedImpostor = new();
+    }
+
+    public static void EndMeeting()
+    {
+        HudManagerStartPatch.WorshiperSuicideButton.MaxTimer = coolTime;
+        HudManagerStartPatch.WorshiperSuicideButton.Timer = coolTime;
+        HudManagerStartPatch.WorshiperSuicideKillButton.MaxTimer = coolTime;
+        HudManagerStartPatch.WorshiperSuicideKillButton.Timer = coolTime;
+        buttonTimer = DateTime.Now;
     }
 }

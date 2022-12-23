@@ -93,8 +93,8 @@ static class HudManagerStartPatch
     public static CustomButton DependentsKillButton;
     public static CustomButton LoversBreakerButton;
     public static CustomButton JumboKillButton;
-    public static CustomButton WorshiperKillButton;
     public static CustomButton WorshiperSuicideButton;
+    public static CustomButton WorshiperSuicideKillButton;
 
     #endregion
 
@@ -3133,7 +3133,7 @@ static class HudManagerStartPatch
             {
                 return true;
             },
-            () => { },
+            () => { Roles.Impostor.MadRole.Worshiper.EndMeeting(); },
             RoleClass.SuicideWisher.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
             __instance,
@@ -3146,6 +3146,33 @@ static class HudManagerStartPatch
             buttonText = ModTranslation.GetString("WorshiperSuicide"),
             showButtonText = true
         };
+
+        WorshiperSuicideKillButton = new(
+            () =>
+            {
+                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Worshiper && ModeHandler.IsMode(ModeId.Default); },
+            () =>
+            {
+                var Target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.ImpostorRed);
+                return PlayerControl.LocalPlayer.CanMove && Target;
+            },
+            () => { Roles.Impostor.MadRole.Worshiper.EndMeeting(); },
+            __instance.KillButton.graphic.sprite,
+            new Vector3(0f, 1f, 0f),
+            __instance,
+            __instance.KillButton,
+            KeyCode.Q,
+            8,
+            () => { return false; }
+        );
+        {
+            WorshiperSuicideKillButton.buttonText = ModTranslation.GetString("WorshiperSuicide");
+            WorshiperSuicideKillButton.showButtonText = true;
+        }
 
         SetCustomButtonCooldowns();
     }
