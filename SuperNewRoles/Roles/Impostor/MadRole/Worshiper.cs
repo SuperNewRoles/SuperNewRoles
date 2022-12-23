@@ -28,7 +28,7 @@ public static class Worshiper
 
     public static void SetupCustomOptions()
     {
-        WorshiperOption = new(optionId, false, CustomOptionType.Crewmate, "WorshiperName", color, 1);
+        WorshiperOption = new(optionId, true, CustomOptionType.Crewmate, "WorshiperName", color, 1);
         WorshiperPlayerCount = CustomOption.Create(optionId + 1, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WorshiperOption);
         WorshiperSuicideCoolTime = CustomOption.Create(optionId + 2, true, CustomOptionType.Crewmate, "WorshiperSuicideCooldownSetting", 30f, 2.5f, 60f, 2.5f, WorshiperOption, format: "unitSeconds");
         WorshiperIsUseVent = CustomOption.Create(optionId + 3, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, WorshiperOption);
@@ -45,6 +45,7 @@ public static class Worshiper
     public static List<PlayerControl> WorshiperPlayer;
     public static Color32 color = ImpostorRed;
     public static List<byte> CheckedImpostor;
+    public static bool IsUseVent;
     public static bool IsImpostorCheck;
     public static int ImpostorCheckTask;
     private static float coolTime;
@@ -55,6 +56,7 @@ public static class Worshiper
 
         coolTime = WorshiperSuicideCoolTime.GetFloat();
 
+        IsUseVent = WorshiperIsUseVent.GetBool();
         IsImpostorCheck = WorshiperIsCheckImpostor.GetBool();
         int Common = WorshiperCommonTask.GetInt();
         int Long = WorshiperLongTask.GetInt();

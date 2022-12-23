@@ -1332,7 +1332,7 @@ public static class RoleHelpers
             RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalUseVent.GetBool(),
             RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerVent.GetBool(),
             RoleId.Dependents => CustomOptionHolder.VampireDependentsCanVent.GetBool(),
-            RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.WorshiperIsUseVent.GetBool(),
+            RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsUseVent,
             _ => player.IsImpostor(),
         };
     }
