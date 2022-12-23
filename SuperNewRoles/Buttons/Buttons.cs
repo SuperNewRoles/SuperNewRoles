@@ -93,6 +93,7 @@ static class HudManagerStartPatch
     public static CustomButton VampireCreateDependentsButton;
     public static CustomButton DependentsKillButton;
     public static CustomButton LoversBreakerButton;
+    public static CustomButton JumboKillButton;
     #endregion
 
     #region Texts
@@ -144,6 +145,35 @@ static class HudManagerStartPatch
             Timer = 0f,
             MaxTimer = 0f,
             buttonText = ModTranslation.GetString("DebuggerButtonName"),
+        };
+
+        JumboKillButton = new(
+            () =>
+            {
+                float killTimer = PlayerControl.LocalPlayer.killTimer;
+                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, SetTarget(Crewmateonly:true));
+                RoleClass.Jumbo.Killed = true;
+                PlayerControl.LocalPlayer.killTimer = killTimer;
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jumbo && PlayerControl.LocalPlayer.IsImpostor() && !RoleClass.Jumbo.Killed && RoleClass.Jumbo.JumboSize.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && RoleClass.Jumbo.JumboSize[PlayerControl.LocalPlayer.PlayerId] >= (CustomOptionHolder.JumboMaxSize.GetFloat() / 10); },
+            () =>
+            {
+                return SetTarget(Crewmateonly:true) && PlayerControl.LocalPlayer.CanMove;
+            },
+            () => {
+                JumboKillButton.MaxTimer = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
+                JumboKillButton.Timer = JumboKillButton.MaxTimer;
+            },
+            __instance.KillButton.graphic.sprite,
+            new Vector3(-2f, 1, 0),
+            __instance,
+            __instance.KillButton,
+            KeyCode.F,
+            49,
+            () => false
+        )
+        {
+            buttonText = ModTranslation.GetString("FinalStatusKill"),
             showButtonText = true
         };
 
@@ -154,14 +184,16 @@ static class HudManagerStartPatch
                 if (Target.IsLovers() || Target.IsRole(RoleId.truelover, RoleId.Cupid))
                 {
                     PlayerControl.LocalPlayer.RpcMurderPlayer(Target);
-                    if (Target.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(Target.PlayerId)) return;
+                    LoversBreakerButton.MaxTimer = CustomOptionHolder.LoversBreakerCoolTime.GetFloat();
+                    LoversBreakerButton.Timer = LoversBreakerButton.MaxTimer;
+                    if (Target.IsRole(RoleId.Cupid) && !Target.IsLovers()) return;
                     RoleClass.LoversBreaker.BreakCount--;
                     if (RoleClass.LoversBreaker.BreakCount <= 0)
                     {
                         bool IsAliveLovers = false;
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
-                            if (p.IsLovers() && p.IsAlive())
+                            if (p.IsAlive() && (p.IsLovers() || p.IsRole(RoleId.truelover) || (p.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(p.PlayerId))))
                             {
                                 IsAliveLovers = true;
                                 break;
@@ -202,7 +234,9 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.LoversBreaker; },
             () =>
             {
-                return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                PlayerControl Target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.LoversBreaker.color);
+                return Target && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {

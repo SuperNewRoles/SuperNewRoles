@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -56,6 +57,7 @@ class LateUpdate
 {
     public static void Postfix()
     {
+        LoversBreaker.LateUpdate();
         LateTask.Update(Time.deltaTime);
     }
 }

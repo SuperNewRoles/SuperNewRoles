@@ -2987,10 +2987,20 @@ public static class RoleClass
         public static List<PlayerControl> JumboPlayer;
         public static Color32 color = ImpostorRed;
         public static Dictionary<byte, float> JumboSize;
+        //イビルジャンボ
+        public static bool Killed;
+        public static bool CanKillSeted;
+
+        public static Dictionary<byte, Vector2> OldPos;
+        public static Dictionary<byte, float> PlaySound;
         public static void ClearAndReload()
         {
             JumboPlayer = new();
             JumboSize = new();
+            Killed = false;
+            CanKillSeted = false;
+            OldPos = new();
+            PlaySound = new();
         }
     }
     //新ロールクラス

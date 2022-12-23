@@ -71,7 +71,7 @@ public class MapOption
                 ValidationPolus = false;
                 ValidationAirship = false;
             }
-            RandomSpawn = (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship && ModeHandler.IsMode(ModeId.Default) && RandomSpawnOption.GetBool();
+            RandomSpawn = (MapNames)GameOptionsManager.Instance.currentGameOptions.MapId == MapNames.Airship && ModeHandler.IsMode(ModeId.Default) && RandomSpawnOption.GetBool();
             WireTaskIsRandom = WireTaskIsRandomOption.GetBool();
             WireTaskNum = WireTaskNumOption.GetInt();
             UseDeadBodyReport = !NotUseReportDeadBody.GetBool();

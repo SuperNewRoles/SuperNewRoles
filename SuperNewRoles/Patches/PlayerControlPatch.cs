@@ -1001,6 +1001,18 @@ public static class MurderPlayerPatch
                     HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
                 }
             }
+            if (target.IsRole(RoleId.Jumbo))
+            {
+                DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == target.PlayerId)
+                    {
+                        if (!RoleClass.Jumbo.JumboSize.ContainsKey(target.PlayerId)) RoleClass.Jumbo.JumboSize.Add(target.PlayerId, 0f);
+                        array[i].transform.localScale = Vector3.one * (RoleClass.Jumbo.JumboSize[target.PlayerId] + 1f);
+                    }
+                }
+            }
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.Death);
             if (target.IsRole(RoleId.Assassin))
             {
