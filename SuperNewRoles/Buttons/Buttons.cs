@@ -3153,7 +3153,7 @@ static class HudManagerStartPatch
                 PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
                 PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
             },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Worshiper && ModeHandler.IsMode(ModeId.Default); },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Worshiper; },
             () =>
             {
                 var Target = SetTarget();
