@@ -120,6 +120,7 @@ static class HudManagerStartPatch
 
     public static void Postfix(HudManager __instance)
     {
+        Roles.Attribute.Debugger.canSeeRole = false;
         DebuggerButton = new(
             () =>
             {
@@ -138,7 +139,7 @@ static class HudManagerStartPatch
             __instance,
             __instance.AbilityButton,
             null,
-            49,         //** ここコントローラだと問題起きるけどデバッグ用だしいいよね **//
+            0,
             () => { return false; }
         )
         {
