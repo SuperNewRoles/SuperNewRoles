@@ -205,8 +205,8 @@ public static class SyncSetting
                         if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
                     }
                 }
-                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.CoolTime));
-                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, SuperNewRoles.Roles.Impostor.MadRole.Worshiper.CoolTime);
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.KillSuicideCoolTime));
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, SuperNewRoles.Roles.Impostor.MadRole.Worshiper.AbilitySuicideCoolTime);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
         }
