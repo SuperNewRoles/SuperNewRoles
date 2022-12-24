@@ -217,6 +217,10 @@ class RpcShapeshiftPatch
                         SyncSetting.CustomSyncSettings(__instance);
                     }
                     return true;
+                case RoleId.Worshiper:
+                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+                    return true;
             }
         }
         return true;
