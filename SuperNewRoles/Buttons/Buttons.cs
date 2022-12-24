@@ -3124,11 +3124,30 @@ static class HudManagerStartPatch
         WorshiperSuicideButton = new(
             () =>
             {
-                //自殺
-                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                {
+                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                    foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+                    {
+                        p.Data.Role.NameColor = Color.white;
+
+                        CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+
+                        if (p.PlayerControl.IsImpostor())
+                        {
+                            p.Data.Role.NameColor = RoleClass.ImpostorRed;
+                        }
+                    }
+                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                }
+                else
+                {
+                    //自殺
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+                }
             },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Worshiper && ModeHandler.IsMode(ModeId.Default); },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Worshiper; },
             () =>
             {
                 return true;
