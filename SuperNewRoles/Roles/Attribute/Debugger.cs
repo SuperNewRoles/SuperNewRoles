@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Hazel;
+using AmongUs.GameOptions;
 using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles.Attribute;
@@ -325,16 +326,20 @@ public static class Debugger
                 || (roleInfo.Team == TeamRoleType.Impostor && currentTab != DebugTabs.SetRole_Impostor)
                 || (roleInfo.Team == TeamRoleType.Neutral && currentTab != DebugTabs.SetRole_Neutral) ) continue;
 
-            int num = index % 3;
-            int num2 = index / 3;
+            int num = index % 8;        //横方向のリミット
+            int num2 = index / 8;       //縦方向のリミット
 
             ShapeshifterPanel panel = GameObject.Instantiate(minigame.PanelPrefab, minigame.transform);
-            panel.transform.localScale *= 0.5f;
-            panel.transform.localPosition = new Vector3(minigame.XStart - 1.5f + (float)num * minigame.XOffset, minigame.YStart + (float)num2 * minigame.YOffset, -1f);
+            panel.transform.localScale *= 0.3f;
+            panel.transform.localPosition = new Vector3(minigame.XStart-0.7f+(float)num*1f, minigame.YStart+(float)num2*-0.3f, -1f);
             panel.SetPlayer(index, CachedPlayer.LocalPlayer.Data, (Action)(() =>
             {
                 if (MeetingHud.Instance != null) MeetingHud.Instance.transform.FindChild("ButtonStuff").gameObject.SetActive(true);
+                if (roleInfo.Team == TeamRoleType.Impostor) DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
+                else DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+
                 target.SetRoleRPC(roleInfo.RoleId);
+                Minigame.Instance.Close();
             }));
             panel.PlayerIcon.gameObject.SetActive(false);
             panel.LevelNumberText.transform.parent.gameObject.SetActive(false);
