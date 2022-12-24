@@ -1162,6 +1162,22 @@ JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボにな
 JumboMaxSize,Maximum size,最大サイズ
 JumboSpeedUpSize,Growth speed,成長スピード
 JumboWalkSoundSize,Loudness of footsteps,足音の大きさ
+DebuggerName,Debugger,デバッガー
+DebuggerButtonName,Debug,デバッグ
+Functions,Functions,基本操作
+PlayerControl,Player control,プレイヤー操作
+StartMeeting,Start meeting,緊急会議
+ShowRole,Show role,役職を表示
+DeShowRole,Cancel show role,役職を非表示
+Teleport,Teleport,テレポート
+ReportDeadbody,Report deadbody,通報
+Exile,Exile,追放
+Kill,Kill,キル
+Revive,Revive,蘇生
+CleanDeadbody,Clean deadbody,死体掃除
+SetRole,Set role,役職付与
+Crewmate,Crewmate,クルーメイト
+Impostor,Impostor,インポスター
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示
