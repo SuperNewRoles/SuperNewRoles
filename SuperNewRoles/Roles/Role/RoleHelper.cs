@@ -1418,7 +1418,7 @@ public static class RoleHelpers
                 RoleId.Pavlovsdogs => CustomOptionHolder.PavlovsdogIsImpostorView.GetBool(),
                 RoleId.Photographer => CustomOptionHolder.PhotographerIsImpostorVision.GetBool(),
                 RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalIsImpostorLight.GetBool(),
-                RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.WorshiperIsImpostorLight.GetBool(),
+                RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsImpostorLight,
                 _ => false,
             };
     }

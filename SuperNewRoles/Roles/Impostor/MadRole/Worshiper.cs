@@ -46,17 +46,19 @@ public static class Worshiper
     public static Color32 color = ImpostorRed;
     public static List<byte> CheckedImpostor;
     public static bool IsUseVent;
+    public static bool IsImpostorLight;
     public static bool IsImpostorCheck;
     public static int ImpostorCheckTask;
-    private static float coolTime;
+    public static float CoolTime;
     private static DateTime buttonTimer;
     public static void ClearAndReload()
     {
         WorshiperPlayer = new();
 
-        coolTime = WorshiperSuicideCoolTime.GetFloat();
+        CoolTime = WorshiperSuicideCoolTime.GetFloat();
 
-        IsUseVent = WorshiperIsUseVent.GetBool();
+        IsUseVent = WorshiperIsImpostorLight.GetBool();
+        IsImpostorLight = WorshiperIsUseVent.GetBool();
         IsImpostorCheck = WorshiperIsCheckImpostor.GetBool();
         int Common = WorshiperCommonTask.GetInt();
         int Long = WorshiperLongTask.GetInt();
@@ -74,10 +76,10 @@ public static class Worshiper
 
     public static void EndMeeting()
     {
-        HudManagerStartPatch.WorshiperSuicideButton.MaxTimer = coolTime;
-        HudManagerStartPatch.WorshiperSuicideButton.Timer = coolTime;
-        HudManagerStartPatch.WorshiperSuicideKillButton.MaxTimer = coolTime;
-        HudManagerStartPatch.WorshiperSuicideKillButton.Timer = coolTime;
+        HudManagerStartPatch.WorshiperSuicideButton.MaxTimer = CoolTime;
+        HudManagerStartPatch.WorshiperSuicideButton.Timer = CoolTime;
+        HudManagerStartPatch.WorshiperSuicideKillButton.MaxTimer = CoolTime;
+        HudManagerStartPatch.WorshiperSuicideKillButton.Timer = CoolTime;
         buttonTimer = DateTime.Now;
     }
 }
