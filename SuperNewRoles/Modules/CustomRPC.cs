@@ -264,6 +264,7 @@ public enum CustomRPC
     SyncDeathMeeting,
     SetDeviceUseStatus,
     SetLoversBreakerWinner,
+    RPCTeleport,
 }
 
 public static class RPCProcedure
@@ -1265,6 +1266,13 @@ public static class RPCProcedure
         }
     }
 
+    public static void RPCTeleport(byte sourceId, byte targetId)
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourceId);
+        PlayerControl target = ModHelpers.PlayerById(targetId);
+        source.transform.localPosition = target.transform.localPosition;
+    }
+
     public static void RandomSpawn(byte playerId, byte locId)
     {
         HudManager.Instance.StartCoroutine(Effects.Lerp(3f, new Action<float>((p) =>
@@ -1617,6 +1625,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetLoversBreakerWinner:
                         SetLoversBreakerWinner(reader.ReadByte());
+                        break;
+                    case CustomRPC.RPCTeleport:
+                        RPCTeleport(reader.ReadByte(), reader.ReadByte());
                         break;
                 }
             }
