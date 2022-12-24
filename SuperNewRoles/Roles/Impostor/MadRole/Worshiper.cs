@@ -7,6 +7,7 @@ using SuperNewRoles.Patches;
 using System;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles.Impostor.MadRole;
 
@@ -33,12 +34,12 @@ public static class Worshiper
         WorshiperSuicideCoolTime = CustomOption.Create(optionId + 2, true, CustomOptionType.Crewmate, "WorshiperSuicideCooldownSetting", 30f, 2.5f, 60f, 2.5f, WorshiperOption, format: "unitSeconds");
         WorshiperIsUseVent = CustomOption.Create(optionId + 3, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, WorshiperOption);
         WorshiperIsImpostorLight = CustomOption.Create(optionId + 4, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, WorshiperOption);
-        WorshiperIsCheckImpostor = CustomOption.Create(optionId + 5, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, WorshiperOption);
+        WorshiperIsCheckImpostor = CustomOption.Create(optionId + 5, false, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, WorshiperOption);
         var Worshiperoption = SelectTask.TaskSetting(optionId + 6, optionId + 7, optionId + 8, WorshiperIsCheckImpostor, CustomOptionType.Crewmate, true);
         WorshiperCommonTask = Worshiperoption.Item1;
         WorshiperShortTask = Worshiperoption.Item2;
         WorshiperLongTask = Worshiperoption.Item3;
-        WorshiperCheckImpostorTask = CustomOption.Create(optionId + 9, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, WorshiperIsCheckImpostor);
+        WorshiperCheckImpostorTask = CustomOption.Create(optionId + 9, false, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, WorshiperIsCheckImpostor);
     }
 
     // RoleClass
@@ -59,7 +60,7 @@ public static class Worshiper
 
         IsUseVent = WorshiperIsImpostorLight.GetBool();
         IsImpostorLight = WorshiperIsUseVent.GetBool();
-        IsImpostorCheck = WorshiperIsCheckImpostor.GetBool();
+        IsImpostorCheck = WorshiperIsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles);
         int Common = WorshiperCommonTask.GetInt();
         int Long = WorshiperLongTask.GetInt();
         int Short = WorshiperShortTask.GetInt();
