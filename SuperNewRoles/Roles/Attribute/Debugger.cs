@@ -70,16 +70,6 @@ public static class Debugger
         }, TabType.Role);
 
     //** ファンクション **//
-    // 会議起こし
-    public static DebugPanel StartMeeting = new("StartMeeting", DebugTabs.FunctionsTab, false,
-        () => {
-            var source = CachedPlayer.LocalPlayer;
-            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedMeeting);
-            writer.Write(source.PlayerId);
-            writer.EndRPC();
-            RPCProcedure.UncheckedMeeting(source.PlayerId);
-        });
-
     // 役職全表示
     public static DebugPanel ShowEveryoneRole = new("ShowRole", DebugTabs.FunctionsTab, false,
         () => {
@@ -171,6 +161,16 @@ public static class Debugger
             writer.EndRPC();
             RPCProcedure.CleanBody(target.PlayerId);
             Minigame.Instance.Close();
+        });
+
+    // 会議起こし
+    public static DebugPanel StartMeeting = new("StartMeeting", DebugTabs.PlayerControlTab, false,
+        () => {
+            var source = target;
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedMeeting);
+            writer.Write(source.PlayerId);
+            writer.EndRPC();
+            RPCProcedure.UncheckedMeeting(source.PlayerId);
         });
 
     // 役職付与
