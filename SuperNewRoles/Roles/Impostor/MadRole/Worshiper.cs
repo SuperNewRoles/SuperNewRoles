@@ -32,7 +32,7 @@ public static class Worshiper
     {
         WorshiperOption = new(optionId, true, CustomOptionType.Crewmate, "WorshiperName", color, 1);
         WorshiperPlayerCount = CustomOption.Create(optionId + 1, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WorshiperOption);
-        WorshiperAbilitySuicideCoolTime = CustomOption.Create(optionId + 2, true, CustomOptionType.Crewmate, "WorshiperAbilitySuicideCoolTime", 30f, 0f, 60f, 2.5f, WorshiperOption, format: "unitSeconds");
+        WorshiperAbilitySuicideCoolTime = CustomOption.Create(optionId + 2, false, CustomOptionType.Crewmate, "WorshiperAbilitySuicideCoolTime", 30f, 0f, 60f, 2.5f, WorshiperOption, format: "unitSeconds");
         WorshiperKillSuicideCoolTime = CustomOption.Create(optionId + 3, true, CustomOptionType.Crewmate, "WorshiperKillSuicideCoolTime", 30f, 2.5f, 60f, 2.5f, WorshiperOption, format: "unitSeconds");
         WorshiperIsUseVent = CustomOption.Create(optionId + 4, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, WorshiperOption);
         WorshiperIsImpostorLight = CustomOption.Create(optionId + 5, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, WorshiperOption);
