@@ -3152,7 +3152,7 @@ static class HudManagerStartPatch
             {
                 return true;
             },
-            () => { Roles.Impostor.MadRole.Worshiper.EndMeeting(); },
+            () => { Roles.Impostor.MadRole.Worshiper.ResetSuicideButton(); },
             RoleClass.SuicideWisher.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
             __instance,
@@ -3179,7 +3179,7 @@ static class HudManagerStartPatch
                 PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.ImpostorRed);
                 return PlayerControl.LocalPlayer.CanMove && Target;
             },
-            () => { Roles.Impostor.MadRole.Worshiper.EndMeeting(); },
+            () => { Roles.Impostor.MadRole.Worshiper.ResetSuicideKillButton(); },
             __instance.KillButton.graphic.sprite,
             new Vector3(0f, 1f, 0f),
             __instance,

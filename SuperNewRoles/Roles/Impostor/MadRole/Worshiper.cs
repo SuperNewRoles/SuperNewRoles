@@ -54,7 +54,9 @@ public static class Worshiper
     public static int ImpostorCheckTask;
     public static float AbilitySuicideCoolTime;
     public static float KillSuicideCoolTime;
-    private static DateTime buttonTimer;
+    private static DateTime suicideButtonTimer;
+    private static DateTime suicideKillButtonTimer;
+    private static bool isfirstResetCool;// カスタムボタンの初手クールを10sにするメソッドができれば不要
     public static void ClearAndReload()
     {
         WorshiperPlayer = new();
@@ -77,14 +79,32 @@ public static class Worshiper
         }
         ImpostorCheckTask = (int)(AllTask * (int.Parse(WorshiperCheckImpostorTask.GetString().Replace("%", "")) / 100f));
         CheckedImpostor = new();
+
+        isfirstResetCool = true;
     }
 
-    public static void EndMeeting()
+    public static void ResetSuicideKillButton()
     {
+        /*
+            [isfirstResetCool(初回クールリセットか?)]がtrueの場合、クールを10sにしている。
+            SHR時非導入者クール(10s)と導入者のクール(カスタムクール)が異なる事を、SNR時共通処理として修正している。
+            初手カスタムボタンクールを10sにするメソッドがあれば不要な処理。
+        */
+        HudManagerStartPatch.WorshiperSuicideKillButton.MaxTimer = !isfirstResetCool ? KillSuicideCoolTime : 10f;
+        HudManagerStartPatch.WorshiperSuicideKillButton.Timer = !isfirstResetCool ? KillSuicideCoolTime : 10f;
+        suicideKillButtonTimer = DateTime.Now;
+        Logger.Info($"「初回クールリセットか?」が{isfirstResetCool}の為、クールを[{HudManagerStartPatch.WorshiperSuicideKillButton.MaxTimer}s]に設定しました。", "Worshiper");
+        isfirstResetCool = false;
+    }
+
+    public static void ResetSuicideButton()
+    {
+        /*
+            初手&会議終了後のクールが非導入者の場合0sになってしまう為、
+            SHR時はアビリティ自決のクールを0s固定にして、導入者と非導入者の差異を無くした。
+        */
         HudManagerStartPatch.WorshiperSuicideButton.MaxTimer = !ModeHandler.IsMode(ModeId.SuperHostRoles) ? AbilitySuicideCoolTime : 0;
         HudManagerStartPatch.WorshiperSuicideButton.Timer = !ModeHandler.IsMode(ModeId.SuperHostRoles) ? AbilitySuicideCoolTime : 0;
-        HudManagerStartPatch.WorshiperSuicideKillButton.MaxTimer = KillSuicideCoolTime;
-        HudManagerStartPatch.WorshiperSuicideKillButton.Timer = KillSuicideCoolTime;
-        buttonTimer = DateTime.Now;
+        suicideButtonTimer = DateTime.Now;
     }
 }
