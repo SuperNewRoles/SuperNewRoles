@@ -127,7 +127,7 @@ public static class Worshiper
             () =>
             {
                 var Target = PlayerControlFixedUpdatePatch.SetTarget();
-                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.ImpostorRed);
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, color);
                 return PlayerControl.LocalPlayer.CanMove && Target;
             },
             () => { ResetSuicideKillButton(); },
