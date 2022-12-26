@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles.Neutral;
 
 public class Safecracker
 {
-    private const int OptionId = 1112;// 設定のId
+    private const int OptionId = 1143;// 設定のId
     public static CustomRoleOption SafecrackerOption;
     public static CustomOption SafecrackerPlayerCount;
     public static CustomOption SafecrackerKillGuardTask;

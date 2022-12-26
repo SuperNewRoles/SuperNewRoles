@@ -44,6 +44,7 @@ public enum CustomGameOverReason
     PavlovsTeamWin,
     TaskerWin,
     LoversBreakerWin,
+    NoWinner,
     BugEnd,
     SafecrackerWin
 }
@@ -75,6 +76,7 @@ enum WinCondition
     PavlovsTeamWin,
     TaskerWin,
     LoversBreakerWin,
+    NoWinner,
     BugEnd,
     SafecrackerWin
 }
@@ -235,6 +237,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.StefinderWin,("StefinderName",RoleClass.Stefinder.color)},
                 {WinCondition.PavlovsTeamWin,("PavlovsTeamWinText",RoleClass.Pavlovsdogs.color)},
                 {WinCondition.LoversBreakerWin,("LoversBreakerName",RoleClass.LoversBreaker.color)},
+                {WinCondition.NoWinner,("NoWinner",Color.white)},
                 {WinCondition.SafecrackerWin,("SafecrackerName",Safecracker.color)}
             };
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
@@ -272,9 +275,14 @@ public class EndGameManagerSetUpPatch
             __instance.WinText.text = ModTranslation.GetString("HaisonName");
             __instance.WinText.color = HaisonColor;
         }
+        else if (AdditionalTempData.winCondition == WinCondition.NoWinner)
+        {
+            __instance.WinText.text = ModTranslation.GetString("NoWinner");
+            __instance.WinText.color = Color.white;
+        }
 
 
-        textRenderer.color = AdditionalTempData.winCondition == WinCondition.HAISON ? Color.clear : RoleColor;
+        textRenderer.color = AdditionalTempData.winCondition is WinCondition.HAISON or WinCondition.NoWinner ? Color.clear : RoleColor;
         __instance.BackgroundBar.material.SetColor("_Color", RoleColor);
         var haison = false;
         if (text == "HAISON")
@@ -282,7 +290,12 @@ public class EndGameManagerSetUpPatch
             haison = true;
             text = ModTranslation.GetString("HaisonName");
         }
-        else
+        else if (text is "NoWinner")
+        {
+            haison = true;
+            text = ModTranslation.GetString("NoWinner");
+        }
+        else { }
         {
             text = ModTranslation.GetString(text);
         }
@@ -597,6 +610,7 @@ public static class OnGameEndPatch
         bool PhotographerWin = gameOverReason == (GameOverReason)CustomGameOverReason.PhotographerWin;
         bool PavlovsTeamWin = gameOverReason == (GameOverReason)CustomGameOverReason.PavlovsTeamWin;
         bool LoversBreakerWin = gameOverReason == (GameOverReason)CustomGameOverReason.LoversBreakerWin;
+        bool NoWinner = gameOverReason == (GameOverReason)CustomGameOverReason.NoWinner;
         bool CrewmateWin = gameOverReason is (GameOverReason)CustomGameOverReason.CrewmateWin or GameOverReason.HumansByVote or GameOverReason.HumansByTask or GameOverReason.ImpostorDisconnect;
         bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
         bool SafecrackerWin = gameOverReason == (GameOverReason)CustomGameOverReason.SafecrackerWin;
@@ -756,7 +770,18 @@ public static class OnGameEndPatch
         }
         else if (LoversBreakerWin)
         {
-            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
+            if (WinnerPlayer is not null)
+            {
+                (TempData.winners = new()).Add(new(WinnerPlayer.Data));
+            }
+            else
+            {
+                TempData.winners = new();
+                foreach (byte playerId in RoleClass.LoversBreaker.CanEndGamePlayers)
+                {
+                    TempData.winners.Add(new(ModHelpers.PlayerById(playerId).Data));
+                }
+            }
             AdditionalTempData.winCondition = WinCondition.LoversBreakerWin;
         }
         else if (SafecrackerWin)
@@ -1074,6 +1099,10 @@ public static class OnGameEndPatch
                 }
             }
             AdditionalTempData.winCondition = WinCondition.HAISON;
+        } else if (NoWinner)
+        {
+            TempData.winners = new();
+            AdditionalTempData.winCondition = WinCondition.NoWinner;
         }
         foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
         {
@@ -1142,7 +1171,6 @@ public static class CheckGameEndHnSPatch
             if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
             if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
             if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
-            if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
             if (CheckAndEndGameForTaskerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
             if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
@@ -1172,6 +1200,7 @@ public static class CheckGameEndPatch
         }
         else
         {
+            if (CheckAndEndGameForLoversBreakerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
             if (CheckAndEndGameForSabotageWin(__instance)) return false;
             if (CheckAndEndGameForPavlovsWin(__instance, statistics)) return false;
@@ -1183,8 +1212,6 @@ public static class CheckGameEndPatch
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
             if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
             if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
-            if (CheckAndEndGameForLoversBreakerWin(__instance, statistics)) return false;
-            if (CheckAndEndGameForSafecrackerWin(__instance)) return false;
             if (!PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
         }
         return false;
@@ -1227,7 +1254,16 @@ public static class CheckGameEndPatch
 
     public static bool CheckAndEndGameForLoversBreakerWin(ShipStatus __instance, PlayerStatistics statistics)
     {
-        if (RoleClass.LoversBreaker.LoversBreakerPlayer.Count > 0 && statistics.LoversAlive <= 0)
+        if (!CustomOptionHolder.LoversBreakerIsDeathWin.GetBool()) {
+            foreach (byte playerId in RoleClass.LoversBreaker.CanEndGamePlayers.ToArray())
+            {
+                if (ModHelpers.PlayerById(playerId).IsDead())
+                {
+                    RoleClass.LoversBreaker.CanEndGamePlayers.Remove(playerId);
+                }
+            }
+        }
+        if (RoleClass.LoversBreaker.CanEndGamePlayers.Count > 0 && statistics.LoversAlive <= 0)
         {
             __instance.enabled = false;
             CustomEndGame((GameOverReason)CustomGameOverReason.LoversBreakerWin, false);
@@ -1518,7 +1554,7 @@ public static class CheckGameEndPatch
                                 numPavlovsTeamAlive++;
                             }
                         }
-                        if (playerInfo.Object.IsLovers()) numLoversAlive++;
+                        if (playerInfo.Object.IsLovers() || playerInfo.Object.IsRole(RoleId.truelover) || (playerInfo.Object.IsRole(RoleId.Cupid) && !RoleClass.Cupid.CupidLoverPair.ContainsKey(playerInfo.Object.PlayerId))) numLoversAlive++;
                     }
                 }
             }
