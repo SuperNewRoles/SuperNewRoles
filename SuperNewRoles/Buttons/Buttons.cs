@@ -1356,19 +1356,7 @@ static class HudManagerStartPatch
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
                 {
-                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
-                    foreach (CachedPlayer p in CachedPlayer.AllPlayers)
-                    {
-                        p.Data.Role.NameColor = Color.white;
-
-                        CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-
-                        if (p.PlayerControl.IsImpostor())
-                        {
-                            p.Data.Role.NameColor = RoleClass.ImpostorRed;
-                        }
-                    }
-                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                    RoleHelpers.UseShapeshift();
                 }
                 else if (PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff))
                 {
