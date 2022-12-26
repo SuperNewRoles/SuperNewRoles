@@ -254,6 +254,23 @@ public static class RoleHelpers
     public static bool IsJackalTeamSidekick(this PlayerControl player)
         => player.GetRole() is RoleId.Sidekick or RoleId.SidekickSeer;
 
+    public static void UseShapeshift()
+    {
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+        foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+        {
+            p.Data.Role.NameColor = Color.white;
+
+            CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+
+            if (p.PlayerControl.IsImpostor())
+            {
+                p.Data.Role.NameColor = RoleClass.ImpostorRed;
+            }
+        }
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+    }
+
     public static void SetRole(this PlayerControl player, RoleId role)
     {
         if (!Spelunker.CheckSetRole(player, role)) return;

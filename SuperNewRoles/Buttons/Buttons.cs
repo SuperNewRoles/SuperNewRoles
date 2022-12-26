@@ -93,8 +93,6 @@ static class HudManagerStartPatch
     public static CustomButton DependentsKillButton;
     public static CustomButton LoversBreakerButton;
     public static CustomButton JumboKillButton;
-    public static CustomButton WorshiperSuicideButton;
-    public static CustomButton WorshiperSuicideKillButton;
 
     #endregion
 
@@ -3121,77 +3119,7 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
-        WorshiperSuicideButton = new(
-            () =>
-            {
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-                {
-                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
-                    foreach (CachedPlayer p in CachedPlayer.AllPlayers)
-                    {
-                        p.Data.Role.NameColor = Color.white;
-
-                        CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-
-                        if (p.PlayerControl.IsImpostor())
-                        {
-                            p.Data.Role.NameColor = RoleClass.ImpostorRed;
-                        }
-                    }
-                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
-                }
-                else
-                {
-                    //自殺
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                    PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
-                }
-            },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Worshiper; },
-            () =>
-            {
-                return true;
-            },
-            () => { Roles.Impostor.MadRole.Worshiper.ResetSuicideButton(); },
-            RoleClass.SuicideWisher.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; }
-        )
-        {
-            buttonText = ModTranslation.GetString("WorshiperSuicide"),
-            showButtonText = true
-        };
-
-        WorshiperSuicideKillButton = new(
-            () =>
-            {
-                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
-            },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Worshiper; },
-            () =>
-            {
-                var Target = SetTarget();
-                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.ImpostorRed);
-                return PlayerControl.LocalPlayer.CanMove && Target;
-            },
-            () => { Roles.Impostor.MadRole.Worshiper.ResetSuicideKillButton(); },
-            __instance.KillButton.graphic.sprite,
-            new Vector3(0f, 1f, 0f),
-            __instance,
-            __instance.KillButton,
-            KeyCode.Q,
-            8,
-            () => { return false; }
-        );
-        {
-            WorshiperSuicideKillButton.buttonText = ModTranslation.GetString("WorshiperSuicide");
-            WorshiperSuicideKillButton.showButtonText = true;
-        }
+        Roles.Impostor.MadRole.Worshiper.SetupCustomButtons(__instance);
 
         SetCustomButtonCooldowns();
     }

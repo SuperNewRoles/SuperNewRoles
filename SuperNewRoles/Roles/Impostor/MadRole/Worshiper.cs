@@ -83,28 +83,101 @@ public static class Worshiper
         isfirstResetCool = true;
     }
 
-    public static void ResetSuicideKillButton()
+
+    // Button
+    private static CustomButton suicideButton;
+
+    private static CustomButton suicideKillButton;
+
+    public static void SetupCustomButtons(HudManager hm)
+    {
+        suicideButton = new(
+            () =>
+            {
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+                {
+                    RoleHelpers.UseShapeshift();
+                }
+                else
+                {
+                    Suicide();
+                }
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Worshiper; },
+            () =>
+            {
+                return true;
+            },
+            () => { ResetSuicideButton(); },
+            SuicideWisher.GetButtonSprite(),
+            new Vector3(-2f, 1, 0),
+            hm,
+            hm.AbilityButton,
+            KeyCode.F,
+            49,
+            () => { return false; }
+        )
+        {
+            buttonText = ModTranslation.GetString("WorshiperSuicide"),
+            showButtonText = true
+        };
+
+        suicideKillButton = new(
+            () =>
+            {
+                Suicide();
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Worshiper; },
+            () =>
+            {
+                var Target = PlayerControlFixedUpdatePatch.SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.ImpostorRed);
+                return PlayerControl.LocalPlayer.CanMove && Target;
+            },
+            () => { ResetSuicideKillButton(); },
+            hm.KillButton.graphic.sprite,
+            new Vector3(0f, 1f, 0f),
+            hm,
+            hm.KillButton,
+            KeyCode.Q,
+            8,
+            () => { return false; }
+        );
+        {
+            suicideKillButton.buttonText = ModTranslation.GetString("WorshiperSuicide");
+            suicideKillButton.showButtonText = true;
+        }
+    }
+
+    private static void Suicide()
+    {
+        //自殺
+        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+        PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+    }
+
+    private static void ResetSuicideButton()
+    {
+        /*
+            初手&会議終了後のクールが非導入者の場合0sになってしまう為、
+            SHR時はアビリティ自決のクールを0s固定にして、導入者と非導入者の差異を無くした。
+        */
+        suicideButton.MaxTimer = !ModeHandler.IsMode(ModeId.SuperHostRoles) ? AbilitySuicideCoolTime : 0;
+        suicideButton.Timer = !ModeHandler.IsMode(ModeId.SuperHostRoles) ? AbilitySuicideCoolTime : 0;
+        suicideButtonTimer = DateTime.Now;
+    }
+
+    private static void ResetSuicideKillButton()
     {
         /*
             [isfirstResetCool(初回クールリセットか?)]がtrueの場合、クールを10sにしている。
             SHR時非導入者クール(10s)と導入者のクール(カスタムクール)が異なる事を、SNR時共通処理として修正している。
             初手カスタムボタンクールを10sにするメソッドがあれば不要な処理。
         */
-        HudManagerStartPatch.WorshiperSuicideKillButton.MaxTimer = !isfirstResetCool ? KillSuicideCoolTime : 10f;
-        HudManagerStartPatch.WorshiperSuicideKillButton.Timer = !isfirstResetCool ? KillSuicideCoolTime : 10f;
+        suicideKillButton.MaxTimer = !isfirstResetCool ? KillSuicideCoolTime : 10f;
+        suicideKillButton.Timer = !isfirstResetCool ? KillSuicideCoolTime : 10f;
         suicideKillButtonTimer = DateTime.Now;
-        Logger.Info($"「初回クールリセットか?」が{isfirstResetCool}の為、クールを[{HudManagerStartPatch.WorshiperSuicideKillButton.MaxTimer}s]に設定しました。", "Worshiper");
+        Logger.Info($"「初回クールリセットか?」が{isfirstResetCool}の為、クールを[{suicideKillButton.MaxTimer}s]に設定しました。", "Worshiper");
         isfirstResetCool = false;
-    }
-
-    public static void ResetSuicideButton()
-    {
-        /*
-            初手&会議終了後のクールが非導入者の場合0sになってしまう為、
-            SHR時はアビリティ自決のクールを0s固定にして、導入者と非導入者の差異を無くした。
-        */
-        HudManagerStartPatch.WorshiperSuicideButton.MaxTimer = !ModeHandler.IsMode(ModeId.SuperHostRoles) ? AbilitySuicideCoolTime : 0;
-        HudManagerStartPatch.WorshiperSuicideButton.Timer = !ModeHandler.IsMode(ModeId.SuperHostRoles) ? AbilitySuicideCoolTime : 0;
-        suicideButtonTimer = DateTime.Now;
     }
 }
