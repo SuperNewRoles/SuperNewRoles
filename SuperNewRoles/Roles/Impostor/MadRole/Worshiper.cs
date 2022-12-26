@@ -1,14 +1,12 @@
-using System.Collections.Generic;
 using AmongUs.GameOptions;
+using SuperNewRoles.Buttons;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Patches;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 using static SuperNewRoles.Roles.RoleClass;
-using SuperNewRoles.Patches;
-using System;
-using Hazel;
-using SuperNewRoles.Buttons;
-using SuperNewRoles.Mode;
-
 namespace SuperNewRoles.Roles.Impostor.MadRole;
 
 public static class Worshiper
