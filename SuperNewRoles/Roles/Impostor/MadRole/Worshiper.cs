@@ -102,7 +102,7 @@ public static class Worshiper
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Worshiper; },
             () =>
             {
-                return true;
+                return PlayerControl.LocalPlayer.CanMove;
             },
             () => { ResetSuicideButton(); },
             SuicideWisher.GetButtonSprite(),
