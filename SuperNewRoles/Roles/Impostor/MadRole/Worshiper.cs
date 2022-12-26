@@ -45,7 +45,6 @@ public static class Worshiper
     // RoleClass
     public static List<PlayerControl> WorshiperPlayer;
     public static Color32 color = ImpostorRed;
-    public static List<byte> CheckedImpostor;
     public static bool IsUseVent;
     public static bool IsImpostorLight;
     public static bool IsImpostorCheck;
@@ -76,7 +75,6 @@ public static class Worshiper
             Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
         }
         ImpostorCheckTask = (int)(AllTask * (int.Parse(WorshiperCheckImpostorTask.GetString().Replace("%", "")) / 100f));
-        CheckedImpostor = new();
 
         isfirstResetCool = true;
     }
