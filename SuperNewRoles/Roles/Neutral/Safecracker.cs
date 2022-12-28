@@ -31,8 +31,7 @@ public class Safecracker
         get
         {
             List<string> customRates = new() { "NotAbility" };
-            foreach (string text in CustomOptionHolder.rates)
-                customRates.Add(text);
+            customRates.AddRange(CustomOptionHolder.rates);
             return customRates.ToArray();
         }
     }

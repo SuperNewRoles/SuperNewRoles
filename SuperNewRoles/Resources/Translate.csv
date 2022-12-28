@@ -1164,6 +1164,7 @@ JumboSpeedUpSize,Growth speed,成長スピード
 JumboWalkSoundSize,Loudness of footsteps,足音の大きさ
 SafecrackerName,Safecracker,金庫破り
 SafecrackerTitle1,Open the safe， get the ability and win!,金庫を開けて、能力と勝利を手に入れよう
+SafecrackerDescription,By opening the vault， you can acquire various abilities.\nIt grants you a kill guard， an exiled guard， vent， etc.\nOpen the safe to the end and win the game.,金庫を開けることで、様々な能力を取得することが出来ます。\nキルガードや追放ガード、ベントなどが付与されます。\n金庫を最期まで開け、勝利を手に入れましょう。
 NotAbility,None,なし
 SafecrackerKillGuardTaskSetting,Amount of tasks to be able to kill guard (of all tasks),キルガードが出来るようになるタスク量(全タスク内)
 SafecrackerMaxKillGuardCountSetting,Kill guard max count,キルガードできる回数
