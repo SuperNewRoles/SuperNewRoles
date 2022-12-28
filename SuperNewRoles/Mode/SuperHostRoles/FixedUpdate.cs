@@ -389,8 +389,15 @@ public static class FixedUpdate
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
             }
         }
-        else if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal, RoleId.MadMaker, RoleId.Egoist, RoleId.RemoteSheriff,
-            RoleId.Demon, RoleId.Arsonist)
+        else if
+            (PlayerControl.LocalPlayer.IsRole
+                (
+                    RoleId.Jackal,
+                    RoleId.MadMaker,
+                    RoleId.Egoist,
+                    RoleId.Demon,
+                    RoleId.Arsonist
+                )
             )
         {
             FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
