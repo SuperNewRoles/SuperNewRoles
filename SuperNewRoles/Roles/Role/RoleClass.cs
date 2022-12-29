@@ -21,6 +21,8 @@ public static class RoleClass
     public static Color ImpostorRed = Palette.ImpostorRed;
     public static Color CrewmateWhite = Color.white;
     public static Color FoxPurple = Palette.Purple;
+    private static Color32 SheriffYellow = new(250, 191, 20, byte.MaxValue);
+    private static Color32 JackalBlue = new(0, 180, 235, byte.MaxValue);
     public static bool IsStart;
     public static List<byte> BlockPlayers;
 
@@ -198,8 +200,8 @@ public static class RoleClass
         Penguin.ClearAndReload();
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
-            Jumbo.ClearAndReload();
-            //ロールクリア
+        Jumbo.ClearAndReload();
+        //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();
@@ -292,7 +294,7 @@ public static class RoleClass
     public static class Sheriff
     {
         public static List<PlayerControl> SheriffPlayer;
-        public static Color32 color = new(255, 255, 0, byte.MaxValue);
+        public static Color32 color = SheriffYellow;
         public static PlayerControl currentTarget;
         public static float CoolTime;
         public static bool IsNeutralKill;
@@ -320,7 +322,7 @@ public static class RoleClass
     public static class MeetingSheriff
     {
         public static List<PlayerControl> MeetingSheriffPlayer;
-        public static Color32 color = new(255, 255, 0, byte.MaxValue);
+        public static Color32 color = SheriffYellow;
         public static bool NeutralKill;
         public static bool MadRoleKill;
         public static float KillMaxCount;
@@ -341,7 +343,7 @@ public static class RoleClass
         public static List<PlayerControl> JackalPlayer;
         public static List<PlayerControl> SidekickPlayer;
         public static List<PlayerControl> FakeSidekickPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = JackalBlue;
         public static float KillCooldown;
         public static bool IsUseVent;
         public static bool IsUseSabo;
@@ -858,7 +860,7 @@ public static class RoleClass
     public static class JackalFriends
     {
         public static List<PlayerControl> JackalFriendsPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = JackalBlue;
         public static bool IsUseVent;
         public static bool IsImpostorLight;
         public static bool IsJackalCheck;
@@ -1645,7 +1647,7 @@ public static class RoleClass
     public static class RemoteSheriff
     {
         public static List<PlayerControl> RemoteSheriffPlayer;
-        public static Color32 color = new(255, 255, 0, byte.MaxValue);
+        public static Color32 color = SheriffYellow;
         public static float CoolTime;
         public static bool IsNeutralKill;
         public static bool IsLoversKill;
@@ -1672,7 +1674,7 @@ public static class RoleClass
     public static class TeleportingJackal
     {
         public static List<PlayerControl> TeleportingJackalPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = JackalBlue;
         public static float KillCooldown;
         public static bool IsUseVent;
         public static bool IsUseSabo;
@@ -1753,7 +1755,7 @@ public static class RoleClass
     public static class SeerFriends
     {
         public static List<PlayerControl> SeerFriendsPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = JackalBlue;
 
         public static List<Vector3> deadBodyPositions;
 
@@ -1795,7 +1797,7 @@ public static class RoleClass
         public static List<PlayerControl> JackalSeerPlayer;
         public static List<PlayerControl> SidekickSeerPlayer;
         public static List<PlayerControl> FakeSidekickSeerPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = JackalBlue;
 
         public static List<Vector3> deadBodyPositions;
         public static float soulDuration;
@@ -1889,7 +1891,7 @@ public static class RoleClass
         public static List<PlayerControl> ChiefPlayer;
         public static List<byte> SheriffPlayer;
         public static List<byte> NoTaskSheriffPlayer;
-        public static Color32 color = new(255, 255, 0, byte.MaxValue);
+        public static Color32 color = SheriffYellow;
         public static bool IsCreateSheriff;
         public static float CoolTime;
         public static bool IsNeutralKill;
@@ -1972,7 +1974,7 @@ public static class RoleClass
     public static class MayorFriends
     {
         public static List<PlayerControl> MayorFriendsPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = JackalBlue;
         public static bool IsUseVent;
         public static bool IsImpostorLight;
         public static bool IsJackalCheck;
@@ -2793,7 +2795,7 @@ public static class RoleClass
     public static class WaveCannonJackal
     {
         public static List<PlayerControl> WaveCannonJackalPlayer;
-        public static Color32 color = Jackal.color;
+        public static Color32 color = JackalBlue;
         public static void ClearAndReload()
         {
             WaveCannonJackalPlayer = new();
