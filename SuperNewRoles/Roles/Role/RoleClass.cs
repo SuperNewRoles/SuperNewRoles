@@ -245,7 +245,7 @@ public static class RoleClass
     public static class Lighter
     {
         public static List<PlayerControl> LighterPlayer;
-        public static Color32 color = new(255, 255, 0, byte.MaxValue);
+        public static Color32 color = new(255, 236, 71, byte.MaxValue);
         public static float CoolTime;
         public static float DurationTime;
         public static bool IsLightOn;
@@ -583,7 +583,7 @@ public static class RoleClass
     public static class NiceScientist
     {
         public static List<PlayerControl> NiceScientistPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = Palette.CrewmateBlue;
         public static float CoolTime;
         public static float DurationTime;
         public static DateTime ButtonTimer;
@@ -2020,7 +2020,7 @@ public static class RoleClass
     public static class GhostMechanic
     {
         public static List<PlayerControl> GhostMechanicPlayer;
-        public static Color32 color = Color.blue;
+        public static Color32 color = new(25, 68, 142, byte.MaxValue);
         public static int LimitCount;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
 
@@ -2649,7 +2649,7 @@ public static class RoleClass
     public static class Photographer
     {
         public static List<PlayerControl> PhotographerPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = new(141, 160, 182, byte.MaxValue);
         public static int BonusCount;
         public static List<byte> PhotedPlayerIds;
         public static bool IsPhotographerShared;
