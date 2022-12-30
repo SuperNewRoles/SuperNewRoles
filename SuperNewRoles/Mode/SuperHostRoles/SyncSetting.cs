@@ -52,12 +52,6 @@ public static class SyncSetting
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.Samurai.SwordCoolTime);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, RoleClass.Samurai.SwordCoolTime);
                 break;
-            case RoleId.God:
-                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.God.IsVoteView);
-                break;
-            case RoleId.Observer:
-                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Observer.IsVoteView);
-                break;
             case RoleId.MadMaker:
                 if (!player.IsMod())
                 {
@@ -182,12 +176,29 @@ public static class SyncSetting
                 if (RoleClass.Camouflager.IsCamouflage)
                 {
                     optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown,
-                            RoleClass.Camouflager.CoolTime >= 5f ? (RoleClass.Camouflager.CoolTime + RoleClass.Camouflager.DurationTime - 2f)
-                                                                 : (3f + RoleClass.Camouflager.DurationTime));
+                            RoleClass.Camouflager.CoolTime >= 5f ? (RoleClass.Camouflager.CoolTime + RoleClass.Camouflager.DurationTime - 2f) : (3f + RoleClass.Camouflager.DurationTime));
                 }
                 break;
         }
-        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
+        {
+            //投票開示処理
+
+            //var role = player.GetRole();
+            //var optdata = SyncSetting.OptionData.DeepCopy();
+
+            switch (role)
+            {
+                case RoleId.God:
+                    optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.God.IsVoteView);
+                    break;
+                case RoleId.Observer:
+                    optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Observer.IsVoteView);
+                    break;
+            }
+            if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
+            Logger.Info("ぷぇ");
+        }
+        //AnonymousVotes.VoteSyncSetting(player);
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         optdata.RpcSyncOption(player.GetClientId());

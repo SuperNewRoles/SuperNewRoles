@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -538,3 +539,25 @@ class MeetingHudStartPatch
         }
     }
 }
+
+
+/*static class AnonymousVotes
+{
+    public static void VoteSyncSetting(PlayerControl player)
+    {
+        var role = player.GetRole();
+        var optdata = SyncSetting.OptionData.DeepCopy();
+
+        switch (role)
+        {
+            case RoleId.God:
+                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.God.IsVoteView);
+                break;
+            case RoleId.Observer:
+                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Observer.IsVoteView);
+                break;
+        }
+        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
+        Logger.Info("ぷぇ");
+    }
+}*/
