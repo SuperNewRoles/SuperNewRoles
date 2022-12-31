@@ -180,25 +180,7 @@ public static class SyncSetting
                 }
                 break;
         }
-        {
-            //投票開示処理
-
-            //var role = player.GetRole();
-            //var optdata = SyncSetting.OptionData.DeepCopy();
-
-            switch (role)
-            {
-                case RoleId.God:
-                    optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.God.IsVoteView);
-                    break;
-                case RoleId.Observer:
-                    optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Observer.IsVoteView);
-                    break;
-            }
-            if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
-            Logger.Info("ぷぇ");
-        }
-        //AnonymousVotes.VoteSyncSetting(player);
+        optdata.SetBool(BoolOptionNames.AnonymousVotes, OpenVotes.VoteSyncSetting(player));
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         optdata.RpcSyncOption(player.GetClientId());

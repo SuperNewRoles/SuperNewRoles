@@ -541,9 +541,13 @@ class MeetingHudStartPatch
 }
 
 
-/*static class AnonymousVotes
+public static class OpenVotes
 {
-    public static void VoteSyncSetting(PlayerControl player)
+    /// <summary>
+    /// 公開投票にします。
+    /// Anonymous votes(匿名投票)をfalseにする事で、Open votes(公開投票)にします。
+    /// </summary>
+    public static bool VoteSyncSetting(this PlayerControl player)
     {
         var role = player.GetRole();
         var optdata = SyncSetting.OptionData.DeepCopy();
@@ -558,6 +562,7 @@ class MeetingHudStartPatch
                 break;
         }
         if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
-        Logger.Info("ぷぇ");
+        Logger.Info("開票しました。", "OpenVotes");
+        return optdata.GetBool(BoolOptionNames.AnonymousVotes);
     }
-}*/
+}
