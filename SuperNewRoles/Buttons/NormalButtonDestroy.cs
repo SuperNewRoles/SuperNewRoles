@@ -13,7 +13,7 @@ public class NormalButtonDestroy
         UseButton
     }
     private static readonly Dictionary<RoleId, (NormalButton, bool)> SetActiveDictionary = new() {
-            //{ RoleId.FastMaker, (NormalButton.KillButton, !ModeHandler.IsMode(ModeId.SuperHostRoles) && !RoleClass.FastMaker.IsCreatedMadmate) }, 試合中に変動する必要がある為辞書に入れず直接パッチ
+            { RoleId.FastMaker, (NormalButton.KillButton, !ModeHandler.IsMode(ModeId.SuperHostRoles))},
             { RoleId.SecretlyKiller, (NormalButton.KillButton, true) },
             { RoleId.DoubleKiller, (NormalButton.KillButton, true) },
             { RoleId.Smasher, (NormalButton.KillButton, true) },
@@ -29,10 +29,6 @@ public class NormalButtonDestroy
     public static void SetActiveState()
     {
         var hm = FastDestroyableSingleton<HudManager>.Instance;
-
-        // ファストメーカーのキルボタン
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.FastMaker) && !ModeHandler.IsMode(ModeId.SuperHostRoles) && !RoleClass.FastMaker.IsCreatedMadmate && hm.KillButton.gameObject.active)
-            hm.KillButton.gameObject.SetActive(false);// キルボタンを無効化
 
         // ニートの使用ボタン
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Neet) && hm.UseButton.gameObject.active)
