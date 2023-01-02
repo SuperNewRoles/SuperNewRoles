@@ -640,7 +640,7 @@ static class CheckMurderPatch
                             if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
                             __instance.RpcShowGuardEffect(target);
                             RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
-                            target.SetRoleRPC(RoleId.Madmate);//マッドにする
+                            Madmate.CreateMadmate(target);//クルーにして、マッドにする
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                             RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことにする
                             SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSHR]マッドを作ったよ");
