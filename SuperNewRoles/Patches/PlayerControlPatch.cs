@@ -521,7 +521,6 @@ static class CheckMurderPatch
                             RoleClass.Truelover.CreatePlayers.Add(__instance.PlayerId);
                             RoleHelpers.SetLovers(__instance, target);
                             RoleHelpers.SetLoversRPC(__instance, target);
-                            //__instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);
                         }
@@ -569,9 +568,7 @@ static class CheckMurderPatch
                             if (target == null || RoleClass.MadMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
                             __instance.RpcShowGuardEffect(target);
                             RoleClass.MadMaker.CreatePlayers.Add(__instance.PlayerId);
-                            target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
-                            target.SetRoleRPC(RoleId.Madmate);
-                            //__instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+                            Madmate.CreateMadmate(target);
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);
                         }
                         else
