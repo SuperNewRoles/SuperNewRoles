@@ -643,13 +643,13 @@ static class CheckMurderPatch
                             target.SetRoleRPC(RoleId.Madmate);//マッドにする
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                             RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことにする
-                            SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSHR]マッドを作ったよ");
+                            Logger.Info("マッドメイトを作成しました","FastMakerSHR");
                             return false;
                         }
                         else
                         {
                             //作ってたら普通のキル(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                            SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSHR]作ったので普通のキル");
+                            Logger.Info("マッドメイトを作成済みの為 普通のキル","FastMakerSHR");
                         }
                         break;
                     case RoleId.Jackal:
