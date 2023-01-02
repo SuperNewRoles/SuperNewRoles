@@ -2533,6 +2533,7 @@ static class HudManagerStartPatch
                 if (target && PlayerControl.LocalPlayer.CanMove && !RoleClass.FastMaker.IsCreatedMadmate)
                 {
                     PlayerControl.LocalPlayer.RpcShowGuardEffect(target); // 守護エフェクトの表示
+                    RoleClass.FastMaker.CreatePlayers.Add(PlayerControl.LocalPlayer.PlayerId);
                     Madmate.CreateMadmate(target);//くるぅにして、マッドにする
                     RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことに
                     FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown > 0 ? RoleClass.DefaultKillCoolDown / 2f : 0.00001f;
