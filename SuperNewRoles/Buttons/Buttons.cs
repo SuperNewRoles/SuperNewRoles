@@ -2529,8 +2529,9 @@ static class HudManagerStartPatch
                     PlayerControl.LocalPlayer.RpcShowGuardEffect(target); // 守護エフェクトの表示
                     Madmate.CreateMadmate(target);//くるぅにして、マッドにする
                     RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことに
-                    FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown - 15f > 0 ? RoleClass.DefaultKillCoolDown - 15f : 0.00001f;
+                    FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown > 0 ? RoleClass.DefaultKillCoolDown / 2f : 0.00001f;
                     FastMakerButton.Timer = FastMakerButton.MaxTimer;
+                    Logger.Info($"守護を発動させている為、設定キルクールの半分の値である<{FastMakerButton.MaxTimer}s>にリセットしました。", "FastMakerButton");
                     Logger.Info($"マッドを作成しました。IsCreatedMadmate == {RoleClass.FastMaker.IsCreatedMadmate}", "FastMakerButton");
                 }
                 else
@@ -2539,7 +2540,7 @@ static class HudManagerStartPatch
                     ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                     FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown;
                     FastMakerButton.Timer = FastMakerButton.MaxTimer;
-                    Logger.Info("Madを作成した為キル", "FastMakerButton");
+                    Logger.Info($"Mad作成済みの為キルしました。デフォルトキルクールである<{FastMakerButton.MaxTimer}s>にリセットしました。", "FastMakerButton");
                 }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && !ModeHandler.IsMode(ModeId.SuperHostRoles); },
