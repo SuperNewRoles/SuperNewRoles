@@ -1376,6 +1376,7 @@ static class HudManagerStartPatch
                         var target = PlayerControlFixedUpdatePatch.SetTarget();
                         var localId = CachedPlayer.LocalPlayer.PlayerId;
                         var misfire = !Sheriff.IsSheriffKill(target);
+                        PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Sheriff.color);
                         if (RoleClass.Chief.SheriffPlayer.Contains(localId))
                         {
                             misfire = !Sheriff.IsChiefSheriffKill(target);
@@ -1866,7 +1867,9 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Chief && ModeHandler.IsMode(ModeId.Default) && !RoleClass.Chief.IsCreateSheriff; },
             () =>
             {
-                return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                var target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Chief.color);
+                return target && PlayerControl.LocalPlayer.CanMove;
             },
             () => { },
             RoleClass.Chief.GetButtonSprite(),
@@ -2310,6 +2313,7 @@ static class HudManagerStartPatch
                 if (RoleClass.SecretlyKiller.MainCool > 0f) return false;
 
                 RoleClass.SecretlyKiller.target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(RoleClass.SecretlyKiller.target, RoleClass.SecretlyKiller.color);
                 return RoleClass.SecretlyKiller.target != null
                         && !RoleClass.SecretlyKiller.target.IsImpostor() && PlayerControl.LocalPlayer.CanMove;
             },
@@ -2432,7 +2436,9 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return (isAlive && (role == RoleId.DoubleKiller) && ModeHandler.IsMode(ModeId.Default)) || (isAlive && (role == RoleId.Smasher) && ModeHandler.IsMode(ModeId.Default)); },
             () =>
             {
-                return PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                var target = PlayerControlFixedUpdatePatch.SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.DoubleKiller.color);
+                return target && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
