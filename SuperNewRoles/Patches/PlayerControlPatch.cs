@@ -661,18 +661,18 @@ static class CheckMurderPatch
                             RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
                             if (!target.IsImpostor())
                             {
-                                Jackal.CreateJackalFriends(target);//守護天使にして クルーにして フレンズにする
+                                Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
                             }
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
-                            SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
+                            Logger.Info("ジャッカルフレンズを作成しました。","JackalSHR");
                             return false;
                         }
                         else
                         {
                             // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                            if (!RoleClass.Jackal.CanCreateFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] フレンズを作る設定ではない為 普通のキル");
-                            else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 作ったので 普通のキル");
-                            else SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 不正なキル");
+                            if (!RoleClass.Jackal.CanCreateFriend) Logger.Info("ジャッカルフレンズを作る設定ではない為 普通のキル","JackalSHR");
+                            else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル","JackalSHR");
+                            else Logger.Info("不正なキル","JackalSHR");
                         }
                         break;
                     case RoleId.DarkKiller:
