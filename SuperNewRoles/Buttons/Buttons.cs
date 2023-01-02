@@ -2529,12 +2529,16 @@ static class HudManagerStartPatch
                     PlayerControl.LocalPlayer.RpcShowGuardEffect(target); // 守護エフェクトの表示
                     Madmate.CreateMadmate(target);//くるぅにして、マッドにする
                     RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことに
+                    FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown - 15f > 0 ? RoleClass.DefaultKillCoolDown - 15f : 0.00001f;
+                    FastMakerButton.Timer = FastMakerButton.MaxTimer;
                     Logger.Info($"マッドを作成しました。IsCreatedMadmate == {RoleClass.FastMaker.IsCreatedMadmate}", "FastMakerButton");
                 }
                 else
                 {
                     //作ってたらキル
                     ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
+                    FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown;
+                    FastMakerButton.Timer = RoleClass.DefaultKillCoolDown;
                     Logger.Info("Madを作成した為キル", "FastMakerButton");
                 }
             },
