@@ -2538,7 +2538,7 @@ static class HudManagerStartPatch
                     //作ってたらキル
                     ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                     FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown;
-                    FastMakerButton.Timer = RoleClass.DefaultKillCoolDown;
+                    FastMakerButton.Timer = FastMakerButton.MaxTimer;
                     Logger.Info("Madを作成した為キル", "FastMakerButton");
                 }
             },
@@ -2549,8 +2549,8 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown;
-                FastMakerButton.Timer = RoleClass.DefaultKillCoolDown;
+                FastMakerButton.MaxTimer = RoleClass.Tuna.IsMeetingEnd ? RoleClass.DefaultKillCoolDown : 10f;
+                FastMakerButton.Timer = FastMakerButton.MaxTimer;
             },
             __instance.KillButton.graphic.sprite,
             new Vector3(-1, 1, 0),
