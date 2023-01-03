@@ -14,6 +14,7 @@ using UnhollowerBaseLib;
 using UnityEngine;
 using AmongUs.GameOptions;
 using SuperNewRoles.Mode;
+using UnityEngine.Audio;
 
 namespace SuperNewRoles;
 
@@ -34,6 +35,21 @@ public static class ModHelpers
                     !MeetingHud.Instance &&
                     !ExileController.Instance;
         }
+    }
+    public static AudioSource PlaySound(Transform parent, AudioClip clip, bool loop, float volume = 1f, AudioMixerGroup audioMixer = null)
+    {
+        if (audioMixer == null)
+        {
+            audioMixer = (loop ? SoundManager.Instance.MusicChannel : SoundManager.Instance.SfxChannel);
+        }
+        AudioSource value = parent.GetComponent<AudioSource>() ?? parent.gameObject.AddComponent<AudioSource>();
+        value.outputAudioMixerGroup = audioMixer;
+        value.playOnAwake = false;
+        value.volume = volume;
+        value.loop = loop;
+        value.clip = clip;
+        value.Play();
+        return value;
     }
     public static void SetKillTimerUnchecked(this PlayerControl player, float time, float max = float.NegativeInfinity)
     {
