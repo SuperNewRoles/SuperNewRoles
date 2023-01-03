@@ -135,7 +135,7 @@ static class HudManagerStartPatch
             },
             () => {},
             RoleClass.Debugger.GetButtonSprite(),
-            new Vector3(-9.2f, 0, 0),
+            new Vector3(0, 2, 0),
             __instance,
             __instance.AbilityButton,
             null,
