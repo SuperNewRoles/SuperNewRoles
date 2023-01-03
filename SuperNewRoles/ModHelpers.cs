@@ -13,6 +13,7 @@ using TMPro;
 using UnhollowerBaseLib;
 using UnityEngine;
 using AmongUs.GameOptions;
+using SuperNewRoles.Mode;
 using UnityEngine.Audio;
 
 namespace SuperNewRoles;
@@ -316,7 +317,7 @@ public static class ModHelpers
         {
             numShort = 1;
         }
-        if (player.IsRole(RoleId.HamburgerShop) && !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool())
+        if (player.IsRole(RoleId.HamburgerShop) && (ModeHandler.IsMode(ModeId.SuperHostRoles) || !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool()))
         {
             return Roles.CrewMate.HamburgerShop.GenerateTasks(numCommon + numShort + numLong);
         }
