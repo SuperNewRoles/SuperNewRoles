@@ -979,7 +979,13 @@ public static class MurderPlayerPatch
                 };
                 target.setOutfit(outfit, true);
                 if (target.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                {
                     __instance.setOutfit(outfit, true);
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Camouflager) && RoleClass.Camouflager.IsCamouflage)
+                    {
+                        Camouflager.RpcResetCamouflage();
+                    }
+                }
             }
             if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Finder))
             {
@@ -1153,13 +1159,13 @@ class ReportDeadBodyPatch
             }
             return false;
         }
+        if (RoleClass.Camouflager.IsCamouflage)
+        {
+            Camouflager.ResetCamouflage();
+        }
         if (!AmongUsClient.Instance.AmHost) return true;
         if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
         if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;
-        if (RoleClass.Camouflager.IsCamouflage)
-        {
-            Roles.Impostor.Camouflager.ResetCamouflage();
-        }
         if (ModeHandler.IsMode(ModeId.Default))
         {
             if (__instance.IsRole(RoleId.EvilButtoner, RoleId.NiceButtoner) && target != null && target.PlayerId == __instance.PlayerId)

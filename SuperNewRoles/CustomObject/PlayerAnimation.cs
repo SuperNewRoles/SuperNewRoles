@@ -38,7 +38,7 @@ public class PlayerAnimation
         PlayerId = Player.PlayerId;
         gameObject = new("PlayerAnimation");
         transform = gameObject.transform;
-        transform.SetParent(Player.transform.FindChild("Sprite"));
+        transform.SetParent(Player.cosmetics.normalBodySprite.BodySprite.transform.parent);
         SpriteRender = gameObject.AddComponent<SpriteRenderer>();
         PlayerAnimations.Add(this);
     }
