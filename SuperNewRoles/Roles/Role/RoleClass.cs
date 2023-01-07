@@ -198,8 +198,8 @@ public static class RoleClass
         Penguin.ClearAndReload();
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
-            Jumbo.ClearAndReload();
-            //ロールクリア
+        Jumbo.ClearAndReload();
+        //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();
@@ -1577,7 +1577,7 @@ public static class RoleClass
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.SeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.SeerSoulDuration.GetFloat();
-            mode = CustomOptionHolder.SeerMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.SeerMode.GetSelection();
 
             Roles.Seer.FullScreenRenderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen, FastDestroyableSingleton<HudManager>.Instance.transform);
         }
@@ -1603,7 +1603,7 @@ public static class RoleClass
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.MadSeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.MadSeerSoulDuration.GetFloat();
-            mode = CustomOptionHolder.MadSeerMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.MadSeerMode.GetSelection();
 
             IsImpostorCheck = CustomOptionHolder.MadSeerIsCheckImpostor.GetBool();
             IsUseVent = CustomOptionHolder.MadSeerIsUseVent.GetBool();
@@ -1638,7 +1638,7 @@ public static class RoleClass
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.EvilSeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.EvilSeerSoulDuration.GetFloat();
-            mode = CustomOptionHolder.EvilSeerMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.EvilSeerMode.GetSelection();
             IsCreateMadmate = CustomOptionHolder.EvilSeerMadmateSetting.GetBool();
         }
     }
@@ -1772,7 +1772,7 @@ public static class RoleClass
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.SeerFriendsLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.SeerFriendsSoulDuration.GetFloat();
-            mode = CustomOptionHolder.SeerFriendsMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.SeerFriendsMode.GetSelection();
 
             IsJackalCheck = CustomOptionHolder.SeerFriendsIsCheckJackal.GetBool();
             IsUseVent = CustomOptionHolder.SeerFriendsIsUseVent.GetBool();
@@ -1820,7 +1820,7 @@ public static class RoleClass
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.JackalSeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.JackalSeerSoulDuration.GetFloat();
-            mode = CustomOptionHolder.JackalSeerMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.JackalSeerMode.GetSelection();
 
             KillCooldown = CustomOptionHolder.JackalSeerKillCooldown.GetFloat();
             IsUseVent = CustomOptionHolder.JackalSeerUseVent.GetBool();
