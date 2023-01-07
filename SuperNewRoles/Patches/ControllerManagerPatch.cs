@@ -85,10 +85,6 @@ class ControllerManagerUpdatePatch
                 GameOptionsManager.Instance.SwitchGameMode(GameModes.HideNSeek);
                 RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
             }
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByKill, false);
-            }
             if (Input.GetKeyDown(KeyCode.J))
             {
                 PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.ImpostorGhost);
