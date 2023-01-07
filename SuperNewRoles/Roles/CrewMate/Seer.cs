@@ -161,7 +161,7 @@ class Seer
                             break;
                         case RoleId.EvilSeer:
                             if (RoleClass.EvilSeer.deadBodyPositions != null) RoleClass.EvilSeer.deadBodyPositions.Add(target.transform.position);
-                            ModeFlag = RoleClass.MadSeer.mode <= 1;
+                            ModeFlag = RoleClass.EvilSeer.mode <= 1;
                             break;
                         case RoleId.SeerFriends:
                             if (RoleClass.SeerFriends.deadBodyPositions != null) RoleClass.SeerFriends.deadBodyPositions.Add(target.transform.position);
