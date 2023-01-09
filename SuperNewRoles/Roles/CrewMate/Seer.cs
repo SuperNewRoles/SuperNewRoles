@@ -191,7 +191,7 @@ class Seer
                         if (!p2.IsMod())
                         {
                             p2.ShowReactorFlash(1.5f);
-                            Logger.Info($"{p2.GetRole()}である{p2.GetDefaultName()}に死の点滅を発生させました。", "MurderPlayer");
+                            Logger.Info($"非導入者で尚且つ[ {p2.GetRole()} ]である{p2.GetDefaultName()}に死の点滅を発生させました。", "MurderPlayer");
                         }
                     }
                 }
