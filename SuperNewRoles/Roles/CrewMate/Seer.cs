@@ -183,7 +183,6 @@ class Seer
             }
             public static void ShowFlash_SHR(PlayerControl target)
             {
-                Logger.Info($"1", "ShowFlash");
                 foreach (var p in Seers)
                 {
                     if (p == null) continue;
