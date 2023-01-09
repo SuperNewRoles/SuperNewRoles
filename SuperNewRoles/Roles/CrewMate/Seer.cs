@@ -10,14 +10,6 @@ namespace SuperNewRoles.Roles;
 class Seer
 //マッド・イビル・フレンズ・ジャッカル・サイドキック　シーア
 {
-    public static List<List<PlayerControl>> Seers = new() {
-            RoleClass.Seer.SeerPlayer,
-            RoleClass.EvilSeer.EvilSeerPlayer,
-            RoleClass.MadSeer.MadSeerPlayer,
-            RoleClass.JackalSeer.JackalSeerPlayer,
-            RoleClass.SeerFriends.SeerFriendsPlayer
-        };
-
     public static SpriteRenderer FullScreenRenderer;
 
     /** <summary>
@@ -183,7 +175,14 @@ class Seer
             }
             public static void ShowFlash_SHR(PlayerControl target)
             {
-                foreach (var p in Seers)
+                List<List<PlayerControl>> seers = new() {
+                    RoleClass.Seer.SeerPlayer,
+                    RoleClass.EvilSeer.EvilSeerPlayer,
+                    RoleClass.MadSeer.MadSeerPlayer,
+                    RoleClass.JackalSeer.JackalSeerPlayer,
+                    RoleClass.SeerFriends.SeerFriendsPlayer
+                };
+                foreach (var p in seers)
                 {
                     if (p == null) continue;
                     foreach (var p2 in p)
@@ -192,6 +191,7 @@ class Seer
                         if (!p2.IsMod())
                         {
                             p2.ShowReactorFlash(1.5f);
+                            Logger.Info($"{p2.GetRole()}である{p2.GetDefaultName()}に死の点滅を発生させました。", "MurderPlayer");
                         }
                     }
                 }
