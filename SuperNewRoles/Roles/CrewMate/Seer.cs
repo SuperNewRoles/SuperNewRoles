@@ -1,3 +1,5 @@
+using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
@@ -176,6 +178,22 @@ class Seer
                     if (PlayerControl.LocalPlayer.IsAlive() && CachedPlayer.LocalPlayer.PlayerId != target.PlayerId && ModeFlag)
                     {
                         ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+                    }
+                }
+            }
+            public static void ShowFlash_SHR(PlayerControl target)
+            {
+                Logger.Info($"1", "ShowFlash");
+                foreach (var p in Seers)
+                {
+                    if (p == null) continue;
+                    foreach (var p2 in p)
+                    {
+                        if (p2 == null) continue;
+                        if (!p2.IsMod())
+                        {
+                            p2.ShowReactorFlash(1.5f);
+                        }
                     }
                 }
             }
