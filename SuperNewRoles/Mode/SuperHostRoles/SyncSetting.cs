@@ -186,6 +186,10 @@ public static class SyncSetting
                                                                  : (3f + RoleClass.Camouflager.DurationTime));
                 }
                 break;
+            case RoleId.EvilSeer:
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
+                break;
         }
         if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
