@@ -228,7 +228,7 @@ namespace SuperNewRoles.Roles."""+namedata+"""
         }\n        //新ロールクラス""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("COLORS", MainClass.GetRoleColor()))
 
         # AllRoleSetClass.cs
-        '''MainClass.WriteCodes("AllRoleSetClass.cs", "//セットクラス",
+        '''MainClass.WriteCodes("Roles/AllRoleSetClass.cs", "//セットクラス",
                                 """if (!(CustomOptionHolder.ROLEID!!Option.GetString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOptionHolder.ROLEID!!Option.GetString().Replace("0%", ""));
@@ -246,7 +246,7 @@ namespace SuperNewRoles.Roles."""+namedata+"""
                 }
             }\n        //セットクラス""".replace("ROLEID!!",MainClass.GetInput("RoleName")).replace("TEAM",MainClass.GetTeam()))'''
 
-        MainClass.WriteCodes("AllRoleSetClass.cs", "//プレイヤーカウント",
+        MainClass.WriteCodes("Roles/AllRoleSetClass.cs", "//プレイヤーカウント",
                              """RoleId.ROLENAME => CustomOptionHolder.ROLENAMEPlayerCount.GetFloat(),\n                //プレイヤーカウント""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # Roles/Role/RoleHelper.cs

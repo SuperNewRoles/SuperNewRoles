@@ -324,8 +324,8 @@ public class CustomHats
     {
         private static void Postfix(PlayerPhysics __instance)
         {
-            AnimationClip currentAnimation = __instance.Animator.GetCurrentAnimation();
-            if (currentAnimation == __instance.CurrentAnimationGroup.ClimbAnim || currentAnimation == __instance.CurrentAnimationGroup.ClimbDownAnim) return;
+            AnimationClip currentAnimation = __instance.Animations.Animator.GetCurrentAnimation();
+            if (currentAnimation == __instance.Animations.group.ClimbUpAnim || currentAnimation == __instance.Animations.group.ClimbDownAnim) return;
             HatParent hp = __instance.myPlayer.HatRenderer();
             if (hp.Hat == null) return;
             HatExtension extend = hp.Hat.GetHatExtension();

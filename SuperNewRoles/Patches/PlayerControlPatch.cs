@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
@@ -178,7 +179,7 @@ class RpcShapeshiftPatch
                             RoleClass.Arsonist.TriggerArsonistWin = true;
                             AdditionalTempData.winCondition = WinCondition.ArsonistWin;
                             __instance.enabled = false;
-                            ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
+                            GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
                             return true;
                         }
                     }
@@ -422,7 +423,8 @@ static class CheckMurderPatch
         Logger.Info("Bot通過", "CheckMurder");
         if (__instance.IsDead() || target.IsDead()) return false;
         Logger.Info("死亡通過", "CheckMurder");
-        if (!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay) return false;
+        if (GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek) return true;
+        if (!RoleClass.IsStart && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) return false;
         Logger.Info("非スタート通過", "CheckMurder");
         if (__instance.PlayerId == target.PlayerId)
         {
@@ -499,6 +501,8 @@ static class CheckMurderPatch
                     case RoleId.RemoteSheriff:
                     case RoleId.ToiletFan:
                     case RoleId.NiceButtoner:
+                    case RoleId.Madmate:
+                    case RoleId.JackalFriends:
                         return false;
                     case RoleId.Egoist:
                         if (!RoleClass.Egoist.UseKill) return false;
@@ -611,7 +615,7 @@ static class CheckMurderPatch
                         if (!__instance.IsDoused(target))
                         {
                             __instance.RpcShowGuardEffect(target);// 守護エフェクト
-                            SyncSetting.OptionData.DeepCopy().RoleOptions.ShapeshifterCooldown = RoleClass.Arsonist.DurationTime;// シェイプクールダウンを塗り時間に
+                            SyncSetting.OptionData.DeepCopy().SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.Arsonist.DurationTime);// シェイプクールダウンを塗り時間に
                             new LateTask(() =>
                             {
                                 if (Vector2.Distance(__instance.transform.position, target.transform.position) <= 1.75f)//1.75f以内にターゲットがいるなら
@@ -622,7 +626,7 @@ static class CheckMurderPatch
                                 }
                                 else
                                 {//塗れなかったらキルクールリセット
-                                    SyncSetting.OptionData.DeepCopy().KillCooldown = SyncSetting.KillCoolSet(0f);
+                                    SyncSetting.OptionData.DeepCopy().SetFloat(FloatOptionNames.KillCooldown, SyncSetting.KillCoolSet(0f));
                                 }
                             }, RoleClass.Arsonist.DurationTime, "SHR Arsonist Douse");
                         }
@@ -827,13 +831,13 @@ static class PlayerControlSetCooldownPatch
 {
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] float time)
     {
-        if (PlayerControl.GameOptions.killCooldown == time && !RoleClass.IsCoolTimeSetted)
+        if (GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown) == time && !RoleClass.IsCoolTimeSetted)
         {
             __instance.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(__instance), RoleHelpers.GetEndMeetingKillCoolTime(__instance));
             RoleClass.IsCoolTimeSetted = true;
             return false;
         }
-        if (__instance.Data.Role.CanUseKillButton && PlayerControl.GameOptions.KillCooldown > 0f)
+        if (__instance.Data.Role.CanUseKillButton && GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown) > 0f)
         {
             FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(__instance.killTimer = time, RoleHelpers.GetEndMeetingKillCoolTime(__instance));
             return false;
@@ -975,7 +979,13 @@ public static class MurderPlayerPatch
                 };
                 target.setOutfit(outfit, true);
                 if (target.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                {
                     __instance.setOutfit(outfit, true);
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Camouflager) && RoleClass.Camouflager.IsCamouflage)
+                    {
+                        Camouflager.RpcResetCamouflage();
+                    }
+                }
             }
             if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Finder))
             {
@@ -987,6 +997,18 @@ public static class MurderPlayerPatch
                 {
                     HudManagerStartPatch.SluggerButton.MaxTimer = CustomOptionHolder.SluggerCoolTime.GetFloat();
                     HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
+                }
+            }
+            if (target.IsRole(RoleId.Jumbo))
+            {
+                DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == target.PlayerId)
+                    {
+                        if (!RoleClass.Jumbo.JumboSize.ContainsKey(target.PlayerId)) RoleClass.Jumbo.JumboSize.Add(target.PlayerId, 0f);
+                        array[i].transform.localScale = Vector3.one * (RoleClass.Jumbo.JumboSize[target.PlayerId] + 1f);
+                    }
                 }
             }
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Painter) && RoleClass.Painter.CurrentTarget != null && RoleClass.Painter.CurrentTarget.PlayerId == target.PlayerId) Roles.Crewmate.Painter.Handle(Roles.Crewmate.Painter.ActionType.Death);
@@ -1047,7 +1069,7 @@ public static class MurderPlayerPatch
                         Writer.Write(target.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RoleClass.Quarreled.IsQuarreledWin = true;
-                        ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
+                        GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
                     }
                 }
             }
@@ -1137,13 +1159,13 @@ class ReportDeadBodyPatch
             }
             return false;
         }
+        if (RoleClass.Camouflager.IsCamouflage)
+        {
+            Camouflager.ResetCamouflage();
+        }
         if (!AmongUsClient.Instance.AmHost) return true;
         if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
         if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;
-        if (RoleClass.Camouflager.IsCamouflage)
-        {
-            Roles.Impostor.Camouflager.ResetCamouflage();
-        }
         if (ModeHandler.IsMode(ModeId.Default))
         {
             if (__instance.IsRole(RoleId.EvilButtoner, RoleId.NiceButtoner) && target != null && target.PlayerId == __instance.PlayerId)
@@ -1177,8 +1199,8 @@ class ReportDeadBodyPatch
             }
         }
         return RoleClass.Assassin.TriggerPlayer == null
-        && (MapOptions.MapOption.UseDeadBodyReport || target == null)
-        && (MapOptions.MapOption.UseMeetingButton || target != null)
+        && (MapOption.MapOption.UseDeadBodyReport || target == null)
+        && (MapOption.MapOption.UseMeetingButton || target != null)
         && !ModeHandler.IsMode(ModeId.BattleRoyal)
         && !ModeHandler.IsMode(ModeId.CopsRobbers)
 && (ModeHandler.IsMode(ModeId.SuperHostRoles)
@@ -1192,7 +1214,7 @@ public static class PlayerControlFixedUpdatePatch
     public static PlayerControl SetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
     {
         PlayerControl result = null;
-        float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
+        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
         if (!MapUtilities.CachedShipStatus) return result;
         if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
@@ -1232,7 +1254,7 @@ public static class PlayerControlFixedUpdatePatch
     public static PlayerControl JackalSetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
     {
         PlayerControl result = null;
-        float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
+        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
         if (!MapUtilities.CachedShipStatus) return result;
         if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
         if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;

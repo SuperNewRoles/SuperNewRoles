@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 
-namespace SuperNewRoles.MapOptions;
+namespace SuperNewRoles.MapOption;
 
 [HarmonyPatch]
 public class MapOption
@@ -70,7 +71,7 @@ public class MapOption
                 ValidationPolus = false;
                 ValidationAirship = false;
             }
-            RandomSpawn = (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship && RandomSpawnOption.GetBool();
+            RandomSpawn = (MapNames)GameOptionsManager.Instance.currentGameOptions.MapId == MapNames.Airship && ModeHandler.IsMode(ModeId.Default) && RandomSpawnOption.GetBool();
             WireTaskIsRandom = WireTaskIsRandomOption.GetBool();
             WireTaskNum = WireTaskNumOption.GetInt();
             UseDeadBodyReport = !NotUseReportDeadBody.GetBool();

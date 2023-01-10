@@ -7,7 +7,9 @@ using System.Reflection;
 using AmongUs.Data;
 using BepInEx;
 using BepInEx.IL2CPP;
+using Cpp2IL.Core;
 using HarmonyLib;
+using InnerNet;
 using UnityEngine;
 
 namespace SuperNewRoles;

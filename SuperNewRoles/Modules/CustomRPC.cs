@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.MapOptions;
+using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
@@ -173,7 +174,9 @@ public enum RoleId
     HamburgerShop,
     Penguin,
     Dependents,
-    //RoleId
+    LoversBreaker,
+        Jumbo,
+        //RoleId
 }
 
 public enum CustomRPC
@@ -256,11 +259,11 @@ public enum CustomRPC
     Camouflage = 230,
     ShowGuardEffect,
     SetLoversCupid,
-    SetMapId,
     PenguinHikizuri,
     SetVampireStatus,
     SyncDeathMeeting,
     SetDeviceUseStatus,
+    SetLoversBreakerWinner,
 }
 
 public static class RPCProcedure
@@ -333,10 +336,6 @@ public static class RPCProcedure
                 RoleClass.Vampire.Targets.Remove(source);
             }
         }
-    }
-    public static void SetMapId(byte mapid)
-    {
-        SNROnlySearch.currentMapId = mapid;
     }
 
     public static void PenguinHikizuri(byte sourceId, byte targetId)
@@ -1050,6 +1049,7 @@ public static class RPCProcedure
         var player = ModHelpers.PlayerById(playerid);
         if (player == null) return;
         player.Revive();
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, player.IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate);
         DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == playerid);
         FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Alive;
     }
@@ -1313,6 +1313,9 @@ public static class RPCProcedure
     {
         Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
     }
+
+    public static void SetLoversBreakerWinner(byte playerid) => RoleClass.LoversBreaker.CanEndGamePlayers.Add(playerid);
+
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
     class RPCHandlerPatch
     {
@@ -1597,9 +1600,6 @@ public static class RPCProcedure
                     case CustomRPC.SetLoversCupid:
                         SetLoversCupid(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
-                    case CustomRPC.SetMapId:
-                        SetMapId(reader.ReadByte());
-                        break;
                     case CustomRPC.PenguinHikizuri:
                         PenguinHikizuri(reader.ReadByte(), reader.ReadByte());
                         break;
@@ -1614,6 +1614,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetDeviceUseStatus:
                         SetDeviceUseStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadString());
+                        break;
+                    case CustomRPC.SetLoversBreakerWinner:
+                        SetLoversBreakerWinner(reader.ReadByte());
                         break;
                 }
             }

@@ -8,6 +8,11 @@ public class BloodStain
     public static List<BloodStain> BloodStains = new();
     private static Sprite sprite;
     private Color color;
+
+    //「血液表現」が現在一つしかない為、無駄なメモリ確保を防ぐ為、color指定を直接数字で行っています。
+    // 今後増やす時は以下のコメントアウトを解除し、BloodStain.colorへの代入をこちらの変数にしてください。
+    // public Color BloodRed = new(179f / 255f, 0f, 0f); // 0.1f指定
+    // public Color BloodBlack = new(0.2f, 0.2f, 0.2f); // 0.1f指定
     public GameObject BloodStainObject;
     private SpriteRenderer spriteRenderer;
     private PlayerControl owner;
@@ -23,7 +28,7 @@ public class BloodStain
     {
         this.owner = player;
         this.ownerId = player.PlayerId;
-        this.color = Color.red;
+        this.color = ConfigRoles.IsNotUsingBlood.Value ? new Color(0.2f, 0.2f, 0.2f) : new Color(179f / 255f, 0f, 0f); // 直接数値で血の色代入中 [? BloodBlack : BloodRed;]
 
         Vector3 posdata = pos != null ? (Vector3)pos : player.transform.position;
         BloodStainObject = new("BloodStain");

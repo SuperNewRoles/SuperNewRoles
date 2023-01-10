@@ -10,15 +10,11 @@ namespace SuperNewRoles.Roles;
 
 class Vampire
 {
-    public static void WrapUp(PlayerControl exiled)
+    /// <summary>
+    /// ヴァンパイアの血痕処理
+    /// </summary>
+    public static void SetActiveBloodStaiWrapUpPatch()
     {
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.Dependents) && PlayerControl.LocalPlayer.IsAlive())
-        {
-            bool Is = true;
-            foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer) if (p.IsAlive() && (exiled == null || exiled.PlayerId != p.PlayerId)) Is = false;
-            if (Is)
-                PlayerControl.LocalPlayer.RpcExiledUnchecked();
-        }
         foreach (var data in RoleClass.Vampire.NoActiveTurnWait.ToArray())
         {
             RoleClass.Vampire.NoActiveTurnWait[data.Key]--;
@@ -32,6 +28,20 @@ class Vampire
             data.BloodStainObject.SetActive(true);
         RoleClass.Vampire.NoActiveTurnWait.Add(RoleClass.Vampire.WaitActiveBloodStains, CustomOptionHolder.VampireViewBloodStainsTurn.GetInt());
         RoleClass.Vampire.WaitActiveBloodStains = new();
+    }
+
+    /// <summary>
+    /// 眷属の心中処理
+    /// </summary>
+    public static void DependentsExileWrapUpPatch(PlayerControl exiled)
+    {
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Dependents) && PlayerControl.LocalPlayer.IsAlive())
+        {
+            bool Is = true;
+            foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer) if (p.IsAlive() && (exiled == null || exiled.PlayerId != p.PlayerId)) Is = false;
+            if (Is)
+                PlayerControl.LocalPlayer.RpcExiledUnchecked();
+        }
     }
     [HarmonyPatch(typeof(VitalsPanel), nameof(VitalsPanel.SetDead))]
     class VitalsPanelSetDeadPatch

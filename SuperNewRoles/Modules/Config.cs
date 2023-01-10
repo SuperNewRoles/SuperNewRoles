@@ -21,6 +21,7 @@ public static class ConfigRoles
     public static ConfigEntry<bool> HideTaskArrows { get; set; }
     public static ConfigEntry<bool> EnableHorseMode { get; set; }
     public static ConfigEntry<bool> DownloadSuperNewNamePlates { get; set; }
+    public static ConfigEntry<bool> IsNotUsingBlood { get; set; }
     public static ConfigEntry<bool> DownloadOtherSkins { get; set; }
     public static ConfigEntry<bool> IsUpdate { get; set; }
     public static ConfigEntry<bool> IsDeleted { get; set; }
@@ -39,6 +40,7 @@ public static class ConfigRoles
         IsAutoRoomCreate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "AutoRoomCreate", true);
         EnableHorseMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "EnableHorseMode", false);
         DownloadSuperNewNamePlates = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "DownloadSuperNewNamePlates", true);
+        IsNotUsingBlood = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsNotUsingBlood", false);
         Ip = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server IP", "127.0.0.1");
         Port = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server Port", (ushort)22023);
         IsUpdate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsUpdate", true);

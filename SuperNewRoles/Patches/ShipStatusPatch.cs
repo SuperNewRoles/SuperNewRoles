@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
@@ -135,7 +136,7 @@ class LightPatch
     public static float GetNeutralLightRadius(ShipStatus shipStatus, bool isImpostor)
     {
         if (Clergyman.IsLightOutVision()) return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision;
-        if (isImpostor) return shipStatus.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
+        if (isImpostor) return shipStatus.MaxLightRadius * GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.ImpostorLightMod);
 
         SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
         float lerpValue = switchSystem.Value / 255f;
@@ -144,7 +145,7 @@ class LightPatch
         {
             lerpValue = 1 - lerpValue;
         }
-        return Mathf.Lerp(shipStatus.MinLightRadius, shipStatus.MaxLightRadius, lerpValue) * PlayerControl.GameOptions.CrewLightMod;
+        return Mathf.Lerp(shipStatus.MinLightRadius, shipStatus.MaxLightRadius, lerpValue) * GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.CrewLightMod);
     }
 }
 [HarmonyPatch(typeof(ShipStatus), nameof(GameStartManager.Start))]
@@ -156,16 +157,16 @@ public class Inversion
     public static GameObject airship;
     public static void Prefix()
     {
-        if (AmongUsClient.Instance.GameMode != GameModes.FreePlay && CustomOptionHolder.enableMirroMap.GetBool())
+        if (AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay && CustomOptionHolder.enableMirroMap.GetBool())
         {
-            if (PlayerControl.GameOptions.MapId == 0)
+            if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 0)
             {
                 skeld = GameObject.Find("SkeldShip(Clone)");
                 skeld.transform.localScale = new Vector3(-1.2f, 1.2f, 1.2f);
                 MapUtilities.CachedShipStatus.InitialSpawnCenter = new Vector2(0.8f, 0.6f);
                 MapUtilities.CachedShipStatus.MeetingSpawnCenter = new Vector2(0.8f, 0.6f);
             }
-            else if (PlayerControl.GameOptions.MapId == 1)
+            else if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 1)
             {
                 mira = GameObject.Find("MiraShip(Clone)");
                 mira.transform.localScale = new Vector3(-1f, 1f, 1f);
@@ -173,7 +174,7 @@ public class Inversion
                 MapUtilities.CachedShipStatus.MeetingSpawnCenter = new Vector2(-25.3921f, 2.5626f);
                 MapUtilities.CachedShipStatus.MeetingSpawnCenter2 = new Vector2(-25.3921f, 2.5626f);
             }
-            else if (PlayerControl.GameOptions.MapId == 2)
+            else if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 2)
             {
                 polus = GameObject.Find("PolusShip(Clone)");
                 polus.transform.localScale = new Vector3(-1f, 1f, 1f);

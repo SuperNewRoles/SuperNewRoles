@@ -26,7 +26,7 @@ public static class Nun
         if (Constants.ShouldPlaySfx())
         {
             SoundManager.Instance.StopNamedSound("PlatformMoving");
-            SoundManager.Instance.PlayDynamicSound("PlatformMoving", __instance.MovingSound, loop: true, (DynamicSound.GetDynamicsFunction)__instance.SoundDynamics, playAsSfx: true);
+            SoundManager.Instance.PlayDynamicSound("PlatformMoving", __instance.MovingSound, loop:true, (DynamicSound.GetDynamicsFunction)__instance.SoundDynamics, SoundManager.instance.SfxChannel);
         }
         __instance.IsLeft = !__instance.IsLeft;
         if (IsTargetOn)

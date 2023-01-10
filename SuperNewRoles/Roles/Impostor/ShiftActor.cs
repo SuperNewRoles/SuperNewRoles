@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 using static SuperNewRoles.Roles.RoleClass;

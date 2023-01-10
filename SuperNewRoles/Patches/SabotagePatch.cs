@@ -50,7 +50,7 @@ public static class MeltdownBooster
 {
     public static void Prefix(ReactorSystemType __instance, float deltaTime)
     {
-        if (MapOptions.MapOption.ReactorDurationOption.GetBool())
+        if (MapOption.MapOption.ReactorDurationOption.GetBool())
         {
             if (!__instance.IsActive)
             {
@@ -58,17 +58,17 @@ public static class MeltdownBooster
             }
             if (MapUtilities.CachedShipStatus.Type == ShipStatus.MapType.Pb)
             {
-                if (__instance.Countdown >= MapOptions.MapOption.PolusReactorTimeLimit.GetFloat())
+                if (__instance.Countdown >= MapOption.MapOption.PolusReactorTimeLimit.GetFloat())
                 {
-                    __instance.Countdown = MapOptions.MapOption.PolusReactorTimeLimit.GetFloat();
+                    __instance.Countdown = MapOption.MapOption.PolusReactorTimeLimit.GetFloat();
                 }
                 return;
             }
             if (MapUtilities.CachedShipStatus.Type == ShipStatus.MapType.Hq)
             {
-                if (__instance.Countdown >= MapOptions.MapOption.MiraReactorTimeLimit.GetFloat())
+                if (__instance.Countdown >= MapOption.MapOption.MiraReactorTimeLimit.GetFloat())
                 {
-                    __instance.Countdown = MapOptions.MapOption.MiraReactorTimeLimit.GetFloat();
+                    __instance.Countdown = MapOption.MapOption.MiraReactorTimeLimit.GetFloat();
                 }
                 return;
             }
@@ -82,7 +82,7 @@ public static class HeliMeltdownBooster
 {
     public static void Prefix(HeliSabotageSystem __instance)
     {
-        if (MapOptions.MapOption.ReactorDurationOption.GetBool())
+        if (MapOption.MapOption.ReactorDurationOption.GetBool())
         {
             if (!__instance.IsActive)
             {
@@ -91,9 +91,9 @@ public static class HeliMeltdownBooster
 
             if (MapUtilities.CachedShipStatus != null)
             {
-                if (__instance.Countdown >= MapOptions.MapOption.AirshipReactorTimeLimit.GetFloat())
+                if (__instance.Countdown >= MapOption.MapOption.AirshipReactorTimeLimit.GetFloat())
                 {
-                    __instance.Countdown = MapOptions.MapOption.AirshipReactorTimeLimit.GetFloat();
+                    __instance.Countdown = MapOption.MapOption.AirshipReactorTimeLimit.GetFloat();
                 }
             }
         }
