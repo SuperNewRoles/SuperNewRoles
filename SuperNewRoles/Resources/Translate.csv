@@ -795,6 +795,7 @@ DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキ�
 FoxName,Fox,妖狐,妖狐
 FoxTitle1,I am Fox!,私は狐です!,我是一只小狐狸！
 SeerName,Seer,シーア,灵媒
+SeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いてインポスターを特定しましょう。
 SeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡
 SeerMode,Mode,モード,灵媒模式
 SeerModeBoth,Show Death Flash + Souls,死の点滅＆幽霊が見える,显示死亡闪光和灵魂
@@ -803,8 +804,10 @@ SeerModeSouls,Show Souls,幽霊が見える,显示灵魂
 SeerLimitSoulDuration,Limit Soul Duration,時間経過で幽霊が消える,灵魂随时间的推移消失
 SeerSoulDuration,Soul Duration,幽霊が見える時間,灵魂从出现到消失经过的时间
 MadSeerName,MadSeer,マッドシーア,叛变的灵媒
+MadSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。
 MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろう,感知内鬼的行动
 EvilSeerName,EvilSeer,イビルシーア,邪恶的灵媒
+EvilSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n相方の行動を把握しサポートに回りましょう。
 EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡
 RemoteSheriffName,Remote Sheriff,リモートシェリフ,超能警长
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう,远距离进行执法
@@ -821,10 +824,13 @@ TaskManagerName,TaskManager,タスクマネージャー,代理人
 TaskManagerTitle1,Finish the task and mount up!,タスクを終わらせ、マウントを取ろう,帮助他人完成所有任务
 SeerFriendsName,SeerFriends,シーアフレンズ,狈族灵媒
 SeerFriendsTitle1,Let's feel the activity of Jackal,ジャッカルの活躍を感じ取ろう,感知豺狼的行动
+SeerFriendsDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。
 JackalSeerName,SeerJackal,ジャッカルシーア,狼族灵媒
 JackalSeerTitle1,Detect the dead and bring victory to your camp!,死者を感知し自陣営に勝利をもたらせ!,感知死亡，为豺狼带来胜利
+JackalSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\nインポスターの行動を把握し、利用しましょう。
 SidekickSeerName,Sidekick(Seer),サイドキック(シーア),狼族灵媒学徒
 SidekickSeerTitle1,Let's help Jackal with the dead detection ability that we got,貰った死者感知能力でジャッカルを助けよう,用死亡感知能力来帮助豺狼
+SidekickSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて、親ジャッカルを守り、時には切り、貢献しましょう。
 AssassinAndMarineName,<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>,<color=#ff0000>アサシン</color>と<color=#AFDFE4>マーリン</color>,<color=#ff0000>阿</color>瓦<color=#AFDFE4>隆</color>
 AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=#ff0000>アサシン</color>の人数,<color=#ff0000>刺客</color>的人数
 MarineSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数
