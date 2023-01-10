@@ -114,7 +114,7 @@ Mr. TeacherShibuya<br>
 Mr. cRox<br>
 
 ## About Contact
-Please use the Discord server:[Discord server](https://discord.gg/hXbDgQzSuK)
+Please use the Discord server:[Discord server](https://discord.gg/Cqfwx82ynN)
 
 ## List of Positions
 It is already on the Discord server.

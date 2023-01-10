@@ -11,7 +11,9 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 [日本語←](https://github.com/ykundesu/SuperNewRoles/blob/master/READMEs/README_jp.md)
 
-# こっちも見てね！:[公式wiki](https://wikiwiki.jp/amas-snr/)
+# [wiki](https://wikiwiki.jp/amas-snr/)
+- 公式情報としては更新を停止しています。
+- 現在有志の皆様に更新して頂いております。
 
 # このMODの特徴
 ## コントローラー対応
@@ -116,7 +118,7 @@ cRox様<br>
 | `T`                     | トイレのドアを開ける | フリープレイ |
 
 ## 連絡について
-Discordサーバーからお願いします:[Discordサーバー](https://discord.gg/hXbDgQzSuK)
+Discordサーバーからお願いします:[Discordサーバー](https://discord.gg/Cqfwx82ynN)
 
 ## 役職一覧
 Discordサーバーには全てすでに乗っています。
