@@ -145,6 +145,27 @@ public static class SyncSetting
                 }
                 optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Jackal.KillCooldown));
                 break;
+            case RoleId.JackalSeer:
+                if (!player.IsMod())
+                {
+                    if (!RoleClass.JackalSeer.IsImpostorLight)
+                    {
+                        optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
+                        var switchSystemJackal = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystemJackal != null && switchSystemJackal.IsActive) optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) / 5);
+                    }
+                }
+                else
+                {
+                    if (RoleClass.JackalSeer.IsImpostorLight)
+                    {
+                        optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
+                        var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
+                    }
+                }
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.JackalSeer.KillCooldown));
+                break;
             case RoleId.Demon:
                 optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Demon.CoolTime));
                 break;

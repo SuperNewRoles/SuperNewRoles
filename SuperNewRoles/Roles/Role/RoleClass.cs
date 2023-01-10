@@ -1795,6 +1795,7 @@ public static class RoleClass
         public static List<PlayerControl> JackalSeerPlayer;
         public static List<PlayerControl> SidekickSeerPlayer;
         public static List<PlayerControl> FakeSidekickSeerPlayer;
+        public static List<int> CreatePlayers;
         public static Color32 color = new(0, 255, 255, byte.MaxValue);
 
         public static List<Vector3> deadBodyPositions;
@@ -1809,6 +1810,7 @@ public static class RoleClass
         public static bool CreateSidekick;
         public static bool NewJackalCreateSidekick;
         public static bool CanCreateSidekick;
+        public static bool CanCreateFriend;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
 
         public static void ClearAndReload()
@@ -1816,6 +1818,7 @@ public static class RoleClass
             JackalSeerPlayer = new();
             SidekickSeerPlayer = new();
             FakeSidekickSeerPlayer = new();
+            CreatePlayers = new();
 
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.JackalSeerLimitSoulDuration.GetBool();
@@ -1828,6 +1831,7 @@ public static class RoleClass
             IsImpostorLight = CustomOptionHolder.JackalSeerIsImpostorLight.GetBool();
             CreateSidekick = CustomOptionHolder.JackalSeerCreateSidekick.GetBool();
             CanCreateSidekick = CustomOptionHolder.JackalSeerCreateSidekick.GetBool();
+            CanCreateFriend = CustomOptionHolder.JackalSeerCreateFriend.GetBool();
             NewJackalCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
         }
     }
