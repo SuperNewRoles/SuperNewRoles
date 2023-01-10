@@ -217,6 +217,8 @@ class RpcShapeshiftPatch
                         SyncSetting.CustomSyncSettings(__instance);
                     }
                     return true;
+                case RoleId.EvilSeer:
+                    return false;//shapeとしての能力は持たせない為、誤爆封じで導入者のみ使用不可にする。
             }
         }
         return true;
