@@ -39,6 +39,7 @@ public class MapOption
     //private static Sprite buttonSprite;
     public static float Default;
     public static float CameraDefault;
+    public static bool CanNotVentAnimation;
     public static void ClearAndReload()
     {
         if (MapOptionSetting.GetBool())
@@ -76,6 +77,7 @@ public class MapOption
             WireTaskNum = WireTaskNumOption.GetInt();
             UseDeadBodyReport = !NotUseReportDeadBody.GetBool();
             UseMeetingButton = !NotUseMeetingButton.GetBool();
+            CanNotVentAnimation = !ModeHandler.IsMode(ModeId.SuperHostRoles) && VentAnimation.GetBool();
             //SuperNewRoles.Patches.AdminPatch.ClearAndReload();
             //SuperNewRoles.Patches.CameraPatch.ClearAndReload();
             //SuperNewRoles.Patches.VitalsPatch.ClearAndReload();
@@ -94,6 +96,7 @@ public class MapOption
             ValidationPolus = false;
             ValidationAirship = false;
             WireTaskIsRandom = false;
+            CanNotVentAnimation = false;
         }
         BlockTool.OldDesyncCommsPlayers = new();
         BlockTool.CameraPlayers = new();

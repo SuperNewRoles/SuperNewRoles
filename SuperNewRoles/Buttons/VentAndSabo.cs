@@ -94,7 +94,7 @@ public static class VentAndSabo
     {
         public static bool Prefix([HarmonyArgument(0)] PlayerControl pc)
         {
-            return !MapOption.MapOption.VentAnimation.GetBool() || pc.AmOwner;
+            return !MapOption.MapOption.CanNotVentAnimation || pc.AmOwner;
         }
     }
     [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent))]
@@ -102,7 +102,7 @@ public static class VentAndSabo
     {
         public static bool Prefix([HarmonyArgument(0)] PlayerControl pc)
         {
-            return !MapOption.MapOption.VentAnimation.GetBool() || pc.AmOwner;
+            return !MapOption.MapOption.CanNotVentAnimation || pc.AmOwner;
         }
     }
     [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
