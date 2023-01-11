@@ -67,7 +67,7 @@ class ReturnClass:
             return Template
         elif (MainClass.GetBool("ImpoColor")):
             print("インポ色を取得しました")
-            return "ImpostorRed"
+            return "RoleClass.ImpostorRed"
         elif (MainClass.GetBool("CrewColor")):
             print("クルー色を取得しました")
             return "new Color32(0, 255, 0, byte.MaxValue)"
@@ -150,9 +150,8 @@ class AllCheck:
         MainClass.GetInput("RoleName")
         MainClass.GetRoleColor()
         MainClass.GetTeam()
-        if (MainClass.GetBool("AddSetting")):
-            MainClass.GetInput("OptionNumber")
-            # MainClass.PlusIDNum()
+        MainClass.GetInput("OptionNumber")
+        # MainClass.PlusIDNum()
 
         MainClass.GetBool("A_ClearTask")
 
@@ -192,8 +191,8 @@ class AllCheck:
     def AllWrite(self):
         # Roles/Role/ROLENAME.cs
         if (MainClass.GetBool("Impo")):
-            namedata = "CustomOptionHolder.Impostor"
-            playerstype = "ImpostorPlayers"
+            namedata = "Impostor"
+            playerstype = "CustomOptionHolder.ImpostorPlayers"
         elif (MainClass.GetBool("Neut")):
             namedata = "Neutral"
             playerstype = "CustomOptionHolder.CrewPlayers"
@@ -202,10 +201,8 @@ class AllCheck:
             playerstype = "CustomOptionHolder.CrewPlayers"
         with open(BasePath+"Roles/"+namedata+"/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), mode="x") as x:
             x.write(
-                ("""using System;
-using System.Collections.Generic;
-using System.Text;
-using SuperNewRoles.Modules;
+                ("""using System.Collections.Generic;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles."""+namedata+""";
 
@@ -230,6 +227,11 @@ public static class ROLENAME
     // ここにコードを書きこんでください
 }""").replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")).replace("PLAYERSTYPE", playerstype).replace("COLORS", MainClass.GetRoleColor()))
 
+        # CustomRPC/CustomRPC.cs
+        MainClass.WriteCodes("Modules/CustomRPC.cs", "//RoleId",
+                             MainClass.GetInput("RoleName")+",\n    //RoleId")
+
+        # Roles/AllRoleSetClass.cs
         MainClass.WriteCodes("Roles/AllRoleSetClass.cs", "// プレイヤーカウント",
                              """RoleId.ROLENAME => ROLENAME.ROLENAMEPlayerCount.GetFloat(),\n            // プレイヤーカウント""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
@@ -285,7 +287,7 @@ public static class ROLENAME
 
         # CustomOption/CustomOptionHolder.cs
         MainClass.WriteCodes("Modules/CustomOptionHolder.cs", "// 表示設定",
-                             """ROLENAME.SetupCustomOptions()\n\n        // 表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                             """ROLENAME.SetupCustomOptions();\n\n        // 表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # シェリフキル
         if (MainClass.GetBool("A_CanSheriffKill_Mad")):
