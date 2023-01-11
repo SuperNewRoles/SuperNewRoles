@@ -37,30 +37,26 @@ public static class RoleHelpers
     }
 
     //We are Mad!
-    public static bool IsMadRoles(this PlayerControl player)
-    {
-        return player.GetRole() is
-            RoleId.Madmate or
-            RoleId.MadMayor or
-            RoleId.MadStuntMan or
-            RoleId.MadHawk or
-            RoleId.MadJester or
-            RoleId.MadSeer or
-            RoleId.BlackCat or
-            RoleId.MadMaker ||
-            (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2);
-        //isMad
-    }
-
-
+    public static bool IsMadRoles(this PlayerControl player) =>
+        (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2) ||
+        player.GetRole() is
+        RoleId.Madmate or
+        RoleId.MadMayor or
+        RoleId.MadStuntMan or
+        RoleId.MadHawk or
+        RoleId.MadJester or
+        RoleId.MadSeer or
+        RoleId.BlackCat or
+        RoleId.MadMaker;
+        // IsMads
 
     //We are JackalFriends!
     public static bool IsFriendRoles(this PlayerControl player) =>
         player.GetRole() is
-            RoleId.JackalFriends or
-            RoleId.SeerFriends or
-            RoleId.MayorFriends;
-    //isFriends
+        RoleId.JackalFriends or
+        RoleId.SeerFriends or
+        RoleId.MayorFriends;
+        // IsFriends
 
 
 
@@ -722,12 +718,12 @@ public static class RoleHelpers
                 RoleClass.Dependents.DependentsPlayer.Add(player);
                 break;
             case RoleId.LoversBreaker:
-                    RoleClass.LoversBreaker.LoversBreakerPlayer.Add(player);
-                    break;
-                case RoleId.Jumbo:
-                    RoleClass.Jumbo.JumboPlayer.Add(player);
-                    break;
-                //ロールアド
+                RoleClass.LoversBreaker.LoversBreakerPlayer.Add(player);
+                break;
+            case RoleId.Jumbo:
+                RoleClass.Jumbo.JumboPlayer.Add(player);
+                break;
+            // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
                 return;
@@ -1194,13 +1190,13 @@ public static class RoleHelpers
             case RoleId.Dependents:
                 RoleClass.Dependents.DependentsPlayer.RemoveAll(ClearRemove);
                 break;
-                case RoleId.LoversBreaker:
-                    RoleClass.LoversBreaker.LoversBreakerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case RoleId.Jumbo:
-                    RoleClass.Jumbo.JumboPlayer.RemoveAll(ClearRemove);
-                    break;
-                //ロールリモベ
+            case RoleId.LoversBreaker:
+                RoleClass.LoversBreaker.LoversBreakerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Jumbo:
+                RoleClass.Jumbo.JumboPlayer.RemoveAll(ClearRemove);
+                break;
+            // ロールリモベ
         }
         ChacheManager.ResetMyRoleChache();
     }
@@ -1265,8 +1261,8 @@ public static class RoleHelpers
             case RoleId.WaveCannonJackal:
             case RoleId.Cupid:
             case RoleId.Dependents:
-                case RoleId.LoversBreaker:
-                //タスククリアか
+            case RoleId.LoversBreaker:
+            // タスククリアか
                 IsTaskClear = true;
                 break;
             case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
@@ -1447,7 +1443,7 @@ public static class RoleHelpers
         RoleId.Cupid or
         RoleId.Pavlovsowner or
         RoleId.LoversBreaker;
-                //第三か
+        // 第三か
     public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
     {
         RoleId MyRole;
@@ -1516,7 +1512,7 @@ public static class RoleHelpers
         try
         {
             if (RoleClass.GhostMechanic.GhostMechanicPlayer.IsCheckListPlayerControl(player)) return RoleId.GhostMechanic;
-            //ここが幽霊役職
+            // ここが幽霊役職
         }
         catch { }
         return RoleId.DefaultRole;
@@ -1703,8 +1699,8 @@ public static class RoleHelpers
             else if (RoleClass.Penguin.PenguinPlayer.IsCheckListPlayerControl(player)) return RoleId.Penguin;
             else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;
             else if (RoleClass.LoversBreaker.LoversBreakerPlayer.IsCheckListPlayerControl(player)) return RoleId.LoversBreaker;
-                else if (RoleClass.Jumbo.JumboPlayer.IsCheckListPlayerControl(player)) return RoleId.Jumbo;
-                //ロールチェック
+            else if (RoleClass.Jumbo.JumboPlayer.IsCheckListPlayerControl(player)) return RoleId.Jumbo;
+            // ロールチェック
         }
         catch (Exception e)
         {
