@@ -178,7 +178,7 @@ public static class VentAndSabo
     {
         public static void Prefix(Vent __instance, ref bool enabled)
         {
-            if (PlayerControl.LocalPlayer.IsMadRoles() && !CustomOptionHolder.MadRolesCanVentMove.GetBool()) enabled = false;
+            if (!Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) && PlayerControl.LocalPlayer.IsMadRoles() && !CustomOptionHolder.MadRolesCanVentMove.GetBool()) enabled = false;
         }
     }
 
