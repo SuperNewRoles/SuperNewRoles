@@ -188,7 +188,7 @@ public class MapOption
         MiraReactorTimeLimit = CustomOption.Create(470, true, CustomOptionType.Generic, "MiraReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
         AirshipReactorTimeLimit = CustomOption.Create(471, true, CustomOptionType.Generic, "AirshipReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
 
-        VentAnimation = CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
+        VentAnimation = CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting); //true時ベントアニメーション無効化
 
         WireTaskIsRandomOption = CustomOption.Create(956, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
         WireTaskNumOption = CustomOption.Create(957, false, CustomOptionType.Generic, "WireTaskNum", 5f, 1f, 8f, 1f, WireTaskIsRandomOption);
