@@ -176,8 +176,6 @@ public enum RoleId
     Dependents,
     LoversBreaker,
     Jumbo,
-    Test,
-    Test,
     //RoleId
 }
 
