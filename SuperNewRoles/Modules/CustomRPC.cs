@@ -15,6 +15,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 using static SuperNewRoles.Patches.FinalStatusPatch;
@@ -177,6 +178,7 @@ public enum RoleId
     LoversBreaker,
     Jumbo,
     Worshiper,
+    Safecracker,
     //RoleId
 }
 
@@ -265,10 +267,28 @@ public enum CustomRPC
     SyncDeathMeeting,
     SetDeviceUseStatus,
     SetLoversBreakerWinner,
+    SafecrackerGuardCount,
 }
 
 public static class RPCProcedure
 {
+    public static void SafecrackerGuardCount(byte id, bool isKillGuard)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        if (isKillGuard)
+        {
+            if (Safecracker.KillGuardCount.ContainsKey(id))
+                Safecracker.KillGuardCount[id] -= 1;
+            else Safecracker.KillGuardCount[id] = Safecracker.SafecrackerMaxKillGuardCount.GetInt() - 1;
+        }
+        else
+        {
+            if (Safecracker.ExiledGuardCount.ContainsKey(id))
+                Safecracker.ExiledGuardCount[id] -= 1;
+            else Safecracker.ExiledGuardCount[id] = Safecracker.SafecrackerMaxExiledGuardCount.GetInt() - 1;
+        }
+    }
     public static void SetDeviceUseStatus(byte devicetype, byte playerId, bool Is, string time)
     {
         DeviceClass.DeviceType type = (DeviceClass.DeviceType)devicetype;
@@ -1618,6 +1638,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetLoversBreakerWinner:
                         SetLoversBreakerWinner(reader.ReadByte());
+                        break;
+                    case CustomRPC.SafecrackerGuardCount:
+                        SafecrackerGuardCount(reader.ReadByte(), reader.ReadBoolean());
                         break;
                 }
             }

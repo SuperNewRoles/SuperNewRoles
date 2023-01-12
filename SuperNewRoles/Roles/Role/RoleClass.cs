@@ -6,6 +6,7 @@ using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
@@ -198,6 +199,7 @@ public static class RoleClass
         LoversBreaker.ClearAndReload();
         Jumbo.ClearAndReload();
         Impostor.MadRole.Worshiper.ClearAndReload();
+        Safecracker.ClearAndReload();
         //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

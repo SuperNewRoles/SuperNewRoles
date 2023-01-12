@@ -749,6 +749,9 @@ public static class RoleHelpers
             case RoleId.Worshiper:
                 Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.Add(player);
                 break;
+            case RoleId.Safecracker:
+                Safecracker.SafecrackerPlayer.Add(player);
+                break;
             //ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1225,7 +1228,10 @@ public static class RoleHelpers
             case RoleId.Worshiper:
                 Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.RemoveAll(ClearRemove);
                 break;
-                //ロールリモベ
+            case RoleId.Safecracker:
+                Safecracker.SafecrackerPlayer.RemoveAll(ClearRemove);
+                break;
+            //ロールリモベ
         }
         ChacheManager.ResetMyRoleChache();
     }
@@ -1293,6 +1299,7 @@ public static class RoleHelpers
             case RoleId.Cupid:
             case RoleId.Dependents:
             case RoleId.LoversBreaker:
+            case RoleId.Safecracker:
                 //タスククリアか
                 IsTaskClear = true;
                 break;
@@ -1350,6 +1357,7 @@ public static class RoleHelpers
             RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerVent.GetBool(),
             RoleId.Dependents => CustomOptionHolder.VampireDependentsCanVent.GetBool(),
             RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsUseVent,
+            RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.UseVent),
             _ => player.IsImpostor(),
         };
     }
@@ -1405,6 +1413,7 @@ public static class RoleHelpers
             RoleId.Minimalist => RoleClass.Minimalist.UseSabo,
             RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerSabo.GetBool(),
             RoleId.Samurai => RoleClass.Samurai.UseSabo,
+            RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.UseSabo),
             _ => player.IsImpostor(),
         };
     }
@@ -1436,6 +1445,7 @@ public static class RoleHelpers
                 RoleId.Photographer => CustomOptionHolder.PhotographerIsImpostorVision.GetBool(),
                 RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalIsImpostorLight.GetBool(),
                 RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsImpostorLight,
+                RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.ImpostorLight),
                 _ => false,
             };
     }
@@ -1475,7 +1485,8 @@ public static class RoleHelpers
         RoleId.Pavlovsowner or
         RoleId.Cupid or
         RoleId.Pavlovsowner or
-        RoleId.LoversBreaker;
+        RoleId.LoversBreaker or
+        RoleId.Safecracker;
         //第三か
     public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
     {
@@ -1734,6 +1745,7 @@ public static class RoleHelpers
             else if (RoleClass.LoversBreaker.LoversBreakerPlayer.IsCheckListPlayerControl(player)) return RoleId.LoversBreaker;
             else if (RoleClass.Jumbo.JumboPlayer.IsCheckListPlayerControl(player)) return RoleId.Jumbo;
             else if (Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.IsCheckListPlayerControl(player)) return RoleId.Worshiper;
+            else if (Safecracker.SafecrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Safecracker;
             //ロールチェック
         }
         catch (Exception e)
