@@ -23,6 +23,7 @@ public static class RoleClass
     public static Color FoxPurple = Palette.Purple;
     public static bool IsStart;
     public static List<byte> BlockPlayers;
+    public static float DefaultKillCoolDown;
 
     public static void ClearAndReloadRoles()
     {
@@ -36,6 +37,7 @@ public static class RoleClass
         LateTask.AddTasks = new();
         BotManager.AllBots = new();
         IsCoolTimeSetted = false;
+        DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
         Agartha.MapData.ClearAndReloads();
         LadderDead.Reset();
@@ -198,8 +200,8 @@ public static class RoleClass
         Penguin.ClearAndReload();
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
-            Jumbo.ClearAndReload();
-            //ロールクリア
+        Jumbo.ClearAndReload();
+        //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();
