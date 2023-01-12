@@ -397,8 +397,7 @@ public static class FixedUpdate
                     RoleId.MadMaker,
                     RoleId.Egoist,
                     RoleId.Demon,
-                    RoleId.Arsonist,
-                    RoleId.RemoteSheriff
+                    RoleId.Arsonist
                 )
             )
         {

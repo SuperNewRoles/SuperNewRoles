@@ -1408,7 +1408,7 @@ static class HudManagerStartPatch
                     }
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Sheriff && ModeHandler.IsMode(ModeId.Default); },
+            (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.RemoteSheriff || (role == RoleId.Sheriff && ModeHandler.IsMode(ModeId.Default))); },
             () =>
             {
                 float killCount = 0f;
@@ -2540,23 +2540,37 @@ static class HudManagerStartPatch
                 if (target && PlayerControl.LocalPlayer.CanMove && !RoleClass.FastMaker.IsCreatedMadmate)
                 {
                     PlayerControl.LocalPlayer.RpcShowGuardEffect(target); // 守護エフェクトの表示
+                    RoleClass.FastMaker.CreatePlayers.Add(PlayerControl.LocalPlayer.PlayerId);
                     Madmate.CreateMadmate(target);//くるぅにして、マッドにする
                     RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことに
-                    SuperNewRolesPlugin.Logger.LogInfo("[FastMakerButton]マッドを作ったから普通のキルボタンに戻すよ!");
+                    FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown > 0 ? RoleClass.DefaultKillCoolDown / 2f : 0.00001f;
+                    FastMakerButton.Timer = FastMakerButton.MaxTimer;
+                    Logger.Info($"守護を発動させている為、設定キルクールの半分の値である<{FastMakerButton.MaxTimer}s>にリセットしました。", "FastMakerButton");
+                    Logger.Info($"マッドを作成しました。IsCreatedMadmate == {RoleClass.FastMaker.IsCreatedMadmate}", "FastMakerButton");
+                }
+                else
+                {
+                    //作ってたらキル
+                    ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
+                    FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown;
+                    FastMakerButton.Timer = FastMakerButton.MaxTimer;
+                    Logger.Info($"Mad作成済みの為キルしました。デフォルトキルクールである<{FastMakerButton.MaxTimer}s>にリセットしました。", "FastMakerButton");
                 }
             },
-            //マッドを作った後はカスタムキルボタンを消去する
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && !RoleClass.FastMaker.IsCreatedMadmate && ModeHandler.IsMode(ModeId.Default); },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && !ModeHandler.IsMode(ModeId.SuperHostRoles); },
             () =>
             {
                 return SetTarget() && PlayerControl.LocalPlayer.CanMove;
             },
-            () => { },
+            () =>
+            {
+                FastMakerButton.MaxTimer = RoleClass.Tuna.IsMeetingEnd ? RoleClass.DefaultKillCoolDown : 10f;
+                FastMakerButton.Timer = FastMakerButton.MaxTimer;
+            },
             __instance.KillButton.graphic.sprite,
-            new Vector3(0, 1, 0),
+            new Vector3(-1, 1, 0),
             __instance,
             __instance.KillButton,
-            //マッドを作る前はキルボタンに擬態する
             KeyCode.Q,
             8,
             () => { return false; }

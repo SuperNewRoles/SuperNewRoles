@@ -513,7 +513,6 @@ static class CheckMurderPatch
                             RoleClass.Truelover.CreatePlayers.Add(__instance.PlayerId);
                             RoleHelpers.SetLovers(__instance, target);
                             RoleHelpers.SetLoversRPC(__instance, target);
-                            //__instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);
                         }
@@ -561,9 +560,7 @@ static class CheckMurderPatch
                             if (target == null || RoleClass.MadMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
                             __instance.RpcShowGuardEffect(target);
                             RoleClass.MadMaker.CreatePlayers.Add(__instance.PlayerId);
-                            target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
-                            target.SetRoleRPC(RoleId.Madmate);
-                            //__instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+                            Madmate.CreateMadmate(target);
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);
                         }
                         else
@@ -632,16 +629,16 @@ static class CheckMurderPatch
                             if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
                             __instance.RpcShowGuardEffect(target);
                             RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
-                            target.SetRoleRPC(RoleId.Madmate);//マッドにする
+                            Madmate.CreateMadmate(target);//クルーにして、マッドにする
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                             RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことにする
-                            SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSHR]マッドを作ったよ");
+                            Logger.Info("マッドメイトを作成しました","FastMakerSHR");
                             return false;
                         }
                         else
                         {
                             //作ってたら普通のキル(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                            SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSHR]作ったので普通のキル");
+                            Logger.Info("マッドメイトを作成済みの為 普通のキル","FastMakerSHR");
                         }
                         break;
                     case RoleId.Jackal:
@@ -653,18 +650,18 @@ static class CheckMurderPatch
                             RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
                             if (!target.IsImpostor())
                             {
-                                Jackal.CreateJackalFriends(target);//守護天使にして クルーにして フレンズにする
+                                Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
                             }
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
-                            SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR]フレンズを作ったよ");
+                            Logger.Info("ジャッカルフレンズを作成しました。","JackalSHR");
                             return false;
                         }
                         else
                         {
                             // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                            if (!RoleClass.Jackal.CanCreateFriend) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] フレンズを作る設定ではない為 普通のキル");
-                            else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 作ったので 普通のキル");
-                            else SuperNewRolesPlugin.Logger.LogInfo("[JackalSHR] 不正なキル");
+                            if (!RoleClass.Jackal.CanCreateFriend) Logger.Info("ジャッカルフレンズを作る設定ではない為 普通のキル","JackalSHR");
+                            else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル","JackalSHR");
+                            else Logger.Info("不正なキル","JackalSHR");
                         }
                         break;
                     case RoleId.JackalSeer:
