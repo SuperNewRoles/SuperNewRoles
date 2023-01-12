@@ -8,6 +8,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using UnhollowerBaseLib;
 using UnityEngine;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
@@ -44,7 +45,8 @@ public enum CustomGameOverReason
     TaskerWin,
     LoversBreakerWin,
     NoWinner,
-    BugEnd
+    BugEnd,
+    SafecrackerWin
 }
 enum WinCondition
 {
@@ -75,7 +77,8 @@ enum WinCondition
     TaskerWin,
     LoversBreakerWin,
     NoWinner,
-    BugEnd
+    BugEnd,
+    SafecrackerWin
 }
 class FinalStatusPatch
 {
@@ -235,6 +238,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.PavlovsTeamWin,("PavlovsTeamWinText",RoleClass.Pavlovsdogs.color)},
                 {WinCondition.LoversBreakerWin,("LoversBreakerName",RoleClass.LoversBreaker.color)},
                 {WinCondition.NoWinner,("NoWinner",Color.white)},
+                {WinCondition.SafecrackerWin,("SafecrackerName",Safecracker.color)}
             };
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {
@@ -564,6 +568,7 @@ public static class OnGameEndPatch
             RoleClass.Pavlovsdogs.PavlovsdogsPlayer,
             RoleClass.Pavlovsowner.PavlovsownerPlayer,
             RoleClass.LoversBreaker.LoversBreakerPlayer,
+            Safecracker.SafecrackerPlayer,
             });
 
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
@@ -609,6 +614,7 @@ public static class OnGameEndPatch
         bool NoWinner = gameOverReason == (GameOverReason)CustomGameOverReason.NoWinner;
         bool CrewmateWin = gameOverReason is (GameOverReason)CustomGameOverReason.CrewmateWin or GameOverReason.HumansByVote or GameOverReason.HumansByTask or GameOverReason.ImpostorDisconnect;
         bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
+        bool SafecrackerWin = gameOverReason == (GameOverReason)CustomGameOverReason.SafecrackerWin;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers) && EndData != null)
         {
             JesterWin = EndData == CustomGameOverReason.JesterWin;
@@ -778,6 +784,11 @@ public static class OnGameEndPatch
                 }
             }
             AdditionalTempData.winCondition = WinCondition.LoversBreakerWin;
+        }
+        else if (SafecrackerWin)
+        {
+            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
+            AdditionalTempData.winCondition = WinCondition.SafecrackerWin;
         }
 
         if (TempData.winners.ToArray().Any(x => x.IsImpostor))
@@ -1165,6 +1176,7 @@ public static class CheckGameEndHnSPatch
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
             if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
             if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForSafecrackerWin(__instance)) return false;
         }
         return true;
     }
@@ -1436,6 +1448,28 @@ public static class CheckGameEndPatch
                         CustomEndGame((GameOverReason)CustomGameOverReason.SuicidalIdeationWin, false);
                         return true;
                     }
+                }
+            }
+        }
+        return false;
+    }
+    public static bool CheckAndEndGameForSafecrackerWin(ShipStatus __instance)
+    {
+        foreach (PlayerControl p in Safecracker.SafecrackerPlayer)
+        {
+            if (p == null) continue;
+            if (!p.Data.Disconnected)
+            {
+                var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                if (p.IsAlive() && playerCompleted >= playerTotal)
+                {
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                    Writer.Write(p.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                    RPCProcedure.ShareWinner(p.PlayerId);
+                    __instance.enabled = false;
+                    CustomEndGame((GameOverReason)CustomGameOverReason.SafecrackerWin, false);
+                    return true;
                 }
             }
         }
