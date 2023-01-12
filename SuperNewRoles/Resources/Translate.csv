@@ -318,6 +318,7 @@ FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺
 FinalStatusRevenge,Revenge,復讐,仇杀
 FinalStatusHitmanKill,Mission accomplished.,任務遂行,遇刺
 FinalStatusHitmanDead,Disposition.,処分,沉江
+FinalStatusWorshiperSelfDeath,Suicide,自決
 
 # Sabotages
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
@@ -549,7 +550,7 @@ ClergymanLightOutMessage,The Clergyman is blocking my view!,聖職者が視界�
 MadmateName,Madmate,マッドメイト,叛徒
 MadmateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助内鬼获得胜利
 MadmateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。
-MadmateIsCheckImpostorSetting,You can check the Impostor.,インポスターが確認できる,可以得知内鬼是谁
+MadmateIsCheckImpostorSetting,Do you have the capacity for fanaticism?,狂信能力を有するか
 MadmateCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量(全タスク内),确认身份需要完成的任务量
 MadmateUseVentSetting,Use Vent,ベントに入れる,可以进入管道
 MadmateVentMoveSetting,Move Vent,ベントで動ける,叛徒可以使用管道
@@ -1178,6 +1179,25 @@ CleanDeadbody,Clean deadbody,死体掃除
 SetRole,Set role,役職付与
 Crewmate,Crewmate,クルーメイト
 Impostor,Impostor,インポスター
+WorshiperName,Worshiper,崇拝者
+WorshiperTitle1,If I can help them，I will spare my life.,あなた方の力になれるのなら 私の命など惜しくはない。
+WorshiperDescription,It has two self-determination abilities.\nIt commits suicide on the spot by using the Shapeshift when SHR and the [Suicide] ability when SNR.\nBy using the kill button，it commits suicide in the form of a sheriff misfire.\nAha，master. My will is yours and my life is for yours...\nCome，master. Let us fulfill that desire.,2つの自決能力を持ちます。\nSHR時はシェイプシフト、SNR時は[自決]能力を使用する事で、その場で自殺します。\nキルボタンを使用する事でシェリフ誤爆のような形で自殺します。\n嗚呼、ご主人。私の意思は貴方の物であり、私の命は貴方の為にあるのです・・・\nさあ、ご主人その願望をかなえましょう。
+WorshiperAbilitySuicideCoolTime,Suicide coold time setting with ability buttons.,アビリティボタンによる自決のクールタイム設定
+WorshiperKillSuicideCoolTime,Suicide coold time setting with kill buttons.,キルボタンによる自決のクールタイム設定
+WorshiperSuicide,Suicide,自決
+SafecrackerName,Safecracker,金庫破り
+SafecrackerTitle1,Open the safe， get the ability and win!,金庫を開けて、能力と勝利を手に入れよう
+SafecrackerDescription,By opening the vault， you can acquire various abilities.\nIt grants you a kill guard， an exiled guard， vent， etc.\nOpen the safe to the end and win the game.,金庫を開けることで、様々な能力を取得することが出来ます。\nキルガードや追放ガード、ベントなどが付与されます。\n金庫を最期まで開け、勝利を手に入れましょう。
+NotAbility,None,なし
+SafecrackerKillGuardTaskSetting,Amount of tasks to be able to kill guard (of all tasks),キルガードが出来るようになるタスク量(全タスク内)
+SafecrackerMaxKillGuardCountSetting,Kill guard max count,キルガードできる回数
+SafecrackerExiledGuardTaskSetting,Amount of tasks to be able to be able to exiled guard (of all tasks),追放ガードが出来るようになるタスク量(全タスク内)
+SafecrackerMaxExiledGuardCountSetting,Exiled guard max count,追放ガードできる回数
+SafecrackerUseVentTaskSetting,Amount of tasks for which the vent will be available (of all tasks),ベントが使用可能になるタスク量(全タスク内)
+SafecrackerUseSaboTaskSetting,Amount of tasks for which sabotage will be available (of all tasks),サボタージュが使用可能になるタスク量(全タスク内)
+SafecrackerIsImpostorLightTaskSetting,Amount of tasks for become an Imposter's field of view (of all tasks),インポスターの視界になるタスク量(全タスク内)
+SafecrackerCheckImpostorTaskSetting,Amount of tasks that will allow you to check the Imposter (of all tasks),インポスターを確認できるようになるタスク量(全タスク内)
+SafecrackerChangeTaskPrefabSetting,Replace all tasks with unlock safe tasks,全タスクを金庫タスクに置き換える
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

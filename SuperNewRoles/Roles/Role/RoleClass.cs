@@ -7,6 +7,7 @@ using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
@@ -44,8 +45,6 @@ public static class RoleClass
         ElectricPatch.Reset();
         SabotageManager.ClearAndReloads();
         Roles.Madmate.CheckedImpostor = new();
-        Roles.MadMayor.CheckedImpostor = new();
-        Roles.MadSeer.CheckedImpostor = new();
         Roles.JackalFriends.CheckedJackal = new();
         Mode.BattleRoyal.Main.VentData = new();
         FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
@@ -201,8 +200,10 @@ public static class RoleClass
         Penguin.ClearAndReload();
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
-            Jumbo.ClearAndReload();
-            //ロールクリア
+        Jumbo.ClearAndReload();
+        Impostor.MadRole.Worshiper.ClearAndReload();
+        Safecracker.ClearAndReload();
+        //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();

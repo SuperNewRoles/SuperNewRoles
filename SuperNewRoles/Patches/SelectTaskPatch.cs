@@ -3,6 +3,11 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
+using SuperNewRoles.Roles.Neutral;
+
 using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Patches;
@@ -47,11 +52,13 @@ public static class SelectTask
         if (JesterIsWinCleartask.GetBool()) taskData.Add(RoleId.Jester, (JesterCommonTask.GetInt(), JesterShortTask.GetInt(), JesterLongTask.GetInt()));
         if (IsMadJesterTaskClearWin.GetBool()) taskData.Add(RoleId.MadJester, (MadJesterCommonTask.GetInt(), MadJesterShortTask.GetInt(), MadJesterLongTask.GetInt()));
         if (GodIsEndTaskWin.GetBool()) taskData.Add(RoleId.God, (GodCommonTask.GetInt(), GodShortTask.GetInt(), GodLongTask.GetInt()));
+        if (Worshiper.WorshiperIsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)) taskData.Add(RoleId.Worshiper, (Worshiper.WorshiperCommonTask.GetInt(), Worshiper.WorshiperShortTask.GetInt(), Worshiper.WorshiperLongTask.GetInt()));
         taskData.Add(RoleId.Workperson, (WorkpersonCommonTask.GetInt(), WorkpersonShortTask.GetInt(), WorkpersonLongTask.GetInt()));
         taskData.Add(RoleId.TaskManager, (TaskManagerCommonTask.GetInt(), TaskManagerShortTask.GetInt(), TaskManagerLongTask.GetInt()));
         taskData.Add(RoleId.SuicidalIdeation, (SuicidalIdeationCommonTask.GetInt(), SuicidalIdeationLongTask.GetInt(), SuicidalIdeationShortTask.GetInt()));
         taskData.Add(RoleId.Tasker, (TaskerCommonTask.GetInt(), TaskerLongTask.GetInt(), TaskerShortTask.GetInt()));
         taskData.Add(RoleId.HamburgerShop, (HamburgerShopCommonTask.GetInt(), HamburgerShopLongTask.GetInt(), HamburgerShopShortTask.GetInt()));
+        taskData.Add(RoleId.Safecracker, (Safecracker.SafecrackerCommonTask.GetInt(), Safecracker.SafecrackerLongTask.GetInt(), Safecracker.SafecrackerShortTask.GetInt()));
 
         //テンプレート
         //taskData.Add(RoleId, (CommonTask.GetInt(), LongTask.GetInt(), ShortTask.GetInt()));

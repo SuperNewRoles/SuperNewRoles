@@ -17,6 +17,7 @@ public static class RoleHelper
             case RoleId.Arsonist:
             case RoleId.ToiletFan:
             case RoleId.NiceButtoner:
+            case RoleId.Worshiper when !SuperNewRoles.Roles.Impostor.MadRole.Worshiper.IsImpostorLight:
                 IsCrewVision = true;
                 break;
                 //クルー視界か
@@ -76,7 +77,7 @@ public static class RoleHelper
                 return RoleClass.MadSeer.IsUseVent;
             case RoleId.SeerFriends:
                 return RoleClass.SeerFriends.IsUseVent;
-                //ベント無限か
+            //ベント無限か
         }
         return IsZeroCoolEngineer;
     }

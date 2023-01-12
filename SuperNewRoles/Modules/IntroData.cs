@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;
@@ -71,7 +72,8 @@ public class IntroData
         if (RoleId is RoleId.DefaultRole)
         {
             return p != null && p.IsImpostor() ? ImpostorIntro : CrewmateIntro;
-        } else if(RoleId is RoleId.Jumbo)
+        }
+        else if (RoleId is RoleId.Jumbo)
         {
             return p == null ? JumboIntro : p.IsImpostor() ? EvilJumboIntro : NiceJumboIntro;
         }
@@ -252,5 +254,7 @@ public class IntroData
     public static IntroData JumboIntro = new("Jumbo", RoleClass.Jumbo.color, 1, RoleId.Jumbo, TeamRoleType.Impostor);
     public static IntroData NiceJumboIntro = new("NiceJumbo", CrewmateIntro.color, 1, RoleId.Jumbo, TeamRoleType.Crewmate);
     public static IntroData EvilJumboIntro = new("EvilJumbo", ImpostorIntro.color, 1, RoleId.Jumbo, TeamRoleType.Impostor);
+    public static IntroData WorshiperIntro = new("Worshiper", Roles.Impostor.MadRole.Worshiper.color, 1, RoleId.Worshiper);
+    public static IntroData SafecrackerIntro = new("Safecracker", Safecracker.color, 1, RoleId.Safecracker, TeamRoleType.Neutral);
     //イントロオブジェ
 }
