@@ -177,6 +177,7 @@ public enum RoleId
     Dependents,
     LoversBreaker,
     Jumbo,
+    Worshiper,
     Safecracker,
     //RoleId
 }

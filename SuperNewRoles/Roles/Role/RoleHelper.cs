@@ -47,6 +47,7 @@ public static class RoleHelpers
             RoleId.MadJester or
             RoleId.MadSeer or
             RoleId.BlackCat or
+            RoleId.Worshiper or
             RoleId.MadMaker ||
             (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2);
         //isMad
@@ -145,7 +146,8 @@ public static class RoleHelpers
     public static void SetLovers(PlayerControl player1, PlayerControl player2)
     {
         List<PlayerControl> sets = new() { player1, player2 };
-        if (player1.IsRole(RoleId.LoversBreaker) || player2.IsRole(RoleId.LoversBreaker)) {
+        if (player1.IsRole(RoleId.LoversBreaker) || player2.IsRole(RoleId.LoversBreaker))
+        {
             if (player1.IsRole(RoleId.LoversBreaker)) RoleClass.Lovers.FakeLovers.Add(player1.PlayerId);
             else RoleClass.Lovers.FakeLovers.Add(player2.PlayerId);
             RoleClass.Lovers.FakeLoverPlayers.Add(sets);
@@ -251,6 +253,23 @@ public static class RoleHelpers
 
     public static bool IsJackalTeamSidekick(this PlayerControl player)
         => player.GetRole() is RoleId.Sidekick or RoleId.SidekickSeer;
+
+    public static void UseShapeshift()
+    {
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+        foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+        {
+            p.Data.Role.NameColor = Color.white;
+
+            CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+
+            if (p.PlayerControl.IsImpostor())
+            {
+                p.Data.Role.NameColor = RoleClass.ImpostorRed;
+            }
+        }
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+    }
 
     public static void SetRole(this PlayerControl player, RoleId role)
     {
@@ -726,6 +745,9 @@ public static class RoleHelpers
                 break;
             case RoleId.Jumbo:
                 RoleClass.Jumbo.JumboPlayer.Add(player);
+                break;
+            case RoleId.Worshiper:
+                Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.Add(player);
                 break;
             case RoleId.Safecracker:
                 Safecracker.SafecrackerPlayer.Add(player);
@@ -1203,10 +1225,13 @@ public static class RoleHelpers
             case RoleId.Jumbo:
                 RoleClass.Jumbo.JumboPlayer.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Worshiper:
+                Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.RemoveAll(ClearRemove);
+                break;
             case RoleId.Safecracker:
                 Safecracker.SafecrackerPlayer.RemoveAll(ClearRemove);
                 break;
-                //ロールリモベ
+            //ロールリモベ
         }
         ChacheManager.ResetMyRoleChache();
     }
@@ -1243,6 +1268,8 @@ public static class RoleHelpers
             case RoleId.MadKiller:
             case RoleId.MadHawk:
             case RoleId.MadJester:
+            case RoleId.MadSeer:
+            case RoleId.Worshiper:
             case RoleId.FalseCharges:
             case RoleId.Fox:
             case RoleId.TeleportingJackal:
@@ -1329,6 +1356,7 @@ public static class RoleHelpers
             RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalUseVent.GetBool(),
             RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerVent.GetBool(),
             RoleId.Dependents => CustomOptionHolder.VampireDependentsCanVent.GetBool(),
+            RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsUseVent,
             RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.UseVent),
             _ => player.IsImpostor(),
         };
@@ -1416,6 +1444,7 @@ public static class RoleHelpers
                 RoleId.Pavlovsdogs => CustomOptionHolder.PavlovsdogIsImpostorView.GetBool(),
                 RoleId.Photographer => CustomOptionHolder.PhotographerIsImpostorVision.GetBool(),
                 RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalIsImpostorLight.GetBool(),
+                RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsImpostorLight,
                 RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.ImpostorLight),
                 _ => false,
             };
@@ -1456,7 +1485,7 @@ public static class RoleHelpers
         RoleId.Pavlovsowner or
         RoleId.Cupid or
         RoleId.Pavlovsowner or
-        RoleId.LoversBreaker or 
+        RoleId.LoversBreaker or
         RoleId.Safecracker;
         //第三か
     public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
@@ -1715,6 +1744,7 @@ public static class RoleHelpers
             else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;
             else if (RoleClass.LoversBreaker.LoversBreakerPlayer.IsCheckListPlayerControl(player)) return RoleId.LoversBreaker;
             else if (RoleClass.Jumbo.JumboPlayer.IsCheckListPlayerControl(player)) return RoleId.Jumbo;
+            else if (Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.IsCheckListPlayerControl(player)) return RoleId.Worshiper;
             else if (Safecracker.SafecrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Safecracker;
             //ロールチェック
         }

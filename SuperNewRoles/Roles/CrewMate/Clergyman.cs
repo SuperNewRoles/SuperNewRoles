@@ -34,6 +34,7 @@ class Clergyman
             || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadJester)
             || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadHawk)
             || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadSeer)
+            || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.Worshiper)
             || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.MadMaker)
             || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.Jackal)
             || CountChanger.IsChange(PlayerControl.LocalPlayer, RoleId.Sidekick)
