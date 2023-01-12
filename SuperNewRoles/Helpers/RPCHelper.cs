@@ -228,11 +228,6 @@ public static class RPCHelper
     public static void ResetAndSetRole(this PlayerControl target, RoleId Id)
     {
         target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-        {
-            target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にする
-            Logger.Info($"[{target.GetDefaultName()}] の役職を [守護天使] に変更しました。");
-        }
         target.SetRoleRPC(Id);
         Logger.Info($"[{target.GetDefaultName()}] の役職を [{Id}] に変更しました。");
     }
