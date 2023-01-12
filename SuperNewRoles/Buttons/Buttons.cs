@@ -1134,12 +1134,19 @@ static class HudManagerStartPatch
                             }
                         }
                     }
-                    bool IsFakeSidekickSeer = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSeerSidekick, target);
-                    MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekickSeer, SendOption.Reliable, -1);
-                    killWriter.Write(target.PlayerId);
-                    killWriter.Write(IsFakeSidekickSeer);
-                    AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                    RPCProcedure.CreateSidekickSeer(target.PlayerId, IsFakeSidekickSeer);
+                    if (RoleClass.JackalSeer.CanCreateFriend)
+                    {
+                        Jackal.CreateJackalFriends(target); //クルーにして フレンズにする
+                    }
+                    else
+                    {
+                        bool IsFakeSidekickSeer = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSeerSidekick, target);
+                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekickSeer, SendOption.Reliable, -1);
+                        killWriter.Write(target.PlayerId);
+                        killWriter.Write(IsFakeSidekickSeer);
+                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                        RPCProcedure.CreateSidekickSeer(target.PlayerId, IsFakeSidekickSeer);
+                    }
                     RoleClass.JackalSeer.CanCreateSidekick = false;
                 }
             },

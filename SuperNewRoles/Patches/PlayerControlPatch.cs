@@ -217,6 +217,8 @@ class RpcShapeshiftPatch
                         SyncSetting.CustomSyncSettings(__instance);
                     }
                     return true;
+                case RoleId.EvilSeer:
+                    return false;//shapeとしての能力は持たせない為、誤爆封じで導入者のみ使用不可にする。
             }
         }
         return true;
@@ -486,16 +488,6 @@ static class CheckMurderPatch
                 Logger.Info("SHR", "CheckMurder");
                 if (RoleClass.Assassin.TriggerPlayer != null) return false;
                 Logger.Info("SHR-Assassin.TriggerPlayerを通過", "CheckMurder");
-                foreach (var p in Seer.Seers)
-                {
-                    if (p == null) continue;
-                    foreach (var p2 in p)
-                    {
-                        if (p2 == null) continue;
-                        if (!p2.IsMod())
-                            p2.ShowReactorFlash(1.5f);
-                    }
-                }
                 switch (__instance.GetRole())
                 {
                     case RoleId.RemoteSheriff:
@@ -670,6 +662,29 @@ static class CheckMurderPatch
                             if (!RoleClass.Jackal.CanCreateFriend) Logger.Info("ジャッカルフレンズを作る設定ではない為 普通のキル","JackalSHR");
                             else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル","JackalSHR");
                             else Logger.Info("不正なキル","JackalSHR");
+                        }
+                        break;
+                    case RoleId.JackalSeer:
+                        if (!RoleClass.JackalSeer.CreatePlayers.Contains(__instance.PlayerId) && RoleClass.JackalSeer.CanCreateFriend)//まだ作ってなくて、設定が有効の時
+                        {
+                            Logger.Info("未作成 且つ 設定が有効である為 フレンズを作成", "JackalSeerSHR");
+                            if (target == null || RoleClass.JackalSeer.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                            __instance.RpcShowGuardEffect(target);
+                            RoleClass.JackalSeer.CreatePlayers.Add(__instance.PlayerId);
+                            if (!target.IsImpostor())
+                            {
+                                Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
+                            }
+                            Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
+                            Logger.Info("ジャッカルフレンズを作成しました。", "JackalSeerSHR");
+                            return false;
+                        }
+                        else
+                        {
+                            // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
+                            if (!RoleClass.JackalSeer.CanCreateFriend) Logger.Info("ジャッカルフレンズを作る設定ではない為 普通のキル", "JackalSeerSHR");
+                            else if (RoleClass.JackalSeer.CanCreateFriend && RoleClass.JackalSeer.CreatePlayers.Contains(__instance.PlayerId)) Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSeerSHR");
+                            else Logger.Info("不正なキル", "JackalSeerSHR");
                         }
                         break;
                     case RoleId.DarkKiller:

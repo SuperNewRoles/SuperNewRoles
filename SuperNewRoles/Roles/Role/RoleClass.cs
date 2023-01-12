@@ -1581,7 +1581,7 @@ public static class RoleClass
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.SeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.SeerSoulDuration.GetFloat();
-            mode = CustomOptionHolder.SeerMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.SeerMode.GetSelection();
 
             Roles.Seer.FullScreenRenderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen, FastDestroyableSingleton<HudManager>.Instance.transform);
         }
@@ -1607,7 +1607,7 @@ public static class RoleClass
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.MadSeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.MadSeerSoulDuration.GetFloat();
-            mode = CustomOptionHolder.MadSeerMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.MadSeerMode.GetSelection();
 
             IsImpostorCheck = CustomOptionHolder.MadSeerIsCheckImpostor.GetBool();
             IsUseVent = CustomOptionHolder.MadSeerIsUseVent.GetBool();
@@ -1642,7 +1642,7 @@ public static class RoleClass
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.EvilSeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.EvilSeerSoulDuration.GetFloat();
-            mode = CustomOptionHolder.EvilSeerMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.EvilSeerMode.GetSelection();
             IsCreateMadmate = CustomOptionHolder.EvilSeerMadmateSetting.GetBool();
         }
     }
@@ -1776,7 +1776,7 @@ public static class RoleClass
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.SeerFriendsLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.SeerFriendsSoulDuration.GetFloat();
-            mode = CustomOptionHolder.SeerFriendsMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.SeerFriendsMode.GetSelection();
 
             IsJackalCheck = CustomOptionHolder.SeerFriendsIsCheckJackal.GetBool();
             IsUseVent = CustomOptionHolder.SeerFriendsIsUseVent.GetBool();
@@ -1799,6 +1799,7 @@ public static class RoleClass
         public static List<PlayerControl> JackalSeerPlayer;
         public static List<PlayerControl> SidekickSeerPlayer;
         public static List<PlayerControl> FakeSidekickSeerPlayer;
+        public static List<int> CreatePlayers;
         public static Color32 color = JackalBlue;
 
         public static List<Vector3> deadBodyPositions;
@@ -1813,6 +1814,7 @@ public static class RoleClass
         public static bool CreateSidekick;
         public static bool NewJackalCreateSidekick;
         public static bool CanCreateSidekick;
+        public static bool CanCreateFriend;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
 
         public static void ClearAndReload()
@@ -1820,11 +1822,12 @@ public static class RoleClass
             JackalSeerPlayer = new();
             SidekickSeerPlayer = new();
             FakeSidekickSeerPlayer = new();
+            CreatePlayers = new();
 
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.JackalSeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.JackalSeerSoulDuration.GetFloat();
-            mode = CustomOptionHolder.JackalSeerMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.JackalSeerMode.GetSelection();
 
             KillCooldown = CustomOptionHolder.JackalSeerKillCooldown.GetFloat();
             IsUseVent = CustomOptionHolder.JackalSeerUseVent.GetBool();
@@ -1832,6 +1835,7 @@ public static class RoleClass
             IsImpostorLight = CustomOptionHolder.JackalSeerIsImpostorLight.GetBool();
             CreateSidekick = CustomOptionHolder.JackalSeerCreateSidekick.GetBool();
             CanCreateSidekick = CustomOptionHolder.JackalSeerCreateSidekick.GetBool();
+            CanCreateFriend = CustomOptionHolder.JackalSeerCreateFriend.GetBool();
             NewJackalCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
         }
     }

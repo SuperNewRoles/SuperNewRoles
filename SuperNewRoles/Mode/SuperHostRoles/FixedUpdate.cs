@@ -393,6 +393,7 @@ public static class FixedUpdate
             (PlayerControl.LocalPlayer.IsRole
                 (
                     RoleId.Jackal,
+                    RoleId.JackalSeer,
                     RoleId.MadMaker,
                     RoleId.Egoist,
                     RoleId.Demon,
