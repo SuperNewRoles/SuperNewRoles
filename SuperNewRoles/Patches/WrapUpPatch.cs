@@ -83,6 +83,7 @@ class WrapUpPatch
         SerialKiller.WrapUp();
         Assassin.WrapUp();
         CountChanger.CountChangerPatch.WrapUpPatch();
+        RoleClass.Tuna.IsMeetingEnd = true;
         CustomButton.MeetingEndedUpdate();
 
         PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
@@ -95,7 +96,6 @@ class WrapUpPatch
         Roles.Impostor.Matryoshka.WrapUp();
         Roles.Neutral.PartTimer.WrapUp();
         Roles.Crewmate.KnightProtected_Patch.WrapUp();
-        RoleClass.Tuna.IsMeetingEnd = true;
         Bestfalsecharge.WrapUp();
         if (AmongUsClient.Instance.AmHost)
         {
