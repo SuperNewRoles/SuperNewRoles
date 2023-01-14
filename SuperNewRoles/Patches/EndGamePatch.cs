@@ -1214,6 +1214,7 @@ public static class CheckGameEndPatch
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
             if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
             if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForSafecrackerWin(__instance)) return false;
             if (!PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
         }
         return false;
