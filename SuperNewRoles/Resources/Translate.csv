@@ -1162,6 +1162,13 @@ JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボにな
 JumboMaxSize,Maximum size,最大サイズ
 JumboSpeedUpSize,Growth speed,成長スピード
 JumboWalkSoundSize,Loudness of footsteps,足音の大きさ
+FierFoxName,Fier Fox,炎狐
+FierFoxTitle1,I am Fier Fox!,私は炎狐です！
+FierFoxCanKillCrewmateSetting,Can kill the crewmate camp,クルーメイト陣営をキルできる
+FierFoxCanKillImpostorSetting,Can kill the imposter camp,インポスター陣営をキルできる
+FierFoxCanKillNeutralSetting,Can kill the third camp.,第三陣営をキルできる
+FierFoxCanKillLoversSetting,Can kill the lovers,ラバーズをキルできる
+FierFoxIsCheckFoxSetting,You can check the fox,妖狐を視認できる
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

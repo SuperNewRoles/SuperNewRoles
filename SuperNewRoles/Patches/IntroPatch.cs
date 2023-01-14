@@ -4,6 +4,7 @@ using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -216,13 +217,26 @@ public class IntroPatch
                         int FoxNum = 0;
                         foreach (PlayerControl player in CachedPlayer.AllPlayers)
                         {
-                            if (player.IsRole(RoleId.Fox))
+                            if (player.IsRole(RoleId.Fox) || (player.IsRole(RoleId.FierFox) && FierFox.FierFoxIsCheckFox.GetBool()))
                             {
                                 FoxNum++;
                                 FoxTeams.Add(player);
                             }
                         }
                         yourTeam = FoxTeams;
+                        break;
+                    case RoleId.FierFox:
+                        Il2CppSystem.Collections.Generic.List<PlayerControl> FierFoxTeams = new();
+                        int FierFoxNum = 0;
+                        foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                        {
+                            if (player.IsRole(RoleId.FierFox) || (player.IsRole(RoleId.Fox) && FierFox.FierFoxIsCheckFox.GetBool()))
+                            {
+                                FierFoxNum++;
+                                FierFoxTeams.Add(player);
+                            }
+                        }
+                        yourTeam = FierFoxTeams;
                         break;
                     default:
                         if (PlayerControl.LocalPlayer.IsImpostor())

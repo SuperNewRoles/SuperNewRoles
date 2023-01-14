@@ -5,7 +5,9 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
@@ -187,7 +189,7 @@ public static class RoleClass
         WaveCannon.ClearAndReload();
         Doppelganger.ClearAndReload();
         Werewolf.ClearAndReload();
-        Crewmate.Knight.ClearAndReload();
+        Knight.ClearAndReload();
         Pavlovsdogs.ClearAndReload();
         Pavlovsowner.ClearAndReload();
         WaveCannonJackal.ClearAndReload();
@@ -198,8 +200,9 @@ public static class RoleClass
         Penguin.ClearAndReload();
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
-            Jumbo.ClearAndReload();
-            //ロールクリア
+        Jumbo.ClearAndReload();
+        FierFox.ClearAndReload();
+        //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();

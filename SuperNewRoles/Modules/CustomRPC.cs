@@ -175,8 +175,9 @@ public enum RoleId
     Penguin,
     Dependents,
     LoversBreaker,
-        Jumbo,
-        //RoleId
+    Jumbo,
+    FierFox,
+    //RoleId
 }
 
 public enum CustomRPC

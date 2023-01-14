@@ -4,6 +4,7 @@ using System.Linq;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnityEngine;
 
@@ -436,6 +437,19 @@ public class SetNameUpdate
                     else
                     {
                         SetNamesClass.SetPlayerNameText(RoleClass.PartTimer.CurrentTarget, RoleClass.PartTimer.CurrentTarget.NameText().text + ModHelpers.Cs(RoleClass.PartTimer.color, "◀"));
+                    }
+                }
+            }
+            else if (LocalRole is RoleId.Fox or RoleId.FierFox)
+            {
+                List<PlayerControl> foxs = new(RoleClass.Fox.FoxPlayer);
+                foxs.AddRange(FierFox.FierFoxPlayer);
+                foreach (PlayerControl p in foxs)
+                {
+                    if (p.IsRole(PlayerControl.LocalPlayer.GetRole()) || FierFox.FierFoxIsCheckFox.GetBool())
+                    {
+                        SetNamesClass.SetPlayerRoleNames(p);
+                        SetNamesClass.SetPlayerNameColors(p);
                     }
                 }
             }
