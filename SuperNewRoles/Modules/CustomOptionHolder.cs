@@ -625,6 +625,7 @@ public class CustomOptionHolder
     public static CustomOption JackalSeerUseSabo;
     public static CustomOption JackalSeerIsImpostorLight;
     public static CustomOption JackalSeerCreateSidekick;
+    public static CustomOption JackalSeerCreateFriend;
     public static CustomOption JackalSeerSKCooldown;
     public static CustomOption JackalSeerNewJackalCreateSidekick;
 
@@ -1106,7 +1107,7 @@ public class CustomOptionHolder
 
         RemoteSheriffOption = SetupCustomRoleOption(44, true, RoleId.RemoteSheriff);
         RemoteSheriffPlayerCount = Create(45, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RemoteSheriffOption);
-        RemoteSheriffCoolTime = Create(46, true, CustomOptionType.Crewmate, ModTranslation.GetString("SheriffCooldownSetting"), 30f, 2.5f, 60f, 2.5f, RemoteSheriffOption, format: "unitSeconds");
+        RemoteSheriffCoolTime = Create(46, false, CustomOptionType.Crewmate, ModTranslation.GetString("SheriffCooldownSetting"), 30f, 2.5f, 60f, 2.5f, RemoteSheriffOption, format: "unitSeconds");
         RemoteSheriffAlwaysKills = Create(733, true, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, RemoteSheriffOption);
         RemoteSheriffNeutralKill = Create(47, true, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, RemoteSheriffOption);
         RemoteSheriffLoversKill = Create(48, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, RemoteSheriffOption);
@@ -1130,7 +1131,7 @@ public class CustomOptionHolder
         JackalIsImpostorLight = Create(63, true, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, JackalOption);
         JackalCreateFriend = Create(666, true, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, JackalOption);
         JackalCreateSidekick = Create(64, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalOption);
-        JackalSKCooldown = Create(1108, true, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalCreateSidekick, format: "unitSeconds");
+        JackalSKCooldown = Create(1108, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalCreateSidekick, format: "unitSeconds");
         JackalNewJackalCreateSidekick = Create(65, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalCreateSidekick);
 
         TeleporterOption = SetupCustomRoleOption(66, false, RoleId.Teleporter);
@@ -1521,17 +1522,18 @@ public class CustomOptionHolder
         SeerFriendsLongTask = SeerFriendsoption.Item3;
         SeerFriendsCheckJackalTask = Create(374, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, SeerFriendsIsCheckJackal);
 
-        JackalSeerOption = SetupCustomRoleOption(375, false, RoleId.JackalSeer);
-        JackalSeerPlayerCount = Create(376, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalSeerOption);
+        JackalSeerOption = SetupCustomRoleOption(375, true, RoleId.JackalSeer);
+        JackalSeerPlayerCount = Create(376, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalSeerOption);
         JackalSeerMode = Create(377, false, CustomOptionType.Neutral, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, JackalSeerOption);
         JackalSeerLimitSoulDuration = Create(378, false, CustomOptionType.Neutral, "SeerLimitSoulDuration", false, JackalSeerOption);
         JackalSeerSoulDuration = Create(379, false, CustomOptionType.Neutral, "SeerSoulDuration", 15f, 0f, 120f, 5f, JackalSeerLimitSoulDuration, format: "unitCouples");
         JackalSeerKillCooldown = Create(380, false, CustomOptionType.Neutral, "JackalCooldownSetting", 30f, 2.5f, 60f, 2.5f, JackalSeerOption, format: "unitSeconds");
-        JackalSeerUseVent = Create(381, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalSeerOption);
-        JackalSeerUseSabo = Create(382, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalSeerOption);
-        JackalSeerIsImpostorLight = Create(383, false, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, JackalSeerOption);
+        JackalSeerUseVent = Create(381, true, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalSeerOption);
+        JackalSeerUseSabo = Create(382, true, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalSeerOption);
+        JackalSeerIsImpostorLight = Create(383, true, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, JackalSeerOption);
         JackalSeerCreateSidekick = Create(384, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalSeerOption);
-        JackalSeerSKCooldown = Create(1109, true, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalSeerCreateSidekick, format: "unitSeconds");
+        JackalSeerCreateFriend = Create(1143, true, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, JackalSeerOption);
+        JackalSeerSKCooldown = Create(1109, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalSeerCreateSidekick, format: "unitSeconds");
         JackalSeerNewJackalCreateSidekick = Create(385, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalSeerCreateSidekick);
 
         AssassinAndMarineOption = new(386, true, CustomOptionType.Impostor, "AssassinAndMarineName", Color.white, 1);
