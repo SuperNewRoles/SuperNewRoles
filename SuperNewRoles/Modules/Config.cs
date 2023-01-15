@@ -30,7 +30,9 @@ public static class ConfigRoles
     public static bool IsUpdated = false;
     public static void Load()
     {
-        IsSendAnalyticsPopupViewd = SuperNewRolesPlugin.Instance.Config.ContainsKey(new ConfigDefinition("Custom", "IsSendAnalytics"));
+        var issendanaly = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsSendAnalyticsViewd", false);
+        IsSendAnalyticsPopupViewd = issendanaly.Value;
+        issendanaly.Value = true;
         CustomCosmetics.CustomCosmeticsMenus.Patch.ObjectData.SelectedPreset = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Selected Closet Preset", 0);
         StreamerMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Enable Streamer Mode", false);
         AutoUpdate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Auto Update", true);
