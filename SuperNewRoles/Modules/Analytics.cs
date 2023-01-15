@@ -38,7 +38,7 @@ public static class Analytics
                 Title.transform.localScale = Vector3.one * 4.5f;
                 Popup.TextAreaTMP.transform.localPosition = new(0, 0.8f, -0.5f);
                 Popup.TextAreaTMP.transform.localScale = Vector3.one * 1.4f;
-                Popup.TextAreaTMP.text = "SuperNewRolesをさらに良いMODにするため、\n使用した役職などをサーバーに送信する機能を作りました。\nこの情報はSuperNewRolesの開発者が見ます。詳細は以下のページを参照してください。\n保存するかは設定で変更できます。\nあなたのプレイヤー名などの個人を特定できる要素は送信しません。\nhttps://github.com/";
+                Popup.TextAreaTMP.text = "SuperNewRolesをさらに良いMODにするため、\n使用した役職などをサーバーに送信する機能を作りました。\nこの情報はSuperNewRolesの開発者が見ることができます。詳細は以下のページを参照してください。\n保存するかは設定で変更できます。\nあなたのプレイヤー名などの個人を特定できる要素は送信しません。\n<link href=\"https://github.com/ykundesu/SuperNewRoles/wiki/解析について\">https://github.com/ykundesu/SuperNewRoles/wiki/解析について</link>";
                 Popup.destroyOnClose = true;
             }
         }
