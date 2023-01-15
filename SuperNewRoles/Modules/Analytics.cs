@@ -31,7 +31,7 @@ public static class Analytics
                 Popup.gameObject.SetActive(true);
                 Popup.transform.FindChild("Background").localScale = new(2, 2.8f, 1);
                 Popup.transform.FindChild("ExitGame").localPosition = new(0f, -2f, -0.5f);
-                Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().text = "了解！";
+                Popup.transform.FindChild("ExitGame").GetComponentInChildren<TextMeshPro>().text = ModTranslation.GetString("AnalyticsOK");
                 TextMeshPro Title = GameObject.Instantiate(Popup.TextAreaTMP, Popup.transform);
                 Title.text = ModTranslation.GetString("Analytics");
                 Title.transform.localPosition = new(0.15f, 2, -0.5f);
