@@ -99,7 +99,7 @@ public static class SyncSetting
                 break;
             case RoleId.RemoteSheriff:
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
-                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, KillCoolSet(RoleClass.RemoteSheriff.KillCoolTime));
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
                 if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId) && RoleClass.RemoteSheriff.KillCount[player.PlayerId] < 1)
                 {
                     optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
