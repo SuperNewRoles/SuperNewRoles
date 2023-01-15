@@ -933,7 +933,9 @@ public static class OnGameEndPatch
                 isreset = true;
             }
         }
-        foreach (PlayerControl player in RoleClass.Fox.FoxPlayer)
+        var foxPlayers = RoleClass.Fox.FoxPlayer;
+        foxPlayers.AddRange(foxPlayers);
+        foreach (PlayerControl player in foxPlayers)
         {
             if (player.IsAlive())
             {
