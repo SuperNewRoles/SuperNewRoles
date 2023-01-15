@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -487,6 +488,7 @@ class MeetingHudStartPatch
 {
     public static void Postfix(MeetingHud __instance)
     {
+        Logger.Info("会議開始時の処理 開始", "MeetingHudStartPatch");
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             new LateTask(() =>
@@ -494,6 +496,7 @@ class MeetingHudStartPatch
                 SyncSetting.CustomSyncSettings();
             }, 3f, "StartMeeting CustomSyncSetting");
         }
+        Roles.Crewmate.Celebrity.TimerStop();
         Roles.Crewmate.Knight.ProtectedPlayer = null;
         Roles.Crewmate.Knight.GuardedPlayers = new();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
@@ -528,6 +531,7 @@ class MeetingHudStartPatch
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
             }, RoleClass.Werewolf.GetButtonSprite(), (PlayerControl player) => player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId);
         }
+        Logger.Info("会議開始時の処理 終了", "MeetingHudStartPatch");
     }
     public static void CreateMeetingButton(MeetingHud __instance, string ButtonName, Action<int, MeetingHud> OnClick, Sprite sprite, Func<PlayerControl, bool> CheckCanButton)
     {

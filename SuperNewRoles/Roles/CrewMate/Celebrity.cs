@@ -35,7 +35,7 @@ namespace SuperNewRoles.Roles.Crewmate
 
         public static void TimerStop()
         {
-            timer.Stop();
+            if (timer != null) timer.Stop();
             Logger.Info("発光用タイマーを止めました。", "CelebrityFlash");
         }
 
