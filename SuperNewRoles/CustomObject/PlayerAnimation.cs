@@ -38,6 +38,7 @@ public class PlayerAnimation
         PlayerId = Player.PlayerId;
         gameObject = new("PlayerAnimation");
         transform = gameObject.transform;
+        transform.localScale = Vector3.one * 0.5f;
         transform.SetParent(Player.cosmetics.normalBodySprite.BodySprite.transform.parent);
         SpriteRender = gameObject.AddComponent<SpriteRenderer>();
         PlayerAnimations.Add(this);
