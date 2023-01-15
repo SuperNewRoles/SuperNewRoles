@@ -24,6 +24,7 @@ public static class RoleClass
     public static Color FoxPurple = Palette.Purple;
     public static bool IsStart;
     public static List<byte> BlockPlayers;
+    public static float DefaultKillCoolDown;
 
     public static void ClearAndReloadRoles()
     {
@@ -37,6 +38,7 @@ public static class RoleClass
         LateTask.AddTasks = new();
         BotManager.AllBots = new();
         IsCoolTimeSetted = false;
+        DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
         Agartha.MapData.ClearAndReloads();
         LadderDead.Reset();
@@ -1483,7 +1485,7 @@ public static class RoleClass
             CelebrityPlayer = new();
             ChangeRoleView = CustomOptionHolder.CelebrityChangeRoleView.GetBool();
             ViewPlayers = new();
-            FlashTime = PlayerControl.GameOptions.KillCooldown >= 5 ? PlayerControl.GameOptions.KillCooldown * 1000 : 5000;
+            FlashTime = DefaultKillCoolDown >= 5 ? DefaultKillCoolDown * 1000 : 5000;
         }
     }
     public static class Nocturnality
