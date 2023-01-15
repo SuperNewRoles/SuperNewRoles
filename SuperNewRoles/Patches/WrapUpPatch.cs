@@ -114,7 +114,7 @@ class WrapUpPatch
         Vampire.SetActiveBloodStaiWrapUpPatch();
         foreach(PlayerControl p in PlayerControl.AllPlayerControls)
         {
-            p.resetChange()
+            p.resetChange();
         }
         RoleClass.Doppelganger.Targets = new();
         if (exiled == null) return;
