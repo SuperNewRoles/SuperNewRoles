@@ -24,8 +24,8 @@ class Celebrity
     /// </summary>
     private static bool EnabledSetting()
     {
-        // スターが死亡、存在しなくなった場合も光らせる設定の場合 trueを返す。
-        if (!CustomOptionHolder.CelebrityIsFlashWhileAlivingOnly.GetBool()) return true;
+        // スターが死んでいても発光し 且つ スターがSKされてもスターの能力を失わない設定の場合 trueを返す。
+        if (!CustomOptionHolder.CelebrityIsFlashWhileAlivingOnly.GetBool() && RoleClass.Celebrity.ChangeRoleView) return true;
 
         // スターが存在し、生きているなら trueを返す
         foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
@@ -33,13 +33,23 @@ class Celebrity
             if (p.IsAlive()) return true;
         }
 
-        //スターがSKされても名前の色が変わらない設定の時
+        // スターがSKされてもスターの能力を失わない設定の時
         if (RoleClass.Celebrity.ChangeRoleView)
         {
             // SKスターが生存しているなら trueを返す
             foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
             {
                 if (p.IsAlive()) return true;
+            }
+        }
+
+        // スターが死んでも発光し スターがSKされた時スターの能力を失う設定 の場合
+        if (!CustomOptionHolder.CelebrityIsFlashWhileAlivingOnly.GetBool() && !RoleClass.Celebrity.ChangeRoleView)
+        {
+            // スターが死亡している場合trueを返す
+            foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
+            {
+                if (p.IsDead()) return true;
             }
         }
 
