@@ -217,6 +217,10 @@ class RpcShapeshiftPatch
                         SyncSetting.CustomSyncSettings(__instance);
                     }
                     return true;
+                case RoleId.Worshiper:
+                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+                    return true;
             }
         }
         return true;
@@ -679,6 +683,10 @@ static class CheckMurderPatch
                         var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                         if (ma != null && !ma.IsActive) return false;
                         break;
+                    case RoleId.Worshiper:
+                        __instance.RpcMurderPlayer(__instance);
+                        __instance.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+                        return false;
                 }
                 break;
             case ModeId.Detective:
