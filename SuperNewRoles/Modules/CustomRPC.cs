@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.Data;
 using AmongUs.GameOptions;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
@@ -1316,6 +1317,41 @@ public static class RPCProcedure
 
     public static void SetLoversBreakerWinner(byte playerid) => RoleClass.LoversBreaker.CanEndGamePlayers.Add(playerid);
 
+    [HarmonyPatch(typeof(HttpMatchmakerManager),nameof(HttpMatchmakerManager.CoRequestGameList))]
+    class a
+    {
+        public static string ToUriQuery(Dictionary<string, object> uriParams)
+        {
+            return string.Join("&", uriParams.Select((KeyValuePair<string, object> kvp) => Uri.EscapeUriString(kvp.Key) + "=" + Uri.EscapeUriString(kvp.Value.ToString())));
+        }
+        public static void Postfix(HttpMatchmakerManager __instance, IGameOptions gameSearchOptions, GameFilterOptions filterOpts)
+        {
+            Dictionary<string, object> uriParams = new();
+        
+            uriParams.Add("mapId", gameSearchOptions.MapId );
+            uriParams.Add("lang", gameSearchOptions.Keywords );
+            uriParams.Add(
+                "quickChat",
+                DataManager.Settings.Multiplayer.ChatMode
+            );
+            uriParams.Add(
+                "platformFlags",
+                CrossplayMode.GetCrossplayFlags()
+            );
+            uriParams.Add("numImpostors", gameSearchOptions.NumImpostors );
+            uriParams.Add(
+                "gameMode",
+                (byte)gameSearchOptions.GameMode
+            );
+            uriParams.Add(
+                "filterTags",
+                string.Join(",", filterOpts.FilterTags)
+            );
+            
+            string uri = DestroyableSingleton<ServerManager>.Instance.CurrentUdpServer.HttpUrl + "api/games?" + ToUriQuery(uriParams);
+            Logger.Info(uri,"URL");
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
     class RPCHandlerPatch
     {

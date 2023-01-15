@@ -463,6 +463,19 @@ public static class OnGameEndPatch
             }
             catch { }
         }
+        if (ConfigRoles.IsSendAnalytics.Value)
+        {
+            try
+            {
+                if (AmongUsClient.Instance.AmHost)
+                    Analytics.PostSendData();
+                Analytics.PostSendClientData();
+            }
+            catch (Exception e)
+            {
+                Logger.Info(e.ToString(), "解析エラー");
+            }
+        }
         if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
     }
 
@@ -472,7 +485,7 @@ public static class OnGameEndPatch
         {
             GameManager.Instance.LogicOptions.SetGameOptions(SyncSetting.OptionData.DeepCopy());
             RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
-        }
+        }   
         var gameOverReason = AdditionalTempData.gameOverReason;
         AdditionalTempData.Clear();
         foreach (var p in GameData.Instance.AllPlayers)
