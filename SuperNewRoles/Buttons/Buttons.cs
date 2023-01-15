@@ -96,6 +96,7 @@ static class HudManagerStartPatch
     public static CustomButton DependentsKillButton;
     public static CustomButton LoversBreakerButton;
     public static CustomButton JumboKillButton;
+
     #endregion
 
     #region Texts
@@ -126,16 +127,17 @@ static class HudManagerStartPatch
             () =>
             {
                 float killTimer = PlayerControl.LocalPlayer.killTimer;
-                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, SetTarget(Crewmateonly:true));
+                ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, SetTarget(Crewmateonly: true));
                 RoleClass.Jumbo.Killed = true;
                 PlayerControl.LocalPlayer.killTimer = killTimer;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jumbo && PlayerControl.LocalPlayer.IsImpostor() && !RoleClass.Jumbo.Killed && RoleClass.Jumbo.JumboSize.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && RoleClass.Jumbo.JumboSize[PlayerControl.LocalPlayer.PlayerId] >= (CustomOptionHolder.JumboMaxSize.GetFloat() / 10); },
             () =>
             {
-                return SetTarget(Crewmateonly:true) && PlayerControl.LocalPlayer.CanMove;
+                return SetTarget(Crewmateonly: true) && PlayerControl.LocalPlayer.CanMove;
             },
-            () => {
+            () =>
+            {
                 JumboKillButton.MaxTimer = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
                 JumboKillButton.Timer = JumboKillButton.MaxTimer;
             },
@@ -191,7 +193,8 @@ static class HudManagerStartPatch
                                 writer.Write(false);
                                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                             }
-                        } else
+                        }
+                        else
                         {
                             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetLoversBreakerWinner);
                             writer.Write(PlayerControl.LocalPlayer.PlayerId);
@@ -1356,19 +1359,7 @@ static class HudManagerStartPatch
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
                 {
-                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
-                    foreach (CachedPlayer p in CachedPlayer.AllPlayers)
-                    {
-                        p.Data.Role.NameColor = Color.white;
-
-                        CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-
-                        if (p.PlayerControl.IsImpostor())
-                        {
-                            p.Data.Role.NameColor = RoleClass.ImpostorRed;
-                        }
-                    }
-                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                    RoleHelpers.UseShapeshift();
                 }
                 else if (PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff))
                 {
@@ -3118,6 +3109,8 @@ static class HudManagerStartPatch
             buttonText = ModTranslation.GetString("CamouflagerButtonName"),
             showButtonText = true
         };
+
+        Roles.Impostor.MadRole.Worshiper.SetupCustomButtons(__instance);
 
         FierFox.SetupCustomButtons(__instance);
 

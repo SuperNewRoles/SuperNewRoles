@@ -366,8 +366,8 @@ public class SetNameUpdate
             if (Madmate.CheckImpostor(PlayerControl.LocalPlayer) ||
                 LocalRole == RoleId.MadKiller ||
                 LocalRole == RoleId.Marine ||
-                (RoleClass.Demon.IsCheckImpostor && LocalRole == RoleId.Demon)
-                )
+                (RoleClass.Demon.IsCheckImpostor && LocalRole == RoleId.Demon) ||
+                (LocalRole == RoleId.Safecracker && Safecracker.CheckTask(__instance, Safecracker.CheckTasks.CheckImpostor)))
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {

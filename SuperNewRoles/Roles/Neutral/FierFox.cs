@@ -8,7 +8,7 @@ namespace SuperNewRoles.Roles.Neutral;
 
 public class FierFox
 {
-    private const int OptionId = 1143;// 設定のId
+    private const int OptionId = 1168;// 設定のId
     public static CustomRoleOption FierFoxOption;
     public static CustomOption FierFoxPlayerCount;
     public static CustomOption FierFoxMaxKillCount;
@@ -66,9 +66,9 @@ public class FierFox
             {
                 if (KillCount <= 0) return false;
                 PlayerControl target = HudManagerStartPatch.SetTarget();
-                PlayerControlFixedUpdatePatch.SetPlayerOutline(target, color);
                 FierFoxKillNumText.text = string.Format(ModTranslation.GetString("SheriffNumTextName"), KillCount);
                 if (!(target && PlayerControl.LocalPlayer.CanMove)) return false;
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(target, color);
                 if (target.IsRole(RoleId.FierFox) && !FierFoxCanKillLovers.GetBool()) return false;
                 if (target.IsRole(RoleId.Fox) && !FierFoxCanKillLovers.GetBool() && FierFoxIsCheckFox.GetBool()) return false;
                 return true;

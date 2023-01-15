@@ -7,6 +7,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using UnhollowerBaseLib;
 using UnityEngine;
 using static MeetingHud;
@@ -363,6 +364,18 @@ class CheckForEndVotingPatch
                     });
                     exiledPlayer = ModHelpers.GetRandom(DictatorSubExileTargetList)?.Data;
                 }
+            }
+            else if (exiledPlayer != null && exiledPlayer.Object.IsRole(RoleId.Safecracker) && Safecracker.CheckTask(exiledPlayer.Object, Safecracker.CheckTasks.ExiledGuard) && (!Safecracker.ExiledGuardCount.ContainsKey(exiledPlayer.Object.PlayerId) || Safecracker.ExiledGuardCount[exiledPlayer.Object.PlayerId] >= 1))
+            {
+                Logger.Info($"金庫破りが追放ガードの条件を満たしましていました", "Safecracker Exiled Guard");
+                Logger.Info($"金庫破りが追放ガードの回数(減らす前) : {(Safecracker.ExiledGuardCount.ContainsKey(exiledPlayer.Object.PlayerId) ? Safecracker.ExiledGuardCount[exiledPlayer.Object.PlayerId] : Safecracker.SafecrackerMaxExiledGuardCount.GetInt())}回", "Safecracker Exiled Guard");
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SafecrackerGuardCount);
+                writer.Write(exiledPlayer.PlayerId);
+                writer.Write(false);
+                writer.EndRPC();
+                RPCProcedure.SafecrackerGuardCount(exiledPlayer.PlayerId, false);
+                Logger.Info($"金庫破りが追放ガードの回数(減らした後) : {Safecracker.ExiledGuardCount[exiledPlayer.PlayerId]}回", "Safecracker Exiled Guard");
+                exiledPlayer = null;
             }
 
             __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC

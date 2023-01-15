@@ -55,7 +55,8 @@ public static class RoleSelectHandler
                 CustomOptionHolder.SamuraiOption.GetSelection() != 0 ||
                 CustomOptionHolder.DemonOption.GetSelection() != 0 ||
                 CustomOptionHolder.ToiletFanOption.GetSelection() != 0 ||
-                CustomOptionHolder.NiceButtonerOption.GetSelection() != 0)
+                CustomOptionHolder.NiceButtonerOption.GetSelection() != 0||
+                SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperOption.GetSelection() != 0)
             {
                 PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
                 bot1.RpcSetRole(RoleTypes.Impostor);
@@ -129,6 +130,7 @@ public static class RoleSelectHandler
         SetRoleDesync(RoleClass.RemoteSheriff.RemoteSheriffPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.ToiletFan.ToiletFanPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.NiceButtoner.NiceButtonerPlayer, RoleTypes.Shapeshifter);
+        SetRoleDesync(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperPlayer, RoleTypes.Shapeshifter);
         /*============シェイプシフターDesync============*/
 
 

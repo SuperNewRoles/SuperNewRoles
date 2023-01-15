@@ -182,6 +182,7 @@ public class IntroPatch
                     case RoleId.MadMayor:
                     case RoleId.MadJester:
                     case RoleId.MadSeer:
+                    case RoleId.Worshiper:
                     case RoleId.BlackCat:
                         if (Madmate.CheckImpostor(PlayerControl.LocalPlayer)) break;
                         ImpostorIntroTeam:
@@ -294,6 +295,7 @@ public class IntroPatch
                     case RoleId.MadMayor:
                     case RoleId.MadHawk:
                     case RoleId.MadSeer:
+                    case RoleId.Worshiper:
                     case RoleId.MadMaker:
                     case RoleId.BlackCat:
                     case RoleId.JackalFriends:
