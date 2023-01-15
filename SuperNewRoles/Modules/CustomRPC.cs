@@ -2,18 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.MapOptions;
+using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 using static SuperNewRoles.Patches.FinalStatusPatch;
@@ -173,6 +175,10 @@ public enum RoleId
     HamburgerShop,
     Penguin,
     Dependents,
+    LoversBreaker,
+    Jumbo,
+    Worshiper,
+    Safecracker,
     //RoleId
 }
 
@@ -256,15 +262,33 @@ public enum CustomRPC
     Camouflage = 230,
     ShowGuardEffect,
     SetLoversCupid,
-    SetMapId,
     PenguinHikizuri,
     SetVampireStatus,
     SyncDeathMeeting,
     SetDeviceUseStatus,
+    SetLoversBreakerWinner,
+    SafecrackerGuardCount,
 }
 
 public static class RPCProcedure
 {
+    public static void SafecrackerGuardCount(byte id, bool isKillGuard)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        if (isKillGuard)
+        {
+            if (Safecracker.KillGuardCount.ContainsKey(id))
+                Safecracker.KillGuardCount[id] -= 1;
+            else Safecracker.KillGuardCount[id] = Safecracker.SafecrackerMaxKillGuardCount.GetInt() - 1;
+        }
+        else
+        {
+            if (Safecracker.ExiledGuardCount.ContainsKey(id))
+                Safecracker.ExiledGuardCount[id] -= 1;
+            else Safecracker.ExiledGuardCount[id] = Safecracker.SafecrackerMaxExiledGuardCount.GetInt() - 1;
+        }
+    }
     public static void SetDeviceUseStatus(byte devicetype, byte playerId, bool Is, string time)
     {
         DeviceClass.DeviceType type = (DeviceClass.DeviceType)devicetype;
@@ -333,10 +357,6 @@ public static class RPCProcedure
                 RoleClass.Vampire.Targets.Remove(source);
             }
         }
-    }
-    public static void SetMapId(byte mapid)
-    {
-        SNROnlySearch.currentMapId = mapid;
     }
 
     public static void PenguinHikizuri(byte sourceId, byte targetId)
@@ -1050,6 +1070,7 @@ public static class RPCProcedure
         var player = ModHelpers.PlayerById(playerid);
         if (player == null) return;
         player.Revive();
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, player.IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate);
         DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == playerid);
         FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Alive;
     }
@@ -1313,6 +1334,9 @@ public static class RPCProcedure
     {
         Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
     }
+
+    public static void SetLoversBreakerWinner(byte playerid) => RoleClass.LoversBreaker.CanEndGamePlayers.Add(playerid);
+
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
     class RPCHandlerPatch
     {
@@ -1597,9 +1621,6 @@ public static class RPCProcedure
                     case CustomRPC.SetLoversCupid:
                         SetLoversCupid(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
-                    case CustomRPC.SetMapId:
-                        SetMapId(reader.ReadByte());
-                        break;
                     case CustomRPC.PenguinHikizuri:
                         PenguinHikizuri(reader.ReadByte(), reader.ReadByte());
                         break;
@@ -1614,6 +1635,12 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetDeviceUseStatus:
                         SetDeviceUseStatus(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadString());
+                        break;
+                    case CustomRPC.SetLoversBreakerWinner:
+                        SetLoversBreakerWinner(reader.ReadByte());
+                        break;
+                    case CustomRPC.SafecrackerGuardCount:
+                        SafecrackerGuardCount(reader.ReadByte(), reader.ReadBoolean());
                         break;
                 }
             }

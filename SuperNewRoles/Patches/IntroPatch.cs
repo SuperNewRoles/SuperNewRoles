@@ -1,4 +1,5 @@
 using System.Collections;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
@@ -43,7 +44,7 @@ public class IntroPatch
                 Logger.Info($"{p.name}=>{p.GetRole()}({p.GetRoleType()}){(p.IsLovers() ? "[♥]" : "")}{(p.IsQuarreled() ? "[○]" : "")}", "Role Data");
             }
             Logger.Info("=================Other Data=================", "Intro Begin");
-            Logger.Info($"MapId:{PlayerControl.GameOptions.MapId} MapNames:{(MapNames)PlayerControl.GameOptions.MapId}", "Other Data");
+            Logger.Info($"MapId:{GameManager.Instance.LogicOptions.currentGameOptions.MapId} MapNames:{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}", "Other Data");
             Logger.Info($"Mode:{ModeHandler.GetMode()}", "Other Data");
             foreach (IntroData data in IntroData.IntroList)
             {
@@ -79,7 +80,7 @@ public class IntroPatch
                     // PlayerControl.SetPetImage(data.DefaultOutfit.PetId, data.DefaultOutfit.ColorId, player.PetSlot);
                     player.cosmetics.nameText.text = data.PlayerName;
                     player.SetFlipX(true);
-                    MapOptions.MapOption.playerIcons[p.PlayerId] = player;
+                    MapOption.MapOption.playerIcons[p.PlayerId] = player;
                     if (CachedPlayer.LocalPlayer.PlayerControl.IsRole(RoleId.Hitman))
                     {
                         player.transform.localPosition = bottomLeft + new Vector3(-0.25f, 0f, 0);
@@ -111,6 +112,7 @@ public class IntroPatch
                                 CachedPlayer.LocalPlayer.Data.IsDead = false;
                                 CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
                                 CachedPlayer.LocalPlayer.Data.IsDead = true;
+                                FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.CrewmateGhost);
                                 foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                                 {
                                     if (p.PlayerControl.IsImpostor())
@@ -118,7 +120,6 @@ public class IntroPatch
                                         p.Data.Role.NameColor = RoleClass.ImpostorRed;
                                     }
                                 }
-                                FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
                             }));
                         }
                         Create(button, p);
@@ -180,6 +181,7 @@ public class IntroPatch
                     case RoleId.MadMayor:
                     case RoleId.MadJester:
                     case RoleId.MadSeer:
+                    case RoleId.Worshiper:
                     case RoleId.BlackCat:
                         if (Madmate.CheckImpostor(PlayerControl.LocalPlayer)) break;
                         ImpostorIntroTeam:
@@ -264,7 +266,7 @@ public class IntroPatch
         {
             if (PlayerControl.LocalPlayer.IsNeutral() && !PlayerControl.LocalPlayer.IsRole(RoleId.GM))
             {
-                IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole());
+                IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
                 TeamTitle = ModTranslation.GetString("Neutral");
                 ImpostorText = ModTranslation.GetString("NeutralSubIntro");
                 color = new(127, 127, 127, byte.MaxValue);
@@ -279,6 +281,7 @@ public class IntroPatch
                     case RoleId.MadMayor:
                     case RoleId.MadHawk:
                     case RoleId.MadSeer:
+                    case RoleId.Worshiper:
                     case RoleId.MadMaker:
                     case RoleId.BlackCat:
                     case RoleId.JackalFriends:
@@ -286,7 +289,7 @@ public class IntroPatch
                     case RoleId.MayorFriends:
                     case RoleId.SatsumaAndImo:
                     case RoleId.GM:
-                        IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole());
+                        IntroData Intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
                         color = Intro.color;
                         TeamTitle = ModTranslation.GetString(Intro.NameKey + "Name");
                         ImpostorText = "";
@@ -306,7 +309,7 @@ public class IntroPatch
                 var myrole = PlayerControl.LocalPlayer.GetRole();
                 if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                 {
-                    var data = IntroData.GetIntroData(myrole);
+                    var data = IntroData.GetIntroData(myrole, PlayerControl.LocalPlayer);
                     color = data.color;
                     TeamTitle = ModTranslation.GetString(data.NameKey + "Name");
                     ImpostorText = data.TitleDesc;
@@ -393,7 +396,7 @@ public class IntroPatch
             while (true)
             {
                 if (PlayerControl.LocalPlayer == null) yield break;
-                if (PlayerControl.LocalPlayer.myTasks.Count == (PlayerControl.GameOptions.NumCommonTasks + PlayerControl.GameOptions.NumShortTasks + PlayerControl.GameOptions.NumLongTasks)) yield break;
+                if (PlayerControl.LocalPlayer.myTasks.Count == (GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumCommonTasks) + GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumShortTasks) + GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.NumLongTasks))) yield break;
 
                 yield return null;
             }

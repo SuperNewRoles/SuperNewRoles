@@ -55,4 +55,7 @@ public enum FinalStatus
     SuicideWisherSelfDeath,
     MadmakerMisSet,
     Revenge,//猫カボチャの道連れ
+    HitmanKill,
+    HitmanDead,
+    WorshiperSelfDeath,
 }

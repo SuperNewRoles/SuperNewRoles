@@ -1,7 +1,13 @@
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
+using SuperNewRoles.Roles.Neutral;
+
 using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.Patches;
@@ -21,7 +27,7 @@ public static class SelectTask
                 taskTypeIds = new byte[0];
                 return;
             }
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Default, ModeId.CopsRobbers) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Default, ModeId.CopsRobbers) && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
             {
                 var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
                 var TasksList = ModHelpers.GenerateTasks(__instance.GetPlayerById(playerId).Object, commont, shortt, longt);
@@ -46,14 +52,16 @@ public static class SelectTask
         if (JesterIsWinCleartask.GetBool()) taskData.Add(RoleId.Jester, (JesterCommonTask.GetInt(), JesterShortTask.GetInt(), JesterLongTask.GetInt()));
         if (IsMadJesterTaskClearWin.GetBool()) taskData.Add(RoleId.MadJester, (MadJesterCommonTask.GetInt(), MadJesterShortTask.GetInt(), MadJesterLongTask.GetInt()));
         if (GodIsEndTaskWin.GetBool()) taskData.Add(RoleId.God, (GodCommonTask.GetInt(), GodShortTask.GetInt(), GodLongTask.GetInt()));
+        if (Worshiper.WorshiperIsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)) taskData.Add(RoleId.Worshiper, (Worshiper.WorshiperCommonTask.GetInt(), Worshiper.WorshiperShortTask.GetInt(), Worshiper.WorshiperLongTask.GetInt()));
         taskData.Add(RoleId.Workperson, (WorkpersonCommonTask.GetInt(), WorkpersonShortTask.GetInt(), WorkpersonLongTask.GetInt()));
         taskData.Add(RoleId.TaskManager, (TaskManagerCommonTask.GetInt(), TaskManagerShortTask.GetInt(), TaskManagerLongTask.GetInt()));
-        taskData.Add(RoleId.SuicidalIdeation, (SuicidalIdeationCommonTask.GetInt(), SuicidalIdeationLongTask.GetInt(), SuicidalIdeationShortTask.GetInt()));
-        taskData.Add(RoleId.Tasker, (TaskerCommonTask.GetInt(), TaskerLongTask.GetInt(), TaskerShortTask.GetInt()));
-        taskData.Add(RoleId.HamburgerShop, (HamburgerShopCommonTask.GetInt(), HamburgerShopLongTask.GetInt(), HamburgerShopShortTask.GetInt()));
+        taskData.Add(RoleId.SuicidalIdeation, (SuicidalIdeationCommonTask.GetInt(), SuicidalIdeationShortTask.GetInt(), SuicidalIdeationLongTask.GetInt()));
+        taskData.Add(RoleId.Tasker, (TaskerCommonTask.GetInt(), TaskerShortTask.GetInt(), TaskerLongTask.GetInt()));
+        taskData.Add(RoleId.HamburgerShop, (HamburgerShopCommonTask.GetInt(), HamburgerShopShortTask.GetInt(), HamburgerShopLongTask.GetInt()));
+        taskData.Add(RoleId.Safecracker, (Safecracker.SafecrackerCommonTask.GetInt(), Safecracker.SafecrackerShortTask.GetInt(), Safecracker.SafecrackerLongTask.GetInt()));
 
         //テンプレート
-        //taskData.Add(RoleId, (CommonTask.GetInt(), LongTask.GetInt(), ShortTask.GetInt()));
+        //taskData.Add(RoleId, (CommonTask.GetInt(), ShortTask.GetInt(), LongTask.GetInt()));
 
         if (taskData.ContainsKey(p.GetRole())) // pの役職がDictionaryにあるか
         {
@@ -71,7 +79,7 @@ public static class SelectTask
         {
             return (0, 0, 0);
         }
-        return (SyncSetting.OptionData.NumCommonTasks, SyncSetting.OptionData.NumShortTasks, SyncSetting.OptionData.NumLongTasks);
+        return (SyncSetting.OptionData.GetInt(Int32OptionNames.NumCommonTasks), SyncSetting.OptionData.GetInt(Int32OptionNames.NumShortTasks), SyncSetting.OptionData.GetInt(Int32OptionNames.NumLongTasks));
     }
     public static (CustomOption, CustomOption, CustomOption) TaskSetting(int commonid, int shortid, int longid, CustomOption Child = null, CustomOptionType type = CustomOptionType.Generic, bool IsSHROn = false)
     {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
@@ -82,7 +83,7 @@ class RoleManagerSelectRolesPatch
                     SelectPlayers.Add(player);
                 }
             }
-            for (int i = 0; i < PlayerControl.GameOptions.NumImpostors; i++)
+            for (int i = 0; i < GameManager.Instance.LogicOptions.NumImpostors; i++)
             {
                 if (SelectPlayers.Count >= 1)
                 {
@@ -99,11 +100,12 @@ class RoleManagerSelectRolesPatch
             {
                 sender.RpcSetRole(player, RoleTypes.Impostor);
             }
+            RoleTypes CrewRoleTypes = ModeHandler.IsMode(ModeId.VanillaHns) ? RoleTypes.Engineer : RoleTypes.Crewmate;
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (!player.Data.Disconnected && !player.IsImpostor())
                 {
-                    sender.RpcSetRole(player, RoleTypes.Crewmate);
+                    sender.RpcSetRole(player, CrewRoleTypes);
                 }
             }
 
@@ -338,7 +340,7 @@ class AllRoleSetClass
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (!p.IsImpostor() && !p.IsNeutral() && !p.IsRole(RoleId.truelover) && !p.IsBot())
+                if (!p.IsImpostor() && !p.IsNeutral() && !p.IsRole(RoleId.truelover, RoleId.LoversBreaker) && !p.IsBot())
                 {
                     if (!IsQuarreledDup || !p.IsQuarreled())
                     {
@@ -353,7 +355,7 @@ class AllRoleSetClass
             {
                 if (!IsQuarreledDup || (!p.IsQuarreled() && !p.IsBot()))
                 {
-                    if (!p.IsRole(RoleId.truelover))
+                    if (!p.IsRole(RoleId.truelover, RoleId.LoversBreaker))
                     {
                         SelectPlayers.Add(p);
                     }
@@ -580,7 +582,9 @@ class AllRoleSetClass
             return;
         }
         bool IsNotEndRandomSelect = true;
+        //各役職のフラグ
         bool IsRevolutionistAssigned = false;
+
         while (IsNotEndRandomSelect)
         {
             if (Neutonepar.Count > 0)
@@ -961,6 +965,10 @@ class AllRoleSetClass
             RoleId.HamburgerShop => CustomOptionHolder.HamburgerShopPlayerCount.GetFloat(),
             RoleId.Penguin => CustomOptionHolder.PenguinPlayerCount.GetFloat(),
             RoleId.Dependents => CustomOptionHolder.DependentsPlayerCount.GetFloat(),
+            RoleId.LoversBreaker => CustomOptionHolder.LoversBreakerPlayerCount.GetFloat(),
+            RoleId.Jumbo => CustomOptionHolder.JumboPlayerCount.GetFloat(),
+            RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.WorshiperPlayerCount.GetFloat(),
+            RoleId.Safecracker => Roles.Neutral.Safecracker.SafecrackerPlayerCount.GetFloat(),
             //プレイヤーカウント
             _ => 1,
         };
@@ -995,11 +1003,12 @@ class AllRoleSetClass
         foreach (IntroData intro in IntroData.IntroList)
         {
             if (intro.RoleId != RoleId.DefaultRole &&
-                (intro.RoleId != RoleId.Nun || (MapNames)PlayerControl.GameOptions.MapId == MapNames.Airship)
+                (intro.RoleId != RoleId.Nun || (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship)
                 && !intro.IsGhostRole
                 && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))
                 && intro.RoleId is not RoleId.GM
-                && intro.RoleId != RoleId.Pavlovsdogs)
+                && intro.RoleId != RoleId.Pavlovsdogs
+                && intro.RoleId != RoleId.Jumbo)
             {
                 var option = IntroData.GetOption(intro.RoleId);
                 if (option == null) continue;
@@ -1042,6 +1051,7 @@ class AllRoleSetClass
                 }
             }
         }
+        SetJumboTicket();
         var Assassinselection = CustomOptionHolder.AssassinAndMarineOption.GetSelection();
         if (Assassinselection != 0 && CrewmatePlayerNum > 0 && CrewmatePlayers.Count > 0)
         {
@@ -1068,6 +1078,27 @@ class AllRoleSetClass
                 for (int i = 1; i <= CustomOptionHolder.RevolutionistAndDictatorOption.GetSelection(); i++)
                 {
                     Neutnotonepar.Add(RoleId.Revolutionist);
+                }
+            }
+        }
+    }
+    public static void SetJumboTicket()
+    {
+        int JumboSelection = CustomOptionHolder.JumboOption.GetSelection();
+        bool IsCrewmate = ModHelpers.IsSucsessChance(CustomOptionHolder.JumboCrewmateChance.GetSelection());
+        if (JumboSelection != 0)
+        {
+            if (JumboSelection == 10)
+            {
+                if (IsCrewmate) Crewonepar.Add(RoleId.Jumbo);
+                else Impoonepar.Add(RoleId.Jumbo);
+            }
+            else
+            {
+                for (int i = 1; i <= JumboSelection; i++)
+                {
+                    if (IsCrewmate) Crewnotonepar.Add(RoleId.Jumbo);
+                    else Imponotonepar.Add(RoleId.Jumbo);
                 }
             }
         }

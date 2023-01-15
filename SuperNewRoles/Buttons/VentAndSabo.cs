@@ -1,5 +1,6 @@
+using AmongUs.GameOptions;
 using HarmonyLib;
-using SuperNewRoles.MapOptions;
+using SuperNewRoles.MapOption;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
@@ -67,7 +68,11 @@ public static class VentAndSabo
                 if (PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
                 {
                     __instance.Close();
-                    FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+                    FastDestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new MapOptions()
+                    {
+                        Mode = MapOptions.Modes.Sabotage,
+                        AllowMovementWhileMapOpen = true
+                    });
                     return false;
                 }
                 if (PlayerControl.LocalPlayer.IsImpostor() && !PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
@@ -89,7 +94,7 @@ public static class VentAndSabo
     {
         public static bool Prefix([HarmonyArgument(0)] PlayerControl pc)
         {
-            return !MapOption.VentAnimation.GetBool() || pc.AmOwner;
+            return !MapOption.MapOption.VentAnimation.GetBool() || pc.AmOwner;
         }
     }
     [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent))]
@@ -97,7 +102,7 @@ public static class VentAndSabo
     {
         public static bool Prefix([HarmonyArgument(0)] PlayerControl pc)
         {
-            return !MapOption.VentAnimation.GetBool() || pc.AmOwner;
+            return !MapOption.MapOption.VentAnimation.GetBool() || pc.AmOwner;
         }
     }
     [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
@@ -209,7 +214,11 @@ public static class VentAndSabo
             // The sabotage button behaves just fine if it's a regular impostor
             if (CachedPlayer.LocalPlayer.Data.Role.TeamType == RoleTeamTypes.Impostor) return true;
 
-            FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+            FastDestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new MapOptions()
+            {
+                Mode = MapOptions.Modes.Sabotage,
+                AllowMovementWhileMapOpen = true
+            });
             return false;
         }
     }

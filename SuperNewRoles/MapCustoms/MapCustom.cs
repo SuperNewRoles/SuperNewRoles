@@ -26,6 +26,7 @@ class MapCustom
     public static CustomOption MoveElecPad;
     public static CustomOption AddWireTask;
     public static CustomOption AntiTaskOverWall;
+    internal static CustomOption ShuffleElectricalDoors;
 
     public static void CreateOption()
     {
@@ -54,5 +55,6 @@ class MapCustom
         MoveElecPad = CustomOption.Create(645, false, CustomOptionType.Generic, "MoveElecPadSetting", false, AirshipSetting);
         AddWireTask = CustomOption.Create(646, false, CustomOptionType.Generic, "AddWireTaskSetting", false, AirshipSetting);
         AntiTaskOverWall = CustomOption.Create(1106, false, CustomOptionType.Generic, "AntiTaskOverWallSetting", false, AirshipSetting);
+        ShuffleElectricalDoors = CustomOption.Create(1110, false, CustomOptionType.Generic, "ShuffleElectricalDoorsSetting", false, AirshipSetting);
     }
 }

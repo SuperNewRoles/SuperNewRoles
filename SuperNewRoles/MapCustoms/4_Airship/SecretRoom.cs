@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
@@ -67,7 +68,7 @@ public static class SecretRoom
                 if ((leftplayer != null && leftplayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId) ||
                     (rightplayer != null && rightplayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId))
                 {
-                    LowerInfoText.text = "Escで実験から抜ける";
+                    LowerInfoText.text = ModTranslation.GetString("ExitExperimentEsc"); // Escで実験から抜ける
                 }
                 break;
             case Status.Join:
@@ -97,7 +98,7 @@ public static class SecretRoom
                     (rightplayer != null && rightplayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId))
                 {
                     PlayerControl.LocalPlayer.moveable = false;
-                    LowerInfoText.text = "実験中...";
+                    LowerInfoText.text = ModTranslation.GetString("Experimenting"); // 実験中...
                 }
                 IsWait = true;
                 break;
@@ -125,7 +126,7 @@ public static class SecretRoom
     }
     public static void ShipStatusAwake(ShipStatus __instance)
     {
-        if (PlayerControl.GameOptions.MapId != (int)MapNames.Airship) return;
+        if (GameManager.Instance.LogicOptions.currentGameOptions.MapId != (int)MapNames.Airship) return;
         if (__instance.Type == ShipStatus.MapType.Ship && MapCustomOption.GetBool() && AirshipSetting.GetBool() && SecretRoomOption.GetBool())
         {
             Transform room = __instance.transform.FindChild("HallwayPortrait");
@@ -353,7 +354,7 @@ public static class SecretRoom
                 __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
                 if (canUse)
                 {
-                    LowerInfoText.text = "Escで実験から抜ける";
+                    LowerInfoText.text = ModTranslation.GetString("ExitExperimentEsc"); // Escで実験から抜ける
                     //LowerInfoText.
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetSecretRoomTeleportStatus);
                     writer.Write((byte)Status.Join);
@@ -392,7 +393,7 @@ public static class SecretRoom
                     ViewMinigame();
                     var minigame = GameObject.FindObjectOfType<VitalsMinigame>();
                     minigame.name = "secretroom_teleport-console";
-                    minigame.BatteryText.text = "実験を開始する";
+                    minigame.BatteryText.text = ModTranslation.GetString("StartExperiment"); // 実験を開始する
                     minigame.BatteryText.color = Color.white;
                     minigame.BatteryText.transform.localPosition = new Vector3(0f, -0.75f, -9f);
                     minigame.BatteryText.transform.localScale = new Vector3(1.75f, 1.75f, 1.75f);
@@ -450,12 +451,12 @@ public static class SecretRoom
                             RPCHelper.EndRPC(writer);
                             Is = true;
                             var obj = GameObject.FindObjectOfType<VitalsMinigame>();
-                            obj.BatteryText.text = "処理中...";
+                            obj.BatteryText.text = ModTranslation.GetString("Processing"); // 処理中...
                             new LateTask(() =>
                             {
                                 if (obj)
                                 {
-                                    obj.BatteryText.text = "実験成功";
+                                    obj.BatteryText.text = ModTranslation.GetString("SuccessfulExperiment"); // 実験成功
                                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetSecretRoomTeleportStatus);
                                     writer.Write((byte)Status.Teleport);
                                     RPCHelper.EndRPC(writer);
@@ -479,7 +480,7 @@ public static class SecretRoom
         {
             while (true)
             {
-                if (RoleClass.IsMeeting || (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started && AmongUsClient.Instance.GameMode != GameModes.FreePlay))
+                if (RoleClass.IsMeeting || (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay))
                 {
                     yield break;
                 }
@@ -488,7 +489,7 @@ public static class SecretRoom
                 {
                     while (IsWait)
                     {
-                        if (RoleClass.IsMeeting || (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started && AmongUsClient.Instance.GameMode != GameModes.FreePlay))
+                        if (RoleClass.IsMeeting || (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay))
                         {
                             LowerInfoText.text = "";
                             yield break;

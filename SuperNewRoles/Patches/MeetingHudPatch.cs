@@ -7,6 +7,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using UnhollowerBaseLib;
 using UnityEngine;
 using static MeetingHud;
@@ -217,7 +218,7 @@ class CheckForEndVotingPatch
             for (var i = 0; i < __instance.playerStates.Length; i++)
             {
                 PlayerVoteArea ps = __instance.playerStates[i];
-                if (AmongUsClient.Instance.GameMode != GameModes.FreePlay || ps.TargetPlayerId == CachedPlayer.LocalPlayer.PlayerId)
+                if (AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay || ps.TargetPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
                     if (!ModeHandler.IsMode(ModeId.BattleRoyal))
                     {
@@ -364,6 +365,18 @@ class CheckForEndVotingPatch
                     exiledPlayer = ModHelpers.GetRandom(DictatorSubExileTargetList)?.Data;
                 }
             }
+            else if (exiledPlayer != null && exiledPlayer.Object.IsRole(RoleId.Safecracker) && Safecracker.CheckTask(exiledPlayer.Object, Safecracker.CheckTasks.ExiledGuard) && (!Safecracker.ExiledGuardCount.ContainsKey(exiledPlayer.Object.PlayerId) || Safecracker.ExiledGuardCount[exiledPlayer.Object.PlayerId] >= 1))
+            {
+                Logger.Info($"金庫破りが追放ガードの条件を満たしましていました", "Safecracker Exiled Guard");
+                Logger.Info($"金庫破りが追放ガードの回数(減らす前) : {(Safecracker.ExiledGuardCount.ContainsKey(exiledPlayer.Object.PlayerId) ? Safecracker.ExiledGuardCount[exiledPlayer.Object.PlayerId] : Safecracker.SafecrackerMaxExiledGuardCount.GetInt())}回", "Safecracker Exiled Guard");
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SafecrackerGuardCount);
+                writer.Write(exiledPlayer.PlayerId);
+                writer.Write(false);
+                writer.EndRPC();
+                RPCProcedure.SafecrackerGuardCount(exiledPlayer.PlayerId, false);
+                Logger.Info($"金庫破りが追放ガードの回数(減らした後) : {Safecracker.ExiledGuardCount[exiledPlayer.PlayerId]}回", "Safecracker Exiled Guard");
+                exiledPlayer = null;
+            }
 
             __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
 
@@ -427,7 +440,7 @@ static class ExtendedMeetingHud
         {
             PlayerVoteArea ps = __instance.playerStates[i];
             if (ps == null) continue;
-            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay && ps.TargetPlayerId != CachedPlayer.LocalPlayer.PlayerId) continue;
+            if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay && ps.TargetPlayerId != CachedPlayer.LocalPlayer.PlayerId) continue;
             if (ps != null && ModHelpers.PlayerById(ps.TargetPlayerId) != null && ps.VotedFor != 252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != 254 && ModHelpers.PlayerById(ps.TargetPlayerId).IsAlive() && !ModHelpers.PlayerById(ps.TargetPlayerId).IsBot())
             {
                 int VoteNum = 1;

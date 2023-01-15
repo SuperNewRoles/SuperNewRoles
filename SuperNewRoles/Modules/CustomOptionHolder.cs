@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 
@@ -11,8 +12,16 @@ public class CustomOptionHolder
     public static string[] rates = new string[] { "0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%" };
 
     public static string[] rates4 = new string[] { "0%", "25%", "50%", "75%", "100%" };
-
-    public static string[] presets = new string[] { "preset1", "preset2", "preset3", "preset4", "preset5", "preset6", "preset7", "preset8", "preset9", "preset10" };
+    private static List<string> presetList()
+    {
+        var tmp = new List<string>();
+        for (int i = 1; i < 11; i++)
+        {
+            tmp.Add($"{ModTranslation.GetString("preset")}{i}");
+        }
+        return tmp;
+    }
+    public static string[] presets = presetList().ToArray();
     public static CustomOption presetSelection;
 
     public static CustomOption specialOptions;
@@ -274,6 +283,7 @@ public class CustomOptionHolder
     public static CustomRoleOption SelfBomberOption;
     public static CustomOption SelfBomberPlayerCount;
     public static CustomOption SelfBomberScope;
+    public static CustomOption SelfBomberBombCoolTime;
 
     public static CustomRoleOption GodOption;
     public static CustomOption GodPlayerCount;
@@ -928,6 +938,18 @@ public class CustomOptionHolder
     public static CustomRoleOption DependentsOption;
     public static CustomOption DependentsPlayerCount;
 
+    public static CustomRoleOption LoversBreakerOption;
+    public static CustomOption LoversBreakerPlayerCount;
+    public static CustomOption LoversBreakerBreakCount;
+    public static CustomOption LoversBreakerCoolTime;
+    public static CustomOption LoversBreakerIsDeathWin;
+
+    public static CustomRoleOption JumboOption;
+    public static CustomOption JumboPlayerCount;
+    public static CustomOption JumboCrewmateChance;
+    public static CustomOption JumboMaxSize;
+    public static CustomOption JumboSpeedUpSize;
+    public static CustomOption JumboWalkSoundSize;
     //CustomOption
 
     public static CustomOption GMOption;
@@ -992,20 +1014,20 @@ public class CustomOptionHolder
         impostorRolesCountMax = Create(7, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoRole"), 0f, 0f, 3f, 1f);
         impostorGhostRolesCountMax = Create(8, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
 
-        enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false);
+        enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false, null, isHeader: true);
 
         enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
         AgarthaRandomSpawn = Create(1084, false, CustomOptionType.Generic, "RandomSpawnOption", true, enableAgartha);
         AgarthaRandomSpawnIsFirstSpawn = Create(1085, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsFirstSpawn", false, AgarthaRandomSpawn);
         AgarthaRandomSpawnIsAddSpawnWay = Create(1086, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
 
-        CanGhostSeeRole = Create(1100, false, CustomOptionType.Generic, "CanGhostSeeRole", true, null, isHeader: true);
-        OnlyImpostorGhostSeeRole = Create(1101, false, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanGhostSeeRole);
+        CanGhostSeeRole = Create(1100, true, CustomOptionType.Generic, "CanGhostSeeRole", true, null, isHeader: true);
+        OnlyImpostorGhostSeeRole = Create(1101, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanGhostSeeRole);
 
         IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
-        IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true);
-
+        IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true, isHidden: true);
+        IsOldMode.selection = 0;
 
         if (ConfigRoles.DebugMode.Value)
         {
@@ -1022,7 +1044,7 @@ public class CustomOptionHolder
         ZoomCoolTime = Create(621, false, CustomOptionType.Generic, "clairvoyantCoolTime", 15f, 1f, 120f, 2.5f, ClairvoyantZoom, format: "unitCouples");
         ZoomDurationTime = Create(622, false, CustomOptionType.Generic, "clairvoyantDurationTime", 5f, 1f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
 
-        MapOptions.MapOption.LoadOption();
+        MapOption.MapOption.LoadOption();
 
         //SoothSayerRate = Create(2, Cs(SoothSayer.color,"soothName"),rates, null, true);
         Mode.ModeHandler.OptionLoad();
@@ -1043,12 +1065,6 @@ public class CustomOptionHolder
         MadRolesCanFixElectrical = Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
         MadRolesCanVentMove = Create(1013, false, CustomOptionType.Crewmate, "MadRolesCanVentMove", false, null);
 
-        SoothSayerOption = SetupCustomRoleOption(12, false, RoleId.SoothSayer);
-        SoothSayerPlayerCount = Create(13, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
-        SoothSayerDisplayMode = Create(14, false, CustomOptionType.Crewmate, "SoothSayerDisplaySetting", false, SoothSayerOption);
-        SoothSayerMaxCount = Create(15, false, CustomOptionType.Crewmate, "SoothSayerMaxCountSetting", CrewPlayers[0] - 1, CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
-        SoothSayerFirstWhiteOption = Create(1050, false, CustomOptionType.Crewmate, "SoothSayerFirstWhiteOption", false, SoothSayerOption);
-
         JesterOption = SetupCustomRoleOption(16, true, RoleId.Jester);
         JesterPlayerCount = Create(17, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JesterOption);
         JesterIsVent = Create(18, true, CustomOptionType.Neutral, "JesterIsVentSetting", false, JesterOption);
@@ -1058,12 +1074,6 @@ public class CustomOptionHolder
         JesterCommonTask = jesteroption.Item1;
         JesterShortTask = jesteroption.Item2;
         JesterLongTask = jesteroption.Item3;
-
-        LighterOption = SetupCustomRoleOption(24, false, RoleId.Lighter);
-        LighterPlayerCount = Create(25, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LighterOption);
-        LighterCoolTime = Create(26, false, CustomOptionType.Crewmate, "LigtherCooldownSetting", 30f, 2.5f, 60f, 2.5f, LighterOption, format: "unitSeconds");
-        LighterDurationTime = Create(27, false, CustomOptionType.Crewmate, "LigtherDurationSetting", 10f, 0f, 180f, 5f, LighterOption, format: "unitSeconds");
-        LighterUpVision = Create(28, false, CustomOptionType.Crewmate, "LighterUpVisionSetting", 0.25f, 0f, 5f, 0.25f, LighterOption);
 
         EvilScientistOption = SetupCustomRoleOption(33, false, RoleId.EvilScientist);
         EvilScientistPlayerCount = Create(34, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilScientistOption);
@@ -1100,6 +1110,114 @@ public class CustomOptionHolder
         MeetingSheriffKillMaxCount = Create(56, false, CustomOptionType.Crewmate, "MeetingSheriffMaxKillCountSetting", 1f, 1f, 20f, 1f, MeetingSheriffOption, format: "unitSeconds");
         MeetingSheriffOneMeetingMultiKill = Create(57, false, CustomOptionType.Crewmate, "MeetingSheriffMeetingmultipleKillSetting", false, MeetingSheriffOption);
 
+        ChiefOption = SetupCustomRoleOption(394, false, RoleId.Chief);
+        ChiefPlayerCount = Create(395, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
+        ChiefSheriffCoolTime = Create(626, false, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, ChiefOption, format: "unitSeconds");
+        ChiefSheriffAlwaysKills = Create(735, true, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, ChiefOption);
+        ChiefSheriffCanKillNeutral = Create(627, false, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, ChiefOption);
+        ChiefSheriffCanKillLovers = Create(628, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, ChiefOption);
+        ChiefSheriffCanKillMadRole = Create(629, false, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, ChiefOption);
+        ChiefSheriffKillLimit = Create(630, false, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, ChiefOption, format: "unitSeconds");
+
+        MayorOption = SetupCustomRoleOption(229, true, RoleId.Mayor);
+        MayorPlayerCount = Create(230, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MayorOption);
+        MayorVoteCount = Create(231, true, CustomOptionType.Crewmate, "MayorVoteCountSetting", 2f, 1f, 100f, 1f, MayorOption);
+
+        MadmateOption = SetupCustomRoleOption(130, true, RoleId.Madmate);
+        MadmatePlayerCount = Create(131, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadmateOption);
+        MadmateIsCheckImpostor = Create(132, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadmateOption);
+        var madmateoption = SelectTask.TaskSetting(133, 134, 135, MadmateIsCheckImpostor, CustomOptionType.Crewmate, true);
+        MadmateCommonTask = madmateoption.Item1;
+        MadmateShortTask = madmateoption.Item2;
+        MadmateLongTask = madmateoption.Item3;
+        //MadmateIsNotTask = madmateoption.Item4;
+        MadmateCheckImpostorTask = Create(136, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MadmateIsCheckImpostor);
+        MadmateIsUseVent = Create(137, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadmateOption);
+        MadmateIsImpostorLight = Create(138, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadmateOption);
+
+        BlackCatOption = SetupCustomRoleOption(556, true, RoleId.BlackCat);
+        BlackCatPlayerCount = Create(557, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BlackCatOption);
+        BlackCatNotImpostorExiled = Create(675, true, CustomOptionType.Crewmate, "NotImpostorExiled", false, BlackCatOption);
+        BlackCatIsCheckImpostor = Create(558, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, BlackCatOption);
+        var blackcatoption = SelectTask.TaskSetting(559, 560, 561, BlackCatIsCheckImpostor, CustomOptionType.Crewmate, true);
+        BlackCatCommonTask = blackcatoption.Item1;
+        BlackCatShortTask = blackcatoption.Item2;
+        BlackCatLongTask = blackcatoption.Item3;
+        //MadmateIsNotTask = madmateoption.Item4;
+        BlackCatCheckImpostorTask = Create(562, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, BlackCatIsCheckImpostor);
+        BlackCatIsUseVent = Create(563, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, BlackCatOption);
+        BlackCatIsImpostorLight = Create(564, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, BlackCatOption);
+
+        Roles.Impostor.MadRole.Worshiper.SetupCustomOptions();
+
+        MadMayorOption = SetupCustomRoleOption(269, true, RoleId.MadMayor);
+        MadMayorPlayerCount = Create(270, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMayorOption);
+        MadMayorVoteCount = Create(271, true, CustomOptionType.Crewmate, "MadMayorVoteCountSetting", 2f, 1f, 100f, 1f, MadMayorOption);
+        MadMayorIsCheckImpostor = Create(272, true, CustomOptionType.Crewmate, "MadMayorIsCheckImpostorSetting", false, MadMayorOption);
+        var madmayoroption = SelectTask.TaskSetting(273, 274, 275, MadMayorIsCheckImpostor, CustomOptionType.Crewmate, true);
+        MadMayorCommonTask = madmayoroption.Item1;
+        MadMayorShortTask = madmayoroption.Item2;
+        MadMayorLongTask = madmayoroption.Item3;
+        MadMayorCheckImpostorTask = Create(276, true, CustomOptionType.Crewmate, "MadMayorCheckImpostorTaskSetting", rates4, MadMayorIsCheckImpostor);
+        MadMayorIsUseVent = Create(277, true, CustomOptionType.Crewmate, "MadMayorUseVentSetting", false, MadMayorOption);
+        MadMayorIsImpostorLight = Create(278, true, CustomOptionType.Crewmate, "MadMayorImpostorLightSetting", false, MadMayorOption);
+
+        MadSeerOption = SetupCustomRoleOption(323, true, RoleId.MadSeer);
+        MadSeerPlayerCount = Create(324, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadSeerOption);
+        MadSeerMode = Create(325, false, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, MadSeerOption);
+        MadSeerLimitSoulDuration = Create(326, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, MadSeerOption);
+        MadSeerSoulDuration = Create(327, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, MadSeerLimitSoulDuration, format: "unitCouples");
+        MadSeerIsUseVent = Create(328, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadSeerOption);
+        MadSeerIsImpostorLight = Create(329, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadSeerOption);
+        MadSeerIsCheckImpostor = Create(330, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadSeerOption);
+        var madseeroption = SelectTask.TaskSetting(331, 332, 526, MadSeerIsCheckImpostor, CustomOptionType.Crewmate, true);
+        MadSeerCommonTask = madseeroption.Item1;
+        MadSeerShortTask = madseeroption.Item2;
+        MadSeerLongTask = madseeroption.Item3;
+        MadSeerCheckImpostorTask = Create(333, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MadSeerIsCheckImpostor);
+
+        MadMakerOption = SetupCustomRoleOption(347, true, RoleId.MadMaker);
+        MadMakerPlayerCount = Create(348, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMakerOption);
+        MadMakerIsUseVent = Create(349, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadMakerOption);
+        MadMakerIsImpostorLight = Create(350, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadMakerOption);
+
+        MadJesterOption = SetupCustomRoleOption(296, true, RoleId.MadJester);
+        MadJesterPlayerCount = Create(297, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadJesterOption);
+        MadJesterIsUseVent = Create(298, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadJesterOption);
+        MadJesterIsImpostorLight = Create(299, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadJesterOption);
+        IsMadJesterTaskClearWin = Create(300, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
+        var MadJesteroption = SelectTask.TaskSetting(667, 668, 669, IsMadJesterTaskClearWin, CustomOptionType.Crewmate, true);
+        MadJesterCommonTask = MadJesteroption.Item1;
+        MadJesterShortTask = MadJesteroption.Item2;
+        MadJesterLongTask = MadJesteroption.Item3;
+
+        MadHawkOption = SetupCustomRoleOption(287, false, RoleId.MadHawk);
+        MadHawkPlayerCount = Create(289, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadHawkOption);
+        MadHawkCoolTime = Create(290, false, CustomOptionType.Crewmate, "HawkCoolTimeSetting", 15f, 0f, 120f, 2.5f, MadHawkOption, format: "unitCouples");
+        MadHawkDurationTime = Create(291, false, CustomOptionType.Crewmate, "HawkDurationTimeSetting", 5f, 0f, 60f, 0.5f, MadHawkOption, format: "unitCouples");
+        MadHawkIsUseVent = Create(292, false, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadHawkOption);
+        MadHawkIsImpostorLight = Create(293, false, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadHawkOption);
+
+        MadCleanerOption = SetupCustomRoleOption(400, false, RoleId.MadCleaner);
+        MadCleanerPlayerCount = Create(401, false, CustomOptionType.Crewmate, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MadCleanerOption);
+        MadCleanerCooldown = Create(402, false, CustomOptionType.Crewmate, "CleanerCooldownSetting", 30f, 2.5f, 60f, 2.5f, MadCleanerOption, format: "unitSeconds");
+        MadCleanerIsUseVent = Create(403, false, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadCleanerOption);
+        MadCleanerIsImpostorLight = Create(404, false, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadCleanerOption);
+
+        MadStuntManOption = SetupCustomRoleOption(283, false, RoleId.MadStuntMan);
+        MadStuntManPlayerCount = Create(284, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadStuntManOption);
+        MadStuntManIsUseVent = Create(285, false, CustomOptionType.Crewmate, "MadMayorUseVentSetting", false, MadStuntManOption);
+        MadStuntManIsImpostorLight = Create(286, false, CustomOptionType.Crewmate, "MadStuntManImpostorLightSetting", false, MadStuntManOption);
+
+        SatsumaAndImoOption = SetupCustomRoleOption(953, true, RoleId.SatsumaAndImo);
+        SatsumaAndImoPlayerCount = Create(800, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SatsumaAndImoOption);
+
+        LighterOption = SetupCustomRoleOption(24, false, RoleId.Lighter);
+        LighterPlayerCount = Create(25, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LighterOption);
+        LighterCoolTime = Create(26, false, CustomOptionType.Crewmate, "LigtherCooldownSetting", 30f, 2.5f, 60f, 2.5f, LighterOption, format: "unitSeconds");
+        LighterDurationTime = Create(27, false, CustomOptionType.Crewmate, "LigtherDurationSetting", 10f, 0f, 180f, 5f, LighterOption, format: "unitSeconds");
+        LighterUpVision = Create(28, false, CustomOptionType.Crewmate, "LighterUpVisionSetting", 0.25f, 0f, 5f, 0.25f, LighterOption);
+
         JackalOption = SetupCustomRoleOption(58, true, RoleId.Jackal);
         JackalPlayerCount = Create(59, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalOption);
         JackalKillCooldown = Create(60, true, CustomOptionType.Neutral, "JackalCooldownSetting", 30f, 2.5f, 60f, 2.5f, JackalOption, format: "unitSeconds");
@@ -1116,6 +1234,12 @@ public class CustomOptionHolder
         TeleporterCoolTime = Create(68, false, CustomOptionType.Impostor, "TeleporterCooldownSetting", 30f, 2.5f, 60f, 2.5f, TeleporterOption, format: "unitSeconds");
         TeleporterDurationTime = Create(69, false, CustomOptionType.Impostor, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleporterOption, format: "unitSeconds");
 
+        SoothSayerOption = SetupCustomRoleOption(12, false, RoleId.SoothSayer);
+        SoothSayerPlayerCount = Create(13, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
+        SoothSayerDisplayMode = Create(14, false, CustomOptionType.Crewmate, "SoothSayerDisplaySetting", false, SoothSayerOption);
+        SoothSayerMaxCount = Create(15, false, CustomOptionType.Crewmate, "SoothSayerMaxCountSetting", CrewPlayers[0] - 1, CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
+        SoothSayerFirstWhiteOption = Create(1050, false, CustomOptionType.Crewmate, "SoothSayerFirstWhiteOption", false, SoothSayerOption);
+
         SpiritMediumOption = SetupCustomRoleOption(70, false, RoleId.SpiritMedium);
         SpiritMediumPlayerCount = Create(71, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpiritMediumOption);
         SpiritMediumIsAutoMode = Create(1058, false, CustomOptionType.Crewmate, "SpiritMediumIsAutoMode", false, SpiritMediumOption);
@@ -1126,13 +1250,13 @@ public class CustomOptionHolder
         SpeedBoosterPlayerCount = Create(75, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpeedBoosterOption);
         SpeedBoosterCoolTime = Create(76, false, CustomOptionType.Crewmate, "SpeedBoosterCooldownSetting", 30f, 2.5f, 60f, 2.5f, SpeedBoosterOption, format: "unitSeconds");
         SpeedBoosterDurationTime = Create(77, false, CustomOptionType.Crewmate, "SpeedBoosterDurationSetting", 15f, 2.5f, 60f, 2.5f, SpeedBoosterOption, format: "unitSeconds");
-        SpeedBoosterSpeed = Create(78, false, CustomOptionType.Crewmate, "SpeedBoosterPlusSpeedSetting", 0.5f, 0.0f, 5f, 0.25f, SpeedBoosterOption, format: "unitSeconds");
+        SpeedBoosterSpeed = Create(78, false, CustomOptionType.Crewmate, "SpeedBoosterPlusSpeedSetting", 1.25f, 0.0f, 5f, 0.25f, SpeedBoosterOption, format: "unitSeconds");
 
         EvilSpeedBoosterOption = SetupCustomRoleOption(79, false, RoleId.EvilSpeedBooster);
         EvilSpeedBoosterPlayerCount = Create(80, false, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], EvilSpeedBoosterOption);
         EvilSpeedBoosterCoolTime = Create(81, false, CustomOptionType.Impostor, "EvilSpeedBoosterCooldownSetting", 30f, 2.5f, 60f, 2.5f, EvilSpeedBoosterOption, format: "unitSeconds");
         EvilSpeedBoosterDurationTime = Create(82, false, CustomOptionType.Impostor, "EvilSpeedBoosterDurationSetting", 15f, 2.5f, 60f, 2.5f, EvilSpeedBoosterOption, format: "unitSeconds");
-        EvilSpeedBoosterSpeed = Create(83, false, CustomOptionType.Impostor, "EvilSpeedBoosterPlusSpeedSetting", 0.5f, 0.0f, 5f, 0.25f, EvilSpeedBoosterOption, format: "unitSeconds");
+        EvilSpeedBoosterSpeed = Create(83, false, CustomOptionType.Impostor, "EvilSpeedBoosterPlusSpeedSetting", 1.25f, 0.0f, 5f, 0.25f, EvilSpeedBoosterOption, format: "unitSeconds");
         EvilSpeedBoosterIsNotSpeedBooster = Create(84, false, CustomOptionType.Impostor, "EvilSpeedBoosterIsNotSpeedBooster", false, EvilSpeedBoosterOption);
 
         DoorrOption = SetupCustomRoleOption(89, false, RoleId.Doorr);
@@ -1176,18 +1300,6 @@ public class CustomOptionHolder
         ClergymanDurationTime = Create(128, false, CustomOptionType.Crewmate, "ClergymanDurationTimeSetting", 10f, 1f, 20f, 0.5f, ClergymanOption, format: "unitSeconds");
         ClergymanDownVision = Create(129, false, CustomOptionType.Crewmate, "ClergymanDownVisionSetting", 0.25f, 0f, 5f, 0.25f, ClergymanOption);
 
-        MadmateOption = SetupCustomRoleOption(130, true, RoleId.Madmate);
-        MadmatePlayerCount = Create(131, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadmateOption);
-        MadmateIsCheckImpostor = Create(132, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadmateOption);
-        var madmateoption = SelectTask.TaskSetting(133, 134, 135, MadmateIsCheckImpostor, CustomOptionType.Crewmate, true);
-        MadmateCommonTask = madmateoption.Item1;
-        MadmateShortTask = madmateoption.Item2;
-        MadmateLongTask = madmateoption.Item3;
-        //MadmateIsNotTask = madmateoption.Item4;
-        MadmateCheckImpostorTask = Create(136, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MadmateIsCheckImpostor);
-        MadmateIsUseVent = Create(137, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadmateOption);
-        MadmateIsImpostorLight = Create(138, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadmateOption);
-
         BaitOption = SetupCustomRoleOption(486, true, RoleId.Bait);
         BaitPlayerCount = Create(487, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BaitOption);
         BaitReportTime = Create(488, true, CustomOptionType.Crewmate, "BaitReportTimeSetting", 2f, 1f, 4f, 0.5f, BaitOption);
@@ -1218,6 +1330,7 @@ public class CustomOptionHolder
         SelfBomberOption = SetupCustomRoleOption(161, true, RoleId.SelfBomber);
         SelfBomberPlayerCount = Create(162, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SelfBomberOption);
         SelfBomberScope = Create(163, true, CustomOptionType.Impostor, "SelfBomberScopeSetting", 1f, 0.5f, 3f, 0.5f, SelfBomberOption);
+        SelfBomberBombCoolTime = Create(1111, true, CustomOptionType.Impostor, "SelfBomberBombCoolTimeSettting", 10f, 2.5f, 90f, 2.5f, SelfBomberOption);
 
         GodOption = SetupCustomRoleOption(164, true, RoleId.God);
         GodPlayerCount = Create(165, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GodOption);
@@ -1299,10 +1412,6 @@ public class CustomOptionHolder
         MagazinerPlayerCount = Create(227, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MagazinerOption);
         MagazinerSetKillTime = Create(228, false, CustomOptionType.Impostor, "MagazinerSetTimeSetting", 0f, 0f, 60f, 2.5f, MagazinerOption);
 
-        MayorOption = SetupCustomRoleOption(229, true, RoleId.Mayor);
-        MayorPlayerCount = Create(230, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MayorOption);
-        MayorVoteCount = Create(231, true, CustomOptionType.Crewmate, "MayorVoteCountSetting", 2f, 1f, 100f, 1f, MayorOption);
-
         trueloverOption = SetupCustomRoleOption(232, true, RoleId.truelover);
         trueloverPlayerCount = Create(233, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], trueloverOption);
 
@@ -1348,47 +1457,13 @@ public class CustomOptionHolder
         SurvivorPlayerCount = Create(267, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SurvivorOption);
         SurvivorKillCoolTime = Create(268, true, CustomOptionType.Impostor, "SurvivorKillCoolTimeSetting", 15f, 0f, 75f, 2.5f, SurvivorOption);
 
-        MadMayorOption = SetupCustomRoleOption(269, true, RoleId.MadMayor);
-        MadMayorPlayerCount = Create(270, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMayorOption);
-        MadMayorVoteCount = Create(271, true, CustomOptionType.Crewmate, "MadMayorVoteCountSetting", 2f, 1f, 100f, 1f, MadMayorOption);
-        MadMayorIsCheckImpostor = Create(272, true, CustomOptionType.Crewmate, "MadMayorIsCheckImpostorSetting", false, MadMayorOption);
-        var madmayoroption = SelectTask.TaskSetting(273, 274, 275, MadMayorIsCheckImpostor, CustomOptionType.Crewmate, true);
-        MadMayorCommonTask = madmayoroption.Item1;
-        MadMayorShortTask = madmayoroption.Item2;
-        MadMayorLongTask = madmayoroption.Item3;
-        MadMayorCheckImpostorTask = Create(276, true, CustomOptionType.Crewmate, "MadMayorCheckImpostorTaskSetting", rates4, MadMayorIsCheckImpostor);
-        MadMayorIsUseVent = Create(277, true, CustomOptionType.Crewmate, "MadMayorUseVentSetting", false, MadMayorOption);
-        MadMayorIsImpostorLight = Create(278, true, CustomOptionType.Crewmate, "MadMayorImpostorLightSetting", false, MadMayorOption);
-
         NiceHawkOption = SetupCustomRoleOption(279, false, RoleId.NiceHawk);
         NiceHawkPlayerCount = Create(280, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceHawkOption);
         NiceHawkCoolTime = Create(281, false, CustomOptionType.Crewmate, "HawkCoolTimeSetting", 15f, 0f, 120f, 2.5f, NiceHawkOption, format: "unitCouples");
         NiceHawkDurationTime = Create(282, false, CustomOptionType.Crewmate, "HawkDurationTimeSetting", 5f, 0f, 60f, 0.5f, NiceHawkOption, format: "unitCouples");
 
-        MadStuntManOption = SetupCustomRoleOption(283, false, RoleId.MadStuntMan);
-        MadStuntManPlayerCount = Create(284, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadStuntManOption);
-        MadStuntManIsUseVent = Create(285, false, CustomOptionType.Crewmate, "MadMayorUseVentSetting", false, MadStuntManOption);
-        MadStuntManIsImpostorLight = Create(286, false, CustomOptionType.Crewmate, "MadStuntManImpostorLightSetting", false, MadStuntManOption);
-
-        MadHawkOption = SetupCustomRoleOption(287, false, RoleId.MadHawk);
-        MadHawkPlayerCount = Create(289, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadHawkOption);
-        MadHawkCoolTime = Create(290, false, CustomOptionType.Crewmate, "HawkCoolTimeSetting", 15f, 0f, 120f, 2.5f, MadHawkOption, format: "unitCouples");
-        MadHawkDurationTime = Create(291, false, CustomOptionType.Crewmate, "HawkDurationTimeSetting", 5f, 0f, 60f, 0.5f, MadHawkOption, format: "unitCouples");
-        MadHawkIsUseVent = Create(292, false, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadHawkOption);
-        MadHawkIsImpostorLight = Create(293, false, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadHawkOption);
-
         BakeryOption = SetupCustomRoleOption(294, true, RoleId.Bakery);
         BakeryPlayerCount = Create(295, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BakeryOption);
-
-        MadJesterOption = SetupCustomRoleOption(296, true, RoleId.MadJester);
-        MadJesterPlayerCount = Create(297, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadJesterOption);
-        MadJesterIsUseVent = Create(298, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadJesterOption);
-        MadJesterIsImpostorLight = Create(299, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadJesterOption);
-        IsMadJesterTaskClearWin = Create(300, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
-        var MadJesteroption = SelectTask.TaskSetting(667, 668, 669, IsMadJesterTaskClearWin, CustomOptionType.Crewmate, true);
-        MadJesterCommonTask = MadJesteroption.Item1;
-        MadJesterShortTask = MadJesteroption.Item2;
-        MadJesterLongTask = MadJesteroption.Item3;
 
         FalseChargesOption = SetupCustomRoleOption(517, true, RoleId.FalseCharges);
         FalseChargesPlayerCount = Create(518, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FalseChargesOption);
@@ -1436,20 +1511,6 @@ public class CustomOptionHolder
         SeerLimitSoulDuration = Create(321, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, SeerOption);
         SeerSoulDuration = Create(322, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerLimitSoulDuration, format: "unitCouples");
 
-        MadSeerOption = SetupCustomRoleOption(323, true, RoleId.MadSeer);
-        MadSeerPlayerCount = Create(324, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadSeerOption);
-        MadSeerMode = Create(325, false, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, MadSeerOption);
-        MadSeerLimitSoulDuration = Create(326, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, MadSeerOption);
-        MadSeerSoulDuration = Create(327, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, MadSeerLimitSoulDuration, format: "unitCouples");
-        MadSeerIsUseVent = Create(328, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadSeerOption);
-        MadSeerIsImpostorLight = Create(329, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadSeerOption);
-        MadSeerIsCheckImpostor = Create(330, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadSeerOption);
-        var madseeroption = SelectTask.TaskSetting(331, 332, 526, MadSeerIsCheckImpostor, CustomOptionType.Crewmate, true);
-        MadSeerCommonTask = madseeroption.Item1;
-        MadSeerShortTask = madseeroption.Item2;
-        MadSeerLongTask = madseeroption.Item3;
-        MadSeerCheckImpostorTask = Create(333, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MadSeerIsCheckImpostor);
-
         EvilSeerOption = SetupCustomRoleOption(334, true, RoleId.EvilSeer);
         EvilSeerPlayerCount = Create(335, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilSeerOption);
         EvilSeerMode = Create(336, false, CustomOptionType.Impostor, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, EvilSeerOption);
@@ -1465,11 +1526,6 @@ public class CustomOptionHolder
         TeleportingJackalUseSabo = Create(344, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, TeleportingJackalOption);
         TeleportingJackalCoolTime = Create(345, false, CustomOptionType.Neutral, "TeleporterCooldownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
         TeleportingJackalDurationTime = Create(346, false, CustomOptionType.Neutral, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleportingJackalOption, format: "unitSeconds");
-
-        MadMakerOption = SetupCustomRoleOption(347, true, RoleId.MadMaker);
-        MadMakerPlayerCount = Create(348, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMakerOption);
-        MadMakerIsUseVent = Create(349, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadMakerOption);
-        MadMakerIsImpostorLight = Create(350, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadMakerOption);
 
         DemonOption = SetupCustomRoleOption(351, true, RoleId.Demon);
         DemonPlayerCount = Create(352, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DemonOption);
@@ -1522,25 +1578,10 @@ public class CustomOptionHolder
         ArsonistDurationTime = Create(392, true, CustomOptionType.Neutral, "ArsonistDurationTimeSetting", 3f, 0.5f, 10f, 0.5f, ArsonistOption, format: "unitSeconds");
         ArsonistIsUseVent = Create(393, true, CustomOptionType.Neutral, "MadmateUseVentSetting", false, ArsonistOption);
 
-        ChiefOption = SetupCustomRoleOption(394, false, RoleId.Chief);
-        ChiefPlayerCount = Create(395, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
-        ChiefSheriffCoolTime = Create(626, false, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, ChiefOption, format: "unitSeconds");
-        ChiefSheriffAlwaysKills = Create(735, true, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, ChiefOption);
-        ChiefSheriffCanKillNeutral = Create(627, false, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, ChiefOption);
-        ChiefSheriffCanKillLovers = Create(628, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, ChiefOption);
-        ChiefSheriffCanKillMadRole = Create(629, false, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, ChiefOption);
-        ChiefSheriffKillLimit = Create(630, false, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, ChiefOption, format: "unitSeconds");
-
         CleanerOption = SetupCustomRoleOption(396, false, RoleId.Cleaner);
         CleanerPlayerCount = Create(397, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CleanerOption);
         CleanerKillCoolTime = Create(398, false, CustomOptionType.Impostor, "CleanerKillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, CleanerOption, format: "unitSeconds");
         CleanerCooldown = Create(399, false, CustomOptionType.Impostor, "CleanerCooldownSetting", 60f, 40f, 70f, 2.5f, CleanerOption, format: "unitSeconds");
-
-        MadCleanerOption = SetupCustomRoleOption(400, false, RoleId.MadCleaner);
-        MadCleanerPlayerCount = Create(401, false, CustomOptionType.Crewmate, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MadCleanerOption);
-        MadCleanerCooldown = Create(402, false, CustomOptionType.Crewmate, "CleanerCooldownSetting", 30f, 2.5f, 60f, 2.5f, MadCleanerOption, format: "unitSeconds");
-        MadCleanerIsUseVent = Create(403, false, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadCleanerOption);
-        MadCleanerIsImpostorLight = Create(404, false, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadCleanerOption);
 
         MayorFriendsOption = SetupCustomRoleOption(405, true, RoleId.MayorFriends);
         MayorFriendsPlayerCount = Create(406, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MayorFriendsOption);
@@ -1591,19 +1632,6 @@ public class CustomOptionHolder
         MafiaOption = SetupCustomRoleOption(602, true, RoleId.Mafia);
         MafiaPlayerCount = Create(603, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MafiaOption);
 
-        BlackCatOption = SetupCustomRoleOption(556, true, RoleId.BlackCat);
-        BlackCatPlayerCount = Create(557, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BlackCatOption);
-        BlackCatNotImpostorExiled = Create(675, true, CustomOptionType.Crewmate, "NotImpostorExiled", false, BlackCatOption);
-        BlackCatIsCheckImpostor = Create(558, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, BlackCatOption);
-        var blackcatoption = SelectTask.TaskSetting(559, 560, 561, BlackCatIsCheckImpostor, CustomOptionType.Crewmate, true);
-        BlackCatCommonTask = blackcatoption.Item1;
-        BlackCatShortTask = blackcatoption.Item2;
-        BlackCatLongTask = blackcatoption.Item3;
-        //MadmateIsNotTask = madmateoption.Item4;
-        BlackCatCheckImpostorTask = Create(562, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, BlackCatIsCheckImpostor);
-        BlackCatIsUseVent = Create(563, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, BlackCatOption);
-        BlackCatIsImpostorLight = Create(564, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, BlackCatOption);
-
         SecretlyKillerOption = SetupCustomRoleOption(607, false, RoleId.SecretlyKiller);
         SecretlyKillerPlayerCount = Create(608, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SecretlyKillerOption);
         SecretlyKillerKillCoolTime = Create(632, false, CustomOptionType.Impostor, "SheriffCooldownSetting", 2.5f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
@@ -1649,9 +1677,6 @@ public class CustomOptionHolder
         ToiletFanOption = SetupCustomRoleOption(656, true, RoleId.ToiletFan);
         ToiletFanPlayerCount = Create(657, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ToiletFanOption);
         ToiletFanCoolTime = Create(658, true, CustomOptionType.Crewmate, "ToiletCooldownSetting", 30f, 0f, 60f, 2.5f, ToiletFanOption);
-
-        SatsumaAndImoOption = SetupCustomRoleOption(953, true, RoleId.SatsumaAndImo);
-        SatsumaAndImoPlayerCount = Create(800, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SatsumaAndImoOption);
 
         EvilButtonerOption = SetupCustomRoleOption(801, true, RoleId.EvilButtoner);
         EvilButtonerPlayerCount = Create(802, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilButtonerOption);
@@ -1870,10 +1895,10 @@ public class CustomOptionHolder
         CupidPlayerCount = Create(1080, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CupidOption);
         CupidCoolTime = Create(1081, false, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 20f, 2.5f, 180f, 2.5f, CupidOption);
 
-        HamburgerShopOption = SetupCustomRoleOption(1091, false, RoleId.HamburgerShop);
-        HamburgerShopPlayerCount = Create(1093, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HamburgerShopOption);
+        HamburgerShopOption = SetupCustomRoleOption(1091, true, RoleId.HamburgerShop);
+        HamburgerShopPlayerCount = Create(1093, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HamburgerShopOption);
         HamburgerShopChangeTaskPrefab = Create(1094, false, CustomOptionType.Crewmate, "HamburgerShopChangeTaskPrefab", true, HamburgerShopOption);
-        var HamburgerShopoption = SelectTask.TaskSetting(1095, 1096, 1097, HamburgerShopOption, CustomOptionType.Crewmate, false);
+        var HamburgerShopoption = SelectTask.TaskSetting(1095, 1096, 1097, HamburgerShopOption, CustomOptionType.Crewmate, true);
         HamburgerShopCommonTask = HamburgerShopoption.Item1;
         HamburgerShopShortTask = HamburgerShopoption.Item2;
         HamburgerShopLongTask = HamburgerShopoption.Item3;
@@ -1883,6 +1908,21 @@ public class CustomOptionHolder
         PenguinCoolTime = Create(1088, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, PenguinOption, format: "unitSeconds");
         PenguinDurationTime = Create(1089, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
         PenguinCanDefaultKill = Create(1090, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
+
+        LoversBreakerOption = SetupCustomRoleOption(1132, false, RoleId.LoversBreaker);
+        LoversBreakerPlayerCount = Create(1133, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LoversBreakerOption);
+        LoversBreakerBreakCount = Create(1134, false, CustomOptionType.Neutral, "LoversBreakerBreakCount", 1f, 1f, 7f, 1f, LoversBreakerOption);
+        LoversBreakerCoolTime = Create(1135, false, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, LoversBreakerOption, format: "unitSeconds");
+        LoversBreakerIsDeathWin = Create(1136, false, CustomOptionType.Neutral, "LoversBreakerIsDeathWin", true, LoversBreakerOption);
+
+        JumboOption = SetupCustomRoleOption(1137, false, RoleId.Jumbo, type: CustomOptionType.Neutral);
+        JumboPlayerCount = Create(1138, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JumboOption);
+        JumboCrewmateChance = Create(1139, false, CustomOptionType.Neutral, "JumboCrewmateChance", rates, JumboOption);
+        JumboMaxSize = Create(1140, false, CustomOptionType.Neutral, "JumboMaxSize", 24f, 1f, 48f, 1f, JumboOption);
+        JumboSpeedUpSize = Create(1141, false, CustomOptionType.Neutral, "JumboSpeedUpSize", 300f, 10f, 600f, 10f, JumboOption);
+        JumboWalkSoundSize = Create(1142, false, CustomOptionType.Neutral, "JumboWalkSoundSize", rates, JumboOption);
+
+        Safecracker.SetupCustomOptions();
 
         //表示設定
 

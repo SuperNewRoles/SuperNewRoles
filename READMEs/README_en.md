@@ -101,7 +101,9 @@ If the host includes this mod, the position will be available to all!<br>
 [Yking](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
 [Kurato_Tsukishiro](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
 [Kuki](https://github.com/Kuki12345)<br>
-[Sakurander](https://github.com/Sakurander)<br>
+[Glaceon](https://github.com/Glaceon-471)<br>
+[~~UKON people~~](https://github.com/UKON256)<br>
+[~~Sakurander~~](https://github.com/Sakurander)<br>
 
 ## Sponsors
 Mr. Concorde<br>
@@ -138,7 +140,7 @@ It is already on the Discord server.
 | [EvilMoving](#EvilMoving)               | [NiceRedRidingHood](#NiceRedRidingHood)   | [Sidekick(Seer)](#SidekickSeer)         |
 | [Levelinger](#Levelinger)               | [Mayor](#Mayor)                           | [Arsonist](#Arsonist)                   |
 | [SideKiller](#SideKiller)               | [Technician](#Technician)                 | [Neet](#Neet)                           |
-| [Survivor](#Survivor)                   | [Diviner](#Diviner)                       |
+| [Survivor](#Survivor)                   | [Diviner](#Diviner)                       | [Safecracker](#Safecracker)
 | [EvilSeer](#EvilSeer)                   | [Spirit Medium](#SpiritMedium)            |
 | [DarkKiller](#DarkKiller)               | [MadMayor](#MadMayor)                     |
 | [Vampire](#Vampire)                     | [NiceHawk](#NiceHawk)                     |
@@ -1524,6 +1526,31 @@ If the protection is successful, a successful protection announcement will be pl
 | Maximum number of times protection is possible.          | If an upper limit is set, set the maximum number of times the protection can be used. This set number of times will be the number of times the protection ability can be used in one match. |
 |                                                          |
 ----------------------- 
+## Safecracker
+### Team Third
+#### Intro
+- Open the safe, get the ability and win!
+#### Description
+- By opening the vault, you can acquire various abilities.<br>It grants you a kill guard, an exiled guard， vent， etc.<br>Open the safe to the end and win the game.
+#### Ability
+- All tasks will be opening the vault.
+- The ability can be acquired by opening the safe.
+### Game Settings
+| Name | Description |
+| ---- | :---------: |
+| Amount of tasks to be able to kill guard (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Kill guard max count | |
+| Amount of tasks to be able to be able to exiled guard (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Exiled guard max count | |
+| Amount of tasks for which the vent will be available (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Amount of tasks for which sabotage will be available (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Amount of tasks for become an Imposter's field of view (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Amount of tasks that will allow you to check the Imposter (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Common Tasks | You can set the number of normal tasks before the Impostor can be checked. |
+| Long Tasks | You can set the number of long tasks before the Impostor can be checked. |
+| Short Tasks | You can set the number of short tasks before the Impostor can be checked. |
+| Replace all tasks with unlock safe tasks | You can set whether the task itself will be replaced by opening the vault. |
+---
 ## Quarreled
 ### overlapping camps 
 This roll will be in pairs. <br> 

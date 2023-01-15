@@ -82,15 +82,21 @@ colorCrasyublue,Crasyu Blue,クラッシュブルー,深海蓝
 colorLightgreen,Light Green,ライトグリーン,亮绿
 colorAzuki,Azuki,小豆,红豆
 colorSnow,Snow,雪,雪白
-colorLightMagenta,LightMagenta,ライトマゼンタ
-colorPeachFlower,PeachFlower,桃花
-colorPlum,Plum,梅
-colorSkyBlue,SkyBlue,青空
-colorLightCyan,LightCyan,ライトシアン
-colorLightOrange,LightOrange,ライトオレンジ
-colorSprout,Sprout,新芽
-colorNega,Nega,ネガ
-colorGold,Gold,金色
+colorLightMagenta,LightMagenta,ライトマゼンタ,浅品红
+colorPeachFlower,PeachFlower,桃花,桃红
+colorPlum,Plum,梅,梅花,梅红
+colorSkyBlue,SkyBlue,青空,天蓝
+colorLightCyan,LightCyan,ライトシアン,浅青
+colorLightOrange,LightOrange,ライトオレンジ,浅橙
+colorSprout,Sprout,新芽,芽绿
+colorNega,Nega,ネガ,负片滤镜
+colorGold,Gold,金色,金黄
+colorWineRed,WineRed,ワインレッド,酒红
+colorCrazyRed,CrazyRed,クレイジーレッド,大红
+colorTokiwaGreen,TokiwaGreen,常磐緑,常青绿
+colorPosi,Posi,ポジ,正片滤镜
+colorXmasRed,X'masRed,クリスマスレッド
+colorXmasGreen,X'masGreen,クリスマスグリーン
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -122,16 +128,7 @@ SettingAllOkRolesName,Setting up multiple positions,複数役職の設定,附加
 Settingsonota,Other settings,その他の設定,其他设置
 optionOn,<color=#03ff0c>On</color>,<color=#03ff0c>オン</color>,<color=#03ff0c>开启</color>
 optionOff,<color=#f22f21>Off</color>,<color=#f22f21>オフ</color>,<color=#f22f21>关闭</color>
-preset1,Preset 1,プリセット1,预设1
-preset2,Preset 2,プリセット2,预设2
-preset3,Preset 3,プリセット3,预设3
-preset4,Preset 4,プリセット4,预设4
-preset5,Preset 5,プリセット5,预设5
-preset6,Preset 6,プリセット6,预设6
-preset7,Preset 7,プリセット7,预设7
-preset8,Preset 8,プリセット8,预设8
-preset9,Preset 9,プリセット9,预设9
-preset10,Preset 10,プリセット10,预设10
+preset,Preset,プリセット,预设
 unitSeconds,Seconds,秒,秒
 SettingPlayerCountName,Role Player,人数,人数
 CustomStremerMode,Hide Server Url,サーバーURLを非表示にする,直播模式
@@ -141,18 +138,22 @@ CustomProcessDown,Update Process Down,処理回数を減らす,更新进程已�
 CustomIsVersionErrorView,Show players Errors.,エラーを表示する,显示错误
 CustomHideTaskArrows,Hide Tasks Arrows,タスクの矢印を非表示にする,隐藏任务指向箭头
 SettingCrewmateRoles,Crewmate Setting,クルーメイトの人数設定,船员阵营职业设置
-SettingCrewmateGhostRoles,Crewmate GhostRole Setting,クルーメイトの幽霊役職の人数設定,船员阵营死后起效职业设置
+SettingCrewmateGhostRoles,Crewmate GhostRole Setting,クルーメイトの幽霊役職の人数設定,船员阵营幽灵职业设置
 SettingNeutralRoles,Neutral Setting,第三陣営の人数設定,独立阵营职业设置
-SettingNeutralGhostRoles,Neutral GhostRole Setting,第三陣営の幽霊役職の人数設定,独立阵营死后起效职业设置
+SettingNeutralGhostRoles,Neutral GhostRole Setting,第三陣営の幽霊役職の人数設定,独立阵营幽灵职业设置
 SettingImpostorRoles,Impostor Setting,インポスターの人数設定,内鬼阵营职业设置
-SettingImpostorGhostRoles,Impostor GhostRole Setting,インポスターの幽霊役職の人数設定,内鬼阵营死后起效职业设置
+SettingImpostorGhostRoles,Impostor GhostRole Setting,インポスターの幽霊役職の人数設定,内鬼阵营幽灵职业设置
 SettingOptionOn,On,オン,开启
 SettingOptionOff,Off,オフ,关闭
 SettingPressTabForMore,Press Tab For More,Tabを押して詳細を表示,按Tab键查看更多...
-ErrorHostNoVersion,Your host does not have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストに<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>が入っていません。,房主没有安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组
-ErrorHostChangeVersion,The host has a different version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストの<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のバージョンが違います。,房主安装的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组版本不同
-ErrorClientNoVersion,You don't have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0}.,{0}に<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>が入っていません。,{0}未安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组
-ErrorClientChangeVersion,The version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0} is wrong.,{0}の<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のバージョンが違います。,{0}安装的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组版本不同
+ErrorHostNoVersion,Your host does not have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストに<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>が導入されておりません。,房主没有安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组
+ErrorHostChangeVersion,The host has a different version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストが使用している<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のバージョンと異なります。,房主安装的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组版本不同
+ErrorHostGuidMatches,The host uses a different <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> dll file.,ホストが使用している<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のdllファイルと異なります。,房主的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>dll文件不同
+ErrorClientNoVersion,You don't have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0}.,{0}に<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>が導入されておりません。,{0}未安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组
+ErrorClientChangeVersion,The version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0} is wrong.,{0}が使用している<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のバージョンが異なります。,{0}安装的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组版本不同
+ErrorClientGuidMatches,{0} uses a different <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> dll file.,{0}が使用している<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のdllファイルが異なります。,{0}的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>dll文件不同
+ErrorClientCanNotPley,,ゲストのMod導入状態に問題がある為、開始できません。\n同verの<color=#ffa500>SNR</color>を導入してもらう、HostModeに変更する等対応をお願いします。
+KickReasonHostNoVersion,The host has no or a different version of <color=#ffa500>SNR</color>\nYou will be kicked in {0}s,ホストが<color=#ffa500>SNR</color>を導入していない、又はバージョンが違う為、\nあと{0}秒でキックされます。,房主没有安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组或模组版本不同\n您将在{0}秒内被踢出
 IsSpecialModeOnAndVanillaKickOff,If <color=#2792c3>[Kick non-PCs]</color> is disabled， the\nmap will be selected for <color=#cd5c5c>MiraHQ</color>.\nIf you want to use<color=#a67646>Agartha</color>\nEnable <color=#2792c3>[Kick non-PCs]</color>.,<color=#2792c3>「PC以外をキックする」</color>が無効である場合、\nマップは<color=#cd5c5c>MiraHQ</color>に選択されます。\n<color=#a67646>Agartha</color>を使用したい場合は、\n<color=#2792c3>「PC以外をキックする」</color>を有効にしてください。,如果 “<color=#2792c3>踢出非电脑端玩家</color>”设置为否，\n地图将变为<color=#cd5c5c>米拉总部</color>。\n要启用<color=#a67646>雅各泰</color>地图，\n需要将“<color=#2792c3>踢出非电脑端玩家</color>”选项设置为是。
 RamdomMapSetting,RandomMap,ランダムマップ,随机地图
 RMSkeldSetting,Skeld,スケルドが有効,可随机游玩骷髅舰(Skeld)
@@ -207,6 +208,7 @@ RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
 CanGhostSeeRole,,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业
 OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる,只有死亡的内鬼阵营玩家可以确认所有玩家的职业
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务
+ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配
 
 # Modes
 ModeSetting,Mode Setting,モード設定,模式设置
@@ -219,7 +221,7 @@ SettingRandomColorMode,Random Color Mode,ランダムカラーモードの設定
 SettingDetectiveMode,Detective Mode,探偵モードの設定,侦探模式设置
 HideAndSeekModeName,Hide And Seek,かくれんぼ,躲猫猫
 BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀
-SuperHostRolesModeName,Super Host Roles,SuperHostRoles,SuperHostRoles
+SuperHostRolesModeName,Super Host Roles,SuperHostRoles,Super Host Roles
 ZombieModeName,Zombie Mode,ゾンビモード,生化危机
 RandomColorModeName,Random Color Mode,ランダムカラー,随机颜色模式
 NotImpostorCheckModeName,Not Impostor Check Mode,インポスター視認不能モード,双盲内鬼模式
@@ -293,8 +295,8 @@ FinalStatusKunaiKill,Kunai,クナイ,苦无
 FinalStatusSamuraiKill,Farewell.,切り捨て御免,一刀两断
 FinalStatusChiefMisSet,Misnaming,指名誤爆,背刺
 FinalStatusFalseChargesFalseCharge,Self-determination for injustice,冤罪自決,冤案
-FinalStatusSelfBomberBomb,Bomb victim,自爆巻き添え,恐袭
-FinalStatusBySelfBomberBomb,Suicide bomb attack,自爆特攻,自爆
+FinalStatusSelfBomberBomb,Suicide bomb attack,自爆特攻,自爆
+FinalStatusBySelfBomberBomb,Bomb victim,自爆巻き添え,恐袭
 FinalStatusLadderDeath,Death by fall,転落死,坠落
 FinalStatusNunDeath,Death by fall from Nun,ぬーん転落死,鬼上身
 FinalStatusSpelunkerCommsElecDeath,CommsElec death,停電通信死,摔死
@@ -314,6 +316,9 @@ FinalStatusOverKillerOverKill,Over Kill!,オーバーキル!,肢解
 FinalStatusSuicideWisherSelfDeath,Suicide,自殺,自杀
 FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺
 FinalStatusRevenge,Revenge,復讐,仇杀
+FinalStatusHitmanKill,Mission accomplished.,任務遂行,遇刺
+FinalStatusHitmanDead,Disposition.,処分,沉江
+FinalStatusWorshiperSelfDeath,Suicide,自決
 
 # Sabotages
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
@@ -361,6 +366,8 @@ NeutralSubIntro,Let's work only for ourselves.Let's Take advantage of others.,�
 detecName,Detective,探偵,侦探
 
 # Roles
+NiceName,Nice,ナイス
+EvilName,Evil,イビル
 SoothSayerName,Diviner,占い師,占卜师
 SoothSayerTitle1,Divine the player and find the outsider.,プレイヤーを占い人外を見つけよう,占卜并找出内鬼
 SoothSayerDisplaySetting,Position visibility,陣営表示にする,占卜师可得信息为阵营而非职业
@@ -444,7 +451,7 @@ SidekickTitle1,Help Jackal,ジャッカルを助けよう,帮助豺狼获得胜�
 TeleporterName,Teleporter,テレポーター,邪恶的传送师
 TeleporterTitle1,Let's get everyone together,みんなを集めよう,把所有人传送到一起
 TeleporterTitle2,Let's get everyone away from the corpse position.,みんなを死体位置から遠ざけよう,利用传送让他人远离尸体
-TeleporterCooldownSetting,Teleporter Sabotage Kill Cooldown,テレポーターサボタージュのキルクールダウン,邪恶的传送师在紧急破坏发生时的击杀冷却
+TeleporterCooldownSetting,Teleporter Sabotage Kill Cooldown,テレポートのクールダウン,正义的传送师传送冷却
 TeleporterTeleportTimeSetting,Time to be teleported,テレポートされるまでの時間,邪恶的传送师技能冷却
 TeleporterTeleportButton,Teleport,テレポート！,传送
 TeleporterTPTextMessage,The teleporter teleported you to {0}!,テレポーターが{0}にテレポートさせた!,传送师把你传送到{0}
@@ -518,11 +525,14 @@ EvilGuesserTitle1,Guess the position of the camp other than Impostor.,インポ�
 EvilGuesserTitle2,Guess the position of the outsider,人外の役職を当てよう,在会议上猜测他人的身份
 EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,邪恶的赌怪能否在一次会议中多次猜测
 EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,邪恶的赌怪最大可猜测次数
+NextPage,Next Page,次のページへ,下一页
+PreviousPage,Previous Page,前のページへ,上一页
 VultureName,Vulture,ヴァルチャー,秃鹫
 VultureTitle1,Let's eat a corpse.,死体を食べよう,吞噬尸体获得胜利
 VultureCooldownSetting,Corpse cooldown,死体クールダウン,秃鹫技能冷却
 VultureDeadBodyCountSetting,Victory corpse count,勝利死体数,秃鹫胜利所需吞噬尸体数
 VultureShowArrowsSetting,Show arrows pointing to dead bodies,死体を指す矢印を表示する,秃鹫可见指向尸体的箭头
+VultureButtonName,Eat,食らう,吞噬
 NiceScientistName,Nice Scientist,ナイスサイエンティスト,正义的隐身人
 NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう,通过隐身来找寻尸体
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう,隐身，很神奇吧
@@ -540,7 +550,7 @@ ClergymanLightOutMessage,The Clergyman is blocking my view!,聖職者が視界�
 MadmateName,Madmate,マッドメイト,叛徒
 MadmateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助内鬼获得胜利
 MadmateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。
-MadmateIsCheckImpostorSetting,You can check the Impostor.,インポスターが確認できる,可以得知内鬼是谁
+MadmateIsCheckImpostorSetting,Do you have the capacity for fanaticism?,狂信能力を有するか
 MadmateCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量(全タスク内),确认身份需要完成的任务量
 MadmateUseVentSetting,Use Vent,ベントに入れる,可以进入管道
 MadmateVentMoveSetting,Move Vent,ベントで動ける,叛徒可以使用管道
@@ -591,6 +601,7 @@ SelfBomberTitle1,Lets' Self Bomb!,自爆をしよう,我的任务 完成啦！
 SelfBomberDescription,Shapeshifting causes self-destruction.\nIf you self-destruct you will die involving everyone around you.,シェイプシフトをすることで、自爆します。\n自爆をすると周りの人を巻き込んで死亡します。,恐怖分子属于内鬼阵营，可以自爆。\n若恐怖分子自爆，自爆者与周围一定范围的玩家都会死亡。
 SelfBomberScopeSetting,Range (radius),範囲(半径),爆炸范围（半径）
 SelfBomberButtonName,Self Bomb,自爆,自爆
+SelfBomberBombCoolTimeSettting,Ability of selfbomb cooldown time.,自爆能力のクールタイム,恐怖分子自爆冷却
 GodName,God,神,神
 GodTitle1,You Are God!!,あなたは神だ,新世界的卡密！
 GodDescription,If you survive to the end you take away the win. Everyone's position is known.,最後まで生き残っていると、勝利を奪い取ります。全員の役職がわかります。,神存活到游戏结束则神单独获胜。\n所有玩家的职业对神可见。
@@ -601,8 +612,8 @@ AllCleanerTitle1,Let's get rid of the corpse.,死体を消そう,杀人不留痕
 AllCleanerCountSetting,Number of times it can be used in one game,1試合中に使える回数,清理者最大可清理次数
 AllCleanerButtonName,Clean,クリーン,清理
 NiceNekomataName,Nice Nekomata,ナイス猫又,正义的猎人
-NiceNekomataTitle1,Let's take him on the road.,道連れにしよう,带人一起上路
-NiceNekomataTitle2,Let's have a human mess.,人外ガチャをしよう,被投出去的你会带走一个人
+NiceNekomataTitle1,Let's take him on the road.,道連れにしよう,带其他人一起上路
+NiceNekomataTitle2,Let's have a human mess.,人外ガチャをしよう,带敌人一起上路
 NiceNekomataTitle3,Let's mess around!,ガチャしようぜ！,扰乱敌人的计划吧
 NiceNekomataDescription,If you are exiled at a meeting you take one of them with you on the road.,自分が会議で追放されると、誰か一人を道連れにします。,猎人在会议中被放逐，则猎人连带存活的随机一名玩家一同死亡。
 NiceNekomataIsChainSetting,Chain Nekomata,猫又同士が連鎖する,猎人被连带死亡会继续触发连带死亡
@@ -646,7 +657,7 @@ HawkDurationTimeSetting,Duration,継続時間,千里眼持续时间
 HawkButtonName,Hawk Eye,ホークアイ,千里眼
 EgoistName,Egotist,エゴイスト,野心家
 EgoistTitle1,We can survive this.,生き残ろう,忍时待机
-EgoistDescription,Impostor judgment.\nThe impostor appears to be a peer.\nIf all the Impostors are dead\nand the Impostor's victory condition is achieved (except Sabotage) the Egoist wins.,インポスター判定です。\nインポスターからは仲間に見えます。\nインポスターがすべて死んでいる状態で、\nインポスターの勝利条件を達成する(サボタージュ以外)とエゴイストの勝利です。,野心家规则上属于内鬼阵营。\n野心家与内鬼阵营玩家互认。\n其他内鬼阵营玩家全部死亡后，若内鬼阵营不通过紧急破坏获得胜利，\n并且野心家存活，则野心家单独获胜。
+EgoistDescription,Impostor judgment.\nThe impostor appears to be a peer.\nIf all the Impostors are dead\nand the Impostor's victory condition is achieved (except Sabotage) the Egoist wins.,インポスター判定です。\nインポスターからは仲間に見えます。\nインポスターがすべて死んでいる状態で、\nインポスターの勝利条件を達成する(サボタージュ以外)とエゴイストの勝利です。,野心家规则上属于内鬼阵营。\n野心家与内鬼阵营玩家互认为同伴。\n其他内鬼阵营玩家全部死亡后，若内鬼阵营不通过紧急破坏获得胜利，\n并且野心家存活，则野心家单独获胜。
 EgoistUseVentSetting,I can use Vent.,ベントを使える,野心家可以使用管道
 EgoistUseSaboSetting,Can use Sabotage,サボタージュが使える,野心家可以进行破坏
 EgoistImpostorLightSetting,Impostor's Vision,インポスターの視界,野心家拥有内鬼视野
@@ -829,7 +840,7 @@ MarineWhois,Who is Merine?,マーリンは誰だ？,谁是梅林？
 ArsonistName,Arsonist,アーソニスト,纵火犯
 ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ,燃烧吧
 ArsonistDurationTimeSetting,Douse Duration,塗り時間,纵火犯涂油所需时间
-ArsonistDouseButtonName,Douse,塗る,涂抹
+ArsonistDouseButtonName,Douse,塗る,涂油
 ArsonistIgniteButtonName,Ignite,燃やす,点燃
 ArsonistDescription,If you oil them all and burn them. you win alone.,油を全員に塗り燃やしたら単独勝利です。,纵火犯属于独立阵营。\n纵火犯给所有人涂油后按下点燃按钮则纵火犯独自获胜。
 ChiefName,Chief,村長,警察局长
@@ -1138,9 +1149,43 @@ PenguinName,Penguin,ペンギン,绑匪
 PenguinTitle1,Let's drag and kill!,ぺちぺち！,绑架他人
 PenguinButtonName,Abduction,拉致,绑架
 PenguinCanDefaultKill,Can default kill,通常キルができる,绑匪可以进行通常击杀
+LoversBreakerName,LoversBreaker,爆ぜ師
+LoversBreakerTitle1,fulfilling life explosion!!fulfilling life explosion!!,リア充爆発！！リア充爆発！！
+LoversBreakerBreakCount,Number of explosions needed to win,勝利に必要な爆破数
+LoversBreakerIsDeathWin,You can win even if you are dead.,死亡していても勝利できる
+LoversBreakerButtonName,Blow up,爆破
+JumboName,Jumbo,ジャンボ
+JumboTitle1,Wow!?Jumbo!!!,ワオ、ジャンボ！！！
+NiceJumboName,NiceJumbo,ナイスジャンボ
+NiceJumboTitle1,Big Crewmate Team!!!,大きいクルーメイトの味方
+EvilJumboName,EvilJumbo,イビルジャンボ
+EvilJumboTitle1,Let's overwhelm the crew with the size of this thing.,この大きさでクルーを圧倒しよう
+JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボになる確率
+JumboMaxSize,Maximum size,最大サイズ
+JumboSpeedUpSize,Growth speed,成長スピード
+JumboWalkSoundSize,Loudness of footsteps,足音の大きさ
+WorshiperName,Worshiper,崇拝者
+WorshiperTitle1,If I can help them，I will spare my life.,あなた方の力になれるのなら 私の命など惜しくはない。
+WorshiperDescription,It has two self-determination abilities.\nIt commits suicide on the spot by using the Shapeshift when SHR and the [Suicide] ability when SNR.\nBy using the kill button，it commits suicide in the form of a sheriff misfire.\nAha，master. My will is yours and my life is for yours...\nCome，master. Let us fulfill that desire.,2つの自決能力を持ちます。\nSHR時はシェイプシフト、SNR時は[自決]能力を使用する事で、その場で自殺します。\nキルボタンを使用する事でシェリフ誤爆のような形で自殺します。\n嗚呼、ご主人。私の意思は貴方の物であり、私の命は貴方の為にあるのです・・・\nさあ、ご主人その願望をかなえましょう。
+WorshiperAbilitySuicideCoolTime,Suicide coold time setting with ability buttons.,アビリティボタンによる自決のクールタイム設定
+WorshiperKillSuicideCoolTime,Suicide coold time setting with kill buttons.,キルボタンによる自決のクールタイム設定
+WorshiperSuicide,Suicide,自決
+SafecrackerName,Safecracker,金庫破り
+SafecrackerTitle1,Open the safe， get the ability and win!,金庫を開けて、能力と勝利を手に入れよう
+SafecrackerDescription,By opening the vault， you can acquire various abilities.\nIt grants you a kill guard， an exiled guard， vent， etc.\nOpen the safe to the end and win the game.,金庫を開けることで、様々な能力を取得することが出来ます。\nキルガードや追放ガード、ベントなどが付与されます。\n金庫を最期まで開け、勝利を手に入れましょう。
+NotAbility,None,なし
+SafecrackerKillGuardTaskSetting,Amount of tasks to be able to kill guard (of all tasks),キルガードが出来るようになるタスク量(全タスク内)
+SafecrackerMaxKillGuardCountSetting,Kill guard max count,キルガードできる回数
+SafecrackerExiledGuardTaskSetting,Amount of tasks to be able to be able to exiled guard (of all tasks),追放ガードが出来るようになるタスク量(全タスク内)
+SafecrackerMaxExiledGuardCountSetting,Exiled guard max count,追放ガードできる回数
+SafecrackerUseVentTaskSetting,Amount of tasks for which the vent will be available (of all tasks),ベントが使用可能になるタスク量(全タスク内)
+SafecrackerUseSaboTaskSetting,Amount of tasks for which sabotage will be available (of all tasks),サボタージュが使用可能になるタスク量(全タスク内)
+SafecrackerIsImpostorLightTaskSetting,Amount of tasks for become an Imposter's field of view (of all tasks),インポスターの視界になるタスク量(全タスク内)
+SafecrackerCheckImpostorTaskSetting,Amount of tasks that will allow you to check the Imposter (of all tasks),インポスターを確認できるようになるタスク量(全タスク内)
+SafecrackerChangeTaskPrefabSetting,Replace all tasks with unlock safe tasks,全タスクを金庫タスクに置き換える
 
 #ConfigRoles
-IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする
+IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！
@@ -1168,11 +1213,17 @@ TwitterDevLink,Development Information Account : https://twitter.com/SNRDevs,開
 Team,Team,陣営,阵营
 MessageSettings,Settings,設定,设置
 NowRolesMessage,Activate Roles,現在入っている役職,当前激活的职业
+Notassign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。,目前还没有激活任何职业。
 TeamMessage,【Team:{0}】,【{0}陣営】,【{0}阵营】
 NameIncludeMod,You cannot make a room public contains mod in your name.,modが名前に含まれている状態では公開部屋にすることはできません。,不能在昵称里有“mod”时将房间状态设置为公开。
 CannotUseRenameMessage,Cannot rename.\nThe /rename command can only be used on\navailable only when hosted.,名前を変更することができません。\n/renameコマンドは\nホスト時のみ使用可能です。,无法重命名。\n/rename命令仅房主可用。
 betatext1,\nThis is a beta version! Watch out for bugs!,\nベータ版です! バグには注意してください!,这是测试版本。请注意是否有bug。
 betatext2,\n~Information for developers~,\n～開発者用の情報～,\n~开发者信息~
+ExitExperimentEsc,Exit from the experiment with Esc.,Escで実験から抜ける,按Esc键退出测试
+Experimenting...,Experimenting...,実験中...,测试中...
+StartExperiment,Start experiment,実験を開始する,开始测试
+Processing,Processing...,処理中...,处理中...
+SuccessfulExperiment,Successful Experiment,実験成功,测试成功
 
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库

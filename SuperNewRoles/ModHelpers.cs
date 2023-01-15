@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,9 +9,13 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnhollowerBaseLib;
 using UnityEngine;
+using AmongUs.GameOptions;
+using SuperNewRoles.Mode;
+using UnityEngine.Audio;
 
 namespace SuperNewRoles;
 
@@ -31,6 +36,21 @@ public static class ModHelpers
                     !MeetingHud.Instance &&
                     !ExileController.Instance;
         }
+    }
+    public static AudioSource PlaySound(Transform parent, AudioClip clip, bool loop, float volume = 1f, AudioMixerGroup audioMixer = null)
+    {
+        if (audioMixer == null)
+        {
+            audioMixer = (loop ? SoundManager.Instance.MusicChannel : SoundManager.Instance.SfxChannel);
+        }
+        AudioSource value = parent.GetComponent<AudioSource>() ?? parent.gameObject.AddComponent<AudioSource>();
+        value.outputAudioMixerGroup = audioMixer;
+        value.playOnAwake = false;
+        value.volume = volume;
+        value.loop = loop;
+        value.clip = clip;
+        value.Play();
+        return value;
     }
     public static void SetKillTimerUnchecked(this PlayerControl player, float time, float max = float.NegativeInfinity)
     {
@@ -146,18 +166,18 @@ public static class ModHelpers
         var anim = spriteAnim.m_animator;
         var skinLayer = playerPhysics.GetSkin();
 
-        var currentPhysicsAnim = playerPhysics.Animator.GetCurrentAnimation();
-        clip = currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.RunAnim
+        var currentPhysicsAnim = playerPhysics.Animations.Animator.GetCurrentAnimation();
+        clip = currentPhysicsAnim == playerPhysics.Animations.group.RunAnim
             ? nextSkin.RunAnim
-            : currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.SpawnAnim
+            : currentPhysicsAnim == playerPhysics.Animations.group.SpawnAnim
             ? nextSkin.SpawnAnim
-            : currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.EnterVentAnim
+            : currentPhysicsAnim == playerPhysics.Animations.group.EnterVentAnim
             ? nextSkin.EnterVentAnim
-            : currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.ExitVentAnim
+            : currentPhysicsAnim == playerPhysics.Animations.group.ExitVentAnim
             ? nextSkin.ExitVentAnim
-            : currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.IdleAnim ? nextSkin.IdleAnim : nextSkin.IdleAnim;
+            : currentPhysicsAnim == playerPhysics.Animations.group.IdleAnim ? nextSkin.IdleAnim : nextSkin.IdleAnim;
 
-        float progress = playerPhysics.Animator.m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        float progress = playerPhysics.Animations.Animator.m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         skinLayer.skin = nextSkin;
 
         spriteAnim.Play(clip, 1f);
@@ -278,6 +298,32 @@ public static class ModHelpers
                 }
             }
         }
+        if (target.IsRole(RoleId.Safecracker) && !killer.IsRole(RoleId.OverKiller) && Safecracker.CheckTask(target, Safecracker.CheckTasks.KillGuard) && (!Safecracker.KillGuardCount.ContainsKey(target.PlayerId) || Safecracker.KillGuardCount[target.PlayerId] >= 1))
+        {
+            if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.SafecrackerGuard, killer))
+            {
+                bool IsSend = false;
+                if (!Safecracker.KillGuardCount.ContainsKey(target.PlayerId) ||
+                    Safecracker.KillGuardCount[target.PlayerId] > 0)
+                {
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
+                    writer.Write(target.PlayerId);
+                    writer.Write(target.PlayerId);
+                    writer.Write(0);
+                    writer.EndRPC();
+                    RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
+                    IsSend = true;
+                }
+                if (IsSend)
+                {
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SafecrackerGuardCount);
+                    writer.Write(target.PlayerId);
+                    writer.Write(true);
+                    writer.EndRPC();
+                    RPCProcedure.SafecrackerGuardCount(target.PlayerId, true);
+                }
+            }
+        }
         return MurderAttemptResult.PerformKill;
     }
     public static void GenerateAndAssignTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
@@ -298,9 +344,13 @@ public static class ModHelpers
         {
             numShort = 1;
         }
-        if (player.IsRole(RoleId.HamburgerShop) && !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool())
+        if (player.IsRole(RoleId.HamburgerShop) && (ModeHandler.IsMode(ModeId.SuperHostRoles) || !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool()))
         {
             return Roles.CrewMate.HamburgerShop.GenerateTasks(numCommon + numShort + numLong);
+        }
+        else if(player.IsRole(RoleId.Safecracker) && !(Safecracker.SafecrackerChangeTaskPrefab.GetBool() || GameManager.Instance.LogicOptions.currentGameOptions.MapId != (int)MapNames.Airship))
+        {
+            return Safecracker.GenerateTasks(numCommon + numShort + numLong);
         }
         var tasks = new Il2CppSystem.Collections.Generic.List<byte>();
         var hashSet = new Il2CppSystem.Collections.Generic.HashSet<TaskTypes>();
@@ -640,113 +690,44 @@ public static class ModHelpers
     }
     public static TextMeshPro NameText(this PoolablePlayer player)
     {
-        return player.transform.FindChild("NameText_TMP").GetComponent<TextMeshPro>();
+        return player.cosmetics.nameText;
     }
     public static SpriteRenderer MyRend(this PlayerControl player)
     {
-        bool Isnull = true;
-        if (MyRendCache.ContainsKey(player.PlayerId))
-        {
-            Isnull = MyRendCache[player.PlayerId] == null;
-        }
-        if (Isnull)
-        {
-            MyRendCache[player.PlayerId] = player.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
-        }
-        return MyRendCache[player.PlayerId];
+        return player.cosmetics.currentBodySprite.BodySprite;
     }
     public static SpriteRenderer Rend(this PlayerPhysics player)
     {
-        byte PlayerId = player.myPlayer.PlayerId;
-        bool Isnull = true;
-        if (MyRendCache.ContainsKey(PlayerId))
-        {
-            Isnull = MyRendCache[PlayerId] == null;
-        }
-        if (Isnull)
-        {
-            MyRendCache[PlayerId] = player.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
-        }
-        return MyRendCache[PlayerId];
+        return player.myPlayer.cosmetics.currentBodySprite.BodySprite;
     }
     public static SkinLayer GetSkin(this PlayerControl player)
     {
-        byte PlayerId = player.PlayerId;
-        bool Isnull = true;
-        if (SkinLayerCache.ContainsKey(PlayerId))
-        {
-            Isnull = SkinLayerCache[PlayerId] == null;
-        }
-        if (Isnull)
-        {
-            SkinLayerCache[PlayerId] = player.transform.FindChild("Skin").GetComponent<SkinLayer>();
-        }
-        return SkinLayerCache[PlayerId];
+        return player.cosmetics.skin;
     }
     public static SkinLayer GetSkin(this PlayerPhysics player)
     {
-        byte PlayerId = player.myPlayer.PlayerId;
-        bool Isnull = true;
-        if (SkinLayerCache.ContainsKey(PlayerId))
-        {
-            Isnull = SkinLayerCache[PlayerId] == null;
-        }
-        if (Isnull)
-        {
-            SkinLayerCache[PlayerId] = player.transform.FindChild("Skin").GetComponent<SkinLayer>();
-        }
-        return SkinLayerCache[PlayerId];
+        return player.myPlayer.cosmetics.skin;
     }
     public static HatParent HatRenderer(this PlayerControl player)
     {
-        byte PlayerId = player.PlayerId;
-        bool Isnull = true;
-        if (HatRendererCache.ContainsKey(PlayerId))
-        {
-            Isnull = HatRendererCache[PlayerId] == null;
-        }
-        if (Isnull)
-        {
-            HatRendererCache[PlayerId] = player.transform.FindChild("Sprite/Hat").GetComponent<HatParent>();
-        }
-        return HatRendererCache[PlayerId];
+        return player.cosmetics.hat;
     }
     public static SpriteRenderer HatRend(this PlayerControl player)
     {
-        byte PlayerId = player.PlayerId;
-        bool Isnull = true;
-        if (HatRendCache.ContainsKey(PlayerId))
-        {
-            Isnull = HatRendCache[PlayerId] == null;
-        }
-        if (Isnull)
-        {
-            HatRendCache[PlayerId] = player.transform.FindChild("Sprite/Hat").GetComponent<SpriteRenderer>();
-        }
-        return HatRendCache[PlayerId];
+        return player.cosmetics.hat.Parent;
     }
     public static VisorLayer VisorSlot(this PlayerControl player)
     {
-        byte PlayerId = player.PlayerId;
-        bool Isnull = true;
-        if (VisorSlotCache.ContainsKey(PlayerId))
-        {
-            Isnull = VisorSlotCache[PlayerId] == null;
-        }
-        if (Isnull)
-        {
-            VisorSlotCache[PlayerId] = player.transform.FindChild("Sprite/Visor").GetComponent<VisorLayer>();
-        }
-        return VisorSlotCache[PlayerId];
+        return player.cosmetics.visor;
     }
 
     public static HatParent HatSlot(this PoolablePlayer player)
     {
-        return player.transform.FindChild("HatSlot").GetComponent<HatParent>();
+        return player.cosmetics.hat;
     }
     public static VisorLayer VisorSlot(this PoolablePlayer player)
     {
-        return player.transform.FindChild("Visor").GetComponent<VisorLayer>();
+        return player.cosmetics.visor;
     }
 
     public static Texture2D LoadTextureFromDisk(string path)
@@ -777,19 +758,18 @@ public static class ModHelpers
         return iCall_LoadImage.Invoke(tex.Pointer, il2cppArray.Pointer, markNonReadable);
     }
 
-    public static PlayerControl GetPlayerControl(this byte id)
-    {
-        return PlayerById(id);
-    }
+    internal static Dictionary<byte, PlayerControl> IdControlDic = new(); // ClearAndReloadで初期化されます
+    public static PlayerControl GetPlayerControl(this byte id) => PlayerById(id);
     public static PlayerControl PlayerById(byte id)
     {
-        foreach (CachedPlayer player in CachedPlayer.AllPlayers)
-        {
-            if (player.PlayerId == id)
-            {
-                return player;
+        if (!IdControlDic.ContainsKey(id)) { // idが辞書にない場合全プレイヤー分のループを回し、辞書に追加する
+            foreach (PlayerControl pc in CachedPlayer.AllPlayers) {
+                if (!IdControlDic.ContainsKey(pc.PlayerId)) // Key重複対策
+                    IdControlDic.Add(pc.PlayerId,pc);
             }
         }
+        if (IdControlDic.ContainsKey(id)) return IdControlDic[id];
+        Logger.Error($"idと合致するPlayerIdが見つかりませんでした。nullを返却します。id:{id}", "ModHelpers");
         return null;
     }
 

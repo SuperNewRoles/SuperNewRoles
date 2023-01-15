@@ -105,7 +105,7 @@ namespace SuperNewRoles.Roles;
                         Writer.Write(random.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RoleClass.Jester.IsJesterWin = true;
-                        ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
+                        GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
                     }
                     if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
                     {
@@ -114,7 +114,7 @@ namespace SuperNewRoles.Roles;
                         Writer.Write(random.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RoleClass.MadJester.IsMadJesterWin = true;
-                        ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.MadJesterWin, false);
+                        GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.MadJesterWin, false);
                     }
                 }
             }

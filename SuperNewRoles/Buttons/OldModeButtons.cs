@@ -69,10 +69,11 @@ public static class OldModeButtons
             }
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((MapBehaviour m) =>
+                FastDestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new MapOptions()
                 {
-                    m.ShowNormalMap();
-                }));
+                    Mode = MapOptions.Modes.Sabotage,
+                    AllowMovementWhileMapOpen = true
+                });
             }
             return false;
         }

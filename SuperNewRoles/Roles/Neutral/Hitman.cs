@@ -70,7 +70,7 @@ public static class Hitman
             }
             if (RoleClass.Hitman.Target != null)
             {
-                foreach (var icondata in MapOptions.MapOption.playerIcons)
+                foreach (var icondata in MapOption.MapOption.playerIcons)
                 {
                     if (icondata.Key == RoleClass.Hitman.Target.PlayerId)
                     {
@@ -127,6 +127,7 @@ public static class Hitman
         if (RoleClass.Hitman.OutMissionLimit <= 0)
         {
             PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+            PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.HitmanDead);
         }
     }
     public static void DestroyIntroHandle(IntroCutscene __instance)

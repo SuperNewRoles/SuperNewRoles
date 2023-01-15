@@ -17,7 +17,7 @@ public static class SabotageManager
     {
         return Options.SabotageSetting.GetBool() && sabotage switch
         {
-            CustomSabotage.CognitiveDeficit => PlayerControl.GameOptions.MapId == 4 && Options.CognitiveDeficitSetting.GetBool(),
+            CustomSabotage.CognitiveDeficit => GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4 && Options.CognitiveDeficitSetting.GetBool(),
             _ => false,
         };
     }

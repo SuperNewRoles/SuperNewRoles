@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;

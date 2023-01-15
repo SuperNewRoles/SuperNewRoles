@@ -4,6 +4,7 @@ using System.Linq;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnityEngine;
 
@@ -87,7 +88,7 @@ public class SetNamesClass
         }
 
         // Set the position every time bc it sometimes ends up in the wrong place due to camoflauge
-        playerInfo.transform.localPosition = p.NameText().transform.localPosition + Vector3.up * 0.5f;
+        playerInfo.transform.localPosition = p.NameText().transform.localPosition + Vector3.up * 0.2f;
 
         PlayerVoteArea playerVoteArea = MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == p.PlayerId);
         TMPro.TextMeshPro meetingInfo = MeetingPlayerInfos.ContainsKey(p.PlayerId) ? MeetingPlayerInfos[p.PlayerId] : null;
@@ -160,7 +161,7 @@ public class SetNamesClass
         }
         else if (role == RoleId.Stefinder && RoleClass.Stefinder.IsKill)
         {
-            var introData = IntroData.GetIntroData(role);
+            var introData = IntroData.GetIntroData(role, p);
             roleNames = introData.Name;
             roleColors = RoleClass.ImpostorRed;
         }
@@ -172,14 +173,14 @@ public class SetNamesClass
         }
         else
         {
-            var introData = IntroData.GetIntroData(role);
+            var introData = IntroData.GetIntroData(role, p);
             roleNames = introData.Name;
             roleColors = introData.color;
         }
         var GhostRole = p.GetGhostRole();
         if (GhostRole != RoleId.DefaultRole)
         {
-            var GhostIntro = IntroData.GetIntroData(GhostRole);
+            var GhostIntro = IntroData.GetIntroData(GhostRole, p);
             GhostroleNames = GhostIntro.Name;
             GhostroleColors = GhostIntro.color;
         }
@@ -221,12 +222,21 @@ public class SetNamesClass
             }
         }
     }
+    public static void JumboSet()
+    {
+        foreach (PlayerControl p in RoleClass.Jumbo.JumboPlayer) {
+            if (!RoleClass.Jumbo.JumboSize.ContainsKey(p.PlayerId)) continue;
+            SetPlayerNameText(p, p.NameText().text + $"({(int)(RoleClass.Jumbo.JumboSize[p.PlayerId] * 15)})");
+        }
+    }
+
     public static void LoversSet()
     {
         string suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
-        if (PlayerControl.LocalPlayer.IsLovers() && PlayerControl.LocalPlayer.IsAlive())
+        if ((PlayerControl.LocalPlayer.IsLovers() || (PlayerControl.LocalPlayer.IsFakeLovers() && !PlayerControl.LocalPlayer.IsFakeLoversFake())) && PlayerControl.LocalPlayer.IsAlive())
         {
             PlayerControl side = PlayerControl.LocalPlayer.GetOneSideLovers();
+            if (side == null) side = PlayerControl.LocalPlayer.GetOneSideFakeLovers();
             SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.NameText().text + suffix);
             if (!side.Data.Disconnected)
                 SetPlayerNameText(side, side.NameText().text + suffix);
@@ -356,8 +366,8 @@ public class SetNameUpdate
             if (Madmate.CheckImpostor(PlayerControl.LocalPlayer) ||
                 LocalRole == RoleId.MadKiller ||
                 LocalRole == RoleId.Marine ||
-                (RoleClass.Demon.IsCheckImpostor && LocalRole == RoleId.Demon)
-                )
+                (RoleClass.Demon.IsCheckImpostor && LocalRole == RoleId.Demon) ||
+                (LocalRole == RoleId.Safecracker && Safecracker.CheckTask(__instance, Safecracker.CheckTasks.CheckImpostor)))
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
@@ -456,6 +466,7 @@ public class SetNameUpdate
             SetNamesClass.LoversSet();
         }
         SetNamesClass.SatsumaimoSet();
+        SetNamesClass.JumboSet();
 
         if (RoleClass.PartTimer.Data.ContainsValue(CachedPlayer.LocalPlayer.PlayerId))
         {

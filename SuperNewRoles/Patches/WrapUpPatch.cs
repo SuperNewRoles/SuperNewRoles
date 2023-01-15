@@ -1,4 +1,5 @@
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
@@ -113,6 +114,11 @@ class WrapUpPatch
         Vampire.SetActiveBloodStaiWrapUpPatch();
         Roles.Crewmate.Celebrity.WrapUp();
         if (exiled == null) return;
+        if (exiled.Object.IsRole(RoleId.Jumbo) && exiled.Object.IsCrew())
+        {
+            GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.NoWinner, false);
+            return;
+        }
         Vampire.DependentsExileWrapUpPatch(exiled.Object);
         SoothSayer_Patch.WrapUp(exiled.Object);
         Nekomata.NekomataEnd(exiled);
