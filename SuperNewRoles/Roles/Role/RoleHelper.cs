@@ -279,8 +279,8 @@ public static class RoleHelpers
                 GameObject.Destroy(obj.gameObject);
             }
         }
-        else if (player.IsRole(RoleId.Camouflager) && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId && RoleClass.Camouflager.IsCamouflage)
-            Camouflager.RpcResetCamouflage();
+        else if (player.IsRole(RoleId.Camouflager) && role != RoleId.Camouflager && RoleClass.Camouflager.IsCamouflage)
+            Camouflager.ResetCamouflage();
         switch (role)
         {
             case RoleId.SoothSayer:
