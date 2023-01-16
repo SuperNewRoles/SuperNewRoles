@@ -23,15 +23,27 @@ namespace SuperNewRoles.Roles.Crewmate
 
         public static bool EnabledSetting()
         {
-            if (!RoleClass.Celebrity.ChangeRoleView)
+            // スターが死亡、存在しなくなった場合も光らせる設定の場合 trueを返す。
+            if (!CustomOptionHolder.CelebrityIsFlashWhileAlivingOnly.GetBool()) return true;
+
+            // スターが存在し、生きているなら trueを返す
+            foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
             {
-                if (RoleClass.Celebrity.CelebrityPlayer.Count <= 0) return false;
+                if (p.IsAlive()) return true;
             }
-            foreach (PlayerControl p in RoleClass.Celebrity.ViewPlayers)
+
+            //スターがSKされても名前の色が変わらない設定の時
+            if (RoleClass.Celebrity.ChangeRoleView)
             {
-                if (p.IsDead()) return false;
+                // SKスターが生存しているなら trueを返す
+                foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
+                {
+                    if (p.IsAlive()) return true;
+                }
             }
-            return true;
+
+            Logger.Info("スターの輝きが現れる条件を満たしませんでした","Celebrity");
+            return false;
         }
         public static void WrapUp()
         {
