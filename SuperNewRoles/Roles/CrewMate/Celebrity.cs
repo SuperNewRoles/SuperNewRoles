@@ -25,9 +25,18 @@ namespace SuperNewRoles.Roles.Crewmate
             Logger.Info($"{RoleClass.Celebrity.FlashTime}[ミリ秒]にタイマーセット ", "CelebrityFlash");
         }
 
+        /// <summary>
+        /// 試合中に変動しない「タスクフェイズ中に画面を光らせるか」の条件を取得する
+        /// </summary>
+        private static bool IsFirstDecisionAboutFlash()
+        {
+            if (RoleClass.Celebrity.ViewPlayers.Count <= 0) return false;
+            if (!CustomOptionHolder.CelebrityIsTaskPhaseFlash.GetBool()) return false;
+            return true;
+        }
         public static void WrapUp()
         {
-            if (IsFlash()) CelebrityTimerSet();
+            if (IsFirstDecisionAboutFlash()) CelebrityTimerSet();
         }
 
         public static void TimerStop()
@@ -38,7 +47,6 @@ namespace SuperNewRoles.Roles.Crewmate
 
         public static bool EnabledSetting()
         {
-            if (!IsFlash()) return false; //この条件をWarapUpでも判断している為、必要なさそうな場合最後に消してください。
             if (!RoleClass.Celebrity.ChangeRoleView)
             {
                 if (RoleClass.Celebrity.CelebrityPlayer.Count <= 0) return false;
@@ -47,13 +55,6 @@ namespace SuperNewRoles.Roles.Crewmate
             {
                 if (p.IsDead()) return false;
             }
-            return true;
-        }
-
-        public static bool IsFlash()
-        {
-            if (RoleClass.Celebrity.ViewPlayers.Count <= 0) return false;
-            if (!CustomOptionHolder.CelebrityIsTaskPhaseFlash.GetBool()) return false;
             return true;
         }
 
