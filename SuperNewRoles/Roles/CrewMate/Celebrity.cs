@@ -11,20 +11,6 @@ namespace SuperNewRoles.Roles.Crewmate
     {
         private static Timer timer;
 
-        public static void CelebrityTimerSet()
-        {
-            timer = new Timer(RoleClass.Celebrity.FlashTime);
-            timer.Elapsed += (source, e) =>
-            {
-                Seer.ShowFlash(Color.yellow);
-                Logger.Info($"{RoleClass.Celebrity.FlashTime / 1000}s 経過した為発光しました。", "CelebrityFlash");
-            };
-            timer.AutoReset = EnabledSetting();
-            timer.Enabled = EnabledSetting();
-            if (!EnabledSetting()) return;
-            Logger.Info($"{RoleClass.Celebrity.FlashTime}[ミリ秒]にタイマーセット ", "CelebrityFlash");
-        }
-
         /// <summary>
         /// 試合中に変動しない「タスクフェイズ中に画面を光らせるか」の条件を取得する
         /// </summary>
@@ -33,16 +19,6 @@ namespace SuperNewRoles.Roles.Crewmate
             if (RoleClass.Celebrity.ViewPlayers.Count <= 0) return false;
             if (!CustomOptionHolder.CelebrityIsTaskPhaseFlash.GetBool()) return false;
             return true;
-        }
-        public static void WrapUp()
-        {
-            if (IsFirstDecisionAboutFlash()) CelebrityTimerSet();
-        }
-
-        public static void TimerStop()
-        {
-            if (timer != null) timer.Stop();
-            Logger.Info("発光用タイマーを止めました。", "CelebrityFlash");
         }
 
         public static bool EnabledSetting()
@@ -56,6 +32,29 @@ namespace SuperNewRoles.Roles.Crewmate
                 if (p.IsDead()) return false;
             }
             return true;
+        }
+        public static void WrapUp()
+        {
+            if (IsFirstDecisionAboutFlash()) CelebrityTimerSet();
+        }
+
+        public static void CelebrityTimerSet()
+        {
+            timer = new Timer(RoleClass.Celebrity.FlashTime);
+            timer.Elapsed += (source, e) =>
+            {
+                Seer.ShowFlash(Color.yellow);
+                Logger.Info($"{RoleClass.Celebrity.FlashTime / 1000}s 経過した為発光しました。", "CelebrityFlash");
+            };
+            timer.AutoReset = EnabledSetting();
+            timer.Enabled = EnabledSetting();
+            if (!EnabledSetting()) return;
+            Logger.Info($"{RoleClass.Celebrity.FlashTime}[ミリ秒]にタイマーセット ", "CelebrityFlash");
+        }
+        public static void TimerStop()
+        {
+            if (timer != null) timer.Stop();
+            Logger.Info("発光用タイマーを止めました。", "CelebrityFlash");
         }
 
         /*
