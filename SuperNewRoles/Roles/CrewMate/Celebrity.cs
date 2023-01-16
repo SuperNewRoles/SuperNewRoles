@@ -27,10 +27,7 @@ namespace SuperNewRoles.Roles.Crewmate
 
         public static void WrapUp()
         {
-            // スターがアサインされていない時に、長くなってしまっている一連の処理を読まないようにreturnする
-            if (RoleClass.Celebrity.ViewPlayers.Count <= 0) return;
-            if (!CustomOptionHolder.CelebrityIsTaskPhaseFlash.GetBool()) return;
-            CelebrityTimerSet();
+            if (IsFlash()) CelebrityTimerSet();
         }
 
         public static void TimerStop()
@@ -41,8 +38,7 @@ namespace SuperNewRoles.Roles.Crewmate
 
         public static bool EnabledSetting()
         {
-            if (RoleClass.Celebrity.ViewPlayers.Count <= 0) return false; //この条件をWarapUpでも判断している為、必要なさそうな場合最後に消してください。
-            if (!CustomOptionHolder.CelebrityIsTaskPhaseFlash.GetBool()) return false; //この条件をWarapUpでも判断している為、必要なさそうな場合最後に消してください。
+            if (!IsFlash()) return false; //この条件をWarapUpでも判断している為、必要なさそうな場合最後に消してください。
             if (!RoleClass.Celebrity.ChangeRoleView)
             {
                 if (RoleClass.Celebrity.CelebrityPlayer.Count <= 0) return false;
@@ -51,6 +47,13 @@ namespace SuperNewRoles.Roles.Crewmate
             {
                 if (p.IsDead()) return false;
             }
+            return true;
+        }
+
+        public static bool IsFlash()
+        {
+            if (RoleClass.Celebrity.ViewPlayers.Count <= 0) return false;
+            if (!CustomOptionHolder.CelebrityIsTaskPhaseFlash.GetBool()) return false;
             return true;
         }
 
