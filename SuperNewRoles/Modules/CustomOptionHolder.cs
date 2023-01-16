@@ -476,6 +476,8 @@ public class CustomOptionHolder
     public static CustomOption CelebrityPlayerCount;
     public static CustomOption CelebrityChangeRoleView;
     public static CustomOption CelebrityIsTaskPhaseFlash;
+    public static CustomOption CelebrityIsFlashWhileAlivingOnly;
+    public static CustomOption CelebrityIsContinueFlashNextMeeting;
 
     public static CustomRoleOption NocturnalityOption;
     public static CustomOption NocturnalityPlayerCount;
@@ -1478,7 +1480,9 @@ public class CustomOptionHolder
         CelebrityOption = SetupCustomRoleOption(525, true, RoleId.Celebrity);
         CelebrityPlayerCount = Create(301, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CelebrityOption);
         CelebrityChangeRoleView = Create(302, true, CustomOptionType.Crewmate, "CelebrityChangeRoleViewSetting", false, CelebrityOption);
-        CelebrityIsTaskPhaseFlash = Create(1110, false, CustomOptionType.Crewmate, "CelebrityIsTaskPhaseFlashSetting", false, CelebrityOption);
+        CelebrityIsTaskPhaseFlash = Create(1168, false, CustomOptionType.Crewmate, "CelebrityIsTaskPhaseFlashSetting", false, CelebrityOption);
+        CelebrityIsFlashWhileAlivingOnly = Create(1169, false, CustomOptionType.Crewmate, "CelebrityIsFlashWhileAlivingOnly", false, CelebrityIsTaskPhaseFlash);
+        CelebrityIsContinueFlashNextMeeting = Create(1170, false, CustomOptionType.Crewmate, "CelebrityIsContinueFlashNextMeeting", false, CelebrityIsFlashWhileAlivingOnly);
 
         NocturnalityOption = SetupCustomRoleOption(303, true, RoleId.Nocturnality);
         NocturnalityPlayerCount = Create(304, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NocturnalityOption);
