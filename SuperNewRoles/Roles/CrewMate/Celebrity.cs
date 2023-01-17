@@ -76,12 +76,5 @@ namespace SuperNewRoles.Roles.Crewmate
             if (timer != null) timer.Stop();
             Logger.Info("発光用タイマーを止めました。", "CelebrityFlash");
         }
-
-        /*
-            スターが死んでもフラッシュする設定があってもいい?
-
-            死亡した時にタイマーストップ
-                SKの昇格方式でタイマーストップ
-        */
     }
 }

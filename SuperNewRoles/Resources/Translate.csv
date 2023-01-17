@@ -774,8 +774,7 @@ CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！,你的名�
 CelebrityDescription,You can tell from all of them that you are the star.,全員から自分がスターと分かります。,大明星属于船员阵营。\n所有其他玩家都能确认你是大明星。
 CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる,因他人技能导致职业变更不会影响大明星的效果
 CelebrityIsTaskPhaseFlashSetting,During the task phase，does the screen light up every set number of seconds of kill time?,タスクフェイズ中、設定したキルクール秒数毎に画面を光らせるか。
-CelebrityIsFlashWhileAlivingOnly,Does the screen glow only while it is alive?,画面が光るのは生きている間のみか。
-CelebrityIsContinueFlashNextMeeting,Do they continue to flash after death until the meeting is held?,死亡後も会議が開かれるまでは光り続けるか。
+CelebrityIsFlashWhileAlivingOnly,Does the screen glow only while it is alive?(Meeting Update),画面が光るのは生きている間のみか(会議更新)。
 NocturnalityName,Nocturnality,夜行性,夜猫子
 NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている,昼伏夜出
 NocturnalityDescription,The view during power outage and normal view are opposite.,停電中と通常の視界が反対になっています。,夜猫子属于船员阵营。\n夜猫子的正常视野与熄灯时视野相反。
