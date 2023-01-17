@@ -46,7 +46,7 @@ namespace SuperNewRoles.Roles.Crewmate
                 }
             }
 
-            Logger.Info("スターの輝きが現れる条件を満たしませんでした", "CelebrityFlash");
+            Logger.Info("スターの輝きが現れる条件を満たしませんでした。「あなたたちは 真の闇におちるのです」", "CelebrityFlash");
             return false;
         }
         public static void WrapUp()
