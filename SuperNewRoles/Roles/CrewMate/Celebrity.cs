@@ -12,7 +12,8 @@ namespace SuperNewRoles.Roles.Crewmate
         private static Timer timer;
 
         /// <summary>
-        /// 試合中に変動しない「タスクフェイズ中に画面を光らせるか」の条件を取得する
+        /// 試合中に変動しない「タスクフェイズ中に画面を光らせるか」の条件を取得する。
+        /// スターがアサインされ且つ設定が有効ならtrueになる。
         /// </summary>
         private static bool IsFirstDecisionAboutFlash()
         {
@@ -20,7 +21,10 @@ namespace SuperNewRoles.Roles.Crewmate
             if (!CustomOptionHolder.CelebrityIsTaskPhaseFlash.GetBool()) return false;
             return true;
         }
-
+        /// <summary>
+        /// 試合中に変動する「タスクフェイズ中に画面を光らせるか」の条件を取得する。
+        /// タイマーの有効、無効の設定に使用している。
+        /// </summary>
         public static bool EnabledSetting()
         {
             // スターが死亡、存在しなくなった場合も光らせる設定の場合 trueを返す。
@@ -42,7 +46,7 @@ namespace SuperNewRoles.Roles.Crewmate
                 }
             }
 
-            Logger.Info("スターの輝きが現れる条件を満たしませんでした","Celebrity");
+            Logger.Info("スターの輝きが現れる条件を満たしませんでした", "CelebrityFlash");
             return false;
         }
         public static void WrapUp()
@@ -50,6 +54,9 @@ namespace SuperNewRoles.Roles.Crewmate
             if (IsFirstDecisionAboutFlash()) CelebrityTimerSet();
         }
 
+        /// <summary>
+        /// タイマーをセットする
+        /// </summary>
         public static void CelebrityTimerSet()
         {
             timer = new Timer(RoleClass.Celebrity.FlashTime);
@@ -58,9 +65,10 @@ namespace SuperNewRoles.Roles.Crewmate
                 Seer.ShowFlash(Color.yellow);
                 Logger.Info($"{RoleClass.Celebrity.FlashTime / 1000}s 経過した為発光しました。", "CelebrityFlash");
             };
-            timer.AutoReset = EnabledSetting();
-            timer.Enabled = EnabledSetting();
-            if (!EnabledSetting()) return;
+            bool enabled = EnabledSetting();
+            timer.AutoReset = enabled;
+            timer.Enabled = enabled;
+            if (!enabled) return;
             Logger.Info($"{RoleClass.Celebrity.FlashTime}[ミリ秒]にタイマーセット ", "CelebrityFlash");
         }
         public static void TimerStop()
