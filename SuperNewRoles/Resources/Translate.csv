@@ -957,6 +957,7 @@ RevolutionTouchTime,Revolutionary contact hours,革命家の接触時間,革命�
 RevolutionistAddWin,Additional Victories for Revolutionist,革命家の追加勝利,革命家获得追加胜利而非单独胜利
 RevolutionistAddWinIsAlive,Additional victory only when alive,生存時のみ追加勝利,革命家仅在存活时获得追加胜利
 RevolutionistButtonName,Up to revolutionary possible,革命可能まで,时机已到，今日起兵！
+RevolutionistMeeting,Revolutionist Meeting,革命会議
 SidekickFriendsName,SidekickFriends,サイドキックフレンズ,牧狼人
 SidekickFriendsTitle1,Help Jackal.,ジャッカルを助けよう,帮助豺狼获得胜利
 SidekickFriendsDescription,It is judged as Cluemate， but is in the Jackal camp.\nIf the jackal wins， it can win. Sidekick Friends can be found from Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。サイドキックフレンズはジャッカルからわかります。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,规则上牧狼人被判定为船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则牧狼人一同获胜。\n豺狼能确认牧狼人是谁。牧狼人需要帮助豺狼以获得胜利。
