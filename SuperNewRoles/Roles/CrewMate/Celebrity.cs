@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
+using SuperNewRoles.Mode;
 using System.Timers;
-using HarmonyLib;
 using UnityEngine;
-
 
 namespace SuperNewRoles.Roles.Crewmate
 {
@@ -13,10 +10,11 @@ namespace SuperNewRoles.Roles.Crewmate
 
         /// <summary>
         /// 試合中に変動しない「タスクフェイズ中に画面を光らせるか」の条件を取得する。
-        /// スターがアサインされ且つ設定が有効ならtrueになる。
+        /// SHRでない且つ スターがアサインされ 且つ設定が有効ならtrueになる。
         /// </summary>
         private static bool IsFirstDecisionAboutFlash()
         {
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return false;
             if (RoleClass.Celebrity.ViewPlayers.Count <= 0) return false;
             if (!CustomOptionHolder.CelebrityIsTaskPhaseFlash.GetBool()) return false;
             return true;
