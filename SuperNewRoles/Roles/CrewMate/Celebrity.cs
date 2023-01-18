@@ -22,7 +22,7 @@ class Celebrity
     /// 試合中に変動する「タスクフェイズ中に画面を光らせるか」の条件を取得する。
     /// タイマーの有効、無効の設定に使用している。
     /// </summary>
-    public static bool EnabledSetting()
+    private static bool EnabledSetting()
     {
         // スターが死亡、存在しなくなった場合も光らせる設定の場合 trueを返す。
         if (!CustomOptionHolder.CelebrityIsFlashWhileAlivingOnly.GetBool()) return true;
@@ -54,7 +54,7 @@ class Celebrity
     /// <summary>
     /// タイマーをセットする
     /// </summary>
-    public static void CelebrityTimerSet()
+    private static void CelebrityTimerSet()
     {
         timer = new Timer(RoleClass.Celebrity.FlashTime);
         timer.Elapsed += (source, e) =>
