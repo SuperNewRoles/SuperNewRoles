@@ -79,12 +79,8 @@ public static class Revolutionist
             {
                 timer = 1 / 30f;
                 tempBodySprite.sprite = FSprites[index];
-                Logger.Info($"a:{text.transform.localScale.x} : {text.transform.localScale.y} : {text.transform.localScale.z}");
                 if (text.transform.localScale.x < 2f)
-                {
                     text.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
-                    Logger.Info($"b:{text.transform.localScale.x} : {text.transform.localScale.y} : {text.transform.localScale.z}");
-                }
                 else
                     text.transform.localScale = new(2, 2, 2);
                 back.sprite = BSprites[index];
