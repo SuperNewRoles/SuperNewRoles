@@ -62,10 +62,10 @@ public static class Revolutionist
         __instance.transform.FindChild("TextBg").gameObject.SetActive(false);
         TextMeshPro text = __instance.transform.GetComponentInChildren<TextMeshPro>();
         text.GetComponent<TextTranslatorTMP>().enabled = false;
+        text.transform.localScale = new(0, 0, 0);
         yield return Effects.Lerp(1.5f, (Action<float>)((float t) =>
         {
             text.transform.localPosition = new(0, -2f, -1f);
-            text.transform.localScale = new(2, 2, 2);
             text.outlineColor = Color.white;
             text.text = ModTranslation.GetString("RevolutionistMeeting");
             timer -= Time.deltaTime;
@@ -79,6 +79,14 @@ public static class Revolutionist
             {
                 timer = 1 / 30f;
                 tempBodySprite.sprite = FSprites[index];
+                Logger.Info($"a:{text.transform.localScale.x} : {text.transform.localScale.y} : {text.transform.localScale.z}");
+                if (text.transform.localScale.x < 2f)
+                {
+                    text.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
+                    Logger.Info($"b:{text.transform.localScale.x} : {text.transform.localScale.y} : {text.transform.localScale.z}");
+                }
+                else
+                    text.transform.localScale = new(2, 2, 2);
                 back.sprite = BSprites[index];
                 index++;
                 if (FSprites.Length <= index)
@@ -88,6 +96,7 @@ public static class Revolutionist
             }
 
         }));
+        text.transform.localScale = new(2, 2, 2);
         yield return Effects.Lerp(1f, (Action<float>)((float t) => { }));
         __instance.gameObject.SetActive(value: false);
     }
