@@ -70,7 +70,10 @@ class Celebrity
     }
     public static void TimerStop()
     {
-        if (timer != null) timer.Stop();
-        Logger.Info("発光用タイマーを止めました。", "CelebrityFlash");
+        if (timer != null)
+        {
+            timer.Stop();
+            Logger.Info("発光用タイマーを止めました。", "CelebrityFlash");
+        }
     }
 }
