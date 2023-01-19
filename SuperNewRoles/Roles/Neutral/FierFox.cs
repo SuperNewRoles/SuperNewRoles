@@ -60,6 +60,7 @@ public class FierFox
                 if (FierFoxCanKillNeutral.GetBool() && (target.IsNeutral() || target.IsFriendRoles())) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 if (FierFoxCanKillLovers.GetBool() && target.IsLovers()) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 KillCount--;
+                FierFoxKillButton.Timer = FierFoxKillButton.MaxTimer;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FierFox; },
             () =>
