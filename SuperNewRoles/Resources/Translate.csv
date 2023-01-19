@@ -1184,9 +1184,10 @@ SafecrackerCheckImpostorTaskSetting,Amount of tasks that will allow you to check
 SafecrackerChangeTaskPrefabSetting,Replace all tasks with unlock safe tasks,全タスクを金庫タスクに置き換える
 FierFoxName,Fier Fox,炎狐
 FierFoxTitle1,I am Fier Fox!,私は炎狐です！
+FierFoxDescription,It is a Fox that has been given a kill button instead of a kill guard.\nThe number of kills is limited and only certain camps can be killed.\nIf you press the kill button for a player who is not in the killable camp， your kill count will decrease without a kill.\nThink about who to kill and contribute to the Fox's victory.,キルガードの代わりにキルボタンを与えられた妖狐です。\nキル回数は制限されており、特定の陣営のみキル可能です。\nキル可能陣営以外にキルボタンを押してしまうと、キルせずにキル回数のみ減ってしまいます。\n誰をキルするか考え、妖狐の勝利に貢献しましょう。
 FierFoxCanKillCrewmateSetting,Can kill the crewmate camp,クルーメイト陣営をキルできる
 FierFoxCanKillImpostorSetting,Can kill the imposter camp,インポスター陣営をキルできる
-FierFoxCanKillNeutralSetting,Can kill the third camp.,第三陣営をキルできる
+FierFoxCanKillNeutralSetting,Can kill the third camp,第三陣営をキルできる
 FierFoxCanKillLoversSetting,Can kill the lovers,ラバーズをキルできる
 FierFoxIsCheckFoxSetting,You can check the fox,妖狐を視認できる
 

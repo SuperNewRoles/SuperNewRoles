@@ -64,9 +64,9 @@ public class FierFox
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FierFox; },
             () =>
             {
+                FierFoxKillNumText.text = string.Format(ModTranslation.GetString("SheriffNumTextName"), KillCount);
                 if (KillCount <= 0) return false;
                 PlayerControl target = HudManagerStartPatch.SetTarget();
-                FierFoxKillNumText.text = string.Format(ModTranslation.GetString("SheriffNumTextName"), KillCount);
                 if (!(target && PlayerControl.LocalPlayer.CanMove)) return false;
                 PlayerControlFixedUpdatePatch.SetPlayerOutline(target, color);
                 if (target.IsRole(RoleId.FierFox) && !FierFoxCanKillLovers.GetBool()) return false;
