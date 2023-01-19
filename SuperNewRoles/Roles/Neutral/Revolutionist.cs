@@ -118,22 +118,6 @@ public static class Revolutionist
                     Buttons.HudManagerStartPatch.RevolutionistButton.actionButton.cooldownTimerText.color = new(1f, 1f, 1f, 1f);
                     Buttons.HudManagerStartPatch.RevolutionistButton.Timer = RoleClass.Revolutionist.CoolTime;
                     Buttons.HudManagerStartPatch.RevolutionistButton.MaxTimer = RoleClass.Revolutionist.CoolTime;
-                    bool IsFlag = true;
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-                    {
-                        if (player.IsAlive() && CachedPlayer.LocalPlayer.PlayerId != player.PlayerId && !RoleClass.Revolutionist.RevolutionedPlayerId.Contains(player.PlayerId))
-                        {
-                            IsFlag = false;
-                        }
-                    }
-                    if (IsFlag)
-                    {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.StartRevolutionMeeting, SendOption.Reliable, -1);
-                        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.StartRevolutionMeeting(CachedPlayer.LocalPlayer.PlayerId);
-                        RoleClass.Revolutionist.IsEndMeeting = true;
-                    }
                 }
             }
         }
@@ -152,6 +136,25 @@ public static class Revolutionist
                     Buttons.HudManagerStartPatch.RevolutionistButton.Timer = RoleClass.Revolutionist.TouchTime;
                     Buttons.HudManagerStartPatch.RevolutionistButton.MaxTimer = RoleClass.Revolutionist.TouchTime;
                 }
+            }
+        }
+        if (!RoleClass.Revolutionist.IsEndMeeting)
+        {
+            bool IsFlag = true;
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            {
+                if (player.IsAlive() && CachedPlayer.LocalPlayer.PlayerId != player.PlayerId && !RoleClass.Revolutionist.RevolutionedPlayerId.Contains(player.PlayerId))
+                {
+                    IsFlag = false;
+                }
+            }
+            if (IsFlag)
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.StartRevolutionMeeting, SendOption.Reliable, -1);
+                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.StartRevolutionMeeting(CachedPlayer.LocalPlayer.PlayerId);
+                RoleClass.Revolutionist.IsEndMeeting = true;
             }
         }
     }
