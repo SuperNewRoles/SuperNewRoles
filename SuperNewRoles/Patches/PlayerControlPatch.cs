@@ -1188,11 +1188,8 @@ class ReportDeadBodyPatch
             {
                 if (!target.Disconnected)
                 {
-                    __instance.RPCSetRoleUnchecked(target.Role.Role is RoleTypes.CrewmateGhost or RoleTypes.GuardianAngel ? RoleTypes.Crewmate : target.Role.Role is RoleTypes.ImpostorGhost ? RoleTypes.Impostor : target.Role.Role);
-                    if (target.Role.IsSimpleRole)
-                    {
-                        __instance.SetRoleRPC(target.Object.GetRole());
-                    }
+                    __instance.RPCSetRoleUnchecked(target.RoleWhenAlive is null ? target.Role.Role : target.RoleWhenAlive.Value);
+                    __instance.SetRoleRPC(target.Object.GetRole());
                 }
             }
         }
