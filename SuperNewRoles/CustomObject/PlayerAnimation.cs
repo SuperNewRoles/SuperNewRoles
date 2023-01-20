@@ -38,8 +38,8 @@ public class PlayerAnimation
         PlayerId = Player.PlayerId;
         gameObject = new("PlayerAnimation");
         transform = gameObject.transform;
-        transform.localScale = Vector3.one * 0.5f;
         transform.SetParent(Player.cosmetics.normalBodySprite.BodySprite.transform.parent);
+        transform.localScale = Vector3.one * 0.5f;
         SpriteRender = gameObject.AddComponent<SpriteRenderer>();
         PlayerAnimations.Add(this);
     }
@@ -180,7 +180,7 @@ public class PlayerAnimation
                         SluggerChargeCreateAnimation();
                     }), new(() =>
                     {
-                        transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
+                        transform.localScale = new(Physics.FlipX ? 0.5f : -0.5f, 0.5f, 0.5f);
                         transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
                         if (SoundManagerSource == null)
                         {
@@ -213,19 +213,19 @@ public class PlayerAnimation
                         Init(GetSprites("SuperNewRoles.Resources.harisen.harisen_", 2, start: 10), false, 40);
                         OnFixedUpdate = new(() =>
                         {
-                            transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
+                            transform.localScale = new(Physics.FlipX ? 0.5f : -0.5f, 0.5f, 0.5f);
                             transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
                         });
                     });
                     OnFixedUpdate = new(() =>
                     {
-                        transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
+                        transform.localScale = new(Physics.FlipX ? 0.5f : -0.5f, 0.5f, 0.5f);
                         transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
                     });
                 });
                 OnFixedUpdate = new(() =>
                 {
-                    transform.localScale = new(Physics.FlipX ? 1 : -1, 1, 1);
+                    transform.localScale = new(Physics.FlipX ? 0.5f : -0.5f, 0.5f, 0.5f);
                     transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
                 });
                 if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) <= 5f)
