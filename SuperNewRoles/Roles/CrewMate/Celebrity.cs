@@ -32,12 +32,9 @@ class Celebrity
 
         // スターがSKされてもスターの能力を失わない設定の時
         if (RoleClass.Celebrity.ChangeRoleView)
-        {
-            // SKスターが生存しているなら trueを返す
+        {// SKスターが生存しているなら trueを返す
             foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
-            {
                 if (p.IsAlive()) return true;
-            }
         }
 
         // スターが死んでいても発光する場合
