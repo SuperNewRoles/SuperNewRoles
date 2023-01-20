@@ -50,9 +50,7 @@ class Celebrity
             {
                 // 「スター」が死んでいたら trueを返す(「スターが生きている」からの漏れを拾う)
                 foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
-                {
                     if (p.IsDead()) return true;
-                }
             }
         }
 
