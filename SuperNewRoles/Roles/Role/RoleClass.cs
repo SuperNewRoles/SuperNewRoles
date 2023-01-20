@@ -201,7 +201,7 @@ public static class RoleClass
         Jumbo.ClearAndReload();
         Impostor.MadRole.Worshiper.ClearAndReload();
         Safecracker.ClearAndReload();
-        FierFox.ClearAndReload();
+        FireFox.ClearAndReload();
         //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

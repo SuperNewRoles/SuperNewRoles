@@ -1923,7 +1923,7 @@ public class CustomOptionHolder
 
         Safecracker.SetupCustomOptions();
 
-        FierFox.SetupCustomOptions();
+        FireFox.SetupCustomOptions();
 
         //表示設定
 

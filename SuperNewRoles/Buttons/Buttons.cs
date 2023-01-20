@@ -3112,7 +3112,7 @@ static class HudManagerStartPatch
 
         Roles.Impostor.MadRole.Worshiper.SetupCustomButtons(__instance);
 
-        FierFox.SetupCustomButtons(__instance);
+        FireFox.SetupCustomButtons(__instance);
 
         SetCustomButtonCooldowns();
     }

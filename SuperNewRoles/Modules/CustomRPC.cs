@@ -179,7 +179,7 @@ public enum RoleId
     Jumbo,
     Worshiper,
     Safecracker,
-    FierFox,
+    FireFox,
     //RoleId
 }
 

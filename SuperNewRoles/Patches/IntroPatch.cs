@@ -218,7 +218,7 @@ public class IntroPatch
                         int FoxNum = 0;
                         foreach (PlayerControl player in CachedPlayer.AllPlayers)
                         {
-                            if (player.IsRole(RoleId.Fox) || (player.IsRole(RoleId.FierFox) && FierFox.FierFoxIsCheckFox.GetBool()))
+                            if (player.IsRole(RoleId.Fox) || (player.IsRole(RoleId.FireFox) && FireFox.FireFoxIsCheckFox.GetBool()))
                             {
                                 FoxNum++;
                                 FoxTeams.Add(player);
@@ -226,18 +226,18 @@ public class IntroPatch
                         }
                         yourTeam = FoxTeams;
                         break;
-                    case RoleId.FierFox:
-                        Il2CppSystem.Collections.Generic.List<PlayerControl> FierFoxTeams = new();
-                        int FierFoxNum = 0;
+                    case RoleId.FireFox:
+                        Il2CppSystem.Collections.Generic.List<PlayerControl> FireFoxTeams = new();
+                        int FireFoxNum = 0;
                         foreach (PlayerControl player in CachedPlayer.AllPlayers)
                         {
-                            if (player.IsRole(RoleId.FierFox) || (player.IsRole(RoleId.Fox) && FierFox.FierFoxIsCheckFox.GetBool()))
+                            if (player.IsRole(RoleId.FireFox) || (player.IsRole(RoleId.Fox) && FireFox.FireFoxIsCheckFox.GetBool()))
                             {
-                                FierFoxNum++;
-                                FierFoxTeams.Add(player);
+                                FireFoxNum++;
+                                FireFoxTeams.Add(player);
                             }
                         }
-                        yourTeam = FierFoxTeams;
+                        yourTeam = FireFoxTeams;
                         break;
                     default:
                         if (PlayerControl.LocalPlayer.IsImpostor())

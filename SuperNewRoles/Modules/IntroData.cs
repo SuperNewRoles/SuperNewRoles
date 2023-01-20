@@ -257,6 +257,6 @@ public class IntroData
     public static IntroData EvilJumboIntro = new("EvilJumbo", ImpostorIntro.color, 1, RoleId.Jumbo, TeamRoleType.Impostor);
     public static IntroData WorshiperIntro = new("Worshiper", Roles.Impostor.MadRole.Worshiper.color, 1, RoleId.Worshiper);
     public static IntroData SafecrackerIntro = new("Safecracker", Safecracker.color, 1, RoleId.Safecracker, TeamRoleType.Neutral);
-    public static IntroData FierFoxIntro = new("FierFox", FierFox.color, 1, RoleId.FierFox, TeamRoleType.Neutral);
+    public static IntroData FireFoxIntro = new("FireFox", FireFox.color, 1, RoleId.FireFox, TeamRoleType.Neutral);
     //イントロオブジェ
 }

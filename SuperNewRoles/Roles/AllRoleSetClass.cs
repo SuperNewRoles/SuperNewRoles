@@ -972,7 +972,7 @@ class AllRoleSetClass
             RoleId.Jumbo => CustomOptionHolder.JumboPlayerCount.GetFloat(),
             RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.WorshiperPlayerCount.GetFloat(),
             RoleId.Safecracker => Roles.Neutral.Safecracker.SafecrackerPlayerCount.GetFloat(),
-            RoleId.FierFox => FierFox.FierFoxPlayerCount.GetFloat(),
+            RoleId.FireFox => FireFox.FireFoxPlayerCount.GetFloat(),
             //プレイヤーカウント
             _ => 1,
         };
