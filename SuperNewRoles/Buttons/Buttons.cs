@@ -1896,6 +1896,7 @@ static class HudManagerStartPatch
             () =>
             {
                 Vulture.RpcCleanDeadBody(RoleClass.Vulture.DeadBodyCount);
+                RoleClass.Vulture.DeadBodyCount--;
 
                 if (RoleClass.Vulture.DeadBodyCount < 0)
                 {
