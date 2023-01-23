@@ -10,8 +10,9 @@ class Celebrity
 
     /// <summary>
     /// 試合中に変動しない「タスクフェイズ中に画面を光らせるか」の条件を取得する。
-    /// SHRでない且つ スターがアサインされ 且つ設定が有効ならtrueになる。
+    /// 条件:SHRでない 且つ スターがアサインされている 且つ 設定が有効である
     /// </summary>
+    /// <returns>trueが返る時スターの能力[溢れ出る輝き]が有効になっている</returns>
     private static bool IsFirstDecisionAboutFlash()
     {
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return false;
@@ -19,13 +20,14 @@ class Celebrity
         if (!CustomOptionHolder.CelebrityIsTaskPhaseFlash.GetBool()) return false;
         return true;
     }
+
     /// <summary>
     /// 試合中に変動する「タスクフェイズ中に画面を光らせるか」の条件を取得する。
-    /// タイマーの有効、無効の設定に使用している。
     /// </summary>
+    /// <returns>trueでタイマーを有効に,falseでタイマーを無効にしている。</returns>
     private static bool EnabledSetting()
     {
-        // スターが存在し、生きているなら trueを返す
+        // スターが存在し、生きている時
         foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
         {
             if (p.IsAlive()) return true;
@@ -33,7 +35,7 @@ class Celebrity
 
         // スターがSKされてもスターの能力を失わない設定の時
         if (RoleClass.Celebrity.ChangeRoleView)
-        {// SKスターが生存しているなら trueを返す
+        {// SKスターが生存している時
             foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
                 if (p.IsAlive()) return true;
         }
@@ -41,12 +43,12 @@ class Celebrity
         // スターが死んでいても発光する場合
         if (!CustomOptionHolder.CelebrityIsFlashWhileAlivingOnly.GetBool())
         {
-            // スターがSKされてもスターの能力を失わない設定の場合 trueを返す。
+            // スターがSKされてもスターの能力を失わない設定の時
             if (RoleClass.Celebrity.ChangeRoleView) return true;
             // 失う場合
             else
             {
-                // 「スター」が死んでいたら trueを返す(「スターが生きている」からの漏れを拾う)
+                // 「スター」が死んでいる時 (「スターが生きている」からの漏れを拾う)
                 foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
                     if (p.IsDead()) return true;
             }
@@ -78,6 +80,9 @@ class Celebrity
         Logger.Info($"{RoleClass.Celebrity.FlashTime}[ミリ秒]にタイマーセット ", "CelebrityFlash");
     }
 
+    /// <summary>
+    /// タイマーを止める
+    /// </summary>
     public static void TimerStop()
     {
         if (timer == null) return;
@@ -90,6 +95,9 @@ class Celebrity
 [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
 public class CelebrityTimerStop
 {
+    /// <summary>
+    /// リザルト画面でタイマーをストップする
+    /// </summary>
     public static void Postfix()
     {
         Celebrity.TimerStop();
