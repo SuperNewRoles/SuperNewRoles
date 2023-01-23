@@ -30,7 +30,8 @@ public class WaveCannonObject
     public static List<WaveCannonObject> Objects = new();
 
     public GameObject gameObject;
-    public GameObject effectGameObject;
+    public Transform effectGameObjectsParent;
+    public List<GameObject> effectGameObjects;
     public Transform transform => gameObject.transform;
 
     public PlayerControl Owner;
@@ -43,7 +44,7 @@ public class WaveCannonObject
     private bool IsLoop;
     private bool Playing;
     private readonly SpriteRenderer render;
-    private readonly SpriteRenderer effectrender;
+    private readonly List<SpriteRenderer> effectrenders;
     private readonly byte OwnerPlayerId;
     private Action OnPlayEnd;
     public static Dictionary<byte, int> Ids;
@@ -52,6 +53,7 @@ public class WaveCannonObject
     private int DestroyIndex = 0;
     static Vector3 OwnerPos;
     static AudioSource ChargeSound;
+    public static List<(float, Vector2)> RotateSet = new() { (90, new(-3.05f, 25.5f)), (270, new(-4f, -26.5f)), (45, new(14.3f, 17.75f)), (45, new(14.3f, -17.75f)), (180, new(-30.7f, -0.8f)) };
 
     public WaveCannonObject(Vector3 pos, bool FlipX, PlayerControl _owner)
     {
@@ -62,17 +64,14 @@ public class WaveCannonObject
 
             Camera.main.GetComponent<FollowerCamera>().Locked = true;
         }
+        effectGameObjects = new();
+        effectrenders = new();
         OwnerPos = _owner.transform.position;
         IsFlipX = FlipX;
         Owner = _owner;
         Id = 0;
         gameObject = new("WaveCannonObject");
-        effectGameObject = new("WaveCannonEffect");
-        effectGameObject.transform.SetParent(transform);
-        effectGameObject.transform.localPosition = new(22.45f, 0, 1);
-        effectGameObject.transform.localScale = new(7 * 1.4f, 1.5f, 1);
         render = gameObject.AddComponent<SpriteRenderer>();
-        effectrender = effectGameObject.AddComponent<SpriteRenderer>();
         index = 0;
         sprites = new();
         for (int i = 1; i <= 5; i++)
@@ -87,6 +86,11 @@ public class WaveCannonObject
         pos.z -= 0.0003f;
         transform.position = pos + new Vector3(FlipX ? -4 : 4, 0, 0);
         transform.localScale = new(FlipX ? -1 : 1, 1, 1);
+        effectGameObjectsParent = new GameObject("WaveCannonEffects").transform;
+        effectGameObjectsParent.SetParent(transform);
+        effectGameObjectsParent.localPosition = new(0, 0, 0);
+        effectGameObjectsParent.localScale = new(1, 1, 1);
+        CreateEffect();
         if (!Ids.ContainsKey(OwnerPlayerId))
         {
             Ids[OwnerPlayerId] = 0;
@@ -95,6 +99,34 @@ public class WaveCannonObject
         Ids[OwnerPlayerId]++;
         IsShootNow = false;
         ChargeSound = SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.WaveCannon.ChargeSound.raw"), true);
+    }
+    public void CreateRotationEffect(Vector3 PlayerPosition, int index)
+    {
+        //PlayerPosition.x -= 13;
+        GameObject effect = CreateEffect();
+        Vector3 Position;
+        Position = new(effect.transform.position.x - PlayerPosition.x, effect.transform.position.y, effect.transform.position.z);
+        Position.x += RotateSet[index].Item2.x - 3;
+        Position.y += RotateSet[index].Item2.y;
+        Position.y -= PlayerPosition.y;
+        effect.transform.localPosition = Position;
+        effect.transform.Rotate(new(0,0, RotateSet[index].Item1));
+        Vector3 pos = effectGameObjects[0].transform.localScale;
+        pos.x = Position.x / 7.06997959f;
+        effectGameObjects[0].transform.localScale = pos;
+        pos = effectGameObjects[0].transform.localPosition;
+        pos.x -= 19f;
+        effectGameObjects[0].transform.localPosition = pos;
+    }
+    public GameObject CreateEffect()
+    {
+        GameObject NewEffect = new("WaveCannonEffect");
+        NewEffect.transform.SetParent(effectGameObjectsParent);
+        NewEffect.transform.localPosition = new(22.45f, 0, 1);
+        NewEffect.transform.localScale = new(7 * 1.4f, 1.5f, 1);
+        effectrenders.Add(NewEffect.AddComponent<SpriteRenderer>());
+        effectGameObjects.Add(NewEffect);
+        return NewEffect;
     }
     public void Shoot()
     {
@@ -108,7 +140,7 @@ public class WaveCannonObject
         {
             sprites.Add(ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Shoot_00{(i <= 9 ? "0" : "")}{i}.png", 115f));
         }
-        effectrender.sprite = sprites[0];
+        foreach (var obj in effectrenders) obj.sprite = sprites[0];
         IsLoop = false;
         freamrate = 12;
         Playing = true;
@@ -122,10 +154,10 @@ public class WaveCannonObject
             {
                 sprites.Add(ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.WaveCannon.Shoot_00{(i <= 9 ? "0" : "")}{i}.png", 115f));
             }
-            effectrender.sprite = sprites[0];
+            foreach (var obj in effectrenders) obj.sprite = sprites[0];
             OnPlayEnd = () =>
             {
-                DestroyIndex++;
+                //DestroyIndex++;
                 if (DestroyIndex > 3)
                 {
                     GameObject.Destroy(this.gameObject);
@@ -151,6 +183,7 @@ public class WaveCannonObject
             };
         };
     }
+    
     public static void AllFixedUpdate()
     {
         if (Objects.Count <= 0) return;
@@ -166,7 +199,7 @@ public class WaveCannonObject
         {
             if (ChargeSound != null)
                 ChargeSound.Stop();
-            GameObject.Destroy(effectGameObject);
+            GameObject.Destroy(effectGameObjectsParent.gameObject);
             GameObject.Destroy(gameObject);
             return;
         }
@@ -242,7 +275,7 @@ public class WaveCannonObject
                     }
                 }
                 UpdateTime = DefaultUpdateTime;
-                if (IsShootNow) effectrender.sprite = sprites[index];
+                if (IsShootNow) foreach (var obj in effectrenders) obj.sprite = sprites[index];
                 else render.sprite = sprites[index];
             }
         }

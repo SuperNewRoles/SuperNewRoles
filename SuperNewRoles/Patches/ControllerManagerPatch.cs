@@ -6,6 +6,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using Agartha;
 using AmongUs.GameOptions;
+using System.Linq;
 
 namespace SuperNewRoles.Patches;
 
@@ -29,11 +30,9 @@ class ControllerManagerUpdatePatch
             if (resolutionIndex >= resolutions.Length) resolutionIndex = 0;
             ResolutionManager.SetResolution(resolutions[resolutionIndex].Item1, resolutions[resolutionIndex].Item2, false);
         }
-        // 以下ホストのみ
-        if (!AmongUsClient.Instance.AmHost) return;
 
         //　ゲーム中
-        if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+        if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && AmongUsClient.Instance.AmHost)
         {
             // 廃村
             if (ModHelpers.GetManyKeyDown(new[] { KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift }))
@@ -51,14 +50,14 @@ class ControllerManagerUpdatePatch
                     MapUtilities.CachedShipStatus.enabled = false;
                 }
             }
+            // 会議を強制終了
+            if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
+            {
+                if (MeetingHud.Instance != null)
+                    MeetingHud.Instance.RpcClose();
+            }
         }
 
-        // 会議を強制終了
-        if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
-        {
-            if (MeetingHud.Instance != null)
-                MeetingHud.Instance.RpcClose();
-        }
         // デバッグモード　かつ　左コントロール
         if (ConfigRoles.DebugMode.Value && Input.GetKey(KeyCode.LeftControl))
         {
@@ -76,9 +75,7 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                PlayerControl.LocalPlayer.Data.IsDead = true;
-                PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.ImpostorGhost);
-                PlayerControl.LocalPlayer.Data.IsDead = false;
+                CustomObject.WaveCannonObject.Objects.All(x => {x.CreateRotationEffect(PlayerControl.LocalPlayer.GetTruePosition(), 1); return false; });
             }
             if (Input.GetKeyDown(KeyCode.P))
             {
