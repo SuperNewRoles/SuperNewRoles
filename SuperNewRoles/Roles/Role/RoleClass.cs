@@ -1487,7 +1487,6 @@ public static class RoleClass
             ChangeRoleView = CustomOptionHolder.CelebrityChangeRoleView.GetBool();
             ViewPlayers = new();
             FlashTime = DefaultKillCoolDown >= 5 ? DefaultKillCoolDown * 1000 : 5000;
-            Crewmate.Celebrity.TimerStop();
         }
     }
     public static class Nocturnality

@@ -1,3 +1,4 @@
+using HarmonyLib;
 using SuperNewRoles.Mode;
 using System.Timers;
 using UnityEngine;
@@ -76,11 +77,21 @@ class Celebrity
         if (!enabled) return;
         Logger.Info($"{RoleClass.Celebrity.FlashTime}[ミリ秒]にタイマーセット ", "CelebrityFlash");
     }
+
     public static void TimerStop()
     {
         if (timer == null) return;
 
         timer.Stop();
         Logger.Info("発光用タイマーを止めました。", "CelebrityFlash");
+    }
+}
+
+[HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
+public class CelebrityTimerStop
+{
+    public static void Postfix()
+    {
+        Celebrity.TimerStop();
     }
 }
