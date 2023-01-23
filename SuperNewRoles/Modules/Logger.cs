@@ -81,7 +81,7 @@ class Logger
         Msg($"\"{stack.GetMethod().ReflectedType.Name}.{stack.GetMethod().Name}\" Called in \"{Path.GetFileName(fileName)}({lineNumber})\"", "Method");
     }
 
-    public static void LogOutPut()
+    public static void SaveLog()
     {
     }
 }
