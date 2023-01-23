@@ -81,7 +81,38 @@ class Logger
         Msg($"\"{stack.GetMethod().ReflectedType.Name}.{stack.GetMethod().Name}\" Called in \"{Path.GetFileName(fileName)}({lineNumber})\"", "Method");
     }
 
-    public static void SaveLog()
+    /// <summary>
+    /// SaveLogFolderにその時点までのlogを名前を付けて保存する
+    /// </summary>
+    /// <param name="memo">ファイル名につける為に取得したメモ(文字列)</param>
+    public static void SaveLog(string memo)
     {
+        // ファイル名に使用する変数作成
+        string date = DateTime.Now.ToString("yyMMdd_HHmmss");
+        string splicingBranch = ReplaceUnusableStringsAsFileNames(ThisAssembly.Git.Branch);
+        string Version = SuperNewRolesPlugin.VersionString.Replace(".", "");
+        string splicingMemo = ReplaceUnusableStringsAsFileNames(memo);
+
+        // ファイル名作成
+        string fileName = $"{date}_SNR_v{Version}_{splicingBranch}_{splicingMemo}.log";
+
+        // logを出力した旨のlogを印字
+        Info($"この地点までのログを [ {fileName} ] に保存しました。", "");
+
+        // 出力
+    }
+
+    /// <summary>
+    /// stringsに含まれるファイル名に使用不可能な文字を"_"に置換する
+    /// </summary>
+    /// <param name="strings">ファイル名に使用したい未編集の文字列</param>
+    /// <returns>ファイル名に使用できるように加工した文字列を返す</returns>
+    private static string ReplaceUnusableStringsAsFileNames(string strings)
+    {
+        var invalidChars = Path.GetInvalidFileNameChars();
+        string fileName = strings;
+        foreach (var invalid in invalidChars)
+            fileName = fileName.Replace($"{invalid}", "_");
+        return fileName;
     }
 }

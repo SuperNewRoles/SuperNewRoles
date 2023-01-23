@@ -33,7 +33,8 @@ class ControllerManagerUpdatePatch
         // その時点までのlogを切り出す
         if (ModHelpers.GetManyKeyDown(new[] { KeyCode.S, KeyCode.LeftShift, KeyCode.RightShift }))
         {
-            Logger.SaveLog();
+            string memo = "SavedWithKeyCommand";
+            Logger.SaveLog(memo);
         }
 
         // 以下ホストのみ
