@@ -100,6 +100,9 @@ class Logger
         Info($"この地点までのログを [ {fileName} ] に保存しました。", "");
 
         // 出力
+        string folderPath = Path.GetDirectoryName(UnityEngine.Application.dataPath) + @"\SuperNewRoles\SaveLogFolder\";
+        Directory.CreateDirectory(folderPath);
+        string filePath = @$"{folderPath}" + @"\SuperNewRoles\SaveLogFolder\" + @$"{fileName}";
     }
 
     /// <summary>
