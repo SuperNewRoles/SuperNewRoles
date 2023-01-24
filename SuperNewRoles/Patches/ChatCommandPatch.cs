@@ -89,7 +89,8 @@ public static class DynamicLobbies
                     memo = text.ToLower()
                         .Replace("/sl", "")
                         .Replace("/savelog", "")
-                        .Replace(" ", "");
+                        .Replace(" ", "")
+                        .Replace("　", "");
 
                     // memoが空なら ファイル名をChatCommandViaにする。
                     if (memo == "") Logger.SaveLog(via, via);
