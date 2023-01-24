@@ -103,8 +103,10 @@ class Logger
         Directory.CreateDirectory(folderPath);
         string filePath = @$"{folderPath}" + @$"{fileName}";
 
-        // logを出力した旨のlogを印字
-        Info($"この地点までのログを [ {fileName} ] に保存しました。", via);
+        // logを出力した旨のlogを印字 及びチャットが存在するときはチャットを表示
+        Info($"この時点までのログを [ {fileName} ] に保存しました。", via);
+        if (PlayerControl.LocalPlayer != null)
+            FastDestroyableSingleton<HudManager>.Instance?.Chat?.AddChat(PlayerControl.LocalPlayer, $"この時点までのログを [ {fileName} ] に保存しました。");
 
         // 出力
         string sourceLogFile = Path.GetDirectoryName(UnityEngine.Application.dataPath) + @"\BepInEx\LogOutput.log";
