@@ -85,7 +85,9 @@ class Logger
     /// SaveLogFolderにその時点までのlogを名前を付けて保存する
     /// </summary>
     /// <param name="memo">ファイル名につける為に取得したメモ(文字列)</param>
-    public static void SaveLog(string memo)
+    /// <param name="via">どこからこのメソッドが呼び出されたかlogに表記する為の文字列</param>
+
+    public static void SaveLog(string memo, string via)
     {
         // ファイル名に使用する変数作成
         string date = DateTime.Now.ToString("yyMMdd_HHmmss");
@@ -96,13 +98,18 @@ class Logger
         // ファイル名作成
         string fileName = $"{date}_SNR_v{Version}_{splicingBranch}_{splicingMemo}.log";
 
-        // logを出力した旨のlogを印字
-        Info($"この地点までのログを [ {fileName} ] に保存しました。", "");
-
-        // 出力
+        // 出力先のパス作成
         string folderPath = Path.GetDirectoryName(UnityEngine.Application.dataPath) + @"\SuperNewRoles\SaveLogFolder\";
         Directory.CreateDirectory(folderPath);
-        string filePath = @$"{folderPath}" + @"\SuperNewRoles\SaveLogFolder\" + @$"{fileName}";
+        string filePath = @$"{folderPath}" + @$"{fileName}";
+
+        // logを出力した旨のlogを印字
+        Info($"この地点までのログを [ {fileName} ] に保存しました。", via);
+
+        // 出力
+        string sourceLogFile = Path.GetDirectoryName(UnityEngine.Application.dataPath) + @"\BepInEx\LogOutput.log";
+        FileInfo sourceLogPath = new(@sourceLogFile);
+        sourceLogPath.CopyTo(@filePath, true);
     }
 
     /// <summary>
