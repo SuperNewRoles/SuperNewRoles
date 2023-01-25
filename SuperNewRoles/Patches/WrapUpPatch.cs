@@ -112,6 +112,11 @@ class WrapUpPatch
         RoleClass.IsMeeting = false;
         Seer.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
+        foreach(PlayerControl p in PlayerControl.AllPlayerControls)
+        {
+            p.resetChange();
+        }
+        RoleClass.Doppelganger.Targets = new();
         if (exiled == null) return;
         if (exiled.Object.IsRole(RoleId.Jumbo) && exiled.Object.IsCrew())
         {

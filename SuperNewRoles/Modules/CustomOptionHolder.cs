@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 
@@ -1798,9 +1801,9 @@ public class CustomOptionHolder
         PsychometristCanCheckFootprintsTime = Create(891, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);
         PsychometristIsReportCheckedDeadBody = Create(892, false, CustomOptionType.Crewmate, "PsychometristIsReportCheckedDeadBody", false, PsychometristOption);
 
-        Roles.Impostor.ShiftActor.SetupCustomOptions();
+        ShiftActor.SetupCustomOptions();
 
-        Roles.Impostor.NekoKabocha.SetupCustomOptions();
+        NekoKabocha.SetupCustomOptions();
 
         CrackerOption = SetupCustomRoleOption(1038, false, RoleId.Cracker);
         CrackerPlayerCount = Create(1031, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CrackerOption);
@@ -1824,7 +1827,7 @@ public class CustomOptionHolder
         WerewolfOption = new(1057, false, CustomOptionType.Impostor, "WerewolfName", RoleClass.Werewolf.color, 1);
         WerewolfPlayerCount = Create(1051, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
 
-        Roles.Crewmate.Knight.SetupCustomOptions();
+        Knight.SetupCustomOptions();
 
         (PavlovsownerOption = new(1039, false, CustomOptionType.Neutral, "PavlovsdogsName", RoleClass.Pavlovsdogs.color, 1))
         .RoleId = RoleId.Pavlovsowner;
@@ -1855,7 +1858,7 @@ public class CustomOptionHolder
         WaveCannonJackalUseSabo = Create(1029, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, WaveCannonJackalOption);
         WaveCannonJackalIsSyncKillCoolTime = Create(1107, false, CustomOptionType.Neutral, "IsSyncKillCoolTime", false, WaveCannonJackalOption);
 
-        Roles.Impostor.Conjurer.SetupCustomOptions();
+        Conjurer.SetupCustomOptions();
 
         TaskerOption = SetupCustomRoleOption(1006, false, RoleId.Tasker);
         TaskerPlayerCount = Create(1007, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
@@ -1875,7 +1878,7 @@ public class CustomOptionHolder
         CamouflagerCamouflageLovers = Create(1065, false, CustomOptionType.Impostor, "CamouflagerCamouflageLoversSetting", false, CamouflagerOption);
         CamouflagerCamouflageQuarreled = Create(1066, false, CustomOptionType.Impostor, "CamouflagerCamouflageQuarreledSetting", false, CamouflagerOption);
         CamouflagerCamouflageChangeColor = Create(1067, false, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
-        CamouflagerCamouflageColor = Create(1068, false, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Roles.Impostor.Camouflager.ColorOption, CamouflagerCamouflageChangeColor);
+        CamouflagerCamouflageColor = Create(1068, false, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Camouflager.ColorOption, CamouflagerCamouflageChangeColor);
 
         NiceGuesserOption = SetupCustomRoleOption(1069, false, RoleId.NiceGuesser);
         NiceGuesserPlayerCount = Create(1070, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGuesserOption);
@@ -1917,7 +1920,8 @@ public class CustomOptionHolder
         JumboMaxSize = Create(1140, false, CustomOptionType.Neutral, "JumboMaxSize", 24f, 1f, 48f, 1f, JumboOption);
         JumboSpeedUpSize = Create(1141, false, CustomOptionType.Neutral, "JumboSpeedUpSize", 300f, 10f, 600f, 10f, JumboOption);
         JumboWalkSoundSize = Create(1142, false, CustomOptionType.Neutral, "JumboWalkSoundSize", rates, JumboOption);
-        //表示設定
+
+        // 表示設定
 
         QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
         QuarreledTeamCount = Create(433, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
