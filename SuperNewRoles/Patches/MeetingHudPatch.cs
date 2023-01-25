@@ -570,7 +570,7 @@ public static class OpenVotes
                 optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Observer.IsVoteView);
                 break;
         }
-        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
+        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, !CustomOptionHolder.CanGhostSeeVote.GetBool());
         Logger.Info("開票しました。", "OpenVotes");
         return optdata.GetBool(BoolOptionNames.AnonymousVotes);
     }

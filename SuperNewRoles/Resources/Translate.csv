@@ -205,7 +205,8 @@ RestrictDevicesOption,Restrict Devices Option,機器の時間制限,飞船设备
 RestrictAdmin,Restrict Admin,アドミンの時間制限,管理师地图使用时间限制
 RestrictVital,Restrict Vital,バイタルの時間制限,生命监测装置使用时间限制
 RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
-CanGhostSeeRole,,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业
+CanGhostSeeRole,After death，everyone's role can be confirmed.,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业
+CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业
 OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる,只有死亡的内鬼阵营玩家可以确认所有玩家的职业
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配

@@ -46,6 +46,7 @@ public class CustomOptionHolder
 
     public static CustomOption CanGhostSeeRole;
     public static CustomOption OnlyImpostorGhostSeeRole;
+    public static CustomOption CanGhostSeeVote;
 
     public static CustomOption IsDebugMode;
     public static CustomOption DebugModeFastStart;
@@ -1024,6 +1025,8 @@ public class CustomOptionHolder
 
         CanGhostSeeRole = Create(1100, true, CustomOptionType.Generic, "CanGhostSeeRole", true, null, isHeader: true);
         OnlyImpostorGhostSeeRole = Create(1101, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanGhostSeeRole);
+
+        CanGhostSeeVote = Create(1144, true, CustomOptionType.Generic, "CanGhostSeeVote", true, null, isHeader: true);
 
         IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
