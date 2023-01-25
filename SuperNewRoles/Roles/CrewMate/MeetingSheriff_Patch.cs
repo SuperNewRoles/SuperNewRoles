@@ -16,7 +16,7 @@ class MeetingUpdatePatch
     {
         if (RoleClass.Assassin.TriggerPlayer != null)
         {
-            __instance.TitleText.text = ModTranslation.GetString("MarineWhois");
+            __instance.TitleText.text = ModTranslation.GetString("MarlinWhois");
         }
         if (!IsFlag) return;
         if (Input.GetKeyDown(KeyCode.RightArrow))

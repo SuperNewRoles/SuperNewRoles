@@ -73,7 +73,8 @@ public class IntroData
         if (RoleId is RoleId.DefaultRole)
         {
             return p != null && p.IsImpostor() ? ImpostorIntro : CrewmateIntro;
-        } else if(RoleId is RoleId.Jumbo)
+        }
+        else if (RoleId is RoleId.Jumbo)
         {
             return p == null ? JumboIntro : p.IsImpostor() ? EvilJumboIntro : NiceJumboIntro;
         }
@@ -189,7 +190,7 @@ public class IntroData
     public static IntroData JackalSeerIntro = new("JackalSeer", RoleClass.JackalSeer.color, 1, RoleId.JackalSeer, TeamRoleType.Neutral);
     public static IntroData SidekickSeerIntro = new("SidekickSeer", RoleClass.JackalSeer.color, 1, RoleId.SidekickSeer, TeamRoleType.Neutral);
     public static IntroData AssassinIntro = new("Assassin", RoleClass.Assassin.color, 1, RoleId.Assassin);
-    public static IntroData MarineIntro = new("Marine", RoleClass.Marine.color, 1, RoleId.Marine);
+    public static IntroData MarlinIntro = new("Marlin", RoleClass.Marlin.color, 1, RoleId.Marlin);
     public static IntroData ArsonistIntro = new("Arsonist", RoleClass.Arsonist.color, 1, RoleId.Arsonist, TeamRoleType.Neutral);
     public static IntroData ChiefIntro = new("Chief", RoleClass.Chief.color, 1, RoleId.Chief);
     public static IntroData CleanerIntro = new("Cleaner", RoleClass.Cleaner.color, 1, RoleId.Cleaner, TeamRoleType.Impostor);

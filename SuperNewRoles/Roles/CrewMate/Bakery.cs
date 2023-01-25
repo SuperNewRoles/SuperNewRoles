@@ -36,7 +36,7 @@ public class Bakery
             PlayerControl player = RoleClass.Assassin.TriggerPlayer;
 
             var exile = ModeHandler.IsMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.Main.RealExiled : exiled.Object;
-            if (exile != null && exile.IsRole(RoleId.Marine))
+            if (exile != null && exile.IsRole(RoleId.Marlin))
             {
                 printStr = player.Data.PlayerName + ModTranslation.GetString("AssassinSucsess");
                 RoleClass.Assassin.IsImpostorWin = true;

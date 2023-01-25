@@ -630,11 +630,11 @@ public class CustomOptionHolder
     public static CustomOption JackalSeerSKCooldown;
     public static CustomOption JackalSeerNewJackalCreateSidekick;
 
-    public static CustomRoleOption AssassinAndMarineOption;
+    public static CustomRoleOption AssassinAndMarlinOption;
     public static CustomOption AssassinPlayerCount;
     public static CustomOption AssassinViewVote;
-    public static CustomOption MarinePlayerCount;
-    public static CustomOption MarineViewVote;
+    public static CustomOption MarlinPlayerCount;
+    public static CustomOption MarlinViewVote;
 
     public static CustomRoleOption ChiefOption;
     public static CustomOption ChiefPlayerCount;
@@ -1541,11 +1541,11 @@ public class CustomOptionHolder
         JackalSeerSKCooldown = Create(1109, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalSeerCreateSidekick, format: "unitSeconds");
         JackalSeerNewJackalCreateSidekick = Create(385, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalSeerCreateSidekick);
 
-        AssassinAndMarineOption = new(386, true, CustomOptionType.Impostor, "AssassinAndMarineName", Color.white, 1);
-        AssassinPlayerCount = Create(387, true, CustomOptionType.Impostor, "AssassinSettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], AssassinAndMarineOption);
-        AssassinViewVote = Create(167, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarineOption);
-        MarinePlayerCount = Create(388, true, CustomOptionType.Impostor, "MarineSettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AssassinAndMarineOption);
-        MarineViewVote = Create(167, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarineOption);
+        AssassinAndMarlinOption = new(386, true, CustomOptionType.Impostor, "AssassinAndMarlinName", Color.white, 1);
+        AssassinPlayerCount = Create(387, true, CustomOptionType.Impostor, "AssassinSettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], AssassinAndMarlinOption);
+        AssassinViewVote = Create(167, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
+        MarlinPlayerCount = Create(388, true, CustomOptionType.Impostor, "MarlinSettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AssassinAndMarlinOption);
+        MarlinViewVote = Create(167, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
 
         ArsonistOption = SetupCustomRoleOption(389, true, RoleId.Arsonist);
         ArsonistPlayerCount = Create(390, true, CustomOptionType.Neutral, "SettingPlayerCountName", AlonePlayers[0], AlonePlayers[1], AlonePlayers[2], AlonePlayers[3], ArsonistOption);

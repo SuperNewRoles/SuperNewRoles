@@ -113,7 +113,7 @@ public enum RoleId
     JackalSeer,
     SidekickSeer,
     Assassin,
-    Marine,
+    Marlin,
     Arsonist,
     Chief,
     Cleaner,

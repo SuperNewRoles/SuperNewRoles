@@ -632,13 +632,13 @@ static class CheckMurderPatch
                             Madmate.CreateMadmate(target);//クルーにして、マッドにする
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
                             RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことにする
-                            Logger.Info("マッドメイトを作成しました","FastMakerSHR");
+                            Logger.Info("マッドメイトを作成しました", "FastMakerSHR");
                             return false;
                         }
                         else
                         {
                             //作ってたら普通のキル(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                            Logger.Info("マッドメイトを作成済みの為 普通のキル","FastMakerSHR");
+                            Logger.Info("マッドメイトを作成済みの為 普通のキル", "FastMakerSHR");
                         }
                         break;
                     case RoleId.Jackal:
@@ -653,15 +653,15 @@ static class CheckMurderPatch
                                 Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
                             }
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
-                            Logger.Info("ジャッカルフレンズを作成しました。","JackalSHR");
+                            Logger.Info("ジャッカルフレンズを作成しました。", "JackalSHR");
                             return false;
                         }
                         else
                         {
                             // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                            if (!RoleClass.Jackal.CanCreateFriend) Logger.Info("ジャッカルフレンズを作る設定ではない為 普通のキル","JackalSHR");
-                            else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル","JackalSHR");
-                            else Logger.Info("不正なキル","JackalSHR");
+                            if (!RoleClass.Jackal.CanCreateFriend) Logger.Info("ジャッカルフレンズを作る設定ではない為 普通のキル", "JackalSHR");
+                            else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSHR");
+                            else Logger.Info("不正なキル", "JackalSHR");
                         }
                         break;
                     case RoleId.JackalSeer:
@@ -785,12 +785,12 @@ static class CheckMurderPatch
             }, 0.5f, "RpcCheckExile Assassin Start Meeting");
             new LateTask(() =>
             {
-                __instance.RpcSetName($"<size=200%>{CustomOptionHolder.Cs(RoleClass.Marine.color, IntroData.MarineIntro.NameKey + "Name")}は誰だ？</size>");
-            }, 2f, "RpcCheckExile Who Marine Name");
+                __instance.RpcSetName($"<size=200%>{CustomOptionHolder.Cs(RoleClass.Marlin.color, IntroData.MarlinIntro.NameKey + "Name")}は誰だ？</size>");
+            }, 2f, "RpcCheckExile Who Marlin Name");
             new LateTask(() =>
             {
-                __instance.RpcSendChat($"\n{ModTranslation.GetString("MarineWhois")}");
-            }, 2.5f, "RpcCheckExile Who Marine Chat");
+                __instance.RpcSendChat($"\n{ModTranslation.GetString("MarlinWhois")}");
+            }, 2.5f, "RpcCheckExile Who Marlin Chat");
             new LateTask(() =>
             {
                 __instance.RpcSetName(__instance.GetDefaultName());
@@ -817,12 +817,12 @@ static class CheckMurderPatch
             }, 0.5f, "RpcMurderPlayerCheck Assassin Meeting");
             new LateTask(() =>
             {
-                target.RpcSetName($"<size=200%>{CustomOptionHolder.Cs(RoleClass.Marine.color, IntroData.MarineIntro.NameKey + "Name")}は誰だ？</size>");
-            }, 2f, "RpcMurderPlayerCheck Who Marine Name");
+                target.RpcSetName($"<size=200%>{CustomOptionHolder.Cs(RoleClass.Marlin.color, IntroData.MarlinIntro.NameKey + "Name")}は誰だ？</size>");
+            }, 2f, "RpcMurderPlayerCheck Who Marlin Name");
             new LateTask(() =>
             {
-                target.RpcSendChat($"\n{ModTranslation.GetString("MarineWhois")}");
-            }, 2.5f, "RpcMurderPlayerCheck Who Marine Chat");
+                target.RpcSendChat($"\n{ModTranslation.GetString("MarlinWhois")}");
+            }, 2.5f, "RpcMurderPlayerCheck Who Marlin Chat");
             new LateTask(() =>
             {
                 target.RpcSetName(target.GetDefaultName());

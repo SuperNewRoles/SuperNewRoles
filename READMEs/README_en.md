@@ -146,7 +146,7 @@ Please use the Discord server:[Discord server](https://discord.gg/Cqfwx82ynN)
 | [EvilSeer](#EvilSeer)                   | [Spirit Medium](#SpiritMedium)            |
 | [DarkKiller](#DarkKiller)               | [MadMayor](#MadMayor)                     |
 | [Vampire](#Vampire)                     | [NiceHawk](#NiceHawk)                     |
-| [AssassinAndMarine](#AssassinAndMarine) | [MadStuntman](#MadStuntman)               |
+| [AssassinAndMarlin](#AssassinAndMarlin) | [MadStuntman](#MadStuntman)               |
 | [Cleaner](#Cleaner)                     | [MadHawk](#MadHawk)                       |
 | [Samurai](#Samurai)                     | [Bakery](#Bakery)                         |
 | [VentMaker](#VentMaker)                 | [MadJester](#MadJester)                   |

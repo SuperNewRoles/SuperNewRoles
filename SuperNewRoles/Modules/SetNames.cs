@@ -223,7 +223,8 @@ public class SetNamesClass
     }
     public static void JumboSet()
     {
-        foreach (PlayerControl p in RoleClass.Jumbo.JumboPlayer) {
+        foreach (PlayerControl p in RoleClass.Jumbo.JumboPlayer)
+        {
             if (!RoleClass.Jumbo.JumboSize.ContainsKey(p.PlayerId)) continue;
             SetPlayerNameText(p, p.NameText().text + $"({(int)(RoleClass.Jumbo.JumboSize[p.PlayerId] * 15)})");
         }
@@ -364,7 +365,7 @@ public class SetNameUpdate
         {
             if (Madmate.CheckImpostor(PlayerControl.LocalPlayer) ||
                 LocalRole == RoleId.MadKiller ||
-                LocalRole == RoleId.Marine ||
+                LocalRole == RoleId.Marlin ||
                 (RoleClass.Demon.IsCheckImpostor && LocalRole == RoleId.Demon)
                 )
             {
