@@ -5,7 +5,9 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
@@ -21,8 +23,11 @@ public static class RoleClass
     public static Color ImpostorRed = Palette.ImpostorRed;
     public static Color CrewmateWhite = Color.white;
     public static Color FoxPurple = Palette.Purple;
+    private static Color32 SheriffYellow = new(250, 191, 20, byte.MaxValue);
+    private static Color32 JackalBlue = new(0, 180, 235, byte.MaxValue);
     public static bool IsStart;
     public static List<byte> BlockPlayers;
+    public static float DefaultKillCoolDown;
 
     public static void ClearAndReloadRoles()
     {
@@ -36,6 +41,7 @@ public static class RoleClass
         LateTask.AddTasks = new();
         BotManager.AllBots = new();
         IsCoolTimeSetted = false;
+        DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
         Agartha.MapData.ClearAndReloads();
         LadderDead.Reset();
@@ -187,7 +193,7 @@ public static class RoleClass
         WaveCannon.ClearAndReload();
         Doppelganger.ClearAndReload();
         Werewolf.ClearAndReload();
-        Crewmate.Knight.ClearAndReload();
+        Knight.ClearAndReload();
         Pavlovsdogs.ClearAndReload();
         Pavlovsowner.ClearAndReload();
         WaveCannonJackal.ClearAndReload();
@@ -198,8 +204,8 @@ public static class RoleClass
         Penguin.ClearAndReload();
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
-            Jumbo.ClearAndReload();
-            //ロールクリア
+        Jumbo.ClearAndReload();
+        // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();
@@ -243,7 +249,7 @@ public static class RoleClass
     public static class Lighter
     {
         public static List<PlayerControl> LighterPlayer;
-        public static Color32 color = new(255, 255, 0, byte.MaxValue);
+        public static Color32 color = new(255, 236, 71, byte.MaxValue);
         public static float CoolTime;
         public static float DurationTime;
         public static bool IsLightOn;
@@ -292,7 +298,7 @@ public static class RoleClass
     public static class Sheriff
     {
         public static List<PlayerControl> SheriffPlayer;
-        public static Color32 color = new(255, 255, 0, byte.MaxValue);
+        public static Color32 color = SheriffYellow;
         public static PlayerControl currentTarget;
         public static float CoolTime;
         public static bool IsNeutralKill;
@@ -320,7 +326,7 @@ public static class RoleClass
     public static class MeetingSheriff
     {
         public static List<PlayerControl> MeetingSheriffPlayer;
-        public static Color32 color = new(255, 255, 0, byte.MaxValue);
+        public static Color32 color = SheriffYellow;
         public static bool NeutralKill;
         public static bool MadRoleKill;
         public static float KillMaxCount;
@@ -341,7 +347,7 @@ public static class RoleClass
         public static List<PlayerControl> JackalPlayer;
         public static List<PlayerControl> SidekickPlayer;
         public static List<PlayerControl> FakeSidekickPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = JackalBlue;
         public static float KillCooldown;
         public static bool IsUseVent;
         public static bool IsUseSabo;
@@ -581,7 +587,7 @@ public static class RoleClass
     public static class NiceScientist
     {
         public static List<PlayerControl> NiceScientistPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = Palette.CrewmateBlue;
         public static float CoolTime;
         public static float DurationTime;
         public static DateTime ButtonTimer;
@@ -858,7 +864,7 @@ public static class RoleClass
     public static class JackalFriends
     {
         public static List<PlayerControl> JackalFriendsPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = JackalBlue;
         public static bool IsUseVent;
         public static bool IsImpostorLight;
         public static bool IsJackalCheck;
@@ -1577,7 +1583,7 @@ public static class RoleClass
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.SeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.SeerSoulDuration.GetFloat();
-            mode = CustomOptionHolder.SeerMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.SeerMode.GetSelection();
 
             Roles.Seer.FullScreenRenderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen, FastDestroyableSingleton<HudManager>.Instance.transform);
         }
@@ -1603,7 +1609,7 @@ public static class RoleClass
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.MadSeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.MadSeerSoulDuration.GetFloat();
-            mode = CustomOptionHolder.MadSeerMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.MadSeerMode.GetSelection();
 
             IsImpostorCheck = CustomOptionHolder.MadSeerIsCheckImpostor.GetBool();
             IsUseVent = CustomOptionHolder.MadSeerIsUseVent.GetBool();
@@ -1638,14 +1644,14 @@ public static class RoleClass
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.EvilSeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.EvilSeerSoulDuration.GetFloat();
-            mode = CustomOptionHolder.EvilSeerMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.EvilSeerMode.GetSelection();
             IsCreateMadmate = CustomOptionHolder.EvilSeerMadmateSetting.GetBool();
         }
     }
     public static class RemoteSheriff
     {
         public static List<PlayerControl> RemoteSheriffPlayer;
-        public static Color32 color = new(255, 255, 0, byte.MaxValue);
+        public static Color32 color = SheriffYellow;
         public static float CoolTime;
         public static bool IsNeutralKill;
         public static bool IsLoversKill;
@@ -1672,7 +1678,7 @@ public static class RoleClass
     public static class TeleportingJackal
     {
         public static List<PlayerControl> TeleportingJackalPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = JackalBlue;
         public static float KillCooldown;
         public static bool IsUseVent;
         public static bool IsUseSabo;
@@ -1753,7 +1759,7 @@ public static class RoleClass
     public static class SeerFriends
     {
         public static List<PlayerControl> SeerFriendsPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = JackalBlue;
 
         public static List<Vector3> deadBodyPositions;
 
@@ -1772,7 +1778,7 @@ public static class RoleClass
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.SeerFriendsLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.SeerFriendsSoulDuration.GetFloat();
-            mode = CustomOptionHolder.SeerFriendsMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.SeerFriendsMode.GetSelection();
 
             IsJackalCheck = CustomOptionHolder.SeerFriendsIsCheckJackal.GetBool();
             IsUseVent = CustomOptionHolder.SeerFriendsIsUseVent.GetBool();
@@ -1795,7 +1801,8 @@ public static class RoleClass
         public static List<PlayerControl> JackalSeerPlayer;
         public static List<PlayerControl> SidekickSeerPlayer;
         public static List<PlayerControl> FakeSidekickSeerPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static List<int> CreatePlayers;
+        public static Color32 color = JackalBlue;
 
         public static List<Vector3> deadBodyPositions;
         public static float soulDuration;
@@ -1809,6 +1816,7 @@ public static class RoleClass
         public static bool CreateSidekick;
         public static bool NewJackalCreateSidekick;
         public static bool CanCreateSidekick;
+        public static bool CanCreateFriend;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
 
         public static void ClearAndReload()
@@ -1816,11 +1824,12 @@ public static class RoleClass
             JackalSeerPlayer = new();
             SidekickSeerPlayer = new();
             FakeSidekickSeerPlayer = new();
+            CreatePlayers = new();
 
             deadBodyPositions = new();
             limitSoulDuration = CustomOptionHolder.JackalSeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.JackalSeerSoulDuration.GetFloat();
-            mode = CustomOptionHolder.JackalSeerMode.GetSelection();
+            mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.JackalSeerMode.GetSelection();
 
             KillCooldown = CustomOptionHolder.JackalSeerKillCooldown.GetFloat();
             IsUseVent = CustomOptionHolder.JackalSeerUseVent.GetBool();
@@ -1828,6 +1837,7 @@ public static class RoleClass
             IsImpostorLight = CustomOptionHolder.JackalSeerIsImpostorLight.GetBool();
             CreateSidekick = CustomOptionHolder.JackalSeerCreateSidekick.GetBool();
             CanCreateSidekick = CustomOptionHolder.JackalSeerCreateSidekick.GetBool();
+            CanCreateFriend = CustomOptionHolder.JackalSeerCreateFriend.GetBool();
             NewJackalCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
         }
     }
@@ -1889,7 +1899,7 @@ public static class RoleClass
         public static List<PlayerControl> ChiefPlayer;
         public static List<byte> SheriffPlayer;
         public static List<byte> NoTaskSheriffPlayer;
-        public static Color32 color = new(255, 255, 0, byte.MaxValue);
+        public static Color32 color = SheriffYellow;
         public static bool IsCreateSheriff;
         public static float CoolTime;
         public static bool IsNeutralKill;
@@ -1972,7 +1982,7 @@ public static class RoleClass
     public static class MayorFriends
     {
         public static List<PlayerControl> MayorFriendsPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = JackalBlue;
         public static bool IsUseVent;
         public static bool IsImpostorLight;
         public static bool IsJackalCheck;
@@ -2018,7 +2028,7 @@ public static class RoleClass
     public static class GhostMechanic
     {
         public static List<PlayerControl> GhostMechanicPlayer;
-        public static Color32 color = Color.blue;
+        public static Color32 color = new(25, 68, 142, byte.MaxValue);
         public static int LimitCount;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
 
@@ -2647,7 +2657,7 @@ public static class RoleClass
     public static class Photographer
     {
         public static List<PlayerControl> PhotographerPlayer;
-        public static Color32 color = new(0, 255, 255, byte.MaxValue);
+        public static Color32 color = new(141, 160, 182, byte.MaxValue);
         public static int BonusCount;
         public static List<byte> PhotedPlayerIds;
         public static bool IsPhotographerShared;
@@ -2793,7 +2803,7 @@ public static class RoleClass
     public static class WaveCannonJackal
     {
         public static List<PlayerControl> WaveCannonJackalPlayer;
-        public static Color32 color = Jackal.color;
+        public static Color32 color = JackalBlue;
         public static void ClearAndReload()
         {
             WaveCannonJackalPlayer = new();

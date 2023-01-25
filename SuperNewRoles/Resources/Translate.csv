@@ -95,8 +95,8 @@ colorWineRed,WineRed,ワインレッド,酒红
 colorCrazyRed,CrazyRed,クレイジーレッド,大红
 colorTokiwaGreen,TokiwaGreen,常磐緑,常青绿
 colorPosi,Posi,ポジ,正片滤镜
-colorXmasRed,X'masRed,クリスマスレッド
-colorXmasGreen,X'masGreen,クリスマスグリーン
+colorXmasRed,X'masRed,クリスマスレッド,圣诞红
+colorXmasGreen,X'masGreen,クリスマスグリーン,圣诞绿
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -1194,21 +1194,21 @@ PenguinName,Penguin,ペンギン,绑匪
 PenguinTitle1,Let's drag and kill!,ぺちぺち！,绑架他人
 PenguinButtonName,Abduction,拉致,绑架
 PenguinCanDefaultKill,Can default kill,通常キルができる,绑匪可以进行通常击杀
-LoversBreakerName,LoversBreaker,爆ぜ師
-LoversBreakerTitle1,fulfilling life explosion!!fulfilling life explosion!!,リア充爆発！！リア充爆発！！
-LoversBreakerBreakCount,Number of explosions needed to win,勝利に必要な爆破数
-LoversBreakerIsDeathWin,You can win even if you are dead.,死亡していても勝利できる
-LoversBreakerButtonName,Blow up,爆破
-JumboName,Jumbo,ジャンボ
-JumboTitle1,Wow!?Jumbo!!!,ワオ、ジャンボ！！！
-NiceJumboName,NiceJumbo,ナイスジャンボ
-NiceJumboTitle1,Big Crewmate Team!!!,大きいクルーメイトの味方
-EvilJumboName,EvilJumbo,イビルジャンボ
-EvilJumboTitle1,Let's overwhelm the crew with the size of this thing.,この大きさでクルーを圧倒しよう
-JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボになる確率
-JumboMaxSize,Maximum size,最大サイズ
-JumboSpeedUpSize,Growth speed,成長スピード
-JumboWalkSoundSize,Loudness of footsteps,足音の大きさ
+LoversBreakerName,LoversBreaker,爆ぜ師,FFF团
+LoversBreakerTitle1,fulfilling life explosion!!fulfilling life explosion!!,リア充爆発！！リア充爆発！！,现充去死！现充爆炸！
+LoversBreakerBreakCount,Number of explosions needed to win,勝利に必要な爆破数,FFF团获胜所需击杀的恋人数
+LoversBreakerIsDeathWin,You can win even if you are dead.,死亡していても勝利できる,FFF团死亡状态下也能获胜
+LoversBreakerButtonName,Blow up,爆破,爆杀现充！
+JumboName,Jumbo,ジャンボ,巨无霸
+JumboTitle1,Wow!?Jumbo!!!,ワオ、ジャンボ！！！,怎么你们都这么小？
+NiceJumboName,NiceJumbo,ナイスジャンボ,正义的巨无霸
+NiceJumboTitle1,Big Crewmate Team!!!,大きいクルーメイトの味方,船员中的大块头
+EvilJumboName,EvilJumbo,イビルジャンボ,邪恶的巨无霸
+EvilJumboTitle1,Let's overwhelm the crew with the size of this thing.,この大きさでクルーを圧倒しよう,用庞大的身躯征服飞船
+JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボになる確率,巨无霸生成为船员阵营的概率
+JumboMaxSize,Maximum size,最大サイズ,巨无霸最大体型
+JumboSpeedUpSize,Growth speed,成長スピード,巨无霸变大速度
+JumboWalkSoundSize,Loudness of footsteps,足音の大きさ,巨无霸脚步声音量
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

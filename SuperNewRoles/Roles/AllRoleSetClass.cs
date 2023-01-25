@@ -6,6 +6,9 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles;
 
@@ -151,7 +154,7 @@ class RoleManagerSelectRolesPatch
         }
         else if (ModeHandler.IsMode(ModeId.Default))
         {
-            Roles.Neutral.GM.AssignGM();
+            GM.AssignGM();
         }
         return true;
     }
@@ -949,25 +952,25 @@ class AllRoleSetClass
             RoleId.Photographer => CustomOptionHolder.PhotographerPlayerCount.GetFloat(),
             RoleId.Stefinder => CustomOptionHolder.StefinderPlayerCount.GetFloat(),
             RoleId.Slugger => CustomOptionHolder.SluggerPlayerCount.GetFloat(),
-            RoleId.ShiftActor => Roles.Impostor.ShiftActor.ShiftActorPlayerCount.GetFloat(),
+            RoleId.ShiftActor => ShiftActor.ShiftActorPlayerCount.GetFloat(),
             RoleId.ConnectKiller => CustomOptionHolder.ConnectKillerPlayerCount.GetFloat(),
             RoleId.Cracker => CustomOptionHolder.CrackerPlayerCount.GetFloat(),
-            RoleId.NekoKabocha => Roles.Impostor.NekoKabocha.NekoKabochaPlayerCount.GetFloat(),
+            RoleId.NekoKabocha => NekoKabocha.NekoKabochaPlayerCount.GetFloat(),
             RoleId.WaveCannon => CustomOptionHolder.WaveCannonPlayerCount.GetFloat(),
             RoleId.Doppelganger => CustomOptionHolder.DoppelgangerPlayerCount.GetFloat(),
             RoleId.Werewolf => CustomOptionHolder.WerewolfPlayerCount.GetFloat(),
-            RoleId.Knight => Roles.Crewmate.Knight.KnightPlayerCount.GetFloat(),
+            RoleId.Knight => Knight.KnightPlayerCount.GetFloat(),
             RoleId.Pavlovsowner => CustomOptionHolder.PavlovsownerPlayerCount.GetFloat(),
             RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalPlayerCount.GetFloat(),
-            RoleId.Conjurer => Roles.Impostor.Conjurer.PlayerCount.GetFloat(),
+            RoleId.Conjurer => Conjurer.PlayerCount.GetFloat(),
             RoleId.Camouflager => CustomOptionHolder.CamouflagerPlayerCount.GetFloat(),
             RoleId.Cupid => CustomOptionHolder.CupidPlayerCount.GetFloat(),
             RoleId.HamburgerShop => CustomOptionHolder.HamburgerShopPlayerCount.GetFloat(),
             RoleId.Penguin => CustomOptionHolder.PenguinPlayerCount.GetFloat(),
             RoleId.Dependents => CustomOptionHolder.DependentsPlayerCount.GetFloat(),
             RoleId.LoversBreaker => CustomOptionHolder.LoversBreakerPlayerCount.GetFloat(),
-                RoleId.Jumbo => CustomOptionHolder.JumboPlayerCount.GetFloat(),
-                //プレイヤーカウント
+            RoleId.Jumbo => CustomOptionHolder.JumboPlayerCount.GetFloat(),
+            // プレイヤーカウント
             _ => 1,
         };
     }
