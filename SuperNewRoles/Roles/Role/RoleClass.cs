@@ -5,6 +5,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
@@ -200,6 +201,7 @@ public static class RoleClass
         Jumbo.ClearAndReload();
         Impostor.MadRole.Worshiper.ClearAndReload();
         Safecracker.ClearAndReload();
+        Squid.ClearAndReload();
         //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

@@ -1182,6 +1182,26 @@ SafecrackerUseSaboTaskSetting,Amount of tasks for which sabotage will be availab
 SafecrackerIsImpostorLightTaskSetting,Amount of tasks for become an Imposter's field of view (of all tasks),インポスターの視界になるタスク量(全タスク内)
 SafecrackerCheckImpostorTaskSetting,Amount of tasks that will allow you to check the Imposter (of all tasks),インポスターを確認できるようになるタスク量(全タスク内)
 SafecrackerChangeTaskPrefabSetting,Replace all tasks with unlock safe tasks,全タスクを金庫タスクに置き換える
+FireFoxName,Fire Fox,炎狐
+FireFoxTitle1,I am Fire Fox!,私は炎狐です！
+FireFoxDescription,It is a Fox that has been given a kill button instead of a kill guard.\nThe number of kills is limited and only certain camps can be killed.\nIf you press the kill button for a player who is not in the killable camp， your kill count will decrease without a kill.\nThink about who to kill and contribute to the Fox's victory.,キルガードの代わりにキルボタンを与えられた妖狐です。\nキル回数は制限されており、特定の陣営のみキル可能です。\nキル可能陣営以外にキルボタンを押してしまうと、キルせずにキル回数のみ減ってしまいます。\n誰をキルするか考え、妖狐の勝利に貢献しましょう。
+FireFoxCanKillCrewmateSetting,Can kill the crewmate camp,クルーメイト陣営をキルできる
+FireFoxCanKillImpostorSetting,Can kill the imposter camp,インポスター陣営をキルできる
+FireFoxCanKillNeutralSetting,Can kill the third camp,第三陣営をキルできる
+FireFoxCanKillLoversSetting,Can kill the lovers,ラバーズをキルできる
+FireFoxIsCheckFoxSetting,You can check the fox,妖狐を視認できる
+SquidName,Squid,イカ
+SquidTitle1,Use ink to survive,墨を使って生き延びろ
+SquidTitle2,Let's use ink to get away with it,墨を使って逃げ切ろう
+SquidDescription,You can be on alert for a certain period of time.\nIf you are about to be killed while on alert， you can prevent the kill， take away your opponent's vision， and increase your own movement speed for a certain period of time.,一定時間警戒することが出来ます。\n警戒中にキルされそうになると、そのキルを防ぎ相手の視界を奪い、一定時間自身の移動速度が上昇します。
+SquidCoolTimeSetting,Cool time for vigilance mode,警戒モードのクールタイム
+SquidDurationTimeSetting,Duration of vigilance mode,警戒モードの持続時間
+SquidBoostSpeedSetting,Movement speed on successful counters,カウンター成功時の移動速度
+SquidBoostSpeedTimeSetting,Time to increase movement speed on successful counters,カウンター成功時の移動速度が上がる時間
+SquidNotKillTimeSetting,Time when no kills can be made on successful counters,カウンター成功時のキルが出来ない時間
+SquidDownVisionSetting,Field of vision when vision is deprived,視界が奪われたときの視野
+SquidObstructionTimeSetting,Time to take away the view,視界を奪う時間
+SquidButtonName,Vigilance,警戒
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

@@ -752,6 +752,9 @@ public static class RoleHelpers
             case RoleId.Safecracker:
                 Safecracker.SafecrackerPlayer.Add(player);
                 break;
+            case RoleId.Squid:
+                Squid.SquidPlayer.Add(player);
+                break;
             //ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1230,6 +1233,9 @@ public static class RoleHelpers
                 break;
             case RoleId.Safecracker:
                 Safecracker.SafecrackerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Squid:
+                Squid.SquidPlayer.RemoveAll(ClearRemove);
                 break;
             //ロールリモベ
         }
@@ -1746,6 +1752,7 @@ public static class RoleHelpers
             else if (RoleClass.Jumbo.JumboPlayer.IsCheckListPlayerControl(player)) return RoleId.Jumbo;
             else if (Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.IsCheckListPlayerControl(player)) return RoleId.Worshiper;
             else if (Safecracker.SafecrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Safecracker;
+            else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
             //ロールチェック
         }
         catch (Exception e)

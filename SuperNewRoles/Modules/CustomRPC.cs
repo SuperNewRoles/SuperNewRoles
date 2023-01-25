@@ -179,6 +179,7 @@ public enum RoleId
     Jumbo,
     Worshiper,
     Safecracker,
+    Squid,
     //RoleId
 }
 
@@ -268,10 +269,22 @@ public enum CustomRPC
     SetDeviceUseStatus,
     SetLoversBreakerWinner,
     SafecrackerGuardCount,
+    SetVigilance,
 }
 
 public static class RPCProcedure
 {
+    public static void SetVigilance(bool isVigilance, byte id)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        if (Squid.IsVigilance.ContainsKey(id) && Squid.IsVigilance[id] && player.AmOwner && !isVigilance)
+        {
+            Squid.ResetCooldown(false);
+            Logger.Info("イカの警戒が解けたためクールをリセットしました");
+        }
+        Squid.IsVigilance[id] = isVigilance;
+    }
     public static void SafecrackerGuardCount(byte id, bool isKillGuard)
     {
         PlayerControl player = ModHelpers.PlayerById(id);
@@ -1056,14 +1069,9 @@ public static class RPCProcedure
     {
         var player = ModHelpers.PlayerById(id);
         if (player == null) return;
-        if (player.Data.Role.IsImpostor)
-        {
-            RoleClass.EvilSpeedBooster.IsBoostPlayers[id] = Is;
-        }
-        else
-        {
-            RoleClass.SpeedBooster.IsBoostPlayers[id] = Is;
-        }
+        if (player.Data.Role.IsImpostor) RoleClass.EvilSpeedBooster.IsBoostPlayers[id] = Is;
+        else if (player.IsRole(RoleId.Squid)) Squid.Abilitys.IsBoostSpeed = Is;
+        else RoleClass.SpeedBooster.IsBoostPlayers[id] = Is;
     }
     public static void ReviveRPC(byte playerid)
     {
@@ -1641,6 +1649,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SafecrackerGuardCount:
                         SafecrackerGuardCount(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case CustomRPC.SetVigilance:
+                        SetVigilance(reader.ReadBoolean(), reader.ReadByte());
                         break;
                 }
             }
