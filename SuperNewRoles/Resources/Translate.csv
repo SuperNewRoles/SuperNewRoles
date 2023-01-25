@@ -37,6 +37,9 @@ Developer,Developer,開発者,开发者
 Sponsor,Sponsor,スポンサー,支持者
 Translator,Translator,翻訳,翻译
 DevAndSpnTitle,Developer & Sponsor,開発者&支援者,开发者与支持者
+Analytics,Analytics,解析
+AnalyticsText,In order to make SuperNewRoles an even better mod， we have created a function to send information about positions used to the server. \nThis information can be viewed by SuperNewRoles developers. See the following page for more information. \nYou can change in the settings whether you want to save the information. \nNo personally identifiable elements， such as your player name， will be sent. \n<link href="https://github.com/ykundesu/SuperNewRoles/wiki/解析について">https://github.com/ykundesu/SuperNewRoles/wiki/解析について</link>,SuperNewRolesをさらに良いMODにするため、\n使用した役職などをサーバーに送信する機能を作りました。\nこの情報はSuperNewRolesの開発者が見ることができます。詳細は以下のページを参照してください。\n保存するかは設定で変更できます。\nあなたのプレイヤー名などの個人を特定できる要素は送信しません。\n<link href="https://github.com/ykundesu/SuperNewRoles/wiki/解析について">https://github.com/ykundesu/SuperNewRoles/wiki/解析について</link>
+AnalyticsOK,OK!,了解！
 
 # CustomColors
 colorSalmon,Salmon,サーモン,鲑鱼红
@@ -137,6 +140,7 @@ CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピ�
 CustomProcessDown,Update Process Down,処理回数を減らす,更新进程已关闭
 CustomIsVersionErrorView,Show players Errors.,エラーを表示する,显示错误
 CustomHideTaskArrows,Hide Tasks Arrows,タスクの矢印を非表示にする,隐藏任务指向箭头
+IsSendAnalytics,Send Analytics,解析を送信する
 SettingCrewmateRoles,Crewmate Setting,クルーメイトの人数設定,船员阵营职业设置
 SettingCrewmateGhostRoles,Crewmate GhostRole Setting,クルーメイトの幽霊役職の人数設定,船员阵营幽灵职业设置
 SettingNeutralRoles,Neutral Setting,第三陣営の人数設定,独立阵营职业设置
