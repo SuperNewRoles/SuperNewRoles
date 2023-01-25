@@ -1848,6 +1848,7 @@ public static class RoleClass
         public static List<byte> MeetingEndPlayers;
         public static PlayerControl TriggerPlayer;
         public static PlayerControl DeadPlayer;
+        public static bool IsVoteView;
         public static bool IsImpostorWin;
         public static void ClearAndReload()
         {
@@ -1856,15 +1857,18 @@ public static class RoleClass
             TriggerPlayer = null;
             DeadPlayer = null;
             IsImpostorWin = false;
+            IsVoteView = CustomOptionHolder.AssassinViewVote.GetBool();
         }
     }
     public static class Marine
     {
         public static List<PlayerControl> MarinePlayer;
         public static Color32 color = new(175, 223, 228, byte.MaxValue);
+        public static bool IsVoteView;
         public static void ClearAndReload()
         {
             MarinePlayer = new();
+            IsVoteView = CustomOptionHolder.MarineViewVote.GetBool();
         }
     }
     public static class Arsonist

@@ -569,6 +569,12 @@ public static class OpenVotes
             case RoleId.Observer:
                 optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Observer.IsVoteView);
                 break;
+            case RoleId.Marine:
+                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Marine.IsVoteView);
+                break;
+            case RoleId.Assassin:
+                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Assassin.IsVoteView);
+                break;
         }
         if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, !CustomOptionHolder.CanGhostSeeVote.GetBool());
         Logger.Info("開票しました。", "OpenVotes");
