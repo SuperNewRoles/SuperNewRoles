@@ -27,7 +27,7 @@ class Seer
     {
         var renderer = FastDestroyableSingleton<HudManager>.Instance;
         if (renderer == null || FullScreenRenderer == null) return;
-        FullScreenRenderer.gameObject.SetActive(true);
+        FullScreenRenderer?.gameObject?.SetActive(true);
         FullScreenRenderer.enabled = true;
         renderer.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
         {
@@ -48,7 +48,7 @@ class Seer
             if (p == 1f && FullScreenRenderer != null)
             {
                 FullScreenRenderer.enabled = true;
-                FullScreenRenderer.gameObject.SetActive(false);
+                FullScreenRenderer?.gameObject?.SetActive(false);
                 Logger.Info("発動待機状態に戻しました。", "SetActive(false)");
             }
         })));

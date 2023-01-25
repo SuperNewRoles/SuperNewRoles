@@ -1585,7 +1585,7 @@ public static class RoleClass
             soulDuration = CustomOptionHolder.SeerSoulDuration.GetFloat();
             mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.SeerMode.GetSelection();
 
-            Roles.Seer.FullScreenRenderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen, FastDestroyableSingleton<HudManager>.Instance.transform);
+            Roles.Seer.FullScreenRenderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance?.FullScreen, FastDestroyableSingleton<HudManager>.Instance?.transform);
         }
     }
     public static class MadSeer
