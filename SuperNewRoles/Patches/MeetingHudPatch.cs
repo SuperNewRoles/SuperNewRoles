@@ -480,7 +480,15 @@ class MeetingHudStartPatch
             new LateTask(() =>
             {
                 SyncSetting.CustomSyncSettings();
+                SyncSetting.MeetingSyncSettings();
             }, 3f, "StartMeeting CustomSyncSetting");
+        }
+        if (ModeHandler.IsMode(ModeId.Default))
+        {
+            new LateTask(() =>
+            {
+                SyncSetting.MeetingSyncSettings();
+            }, 3f, "StartMeeting MeetingSyncSettings SNR");
         }
         Roles.Crewmate.Knight.ProtectedPlayer = null;
         Roles.Crewmate.Knight.GuardedPlayers = new();
@@ -545,8 +553,9 @@ public static class OpenVotes
 {
     /// <summary>
     /// 公開投票にします。
-    /// Anonymous votes(匿名投票)をfalseにする事で、Open votes(公開投票)にします。
     /// </summary>
+    /// <param name="player">設定送信先</param>
+    /// <returns>Anonymous votes(匿名投票)をfalseにする事で、Open votes(公開投票)にします。</returns>
     public static bool VoteSyncSetting(this PlayerControl player)
     {
         var role = player.GetRole();

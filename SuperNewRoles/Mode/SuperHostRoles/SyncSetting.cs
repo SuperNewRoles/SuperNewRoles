@@ -205,7 +205,6 @@ public static class SyncSetting
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
         }
-        optdata.SetBool(BoolOptionNames.AnonymousVotes, OpenVotes.VoteSyncSetting(player));
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         optdata.RpcSyncOption(player.GetClientId());
@@ -234,8 +233,19 @@ public static class SyncSetting
             default:
                 return;
         }
-        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
+        if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
+        optdata.RpcSyncOption(player.GetClientId());
+    }
+
+    public static void MeetingSyncSettings(this PlayerControl player)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        var role = player.GetRole();
+        var optdata = OptionData.DeepCopy();
+
+        optdata.SetBool(BoolOptionNames.AnonymousVotes, OpenVotes.VoteSyncSetting(player));
+        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         optdata.RpcSyncOption(player.GetClientId());
     }
@@ -279,6 +289,21 @@ public static class SyncSetting
             }
         }
     }
+
+    /// <summary>
+    /// 開票処理をゲストに送信する準備
+    /// </summary>
+    public static void MeetingSyncSettings()
+    {
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        {
+            if (!p.Data.Disconnected && !p.IsBot())
+            {
+                MeetingSyncSettings(p);
+            }
+        }
+    }
+
     public static IGameOptions DeepCopy(this IGameOptions opt)
     {
         var optByte = GameOptionsManager.Instance.gameOptionsFactory.ToBytes(opt);
