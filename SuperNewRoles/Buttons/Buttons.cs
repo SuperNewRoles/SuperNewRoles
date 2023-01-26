@@ -1916,6 +1916,7 @@ static class HudManagerStartPatch
                         AmongUsClient.Instance.FinishRpcImmediately(writer2);
                     }
                 }
+                Vulture.ResetCoolDown();
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Vulture; },
             () =>
@@ -1924,8 +1925,7 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                VultureButton.MaxTimer = RoleClass.Vulture.CoolTime;
-                VultureButton.Timer = RoleClass.Vulture.CoolTime;
+                Vulture.EndMeeting();
             },
             RoleClass.Vulture.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
