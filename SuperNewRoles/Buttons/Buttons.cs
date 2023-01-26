@@ -1898,7 +1898,7 @@ static class HudManagerStartPatch
                 Vulture.RpcCleanDeadBody(RoleClass.Vulture.DeadBodyCount);
                 RoleClass.Vulture.DeadBodyCount--;
 
-                if (RoleClass.Vulture.DeadBodyCount < 0)
+                if (RoleClass.Vulture.DeadBodyCount <= 0)
                 {
                     RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
