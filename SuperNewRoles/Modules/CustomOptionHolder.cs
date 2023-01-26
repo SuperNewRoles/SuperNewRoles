@@ -1543,9 +1543,9 @@ public class CustomOptionHolder
 
         AssassinAndMarlinOption = new(386, true, CustomOptionType.Impostor, "AssassinAndMarlinName", Color.white, 1);
         AssassinPlayerCount = Create(387, true, CustomOptionType.Impostor, "AssassinSettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], AssassinAndMarlinOption);
-        AssassinViewVote = Create(167, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
+        AssassinViewVote = Create(1145, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
         MarlinPlayerCount = Create(388, true, CustomOptionType.Impostor, "MarlinSettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AssassinAndMarlinOption);
-        MarlinViewVote = Create(167, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
+        MarlinViewVote = Create(1146, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
 
         ArsonistOption = SetupCustomRoleOption(389, true, RoleId.Arsonist);
         ArsonistPlayerCount = Create(390, true, CustomOptionType.Neutral, "SettingPlayerCountName", AlonePlayers[0], AlonePlayers[1], AlonePlayers[2], AlonePlayers[3], ArsonistOption);
