@@ -69,7 +69,7 @@ public class IntroData
     }
     public static IntroData GetIntroData(RoleId RoleId, PlayerControl p = null)
     {
-        if (RoleId is RoleId.DefaultRole)
+        if (RoleId is RoleId.DefaultRole or RoleId.Bestfalsecharge)
         {
             return p != null && p.IsImpostor() ? ImpostorIntro : CrewmateIntro;
         }
