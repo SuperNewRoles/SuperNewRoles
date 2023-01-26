@@ -280,7 +280,7 @@ public static class RPCProcedure
         if (player == null) return;
         if (Squid.IsVigilance.ContainsKey(id) && Squid.IsVigilance[id] && player.AmOwner && !isVigilance)
         {
-            Squid.ResetCooldown(false);
+            Squid.ResetCooldown();
             Logger.Info("イカの警戒が解けたためクールをリセットしました");
         }
         Squid.IsVigilance[id] = isVigilance;
@@ -1070,7 +1070,11 @@ public static class RPCProcedure
         var player = ModHelpers.PlayerById(id);
         if (player == null) return;
         if (player.Data.Role.IsImpostor) RoleClass.EvilSpeedBooster.IsBoostPlayers[id] = Is;
-        else if (player.IsRole(RoleId.Squid)) Squid.Abilitys.IsBoostSpeed = Is;
+        else if (player.IsRole(RoleId.Squid))
+        {
+            Squid.Abilitys.IsBoostSpeed = Is;
+            Squid.Abilitys.BoostSpeedTimer = Squid.SquidBoostSpeedTime.GetFloat();
+        }
         else RoleClass.SpeedBooster.IsBoostPlayers[id] = Is;
     }
     public static void ReviveRPC(byte playerid)

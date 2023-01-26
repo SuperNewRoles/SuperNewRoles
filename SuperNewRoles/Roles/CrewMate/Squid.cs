@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
@@ -37,12 +37,14 @@ public class Squid
     public static Color32 color = new(187, 255, 255, byte.MaxValue);
     public static Dictionary<byte, bool> IsVigilance;
     public static Ability Abilitys;
+    public static int DefaultKillDistance;
     public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SquidButton.png", 115f);
     public static void ClearAndReload()
     {
         SquidPlayer = new();
         IsVigilance = new();
         Abilitys = new();
+        DefaultKillDistance = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.KillDistance);
     }
 
     public static CustomButton SquidButton;
@@ -55,7 +57,11 @@ public class Squid
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Squid; },
             () => { return PlayerControl.LocalPlayer.CanMove; },
-            () => { ResetCooldown(); },
+            () =>
+            {
+                ResetCooldown();
+                SetVigilance(PlayerControl.LocalPlayer, false);
+            },
             GetButtonSprite(),
             new Vector3(-2f, 0, 0),
             __instance,
@@ -69,6 +75,7 @@ public class Squid
             {
                 Logger.Info("効果終了のお知らせ", "Squid Button");
                 ResetCooldown();
+                SetVigilance(PlayerControl.LocalPlayer, false);
             }
         )
         {
@@ -76,15 +83,15 @@ public class Squid
             showButtonText = true
         };
     }
-    public static void ResetCooldown(bool vigilanceReset = true)
+    public static void ResetCooldown()
     {
         SquidButton.MaxTimer = SquidCoolTime.GetFloat();
         SquidButton.Timer = SquidButton.MaxTimer;
         SquidButton.EffectDuration = SquidDurationTime.GetFloat();
         SquidButton.effectCancellable = false;
         SquidButton.HasEffect = true;
+        SquidButton.isEffectActive = false;
         SquidButton.actionButton.cooldownTimerText.color = Color.white;
-        if (vigilanceReset) SetVigilance(PlayerControl.LocalPlayer, false);
     }
 
     public static Sprite GetInkSprite(float size = 250f) => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SquidInk.png", size);
@@ -214,6 +221,7 @@ public class Squid
             {
                 Abilitys.IsObstruction = false;
                 Abilitys.ObstructionTimer = SquidObstructionTime.GetFloat();
+                GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.KillDistance, DefaultKillDistance);
             }
         }
     }

@@ -337,6 +337,8 @@ public static class ModHelpers
             Squid.SetSpeedBoost(target);
             Squid.Abilitys.IsKillGuard = true;
             Squid.Abilitys.IsObstruction = true;
+            Squid.Abilitys.ObstructionTimer = Squid.SquidObstructionTime.GetFloat();
+            GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.KillDistance, 0);
             Squid.InkSet();
         }
         return MurderAttemptResult.PerformKill;
