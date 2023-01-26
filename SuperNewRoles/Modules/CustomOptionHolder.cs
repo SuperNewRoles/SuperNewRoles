@@ -1052,7 +1052,7 @@ public class CustomOptionHolder
 
         Sabotage.Options.Load();
 
-        if (ConfigRoles.DebugMode.Value)  { DebuggerOption = Create(6078, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false, isHeader: true); }
+        if (ConfigRoles.DebugMode.Value)  { DebuggerOption = Create(1168, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false, isHeader: true); }
 
         GMOption = Create(1028, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
 
