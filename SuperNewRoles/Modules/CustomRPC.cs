@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.Data;
 using AmongUs.GameOptions;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
@@ -647,8 +648,8 @@ public static class RPCProcedure
     {
         PlayerControl source = ModHelpers.PlayerById(sourceid);
         if (source == null) return;
-        source.ReportDeadBody(null);
         RoleClass.Revolutionist.MeetingTrigger = source;
+        source.ReportDeadBody(null);
     }
 
     public static void KunaiKill(byte sourceid, byte targetid)
