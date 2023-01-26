@@ -950,6 +950,7 @@ public class CustomOptionHolder
     public static CustomOption JumboWalkSoundSize;
     //CustomOption
 
+    public static CustomOption DebuggerOption;
     public static CustomOption GMOption;
 
     public static CustomOption QuarreledOption;
@@ -1050,6 +1051,8 @@ public class CustomOptionHolder
         MapCustoms.MapCustom.CreateOption();
 
         Sabotage.Options.Load();
+
+        if (ConfigRoles.DebugMode.Value)  { DebuggerOption = Create(1168, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false, isHeader: true); }
 
         GMOption = Create(1028, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
 

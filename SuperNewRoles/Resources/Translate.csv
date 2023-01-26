@@ -1168,6 +1168,22 @@ JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボにな
 JumboMaxSize,Maximum size,最大サイズ
 JumboSpeedUpSize,Growth speed,成長スピード
 JumboWalkSoundSize,Loudness of footsteps,足音の大きさ
+DebuggerName,Debugger,デバッガー
+DebuggerButtonName,Debug,デバッグ
+Functions,Functions,基本操作
+PlayerControl,Player control,プレイヤー操作
+StartMeeting,Start meeting,緊急会議
+ShowRole,Show role,役職を表示
+DeShowRole,Cancel show role,役職を非表示
+Teleport,Teleport,テレポート
+ReportDeadbody,Report deadbody,通報
+Exile,Exile,追放
+Kill,Kill,キル
+Revive,Revive,蘇生
+CleanDeadbody,Clean deadbody,死体掃除
+SetRole,Set role,役職付与
+Crewmate,Crewmate,クルーメイト
+Impostor,Impostor,インポスター
 WorshiperName,Worshiper,崇拝者
 WorshiperTitle1,If I can help them，I will spare my life.,あなた方の力になれるのなら 私の命など惜しくはない。
 WorshiperDescription,It has two self-determination abilities.\nIt commits suicide on the spot by using the Shapeshift when SHR and the [Suicide] ability when SNR.\nBy using the kill button，it commits suicide in the form of a sheriff misfire.\nAha，master. My will is yours and my life is for yours...\nCome，master. Let us fulfill that desire.,2つの自決能力を持ちます。\nSHR時はシェイプシフト、SNR時は[自決]能力を使用する事で、その場で自殺します。\nキルボタンを使用する事でシェリフ誤爆のような形で自殺します。\n嗚呼、ご主人。私の意思は貴方の物であり、私の命は貴方の為にあるのです・・・\nさあ、ご主人その願望をかなえましょう。
