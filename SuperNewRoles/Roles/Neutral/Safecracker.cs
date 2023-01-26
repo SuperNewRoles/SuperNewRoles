@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
-using Steamworks;
 using SuperNewRoles.Patches;
 using UnityEngine;
 
@@ -158,7 +157,7 @@ public class Safecracker
                 }
             }
         }
-        public static void Postfix(Console __instance, ref bool __state)
+        public static void Postfix(Console __instance)
         {
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Safecracker)
                 && (SafecrackerChangeTaskPrefab.GetBool() || GameManager.Instance.LogicOptions.currentGameOptions.MapId != (int)MapNames.Airship))

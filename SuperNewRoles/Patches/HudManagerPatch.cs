@@ -1,6 +1,7 @@
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Roles;
+using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
@@ -13,7 +14,6 @@ class HudManagerPatch
         {
             GameSettingsScale.GameSettingsScalePatch(__instance);
         }
-
         public static void Postfix(HudManager __instance)
         {
             WallHack.WallHackUpdate();

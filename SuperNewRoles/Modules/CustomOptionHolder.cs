@@ -1569,6 +1569,7 @@ public class CustomOptionHolder
         JackalSeerNewJackalCreateSidekick = Create(385, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalSeerCreateSidekick);
 
         AssassinAndMarineOption = new(386, true, CustomOptionType.Impostor, "AssassinAndMarineName", Color.white, 1);
+        AssassinAndMarineOption.RoleId = RoleId.Assassin;
         AssassinPlayerCount = Create(387, true, CustomOptionType.Impostor, "AssassinSettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], AssassinAndMarineOption);
         MarinePlayerCount = Create(388, true, CustomOptionType.Impostor, "MarineSettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AssassinAndMarineOption);
 
@@ -1702,6 +1703,7 @@ public class CustomOptionHolder
         FinderCheckMadmateSetting = Create(819, false, CustomOptionType.Impostor, "FinderCheckMadmateSetting", 3f, 1f, 15f, 1f, FinderOption);
 
         RevolutionistAndDictatorOption = new(820, false, CustomOptionType.Neutral, "RevolutionistAndDictatorName", Color.white, 1);
+        RevolutionistAndDictatorOption.RoleId = RoleId.Revolutionist;
         RevolutionistPlayerCount = Create(821, false, CustomOptionType.Neutral, "SettingRevolutionistPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
         DictatorPlayerCount = Create(822, false, CustomOptionType.Neutral, "SettingDictatorPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
         DictatorVoteCount = Create(823, false, CustomOptionType.Neutral, "DictatorVoteCount", 2f, 1f, 100f, 1f, RevolutionistAndDictatorOption);

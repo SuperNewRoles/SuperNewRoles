@@ -55,13 +55,13 @@ public static class SelectTask
         if (Worshiper.WorshiperIsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)) taskData.Add(RoleId.Worshiper, (Worshiper.WorshiperCommonTask.GetInt(), Worshiper.WorshiperShortTask.GetInt(), Worshiper.WorshiperLongTask.GetInt()));
         taskData.Add(RoleId.Workperson, (WorkpersonCommonTask.GetInt(), WorkpersonShortTask.GetInt(), WorkpersonLongTask.GetInt()));
         taskData.Add(RoleId.TaskManager, (TaskManagerCommonTask.GetInt(), TaskManagerShortTask.GetInt(), TaskManagerLongTask.GetInt()));
-        taskData.Add(RoleId.SuicidalIdeation, (SuicidalIdeationCommonTask.GetInt(), SuicidalIdeationLongTask.GetInt(), SuicidalIdeationShortTask.GetInt()));
-        taskData.Add(RoleId.Tasker, (TaskerCommonTask.GetInt(), TaskerLongTask.GetInt(), TaskerShortTask.GetInt()));
-        taskData.Add(RoleId.HamburgerShop, (HamburgerShopCommonTask.GetInt(), HamburgerShopLongTask.GetInt(), HamburgerShopShortTask.GetInt()));
-        taskData.Add(RoleId.Safecracker, (Safecracker.SafecrackerCommonTask.GetInt(), Safecracker.SafecrackerLongTask.GetInt(), Safecracker.SafecrackerShortTask.GetInt()));
+        taskData.Add(RoleId.SuicidalIdeation, (SuicidalIdeationCommonTask.GetInt(), SuicidalIdeationShortTask.GetInt(), SuicidalIdeationLongTask.GetInt()));
+        taskData.Add(RoleId.Tasker, (TaskerCommonTask.GetInt(), TaskerShortTask.GetInt(), TaskerLongTask.GetInt()));
+        taskData.Add(RoleId.HamburgerShop, (HamburgerShopCommonTask.GetInt(), HamburgerShopShortTask.GetInt(), HamburgerShopLongTask.GetInt()));
+        taskData.Add(RoleId.Safecracker, (Safecracker.SafecrackerCommonTask.GetInt(), Safecracker.SafecrackerShortTask.GetInt(), Safecracker.SafecrackerLongTask.GetInt()));
 
         //テンプレート
-        //taskData.Add(RoleId, (CommonTask.GetInt(), LongTask.GetInt(), ShortTask.GetInt()));
+        //taskData.Add(RoleId, (CommonTask.GetInt(), ShortTask.GetInt(), LongTask.GetInt()));
 
         if (taskData.ContainsKey(p.GetRole())) // pの役職がDictionaryにあるか
         {
