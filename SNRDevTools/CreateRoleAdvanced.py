@@ -86,15 +86,15 @@ class ReturnClass:
     # イントロのサウンド取得
     def GetIntroSoundType(self):
         if (MainClass.GetBool("CrewIntroSound")):
-            return "Crewmate"
+            return ""
         elif (MainClass.GetBool("EngineerIntroSound")):
-            return "Engineer"
+            return ", IntroSound : RoleTypes.Engineer"
         elif (MainClass.GetBool("ScientistIntroSound")):
-            return "Scientist"
+            return ", IntroSound : RoleTypes.Scientist"
         elif (MainClass.GetBool("ImpoIntroSound")):
-            return "Impostor"
+            return ", IntroSound : RoleTypes.Impostor"
         elif (MainClass.GetBool("ShapeIntroSound")):
-            return "Shapeshifter"
+            return ", IntroSound : RoleTypes.Shapeshifter"
 
     # チーム取得
 
@@ -305,13 +305,13 @@ namespace SuperNewRoles.Roles."""+namedata+"""
 
         # Intro/IntroData.cs
         if (MainClass.GetBool("Impo")):
-            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Impostor, IntroSound : RoleTypes.ROLETYPE);
+            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.ImpostorROLETYPE);
         //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("ROLETYPE", MainClass.GetIntroSoundType()))
         elif (MainClass.GetBool("Crew")):
-            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate, IntroSound : RoleTypes.ROLETYPE);
+            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.CrewmateROLETYPE);
         //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("ROLETYPE", MainClass.GetIntroSoundType()))
         elif (MainClass.GetBool("Neut")):
-            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Neutral, IntroSound : RoleTypes.ROLETYPE);
+            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.NeutralROLETYPE);
         //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("ROLETYPE", MainClass.GetIntroSoundType()))
             '''MainClass.WriteCodes("Modules/IntroData.cs", "//イントロ検知","""case (RoleId.ROLENAME):
                     return ROLENAMEIntro;
