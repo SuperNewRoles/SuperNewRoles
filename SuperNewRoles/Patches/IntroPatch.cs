@@ -451,6 +451,9 @@ public class IntroPatch
                 __instance.ourCrewmate.transform.localPosition = new Vector3(0f, -1.05f, -18f);
                 __instance.ourCrewmate.transform.localScale = new Vector3(1f, 1f, 1f);
 
+                //サウンド再生
+                IntroData.PlayIntroSound(myrole);
+
                 //字幕やプレイヤーを再表示する(Prefixで消している)
                 __instance.ourCrewmate.gameObject.SetActive(true);
                 __instance.YouAreText.gameObject.SetActive(true);
