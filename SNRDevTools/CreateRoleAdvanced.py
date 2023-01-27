@@ -82,6 +82,20 @@ class ReturnClass:
         return RGB
         print(RGB.strip())
         return RGB.strip()
+
+    # イントロのサウンド取得
+    def GetIntroSoundType(self):
+        if (MainClass.GetBool("CrewIntroSound")):
+            return "Crewmate"
+        elif (MainClass.GetBool("EngineerIntroSound")):
+            return "Engineer"
+        elif (MainClass.GetBool("ScientistIntroSound")):
+            return "Scientist"
+        elif (MainClass.GetBool("ImpoIntroSound")):
+            return "Impostor"
+        elif (MainClass.GetBool("ShapeIntroSound")):
+            return "Shapeshifter"
+
     # チーム取得
 
     def GetTeam(self):
@@ -291,14 +305,14 @@ namespace SuperNewRoles.Roles."""+namedata+"""
 
         # Intro/IntroData.cs
         if (MainClass.GetBool("Impo")):
-            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Impostor);
-        //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Impostor, IntroSound : RoleTypes.ROLETYPE);
+        //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("ROLETYPE", MainClass.GetIntroSoundType()))
         elif (MainClass.GetBool("Crew")):
-            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate);
-        //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate, IntroSound : RoleTypes.ROLETYPE);
+        //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("ROLETYPE", MainClass.GetIntroSoundType()))
         elif (MainClass.GetBool("Neut")):
-            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Neutral);
-        //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+            MainClass.WriteCodes("Modules/IntroData.cs", "//イントロオブジェ", """public static IntroData ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Neutral, IntroSound : RoleTypes.ROLETYPE);
+        //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("ROLETYPE", MainClass.GetIntroSoundType()))
             '''MainClass.WriteCodes("Modules/IntroData.cs", "//イントロ検知","""case (RoleId.ROLENAME):
                     return ROLENAMEIntro;
                 //イントロ検知""".replace("ROLENAME",MainClass.GetInput("RoleName")))'''  # ⇐なにこれ？
@@ -457,6 +471,8 @@ MainTab = psg.Tab("メイン", [
         30, 2), default_value=MainClass.GetConfig("MainDefaultSetting", "Intro"))],
     [psg.Text("陣営:    ", key="TeamText"), psg.Radio("インポ陣営", "TeamName", key="Impo", default=True),
      psg.Radio("クルー陣営", "TeamName", key="Crew"), psg.Radio("第三陣営", "TeamName", key="Neut")],
+    [psg.Text("イントロ音声:", key="IntroSoundText"), psg.Radio("クルー", "IntroSound", key="CrewIntroSound", default=True), psg.Radio("エンジニア", "IntroSound", key="EngineerIntroSound", default=False), psg.Radio("科学者", "IntroSound", key="ScientistIntroSound", default=False),
+     psg.Radio("インポ", "IntroSound", key="ImpoIntroSound", default=False), psg.Radio("シェイプ", "IntroSound", key="ShapeIntroSound", default=False)],
     [psg.Radio("重複陣営(ペア)", group_id="TeamName", key="TeamTwo"), psg.Radio(
         "重複陣営(個人)", group_id="TeamName", key="TeamOne"), psg.Radio("幽霊役職", group_id="TeamName", key="TeamGhost")],
     [psg.Text("役職カラー:", key="ColorText"), psg.Radio("インポ色", "RoleColor", key="ImpoColor", default=True), psg.Radio(
