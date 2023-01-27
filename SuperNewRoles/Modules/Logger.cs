@@ -92,11 +92,12 @@ class Logger
         // ファイル名に使用する変数作成
         string date = DateTime.Now.ToString("yyMMdd_HHmmss");
         string splicingBranch = ReplaceUnusableStringsAsFileNames(ThisAssembly.Git.Branch);
-        string Version = SuperNewRolesPlugin.VersionString.Replace(".", "");
+        string version = SuperNewRolesPlugin.VersionString.Replace(".", "");
+        version = ReplaceUnusableStringsAsFileNames(version);
         string splicingMemo = ReplaceUnusableStringsAsFileNames(memo);
 
         // ファイル名作成
-        string fileName = $"{date}_SNR_v{Version}_{splicingBranch}_{splicingMemo}.log";
+        string fileName = $"{date}_SNR_v{version}_{splicingBranch}_{splicingMemo}.log";
 
         // 出力先のパス作成
         string folderPath = Path.GetDirectoryName(UnityEngine.Application.dataPath) + @"\SuperNewRoles\SaveLogFolder\";
@@ -125,6 +126,7 @@ class Logger
         string fileName = strings;
         foreach (var invalid in invalidChars)
             fileName = fileName.Replace($"{invalid}", "_");
+        fileName = fileName.Replace($".", "_");
         return fileName;
     }
 }
