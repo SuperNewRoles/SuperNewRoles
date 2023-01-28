@@ -1337,9 +1337,18 @@ public static class RPCProcedure
             }
             return true;
         }
+
+        /// <summary>
+        /// LOGに記載しないRPCを設定する
+        /// </summary>
+        /// <returns>falseで記載するとRPCをlogに記載しなくなる。</returns>
+        private static readonly Dictionary<CustomRPC, bool> IsWritingRPCLog = new() {
+            {CustomRPC.ShareSNRVersion,false},
+        };
+
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
         {
-            Logger.Info(ModHelpers.GetRPCNameFromByte(callId), "RPC");
+            if (!IsWritingRPCLog.ContainsKey((CustomRPC)callId)) Logger.Info(ModHelpers.GetRPCNameFromByte(callId), "RPC");
             try
             {
                 byte packetId = callId;
