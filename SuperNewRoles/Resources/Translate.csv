@@ -1191,7 +1191,8 @@ SafecrackerCheckImpostorTaskSetting,Amount of tasks that will allow you to check
 SafecrackerChangeTaskPrefabSetting,Replace all tasks with unlock safe tasks,全タスクを金庫タスクに置き換える
 DyingMessengerName,Dying Messenger,遺言伝達者
 DyingMessengerTitle1,Will and testament， we will tell you.,遺言、お伝え致します
-DyingMessengerGetRoleTimeSetting,Time to read the roll of the killers from the corpse,死体からキル者のロールを読み取れる時間
+DyingMessengerDescription,When you are able to report a kill within a certain amount of time after the kill.\nYou can get the information of the killers of the dead body you reported.\nGet the information and contribute to the victory of the crew's camp.,キルされてから一定時間内で通報できた時に、\n通報した死体のキル者の情報を取得することが出来ます。\n情報を取得し、クルー陣営の勝利に貢献しましょう。
+DyingMessengerGetRoleTimeSetting,Time to read the roll of the killers from the corpse,死体からキル者の役職を読み取れる時間
 DyingMessengerGetLightAndDarkerTimeSetting,Time to read the light and darker colors of the kill from the corpse,死体からキル者の色の明暗を読み取れる時間
 DyingMessengerGetRoleText,The role of the person who killed {0} was {1}.,{0}をキルした人の役職は{1}でした。
 DyingMessengerGetLightAndDarkerText,The light and darker of the person who killed {0} were {1}.,{0}をキルした人の明暗は{1}色でした。

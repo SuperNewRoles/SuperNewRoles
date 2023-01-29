@@ -166,6 +166,7 @@ It is already on the Discord server.
 |                                         | [GhostMechanic](#GhostMechanic)           |
 |                                         | [ToiletFan](#ToiletFan)                   |
 |                                         | [Knight](#Knight)                         |
+|                                         | [Dying Messenger](#DyingMessenger)        |
 
 # Position Details 
 ## Attention. 
@@ -1550,6 +1551,22 @@ If the protection is successful, a successful protection announcement will be pl
 | Long Tasks | You can set the number of long tasks before the Impostor can be checked. |
 | Short Tasks | You can set the number of short tasks before the Impostor can be checked. |
 | Replace all tasks with unlock safe tasks | You can set whether the task itself will be replaced by opening the vault. |
+---
+## DyingMessenger
+### Team Crew
+#### Intro
+- Will and testament， we will tell you.
+#### Description
+- When you are able to report a kill within a certain amount of time after the kill.<br>You can get the information of the killers of the dead body you reported.<br>Get the information and contribute to the victory of the crew's camp.
+#### Ability
+- When a person is killed and is able to report it within a certain amount of time, you can get the information of the killers of the body that reported it.
+- The acquired information is sent to only you via chat.
+- The information that can be retrieved is the "Killer's role" and the "Killer's light and darker".
+### Game Settings
+| Name | Description |
+| ---- | :---------: |
+| Time to read the roll of the killers from the corpse | You can set a time limit for getting the killers' role from the corpse. |
+| Time to read the light and darker colors of the kill from the corpse| You can set a time limit for getting the killers' light and darker from the corpse. |
 ---
 ## Quarreled
 ### overlapping camps 
