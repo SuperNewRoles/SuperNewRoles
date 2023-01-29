@@ -1438,6 +1438,7 @@ public static class RoleClass
             IsUseVent = CustomOptionHolder.MadJesterIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadJesterIsImpostorLight.GetBool();
             IsMadJesterTaskClearWin = CustomOptionHolder.IsMadJesterTaskClearWin.GetBool();
+            IsImpostorCheck = CustomOptionHolder.MadJesterIsCheckImpostor.GetBool();
             int Common = CustomOptionHolder.MadJesterCommonTask.GetInt();
             int Long = CustomOptionHolder.MadJesterLongTask.GetInt();
             int Short = CustomOptionHolder.MadJesterShortTask.GetInt();
@@ -1448,6 +1449,7 @@ public static class RoleClass
                 Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
                 Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
+            ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MadJesterCheckImpostorTask.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class FalseCharges
