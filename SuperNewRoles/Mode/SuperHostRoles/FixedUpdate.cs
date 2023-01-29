@@ -109,7 +109,7 @@ public static class FixedUpdate
 
         if (Madmate.CheckImpostor(player) ||
             MadMayor.CheckImpostor(player) ||
-            player.IsRole(RoleId.Marine) ||
+            player.IsRole(RoleId.Marlin) ||
             BlackCat.CheckImpostor(player))
         {
             foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)

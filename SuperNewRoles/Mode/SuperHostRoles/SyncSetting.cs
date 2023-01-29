@@ -52,12 +52,6 @@ public static class SyncSetting
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.Samurai.SwordCoolTime);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, RoleClass.Samurai.SwordCoolTime);
                 break;
-            case RoleId.God:
-                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.God.IsVoteView);
-                break;
-            case RoleId.Observer:
-                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Observer.IsVoteView);
-                break;
             case RoleId.MadMaker:
                 if (!player.IsMod())
                 {
@@ -203,8 +197,7 @@ public static class SyncSetting
                 if (RoleClass.Camouflager.IsCamouflage)
                 {
                     optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown,
-                            RoleClass.Camouflager.CoolTime >= 5f ? (RoleClass.Camouflager.CoolTime + RoleClass.Camouflager.DurationTime - 2f)
-                                                                 : (3f + RoleClass.Camouflager.DurationTime));
+                            RoleClass.Camouflager.CoolTime >= 5f ? (RoleClass.Camouflager.CoolTime + RoleClass.Camouflager.DurationTime - 2f) : (3f + RoleClass.Camouflager.DurationTime));
                 }
                 break;
             case RoleId.EvilSeer:
@@ -212,7 +205,6 @@ public static class SyncSetting
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
         }
-        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         optdata.RpcSyncOption(player.GetClientId());
@@ -241,8 +233,19 @@ public static class SyncSetting
             default:
                 return;
         }
-        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
+        if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
+        optdata.RpcSyncOption(player.GetClientId());
+    }
+
+    public static void MeetingSyncSettings(this PlayerControl player)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        var role = player.GetRole();
+        var optdata = OptionData.DeepCopy();
+
+        optdata.SetBool(BoolOptionNames.AnonymousVotes, OpenVotes.VoteSyncSetting(player));
+        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         optdata.RpcSyncOption(player.GetClientId());
     }
@@ -286,6 +289,21 @@ public static class SyncSetting
             }
         }
     }
+
+    /// <summary>
+    /// 開票処理をゲストに送信する準備
+    /// </summary>
+    public static void MeetingSyncSettings()
+    {
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        {
+            if (!p.Data.Disconnected && !p.IsBot())
+            {
+                MeetingSyncSettings(p);
+            }
+        }
+    }
+
     public static IGameOptions DeepCopy(this IGameOptions opt)
     {
         var optByte = GameOptionsManager.Instance.gameOptionsFactory.ToBytes(opt);

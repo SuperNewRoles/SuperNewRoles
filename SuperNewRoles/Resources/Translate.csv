@@ -205,7 +205,8 @@ RestrictDevicesOption,Restrict Devices Option,機器の時間制限,飞船设备
 RestrictAdmin,Restrict Admin,アドミンの時間制限,管理师地图使用时间限制
 RestrictVital,Restrict Vital,バイタルの時間制限,生命监测装置使用时间限制
 RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
-CanGhostSeeRole,,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业
+CanGhostSeeRole,After death，everyone's role can be confirmed.,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业
+CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业
 OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる,只有死亡的内鬼阵营玩家可以确认所有玩家的职业
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配
@@ -831,16 +832,16 @@ JackalSeerDescription,,死亡時刻や死亡場所を把握する事が可能な
 SidekickSeerName,Sidekick(Seer),サイドキック(シーア),狼族灵媒学徒
 SidekickSeerTitle1,Let's help Jackal with the dead detection ability that we got,貰った死者感知能力でジャッカルを助けよう,用死亡感知能力来帮助豺狼
 SidekickSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて、親ジャッカルを守り、時には切り、貢献しましょう。
-AssassinAndMarineName,<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>,<color=#ff0000>アサシン</color>と<color=#AFDFE4>マーリン</color>,<color=#ff0000>阿</color>瓦<color=#AFDFE4>隆</color>
+AssassinAndMarlinName,<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>,<color=#ff0000>アサシン</color>と<color=#AFDFE4>マーリン</color>,<color=#ff0000>阿</color>瓦<color=#AFDFE4>隆</color>
 AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=#ff0000>アサシン</color>の人数,<color=#ff0000>刺客</color>的人数
-MarineSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数
+MarlinSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数
 AssassinName,Assassin,アサシン,刺客
 AssassinTitle1,<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!,<color=#AFDFE4>マーリン</color>を当てて逆転勝利しよう,找出<color=#AFDFE4>梅林</color>来获得胜利
-AssassinSucsess,was marine.,はマーリンだった,是梅林
-AssassinFail,was not marine.,はマーリンではなかった,不是梅林
-MarineName,Merine,マーリン,梅林
-MarineTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。,不要被<color=#ff0000>刺客</color>发现。
-MarineWhois,Who is Merine?,マーリンは誰だ？,谁是梅林？
+AssassinSucsess,was Marlin.,はマーリンだった,是梅林
+AssassinFail,was not Marlin.,はマーリンではなかった,不是梅林
+MarlinName,Merine,マーリン,梅林
+MarlinTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。,不要被<color=#ff0000>刺客</color>发现。
+MarlinWhois,Who is Merine?,マーリンは誰だ？,谁是梅林？
 ArsonistName,Arsonist,アーソニスト,纵火犯
 ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ,燃烧吧
 ArsonistDurationTimeSetting,Douse Duration,塗り時間,纵火犯涂油所需时间

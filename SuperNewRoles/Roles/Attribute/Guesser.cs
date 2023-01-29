@@ -182,7 +182,7 @@ class Guesser
         if (CustomOptionHolder.JackalSeerOption.GetSelection() is not 0 && CustomOptionHolder.JackalSeerCreateSidekick.GetBool()) CreateRole(IntroData.SidekickSeerIntro);
         if (CustomOptionHolder.PavlovsownerOption.GetSelection() is not 0) CreateRole(IntroData.PavlovsdogsIntro);
         if (CustomOptionHolder.RevolutionistAndDictatorOption.GetSelection() is not 0) { CreateRole(IntroData.DictatorIntro); CreateRole(IntroData.RevolutionistIntro); }
-        if (CustomOptionHolder.AssassinAndMarineOption.GetSelection() is not 0) { CreateRole(IntroData.AssassinIntro); CreateRole(IntroData.MarineIntro); }
+        if (CustomOptionHolder.AssassinAndMarlinOption.GetSelection() is not 0) { CreateRole(IntroData.AssassinIntro); CreateRole(IntroData.MarlinIntro); }
         void CreateRole(IntroData roleInfo)
         {
             if (40 <= i[(int)roleInfo.Team]) i[(int)roleInfo.Team] = 0;
