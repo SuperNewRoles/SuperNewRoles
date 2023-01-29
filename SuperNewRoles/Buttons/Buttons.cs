@@ -1896,8 +1896,9 @@ static class HudManagerStartPatch
             () =>
             {
                 Vulture.RpcCleanDeadBody(RoleClass.Vulture.DeadBodyCount);
+                RoleClass.Vulture.DeadBodyCount--;
 
-                if (RoleClass.Vulture.DeadBodyCount < 0)
+                if (RoleClass.Vulture.DeadBodyCount <= 0)
                 {
                     RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
@@ -1915,6 +1916,7 @@ static class HudManagerStartPatch
                         AmongUsClient.Instance.FinishRpcImmediately(writer2);
                     }
                 }
+                Vulture.ResetCoolDown();
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Vulture; },
             () =>
@@ -1923,8 +1925,7 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                VultureButton.MaxTimer = RoleClass.Vulture.CoolTime;
-                VultureButton.Timer = RoleClass.Vulture.CoolTime;
+                Vulture.EndMeeting();
             },
             RoleClass.Vulture.GetButtonSprite(),
             new Vector3(-2f, 1, 0),

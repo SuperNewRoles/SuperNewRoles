@@ -1,4 +1,5 @@
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.Buttons;
 using UnityEngine;
 using Hazel;
 
@@ -70,5 +71,16 @@ public class Vulture
                 }
             }
         }
+    }
+
+    public static void EndMeeting()
+    {
+        ResetCoolDown();
+    }
+
+    public static void ResetCoolDown()
+    {
+        HudManagerStartPatch.VultureButton.MaxTimer = RoleClass.Vulture.CoolTime;
+        HudManagerStartPatch.VultureButton.Timer = RoleClass.Vulture.CoolTime;
     }
 }
