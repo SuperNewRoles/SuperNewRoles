@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
@@ -1922,6 +1923,8 @@ public class CustomOptionHolder
         JumboWalkSoundSize = Create(1142, false, CustomOptionType.Neutral, "JumboWalkSoundSize", rates, JumboOption);
 
         Safecracker.SetupCustomOptions();
+
+        DyingMessenger.SetupCustomOptions();
 
         //表示設定
 

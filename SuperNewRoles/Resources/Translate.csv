@@ -100,6 +100,8 @@ colorTokiwaGreen,TokiwaGreen,常磐緑,常青绿
 colorPosi,Posi,ポジ,正片滤镜
 colorXmasRed,X'masRed,クリスマスレッド
 colorXmasGreen,X'masGreen,クリスマスグリーン
+LightColor,bright,明るい
+DarkerColor,darker,暗い
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -1187,9 +1189,16 @@ SafecrackerUseSaboTaskSetting,Amount of tasks for which sabotage will be availab
 SafecrackerIsImpostorLightTaskSetting,Amount of tasks for become an Imposter's field of view (of all tasks),インポスターの視界になるタスク量(全タスク内)
 SafecrackerCheckImpostorTaskSetting,Amount of tasks that will allow you to check the Imposter (of all tasks),インポスターを確認できるようになるタスク量(全タスク内)
 SafecrackerChangeTaskPrefabSetting,Replace all tasks with unlock safe tasks,全タスクを金庫タスクに置き換える
+DyingMessengerName,Dying Messenger,遺言伝達者
+DyingMessengerTitle1,Will and testament， we will tell you.,遺言、お伝え致します
+DyingMessengerGetRoleTimeSetting,Time to read the roll of the killers from the corpse,死体からキル者のロールを読み取れる時間
+DyingMessengerGetLightAndDarkerTimeSetting,Time to read the light and darker colors of the kill from the corpse,死体からキル者の色の明暗を読み取れる時間
+DyingMessengerGetRoleText,The role of the person who killed {0} was {1}.,{0}をキルした人の役職は{1}でした。
+DyingMessengerGetLightAndDarkerText,The light and darker of the person who killed {0} were {1}.,{0}をキルした人の明暗は{1}色でした。
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示
+IsLightAndDarker,Show light and darker,明暗を表示する
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！

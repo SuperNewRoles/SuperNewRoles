@@ -180,6 +180,7 @@ public enum RoleId
     Jumbo,
     Worshiper,
     Safecracker,
+    DyingMessenger,
     //RoleId
 }
 
@@ -269,10 +270,20 @@ public enum CustomRPC
     SetDeviceUseStatus,
     SetLoversBreakerWinner,
     SafecrackerGuardCount,
+    Chat,
 }
 
 public static class RPCProcedure
 {
+    public static void Chat(byte id, string text)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        bool isAlive = player.IsAlive();
+        player.Data.IsDead = false;
+        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, text);
+        player.Data.IsDead = isAlive;
+    }
     public static void SafecrackerGuardCount(byte id, bool isKillGuard)
     {
         PlayerControl player = ModHelpers.PlayerById(id);
@@ -1642,6 +1653,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SafecrackerGuardCount:
                         SafecrackerGuardCount(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case CustomRPC.Chat:
+                        Chat(reader.ReadByte(), reader.ReadString());
                         break;
                 }
             }
