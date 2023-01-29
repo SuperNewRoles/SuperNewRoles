@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -239,6 +240,14 @@ class ShapeshifterMinigameBeginPatch
 {
     public static void Postfix(ShapeshifterMinigame __instance, PlayerTask task)
     {
+        //** Debuggerの処理 **//
+        if (RoleClass.Debugger.AmDebugger)
+        {
+            SuperNewRoles.Roles.Attribute.Debugger.CreateDebugMenu(__instance);
+        }
+
+        //デバッガー + GMだと問題起こりそうですがそうそうないと思うのでﾖｼｯ!
+        //** GMの処理 **//
         if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
         {
             static void NewTask(ShapeshifterMinigame __instance)
