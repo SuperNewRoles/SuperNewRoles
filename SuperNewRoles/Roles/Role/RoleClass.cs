@@ -218,7 +218,7 @@ public static class RoleClass
 
         public static void ClearAndReload()
         {
-            AmDebugger = AmongUsClient.Instance.AmHost && CustomOptionHolder.DebuggerOption.GetBool();
+            AmDebugger = AmongUsClient.Instance.AmHost && ConfigRoles.DebugMode.Value && CustomOptionHolder.DebuggerOption.GetBool();
         }
     }
 
