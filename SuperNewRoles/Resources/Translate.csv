@@ -1194,8 +1194,10 @@ DyingMessengerTitle1,Will and testament， we will tell you.,遺言、お伝え�
 DyingMessengerDescription,When you are able to report a kill within a certain amount of time after the kill.\nYou can get the information of the killers of the dead body you reported.\nGet the information and contribute to the victory of the crew's camp.,キルされてから一定時間内で通報できた時に、\n通報した死体のキル者の情報を取得することが出来ます。\n情報を取得し、クルー陣営の勝利に貢献しましょう。
 DyingMessengerGetRoleTimeSetting,Time to read the roll of the killers from the corpse,死体からキル者の役職を読み取れる時間
 DyingMessengerGetLightAndDarkerTimeSetting,Time to read the light and darker colors of the kill from the corpse,死体からキル者の色の明暗を読み取れる時間
+DyingMessengerFirstPerson1,me,私
+DyingMessengerFirstPerson2,me,僕
 DyingMessengerGetRoleText,The role of the person who killed {0} was {1}.,{0}をキルした人の役職は{1}でした。
-DyingMessengerGetLightAndDarkerText,The light and darker of the person who killed {0} were {1}.,{0}をキルした人の明暗は{1}色でした。
+DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}をキルした人の色は{1}色でした。
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

@@ -1192,23 +1192,29 @@ class ReportDeadBodyPatch
             {
                 bool isGetRole = (float)(DyingMessenger.KillTime[target.PlayerId].Item1 + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetRoleTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
                 bool isGetLightAndDarker = (float)(DyingMessenger.KillTime[target.PlayerId].Item1 + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetLightAndDarkerTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
-                bool isFirstPerson = IsSucsessChance(9);
+                string firstPerson = IsSucsessChance(9) ? ModTranslation.GetString("DyingMessengerFirstPerson1") : ModTranslation.GetString("DyingMessengerFirstPerson2");
                 if (isGetRole)
                 {
-                    string text = string.Format(ModTranslation.GetString("DyingMessengerGetRoleText"), isFirstPerson ? "私" : "僕", ModTranslation.GetString($"{DyingMessenger.KillTime[target.PlayerId].Item2.GetRole()}Name"));
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Chat, __instance);
-                    writer.Write(target.PlayerId);
-                    writer.Write(text);
-                    writer.EndRPC();
+                    string text = string.Format(ModTranslation.GetString("DyingMessengerGetRoleText"), firstPerson, ModTranslation.GetString($"{DyingMessenger.KillTime[target.PlayerId].Item2.GetRole()}Name"));
+                    new LateTask(() =>
+                    {
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Chat, __instance);
+                        writer.Write(target.PlayerId);
+                        writer.Write(text);
+                        writer.EndRPC();
+                    }, 0.5f, "DyingMessengerText");
                 }
                 if (isGetLightAndDarker)
                 {
-                    string text = string.Format(ModTranslation.GetString("DyingMessengerGetLightAndDarkerText"), isFirstPerson ? "私" : "僕",
+                    string text = string.Format(ModTranslation.GetString("DyingMessengerGetLightAndDarkerText"), firstPerson,
                         CustomColors.lighterColors.Contains(DyingMessenger.KillTime[target.PlayerId].Item2.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"));
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Chat, __instance);
-                    writer.Write(target.PlayerId);
-                    writer.Write(text);
-                    writer.EndRPC();
+                    new LateTask(() =>
+                    {
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Chat, __instance);
+                        writer.Write(target.PlayerId);
+                        writer.Write(text);
+                        writer.EndRPC();
+                    }, 0.5f, "DyingMessengerText");
                 }
             }
         }
