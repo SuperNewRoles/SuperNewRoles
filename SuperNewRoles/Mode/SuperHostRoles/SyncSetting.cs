@@ -245,7 +245,6 @@ public static class SyncSetting
         var optdata = OptionData.DeepCopy();
 
         optdata.SetBool(BoolOptionNames.AnonymousVotes, OpenVotes.VoteSyncSetting(player));
-        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         optdata.RpcSyncOption(player.GetClientId());
     }
