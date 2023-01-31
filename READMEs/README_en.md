@@ -140,8 +140,8 @@ It is already on the Discord server.
 | [EvilMoving](#EvilMoving)               | [NiceRedRidingHood](#NiceRedRidingHood)   | [Sidekick(Seer)](#SidekickSeer)         |
 | [Levelinger](#Levelinger)               | [Mayor](#Mayor)                           | [Arsonist](#Arsonist)                   |
 | [SideKiller](#SideKiller)               | [Technician](#Technician)                 | [Neet](#Neet)                           |
-| [Survivor](#Survivor)                   | [Diviner](#Diviner)                       | [Safecracker](#Safecracker)
-| [EvilSeer](#EvilSeer)                   | [Spirit Medium](#SpiritMedium)            |
+| [Survivor](#Survivor)                   | [Diviner](#Diviner)                       | [Safecracker](#Safecracker)             |
+| [EvilSeer](#EvilSeer)                   | [Spirit Medium](#SpiritMedium)            | [Fire Fox](#FireFox)
 | [DarkKiller](#DarkKiller)               | [MadMayor](#MadMayor)                     |
 | [Vampire](#Vampire)                     | [NiceHawk](#NiceHawk)                     |
 | [AssassinAndMarine](#AssassinAndMarine) | [MadStuntman](#MadStuntman)               |
@@ -1551,6 +1551,30 @@ If the protection is successful, a successful protection announcement will be pl
 | Long Tasks | You can set the number of long tasks before the Impostor can be checked. |
 | Short Tasks | You can set the number of short tasks before the Impostor can be checked. |
 | Replace all tasks with unlock safe tasks | You can set whether the task itself will be replaced by opening the vault. |
+---
+## FireFox
+### Team Third
+#### Intro
+- I am Fire Fox!
+#### Description
+- It is a Fox that has been given a kill button instead of a kill guard.<br>The number of kills is limited and only certain camps can be killed.<br>If you press the kill button for a player who is not in the killable camp, your kill count will decrease without a kill.<br>Think about who to kill and contribute to the Fox's victory.
+#### Ability
+- It has a kill button and can kill for a specific number of times.
+- Each kill reduces the number of kills.
+- Not kill except for certain camps.
+### Game Settings
+| Name | Description |
+| ---- | :---------: |
+| Maximum number of kills | You can set the number of kills a fire fox can make. |
+| Kill Cooldown | Individual kill cooldown time can be set. |
+| Can kill the crewmate camp | You can set whether you can kill the crewmate camp. |
+| Can kill the imposter camp | You can set whether you can kill the imposter camp. |
+| Can kill the third camp | You can set whether you can kill the third camp. |
+| Can kill the lovers | You can set whether you can kill lovers. |
+| You can check the fox | You can set whether you can see the fox. |
+| Use Vent | You will be able to put in a vent. |
+| Impostor Light | You can set whether the view will be the same as the Impostor's view. |
+| Use DeadBody Report | Off to disable reporting. |
 ---
 ## DyingMessenger
 ### Team Crew

@@ -342,7 +342,7 @@ public class SetNameUpdate
     {
         SetNamesClass.ResetNameTagsAndColors();
         RoleId LocalRole = PlayerControl.LocalPlayer.GetRole();
-        if (PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor()) && LocalRole != RoleId.NiceRedRidingHood)
+        if ((PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor()) && LocalRole != RoleId.NiceRedRidingHood) || Roles.Attribute.Debugger.canSeeRole)
         {
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
@@ -437,6 +437,19 @@ public class SetNameUpdate
                     else
                     {
                         SetNamesClass.SetPlayerNameText(RoleClass.PartTimer.CurrentTarget, RoleClass.PartTimer.CurrentTarget.NameText().text + ModHelpers.Cs(RoleClass.PartTimer.color, "◀"));
+                    }
+                }
+            }
+            else if (LocalRole is RoleId.Fox or RoleId.FireFox)
+            {
+                List<PlayerControl> foxs = new(RoleClass.Fox.FoxPlayer);
+                foxs.AddRange(FireFox.FireFoxPlayer);
+                foreach (PlayerControl p in foxs)
+                {
+                    if (p.IsRole(PlayerControl.LocalPlayer.GetRole()) || FireFox.FireFoxIsCheckFox.GetBool())
+                    {
+                        SetNamesClass.SetPlayerRoleNames(p);
+                        SetNamesClass.SetPlayerNameColors(p);
                     }
                 }
             }

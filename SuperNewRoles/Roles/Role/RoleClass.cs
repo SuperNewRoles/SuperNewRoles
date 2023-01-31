@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ public static class RoleClass
     public static Color FoxPurple = Palette.Purple;
     public static bool IsStart;
     public static List<byte> BlockPlayers;
+    public static float DefaultKillCoolDown;
 
     public static void ClearAndReloadRoles()
     {
@@ -38,6 +40,7 @@ public static class RoleClass
         LateTask.AddTasks = new();
         BotManager.AllBots = new();
         IsCoolTimeSetted = false;
+        DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
         Agartha.MapData.ClearAndReloads();
         LadderDead.Reset();
@@ -53,6 +56,8 @@ public static class RoleClass
         MapCustoms.SpecimenVital.ClearAndReload();
         MapCustoms.MoveElecPad.ClearAndReload();
         Beacon.ClearBeacons();
+
+        Debugger.ClearAndReload();
         SoothSayer.ClearAndReload();
         Jester.ClearAndReload();
         Lighter.ClearAndReload();
@@ -187,7 +192,7 @@ public static class RoleClass
         WaveCannon.ClearAndReload();
         Doppelganger.ClearAndReload();
         Werewolf.ClearAndReload();
-        Crewmate.Knight.ClearAndReload();
+        Knight.ClearAndReload();
         Pavlovsdogs.ClearAndReload();
         Pavlovsowner.ClearAndReload();
         WaveCannonJackal.ClearAndReload();
@@ -201,6 +206,7 @@ public static class RoleClass
         Jumbo.ClearAndReload();
         Impostor.MadRole.Worshiper.ClearAndReload();
         Safecracker.ClearAndReload();
+        FireFox.ClearAndReload();
         DyingMessenger.ClearAndReload();
         //ロールクリア
         Quarreled.ClearAndReload();
@@ -208,6 +214,19 @@ public static class RoleClass
         MapOption.MapOption.ClearAndReload();
         ChacheManager.Load();
     }
+
+    public static class Debugger
+    {
+        public static bool AmDebugger;
+        public static Color32 color = Palette.DisabledGrey;
+        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
+
+        public static void ClearAndReload()
+        {
+            AmDebugger = AmongUsClient.Instance.AmHost && ConfigRoles.DebugMode.Value && CustomOptionHolder.DebuggerOption.GetBool();
+        }
+    }
+
     public static class SoothSayer
     {
         public static List<PlayerControl> SoothSayerPlayer;
@@ -1424,6 +1443,7 @@ public static class RoleClass
             IsUseVent = CustomOptionHolder.MadJesterIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadJesterIsImpostorLight.GetBool();
             IsMadJesterTaskClearWin = CustomOptionHolder.IsMadJesterTaskClearWin.GetBool();
+            IsImpostorCheck = CustomOptionHolder.MadJesterIsCheckImpostor.GetBool();
             int Common = CustomOptionHolder.MadJesterCommonTask.GetInt();
             int Long = CustomOptionHolder.MadJesterLongTask.GetInt();
             int Short = CustomOptionHolder.MadJesterShortTask.GetInt();
@@ -1434,6 +1454,7 @@ public static class RoleClass
                 Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
                 Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
+            ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MadJesterCheckImpostorTask.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class FalseCharges
@@ -1479,11 +1500,13 @@ public static class RoleClass
         public static Color32 color = Color.yellow;
         public static bool ChangeRoleView;
         public static List<PlayerControl> ViewPlayers;
+        public static float FlashTime;
         public static void ClearAndReload()
         {
             CelebrityPlayer = new();
             ChangeRoleView = CustomOptionHolder.CelebrityChangeRoleView.GetBool();
             ViewPlayers = new();
+            FlashTime = DefaultKillCoolDown >= 5 ? DefaultKillCoolDown * 1000 : 5000;
         }
     }
     public static class Nocturnality
@@ -2348,6 +2371,7 @@ public static class RoleClass
         public static Color32 color = ImpostorRed;
         public static int CheckMadmateKillCount;
         public static int KillCount;
+        public static Dictionary<byte, int> KillCounts;
         public static bool IsCheck
         {
             get
@@ -2360,6 +2384,7 @@ public static class RoleClass
             FinderPlayer = new();
             CheckMadmateKillCount = CustomOptionHolder.FinderCheckMadmateSetting.GetInt();
             KillCount = 0;
+            KillCounts = new();
         }
     }
     public static class Revolutionist

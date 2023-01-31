@@ -765,7 +765,7 @@ MadHawkName,MadHawk,マッドホーク,叛变的鹰眼
 MadHawkTitle1,See it all.,すべてを見渡そう,将一切尽收眼底
 MadJesterName,MadJester,マッドてるてる,傀儡小丑
 MadJesterTitle1,Get voted out and win with the Impostors!,投票で追放されてインポスターと勝利しよう,想办法被投出去，与内鬼一同获胜
-MadJesterDescription,It is a crewmate decision. but it is in the Impostor camp. \nThe impostor wins by being expelled at the meeting.,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。,傀儡小丑规则上属于船员阵营，但是其为内鬼的同伙。\n傀儡小丑在会议中被放逐则内鬼阵营获胜。
+MadJesterDescription,It is a crewmate decision. but it is in the Impostor camp. \nThe impostor wins by being expelled at the meeting.\nYou go for the gallows，climb up，tumbling down，tumbling down...\nFor I believe it will bring us glory...,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。\n貴方は絞首台をめざす、のぼる、おちる。\nそれが我らの栄光につながると信じて。
 FalseChargesName,FalseCharges,冤罪師,冤罪师
 FalseChargesTitle1,Let the false accusations win!,冤罪をさせて勝利しよう,栽赃他人获取胜利
 FalseChargesDescription,You can make the opponent who presses the button kill you. \nYou will win if the opponent you have killed is expelled by the conference.,ボタンを押した相手に自分をキルさせることができます。\nキルさせた相手が会議で追放されたら勝利できます、,冤罪师属于独立阵营。\n冤罪师的技能为可以让附近的其他玩家击杀自己。\n这个技能发动后的指定轮数之内，若击杀冤罪师的凶手被放逐，则冤罪师独自获胜。
@@ -777,8 +777,10 @@ NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてイン
 NiceTeleporterCooldownSetting,Teleport cooldown,テレポートのクールダウン,正义的传送师传送冷却
 CelebrityName,Celebrity,スター,大明星
 CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！,你的名字无人不知无人不晓！
-CelebrityDescription,You can tell from all of them that you are the star.,全員から自分がスターと分かります。,大明星属于船员阵营。\n所有其他玩家都能确认你是大明星。
+CelebrityDescription,You can tell from all of them that you are the star.\nThere is also a setting that shines each time kill cool time elapses.\nHis presence illuminates the surroundings and gives hope.\nThe people around him cling to that hope. \nWithout thinking of the consequences of believing in him...,全員から自分がスターと分かります。\nスター存在時キルクールタイムが経過するたびに輝く設定もあります。\n彼の存在は周囲を照らし希望を与える。\n周囲は縋るその希望に。\n信じた結果齎す事など考えもせず・・・
 CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる,因他人技能导致职业变更不会影响大明星的效果
+CelebrityIsTaskPhaseFlashSetting,During the task phase，does the screen light up every set number of seconds of kill time?,タスクフェイズ中、設定したキルクール秒数毎に画面を光らせるか。
+CelebrityIsFlashWhileAlivingOnly,Does the screen glow only while it is alive?(Meeting Update),画面が光るのは生きている間のみか(会議更新)。
 NocturnalityName,Nocturnality,夜行性,夜猫子
 NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている,昼伏夜出
 NocturnalityDescription,The view during power outage and normal view are opposite.,停電中と通常の視界が反対になっています。,夜猫子属于船员阵营。\n夜猫子的正常视野与熄灯时视野相反。
@@ -1170,6 +1172,22 @@ JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボにな
 JumboMaxSize,Maximum size,最大サイズ
 JumboSpeedUpSize,Growth speed,成長スピード
 JumboWalkSoundSize,Loudness of footsteps,足音の大きさ
+DebuggerName,Debugger,デバッガー
+DebuggerButtonName,Debug,デバッグ
+Functions,Functions,基本操作
+PlayerControl,Player control,プレイヤー操作
+StartMeeting,Start meeting,緊急会議
+ShowRole,Show role,役職を表示
+DeShowRole,Cancel show role,役職を非表示
+Teleport,Teleport,テレポート
+ReportDeadbody,Report deadbody,通報
+Exile,Exile,追放
+Kill,Kill,キル
+Revive,Revive,蘇生
+CleanDeadbody,Clean deadbody,死体掃除
+SetRole,Set role,役職付与
+Crewmate,Crewmate,クルーメイト
+Impostor,Impostor,インポスター
 WorshiperName,Worshiper,崇拝者
 WorshiperTitle1,If I can help them，I will spare my life.,あなた方の力になれるのなら 私の命など惜しくはない。
 WorshiperDescription,It has two self-determination abilities.\nIt commits suicide on the spot by using the Shapeshift when SHR and the [Suicide] ability when SNR.\nBy using the kill button，it commits suicide in the form of a sheriff misfire.\nAha，master. My will is yours and my life is for yours...\nCome，master. Let us fulfill that desire.,2つの自決能力を持ちます。\nSHR時はシェイプシフト、SNR時は[自決]能力を使用する事で、その場で自殺します。\nキルボタンを使用する事でシェリフ誤爆のような形で自殺します。\n嗚呼、ご主人。私の意思は貴方の物であり、私の命は貴方の為にあるのです・・・\nさあ、ご主人その願望をかなえましょう。
@@ -1189,6 +1207,14 @@ SafecrackerUseSaboTaskSetting,Amount of tasks for which sabotage will be availab
 SafecrackerIsImpostorLightTaskSetting,Amount of tasks for become an Imposter's field of view (of all tasks),インポスターの視界になるタスク量(全タスク内)
 SafecrackerCheckImpostorTaskSetting,Amount of tasks that will allow you to check the Imposter (of all tasks),インポスターを確認できるようになるタスク量(全タスク内)
 SafecrackerChangeTaskPrefabSetting,Replace all tasks with unlock safe tasks,全タスクを金庫タスクに置き換える
+FireFoxName,Fier Fox,炎狐
+FireFoxTitle1,I am Fier Fox!,私は炎狐です！
+FireFoxDescription,It is a Fox that has been given a kill button instead of a kill guard.\nThe number of kills is limited and only certain camps can be killed.\nIf you press the kill button for a player who is not in the killable camp， your kill count will decrease without a kill.\nThink about who to kill and contribute to the Fox's victory.,キルガードの代わりにキルボタンを与えられた妖狐です。\nキル回数は制限されており、特定の陣営のみキル可能です。\nキル可能陣営以外にキルボタンを押してしまうと、キルせずにキル回数のみ減ってしまいます。\n誰をキルするか考え、妖狐の勝利に貢献しましょう。
+FireFoxCanKillCrewmateSetting,Can kill the crewmate camp,クルーメイト陣営をキルできる
+FireFoxCanKillImpostorSetting,Can kill the imposter camp,インポスター陣営をキルできる
+FireFoxCanKillNeutralSetting,Can kill the third camp,第三陣営をキルできる
+FireFoxCanKillLoversSetting,Can kill the lovers,ラバーズをキルできる
+FireFoxIsCheckFoxSetting,You can check the fox,妖狐を視認できる
 DyingMessengerName,Dying Messenger,遺言伝達者
 DyingMessengerTitle1,Will and testament， we will tell you.,遺言、お伝え致します
 DyingMessengerDescription,When you are able to report a kill within a certain amount of time after the kill.\nYou can get the information of the killers of the dead body you reported.\nGet the information and contribute to the victory of the crew's camp.,キルされてから一定時間内で通報できた時に、\n通報した死体のキル者の情報を取得することが出来ます。\n情報を取得し、クルー陣営の勝利に貢献しましょう。
@@ -1222,6 +1248,7 @@ CommandsMessage6,/GetInRoles myplayer ([/gr mp] or [/gr myp]) : \nDisplays all a
 CommandsMessage7,/AllRoles (/ar) : \nDisplays all activate roles' description and settings.(Send to all player when you're hosts.)\nTransmitted at 1.5 second intervals.,/AllRoles (/ar) ： \n入っている全役職の説明と設定が確認できます。\n(ホストが実行すると全員に送信します)\n1.5秒間隔で送信されます。,/AllRoles (/ar) ： \n显示所有激活职业的职业描述和设置。\n(如果你是主持人将推送给房间内所有玩家)\n每1.5秒发送一个。
 CommandsMessage8,/AllRoles [transmission interval] (/ar [transmission interval]): \nAdditional transmission intervals can be specified for /AllRoles.,/AllRoles [送信間隔] (/ar [送信間隔]) ： \n/AllRolesに+で送信間隔を指定できます。,/AllRoles [发送间隔] (/ar [发送间隔]) ： \n你可以在/AllRoles后添加指定发送间隔时间
 CommandsMessage9,/AllRoles [send interval] myplayer (/ar [send interval] (mp or myp)): \nAdd to /AllRoles [send interval] and send only to yourself even if you are the host.,/AllRoles [送信間隔] myplayer (/ar [送信間隔] (mp もしくは myp)) ： \n/AllRoles [送信間隔]に+で、ホストでも自分のみに送信されます。,/AllRoles [发送间隔] myplayer (/ar [发送间隔] (mp 或者 myp)) ： \n你可以在/AllRoles [发送间隔]后添加指令发送，仅自己可见。
+CommandsMessage10,/SaveLog or /sl [string to be attached to file name]：\nSave logs up to the present time in SuperNewRoles/SaveLogFolder.\nYou can arbitrarily change a part of the file name.\nIt can be used even if the string part is not described (/sl，etc. by itself).,/SaveLog 又は /sl + [ファイル名につけたい文字列] ： \nSuperNewRoles/SaveLogFolderに現時点までのログを保存します。\nファイル名の一部を任意で変更できます。\n文字列部分を記載しなくとも(/sl等単体でも)使用可能です。
 SNROfficialDiscordMessage,Come here to visit the official SuperNewRoles Discord server.,SuperNewRoles公式Discordサーバーはこちらから:,SuperNewRoles官方Discord服务器：
 SNROfficialTwitterMessage,Come here to visit the official SuperNewRoles Twitter Accounts.,SuperNewRoles公式Twitterはこちらから,在这里关注超新职业官方Twitter
 TwitterOfficialLink,Official Account : https://twitter.com/SuperNewRoles,公式アカウント：https://twitter.com/SuperNewRoles,官方Twitter：https://twitter.com/SuperNewRoles

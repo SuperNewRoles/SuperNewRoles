@@ -6,7 +6,7 @@ namespace SuperNewRoles.Roles.Crewmate;
 
 public class DyingMessenger
 {
-    private const int OptionId = 1179;
+    private const int OptionId = 1194;
     public static CustomRoleOption DyingMessengerOption;
     public static CustomOption DyingMessengerPlayerCount;
     public static CustomOption DyingMessengerGetRoleTime;
