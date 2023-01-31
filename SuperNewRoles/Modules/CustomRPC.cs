@@ -182,6 +182,7 @@ public enum RoleId
     Safecracker,
     FireFox,
     Squid,
+    DyingMessenger,
     //RoleId
 }
 
@@ -273,10 +274,20 @@ public enum CustomRPC
     RPCTeleport,
     SafecrackerGuardCount,
     SetVigilance,
+    Chat,
 }
 
 public static class RPCProcedure
 {
+    public static void Chat(byte id, string text)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        bool isAlive = player.IsAlive();
+        player.Data.IsDead = false;
+        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, text);
+        player.Data.IsDead = isAlive;
+    }
     public static void SetVigilance(bool isVigilance, byte id)
     {
         PlayerControl player = ModHelpers.PlayerById(id);
@@ -1669,6 +1680,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetVigilance:
                         SetVigilance(reader.ReadBoolean(), reader.ReadByte());
+                        break;
+                    case CustomRPC.Chat:
+                        Chat(reader.ReadByte(), reader.ReadString());
                         break;
                 }
             }

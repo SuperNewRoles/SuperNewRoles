@@ -208,6 +208,7 @@ public static class RoleClass
         Safecracker.ClearAndReload();
         FireFox.ClearAndReload();
         Squid.ClearAndReload();
+        DyingMessenger.ClearAndReload();
         //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
