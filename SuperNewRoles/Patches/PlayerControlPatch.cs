@@ -881,7 +881,7 @@ public static class MurderPlayerPatch
         }
         EvilGambler.MurderPlayerPrefix(__instance, target);
         Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
-        DyingMessenger.KillTime.Add(target.PlayerId, (DateTime.Now, __instance));
+        DyingMessenger.ActualDeathTime.Add(target.PlayerId, (DateTime.Now, __instance));
         if (ModeHandler.IsMode(ModeId.Default))
         {
             target.resetChange();
@@ -1188,14 +1188,14 @@ class ReportDeadBodyPatch
                     }
                 }
             }
-            if (__instance.IsRole(RoleId.DyingMessenger) && target != null && DyingMessenger.KillTime.ContainsKey(target.PlayerId))
+            if (__instance.IsRole(RoleId.DyingMessenger) && target != null && DyingMessenger.ActualDeathTime.ContainsKey(target.PlayerId))
             {
-                bool isGetRole = (float)(DyingMessenger.KillTime[target.PlayerId].Item1 + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetRoleTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
-                bool isGetLightAndDarker = (float)(DyingMessenger.KillTime[target.PlayerId].Item1 + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetLightAndDarkerTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
+                bool isGetRole = (float)(DyingMessenger.ActualDeathTime[target.PlayerId].Item1 + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetRoleTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
+                bool isGetLightAndDarker = (float)(DyingMessenger.ActualDeathTime[target.PlayerId].Item1 + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetLightAndDarkerTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
                 string firstPerson = IsSucsessChance(9) ? ModTranslation.GetString("DyingMessengerFirstPerson1") : ModTranslation.GetString("DyingMessengerFirstPerson2");
                 if (isGetRole)
                 {
-                    string text = string.Format(ModTranslation.GetString("DyingMessengerGetRoleText"), firstPerson, ModTranslation.GetString($"{DyingMessenger.KillTime[target.PlayerId].Item2.GetRole()}Name"));
+                    string text = string.Format(ModTranslation.GetString("DyingMessengerGetRoleText"), firstPerson, ModTranslation.GetString($"{DyingMessenger.ActualDeathTime[target.PlayerId].Item2.GetRole()}Name"));
                     new LateTask(() =>
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Chat, __instance);
@@ -1207,7 +1207,7 @@ class ReportDeadBodyPatch
                 if (isGetLightAndDarker)
                 {
                     string text = string.Format(ModTranslation.GetString("DyingMessengerGetLightAndDarkerText"), firstPerson,
-                        CustomColors.lighterColors.Contains(DyingMessenger.KillTime[target.PlayerId].Item2.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"));
+                        CustomColors.lighterColors.Contains(DyingMessenger.ActualDeathTime[target.PlayerId].Item2.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"));
                     new LateTask(() =>
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Chat, __instance);

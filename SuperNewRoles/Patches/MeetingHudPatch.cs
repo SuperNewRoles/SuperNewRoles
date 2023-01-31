@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -550,4 +551,35 @@ class MeetingHudStartPatch
             }
         }
     }
+}
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
+public class MeetingHudUpdatePatch
+{
+    public static void Postfix()
+    {
+        if (Instance)
+        {
+            foreach (PlayerVoteArea player in Instance.playerStates)
+            {
+                PlayerControl target = null;
+                PlayerControl.AllPlayerControls.ToList().ForEach(x =>
+                {
+                    string name = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
+                    if (name == x.Data.PlayerName) target = x;
+                });
+                if (target != null)
+                {
+                    if (ConfigRoles.IsLightAndDarker.Value)
+                    {
+                        if (player.NameText.text.Contains(GetLightAndDarkerText(true)) ||
+                            player.NameText.text.Contains(GetLightAndDarkerText(false))) continue;
+                        player.NameText.text += GetLightAndDarkerText(CustomColors.lighterColors.Contains(target.Data.DefaultOutfit.ColorId));
+                    }
+                    else player.NameText.text = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
+                }
+                else Logger.Error($"プレイヤーコントロールを取得できませんでした。 プレイヤー名 : {player.NameText.text}", "LightAndDarkerText");
+            }
+        }
+    }
+    public static string GetLightAndDarkerText(bool isLight) => $" ({(isLight ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"))[0]})";
 }
