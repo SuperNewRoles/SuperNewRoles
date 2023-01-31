@@ -14,6 +14,12 @@ class MurderPlayer
         if (!AmongUsClient.Instance.AmHost) return;
         if (target.IsAlive()) return;
         FixedUpdate.SetRoleNames();
+        if (__instance.IsRole(RoleId.Finder))
+        {
+            if (!RoleClass.Finder.KillCounts.ContainsKey(__instance.PlayerId))
+                RoleClass.Finder.KillCounts[__instance.PlayerId] = 0;
+            RoleClass.Finder.KillCounts[__instance.PlayerId]++;
+        }
         if (target.IsRole(RoleId.Sheriff) || target.IsRole(RoleId.truelover) || target.IsRole(RoleId.MadMaker))
         {
             target.RpcSetRoleDesync(RoleTypes.GuardianAngel);

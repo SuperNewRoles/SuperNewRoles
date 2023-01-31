@@ -2345,6 +2345,7 @@ public static class RoleClass
         public static Color32 color = ImpostorRed;
         public static int CheckMadmateKillCount;
         public static int KillCount;
+        public static Dictionary<byte, int> KillCounts;
         public static bool IsCheck
         {
             get
@@ -2357,6 +2358,7 @@ public static class RoleClass
             FinderPlayer = new();
             CheckMadmateKillCount = CustomOptionHolder.FinderCheckMadmateSetting.GetInt();
             KillCount = 0;
+            KillCounts = new();
         }
     }
     public static class Revolutionist

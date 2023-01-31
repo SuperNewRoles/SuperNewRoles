@@ -223,11 +223,11 @@ public static class FixedUpdate
                 }
             }
         }
-        else if (player.IsRole(RoleId.Finder))
+        else if (player.IsRole(RoleId.Finder) && RoleClass.Finder.KillCounts.ContainsKey(player.PlayerId) && RoleClass.Finder.KillCounts[player.PlayerId] >= RoleClass.Finder.CheckMadmateKillCount)
         {
             foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
-                if (!Player.IsBot() && Player.IsImpostor())
+                if (!Player.IsBot() && Player.IsMadRoles())
                 {
                     if (!ChangePlayers.ContainsKey(Player.PlayerId))
                     {
