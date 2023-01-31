@@ -67,5 +67,6 @@ class MurderPlayer
         }
         Roles.Bait.MurderPostfix(__instance, target);
         FixedUpdate.SetRoleName(target);
+        Seer.WrapUpPatch.MurderPlayerPatch.ShowFlash_SHR(target);
     }
 }

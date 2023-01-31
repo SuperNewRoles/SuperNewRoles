@@ -1167,12 +1167,19 @@ static class HudManagerStartPatch
                             }
                         }
                     }
-                    bool IsFakeSidekickSeer = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSeerSidekick, target);
-                    MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekickSeer, SendOption.Reliable, -1);
-                    killWriter.Write(target.PlayerId);
-                    killWriter.Write(IsFakeSidekickSeer);
-                    AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                    RPCProcedure.CreateSidekickSeer(target.PlayerId, IsFakeSidekickSeer);
+                    if (RoleClass.JackalSeer.CanCreateFriend)
+                    {
+                        Jackal.CreateJackalFriends(target); //クルーにして フレンズにする
+                    }
+                    else
+                    {
+                        bool IsFakeSidekickSeer = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSeerSidekick, target);
+                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekickSeer, SendOption.Reliable, -1);
+                        killWriter.Write(target.PlayerId);
+                        killWriter.Write(IsFakeSidekickSeer);
+                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                        RPCProcedure.CreateSidekickSeer(target.PlayerId, IsFakeSidekickSeer);
+                    }
                     RoleClass.JackalSeer.CanCreateSidekick = false;
                 }
             },
@@ -1397,6 +1404,7 @@ static class HudManagerStartPatch
                         var target = PlayerControlFixedUpdatePatch.SetTarget();
                         var localId = CachedPlayer.LocalPlayer.PlayerId;
                         var misfire = !Sheriff.IsSheriffKill(target);
+                        PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Sheriff.color);
                         if (RoleClass.Chief.SheriffPlayer.Contains(localId))
                         {
                             misfire = !Sheriff.IsChiefSheriffKill(target);
@@ -1421,7 +1429,7 @@ static class HudManagerStartPatch
                     }
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Sheriff && ModeHandler.IsMode(ModeId.Default); },
+            (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.RemoteSheriff || (role == RoleId.Sheriff && ModeHandler.IsMode(ModeId.Default))); },
             () =>
             {
                 float killCount = 0f;
@@ -1887,7 +1895,9 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Chief && ModeHandler.IsMode(ModeId.Default) && !RoleClass.Chief.IsCreateSheriff; },
             () =>
             {
-                return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                var target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Chief.color);
+                return target && PlayerControl.LocalPlayer.CanMove;
             },
             () => { },
             RoleClass.Chief.GetButtonSprite(),
@@ -1907,8 +1917,9 @@ static class HudManagerStartPatch
             () =>
             {
                 Vulture.RpcCleanDeadBody(RoleClass.Vulture.DeadBodyCount);
+                RoleClass.Vulture.DeadBodyCount--;
 
-                if (RoleClass.Vulture.DeadBodyCount < 0)
+                if (RoleClass.Vulture.DeadBodyCount <= 0)
                 {
                     RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
@@ -1926,6 +1937,7 @@ static class HudManagerStartPatch
                         AmongUsClient.Instance.FinishRpcImmediately(writer2);
                     }
                 }
+                Vulture.ResetCoolDown();
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Vulture; },
             () =>
@@ -1934,8 +1946,7 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                VultureButton.MaxTimer = RoleClass.Vulture.CoolTime;
-                VultureButton.Timer = RoleClass.Vulture.CoolTime;
+                Vulture.EndMeeting();
             },
             RoleClass.Vulture.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
@@ -2331,6 +2342,7 @@ static class HudManagerStartPatch
                 if (RoleClass.SecretlyKiller.MainCool > 0f) return false;
 
                 RoleClass.SecretlyKiller.target = SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(RoleClass.SecretlyKiller.target, RoleClass.SecretlyKiller.color);
                 return RoleClass.SecretlyKiller.target != null
                         && !RoleClass.SecretlyKiller.target.IsImpostor() && PlayerControl.LocalPlayer.CanMove;
             },
@@ -2453,7 +2465,9 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return (isAlive && (role == RoleId.DoubleKiller) && ModeHandler.IsMode(ModeId.Default)) || (isAlive && (role == RoleId.Smasher) && ModeHandler.IsMode(ModeId.Default)); },
             () =>
             {
-                return PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                var target = PlayerControlFixedUpdatePatch.SetTarget();
+                PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.DoubleKiller.color);
+                return target && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
@@ -2548,23 +2562,37 @@ static class HudManagerStartPatch
                 if (target && PlayerControl.LocalPlayer.CanMove && !RoleClass.FastMaker.IsCreatedMadmate)
                 {
                     PlayerControl.LocalPlayer.RpcShowGuardEffect(target); // 守護エフェクトの表示
+                    RoleClass.FastMaker.CreatePlayers.Add(PlayerControl.LocalPlayer.PlayerId);
                     Madmate.CreateMadmate(target);//くるぅにして、マッドにする
                     RoleClass.FastMaker.IsCreatedMadmate = true;//作ったことに
-                    SuperNewRolesPlugin.Logger.LogInfo("[FastMakerButton]マッドを作ったから普通のキルボタンに戻すよ!");
+                    FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown > 0 ? RoleClass.DefaultKillCoolDown / 2f : 0.00001f;
+                    FastMakerButton.Timer = FastMakerButton.MaxTimer;
+                    Logger.Info($"守護を発動させている為、設定キルクールの半分の値である<{FastMakerButton.MaxTimer}s>にリセットしました。", "FastMakerButton");
+                    Logger.Info($"マッドを作成しました。IsCreatedMadmate == {RoleClass.FastMaker.IsCreatedMadmate}", "FastMakerButton");
+                }
+                else
+                {
+                    //作ってたらキル
+                    ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
+                    FastMakerButton.MaxTimer = RoleClass.DefaultKillCoolDown;
+                    FastMakerButton.Timer = FastMakerButton.MaxTimer;
+                    Logger.Info($"Mad作成済みの為キルしました。デフォルトキルクールである<{FastMakerButton.MaxTimer}s>にリセットしました。", "FastMakerButton");
                 }
             },
-            //マッドを作った後はカスタムキルボタンを消去する
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && !RoleClass.FastMaker.IsCreatedMadmate && ModeHandler.IsMode(ModeId.Default); },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && !ModeHandler.IsMode(ModeId.SuperHostRoles); },
             () =>
             {
                 return SetTarget() && PlayerControl.LocalPlayer.CanMove;
             },
-            () => { },
+            () =>
+            {
+                FastMakerButton.MaxTimer = RoleClass.Tuna.IsMeetingEnd ? RoleClass.DefaultKillCoolDown : 10f;
+                FastMakerButton.Timer = FastMakerButton.MaxTimer;
+            },
             __instance.KillButton.graphic.sprite,
-            new Vector3(0, 1, 0),
+            new Vector3(-1, 1, 0),
             __instance,
             __instance.KillButton,
-            //マッドを作る前はキルボタンに擬態する
             KeyCode.Q,
             8,
             () => { return false; }
@@ -3128,8 +3156,6 @@ static class HudManagerStartPatch
             5f,
             () =>
             {
-                Logger.Info("効果終了のお知らせ");
-                Camouflager.RpcResetCamouflage();
                 CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
                 CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
             }

@@ -98,8 +98,8 @@ colorWineRed,WineRed,ワインレッド,酒红
 colorCrazyRed,CrazyRed,クレイジーレッド,大红
 colorTokiwaGreen,TokiwaGreen,常磐緑,常青绿
 colorPosi,Posi,ポジ,正片滤镜
-colorXmasRed,X'masRed,クリスマスレッド
-colorXmasGreen,X'masGreen,クリスマスグリーン
+colorXmasRed,X'masRed,クリスマスレッド,圣诞红
+colorXmasGreen,X'masGreen,クリスマスグリーン,圣诞绿
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -209,7 +209,8 @@ RestrictDevicesOption,Restrict Devices Option,機器の時間制限,飞船设备
 RestrictAdmin,Restrict Admin,アドミンの時間制限,管理师地图使用时间限制
 RestrictVital,Restrict Vital,バイタルの時間制限,生命监测装置使用时间限制
 RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
-CanGhostSeeRole,,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业
+CanGhostSeeRole,After death，everyone's role can be confirmed.,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业
+CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业
 OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる,只有死亡的内鬼阵营玩家可以确认所有玩家的职业
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配
@@ -802,6 +803,7 @@ DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキ�
 FoxName,Fox,妖狐,妖狐
 FoxTitle1,I am Fox!,私は狐です!,我是一只小狐狸！
 SeerName,Seer,シーア,灵媒
+SeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いてインポスターを特定しましょう。
 SeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡
 SeerMode,Mode,モード,灵媒模式
 SeerModeBoth,Show Death Flash + Souls,死の点滅＆幽霊が見える,显示死亡闪光和灵魂
@@ -810,8 +812,10 @@ SeerModeSouls,Show Souls,幽霊が見える,显示灵魂
 SeerLimitSoulDuration,Limit Soul Duration,時間経過で幽霊が消える,灵魂随时间的推移消失
 SeerSoulDuration,Soul Duration,幽霊が見える時間,灵魂从出现到消失经过的时间
 MadSeerName,MadSeer,マッドシーア,叛变的灵媒
+MadSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。
 MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろう,感知内鬼的行动
 EvilSeerName,EvilSeer,イビルシーア,邪恶的灵媒
+EvilSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n相方の行動を把握しサポートに回りましょう。
 EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡
 RemoteSheriffName,Remote Sheriff,リモートシェリフ,超能警长
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう,远距离进行执法
@@ -828,20 +832,23 @@ TaskManagerName,TaskManager,タスクマネージャー,代理人
 TaskManagerTitle1,Finish the task and mount up!,タスクを終わらせ、マウントを取ろう,帮助他人完成所有任务
 SeerFriendsName,SeerFriends,シーアフレンズ,狈族灵媒
 SeerFriendsTitle1,Let's feel the activity of Jackal,ジャッカルの活躍を感じ取ろう,感知豺狼的行动
+SeerFriendsDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。
 JackalSeerName,SeerJackal,ジャッカルシーア,狼族灵媒
 JackalSeerTitle1,Detect the dead and bring victory to your camp!,死者を感知し自陣営に勝利をもたらせ!,感知死亡，为豺狼带来胜利
+JackalSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\nインポスターの行動を把握し、利用しましょう。
 SidekickSeerName,Sidekick(Seer),サイドキック(シーア),狼族灵媒学徒
 SidekickSeerTitle1,Let's help Jackal with the dead detection ability that we got,貰った死者感知能力でジャッカルを助けよう,用死亡感知能力来帮助豺狼
-AssassinAndMarineName,<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>,<color=#ff0000>アサシン</color>と<color=#AFDFE4>マーリン</color>,<color=#ff0000>阿</color>瓦<color=#AFDFE4>隆</color>
+SidekickSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて、親ジャッカルを守り、時には切り、貢献しましょう。
+AssassinAndMarlinName,<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>,<color=#ff0000>アサシン</color>と<color=#AFDFE4>マーリン</color>,<color=#ff0000>阿</color>瓦<color=#AFDFE4>隆</color>
 AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=#ff0000>アサシン</color>の人数,<color=#ff0000>刺客</color>的人数
-MarineSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数
+MarlinSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数
 AssassinName,Assassin,アサシン,刺客
 AssassinTitle1,<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!,<color=#AFDFE4>マーリン</color>を当てて逆転勝利しよう,找出<color=#AFDFE4>梅林</color>来获得胜利
-AssassinSucsess,was marine.,はマーリンだった,是梅林
-AssassinFail,was not marine.,はマーリンではなかった,不是梅林
-MarineName,Merine,マーリン,梅林
-MarineTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。,不要被<color=#ff0000>刺客</color>发现。
-MarineWhois,Who is Merine?,マーリンは誰だ？,谁是梅林？
+AssassinSucsess,was Marlin.,はマーリンだった,是梅林
+AssassinFail,was not Marlin.,はマーリンではなかった,不是梅林
+MarlinName,Merine,マーリン,梅林
+MarlinTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。,不要被<color=#ff0000>刺客</color>发现。
+MarlinWhois,Who is Merine?,マーリンは誰だ？,谁是梅林？
 ArsonistName,Arsonist,アーソニスト,纵火犯
 ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ,燃烧吧
 ArsonistDurationTimeSetting,Douse Duration,塗り時間,纵火犯涂油所需时间
@@ -1155,21 +1162,21 @@ PenguinName,Penguin,ペンギン,绑匪
 PenguinTitle1,Let's drag and kill!,ぺちぺち！,绑架他人
 PenguinButtonName,Abduction,拉致,绑架
 PenguinCanDefaultKill,Can default kill,通常キルができる,绑匪可以进行通常击杀
-LoversBreakerName,LoversBreaker,爆ぜ師
-LoversBreakerTitle1,fulfilling life explosion!!fulfilling life explosion!!,リア充爆発！！リア充爆発！！
-LoversBreakerBreakCount,Number of explosions needed to win,勝利に必要な爆破数
-LoversBreakerIsDeathWin,You can win even if you are dead.,死亡していても勝利できる
-LoversBreakerButtonName,Blow up,爆破
-JumboName,Jumbo,ジャンボ
-JumboTitle1,Wow!?Jumbo!!!,ワオ、ジャンボ！！！
-NiceJumboName,NiceJumbo,ナイスジャンボ
-NiceJumboTitle1,Big Crewmate Team!!!,大きいクルーメイトの味方
-EvilJumboName,EvilJumbo,イビルジャンボ
-EvilJumboTitle1,Let's overwhelm the crew with the size of this thing.,この大きさでクルーを圧倒しよう
-JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボになる確率
-JumboMaxSize,Maximum size,最大サイズ
-JumboSpeedUpSize,Growth speed,成長スピード
-JumboWalkSoundSize,Loudness of footsteps,足音の大きさ
+LoversBreakerName,LoversBreaker,爆ぜ師,FFF团
+LoversBreakerTitle1,fulfilling life explosion!!fulfilling life explosion!!,リア充爆発！！リア充爆発！！,现充去死！现充爆炸！
+LoversBreakerBreakCount,Number of explosions needed to win,勝利に必要な爆破数,FFF团获胜所需击杀的恋人数
+LoversBreakerIsDeathWin,You can win even if you are dead.,死亡していても勝利できる,FFF团死亡状态下也能获胜
+LoversBreakerButtonName,Blow up,爆破,爆杀现充！
+JumboName,Jumbo,ジャンボ,巨无霸
+JumboTitle1,Wow!?Jumbo!!!,ワオ、ジャンボ！！！,怎么你们都这么小？
+NiceJumboName,NiceJumbo,ナイスジャンボ,正义的巨无霸
+NiceJumboTitle1,Big Crewmate Team!!!,大きいクルーメイトの味方,船员中的大块头
+EvilJumboName,EvilJumbo,イビルジャンボ,邪恶的巨无霸
+EvilJumboTitle1,Let's overwhelm the crew with the size of this thing.,この大きさでクルーを圧倒しよう,用庞大的身躯征服飞船
+JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボになる確率,巨无霸生成为船员阵营的概率
+JumboMaxSize,Maximum size,最大サイズ,巨无霸最大体型
+JumboSpeedUpSize,Growth speed,成長スピード,巨无霸变大速度
+JumboWalkSoundSize,Loudness of footsteps,足音の大きさ,巨无霸脚步声音量
 DebuggerName,Debugger,デバッガー
 DebuggerButtonName,Debug,デバッグ
 Functions,Functions,基本操作

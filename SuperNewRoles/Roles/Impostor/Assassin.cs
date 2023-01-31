@@ -59,7 +59,7 @@ public static class Assassin
                             exileplayer = p.Data;
                             exile = p;
                             p.RpcSetColor((byte)outfit.ColorId);
-                            p.RpcSetName(target.Object.GetDefaultName() + (target.Object.IsRole(RoleId.Marine) ? ModTranslation.GetString("AssassinSucsess") : ModTranslation.GetString("AssassinFail")) + "<size=0%>");
+                            p.RpcSetName(target.Object.GetDefaultName() + (target.Object.IsRole(RoleId.Marlin) ? ModTranslation.GetString("AssassinSucsess") : ModTranslation.GetString("AssassinFail")) + "<size=0%>");
                             p.RpcSetHat(outfit.HatId);
                             p.RpcSetVisor(outfit.VisorId);
                             p.RpcSetSkin(outfit.SkinId);
@@ -68,7 +68,7 @@ public static class Assassin
                     }
                 }
                 RoleClass.Assassin.MeetingEndPlayers.Add(RoleClass.Assassin.TriggerPlayer.PlayerId);
-                if (target.Object.IsRole(RoleId.Marine))
+                if (target.Object.IsRole(RoleId.Marlin))
                 {
                     RoleClass.Assassin.IsImpostorWin = true;
                 }
@@ -128,11 +128,11 @@ public static class Assassin
                 }, 10.5f, "Assassin Meet");
                 new LateTask(() =>
                 {
-                    exile.RpcSetName($"<size=200%>{CustomOptionHolder.Cs(RoleClass.Marine.color, IntroData.MarineIntro.NameKey + "Name")}<color=white>は誰だ？</size>");
+                    exile.RpcSetName($"<size=200%>{CustomOptionHolder.Cs(RoleClass.Marlin.color, IntroData.MarlinIntro.NameKey + "Name")}<color=white>は誰だ？</size>");
                 }, 12f, "Assassin Name");
                 new LateTask(() =>
                 {
-                    exile.RpcSendChat($"\n{ModTranslation.GetString("MarineWhois")}");
+                    exile.RpcSendChat($"\n{ModTranslation.GetString("MarlinWhois")}");
                 }, 12.5f, "Assassin Chat");
                 new LateTask(() =>
                 {

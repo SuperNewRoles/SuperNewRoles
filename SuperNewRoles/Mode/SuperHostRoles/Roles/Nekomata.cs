@@ -55,7 +55,8 @@ class Nekomata
         var rdm = ModHelpers.GetRandomIndex(p);
         var random = p[rdm];
         random.RpcCheckExile();
-        if ((random.IsRole(RoleId.NiceNekomata) || random.IsRole(RoleId.EvilNekomata) || random.IsRole(RoleId.BlackCat)) && RoleClass.NiceNekomata.IsChain)
+        if (RoleClass.NiceNekomata.IsChain &&
+            (random.IsRole(RoleId.NiceNekomata) || random.IsRole(RoleId.EvilNekomata) || random.IsRole(RoleId.BlackCat)))
         {
             p.RemoveAt(rdm);
             NekomataProc(p);

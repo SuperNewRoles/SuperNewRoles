@@ -1,4 +1,5 @@
 using System;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles;
@@ -11,8 +12,8 @@ class Sheriff
         {
             if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
             {
-                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
-                HudManagerStartPatch.SheriffKillButton.Timer = RoleClass.RemoteSheriff.CoolTime;
+                HudManagerStartPatch.SheriffKillButton.MaxTimer = ModeHandler.IsMode(ModeId.SuperHostRoles) ? 0f : RoleClass.RemoteSheriff.CoolTime;
+                HudManagerStartPatch.SheriffKillButton.Timer = ModeHandler.IsMode(ModeId.SuperHostRoles) ? 0f : RoleClass.RemoteSheriff.CoolTime;
                 RoleClass.Sheriff.ButtonTimer = DateTime.Now;
             }
             else
