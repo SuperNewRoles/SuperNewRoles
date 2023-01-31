@@ -268,6 +268,7 @@ public class IntroData
     public static IntroData WorshiperIntro = new("Worshiper", Roles.Impostor.MadRole.Worshiper.color, 1, RoleId.Worshiper);
     public static IntroData SafecrackerIntro = new("Safecracker", Safecracker.color, 1, RoleId.Safecracker, TeamRoleType.Neutral, IntroSound : RoleTypes.Shapeshifter);
     public static IntroData FireFoxIntro = new("FireFox", FireFox.color, 1, RoleId.FireFox, TeamRoleType.Neutral);
+    public static IntroData SquidIntro = new("Squid", Squid.color, 2, RoleId.Squid, TeamRoleType.Crewmate);
     public static IntroData DyingMessengerIntro = new("DyingMessenger", DyingMessenger.color, 1, RoleId.DyingMessenger, TeamRoleType.Crewmate);
     //イントロオブジェ
 }

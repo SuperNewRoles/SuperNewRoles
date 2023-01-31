@@ -181,6 +181,7 @@ public enum RoleId
     Worshiper,
     Safecracker,
     FireFox,
+    Squid,
     DyingMessenger,
     //RoleId
 }
@@ -272,6 +273,7 @@ public enum CustomRPC
     SetLoversBreakerWinner,
     RPCTeleport,
     SafecrackerGuardCount,
+    SetVigilance,
     Chat,
 }
 
@@ -285,6 +287,17 @@ public static class RPCProcedure
         player.Data.IsDead = false;
         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, text);
         player.Data.IsDead = isAlive;
+    }
+    public static void SetVigilance(bool isVigilance, byte id)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        if (Squid.IsVigilance.ContainsKey(id) && Squid.IsVigilance[id] && player.AmOwner && !isVigilance)
+        {
+            Squid.ResetCooldown();
+            Logger.Info("イカの警戒が解けたためクールをリセットしました");
+        }
+        Squid.IsVigilance[id] = isVigilance;
     }
     public static void SafecrackerGuardCount(byte id, bool isKillGuard)
     {
@@ -1070,14 +1083,13 @@ public static class RPCProcedure
     {
         var player = ModHelpers.PlayerById(id);
         if (player == null) return;
-        if (player.Data.Role.IsImpostor)
+        if (player.Data.Role.IsImpostor) RoleClass.EvilSpeedBooster.IsBoostPlayers[id] = Is;
+        else if (player.IsRole(RoleId.Squid))
         {
-            RoleClass.EvilSpeedBooster.IsBoostPlayers[id] = Is;
+            Squid.Abilitys.IsBoostSpeed = Is;
+            Squid.Abilitys.BoostSpeedTimer = Squid.SquidBoostSpeedTime.GetFloat();
         }
-        else
-        {
-            RoleClass.SpeedBooster.IsBoostPlayers[id] = Is;
-        }
+        else RoleClass.SpeedBooster.IsBoostPlayers[id] = Is;
     }
     public static void ReviveRPC(byte playerid)
     {
@@ -1665,6 +1677,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SafecrackerGuardCount:
                         SafecrackerGuardCount(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case CustomRPC.SetVigilance:
+                        SetVigilance(reader.ReadBoolean(), reader.ReadByte());
                         break;
                     case CustomRPC.Chat:
                         Chat(reader.ReadByte(), reader.ReadString());

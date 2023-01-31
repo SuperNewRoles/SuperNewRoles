@@ -755,6 +755,9 @@ public static class RoleHelpers
             case RoleId.FireFox:
                 FireFox.FireFoxPlayer.Add(player);
                 break;
+            case RoleId.Squid:
+                Squid.SquidPlayer.Add(player);
+                break;
             case RoleId.DyingMessenger:
                 DyingMessenger.DyingMessengerPlayer.Add(player);
                 break;
@@ -1239,6 +1242,9 @@ public static class RoleHelpers
                 break;
             case RoleId.FireFox:
                 FireFox.FireFoxPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Squid:
+                Squid.SquidPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.DyingMessenger:
                 DyingMessenger.DyingMessengerPlayer.RemoveAll(ClearRemove);
@@ -1763,6 +1769,7 @@ public static class RoleHelpers
             else if (Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.IsCheckListPlayerControl(player)) return RoleId.Worshiper;
             else if (Safecracker.SafecrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Safecracker;
             else if (FireFox.FireFoxPlayer.IsCheckListPlayerControl(player)) return RoleId.FireFox;
+            else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
             else if (DyingMessenger.DyingMessengerPlayer.IsCheckListPlayerControl(player)) return RoleId.DyingMessenger;
             //ロールチェック
         }

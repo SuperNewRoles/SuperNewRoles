@@ -1939,6 +1939,8 @@ public class CustomOptionHolder
 
         FireFox.SetupCustomOptions();
 
+        Squid.SetupCustomOptions();
+
         DyingMessenger.SetupCustomOptions();
 
         //表示設定

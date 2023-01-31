@@ -1098,6 +1098,12 @@ public static class MurderPlayerPatch
             {
                 PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance), RoleHelpers.GetCoolTime(__instance));
             }
+            if (Squid.Abilitys.IsKillGuard)
+            {
+                PlayerControl.LocalPlayer.SetKillTimerUnchecked(Squid.SquidNotKillTime.GetFloat(), Squid.SquidNotKillTime.GetFloat());
+                Squid.SetKillTimer(Squid.SquidNotKillTime.GetFloat());
+                Squid.Abilitys.IsKillGuard = false;
+            }
         }
     }
 }
