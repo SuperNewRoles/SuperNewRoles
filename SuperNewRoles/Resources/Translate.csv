@@ -37,6 +37,9 @@ Developer,Developer,開発者,开发者
 Sponsor,Sponsor,スポンサー,支持者
 Translator,Translator,翻訳,翻译
 DevAndSpnTitle,Developer & Sponsor,開発者&支援者,开发者与支持者
+Analytics,Analytics,解析
+AnalyticsText,In order to make SuperNewRoles an even better mod， we have created a function to send information about positions used to the server. \nThis information can be viewed by SuperNewRoles developers. See the following page for more information. \nYou can change in the settings whether you want to save the information. \nNo personally identifiable elements， such as your player name， will be sent. \n<link href="https://github.com/ykundesu/SuperNewRoles/wiki/解析について">https://github.com/ykundesu/SuperNewRoles/wiki/解析について</link>,SuperNewRolesをさらに良いMODにするため、\n使用した役職などをサーバーに送信する機能を作りました。\nこの情報はSuperNewRolesの開発者が見ることができます。詳細は以下のページを参照してください。\n保存するかは設定で変更できます。\nあなたのプレイヤー名などの個人を特定できる要素は送信しません。\n<link href="https://github.com/ykundesu/SuperNewRoles/wiki/解析について">https://github.com/ykundesu/SuperNewRoles/wiki/解析について</link>
+AnalyticsOK,OK!,了解！
 
 # CustomColors
 colorSalmon,Salmon,サーモン,鲑鱼红
@@ -137,6 +140,7 @@ CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピ�
 CustomProcessDown,Update Process Down,処理回数を減らす,更新进程已关闭
 CustomIsVersionErrorView,Show players Errors.,エラーを表示する,显示错误
 CustomHideTaskArrows,Hide Tasks Arrows,タスクの矢印を非表示にする,隐藏任务指向箭头
+IsSendAnalytics,Send Analytics,解析を送信する
 SettingCrewmateRoles,Crewmate Setting,クルーメイトの人数設定,船员阵营职业设置
 SettingCrewmateGhostRoles,Crewmate GhostRole Setting,クルーメイトの幽霊役職の人数設定,船员阵营幽灵职业设置
 SettingNeutralRoles,Neutral Setting,第三陣営の人数設定,独立阵营职业设置
@@ -759,7 +763,7 @@ MadHawkName,MadHawk,マッドホーク,叛变的鹰眼
 MadHawkTitle1,See it all.,すべてを見渡そう,将一切尽收眼底
 MadJesterName,MadJester,マッドてるてる,傀儡小丑
 MadJesterTitle1,Get voted out and win with the Impostors!,投票で追放されてインポスターと勝利しよう,想办法被投出去，与内鬼一同获胜
-MadJesterDescription,It is a crewmate decision. but it is in the Impostor camp. \nThe impostor wins by being expelled at the meeting.,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。,傀儡小丑规则上属于船员阵营，但是其为内鬼的同伙。\n傀儡小丑在会议中被放逐则内鬼阵营获胜。
+MadJesterDescription,It is a crewmate decision. but it is in the Impostor camp. \nThe impostor wins by being expelled at the meeting.\nYou go for the gallows，climb up，tumbling down，tumbling down...\nFor I believe it will bring us glory...,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。\n貴方は絞首台をめざす、のぼる、おちる。\nそれが我らの栄光につながると信じて。
 FalseChargesName,FalseCharges,冤罪師,冤罪师
 FalseChargesTitle1,Let the false accusations win!,冤罪をさせて勝利しよう,栽赃他人获取胜利
 FalseChargesDescription,You can make the opponent who presses the button kill you. \nYou will win if the opponent you have killed is expelled by the conference.,ボタンを押した相手に自分をキルさせることができます。\nキルさせた相手が会議で追放されたら勝利できます、,冤罪师属于独立阵营。\n冤罪师的技能为可以让附近的其他玩家击杀自己。\n这个技能发动后的指定轮数之内，若击杀冤罪师的凶手被放逐，则冤罪师独自获胜。
@@ -771,8 +775,10 @@ NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてイン
 NiceTeleporterCooldownSetting,Teleport cooldown,テレポートのクールダウン,正义的传送师传送冷却
 CelebrityName,Celebrity,スター,大明星
 CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！,你的名字无人不知无人不晓！
-CelebrityDescription,You can tell from all of them that you are the star.,全員から自分がスターと分かります。,大明星属于船员阵营。\n所有其他玩家都能确认你是大明星。
+CelebrityDescription,You can tell from all of them that you are the star.\nThere is also a setting that shines each time kill cool time elapses.\nHis presence illuminates the surroundings and gives hope.\nThe people around him cling to that hope. \nWithout thinking of the consequences of believing in him...,全員から自分がスターと分かります。\nスター存在時キルクールタイムが経過するたびに輝く設定もあります。\n彼の存在は周囲を照らし希望を与える。\n周囲は縋るその希望に。\n信じた結果齎す事など考えもせず・・・
 CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる,因他人技能导致职业变更不会影响大明星的效果
+CelebrityIsTaskPhaseFlashSetting,During the task phase，does the screen light up every set number of seconds of kill time?,タスクフェイズ中、設定したキルクール秒数毎に画面を光らせるか。
+CelebrityIsFlashWhileAlivingOnly,Does the screen glow only while it is alive?(Meeting Update),画面が光るのは生きている間のみか(会議更新)。
 NocturnalityName,Nocturnality,夜行性,夜猫子
 NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている,昼伏夜出
 NocturnalityDescription,The view during power outage and normal view are opposite.,停電中と通常の視界が反対になっています。,夜猫子属于船员阵营。\n夜猫子的正常视野与熄灯时视野相反。
@@ -957,6 +963,7 @@ RevolutionTouchTime,Revolutionary contact hours,革命家の接触時間,革命�
 RevolutionistAddWin,Additional Victories for Revolutionist,革命家の追加勝利,革命家获得追加胜利而非单独胜利
 RevolutionistAddWinIsAlive,Additional victory only when alive,生存時のみ追加勝利,革命家仅在存活时获得追加胜利
 RevolutionistButtonName,Up to revolutionary possible,革命可能まで,时机已到，今日起兵！
+RevolutionistMeeting,Revolutionist Meeting,革命会議
 SidekickFriendsName,SidekickFriends,サイドキックフレンズ,牧狼人
 SidekickFriendsTitle1,Help Jackal.,ジャッカルを助けよう,帮助豺狼获得胜利
 SidekickFriendsDescription,It is judged as Cluemate， but is in the Jackal camp.\nIf the jackal wins， it can win. Sidekick Friends can be found from Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。サイドキックフレンズはジャッカルからわかります。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,规则上牧狼人被判定为船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则牧狼人一同获胜。\n豺狼能确认牧狼人是谁。牧狼人需要帮助豺狼以获得胜利。
@@ -1163,6 +1170,22 @@ JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボにな
 JumboMaxSize,Maximum size,最大サイズ
 JumboSpeedUpSize,Growth speed,成長スピード
 JumboWalkSoundSize,Loudness of footsteps,足音の大きさ
+DebuggerName,Debugger,デバッガー
+DebuggerButtonName,Debug,デバッグ
+Functions,Functions,基本操作
+PlayerControl,Player control,プレイヤー操作
+StartMeeting,Start meeting,緊急会議
+ShowRole,Show role,役職を表示
+DeShowRole,Cancel show role,役職を非表示
+Teleport,Teleport,テレポート
+ReportDeadbody,Report deadbody,通報
+Exile,Exile,追放
+Kill,Kill,キル
+Revive,Revive,蘇生
+CleanDeadbody,Clean deadbody,死体掃除
+SetRole,Set role,役職付与
+Crewmate,Crewmate,クルーメイト
+Impostor,Impostor,インポスター
 WorshiperName,Worshiper,崇拝者
 WorshiperTitle1,If I can help them，I will spare my life.,あなた方の力になれるのなら 私の命など惜しくはない。
 WorshiperDescription,It has two self-determination abilities.\nIt commits suicide on the spot by using the Shapeshift when SHR and the [Suicide] ability when SNR.\nBy using the kill button，it commits suicide in the form of a sheriff misfire.\nAha，master. My will is yours and my life is for yours...\nCome，master. Let us fulfill that desire.,2つの自決能力を持ちます。\nSHR時はシェイプシフト、SNR時は[自決]能力を使用する事で、その場で自殺します。\nキルボタンを使用する事でシェリフ誤爆のような形で自殺します。\n嗚呼、ご主人。私の意思は貴方の物であり、私の命は貴方の為にあるのです・・・\nさあ、ご主人その願望をかなえましょう。
@@ -1217,6 +1240,7 @@ CommandsMessage6,/GetInRoles myplayer ([/gr mp] or [/gr myp]) : \nDisplays all a
 CommandsMessage7,/AllRoles (/ar) : \nDisplays all activate roles' description and settings.(Send to all player when you're hosts.)\nTransmitted at 1.5 second intervals.,/AllRoles (/ar) ： \n入っている全役職の説明と設定が確認できます。\n(ホストが実行すると全員に送信します)\n1.5秒間隔で送信されます。,/AllRoles (/ar) ： \n显示所有激活职业的职业描述和设置。\n(如果你是主持人将推送给房间内所有玩家)\n每1.5秒发送一个。
 CommandsMessage8,/AllRoles [transmission interval] (/ar [transmission interval]): \nAdditional transmission intervals can be specified for /AllRoles.,/AllRoles [送信間隔] (/ar [送信間隔]) ： \n/AllRolesに+で送信間隔を指定できます。,/AllRoles [发送间隔] (/ar [发送间隔]) ： \n你可以在/AllRoles后添加指定发送间隔时间
 CommandsMessage9,/AllRoles [send interval] myplayer (/ar [send interval] (mp or myp)): \nAdd to /AllRoles [send interval] and send only to yourself even if you are the host.,/AllRoles [送信間隔] myplayer (/ar [送信間隔] (mp もしくは myp)) ： \n/AllRoles [送信間隔]に+で、ホストでも自分のみに送信されます。,/AllRoles [发送间隔] myplayer (/ar [发送间隔] (mp 或者 myp)) ： \n你可以在/AllRoles [发送间隔]后添加指令发送，仅自己可见。
+CommandsMessage10,/SaveLog or /sl [string to be attached to file name]：\nSave logs up to the present time in SuperNewRoles/SaveLogFolder.\nYou can arbitrarily change a part of the file name.\nIt can be used even if the string part is not described (/sl，etc. by itself).,/SaveLog 又は /sl + [ファイル名につけたい文字列] ： \nSuperNewRoles/SaveLogFolderに現時点までのログを保存します。\nファイル名の一部を任意で変更できます。\n文字列部分を記載しなくとも(/sl等単体でも)使用可能です。
 SNROfficialDiscordMessage,Come here to visit the official SuperNewRoles Discord server.,SuperNewRoles公式Discordサーバーはこちらから:,SuperNewRoles官方Discord服务器：
 SNROfficialTwitterMessage,Come here to visit the official SuperNewRoles Twitter Accounts.,SuperNewRoles公式Twitterはこちらから,在这里关注超新职业官方Twitter
 TwitterOfficialLink,Official Account : https://twitter.com/SuperNewRoles,公式アカウント：https://twitter.com/SuperNewRoles,官方Twitter：https://twitter.com/SuperNewRoles
