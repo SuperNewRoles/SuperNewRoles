@@ -3135,8 +3135,6 @@ static class HudManagerStartPatch
             5f,
             () =>
             {
-                Logger.Info("効果終了のお知らせ");
-                Roles.Impostor.Camouflager.RpcResetCamouflage();
                 CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
                 CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
             }

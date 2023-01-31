@@ -227,5 +227,14 @@ class ButtonTime
                 }
             }
         }
+        else
+        {
+            var timeSpanData = new TimeSpan(0, 0, 0, (int)RoleClass.Camouflager.DurationTime);
+            RoleClass.Camouflager.CamoDurationData = (float)((RoleClass.Camouflager.ButtonTimer + timeSpanData) - DateTime.Now).TotalSeconds;
+            if (RoleClass.Camouflager.CamoDurationData <= 0f)
+            {
+                Roles.Impostor.Camouflager.ResetCamouflage();
+            }
+        }
     }
 }
