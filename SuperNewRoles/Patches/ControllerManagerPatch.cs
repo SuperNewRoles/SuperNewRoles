@@ -29,6 +29,14 @@ class ControllerManagerUpdatePatch
             if (resolutionIndex >= resolutions.Length) resolutionIndex = 0;
             ResolutionManager.SetResolution(resolutions[resolutionIndex].Item1, resolutions[resolutionIndex].Item2, false);
         }
+
+        // その時点までのlogを切り出す
+        if (ModHelpers.GetManyKeyDown(new[] { KeyCode.S, KeyCode.LeftShift, KeyCode.RightShift }))
+        {
+            string via = "KeyCommandVia";
+            Logger.SaveLog(via,via);
+        }
+
         // 以下ホストのみ
         if (!AmongUsClient.Instance.AmHost) return;
 
