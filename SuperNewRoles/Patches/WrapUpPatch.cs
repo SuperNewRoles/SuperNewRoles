@@ -113,7 +113,7 @@ class WrapUpPatch
         Seer.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
         Roles.Crewmate.Celebrity.WrapUp();
-        foreach(PlayerControl p in PlayerControl.AllPlayerControls)
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
             p.resetChange();
         }

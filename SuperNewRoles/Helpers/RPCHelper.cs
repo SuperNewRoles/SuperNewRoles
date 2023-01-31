@@ -131,9 +131,9 @@ public static class RPCHelper
             writer.StartMessage(1); //0x01 Data
             {
                 writer.WritePacked(gm.NetId);
-                        writer.StartMessage((byte)4);
-                        writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(gameOptions));
-                        writer.EndMessage();
+                writer.StartMessage((byte)4);
+                writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(gameOptions));
+                writer.EndMessage();
             }
             writer.EndMessage();
         }

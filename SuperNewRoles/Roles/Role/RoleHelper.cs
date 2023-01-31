@@ -1247,7 +1247,7 @@ public static class RoleHelpers
             case RoleId.DyingMessenger:
                 DyingMessenger.DyingMessengerPlayer.RemoveAll(ClearRemove);
                 break;
-            //ロールリモベ
+                //ロールリモベ
         }
         ChacheManager.ResetMyRoleChache();
     }

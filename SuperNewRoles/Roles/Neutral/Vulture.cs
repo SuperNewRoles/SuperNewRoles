@@ -1,7 +1,7 @@
-using SuperNewRoles.CustomObject;
-using SuperNewRoles.Buttons;
-using UnityEngine;
 using Hazel;
+using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomObject;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles;
 

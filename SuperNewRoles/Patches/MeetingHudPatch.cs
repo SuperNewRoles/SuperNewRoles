@@ -1,7 +1,7 @@
-using AmongUs.GameOptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles;

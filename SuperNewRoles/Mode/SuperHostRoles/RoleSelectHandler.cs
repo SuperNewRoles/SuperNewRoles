@@ -55,7 +55,7 @@ public static class RoleSelectHandler
                 CustomOptionHolder.SamuraiOption.GetSelection() != 0 ||
                 CustomOptionHolder.DemonOption.GetSelection() != 0 ||
                 CustomOptionHolder.ToiletFanOption.GetSelection() != 0 ||
-                CustomOptionHolder.NiceButtonerOption.GetSelection() != 0||
+                CustomOptionHolder.NiceButtonerOption.GetSelection() != 0 ||
                 SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperOption.GetSelection() != 0)
             {
                 PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");

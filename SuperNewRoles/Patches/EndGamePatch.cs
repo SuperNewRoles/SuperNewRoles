@@ -490,7 +490,7 @@ public static class OnGameEndPatch
         {
             GameManager.Instance.LogicOptions.SetGameOptions(SyncSetting.OptionData.DeepCopy());
             RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
-        }   
+        }
         var gameOverReason = AdditionalTempData.gameOverReason;
         AdditionalTempData.Clear();
         foreach (var p in GameData.Instance.AllPlayers)

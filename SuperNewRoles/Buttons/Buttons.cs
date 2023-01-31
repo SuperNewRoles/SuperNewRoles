@@ -137,7 +137,7 @@ static class HudManagerStartPatch
             {
                 return PlayerControl.LocalPlayer.CanMove;
             },
-            () => {},
+            () => { },
             RoleClass.Debugger.GetButtonSprite(),
             new Vector3(0, 2, 0),
             __instance,

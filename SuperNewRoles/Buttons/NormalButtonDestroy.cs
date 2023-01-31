@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
-using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Buttons;
 

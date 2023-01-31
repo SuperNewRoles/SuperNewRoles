@@ -1,11 +1,11 @@
+using Agartha;
+using AmongUs.GameOptions;
 using HarmonyLib;
-using UnityEngine;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
-using Agartha;
-using AmongUs.GameOptions;
+using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
@@ -34,7 +34,7 @@ class ControllerManagerUpdatePatch
         if (ModHelpers.GetManyKeyDown(new[] { KeyCode.S, KeyCode.LeftShift, KeyCode.RightShift }))
         {
             string via = "KeyCommandVia";
-            Logger.SaveLog(via,via);
+            Logger.SaveLog(via, via);
         }
 
         // 以下ホストのみ
