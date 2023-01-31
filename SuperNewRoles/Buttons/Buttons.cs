@@ -22,6 +22,7 @@ namespace SuperNewRoles.Buttons;
 static class HudManagerStartPatch
 {
     #region Buttons
+    public static CustomButton DebuggerButton;
     public static CustomButton SheriffKillButton;
     public static CustomButton ClergymanLightOutButton;
     public static CustomButton SpeedBoosterBoostButton;
@@ -123,6 +124,34 @@ static class HudManagerStartPatch
 
     public static void Postfix(HudManager __instance)
     {
+        Roles.Attribute.Debugger.canSeeRole = false;
+        DebuggerButton = new(
+            () =>
+            {
+                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+            },
+            (bool isAlive, RoleId role) => { return RoleClass.Debugger.AmDebugger; },
+            () =>
+            {
+                return PlayerControl.LocalPlayer.CanMove;
+            },
+            () => {},
+            RoleClass.Debugger.GetButtonSprite(),
+            new Vector3(0, 2, 0),
+            __instance,
+            __instance.AbilityButton,
+            null,
+            0,
+            () => { return false; }
+        )
+        {
+            Timer = 0f,
+            MaxTimer = 0f,
+            buttonText = ModTranslation.GetString("DebuggerButtonName"),
+        };
+
         JumboKillButton = new(
             () =>
             {
