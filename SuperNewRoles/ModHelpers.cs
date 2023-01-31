@@ -335,6 +335,7 @@ public static class ModHelpers
             RPCProcedure.ShielderProtect(target.PlayerId, target.PlayerId, 0);
             Squid.SetVigilance(target, false);
             Squid.SetSpeedBoost(target);
+            RPCHelper.StartRPC(CustomRPC.ShowFlash, target).EndRPC();
             Squid.Abilitys.IsKillGuard = true;
             Squid.Abilitys.IsObstruction = true;
             Squid.Abilitys.ObstructionTimer = Squid.SquidObstructionTime.GetFloat();

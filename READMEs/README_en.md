@@ -166,6 +166,7 @@ It is already on the Discord server.
 |                                         | [GhostMechanic](#GhostMechanic)           |
 |                                         | [ToiletFan](#ToiletFan)                   |
 |                                         | [Knight](#Knight)                         |
+|                                         | [Squid](#Squid)                           |
 
 # Position Details 
 ## Attention. 

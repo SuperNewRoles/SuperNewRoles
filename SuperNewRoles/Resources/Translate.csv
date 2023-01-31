@@ -1182,14 +1182,6 @@ SafecrackerUseSaboTaskSetting,Amount of tasks for which sabotage will be availab
 SafecrackerIsImpostorLightTaskSetting,Amount of tasks for become an Imposter's field of view (of all tasks),インポスターの視界になるタスク量(全タスク内)
 SafecrackerCheckImpostorTaskSetting,Amount of tasks that will allow you to check the Imposter (of all tasks),インポスターを確認できるようになるタスク量(全タスク内)
 SafecrackerChangeTaskPrefabSetting,Replace all tasks with unlock safe tasks,全タスクを金庫タスクに置き換える
-FireFoxName,Fire Fox,炎狐
-FireFoxTitle1,I am Fire Fox!,私は炎狐です！
-FireFoxDescription,It is a Fox that has been given a kill button instead of a kill guard.\nThe number of kills is limited and only certain camps can be killed.\nIf you press the kill button for a player who is not in the killable camp， your kill count will decrease without a kill.\nThink about who to kill and contribute to the Fox's victory.,キルガードの代わりにキルボタンを与えられた妖狐です。\nキル回数は制限されており、特定の陣営のみキル可能です。\nキル可能陣営以外にキルボタンを押してしまうと、キルせずにキル回数のみ減ってしまいます。\n誰をキルするか考え、妖狐の勝利に貢献しましょう。
-FireFoxCanKillCrewmateSetting,Can kill the crewmate camp,クルーメイト陣営をキルできる
-FireFoxCanKillImpostorSetting,Can kill the imposter camp,インポスター陣営をキルできる
-FireFoxCanKillNeutralSetting,Can kill the third camp,第三陣営をキルできる
-FireFoxCanKillLoversSetting,Can kill the lovers,ラバーズをキルできる
-FireFoxIsCheckFoxSetting,You can check the fox,妖狐を視認できる
 SquidName,Squid,イカ
 SquidTitle1,Use ink to survive.,墨を使って生き延びろ
 SquidTitle2,Let's use ink to get away with it.,墨を使って逃げ切ろう
