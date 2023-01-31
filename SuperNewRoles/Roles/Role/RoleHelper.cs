@@ -755,6 +755,9 @@ public static class RoleHelpers
             case RoleId.FireFox:
                 FireFox.FireFoxPlayer.Add(player);
                 break;
+            case RoleId.Squid:
+                Squid.SquidPlayer.Add(player);
+                break;
             //ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1236,6 +1239,9 @@ public static class RoleHelpers
                 break;
             case RoleId.FireFox:
                 FireFox.FireFoxPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Squid:
+                Squid.SquidPlayer.RemoveAll(ClearRemove);
                 break;
             //ロールリモベ
         }
@@ -1757,6 +1763,7 @@ public static class RoleHelpers
             else if (Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.IsCheckListPlayerControl(player)) return RoleId.Worshiper;
             else if (Safecracker.SafecrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Safecracker;
             else if (FireFox.FireFoxPlayer.IsCheckListPlayerControl(player)) return RoleId.FireFox;
+            else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
             //ロールチェック
         }
         catch (Exception e)

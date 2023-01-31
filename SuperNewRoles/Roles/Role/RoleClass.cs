@@ -207,6 +207,7 @@ public static class RoleClass
         Impostor.MadRole.Worshiper.ClearAndReload();
         Safecracker.ClearAndReload();
         FireFox.ClearAndReload();
+        Squid.ClearAndReload();
         //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
