@@ -2875,6 +2875,7 @@ public static class RoleClass
         public static byte Color;
         private static Sprite buttonSprite;
         public static DateTime ButtonTimer;
+        public static float CamoDurationData;
         public static bool IsCamouflage;
         public static float Duration;
         public static Sprite GetButtonSprite()
@@ -2886,6 +2887,7 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             CamouflagerPlayer = new();
+            CamoDurationData = 0;
             CoolTime = CustomOptionHolder.CamouflagerCoolTime.GetFloat();
             DurationTime = CustomOptionHolder.CamouflagerDurationTime.GetFloat();
             ArsonistMark = CustomOptionHolder.CamouflagerCamouflageArsonist.GetBool();
