@@ -6,6 +6,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
@@ -25,6 +26,7 @@ public static class RoleClass
     public static Color FoxPurple = Palette.Purple;
     public static bool IsStart;
     public static List<byte> BlockPlayers;
+    public static float DefaultKillCoolDown;
 
     public static void ClearAndReloadRoles()
     {
@@ -38,6 +40,7 @@ public static class RoleClass
         LateTask.AddTasks = new();
         BotManager.AllBots = new();
         IsCoolTimeSetted = false;
+        DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
         Agartha.MapData.ClearAndReloads();
         LadderDead.Reset();
@@ -1495,11 +1498,13 @@ public static class RoleClass
         public static Color32 color = Color.yellow;
         public static bool ChangeRoleView;
         public static List<PlayerControl> ViewPlayers;
+        public static float FlashTime;
         public static void ClearAndReload()
         {
             CelebrityPlayer = new();
             ChangeRoleView = CustomOptionHolder.CelebrityChangeRoleView.GetBool();
             ViewPlayers = new();
+            FlashTime = DefaultKillCoolDown >= 5 ? DefaultKillCoolDown * 1000 : 5000;
         }
     }
     public static class Nocturnality
