@@ -1344,6 +1344,8 @@ public static class RPCProcedure
         /// <returns>falseで記載するとRPCをlogに記載しなくなる。</returns>
         private static readonly Dictionary<CustomRPC, bool> IsWritingRPCLog = new() {
             {CustomRPC.ShareSNRVersion,false},
+            {CustomRPC.SetRoomTimerRPC,false},
+            {CustomRPC.SetDeviceTime,false},
         };
 
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
