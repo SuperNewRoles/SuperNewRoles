@@ -192,7 +192,7 @@ public static class RoleClass
         WaveCannon.ClearAndReload();
         Doppelganger.ClearAndReload();
         Werewolf.ClearAndReload();
-        Crewmate.Knight.ClearAndReload();
+        Knight.ClearAndReload();
         Pavlovsdogs.ClearAndReload();
         Pavlovsowner.ClearAndReload();
         WaveCannonJackal.ClearAndReload();
@@ -206,6 +206,7 @@ public static class RoleClass
         Jumbo.ClearAndReload();
         Impostor.MadRole.Worshiper.ClearAndReload();
         Safecracker.ClearAndReload();
+        FireFox.ClearAndReload();
         //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

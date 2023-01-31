@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
@@ -1813,9 +1815,9 @@ public class CustomOptionHolder
         PsychometristCanCheckFootprintsTime = Create(891, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);
         PsychometristIsReportCheckedDeadBody = Create(892, false, CustomOptionType.Crewmate, "PsychometristIsReportCheckedDeadBody", false, PsychometristOption);
 
-        Roles.Impostor.ShiftActor.SetupCustomOptions();
+        ShiftActor.SetupCustomOptions();
 
-        Roles.Impostor.NekoKabocha.SetupCustomOptions();
+        NekoKabocha.SetupCustomOptions();
 
         CrackerOption = SetupCustomRoleOption(1038, false, RoleId.Cracker);
         CrackerPlayerCount = Create(1031, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CrackerOption);
@@ -1839,7 +1841,7 @@ public class CustomOptionHolder
         WerewolfOption = new(1057, false, CustomOptionType.Impostor, "WerewolfName", RoleClass.Werewolf.color, 1);
         WerewolfPlayerCount = Create(1051, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
 
-        Roles.Crewmate.Knight.SetupCustomOptions();
+        Knight.SetupCustomOptions();
 
         (PavlovsownerOption = new(1039, false, CustomOptionType.Neutral, "PavlovsdogsName", RoleClass.Pavlovsdogs.color, 1))
         .RoleId = RoleId.Pavlovsowner;
@@ -1934,6 +1936,8 @@ public class CustomOptionHolder
         JumboWalkSoundSize = Create(1142, false, CustomOptionType.Neutral, "JumboWalkSoundSize", rates, JumboOption);
 
         Safecracker.SetupCustomOptions();
+
+        FireFox.SetupCustomOptions();
 
         //表示設定
 
