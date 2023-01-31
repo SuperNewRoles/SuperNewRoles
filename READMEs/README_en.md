@@ -168,6 +168,8 @@ Please use the Discord server:[Discord server](https://discord.gg/Cqfwx82ynN)
 |                                         | [GhostMechanic](#GhostMechanic)           |
 |                                         | [ToiletFan](#ToiletFan)                   |
 |                                         | [Knight](#Knight)                         |
+|                                         | [Squid](#Squid)                           |
+|                                         | [Dying Messenger](#DyingMessenger)        |
 
 # Position Details 
 ## Attention. 
@@ -1576,6 +1578,46 @@ If the protection is successful, a successful protection announcement will be pl
 | Use Vent | You will be able to put in a vent. |
 | Impostor Light | You can set whether the view will be the same as the Impostor's view. |
 | Use DeadBody Report | Off to disable reporting. |
+---
+## Squid
+### Team Crew
+#### Intro
+- Use ink to survive.
+- Let's use ink to get away with it.
+#### Description
+- You can be on alert for a certain period of time.<br>If you are about to be killed while on alert, you can prevent the kill, <br>take away your opponent's vision, and increase your own movement speed for a certain period of time.
+#### Ability
+- There is an vigilance button.
+- By pressing the vigilance button, the system enters the vigilance mode.
+- If you are kill while in vigilance mode, you can guard against the kill.
+- If you can guard against a kill, the vigilance mode is released and your movement speed is temporarily increased. <br>(A flash will also occur.)
+- The side whose kill is guarded will have a set value of kill cool, <br>its field of view will be lowered and squid ink will adhere to the screen.
+### Game Settings
+| Name | Description |
+| ---- | :---------: |
+| Cool time for vigilance mode | You can set a cool time for the vigilance mode. |
+| Duration of vigilance mode | You can set the duration of the vigilance mode. |
+| Movement speed on successful counters | You can set the duration of a successful counter |
+| Time to increase movement speed on successful counters | You can set the time to increase the speed of movement on successful counters. |
+| Time when no kills can be made on successful counters | You can set the time that no kills can be made on a successful counter. |
+| Field of vision when vision is deprived | You can set the killers' field of view on a successful counter. |
+| Time to take away the view | You can set the time to change the field of view and the time to display squid ink. |
+---
+## DyingMessenger
+### Team Crew
+#### Intro
+- Will and testament， we will tell you.
+#### Description
+- When you are able to report a kill within a certain amount of time after the kill.<br>You can get the information of the killers of the dead body you reported.<br>Get the information and contribute to the victory of the crew's camp.
+#### Ability
+- When a person is killed and is able to report it within a certain amount of time, you can get the information of the killers of the body that reported it.
+- The acquired information is sent to only you via chat.
+- The information that can be retrieved is the "Killer's role" and the "Killer's light and darker".
+### Game Settings
+| Name | Description |
+| ---- | :---------: |
+| Time to read the roll of the killers from the corpse | You can set a time limit for getting the killers' role from the corpse. |
+| Time to read the light and darker colors of the kill from the corpse| You can set a time limit for getting the killers' light and darker from the corpse. |
 ---
 ## Quarreled
 ### overlapping camps 

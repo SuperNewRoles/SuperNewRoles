@@ -1405,14 +1405,15 @@ static class HudManagerStartPatch
                         var localId = CachedPlayer.LocalPlayer.PlayerId;
                         var misfire = !Sheriff.IsSheriffKill(target);
                         PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Sheriff.color);
-                        if (RoleClass.Chief.SheriffPlayer.Contains(localId))
-                        {
-                            misfire = !Sheriff.IsChiefSheriffKill(target);
-                        }
+                        if (RoleClass.Chief.SheriffPlayer.Contains(localId)) misfire = !Sheriff.IsChiefSheriffKill(target);
                         var alwaysKill = !Sheriff.IsSheriffKill(target) && CustomOptionHolder.SheriffAlwaysKills.GetBool();
-                        if (RoleClass.Chief.SheriffPlayer.Contains(localId))
+                        if (RoleClass.Chief.SheriffPlayer.Contains(localId)) alwaysKill = !Sheriff.IsChiefSheriffKill(target) && CustomOptionHolder.ChiefSheriffAlwaysKills.GetBool();
+                        if (alwaysKill && target.IsRole(RoleId.Squid) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
                         {
-                            alwaysKill = !Sheriff.IsChiefSheriffKill(target) && CustomOptionHolder.ChiefSheriffAlwaysKills.GetBool();
+                            alwaysKill = false;
+                            Squid.SetVigilance(target, false);
+                            Squid.SetSpeedBoost(target);
+                            RPCHelper.StartRPC(CustomRPC.ShowFlash, target).EndRPC();
                         }
                         var targetId = target.PlayerId;
 
@@ -3168,6 +3169,8 @@ static class HudManagerStartPatch
         Roles.Impostor.MadRole.Worshiper.SetupCustomButtons(__instance);
 
         FireFox.SetupCustomButtons(__instance);
+
+        Squid.SetusCustomButton(__instance);
 
         SetCustomButtonCooldowns();
     }

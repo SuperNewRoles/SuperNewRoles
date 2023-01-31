@@ -973,6 +973,8 @@ class AllRoleSetClass
             RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.WorshiperPlayerCount.GetFloat(),
             RoleId.Safecracker => Roles.Neutral.Safecracker.SafecrackerPlayerCount.GetFloat(),
             RoleId.FireFox => FireFox.FireFoxPlayerCount.GetFloat(),
+            RoleId.Squid => Squid.SquidPlayerCount.GetFloat(),
+            RoleId.DyingMessenger => DyingMessenger.DyingMessengerPlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
         };
