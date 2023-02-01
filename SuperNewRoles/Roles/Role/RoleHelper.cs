@@ -58,7 +58,23 @@ public static class RoleHelpers
         RoleId.MayorFriends;
     // IsFriends
 
-
+    /// <summary>
+    /// v2022.12.8で発生したシェイプシフターが死亡後クルーメイトゴーストになるバグの修正用。
+    /// We are Shapeshifter!
+    /// </summary>
+    /// <param name="player">シェイプシフターであるか判定されるプレイヤー</param>
+    /// <returns>プレイヤーがシェイプシフターである場合trueを返す</returns>
+    public static bool IsShapeshifter(this PlayerControl player) =>
+        player.GetRole() is
+        RoleId.SelfBomber or
+        RoleId.Samurai or
+        RoleId.EvilButtoner or
+        RoleId.SuicideWisher or
+        RoleId.Doppelganger or
+        RoleId.Camouflager or
+        RoleId.EvilSeer or
+        RoleId.ShiftActor;
+    // IsShapeshifter
 
     public static bool IsQuarreled(this PlayerControl player, bool IsChache = true)
     {
