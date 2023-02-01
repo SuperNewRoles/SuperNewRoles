@@ -979,10 +979,7 @@ public static class MurderPlayerPatch
 
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
-            if (AmongUsClient.Instance.AmHost)
-            {
-                MurderPlayer.Postfix(__instance, target);
-            }
+            MurderPlayer.Postfix(__instance, target);
         }
         else if (ModeHandler.IsMode(ModeId.Default))
         {
