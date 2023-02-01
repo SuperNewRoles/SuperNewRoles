@@ -197,7 +197,7 @@ public static class RoleSelectHandler
                 foreach (var pc in PlayerControl.AllPlayerControls)
                 {
                     if (pc.PlayerId == Player.PlayerId) continue;
-                    if (!pc.IsMod()) 
+                    if (!pc.IsMod())
                     {
                         if (pc.IsImpostor() || pc.IsRole(RoleId.Spy))
                         {
