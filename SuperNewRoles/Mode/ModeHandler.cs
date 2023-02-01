@@ -120,6 +120,7 @@ public static class ModeHandler
     {
         if (IsMode(ModeId.Zombie)) Zombie.Intro.YouAreHandle(__instance);
         else if (IsMode(ModeId.Detective)) Detective.Intro.YouAreHandle(__instance);
+        else if (IsMode(ModeId.BattleRoyal)) SuperNewRoles.Mode.BattleRoyal.Intro.YouAreHandle(__instance);
     }
     public static void OptionLoad()
     {

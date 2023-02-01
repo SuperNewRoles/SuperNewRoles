@@ -16,6 +16,7 @@ using UnityEngine;
 using AmongUs.GameOptions;
 using SuperNewRoles.Mode;
 using UnityEngine.Audio;
+using SuperNewRoles.Roles.Crewmate;
 
 namespace SuperNewRoles;
 
@@ -323,6 +324,23 @@ public static class ModHelpers
                     RPCProcedure.SafecrackerGuardCount(target.PlayerId, true);
                 }
             }
+        }
+        if (target.IsRole(RoleId.Squid) && !killer.IsRole(RoleId.OverKiller) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
+        {
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ShielderProtect);
+            writer.Write(target.PlayerId);
+            writer.Write(target.PlayerId);
+            writer.Write(0);
+            writer.EndRPC();
+            RPCProcedure.ShielderProtect(target.PlayerId, target.PlayerId, 0);
+            Squid.SetVigilance(target, false);
+            Squid.SetSpeedBoost(target);
+            RPCHelper.StartRPC(CustomRPC.ShowFlash, target).EndRPC();
+            Squid.Abilitys.IsKillGuard = true;
+            Squid.Abilitys.IsObstruction = true;
+            Squid.Abilitys.ObstructionTimer = Squid.SquidObstructionTime.GetFloat();
+            GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.KillDistance, 0);
+            Squid.InkSet();
         }
         return MurderAttemptResult.PerformKill;
     }
