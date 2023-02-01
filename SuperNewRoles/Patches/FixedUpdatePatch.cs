@@ -231,6 +231,9 @@ public class FixedUpdate
                             }
                             break;
                     }
+                    if (PlayerControl.LocalPlayer.IsShapeshifter())
+                        PlayerControl.LocalPlayer.ResetAndSetImpostorghost();
+                    break;
                 }
                 break;
             case ModeId.SuperHostRoles:
