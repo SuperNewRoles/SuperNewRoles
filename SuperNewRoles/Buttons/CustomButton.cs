@@ -156,15 +156,15 @@ public class CustomButton
     }
 
     /// <summary>
-    /// 3秒以内になったら震えます
+    /// fillUpTime未満になったらボタンが震えます
     /// </summary>
-    public static void FillUp(CustomButton button)
+    public static void FillUp(CustomButton button, float fillUpTime = 3f)
     {
         float timer = button.Timer;
 
-		if (button.isEffectActive && timer < 3f)
+		if (button.actionButton.isCoolingDown && timer < fillUpTime)
 		{
-			button.actionButton.graphic.transform.localPosition = button.actionButton.position + (Vector3)UnityEngine.Random.insideUnitCircle * 2f/*0.05*/;
+			button.actionButton.graphic.transform.localPosition = button.actionButton.position + (Vector3)UnityEngine.Random.insideUnitCircle * 0.05f;
 		}
 		else
 		{
