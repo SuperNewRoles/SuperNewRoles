@@ -47,6 +47,7 @@ public static class RoleHelpers
         RoleId.MadJester or
         RoleId.MadSeer or
         RoleId.BlackCat or
+        RoleId.MadCleaner or
         RoleId.MadMaker;
     // IsMads
 
