@@ -155,6 +155,23 @@ public class CustomButton
         }
     }
 
+    /// <summary>
+    /// 3秒以内になったら震えます
+    /// </summary>
+    public static void FillUp(CustomButton button)
+    {
+        float timer = button.Timer;
+
+		if (button.isEffectActive && timer < 3f)
+		{
+			button.actionButton.graphic.transform.localPosition = button.actionButton.position + (Vector3)UnityEngine.Random.insideUnitCircle * 2f/*0.05*/;
+		}
+		else
+		{
+			button.actionButton.graphic.transform.localPosition = button.actionButton.position;
+		}
+    }
+
     private void Update(bool isAlive, RoleId role)
     {
         var localPlayer = CachedPlayer.LocalPlayer;
@@ -176,7 +193,8 @@ public class CustomButton
 
         if (hudManager.UseButton != null)
         {
-            actionButton.transform.localPosition = PositionOffset;
+            //actionButton.transform.localPosition = PositionOffset;
+
             if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
             {
                 actionButton.transform.localScale = new(0.7f, 0.7f, 0.7f);

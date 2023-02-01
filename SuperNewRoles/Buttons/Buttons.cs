@@ -423,6 +423,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Penguin; },
             () =>
             {
+                CustomButton.FillUp(PenguinButton);
                 return PlayerControl.LocalPlayer.CanMove && SetTarget(null, true);
             },
             () =>
@@ -1475,6 +1476,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Clergyman; },
             () =>
             {
+                CustomButton.FillUp(ClergymanLightOutButton);
                 return PlayerControl.LocalPlayer.CanMove;
             },
             () => { Clergyman.EndMeeting(); },
@@ -1512,6 +1514,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SpeedBooster; },
             () =>
             {
+                CustomButton.FillUp(SpeedBoosterBoostButton);
                 return SpeedBoosterBoostButton.Timer <= 0;
             },
             () => { SpeedBooster.EndMeeting(); },
@@ -1539,6 +1542,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.EvilSpeedBooster || RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.SpeedBooster)); },
             () =>
             {
+                CustomButton.FillUp(EvilSpeedBoosterBoostButton);
                 return EvilSpeedBoosterBoostButton.Timer <= 0;
             },
             () => { EvilSpeedBooster.EndMeeting(); },
@@ -1838,6 +1842,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Speeder; },
             () =>
             {
+                CustomButton.FillUp(SpeederButton);
                 return PlayerControl.LocalPlayer.CanMove;
             },
             () => { Speeder.EndMeeting(); },
@@ -1964,6 +1969,7 @@ static class HudManagerStartPatch
             {
                 var Target = SetTarget();
                 PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Shielder.color);
+                CustomButton.FillUp(ShielderButton);
                 return PlayerControl.LocalPlayer.CanMove && Target;
             },
             () =>
@@ -2050,6 +2056,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Freezer; },
             () =>
             {
+                CustomButton.FillUp(FreezerButton);
                 return PlayerControl.LocalPlayer.CanMove;
             },
             () => { Freezer.EndMeeting(); },
@@ -2789,6 +2796,7 @@ static class HudManagerStartPatch
                     MatryoshkaButton.buttonText = ModTranslation.GetString("MatryoshkaPutOnButtonName");
                 }
                 MatryoshkaButton.HasEffect = __instance.ReportButton.graphic.color == Palette.EnabledColor;
+                CustomButton.FillUp(MatryoshkaButton);
                 return (__instance.ReportButton.graphic.color == Palette.EnabledColor || RoleClass.Matryoshka.IsLocalOn) && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
@@ -3105,7 +3113,10 @@ static class HudManagerStartPatch
                 }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Camouflager && ModeHandler.IsMode(ModeId.Default); },
-            () => { return PlayerControl.LocalPlayer.CanMove; },
+            () => {
+                CustomButton.FillUp(CamouflagerButton);
+                return PlayerControl.LocalPlayer.CanMove;
+            },
             () =>
             {
                 CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
