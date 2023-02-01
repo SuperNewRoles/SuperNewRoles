@@ -1231,6 +1231,7 @@ public static class RoleHelpers
     {
         var IsTaskClear = false;
         if (player.IsImpostor()) IsTaskClear = true;
+        if (player.IsShapeshifter()) IsTaskClear = true;
         switch (player.GetRole())
         {
             case RoleId.Jester:
