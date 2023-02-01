@@ -1140,7 +1140,7 @@ public static class OnGameEndPatch
             if (player.Object != null && player.Object.IsBot()) continue;
             CustomPlayerData data = new(player, gameOverReason)
             {
-                IsWin = TempData.winners.TrueForAll((Il2CppSystem.Predicate<WinningPlayerData>)(x => x.PlayerName == player.PlayerName))
+                IsWin = TempData.winners.ToArray().Any(x => x.PlayerName == player.PlayerName)
             };
             PlayerData.Add(data);
         }
