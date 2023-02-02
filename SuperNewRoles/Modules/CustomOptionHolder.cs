@@ -1065,7 +1065,7 @@ public class CustomOptionHolder
 
         Sabotage.Options.Load();
 
-        if (ConfigRoles.DebugMode.Value) { DebuggerOption = Create(1168, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false, isHeader: true); }
+        if (ConfigRoles.DebugMode.Value) { DebuggerOption = Create(1172, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false, isHeader: true); }
 
         GMOption = Create(1028, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
 
@@ -1200,8 +1200,8 @@ public class CustomOptionHolder
         MadJesterIsUseVent = Create(298, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadJesterOption);
         MadJesterIsImpostorLight = Create(299, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadJesterOption);
         IsMadJesterTaskClearWin = Create(300, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
-        MadJesterIsCheckImpostor = Create(1169, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadJesterOption);
-        MadJesterCheckImpostorTask = Create(1170, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MadJesterIsCheckImpostor);
+        MadJesterIsCheckImpostor = Create(1173, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadJesterOption);
+        MadJesterCheckImpostorTask = Create(1174, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MadJesterIsCheckImpostor);
         var MadJesteroption = SelectTask.TaskSetting(667, 668, 669, MadJesterOption, CustomOptionType.Crewmate, true);
         MadJesterCommonTask = MadJesteroption.Item1;
         MadJesterShortTask = MadJesteroption.Item2;
