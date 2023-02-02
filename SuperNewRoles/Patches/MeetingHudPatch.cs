@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles;
+using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -487,6 +489,7 @@ class MeetingHudStartPatch
 {
     public static void Postfix(MeetingHud __instance)
     {
+        Logger.Info("会議開始時の処理 開始", "MeetingHudStartPatch");
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             new LateTask(() =>
@@ -494,6 +497,7 @@ class MeetingHudStartPatch
                 SyncSetting.CustomSyncSettings();
             }, 3f, "StartMeeting CustomSyncSetting");
         }
+        Roles.Crewmate.Celebrity.TimerStop();
         Roles.Crewmate.Knight.ProtectedPlayer = null;
         Roles.Crewmate.Knight.GuardedPlayers = new();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
@@ -528,6 +532,7 @@ class MeetingHudStartPatch
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
             }, RoleClass.Werewolf.GetButtonSprite(), (PlayerControl player) => player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId);
         }
+        Logger.Info("会議開始時の処理 終了", "MeetingHudStartPatch");
     }
     public static void CreateMeetingButton(MeetingHud __instance, string ButtonName, Action<int, MeetingHud> OnClick, Sprite sprite, Func<PlayerControl, bool> CheckCanButton)
     {
@@ -550,4 +555,35 @@ class MeetingHudStartPatch
             }
         }
     }
+}
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
+public class MeetingHudUpdatePatch
+{
+    public static void Postfix()
+    {
+        if (Instance)
+        {
+            foreach (PlayerVoteArea player in Instance.playerStates)
+            {
+                PlayerControl target = null;
+                PlayerControl.AllPlayerControls.ToList().ForEach(x =>
+                {
+                    string name = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
+                    if (name == x.Data.PlayerName) target = x;
+                });
+                if (target != null)
+                {
+                    if (ConfigRoles.IsLightAndDarker.Value)
+                    {
+                        if (player.NameText.text.Contains(GetLightAndDarkerText(true)) ||
+                            player.NameText.text.Contains(GetLightAndDarkerText(false))) continue;
+                        player.NameText.text += GetLightAndDarkerText(CustomColors.lighterColors.Contains(target.Data.DefaultOutfit.ColorId));
+                    }
+                    else player.NameText.text = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
+                }
+                else Logger.Error($"プレイヤーコントロールを取得できませんでした。 プレイヤー名 : {player.NameText.text}", "LightAndDarkerText");
+            }
+        }
+    }
+    public static string GetLightAndDarkerText(bool isLight) => $" ({(isLight ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"))[0]})";
 }

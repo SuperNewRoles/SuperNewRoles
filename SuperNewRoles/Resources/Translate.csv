@@ -100,6 +100,8 @@ colorTokiwaGreen,TokiwaGreen,常磐緑,常青绿
 colorPosi,Posi,ポジ,正片滤镜
 colorXmasRed,X'masRed,クリスマスレッド
 colorXmasGreen,X'masGreen,クリスマスグリーン
+LightColor,bright,明るい
+DarkerColor,darker,暗い
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -775,8 +777,10 @@ NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてイン
 NiceTeleporterCooldownSetting,Teleport cooldown,テレポートのクールダウン,正义的传送师传送冷却
 CelebrityName,Celebrity,スター,大明星
 CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！,你的名字无人不知无人不晓！
-CelebrityDescription,You can tell from all of them that you are the star.,全員から自分がスターと分かります。,大明星属于船员阵营。\n所有其他玩家都能确认你是大明星。
+CelebrityDescription,You can tell from all of them that you are the star.\nThere is also a setting that shines each time kill cool time elapses.\nHis presence illuminates the surroundings and gives hope.\nThe people around him cling to that hope. \nWithout thinking of the consequences of believing in him...,全員から自分がスターと分かります。\nスター存在時キルクールタイムが経過するたびに輝く設定もあります。\n彼の存在は周囲を照らし希望を与える。\n周囲は縋るその希望に。\n信じた結果齎す事など考えもせず・・・
 CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる,因他人技能导致职业变更不会影响大明星的效果
+CelebrityIsTaskPhaseFlashSetting,During the task phase，does the screen light up every set number of seconds of kill time?,タスクフェイズ中、設定したキルクール秒数毎に画面を光らせるか。
+CelebrityIsFlashWhileAlivingOnly,Does the screen glow only while it is alive?(Meeting Update),画面が光るのは生きている間のみか(会議更新)。
 NocturnalityName,Nocturnality,夜行性,夜猫子
 NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている,昼伏夜出
 NocturnalityDescription,The view during power outage and normal view are opposite.,停電中と通常の視界が反対になっています。,夜猫子属于船员阵营。\n夜猫子的正常视野与熄灯时视野相反。
@@ -1203,9 +1207,39 @@ SafecrackerUseSaboTaskSetting,Amount of tasks for which sabotage will be availab
 SafecrackerIsImpostorLightTaskSetting,Amount of tasks for become an Imposter's field of view (of all tasks),インポスターの視界になるタスク量(全タスク内)
 SafecrackerCheckImpostorTaskSetting,Amount of tasks that will allow you to check the Imposter (of all tasks),インポスターを確認できるようになるタスク量(全タスク内)
 SafecrackerChangeTaskPrefabSetting,Replace all tasks with unlock safe tasks,全タスクを金庫タスクに置き換える
+FireFoxName,Fier Fox,炎狐
+FireFoxTitle1,I am Fier Fox!,私は炎狐です！
+FireFoxDescription,It is a Fox that has been given a kill button instead of a kill guard.\nThe number of kills is limited and only certain camps can be killed.\nIf you press the kill button for a player who is not in the killable camp， your kill count will decrease without a kill.\nThink about who to kill and contribute to the Fox's victory.,キルガードの代わりにキルボタンを与えられた妖狐です。\nキル回数は制限されており、特定の陣営のみキル可能です。\nキル可能陣営以外にキルボタンを押してしまうと、キルせずにキル回数のみ減ってしまいます。\n誰をキルするか考え、妖狐の勝利に貢献しましょう。
+FireFoxCanKillCrewmateSetting,Can kill the crewmate camp,クルーメイト陣営をキルできる
+FireFoxCanKillImpostorSetting,Can kill the imposter camp,インポスター陣営をキルできる
+FireFoxCanKillNeutralSetting,Can kill the third camp,第三陣営をキルできる
+FireFoxCanKillLoversSetting,Can kill the lovers,ラバーズをキルできる
+FireFoxIsCheckFoxSetting,You can check the fox,妖狐を視認できる
+SquidName,Squid,イカ
+SquidTitle1,Use ink to survive.,墨を使って生き延びろ
+SquidTitle2,Let's use ink to get away with it.,墨を使って逃げ切ろう
+SquidDescription,You can be on alert for a certain period of time.\nIf you are about to be killed while on alert， you can prevent the kill， take away your opponent's vision， and increase your own movement speed for a certain period of time.,一定時間警戒することが出来ます。\n警戒中にキルされそうになると、そのキルを防ぎ相手の視界を奪い、一定時間自身の移動速度が上昇します。
+SquidCoolTimeSetting,Cool time for vigilance mode,警戒モードのクールタイム
+SquidDurationTimeSetting,Duration of vigilance mode,警戒モードの持続時間
+SquidBoostSpeedSetting,Movement speed on successful counters,カウンター成功時の移動速度
+SquidBoostSpeedTimeSetting,Time to increase movement speed on successful counters,カウンター成功時の移動速度が上がる時間
+SquidNotKillTimeSetting,Time when no kills can be made on successful counters,カウンター成功時のキルが出来ない時間
+SquidDownVisionSetting,Field of vision when vision is deprived,視界が奪われたときの視野
+SquidObstructionTimeSetting,Time to take away the view,視界を奪う時間
+SquidButtonName,Vigilance,警戒
+DyingMessengerName,Dying Messenger,遺言伝達者
+DyingMessengerTitle1,Will and testament， we will tell you.,遺言、お伝え致します
+DyingMessengerDescription,When you are able to report a kill within a certain amount of time after the kill.\nYou can get the information of the killers of the dead body you reported.\nGet the information and contribute to the victory of the crew's camp.,キルされてから一定時間内で通報できた時に、\n通報した死体のキル者の情報を取得することが出来ます。\n情報を取得し、クルー陣営の勝利に貢献しましょう。
+DyingMessengerGetRoleTimeSetting,Time to read the roll of the killers from the corpse,死体からキル者の役職を読み取れる時間
+DyingMessengerGetLightAndDarkerTimeSetting,Time to read the light and darker colors of the kill from the corpse,死体からキル者の色の明暗を読み取れる時間
+DyingMessengerFirstPerson1,me,私
+DyingMessengerFirstPerson2,me,僕
+DyingMessengerGetRoleText,The role of the person who killed {0} was {1}.,{0}をキルした人の役職は{1}でした。
+DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}をキルした人の色は{1}色でした。
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示
+IsLightAndDarker,Show light and darker,明暗を表示する
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！
@@ -1226,6 +1260,7 @@ CommandsMessage6,/GetInRoles myplayer ([/gr mp] or [/gr myp]) : \nDisplays all a
 CommandsMessage7,/AllRoles (/ar) : \nDisplays all activate roles' description and settings.(Send to all player when you're hosts.)\nTransmitted at 1.5 second intervals.,/AllRoles (/ar) ： \n入っている全役職の説明と設定が確認できます。\n(ホストが実行すると全員に送信します)\n1.5秒間隔で送信されます。,/AllRoles (/ar) ： \n显示所有激活职业的职业描述和设置。\n(如果你是主持人将推送给房间内所有玩家)\n每1.5秒发送一个。
 CommandsMessage8,/AllRoles [transmission interval] (/ar [transmission interval]): \nAdditional transmission intervals can be specified for /AllRoles.,/AllRoles [送信間隔] (/ar [送信間隔]) ： \n/AllRolesに+で送信間隔を指定できます。,/AllRoles [发送间隔] (/ar [发送间隔]) ： \n你可以在/AllRoles后添加指定发送间隔时间
 CommandsMessage9,/AllRoles [send interval] myplayer (/ar [send interval] (mp or myp)): \nAdd to /AllRoles [send interval] and send only to yourself even if you are the host.,/AllRoles [送信間隔] myplayer (/ar [送信間隔] (mp もしくは myp)) ： \n/AllRoles [送信間隔]に+で、ホストでも自分のみに送信されます。,/AllRoles [发送间隔] myplayer (/ar [发送间隔] (mp 或者 myp)) ： \n你可以在/AllRoles [发送间隔]后添加指令发送，仅自己可见。
+CommandsMessage10,/SaveLog or /sl [string to be attached to file name]：\nSave logs up to the present time in SuperNewRoles/SaveLogFolder.\nYou can arbitrarily change a part of the file name.\nIt can be used even if the string part is not described (/sl，etc. by itself).,/SaveLog 又は /sl + [ファイル名につけたい文字列] ： \nSuperNewRoles/SaveLogFolderに現時点までのログを保存します。\nファイル名の一部を任意で変更できます。\n文字列部分を記載しなくとも(/sl等単体でも)使用可能です。
 SNROfficialDiscordMessage,Come here to visit the official SuperNewRoles Discord server.,SuperNewRoles公式Discordサーバーはこちらから:,SuperNewRoles官方Discord服务器：
 SNROfficialTwitterMessage,Come here to visit the official SuperNewRoles Twitter Accounts.,SuperNewRoles公式Twitterはこちらから,在这里关注超新职业官方Twitter
 TwitterOfficialLink,Official Account : https://twitter.com/SuperNewRoles,公式アカウント：https://twitter.com/SuperNewRoles,官方Twitter：https://twitter.com/SuperNewRoles
