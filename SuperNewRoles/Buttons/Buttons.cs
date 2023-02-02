@@ -726,7 +726,6 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Kunoichi && RoleClass.Kunoichi.IsWaitAndPressTheButtonToHide; },
             () =>
             {
-                if (RoleClass.Kunoichi.IsHideButton) CustomButton.FillUp(KunoichiHideButton);
                 return PlayerControl.LocalPlayer.CanMove;
             },
             () => { Kunoichi.HideOff(); },
@@ -929,6 +928,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.NiceScientist || role == RoleId.EvilScientist); },
             () =>
             {
+                if (RoleClass.NiceScientist.IsScientist) CustomButton.FillUp(ScientistButton);
                 return PlayerControl.LocalPlayer.CanMove;
             },
             () => { Scientist.EndMeeting(); },
