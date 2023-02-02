@@ -208,9 +208,9 @@ class ButtonTime
     }
     public static void CamouflagerButton()
     {
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+        if (RoleClass.Camouflager.IsCamouflage)
         {
-            if (RoleClass.Camouflager.IsCamouflage)
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 var timeSpanData = new TimeSpan(0, 0, 0, (int)RoleClass.Camouflager.DurationTime);
                 HudManagerStartPatch.CamouflagerButton.actionButton.cooldownTimerText.color = Color.green;
@@ -226,14 +226,14 @@ class ButtonTime
                     RoleClass.Camouflager.ButtonTimer = DateTime.Now;
                 }
             }
-        }
-        else
-        {
-            var timeSpanData = new TimeSpan(0, 0, 0, (int)RoleClass.Camouflager.DurationTime);
-            RoleClass.Camouflager.CamoDurationData = (float)((RoleClass.Camouflager.ButtonTimer + timeSpanData) - DateTime.Now).TotalSeconds;
-            if (RoleClass.Camouflager.CamoDurationData <= 0f)
+            else
             {
-                Roles.Impostor.Camouflager.ResetCamouflage();
+                var timeSpanData = new TimeSpan(0, 0, 0, (int)RoleClass.Camouflager.DurationTime);
+                RoleClass.Camouflager.CamoDurationData = (float)((RoleClass.Camouflager.ButtonTimer + timeSpanData) - DateTime.Now).TotalSeconds;
+                if (RoleClass.Camouflager.CamoDurationData <= 0f)
+                {
+                    Roles.Impostor.Camouflager.ResetCamouflage();
+                }
             }
         }
     }
