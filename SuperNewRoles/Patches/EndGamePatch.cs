@@ -8,6 +8,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using UnhollowerBaseLib;
 using UnityEngine;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
@@ -44,7 +45,8 @@ public enum CustomGameOverReason
     TaskerWin,
     LoversBreakerWin,
     NoWinner,
-    BugEnd
+    BugEnd,
+    SafecrackerWin
 }
 enum WinCondition
 {
@@ -75,7 +77,8 @@ enum WinCondition
     TaskerWin,
     LoversBreakerWin,
     NoWinner,
-    BugEnd
+    BugEnd,
+    SafecrackerWin
 }
 class FinalStatusPatch
 {
@@ -102,7 +105,7 @@ public static class ShipStatusPatch
     [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.IsGameOverDueToDeath))]
     public static void Postfix2(ref bool __result)
     {
-        
+
         __result = false;
     }
 }
@@ -235,6 +238,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.PavlovsTeamWin,("PavlovsTeamWinText",RoleClass.Pavlovsdogs.color)},
                 {WinCondition.LoversBreakerWin,("LoversBreakerName",RoleClass.LoversBreaker.color)},
                 {WinCondition.NoWinner,("NoWinner",Color.white)},
+                {WinCondition.SafecrackerWin,("SafecrackerName",Safecracker.color)}
             };
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {
@@ -374,7 +378,8 @@ public class EndGameManagerSetUpPatch
                 {
                     roleText += $" → {CustomOptionHolder.Cs(data.GhostIntroData.color, data.GhostIntroData.NameKey + "Name")}";
                 }
-                string result = $"{ModHelpers.Cs(Palette.PlayerColors[data.ColorId], data.PlayerName)}{data.NameSuffix}{taskInfo} - {FinalStatusPatch.GetStatusText(data.Status)} - {roleText}";
+                //位置調整:ExR参考  by 漢方
+                string result = $"{ModHelpers.Cs(Palette.PlayerColors[data.ColorId], data.PlayerName)}{data.NameSuffix}<pos=17%>{taskInfo} - <pos=27%>{FinalStatusPatch.GetStatusText(data.Status)} - {roleText}";
                 if (ModeHandler.IsMode(ModeId.Zombie))
                 {
                     roleText = data.ColorId == 1 ? CustomOptionHolder.Cs(Mode.Zombie.Main.Policecolor, "ZombiePoliceName") : CustomOptionHolder.Cs(Mode.Zombie.Main.Zombiecolor, "ZombieZombieName");
@@ -462,6 +467,19 @@ public static class OnGameEndPatch
                 p.resetChange();
             }
             catch { }
+        }
+        if (ConfigRoles.IsSendAnalytics.Value)
+        {
+            try
+            {
+                if (AmongUsClient.Instance.AmHost)
+                    Analytics.PostSendData();
+                Analytics.PostSendClientData();
+            }
+            catch (Exception e)
+            {
+                Logger.Info(e.ToString(), "解析エラー");
+            }
         }
         if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
     }
@@ -563,8 +581,9 @@ public static class OnGameEndPatch
             RoleClass.Pavlovsdogs.PavlovsdogsPlayer,
             RoleClass.Pavlovsowner.PavlovsownerPlayer,
             RoleClass.LoversBreaker.LoversBreakerPlayer,
+            Roles.Impostor.MadRole.Worshiper.WorshiperPlayer,
+            Safecracker.SafecrackerPlayer,
             });
-
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
 
@@ -608,6 +627,7 @@ public static class OnGameEndPatch
         bool NoWinner = gameOverReason == (GameOverReason)CustomGameOverReason.NoWinner;
         bool CrewmateWin = gameOverReason is (GameOverReason)CustomGameOverReason.CrewmateWin or GameOverReason.HumansByVote or GameOverReason.HumansByTask or GameOverReason.ImpostorDisconnect;
         bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
+        bool SafecrackerWin = gameOverReason == (GameOverReason)CustomGameOverReason.SafecrackerWin;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers) && EndData != null)
         {
             JesterWin = EndData == CustomGameOverReason.JesterWin;
@@ -778,6 +798,11 @@ public static class OnGameEndPatch
             }
             AdditionalTempData.winCondition = WinCondition.LoversBreakerWin;
         }
+        else if (SafecrackerWin)
+        {
+            (TempData.winners = new()).Add(new(WinnerPlayer.Data));
+            AdditionalTempData.winCondition = WinCondition.SafecrackerWin;
+        }
 
         if (TempData.winners.ToArray().Any(x => x.IsImpostor))
         {
@@ -790,29 +815,32 @@ public static class OnGameEndPatch
         //下に行くほど優先度が高い
         bool isDleted = false;
         bool changeTheWinCondition = CustomOptionHolder.IsChangeTheWinCondition.GetBool();
+        bool isReset = false;
 
         foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
         {
             if (player.IsAlive() && !RoleClass.Neet.IsAddWin)
             {
-                if (!(isDleted || changeTheWinCondition))
+                if (!((isDleted && changeTheWinCondition) || isReset))
                 {
                     TempData.winners = new();
                     isDleted = true;
+                    isReset = true;
                 }
                 TempData.winners.Add(new(player.Data));
                 AdditionalTempData.winCondition = WinCondition.NeetWin;
-
             }
         }
+        isReset = false;
         foreach (PlayerControl player in RoleClass.God.GodPlayer)
         {
             if (player.IsAlive())
             {
-                if (!(isDleted || changeTheWinCondition))
+                if (!((isDleted && changeTheWinCondition) || isReset))
                 {
                     TempData.winners = new();
                     isDleted = true;
+                    isReset = true;
                 }
                 var (Complete, all) = TaskCount.TaskDateNoClearCheck(player.Data);
                 if (!RoleClass.God.IsTaskEndWin || Complete >= all)
@@ -822,20 +850,23 @@ public static class OnGameEndPatch
                 }
             }
         }
+        isReset = false;
         foreach (PlayerControl player in RoleClass.Tuna.TunaPlayer)
         {
             if (player.IsAlive() && !RoleClass.Tuna.IsTunaAddWin)
             {
-                if (!(isDleted || changeTheWinCondition))
+                if (!((isDleted && changeTheWinCondition) || isReset))
                 {
                     TempData.winners = new();
                     isDleted = true;
+                    isReset = true;
                 }
                 TempData.winners.Add(new(player.Data));
                 AdditionalTempData.winCondition = WinCondition.TunaWin;
 
             }
         }
+        isReset = false;
         foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
         {
             if (player.IsAlive() && CustomOptionHolder.StefinderSoloWin.GetBool())
@@ -845,10 +876,11 @@ public static class OnGameEndPatch
                     AdditionalTempData.gameOverReason == GameOverReason.HumansByVote ||
                     AdditionalTempData.gameOverReason == GameOverReason.HumansDisconnect))
                 {
-                    if (!(isDleted || changeTheWinCondition))
+                    if (!((isDleted && changeTheWinCondition) || isReset))
                     {
                         TempData.winners = new();
                         isDleted = true;
+                        isReset = true;
                     }
                     TempData.winners.Add(new(player.Data));
                     AdditionalTempData.winCondition = WinCondition.StefinderWin;
@@ -859,16 +891,18 @@ public static class OnGameEndPatch
                     AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote ||
                     AdditionalTempData.gameOverReason == GameOverReason.ImpostorDisconnect))
                 {
-                    if (!(isDleted || changeTheWinCondition))
+                    if (!((isDleted && changeTheWinCondition) || isReset))
                     {
                         TempData.winners = new();
                         isDleted = true;
+                        isReset = true;
                     }
                     TempData.winners.Add(new(player.Data));
                     AdditionalTempData.winCondition = WinCondition.StefinderWin;
                 }
             }
         }
+        isReset = false;
         foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
         {
             if (RoleClass.Lovers.IsSingleTeam)
@@ -885,10 +919,11 @@ public static class OnGameEndPatch
                 {
                     foreach (PlayerControl player in plist)
                     {
-                        if (!(isDleted || changeTheWinCondition))
+                        if (!((isDleted && changeTheWinCondition) || isReset))
                         {
                             TempData.winners = new();
                             isDleted = true;
+                            isReset = true;
                         }
                         TempData.winners.Add(new(player.Data));
                         if (RoleClass.Cupid.CupidLoverPair.ContainsValue(player.PlayerId))
@@ -903,6 +938,7 @@ public static class OnGameEndPatch
                 }
             }
         }
+        isReset = false;
         foreach (PlayerControl player in RoleClass.Spelunker.SpelunkerPlayer)
         {
             bool isreset = false;
@@ -910,10 +946,11 @@ public static class OnGameEndPatch
             {
                 if (!isreset)
                 {
-                    if (!(isDleted || changeTheWinCondition))
+                    if (!((isDleted && changeTheWinCondition) || isReset))
                     {
                         TempData.winners = new();
                         isDleted = true;
+                        isReset = true;
                     }
                     TempData.winners.Add(new(player.Data));
                     AdditionalTempData.winCondition = WinCondition.SpelunkerWin;
@@ -921,14 +958,18 @@ public static class OnGameEndPatch
                 isreset = true;
             }
         }
-        foreach (PlayerControl player in RoleClass.Fox.FoxPlayer)
+        isReset = false;
+        var foxPlayers = RoleClass.Fox.FoxPlayer;
+        foxPlayers.AddRange(foxPlayers);
+        foreach (PlayerControl player in foxPlayers)
         {
             if (player.IsAlive())
             {
-                if (!(isDleted || changeTheWinCondition))
+                if (!((isDleted && changeTheWinCondition) || isReset))
                 {
                     TempData.winners = new();
                     isDleted = true;
+                    isReset = true;
                 }
                 TempData.winners.Add(new(player.Data));
                 AdditionalTempData.winCondition = WinCondition.FoxWin;
@@ -1088,7 +1129,8 @@ public static class OnGameEndPatch
                 }
             }
             AdditionalTempData.winCondition = WinCondition.HAISON;
-        } else if (NoWinner)
+        }
+        else if (NoWinner)
         {
             TempData.winners = new();
             AdditionalTempData.winCondition = WinCondition.NoWinner;
@@ -1164,6 +1206,7 @@ public static class CheckGameEndHnSPatch
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
             if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
             if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForSafecrackerWin(__instance)) return false;
         }
         return true;
     }
@@ -1200,6 +1243,7 @@ public static class CheckGameEndPatch
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
             if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
             if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForSafecrackerWin(__instance)) return false;
             if (!PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
         }
         return false;
@@ -1242,7 +1286,8 @@ public static class CheckGameEndPatch
 
     public static bool CheckAndEndGameForLoversBreakerWin(ShipStatus __instance, PlayerStatistics statistics)
     {
-        if (!CustomOptionHolder.LoversBreakerIsDeathWin.GetBool()) {
+        if (!CustomOptionHolder.LoversBreakerIsDeathWin.GetBool())
+        {
             foreach (byte playerId in RoleClass.LoversBreaker.CanEndGamePlayers.ToArray())
             {
                 if (ModHelpers.PlayerById(playerId).IsDead())
@@ -1435,6 +1480,28 @@ public static class CheckGameEndPatch
                         CustomEndGame((GameOverReason)CustomGameOverReason.SuicidalIdeationWin, false);
                         return true;
                     }
+                }
+            }
+        }
+        return false;
+    }
+    public static bool CheckAndEndGameForSafecrackerWin(ShipStatus __instance)
+    {
+        foreach (PlayerControl p in Safecracker.SafecrackerPlayer)
+        {
+            if (p == null) continue;
+            if (!p.Data.Disconnected)
+            {
+                var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                if (p.IsAlive() && playerCompleted >= playerTotal)
+                {
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                    Writer.Write(p.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                    RPCProcedure.ShareWinner(p.PlayerId);
+                    __instance.enabled = false;
+                    CustomEndGame((GameOverReason)CustomGameOverReason.SafecrackerWin, false);
+                    return true;
                 }
             }
         }

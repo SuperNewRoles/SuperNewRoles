@@ -15,7 +15,7 @@ public static class TaskBar
             Instance = __instance;
             if (GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.TaskBarMode) != (int)TaskBarMode.Invisible)
             {
-                
+
                 if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.CognitiveDeficit)
                 {
                     __instance.gameObject.SetActive(Main.IsLocalEnd);

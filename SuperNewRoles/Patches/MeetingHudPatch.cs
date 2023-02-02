@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles;
+using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using UnhollowerBaseLib;
 using UnityEngine;
 using static MeetingHud;
@@ -130,7 +134,7 @@ class CheckForEndVotingPatch
                                     exile = p;
                                     p.RpcSetColor((byte)outfit.ColorId);
                                     p.RpcSetName(target.Object.GetDefaultName() +
-                                        ModTranslation.GetString(target.Object.IsRole(RoleId.Marine) ?
+                                        ModTranslation.GetString(target.Object.IsRole(RoleId.Marlin) ?
                                         "AssassinSucsess" :
                                         "AssassinFail")
                                         + "<size=0%>");
@@ -142,7 +146,7 @@ class CheckForEndVotingPatch
                             }
                         }
                         RoleClass.Assassin.MeetingEndPlayers.Add(RoleClass.Assassin.TriggerPlayer.PlayerId);
-                        if (target.Object.IsRole(RoleId.Marine))
+                        if (target.Object.IsRole(RoleId.Marlin))
                             RoleClass.Assassin.IsImpostorWin = true;
                         else
                             RoleClass.Assassin.DeadPlayer = RoleClass.Assassin.TriggerPlayer;
@@ -364,6 +368,18 @@ class CheckForEndVotingPatch
                     exiledPlayer = ModHelpers.GetRandom(DictatorSubExileTargetList)?.Data;
                 }
             }
+            else if (exiledPlayer != null && exiledPlayer.Object.IsRole(RoleId.Safecracker) && Safecracker.CheckTask(exiledPlayer.Object, Safecracker.CheckTasks.ExiledGuard) && (!Safecracker.ExiledGuardCount.ContainsKey(exiledPlayer.Object.PlayerId) || Safecracker.ExiledGuardCount[exiledPlayer.Object.PlayerId] >= 1))
+            {
+                Logger.Info($"金庫破りが追放ガードの条件を満たしましていました", "Safecracker Exiled Guard");
+                Logger.Info($"金庫破りが追放ガードの回数(減らす前) : {(Safecracker.ExiledGuardCount.ContainsKey(exiledPlayer.Object.PlayerId) ? Safecracker.ExiledGuardCount[exiledPlayer.Object.PlayerId] : Safecracker.SafecrackerMaxExiledGuardCount.GetInt())}回", "Safecracker Exiled Guard");
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SafecrackerGuardCount);
+                writer.Write(exiledPlayer.PlayerId);
+                writer.Write(false);
+                writer.EndRPC();
+                RPCProcedure.SafecrackerGuardCount(exiledPlayer.PlayerId, false);
+                Logger.Info($"金庫破りが追放ガードの回数(減らした後) : {Safecracker.ExiledGuardCount[exiledPlayer.PlayerId]}回", "Safecracker Exiled Guard");
+                exiledPlayer = null;
+            }
 
             __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
 
@@ -474,12 +490,22 @@ class MeetingHudStartPatch
 {
     public static void Postfix(MeetingHud __instance)
     {
+        Logger.Info("会議開始時の処理 開始", "MeetingHudStartPatch");
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             new LateTask(() =>
             {
                 SyncSetting.CustomSyncSettings();
+                SyncSetting.MeetingSyncSettings();
             }, 3f, "StartMeeting CustomSyncSetting");
+        }
+        Roles.Crewmate.Celebrity.TimerStop();
+        if (ModeHandler.IsMode(ModeId.Default))
+        {
+            new LateTask(() =>
+            {
+                SyncSetting.MeetingSyncSettings();
+            }, 3f, "StartMeeting MeetingSyncSettings SNR");
         }
         Roles.Crewmate.Knight.ProtectedPlayer = null;
         Roles.Crewmate.Knight.GuardedPlayers = new();
@@ -515,6 +541,7 @@ class MeetingHudStartPatch
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("WerewolfKillButton") != null) GameObject.Destroy(x.transform.FindChild("WerewolfKillButton").gameObject); });
             }, RoleClass.Werewolf.GetButtonSprite(), (PlayerControl player) => player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId);
         }
+        Logger.Info("会議開始時の処理 終了", "MeetingHudStartPatch");
     }
     public static void CreateMeetingButton(MeetingHud __instance, string ButtonName, Action<int, MeetingHud> OnClick, Sprite sprite, Func<PlayerControl, bool> CheckCanButton)
     {
@@ -537,4 +564,69 @@ class MeetingHudStartPatch
             }
         }
     }
+}
+
+public static class OpenVotes
+{
+    /// <summary>
+    /// 公開投票にします。
+    /// </summary>
+    /// <param name="player">設定送信先</param>
+    /// <returns>Anonymous votes(匿名投票)をfalseにする事で、Open votes(公開投票)にします。</returns>
+    public static bool VoteSyncSetting(this PlayerControl player)
+    {
+        var role = player.GetRole();
+        var optdata = SyncSetting.OptionData.DeepCopy();
+
+        switch (role)
+        {
+            case RoleId.God:
+                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.God.IsVoteView);
+                break;
+            case RoleId.Observer:
+                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Observer.IsVoteView);
+                break;
+            case RoleId.Marlin:
+                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Marlin.IsVoteView);
+                break;
+            case RoleId.Assassin:
+                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Assassin.IsVoteView);
+                break;
+        }
+        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, !CustomOptionHolder.CanGhostSeeVote.GetBool());
+        Logger.Info("開票しました。", "OpenVotes");
+        return optdata.GetBool(BoolOptionNames.AnonymousVotes);
+    }
+}
+
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
+public class MeetingHudUpdatePatch
+{
+    public static void Postfix()
+    {
+        if (Instance)
+        {
+            foreach (PlayerVoteArea player in Instance.playerStates)
+            {
+                PlayerControl target = null;
+                PlayerControl.AllPlayerControls.ToList().ForEach(x =>
+                {
+                    string name = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
+                    if (name == x.Data.PlayerName) target = x;
+                });
+                if (target != null)
+                {
+                    if (ConfigRoles.IsLightAndDarker.Value)
+                    {
+                        if (player.NameText.text.Contains(GetLightAndDarkerText(true)) ||
+                            player.NameText.text.Contains(GetLightAndDarkerText(false))) continue;
+                        player.NameText.text += GetLightAndDarkerText(CustomColors.lighterColors.Contains(target.Data.DefaultOutfit.ColorId));
+                    }
+                    else player.NameText.text = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
+                }
+                else Logger.Error($"プレイヤーコントロールを取得できませんでした。 プレイヤー名 : {player.NameText.text}", "LightAndDarkerText");
+            }
+        }
+    }
+    public static string GetLightAndDarkerText(bool isLight) => $" ({(isLight ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"))[0]})";
 }

@@ -56,5 +56,6 @@ public enum FinalStatus
     MadmakerMisSet,
     Revenge,//猫カボチャの道連れ
     HitmanKill,
-    HitmanDead
+    HitmanDead,
+    WorshiperSelfDeath,
 }

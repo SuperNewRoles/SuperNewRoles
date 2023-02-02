@@ -11,9 +11,19 @@ class MurderPlayer
 {
     public static void Postfix(PlayerControl __instance, PlayerControl target)
     {
-        if (!AmongUsClient.Instance.AmHost) return;
         if (target.IsAlive()) return;
+        if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Finder))
+        {
+            RoleClass.Finder.KillCount++;
+        }
+        if (!AmongUsClient.Instance.AmHost) return;
         FixedUpdate.SetRoleNames();
+        if (__instance.IsRole(RoleId.Finder))
+        {
+            if (!RoleClass.Finder.KillCounts.ContainsKey(__instance.PlayerId))
+                RoleClass.Finder.KillCounts[__instance.PlayerId] = 0;
+            RoleClass.Finder.KillCounts[__instance.PlayerId]++;
+        }
         if (target.IsRole(RoleId.Sheriff) || target.IsRole(RoleId.truelover) || target.IsRole(RoleId.MadMaker))
         {
             target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
@@ -61,5 +71,6 @@ class MurderPlayer
         }
         Roles.Bait.MurderPostfix(__instance, target);
         FixedUpdate.SetRoleName(target);
+        Seer.WrapUpPatch.MurderPlayerPatch.ShowFlash_SHR(target);
     }
 }

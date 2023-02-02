@@ -55,7 +55,8 @@ public static class RoleSelectHandler
                 CustomOptionHolder.SamuraiOption.GetSelection() != 0 ||
                 CustomOptionHolder.DemonOption.GetSelection() != 0 ||
                 CustomOptionHolder.ToiletFanOption.GetSelection() != 0 ||
-                CustomOptionHolder.NiceButtonerOption.GetSelection() != 0)
+                CustomOptionHolder.NiceButtonerOption.GetSelection() != 0 ||
+                SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperOption.GetSelection() != 0)
             {
                 PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
                 bot1.RpcSetRole(RoleTypes.Impostor);
@@ -69,7 +70,7 @@ public static class RoleSelectHandler
                 crewmate++;
                 crewmate++;
             }
-            else if (CustomOptionHolder.AssassinAndMarineOption.GetSelection() != 0)
+            else if (CustomOptionHolder.AssassinAndMarlinOption.GetSelection() != 0)
             {
                 PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
                 bot1.RpcSetRole(RoleTypes.Crewmate);
@@ -88,9 +89,9 @@ public static class RoleSelectHandler
             {
                 BotManager.Spawn("パン屋BOT").Exiled();
             }
-            else if (CustomOptionHolder.AssassinAndMarineOption.GetSelection() != 0)
+            else if (CustomOptionHolder.AssassinAndMarlinOption.GetSelection() != 0)
             {
-                BotManager.Spawn(ModTranslation.GetString("AssassinAndMarineName") + "BOT").Exiled();
+                BotManager.Spawn(ModTranslation.GetString("AssassinAndMarlinName") + "BOT").Exiled();
             }
         }
     }
@@ -129,6 +130,7 @@ public static class RoleSelectHandler
         SetRoleDesync(RoleClass.RemoteSheriff.RemoteSheriffPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.ToiletFan.ToiletFanPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.NiceButtoner.NiceButtonerPlayer, RoleTypes.Shapeshifter);
+        SetRoleDesync(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperPlayer, RoleTypes.Shapeshifter);
         /*============シェイプシフターDesync============*/
 
 
@@ -139,6 +141,7 @@ public static class RoleSelectHandler
         SetVanillaRole(RoleClass.SuicideWisher.SuicideWisherPlayer, RoleTypes.Shapeshifter, false);
         SetVanillaRole(RoleClass.Doppelganger.DoppelggerPlayer, RoleTypes.Shapeshifter, false);
         SetVanillaRole(RoleClass.Camouflager.CamouflagerPlayer, RoleTypes.Shapeshifter, false);
+        SetVanillaRole(RoleClass.EvilSeer.EvilSeerPlayer, RoleTypes.Shapeshifter, false);
         /*============シェイプシフター役職設定============*/
 
         foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer)
@@ -194,7 +197,7 @@ public static class RoleSelectHandler
                 foreach (var pc in PlayerControl.AllPlayerControls)
                 {
                     if (pc.PlayerId == Player.PlayerId) continue;
-                    if (!pc.IsMod()) 
+                    if (!pc.IsMod())
                     {
                         if (pc.IsImpostor() || pc.IsRole(RoleId.Spy))
                         {
@@ -332,7 +335,7 @@ public static class RoleSelectHandler
             }
         }
 
-        var Assassinselection = CustomOptionHolder.AssassinAndMarineOption.GetSelection();
+        var Assassinselection = CustomOptionHolder.AssassinAndMarlinOption.GetSelection();
         SuperNewRolesPlugin.Logger.LogInfo("[SHR] アサイン情報:" + Assassinselection + "、" + AllRoleSetClass.CrewmatePlayerNum + "、" + AllRoleSetClass.CrewmatePlayers.Count);
         if (Assassinselection != 0 && AllRoleSetClass.CrewmatePlayerNum > 0 && AllRoleSetClass.CrewmatePlayers.Count > 0)
         {

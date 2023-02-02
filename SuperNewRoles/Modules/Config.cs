@@ -25,9 +25,15 @@ public static class ConfigRoles
     public static ConfigEntry<bool> DownloadOtherSkins { get; set; }
     public static ConfigEntry<bool> IsUpdate { get; set; }
     public static ConfigEntry<bool> IsDeleted { get; set; }
+    public static ConfigEntry<bool> IsSendAnalytics { get; set; }
+    public static ConfigEntry<bool> IsLightAndDarker { get; set; }
+    public static bool IsSendAnalyticsPopupViewd;
     public static bool IsUpdated = false;
     public static void Load()
     {
+        var issendanaly = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsSendAnalyticsViewd", false);
+        IsSendAnalyticsPopupViewd = issendanaly.Value;
+        issendanaly.Value = true;
         CustomCosmetics.CustomCosmeticsMenus.Patch.ObjectData.SelectedPreset = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Selected Closet Preset", 0);
         StreamerMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Enable Streamer Mode", false);
         AutoUpdate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Auto Update", true);
@@ -41,6 +47,8 @@ public static class ConfigRoles
         EnableHorseMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "EnableHorseMode", false);
         DownloadSuperNewNamePlates = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "DownloadSuperNewNamePlates", true);
         IsNotUsingBlood = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsNotUsingBlood", false);
+        IsSendAnalytics = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsSendAnalytics", true);
+        IsLightAndDarker = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsLightAndDarker", true);
         Ip = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server IP", "127.0.0.1");
         Port = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server Port", (ushort)22023);
         IsUpdate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsUpdate", true);

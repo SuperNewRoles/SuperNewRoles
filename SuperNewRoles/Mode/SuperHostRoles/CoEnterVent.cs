@@ -26,6 +26,9 @@ class CoEnterVent
             case RoleId.Jackal:
                 if (RoleClass.Jackal.IsUseVent) return true;
                 break;
+            case RoleId.JackalSeer:
+                if (RoleClass.JackalSeer.IsUseVent) return true;
+                break;
             case RoleId.MadMaker:
                 if (RoleClass.MadMaker.IsUseVent) return true;
                 break;
@@ -40,6 +43,9 @@ class CoEnterVent
                 break;
             case RoleId.SeerFriends:
                 if (RoleClass.SeerFriends.IsUseVent) return true;
+                break;
+            case RoleId.Worshiper:
+                if (SuperNewRoles.Roles.Impostor.MadRole.Worshiper.IsUseVent) return true;
                 break;
             case RoleId.RemoteSheriff:
             case RoleId.Sheriff:

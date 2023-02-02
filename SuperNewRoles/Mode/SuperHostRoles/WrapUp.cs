@@ -6,6 +6,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using UnityEngine;
+using static SuperNewRoles.Helpers.RPCHelper;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -25,6 +26,10 @@ class WrapUpClass
             if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
         }
         foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
+        {
+            if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
+        }
+        foreach (PlayerControl p in SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperPlayer)
         {
             if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
         }
@@ -84,5 +89,6 @@ class WrapUpClass
         }
         Roles.Jester.WrapUp(exiled);
         Roles.Nekomata.WrapUp(exiled);
+        if (exiled.Object.IsShapeshifter()) exiled.Object.ResetAndSetImpostorghost();
     }
 }
