@@ -84,7 +84,7 @@ colorAzuki,Azuki,小豆,红豆
 colorSnow,Snow,雪,雪白
 colorLightMagenta,LightMagenta,ライトマゼンタ,浅品红
 colorPeachFlower,PeachFlower,桃花,桃红
-colorPlum,Plum,梅,梅花,梅红
+colorPlum,Plum,梅,梅红
 colorSkyBlue,SkyBlue,青空,天蓝
 colorLightCyan,LightCyan,ライトシアン,浅青
 colorLightOrange,LightOrange,ライトオレンジ,浅橙
@@ -283,7 +283,7 @@ FinalStatusKill,Kill,キル,死亡
 FinalStatusExiled,Exiled,追放,放逐
 FinalStatusSheriffKill,Executing justice,正義執行,出警
 FinalStatusSheriffMisFire,Sheriff misfire,シェリフ誤爆,走火
-FinalStatusMeetingSheriffKill,Meeting Sheriff kill,Executing justice,正義執行,执法
+FinalStatusMeetingSheriffKill,Meeting Sheriff kill，Executing justice,正義執行,执法
 FinalStatusMeetingSheriffMisFire,Meeting Sheriff misfire,ミーティングシェリフ誤爆,误判
 FinalStatusIgnite,Ignite,焼殺,纵火
 FinalStatusDisconnected,Amputation,切断,断连
@@ -550,7 +550,7 @@ ClergymanLightOutMessage,The Clergyman is blocking my view!,聖職者が視界�
 MadmateName,Madmate,マッドメイト,叛徒
 MadmateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助内鬼获得胜利
 MadmateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。
-MadmateIsCheckImpostorSetting,You can check the Impostor.,インポスターが確認できる,可以得知内鬼是谁
+MadmateIsCheckImpostorSetting,Do you have the capacity for fanaticism?,狂信能力を有するか
 MadmateCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量(全タスク内),确认身份需要完成的任务量
 MadmateUseVentSetting,Use Vent,ベントに入れる,可以进入管道
 MadmateVentMoveSetting,Move Vent,ベントで動ける,叛徒可以使用管道
@@ -1058,7 +1058,7 @@ MadRolesCanFixElectrical,Mad roles can fix electrical sabotage,マッド役職�
 MadRolesCanVentMove,Mad roles can vent move,マッド役職がベント移動できる,叛徒阵营玩家可以在管道间移动
 DoppelgangerName,Doppelganger,ドッペルゲンガー,二重身
 DoppelgangerTitle1,\It seems that if you'll meet myself， you're dead\,同じ顔の人に出会うと死んじゃうんだって,“听说了吗，人在命不久矣的时候会见到另一个自己”
-DoppelgangerDescription,Doppelgangers can ShapeShift.\nIf a ShapeShifted target is killed during ShapeShift, the Kill Cool  is shorter.\nIf, instead, a non-shapeShifted target is killed or a non-shapeShifted target is killed, the Kill Cool will be longer.,ドッペルゲンガーはシェイプシフトができます\nシェイプシフトをした状態で、シェイプシフトの変身先をキルするとキルクールが短くなります。\nシェイプシフトの変身先以外をキルしたり、シェイプシフトをしない状態でキルすると、キルクールが長くなってします。,二重身可以化形。\n化形状态下的二重身击杀自己的化形对象后，二重身的下一次击杀冷却缩短。\n若二重身在化形状态下击杀了自己化形对象以外的玩家，或者在未化形的状态下进行击杀，下一次击杀冷却将延长。
+DoppelgangerDescription,Doppelgangers can ShapeShift.\nIf a ShapeShifted target is killed during ShapeShift，the Kill Cool  is shorter.\nIf，instead，a non-shapeShifted target is killed or a non-shapeShifted target is killed，the Kill Cool will be longer.,ドッペルゲンガーはシェイプシフトができます\nシェイプシフトをした状態で、シェイプシフトの変身先をキルするとキルクールが短くなります。\nシェイプシフトの変身先以外をキルしたり、シェイプシフトをしない状態でキルすると、キルクールが長くなってします。,二重身可以化形。\n化形状态下的二重身击杀自己的化形对象后，二重身的下一次击杀冷却缩短。\n若二重身在化形状态下击杀了自己化形对象以外的玩家，或者在未化形的状态下进行击杀，下一次击杀冷却将延长。
 DoppelgangerDurationTimeSetting,Shapeshift Duration,シェイプシフトの持続時間,二重身化形持续时间
 DoppelgangerCooldownSetting,Shapeshift Cooldown,シェイプシフトのクールタイム,二重身化形冷却
 DoppelgangerSucTimeSetting,Kill Cool Time on Success,成功時のキルクール,二重身成功击杀化形对象后的击杀冷却
@@ -1106,7 +1106,7 @@ PavlovsTeamWinText,Pavlov's dog and owner,パブロフの犬とオーナー,巴�
 PavlovsownerCreatedogButtonName,stenciling,刷り込み,驯化
 KnightName,Knight,騎士,骑士
 KnightTitle1,I will protect you according to my beliefs.,我が信念に沿って護衛しよう,举起正义之盾
-KnightDescription,During the conference phase, you can put up a shield to prevent one kill by using the protect button. If the protection is successful, a successful protection announcement will be played at the beginning of the next meeting phase.,会議フェイズ中に護衛ボタンを使用する事で、キルを一回防ぐシールドを張ることができます。 設定により護衛が成功した際、次の会議フェイズ開始時に護衛成功アナウンスが流れます。,会议阶段，骑士可以选择一名玩家，阻挡一次那名玩家在会议上遭受的击杀。根据房间设置，骑士守护成功的下一轮会议上，所有玩家可以收到骑士守护成功的信息。
+KnightDescription,During the conference phase，you can put up a shield to prevent one kill by using the protect button. If the protection is successful，a successful protection announcement will be played at the beginning of the next meeting phase.,会議フェイズ中に護衛ボタンを使用する事で、キルを一回防ぐシールドを張ることができます。 設定により護衛が成功した際、次の会議フェイズ開始時に護衛成功アナウンスが流れます。,会议阶段，骑士可以选择一名玩家，阻挡一次那名玩家在会议上遭受的击杀。根据房间设置，骑士守护成功的下一轮会议上，所有玩家可以收到骑士守护成功的信息。
 KnightCanAnnounceOfProtected,Play an announcement when the protection is successful?,護衛成功時にアナウンスを流すか,骑士守护成功后通知所有玩家
 KnightSetTheUpperLimitOfTheGuarding,Do you want to set a limit on the number of protections?,護衛回数に上限を設けるか,骑士守护次数有上限
 KnightMaximumNumberOfTimes,Maximum number of times protection is possible.,護衛上限回数,骑士每轮游戏最大守护次数
