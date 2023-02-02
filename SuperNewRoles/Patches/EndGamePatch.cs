@@ -815,32 +815,29 @@ public static class OnGameEndPatch
         //下に行くほど優先度が高い
         bool isDleted = false;
         bool changeTheWinCondition = CustomOptionHolder.IsChangeTheWinCondition.GetBool();
-        bool isReset = false;
 
         foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
         {
             if (player.IsAlive() && !RoleClass.Neet.IsAddWin)
             {
-                if (!((isDleted && changeTheWinCondition) || isReset))
+                if (!(isDleted || changeTheWinCondition))
                 {
                     TempData.winners = new();
                     isDleted = true;
-                    isReset = true;
                 }
                 TempData.winners.Add(new(player.Data));
                 AdditionalTempData.winCondition = WinCondition.NeetWin;
+
             }
         }
-        isReset = false;
         foreach (PlayerControl player in RoleClass.God.GodPlayer)
         {
             if (player.IsAlive())
             {
-                if (!((isDleted && changeTheWinCondition) || isReset))
+                if (!(isDleted || changeTheWinCondition))
                 {
                     TempData.winners = new();
                     isDleted = true;
-                    isReset = true;
                 }
                 var (Complete, all) = TaskCount.TaskDateNoClearCheck(player.Data);
                 if (!RoleClass.God.IsTaskEndWin || Complete >= all)
@@ -850,23 +847,20 @@ public static class OnGameEndPatch
                 }
             }
         }
-        isReset = false;
         foreach (PlayerControl player in RoleClass.Tuna.TunaPlayer)
         {
             if (player.IsAlive() && !RoleClass.Tuna.IsTunaAddWin)
             {
-                if (!((isDleted && changeTheWinCondition) || isReset))
+                if (!(isDleted || changeTheWinCondition))
                 {
                     TempData.winners = new();
                     isDleted = true;
-                    isReset = true;
                 }
                 TempData.winners.Add(new(player.Data));
                 AdditionalTempData.winCondition = WinCondition.TunaWin;
 
             }
         }
-        isReset = false;
         foreach (PlayerControl player in RoleClass.Stefinder.StefinderPlayer)
         {
             if (player.IsAlive() && CustomOptionHolder.StefinderSoloWin.GetBool())
@@ -876,11 +870,10 @@ public static class OnGameEndPatch
                     AdditionalTempData.gameOverReason == GameOverReason.HumansByVote ||
                     AdditionalTempData.gameOverReason == GameOverReason.HumansDisconnect))
                 {
-                    if (!((isDleted && changeTheWinCondition) || isReset))
+                    if (!(isDleted || changeTheWinCondition))
                     {
                         TempData.winners = new();
                         isDleted = true;
-                        isReset = true;
                     }
                     TempData.winners.Add(new(player.Data));
                     AdditionalTempData.winCondition = WinCondition.StefinderWin;
@@ -891,18 +884,16 @@ public static class OnGameEndPatch
                     AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote ||
                     AdditionalTempData.gameOverReason == GameOverReason.ImpostorDisconnect))
                 {
-                    if (!((isDleted && changeTheWinCondition) || isReset))
+                    if (!(isDleted || changeTheWinCondition))
                     {
                         TempData.winners = new();
                         isDleted = true;
-                        isReset = true;
                     }
                     TempData.winners.Add(new(player.Data));
                     AdditionalTempData.winCondition = WinCondition.StefinderWin;
                 }
             }
         }
-        isReset = false;
         foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
         {
             if (RoleClass.Lovers.IsSingleTeam)
@@ -919,11 +910,10 @@ public static class OnGameEndPatch
                 {
                     foreach (PlayerControl player in plist)
                     {
-                        if (!((isDleted && changeTheWinCondition) || isReset))
+                        if (!(isDleted || changeTheWinCondition))
                         {
                             TempData.winners = new();
                             isDleted = true;
-                            isReset = true;
                         }
                         TempData.winners.Add(new(player.Data));
                         if (RoleClass.Cupid.CupidLoverPair.ContainsValue(player.PlayerId))
@@ -938,7 +928,6 @@ public static class OnGameEndPatch
                 }
             }
         }
-        isReset = false;
         foreach (PlayerControl player in RoleClass.Spelunker.SpelunkerPlayer)
         {
             bool isreset = false;
@@ -946,11 +935,10 @@ public static class OnGameEndPatch
             {
                 if (!isreset)
                 {
-                    if (!((isDleted && changeTheWinCondition) || isReset))
+                    if (!(isDleted || changeTheWinCondition))
                     {
                         TempData.winners = new();
                         isDleted = true;
-                        isReset = true;
                     }
                     TempData.winners.Add(new(player.Data));
                     AdditionalTempData.winCondition = WinCondition.SpelunkerWin;
@@ -958,18 +946,14 @@ public static class OnGameEndPatch
                 isreset = true;
             }
         }
-        isReset = false;
-        var foxPlayers = RoleClass.Fox.FoxPlayer;
-        foxPlayers.AddRange(foxPlayers);
-        foreach (PlayerControl player in foxPlayers)
+        foreach (PlayerControl player in RoleClass.Fox.FoxPlayer)
         {
             if (player.IsAlive())
             {
-                if (!((isDleted && changeTheWinCondition) || isReset))
+                if (!(isDleted || changeTheWinCondition))
                 {
                     TempData.winners = new();
                     isDleted = true;
-                    isReset = true;
                 }
                 TempData.winners.Add(new(player.Data));
                 AdditionalTempData.winCondition = WinCondition.FoxWin;

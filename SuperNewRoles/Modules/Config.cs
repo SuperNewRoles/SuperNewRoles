@@ -26,7 +26,6 @@ public static class ConfigRoles
     public static ConfigEntry<bool> IsUpdate { get; set; }
     public static ConfigEntry<bool> IsDeleted { get; set; }
     public static ConfigEntry<bool> IsSendAnalytics { get; set; }
-    public static ConfigEntry<bool> IsLightAndDarker { get; set; }
     public static bool IsSendAnalyticsPopupViewd;
     public static bool IsUpdated = false;
     public static void Load()
@@ -48,7 +47,6 @@ public static class ConfigRoles
         DownloadSuperNewNamePlates = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "DownloadSuperNewNamePlates", true);
         IsNotUsingBlood = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsNotUsingBlood", false);
         IsSendAnalytics = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsSendAnalytics", true);
-        IsLightAndDarker = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsLightAndDarker", true);
         Ip = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server IP", "127.0.0.1");
         Port = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server Port", (ushort)22023);
         IsUpdate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsUpdate", true);

@@ -6,7 +6,6 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
-using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
@@ -26,7 +25,6 @@ public static class RoleClass
     public static Color FoxPurple = Palette.Purple;
     public static bool IsStart;
     public static List<byte> BlockPlayers;
-    public static float DefaultKillCoolDown;
 
     public static void ClearAndReloadRoles()
     {
@@ -40,7 +38,6 @@ public static class RoleClass
         LateTask.AddTasks = new();
         BotManager.AllBots = new();
         IsCoolTimeSetted = false;
-        DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
         Agartha.MapData.ClearAndReloads();
         LadderDead.Reset();
@@ -192,7 +189,7 @@ public static class RoleClass
         WaveCannon.ClearAndReload();
         Doppelganger.ClearAndReload();
         Werewolf.ClearAndReload();
-        Knight.ClearAndReload();
+        Crewmate.Knight.ClearAndReload();
         Pavlovsdogs.ClearAndReload();
         Pavlovsowner.ClearAndReload();
         WaveCannonJackal.ClearAndReload();
@@ -206,9 +203,6 @@ public static class RoleClass
         Jumbo.ClearAndReload();
         Impostor.MadRole.Worshiper.ClearAndReload();
         Safecracker.ClearAndReload();
-        FireFox.ClearAndReload();
-        Squid.ClearAndReload();
-        DyingMessenger.ClearAndReload();
         //ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
@@ -224,7 +218,7 @@ public static class RoleClass
 
         public static void ClearAndReload()
         {
-            AmDebugger = AmongUsClient.Instance.AmHost && ConfigRoles.DebugMode.Value && CustomOptionHolder.DebuggerOption.GetBool();
+            AmDebugger = AmongUsClient.Instance.AmHost && CustomOptionHolder.DebuggerOption.GetBool();
         }
     }
 
@@ -1501,13 +1495,11 @@ public static class RoleClass
         public static Color32 color = Color.yellow;
         public static bool ChangeRoleView;
         public static List<PlayerControl> ViewPlayers;
-        public static float FlashTime;
         public static void ClearAndReload()
         {
             CelebrityPlayer = new();
             ChangeRoleView = CustomOptionHolder.CelebrityChangeRoleView.GetBool();
             ViewPlayers = new();
-            FlashTime = DefaultKillCoolDown >= 5 ? DefaultKillCoolDown * 1000 : 5000;
         }
     }
     public static class Nocturnality
@@ -2372,7 +2364,6 @@ public static class RoleClass
         public static Color32 color = ImpostorRed;
         public static int CheckMadmateKillCount;
         public static int KillCount;
-        public static Dictionary<byte, int> KillCounts;
         public static bool IsCheck
         {
             get
@@ -2385,7 +2376,6 @@ public static class RoleClass
             FinderPlayer = new();
             CheckMadmateKillCount = CustomOptionHolder.FinderCheckMadmateSetting.GetInt();
             KillCount = 0;
-            KillCounts = new();
         }
     }
     public static class Revolutionist

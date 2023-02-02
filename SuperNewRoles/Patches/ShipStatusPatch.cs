@@ -4,7 +4,6 @@ using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
-using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -127,8 +126,6 @@ class LightPatch
             ? __instance.MaxLightRadius
             : player.Object.IsRole(RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate
             ? GetNeutralLightRadius(__instance, false)
-            : Squid.Abilitys.IsObstruction
-            ? Mathf.Lerp(__instance.MaxLightRadius * Squid.SquidDownVision.GetFloat(), __instance.MaxLightRadius * Squid.SquidDownVision.GetFloat(), num)
             : player.Object.IsImpostor() || RoleHelpers.IsImpostorLight(player.Object)
             ? GetNeutralLightRadius(__instance, true)
             : player.Object.IsRole(RoleId.Lighter) && RoleClass.Lighter.IsLightOn

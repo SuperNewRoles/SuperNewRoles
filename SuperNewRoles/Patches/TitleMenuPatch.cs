@@ -1,22 +1,9 @@
-using System.Linq;
-using BepInEx.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace SuperNewRoles.Patches;
 
-[HarmonyPatch(typeof(PlayerParticles), nameof(PlayerParticles.Start))]
-public class MainMenuStartPatcha
-{
-    private static void Postfix(PlayerParticles __instance)
-    {
-        foreach (var item in __instance.pool.activeChildren)
-        {
-            PlayerMaterial.SetColors(ModHelpers.GetRandomIndex<Color32>(Palette.PlayerColors.ToList()), item.TryCast<PlayerParticle>().myRend);
-        }
-    }
-}
 [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
 public class MainMenuStartPatch
 {
