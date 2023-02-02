@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
@@ -8,14 +10,6 @@ namespace SuperNewRoles.Roles;
 class Seer
 //マッド・イビル・フレンズ・ジャッカル・サイドキック　シーア
 {
-    public static List<List<PlayerControl>> Seers = new() {
-            RoleClass.Seer.SeerPlayer,
-            RoleClass.EvilSeer.EvilSeerPlayer,
-            RoleClass.MadSeer.MadSeerPlayer,
-            RoleClass.JackalSeer.JackalSeerPlayer,
-            RoleClass.SeerFriends.SeerFriendsPlayer
-        };
-
     public static SpriteRenderer FullScreenRenderer;
 
     /** <summary>
@@ -161,7 +155,7 @@ class Seer
                             break;
                         case RoleId.EvilSeer:
                             if (RoleClass.EvilSeer.deadBodyPositions != null) RoleClass.EvilSeer.deadBodyPositions.Add(target.transform.position);
-                            ModeFlag = RoleClass.MadSeer.mode <= 1;
+                            ModeFlag = RoleClass.EvilSeer.mode <= 1;
                             break;
                         case RoleId.SeerFriends:
                             if (RoleClass.SeerFriends.deadBodyPositions != null) RoleClass.SeerFriends.deadBodyPositions.Add(target.transform.position);
@@ -176,6 +170,29 @@ class Seer
                     if (PlayerControl.LocalPlayer.IsAlive() && CachedPlayer.LocalPlayer.PlayerId != target.PlayerId && ModeFlag)
                     {
                         ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+                    }
+                }
+            }
+            public static void ShowFlash_SHR(PlayerControl target)
+            {
+                List<List<PlayerControl>> seers = new() {
+                    RoleClass.Seer.SeerPlayer,
+                    RoleClass.EvilSeer.EvilSeerPlayer,
+                    RoleClass.MadSeer.MadSeerPlayer,
+                    RoleClass.JackalSeer.JackalSeerPlayer,
+                    RoleClass.SeerFriends.SeerFriendsPlayer
+                };
+                foreach (var p in seers)
+                {
+                    if (p == null) continue;
+                    foreach (var p2 in p)
+                    {
+                        if (p2 == null) continue;
+                        if (!p2.IsMod())
+                        {
+                            p2.ShowReactorFlash(1.5f);
+                            Logger.Info($"非導入者で尚且つ[ {p2.GetRole()} ]である{p2.GetDefaultName()}に死の点滅を発生させました。", "MurderPlayer");
+                        }
                     }
                 }
             }

@@ -1,11 +1,11 @@
+using Agartha;
+using AmongUs.GameOptions;
 using HarmonyLib;
-using UnityEngine;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
-using Agartha;
-using AmongUs.GameOptions;
+using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
@@ -29,6 +29,14 @@ class ControllerManagerUpdatePatch
             if (resolutionIndex >= resolutions.Length) resolutionIndex = 0;
             ResolutionManager.SetResolution(resolutions[resolutionIndex].Item1, resolutions[resolutionIndex].Item2, false);
         }
+
+        // その時点までのlogを切り出す
+        if (ModHelpers.GetManyKeyDown(new[] { KeyCode.S, KeyCode.LeftShift, KeyCode.RightShift }))
+        {
+            string via = "KeyCommandVia";
+            Logger.SaveLog(via, via);
+        }
+
         // 以下ホストのみ
         if (!AmongUsClient.Instance.AmHost) return;
 
@@ -84,10 +92,6 @@ class ControllerManagerUpdatePatch
             {
                 GameOptionsManager.Instance.SwitchGameMode(GameModes.HideNSeek);
                 RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
-            }
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                GameManager.Instance.RpcEndGame(GameOverReason.ImpostorByKill, false);
             }
             if (Input.GetKeyDown(KeyCode.J))
             {

@@ -52,12 +52,6 @@ public static class SyncSetting
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, RoleClass.Samurai.SwordCoolTime);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, RoleClass.Samurai.SwordCoolTime);
                 break;
-            case RoleId.God:
-                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.God.IsVoteView);
-                break;
-            case RoleId.Observer:
-                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Observer.IsVoteView);
-                break;
             case RoleId.MadMaker:
                 if (!player.IsMod())
                 {
@@ -99,7 +93,7 @@ public static class SyncSetting
                 break;
             case RoleId.RemoteSheriff:
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
-                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, KillCoolSet(RoleClass.RemoteSheriff.KillCoolTime));
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
                 if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId) && RoleClass.RemoteSheriff.KillCount[player.PlayerId] < 1)
                 {
                     optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
@@ -145,6 +139,27 @@ public static class SyncSetting
                 }
                 optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Jackal.KillCooldown));
                 break;
+            case RoleId.JackalSeer:
+                if (!player.IsMod())
+                {
+                    if (!RoleClass.JackalSeer.IsImpostorLight)
+                    {
+                        optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
+                        var switchSystemJackal = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystemJackal != null && switchSystemJackal.IsActive) optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) / 5);
+                    }
+                }
+                else
+                {
+                    if (RoleClass.JackalSeer.IsImpostorLight)
+                    {
+                        optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
+                        var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
+                    }
+                }
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.JackalSeer.KillCooldown));
+                break;
             case RoleId.Demon:
                 optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Demon.CoolTime));
                 break;
@@ -182,12 +197,37 @@ public static class SyncSetting
                 if (RoleClass.Camouflager.IsCamouflage)
                 {
                     optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown,
-                            RoleClass.Camouflager.CoolTime >= 5f ? (RoleClass.Camouflager.CoolTime + RoleClass.Camouflager.DurationTime - 2f)
-                                                                 : (3f + RoleClass.Camouflager.DurationTime));
+                            RoleClass.Camouflager.CoolTime >= 5f ? (RoleClass.Camouflager.CoolTime + RoleClass.Camouflager.DurationTime - 2f) : (3f + RoleClass.Camouflager.DurationTime));
                 }
                 break;
+            case RoleId.Worshiper:
+                if (!player.IsMod())
+                {
+                    if (!SuperNewRoles.Roles.Impostor.MadRole.Worshiper.IsImpostorLight)
+                    {
+                        optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
+                        var switchSystemWorshiper = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystemWorshiper != null && switchSystemWorshiper.IsActive) optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) / 5);
+                    }
+                }
+                else
+                {
+                    if (SuperNewRoles.Roles.Impostor.MadRole.Worshiper.IsImpostorLight)
+                    {
+                        optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
+                        var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
+                    }
+                }
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.KillSuicideCoolTime));
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, SuperNewRoles.Roles.Impostor.MadRole.Worshiper.AbilitySuicideCoolTime);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
+                break;
+            case RoleId.EvilSeer:
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
+                optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
+                break;
         }
-        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         optdata.RpcSyncOption(player.GetClientId());
@@ -216,8 +256,18 @@ public static class SyncSetting
             default:
                 return;
         }
-        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, false);
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
+        if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
+        optdata.RpcSyncOption(player.GetClientId());
+    }
+
+    public static void MeetingSyncSettings(this PlayerControl player)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        var role = player.GetRole();
+        var optdata = OptionData.DeepCopy();
+
+        optdata.SetBool(BoolOptionNames.AnonymousVotes, OpenVotes.VoteSyncSetting(player));
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
         optdata.RpcSyncOption(player.GetClientId());
     }
@@ -261,6 +311,21 @@ public static class SyncSetting
             }
         }
     }
+
+    /// <summary>
+    /// 開票処理をゲストに送信する準備
+    /// </summary>
+    public static void MeetingSyncSettings()
+    {
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        {
+            if (!p.Data.Disconnected && !p.IsBot())
+            {
+                MeetingSyncSettings(p);
+            }
+        }
+    }
+
     public static IGameOptions DeepCopy(this IGameOptions opt)
     {
         var optByte = GameOptionsManager.Instance.gameOptionsFactory.ToBytes(opt);

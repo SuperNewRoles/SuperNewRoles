@@ -37,6 +37,9 @@ Developer,Developer,開発者,开发者
 Sponsor,Sponsor,スポンサー,支持者
 Translator,Translator,翻訳,翻译
 DevAndSpnTitle,Developer & Sponsor,開発者&支援者,开发者与支持者
+Analytics,Analytics,解析
+AnalyticsText,In order to make SuperNewRoles an even better mod， we have created a function to send information about positions used to the server. \nThis information can be viewed by SuperNewRoles developers. See the following page for more information. \nYou can change in the settings whether you want to save the information. \nNo personally identifiable elements， such as your player name， will be sent. \n<link href="https://github.com/ykundesu/SuperNewRoles/wiki/解析について">https://github.com/ykundesu/SuperNewRoles/wiki/解析について</link>,SuperNewRolesをさらに良いMODにするため、\n使用した役職などをサーバーに送信する機能を作りました。\nこの情報はSuperNewRolesの開発者が見ることができます。詳細は以下のページを参照してください。\n保存するかは設定で変更できます。\nあなたのプレイヤー名などの個人を特定できる要素は送信しません。\n<link href="https://github.com/ykundesu/SuperNewRoles/wiki/解析について">https://github.com/ykundesu/SuperNewRoles/wiki/解析について</link>
+AnalyticsOK,OK!,了解！
 
 # CustomColors
 colorSalmon,Salmon,サーモン,鲑鱼红
@@ -84,7 +87,7 @@ colorAzuki,Azuki,小豆,红豆
 colorSnow,Snow,雪,雪白
 colorLightMagenta,LightMagenta,ライトマゼンタ,浅品红
 colorPeachFlower,PeachFlower,桃花,桃红
-colorPlum,Plum,梅,梅花,梅红
+colorPlum,Plum,梅,梅红
 colorSkyBlue,SkyBlue,青空,天蓝
 colorLightCyan,LightCyan,ライトシアン,浅青
 colorLightOrange,LightOrange,ライトオレンジ,浅橙
@@ -95,8 +98,10 @@ colorWineRed,WineRed,ワインレッド,酒红
 colorCrazyRed,CrazyRed,クレイジーレッド,大红
 colorTokiwaGreen,TokiwaGreen,常磐緑,常青绿
 colorPosi,Posi,ポジ,正片滤镜
-colorXmasRed,X'masRed,クリスマスレッド
-colorXmasGreen,X'masGreen,クリスマスグリーン
+colorXmasRed,X'masRed,クリスマスレッド,圣诞红
+colorXmasGreen,X'masGreen,クリスマスグリーン,圣诞绿
+LightColor,bright,明るい
+DarkerColor,darker,暗い
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -137,6 +142,7 @@ CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピ�
 CustomProcessDown,Update Process Down,処理回数を減らす,更新进程已关闭
 CustomIsVersionErrorView,Show players Errors.,エラーを表示する,显示错误
 CustomHideTaskArrows,Hide Tasks Arrows,タスクの矢印を非表示にする,隐藏任务指向箭头
+IsSendAnalytics,Send Analytics,解析を送信する
 SettingCrewmateRoles,Crewmate Setting,クルーメイトの人数設定,船员阵营职业设置
 SettingCrewmateGhostRoles,Crewmate GhostRole Setting,クルーメイトの幽霊役職の人数設定,船员阵营幽灵职业设置
 SettingNeutralRoles,Neutral Setting,第三陣営の人数設定,独立阵营职业设置
@@ -205,7 +211,8 @@ RestrictDevicesOption,Restrict Devices Option,機器の時間制限,飞船设备
 RestrictAdmin,Restrict Admin,アドミンの時間制限,管理师地图使用时间限制
 RestrictVital,Restrict Vital,バイタルの時間制限,生命监测装置使用时间限制
 RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
-CanGhostSeeRole,,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业
+CanGhostSeeRole,After death，everyone's role can be confirmed.,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业
+CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业
 OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる,只有死亡的内鬼阵营玩家可以确认所有玩家的职业
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配
@@ -282,7 +289,7 @@ FinalStatusKill,Kill,キル,死亡
 FinalStatusExiled,Exiled,追放,放逐
 FinalStatusSheriffKill,Executing justice,正義執行,出警
 FinalStatusSheriffMisFire,Sheriff misfire,シェリフ誤爆,走火
-FinalStatusMeetingSheriffKill,Meeting Sheriff kill,Executing justice,正義執行,执法
+FinalStatusMeetingSheriffKill,Meeting Sheriff kill，Executing justice,正義執行,执法
 FinalStatusMeetingSheriffMisFire,Meeting Sheriff misfire,ミーティングシェリフ誤爆,误判
 FinalStatusIgnite,Ignite,焼殺,纵火
 FinalStatusDisconnected,Amputation,切断,断连
@@ -318,6 +325,7 @@ FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺
 FinalStatusRevenge,Revenge,復讐,仇杀
 FinalStatusHitmanKill,Mission accomplished.,任務遂行,遇刺
 FinalStatusHitmanDead,Disposition.,処分,沉江
+FinalStatusWorshiperSelfDeath,Suicide,自決
 
 # Sabotages
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
@@ -549,7 +557,7 @@ ClergymanLightOutMessage,The Clergyman is blocking my view!,聖職者が視界�
 MadmateName,Madmate,マッドメイト,叛徒
 MadmateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助内鬼获得胜利
 MadmateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。
-MadmateIsCheckImpostorSetting,You can check the Impostor.,インポスターが確認できる,可以得知内鬼是谁
+MadmateIsCheckImpostorSetting,Do you have the capacity for fanaticism?,狂信能力を有するか
 MadmateCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量(全タスク内),确认身份需要完成的任务量
 MadmateUseVentSetting,Use Vent,ベントに入れる,可以进入管道
 MadmateVentMoveSetting,Move Vent,ベントで動ける,叛徒可以使用管道
@@ -758,7 +766,7 @@ MadHawkName,MadHawk,マッドホーク,叛变的鹰眼
 MadHawkTitle1,See it all.,すべてを見渡そう,将一切尽收眼底
 MadJesterName,MadJester,マッドてるてる,傀儡小丑
 MadJesterTitle1,Get voted out and win with the Impostors!,投票で追放されてインポスターと勝利しよう,想办法被投出去，与内鬼一同获胜
-MadJesterDescription,It is a crewmate decision. but it is in the Impostor camp. \nThe impostor wins by being expelled at the meeting.,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。,傀儡小丑规则上属于船员阵营，但是其为内鬼的同伙。\n傀儡小丑在会议中被放逐则内鬼阵营获胜。
+MadJesterDescription,It is a crewmate decision. but it is in the Impostor camp. \nThe impostor wins by being expelled at the meeting.\nYou go for the gallows，climb up，tumbling down，tumbling down...\nFor I believe it will bring us glory...,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。\n貴方は絞首台をめざす、のぼる、おちる。\nそれが我らの栄光につながると信じて。
 FalseChargesName,FalseCharges,冤罪師,冤罪师
 FalseChargesTitle1,Let the false accusations win!,冤罪をさせて勝利しよう,栽赃他人获取胜利
 FalseChargesDescription,You can make the opponent who presses the button kill you. \nYou will win if the opponent you have killed is expelled by the conference.,ボタンを押した相手に自分をキルさせることができます。\nキルさせた相手が会議で追放されたら勝利できます、,冤罪师属于独立阵营。\n冤罪师的技能为可以让附近的其他玩家击杀自己。\n这个技能发动后的指定轮数之内，若击杀冤罪师的凶手被放逐，则冤罪师独自获胜。
@@ -770,8 +778,10 @@ NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてイン
 NiceTeleporterCooldownSetting,Teleport cooldown,テレポートのクールダウン,正义的传送师传送冷却
 CelebrityName,Celebrity,スター,大明星
 CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！,你的名字无人不知无人不晓！
-CelebrityDescription,You can tell from all of them that you are the star.,全員から自分がスターと分かります。,大明星属于船员阵营。\n所有其他玩家都能确认你是大明星。
+CelebrityDescription,You can tell from all of them that you are the star.\nThere is also a setting that shines each time kill cool time elapses.\nHis presence illuminates the surroundings and gives hope.\nThe people around him cling to that hope. \nWithout thinking of the consequences of believing in him...,全員から自分がスターと分かります。\nスター存在時キルクールタイムが経過するたびに輝く設定もあります。\n彼の存在は周囲を照らし希望を与える。\n周囲は縋るその希望に。\n信じた結果齎す事など考えもせず・・・
 CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる,因他人技能导致职业变更不会影响大明星的效果
+CelebrityIsTaskPhaseFlashSetting,During the task phase，does the screen light up every set number of seconds of kill time?,タスクフェイズ中、設定したキルクール秒数毎に画面を光らせるか。
+CelebrityIsFlashWhileAlivingOnly,Does the screen glow only while it is alive?(Meeting Update),画面が光るのは生きている間のみか(会議更新)。
 NocturnalityName,Nocturnality,夜行性,夜猫子
 NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている,昼伏夜出
 NocturnalityDescription,The view during power outage and normal view are opposite.,停電中と通常の視界が反対になっています。,夜猫子属于船员阵营。\n夜猫子的正常视野与熄灯时视野相反。
@@ -795,6 +805,7 @@ DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキ�
 FoxName,Fox,妖狐,妖狐
 FoxTitle1,I am Fox!,私は狐です!,我是一只小狐狸！
 SeerName,Seer,シーア,灵媒
+SeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いてインポスターを特定しましょう。
 SeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡
 SeerMode,Mode,モード,灵媒模式
 SeerModeBoth,Show Death Flash + Souls,死の点滅＆幽霊が見える,显示死亡闪光和灵魂
@@ -803,8 +814,10 @@ SeerModeSouls,Show Souls,幽霊が見える,显示灵魂
 SeerLimitSoulDuration,Limit Soul Duration,時間経過で幽霊が消える,灵魂随时间的推移消失
 SeerSoulDuration,Soul Duration,幽霊が見える時間,灵魂从出现到消失经过的时间
 MadSeerName,MadSeer,マッドシーア,叛变的灵媒
+MadSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。
 MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろう,感知内鬼的行动
 EvilSeerName,EvilSeer,イビルシーア,邪恶的灵媒
+EvilSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n相方の行動を把握しサポートに回りましょう。
 EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡
 RemoteSheriffName,Remote Sheriff,リモートシェリフ,超能警长
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう,远距离进行执法
@@ -821,20 +834,23 @@ TaskManagerName,TaskManager,タスクマネージャー,代理人
 TaskManagerTitle1,Finish the task and mount up!,タスクを終わらせ、マウントを取ろう,帮助他人完成所有任务
 SeerFriendsName,SeerFriends,シーアフレンズ,狈族灵媒
 SeerFriendsTitle1,Let's feel the activity of Jackal,ジャッカルの活躍を感じ取ろう,感知豺狼的行动
+SeerFriendsDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。
 JackalSeerName,SeerJackal,ジャッカルシーア,狼族灵媒
 JackalSeerTitle1,Detect the dead and bring victory to your camp!,死者を感知し自陣営に勝利をもたらせ!,感知死亡，为豺狼带来胜利
+JackalSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\nインポスターの行動を把握し、利用しましょう。
 SidekickSeerName,Sidekick(Seer),サイドキック(シーア),狼族灵媒学徒
 SidekickSeerTitle1,Let's help Jackal with the dead detection ability that we got,貰った死者感知能力でジャッカルを助けよう,用死亡感知能力来帮助豺狼
-AssassinAndMarineName,<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>,<color=#ff0000>アサシン</color>と<color=#AFDFE4>マーリン</color>,<color=#ff0000>阿</color>瓦<color=#AFDFE4>隆</color>
+SidekickSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて、親ジャッカルを守り、時には切り、貢献しましょう。
+AssassinAndMarlinName,<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>,<color=#ff0000>アサシン</color>と<color=#AFDFE4>マーリン</color>,<color=#ff0000>阿</color>瓦<color=#AFDFE4>隆</color>
 AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=#ff0000>アサシン</color>の人数,<color=#ff0000>刺客</color>的人数
-MarineSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数
+MarlinSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数,<color=#AFDFE4>梅林</color>的人数
 AssassinName,Assassin,アサシン,刺客
 AssassinTitle1,<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!,<color=#AFDFE4>マーリン</color>を当てて逆転勝利しよう,找出<color=#AFDFE4>梅林</color>来获得胜利
-AssassinSucsess,was marine.,はマーリンだった,是梅林
-AssassinFail,was not marine.,はマーリンではなかった,不是梅林
-MarineName,Merine,マーリン,梅林
-MarineTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。,不要被<color=#ff0000>刺客</color>发现。
-MarineWhois,Who is Merine?,マーリンは誰だ？,谁是梅林？
+AssassinSucsess,was Marlin.,はマーリンだった,是梅林
+AssassinFail,was not Marlin.,はマーリンではなかった,不是梅林
+MarlinName,Merine,マーリン,梅林
+MarlinTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。,不要被<color=#ff0000>刺客</color>发现。
+MarlinWhois,Who is Merine?,マーリンは誰だ？,谁是梅林？
 ArsonistName,Arsonist,アーソニスト,纵火犯
 ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ,燃烧吧
 ArsonistDurationTimeSetting,Douse Duration,塗り時間,纵火犯涂油所需时间
@@ -956,6 +972,7 @@ RevolutionTouchTime,Revolutionary contact hours,革命家の接触時間,革命�
 RevolutionistAddWin,Additional Victories for Revolutionist,革命家の追加勝利,革命家获得追加胜利而非单独胜利
 RevolutionistAddWinIsAlive,Additional victory only when alive,生存時のみ追加勝利,革命家仅在存活时获得追加胜利
 RevolutionistButtonName,Up to revolutionary possible,革命可能まで,时机已到，今日起兵！
+RevolutionistMeeting,Revolutionist Meeting,革命会議
 SidekickFriendsName,SidekickFriends,サイドキックフレンズ,牧狼人
 SidekickFriendsTitle1,Help Jackal.,ジャッカルを助けよう,帮助豺狼获得胜利
 SidekickFriendsDescription,It is judged as Cluemate， but is in the Jackal camp.\nIf the jackal wins， it can win. Sidekick Friends can be found from Jackal.\nHelp Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。サイドキックフレンズはジャッカルからわかります。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。,规则上牧狼人被判定为船员阵营，但是其为豺狼的同伙。\n豺狼团队获胜则牧狼人一同获胜。\n豺狼能确认牧狼人是谁。牧狼人需要帮助豺狼以获得胜利。
@@ -1051,7 +1068,7 @@ MadRolesCanFixElectrical,Mad roles can fix electrical sabotage,マッド役職�
 MadRolesCanVentMove,Mad roles can vent move,マッド役職がベント移動できる,叛徒阵营玩家可以在管道间移动
 DoppelgangerName,Doppelganger,ドッペルゲンガー,二重身
 DoppelgangerTitle1,\It seems that if you'll meet myself， you're dead\,同じ顔の人に出会うと死んじゃうんだって,“听说了吗，人在命不久矣的时候会见到另一个自己”
-DoppelgangerDescription,Doppelgangers can ShapeShift.\nIf a ShapeShifted target is killed during ShapeShift, the Kill Cool  is shorter.\nIf, instead, a non-shapeShifted target is killed or a non-shapeShifted target is killed, the Kill Cool will be longer.,ドッペルゲンガーはシェイプシフトができます\nシェイプシフトをした状態で、シェイプシフトの変身先をキルするとキルクールが短くなります。\nシェイプシフトの変身先以外をキルしたり、シェイプシフトをしない状態でキルすると、キルクールが長くなってします。,二重身可以化形。\n化形状态下的二重身击杀自己的化形对象后，二重身的下一次击杀冷却缩短。\n若二重身在化形状态下击杀了自己化形对象以外的玩家，或者在未化形的状态下进行击杀，下一次击杀冷却将延长。
+DoppelgangerDescription,Doppelgangers can ShapeShift.\nIf a ShapeShifted target is killed during ShapeShift，the Kill Cool  is shorter.\nIf，instead，a non-shapeShifted target is killed or a non-shapeShifted target is killed，the Kill Cool will be longer.,ドッペルゲンガーはシェイプシフトができます\nシェイプシフトをした状態で、シェイプシフトの変身先をキルするとキルクールが短くなります。\nシェイプシフトの変身先以外をキルしたり、シェイプシフトをしない状態でキルすると、キルクールが長くなってします。,二重身可以化形。\n化形状态下的二重身击杀自己的化形对象后，二重身的下一次击杀冷却缩短。\n若二重身在化形状态下击杀了自己化形对象以外的玩家，或者在未化形的状态下进行击杀，下一次击杀冷却将延长。
 DoppelgangerDurationTimeSetting,Shapeshift Duration,シェイプシフトの持続時間,二重身化形持续时间
 DoppelgangerCooldownSetting,Shapeshift Cooldown,シェイプシフトのクールタイム,二重身化形冷却
 DoppelgangerSucTimeSetting,Kill Cool Time on Success,成功時のキルクール,二重身成功击杀化形对象后的击杀冷却
@@ -1099,7 +1116,7 @@ PavlovsTeamWinText,Pavlov's dog and owner,パブロフの犬とオーナー,巴�
 PavlovsownerCreatedogButtonName,stenciling,刷り込み,驯化
 KnightName,Knight,騎士,骑士
 KnightTitle1,I will protect you according to my beliefs.,我が信念に沿って護衛しよう,举起正义之盾
-KnightDescription,During the conference phase, you can put up a shield to prevent one kill by using the protect button. If the protection is successful, a successful protection announcement will be played at the beginning of the next meeting phase.,会議フェイズ中に護衛ボタンを使用する事で、キルを一回防ぐシールドを張ることができます。 設定により護衛が成功した際、次の会議フェイズ開始時に護衛成功アナウンスが流れます。,会议阶段，骑士可以选择一名玩家，阻挡一次那名玩家在会议上遭受的击杀。根据房间设置，骑士守护成功的下一轮会议上，所有玩家可以收到骑士守护成功的信息。
+KnightDescription,During the conference phase，you can put up a shield to prevent one kill by using the protect button. If the protection is successful，a successful protection announcement will be played at the beginning of the next meeting phase.,会議フェイズ中に護衛ボタンを使用する事で、キルを一回防ぐシールドを張ることができます。 設定により護衛が成功した際、次の会議フェイズ開始時に護衛成功アナウンスが流れます。,会议阶段，骑士可以选择一名玩家，阻挡一次那名玩家在会议上遭受的击杀。根据房间设置，骑士守护成功的下一轮会议上，所有玩家可以收到骑士守护成功的信息。
 KnightCanAnnounceOfProtected,Play an announcement when the protection is successful?,護衛成功時にアナウンスを流すか,骑士守护成功后通知所有玩家
 KnightSetTheUpperLimitOfTheGuarding,Do you want to set a limit on the number of protections?,護衛回数に上限を設けるか,骑士守护次数有上限
 KnightMaximumNumberOfTimes,Maximum number of times protection is possible.,護衛上限回数,骑士每轮游戏最大守护次数
@@ -1147,24 +1164,89 @@ PenguinName,Penguin,ペンギン,绑匪
 PenguinTitle1,Let's drag and kill!,ぺちぺち！,绑架他人
 PenguinButtonName,Abduction,拉致,绑架
 PenguinCanDefaultKill,Can default kill,通常キルができる,绑匪可以进行通常击杀
-LoversBreakerName,LoversBreaker,爆ぜ師
-LoversBreakerTitle1,fulfilling life explosion!!fulfilling life explosion!!,リア充爆発！！リア充爆発！！
-LoversBreakerBreakCount,Number of explosions needed to win,勝利に必要な爆破数
-LoversBreakerIsDeathWin,You can win even if you are dead.,死亡していても勝利できる
-LoversBreakerButtonName,Blow up,爆破
-JumboName,Jumbo,ジャンボ
-JumboTitle1,Wow!?Jumbo!!!,ワオ、ジャンボ！！！
-NiceJumboName,NiceJumbo,ナイスジャンボ
-NiceJumboTitle1,Big Crewmate Team!!!,大きいクルーメイトの味方
-EvilJumboName,EvilJumbo,イビルジャンボ
-EvilJumboTitle1,Let's overwhelm the crew with the size of this thing.,この大きさでクルーを圧倒しよう
-JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボになる確率
-JumboMaxSize,Maximum size,最大サイズ
-JumboSpeedUpSize,Growth speed,成長スピード
-JumboWalkSoundSize,Loudness of footsteps,足音の大きさ
+LoversBreakerName,LoversBreaker,爆ぜ師,FFF团
+LoversBreakerTitle1,fulfilling life explosion!!fulfilling life explosion!!,リア充爆発！！リア充爆発！！,现充去死！现充爆炸！
+LoversBreakerBreakCount,Number of explosions needed to win,勝利に必要な爆破数,FFF团获胜所需击杀的恋人数
+LoversBreakerIsDeathWin,You can win even if you are dead.,死亡していても勝利できる,FFF团死亡状态下也能获胜
+LoversBreakerButtonName,Blow up,爆破,爆杀现充！
+JumboName,Jumbo,ジャンボ,巨无霸
+JumboTitle1,Wow!?Jumbo!!!,ワオ、ジャンボ！！！,怎么你们都这么小？
+NiceJumboName,NiceJumbo,ナイスジャンボ,正义的巨无霸
+NiceJumboTitle1,Big Crewmate Team!!!,大きいクルーメイトの味方,船员中的大块头
+EvilJumboName,EvilJumbo,イビルジャンボ,邪恶的巨无霸
+EvilJumboTitle1,Let's overwhelm the crew with the size of this thing.,この大きさでクルーを圧倒しよう,用庞大的身躯征服飞船
+JumboCrewmateChance,Probability of being a NiceJumbo,ナイスジャンボになる確率,巨无霸生成为船员阵营的概率
+JumboMaxSize,Maximum size,最大サイズ,巨无霸最大体型
+JumboSpeedUpSize,Growth speed,成長スピード,巨无霸变大速度
+JumboWalkSoundSize,Loudness of footsteps,足音の大きさ,巨无霸脚步声音量
+DebuggerName,Debugger,デバッガー
+DebuggerButtonName,Debug,デバッグ
+Functions,Functions,基本操作
+PlayerControl,Player control,プレイヤー操作
+StartMeeting,Start meeting,緊急会議
+ShowRole,Show role,役職を表示
+DeShowRole,Cancel show role,役職を非表示
+Teleport,Teleport,テレポート
+ReportDeadbody,Report deadbody,通報
+Exile,Exile,追放
+Kill,Kill,キル
+Revive,Revive,蘇生
+CleanDeadbody,Clean deadbody,死体掃除
+SetRole,Set role,役職付与
+Crewmate,Crewmate,クルーメイト
+Impostor,Impostor,インポスター
+WorshiperName,Worshiper,崇拝者
+WorshiperTitle1,If I can help them，I will spare my life.,あなた方の力になれるのなら 私の命など惜しくはない。
+WorshiperDescription,It has two self-determination abilities.\nIt commits suicide on the spot by using the Shapeshift when SHR and the [Suicide] ability when SNR.\nBy using the kill button，it commits suicide in the form of a sheriff misfire.\nAha，master. My will is yours and my life is for yours...\nCome，master. Let us fulfill that desire.,2つの自決能力を持ちます。\nSHR時はシェイプシフト、SNR時は[自決]能力を使用する事で、その場で自殺します。\nキルボタンを使用する事でシェリフ誤爆のような形で自殺します。\n嗚呼、ご主人。私の意思は貴方の物であり、私の命は貴方の為にあるのです・・・\nさあ、ご主人その願望をかなえましょう。
+WorshiperAbilitySuicideCoolTime,Suicide coold time setting with ability buttons.,アビリティボタンによる自決のクールタイム設定
+WorshiperKillSuicideCoolTime,Suicide coold time setting with kill buttons.,キルボタンによる自決のクールタイム設定
+WorshiperSuicide,Suicide,自決
+SafecrackerName,Safecracker,金庫破り
+SafecrackerTitle1,Open the safe， get the ability and win!,金庫を開けて、能力と勝利を手に入れよう
+SafecrackerDescription,By opening the vault， you can acquire various abilities.\nIt grants you a kill guard， an exiled guard， vent， etc.\nOpen the safe to the end and win the game.,金庫を開けることで、様々な能力を取得することが出来ます。\nキルガードや追放ガード、ベントなどが付与されます。\n金庫を最期まで開け、勝利を手に入れましょう。
+NotAbility,None,なし
+SafecrackerKillGuardTaskSetting,Amount of tasks to be able to kill guard (of all tasks),キルガードが出来るようになるタスク量(全タスク内)
+SafecrackerMaxKillGuardCountSetting,Kill guard max count,キルガードできる回数
+SafecrackerExiledGuardTaskSetting,Amount of tasks to be able to be able to exiled guard (of all tasks),追放ガードが出来るようになるタスク量(全タスク内)
+SafecrackerMaxExiledGuardCountSetting,Exiled guard max count,追放ガードできる回数
+SafecrackerUseVentTaskSetting,Amount of tasks for which the vent will be available (of all tasks),ベントが使用可能になるタスク量(全タスク内)
+SafecrackerUseSaboTaskSetting,Amount of tasks for which sabotage will be available (of all tasks),サボタージュが使用可能になるタスク量(全タスク内)
+SafecrackerIsImpostorLightTaskSetting,Amount of tasks for become an Imposter's field of view (of all tasks),インポスターの視界になるタスク量(全タスク内)
+SafecrackerCheckImpostorTaskSetting,Amount of tasks that will allow you to check the Imposter (of all tasks),インポスターを確認できるようになるタスク量(全タスク内)
+SafecrackerChangeTaskPrefabSetting,Replace all tasks with unlock safe tasks,全タスクを金庫タスクに置き換える
+FireFoxName,Fier Fox,炎狐
+FireFoxTitle1,I am Fier Fox!,私は炎狐です！
+FireFoxDescription,It is a Fox that has been given a kill button instead of a kill guard.\nThe number of kills is limited and only certain camps can be killed.\nIf you press the kill button for a player who is not in the killable camp， your kill count will decrease without a kill.\nThink about who to kill and contribute to the Fox's victory.,キルガードの代わりにキルボタンを与えられた妖狐です。\nキル回数は制限されており、特定の陣営のみキル可能です。\nキル可能陣営以外にキルボタンを押してしまうと、キルせずにキル回数のみ減ってしまいます。\n誰をキルするか考え、妖狐の勝利に貢献しましょう。
+FireFoxCanKillCrewmateSetting,Can kill the crewmate camp,クルーメイト陣営をキルできる
+FireFoxCanKillImpostorSetting,Can kill the imposter camp,インポスター陣営をキルできる
+FireFoxCanKillNeutralSetting,Can kill the third camp,第三陣営をキルできる
+FireFoxCanKillLoversSetting,Can kill the lovers,ラバーズをキルできる
+FireFoxIsCheckFoxSetting,You can check the fox,妖狐を視認できる
+SquidName,Squid,イカ
+SquidTitle1,Use ink to survive.,墨を使って生き延びろ
+SquidTitle2,Let's use ink to get away with it.,墨を使って逃げ切ろう
+SquidDescription,You can be on alert for a certain period of time.\nIf you are about to be killed while on alert， you can prevent the kill， take away your opponent's vision， and increase your own movement speed for a certain period of time.,一定時間警戒することが出来ます。\n警戒中にキルされそうになると、そのキルを防ぎ相手の視界を奪い、一定時間自身の移動速度が上昇します。
+SquidCoolTimeSetting,Cool time for vigilance mode,警戒モードのクールタイム
+SquidDurationTimeSetting,Duration of vigilance mode,警戒モードの持続時間
+SquidBoostSpeedSetting,Movement speed on successful counters,カウンター成功時の移動速度
+SquidBoostSpeedTimeSetting,Time to increase movement speed on successful counters,カウンター成功時の移動速度が上がる時間
+SquidNotKillTimeSetting,Time when no kills can be made on successful counters,カウンター成功時のキルが出来ない時間
+SquidDownVisionSetting,Field of vision when vision is deprived,視界が奪われたときの視野
+SquidObstructionTimeSetting,Time to take away the view,視界を奪う時間
+SquidButtonName,Vigilance,警戒
+DyingMessengerName,Dying Messenger,遺言伝達者
+DyingMessengerTitle1,Will and testament， we will tell you.,遺言、お伝え致します
+DyingMessengerDescription,When you are able to report a kill within a certain amount of time after the kill.\nYou can get the information of the killers of the dead body you reported.\nGet the information and contribute to the victory of the crew's camp.,キルされてから一定時間内で通報できた時に、\n通報した死体のキル者の情報を取得することが出来ます。\n情報を取得し、クルー陣営の勝利に貢献しましょう。
+DyingMessengerGetRoleTimeSetting,Time to read the roll of the killers from the corpse,死体からキル者の役職を読み取れる時間
+DyingMessengerGetLightAndDarkerTimeSetting,Time to read the light and darker colors of the kill from the corpse,死体からキル者の色の明暗を読み取れる時間
+DyingMessengerFirstPerson1,me,私
+DyingMessengerFirstPerson2,me,僕
+DyingMessengerGetRoleText,The role of the person who killed {0} was {1}.,{0}をキルした人の役職は{1}でした。
+DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}をキルした人の色は{1}色でした。
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示
+IsLightAndDarker,Show light and darker,明暗を表示する
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！
@@ -1185,6 +1267,7 @@ CommandsMessage6,/GetInRoles myplayer ([/gr mp] or [/gr myp]) : \nDisplays all a
 CommandsMessage7,/AllRoles (/ar) : \nDisplays all activate roles' description and settings.(Send to all player when you're hosts.)\nTransmitted at 1.5 second intervals.,/AllRoles (/ar) ： \n入っている全役職の説明と設定が確認できます。\n(ホストが実行すると全員に送信します)\n1.5秒間隔で送信されます。,/AllRoles (/ar) ： \n显示所有激活职业的职业描述和设置。\n(如果你是主持人将推送给房间内所有玩家)\n每1.5秒发送一个。
 CommandsMessage8,/AllRoles [transmission interval] (/ar [transmission interval]): \nAdditional transmission intervals can be specified for /AllRoles.,/AllRoles [送信間隔] (/ar [送信間隔]) ： \n/AllRolesに+で送信間隔を指定できます。,/AllRoles [发送间隔] (/ar [发送间隔]) ： \n你可以在/AllRoles后添加指定发送间隔时间
 CommandsMessage9,/AllRoles [send interval] myplayer (/ar [send interval] (mp or myp)): \nAdd to /AllRoles [send interval] and send only to yourself even if you are the host.,/AllRoles [送信間隔] myplayer (/ar [送信間隔] (mp もしくは myp)) ： \n/AllRoles [送信間隔]に+で、ホストでも自分のみに送信されます。,/AllRoles [发送间隔] myplayer (/ar [发送间隔] (mp 或者 myp)) ： \n你可以在/AllRoles [发送间隔]后添加指令发送，仅自己可见。
+CommandsMessage10,/SaveLog or /sl [string to be attached to file name]：\nSave logs up to the present time in SuperNewRoles/SaveLogFolder.\nYou can arbitrarily change a part of the file name.\nIt can be used even if the string part is not described (/sl，etc. by itself).,/SaveLog 又は /sl + [ファイル名につけたい文字列] ： \nSuperNewRoles/SaveLogFolderに現時点までのログを保存します。\nファイル名の一部を任意で変更できます。\n文字列部分を記載しなくとも(/sl等単体でも)使用可能です。
 SNROfficialDiscordMessage,Come here to visit the official SuperNewRoles Discord server.,SuperNewRoles公式Discordサーバーはこちらから:,SuperNewRoles官方Discord服务器：
 SNROfficialTwitterMessage,Come here to visit the official SuperNewRoles Twitter Accounts.,SuperNewRoles公式Twitterはこちらから,在这里关注超新职业官方Twitter
 TwitterOfficialLink,Official Account : https://twitter.com/SuperNewRoles,公式アカウント：https://twitter.com/SuperNewRoles,官方Twitter：https://twitter.com/SuperNewRoles

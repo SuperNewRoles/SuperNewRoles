@@ -77,7 +77,7 @@ public static class ShiftActor
                     TargetRoleText = ModTranslation.GetString("CrewmateName");
                 }
             }
-            else if (target.IsRole(RoleId.Marine))
+            else if (target.IsRole(RoleId.Marlin))
             { // マーリンはクルーに
                 TargetRoleText = ModTranslation.GetString("CrewmateName");
             }

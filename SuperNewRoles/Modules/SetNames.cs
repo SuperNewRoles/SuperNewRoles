@@ -4,6 +4,7 @@ using System.Linq;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnityEngine;
 
@@ -223,7 +224,8 @@ public class SetNamesClass
     }
     public static void JumboSet()
     {
-        foreach (PlayerControl p in RoleClass.Jumbo.JumboPlayer) {
+        foreach (PlayerControl p in RoleClass.Jumbo.JumboPlayer)
+        {
             if (!RoleClass.Jumbo.JumboSize.ContainsKey(p.PlayerId)) continue;
             SetPlayerNameText(p, p.NameText().text + $"({(int)(RoleClass.Jumbo.JumboSize[p.PlayerId] * 15)})");
         }
@@ -341,7 +343,7 @@ public class SetNameUpdate
     {
         SetNamesClass.ResetNameTagsAndColors();
         RoleId LocalRole = PlayerControl.LocalPlayer.GetRole();
-        if (PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor()) && LocalRole != RoleId.NiceRedRidingHood)
+        if ((PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor()) && LocalRole != RoleId.NiceRedRidingHood) || Roles.Attribute.Debugger.canSeeRole)
         {
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
@@ -364,9 +366,9 @@ public class SetNameUpdate
         {
             if (Madmate.CheckImpostor(PlayerControl.LocalPlayer) ||
                 LocalRole == RoleId.MadKiller ||
-                LocalRole == RoleId.Marine ||
-                (RoleClass.Demon.IsCheckImpostor && LocalRole == RoleId.Demon)
-                )
+                LocalRole == RoleId.Marlin ||
+                (RoleClass.Demon.IsCheckImpostor && LocalRole == RoleId.Demon) ||
+                (LocalRole == RoleId.Safecracker && Safecracker.CheckTask(__instance, Safecracker.CheckTasks.CheckImpostor)))
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
@@ -436,6 +438,19 @@ public class SetNameUpdate
                     else
                     {
                         SetNamesClass.SetPlayerNameText(RoleClass.PartTimer.CurrentTarget, RoleClass.PartTimer.CurrentTarget.NameText().text + ModHelpers.Cs(RoleClass.PartTimer.color, "◀"));
+                    }
+                }
+            }
+            else if (LocalRole is RoleId.Fox or RoleId.FireFox)
+            {
+                List<PlayerControl> foxs = new(RoleClass.Fox.FoxPlayer);
+                foxs.AddRange(FireFox.FireFoxPlayer);
+                foreach (PlayerControl p in foxs)
+                {
+                    if (p.IsRole(PlayerControl.LocalPlayer.GetRole()) || FireFox.FireFoxIsCheckFox.GetBool())
+                    {
+                        SetNamesClass.SetPlayerRoleNames(p);
+                        SetNamesClass.SetPlayerNameColors(p);
                     }
                 }
             }
