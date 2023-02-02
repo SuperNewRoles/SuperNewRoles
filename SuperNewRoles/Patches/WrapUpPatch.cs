@@ -192,6 +192,7 @@ class WrapUpPatch
                     CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.MadJesterWin, false);
                 }
             }
+            if (exiled.Object.IsShapeshifter()) exiled.Object.ResetAndSetImpostorghost();
         }
         Mode.SuperHostRoles.Main.RealExiled = null;
     }

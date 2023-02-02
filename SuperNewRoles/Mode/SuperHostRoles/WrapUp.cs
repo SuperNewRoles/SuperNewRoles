@@ -6,6 +6,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using UnityEngine;
+using static SuperNewRoles.Helpers.RPCHelper;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -84,5 +85,6 @@ class WrapUpClass
         }
         Roles.Jester.WrapUp(exiled);
         Roles.Nekomata.WrapUp(exiled);
+        if (exiled.Object.IsShapeshifter()) exiled.Object.ResetAndSetImpostorghost();
     }
 }

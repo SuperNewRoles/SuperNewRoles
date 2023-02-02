@@ -142,6 +142,7 @@ class RpcShapeshiftPatch
                         }
                     }
                     __instance.RpcMurderPlayer(__instance);
+                    __instance.ResetAndSetImpostorghost();
                     __instance.RpcSetFinalStatus(FinalStatus.SelfBomberBomb);
                     return false;
                 case RoleId.Samurai:
@@ -186,6 +187,7 @@ class RpcShapeshiftPatch
                     return false;
                 case RoleId.SuicideWisher:
                     __instance.RpcMurderPlayer(__instance);
+                    __instance.ResetAndSetImpostorghost();
                     __instance.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
                     return false;
                 case RoleId.ToiletFan:
@@ -763,6 +765,7 @@ static class CheckMurderPatch
                     }
                 }
             }
+            else if (target.IsShapeshifter()) target.ResetAndSetImpostorghost();
         }
         Logger.Info("全スタントマン系通過", "CheckMurder");
         __instance.RpcMurderPlayerCheck(target);
@@ -1086,6 +1089,7 @@ public static class MurderPlayerPatch
                 }
             }
             Minimalist.MurderPatch.Postfix(__instance);
+            if (target.IsShapeshifter()) target.ResetAndSetImpostorghost();
         }
         Vampire.OnMurderPlayer(__instance, target);
         if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && ModeHandler.IsMode(ModeId.Default))
