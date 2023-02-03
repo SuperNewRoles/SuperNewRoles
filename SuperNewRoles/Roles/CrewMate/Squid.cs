@@ -56,7 +56,11 @@ public class Squid
                 SetVigilance(PlayerControl.LocalPlayer);
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Squid; },
-            () => { return PlayerControl.LocalPlayer.CanMove; },
+            () =>
+            {
+                if (Squid.IsVigilance.ContainsValue(true)) CustomButton.FillUp(SquidButton);
+                return PlayerControl.LocalPlayer.CanMove;
+            },
             () =>
             {
                 ResetCooldown();
