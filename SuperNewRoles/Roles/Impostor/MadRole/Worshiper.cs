@@ -1,9 +1,9 @@
+using System;
+using System.Collections.Generic;
 using AmongUs.GameOptions;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 using static SuperNewRoles.Roles.RoleClass;
@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles.Impostor.MadRole;
 
 public static class Worshiper
 {
-    private const int optionId = 1157;// 設定のId
+    private const int optionId = 1161;// 設定のId
 
     // CustomOptionHolder
     public static CustomRoleOption WorshiperOption;

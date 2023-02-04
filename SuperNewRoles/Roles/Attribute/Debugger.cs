@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using Hazel;
 using AmongUs.GameOptions;
+using Hazel;
 using SuperNewRoles.Helpers;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Attribute;
 public enum TabType
@@ -42,29 +42,34 @@ public static class Debugger
     //** タブ **//
     // 普通
     public static DebugPanel FunctionsTab = new("Functions", DebugTabs.Always, true,
-        () => {
+        () =>
+        {
             currentTab = DebugTabs.FunctionsTab;
             ReShowPanels();
         });
     public static DebugPanel PlayerControlTab = new("PlayerControl", DebugTabs.Always, true,
-        () => {
+        () =>
+        {
             currentTab = DebugTabs.PlayersTab;
             ReShowPanels();
         });
 
     // 役職
     public static DebugPanel Crewmate = new(CustomOptionHolder.Cs(Palette.CrewmateBlue, "Crewmate"), DebugTabs.Always, true,
-        ()=> {
+        () =>
+        {
             currentTab = DebugTabs.SetRole_Crewmate;
             ReShowPanels();
         }, TabType.Role);
     public static DebugPanel Impostor = new(CustomOptionHolder.Cs(Palette.ImpostorRed, "Impostor"), DebugTabs.Always, true,
-        ()=> {
+        () =>
+        {
             currentTab = DebugTabs.SetRole_Impostor;
             ReShowPanels();
         }, TabType.Role);
     public static DebugPanel Neutral = new(CustomOptionHolder.Cs(Palette.DisabledGrey, "Neutral"), DebugTabs.Always, true,
-        ()=> {
+        () =>
+        {
             currentTab = DebugTabs.SetRole_Neutral;
             ReShowPanels();
         }, TabType.Role);
@@ -72,14 +77,16 @@ public static class Debugger
     //** ファンクション **//
     // 役職全表示
     public static DebugPanel ShowEveryoneRole = new("ShowRole", DebugTabs.FunctionsTab, false,
-        () => {
+        () =>
+        {
             canSeeRole = true;
             Minigame.Instance.Close();
         });
 
     // 役職全非表示
     public static DebugPanel DeShowEveryoneRole = new("DeShowRole", DebugTabs.FunctionsTab, false,
-        () => {
+        () =>
+        {
             canSeeRole = false;
             Minigame.Instance.Close();
         });
@@ -87,7 +94,8 @@ public static class Debugger
     //** プレイヤー操作 **//
     // テレポート
     public static DebugPanel Teleport = new("Teleport", DebugTabs.PlayerControlTab, false,
-        () => {
+        () =>
+        {
             if (!RoleClass.Debugger.AmDebugger) return;
             var source = CachedPlayer.LocalPlayer;
             var target = Debugger.target;
@@ -101,7 +109,8 @@ public static class Debugger
 
     // 死体通報
     public static DebugPanel ReportDeadbody = new("ReportDeadbody", DebugTabs.PlayerControlTab, false,
-        () => {
+        () =>
+        {
             if (!RoleClass.Debugger.AmDebugger) return;
 
             var source = CachedPlayer.LocalPlayer;
@@ -116,7 +125,8 @@ public static class Debugger
 
     // 追放
     public static DebugPanel Exile = new("Exile", DebugTabs.PlayerControlTab, false,
-        () => {
+        () =>
+        {
             if (!RoleClass.Debugger.AmDebugger) return;
 
             var target = Debugger.target;
@@ -129,7 +139,8 @@ public static class Debugger
 
     // 殺害
     public static DebugPanel Kill = new("Kill", DebugTabs.PlayerControlTab, false,
-        () => {
+        () =>
+        {
             if (!RoleClass.Debugger.AmDebugger) return;
 
             var target = Debugger.target;
@@ -139,7 +150,8 @@ public static class Debugger
 
     // 蘇生
     public static DebugPanel Revive = new("Revive", DebugTabs.PlayerControlTab, false,
-        () => {
+        () =>
+        {
             if (!RoleClass.Debugger.AmDebugger) return;
 
             var target = Debugger.target;
@@ -152,7 +164,8 @@ public static class Debugger
 
     // 死体掃除
     public static DebugPanel CleanDeadbody = new("CleanDeadbody", DebugTabs.PlayerControlTab, false,
-        () => {
+        () =>
+        {
             if (!RoleClass.Debugger.AmDebugger) return;
 
             var target = Debugger.target;
@@ -165,7 +178,8 @@ public static class Debugger
 
     // 会議起こし
     public static DebugPanel StartMeeting = new("StartMeeting", DebugTabs.PlayerControlTab, false,
-        () => {
+        () =>
+        {
             var source = target;
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedMeeting);
             writer.Write(source.PlayerId);
@@ -175,7 +189,8 @@ public static class Debugger
 
     // 役職付与
     public static DebugPanel SetRole = new("SetRole", DebugTabs.PlayerControlTab, false,
-        () => {
+        () =>
+        {
             currentTab = DebugTabs.SetRole_Crewmate;
             ReShowPanels();
         });
@@ -324,14 +339,14 @@ public static class Debugger
         {
             if ((roleInfo.Team == TeamRoleType.Crewmate && currentTab != DebugTabs.SetRole_Crewmate)
                 || (roleInfo.Team == TeamRoleType.Impostor && currentTab != DebugTabs.SetRole_Impostor)
-                || (roleInfo.Team == TeamRoleType.Neutral && currentTab != DebugTabs.SetRole_Neutral) ) continue;
+                || (roleInfo.Team == TeamRoleType.Neutral && currentTab != DebugTabs.SetRole_Neutral)) continue;
 
             int num = index % 8;        //横方向のリミット
             int num2 = index / 8;       //縦方向のリミット
 
             ShapeshifterPanel panel = GameObject.Instantiate(minigame.PanelPrefab, minigame.transform);
             panel.transform.localScale *= 0.3f;
-            panel.transform.localPosition = new Vector3(minigame.XStart-0.7f+(float)num*1f, minigame.YStart+(float)num2*-0.3f, -1f);
+            panel.transform.localPosition = new Vector3(minigame.XStart - 0.7f + (float)num * 1f, minigame.YStart + (float)num2 * -0.3f, -1f);
             panel.SetPlayer(index, CachedPlayer.LocalPlayer.Data, (Action)(() =>
             {
                 if (MeetingHud.Instance != null) MeetingHud.Instance.transform.FindChild("ButtonStuff").gameObject.SetActive(true);

@@ -1,12 +1,12 @@
 using System.Collections;
 using AmongUs.GameOptions;
+using BepInEx.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
-using BepInEx.IL2CPP.Utils.Collections;
 
 namespace SuperNewRoles.Patches;
 

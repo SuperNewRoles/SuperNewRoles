@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Buttons;
 

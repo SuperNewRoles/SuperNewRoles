@@ -77,7 +77,7 @@ public static class RoleHelper
                 return RoleClass.MadSeer.IsUseVent;
             case RoleId.SeerFriends:
                 return RoleClass.SeerFriends.IsUseVent;
-            //ベント無限か
+                //ベント無限か
         }
         return IsZeroCoolEngineer;
     }

@@ -21,10 +21,10 @@ public static class Revolutionist
         {
             const int max = 45;
             List<Sprite> sprites = new();
-            for(int i = 0; i < max; i++)
+            for (int i = 0; i < max; i++)
             {
                 string index = i >= 10 ? i.ToString() : $"0{i}";
-                sprites.Add(ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.RevoMeetingAnim.Revolutionist_front-anim_" + index+".png", 115f));
+                sprites.Add(ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.RevoMeetingAnim.Revolutionist_front-anim_" + index + ".png", 115f));
             }
             FSprites = sprites.ToArray();
         }

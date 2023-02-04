@@ -131,9 +131,9 @@ public static class RPCHelper
             writer.StartMessage(1); //0x01 Data
             {
                 writer.WritePacked(gm.NetId);
-                        writer.StartMessage((byte)4);
-                        writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(gameOptions));
-                        writer.EndMessage();
+                writer.StartMessage((byte)4);
+                writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(gameOptions));
+                writer.EndMessage();
             }
             writer.EndMessage();
         }
@@ -228,13 +228,29 @@ public static class RPCHelper
     public static void ResetAndSetRole(this PlayerControl target, RoleId Id)
     {
         target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-        {
-            target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にする
-            Logger.Info($"[{target.GetDefaultName()}] の役職を [守護天使] に変更しました。");
-        }
         target.SetRoleRPC(Id);
         Logger.Info($"[{target.GetDefaultName()}] の役職を [{Id}] に変更しました。");
+    }
+
+    /// <summary>
+    ///　役職をImpostorghostにリセットします。
+    /// </summary>
+    /// <param name="target">役職が変更される対象</param>
+    public static void ResetAndSetImpostorghost(this PlayerControl target)
+    {
+        var targetRole = target.GetRole();
+
+        if (AmongUsClient.Instance.AmHost)
+        {
+            target.RPCSetRoleUnchecked(RoleTypes.ImpostorGhost);
+            target.RpcSetRole(RoleTypes.ImpostorGhost);
+        }
+        else
+        {
+            target.RPCSetRoleUnchecked(RoleTypes.ImpostorGhost);
+            target.SetRole(RoleTypes.ImpostorGhost);
+        }
+        Logger.Info($"[{targetRole}] であった [{target.GetDefaultName()}] の役職を ImpostorGhost に変更しました。");
     }
 
     public static void RpcResetAbilityCooldown(this PlayerControl target)
