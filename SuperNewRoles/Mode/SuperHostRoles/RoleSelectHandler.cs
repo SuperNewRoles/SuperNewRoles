@@ -55,7 +55,8 @@ public static class RoleSelectHandler
                 CustomOptionHolder.SamuraiOption.GetSelection() != 0 ||
                 CustomOptionHolder.DemonOption.GetSelection() != 0 ||
                 CustomOptionHolder.ToiletFanOption.GetSelection() != 0 ||
-                CustomOptionHolder.NiceButtonerOption.GetSelection() != 0)
+                CustomOptionHolder.NiceButtonerOption.GetSelection() != 0 ||
+                SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperOption.GetSelection() != 0)
             {
                 PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
                 bot1.RpcSetRole(RoleTypes.Impostor);
@@ -129,6 +130,7 @@ public static class RoleSelectHandler
         SetRoleDesync(RoleClass.RemoteSheriff.RemoteSheriffPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.ToiletFan.ToiletFanPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.NiceButtoner.NiceButtonerPlayer, RoleTypes.Shapeshifter);
+        SetRoleDesync(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperPlayer, RoleTypes.Shapeshifter);
         /*============シェイプシフターDesync============*/
 
 
@@ -183,12 +185,19 @@ public static class RoleSelectHandler
                     if (pc.PlayerId == Player.PlayerId) continue;
                     sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
                 }
+            }
+            else
+            {
+                if (Player.PlayerId != 0) sender.RpcSetRole(Player, RoleTypes.Crewmate, Player.GetClientId());
+                else Player.SetRole(RoleTypes.Crewmate);
+            }
+            if (ModeHandler.GetMode() == ModeId.SuperHostRoles)
+            {
                 //他視点で科学者にするループ
                 foreach (var pc in PlayerControl.AllPlayerControls)
                 {
                     if (pc.PlayerId == Player.PlayerId) continue;
-                    if (pc.IsMod()) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
-                    else
+                    if (!pc.IsMod())
                     {
                         if (pc.IsImpostor() || pc.IsRole(RoleId.Spy))
                         {
@@ -200,11 +209,6 @@ public static class RoleSelectHandler
                         }
                     }
                 }
-            }
-            else
-            {
-                if (Player.PlayerId != 0) sender.RpcSetRole(Player, RoleTypes.Crewmate, Player.GetClientId());
-                else Player.SetRole(RoleTypes.Crewmate);
             }
         }
         return;

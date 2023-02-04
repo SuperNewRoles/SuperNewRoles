@@ -112,7 +112,8 @@ class WrapUpPatch
         RoleClass.IsMeeting = false;
         Seer.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
-        foreach(PlayerControl p in PlayerControl.AllPlayerControls)
+        Roles.Crewmate.Celebrity.WrapUp();
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
             p.resetChange();
         }

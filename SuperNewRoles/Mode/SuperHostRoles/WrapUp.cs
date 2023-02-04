@@ -29,6 +29,10 @@ class WrapUpClass
         {
             if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
         }
+        foreach (PlayerControl p in SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperPlayer)
+        {
+            if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
+        }
         AmongUsClient.Instance.StartCoroutine(nameof(ResetName));
 
         static IEnumerator ResetName()

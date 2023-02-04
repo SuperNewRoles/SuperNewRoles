@@ -223,6 +223,23 @@ public static class FixedUpdate
                 }
             }
         }
+        else if (player.IsRole(RoleId.Finder) && RoleClass.Finder.KillCounts.ContainsKey(player.PlayerId) && RoleClass.Finder.KillCounts[player.PlayerId] >= RoleClass.Finder.CheckMadmateKillCount)
+        {
+            foreach (PlayerControl Player in CachedPlayer.AllPlayers)
+            {
+                if (!Player.IsBot() && Player.IsMadRoles())
+                {
+                    if (!ChangePlayers.ContainsKey(Player.PlayerId))
+                    {
+                        ChangePlayers.Add(Player.PlayerId, ModHelpers.Cs(RoleClass.ImpostorRed, Player.GetDefaultName()));
+                    }
+                    else
+                    {
+                        ChangePlayers[Player.PlayerId] = ModHelpers.Cs(RoleClass.ImpostorRed, ChangePlayers[Player.PlayerId]);
+                    }
+                }
+            }
+        }
 
         if (player.IsLovers() &&
             ((RoleClass.Camouflager.LoversMark && RoleClass.Camouflager.IsCamouflage) || !RoleClass.Camouflager.IsCamouflage))

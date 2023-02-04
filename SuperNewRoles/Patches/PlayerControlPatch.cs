@@ -1,15 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 using static GameData;
@@ -219,6 +222,10 @@ class RpcShapeshiftPatch
                         SyncSetting.CustomSyncSettings(__instance);
                     }
                     return true;
+                case RoleId.Worshiper:
+                    __instance.RpcMurderPlayer(__instance);
+                    __instance.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+                    return true;
                 case RoleId.EvilSeer:
                     return false;//shapeとしての能力は持たせない為、誤爆封じで導入者のみ使用不可にする。
             }
@@ -239,6 +246,14 @@ class ShapeshifterMinigameBeginPatch
 {
     public static void Postfix(ShapeshifterMinigame __instance, PlayerTask task)
     {
+        //** Debuggerの処理 **//
+        if (RoleClass.Debugger.AmDebugger)
+        {
+            SuperNewRoles.Roles.Attribute.Debugger.CreateDebugMenu(__instance);
+        }
+
+        //デバッガー + GMだと問題起こりそうですがそうそうないと思うのでﾖｼｯ!
+        //** GMの処理 **//
         if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
         {
             static void NewTask(ShapeshifterMinigame __instance)
@@ -693,6 +708,10 @@ static class CheckMurderPatch
                         var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                         if (ma != null && !ma.IsActive) return false;
                         break;
+                    case RoleId.Worshiper:
+                        __instance.RpcMurderPlayer(__instance);
+                        __instance.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+                        return false;
                 }
                 break;
             case ModeId.Detective:
@@ -886,6 +905,7 @@ public static class MurderPlayerPatch
         }
         EvilGambler.MurderPlayerPrefix(__instance, target);
         Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
+        DyingMessenger.ActualDeathTime.Add(target.PlayerId, (DateTime.Now, __instance));
         if (ModeHandler.IsMode(ModeId.Default))
         {
             target.resetChange();
@@ -974,10 +994,7 @@ public static class MurderPlayerPatch
 
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
-            if (AmongUsClient.Instance.AmHost)
-            {
-                MurderPlayer.Postfix(__instance, target);
-            }
+            MurderPlayer.Postfix(__instance, target);
         }
         else if (ModeHandler.IsMode(ModeId.Default))
         {
@@ -1100,6 +1117,12 @@ public static class MurderPlayerPatch
             {
                 PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetCoolTime(__instance), RoleHelpers.GetCoolTime(__instance));
             }
+            if (Squid.Abilitys.IsKillGuard)
+            {
+                PlayerControl.LocalPlayer.SetKillTimerUnchecked(Squid.SquidNotKillTime.GetFloat(), Squid.SquidNotKillTime.GetFloat());
+                Squid.SetKillTimer(Squid.SquidNotKillTime.GetFloat());
+                Squid.Abilitys.IsKillGuard = false;
+            }
         }
     }
 }
@@ -1194,6 +1217,35 @@ class ReportDeadBodyPatch
                 {
                     __instance.RPCSetRoleUnchecked(target.RoleWhenAlive is null ? target.Role.Role : target.RoleWhenAlive.Value);
                     __instance.SetRoleRPC(target.Object.GetRole());
+                }
+            }
+            if (__instance.IsRole(RoleId.DyingMessenger) && target != null && DyingMessenger.ActualDeathTime.ContainsKey(target.PlayerId))
+            {
+                bool isGetRole = (float)(DyingMessenger.ActualDeathTime[target.PlayerId].Item1 + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetRoleTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
+                bool isGetLightAndDarker = (float)(DyingMessenger.ActualDeathTime[target.PlayerId].Item1 + new TimeSpan(0, 0, 0, DyingMessenger.DyingMessengerGetLightAndDarkerTime.GetInt()) - DateTime.Now).TotalSeconds >= 0;
+                string firstPerson = IsSucsessChance(9) ? ModTranslation.GetString("DyingMessengerFirstPerson1") : ModTranslation.GetString("DyingMessengerFirstPerson2");
+                if (isGetRole)
+                {
+                    string text = string.Format(ModTranslation.GetString("DyingMessengerGetRoleText"), firstPerson, ModTranslation.GetString($"{DyingMessenger.ActualDeathTime[target.PlayerId].Item2.GetRole()}Name"));
+                    new LateTask(() =>
+                    {
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Chat, __instance);
+                        writer.Write(target.PlayerId);
+                        writer.Write(text);
+                        writer.EndRPC();
+                    }, 0.5f, "DyingMessengerText");
+                }
+                if (isGetLightAndDarker)
+                {
+                    string text = string.Format(ModTranslation.GetString("DyingMessengerGetLightAndDarkerText"), firstPerson,
+                        CustomColors.lighterColors.Contains(DyingMessenger.ActualDeathTime[target.PlayerId].Item2.Data.DefaultOutfit.ColorId) ? ModTranslation.GetString("LightColor") : ModTranslation.GetString("DarkerColor"));
+                    new LateTask(() =>
+                    {
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.Chat, __instance);
+                        writer.Write(target.PlayerId);
+                        writer.Write(text);
+                        writer.EndRPC();
+                    }, 0.5f, "DyingMessengerText");
                 }
             }
         }

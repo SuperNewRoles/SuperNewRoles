@@ -44,6 +44,9 @@ class CoEnterVent
             case RoleId.SeerFriends:
                 if (RoleClass.SeerFriends.IsUseVent) return true;
                 break;
+            case RoleId.Worshiper:
+                if (SuperNewRoles.Roles.Impostor.MadRole.Worshiper.IsUseVent) return true;
+                break;
             case RoleId.RemoteSheriff:
             case RoleId.Sheriff:
             case RoleId.truelover:

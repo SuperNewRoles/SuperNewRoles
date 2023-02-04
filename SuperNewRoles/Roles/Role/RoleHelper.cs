@@ -47,8 +47,9 @@ public static class RoleHelpers
         RoleId.MadJester or
         RoleId.MadSeer or
         RoleId.BlackCat or
+        RoleId.MadMaker or
         RoleId.MadCleaner or
-        RoleId.MadMaker;
+        RoleId.Worshiper;
     // IsMads
 
     //We are JackalFriends!
@@ -265,6 +266,23 @@ public static class RoleHelpers
 
     public static bool IsJackalTeamSidekick(this PlayerControl player)
         => player.GetRole() is RoleId.Sidekick or RoleId.SidekickSeer;
+
+    public static void UseShapeshift()
+    {
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+        foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+        {
+            p.Data.Role.NameColor = Color.white;
+
+            CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+
+            if (p.PlayerControl.IsImpostor())
+            {
+                p.Data.Role.NameColor = RoleClass.ImpostorRed;
+            }
+        }
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+    }
 
     public static void SetRole(this PlayerControl player, RoleId role)
     {
@@ -743,6 +761,21 @@ public static class RoleHelpers
             case RoleId.Jumbo:
                 RoleClass.Jumbo.JumboPlayer.Add(player);
                 break;
+            case RoleId.Worshiper:
+                Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.Add(player);
+                break;
+            case RoleId.Safecracker:
+                Safecracker.SafecrackerPlayer.Add(player);
+                break;
+            case RoleId.FireFox:
+                FireFox.FireFoxPlayer.Add(player);
+                break;
+            case RoleId.Squid:
+                Squid.SquidPlayer.Add(player);
+                break;
+            case RoleId.DyingMessenger:
+                DyingMessenger.DyingMessengerPlayer.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1216,7 +1249,22 @@ public static class RoleHelpers
             case RoleId.Jumbo:
                 RoleClass.Jumbo.JumboPlayer.RemoveAll(ClearRemove);
                 break;
-                // ロールリモベ
+            case RoleId.Worshiper:
+                Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Safecracker:
+                Safecracker.SafecrackerPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.FireFox:
+                FireFox.FireFoxPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.Squid:
+                Squid.SquidPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.DyingMessenger:
+                DyingMessenger.DyingMessengerPlayer.RemoveAll(ClearRemove);
+                break;
+                //ロールリモベ
         }
         ChacheManager.ResetMyRoleChache();
     }
@@ -1254,6 +1302,8 @@ public static class RoleHelpers
             case RoleId.MadKiller:
             case RoleId.MadHawk:
             case RoleId.MadJester:
+            case RoleId.MadSeer:
+            case RoleId.Worshiper:
             case RoleId.FalseCharges:
             case RoleId.Fox:
             case RoleId.TeleportingJackal:
@@ -1283,6 +1333,8 @@ public static class RoleHelpers
             case RoleId.Cupid:
             case RoleId.Dependents:
             case RoleId.LoversBreaker:
+            case RoleId.Safecracker:
+            case RoleId.FireFox:
                 // タスククリアか
                 IsTaskClear = true;
                 break;
@@ -1339,6 +1391,9 @@ public static class RoleHelpers
             RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalUseVent.GetBool(),
             RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerVent.GetBool(),
             RoleId.Dependents => CustomOptionHolder.VampireDependentsCanVent.GetBool(),
+            RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsUseVent,
+            RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.UseVent),
+            RoleId.FireFox => FireFox.FireFoxIsUseVent.GetBool(),
             _ => player.IsImpostor(),
         };
     }
@@ -1394,6 +1449,7 @@ public static class RoleHelpers
             RoleId.Minimalist => RoleClass.Minimalist.UseSabo,
             RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerSabo.GetBool(),
             RoleId.Samurai => RoleClass.Samurai.UseSabo,
+            RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.UseSabo),
             _ => player.IsImpostor(),
         };
     }
@@ -1424,6 +1480,9 @@ public static class RoleHelpers
                 RoleId.Pavlovsdogs => CustomOptionHolder.PavlovsdogIsImpostorView.GetBool(),
                 RoleId.Photographer => CustomOptionHolder.PhotographerIsImpostorVision.GetBool(),
                 RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalIsImpostorLight.GetBool(),
+                RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsImpostorLight,
+                RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.ImpostorLight),
+                RoleId.FireFox => FireFox.FireFoxIsImpostorLight.GetBool(),
                 _ => false,
             };
     }
@@ -1463,7 +1522,9 @@ public static class RoleHelpers
         RoleId.Pavlovsowner or
         RoleId.Cupid or
         RoleId.Pavlovsowner or
-        RoleId.LoversBreaker;
+        RoleId.LoversBreaker or
+        RoleId.Safecracker or
+        RoleId.FireFox;
     // 第三か
     public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
     {
@@ -1714,6 +1775,11 @@ public static class RoleHelpers
             else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;
             else if (RoleClass.LoversBreaker.LoversBreakerPlayer.IsCheckListPlayerControl(player)) return RoleId.LoversBreaker;
             else if (RoleClass.Jumbo.JumboPlayer.IsCheckListPlayerControl(player)) return RoleId.Jumbo;
+            else if (Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.IsCheckListPlayerControl(player)) return RoleId.Worshiper;
+            else if (Safecracker.SafecrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Safecracker;
+            else if (FireFox.FireFoxPlayer.IsCheckListPlayerControl(player)) return RoleId.FireFox;
+            else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
+            else if (DyingMessenger.DyingMessengerPlayer.IsCheckListPlayerControl(player)) return RoleId.DyingMessenger;
             // ロールチェック
         }
         catch (Exception e)

@@ -1,6 +1,6 @@
 using System;
-using SuperNewRoles.Mode;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles;
 

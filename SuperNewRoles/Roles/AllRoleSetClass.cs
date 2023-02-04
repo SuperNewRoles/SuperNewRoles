@@ -970,6 +970,11 @@ class AllRoleSetClass
             RoleId.Dependents => CustomOptionHolder.DependentsPlayerCount.GetFloat(),
             RoleId.LoversBreaker => CustomOptionHolder.LoversBreakerPlayerCount.GetFloat(),
             RoleId.Jumbo => CustomOptionHolder.JumboPlayerCount.GetFloat(),
+            RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.WorshiperPlayerCount.GetFloat(),
+            RoleId.Safecracker => Roles.Neutral.Safecracker.SafecrackerPlayerCount.GetFloat(),
+            RoleId.FireFox => FireFox.FireFoxPlayerCount.GetFloat(),
+            RoleId.Squid => Squid.SquidPlayerCount.GetFloat(),
+            RoleId.DyingMessenger => DyingMessenger.DyingMessengerPlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
         };
@@ -1004,6 +1009,8 @@ class AllRoleSetClass
         foreach (IntroData intro in IntroData.IntroList)
         {
             if (intro.RoleId != RoleId.DefaultRole &&
+                intro.RoleId != RoleId.Revolutionist &&
+                intro.RoleId != RoleId.Assassin &&
                 (intro.RoleId != RoleId.Nun || (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship)
                 && !intro.IsGhostRole
                 && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))

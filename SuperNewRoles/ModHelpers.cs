@@ -1,18 +1,21 @@
-using System.Collections.Specialized;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnhollowerBaseLib;
 using UnityEngine;
-using AmongUs.GameOptions;
 using UnityEngine.Audio;
 
 namespace SuperNewRoles;
@@ -296,6 +299,49 @@ public static class ModHelpers
                 }
             }
         }
+        if (target.IsRole(RoleId.Safecracker) && !killer.IsRole(RoleId.OverKiller) && Safecracker.CheckTask(target, Safecracker.CheckTasks.KillGuard) && (!Safecracker.KillGuardCount.ContainsKey(target.PlayerId) || Safecracker.KillGuardCount[target.PlayerId] >= 1))
+        {
+            if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.SafecrackerGuard, killer))
+            {
+                bool IsSend = false;
+                if (!Safecracker.KillGuardCount.ContainsKey(target.PlayerId) ||
+                    Safecracker.KillGuardCount[target.PlayerId] > 0)
+                {
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
+                    writer.Write(target.PlayerId);
+                    writer.Write(target.PlayerId);
+                    writer.Write(0);
+                    writer.EndRPC();
+                    RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
+                    IsSend = true;
+                }
+                if (IsSend)
+                {
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SafecrackerGuardCount);
+                    writer.Write(target.PlayerId);
+                    writer.Write(true);
+                    writer.EndRPC();
+                    RPCProcedure.SafecrackerGuardCount(target.PlayerId, true);
+                }
+            }
+        }
+        if (target.IsRole(RoleId.Squid) && !killer.IsRole(RoleId.OverKiller) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
+        {
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ShielderProtect);
+            writer.Write(target.PlayerId);
+            writer.Write(target.PlayerId);
+            writer.Write(0);
+            writer.EndRPC();
+            RPCProcedure.ShielderProtect(target.PlayerId, target.PlayerId, 0);
+            Squid.SetVigilance(target, false);
+            Squid.SetSpeedBoost(target);
+            RPCHelper.StartRPC(CustomRPC.ShowFlash, target).EndRPC();
+            Squid.Abilitys.IsKillGuard = true;
+            Squid.Abilitys.IsObstruction = true;
+            Squid.Abilitys.ObstructionTimer = Squid.SquidObstructionTime.GetFloat();
+            GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.KillDistance, 0);
+            Squid.InkSet();
+        }
         return MurderAttemptResult.PerformKill;
     }
     public static void GenerateAndAssignTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
@@ -316,9 +362,13 @@ public static class ModHelpers
         {
             numShort = 1;
         }
-        if (player.IsRole(RoleId.HamburgerShop) && !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool())
+        if (player.IsRole(RoleId.HamburgerShop) && (ModeHandler.IsMode(ModeId.SuperHostRoles) || !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool()))
         {
             return Roles.CrewMate.HamburgerShop.GenerateTasks(numCommon + numShort + numLong);
+        }
+        else if (player.IsRole(RoleId.Safecracker) && !(Safecracker.SafecrackerChangeTaskPrefab.GetBool() || GameManager.Instance.LogicOptions.currentGameOptions.MapId != (int)MapNames.Airship))
+        {
+            return Safecracker.GenerateTasks(numCommon + numShort + numLong);
         }
         var tasks = new Il2CppSystem.Collections.Generic.List<byte>();
         var hashSet = new Il2CppSystem.Collections.Generic.HashSet<TaskTypes>();
@@ -730,10 +780,12 @@ public static class ModHelpers
     public static PlayerControl GetPlayerControl(this byte id) => PlayerById(id);
     public static PlayerControl PlayerById(byte id)
     {
-        if (!IdControlDic.ContainsKey(id)) { // idが辞書にない場合全プレイヤー分のループを回し、辞書に追加する
-            foreach (PlayerControl pc in CachedPlayer.AllPlayers) {
+        if (!IdControlDic.ContainsKey(id))
+        { // idが辞書にない場合全プレイヤー分のループを回し、辞書に追加する
+            foreach (PlayerControl pc in CachedPlayer.AllPlayers)
+            {
                 if (!IdControlDic.ContainsKey(pc.PlayerId)) // Key重複対策
-                    IdControlDic.Add(pc.PlayerId,pc);
+                    IdControlDic.Add(pc.PlayerId, pc);
             }
         }
         if (IdControlDic.ContainsKey(id)) return IdControlDic[id];
