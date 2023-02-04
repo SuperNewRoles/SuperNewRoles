@@ -191,7 +191,7 @@ public class IntroPatch
                         ImpostorTeams.Add(PlayerControl.LocalPlayer);
                         foreach (PlayerControl player in CachedPlayer.AllPlayers)
                         {
-                            if ((player.IsImpostor() || player.IsRole(RoleId.Spy)) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                            if ((player.IsImpostor() || player.IsRole(RoleId.Spy, RoleId.Egoist)) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                             {
                                 ImpostorTeams.Add(player);
                             }
