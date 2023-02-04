@@ -3010,6 +3010,7 @@ public static class RoleClass
     public static class Jumbo
     {
         public static List<PlayerControl> JumboPlayer;
+        public static List<PlayerControl> BigPlayer;
         public static Color32 color = ImpostorRed;
         public static Dictionary<byte, float> JumboSize;
         //イビルジャンボ
@@ -3021,6 +3022,7 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             JumboPlayer = new();
+            BigPlayer = new();
             JumboSize = new();
             Killed = false;
             CanKillSeted = false;
