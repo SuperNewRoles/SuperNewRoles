@@ -154,7 +154,7 @@ class RoleManagerSelectRolesPatch
         }
         else if (ModeHandler.IsMode(ModeId.Default))
         {
-            Roles.Neutral.GM.AssignGM();
+            GM.AssignGM();
         }
         return true;
     }
@@ -547,13 +547,13 @@ class AllRoleSetClass
         //マーリンを選ぶ
         if (IsAssassinAssigned)
         {
-            int PlayerCount = (int)GetPlayerCount(RoleId.Marine);
+            int PlayerCount = (int)GetPlayerCount(RoleId.Marlin);
             if (PlayerCount >= CrewmatePlayerNum)
             {
                 for (int i = 1; i <= CrewmatePlayerNum; i++)
                 {
                     PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
-                    p.SetRoleRPC(RoleId.Marine);
+                    p.SetRoleRPC(RoleId.Marlin);
                     CrewmatePlayers.Remove(p);
                 }
                 CrewmatePlayerNum = 0;
@@ -562,7 +562,7 @@ class AllRoleSetClass
             {
                 foreach (PlayerControl Player in CrewmatePlayers)
                 {
-                    Player.SetRoleRPC(RoleId.Marine);
+                    Player.SetRoleRPC(RoleId.Marlin);
                 }
                 CrewmatePlayerNum = 0;
             }
@@ -572,7 +572,7 @@ class AllRoleSetClass
                 {
                     CrewmatePlayerNum--;
                     PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
-                    p.SetRoleRPC(RoleId.Marine);
+                    p.SetRoleRPC(RoleId.Marlin);
                     CrewmatePlayers.Remove(p);
                 }
             }
@@ -911,7 +911,7 @@ class AllRoleSetClass
             RoleId.SeerFriends => CustomOptionHolder.SeerFriendsPlayerCount.GetFloat(),
             RoleId.JackalSeer => CustomOptionHolder.JackalSeerPlayerCount.GetFloat(),
             RoleId.Assassin => CustomOptionHolder.AssassinPlayerCount.GetFloat(),
-            RoleId.Marine => CustomOptionHolder.MarinePlayerCount.GetFloat(),
+            RoleId.Marlin => CustomOptionHolder.MarlinPlayerCount.GetFloat(),
             RoleId.Arsonist => CustomOptionHolder.ArsonistPlayerCount.GetFloat(),
             RoleId.Chief => CustomOptionHolder.ChiefPlayerCount.GetFloat(),
             RoleId.Cleaner => CustomOptionHolder.CleanerPlayerCount.GetFloat(),
@@ -975,7 +975,7 @@ class AllRoleSetClass
             RoleId.FireFox => FireFox.FireFoxPlayerCount.GetFloat(),
             RoleId.Squid => Squid.SquidPlayerCount.GetFloat(),
             RoleId.DyingMessenger => DyingMessenger.DyingMessengerPlayerCount.GetFloat(),
-            //プレイヤーカウント
+            // プレイヤーカウント
             _ => 1,
         };
     }
@@ -1010,7 +1010,7 @@ class AllRoleSetClass
         {
             if (intro.RoleId != RoleId.DefaultRole &&
                 intro.RoleId != RoleId.Revolutionist &&
-                intro.RoleId != RoleId.Assassin && 
+                intro.RoleId != RoleId.Assassin &&
                 (intro.RoleId != RoleId.Nun || (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship)
                 && !intro.IsGhostRole
                 && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))
@@ -1060,7 +1060,7 @@ class AllRoleSetClass
             }
         }
         SetJumboTicket();
-        var Assassinselection = CustomOptionHolder.AssassinAndMarineOption.GetSelection();
+        var Assassinselection = CustomOptionHolder.AssassinAndMarlinOption.GetSelection();
         if (Assassinselection != 0 && CrewmatePlayerNum > 0 && CrewmatePlayers.Count > 0)
         {
             if (Assassinselection == 10)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles;
@@ -133,7 +134,7 @@ class CheckForEndVotingPatch
                                     exile = p;
                                     p.RpcSetColor((byte)outfit.ColorId);
                                     p.RpcSetName(target.Object.GetDefaultName() +
-                                        ModTranslation.GetString(target.Object.IsRole(RoleId.Marine) ?
+                                        ModTranslation.GetString(target.Object.IsRole(RoleId.Marlin) ?
                                         "AssassinSucsess" :
                                         "AssassinFail")
                                         + "<size=0%>");
@@ -145,7 +146,7 @@ class CheckForEndVotingPatch
                             }
                         }
                         RoleClass.Assassin.MeetingEndPlayers.Add(RoleClass.Assassin.TriggerPlayer.PlayerId);
-                        if (target.Object.IsRole(RoleId.Marine))
+                        if (target.Object.IsRole(RoleId.Marlin))
                             RoleClass.Assassin.IsImpostorWin = true;
                         else
                             RoleClass.Assassin.DeadPlayer = RoleClass.Assassin.TriggerPlayer;
@@ -495,9 +496,17 @@ class MeetingHudStartPatch
             new LateTask(() =>
             {
                 SyncSetting.CustomSyncSettings();
+                SyncSetting.MeetingSyncSettings();
             }, 3f, "StartMeeting CustomSyncSetting");
         }
         Roles.Crewmate.Celebrity.TimerStop();
+        if (ModeHandler.IsMode(ModeId.Default))
+        {
+            new LateTask(() =>
+            {
+                SyncSetting.MeetingSyncSettings();
+            }, 3f, "StartMeeting MeetingSyncSettings SNR");
+        }
         Roles.Crewmate.Knight.ProtectedPlayer = null;
         Roles.Crewmate.Knight.GuardedPlayers = new();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
@@ -556,6 +565,40 @@ class MeetingHudStartPatch
         }
     }
 }
+
+public static class OpenVotes
+{
+    /// <summary>
+    /// 公開投票にします。
+    /// </summary>
+    /// <param name="player">設定送信先</param>
+    /// <returns>Anonymous votes(匿名投票)をfalseにする事で、Open votes(公開投票)にします。</returns>
+    public static bool VoteSyncSetting(this PlayerControl player)
+    {
+        var role = player.GetRole();
+        var optdata = SyncSetting.OptionData.DeepCopy();
+
+        switch (role)
+        {
+            case RoleId.God:
+                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.God.IsVoteView);
+                break;
+            case RoleId.Observer:
+                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Observer.IsVoteView);
+                break;
+            case RoleId.Marlin:
+                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Marlin.IsVoteView);
+                break;
+            case RoleId.Assassin:
+                optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Assassin.IsVoteView);
+                break;
+        }
+        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, !CustomOptionHolder.CanGhostSeeVote.GetBool());
+        Logger.Info("開票しました。", "OpenVotes");
+        return optdata.GetBool(BoolOptionNames.AnonymousVotes);
+    }
+}
+
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
 public class MeetingHudUpdatePatch
 {

@@ -39,6 +39,7 @@ public class MapOption
     //private static Sprite buttonSprite;
     public static float Default;
     public static float CameraDefault;
+    public static bool CanNotVentAnimation;
     public static void ClearAndReload()
     {
         if (MapOptionSetting.GetBool())
@@ -76,6 +77,7 @@ public class MapOption
             WireTaskNum = WireTaskNumOption.GetInt();
             UseDeadBodyReport = !NotUseReportDeadBody.GetBool();
             UseMeetingButton = !NotUseMeetingButton.GetBool();
+            CanNotVentAnimation = !ModeHandler.IsMode(ModeId.SuperHostRoles) && VentAnimation.GetBool();
             //SuperNewRoles.Patches.AdminPatch.ClearAndReload();
             //SuperNewRoles.Patches.CameraPatch.ClearAndReload();
             //SuperNewRoles.Patches.VitalsPatch.ClearAndReload();
@@ -94,6 +96,7 @@ public class MapOption
             ValidationPolus = false;
             ValidationAirship = false;
             WireTaskIsRandom = false;
+            CanNotVentAnimation = false;
         }
         BlockTool.OldDesyncCommsPlayers = new();
         BlockTool.CameraPlayers = new();
@@ -185,7 +188,7 @@ public class MapOption
         MiraReactorTimeLimit = CustomOption.Create(470, true, CustomOptionType.Generic, "MiraReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
         AirshipReactorTimeLimit = CustomOption.Create(471, true, CustomOptionType.Generic, "AirshipReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
 
-        VentAnimation = CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
+        VentAnimation = CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting); //true時ベントアニメーション無効化
 
         WireTaskIsRandomOption = CustomOption.Create(956, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
         WireTaskNumOption = CustomOption.Create(957, false, CustomOptionType.Generic, "WireTaskNum", 5f, 1f, 8f, 1f, WireTaskIsRandomOption);

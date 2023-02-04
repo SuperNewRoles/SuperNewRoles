@@ -101,14 +101,16 @@ class TaskCount
                 case ModeId.Default:
                 case ModeId.CopsRobbers:
                     CountDefaultTask(__instance);
-                    return;
+                    break;
                 case ModeId.Zombie:
                     Mode.Zombie.Main.CountTaskZombie(__instance);
-                    return;
+                    break;
                 case ModeId.Detective:
                     Mode.Detective.Task.TaskCountDetective(__instance);
-                    return;
+                    break;
             }
+            if (__instance.TotalTasks <= 0)
+                __instance.TotalTasks = 1;
         }
     }
     static void CountDefaultTask(GameData __instance)

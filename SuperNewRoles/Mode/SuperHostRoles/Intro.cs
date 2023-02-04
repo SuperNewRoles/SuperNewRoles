@@ -28,6 +28,7 @@ class Intro
                 {
                     if ((p.IsImpostor() || p.IsRole(RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && !p.IsBot())
                     {
+                        if (p.IsRole(RoleId.Spy)) p.Data.Role.NameColor = RoleClass.ImpostorRed;
                         Teams.Add(p);
                     }
                 }

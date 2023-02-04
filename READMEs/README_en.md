@@ -114,10 +114,12 @@ Mr. TeacherShibuya<br>
 Mr. cRox<br>
 
 ## About Contact
-Please use the Discord server:[Discord server](https://discord.gg/hXbDgQzSuK)
+Please use the Discord server:[Discord server](https://discord.gg/Cqfwx82ynN)
 
-## List of Positions
-It is already on the Discord server.
+## List of Roles
+- Migrating to Githubwiki (a table of positions that are already supported in SuperHostRoles mode is listed here).
+- If there are differences between ReadMe and Githubwiki, the information on Githubwiki is the most up-to-date.
+- [Githubwiki_Roles_List](https://github.com/ykundesu/SuperNewRoles/wiki/%E5%BD%B9%E8%81%B7%E4%B8%80%E8%A6%A7)
 
 
 | Impostor                                | Crewmate                                  | Neutral                                 | Redundant Camps         |
@@ -144,7 +146,7 @@ It is already on the Discord server.
 | [EvilSeer](#EvilSeer)                   | [Spirit Medium](#SpiritMedium)            | [Fire Fox](#FireFox)
 | [DarkKiller](#DarkKiller)               | [MadMayor](#MadMayor)                     |
 | [Vampire](#Vampire)                     | [NiceHawk](#NiceHawk)                     |
-| [AssassinAndMarine](#AssassinAndMarine) | [MadStuntman](#MadStuntman)               |
+| [AssassinAndMarlin](#AssassinAndMarlin) | [MadStuntman](#MadStuntman)               |
 | [Cleaner](#Cleaner)                     | [MadHawk](#MadHawk)                       |
 | [Samurai](#Samurai)                     | [Bakery](#Bakery)                         |
 | [VentMaker](#VentMaker)                 | [MadJester](#MadJester)                   |

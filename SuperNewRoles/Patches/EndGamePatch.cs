@@ -490,7 +490,7 @@ public static class OnGameEndPatch
         {
             GameManager.Instance.LogicOptions.SetGameOptions(SyncSetting.OptionData.DeepCopy());
             RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
-        }   
+        }
         var gameOverReason = AdditionalTempData.gameOverReason;
         AdditionalTempData.Clear();
         foreach (var p in GameData.Instance.AllPlayers)
@@ -1140,7 +1140,7 @@ public static class OnGameEndPatch
             if (player.Object != null && player.Object.IsBot()) continue;
             CustomPlayerData data = new(player, gameOverReason)
             {
-                IsWin = TempData.winners.TrueForAll((Il2CppSystem.Predicate<WinningPlayerData>)(x => x.PlayerName == player.PlayerName))
+                IsWin = TempData.winners.ToArray().Any(x => x.PlayerName == player.PlayerName)
             };
             PlayerData.Add(data);
         }
