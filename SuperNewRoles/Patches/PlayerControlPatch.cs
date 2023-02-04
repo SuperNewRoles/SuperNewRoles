@@ -1031,6 +1031,20 @@ public static class MurderPlayerPatch
                     HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
                 }
             }
+            if (__instance.IsRole(RoleId.OverKiller))
+            {
+                DeadBody deadBodyPrefab = target.KillAnimations[0].bodyPrefab;
+                Vector3 BodyOffset = target.KillAnimations[0].BodyOffset;
+                for (int i = 0; i < RoleClass.OverKiller.KillCount - 1; i++)
+                {
+                    DeadBody deadBody = GameObject.Instantiate(deadBodyPrefab);
+                    deadBody.enabled = false;
+                    deadBody.ParentId = target.PlayerId;
+                    Vector3 position = target.transform.position + BodyOffset;
+                    position.z = position.y / 1000f;
+                    deadBody.transform.position = position;
+                }
+            }
             if (target.IsRole(RoleId.Jumbo))
             {
                 DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
