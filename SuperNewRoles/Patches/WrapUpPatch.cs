@@ -79,6 +79,7 @@ class WrapUpPatch
             exiled = null;
         }
 
+        Shielder.WrapUp();
         Kunoichi.WrapUp();
         SerialKiller.WrapUp();
         Assassin.WrapUp();
