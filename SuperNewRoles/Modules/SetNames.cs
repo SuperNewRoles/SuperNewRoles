@@ -61,7 +61,7 @@ public class SetNamesClass
         {
             bool hidename = ModHelpers.HidePlayerName(PlayerControl.LocalPlayer, player);
             player.NameText().text = hidename ? "" : player.CurrentOutfit.PlayerName;
-            if ((PlayerControl.LocalPlayer.IsImpostor() && (player.IsImpostor() || player.IsRole(RoleId.Spy))) || (ModeHandler.IsMode(ModeId.HideAndSeek) && player.IsImpostor()))
+            if ((PlayerControl.LocalPlayer.IsImpostor() && (player.IsImpostor() || player.IsRole(RoleId.Spy, RoleId.Egoist))) || (ModeHandler.IsMode(ModeId.HideAndSeek) && player.IsImpostor()))
             {
                 SetPlayerNameColor(player, RoleClass.ImpostorRed);
             }
