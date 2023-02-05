@@ -9,7 +9,7 @@ class Teleporter
 {
     public static void ResetCooldown()
     {
-        HudManagerStartPatch.TeleporterButton.MaxTimer = RoleClass.Teleporter.CoolTime;
+        HudManagerStartPatch.TeleporterButton.MaxTimer = CoolTime;
         RoleClass.Teleporter.ButtonTimer = DateTime.Now;
     }
     public static void TeleportStart()
@@ -33,9 +33,26 @@ class Teleporter
     {
         return Player.IsRole(RoleId.Teleporter);
     }
+    public static float CoolTime {
+        get
+        {
+            switch (PlayerControl.LocalPlayer.GetRole())
+            {
+                case RoleId.Levelinger:
+                case RoleId.Teleporter:
+                    return RoleClass.Teleporter.CoolTime;
+                case RoleId.NiceTeleporter:
+                    return RoleClass.NiceTeleporter.CoolTime;
+                case RoleId.TeleportingJackal:
+                    return RoleClass.TeleportingJackal.CoolTime;
+                default:
+                    return 0f;
+            }
+        }
+    }
     public static void EndMeeting()
     {
-        HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Teleporter.CoolTime;
+        HudManagerStartPatch.SheriffKillButton.MaxTimer = CoolTime;
         RoleClass.Teleporter.ButtonTimer = DateTime.Now;
     }
 }

@@ -61,7 +61,7 @@ public class SetNamesClass
         {
             bool hidename = ModHelpers.HidePlayerName(PlayerControl.LocalPlayer, player);
             player.NameText().text = hidename ? "" : player.CurrentOutfit.PlayerName;
-            if ((PlayerControl.LocalPlayer.IsImpostor() && (player.IsImpostor() || player.IsRole(RoleId.Spy))) || (ModeHandler.IsMode(ModeId.HideAndSeek) && player.IsImpostor()))
+            if ((PlayerControl.LocalPlayer.IsImpostor() && (player.IsImpostor() || player.IsRole(RoleId.Spy, RoleId.Egoist))) || (ModeHandler.IsMode(ModeId.HideAndSeek) && player.IsImpostor()))
             {
                 SetPlayerNameColor(player, RoleClass.ImpostorRed);
             }
@@ -224,7 +224,7 @@ public class SetNamesClass
     }
     public static void JumboSet()
     {
-        foreach (PlayerControl p in RoleClass.Jumbo.JumboPlayer)
+        foreach (PlayerControl p in RoleClass.Jumbo.BigPlayer)
         {
             if (!RoleClass.Jumbo.JumboSize.ContainsKey(p.PlayerId)) continue;
             SetPlayerNameText(p, p.NameText().text + $"({(int)(RoleClass.Jumbo.JumboSize[p.PlayerId] * 15)})");
@@ -372,7 +372,7 @@ public class SetNameUpdate
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (p.IsImpostor() || p.IsRole(RoleId.Spy))
+                    if (p.IsImpostor() || p.IsRole(RoleId.Spy, RoleId.Egoist))
                     {
                         SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                     }

@@ -797,10 +797,9 @@ public static class ModHelpers
     {
         foreach (PlayerControl Player in listData)
         {
+            if (Player is null) continue;
             if (Player.PlayerId == CheckPlayer.PlayerId)
-            {
                 return true;
-            }
         }
         return false;
     }
