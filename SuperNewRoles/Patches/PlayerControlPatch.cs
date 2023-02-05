@@ -1019,6 +1019,10 @@ public static class MurderPlayerPatch
                     }
                 }
             }
+            if (target.IsRole(RoleId.Clergyman))
+            {
+                RPCProcedure.RPCClergymanLightOut(false);
+            }
             if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Finder))
             {
                 RoleClass.Finder.KillCount++;
