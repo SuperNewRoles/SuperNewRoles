@@ -410,15 +410,12 @@ class AllRoleSetClass
                 {
                     try
                     {
-                        for (int i1 = 1; i1 <= 15; i1++)
+                        int index = 0;
+                        foreach (var role in Crewnotonepar.ToArray())
                         {
-                            for (int i = 1; i <= Imponotonepar.Count; i++)
-                            {
-                                if (Crewnotonepar[i - 1] == RoleId.SpeedBooster)
-                                {
-                                    Crewnotonepar.RemoveAt(i - 1);
-                                }
-                            }
+                            if (role is RoleId.SpeedBooster)
+                                Crewnotonepar.RemoveAt(index);
+                            index++;
                         }
                         Crewonepar.Remove(RoleId.SpeedBooster);
                     }
@@ -479,15 +476,12 @@ class AllRoleSetClass
                 {
                     try
                     {
-                        for (int i1 = 1; i1 <= 15; i1++)
+                        int index = 0;
+                        foreach (var role in Crewnotonepar.ToArray())
                         {
-                            for (int i = 1; i <= Imponotonepar.Count; i++)
-                            {
-                                if (Crewnotonepar[i - 1] == RoleId.SpeedBooster)
-                                {
-                                    Crewnotonepar.RemoveAt(i - 1);
-                                }
-                            }
+                            if (role is RoleId.SpeedBooster)
+                                Crewnotonepar.RemoveAt(index);
+                            index++;
                         }
                         Crewonepar.Remove(RoleId.SpeedBooster);
                     }
