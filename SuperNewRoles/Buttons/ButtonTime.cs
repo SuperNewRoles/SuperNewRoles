@@ -92,7 +92,7 @@ class ButtonTime
         {
             RoleClass.Teleporter.ButtonTimer = DateTime.Now;
         }
-        var timeSpanData = new TimeSpan(0, 0, 0, (int)RoleClass.Teleporter.CoolTime);
+        var timeSpanData = new TimeSpan(0, 0, 0, (int)Teleporter.CoolTime);
         HudManagerStartPatch.TeleporterButton.Timer = (float)(RoleClass.Teleporter.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
         if (HudManagerStartPatch.TeleporterButton.Timer <= 0f) HudManagerStartPatch.TeleporterButton.Timer = 0f; return;
     }
