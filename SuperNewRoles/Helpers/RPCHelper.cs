@@ -243,13 +243,15 @@ public static class RPCHelper
         if (AmongUsClient.Instance.AmHost)
         {
             target.RPCSetRoleUnchecked(RoleTypes.ImpostorGhost);
-            target.RpcSetRole(RoleTypes.ImpostorGhost);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(target.NetId, (byte)RpcCalls.SetRole, SendOption.None);
+            writer.Write((ushort)RoleTypes.ImpostorGhost);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
         else
         {
             target.RPCSetRoleUnchecked(RoleTypes.ImpostorGhost);
-            target.SetRole(RoleTypes.ImpostorGhost);
         }
+        target.SetRole(RoleTypes.ImpostorGhost);
         Logger.Info($"[{targetRole}] であった [{target.GetDefaultName()}] の役職を ImpostorGhost に変更しました。");
     }
 

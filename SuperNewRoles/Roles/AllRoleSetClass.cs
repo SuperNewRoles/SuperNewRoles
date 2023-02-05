@@ -406,19 +406,16 @@ class AllRoleSetClass
                 int selectRoleDataIndex = ModHelpers.GetRandomIndex(Impoonepar);
                 RoleId selectRoleData = Impoonepar[selectRoleDataIndex];
 
-                if (selectRoleData == RoleId.EvilSpeedBooster)
+                if (selectRoleData == RoleId.EvilSpeedBooster && CustomOptionHolder.EvilSpeedBoosterIsNotSpeedBooster.GetBool())
                 {
                     try
                     {
-                        for (int i1 = 1; i1 <= 15; i1++)
+                        int index = 0;
+                        foreach (var role in Crewnotonepar.ToArray())
                         {
-                            for (int i = 1; i <= Imponotonepar.Count; i++)
-                            {
-                                if (Crewnotonepar[i - 1] == RoleId.SpeedBooster)
-                                {
-                                    Crewnotonepar.RemoveAt(i - 1);
-                                }
-                            }
+                            if (role is RoleId.SpeedBooster)
+                                Crewnotonepar.RemoveAt(index);
+                            index++;
                         }
                         Crewonepar.Remove(RoleId.SpeedBooster);
                     }
@@ -475,19 +472,16 @@ class AllRoleSetClass
                 int selectRoleDataIndex = ModHelpers.GetRandomIndex(Imponotonepar);
                 RoleId selectRoleData = Imponotonepar[selectRoleDataIndex];
 
-                if (selectRoleData == RoleId.EvilSpeedBooster)
+                if (selectRoleData == RoleId.EvilSpeedBooster && CustomOptionHolder.EvilSpeedBoosterIsNotSpeedBooster.GetBool())
                 {
                     try
                     {
-                        for (int i1 = 1; i1 <= 15; i1++)
+                        int index = 0;
+                        foreach (var role in Crewnotonepar.ToArray())
                         {
-                            for (int i = 1; i <= Imponotonepar.Count; i++)
-                            {
-                                if (Crewnotonepar[i - 1] == RoleId.SpeedBooster)
-                                {
-                                    Crewnotonepar.RemoveAt(i - 1);
-                                }
-                            }
+                            if (role is RoleId.SpeedBooster)
+                                Crewnotonepar.RemoveAt(index);
+                            index++;
                         }
                         Crewonepar.Remove(RoleId.SpeedBooster);
                     }
