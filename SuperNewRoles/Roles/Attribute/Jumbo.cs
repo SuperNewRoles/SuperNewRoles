@@ -12,12 +12,15 @@ public static class Jumbo
     public static void FixedUpdate()
     {
         foreach (PlayerControl p in RoleClass.Jumbo.JumboPlayer)
+            if (!RoleClass.Jumbo.BigPlayer.IsCheckListPlayerControl(p))
+                RoleClass.Jumbo.BigPlayer.Add(p);
+        foreach (PlayerControl p in RoleClass.Jumbo.BigPlayer)
         {
             if (p == null) continue;
             if (!RoleClass.Jumbo.JumboSize.ContainsKey(p.PlayerId)) RoleClass.Jumbo.JumboSize.Add(p.PlayerId, 0f);
             if (!RoleClass.Jumbo.OldPos.ContainsKey(p.PlayerId)) RoleClass.Jumbo.OldPos.Add(p.PlayerId, p.GetTruePosition());
-            Logger.Info($"{((CustomOptionHolder.JumboMaxSize.GetFloat() / 10) / RoleClass.Jumbo.JumboSize[p.PlayerId])} : {((CustomOptionHolder.JumboMaxSize.GetFloat() / 10) / RoleClass.Jumbo.JumboSize[p.PlayerId]) >= CustomOptionHolder.JumboWalkSoundSize.GetSelection()} : {RoleClass.Jumbo.OldPos[p.PlayerId] != p.GetTruePosition()} : {RoleClass.Jumbo.OldPos[p.PlayerId]} : {p.GetTruePosition()}");
-            if (((CustomOptionHolder.JumboMaxSize.GetFloat() / 10) / RoleClass.Jumbo.JumboSize[p.PlayerId]) >= CustomOptionHolder.JumboWalkSoundSize.GetSelection())
+            Logger.Info($"{(CustomOptionHolder.JumboMaxSize.GetFloat() / 10 / RoleClass.Jumbo.JumboSize[p.PlayerId])} : {((CustomOptionHolder.JumboMaxSize.GetFloat() / 10) / RoleClass.Jumbo.JumboSize[p.PlayerId]) >= CustomOptionHolder.JumboWalkSoundSize.GetSelection()} : {RoleClass.Jumbo.OldPos[p.PlayerId] != p.GetTruePosition()} : {RoleClass.Jumbo.OldPos[p.PlayerId]} : {p.GetTruePosition()}");
+            if ((CustomOptionHolder.JumboMaxSize.GetFloat() / 10 / RoleClass.Jumbo.JumboSize[p.PlayerId]) >= CustomOptionHolder.JumboWalkSoundSize.GetSelection())
             {
                 if (!RoleClass.Jumbo.PlaySound.ContainsKey(p.PlayerId)) RoleClass.Jumbo.PlaySound.Add(p.PlayerId, 0f);
                 RoleClass.Jumbo.PlaySound[p.PlayerId] -= Time.deltaTime;
