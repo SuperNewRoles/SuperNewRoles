@@ -372,7 +372,7 @@ public class SetNameUpdate
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (p.IsImpostor() || p.IsRole(RoleId.Spy))
+                    if (p.IsImpostor() || p.IsRole(RoleId.Spy, RoleId.Egoist))
                     {
                         SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                     }
