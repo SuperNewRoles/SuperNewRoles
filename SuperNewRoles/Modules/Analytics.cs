@@ -64,14 +64,14 @@ public static class Analytics
         string ActivateRole = "";
         string RealActivateRole = "";
         List<RoleId> RealActivateRoleList = new();
-        foreach (ClientData cd in AmongUsClient.Instance.allClients)
+        foreach (GameData.PlayerInfo player in GameData.Instance is null ? new() : GameData.Instance.AllPlayers)
         {
-            if (cd.Id == AmongUsClient.Instance.ClientId) continue;
-            PlayerDatas += $"{cd.FriendCode},";
+            if (player.PlayerId == PlayerControl.LocalPlayer.Data.PlayerId) continue;
+            PlayerDatas += $"{player.FriendCode},";
         }
         if (PlayerDatas.Length > 1)
         {
-            PlayerDatas = PlayerDatas[..-1];
+            PlayerDatas = PlayerDatas.Substring(0, PlayerDatas.Length - 1);
         }
 
         foreach (CustomOption opt in CustomOption.options)
