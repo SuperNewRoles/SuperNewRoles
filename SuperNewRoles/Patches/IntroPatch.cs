@@ -195,6 +195,10 @@ public class IntroPatch
                             {
                                 ImpostorTeams.Add(player);
                             }
+                            if (player.IsRole(RoleId.Egoist))
+                            {
+                                player.Data.Role.NameColor = Color.red;
+                            }
                         }
                         yourTeam = ImpostorTeams;
                         break;
@@ -309,6 +313,13 @@ public class IntroPatch
                         TeamTitle = ModTranslation.GetString(Intro.NameKey + "Name");
                         ImpostorText = "";
                         break;
+                }
+                foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.IsRole(RoleId.Egoist))
+                    {
+                        player.Data.Role.NameColor = Color.white;
+                    }
                 }
             }
         }
