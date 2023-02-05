@@ -406,7 +406,7 @@ class AllRoleSetClass
                 int selectRoleDataIndex = ModHelpers.GetRandomIndex(Impoonepar);
                 RoleId selectRoleData = Impoonepar[selectRoleDataIndex];
 
-                if (selectRoleData == RoleId.EvilSpeedBooster)
+                if (selectRoleData == RoleId.EvilSpeedBooster && CustomOptionHolder.EvilSpeedBoosterIsNotSpeedBooster.GetBool())
                 {
                     try
                     {
@@ -475,7 +475,7 @@ class AllRoleSetClass
                 int selectRoleDataIndex = ModHelpers.GetRandomIndex(Imponotonepar);
                 RoleId selectRoleData = Imponotonepar[selectRoleDataIndex];
 
-                if (selectRoleData == RoleId.EvilSpeedBooster)
+                if (selectRoleData == RoleId.EvilSpeedBooster && CustomOptionHolder.EvilSpeedBoosterIsNotSpeedBooster.GetBool())
                 {
                     try
                     {
