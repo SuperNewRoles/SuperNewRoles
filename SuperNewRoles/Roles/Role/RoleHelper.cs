@@ -776,6 +776,9 @@ public static class RoleHelpers
             case RoleId.DyingMessenger:
                 DyingMessenger.DyingMessengerPlayer.Add(player);
                 break;
+            case RoleId.Moira:
+                Moira.MoiraPlayer.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1335,7 +1338,8 @@ public static class RoleHelpers
             case RoleId.LoversBreaker:
             case RoleId.Safecracker:
             case RoleId.FireFox:
-                // タスククリアか
+                case RoleId.Moira:
+            // タスククリアか
                 IsTaskClear = true;
                 break;
             case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
@@ -1780,6 +1784,7 @@ public static class RoleHelpers
             else if (FireFox.FireFoxPlayer.IsCheckListPlayerControl(player)) return RoleId.FireFox;
             else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
             else if (DyingMessenger.DyingMessengerPlayer.IsCheckListPlayerControl(player)) return RoleId.DyingMessenger;
+            else if (Moira.MoiraPlayer.IsCheckListPlayerControl(player)) return RoleId.Moira;
             // ロールチェック
         }
         catch (Exception e)

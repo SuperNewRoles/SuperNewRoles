@@ -46,7 +46,8 @@ public enum CustomGameOverReason
     LoversBreakerWin,
     NoWinner,
     BugEnd,
-    SafecrackerWin
+    SafecrackerWin,
+    MoiraWin
 }
 enum WinCondition
 {
@@ -78,7 +79,8 @@ enum WinCondition
     LoversBreakerWin,
     NoWinner,
     BugEnd,
-    SafecrackerWin
+    SafecrackerWin,
+    MoiraWin
 }
 class FinalStatusPatch
 {
@@ -238,7 +240,8 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.PavlovsTeamWin,("PavlovsTeamWinText",RoleClass.Pavlovsdogs.color)},
                 {WinCondition.LoversBreakerWin,("LoversBreakerName",RoleClass.LoversBreaker.color)},
                 {WinCondition.NoWinner,("NoWinner",Color.white)},
-                {WinCondition.SafecrackerWin,("SafecrackerName",Safecracker.color)}
+                {WinCondition.SafecrackerWin,("SafecrackerName",Safecracker.color)},
+                {WinCondition.MoiraWin,("MoiraName",Moira.color)}
             };
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {
@@ -976,6 +979,19 @@ public static class OnGameEndPatch
             }
         }
 
+        isReset = false;
+        foreach (byte playerId in Moira.AbilityUsedPlayers)
+        {
+            PlayerControl player = ModHelpers.PlayerById(playerId);
+            if (!((isDleted && changeTheWinCondition) || isReset))
+            {
+                TempData.winners = new();
+                isDleted = true;
+                isReset = true;
+            }
+            TempData.winners.Add(new(player.Data));
+            AdditionalTempData.winCondition = WinCondition.MoiraWin;
+        }
         //追加勝利系
         foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
         {

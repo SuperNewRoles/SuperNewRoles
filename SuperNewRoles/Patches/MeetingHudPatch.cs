@@ -435,6 +435,8 @@ class CheckForEndVotingPatch
 
 static class ExtendedMeetingHud
 {
+    private static PlayerVoteArea swapped1 = null;
+    private static PlayerVoteArea swapped2 = null;
     public static Dictionary<byte, int> CustomCalculateVotes(this MeetingHud __instance)
     {
         Dictionary<byte, int> dic = new();
@@ -451,6 +453,30 @@ static class ExtendedMeetingHud
                 dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out int num) ? VoteNum : num + VoteNum;
             }
         }
+        if (Moira.SwapVoteData.Count > 0)
+        {
+            foreach (var data in Moira.SwapVoteData)
+            {
+                PlayerControl player = ModHelpers.PlayerById(data.Key);
+                if (player is null || player.IsDead()) continue;
+                swapped1 = null;
+                swapped2 = null;
+                foreach (PlayerVoteArea playerVoteArea in __instance.playerStates)
+                {
+                    if (playerVoteArea.TargetPlayerId == data.Value.Item1) swapped1 = playerVoteArea;
+                    if (playerVoteArea.TargetPlayerId == data.Value.Item2) swapped2 = playerVoteArea;
+                }
+
+                if (swapped1 != null && swapped2 != null)
+                {
+                    if (!dic.ContainsKey(swapped1.TargetPlayerId)) dic[swapped1.TargetPlayerId] = 0;
+                    if (!dic.ContainsKey(swapped2.TargetPlayerId)) dic[swapped2.TargetPlayerId] = 0;
+                    int tmp = dic[swapped1.TargetPlayerId];
+                    dic[swapped1.TargetPlayerId] = dic[swapped2.TargetPlayerId];
+                    dic[swapped2.TargetPlayerId] = tmp;
+                }
+            }
+        }
         return dic;
     }
 }
@@ -465,7 +491,7 @@ class MeetingHudSetForegroundForDeadPatch
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
 class MeetingHudUpdateButtonsPatch
 {
-    public static bool PreFix(MeetingHud __instance)
+    public static bool Prefix(MeetingHud __instance)
     {
         if (RoleClass.Assassin.TriggerPlayer == null && RoleClass.Revolutionist.MeetingTrigger) { return true; }
 
@@ -484,12 +510,42 @@ class MeetingHudUpdateButtonsPatch
         }
         return false;
     }
+    public static void Postfix(MeetingHud __instance)
+    {
+        if (PlayerControl.LocalPlayer.IsAlive()) return;
+        switch (PlayerControl.LocalPlayer.GetRole())
+        {
+            case RoleId.Moira:
+                Moira.MeetingUpdateButtons(__instance);
+                break;
+        }
+    }
 }
+
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateResults))]
+class MeetingHudPopulateVotesPatch
+{
+
+    static void Prefix(MeetingHud __instance, Il2CppStructArray<MeetingHud.VoterState> states)
+    {
+        Moira.PopulateVotes(__instance);
+    }
+}
+
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
 class MeetingHudStartPatch
 {
     public static void Postfix(MeetingHud __instance)
     {
+        if (PlayerControl.LocalPlayer.IsAlive())
+        {
+            switch (PlayerControl.LocalPlayer.GetRole())
+            {
+                case RoleId.Moira:
+                    Moira.StartMeeting(__instance);
+                    break;
+            }
+        }
         Logger.Info("会議開始時の処理 開始", "MeetingHudStartPatch");
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {

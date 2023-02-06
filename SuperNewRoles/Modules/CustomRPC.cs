@@ -183,6 +183,7 @@ public enum RoleId
     FireFox,
     Squid,
     DyingMessenger,
+    Moira,
     //RoleId
 }
 
@@ -275,10 +276,12 @@ public enum CustomRPC
     SafecrackerGuardCount,
     SetVigilance,
     Chat,
+    MoiraChangeRole
 }
 
 public static class RPCProcedure
 {
+    public static void MoiraChangeRole(byte source, byte player1, byte player2, bool IsUseEnd) => Moira.ChangeRole(source, player1, player2, IsUseEnd);
     public static void Chat(byte id, string text)
     {
         PlayerControl player = ModHelpers.PlayerById(id);
@@ -1695,6 +1698,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.Chat:
                         Chat(reader.ReadByte(), reader.ReadString());
+                        break;
+                    case CustomRPC.MoiraChangeRole:
+                        MoiraChangeRole(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                 }
             }

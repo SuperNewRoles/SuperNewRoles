@@ -289,6 +289,15 @@ public class SetNamesClass
             }
         }
     }
+    public static void MoiraSet()
+    {
+        foreach (byte playerId in Moira.AbilityUsedPlayers)
+        {
+            PlayerControl player = ModHelpers.PlayerById(playerId);
+            if (player is null) continue;
+            SetPlayerNameText(player, player.NameText().text += "(→←)");
+        }
+    }
     public static void CelebritySet()
     {
         if (RoleClass.Celebrity.ChangeRoleView)

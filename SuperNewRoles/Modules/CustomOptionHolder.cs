@@ -1956,6 +1956,8 @@ public class CustomOptionHolder
 
         DyingMessenger.SetupCustomOptions();
 
+        Moira.SetupCustomOptions();
+
         // 表示設定
 
         QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
