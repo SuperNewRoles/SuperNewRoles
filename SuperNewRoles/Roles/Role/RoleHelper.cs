@@ -776,6 +776,12 @@ public static class RoleHelpers
             case RoleId.DyingMessenger:
                 DyingMessenger.DyingMessengerPlayer.Add(player);
                 break;
+            case RoleId.NiceMechanic:
+                NiceMechanic.NiceMechanicPlayer.Add(player);
+                break;
+            case RoleId.EvilMechanic:
+                EvilMechanic.EvilMechanicPlayer.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1780,6 +1786,8 @@ public static class RoleHelpers
             else if (FireFox.FireFoxPlayer.IsCheckListPlayerControl(player)) return RoleId.FireFox;
             else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
             else if (DyingMessenger.DyingMessengerPlayer.IsCheckListPlayerControl(player)) return RoleId.DyingMessenger;
+            else if (NiceMechanic.NiceMechanicPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceMechanic;
+            else if (EvilMechanic.EvilMechanicPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilMechanic;
             // ロールチェック
         }
         catch (Exception e)

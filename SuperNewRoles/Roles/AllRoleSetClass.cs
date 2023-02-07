@@ -969,6 +969,8 @@ class AllRoleSetClass
             RoleId.FireFox => FireFox.FireFoxPlayerCount.GetFloat(),
             RoleId.Squid => Squid.SquidPlayerCount.GetFloat(),
             RoleId.DyingMessenger => DyingMessenger.DyingMessengerPlayerCount.GetFloat(),
+            RoleId.NiceMechanic => NiceMechanic.NiceMechanicPlayerCount.GetFloat(),
+            RoleId.EvilMechanic => EvilMechanic.EvilMechanicPlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
         };
