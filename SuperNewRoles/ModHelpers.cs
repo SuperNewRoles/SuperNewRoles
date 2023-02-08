@@ -777,6 +777,7 @@ public static class ModHelpers
     }
 
     internal static Dictionary<byte, PlayerControl> IdControlDic = new(); // ClearAndReloadで初期化されます
+    internal static Dictionary<int, Vent> VentIdControlDic = new(); // ClearAndReloadで初期化されます
     public static PlayerControl GetPlayerControl(this byte id) => PlayerById(id);
     public static PlayerControl PlayerById(byte id)
     {
@@ -790,6 +791,20 @@ public static class ModHelpers
         }
         if (IdControlDic.ContainsKey(id)) return IdControlDic[id];
         Logger.Error($"idと合致するPlayerIdが見つかりませんでした。nullを返却します。id:{id}", "ModHelpers");
+        return null;
+    }
+    public static Vent VentById(byte id)
+    {
+        if (!VentIdControlDic.ContainsKey(id))
+        { // idが辞書にない場合全プレイヤー分のループを回し、辞書に追加する
+            foreach (Vent vn in ShipStatus.Instance.AllVents)
+            {
+                if (!VentIdControlDic.ContainsKey(vn.Id)) // Key重複対策
+                    VentIdControlDic.Add(vn.Id, vn);
+            }
+        }
+        if (IdControlDic.ContainsKey(id)) return VentIdControlDic[id];
+        Logger.Error($"idと合致するVentIdが見つかりませんでした。nullを返却します。id:{id}", "ModHelpers");
         return null;
     }
 

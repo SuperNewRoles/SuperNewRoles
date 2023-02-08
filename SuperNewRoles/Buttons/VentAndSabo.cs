@@ -1,6 +1,7 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.MapOption;
+using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
@@ -179,6 +180,7 @@ public static class VentAndSabo
         public static void Prefix(Vent __instance, ref bool enabled)
         {
             if (!Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) && PlayerControl.LocalPlayer.IsMadRoles() && !CustomOptionHolder.MadRolesCanVentMove.GetBool()) enabled = false;
+            if (NiceMechanic.TargetVent.ContainsValue(__instance)) enabled = false;
         }
     }
 

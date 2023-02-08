@@ -277,10 +277,17 @@ public enum CustomRPC
     SafecrackerGuardCount,
     SetVigilance,
     Chat,
+    SetVentStatusMechanic
 }
 
 public static class RPCProcedure
 {
+    public static void SetVentStatusMechanic(byte sourceplayer, byte targetvent, bool Is)
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourceplayer);
+        Vent vent = ModHelpers.VentById(targetvent);
+        NiceMechanic.SetVentStatusMechanic(source, vent, Is);
+    }
     public static void Chat(byte id, string text)
     {
         PlayerControl player = ModHelpers.PlayerById(id);
@@ -1697,6 +1704,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.Chat:
                         Chat(reader.ReadByte(), reader.ReadString());
+                        break;
+                    case CustomRPC.SetVentStatusMechanic:
+                        SetVentStatusMechanic(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                 }
             }
