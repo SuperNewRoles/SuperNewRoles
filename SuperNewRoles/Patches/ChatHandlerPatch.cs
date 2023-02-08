@@ -85,7 +85,10 @@ class AddChatPatch
                 betatext += $"\nBranch: {ThisAssembly.Git.Branch}";
                 betatext += $"\nCommitId: {ThisAssembly.Git.Commit}";
             }
-            SendCommand(sourcePlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
+            PlayerControl sendPlayer;
+            if (sourcePlayer.AmOwner) sendPlayer = null;
+            else sendPlayer = sourcePlayer;
+            SendCommand(sendPlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
             return false;
         }
         else if (
