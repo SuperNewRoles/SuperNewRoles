@@ -4,6 +4,7 @@ using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
+using Unity.Services.Authentication.Internal;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;
@@ -101,6 +102,7 @@ public static class Moira
             {
                 __instance.StartCoroutine(Effects.Slide3D(swapped1.transform, swapped1.transform.localPosition, swapped2.transform.localPosition, 1.5f));
                 __instance.StartCoroutine(Effects.Slide3D(swapped2.transform, swapped2.transform.localPosition, swapped1.transform.localPosition, 1.5f));
+                SwapRole(swapped1.TargetPlayerId, swapped2.TargetPlayerId);
             }
         }
     }
@@ -126,7 +128,6 @@ public static class Moira
     }
     public static void ChangeRole(byte source, byte player1Id, byte player2Id, bool IsUseEnd)
     {
-        SwapRole(player1Id, player2Id);
         if (!ChangeData.ContainsKey(source)) ChangeData.Add(source, new());
         if (!SwapVoteData.ContainsKey(source) && !SwapVoteData.ContainsValue((player1Id, player2Id)) && !SwapVoteData.ContainsValue((player2Id, player1Id))) SwapVoteData.Add(source, (player1Id, player2Id));
         ChangeData[source].Add((player1Id, player2Id));
