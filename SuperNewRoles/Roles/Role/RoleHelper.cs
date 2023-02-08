@@ -1338,7 +1338,7 @@ public static class RoleHelpers
             case RoleId.LoversBreaker:
             case RoleId.Safecracker:
             case RoleId.FireFox:
-                case RoleId.Moira:
+            case RoleId.Moira:
             // タスククリアか
                 IsTaskClear = true;
                 break;
@@ -1528,7 +1528,8 @@ public static class RoleHelpers
         RoleId.Pavlovsowner or
         RoleId.LoversBreaker or
         RoleId.Safecracker or
-        RoleId.FireFox;
+        RoleId.FireFox or
+        RoleId.Moira;
     // 第三か
     public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
     {

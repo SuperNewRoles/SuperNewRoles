@@ -75,7 +75,7 @@ class WrapUpPatch
     }
     public static void Postfix(GameData.PlayerInfo exiled)
     {
-        if (exiled != null && exiled.Object == null)
+        if (exiled is not null && exiled.Object is null)
         {
             exiled = null;
         }
@@ -120,8 +120,8 @@ class WrapUpPatch
             p.resetChange();
         }
         RoleClass.Doppelganger.Targets = new();
-        Moira.WrapUp(exiled.Object);
-        if (exiled == null) return;
+        Moira.WrapUp(exiled);
+        if (exiled is null) return;
         if (exiled.Object.IsRole(RoleId.Jumbo) && exiled.Object.IsCrew())
         {
             GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.NoWinner, false);

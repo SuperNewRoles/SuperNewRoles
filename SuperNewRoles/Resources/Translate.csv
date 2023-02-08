@@ -1246,6 +1246,7 @@ DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}
 MoiraName,Moira,モイラ
 MoiraTitle1,Destiny is in my hands!,運命は私の手の中に！
 MoiraWinLimit,Number of ability usage,能力使用数
+MoiraChangeVote,I'll switch my vote as well.,投票も入れ替える
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

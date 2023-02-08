@@ -15,11 +15,13 @@ public static class Moira
     public static CustomRoleOption MoiraOption;
     public static CustomOption MoiraPlayerCount;
     public static CustomOption MoiraWinLimit;
+    public static CustomOption MoiraChangeVote;
     public static void SetupCustomOptions()
     {
         MoiraOption = CustomOption.SetupCustomRoleOption(OptionId, false, RoleId.Moira);
         MoiraPlayerCount = CustomOption.Create(OptionId + 1, false, CustomOptionType.Neutral, "SettingPlayerCountName", CustomOptionHolder.CrewPlayers[0], CustomOptionHolder.CrewPlayers[1], CustomOptionHolder.CrewPlayers[2], CustomOptionHolder.CrewPlayers[3], MoiraOption);
         MoiraWinLimit = CustomOption.Create(OptionId + 2, false, CustomOptionType.Neutral, "MoiraWinLimit", 5f, 1f, 10f, 1f, MoiraOption);
+        MoiraChangeVote = CustomOption.Create(OptionId + 3, false, CustomOptionType.Neutral, "MoiraChangeVote", true, MoiraOption);
     }
     
     public static List<PlayerControl> MoiraPlayer;
@@ -102,7 +104,6 @@ public static class Moira
             {
                 __instance.StartCoroutine(Effects.Slide3D(swapped1.transform, swapped1.transform.localPosition, swapped2.transform.localPosition, 1.5f));
                 __instance.StartCoroutine(Effects.Slide3D(swapped2.transform, swapped2.transform.localPosition, swapped1.transform.localPosition, 1.5f));
-                SwapRole(swapped1.TargetPlayerId, swapped2.TargetPlayerId);
             }
         }
     }
@@ -147,11 +148,15 @@ public static class Moira
         player2.SetRoleRPC(player1Role);
         player2.RPCSetRoleUnchecked(player1RoleType);
     }
-    public static void WrapUp(PlayerControl exiled)
+    public static void WrapUp(GameData.PlayerInfo exiled)
     {
+        foreach (var data in SwapVoteData)
+        {
+            SwapRole(data.Value.Item1, data.Value.Item2);
+        }
         SwapVoteData = new();
-        if (exiled == null) return;
-        if (exiled.IsRole(RoleId.Moira))
+        if (exiled is null) return;
+        if (exiled.Object.IsRole(RoleId.Moira))
             if (ChangeData.ContainsKey(exiled.PlayerId))
                 foreach (var data in ChangeData[exiled.PlayerId])
                     SwapRole(data.Item1, data.Item2);
