@@ -40,6 +40,7 @@ public static class RoleHelpers
     public static bool IsMadRoles(this PlayerControl player) =>
         (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2) ||
         player.GetRole() is
+        // RoleId.MadKiller or [MadRoleでもありImpostorRoleでもある為 MadRoleに記載不可]
         RoleId.Madmate or
         RoleId.MadMayor or
         RoleId.MadStuntMan or
@@ -1281,6 +1282,8 @@ public static class RoleHelpers
         var IsTaskClear = false;
         if (player.IsImpostor()) IsTaskClear = true;
         if (player.IsShapeshifter()) IsTaskClear = true;
+        if (player.IsMadRoles()) IsTaskClear = true;
+        if (player.IsFriendRoles()) IsTaskClear = true;
         switch (player.GetRole())
         {
             case RoleId.Jester:
@@ -1288,8 +1291,6 @@ public static class RoleHelpers
             case RoleId.Sidekick:
             case RoleId.Vulture:
             case RoleId.HomeSecurityGuard:
-            case RoleId.Madmate:
-            case RoleId.JackalFriends:
             case RoleId.Opportunist:
             case RoleId.Researcher:
             case RoleId.God:
@@ -1297,26 +1298,15 @@ public static class RoleHelpers
             case RoleId.Workperson:
             case RoleId.truelover:
             case RoleId.Amnesiac:
-            case RoleId.MadMayor:
-            case RoleId.MadStuntMan:
-            case RoleId.MadKiller:
-            case RoleId.MadHawk:
-            case RoleId.MadJester:
-            case RoleId.MadSeer:
-            case RoleId.Worshiper:
+            case RoleId.MadKiller: // MadRoleでもありImpostorRoleでもある為MadRoleに記載不可
             case RoleId.FalseCharges:
             case RoleId.Fox:
             case RoleId.TeleportingJackal:
             case RoleId.Demon:
-            case RoleId.SeerFriends:
             case RoleId.Arsonist:
             case RoleId.JackalSeer:
             case RoleId.SidekickSeer:
-            case RoleId.MadMaker:
-            case RoleId.MadCleaner:
-            case RoleId.MayorFriends:
             case RoleId.Tuna:
-            case RoleId.BlackCat:
             case RoleId.Neet:
             case RoleId.SatsumaAndImo:
             case RoleId.Revolutionist:
