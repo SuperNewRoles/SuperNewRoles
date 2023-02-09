@@ -959,8 +959,8 @@ public static class OnGameEndPatch
             }
         }
         isReset = false;
-        var foxPlayers = RoleClass.Fox.FoxPlayer;
-        foxPlayers.AddRange(foxPlayers);
+        List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
+        foxPlayers.AddRange(FireFox.FireFoxPlayer);
         foreach (PlayerControl player in foxPlayers)
         {
             if (player.IsAlive())
