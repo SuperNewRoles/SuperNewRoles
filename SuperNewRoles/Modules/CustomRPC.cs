@@ -283,10 +283,12 @@ public static class RPCProcedure
     {
         PlayerControl player = ModHelpers.PlayerById(id);
         if (player == null) return;
-        bool isAlive = player.IsAlive();
+        bool isDead = player.IsDead();
+        Logger.Info($"{player.Data.PlayerName}が発言します。元のIsDead : {isDead}", "RPC Chat");
         player.Data.IsDead = false;
         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, text);
-        player.Data.IsDead = isAlive;
+        player.Data.IsDead = isDead;
+        if (isDead != player.Data.IsDead) Logger.Error($"{player.Data.PlayerName}のIsDeadが正常に戻りませんでした。元のIsDead : {isDead}, 現在のIsDead : {player.Data.IsDead}", "RPC Chat");
     }
     public static void SetVigilance(bool isVigilance, byte id)
     {
