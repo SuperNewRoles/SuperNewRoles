@@ -1296,13 +1296,18 @@ public static class RoleHelpers
             case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
                 IsTaskClear = true;
                 break;
+            case RoleId.Sheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
+            case RoleId.RemoteSheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
+            case RoleId.ToiletFan when ModeHandler.IsMode(ModeId.SuperHostRoles):
+            case RoleId.NiceButtoner when ModeHandler.IsMode(ModeId.SuperHostRoles):
+                IsTaskClear = true;
+                break;
         }
         if (!IsTaskClear
-            && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
-            player.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff, RoleId.ToiletFan, RoleId.NiceButtoner))
-            || player.IsQuarreled()
-            || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
-            || player.IsImpostor()))
+            && (player.IsQuarreled()
+                || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
+                || player.IsImpostor())
+            )
         {
             IsTaskClear = true;
         }
