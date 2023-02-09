@@ -313,6 +313,8 @@ public static class RoleHelpers
         }
         else if (player.IsRole(RoleId.Camouflager) && role != RoleId.Camouflager && RoleClass.Camouflager.IsCamouflage)
             Camouflager.ResetCamouflage();
+        else if (player.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic))
+            NiceMechanic.ChangeRole(player);
         switch (role)
         {
             case RoleId.SoothSayer:
@@ -1400,6 +1402,8 @@ public static class RoleHelpers
             RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsUseVent,
             RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.UseVent),
             RoleId.FireFox => FireFox.FireFoxIsUseVent.GetBool(),
+            RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
+            RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
             _ => player.IsImpostor(),
         };
     }

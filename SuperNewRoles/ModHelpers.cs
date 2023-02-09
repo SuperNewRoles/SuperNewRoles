@@ -38,6 +38,41 @@ public static class ModHelpers
                     !ExileController.Instance;
         }
     }
+    public static Vent SetTargetVent(List<Vent> untargetablePlayers = null, PlayerControl targetingPlayer = null, bool forceout = false)
+    {
+        Vent result = null;
+        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        if (!MapUtilities.CachedShipStatus) return result;
+        if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
+        if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
+
+        if (untargetablePlayers == null)
+        {
+            untargetablePlayers = new();
+        }
+
+        Vector2 truePosition = targetingPlayer.GetTruePosition();
+        var allPlayers = ShipStatus.Instance.AllVents;
+        for (int i = 0; i < allPlayers.Count; i++)
+        {
+            Vent ventInfo = allPlayers[i];
+            if (untargetablePlayers.Any(x => x == ventInfo))
+            {
+                continue;
+            }
+            if (ventInfo && (NiceMechanic.TargetVent.All(x => x.Value is null || x.Value.Id != ventInfo.Id) || forceout))
+            {
+                Vector2 vector = new Vector2(ventInfo.transform.position.x, ventInfo.transform.position.y) - truePosition;
+                float magnitude = vector.magnitude;
+                if (magnitude <= num && !PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask))
+                {
+                    result = ventInfo;
+                    num = magnitude;
+                }
+            }
+        }
+        return result;
+    }
     public static AudioSource PlaySound(Transform parent, AudioClip clip, bool loop, float volume = 1f, AudioMixerGroup audioMixer = null)
     {
         if (audioMixer == null)
@@ -803,7 +838,7 @@ public static class ModHelpers
                     VentIdControlDic.Add(vn.Id, vn);
             }
         }
-        if (IdControlDic.ContainsKey(id)) return VentIdControlDic[id];
+        if (VentIdControlDic.ContainsKey(id)) return VentIdControlDic[id];
         Logger.Error($"idと合致するVentIdが見つかりませんでした。nullを返却します。id:{id}", "ModHelpers");
         return null;
     }

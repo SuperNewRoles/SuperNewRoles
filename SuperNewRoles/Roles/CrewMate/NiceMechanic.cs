@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using Hazel;
+using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using UnityEngine;
 using static Il2CppSystem.Globalization.CultureInfo;
@@ -26,6 +28,7 @@ public static class NiceMechanic
     public static List<PlayerControl> NiceMechanicPlayer;
     public static Color32 color = new Color32(82, 108, 173, byte.MaxValue);
     public static Dictionary<byte, Vent> TargetVent;
+    public static bool IsLocalUsingNow => TargetVent.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && TargetVent[PlayerControl.LocalPlayer.PlayerId] is not null;
     public static void ClearAndReload()
     {
         NiceMechanicPlayer = new();
@@ -36,33 +39,41 @@ public static class NiceMechanic
     {
         foreach (var data in TargetVent)
         {
+            if (data.Value is null) continue;
             PlayerControl player = ModHelpers.PlayerById(data.Key);
             if (player is null) continue;
-            Vector2 truepos = player.GetTruePosition();
-            data.Value.transform.position = new(truepos.x, truepos.y, player.transform.position.z - 0.5f);
+            Vector2 truepos = player.transform.position;
+            data.Value.transform.position = new(truepos.x, truepos.y, player.transform.position.z + 0.5f);
+            SetHideStatus(player, true);
             if (Vent.currentVent is not null && Vent.currentVent.Id == data.Value.Id)
             {
                 PlayerControl.LocalPlayer.transform.position = Vent.currentVent.transform.position;
             }
         }
     }
-    public static void RpcSetVentStatusMechanic(PlayerControl source, Vent targetvent, bool Is)
+    public static void RpcSetVentStatusMechanic(PlayerControl source, Vent targetvent, bool Is, Vector3? pos = null)
     {
+        Vector3 position = pos ?? new();
+        byte[] buff = new byte[sizeof(float) * 3];
+        Buffer.BlockCopy(BitConverter.GetBytes(position.x), 0, buff, 0 * sizeof(float), sizeof(float));
+        Buffer.BlockCopy(BitConverter.GetBytes(position.y), 0, buff, 1 * sizeof(float), sizeof(float));
+        Buffer.BlockCopy(BitConverter.GetBytes(position.z), 0, buff, 2 * sizeof(float), sizeof(float));
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetVentStatusMechanic);
         writer.Write(source.PlayerId);
-        writer.Write((byte)targetvent.Id);
+        writer.Write(targetvent is null ? 255 : (byte)targetvent.Id);
         writer.Write(Is);
+        writer.WriteBytesAndSize(buff);
         writer.EndRPC();
-        RPCProcedure.SetVentStatusMechanic(source.PlayerId, (byte)targetvent.Id, Is);
+        RPCProcedure.SetVentStatusMechanic(source.PlayerId, (byte)targetvent.Id, Is, buff);
     }
-    public static void SetVentStatusMechanic(PlayerControl source, Vent targetvent, bool Is)
+    public static void SetVentStatusMechanic(PlayerControl source, Vent targetvent, bool Is, Vector3 pos)
     {
         if (Is)
         {
             TargetVent[source.PlayerId] = targetvent;
-            Vector2 truepos = source.GetTruePosition();
-            targetvent.transform.position = new(truepos.x, truepos.y, source.transform.position.z - 0.5f);
-            source.cosmetics.currentBodySprite.BodySprite.enabled = false;
+            Vector2 truepos = source.transform.position;
+            targetvent.transform.position = new(truepos.x, truepos.y, source.transform.position.z + 0.5f);
+            SetHideStatus(source, true);
             if (Vent.currentVent is not null && Vent.currentVent.Id == targetvent.Id)
             {
                 targetvent.SetButtons(false);
@@ -71,23 +82,44 @@ public static class NiceMechanic
         else
         {
             TargetVent[source.PlayerId] = null;
-            Vector2 truepos = source.GetTruePosition();
-            targetvent.transform.position = new(truepos.x, truepos.y, source.transform.position.z - 0.5f);
-            source.cosmetics.currentBodySprite.BodySprite.enabled = true;
-            if (Vent.currentVent is not null && Vent.currentVent.Id == targetvent.Id && )
+            Vector2 truepos = source.transform.position;
+            targetvent.transform.position = pos;
+            SetHideStatus(source, false);
+            if (Vent.currentVent is not null && Vent.currentVent.Id == targetvent.Id)
             {
                 targetvent.SetButtons(true);
             }
         }
     }
-    //メモ:役職変更時に処理を入れる
+    public static void ChangeRole(PlayerControl Target)
+    {
+        if (PlayerControl.LocalPlayer.PlayerId == Target.PlayerId && IsLocalUsingNow)
+        {
+            Vector3 truepos = PlayerControl.LocalPlayer.transform.position;
+            RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, HudManagerStartPatch.SetTargetVent(forceout:true), false, new(truepos.x, truepos.y, truepos.z + 0.5f));
+        }
+    }
+    public static void SetHideStatus(PlayerControl Target, bool ison)
+    {
+        var opacity = 0f;
+        if (ison)
+        {
+            opacity = 0f;
+            Target.MyRend().material.SetFloat("_Outline", 0f);
+        }
+        else
+        {
+            opacity = 1.5f;
+        }
+        Scientist.SetOpacity(Target, opacity, false);
+    }
     public static void WrapUp()
     {
         foreach (var data in TargetVent)
         {
             PlayerControl player = ModHelpers.PlayerById(data.Key);
             if (player is null) return;
-            player.cosmetics.currentBodySprite.BodySprite.enabled = true;
+            SetHideStatus(player, true);
         }
         TargetVent = new();
     }

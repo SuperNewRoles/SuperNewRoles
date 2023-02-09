@@ -97,6 +97,7 @@ static class HudManagerStartPatch
     public static CustomButton DependentsKillButton;
     public static CustomButton LoversBreakerButton;
     public static CustomButton JumboKillButton;
+    public static CustomButton MechanicButton;
 
     #endregion
 
@@ -121,10 +122,64 @@ static class HudManagerStartPatch
     {
         return PlayerControlFixedUpdatePatch.SetTarget(untargetablePlayers: untarget, onlyCrewmates: Crewmateonly);
     }
+    public static Vent SetTargetVent(List<Vent> untarget = null, bool forceout = false)
+    {
+        return ModHelpers.SetTargetVent(untargetablePlayers: untarget, forceout:forceout);
+    }
 
     public static void Postfix(HudManager __instance)
     {
         Roles.Attribute.Debugger.canSeeRole = false;
+
+        MechanicButton = new(
+            () =>
+            {
+                if (MechanicButton.isEffectActive)
+                {
+                    Vector3 truepos = PlayerControl.LocalPlayer.transform.position;
+                    NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(), false, new(truepos.x, truepos.y, truepos.z + 0.5f));
+                    MechanicButton.isEffectActive = false;
+                    MechanicButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicCoolTime.GetFloat() : EvilMechanic.EvilMechanicCoolTime.GetFloat();
+                    MechanicButton.Timer = MechanicButton.MaxTimer;
+                    return;
+                }
+                NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(), true);
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role is RoleId.NiceMechanic or RoleId.EvilMechanic; },
+            () =>
+            {
+                return PlayerControl.LocalPlayer.CanMove && SetTargetVent();
+            },
+            () =>
+            {
+                MechanicButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicCoolTime.GetFloat() : EvilMechanic.EvilMechanicCoolTime.GetFloat();
+                MechanicButton.Timer = MechanicButton.MaxTimer;
+                MechanicButton.effectCancellable = true;
+                MechanicButton.EffectDuration = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicDurationTime.GetFloat() : EvilMechanic.EvilMechanicDurationTime.GetFloat();
+                MechanicButton.HasEffect = true;
+            },
+            RoleClass.WaveCannon.GetButtonSprite(),
+            new Vector3(-2f, 1, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.F,
+            49,
+            () => { return false; },
+            true,
+            5f,
+            () =>
+            {
+                Vector3 truepos = PlayerControl.LocalPlayer.transform.position;
+                NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(forceout:true), false, new(truepos.x, truepos.y, truepos.z + 0.5f));
+                MechanicButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicCoolTime.GetFloat() : EvilMechanic.EvilMechanicCoolTime.GetFloat();
+                MechanicButton.Timer = MechanicButton.MaxTimer;
+            }
+        )
+        {
+            buttonText = ModTranslation.GetString("MechanicButtonName"),
+            showButtonText = true
+        };
+
         DebuggerButton = new(
             () =>
             {
