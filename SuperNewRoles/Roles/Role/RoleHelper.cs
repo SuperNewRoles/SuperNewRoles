@@ -1284,47 +1284,12 @@ public static class RoleHelpers
         if (player.IsShapeshifter()) IsTaskClear = true;
         if (player.IsMadRoles()) IsTaskClear = true;
         if (player.IsFriendRoles()) IsTaskClear = true;
+        if (player.IsNeutral()) IsTaskClear = true;
         switch (player.GetRole())
         {
-            case RoleId.Jester:
-            case RoleId.Jackal:
-            case RoleId.Sidekick:
-            case RoleId.Vulture:
             case RoleId.HomeSecurityGuard:
-            case RoleId.Opportunist:
-            case RoleId.Researcher:
-            case RoleId.God:
-            case RoleId.Egoist:
-            case RoleId.Workperson:
-            case RoleId.truelover:
-            case RoleId.Amnesiac:
             case RoleId.MadKiller: // MadRoleでもありImpostorRoleでもある為MadRoleに記載不可
-            case RoleId.FalseCharges:
-            case RoleId.Fox:
-            case RoleId.TeleportingJackal:
-            case RoleId.Demon:
-            case RoleId.Arsonist:
-            case RoleId.JackalSeer:
-            case RoleId.SidekickSeer:
-            case RoleId.Tuna:
-            case RoleId.Neet:
             case RoleId.SatsumaAndImo:
-            case RoleId.Revolutionist:
-            case RoleId.Spelunker:
-            case RoleId.SuicidalIdeation:
-            case RoleId.Hitman:
-            case RoleId.Stefinder:
-            case RoleId.PartTimer:
-            case RoleId.Photographer:
-            case RoleId.Pavlovsdogs:
-            case RoleId.Pavlovsowner:
-            case RoleId.GM:
-            case RoleId.WaveCannonJackal:
-            case RoleId.Cupid:
-            case RoleId.Dependents:
-            case RoleId.LoversBreaker:
-            case RoleId.Safecracker:
-            case RoleId.FireFox:
                 // タスククリアか
                 IsTaskClear = true;
                 break;
