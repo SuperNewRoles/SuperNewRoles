@@ -60,7 +60,7 @@ public static class NiceMechanic
         Buffer.BlockCopy(BitConverter.GetBytes(position.z), 0, buff, 2 * sizeof(float), sizeof(float));
         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetVentStatusMechanic);
         writer.Write(source.PlayerId);
-        writer.Write(targetvent is null ? 255 : (byte)targetvent.Id);
+        writer.Write((byte)targetvent.Id);
         writer.Write(Is);
         writer.WriteBytesAndSize(buff);
         writer.EndRPC();
