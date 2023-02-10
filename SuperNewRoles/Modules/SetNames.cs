@@ -487,6 +487,7 @@ public class SetNameUpdate
             SetNamesClass.CelebritySet();
             SetNamesClass.QuarreledSet();
             SetNamesClass.LoversSet();
+            SetNamesClass.MoiraSet();
         }
         SetNamesClass.SatsumaimoSet();
         SetNamesClass.JumboSet();
