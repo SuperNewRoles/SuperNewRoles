@@ -807,7 +807,7 @@ public static class OnGameEndPatch
         if (TempData.winners.ToArray().Any(x => x.IsImpostor))
         {
             foreach (var cp in CachedPlayer.AllPlayers)
-                if (cp.PlayerControl.IsMadRoles() || cp.PlayerControl.IsRole(RoleId.MadKiller, RoleId.Dependents)) TempData.winners.Add(new(cp.Data));
+                if (cp.PlayerControl.IsMadRoles() || cp.PlayerControl.IsRole(RoleId.MadKiller)) TempData.winners.Add(new(cp.Data));
         }
 
 
