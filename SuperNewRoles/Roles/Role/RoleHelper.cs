@@ -58,10 +58,7 @@ public static class RoleHelpers
         RoleId.ShiftActor;
     // IsShapeshifter
 
-    public static bool IsHauntedWolf(this PlayerControl player)
-    {
-        return player.IsRole(RoleId.HauntedWolf);
-    }
+    public static bool IsHauntedWolf(this PlayerControl player) => player.IsRole(RoleId.HauntedWolf);
 
     //We are Mad!
     public static bool IsMadRoles(this PlayerControl player) =>
