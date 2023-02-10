@@ -119,7 +119,7 @@ public static class NiceMechanic
         {
             PlayerControl player = ModHelpers.PlayerById(data.Key);
             if (player is null) return;
-            SetHideStatus(player, true);
+            SetHideStatus(player, false);
         }
         TargetVent = new();
     }
