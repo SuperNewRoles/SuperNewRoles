@@ -68,6 +68,7 @@ public static class RoleHelpers
         (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2) ||
         player.GetRole() is
         // RoleId.MadKiller or [MadRoleでもありImpostorRoleでもある為 MadRoleに記載不可]
+        // RoleId.Dependents or [MadRoleとしての共通能力を持たない為記載しない]
         RoleId.Madmate or
         RoleId.MadMayor or
         RoleId.MadStuntMan or
@@ -1332,7 +1333,7 @@ public static class RoleHelpers
         else if (player.IsNeutral()) NeutralPlayer.RemoveAll(ClearRemove);
         else if (player.IsMadRoles()) MadRolesPlayer.RemoveAll(ClearRemove);
         else if (player.IsFriendRoles()) FriendRolesPlayer.RemoveAll(ClearRemove);
-        else CrewmatePlayer.RemoveAll(ClearRemove);
+        else CrewmatePlayer.RemoveAll(ClearRemove); // 眷族等クルーではない役職も此処に含まれる
         ChacheManager.ResetMyRoleChache();
     }
     public static void SetRoleRPC(this PlayerControl Player, RoleId selectRoleData)
@@ -1354,7 +1355,8 @@ public static class RoleHelpers
         switch (player.GetRole())
         {
             case RoleId.HomeSecurityGuard:
-            case RoleId.MadKiller: // MadRoleでもありImpostorRoleでもある為MadRoleに記載不可
+            case RoleId.MadKiller:
+            case RoleId.Dependents:
             case RoleId.SatsumaAndImo:
                 // タスククリアか
                 IsTaskClear = true;

@@ -543,6 +543,7 @@ public static class OnGameEndPatch
             {
                 RoleClass.SatsumaAndImo.SatsumaAndImoPlayer,
                 RoleClass.SideKiller.MadKillerPlayer,
+                RoleClass.Dependents.DependentsPlayer
                 /*  RoleClass.Cupid.CupidPlayer,
                     キューピットはNeutralPlayerだが元々記載の方法が特殊だった為コメントアウトで記載を残した。*/
             });
