@@ -537,56 +537,24 @@ public static class OnGameEndPatch
         }
         // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
         List<PlayerControl> notWinners = new();
+        List<PlayerControl> peculiarNotWinners = new();
 
-        notWinners.AddRanges(new[]{RoleClass.Jester.JesterPlayer,
-            RoleClass.Madmate.MadmatePlayer,
-            RoleClass.Jackal.JackalPlayer,
-            RoleClass.Jackal.SidekickPlayer,
-            RoleClass.JackalFriends.JackalFriendsPlayer,
-            RoleClass.God.GodPlayer,
-            RoleClass.Opportunist.OpportunistPlayer,
-            RoleClass.Truelover.trueloverPlayer,
-            RoleClass.Egoist.EgoistPlayer,
-            RoleClass.Workperson.WorkpersonPlayer,
-            RoleClass.Amnesiac.AmnesiacPlayer,
-            RoleClass.SideKiller.MadKillerPlayer,
-            RoleClass.MadMayor.MadMayorPlayer,
-            RoleClass.MadStuntMan.MadStuntManPlayer,
-            RoleClass.MadHawk.MadHawkPlayer,
-            RoleClass.MadJester.MadJesterPlayer,
-            RoleClass.MadSeer.MadSeerPlayer,
-            RoleClass.FalseCharges.FalseChargesPlayer,
-            RoleClass.Fox.FoxPlayer,
-            BotManager.AllBots,
-            RoleClass.MadMaker.MadMakerPlayer,
-            RoleClass.Demon.DemonPlayer,
-            RoleClass.SeerFriends.SeerFriendsPlayer,
-            RoleClass.JackalSeer.JackalSeerPlayer,
-            RoleClass.JackalSeer.SidekickSeerPlayer,
-            RoleClass.Arsonist.ArsonistPlayer,
-            RoleClass.Vulture.VulturePlayer,
-            RoleClass.MadCleaner.MadCleanerPlayer,
-            RoleClass.MayorFriends.MayorFriendsPlayer,
-            RoleClass.Tuna.TunaPlayer,
-            RoleClass.BlackCat.BlackCatPlayer,
-            RoleClass.Neet.NeetPlayer,
-            RoleClass.SatsumaAndImo.SatsumaAndImoPlayer,
-            RoleClass.Revolutionist.RevolutionistPlayer,
-            RoleClass.SuicidalIdeation.SuicidalIdeationPlayer,
-            RoleClass.Spelunker.SpelunkerPlayer,
-            RoleClass.Hitman.HitmanPlayer,
-            RoleClass.PartTimer.PartTimerPlayer,
-            RoleClass.Photographer.PhotographerPlayer,
-            RoleClass.Stefinder.StefinderPlayer,
-            RoleClass.Pavlovsdogs.PavlovsdogsPlayer,
-            RoleClass.Pavlovsowner.PavlovsownerPlayer,
-            RoleClass.LoversBreaker.LoversBreakerPlayer,
-            Roles.Impostor.MadRole.Worshiper.WorshiperPlayer,
-            Safecracker.SafecrackerPlayer,
-            FireFox.FireFoxPlayer,
+        peculiarNotWinners.AddRanges(new[]
+            {
+                RoleClass.SatsumaAndImo.SatsumaAndImoPlayer,
+                RoleClass.SideKiller.MadKillerPlayer,
+                /*  RoleClass.Cupid.CupidPlayer,
+                    キューピットはNeutralPlayerだが元々記載の方法が特殊だった為コメントアウトで記載を残した。*/
             });
-        notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
-        notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
+
+        notWinners.AddRanges(new[]
+            {
+                BotManager.AllBots,
+                RoleHelpers.NeutralPlayer,
+                RoleHelpers.MadRolesPlayer,
+                RoleHelpers.FriendRolesPlayer,
+                peculiarNotWinners,
+            });
 
         foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
         {

@@ -21,6 +21,13 @@ public enum TeamRoleType
 }
 public static class RoleHelpers
 {
+
+    public static List<PlayerControl> CrewmatePlayer;
+    public static List<PlayerControl> ImposterPlayer;
+    public static List<PlayerControl> NeutralPlayer;
+    public static List<PlayerControl> MadRolesPlayer;
+    public static List<PlayerControl> FriendRolesPlayer;
+
     // |: ================陣営の分類 ================ :|
 
     public static bool IsCrew(this PlayerControl player)
@@ -832,6 +839,11 @@ public static class RoleHelpers
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
                 return;
         }
+        if (player.IsImpostor()) ImposterPlayer.Add(player);
+        else if (player.IsNeutral()) NeutralPlayer.Add(player);
+        else if (player.IsMadRoles()) MadRolesPlayer.Add(player);
+        else if (player.IsFriendRoles()) FriendRolesPlayer.Add(player);
+        else CrewmatePlayer.Add(player);
         bool flag = player.GetRole() != role && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
         if (role.IsGhostRole())
         {
@@ -1317,6 +1329,11 @@ public static class RoleHelpers
                 break;
                 //ロールリモベ
         }
+        if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
+        else if (player.IsNeutral()) NeutralPlayer.RemoveAll(ClearRemove);
+        else if (player.IsMadRoles()) MadRolesPlayer.RemoveAll(ClearRemove);
+        else if (player.IsFriendRoles()) FriendRolesPlayer.RemoveAll(ClearRemove);
+        else CrewmatePlayer.RemoveAll(ClearRemove);
         ChacheManager.ResetMyRoleChache();
     }
     public static void SetRoleRPC(this PlayerControl Player, RoleId selectRoleData)
