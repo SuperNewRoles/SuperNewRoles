@@ -77,7 +77,6 @@ public static class RoleHelpers
         RoleId.BlackCat or
         RoleId.MadMaker or
         RoleId.MadCleaner or
-        RoleId.Dependents or
         RoleId.Worshiper;
     // IsMads
 
