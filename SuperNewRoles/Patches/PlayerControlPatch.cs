@@ -905,7 +905,8 @@ public static class MurderPlayerPatch
         }
         EvilGambler.MurderPlayerPrefix(__instance, target);
         Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
-        DyingMessenger.ActualDeathTime.Add(target.PlayerId, (DateTime.Now, __instance));
+        if (!DyingMessenger.ActualDeathTime.ContainsKey(target.PlayerId)) DyingMessenger.ActualDeathTime.Add(target.PlayerId, (DateTime.Now, __instance));
+        else DyingMessenger.ActualDeathTime[target.PlayerId] = (DateTime.Now, __instance);
         if (ModeHandler.IsMode(ModeId.Default))
         {
             target.resetChange();
