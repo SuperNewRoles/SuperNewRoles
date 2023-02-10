@@ -119,6 +119,24 @@ public static class RoleHelpers
         RoleId.FireFox;
     // 第三か
 
+    public static bool IsKiller(this PlayerControl player) =>
+        player.GetRole() ==
+            RoleId.Pavlovsowner
+            && !RoleClass.Pavlovsowner.CountData.ContainsKey(player.PlayerId)
+            || RoleClass.Pavlovsowner.CountData[player.PlayerId] > 0
+        ||
+        player.GetRole() is
+        RoleId.Pavlovsdogs or
+        RoleId.Jackal or
+        RoleId.Sidekick or
+        RoleId.TeleportingJackal or
+        RoleId.JackalSeer or
+        RoleId.SidekickSeer or
+        RoleId.WaveCannonJackal or
+        RoleId.Hitman or
+        RoleId.Egoist;
+    // 第三キル人外か
+
     public static bool IsPavlovsTeam(this PlayerControl player) => player.GetRole() is
             RoleId.Pavlovsdogs or
             RoleId.Pavlovsowner;
