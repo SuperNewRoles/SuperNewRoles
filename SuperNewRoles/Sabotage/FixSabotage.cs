@@ -8,7 +8,8 @@ public class FixSabotage
     /// <summary>
     /// (リアクター, 停電, 通信, 酸素)
     /// </summary>
-    public static Dictionary<RoleId, (bool, bool, bool, bool)> SetFixSabotageDictionary = new();
+    /// <remarks>true = 直せる, false = 直せない</remarks>
+    private static Dictionary<RoleId, (bool, bool, bool, bool)> SetFixSabotageDictionary = new();
     public static void ClearAndReload()
     {
         SetFixSabotageDictionary = new()
@@ -28,7 +29,7 @@ public class FixSabotage
         {
             if (!(SetFixSabotageDictionary.ContainsKey(PlayerControl.LocalPlayer.GetRole()) || PlayerControl.LocalPlayer.IsMadRoles())) return true;
             __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
-            if (canUse) return IsBlocked(__instance.FindTask(CachedPlayer.LocalPlayer).TaskType, !PlayerControl.LocalPlayer.IsMadRoles() ? PlayerControl.LocalPlayer.GetRole() : RoleId.Madmate);
+            if (canUse) return IsBlocked(__instance.FindTask(CachedPlayer.LocalPlayer).TaskType, GetRole(PlayerControl.LocalPlayer.GetRole()));
             return true;
         }
     }
@@ -49,22 +50,28 @@ public class FixSabotage
             return true;
         }
     }
-    public static bool IsBlocked(TaskTypes type, RoleId roleId)
+    private static bool IsBlocked(TaskTypes type, RoleId role)
     {
-        if (!SetFixSabotageDictionary.ContainsKey(roleId)) return true;
-        (bool, bool, bool, bool) fixSabotage = SetFixSabotageDictionary[roleId];
+        if (!SetFixSabotageDictionary.ContainsKey(role)) return true;
+        (bool, bool, bool, bool) fixSabotage = SetFixSabotageDictionary[role];
         if (type is TaskTypes.StopCharles or TaskTypes.ResetSeismic or TaskTypes.ResetReactor && fixSabotage.Item1) return true;
         if (type is TaskTypes.FixLights && fixSabotage.Item2) return true;
         if (type is TaskTypes.FixComms && fixSabotage.Item3) return true;
         if (type is TaskTypes.RestoreOxy && fixSabotage.Item4) return true;
         return false;
     }
-    public static bool IsBlocked(IUsable target)
+    private static bool IsBlocked(IUsable target)
     {
         if (target == null) return false;
         Console console = target.TryCast<Console>();
-        if (console != null && !IsBlocked(console.FindTask(CachedPlayer.LocalPlayer).TaskType, !PlayerControl.LocalPlayer.IsMadRoles() ? PlayerControl.LocalPlayer.GetRole() : RoleId.Madmate))
+        if (console != null && !IsBlocked(console.FindTask(CachedPlayer.LocalPlayer).TaskType, GetRole(PlayerControl.LocalPlayer.GetRole())))
             return true;
         return false;
+    }
+    private static RoleId GetRole(RoleId role)
+    {
+        if (SetFixSabotageDictionary.ContainsKey(role)) return role;
+        else if (PlayerControl.LocalPlayer.IsMadRoles()) return RoleId.Madmate;
+        return role;
     }
 }
