@@ -1393,8 +1393,7 @@ public static class RoleHelpers
         }
         if (!IsTaskClear
             && (player.IsQuarreled()
-                || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
-                || player.IsImpostor())
+                || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers()))
             )
         {
             IsTaskClear = true;
