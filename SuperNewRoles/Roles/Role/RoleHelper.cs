@@ -60,7 +60,12 @@ public static class RoleHelpers
 
     public static bool IsHauntedWolf(this PlayerControl player) => player.IsRole(RoleId.HauntedWolf);
 
-    //We are Mad!
+    /// <summary>
+    /// We are Mad!
+    /// マッド役職の判定に用いる。マッドの共通設定から外れる為眷属とマッドキラーはマッド判定にしていない。
+    /// </summary>
+    /// <param name="player">マッドであるか判定したいプレイヤー</param>
+    /// <returns>プレイヤーがマッド役職である場合trueを返す</returns>
     public static bool IsMadRoles(this PlayerControl player) =>
         (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2) ||
         player.GetRole() is
