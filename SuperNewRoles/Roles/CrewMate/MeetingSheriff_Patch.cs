@@ -91,19 +91,11 @@ class Meetingsheriff_updatepatch
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
 class MeetingSheriff_Patch
 {
-    public static bool IsMeetingSheriffKill(PlayerControl Target)
-    {
-        var roledata = CountChanger.GetRoleType(Target);
-        return (roledata == TeamRoleType.Impostor)
-            || (Target.IsMadRoles() && RoleClass.MeetingSheriff.MadRoleKill)
-            || (Target.IsFriendRoles() && RoleClass.MeetingSheriff.MadRoleKill)
-            || (Target.IsNeutral() && RoleClass.MeetingSheriff.NeutralKill) || Target.IsRole(RoleId.HauntedWolf);
-    }
     static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
     {
         var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
-        var misfire = !IsMeetingSheriffKill(Target);
-        var alwaysKill = !IsMeetingSheriffKill(Target) && CustomOptionHolder.MeetingSheriffAlwaysKills.GetBool();
+        var misfire = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target);
+        var alwaysKill = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target) && CustomOptionHolder.MeetingSheriffAlwaysKills.GetBool();
         var TargetID = Target.PlayerId;
         var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
