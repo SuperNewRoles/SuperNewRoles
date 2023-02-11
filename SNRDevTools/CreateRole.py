@@ -83,11 +83,6 @@ while True:
                                     """case (RoleId.ROLENAME):
                     IsNeutral = true;
                     break;\n                //第三か""".replace("ROLENAME", rolename))
-                temp = temp.replace("//タスククリアか",
-                                    """case (RoleId.ROLENAME):
-                    IsTaskClear = true;
-                    break; 
-                //タスククリアか""".replace("ROLENAME", rolename))
             f.write(temp)
     with open(baseurl+"Intro\\IntroData.cs", mode="r", encoding="utf-8") as r:
         temp = r.read()

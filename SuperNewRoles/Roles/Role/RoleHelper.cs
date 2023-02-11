@@ -1381,7 +1381,7 @@ public static class RoleHelpers
             case RoleId.MadKiller:
             case RoleId.Dependents:
             case RoleId.SatsumaAndImo:
-                // タスククリアか
+                // タスククリアか 個別表記
                 IsTaskClear = true;
                 break;
             case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
@@ -1391,6 +1391,7 @@ public static class RoleHelpers
             case RoleId.RemoteSheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
             case RoleId.ToiletFan when ModeHandler.IsMode(ModeId.SuperHostRoles):
             case RoleId.NiceButtoner when ModeHandler.IsMode(ModeId.SuperHostRoles):
+                // インポスター置き換えクルー役職系のタスククリア
                 IsTaskClear = true;
                 break;
         }
