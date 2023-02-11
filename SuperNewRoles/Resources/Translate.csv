@@ -1243,6 +1243,10 @@ DyingMessengerFirstPerson1,me,私,我
 DyingMessengerFirstPerson2,me,僕,我
 DyingMessengerGetRoleText,The role of the person who killed {0} was {1}.,{0}をキルした人の役職は{1}でした。,把{0}杀害的人是一名{1}。
 DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}をキルした人の色は{1}色でした。,把{0}杀害的人是{1}色的。
+OrientalShamanName,OrientalShaman,陰陽師
+OrientalShamanTitle1,Where this ship will end up is beyond where the stars lead us.,この船の行く末は星が導くその先に
+ShermansServantName,Sherman'sServant,式神
+ShermansServantTitle1,This body is for my Lord,この身は我が主のために有り
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

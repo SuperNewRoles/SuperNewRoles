@@ -776,6 +776,12 @@ public static class RoleHelpers
             case RoleId.DyingMessenger:
                 DyingMessenger.DyingMessengerPlayer.Add(player);
                 break;
+            case RoleId.ShermansServant:
+                ShermansServant.ShermansServantPlayer.Add(player);
+                break;
+            case RoleId.OrientalShaman:
+                OrientalShaman.OrientalShamanPlayer.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1335,7 +1341,9 @@ public static class RoleHelpers
             case RoleId.LoversBreaker:
             case RoleId.Safecracker:
             case RoleId.FireFox:
-                // タスククリアか
+                case RoleId.ShermansServant:
+            case RoleId.OrientalShaman:
+            // タスククリアか
                 IsTaskClear = true;
                 break;
             case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
@@ -1780,6 +1788,8 @@ public static class RoleHelpers
             else if (FireFox.FireFoxPlayer.IsCheckListPlayerControl(player)) return RoleId.FireFox;
             else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
             else if (DyingMessenger.DyingMessengerPlayer.IsCheckListPlayerControl(player)) return RoleId.DyingMessenger;
+            else if (ShermansServant.ShermansServantPlayer.IsCheckListPlayerControl(player)) return RoleId.ShermansServant;
+            else if (OrientalShaman.OrientalShamanPlayer.IsCheckListPlayerControl(player)) return RoleId.OrientalShaman;
             // ロールチェック
         }
         catch (Exception e)

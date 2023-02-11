@@ -183,6 +183,8 @@ public enum RoleId
     FireFox,
     Squid,
     DyingMessenger,
+    ShermansServant,
+    OrientalShaman,
     //RoleId
 }
 
