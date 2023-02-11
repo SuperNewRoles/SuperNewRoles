@@ -135,6 +135,7 @@ public static class RoleClass
         Fox.ClearAndReload();
         DarkKiller.ClearAndReload();
         Seer.ClearAndReload();
+        Crewmate.Seer.ShowFlash_ClearAndReload();
         MadSeer.ClearAndReload();
         EvilSeer.ClearAndReload();
         RemoteSheriff.ClearAndReload();
@@ -1608,8 +1609,6 @@ public static class RoleClass
             limitSoulDuration = CustomOptionHolder.SeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.SeerSoulDuration.GetFloat();
             mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.SeerMode.GetSelection();
-
-            Roles.Seer.FullScreenRenderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen, FastDestroyableSingleton<HudManager>.Instance.transform);
         }
     }
     public static class MadSeer
