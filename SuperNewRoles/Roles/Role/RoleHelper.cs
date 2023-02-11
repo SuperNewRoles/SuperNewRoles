@@ -27,6 +27,7 @@ public static class RoleHelpers
     public static List<PlayerControl> NeutralPlayer;
     public static List<PlayerControl> MadRolesPlayer;
     public static List<PlayerControl> FriendRolesPlayer;
+    public static List<PlayerControl> NeutralKillingPlayer;
 
     // |: ================陣営の分類 ================ :|
 
@@ -864,6 +865,7 @@ public static class RoleHelpers
         else if (player.IsMadRoles()) MadRolesPlayer.Add(player);
         else if (player.IsFriendRoles()) FriendRolesPlayer.Add(player);
         else CrewmatePlayer.Add(player);
+        if (player.IsKiller()) NeutralKillingPlayer.Add(player);
         bool flag = player.GetRole() != role && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
         if (role.IsGhostRole())
         {
@@ -1354,6 +1356,7 @@ public static class RoleHelpers
         else if (player.IsMadRoles()) MadRolesPlayer.RemoveAll(ClearRemove);
         else if (player.IsFriendRoles()) FriendRolesPlayer.RemoveAll(ClearRemove);
         else CrewmatePlayer.RemoveAll(ClearRemove); // 眷族等クルーではない役職も此処に含まれる
+        if (player.IsKiller()) NeutralKillingPlayer.RemoveAll(ClearRemove);
         ChacheManager.ResetMyRoleChache();
     }
     public static void SetRoleRPC(this PlayerControl Player, RoleId selectRoleData)

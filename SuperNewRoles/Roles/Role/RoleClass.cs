@@ -65,6 +65,7 @@ public static class RoleClass
         RoleHelpers.NeutralPlayer = new();
         RoleHelpers.MadRolesPlayer = new();
         RoleHelpers.FriendRolesPlayer = new();
+        RoleHelpers.NeutralKillingPlayer = new();
 
         Debugger.ClearAndReload();
         SoothSayer.ClearAndReload();
