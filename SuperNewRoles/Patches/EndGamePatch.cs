@@ -539,11 +539,12 @@ public static class OnGameEndPatch
         List<PlayerControl> notWinners = new();
         List<PlayerControl> peculiarNotWinners = new();
 
+        // Neutral,MadRoles,FriendRolesから溢れたクルー勝利から除外する必要のある役職を個別追記する
         peculiarNotWinners.AddRanges(new[]
             {
-                RoleClass.SatsumaAndImo.SatsumaAndImoPlayer,
-                RoleClass.SideKiller.MadKillerPlayer,
-                RoleClass.Dependents.DependentsPlayer
+                RoleClass.SatsumaAndImo.SatsumaAndImoPlayer, // クルー陣営の時はマッド役職でない為
+                RoleClass.SideKiller.MadKillerPlayer, // マッドロールから外され[CrewmatePlayer]に含まれている為
+                RoleClass.Dependents.DependentsPlayer, // マッドロールから外され[CrewmatePlayer]に含まれている為
                 /*  RoleClass.Cupid.CupidPlayer,
                     キューピットはNeutralPlayerだが元々記載の方法が特殊だった為コメントアウトで記載を残した。*/
             });
@@ -554,7 +555,7 @@ public static class OnGameEndPatch
                 RoleHelpers.NeutralPlayer,
                 RoleHelpers.MadRolesPlayer,
                 RoleHelpers.FriendRolesPlayer,
-                peculiarNotWinners,
+                peculiarNotWinners, // 上記に含まれないクルー勝利除外役職
             });
 
         foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
