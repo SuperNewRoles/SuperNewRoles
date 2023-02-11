@@ -7,13 +7,13 @@ namespace SuperNewRoles.Modules;
 
 public static class VentDataPatch
 {
-    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]
     class IntroCutsceneOnDestroy
     {
         public static void Postfix()
         {
             VentData.VentMap = new();
-            foreach (Vent vent in MapUtilities.CachedShipStatus.AllVents)
+            foreach (Vent vent in ShipStatus.Instance.AllVents)
             {
                 VentData.VentMap.Add(vent.gameObject.name, new(vent));
             }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Buttons;
 
@@ -12,7 +14,7 @@ public class NormalButtonDestroy
         UseButton
     }
     private static readonly Dictionary<RoleId, (NormalButton, bool)> SetActiveDictionary = new() {
-            { RoleId.FastMaker, (NormalButton.KillButton, !RoleClass.FastMaker.IsCreatedMadmate) },
+            { RoleId.FastMaker, (NormalButton.KillButton, !ModeHandler.IsMode(ModeId.SuperHostRoles))},
             { RoleId.SecretlyKiller, (NormalButton.KillButton, true) },
             { RoleId.DoubleKiller, (NormalButton.KillButton, true) },
             { RoleId.Smasher, (NormalButton.KillButton, true) },
@@ -22,38 +24,41 @@ public class NormalButtonDestroy
             { RoleId.Minimalist, (NormalButton.ReportButton, !RoleClass.Minimalist.UseReport) },
             { RoleId.Fox, (NormalButton.ReportButton, !RoleClass.Fox.UseReport) },
             { RoleId.Neet, (NormalButton.ReportButton, true) },
+            { RoleId.FireFox, (NormalButton.ReportButton, !FireFox.FireFoxReport.GetBool()) }
 
             //{ RoleId.Neet, (NormalButton.UseButton, true) }, Key重複のため辞書に入れず直接パッチ
         };
     public static void SetActiveState()
     {
+        var hm = FastDestroyableSingleton<HudManager>.Instance;
+
         // ニートの使用ボタン
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.Neet) && FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.active)
-            FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.SetActive(false);// 使用ボタンを無効化
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Neet) && hm.UseButton.gameObject.active)
+            hm.UseButton.gameObject.SetActive(false);// 使用ボタンを無効化
 
         if (!SetActiveDictionary.ContainsKey(PlayerControl.LocalPlayer.GetRole())) return;
         if (!SetActiveDictionary[PlayerControl.LocalPlayer.GetRole()].Item2) return;
         switch (SetActiveDictionary[PlayerControl.LocalPlayer.GetRole()].Item1)
         {
             case NormalButton.KillButton: // キルボタン
-                if (FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.active)
-                    FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+                if (hm.KillButton.gameObject.active)
+                    hm.KillButton.gameObject.SetActive(false);
                 break;
             case NormalButton.ReportButton: // 通報ボタン
-                if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
+                if (hm.ReportButton.gameObject.active)
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);//通報
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.SetActiveRecursively(false);
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.enabled = false;
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.enabled = false;
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.sprite = null;
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.enabled = false;
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
+                    hm.ReportButton.SetActive(false);//通報
+                    hm.ReportButton.gameObject.SetActiveRecursively(false);
+                    hm.ReportButton.graphic.enabled = false;
+                    hm.ReportButton.enabled = false;
+                    hm.ReportButton.graphic.sprite = null;
+                    hm.ReportButton.buttonLabelText.enabled = false;
+                    hm.ReportButton.buttonLabelText.SetText("");
                 }
                 break;
             case NormalButton.UseButton: // 使用ボタン
-                if (FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.active)
-                    FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.SetActive(false);
+                if (hm.UseButton.gameObject.active)
+                    hm.UseButton.gameObject.SetActive(false);
                 break;
         }
     }

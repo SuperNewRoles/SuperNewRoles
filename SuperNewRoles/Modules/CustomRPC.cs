@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.Data;
 using AmongUs.GameOptions;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
@@ -114,7 +115,7 @@ public enum RoleId
     JackalSeer,
     SidekickSeer,
     Assassin,
-    Marine,
+    Marlin,
     Arsonist,
     Chief,
     Cleaner,
@@ -179,6 +180,9 @@ public enum RoleId
     Jumbo,
     Worshiper,
     Safecracker,
+    FireFox,
+    Squid,
+    DyingMessenger,
     //RoleId
 }
 
@@ -267,11 +271,34 @@ public enum CustomRPC
     SyncDeathMeeting,
     SetDeviceUseStatus,
     SetLoversBreakerWinner,
+    RPCTeleport,
     SafecrackerGuardCount,
+    SetVigilance,
+    Chat,
 }
 
 public static class RPCProcedure
 {
+    public static void Chat(byte id, string text)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        bool isAlive = player.IsAlive();
+        player.Data.IsDead = false;
+        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, text);
+        player.Data.IsDead = isAlive;
+    }
+    public static void SetVigilance(bool isVigilance, byte id)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        if (Squid.IsVigilance.ContainsKey(id) && Squid.IsVigilance[id] && player.AmOwner && !isVigilance)
+        {
+            Squid.ResetCooldown();
+            Logger.Info("イカの警戒が解けたためクールをリセットしました");
+        }
+        Squid.IsVigilance[id] = isVigilance;
+    }
     public static void SafecrackerGuardCount(byte id, bool isKillGuard)
     {
         PlayerControl player = ModHelpers.PlayerById(id);
@@ -647,8 +674,8 @@ public static class RPCProcedure
     {
         PlayerControl source = ModHelpers.PlayerById(sourceid);
         if (source == null) return;
-        source.ReportDeadBody(null);
         RoleClass.Revolutionist.MeetingTrigger = source;
+        source.ReportDeadBody(null);
     }
 
     public static void KunaiKill(byte sourceid, byte targetid)
@@ -1056,14 +1083,13 @@ public static class RPCProcedure
     {
         var player = ModHelpers.PlayerById(id);
         if (player == null) return;
-        if (player.Data.Role.IsImpostor)
+        if (player.Data.Role.IsImpostor) RoleClass.EvilSpeedBooster.IsBoostPlayers[id] = Is;
+        else if (player.IsRole(RoleId.Squid))
         {
-            RoleClass.EvilSpeedBooster.IsBoostPlayers[id] = Is;
+            Squid.Abilitys.IsBoostSpeed = Is;
+            Squid.Abilitys.BoostSpeedTimer = Squid.SquidBoostSpeedTime.GetFloat();
         }
-        else
-        {
-            RoleClass.SpeedBooster.IsBoostPlayers[id] = Is;
-        }
+        else RoleClass.SpeedBooster.IsBoostPlayers[id] = Is;
     }
     public static void ReviveRPC(byte playerid)
     {
@@ -1286,6 +1312,13 @@ public static class RPCProcedure
         }
     }
 
+    public static void RPCTeleport(byte sourceId, byte targetId)
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourceId);
+        PlayerControl target = ModHelpers.PlayerById(targetId);
+        source.transform.localPosition = target.transform.localPosition;
+    }
+
     public static void RandomSpawn(byte playerId, byte locId)
     {
         HudManager.Instance.StartCoroutine(Effects.Lerp(3f, new Action<float>((p) =>
@@ -1358,9 +1391,21 @@ public static class RPCProcedure
             }
             return true;
         }
+
+        /// <summary>
+        /// LOGに記載しないRPCを設定する
+        /// </summary>
+        /// <returns>falseで記載するとRPCをlogに記載しなくなる。</returns>
+        private static readonly Dictionary<CustomRPC, bool> IsWritingRPCLog = new() {
+            {CustomRPC.ShareSNRVersion,false},
+            {CustomRPC.SetRoomTimerRPC,false},
+            {CustomRPC.SetDeviceTime,false},
+        };
+
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
         {
-            Logger.Info(ModHelpers.GetRPCNameFromByte(callId), "RPC");
+            if (!IsWritingRPCLog.ContainsKey((CustomRPC)callId))
+                Logger.Info(ModHelpers.GetRPCNameFromByte(callId), "RPC");
             try
             {
                 byte packetId = callId;
@@ -1639,8 +1684,17 @@ public static class RPCProcedure
                     case CustomRPC.SetLoversBreakerWinner:
                         SetLoversBreakerWinner(reader.ReadByte());
                         break;
+                    case CustomRPC.RPCTeleport:
+                        RPCTeleport(reader.ReadByte(), reader.ReadByte());
+                        break;
                     case CustomRPC.SafecrackerGuardCount:
                         SafecrackerGuardCount(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case CustomRPC.SetVigilance:
+                        SetVigilance(reader.ReadBoolean(), reader.ReadByte());
+                        break;
+                    case CustomRPC.Chat:
+                        Chat(reader.ReadByte(), reader.ReadString());
                         break;
                 }
             }

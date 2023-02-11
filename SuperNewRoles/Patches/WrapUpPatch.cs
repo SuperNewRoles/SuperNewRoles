@@ -79,10 +79,12 @@ class WrapUpPatch
             exiled = null;
         }
 
+        Shielder.WrapUp();
         Kunoichi.WrapUp();
         SerialKiller.WrapUp();
         Assassin.WrapUp();
         CountChanger.CountChangerPatch.WrapUpPatch();
+        RoleClass.Tuna.IsMeetingEnd = true;
         CustomButton.MeetingEndedUpdate();
 
         PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
@@ -95,7 +97,6 @@ class WrapUpPatch
         Roles.Impostor.Matryoshka.WrapUp();
         Roles.Neutral.PartTimer.WrapUp();
         Roles.Crewmate.KnightProtected_Patch.WrapUp();
-        RoleClass.Tuna.IsMeetingEnd = true;
         Bestfalsecharge.WrapUp();
         if (AmongUsClient.Instance.AmHost)
         {
@@ -112,6 +113,12 @@ class WrapUpPatch
         RoleClass.IsMeeting = false;
         Seer.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
+        Roles.Crewmate.Celebrity.WrapUp();
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+        {
+            p.resetChange();
+        }
+        RoleClass.Doppelganger.Targets = new();
         if (exiled == null) return;
         if (exiled.Object.IsRole(RoleId.Jumbo) && exiled.Object.IsCrew())
         {
@@ -187,6 +194,7 @@ class WrapUpPatch
                     CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.MadJesterWin, false);
                 }
             }
+            if (exiled.Object.IsShapeshifter()) exiled.Object.ResetAndSetImpostorghost();
         }
         Mode.SuperHostRoles.Main.RealExiled = null;
     }

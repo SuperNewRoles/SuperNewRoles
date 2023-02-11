@@ -88,7 +88,7 @@ public class WaveCannonObject
         transform.localScale = new(FlipX ? -1 : 1, 1, 1);
         effectGameObjectsParent = new GameObject("WaveCannonEffects").transform;
         effectGameObjectsParent.SetParent(transform);
-        effectGameObjectsParent.localPosition = new(0, 0, 0);
+        effectGameObjectsParent.position = new(-39.71f, 1.56f, -2.43f);
         effectGameObjectsParent.localScale = new(1, 1, 1);
         CreateEffect();
         if (!Ids.ContainsKey(OwnerPlayerId))
@@ -122,7 +122,7 @@ public class WaveCannonObject
     {
         GameObject NewEffect = new("WaveCannonEffect");
         NewEffect.transform.SetParent(effectGameObjectsParent);
-        NewEffect.transform.localPosition = new(22.45f, 0, 1);
+        NewEffect.transform.localPosition = new(0f, 0, 1);
         NewEffect.transform.localScale = new(7 * 1.4f, 1.5f, 1);
         effectrenders.Add(NewEffect.AddComponent<SpriteRenderer>());
         effectGameObjects.Add(NewEffect);

@@ -55,7 +55,7 @@ public static class RoleSelectHandler
                 CustomOptionHolder.SamuraiOption.GetSelection() != 0 ||
                 CustomOptionHolder.DemonOption.GetSelection() != 0 ||
                 CustomOptionHolder.ToiletFanOption.GetSelection() != 0 ||
-                CustomOptionHolder.NiceButtonerOption.GetSelection() != 0||
+                CustomOptionHolder.NiceButtonerOption.GetSelection() != 0 ||
                 SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperOption.GetSelection() != 0)
             {
                 PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
@@ -70,7 +70,7 @@ public static class RoleSelectHandler
                 crewmate++;
                 crewmate++;
             }
-            else if (CustomOptionHolder.AssassinAndMarineOption.GetSelection() != 0)
+            else if (CustomOptionHolder.AssassinAndMarlinOption.GetSelection() != 0)
             {
                 PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
                 bot1.RpcSetRole(RoleTypes.Crewmate);
@@ -89,9 +89,9 @@ public static class RoleSelectHandler
             {
                 BotManager.Spawn("パン屋BOT").Exiled();
             }
-            else if (CustomOptionHolder.AssassinAndMarineOption.GetSelection() != 0)
+            else if (CustomOptionHolder.AssassinAndMarlinOption.GetSelection() != 0)
             {
-                BotManager.Spawn(ModTranslation.GetString("AssassinAndMarineName") + "BOT").Exiled();
+                BotManager.Spawn(ModTranslation.GetString("AssassinAndMarlinName") + "BOT").Exiled();
             }
         }
     }
@@ -141,6 +141,7 @@ public static class RoleSelectHandler
         SetVanillaRole(RoleClass.SuicideWisher.SuicideWisherPlayer, RoleTypes.Shapeshifter, false);
         SetVanillaRole(RoleClass.Doppelganger.DoppelggerPlayer, RoleTypes.Shapeshifter, false);
         SetVanillaRole(RoleClass.Camouflager.CamouflagerPlayer, RoleTypes.Shapeshifter, false);
+        SetVanillaRole(RoleClass.EvilSeer.EvilSeerPlayer, RoleTypes.Shapeshifter, false);
         /*============シェイプシフター役職設定============*/
 
         foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer)
@@ -184,12 +185,19 @@ public static class RoleSelectHandler
                     if (pc.PlayerId == Player.PlayerId) continue;
                     sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
                 }
+            }
+            else
+            {
+                if (Player.PlayerId != 0) sender.RpcSetRole(Player, RoleTypes.Crewmate, Player.GetClientId());
+                else Player.SetRole(RoleTypes.Crewmate);
+            }
+            if (ModeHandler.GetMode() == ModeId.SuperHostRoles)
+            {
                 //他視点で科学者にするループ
                 foreach (var pc in PlayerControl.AllPlayerControls)
                 {
                     if (pc.PlayerId == Player.PlayerId) continue;
-                    if (pc.IsMod()) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
-                    else
+                    if (!pc.IsMod())
                     {
                         if (pc.IsImpostor() || pc.IsRole(RoleId.Spy))
                         {
@@ -201,11 +209,6 @@ public static class RoleSelectHandler
                         }
                     }
                 }
-            }
-            else
-            {
-                if (Player.PlayerId != 0) sender.RpcSetRole(Player, RoleTypes.Crewmate, Player.GetClientId());
-                else Player.SetRole(RoleTypes.Crewmate);
             }
         }
         return;
@@ -288,7 +291,15 @@ public static class RoleSelectHandler
 
         foreach (IntroData intro in IntroData.IntroList)
         {
-            if (intro.RoleId != RoleId.DefaultRole)
+            if (intro.RoleId != RoleId.DefaultRole &&
+                intro.RoleId != RoleId.Revolutionist &&
+                intro.RoleId != RoleId.Assassin &&
+                (intro.RoleId != RoleId.Nun || (MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId == MapNames.Airship)
+                && !intro.IsGhostRole
+                && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))
+                && intro.RoleId is not RoleId.GM
+                && intro.RoleId != RoleId.Pavlovsdogs
+                && intro.RoleId != RoleId.Jumbo)
             {
                 var option = IntroData.GetOption(intro.RoleId);
                 if (option == null || !option.isSHROn) continue;
@@ -332,7 +343,7 @@ public static class RoleSelectHandler
             }
         }
 
-        var Assassinselection = CustomOptionHolder.AssassinAndMarineOption.GetSelection();
+        var Assassinselection = CustomOptionHolder.AssassinAndMarlinOption.GetSelection();
         SuperNewRolesPlugin.Logger.LogInfo("[SHR] アサイン情報:" + Assassinselection + "、" + AllRoleSetClass.CrewmatePlayerNum + "、" + AllRoleSetClass.CrewmatePlayers.Count);
         if (Assassinselection != 0 && AllRoleSetClass.CrewmatePlayerNum > 0 && AllRoleSetClass.CrewmatePlayers.Count > 0)
         {

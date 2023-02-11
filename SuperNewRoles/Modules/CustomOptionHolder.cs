@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
@@ -44,6 +46,7 @@ public class CustomOptionHolder
 
     public static CustomOption CanGhostSeeRole;
     public static CustomOption OnlyImpostorGhostSeeRole;
+    public static CustomOption CanGhostSeeVote;
 
     public static CustomOption IsDebugMode;
     public static CustomOption DebugModeFastStart;
@@ -461,6 +464,8 @@ public class CustomOptionHolder
     public static CustomOption MadJesterCommonTask;
     public static CustomOption MadJesterShortTask;
     public static CustomOption MadJesterLongTask;
+    public static CustomOption MadJesterIsCheckImpostor;
+    public static CustomOption MadJesterCheckImpostorTask;
 
     public static CustomRoleOption FalseChargesOption;
     public static CustomOption FalseChargesPlayerCount;
@@ -475,6 +480,9 @@ public class CustomOptionHolder
     public static CustomRoleOption CelebrityOption;
     public static CustomOption CelebrityPlayerCount;
     public static CustomOption CelebrityChangeRoleView;
+    public static CustomOption CelebrityIsTaskPhaseFlash;
+    public static CustomOption CelebrityIsFlashWhileAlivingOnly;
+
     public static CustomRoleOption NocturnalityOption;
     public static CustomOption NocturnalityPlayerCount;
 
@@ -623,12 +631,15 @@ public class CustomOptionHolder
     public static CustomOption JackalSeerUseSabo;
     public static CustomOption JackalSeerIsImpostorLight;
     public static CustomOption JackalSeerCreateSidekick;
+    public static CustomOption JackalSeerCreateFriend;
     public static CustomOption JackalSeerSKCooldown;
     public static CustomOption JackalSeerNewJackalCreateSidekick;
 
-    public static CustomRoleOption AssassinAndMarineOption;
+    public static CustomRoleOption AssassinAndMarlinOption;
     public static CustomOption AssassinPlayerCount;
-    public static CustomOption MarinePlayerCount;
+    public static CustomOption AssassinViewVote;
+    public static CustomOption MarlinPlayerCount;
+    public static CustomOption MarlinViewVote;
 
     public static CustomRoleOption ChiefOption;
     public static CustomOption ChiefPlayerCount;
@@ -950,6 +961,7 @@ public class CustomOptionHolder
     public static CustomOption JumboWalkSoundSize;
     //CustomOption
 
+    public static CustomOption DebuggerOption;
     public static CustomOption GMOption;
 
     public static CustomOption QuarreledOption;
@@ -1022,6 +1034,8 @@ public class CustomOptionHolder
         CanGhostSeeRole = Create(1100, true, CustomOptionType.Generic, "CanGhostSeeRole", true, null, isHeader: true);
         OnlyImpostorGhostSeeRole = Create(1101, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanGhostSeeRole);
 
+        CanGhostSeeVote = Create(1144, true, CustomOptionType.Generic, "CanGhostSeeVote", true, null, isHeader: true);
+
         IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
         IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true, isHidden: true);
@@ -1050,6 +1064,8 @@ public class CustomOptionHolder
         MapCustoms.MapCustom.CreateOption();
 
         Sabotage.Options.Load();
+
+        if (ConfigRoles.DebugMode.Value) { DebuggerOption = Create(1172, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false, isHeader: true); }
 
         GMOption = Create(1028, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
 
@@ -1092,7 +1108,7 @@ public class CustomOptionHolder
 
         RemoteSheriffOption = SetupCustomRoleOption(44, true, RoleId.RemoteSheriff);
         RemoteSheriffPlayerCount = Create(45, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RemoteSheriffOption);
-        RemoteSheriffCoolTime = Create(46, true, CustomOptionType.Crewmate, ModTranslation.GetString("SheriffCooldownSetting"), 30f, 2.5f, 60f, 2.5f, RemoteSheriffOption, format: "unitSeconds");
+        RemoteSheriffCoolTime = Create(46, false, CustomOptionType.Crewmate, ModTranslation.GetString("SheriffCooldownSetting"), 30f, 2.5f, 60f, 2.5f, RemoteSheriffOption, format: "unitSeconds");
         RemoteSheriffAlwaysKills = Create(733, true, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, RemoteSheriffOption);
         RemoteSheriffNeutralKill = Create(47, true, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, RemoteSheriffOption);
         RemoteSheriffLoversKill = Create(48, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, RemoteSheriffOption);
@@ -1184,7 +1200,9 @@ public class CustomOptionHolder
         MadJesterIsUseVent = Create(298, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadJesterOption);
         MadJesterIsImpostorLight = Create(299, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadJesterOption);
         IsMadJesterTaskClearWin = Create(300, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
-        var MadJesteroption = SelectTask.TaskSetting(667, 668, 669, IsMadJesterTaskClearWin, CustomOptionType.Crewmate, true);
+        MadJesterIsCheckImpostor = Create(1173, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadJesterOption);
+        MadJesterCheckImpostorTask = Create(1174, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MadJesterIsCheckImpostor);
+        var MadJesteroption = SelectTask.TaskSetting(667, 668, 669, MadJesterOption, CustomOptionType.Crewmate, true);
         MadJesterCommonTask = MadJesteroption.Item1;
         MadJesterShortTask = MadJesteroption.Item2;
         MadJesterLongTask = MadJesteroption.Item3;
@@ -1224,7 +1242,7 @@ public class CustomOptionHolder
         JackalIsImpostorLight = Create(63, true, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, JackalOption);
         JackalCreateFriend = Create(666, true, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, JackalOption);
         JackalCreateSidekick = Create(64, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalOption);
-        JackalSKCooldown = Create(1108, true, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalCreateSidekick, format: "unitSeconds");
+        JackalSKCooldown = Create(1108, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalCreateSidekick, format: "unitSeconds");
         JackalNewJackalCreateSidekick = Create(65, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalCreateSidekick);
 
         TeleporterOption = SetupCustomRoleOption(66, false, RoleId.Teleporter);
@@ -1476,6 +1494,8 @@ public class CustomOptionHolder
         CelebrityOption = SetupCustomRoleOption(525, true, RoleId.Celebrity);
         CelebrityPlayerCount = Create(301, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CelebrityOption);
         CelebrityChangeRoleView = Create(302, true, CustomOptionType.Crewmate, "CelebrityChangeRoleViewSetting", false, CelebrityOption);
+        CelebrityIsTaskPhaseFlash = Create(1180, false, CustomOptionType.Crewmate, "CelebrityIsTaskPhaseFlashSetting", false, CelebrityOption);
+        CelebrityIsFlashWhileAlivingOnly = Create(1181, false, CustomOptionType.Crewmate, "CelebrityIsFlashWhileAlivingOnly", false, CelebrityIsTaskPhaseFlash);
 
         NocturnalityOption = SetupCustomRoleOption(303, true, RoleId.Nocturnality);
         NocturnalityPlayerCount = Create(304, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NocturnalityOption);
@@ -1552,22 +1572,28 @@ public class CustomOptionHolder
         SeerFriendsLongTask = SeerFriendsoption.Item3;
         SeerFriendsCheckJackalTask = Create(374, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, SeerFriendsIsCheckJackal);
 
-        JackalSeerOption = SetupCustomRoleOption(375, false, RoleId.JackalSeer);
-        JackalSeerPlayerCount = Create(376, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalSeerOption);
+        JackalSeerOption = SetupCustomRoleOption(375, true, RoleId.JackalSeer);
+        JackalSeerPlayerCount = Create(376, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalSeerOption);
         JackalSeerMode = Create(377, false, CustomOptionType.Neutral, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, JackalSeerOption);
         JackalSeerLimitSoulDuration = Create(378, false, CustomOptionType.Neutral, "SeerLimitSoulDuration", false, JackalSeerOption);
         JackalSeerSoulDuration = Create(379, false, CustomOptionType.Neutral, "SeerSoulDuration", 15f, 0f, 120f, 5f, JackalSeerLimitSoulDuration, format: "unitCouples");
         JackalSeerKillCooldown = Create(380, false, CustomOptionType.Neutral, "JackalCooldownSetting", 30f, 2.5f, 60f, 2.5f, JackalSeerOption, format: "unitSeconds");
-        JackalSeerUseVent = Create(381, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalSeerOption);
-        JackalSeerUseSabo = Create(382, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalSeerOption);
-        JackalSeerIsImpostorLight = Create(383, false, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, JackalSeerOption);
+        JackalSeerUseVent = Create(381, true, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalSeerOption);
+        JackalSeerUseSabo = Create(382, true, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalSeerOption);
+        JackalSeerIsImpostorLight = Create(383, true, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, JackalSeerOption);
         JackalSeerCreateSidekick = Create(384, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalSeerOption);
-        JackalSeerSKCooldown = Create(1109, true, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalSeerCreateSidekick, format: "unitSeconds");
+        JackalSeerCreateFriend = Create(1143, true, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, JackalSeerOption);
+        JackalSeerSKCooldown = Create(1109, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalSeerCreateSidekick, format: "unitSeconds");
         JackalSeerNewJackalCreateSidekick = Create(385, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalSeerCreateSidekick);
 
-        AssassinAndMarineOption = new(386, true, CustomOptionType.Impostor, "AssassinAndMarineName", Color.white, 1);
-        AssassinPlayerCount = Create(387, true, CustomOptionType.Impostor, "AssassinSettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], AssassinAndMarineOption);
-        MarinePlayerCount = Create(388, true, CustomOptionType.Impostor, "MarineSettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AssassinAndMarineOption);
+        AssassinAndMarlinOption = new(386, true, CustomOptionType.Impostor, "AssassinAndMarlinName", Color.white, 1)
+        {
+            RoleId = RoleId.Assassin
+        };
+        AssassinPlayerCount = Create(387, true, CustomOptionType.Impostor, "AssassinSettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], AssassinAndMarlinOption);
+        AssassinViewVote = Create(1145, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
+        MarlinPlayerCount = Create(388, true, CustomOptionType.Impostor, "MarlinSettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AssassinAndMarlinOption);
+        MarlinViewVote = Create(1146, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
 
         ArsonistOption = SetupCustomRoleOption(389, true, RoleId.Arsonist);
         ArsonistPlayerCount = Create(390, true, CustomOptionType.Neutral, "SettingPlayerCountName", AlonePlayers[0], AlonePlayers[1], AlonePlayers[2], AlonePlayers[3], ArsonistOption);
@@ -1694,11 +1720,14 @@ public class CustomOptionHolder
         SpelunkerLiftDeathChance = Create(815, false, CustomOptionType.Neutral, "SpelunkerLiftDeathChance", rates, SpelunkerOption);
         SpelunkerDoorOpenChance = Create(816, false, CustomOptionType.Neutral, "SpelunkerDoorOpenChance", rates, SpelunkerOption);
 
-        FinderOption = SetupCustomRoleOption(817, false, RoleId.Finder);
-        FinderPlayerCount = Create(818, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FinderOption);
-        FinderCheckMadmateSetting = Create(819, false, CustomOptionType.Impostor, "FinderCheckMadmateSetting", 3f, 1f, 15f, 1f, FinderOption);
+        FinderOption = SetupCustomRoleOption(817, true, RoleId.Finder);
+        FinderPlayerCount = Create(818, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FinderOption);
+        FinderCheckMadmateSetting = Create(819, true, CustomOptionType.Impostor, "FinderCheckMadmateSetting", 3f, 1f, 15f, 1f, FinderOption);
 
-        RevolutionistAndDictatorOption = new(820, false, CustomOptionType.Neutral, "RevolutionistAndDictatorName", Color.white, 1);
+        RevolutionistAndDictatorOption = new(820, false, CustomOptionType.Neutral, "RevolutionistAndDictatorName", Color.white, 1)
+        {
+            RoleId = RoleId.Revolutionist
+        };
         RevolutionistPlayerCount = Create(821, false, CustomOptionType.Neutral, "SettingRevolutionistPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
         DictatorPlayerCount = Create(822, false, CustomOptionType.Neutral, "SettingDictatorPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
         DictatorVoteCount = Create(823, false, CustomOptionType.Neutral, "DictatorVoteCount", 2f, 1f, 100f, 1f, RevolutionistAndDictatorOption);
@@ -1799,9 +1828,9 @@ public class CustomOptionHolder
         PsychometristCanCheckFootprintsTime = Create(891, false, CustomOptionType.Crewmate, "PsychometristCanCheckFootprintsTime", 7.5f, 0.5f, 60f, 0.5f, PsychometristIsCheckFootprints);
         PsychometristIsReportCheckedDeadBody = Create(892, false, CustomOptionType.Crewmate, "PsychometristIsReportCheckedDeadBody", false, PsychometristOption);
 
-        Roles.Impostor.ShiftActor.SetupCustomOptions();
+        ShiftActor.SetupCustomOptions();
 
-        Roles.Impostor.NekoKabocha.SetupCustomOptions();
+        NekoKabocha.SetupCustomOptions();
 
         CrackerOption = SetupCustomRoleOption(1038, false, RoleId.Cracker);
         CrackerPlayerCount = Create(1031, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CrackerOption);
@@ -1825,7 +1854,7 @@ public class CustomOptionHolder
         WerewolfOption = new(1057, false, CustomOptionType.Impostor, "WerewolfName", RoleClass.Werewolf.color, 1);
         WerewolfPlayerCount = Create(1051, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
 
-        Roles.Crewmate.Knight.SetupCustomOptions();
+        Knight.SetupCustomOptions();
 
         (PavlovsownerOption = new(1039, false, CustomOptionType.Neutral, "PavlovsdogsName", RoleClass.Pavlovsdogs.color, 1))
         .RoleId = RoleId.Pavlovsowner;
@@ -1856,7 +1885,7 @@ public class CustomOptionHolder
         WaveCannonJackalUseSabo = Create(1029, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, WaveCannonJackalOption);
         WaveCannonJackalIsSyncKillCoolTime = Create(1107, false, CustomOptionType.Neutral, "IsSyncKillCoolTime", false, WaveCannonJackalOption);
 
-        Roles.Impostor.Conjurer.SetupCustomOptions();
+        Conjurer.SetupCustomOptions();
 
         TaskerOption = SetupCustomRoleOption(1006, false, RoleId.Tasker);
         TaskerPlayerCount = Create(1007, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
@@ -1876,7 +1905,7 @@ public class CustomOptionHolder
         CamouflagerCamouflageLovers = Create(1065, false, CustomOptionType.Impostor, "CamouflagerCamouflageLoversSetting", false, CamouflagerOption);
         CamouflagerCamouflageQuarreled = Create(1066, false, CustomOptionType.Impostor, "CamouflagerCamouflageQuarreledSetting", false, CamouflagerOption);
         CamouflagerCamouflageChangeColor = Create(1067, false, CustomOptionType.Impostor, "CamouflagerCamouflageChangeColorSetting", false, CamouflagerOption);
-        CamouflagerCamouflageColor = Create(1068, false, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Roles.Impostor.Camouflager.ColorOption, CamouflagerCamouflageChangeColor);
+        CamouflagerCamouflageColor = Create(1068, false, CustomOptionType.Impostor, "CamouflagerCamouflageColorSetting", Camouflager.ColorOption, CamouflagerCamouflageChangeColor);
 
         NiceGuesserOption = SetupCustomRoleOption(1069, false, RoleId.NiceGuesser);
         NiceGuesserPlayerCount = Create(1070, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGuesserOption);
@@ -1921,7 +1950,13 @@ public class CustomOptionHolder
 
         Safecracker.SetupCustomOptions();
 
-        //表示設定
+        FireFox.SetupCustomOptions();
+
+        Squid.SetupCustomOptions();
+
+        DyingMessenger.SetupCustomOptions();
+
+        // 表示設定
 
         QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
         QuarreledTeamCount = Create(433, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

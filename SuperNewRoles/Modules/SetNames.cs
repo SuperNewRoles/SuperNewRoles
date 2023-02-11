@@ -61,7 +61,7 @@ public class SetNamesClass
         {
             bool hidename = ModHelpers.HidePlayerName(PlayerControl.LocalPlayer, player);
             player.NameText().text = hidename ? "" : player.CurrentOutfit.PlayerName;
-            if ((PlayerControl.LocalPlayer.IsImpostor() && (player.IsImpostor() || player.IsRole(RoleId.Spy))) || (ModeHandler.IsMode(ModeId.HideAndSeek) && player.IsImpostor()))
+            if ((PlayerControl.LocalPlayer.IsImpostor() && (player.IsImpostor() || player.IsRole(RoleId.Spy, RoleId.Egoist))) || (ModeHandler.IsMode(ModeId.HideAndSeek) && player.IsImpostor()))
             {
                 SetPlayerNameColor(player, RoleClass.ImpostorRed);
             }
@@ -224,7 +224,8 @@ public class SetNamesClass
     }
     public static void JumboSet()
     {
-        foreach (PlayerControl p in RoleClass.Jumbo.JumboPlayer) {
+        foreach (PlayerControl p in RoleClass.Jumbo.BigPlayer)
+        {
             if (!RoleClass.Jumbo.JumboSize.ContainsKey(p.PlayerId)) continue;
             SetPlayerNameText(p, p.NameText().text + $"({(int)(RoleClass.Jumbo.JumboSize[p.PlayerId] * 15)})");
         }
@@ -342,7 +343,7 @@ public class SetNameUpdate
     {
         SetNamesClass.ResetNameTagsAndColors();
         RoleId LocalRole = PlayerControl.LocalPlayer.GetRole();
-        if (PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor()) && LocalRole != RoleId.NiceRedRidingHood)
+        if ((PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor()) && LocalRole != RoleId.NiceRedRidingHood) || Roles.Attribute.Debugger.canSeeRole)
         {
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
@@ -365,13 +366,13 @@ public class SetNameUpdate
         {
             if (Madmate.CheckImpostor(PlayerControl.LocalPlayer) ||
                 LocalRole == RoleId.MadKiller ||
-                LocalRole == RoleId.Marine ||
+                LocalRole == RoleId.Marlin ||
                 (RoleClass.Demon.IsCheckImpostor && LocalRole == RoleId.Demon) ||
                 (LocalRole == RoleId.Safecracker && Safecracker.CheckTask(__instance, Safecracker.CheckTasks.CheckImpostor)))
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (p.IsImpostor() || p.IsRole(RoleId.Spy))
+                    if (p.IsImpostor() || p.IsRole(RoleId.Spy, RoleId.Egoist))
                     {
                         SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                     }
@@ -437,6 +438,19 @@ public class SetNameUpdate
                     else
                     {
                         SetNamesClass.SetPlayerNameText(RoleClass.PartTimer.CurrentTarget, RoleClass.PartTimer.CurrentTarget.NameText().text + ModHelpers.Cs(RoleClass.PartTimer.color, "◀"));
+                    }
+                }
+            }
+            else if (LocalRole is RoleId.Fox or RoleId.FireFox)
+            {
+                List<PlayerControl> foxs = new(RoleClass.Fox.FoxPlayer);
+                foxs.AddRange(FireFox.FireFoxPlayer);
+                foreach (PlayerControl p in foxs)
+                {
+                    if (p.IsRole(PlayerControl.LocalPlayer.GetRole()) || FireFox.FireFoxIsCheckFox.GetBool())
+                    {
+                        SetNamesClass.SetPlayerRoleNames(p);
+                        SetNamesClass.SetPlayerNameColors(p);
                     }
                 }
             }

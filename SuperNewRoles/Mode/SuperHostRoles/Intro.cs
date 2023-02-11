@@ -1,5 +1,6 @@
 using System;
 using SuperNewRoles.Roles;
+using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -27,6 +28,7 @@ class Intro
                 {
                     if ((p.IsImpostor() || p.IsRole(RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && !p.IsBot())
                     {
+                        if (p.IsRole(RoleId.Spy)) p.Data.Role.NameColor = RoleClass.ImpostorRed;
                         Teams.Add(p);
                     }
                 }
@@ -39,15 +41,30 @@ class Intro
     public static void RoleTextHandler(IntroCutscene __instance)
     {
         var myrole = PlayerControl.LocalPlayer.GetRole();
-        if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
+        var data = IntroData.GetIntroData(myrole);
+
+        __instance.YouAreText.color = data.color;           //あなたのロールは...を役職の色に変更
+        __instance.RoleText.color = data.color;             //役職名の色を変更
+        __instance.RoleBlurbText.color = data.color;        //イントロの簡易説明の色を変更
+
+        if ((myrole == RoleId.DefaultRole && !PlayerControl.LocalPlayer.IsImpostor()) || myrole == RoleId.Bestfalsecharge)
         {
-            var data = IntroData.GetIntroData(myrole);
-            __instance.YouAreText.color = data.color;
-            __instance.RoleText.text = ModTranslation.GetString(data.NameKey + "Name");
-            __instance.RoleText.color = data.color;
-            __instance.RoleBlurbText.text = data.TitleDesc;
-            __instance.RoleBlurbText.color = data.color;
+            data = IntroData.CrewmateIntro;
+            __instance.YouAreText.color = Palette.CrewmateBlue;     //あなたのロールは...を役職の色に変更
+            __instance.RoleText.color = Palette.CrewmateBlue;       //役職名の色を変更
+            __instance.RoleBlurbText.color = Palette.CrewmateBlue;  //イントロの簡易説明の色を変更
         }
+        else if (myrole is RoleId.DefaultRole)
+        {
+            data = IntroData.ImpostorIntro;
+            __instance.YouAreText.color = Palette.ImpostorRed;     //あなたのロールは...を役職の色に変更
+            __instance.RoleText.color = Palette.ImpostorRed;       //役職名の色を変更
+            __instance.RoleBlurbText.color = Palette.ImpostorRed;  //イントロの簡易説明の色を変更
+        }
+
+        __instance.RoleText.text = data.Name;               //役職名を変更
+        __instance.RoleBlurbText.text = data.TitleDesc;     //イントロの簡易説明を変更
+
         if (PlayerControl.LocalPlayer.IsLovers()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.GetDefaultName() ?? ""));
         if (PlayerControl.LocalPlayer.IsQuarreled()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
     }
