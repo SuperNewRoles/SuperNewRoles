@@ -1,3 +1,4 @@
+using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.MapOption;
@@ -121,6 +122,7 @@ public static class VentAndSabo
             couldUse = (@object.inVent || roleCouldUse) && !pc.IsDead && (@object.CanMove || @object.inVent);
             canUse = couldUse;
             if (pc.Object.IsRole(RoleTypes.Engineer)) return true;
+            if (NiceMechanic.TargetVent.Values.FirstOrDefault(x => x is not null && x.Id == __instance.Id) is not null) canUse = false;
             if (canUse)
             {
                 Vector2 truePosition = @object.GetTruePosition();
@@ -180,7 +182,7 @@ public static class VentAndSabo
         public static void Prefix(Vent __instance, ref bool enabled)
         {
             if (!Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) && PlayerControl.LocalPlayer.IsMadRoles() && !CustomOptionHolder.MadRolesCanVentMove.GetBool()) enabled = false;
-            if (NiceMechanic.TargetVent.ContainsValue(__instance)) enabled = false;
+            if (NiceMechanic.TargetVent.ContainsValue(__instance) && ModHelpers.PlayerById(NiceMechanic.TargetVent.ToArray().FirstOrDefault(x => x.Value == __instance).Key).IsRole(RoleId.NiceMechanic)) enabled = false;
         }
     }
 

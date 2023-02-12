@@ -42,7 +42,7 @@ public static class NiceMechanic
             if (data.Value is null) continue;
             PlayerControl player = ModHelpers.PlayerById(data.Key);
             if (player is null) continue;
-            Vector2 truepos = player.transform.position;
+            Vector2 truepos = player.GetTruePosition();
             data.Value.transform.position = new(truepos.x, truepos.y, player.transform.position.z + 0.0025f);
             SetHideStatus(player, true);
             if (Vent.currentVent is not null && Vent.currentVent.Id == data.Value.Id)
@@ -71,7 +71,7 @@ public static class NiceMechanic
         if (Is)
         {
             TargetVent[source.PlayerId] = targetvent;
-            Vector2 truepos = source.transform.position;
+            Vector2 truepos = source.GetTruePosition();
             targetvent.transform.position = new(truepos.x, truepos.y, source.transform.position.z + 0.0025f);
             SetHideStatus(source, true);
             if (Vent.currentVent is not null && Vent.currentVent.Id == targetvent.Id)
