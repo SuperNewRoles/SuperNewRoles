@@ -136,10 +136,12 @@ static class HudManagerStartPatch
                     WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
                     WiseManButton.Timer = WiseManButton.MaxTimer;
                     Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                    PlayerControl.LocalPlayer.moveable = true;
                     return;
                 }
                 WiseMan.RpcSetWiseManStatus(WiseMan.GetRandomAngle, true);
                 Camera.main.GetComponent<FollowerCamera>().Locked = true;
+                PlayerControl.LocalPlayer.moveable = false;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.WiseMan; },
             () =>
@@ -167,6 +169,7 @@ static class HudManagerStartPatch
             {
                 WiseMan.RpcSetWiseManStatus(0, false);
                 Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                PlayerControl.LocalPlayer.moveable = true;
             }
         )
         {

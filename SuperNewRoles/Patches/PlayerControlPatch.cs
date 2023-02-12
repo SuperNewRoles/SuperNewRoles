@@ -911,6 +911,8 @@ public static class MurderPlayerPatch
                 HudManagerStartPatch.WiseManButton.isEffectActive = false;
                 HudManagerStartPatch.WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
                 HudManagerStartPatch.WiseManButton.Timer = HudManagerStartPatch.WiseManButton.MaxTimer;
+                Camera.main.GetComponent<FollowerCamera>().Locked = fakse;
+                PlayerControl.LocalPlayer.moveable = true;
             }
             target = __instance;
         }

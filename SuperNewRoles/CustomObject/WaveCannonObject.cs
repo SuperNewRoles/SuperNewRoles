@@ -250,6 +250,7 @@ public class WaveCannonObject
                 HudManagerStartPatch.WiseManButton.isEffectActive = false;
                 HudManagerStartPatch.WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
                 HudManagerStartPatch.WiseManButton.Timer = HudManagerStartPatch.WiseManButton.MaxTimer;
+                PlayerControl.LocalPlayer.moveable = true;
             }
         }
     }
@@ -268,9 +269,18 @@ public class WaveCannonObject
         {
             if (data.Key is null) continue;
             if (data.Value.Item1 is null) continue;
-            data.Key.moveable = true;
-            Camera.main.GetComponent<FollowerCamera>().Locked = false;
-            if (data.Value.Item1 is not null) GameObject.Destroy(data.Value.Item1);
+            if (data.Key.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            {
+                data.Key.moveable = true;
+                Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                foreach (var anim in data.Key.currentRoleAnimations)
+                {
+                    if (anim is not null)
+                    {
+                        GameObject.Destroy(anim.gameObject);
+                    }
+                }
+            }
         }
     }
     public void FixedUpdate()
