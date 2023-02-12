@@ -1,0 +1,160 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using AmongUs.GameOptions;
+using SuperNewRoles.Patches;
+using UnityEngine;
+
+namespace SuperNewRoles.Roles.Neutral;
+
+public class TheThreeLittlePigs
+{
+    private const int OptionId = 1207;
+    private const CustomOptionType type = CustomOptionType.Neutral;
+    public static CustomRoleOption TheThreeLittlePigsOption;
+    public static CustomOption TheThreeLittlePigsTeamCount;
+    public static CustomOption TheThreeLittlePigsTask;
+    public static CustomOption TheThreeLittlePigsCommonTask;
+    public static CustomOption TheThreeLittlePigsShortTask;
+    public static CustomOption TheThreeLittlePigsLongTask;
+    public static CustomOption TheFirstLittlePigClearTask;
+    public static CustomOption TheFirstLittlePigIsCustomTimer;
+    public static CustomOption TheFirstLittlePigCustomTimer;
+    public static CustomOption TheSecondLittlePigClearTask;
+    public static CustomOption TheSecondLittlePigMaxGuardCount;
+    public static CustomOption TheThirdLittlePigClearTask;
+    public static CustomOption TheThirdLittlePigMaxCounterCount;
+    public static void SetupCustomOptions()
+    {
+        (TheThreeLittlePigsOption = new(OptionId, false, type, "TheThreeLittlePigsName", color, 1)).RoleId = RoleId.TheFirstLittlePig;
+        TheThreeLittlePigsTeamCount = CustomOption.Create(OptionId + 1, false, type, "QuarreledTeamCountSetting", 1f, 1f, 4f, 1f, TheThreeLittlePigsOption);
+        TheThreeLittlePigsTask = CustomOption.Create(OptionId + 2, false, type, "TheThreeLittlePigsTaskSetting", false, TheThreeLittlePigsOption);
+        var TheThreeLittlePigsoption = SelectTask.TaskSetting(OptionId + 3, OptionId + 4, OptionId + 5, TheThreeLittlePigsTask, type);
+        TheThreeLittlePigsCommonTask = TheThreeLittlePigsoption.Item1;
+        TheThreeLittlePigsShortTask = TheThreeLittlePigsoption.Item2;
+        TheThreeLittlePigsLongTask = TheThreeLittlePigsoption.Item3;
+        TheFirstLittlePigClearTask = CustomOption.Create(OptionId + 6, false, type, "TheFirstLittlePigClearTaskSetting", ModHelpers.CustomRates(3), TheThreeLittlePigsOption);
+        TheFirstLittlePigIsCustomTimer = CustomOption.Create(OptionId + 7, false, type, "TheFirstLittlePigIsCustomTimerSetting", false, TheThreeLittlePigsOption);
+        TheFirstLittlePigCustomTimer = CustomOption.Create(OptionId + 8, false, type, "TheFirstLittlePigCustomTimerSetting", 30f, 5f, 60f, 2.5f, TheFirstLittlePigIsCustomTimer);
+        TheSecondLittlePigClearTask = CustomOption.Create(OptionId + 9, false, type, "TheSecondLittlePigClearTaskSetting", ModHelpers.CustomRates(6), TheThreeLittlePigsOption);
+        TheSecondLittlePigMaxGuardCount = CustomOption.Create(OptionId + 10, false, type, "TheSecondLittlePigManGuardMaxCountSetting", 1f, 1f, 15f, 1f, TheThreeLittlePigsOption);
+        TheThirdLittlePigClearTask = CustomOption.Create(OptionId + 11, false, type, "TheThirdLittlePigClearTaskSetting", ModHelpers.CustomRates(10), TheThreeLittlePigsOption);
+        TheThirdLittlePigMaxCounterCount = CustomOption.Create(OptionId + 12, false, type, "TheThirdLittlePigCounterKillSetting", 1f, 1f, 15f, 1f, TheThreeLittlePigsOption);
+    }
+
+    public static Color32 color = new(255, 99, 123, byte.MaxValue);
+    public static List<List<PlayerControl>> TheThreeLittlePigsPlayer;
+    public static TheFirstLittlePigClass TheFirstLittlePig;
+    public static TheSecondLittlePigClass TheSecondLittlePig;
+    public static TheThirdLittlePigClass TheThirdLittlePig;
+    public static int AllTask
+    {
+        get
+        {
+            int num = TheThreeLittlePigsCommonTask.GetInt() + TheThreeLittlePigsShortTask.GetInt() + TheThreeLittlePigsLongTask.GetInt();
+            if (!TheThreeLittlePigsTask.GetBool() || num == 0)
+                num = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks) +
+                      GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks) +
+                      GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
+            return num;
+        }
+    }
+    public static void ClearAndReload()
+    {
+        TheThreeLittlePigsPlayer = new();
+        CheckedTask = new();
+        TheFirstLittlePig = new();
+        TheSecondLittlePig = new();
+        TheThirdLittlePig = new();
+    }
+
+    //タスクを完了しているかの判定
+    public static List<byte> CheckedTask;
+    public static bool TaskCheck(PlayerControl player)
+    {
+        if (CheckedTask.Contains(player.PlayerId)) return true;
+        RoleId Role = player.GetRole();
+        int clearTask = 0;
+        switch (Role)
+        {
+            case RoleId.TheFirstLittlePig:
+                clearTask = TheFirstLittlePig.ClearTask;
+                break;
+            case RoleId.TheSecondLittlePig:
+                clearTask = TheSecondLittlePig.ClearTask;
+                break;
+            case RoleId.TheThirdLittlePig:
+                clearTask = TheThirdLittlePig.ClearTask;
+                break;
+            default:
+                return false;
+        }
+        var taskdata = TaskCount.TaskDate(player.Data).Item1;
+        if (clearTask <= taskdata)
+        {
+            CheckedTask.Add(player.PlayerId);
+            return true;
+        }
+        return false;
+    }
+
+    public class TheFirstLittlePigClass
+    {
+        public List<PlayerControl> Player;
+        public int ClearTask;
+        public bool IsFlash;
+        public float Timer;
+        public void FixedUpdate()
+        {
+            if (!RoleClass.IsMeeting)
+            {
+                if (PlayerControl.LocalPlayer.IsDead()) return;
+                bool exception = (CustomOptionHolder.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent) ||
+                                 (CustomOptionHolder.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask);
+                if (PlayerControl.LocalPlayer.CanMove || (!PlayerControl.LocalPlayer.CanMove && exception))
+                    Timer -= Time.fixedDeltaTime;
+                if (Timer <= 0 && IsFlash && TaskCheck(PlayerControl.LocalPlayer))
+                {
+                    IsFlash = false;
+                    Seer.ShowFlash(new Color32(245, 95, 71, byte.MaxValue), 2.5f);
+                }
+            }
+            else
+            {
+                IsFlash = true;
+                Timer = TheFirstLittlePigIsCustomTimer.GetBool() ? TheFirstLittlePigCustomTimer.GetFloat() : RoleClass.DefaultKillCoolDown;
+            }
+        }
+        public TheFirstLittlePigClass()
+        {
+            Player = new();
+            ClearTask = (int)(AllTask * (int.Parse(TheFirstLittlePigClearTask.GetString().Replace("%", "")) / 100f));
+            IsFlash = true;
+            Timer = TheFirstLittlePigIsCustomTimer.GetBool() ? TheFirstLittlePigCustomTimer.GetFloat() : RoleClass.DefaultKillCoolDown;
+        }
+    }
+    public class TheSecondLittlePigClass
+    {
+        public List<PlayerControl> Player;
+        public int ClearTask;
+        public Dictionary<byte, int> GuardCount;
+        public TheSecondLittlePigClass()
+        {
+            Player = new();
+            ClearTask = (int)(AllTask * (int.Parse(TheSecondLittlePigClearTask.GetString().Replace("%", "")) / 100f));
+            GuardCount = new();
+        }
+    }
+    public class TheThirdLittlePigClass
+    {
+        public List<PlayerControl> Player;
+        public int ClearTask;
+        public Dictionary<byte, int> CounterCount;
+        public TheThirdLittlePigClass()
+        {
+            Player = new();
+            ClearTask = (int)(AllTask * (int.Parse(TheThirdLittlePigClearTask.GetString().Replace("%", "")) / 100f));
+            CounterCount = new();
+        }
+    }
+}

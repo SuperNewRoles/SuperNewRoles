@@ -7,6 +7,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 
@@ -197,6 +198,9 @@ public class FixedUpdate
                             break;
                         case RoleId.Dependents:
                             Vampire.FixedUpdate.DependentsOnly();
+                            break;
+                        case RoleId.TheFirstLittlePig:
+                            TheThreeLittlePigs.TheFirstLittlePig.FixedUpdate();
                             break;
                     }
                 }
