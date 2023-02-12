@@ -313,6 +313,8 @@ public static class RoleHelpers
         }
         else if (player.IsRole(RoleId.Camouflager) && role != RoleId.Camouflager && RoleClass.Camouflager.IsCamouflage)
             Camouflager.ResetCamouflage();
+        else if (player.IsRole(RoleId.WiseMan) && player.PlayerId == PlayerControl.LocalPlayer.PlayerId && role is not RoleId.WiseMan)
+            WiseMan.OnChangeRole();
         switch (role)
         {
             case RoleId.SoothSayer:
@@ -775,6 +777,9 @@ public static class RoleHelpers
                 break;
             case RoleId.DyingMessenger:
                 DyingMessenger.DyingMessengerPlayer.Add(player);
+                break;
+            case RoleId.WiseMan:
+                WiseMan.WiseManPlayer.Add(player);
                 break;
             // ロールアド
             default:
@@ -1780,6 +1785,7 @@ public static class RoleHelpers
             else if (FireFox.FireFoxPlayer.IsCheckListPlayerControl(player)) return RoleId.FireFox;
             else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
             else if (DyingMessenger.DyingMessengerPlayer.IsCheckListPlayerControl(player)) return RoleId.DyingMessenger;
+            else if (WiseMan.WiseManPlayer.IsCheckListPlayerControl(player)) return RoleId.WiseMan;
             // ロールチェック
         }
         catch (Exception e)

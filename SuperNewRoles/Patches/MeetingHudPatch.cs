@@ -10,6 +10,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using UnhollowerBaseLib;
 using UnityEngine;
@@ -490,6 +491,7 @@ class MeetingHudStartPatch
 {
     public static void Postfix(MeetingHud __instance)
     {
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.WiseMan)) WiseMan.StartMeeting();
         Logger.Info("会議開始時の処理 開始", "MeetingHudStartPatch");
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {

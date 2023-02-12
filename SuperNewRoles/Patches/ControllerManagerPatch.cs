@@ -9,6 +9,7 @@ using Agartha;
 using AmongUs.GameOptions;
 using System.Linq;
 using UnityEngine;
+using Hazel;
 
 namespace SuperNewRoles.Patches;
 
@@ -89,8 +90,7 @@ class ControllerManagerUpdatePatch
             }
             if (Input.GetKeyDown(KeyCode.P))
             {
-                GameOptionsManager.Instance.SwitchGameMode(GameModes.HideNSeek);
-                RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
+                UnityEngine.Object.Instantiate(DestroyableSingleton<RoleManager>.Instance.protectAnim, PlayerControl.LocalPlayer.gameObject.transform).Play(PlayerControl.LocalPlayer, null, PlayerControl.LocalPlayer.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
             }
             if (Input.GetKeyDown(KeyCode.J))
             {

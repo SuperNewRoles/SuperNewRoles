@@ -183,6 +183,7 @@ public enum RoleId
     FireFox,
     Squid,
     DyingMessenger,
+    WiseMan,
     //RoleId
 }
 
@@ -275,10 +276,16 @@ public enum CustomRPC
     SafecrackerGuardCount,
     SetVigilance,
     Chat,
+    SetWiseManStatus
 }
 
 public static class RPCProcedure
 {
+    public static void SetWiseManStatus(byte sourceId, float rotate, bool Is)
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourceId);
+        WiseMan.SetWiseManStatus(source, rotate, Is);
+    }
     public static void Chat(byte id, string text)
     {
         PlayerControl player = ModHelpers.PlayerById(id);
@@ -1695,6 +1702,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.Chat:
                         Chat(reader.ReadByte(), reader.ReadString());
+                        break;
+                    case CustomRPC.SetWiseManStatus:
+                        SetWiseManStatus(reader.ReadByte(), reader.ReadSingle(), reader.ReadBoolean());
                         break;
                 }
             }
