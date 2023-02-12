@@ -71,7 +71,7 @@ public class WaveCannonObject
         {
             if (_waveCannonObjectPrefab is null)
             {
-                var resourceAudioAssetBundleStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SuperNewRoles.Resources.WaveCannon.WaveCannonEffects");
+                var resourceAudioAssetBundleStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SuperNewRoles.Resources.WaveCannon.WaveCannonEffects.bundle");
                 var assetBundleBundle = AssetBundle.LoadFromMemory(resourceAudioAssetBundleStream.ReadFully());
                 _waveCannonObjectPrefab = assetBundleBundle.LoadAsset<GameObject>("WaveCannonEffects.prefab").DontUnload();
             }
