@@ -113,7 +113,7 @@ public static class NiceMechanic
         }
         Scientist.SetOpacity(Target, opacity, false);
     }
-    public static void WrapUp()
+    public static void StartMeeting()
     {
         foreach (var data in TargetVent)
         {

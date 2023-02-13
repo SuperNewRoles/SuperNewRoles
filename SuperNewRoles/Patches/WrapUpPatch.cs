@@ -120,7 +120,6 @@ class WrapUpPatch
             p.resetChange();
         }
         RoleClass.Doppelganger.Targets = new();
-        NiceMechanic.WrapUp();
         if (exiled == null) return;
         if (exiled.Object.IsRole(RoleId.Jumbo) && exiled.Object.IsCrew())
         {
