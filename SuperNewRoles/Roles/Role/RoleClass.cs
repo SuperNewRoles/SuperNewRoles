@@ -58,6 +58,7 @@ public static class RoleClass
         MapCustoms.SpecimenVital.ClearAndReload();
         MapCustoms.MoveElecPad.ClearAndReload();
         Beacon.ClearBeacons();
+        FixSabotage.ClearAndReload();
 
         Debugger.ClearAndReload();
         SoothSayer.ClearAndReload();
