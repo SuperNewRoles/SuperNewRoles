@@ -89,24 +89,21 @@ public static class Moira
 
     public static void PopulateVotes(MeetingHud __instance)
     {
-        if (MoiraChangeVote.GetBool())
+        foreach (var data in SwapVoteData)
         {
-            foreach (var data in SwapVoteData)
+            PlayerVoteArea swapped1 = null;
+            PlayerVoteArea swapped2 = null;
+            foreach (PlayerVoteArea playerVoteArea in __instance.playerStates)
             {
-                PlayerVoteArea swapped1 = null;
-                PlayerVoteArea swapped2 = null;
-                foreach (PlayerVoteArea playerVoteArea in __instance.playerStates)
-                {
-                    if (playerVoteArea.TargetPlayerId == data.Value.Item1) swapped1 = playerVoteArea;
-                    if (playerVoteArea.TargetPlayerId == data.Value.Item2) swapped2 = playerVoteArea;
-                }
-                PlayerControl source = ModHelpers.PlayerById(data.Key);
-                bool doSwap = swapped1 != null && swapped2 != null && source.IsRole(RoleId.Moira) && source.IsAlive();
-                if (doSwap)
-                {
-                    __instance.StartCoroutine(Effects.Slide3D(swapped1.transform, swapped1.transform.localPosition, swapped2.transform.localPosition, 1.5f));
-                    __instance.StartCoroutine(Effects.Slide3D(swapped2.transform, swapped2.transform.localPosition, swapped1.transform.localPosition, 1.5f));
-                }
+                if (playerVoteArea.TargetPlayerId == data.Value.Item1) swapped1 = playerVoteArea;
+                if (playerVoteArea.TargetPlayerId == data.Value.Item2) swapped2 = playerVoteArea;
+            }
+            PlayerControl source = ModHelpers.PlayerById(data.Key);
+            bool doSwap = swapped1 != null && swapped2 != null && source.IsRole(RoleId.Moira) && source.IsAlive();
+            if (doSwap)
+            {
+                __instance.StartCoroutine(Effects.Slide3D(swapped1.transform, swapped1.transform.localPosition, swapped2.transform.localPosition, 1.5f));
+                __instance.StartCoroutine(Effects.Slide3D(swapped2.transform, swapped2.transform.localPosition, swapped1.transform.localPosition, 1.5f));
             }
         }
     }

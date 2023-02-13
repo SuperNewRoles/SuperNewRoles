@@ -453,7 +453,7 @@ static class ExtendedMeetingHud
                 dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out int num) ? VoteNum : num + VoteNum;
             }
         }
-        if (Moira.SwapVoteData.Count > 0)
+        if (Moira.SwapVoteData.Count > 0 && Moira.MoiraChangeVote.GetBool())
         {
             foreach (var data in Moira.SwapVoteData)
             {
@@ -667,8 +667,7 @@ public class MeetingHudUpdatePatch
                 PlayerControl target = null;
                 PlayerControl.AllPlayerControls.ToList().ForEach(x =>
                 {
-                    string name = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
-                    if (name == x.Data.PlayerName) target = x;
+                    if (player.TargetPlayerId == x.PlayerId) target = x;
                 });
                 if (target != null)
                 {
