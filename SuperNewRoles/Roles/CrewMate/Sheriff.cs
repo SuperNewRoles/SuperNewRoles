@@ -54,6 +54,7 @@ class Sheriff
                 }
                 else // 村長シェリフの場合
                 {
+                    isImpostorKill = CustomOptionHolder.ChiefSheriffCanKillImpostor.GetBool();
                     isMadRolesKill = CustomOptionHolder.ChiefSheriffCanKillMadRole.GetBool();
                     isNeutralKill = CustomOptionHolder.ChiefSheriffCanKillNeutral.GetBool();
                     isFriendRolesKill = CustomOptionHolder.ChiefSheriffFriendsRoleKill.GetBool();
