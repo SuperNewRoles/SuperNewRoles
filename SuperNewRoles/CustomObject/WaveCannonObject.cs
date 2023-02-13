@@ -78,7 +78,7 @@ public class WaveCannonObject
             return _waveCannonObjectPrefab;
         }
     }
-    public Dictionary<PlayerControl, (RoleEffectAnimation, float)> WiseManData;
+    public Dictionary<PlayerControl, (RoleEffectAnimation, float, Vector3)> WiseManData;
     public bool IsShootNow;
     public bool IsFlipX;
     private int DestroyIndex = 0;
@@ -137,12 +137,19 @@ public class WaveCannonObject
     public GameObject CreateRotationEffect(Vector3 PlayerPosition, float Angle)
     {
         //PlayerPosition.x -= 13;
-        effectrenders[0].transform.parent.localScale = new((PlayerPosition.x - effectrenders[0].transform.parent.position.x) * 0.0145f, 1, 1);
+        float posvalue = PlayerPosition.x - effectrenders[0].transform.parent.position.x;
+        if (posvalue < 0)
+        {
+            posvalue *= -1;
+        }
+        effectrenders[0].transform.parent.localScale = new(posvalue * 0.0145f, 1, 1);
         SpriteRenderer effectrender = CreateEffect();
         GameObject effect = effectrender.transform.parent.gameObject;
         effect.transform.position = new(PlayerPosition.x, effect.transform.position.y, effect.transform.position.z + 0.1f);
         effect.transform.Rotate(new(0, 0, Angle));
         CreateCollider(effectrender);
+        colliders.RemoveAt(0);
+        CreateCollider(effectrenders[0]);
         return effect;
         //Position = new(effect.transform.position.x - PlayerPosition.x, effect.transform.position.y, effect.transform.position.z);
         //Position.x += RotateSet[index].Item2.x - 3;
@@ -241,9 +248,10 @@ public class WaveCannonObject
             if (!player.Collider.IsTouching(colliders[0])) continue;
             CreateRotationEffect(player.GetTruePosition(), data.Value.Value);
             WiseMan.WiseManData[player.PlayerId] = null;
+            WiseMan.WiseManPosData[player] = null;
             RoleEffectAnimation anim = UnityEngine.Object.Instantiate(DestroyableSingleton<RoleManager>.Instance.protectAnim, player.gameObject.transform);
             anim.Play(player, null, player.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
-            WiseManData[player] = (anim, 0.75f);
+            WiseManData[player] = (anim, 0.75f, player.transform.position);
             anim.Renderer.transform.localScale = new(1.1f, 1.6f, 1);
             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
             {
@@ -273,12 +281,12 @@ public class WaveCannonObject
             {
                 data.Key.moveable = true;
                 Camera.main.GetComponent<FollowerCamera>().Locked = false;
-                foreach (var anim in data.Key.currentRoleAnimations)
+            }
+            foreach (var anim in data.Key.GetComponentsInChildren<RoleEffectAnimation>())
+            {
+                if (anim is not null)
                 {
-                    if (anim is not null)
-                    {
-                        GameObject.Destroy(anim.gameObject);
-                    }
+                    GameObject.Destroy(anim.gameObject);
                 }
             }
         }
@@ -313,10 +321,14 @@ public class WaveCannonObject
             if (data.Key is null) continue;
             if (data.Value.Item1 is null) continue;
             data.Key.moveable = false;
-            Camera.main.GetComponent<FollowerCamera>().Locked = true;
+            data.Key.transform.position = data.Value.Item3;
+            if (data.Key.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            {
+                Camera.main.GetComponent<FollowerCamera>().Locked = true;
+            }
             if (data.Value.Item2 > 0)
             {
-                WiseManData[data.Key] = (data.Value.Item1, data.Value.Item2 - Time.fixedDeltaTime);
+                WiseManData[data.Key] = (data.Value.Item1, data.Value.Item2 - Time.fixedDeltaTime, data.Value.Item3);
                 continue;
             }
             data.Value.Item1.Animator.Pause();
@@ -333,7 +345,7 @@ public class WaveCannonObject
                     if (player.IsDead()) continue;
                     if (WiseManData.ContainsKey(player)) continue;
                     if (RoleClass.WaveCannon.CannotMurderPlayers.Contains(player.PlayerId)) continue;
-                    if (player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
+                    if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
                     //float posdata = player.GetTruePosition().y - transform.position.y;
                     //if (posdata is > 1 or < (-1)) continue;
                     //posdata = transform.position.x - (IsFlipX ? -2 : 2);

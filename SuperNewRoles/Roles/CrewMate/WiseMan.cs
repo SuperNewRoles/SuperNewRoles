@@ -23,19 +23,30 @@ public static class WiseMan
     {
         get
         {
-            return ModHelpers.GetRandom<float>(new() { 45, 90, 135, 225, 270});
+            return ModHelpers.GetRandom<float>(new() { 135, 90, 270, 225});
         }
     }
     public static List<PlayerControl> WiseManPlayer;
     public static Color32 color = new Color32(85, 180, 236, byte.MaxValue);
     public static Dictionary<byte, float?> WiseManData;
+    public static Dictionary<PlayerControl, Vector3?> WiseManPosData;
     public static void ClearAndReload()
     {
         WiseManPlayer = new();
         WiseManData = new();
+        WiseManPosData = new();
     }
 
     public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.WiseManButton.png", 115f);
+
+    public static void FixedUpdate()
+    {
+        foreach (var data in WiseManPosData) {
+            if (data.Key is null) continue;
+            if (!data.Value.HasValue) continue;
+            data.Key.transform.position = data.Value.Value;
+        }
+    }
 
     public static void RpcSetWiseManStatus(float rotate, bool Is)
     {
@@ -50,6 +61,7 @@ public static class WiseMan
     public static void SetWiseManStatus(PlayerControl source, float rotate, bool Is)
     {
         WiseManData[source.PlayerId] = Is ? rotate : null;
+        WiseManPosData[source] = Is ? source.transform.position : null;
     }
     public static void StartMeeting()
     {

@@ -906,12 +906,13 @@ public static class MurderPlayerPatch
         if (target.IsRole(RoleId.WiseMan)  && WiseMan.WiseManData.ContainsKey(target.PlayerId) && WiseMan.WiseManData[target.PlayerId] is not null)
         {
             WiseMan.WiseManData[target.PlayerId] = null;
+            WiseMan.WiseManPosData[target] = null;
             if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
             {
                 HudManagerStartPatch.WiseManButton.isEffectActive = false;
                 HudManagerStartPatch.WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
                 HudManagerStartPatch.WiseManButton.Timer = HudManagerStartPatch.WiseManButton.MaxTimer;
-                Camera.main.GetComponent<FollowerCamera>().Locked = fakse;
+                Camera.main.GetComponent<FollowerCamera>().Locked = false;
                 PlayerControl.LocalPlayer.moveable = true;
             }
             target = __instance;
