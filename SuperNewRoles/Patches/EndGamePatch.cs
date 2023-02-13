@@ -241,7 +241,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.LoversBreakerWin,("LoversBreakerName",RoleClass.LoversBreaker.color)},
                 {WinCondition.NoWinner,("NoWinner",Color.white)},
                 {WinCondition.SafecrackerWin,("SafecrackerName",Safecracker.color)},
-                {WinCondition.TheThreeLittlePigsWin,("TheThreeLittlePigsWinName",TheThreeLittlePigs.color)},
+                {WinCondition.TheThreeLittlePigsWin,("TheThreeLittlePigsName",TheThreeLittlePigs.color)},
             };
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {

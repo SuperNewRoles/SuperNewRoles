@@ -651,12 +651,12 @@ class AllRoleSetClass
                             TheThreeLittlePigsPlayer.Add(p);
                             CrewmatePlayers.Remove(p);
                             NeutralPlayerNum = NeutralPlayerNum - 3;
-                            TheThreeLittlePigs.TheThreeLittlePigsPlayer.Add(TheThreeLittlePigsPlayer);
                             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetTheThreeLittlePigsTeam);
                             writer.Write(TheThreeLittlePigsPlayer[0].PlayerId);
                             writer.Write(TheThreeLittlePigsPlayer[1].PlayerId);
                             writer.Write(TheThreeLittlePigsPlayer[2].PlayerId);
                             writer.EndRPC();
+                            RPCProcedure.SetTheThreeLittlePigsTeam(TheThreeLittlePigsPlayer[0].PlayerId, TheThreeLittlePigsPlayer[1].PlayerId, TheThreeLittlePigsPlayer[2].PlayerId);
                         }
                         if (0 >= NeutralPlayerNum || 0 >= CrewmatePlayers.Count)
                             IsNotEndRandomSelect = false;
@@ -683,12 +683,12 @@ class AllRoleSetClass
                             TheThreeLittlePigsPlayer.Add(p);
                             CrewmatePlayers.Remove(p);
                             NeutralPlayerNum = NeutralPlayerNum - 3;
-                            TheThreeLittlePigs.TheThreeLittlePigsPlayer.Add(TheThreeLittlePigsPlayer);
                             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetTheThreeLittlePigsTeam);
                             writer.Write(TheThreeLittlePigsPlayer[0].PlayerId);
                             writer.Write(TheThreeLittlePigsPlayer[1].PlayerId);
                             writer.Write(TheThreeLittlePigsPlayer[2].PlayerId);
                             writer.EndRPC();
+                            RPCProcedure.SetTheThreeLittlePigsTeam(TheThreeLittlePigsPlayer[0].PlayerId, TheThreeLittlePigsPlayer[1].PlayerId, TheThreeLittlePigsPlayer[2].PlayerId);
                         }
                         if (0 >= NeutralPlayerNum || 0 >= CrewmatePlayers.Count)
                             IsNotEndRandomSelect = false;
@@ -714,12 +714,12 @@ class AllRoleSetClass
                             TheThreeLittlePigsPlayer.Add(p);
                             CrewmatePlayers.Remove(p);
                             NeutralPlayerNum = NeutralPlayerNum - 3;
-                            TheThreeLittlePigs.TheThreeLittlePigsPlayer.Add(TheThreeLittlePigsPlayer);
                             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetTheThreeLittlePigsTeam);
                             writer.Write(TheThreeLittlePigsPlayer[0].PlayerId);
                             writer.Write(TheThreeLittlePigsPlayer[1].PlayerId);
                             writer.Write(TheThreeLittlePigsPlayer[2].PlayerId);
                             writer.EndRPC();
+                            RPCProcedure.SetTheThreeLittlePigsTeam(TheThreeLittlePigsPlayer[0].PlayerId, TheThreeLittlePigsPlayer[1].PlayerId, TheThreeLittlePigsPlayer[2].PlayerId);
                         }
                     }
                 }

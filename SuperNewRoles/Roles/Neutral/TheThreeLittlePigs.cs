@@ -113,10 +113,10 @@ public class TheThreeLittlePigs
                                  (CustomOptionHolder.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask);
                 if (PlayerControl.LocalPlayer.CanMove || (!PlayerControl.LocalPlayer.CanMove && exception))
                     Timer -= Time.fixedDeltaTime;
-                if (Timer <= 0 && IsFlash && TaskCheck(PlayerControl.LocalPlayer))
+                if (Timer <= 0 && IsFlash)
                 {
                     IsFlash = false;
-                    Seer.ShowFlash(new Color32(245, 95, 71, byte.MaxValue), 2.5f);
+                    if (TaskCheck(PlayerControl.LocalPlayer)) Seer.ShowFlash(new Color32(245, 95, 71, byte.MaxValue), 2.5f);
                 }
             }
             else
