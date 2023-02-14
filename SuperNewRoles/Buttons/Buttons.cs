@@ -1623,7 +1623,7 @@ static class HudManagerStartPatch
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("SidekickName"),
+            buttonText = ModTranslation.GetString("CreateMadmateButton"),
             showButtonText = true
         };
 
@@ -1661,7 +1661,7 @@ static class HudManagerStartPatch
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("SidekickName"),
+            buttonText = ModTranslation.GetString("SideKillerSidekickButtonName"),
             showButtonText = true
         };
 
@@ -1710,7 +1710,7 @@ static class HudManagerStartPatch
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("SidekickName"),
+            buttonText = ModTranslation.GetString("MadMakerSidekickButtonName"),
             showButtonText = true
         };
 
@@ -1910,7 +1910,7 @@ static class HudManagerStartPatch
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("SidekickName"),
+            buttonText = ModTranslation.GetString("ChiefSidekickButtonName"),
             showButtonText = true
         };
 
