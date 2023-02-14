@@ -179,7 +179,7 @@ static class HudManagerStartPatch
             () => false
         )
         {
-            buttonText = ModTranslation.GetString("FinalStatusKill"),
+            buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
             showButtonText = true
         };
 
@@ -2360,7 +2360,7 @@ static class HudManagerStartPatch
             }
         )
         {
-            buttonText = ModTranslation.GetString("FinalStatusKill"),
+            buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
             showButtonText = true
         };
 
@@ -3087,7 +3087,7 @@ static class HudManagerStartPatch
             }
         )
         {
-            buttonText = ModTranslation.GetString("FinalStatusKill"),
+            buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
             showButtonText = true
         };
 
