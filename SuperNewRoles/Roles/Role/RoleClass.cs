@@ -3036,9 +3036,12 @@ public static class RoleClass
         public static List<List<PlayerControl>> QuarreledPlayer;
         public static Color32 color = new(210, 105, 30, byte.MaxValue);
         public static bool IsQuarreledWin;
+        public static bool IsQuarreledSuicide;
         public static void ClearAndReload()
         {
             QuarreledPlayer = new List<List<PlayerControl>>();
+            IsQuarreledWin = false;
+            IsQuarreledSuicide = false;
         }
     }
     public static class Lovers

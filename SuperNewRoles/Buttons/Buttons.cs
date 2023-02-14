@@ -1805,7 +1805,6 @@ static class HudManagerStartPatch
                         if (player == null) continue;
                         if (player.IsDead()) continue;
                         if (player == PlayerControl.LocalPlayer) continue;
-                        if (player.IsQuarreled()) continue;
 
                         ModHelpers.CheckMurderAttemptAndKill(player, player);
                         if (player.IsDead())

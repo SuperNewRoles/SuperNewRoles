@@ -1112,9 +1112,11 @@ public static class MurderPlayerPatch
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
+                    if (__instance.IsQuarreled()) RoleClass.Quarreled.IsQuarreledSuicide = true;
                     var Side = RoleHelpers.GetOneSideQuarreled(target);
                     if (Side.IsDead())
                     {
+                        if (RoleClass.Quarreled.IsQuarreledSuicide) return;
                         RPCProcedure.ShareWinner(target.PlayerId);
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(target.PlayerId);
