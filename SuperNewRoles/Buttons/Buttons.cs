@@ -1798,6 +1798,25 @@ static class HudManagerStartPatch
                 writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
 
+                foreach (var data in RoleClass.Arsonist.DouseData)
+                {
+                    foreach (PlayerControl player in data.Value)
+                    {
+                        if (player == null) continue;
+                        if (player.IsDead()) continue;
+                        if (player == PlayerControl.LocalPlayer) continue;
+                        if (player.IsQuarreled()) continue;
+
+                        ModHelpers.CheckMurderAttemptAndKill(player, player);
+                        if (player.IsDead())
+                        { // 妖狐 及び 能力発動中の シールダー イカ 金庫破り etc... 等殺せなかった人の死因を記載しないように
+                            player.RpcSetFinalStatus(FinalStatus.Ignite);
+                            Logger.Info($"{player.GetDefaultName()} を 焼死させました。", "ArsonistIgnite");
+                        }
+                        else Logger.Info($"{player.GetDefaultName()} はキルガード能力を有していた為 焼死から免れました。", "ArsonistIgnite");
+                    }
+                }
+
                 writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                 writer.Write((byte)CustomGameOverReason.ArsonistWin);
                 writer.EndRPC();
