@@ -59,6 +59,7 @@ public static class RoleClass
         MapCustoms.MoveElecPad.ClearAndReload();
         Beacon.ClearBeacons();
         MeetingHudUpdatePatch.ErrorNames = new();
+        FixSabotage.ClearAndReload();
 
         Debugger.ClearAndReload();
         SoothSayer.ClearAndReload();
