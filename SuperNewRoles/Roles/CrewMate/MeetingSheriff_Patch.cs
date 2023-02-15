@@ -95,7 +95,7 @@ class MeetingSheriff_Patch
     {
         var roledata = CountChanger.GetRoleType(Target);
         return (roledata == TeamRoleType.Impostor)
-            || ((Target.IsMadRoles() || Target.IsRole(RoleId.MadKiller) || Target.IsRole(RoleId.Dependents)) && RoleClass.MeetingSheriff.MadRoleKill)
+            || (Target.IsMadRoles() && RoleClass.MeetingSheriff.MadRoleKill)
             || (Target.IsFriendRoles() && RoleClass.MeetingSheriff.MadRoleKill)
             || (Target.IsNeutral() && RoleClass.MeetingSheriff.NeutralKill) || Target.IsRole(RoleId.HauntedWolf);
     }
