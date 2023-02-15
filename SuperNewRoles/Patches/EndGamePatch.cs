@@ -468,7 +468,7 @@ public static class OnGameEndPatch
             }
             catch { }
         }
-        if (ConfigRoles.IsSendAnalytics.Value)
+        if (ConfigRoles.IsSendAnalytics.Value && !SuperNewRolesPlugin.IsBeta && !ConfigRoles.DebugMode.Value)
         {
             try
             {

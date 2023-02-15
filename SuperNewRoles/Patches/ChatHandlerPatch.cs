@@ -37,6 +37,22 @@ public class AmongUsClientOnPlayerJoinedPatch
                     AddChatPatch.SendCommand(__instance.myPlayer, text, AddChatPatch.WelcomeToSuperNewRoles);
                 }
             }, 1f, "Welcome Message");
+            if (SuperNewRolesPlugin.IsBeta)
+            {
+                string betaText =
+                    ModTranslation.GetString("betatext1") +
+                    ModTranslation.GetString("betatext2") +
+                    $"\nBranch: {ThisAssembly.Git.Branch}" +
+                    $"\nCommitId: {ThisAssembly.Git.Commit}" +
+                    " " + "\n.";
+                new LateTask(() =>
+                {
+                    if (!__instance.myPlayer.IsBot())
+                    {
+                        AddChatPatch.SendCommand(__instance.myPlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betaText}");
+                    }
+                }, 2f, "Welcome Beta Message");
+            }
         }
     }
 }
@@ -69,7 +85,10 @@ class AddChatPatch
                 betatext += $"\nBranch: {ThisAssembly.Git.Branch}";
                 betatext += $"\nCommitId: {ThisAssembly.Git.Commit}";
             }
-            SendCommand(sourcePlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
+            PlayerControl sendPlayer;
+            if (sourcePlayer.AmOwner) sendPlayer = null;
+            else sendPlayer = sourcePlayer;
+            SendCommand(sendPlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
             return false;
         }
         else if (

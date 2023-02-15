@@ -905,7 +905,8 @@ public static class MurderPlayerPatch
         }
         EvilGambler.MurderPlayerPrefix(__instance, target);
         Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
-        DyingMessenger.ActualDeathTime.Add(target.PlayerId, (DateTime.Now, __instance));
+        if (!DyingMessenger.ActualDeathTime.ContainsKey(target.PlayerId)) DyingMessenger.ActualDeathTime.Add(target.PlayerId, (DateTime.Now, __instance));
+        else DyingMessenger.ActualDeathTime[target.PlayerId] = (DateTime.Now, __instance);
         if (ModeHandler.IsMode(ModeId.Default))
         {
             target.resetChange();
@@ -1124,7 +1125,13 @@ public static class MurderPlayerPatch
                 }
             }
             Minimalist.MurderPatch.Postfix(__instance);
-            if (target.IsShapeshifter()) target.ResetAndSetImpostorghost();
+            /*
+                DefaultModeにシフトアクター以外のシェイプシフター置き換え役職が増えた場合
+                [if (target.IsShapeshifter()) ~ ] のコメントアウトを解除し、
+                [if (target.IsRole(RoleId.ShiftActor)) ~ ]のコードを削除してください。
+            */
+            // if (target.IsShapeshifter()) target.ResetAndSetImpostorghost();
+            if (target.IsRole(RoleId.ShiftActor)) target.ResetAndSetImpostorghost();
         }
         Vampire.OnMurderPlayer(__instance, target);
         if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && ModeHandler.IsMode(ModeId.Default))
