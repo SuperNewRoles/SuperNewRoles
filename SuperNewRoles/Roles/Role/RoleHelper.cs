@@ -168,7 +168,7 @@ public static class RoleHelpers
         else RoleClass.Lovers.LoversPlayer.Add(sets);
         if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
         {
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         }
         ChacheManager.ResetLoversChache();
     }
@@ -792,7 +792,7 @@ public static class RoleHelpers
         }
         if (flag)
         {
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         }
         SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
         PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(player.PlayerId);

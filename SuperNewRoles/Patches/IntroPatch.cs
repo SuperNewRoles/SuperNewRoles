@@ -314,7 +314,7 @@ public class IntroPatch
                         ImpostorText = "";
                         break;
                 }
-                foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     if (player.IsRole(RoleId.Egoist))
                     {
@@ -405,7 +405,7 @@ public class IntroPatch
             {
                 PlayerControl.LocalPlayer.SetKillTimerUnchecked(SetTime);
             }
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         }
     }
 
