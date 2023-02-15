@@ -797,7 +797,7 @@ public static class RPCProcedure
         RoleClass.SideKiller.MadKillerPair.Add(source.PlayerId, target.PlayerId);
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
         ChacheManager.ResetMyRoleChache();
-        PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+        PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
     }
     public static void UncheckedSetVanillaRole(byte playerid, byte roletype)
     {
@@ -1149,7 +1149,7 @@ public static class RPCProcedure
                 RoleClass.Jackal.CanCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
             }
         }
-        PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+        PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         ChacheManager.ResetMyRoleChache();
     }
     public static void CreateSidekick(byte playerid, bool IsFake)
@@ -1165,7 +1165,7 @@ public static class RPCProcedure
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
             player.ClearRole();
             RoleClass.Jackal.SidekickPlayer.Add(player);
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
     }
@@ -1182,7 +1182,7 @@ public static class RPCProcedure
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
             player.ClearRole();
             RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
     }

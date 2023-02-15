@@ -375,7 +375,6 @@ public static class RoleClass
         public static bool IsUseSabo;
         public static bool IsImpostorLight;
         public static bool CreateSidekick;
-        public static bool NewJackalCreateSidekick;
         public static bool CanCreateSidekick;
         public static List<int> CreatePlayers;
         public static bool IsCreatedFriend;
@@ -392,7 +391,6 @@ public static class RoleClass
             IsImpostorLight = CustomOptionHolder.JackalIsImpostorLight.GetBool();
             CreateSidekick = CustomOptionHolder.JackalCreateSidekick.GetBool();
             CanCreateSidekick = CustomOptionHolder.JackalCreateSidekick.GetBool();
-            NewJackalCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
             IsCreatedFriend = false;
             CreatePlayers = new();
             CanCreateFriend = CustomOptionHolder.JackalCreateFriend.GetBool();
@@ -1838,7 +1836,6 @@ public static class RoleClass
         public static bool IsUseSabo;
         public static bool IsImpostorLight;
         public static bool CreateSidekick;
-        public static bool NewJackalCreateSidekick;
         public static bool CanCreateSidekick;
         public static bool CanCreateFriend;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
@@ -1862,7 +1859,6 @@ public static class RoleClass
             CreateSidekick = CustomOptionHolder.JackalSeerCreateSidekick.GetBool();
             CanCreateSidekick = CustomOptionHolder.JackalSeerCreateSidekick.GetBool();
             CanCreateFriend = CustomOptionHolder.JackalSeerCreateFriend.GetBool();
-            NewJackalCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
         }
     }
     public static class Assassin
