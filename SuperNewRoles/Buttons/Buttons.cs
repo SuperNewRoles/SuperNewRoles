@@ -1127,7 +1127,7 @@ static class HudManagerStartPatch
                     RoleClass.Jackal.CanCreateSidekick = false;
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick && CustomOptionHolder.JackalCreateSidekick.GetBool(); },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick; },
             () =>
             {
                 return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -1183,7 +1183,7 @@ static class HudManagerStartPatch
                     RoleClass.JackalSeer.CanCreateSidekick = false;
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.CanCreateSidekick && CustomOptionHolder.JackalSeerCreateSidekick.GetBool(); },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.CanCreateSidekick; },
             () =>
             {
                 return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
