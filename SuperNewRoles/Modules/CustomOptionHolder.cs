@@ -1017,29 +1017,14 @@ public class CustomOptionHolder
         specialOptions = new CustomOptionBlank(null);
         hideSettings = Create(2, true, CustomOptionType.Generic, Cs(Color.white, "SettingsHideSetting"), false, specialOptions);
 
-        crewmateRolesCountMax = Create(3, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewRole"), 0f, 0f, 15f, 1f);
-        crewmateGhostRolesCountMax = Create(4, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewGhostRole"), 0f, 0f, 15f, 1f);
-        neutralRolesCountMax = Create(5, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralRole"), 0f, 0f, 15f, 1f);
-        neutralGhostRolesCountMax = Create(6, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralGhostRole"), 0f, 0f, 15f, 1f);
-        impostorRolesCountMax = Create(7, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoRole"), 0f, 0f, 3f, 1f);
-        impostorGhostRolesCountMax = Create(8, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
+        /* |: ========================= Mod Normal Settings ========================== :| */
 
-        enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false, null, isHeader: true);
-
-        enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
-        AgarthaRandomSpawn = Create(1084, false, CustomOptionType.Generic, "RandomSpawnOption", true, enableAgartha);
-        AgarthaRandomSpawnIsFirstSpawn = Create(1085, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsFirstSpawn", false, AgarthaRandomSpawn);
-        AgarthaRandomSpawnIsAddSpawnWay = Create(1086, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
-
-        CanGhostSeeRole = Create(1100, true, CustomOptionType.Generic, "CanGhostSeeRole", true, null, isHeader: true);
-        OnlyImpostorGhostSeeRole = Create(1101, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanGhostSeeRole);
-
-        CanGhostSeeVote = Create(1144, true, CustomOptionType.Generic, "CanGhostSeeVote", true, null, isHeader: true);
-
-        IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
-
-        IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true, isHidden: true);
-        IsOldMode.selection = 0;
+        impostorRolesCountMax = Create(3, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoRole"), 0f, 0f, 3f, 1f);
+        neutralRolesCountMax = Create(4, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralRole"), 0f, 0f, 15f, 1f);
+        crewmateRolesCountMax = Create(5, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewRole"), 0f, 0f, 15f, 1f);
+        impostorGhostRolesCountMax = Create(6, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
+        neutralGhostRolesCountMax = Create(7, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralGhostRole"), 0f, 0f, 15f, 1f);
+        crewmateGhostRolesCountMax = Create(8, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewGhostRole"), 0f, 0f, 15f, 1f);
 
         if (ConfigRoles.DebugMode.Value)
         {
@@ -1050,30 +1035,62 @@ public class CustomOptionHolder
 
         DisconnectNotPCOption = Create(11, true, CustomOptionType.Generic, Cs(Color.white, "DisconnectNotPC"), true, null, isHeader: true);
 
+        IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
+
+        enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
+        // 後でマップ改造に移動 ここから
+        AgarthaRandomSpawn = Create(1084, false, CustomOptionType.Generic, "RandomSpawnOption", true, enableAgartha);
+        AgarthaRandomSpawnIsFirstSpawn = Create(1085, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsFirstSpawn", false, AgarthaRandomSpawn);
+        AgarthaRandomSpawnIsAddSpawnWay = Create(1086, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
+        // 後でマップ改造に移動 ここまで
+
+        GMOption = Create(1028, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
+        if (ConfigRoles.DebugMode.Value) { DebuggerOption = Create(1172, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false); }
+
+        /* |: ========================= Mod Normal Settings ========================== :| */
+
+        Mode.ModeHandler.OptionLoad(); // モード設定
+
+        MapOption.MapOption.LoadOption(); // マップの設定
+        enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false, null); // 上のオプションの中に移動
+
+        MapCustoms.MapCustom.CreateOption(); // マップ改造
+
+        Sabotage.Options.Load(); // 独自サボタージュの設定
+
+        /* |: ========================= Game Option Settings ========================== :| */
+
+        CanGhostSeeRole = Create(1100, true, CustomOptionType.Generic, "CanGhostSeeRole", true, null, isHeader: true);
+        OnlyImpostorGhostSeeRole = Create(1101, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanGhostSeeRole);
+
+        CanGhostSeeVote = Create(1144, true, CustomOptionType.Generic, "CanGhostSeeVote", true, null, isHeader: true);
+
+        IsAlwaysReduceCooldown = Create(682, false, CustomOptionType.Generic, "IsAlwaysReduceCooldown", false, null, isHeader: true);
+        IsAlwaysReduceCooldownExceptInVent = Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
+        IsAlwaysReduceCooldownExceptOnTask = Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
+
+        // 下記コメントアウト文別のcsfileから移動必須
+        // CustomOptionHolder.LadderDead = CustomOption.Create(637, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
+        // LadderDeadChance = CustomOption.Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], CustomOptionHolder.LadderDead);
+
+        // NoTaskWinModeSetting = CustomOption.Create(510, true, CustomOptionType.Generic, "SettingNoTaskWinMode", false, PlusModeSetting, isHeader: true);
+
+        IsChangeTheWinCondition = Create(1005, true, CustomOptionType.Generic, "IsChangeTheWinCondition", false, null, isHeader: true);
+
         ZoomOption = Create(618, false, CustomOptionType.Generic, Cs(Color.white, "Zoomafterdeath"), true, null, isHeader: true);
         MouseZoom = Create(619, false, CustomOptionType.Generic, "mousemode", false, ZoomOption);
         ClairvoyantZoom = Create(620, false, CustomOptionType.Generic, "clairvoyantmode", false, ZoomOption);
         ZoomCoolTime = Create(621, false, CustomOptionType.Generic, "clairvoyantCoolTime", 15f, 1f, 120f, 2.5f, ClairvoyantZoom, format: "unitCouples");
         ZoomDurationTime = Create(622, false, CustomOptionType.Generic, "clairvoyantDurationTime", 5f, 1f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
 
-        MapOption.MapOption.LoadOption();
+        // NoSabotageModeSetting = CustomOption.Create(509, true, CustomOptionType.Generic, "SettingNoSabotageMode", false, PlusModeSetting, isHeader: true);
+        // NotUseReportDeadBody = CustomOption.Create(452, true, CustomOptionType.Generic, "NotUseReportSetting", false, MapOptionSetting);
+        // NotUseMeetingButton = CustomOption.Create(453, true, CustomOptionType.Generic, "NotUseMeetingSetting", false, MapOptionSetting);
 
-        //SoothSayerRate = Create(2, Cs(SoothSayer.color,"soothName"),rates, null, true);
-        Mode.ModeHandler.OptionLoad();
+        /* |: ========================= Game Option Settings ========================== :| */
 
-        MapCustoms.MapCustom.CreateOption();
-
-        Sabotage.Options.Load();
-
-        if (ConfigRoles.DebugMode.Value) { DebuggerOption = Create(1172, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false, isHeader: true); }
-
-        GMOption = Create(1028, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
-
-        IsAlwaysReduceCooldown = Create(682, false, CustomOptionType.Generic, "IsAlwaysReduceCooldown", false, null, isHeader: true);
-        IsAlwaysReduceCooldownExceptInVent = Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
-        IsAlwaysReduceCooldownExceptOnTask = Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
-
-        IsChangeTheWinCondition = Create(1005, true, CustomOptionType.Generic, "IsChangeTheWinCondition", false, null, isHeader: true);
+        IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true, isHidden: true);
+        IsOldMode.selection = 0;
 
         MadRolesCanFixComms = Create(984, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
         MadRolesCanFixElectrical = Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
