@@ -569,10 +569,10 @@ class MeetingHudStartPatch
 public static class OpenVotes
 {
     /// <summary>
-    /// 公開投票にします。
+    /// 公開投票にします。[Anonymous votes(匿名投票) / Open votes(公開投票)]
     /// </summary>
     /// <param name="player">設定送信先</param>
-    /// <returns>Anonymous votes(匿名投票)をfalseにする事で、Open votes(公開投票)にします。</returns>
+    /// <returns> Anonymous votes => [true : 匿名投票 / false : 公開投票]</returns>
     public static bool VoteSyncSetting(this PlayerControl player)
     {
         var role = player.GetRole();
@@ -593,7 +593,7 @@ public static class OpenVotes
                 optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Assassin.IsVoteView);
                 break;
         }
-        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, !CustomOptionHolder.CanGhostSeeVote.GetBool());
+        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, !Mode.PlusMode.PlusGameOptions.IsGhostSeeVote);
         Logger.Info("開票しました。", "OpenVotes");
         return optdata.GetBool(BoolOptionNames.AnonymousVotes);
     }

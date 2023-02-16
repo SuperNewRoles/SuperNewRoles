@@ -133,8 +133,6 @@ public static class ModeHandler
         Detective.DetectiveOptions.Load();
         CopsRobbers.CopsRobbersOptions.Load();
         //Werewolf.WerewolfOptions.Load();
-
-        PlusMode.Options.Load();
     }
     public static void HudUpdate(HudManager __instance)
     {

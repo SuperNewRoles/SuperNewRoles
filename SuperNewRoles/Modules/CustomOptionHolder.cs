@@ -44,29 +44,13 @@ public class CustomOptionHolder
     public static CustomOption AgarthaRandomSpawnIsFirstSpawn;
     public static CustomOption AgarthaRandomSpawnIsAddSpawnWay;
 
-    public static CustomOption CanGhostSeeRole;
-    public static CustomOption OnlyImpostorGhostSeeRole;
-    public static CustomOption CanGhostSeeVote;
-
     public static CustomOption IsDebugMode;
     public static CustomOption DebugModeFastStart;
     public static CustomOption IsMurderPlayerAnnounce;
 
     public static CustomOption DisconnectNotPCOption;
 
-    public static CustomOption ZoomOption;
-    public static CustomOption ClairvoyantZoom;
-    public static CustomOption MouseZoom;
-    public static CustomOption ZoomCoolTime;
-    public static CustomOption ZoomDurationTime;
-
-    public static CustomOption IsAlwaysReduceCooldown;
-    public static CustomOption IsAlwaysReduceCooldownExceptInVent;
-    public static CustomOption IsAlwaysReduceCooldownExceptOnTask;
-
     public static CustomOption IsOldMode;
-
-    public static CustomOption IsChangeTheWinCondition;
 
     public static CustomOption DetectiveRate;
     public static CustomOption DetectivePlayerCount;
@@ -979,8 +963,6 @@ public class CustomOptionHolder
     public static CustomOption LoversCommonTask;
     public static CustomOption LoversLongTask;
     public static CustomOption LoversShortTask;
-    public static CustomOption LadderDead;
-    public static CustomOption LadderDeadChance;
 
     public static string[] LevelingerTexts = new string[] { };
     public static List<float> CrewPlayers = new() { 1f, 1f, 15f, 1f };
@@ -1058,39 +1040,12 @@ public class CustomOptionHolder
 
         Sabotage.Options.Load(); // 独自サボタージュの設定
 
-        /* |: ========================= Game Option Settings ========================== :| */
-
-        CanGhostSeeRole = Create(1100, true, CustomOptionType.Generic, "CanGhostSeeRole", true, null, isHeader: true);
-        OnlyImpostorGhostSeeRole = Create(1101, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanGhostSeeRole);
-
-        CanGhostSeeVote = Create(1144, true, CustomOptionType.Generic, "CanGhostSeeVote", true, null, isHeader: true);
-
-        IsAlwaysReduceCooldown = Create(682, false, CustomOptionType.Generic, "IsAlwaysReduceCooldown", false, null, isHeader: true);
-        IsAlwaysReduceCooldownExceptInVent = Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
-        IsAlwaysReduceCooldownExceptOnTask = Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
-
-        // 下記コメントアウト文別のcsfileから移動必須
-        // CustomOptionHolder.LadderDead = CustomOption.Create(637, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
-        // LadderDeadChance = CustomOption.Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], CustomOptionHolder.LadderDead);
-
-        // NoTaskWinModeSetting = CustomOption.Create(510, true, CustomOptionType.Generic, "SettingNoTaskWinMode", false, PlusModeSetting, isHeader: true);
-
-        IsChangeTheWinCondition = Create(1005, true, CustomOptionType.Generic, "IsChangeTheWinCondition", false, null, isHeader: true);
-
-        ZoomOption = Create(618, false, CustomOptionType.Generic, Cs(Color.white, "Zoomafterdeath"), true, null, isHeader: true);
-        MouseZoom = Create(619, false, CustomOptionType.Generic, "mousemode", false, ZoomOption);
-        ClairvoyantZoom = Create(620, false, CustomOptionType.Generic, "clairvoyantmode", false, ZoomOption);
-        ZoomCoolTime = Create(621, false, CustomOptionType.Generic, "clairvoyantCoolTime", 15f, 1f, 120f, 2.5f, ClairvoyantZoom, format: "unitCouples");
-        ZoomDurationTime = Create(622, false, CustomOptionType.Generic, "clairvoyantDurationTime", 5f, 1f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
-
-        // NoSabotageModeSetting = CustomOption.Create(509, true, CustomOptionType.Generic, "SettingNoSabotageMode", false, PlusModeSetting, isHeader: true);
-        // NotUseReportDeadBody = CustomOption.Create(452, true, CustomOptionType.Generic, "NotUseReportSetting", false, MapOptionSetting);
-        // NotUseMeetingButton = CustomOption.Create(453, true, CustomOptionType.Generic, "NotUseMeetingSetting", false, MapOptionSetting);
-
-        /* |: ========================= Game Option Settings ========================== :| */
+        Mode.PlusMode.PlusGameOptions.Load(); // プラスゲームオプション
 
         IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true, isHidden: true);
         IsOldMode.selection = 0;
+
+        /* |: ========================= Roles Settings ========================== :| */
 
         MadRolesCanFixComms = Create(984, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
         MadRolesCanFixElectrical = Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
@@ -1991,6 +1946,8 @@ public class CustomOptionHolder
         LoversCommonTask = loversoption.Item1;
         LoversShortTask = loversoption.Item2;
         LoversLongTask = loversoption.Item3;
+
+        /* |: ========================= Roles Settings ========================== :| */
 
         SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:" + Max);
         SuperNewRolesPlugin.Logger.LogInfo("設定数:" + options.Count);

@@ -14,8 +14,6 @@ public class MapOption
     public static bool UseAdmin;
     public static bool UseVitalOrDoorLog;
     public static bool UseCamera;
-    public static bool UseDeadBodyReport;
-    public static bool UseMeetingButton;
     public static bool IsRandomMap;
     public static bool ValidationSkeld;
     public static bool ValidationMira;
@@ -28,14 +26,6 @@ public class MapOption
     public static bool WireTaskIsRandom;
     public static int WireTaskNum;
 
-    //千里眼・ズーム関連
-    public static bool MouseZoom;
-    public static bool ClairvoyantZoom;
-    public static float CoolTime;
-    public static float DurationTime;
-    public static bool IsZoomOn;
-    public static float Timer;
-    public static DateTime ButtonTimer;
     //private static Sprite buttonSprite;
     public static float Default;
     public static float CameraDefault;
@@ -75,8 +65,6 @@ public class MapOption
             RandomSpawn = (MapNames)GameOptionsManager.Instance.currentGameOptions.MapId == MapNames.Airship && ModeHandler.IsMode(ModeId.Default) && RandomSpawnOption.GetBool();
             WireTaskIsRandom = WireTaskIsRandomOption.GetBool();
             WireTaskNum = WireTaskNumOption.GetInt();
-            UseDeadBodyReport = !NotUseReportDeadBody.GetBool();
-            UseMeetingButton = !NotUseMeetingButton.GetBool();
             CanNotVentAnimation = !ModeHandler.IsMode(ModeId.SuperHostRoles) && VentAnimation.GetBool();
             //SuperNewRoles.Patches.AdminPatch.ClearAndReload();
             //SuperNewRoles.Patches.CameraPatch.ClearAndReload();
@@ -88,8 +76,6 @@ public class MapOption
             UseAdmin = true;
             UseVitalOrDoorLog = true;
             UseCamera = true;
-            UseDeadBodyReport = true;
-            UseMeetingButton = true;
             IsRandomMap = false;
             ValidationSkeld = false;
             ValidationMira = false;
@@ -105,14 +91,6 @@ public class MapOption
         MiraReactorTimeLimit.GetFloat();
         AirshipReactorTimeLimit.GetFloat();
 
-        //千里眼・ズーム関連
-        ClairvoyantZoom = CustomOptionHolder.ClairvoyantZoom.GetBool();
-        MouseZoom = CustomOptionHolder.MouseZoom.GetBool();
-        CoolTime = ZoomCoolTime.GetFloat();
-        DurationTime = ZoomDurationTime.GetFloat();
-        IsZoomOn = false;
-        Timer = 0;
-        ButtonTimer = DateTime.Now;
         CameraDefault = Camera.main.orthographicSize;
         Default = FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize;
         playerIcons = new();
@@ -127,8 +105,6 @@ public class MapOption
     public static CustomOption DeviceUseVitalOrDoorLogTime;
     public static CustomOption DeviceUseCamera;
     public static CustomOption DeviceUseCameraTime;
-    public static CustomOption NotUseReportDeadBody;
-    public static CustomOption NotUseMeetingButton;
     public static CustomOption RandomMapOption;
     public static CustomOption RandomMapSkeld;
     public static CustomOption RandomMapMira;
@@ -164,8 +140,6 @@ public class MapOption
         DeviceUseAdmin = CustomOption.Create(446, true, CustomOptionType.Generic, "DeviceUseAdminSetting", true, DeviceOptions);
         DeviceUseVitalOrDoorLog = CustomOption.Create(448, true, CustomOptionType.Generic, "DeviceUseVitalOrDoorLogSetting", true, DeviceOptions);
         DeviceUseCamera = CustomOption.Create(450, true, CustomOptionType.Generic, "DeviceUseCameraSetting", true, DeviceOptions);
-        NotUseReportDeadBody = CustomOption.Create(452, true, CustomOptionType.Generic, "NotUseReportSetting", false, MapOptionSetting);
-        NotUseMeetingButton = CustomOption.Create(453, true, CustomOptionType.Generic, "NotUseMeetingSetting", false, MapOptionSetting);
 
         RestrictDevicesOption = CustomOption.Create(1105, false, CustomOptionType.Generic, "RestrictDevicesOption", false, MapOptionSetting);
         RestrictAdmin = CustomOption.Create(1102, false, CustomOptionType.Generic, "RestrictAdmin", false, RestrictDevicesOption);
@@ -192,8 +166,5 @@ public class MapOption
 
         WireTaskIsRandomOption = CustomOption.Create(956, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting);
         WireTaskNumOption = CustomOption.Create(957, false, CustomOptionType.Generic, "WireTaskNum", 5f, 1f, 8f, 1f, WireTaskIsRandomOption);
-
-        CustomOptionHolder.LadderDead = CustomOption.Create(637, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
-        LadderDeadChance = CustomOption.Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], CustomOptionHolder.LadderDead);
     }
 }

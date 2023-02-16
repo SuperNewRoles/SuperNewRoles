@@ -265,7 +265,7 @@ RandomColorNameColorSetting,Change Name Color,名前の色も変える,昵称颜
 RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する,会议中昵称颜色改变
 NeutralName,Neutral,第三陣営,独立阵营
 WinName,Win,勝利,胜利
-PlusModeSetting,Plus Mode,重複モード,附加模式
+PlusGameOptionSetting,Plus Game Options Setting.,ゲーム オプション
 SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード,内鬼禁用破坏
 SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船员禁用完成任务获胜
 SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点

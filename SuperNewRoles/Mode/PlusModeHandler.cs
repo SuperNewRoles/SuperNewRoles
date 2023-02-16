@@ -32,8 +32,8 @@ class PlusModeHandler
     {
         return Modeid switch
         {
-            PlusModeId.NotSabotage => Options.PlusModeSetting.GetBool() && Options.NoSabotageModeSetting.GetBool(),
-            PlusModeId.NotTaskWin => Options.PlusModeSetting.GetBool() && Options.NoTaskWinModeSetting.GetBool(),
+            PlusModeId.NotSabotage => PlusGameOptions.PlusGameOptionSetting.GetBool() && PlusGameOptions.NoSabotageModeSetting.GetBool(),
+            PlusModeId.NotTaskWin => PlusGameOptions.PlusGameOptionSetting.GetBool() && PlusGameOptions.NoTaskWinModeSetting.GetBool(),
             _ => false,
         };
     }
