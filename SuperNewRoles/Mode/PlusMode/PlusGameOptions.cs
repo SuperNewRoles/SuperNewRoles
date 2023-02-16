@@ -9,38 +9,38 @@ class PlusGameOptions
 {
     public static CustomOption PlusGameOptionSetting;
 
-    public static CustomOption CanGhostSeeRole; // OK
-    public static CustomOption OnlyImpostorGhostSeeRole; // OK
+    public static CustomOption CanGhostSeeRole;
+    public static CustomOption OnlyImpostorGhostSeeRole;
 
-    public static CustomOption CanGhostSeeVote; // OK
+    public static CustomOption CanGhostSeeVote;
 
-    public static CustomOption IsAlwaysReduceCooldown; // OK
-    public static CustomOption IsAlwaysReduceCooldownExceptInVent; // OK
-    public static CustomOption IsAlwaysReduceCooldownExceptOnTask; // OK
+    public static CustomOption IsAlwaysReduceCooldown;
+    public static CustomOption IsAlwaysReduceCooldownExceptInVent;
+    public static CustomOption IsAlwaysReduceCooldownExceptOnTask;
 
-    public static CustomOption LadderDead; // OK
-    public static CustomOption LadderDeadChance; // OK
+    public static CustomOption LadderDead;
+    public static CustomOption LadderDeadChance;
 
-    public static CustomOption NoTaskWinModeSetting; // OK
+    public static CustomOption NoTaskWinModeSetting;
 
-    public static CustomOption IsChangeTheWinCondition; // OK
+    public static CustomOption IsChangeTheWinCondition;
 
-    public static CustomOption ZoomOption; // OK
-    public static CustomOption ClairvoyantZoom; // OK
-    public static CustomOption MouseZoom; // OK
-    public static CustomOption ZoomCoolTime; // OK
-    public static CustomOption ZoomDurationTime; // OK
+    public static CustomOption ZoomOption;
+    public static CustomOption ClairvoyantZoom;
+    public static CustomOption MouseZoom;
+    public static CustomOption ZoomCoolTime;
+    public static CustomOption ZoomDurationTime;
 
-    public static CustomOption NoSabotageModeSetting; // OK
-    public static CustomOption NotUseReportDeadBody; // OK
-    public static CustomOption NotUseMeetingButton; // OK
+    public static CustomOption NoSabotageModeSetting;
+    public static CustomOption NotUseReportDeadBody;
+    public static CustomOption NotUseMeetingButton;
 
     public static void Load()
     {
         PlusGameOptionSetting = Create(508, true, CustomOptionType.Generic, "PlusGameOptionSetting", false, null, isHeader: true);
 
-        CanGhostSeeRole = Create(1100, true, CustomOptionType.Generic, "CanGhostSeeRole", true, PlusGameOptionSetting, isHeader: true); // OK
-        OnlyImpostorGhostSeeRole = Create(1101, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanGhostSeeRole); // OK
+        CanGhostSeeRole = Create(1100, true, CustomOptionType.Generic, "CanGhostSeeRole", true, PlusGameOptionSetting, isHeader: true);
+        OnlyImpostorGhostSeeRole = Create(1101, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanGhostSeeRole);
 
         CanGhostSeeVote = Create(1144, true, CustomOptionType.Generic, "CanGhostSeeVote", true, PlusGameOptionSetting, isHeader: true);
 
