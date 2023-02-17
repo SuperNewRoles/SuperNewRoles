@@ -40,9 +40,6 @@ public class CustomOptionHolder
     public static CustomOption enableMirroMap;
 
     public static CustomOption enableAgartha;
-    public static CustomOption AgarthaRandomSpawn;
-    public static CustomOption AgarthaRandomSpawnIsFirstSpawn;
-    public static CustomOption AgarthaRandomSpawnIsAddSpawnWay;
 
     public static CustomOption IsDebugMode;
     public static CustomOption DebugModeFastStart;
@@ -1020,11 +1017,6 @@ public class CustomOptionHolder
         IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
         enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
-        // 後でマップ改造に移動 ここから
-        AgarthaRandomSpawn = Create(1084, false, CustomOptionType.Generic, "RandomSpawnOption", true, enableAgartha);
-        AgarthaRandomSpawnIsFirstSpawn = Create(1085, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsFirstSpawn", false, AgarthaRandomSpawn);
-        AgarthaRandomSpawnIsAddSpawnWay = Create(1086, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
-        // 後でマップ改造に移動 ここまで
 
         GMOption = Create(1028, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
         if (ConfigRoles.DebugMode.Value) { DebuggerOption = Create(1172, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false); }

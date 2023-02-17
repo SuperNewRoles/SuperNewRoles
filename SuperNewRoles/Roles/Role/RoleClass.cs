@@ -55,6 +55,7 @@ public static class RoleClass
         Mode.BattleRoyal.Main.VentData = new();
         FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
         Mode.ModeHandler.ClearAndReload();
+        MapCustoms.MapCustomClearAndReload.ClearAndReload();
         MapCustoms.AdditionalVents.ClearAndReload();
         MapCustoms.SpecimenVital.ClearAndReload();
         MapCustoms.MoveElecPad.ClearAndReload();

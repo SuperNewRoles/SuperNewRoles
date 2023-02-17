@@ -104,7 +104,7 @@ LightColor,bright,明るい,亮色
 DarkerColor,darker,暗い,暗色
 
 # CustomOptions
-MapCustom,Map Custom,マップ改造,地图设置
+MapCustom,Map Custom,<color=#84a2d4>マップ改造</color>,地图设置
 SecretRoom,(Airship)Secret Room,(エアーシップ)シークレットルーム,空艇：机密室
 enableMirroMap,enable MirroMap,反転マップを有効にする,启用镜像地图
 SettingpresetSelection,Preset,プリセット,预设
@@ -1293,6 +1293,6 @@ SuccessfulExperiment,Successful Experiment,実験成功,测试成功
 Agartha_WareHouse,WareHouse,倉庫,仓库
 Agartha_ToolRoom,ToolRoom,工具室,工具室
 Agartha_WorkRoom,WorkRoom,仕事場,工坊
-AgarthaName,Agartha,アガルタ,雅各泰
+AgarthaName,<color=#a67646>Agartha</color>,<color=#a67646>Agartha</color>,雅各泰
 AgarthaRandomSpawnIsFirstSpawn,Applies to first spawn.,初スポーンにも適用される,只在游戏开始时随机出生
 AgarthaRandomSpawnIsAddSpawnWay,Add spawn to the road,道へのスポーンを追加する,在通道上增加随机出生点
