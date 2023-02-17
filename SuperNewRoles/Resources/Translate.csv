@@ -1243,10 +1243,23 @@ DyingMessengerFirstPerson1,me,私,我
 DyingMessengerFirstPerson2,me,僕,我
 DyingMessengerGetRoleText,The role of the person who killed {0} was {1}.,{0}をキルした人の役職は{1}でした。,把{0}杀害的人是一名{1}。
 DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}をキルした人の色は{1}色でした。,把{0}杀害的人是{1}色的。
-OrientalShamanName,OrientalShaman,陰陽師
+OrientalShamanName,Oriental Shaman,陰陽師
 OrientalShamanTitle1,Where this ship will end up is beyond where the stars lead us.,この船の行く末は星が導くその先に
-ShermansServantName,Sherman'sServant,式神
+OrientalShamanDescription,They possess a variety of abilities necessary for survival.\nInstead， can't fix sabotage.\nIf you survive to the end， you win alone.,生き抜くために必要な様々な能力を持っています。\n代わりにサボタージュは直せません。\n最後まで生き残ると単独勝利します。
+OrientalShamanImpostorVisionSetting,Make Oriental shaman the imposter vision,陰陽師をインポスターの視界にする
+OrientalShamanVentUseCoolTimeSetting,Cool time for Oriental shaman's vent,陰陽師のベントのクールタイム
+OrientalShamanVentDurationTimeSetting,Duration of Oriental shaman's vent,陰陽師のベントの持続時間
+OrientalShamanCrewTaskWinHijackSetting,You can hijack a task victory,タスク勝利を乗っ取れる
+OrientalShamanWinTaskSetting,Oriental shaman was clear task win,タスクを完了しないと勝利できない
+OrientalShamanCreateShermansServantSetting,Sherman's servant can be appointed,式神を指名出来る
+OrientalShamanCreateShermansServantCoolSetting,Sherman's servant nomination cool time,式神指名のクールタイム
+OrientalShamanShermansServantButtoonName,Nominate Sherman's servant,式神指名
+ShermansServantName,Sherman's Servant,式神
 ShermansServantTitle1,This body is for my Lord,この身は我が主のために有り
+ShermansServantDescription,It is a sidekick to the Oriental shaman.\nIt is possible to transform into the form of an Oriental shaman.\nThe Sherman's servant is basically judged as a crew， so take advantage of this to protect the Oriental shaman.,陰陽師のサイドキックです。\n陰陽師の姿に変身することが出来ます。\n式神は基本的にクルーと判定されるので、それを生かして陰陽師を守りましょう。
+ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation cool time,式神の変身クールタイム
+ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム
+ShermansServantTransformationButtonName,Metamorphosis,変身
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

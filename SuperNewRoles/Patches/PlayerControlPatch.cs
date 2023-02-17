@@ -11,9 +11,11 @@ using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using static GameData;
 using static SuperNewRoles.Helpers.DesyncHelpers;
@@ -905,7 +907,7 @@ public static class MurderPlayerPatch
         }
         EvilGambler.MurderPlayerPrefix(__instance, target);
         Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
-        DyingMessenger.ActualDeathTime.Add(target.PlayerId, (DateTime.Now, __instance));
+        DyingMessenger.ActualDeathTime[target.PlayerId] = (DateTime.Now, __instance);
         if (ModeHandler.IsMode(ModeId.Default))
         {
             target.resetChange();
@@ -924,6 +926,11 @@ public static class MurderPlayerPatch
                             RoleClass.SideKiller.IsUpMadKiller = true;
                         }
                     }
+                }
+                else if (target.IsRole(RoleId.ShermansServant) && OrientalShaman.IsTransformation && target.AmOwner)
+                {
+                    OrientalShaman.SetOutfit(target, target.Data.DefaultOutfit);
+                    OrientalShaman.IsTransformation = false;
                 }
             }
             else if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
@@ -1089,6 +1096,19 @@ public static class MurderPlayerPatch
                 {
                     Roles.Neutral.Hitman.Death();
                 }
+                else if (target.IsRole(RoleId.OrientalShaman) && OrientalShaman.OrientalShamanCausative.ContainsKey(target.PlayerId))
+                {
+                    PlayerControl causativePlayer = PlayerById(OrientalShaman.OrientalShamanCausative[target.PlayerId]);
+                    if (causativePlayer.IsAlive())
+                    {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                        writer.Write(causativePlayer.PlayerId);
+                        writer.Write(causativePlayer.PlayerId);
+                        writer.Write((byte)0);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        RPCProcedure.RPCMurderPlayer(causativePlayer.PlayerId, causativePlayer.PlayerId, 0);
+                    }
+                }
             }
             Levelinger.MurderPlayer(__instance, target);
             if (RoleClass.Lovers.SameDie && target.IsLovers())
@@ -1184,6 +1204,17 @@ public static class ExilePlayerPatch
             {
                 Roles.Neutral.Hitman.Death();
             }
+            if (__instance.IsRole(RoleId.OrientalShaman) && OrientalShaman.OrientalShamanCausative.ContainsKey(__instance.PlayerId))
+            {
+                PlayerControl causativePlayer = PlayerById(OrientalShaman.OrientalShamanCausative[__instance.PlayerId]);
+                if (causativePlayer.IsAlive())
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ExiledRPC, SendOption.Reliable, -1);
+                    writer.Write(causativePlayer.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.ExiledRPC(causativePlayer.PlayerId);
+                }
+            }
             if (RoleClass.Lovers.SameDie && __instance.IsLovers())
             {
                 if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
@@ -1265,6 +1296,11 @@ class ReportDeadBodyPatch
                         writer.EndRPC();
                     }, 0.5f, "DyingMessengerText");
                 }
+            }
+            if (OrientalShaman.IsTransformation)
+            {
+                OrientalShaman.SetOutfit(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data.DefaultOutfit);
+                OrientalShaman.IsTransformation = false;
             }
         }
         if (ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))

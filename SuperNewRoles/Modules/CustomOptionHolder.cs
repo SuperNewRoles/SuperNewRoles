@@ -1956,8 +1956,6 @@ public class CustomOptionHolder
 
         DyingMessenger.SetupCustomOptions();
 
-        ShermansServant.SetupCustomOptions();
-
         OrientalShaman.SetupCustomOptions();
 
         // 表示設定

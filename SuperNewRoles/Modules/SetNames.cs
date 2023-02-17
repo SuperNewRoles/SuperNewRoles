@@ -454,6 +454,29 @@ public class SetNameUpdate
                     }
                 }
             }
+            else if (LocalRole is RoleId.OrientalShaman)
+            {
+                foreach (var date in OrientalShaman.OrientalShamanCausative)
+                {
+                    if (date.Key != PlayerControl.LocalPlayer.PlayerId) continue;
+                    SetNamesClass.SetPlayerRoleNames(ModHelpers.PlayerById(date.Value));
+                    SetNamesClass.SetPlayerNameColors(ModHelpers.PlayerById(date.Value));
+                }
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (OrientalShaman.IsKiller(player))
+                        SetNamesClass.SetPlayerNameColors(player);
+                }
+            }
+            else if (LocalRole is RoleId.ShermansServant)
+            {
+                foreach (var date in OrientalShaman.OrientalShamanCausative)
+                {
+                    if (date.Value != PlayerControl.LocalPlayer.PlayerId) continue;
+                    SetNamesClass.SetPlayerRoleNames(ModHelpers.PlayerById(date.Key));
+                    SetNamesClass.SetPlayerNameColors(ModHelpers.PlayerById(date.Key));
+                }
+            }
             SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
             SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
         }
