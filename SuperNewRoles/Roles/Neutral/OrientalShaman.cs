@@ -53,7 +53,6 @@ public static class OrientalShaman
     public static Dictionary<byte, byte> OrientalShamanCausative;
     public static Color32 color = new(192, 177, 246, byte.MaxValue);
     public static bool CanCreateShermansServant;
-    public static float Distance;
     public static bool IsTransformation;
     public static Dictionary<DeadBody, Arrow> DeadPlayerArrows;
     public static Arrow SeePositionArrow;
@@ -64,7 +63,6 @@ public static class OrientalShaman
         ShermansServantPlayer = new();
         OrientalShamanCausative = new();
         CanCreateShermansServant = true;
-        Distance = FastDestroyableSingleton<Vent>.Instance.UsableDistance;
         IsTransformation = false;
         DeadPlayerArrows = new();
         SeePositionArrow = null;
@@ -128,13 +126,15 @@ public static class OrientalShaman
                 foreach (Vent vent in ShipStatus.Instance.AllVents)
                 {
                     float distance = Vector2.Distance(PlayerControl.LocalPlayer.transform.position, vent.transform.position);
-                    if (distance <= Distance && distance < min_distance)
+                    if (distance <= vent.UsableDistance && distance < min_distance)
                     {
                         min_distance = distance;
-                        inVent = vent;
-                        Logger.Info($"選択されたベント : {vent.gameObject.name}", "OrientalShaman Vent Button");
+                        vent.CanUse(PlayerControl.LocalPlayer.Data, out bool canUse, out bool _);
+                        if (canUse) inVent = vent;
+                        Logger.Info($"選択されたベント : {vent.gameObject.name}, vent.UsableDistance : {vent.UsableDistance}", "OrientalShaman Vent Button");
                     }
                 }
+                if (!inVent) return;
                 if (!OrientalShamanVentButton.isEffectActive)
                 {
                     inVent.SetButtons(true);
@@ -178,12 +178,14 @@ public static class OrientalShaman
                     vent.myRend.material.SetColor("_AddColor", color);
                     vent.myRend.material.SetFloat("_Outline", 0f);
                     float distance = Vector2.Distance(PlayerControl.LocalPlayer.transform.position, vent.transform.position);
-                    if (distance <= Distance && distance < min_distance)
+                    if (distance <= vent.UsableDistance && distance < min_distance)
                     {
                         min_distance = distance;
-                        inVent = vent;
+                        vent.CanUse(PlayerControl.LocalPlayer.Data, out bool canUse, out bool _);
+                        if (canUse) inVent = vent;
                     }
                 }
+
                 if (inVent) inVent.myRend.material.SetFloat("_Outline", 1f);
                 return inVent;
             },
@@ -227,10 +229,11 @@ public static class OrientalShaman
                 foreach (Vent vent in ShipStatus.Instance.AllVents)
                 {
                     float distance = Vector2.Distance(PlayerControl.LocalPlayer.transform.position, vent.transform.position);
-                    if (distance <= Distance && distance < min_distance)
+                    if (distance <= vent.UsableDistance && distance < min_distance)
                     {
                         min_distance = distance;
-                        inVent = vent;
+                        vent.CanUse(PlayerControl.LocalPlayer.Data, out bool canUse, out bool _);
+                        if (canUse) inVent = vent;
                         Logger.Info($"選択されたベント : {vent.gameObject.name}", "OrientalShaman Vent Button");
                     }
                 }
