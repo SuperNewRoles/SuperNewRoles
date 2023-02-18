@@ -64,7 +64,7 @@ public static class OrientalShaman
         ShermansServantPlayer = new();
         OrientalShamanCausative = new();
         CanCreateShermansServant = true;
-        Distance = 0.6558f;
+        Distance = FastDestroyableSingleton<Vent>.Instance.UsableDistance;
         IsTransformation = false;
         DeadPlayerArrows = new();
         SeePositionArrow = null;
