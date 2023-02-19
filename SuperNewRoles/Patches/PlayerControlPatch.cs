@@ -1107,6 +1107,7 @@ public static class MurderPlayerPatch
                         writer.Write((byte)0);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.RPCMurderPlayer(causativePlayer.PlayerId, causativePlayer.PlayerId, 0);
+                        causativePlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                     }
                 }
             }
@@ -1213,6 +1214,7 @@ public static class ExilePlayerPatch
                     writer.Write(causativePlayer.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.ExiledRPC(causativePlayer.PlayerId);
+                    causativePlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                 }
             }
             if (RoleClass.Lovers.SameDie && __instance.IsLovers())

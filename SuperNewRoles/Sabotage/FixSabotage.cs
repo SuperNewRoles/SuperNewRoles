@@ -53,6 +53,7 @@ public class FixSabotage
     }
     private static bool IsBlocked(TaskTypes type, RoleId role)
     {
+        if (!IsSabotage(type)) return true;
         if (!SetFixSabotageDictionary.ContainsKey(role)) return true;
         (bool, bool, bool, bool) fixSabotage = SetFixSabotageDictionary[role];
         if (type is TaskTypes.StopCharles or TaskTypes.ResetSeismic or TaskTypes.ResetReactor && fixSabotage.Item1) return true;
@@ -69,6 +70,8 @@ public class FixSabotage
             return true;
         return false;
     }
+    private static bool IsSabotage(TaskTypes type) =>
+        type is TaskTypes.StopCharles or TaskTypes.ResetSeismic or TaskTypes.ResetReactor or TaskTypes.FixLights or TaskTypes.FixComms or TaskTypes.RestoreOxy;
     private static RoleId GetRole(RoleId role)
     {
         if (SetFixSabotageDictionary.ContainsKey(role)) return role;

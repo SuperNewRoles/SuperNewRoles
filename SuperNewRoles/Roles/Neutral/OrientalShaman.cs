@@ -193,6 +193,7 @@ public static class OrientalShaman
             {
                 OrientalShamanVentButton.MaxTimer = OrientalShamanVentUseCoolTime.GetFloat();
                 OrientalShamanVentButton.Timer = OrientalShamanVentButton.MaxTimer;
+                OrientalShamanVentButton.EffectDuration = OrientalShamanVentDurationTime.GetFloat();
                 OrientalShamanVentButton.effectCancellable = true;
                 OrientalShamanVentButton.isEffectActive = false;
                 OrientalShamanVentButton.HasEffect = true;
@@ -387,7 +388,7 @@ public static class OrientalShaman
     {
         if (target.IsImpostor()) return true;
         if (target.IsJackalTeam() && !target.IsFriendRoles() && !target.IsJackalTeamSidekick()) return true;
-        if (target.IsRole(RoleId.Pavlovsdogs, RoleId.Hitman, RoleId.Stefinder, RoleId.Egoist)) return true;
+        if (target.IsRole(RoleId.Pavlovsdogs, RoleId.Hitman, RoleId.Stefinder, RoleId.Egoist, RoleId.FireFox)) return true;
         if (target.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff)) return true;
         return false;
     }
