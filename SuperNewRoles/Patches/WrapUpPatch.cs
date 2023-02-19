@@ -131,8 +131,6 @@ class WrapUpPatch
         SoothSayer_Patch.WrapUp(exiled.Object);
         Nekomata.NekomataEnd(exiled);
         Roles.Impostor.NekoKabocha.OnWrapUp(exiled.Object);
-
-        exiled.Object.Exiled();
         exiled.IsDead = true;
         FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
         var Player = ModHelpers.PlayerById(exiled.PlayerId);
