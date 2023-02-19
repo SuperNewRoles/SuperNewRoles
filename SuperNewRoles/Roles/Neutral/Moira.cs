@@ -28,6 +28,7 @@ public static class Moira
     public static Color32 color = RoleClass.ImpostorRed;
     public static byte WinLimit;
     public static List<byte> AbilityUsedPlayers;
+    public static List<byte> AbilityUsedWrapUpSetPlayers;
     public static Dictionary<byte, List<(byte, byte)>> ChangeData;
     public static Dictionary<byte, (byte, byte)> SwapVoteData;
     public static bool AbilityUsedThisMeeting;
@@ -36,6 +37,7 @@ public static class Moira
         MoiraPlayer = new();
         WinLimit = (byte)MoiraWinLimit.GetFloat();
         AbilityUsedPlayers = new();
+        AbilityUsedWrapUpSetPlayers = new();
         ChangeData = new();
         SwapVoteData = new();
         AbilityUsedThisMeeting = false;
@@ -132,7 +134,7 @@ public static class Moira
         if (!ChangeData.ContainsKey(source)) ChangeData.Add(source, new());
         if (!SwapVoteData.ContainsKey(source) && !SwapVoteData.ContainsValue((player1Id, player2Id)) && !SwapVoteData.ContainsValue((player2Id, player1Id))) SwapVoteData.Add(source, (player1Id, player2Id));
         ChangeData[source].Add((player1Id, player2Id));
-        if (IsUseEnd) AbilityUsedPlayers.Add(source);
+        if (IsUseEnd) AbilityUsedWrapUpSetPlayers.Add(source);
     }
     public static void SwapRole(byte player1Id, byte player2Id)
     {
@@ -150,6 +152,11 @@ public static class Moira
     }
     public static void WrapUp(GameData.PlayerInfo exiled)
     {
+        foreach (byte pid in AbilityUsedWrapUpSetPlayers)
+        {
+            AbilityUsedPlayers.Add(pid);
+        }
+        AbilityUsedWrapUpSetPlayers = new();
         SwapVoteData = new();
         if (!AmongUsClient.Instance.AmHost) return;
         foreach (var data in SwapVoteData)
