@@ -150,11 +150,12 @@ public static class Moira
     }
     public static void WrapUp(GameData.PlayerInfo exiled)
     {
+        SwapVoteData = new();
+        if (!AmongUsClient.Instance.AmHost) return;
         foreach (var data in SwapVoteData)
         {
             SwapRole(data.Value.Item1, data.Value.Item2);
         }
-        SwapVoteData = new();
         if (exiled is null) return;
         if (exiled.Object.IsRole(RoleId.Moira))
             if (ChangeData.ContainsKey(exiled.PlayerId))
