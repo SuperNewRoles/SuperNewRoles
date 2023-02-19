@@ -199,9 +199,6 @@ public class FixedUpdate
                         case RoleId.Dependents:
                             Vampire.FixedUpdate.DependentsOnly();
                             break;
-                        case RoleId.TheFirstLittlePig:
-                            TheThreeLittlePigs.TheFirstLittlePig.FixedUpdate();
-                            break;
                     }
                 }
                 else // -- 死亡時 --

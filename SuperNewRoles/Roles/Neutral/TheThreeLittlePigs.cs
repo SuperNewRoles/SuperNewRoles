@@ -1,6 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Timers;
 using AmongUs.GameOptions;
 using SuperNewRoles.Patches;
 using UnityEngine;
@@ -62,20 +61,17 @@ public class TheThreeLittlePigs
     public static void ClearAndReload()
     {
         TheThreeLittlePigsPlayer = new();
-        CheckedTask = new();
+        Logger.Info($"タスク総数 : {AllTask}", "TheThreeLittlePigs");
         TheFirstLittlePig = new();
         TheSecondLittlePig = new();
         TheThirdLittlePig = new();
     }
 
     //タスクを完了しているかの判定
-    public static List<byte> CheckedTask;
     public static bool TaskCheck(PlayerControl player)
     {
-        if (CheckedTask.Contains(player.PlayerId)) return true;
-        RoleId Role = player.GetRole();
         int clearTask = 0;
-        switch (Role)
+        switch (player.GetRole())
         {
             case RoleId.TheFirstLittlePig:
                 clearTask = TheFirstLittlePig.ClearTask;
@@ -89,48 +85,49 @@ public class TheThreeLittlePigs
             default:
                 return false;
         }
-        var taskdata = TaskCount.TaskDate(player.Data).Item1;
-        if (clearTask <= taskdata)
-        {
-            CheckedTask.Add(player.PlayerId);
-            return true;
-        }
-        return false;
+        return clearTask <= TaskCount.TaskDate(player.Data).Item1;
     }
 
     public class TheFirstLittlePigClass
     {
         public List<PlayerControl> Player;
         public int ClearTask;
-        public bool IsFlash;
-        public float Timer;
-        public void FixedUpdate()
+        public float FlashTime;
+        public Timer Timer;
+        public void WrapUp() => TimerSet();
+        public void TimerSet()
         {
-            if (!RoleClass.IsMeeting)
+            Timer = new(FlashTime);
+            Timer.Elapsed += (source, e) =>
             {
-                if (PlayerControl.LocalPlayer.IsDead()) return;
-                bool exception = (CustomOptionHolder.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent) ||
-                                 (CustomOptionHolder.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask);
-                if (PlayerControl.LocalPlayer.CanMove || (!PlayerControl.LocalPlayer.CanMove && exception))
-                    Timer -= Time.fixedDeltaTime;
-                if (Timer <= 0 && IsFlash)
+                if (PlayerControl.LocalPlayer.IsAlive() && TaskCheck(PlayerControl.LocalPlayer))
                 {
-                    IsFlash = false;
-                    if (TaskCheck(PlayerControl.LocalPlayer)) Seer.ShowFlash(new Color32(245, 95, 71, byte.MaxValue), 2.5f);
+                    Seer.ShowFlash(new Color32(245, 95, 71, byte.MaxValue), 2.5f);
+                    Logger.Info($"{FlashTime / 1000}s経過して、条件が達成されていた為発光させました", "TheFirstLittlePig");
                 }
-            }
-            else
-            {
-                IsFlash = true;
-                Timer = TheFirstLittlePigIsCustomTimer.GetBool() ? TheFirstLittlePigCustomTimer.GetFloat() : RoleClass.DefaultKillCoolDown;
-            }
+                else
+                {
+                    Logger.Info($"{FlashTime / 1000}s経過しましたが、条件が達成されませんでした。条件(生きているか : {PlayerControl.LocalPlayer.IsAlive()}, タスクを完了しているか : {TaskCheck(PlayerControl.LocalPlayer)})", "TheFirstLittlePig");
+                }
+            };
+            Timer.AutoReset = PlayerControl.LocalPlayer ? PlayerControl.LocalPlayer.IsAlive() : true;
+            Timer.Enabled = PlayerControl.LocalPlayer ? PlayerControl.LocalPlayer.IsAlive() : true;
+            if (PlayerControl.LocalPlayer ? PlayerControl.LocalPlayer.IsAlive() : true) return;
+            Logger.Info($"{FlashTime / 1000}sにタイマーセット", "TheFirstLittlePig");
+        }
+        public void TimerStop()
+        {
+            if (Timer == null) return;
+            Timer.Stop();
+            Logger.Info($"タイマを止めました", "TheFirstLittlePig");
         }
         public TheFirstLittlePigClass()
         {
             Player = new();
             ClearTask = (int)(AllTask * (int.Parse(TheFirstLittlePigClearTask.GetString().Replace("%", "")) / 100f));
-            IsFlash = true;
-            Timer = TheFirstLittlePigIsCustomTimer.GetBool() ? TheFirstLittlePigCustomTimer.GetFloat() : RoleClass.DefaultKillCoolDown;
+            Logger.Info($"1番目の仔豚のタスク割合 : {ClearTask}, 割合 : {TheFirstLittlePigClearTask.GetString()}", "TheThreeLittlePigs");
+            FlashTime = (TheFirstLittlePigIsCustomTimer.GetBool() ? TheFirstLittlePigCustomTimer.GetFloat() :
+                        RoleClass.DefaultKillCoolDown >= 5 ? RoleClass.DefaultKillCoolDown : 5) * 1000;
         }
     }
     public class TheSecondLittlePigClass
@@ -142,6 +139,7 @@ public class TheThreeLittlePigs
         {
             Player = new();
             ClearTask = (int)(AllTask * (int.Parse(TheSecondLittlePigClearTask.GetString().Replace("%", "")) / 100f));
+            Logger.Info($"2番目の仔豚のタスク割合 : {ClearTask}, 割合 : {TheSecondLittlePigClearTask.GetString()}", "TheThreeLittlePigs");
             GuardCount = new();
         }
     }
@@ -154,6 +152,7 @@ public class TheThreeLittlePigs
         {
             Player = new();
             ClearTask = (int)(AllTask * (int.Parse(TheThirdLittlePigClearTask.GetString().Replace("%", "")) / 100f));
+            Logger.Info($"3番目の仔豚のタスク割合 : {ClearTask}, 割合 : {TheThirdLittlePigClearTask.GetString()}", "TheThreeLittlePigs");
             CounterCount = new();
         }
     }
