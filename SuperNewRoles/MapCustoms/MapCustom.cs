@@ -71,7 +71,7 @@ class MapCustom
         ShuffleElectricalDoors = Create(1110, false, CustomOptionType.Generic, "ShuffleElectricalDoorsSetting", false, AirshipSetting);
 
         /*===============アガルタ===============*/
-        AgarthaSetting = Create(663, false, CustomOptionType.Generic, "<color=#a67646>Agartha</color>", false, MapCustomOption);
+        AgarthaSetting = Create(1208, false, CustomOptionType.Generic, "<color=#a67646>Agartha</color>", false, MapCustomOption);
         AgarthaRandomSpawn = Create(1084, false, CustomOptionType.Generic, "RandomSpawnOption", true, AgarthaSetting);
         AgarthaRandomSpawnIsFirstSpawn = Create(1085, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsFirstSpawn", false, AgarthaRandomSpawn);
         AgarthaRandomSpawnIsAddSpawnWay = Create(1086, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
