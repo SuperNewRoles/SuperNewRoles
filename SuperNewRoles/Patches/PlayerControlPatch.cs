@@ -1101,13 +1101,6 @@ public static class MurderPlayerPatch
                     PlayerControl causativePlayer = PlayerById(OrientalShaman.OrientalShamanCausative[target.PlayerId]);
                     if (causativePlayer.IsAlive())
                     {
-                        /*
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
-                        writer.Write(causativePlayer.PlayerId);
-                        writer.Write(causativePlayer.PlayerId);
-                        writer.Write((byte)0);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        //*/
                         RPCProcedure.RPCMurderPlayer(causativePlayer.PlayerId, causativePlayer.PlayerId, 0);
                         causativePlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
                     }
