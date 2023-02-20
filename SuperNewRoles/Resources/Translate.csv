@@ -100,8 +100,8 @@ colorTokiwaGreen,TokiwaGreen,常磐緑,常青绿
 colorPosi,Posi,ポジ,正片滤镜
 colorXmasRed,X'masRed,クリスマスレッド,圣诞红
 colorXmasGreen,X'masGreen,クリスマスグリーン,圣诞绿
-LightColor,bright,明るい,亮色
-DarkerColor,darker,暗い,暗色
+LightColor,bright,明るい,亮
+DarkerColor,darker,暗い,暗
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -325,7 +325,7 @@ FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺
 FinalStatusRevenge,Revenge,復讐,仇杀
 FinalStatusHitmanKill,Mission accomplished.,任務遂行,遇刺
 FinalStatusHitmanDead,Disposition.,処分,沉江
-FinalStatusWorshiperSelfDeath,Suicide,自決
+FinalStatusWorshiperSelfDeath,Suicide,自決,自杀
 
 # Sabotages
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
@@ -734,7 +734,7 @@ AmnesiacName,Amnesiac,忘却者,失忆者
 AmnesiacTitle1,Let's call the cops and join them.,通報して仲間になろう,努力回想你的职业
 SideKillerName,SideKiller,サイドキラー,头目
 SideKillerTitle1,Make friends and win!,仲間を作って勝利しよう,招募喽啰来获得胜利
-SideKillerSidekickButtonName,Erosion,浸食する
+SideKillerSidekickButtonName,Erosion,浸食する,策反
 SideKillerKillCoolTimeSetting,SideKiller Kill Cool Time.,サイドキラーのキルクールタイム,头目击杀冷却
 SideKillerMadKillerKillCoolTimeSetting,MadKiller Kill Cool Time.,マッドキラーのキルクールタイム,喽啰击杀冷却
 MadKillerName,MadKiller,マッドキラー,喽啰
@@ -828,7 +828,7 @@ TeleportingJackalName,TeleportingJackal,テレポートジャッカル,狼族传
 TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう,传送并杀死所有人
 MadMakerName,MadMaker,マッドメーカー,走狗
 MadMakerTitle1,Let's get more lunatics!,狂人を増やそう！,让更多的人叛变
-MadMakerSidekickButtonName,Solicitation,勧誘する
+MadMakerSidekickButtonName,Solicitation,勧誘する,收买
 DemonName,Demon,悪魔,恶魔
 DemonTitle1,Curse the Crew and Help the Impostor!,クルーを呪いながらインポスターを手助けせよ,诅咒船员并协助内鬼
 DemonIsAliveWinSetting,You have to be alive to win.,生存していないと勝利できない,恶魔存活才能获胜
@@ -862,7 +862,7 @@ ArsonistIgniteButtonName,Ignite,燃やす,点燃
 ArsonistDescription,If you oil them all and burn them. you win alone.,油を全員に塗り燃やしたら単独勝利です。,纵火犯属于独立阵营。\n纵火犯给所有人涂油后按下点燃按钮则纵火犯独自获胜。
 ChiefName,Chief,村長,警察局长
 ChiefTitle1,Appoint a sheriff to help your crew.,シェリフを任命してクルーを助けよう,任命一位警长来帮助船员
-ChiefSidekickButtonName,Appointment,任命する
+ChiefSidekickButtonName,Appointment,任命する,任命
 CleanerName,Cleaner,クリーナー,清理者
 CleanerTitle1,Let's destroy the evidence!,証拠を隠滅しよう!,毁尸灭迹
 CleanerButtonName,CleanButton,死体を消す!,清理
