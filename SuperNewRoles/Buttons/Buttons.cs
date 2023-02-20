@@ -124,7 +124,7 @@ static class HudManagerStartPatch
     }
     public static Vent SetTargetVent(List<Vent> untarget = null, bool forceout = false)
     {
-        return ModHelpers.SetTargetVent(untargetablePlayers: untarget, forceout:forceout);
+        return ModHelpers.SetTargetVent(untargetablePlayers: untarget, forceout: forceout);
     }
 
     public static void Postfix(HudManager __instance)
@@ -137,7 +137,7 @@ static class HudManagerStartPatch
                 if (MechanicButton.isEffectActive)
                 {
                     Vector3 truepos = PlayerControl.LocalPlayer.transform.position;
-                    NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(forceout:true), false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
+                    NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(forceout: true), false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
                     MechanicButton.isEffectActive = false;
                     MechanicButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicCoolTime.GetFloat() : EvilMechanic.EvilMechanicCoolTime.GetFloat();
                     MechanicButton.Timer = MechanicButton.MaxTimer;
@@ -158,7 +158,8 @@ static class HudManagerStartPatch
                 MechanicButton.EffectDuration = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicDurationTime.GetFloat() : EvilMechanic.EvilMechanicDurationTime.GetFloat();
                 MechanicButton.HasEffect = true;
             },
-            RoleClass.WaveCannon.GetButtonSprite(),
+            // FIXME: EvilMechanicでもNiceMechanicのボタンが表示されている状態です。変える方法分かったら変えて下さい…
+            PlayerControl.LocalPlayer.IsImpostor() ? Roles.Impostor.EvilMechanic.GetButtonSprite() : Roles.Crewmate.NiceMechanic.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
             __instance,
             __instance.AbilityButton,
@@ -170,7 +171,7 @@ static class HudManagerStartPatch
             () =>
             {
                 Vector3 truepos = PlayerControl.LocalPlayer.transform.position;
-                NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(forceout:true), false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
+                NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(forceout: true), false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
                 MechanicButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicCoolTime.GetFloat() : EvilMechanic.EvilMechanicCoolTime.GetFloat();
                 MechanicButton.Timer = MechanicButton.MaxTimer;
             }

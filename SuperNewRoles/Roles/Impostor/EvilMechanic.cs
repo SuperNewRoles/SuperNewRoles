@@ -21,10 +21,11 @@ public static class EvilMechanic
 
     public static List<PlayerControl> EvilMechanicPlayer;
     public static Color32 color = RoleClass.ImpostorRed;
+    public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MechanicButton_Evil.png", 115f);
     public static void ClearAndReload()
     {
         EvilMechanicPlayer = new();
     }
-    
+
     // ここにコードを書きこんでください
 }

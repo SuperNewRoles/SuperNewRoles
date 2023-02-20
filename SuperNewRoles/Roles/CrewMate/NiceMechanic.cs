@@ -29,6 +29,7 @@ public static class NiceMechanic
     public static Color32 color = new Color32(82, 108, 173, byte.MaxValue);
     public static Dictionary<byte, Vent> TargetVent;
     public static bool IsLocalUsingNow => TargetVent.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && TargetVent[PlayerControl.LocalPlayer.PlayerId] is not null;
+    public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MechanicButton_Nice.png", 115f);
     public static void ClearAndReload()
     {
         NiceMechanicPlayer = new();
@@ -96,7 +97,7 @@ public static class NiceMechanic
         if (PlayerControl.LocalPlayer.PlayerId == Target.PlayerId && IsLocalUsingNow)
         {
             Vector3 truepos = PlayerControl.LocalPlayer.transform.position;
-            RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, HudManagerStartPatch.SetTargetVent(forceout:true), false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
+            RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, HudManagerStartPatch.SetTargetVent(forceout: true), false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
         }
     }
     public static void SetHideStatus(PlayerControl Target, bool ison)

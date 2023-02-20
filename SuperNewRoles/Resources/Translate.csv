@@ -1247,6 +1247,7 @@ NiceMechanicName,NiceMechanic,ナイスメカニック
 NiceMechanicTitle1,Leave it to me to maintain this boat!,この船の整備はお任せあれ！
 EvilMechanicName,EvilMechanic,イビルメカニック
 EvilMechanicTitle1,I will convert this ship to my liking.,この船を私好みに改造してやろう
+MechanicButtonName,Relocate.,移設
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示
