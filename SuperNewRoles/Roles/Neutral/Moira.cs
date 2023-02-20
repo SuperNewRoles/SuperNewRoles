@@ -152,6 +152,7 @@ public static class Moira
     }
     public static void WrapUp(GameData.PlayerInfo exiled)
     {
+        AbilityUsedThisMeeting = false;
         foreach (byte pid in AbilityUsedWrapUpSetPlayers)
         {
             AbilityUsedPlayers.Add(pid);
