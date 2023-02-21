@@ -491,7 +491,6 @@ class MeetingHudStartPatch
 {
     public static void Postfix(MeetingHud __instance)
     {
-        NiceMechanic.StartMeeting();
         Logger.Info("会議開始時の処理 開始", "MeetingHudStartPatch");
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
@@ -501,7 +500,6 @@ class MeetingHudStartPatch
                 SyncSetting.MeetingSyncSettings();
             }, 3f, "StartMeeting CustomSyncSetting");
         }
-        Roles.Crewmate.Celebrity.TimerStop();
         if (ModeHandler.IsMode(ModeId.Default))
         {
             new LateTask(() =>
@@ -509,6 +507,8 @@ class MeetingHudStartPatch
                 SyncSetting.MeetingSyncSettings();
             }, 3f, "StartMeeting MeetingSyncSettings SNR");
         }
+        NiceMechanic.StartMeeting();
+        Roles.Crewmate.Celebrity.TimerStop();
         Roles.Crewmate.Knight.ProtectedPlayer = null;
         Roles.Crewmate.Knight.GuardedPlayers = new();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
