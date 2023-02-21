@@ -65,6 +65,7 @@ public static class SelectTask
             taskData.Add(RoleId.TheSecondLittlePig, (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()));
             taskData.Add(RoleId.TheThirdLittlePig, (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()));
         }
+        if (OrientalShaman.OrientalShamanWinTask.GetBool()) taskData.Add(RoleId.OrientalShaman, (OrientalShaman.OrientalShamanCommonTask.GetInt(), OrientalShaman.OrientalShamanShortTask.GetInt(), OrientalShaman.OrientalShamanLongTask.GetInt()));
 
         //テンプレート
         //taskData.Add(RoleId, (CommonTask.GetInt(), ShortTask.GetInt(), LongTask.GetInt()));

@@ -115,7 +115,7 @@ public static class VentAndSabo
             float num = float.MaxValue;
             PlayerControl @object = pc.Object;
 
-            bool roleCouldUse = @object.IsUseVent();
+            bool roleCouldUse = @object.IsUseVent() || @object.IsRole(RoleId.OrientalShaman);
 
             var usableDistance = __instance.UsableDistance;
 

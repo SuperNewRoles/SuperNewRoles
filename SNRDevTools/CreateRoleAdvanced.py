@@ -268,7 +268,7 @@ public static class ROLENAME
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", ";\n        // 第三か",
                                  """ or
         RoleId.ROLENAME;
-        //第三か""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+        // 第三か""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "// タスククリアか",
                                  """case RoleId.ROLENAME:
             // タスククリアか""".replace("ROLENAME", MainClass.GetInput("RoleName")))

@@ -1073,6 +1073,7 @@ class AllRoleSetClass
             RoleId.TheFirstLittlePig => TheThreeLittlePigs.TheThreeLittlePigsTeamCount.GetFloat(),
             RoleId.TheSecondLittlePig => TheThreeLittlePigs.TheThreeLittlePigsTeamCount.GetFloat(),
             RoleId.TheThirdLittlePig => TheThreeLittlePigs.TheThreeLittlePigsTeamCount.GetFloat(),
+            RoleId.OrientalShaman => OrientalShaman.OrientalShamanPlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
         };
@@ -1114,7 +1115,8 @@ class AllRoleSetClass
                 && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))
                 && intro.RoleId is not RoleId.GM
                 && intro.RoleId != RoleId.Pavlovsdogs
-                && intro.RoleId != RoleId.Jumbo)
+                && intro.RoleId != RoleId.Jumbo
+                && intro.RoleId != RoleId.ShermansServant)
             {
                 var option = IntroData.GetOption(intro.RoleId);
                 if (option == null) continue;

@@ -8,6 +8,7 @@ using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using Sentry;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapOption;
@@ -188,6 +189,8 @@ public enum RoleId
     TheFirstLittlePig,
     TheSecondLittlePig,
     TheThirdLittlePig,
+    OrientalShaman,
+    ShermansServant,
     //RoleId
 }
 
@@ -280,9 +283,12 @@ public enum CustomRPC
     SafecrackerGuardCount,
     SetVigilance,
     Chat,
-    SetVentStatusMechanic
+    SetVentStatusMechanic,
     SetTheThreeLittlePigsTeam,
     UseTheThreeLittlePigsCount,
+    SetOutfit,
+    CreateShermansServant,
+    SetVisible,
 }
 
 public static class RPCProcedure
@@ -296,6 +302,35 @@ public static class RPCProcedure
         position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
         position.z = BitConverter.ToSingle(buff, 2 * sizeof(float));
         NiceMechanic.SetVentStatusMechanic(source, vent, Is, position);
+    }
+    public static void SetVisible(byte id, bool visible)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        player.Visible = visible;
+    }
+    public static void CreateShermansServant(byte OrientalShamanId, byte ShermansServantId)
+    {
+        PlayerControl OrientalShamanPlayer = ModHelpers.PlayerById(OrientalShamanId);
+        PlayerControl ShermansServantIPlayer = ModHelpers.PlayerById(ShermansServantId);
+        if (!OrientalShamanPlayer && !ShermansServantIPlayer) return;
+        OrientalShaman.OrientalShamanCausative.Add(OrientalShamanId, ShermansServantId);
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(ShermansServantIPlayer, RoleTypes.Crewmate);
+    }
+    public static void SetOutfit(byte id, int color, string hat, string pet, string skin, string visor, string name)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        GameData.PlayerOutfit outfit = new()
+        {
+            ColorId = color,
+            HatId = hat,
+            PetId = pet,
+            SkinId = skin,
+            VisorId = visor,
+            PlayerName = name
+        };
+        player.setOutfit(outfit);
     }
     public static void UseTheThreeLittlePigsCount(byte id)
     {
@@ -1747,11 +1782,21 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetVentStatusMechanic:
                         SetVentStatusMechanic(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBytesAndSize());
+                        break;
                     case CustomRPC.SetTheThreeLittlePigsTeam:
                         SetTheThreeLittlePigsTeam(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.UseTheThreeLittlePigsCount:
                         UseTheThreeLittlePigsCount(reader.ReadByte());
+                        break;
+                    case CustomRPC.SetOutfit:
+                        SetOutfit(reader.ReadByte(), reader.ReadInt32(), reader.ReadString(), reader.ReadString(), reader.ReadString(), reader.ReadString(), reader.ReadString());
+                        break;
+                    case CustomRPC.CreateShermansServant:
+                        CreateShermansServant(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.SetVisible:
+                        SetVisible(reader.ReadByte(), reader.ReadBoolean());
                         break;
                 }
             }
