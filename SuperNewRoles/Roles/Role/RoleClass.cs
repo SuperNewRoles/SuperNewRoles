@@ -59,6 +59,7 @@ public static class RoleClass
         MapCustoms.SpecimenVital.ClearAndReload();
         MapCustoms.MoveElecPad.ClearAndReload();
         Beacon.ClearBeacons();
+        FixSabotage.ClearAndReload();
 
         Debugger.ClearAndReload();
         SoothSayer.ClearAndReload();
@@ -214,6 +215,7 @@ public static class RoleClass
         DyingMessenger.ClearAndReload();
         NiceMechanic.ClearAndReload();
         EvilMechanic.ClearAndReload();
+        TheThreeLittlePigs.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

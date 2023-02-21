@@ -100,6 +100,12 @@ colorTokiwaGreen,TokiwaGreen,常磐緑,常青绿
 colorPosi,Posi,ポジ,正片滤镜
 colorXmasRed,X'masRed,クリスマスレッド,圣诞红
 colorXmasGreen,X'masGreen,クリスマスグリーン,圣诞绿
+colorCyberRed,CyberRed,サイバーレッド
+colorCyberYellow,CyberYellow,サイバーイエロー
+colorCyberGreen,CyberGreen,サイバーグリーン
+colorCyberBlue,CyberBlue,サイバーブルー
+colorCyberPurple,CyberPurple,サイバーパープル
+
 LightColor,bright,明るい,亮色
 DarkerColor,darker,暗い,暗色
 
@@ -326,6 +332,7 @@ FinalStatusRevenge,Revenge,復讐,仇杀
 FinalStatusHitmanKill,Mission accomplished.,任務遂行,遇刺
 FinalStatusHitmanDead,Disposition.,処分,沉江
 FinalStatusWorshiperSelfDeath,Suicide,自決
+FinalStatusTheThirdLittlePigCounterKill,Counter Kill,カウンターキル
 
 # Sabotages
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
@@ -1248,6 +1255,21 @@ NiceMechanicTitle1,Leave it to me to maintain this boat!,この船の整備は�
 EvilMechanicName,EvilMechanic,イビルメカニック
 EvilMechanicTitle1,I will convert this ship to my liking.,この船を私好みに改造してやろう
 MechanicButtonName,Relocate.,移設
+TheThreeLittlePigsName,The Three Little Pigs,3匹の仔豚
+TheFirstLittlePigName,The First Little Pig,1番目の仔豚
+TheSecondLittlePigName,The Second Little Pig,2番目の仔豚
+TheThirdLittlePigName,The Third Little Pig,3番目の仔豚
+TheFirstLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう
+TheSecondLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう
+TheThirdLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう
+TheThreeLittlePigsTaskSetting,Assign tasks separately,別にタスクを割り当てる
+TheFirstLittlePigClearTaskSetting,Percentage of tasks required for The first little pig to complete the house,1番目の仔豚が家を完成させるのに必要なタスクの割合
+TheFirstLittlePigIsCustomTimerSetting,Set the timer for The first little pig,1番目の仔豚のタイマーを設定する
+TheFirstLittlePigCustomTimerSetting,The first little pig timer,1番目の仔豚のタイマー
+TheSecondLittlePigClearTaskSetting,Percentage of tasks required for The second little pig to complete the house,2番目の仔豚が家を完成させるのに必要なタスクの割合
+TheSecondLittlePigManGuardMaxCountSetting,Number of times The second little pig can be guarded,2番目の仔豚がガードできる回数
+TheThirdLittlePigClearTaskSetting,Percentage of tasks required for The third little pig to complete the house,3番目の仔豚が家を完成させるのに必要なタスクの割合
+TheThirdLittlePigCounterKillSetting,Number of times The third little pig can be countered,3番目の仔豚がカウンターできる回数
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

@@ -377,6 +377,39 @@ public static class ModHelpers
             GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.KillDistance, 0);
             Squid.InkSet();
         }
+        if (target.IsRole(RoleId.TheSecondLittlePig) && !killer.IsRole(RoleId.OverKiller) && TheThreeLittlePigs.TaskCheck(target) && (!TheThreeLittlePigs.TheSecondLittlePig.GuardCount.ContainsKey(target.PlayerId) || TheThreeLittlePigs.TheSecondLittlePig.GuardCount[target.PlayerId] > 0))
+        {
+            MessageWriter writer1 = RPCHelper.StartRPC(CustomRPC.ShielderProtect);
+            writer1.Write(target.PlayerId);
+            writer1.Write(target.PlayerId);
+            writer1.Write(0);
+            writer1.EndRPC();
+            RPCProcedure.ShielderProtect(target.PlayerId, target.PlayerId, 0);
+            MessageWriter writer2 = RPCHelper.StartRPC(CustomRPC.UseTheThreeLittlePigsCount);
+            writer2.Write(target.PlayerId);
+            writer2.EndRPC();
+            RPCProcedure.UseTheThreeLittlePigsCount(target.PlayerId);
+        }
+        if (target.IsRole(RoleId.TheThirdLittlePig) && !killer.IsRole(RoleId.OverKiller) && TheThreeLittlePigs.TaskCheck(target) && (!TheThreeLittlePigs.TheThirdLittlePig.CounterCount.ContainsKey(target.PlayerId) || TheThreeLittlePigs.TheThirdLittlePig.CounterCount[target.PlayerId] > 0))
+        {
+            MessageWriter writer1 = RPCHelper.StartRPC(CustomRPC.ShielderProtect);
+            writer1.Write(target.PlayerId);
+            writer1.Write(target.PlayerId);
+            writer1.Write(0);
+            writer1.EndRPC();
+            RPCProcedure.ShielderProtect(target.PlayerId, target.PlayerId, 0);
+            MessageWriter writer2 = RPCHelper.StartRPC(CustomRPC.UseTheThreeLittlePigsCount);
+            writer2.Write(target.PlayerId);
+            writer2.EndRPC();
+            RPCProcedure.UseTheThreeLittlePigsCount(target.PlayerId);
+            MessageWriter writer3 = RPCHelper.StartRPC(CustomRPC.RPCMurderPlayer);
+            writer3.Write(target.PlayerId);
+            writer3.Write(killer.PlayerId);
+            writer3.Write((byte)0);
+            writer3.EndRPC();
+            RPCProcedure.RPCMurderPlayer(target.PlayerId, killer.PlayerId, 0);
+            FinalStatusClass.RpcSetFinalStatus(killer, FinalStatus.TheThirdLittlePigCounterKill);
+        }
         return MurderAttemptResult.PerformKill;
     }
     public static void GenerateAndAssignTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
@@ -886,6 +919,19 @@ public static class ModHelpers
     /// <param name="target">対象の文字列</param>
     /// <returns>文字列が半角の場合はtrue、それ以外はfalse</returns>
     public static bool IsOneByteOnlyString(string target) => new Regex("^[\u0020-\u007E\uFF66-\uFF9F]+$").IsMatch(target);
+    public static string[] CustomRates(int start = 0)
+    {
+        start = start >= 10 ? 10 : start;
+        start = start <= 0 ? 0 : start;
+        List<string> rates = new(CustomOptionHolder.rates);
+        for (int i = 0; i < start; i++)
+        {
+            string text = rates[0];
+            rates.Remove(text);
+            rates.Add(text);
+        }
+        return rates.ToArray();
+    }
 }
 public static class CreateFlag
 {
