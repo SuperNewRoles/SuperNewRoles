@@ -55,8 +55,8 @@ public class FireFox
             {
                 PlayerControl target = HudManagerStartPatch.SetTarget();
                 if (!(target && PlayerControl.LocalPlayer.CanMove) || RoleHelpers.IsDead(PlayerControl.LocalPlayer) || KillCount <= 0) return;
-                if (FireFoxCanKillCrewmate.GetBool() && target.IsCrew() && !(target.IsMadRoles() || target.IsFriendRoles())) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
-                if (FireFoxCanKillImpostor.GetBool() && (target.IsImpostor() || target.IsMadRoles())) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
+                if (FireFoxCanKillCrewmate.GetBool() && target.IsCrew() && !(target.IsMadRoles() || target.IsFriendRoles() || target.IsRole(RoleId.MadKiller) || target.IsRole(RoleId.Dependents))) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
+                if (FireFoxCanKillImpostor.GetBool() && (target.IsImpostor() || target.IsMadRoles() || target.IsRole(RoleId.MadKiller) || target.IsRole(RoleId.Dependents))) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 if (FireFoxCanKillNeutral.GetBool() && (target.IsNeutral() || target.IsFriendRoles())) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 if (FireFoxCanKillLovers.GetBool() && target.IsLovers()) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 KillCount--;

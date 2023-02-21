@@ -60,6 +60,13 @@ public static class RoleClass
         Beacon.ClearBeacons();
         MeetingHudUpdatePatch.ErrorNames = new();
 
+        RoleHelpers.CrewmatePlayer = new();
+        RoleHelpers.ImposterPlayer = new();
+        RoleHelpers.NeutralPlayer = new();
+        RoleHelpers.MadRolesPlayer = new();
+        RoleHelpers.FriendRolesPlayer = new();
+        RoleHelpers.NeutralKillingPlayer = new();
+
         Debugger.ClearAndReload();
         SoothSayer.ClearAndReload();
         Jester.ClearAndReload();
