@@ -332,6 +332,7 @@ FinalStatusRevenge,Revenge,復讐,仇杀
 FinalStatusHitmanKill,Mission accomplished.,任務遂行,遇刺
 FinalStatusHitmanDead,Disposition.,処分,沉江
 FinalStatusWorshiperSelfDeath,Suicide,自決,自杀
+FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,暴発巻き添え
 
 # Sabotages
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
