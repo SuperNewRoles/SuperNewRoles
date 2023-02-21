@@ -72,7 +72,12 @@ public class CustomColors
         TokiwaGreen,
         Posi,
         XmasRed,
-        XmasGreen
+        XmasGreen,
+        CyberRed,
+        CyberYellow,
+        CyberGreen,
+        CyberBlue,
+        CyberPurple
     }
 
     private const byte bmv = 255; // byte.MaxValue
@@ -119,24 +124,29 @@ public class CustomColors
             //暗い色(V値が70/100未満、並びはH値順、同じH値の場合はS値が高い方が先、S値も同じ場合はV値が高い方が先)
             { ColorType.PitchBlack, (new(0, 0, 0, bmv), new(0, 0, 0, bmv), false) }, //H000
             { ColorType.Nega, (new(0, 0, 0, bmv), new(255, 255, 255, bmv), false) }, //H000
+            { ColorType.CyberRed, (new(0, 0, 0, bmv), new(255, 0, 0, bmv), false) }, //H000,H000
             { ColorType.WineRed, (new(142, 7, 7, bmv), new(109, 0, 0, bmv), false) }, //H000,S061
             { ColorType.Azuki, (new(150, 81, 77, bmv), new(115, 40, 35, bmv), false) }, //H003
             { ColorType.CrazyRed, (new(166, 20, 0, bmv), new(13, 45, 188, bmv), false) }, //H007
             { ColorType.Nougat, (new(160, 101, 56, bmv), new(115, 15, 78, bmv), false) }, //H026
             { ColorType.Azi, (new(100, 48, 0, bmv), new(98, 5, 0, bmv), false) }, //H029
             { ColorType.Olive, (new(154, 140, 61, bmv), new(104, 95, 40, bmv), false) }, //H051
+            { ColorType.CyberYellow, (new(0, 0, 0, bmv), new(255, 255, 0, bmv), false) }, //H000,H060
             { ColorType.Wasabi, (new(112, 143, 46, bmv), new(72, 92, 29, bmv), false) }, //H079
             { ColorType.Leaf, (new(62, 90, 11, bmv), new(34, 50, 6, bmv), false) }, //H081
             { ColorType.Matcha, (new(52, 99, 23, bmv), new(34, 54, 19, bmv), false) }, //H097
             { ColorType.XmasGreen, (new(36, 151, 26, bmv), new(183, 34, 34, bmv), false) }, //H120
+            { ColorType.CyberGreen, (new(0, 0, 0, bmv), new(0, 255, 127, bmv), false) }, //H000,H150
             { ColorType.TokiwaGreen, (new(0, 123, 67, bmv), new(0, 84, 83, bmv), false) }, //H153
             { ColorType.Petrol, (new(0, 99, 105, bmv), new(0, 61, 54, bmv), false) }, //H183
             { ColorType.Sunkengreenishblue, (new(128, 156, 166, bmv), new(115, 141, 153, bmv), false) }, //H196
             { ColorType.Turqoise, (new(22, 132, 176, bmv), new(15, 89, 117, bmv), false) }, //H197
+            { ColorType.CyberBlue, (new(0, 0, 0, bmv), new(0, 169, 255, bmv), false) }, //H000,H200
             { ColorType.Crasyublue, (new(2, 38, 106, bmv), new(64, 0, 111, bmv), false) }, //H219
             { ColorType.Blueclosertoblack, (new(0, 0, 50, bmv), new(0, 0, 25, bmv), false) }, //H240
             { ColorType.Blurple, (new(0x59, 0x3C, 0xD6, bmv), new(0x29, 0x17, 0x96, bmv), false) }, //H251
             { ColorType.Mildpurple, (new(109, 83, 131, bmv), new(82, 54, 105, bmv), false) }, //H272
+            { ColorType.CyberPurple, (new(0, 0, 0, bmv), new(207, 15, 216, bmv), false) }, //H000,H297
             { ColorType.Darkmagenta, (new(139, 0, 139, bmv), new(153, 50, 204, bmv), false) }, //H300
             { ColorType.Ashishreddishpurplecolor, (new(139, 102, 118, bmv), new(114, 74, 91, bmv), false) }, //H334
             { ColorType.Bordeaux, (new(109, 7, 26, bmv), new(54, 2, 11, bmv), false) }, //H349
@@ -231,7 +241,7 @@ public class CustomColors
             { // Replace instead
                 Il2CppArrayBase<ColorChip> chips = __instance.ColorChips.ToArray();
 
-                int cols = 10; // TODO: Design an algorithm to dynamically position chips to optimally fill space
+                int cols = 15; // TODO: Design an algorithm to dynamically position chips to optimally fill space
                 for (int i = 0; i < Palette.PlayerColors.Count; i++)
                 {
                     ColorChip chip = chips[i];

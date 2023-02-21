@@ -118,6 +118,23 @@ public static class RoleHelpers
         }
         return false;
     }
+
+    public static bool IsKiller(this PlayerControl player) =>
+        (player.GetRole() == RoleId.Pavlovsowner &&
+            (!RoleClass.Pavlovsowner.CountData.ContainsKey(player.PlayerId) ||
+            RoleClass.Pavlovsowner.CountData[player.PlayerId] > 0)) ||
+        player.GetRole() is
+        RoleId.Pavlovsdogs or
+        RoleId.Jackal or
+        RoleId.Sidekick or
+        RoleId.TeleportingJackal or
+        RoleId.JackalSeer or
+        RoleId.SidekickSeer or
+        RoleId.WaveCannonJackal or
+        RoleId.Hitman or
+        RoleId.Egoist;
+    // 第三キル人外か
+
     public static bool IsFakeLoversFake(this PlayerControl player)
     {
         if (player == null) return false;
@@ -315,6 +332,8 @@ public static class RoleHelpers
             Camouflager.ResetCamouflage();
         else if (player.IsRole(RoleId.WiseMan) && player.PlayerId == PlayerControl.LocalPlayer.PlayerId && role is not RoleId.WiseMan)
             WiseMan.OnChangeRole();
+        else if (player.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic))
+            NiceMechanic.ChangeRole(player);
         switch (role)
         {
             case RoleId.SoothSayer:
@@ -780,6 +799,27 @@ public static class RoleHelpers
                 break;
             case RoleId.WiseMan:
                 WiseMan.WiseManPlayer.Add(player);
+                break;
+            case RoleId.NiceMechanic:
+                NiceMechanic.NiceMechanicPlayer.Add(player);
+                break;
+            case RoleId.EvilMechanic:
+                EvilMechanic.EvilMechanicPlayer.Add(player);
+                break;
+            case RoleId.TheFirstLittlePig:
+                TheThreeLittlePigs.TheFirstLittlePig.Player.Add(player);
+                break;
+            case RoleId.TheSecondLittlePig:
+                TheThreeLittlePigs.TheSecondLittlePig.Player.Add(player);
+                break;
+            case RoleId.TheThirdLittlePig:
+                TheThreeLittlePigs.TheThirdLittlePig.Player.Add(player);
+                break;
+            case RoleId.OrientalShaman:
+                OrientalShaman.OrientalShamanPlayer.Add(player);
+                break;
+            case RoleId.ShermansServant:
+                OrientalShaman.ShermansServantPlayer.Add(player);
                 break;
             // ロールアド
             default:
@@ -1269,6 +1309,21 @@ public static class RoleHelpers
             case RoleId.DyingMessenger:
                 DyingMessenger.DyingMessengerPlayer.RemoveAll(ClearRemove);
                 break;
+            case RoleId.TheFirstLittlePig:
+                TheThreeLittlePigs.TheFirstLittlePig.Player.RemoveAll(ClearRemove);
+                break;
+            case RoleId.TheSecondLittlePig:
+                TheThreeLittlePigs.TheSecondLittlePig.Player.RemoveAll(ClearRemove);
+                break;
+            case RoleId.TheThirdLittlePig:
+                TheThreeLittlePigs.TheThirdLittlePig.Player.RemoveAll(ClearRemove);
+                break;
+            case RoleId.OrientalShaman:
+                OrientalShaman.OrientalShamanPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.ShermansServant:
+                OrientalShaman.ShermansServantPlayer.RemoveAll(ClearRemove);
+                break;
                 //ロールリモベ
         }
         ChacheManager.ResetMyRoleChache();
@@ -1340,6 +1395,11 @@ public static class RoleHelpers
             case RoleId.LoversBreaker:
             case RoleId.Safecracker:
             case RoleId.FireFox:
+            case RoleId.TheFirstLittlePig:
+            case RoleId.TheSecondLittlePig:
+            case RoleId.TheThirdLittlePig:
+            case RoleId.OrientalShaman:
+            case RoleId.ShermansServant:
                 // タスククリアか
                 IsTaskClear = true;
                 break;
@@ -1399,6 +1459,8 @@ public static class RoleHelpers
             RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsUseVent,
             RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.UseVent),
             RoleId.FireFox => FireFox.FireFoxIsUseVent.GetBool(),
+            RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
+            RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
             _ => player.IsImpostor(),
         };
     }
@@ -1488,6 +1550,7 @@ public static class RoleHelpers
                 RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsImpostorLight,
                 RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.ImpostorLight),
                 RoleId.FireFox => FireFox.FireFoxIsImpostorLight.GetBool(),
+                RoleId.OrientalShaman => OrientalShaman.OrientalShamanImpostorVision.GetBool(),
                 _ => false,
             };
     }
@@ -1529,7 +1592,11 @@ public static class RoleHelpers
         RoleId.Pavlovsowner or
         RoleId.LoversBreaker or
         RoleId.Safecracker or
-        RoleId.FireFox;
+        RoleId.FireFox or
+        RoleId.TheFirstLittlePig or
+        RoleId.TheSecondLittlePig or
+        RoleId.TheThirdLittlePig or
+        RoleId.OrientalShaman;
     // 第三か
     public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
     {
@@ -1786,6 +1853,13 @@ public static class RoleHelpers
             else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
             else if (DyingMessenger.DyingMessengerPlayer.IsCheckListPlayerControl(player)) return RoleId.DyingMessenger;
             else if (WiseMan.WiseManPlayer.IsCheckListPlayerControl(player)) return RoleId.WiseMan;
+            else if (NiceMechanic.NiceMechanicPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceMechanic;
+            else if (EvilMechanic.EvilMechanicPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilMechanic;
+            else if (TheThreeLittlePigs.TheFirstLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheFirstLittlePig;
+            else if (TheThreeLittlePigs.TheSecondLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheSecondLittlePig;
+            else if (TheThreeLittlePigs.TheThirdLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheThirdLittlePig;
+            else if (OrientalShaman.OrientalShamanPlayer.IsCheckListPlayerControl(player)) return RoleId.OrientalShaman;
+            else if (OrientalShaman.ShermansServantPlayer.IsCheckListPlayerControl(player)) return RoleId.ShermansServant;
             // ロールチェック
         }
         catch (Exception e)

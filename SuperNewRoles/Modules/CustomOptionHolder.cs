@@ -1955,6 +1955,12 @@ public class CustomOptionHolder
         Squid.SetupCustomOptions();
 
         DyingMessenger.SetupCustomOptions();
+        NiceMechanic.SetupCustomOptions();
+
+        EvilMechanic.SetupCustomOptions();
+        TheThreeLittlePigs.SetupCustomOptions();
+
+        OrientalShaman.SetupCustomOptions();
 
         WiseMan.SetupCustomOptions();
 

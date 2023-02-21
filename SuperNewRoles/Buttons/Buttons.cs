@@ -98,6 +98,7 @@ static class HudManagerStartPatch
     public static CustomButton LoversBreakerButton;
     public static CustomButton JumboKillButton;
     public static CustomButton WiseManButton;
+    public static CustomButton MechanicButton;
 
     #endregion
 
@@ -121,6 +122,10 @@ static class HudManagerStartPatch
     public static PlayerControl SetTarget(List<PlayerControl> untarget = null, bool Crewmateonly = false)
     {
         return PlayerControlFixedUpdatePatch.SetTarget(untargetablePlayers: untarget, onlyCrewmates: Crewmateonly);
+    }
+    public static Vent SetTargetVent(List<Vent> untarget = null, bool forceout = false)
+    {
+        return ModHelpers.SetTargetVent(untargetablePlayers: untarget, forceout: forceout);
     }
 
     public static void Postfix(HudManager __instance)
@@ -156,8 +161,7 @@ static class HudManagerStartPatch
                 WiseManButton.EffectDuration = WiseMan.WiseManDurationTime.GetFloat();
                 WiseManButton.HasEffect = true;
             },
-            WiseMan.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
+            WiseMan.GetButtonSprite(), new Vector3(-2f, 1, 0),
             __instance,
             __instance.AbilityButton,
             KeyCode.F,
@@ -174,6 +178,56 @@ static class HudManagerStartPatch
         )
         {
             buttonText = ModTranslation.GetString("WiseManButtonName"),
+            showButtonText = true
+        };
+
+        MechanicButton = new(
+            () =>
+            {
+                if (MechanicButton.isEffectActive)
+                {
+                    Vector3 truepos = PlayerControl.LocalPlayer.GetTruePosition();
+                    NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(forceout: true), false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
+                    MechanicButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicCoolTime.GetFloat() : EvilMechanic.EvilMechanicCoolTime.GetFloat();
+                    MechanicButton.Timer = MechanicButton.MaxTimer;
+                    MechanicButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                    return;
+                }
+                NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(), true);
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role is RoleId.NiceMechanic or RoleId.EvilMechanic; },
+            () =>
+            {
+                return PlayerControl.LocalPlayer.CanMove && SetTargetVent();
+            },
+            () =>
+            {
+                MechanicButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicCoolTime.GetFloat() : EvilMechanic.EvilMechanicCoolTime.GetFloat();
+                MechanicButton.Timer = MechanicButton.MaxTimer;
+                MechanicButton.effectCancellable = true;
+                MechanicButton.EffectDuration = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicDurationTime.GetFloat() : EvilMechanic.EvilMechanicDurationTime.GetFloat();
+                MechanicButton.HasEffect = true;
+            },
+            // FIXME: EvilMechanicでもNiceMechanicのボタンが表示されている状態です。変える方法分かったら変えて下さい…
+            PlayerControl.LocalPlayer.IsImpostor() ? Roles.Impostor.EvilMechanic.GetButtonSprite() : Roles.Crewmate.NiceMechanic.GetButtonSprite(),
+            new Vector3(-2f, 1, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.F,
+            49,
+            () => { return false; },
+            true,
+            5f,
+            () =>
+            {
+                Vector3 truepos = PlayerControl.LocalPlayer.GetTruePosition();
+                NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(forceout: true), false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
+                MechanicButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicCoolTime.GetFloat() : EvilMechanic.EvilMechanicCoolTime.GetFloat();
+                MechanicButton.Timer = MechanicButton.MaxTimer;
+            }
+        )
+        {
+            buttonText = ModTranslation.GetString("MechanicButtonName"),
             showButtonText = true
         };
 
@@ -3223,6 +3277,8 @@ static class HudManagerStartPatch
         FireFox.SetupCustomButtons(__instance);
 
         Squid.SetusCustomButton(__instance);
+
+        OrientalShaman.SetupCustomButtons(__instance);
 
         SetCustomButtonCooldowns();
     }

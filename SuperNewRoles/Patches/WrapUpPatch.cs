@@ -8,6 +8,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Sabotage;
 
 namespace SuperNewRoles.Patches;
@@ -114,6 +115,7 @@ class WrapUpPatch
         Seer.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
         Roles.Crewmate.Celebrity.WrapUp();
+        Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
             p.resetChange();

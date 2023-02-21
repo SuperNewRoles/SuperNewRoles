@@ -101,5 +101,6 @@ public class CelebrityTimerStop
     public static void Postfix()
     {
         Celebrity.TimerStop();
+        Neutral.TheThreeLittlePigs.TheFirstLittlePig.TimerStop();
     }
 }
