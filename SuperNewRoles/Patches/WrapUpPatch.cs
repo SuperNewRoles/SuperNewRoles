@@ -8,6 +8,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Sabotage;
 
 namespace SuperNewRoles.Patches;

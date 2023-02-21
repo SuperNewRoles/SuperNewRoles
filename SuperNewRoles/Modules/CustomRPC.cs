@@ -184,6 +184,8 @@ public enum RoleId
     FireFox,
     Squid,
     DyingMessenger,
+    NiceMechanic,
+    EvilMechanic,
     TheFirstLittlePig,
     TheSecondLittlePig,
     TheThirdLittlePig,
@@ -281,6 +283,7 @@ public enum CustomRPC
     SafecrackerGuardCount,
     SetVigilance,
     Chat,
+    SetVentStatusMechanic,
     SetTheThreeLittlePigsTeam,
     UseTheThreeLittlePigsCount,
     SetOutfit,
@@ -290,6 +293,16 @@ public enum CustomRPC
 
 public static class RPCProcedure
 {
+    public static void SetVentStatusMechanic(byte sourceplayer, byte targetvent, bool Is, byte[] buff)
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourceplayer);
+        Vent vent = ModHelpers.VentById(targetvent);
+        Vector3 position = Vector3.zero;
+        position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
+        position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
+        position.z = BitConverter.ToSingle(buff, 2 * sizeof(float));
+        NiceMechanic.SetVentStatusMechanic(source, vent, Is, position);
+    }
     public static void SetVisible(byte id, bool visible)
     {
         PlayerControl player = ModHelpers.PlayerById(id);
@@ -1766,6 +1779,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.Chat:
                         Chat(reader.ReadByte(), reader.ReadString());
+                        break;
+                    case CustomRPC.SetVentStatusMechanic:
+                        SetVentStatusMechanic(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBytesAndSize());
                         break;
                     case CustomRPC.SetTheThreeLittlePigsTeam:
                         SetTheThreeLittlePigsTeam(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());

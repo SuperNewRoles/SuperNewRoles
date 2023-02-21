@@ -95,6 +95,7 @@ public class FixedUpdate
             case ModeId.Default:
                 SabotageManager.Update();
                 SetNameUpdate.Postfix(__instance);
+                NiceMechanic.FixedUpdate();
                 Jackal.JackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 JackalSeer.JackalSeerFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 Roles.Crewmate.Psychometrist.FixedUpdate();

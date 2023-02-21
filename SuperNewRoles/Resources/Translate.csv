@@ -1250,6 +1250,11 @@ DyingMessengerFirstPerson1,me,私,我
 DyingMessengerFirstPerson2,me,僕,我
 DyingMessengerGetRoleText,The role of the person who killed {0} was {1}.,{0}をキルした人の役職は{1}でした。,把{0}杀害的人是一名{1}。
 DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}をキルした人の色は{1}色でした。,把{0}杀害的人是{1}色的。
+NiceMechanicName,NiceMechanic,ナイスメカニック
+NiceMechanicTitle1,Leave it to me to maintain this boat!,この船の整備はお任せあれ！
+EvilMechanicName,EvilMechanic,イビルメカニック
+EvilMechanicTitle1,I will convert this ship to my liking.,この船を私好みに改造してやろう
+MechanicButtonName,Relocate.,移設
 TheThreeLittlePigsName,The Three Little Pigs,3匹の仔豚
 TheFirstLittlePigName,The First Little Pig,1番目の仔豚
 TheSecondLittlePigName,The Second Little Pig,2番目の仔豚

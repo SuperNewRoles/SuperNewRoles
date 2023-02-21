@@ -330,6 +330,8 @@ public static class RoleHelpers
         }
         else if (player.IsRole(RoleId.Camouflager) && role != RoleId.Camouflager && RoleClass.Camouflager.IsCamouflage)
             Camouflager.ResetCamouflage();
+        else if (player.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic))
+            NiceMechanic.ChangeRole(player);
         switch (role)
         {
             case RoleId.SoothSayer:
@@ -792,6 +794,12 @@ public static class RoleHelpers
                 break;
             case RoleId.DyingMessenger:
                 DyingMessenger.DyingMessengerPlayer.Add(player);
+                break;
+            case RoleId.NiceMechanic:
+                NiceMechanic.NiceMechanicPlayer.Add(player);
+                break;
+            case RoleId.EvilMechanic:
+                EvilMechanic.EvilMechanicPlayer.Add(player);
                 break;
             case RoleId.TheFirstLittlePig:
                 TheThreeLittlePigs.TheFirstLittlePig.Player.Add(player);
@@ -1311,7 +1319,7 @@ public static class RoleHelpers
             case RoleId.ShermansServant:
                 OrientalShaman.ShermansServantPlayer.RemoveAll(ClearRemove);
                 break;
-            //ロールリモベ
+                //ロールリモベ
         }
         ChacheManager.ResetMyRoleChache();
     }
@@ -1446,6 +1454,8 @@ public static class RoleHelpers
             RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsUseVent,
             RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.UseVent),
             RoleId.FireFox => FireFox.FireFoxIsUseVent.GetBool(),
+            RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
+            RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
             _ => player.IsImpostor(),
         };
     }
@@ -1837,6 +1847,8 @@ public static class RoleHelpers
             else if (FireFox.FireFoxPlayer.IsCheckListPlayerControl(player)) return RoleId.FireFox;
             else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
             else if (DyingMessenger.DyingMessengerPlayer.IsCheckListPlayerControl(player)) return RoleId.DyingMessenger;
+            else if (NiceMechanic.NiceMechanicPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceMechanic;
+            else if (EvilMechanic.EvilMechanicPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilMechanic;
             else if (TheThreeLittlePigs.TheFirstLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheFirstLittlePig;
             else if (TheThreeLittlePigs.TheSecondLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheSecondLittlePig;
             else if (TheThreeLittlePigs.TheThirdLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheThirdLittlePig;

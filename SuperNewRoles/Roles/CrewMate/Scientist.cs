@@ -67,7 +67,7 @@ public class Scientist
                 player.cosmetics.colorBlindText.color = color;
 
             if (player.NameText != null)
-                if (opacity == 0.1f)
+                if (opacity <= 0.1f)
                 {
                     player.NameText().text = "";
                 }

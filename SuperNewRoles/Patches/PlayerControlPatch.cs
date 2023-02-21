@@ -1042,6 +1042,14 @@ public static class MurderPlayerPatch
                     HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
                 }
             }
+            if (target.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic) && target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            {
+                if (NiceMechanic.TargetVent.ContainsKey(target.PlayerId) || NiceMechanic.TargetVent[target.PlayerId] is not null)
+                {
+                    Vector3 truepos = target.transform.position;
+                    NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, NiceMechanic.TargetVent[target.PlayerId], false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
+                }
+            }
             if (__instance.IsRole(RoleId.OverKiller))
             {
                 DeadBody deadBodyPrefab = target.KillAnimations[0].bodyPrefab;
