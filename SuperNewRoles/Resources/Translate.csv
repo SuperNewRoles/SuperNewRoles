@@ -100,6 +100,12 @@ colorTokiwaGreen,TokiwaGreen,常磐緑,常青绿
 colorPosi,Posi,ポジ,正片滤镜
 colorXmasRed,X'masRed,クリスマスレッド,圣诞红
 colorXmasGreen,X'masGreen,クリスマスグリーン,圣诞绿
+colorCyberRed,CyberRed,サイバーレッド
+colorCyberYellow,CyberYellow,サイバーイエロー
+colorCyberGreen,CyberGreen,サイバーグリーン
+colorCyberBlue,CyberBlue,サイバーブルー
+colorCyberPurple,CyberPurple,サイバーパープル
+
 LightColor,bright,明るい,亮
 DarkerColor,darker,暗い,暗
 
