@@ -7,7 +7,7 @@ namespace SuperNewRoles.Roles.Crewmate;
 
 public static class WiseMan
 {
-    private const int OptionId = 1207;
+    private const int OptionId = 1243;
     public static CustomRoleOption WiseManOption;
     public static CustomOption WiseManPlayerCount;
     public static CustomOption WiseManCoolTime;

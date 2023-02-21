@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles.Crewmate;
 
 public static class NiceMechanic
 {
-    private const int OptionId = 1207;
+    private const int OptionId = 1234;
     public static CustomRoleOption NiceMechanicOption;
     public static CustomOption NiceMechanicPlayerCount;
     public static CustomOption NiceMechanicCoolTime;
