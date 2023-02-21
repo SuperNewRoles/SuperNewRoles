@@ -2,6 +2,7 @@ using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Roles.Crewmate;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -42,7 +43,10 @@ public static class Penguin
                 RoleClass.Penguin.PenguinData.Remove(data.Key);
                 continue;
             }
-            data.Value.transform.position = data.Key.transform.position;
+            if (data.Value.IsRole(RoleId.WiseMan) && WiseMan.WiseManData.ContainsKey(data.Value.PlayerId) && WiseMan.WiseManData[data.Value.PlayerId] is not null)
+                data.Key.transform.position = data.Value.transform.position;
+            else
+                data.Value.transform.position = data.Key.transform.position;
         }
     }
 }

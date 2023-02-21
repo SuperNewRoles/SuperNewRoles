@@ -132,7 +132,9 @@ public class CustomOptionHolder
     public static CustomOption RemoteSheriffAlwaysKills;
     public static CustomOption RemoteSheriffMadRoleKill;
     public static CustomOption RemoteSheriffNeutralKill;
+    public static CustomOption RemoteSheriffFriendRolesKill;
     public static CustomOption RemoteSheriffLoversKill;
+    public static CustomOption RemoteSheriffQuarreledKill;
     public static CustomOption RemoteSheriffKillMaxCount;
     public static CustomOption RemoteSheriffIsKillTeleportSetting;
 
@@ -141,6 +143,9 @@ public class CustomOptionHolder
     public static CustomOption MeetingSheriffAlwaysKills;
     public static CustomOption MeetingSheriffMadRoleKill;
     public static CustomOption MeetingSheriffNeutralKill;
+    public static CustomOption MeetingSheriffFriendsRoleKill;
+    public static CustomOption MeetingSheriffLoversKill;
+    public static CustomOption MeetingSheriffQuarreledKill;
     public static CustomOption MeetingSheriffKillMaxCount;
     public static CustomOption MeetingSheriffOneMeetingMultiKill;
 
@@ -645,9 +650,13 @@ public class CustomOptionHolder
     public static CustomOption ChiefPlayerCount;
     public static CustomOption ChiefSheriffCoolTime;
     public static CustomOption ChiefSheriffAlwaysKills;
+    public static CustomOption ChiefSheriffCanKillImpostor;
     public static CustomOption ChiefSheriffCanKillNeutral;
     public static CustomOption ChiefSheriffCanKillLovers;
     public static CustomOption ChiefSheriffCanKillMadRole;
+    public static CustomOption ChiefSheriffFriendsRoleKill;
+    public static CustomOption ChiefSheriffQuarreledKill;
+
     public static CustomOption ChiefSheriffKillLimit;
 
     public static CustomRoleOption CleanerOption;
@@ -1021,7 +1030,7 @@ public class CustomOptionHolder
         crewmateGhostRolesCountMax = Create(4, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewGhostRole"), 0f, 0f, 15f, 1f);
         neutralRolesCountMax = Create(5, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralRole"), 0f, 0f, 15f, 1f);
         neutralGhostRolesCountMax = Create(6, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralGhostRole"), 0f, 0f, 15f, 1f);
-        impostorRolesCountMax = Create(7, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoRole"), 0f, 0f, 3f, 1f);
+        impostorRolesCountMax = Create(7, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoRole"), 0f, 0f, 15f, 1f);
         impostorGhostRolesCountMax = Create(8, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
 
         enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false, null, isHeader: true);
@@ -1094,44 +1103,52 @@ public class CustomOptionHolder
         EvilScientistCoolTime = Create(35, false, CustomOptionType.Impostor, "EvilScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, EvilScientistOption, format: "unitSeconds");
         EvilScientistDurationTime = Create(36, false, CustomOptionType.Impostor, "EvilScientistDurationSetting", 10f, 2.5f, 20f, 2.5f, EvilScientistOption, format: "unitSeconds");
 
-        SheriffOption = SetupCustomRoleOption(37, true, RoleId.Sheriff);
-        SheriffPlayerCount = Create(38, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SheriffOption);
-        SheriffCoolTime = Create(39, true, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
-        SheriffKillMaxCount = Create(43, true, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, SheriffOption, format: "unitSeconds");
-        SheriffCanKillImpostor = Create(731, true, CustomOptionType.Crewmate, "SheriffIsKillImpostorSetting", true, SheriffOption);
-        SheriffAlwaysKills = Create(732, true, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, SheriffOption);
-        SheriffMadRoleKill = Create(42, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, SheriffOption);
+        SheriffOption = SetupCustomRoleOption(700, true, RoleId.Sheriff);
+        SheriffPlayerCount = Create(701, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SheriffOption);
+        SheriffCoolTime = Create(702, true, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
+        SheriffKillMaxCount = Create(703, true, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, SheriffOption, format: "unitSeconds");
+        SheriffAlwaysKills = Create(704, true, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, SheriffOption);
+        SheriffCanKillImpostor = Create(705, true, CustomOptionType.Crewmate, "SheriffIsKillImpostorSetting", true, SheriffOption);
+        SheriffMadRoleKill = Create(706, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, SheriffOption);
+        SheriffNeutralKill = Create(707, true, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, SheriffOption);
         SheriffFriendsRoleKill = Create(708, true, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, SheriffOption);
-        SheriffNeutralKill = Create(40, true, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, SheriffOption);
-        SheriffLoversKill = Create(41, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, SheriffOption);
-        SheriffQuarreledKill = Create(730, true, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, SheriffOption);
+        SheriffLoversKill = Create(709, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, SheriffOption);
+        SheriffQuarreledKill = Create(710, true, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, SheriffOption);
 
-        RemoteSheriffOption = SetupCustomRoleOption(44, true, RoleId.RemoteSheriff);
-        RemoteSheriffPlayerCount = Create(45, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RemoteSheriffOption);
-        RemoteSheriffCoolTime = Create(46, false, CustomOptionType.Crewmate, ModTranslation.GetString("SheriffCooldownSetting"), 30f, 2.5f, 60f, 2.5f, RemoteSheriffOption, format: "unitSeconds");
-        RemoteSheriffAlwaysKills = Create(733, true, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, RemoteSheriffOption);
-        RemoteSheriffNeutralKill = Create(47, true, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, RemoteSheriffOption);
-        RemoteSheriffLoversKill = Create(48, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, RemoteSheriffOption);
-        RemoteSheriffMadRoleKill = Create(49, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, RemoteSheriffOption);
-        RemoteSheriffKillMaxCount = Create(50, true, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, RemoteSheriffOption, format: "unitSeconds");
-        RemoteSheriffIsKillTeleportSetting = Create(51, true, CustomOptionType.Crewmate, "RemoteSheriffIsKillTeleportSetting", false, RemoteSheriffOption);
+        RemoteSheriffOption = SetupCustomRoleOption(711, true, RoleId.RemoteSheriff);
+        RemoteSheriffPlayerCount = Create(712, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RemoteSheriffOption);
+        RemoteSheriffCoolTime = Create(713, false, CustomOptionType.Crewmate, ModTranslation.GetString("SheriffCooldownSetting"), 30f, 2.5f, 60f, 2.5f, RemoteSheriffOption, format: "unitSeconds");
+        RemoteSheriffKillMaxCount = Create(714, true, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, RemoteSheriffOption, format: "unitSeconds");
+        RemoteSheriffIsKillTeleportSetting = Create(715, true, CustomOptionType.Crewmate, "RemoteSheriffIsKillTeleportSetting", false, RemoteSheriffOption);
+        RemoteSheriffAlwaysKills = Create(716, true, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, RemoteSheriffOption);
+        RemoteSheriffMadRoleKill = Create(717, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, RemoteSheriffOption);
+        RemoteSheriffNeutralKill = Create(718, true, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, RemoteSheriffOption);
+        RemoteSheriffFriendRolesKill = Create(719, true, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, RemoteSheriffOption);
+        RemoteSheriffLoversKill = Create(720, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, RemoteSheriffOption);
+        RemoteSheriffQuarreledKill = Create(721, true, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, RemoteSheriffOption);
 
-        MeetingSheriffOption = SetupCustomRoleOption(52, false, RoleId.MeetingSheriff);
-        MeetingSheriffPlayerCount = Create(53, false, CustomOptionType.Crewmate, Cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MeetingSheriffOption);
-        MeetingSheriffAlwaysKills = Create(734, false, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, MeetingSheriffOption);
-        MeetingSheriffNeutralKill = Create(54, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillNeutralSetting", false, MeetingSheriffOption);
-        MeetingSheriffMadRoleKill = Create(55, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillMadRoleSetting", false, MeetingSheriffOption);
-        MeetingSheriffKillMaxCount = Create(56, false, CustomOptionType.Crewmate, "MeetingSheriffMaxKillCountSetting", 1f, 1f, 20f, 1f, MeetingSheriffOption, format: "unitSeconds");
-        MeetingSheriffOneMeetingMultiKill = Create(57, false, CustomOptionType.Crewmate, "MeetingSheriffMeetingmultipleKillSetting", false, MeetingSheriffOption);
+        MeetingSheriffOption = SetupCustomRoleOption(723, false, RoleId.MeetingSheriff);
+        MeetingSheriffPlayerCount = Create(724, false, CustomOptionType.Crewmate, Cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MeetingSheriffOption);
+        MeetingSheriffKillMaxCount = Create(725, false, CustomOptionType.Crewmate, "MeetingSheriffMaxKillCountSetting", 1f, 1f, 20f, 1f, MeetingSheriffOption, format: "unitSeconds");
+        MeetingSheriffOneMeetingMultiKill = Create(726, false, CustomOptionType.Crewmate, "MeetingSheriffMeetingmultipleKillSetting", false, MeetingSheriffOption);
+        MeetingSheriffAlwaysKills = Create(727, false, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, MeetingSheriffOption);
+        MeetingSheriffMadRoleKill = Create(728, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillMadRoleSetting", false, MeetingSheriffOption);
+        MeetingSheriffNeutralKill = Create(729, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillNeutralSetting", false, MeetingSheriffOption);
+        MeetingSheriffFriendsRoleKill = Create(730, false, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, MeetingSheriffOption);
+        MeetingSheriffLoversKill = Create(731, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, MeetingSheriffOption);
+        MeetingSheriffQuarreledKill = Create(732, false, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, MeetingSheriffOption);
 
-        ChiefOption = SetupCustomRoleOption(394, false, RoleId.Chief);
-        ChiefPlayerCount = Create(395, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
-        ChiefSheriffCoolTime = Create(626, false, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, ChiefOption, format: "unitSeconds");
-        ChiefSheriffAlwaysKills = Create(735, true, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, ChiefOption);
-        ChiefSheriffCanKillNeutral = Create(627, false, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, ChiefOption);
-        ChiefSheriffCanKillLovers = Create(628, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, ChiefOption);
-        ChiefSheriffCanKillMadRole = Create(629, false, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, ChiefOption);
-        ChiefSheriffKillLimit = Create(630, false, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, ChiefOption, format: "unitSeconds");
+        ChiefOption = SetupCustomRoleOption(733, false, RoleId.Chief);
+        ChiefPlayerCount = Create(734, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
+        ChiefSheriffCoolTime = Create(735, false, CustomOptionType.Crewmate, "SheriffCooldownSetting", 30f, 2.5f, 60f, 2.5f, ChiefOption, format: "unitSeconds");
+        ChiefSheriffKillLimit = Create(736, false, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, ChiefOption, format: "unitSeconds");
+        ChiefSheriffAlwaysKills = Create(737, false, CustomOptionType.Crewmate, "SheriffAlwaysKills", false, ChiefOption);
+        ChiefSheriffCanKillImpostor = Create(738, false, CustomOptionType.Crewmate, "SheriffIsKillImpostorSetting", true, ChiefOption);
+        ChiefSheriffCanKillMadRole = Create(739, false, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, ChiefOption);
+        ChiefSheriffCanKillNeutral = Create(740, false, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, ChiefOption);
+        ChiefSheriffFriendsRoleKill = Create(741, false, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, ChiefOption);
+        ChiefSheriffCanKillLovers = Create(742, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, ChiefOption);
+        ChiefSheriffQuarreledKill = Create(743, false, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, ChiefOption);
 
         MayorOption = SetupCustomRoleOption(229, true, RoleId.Mayor);
         MayorPlayerCount = Create(230, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MayorOption);
@@ -1955,6 +1972,14 @@ public class CustomOptionHolder
         Squid.SetupCustomOptions();
 
         DyingMessenger.SetupCustomOptions();
+        NiceMechanic.SetupCustomOptions();
+
+        EvilMechanic.SetupCustomOptions();
+        TheThreeLittlePigs.SetupCustomOptions();
+
+        OrientalShaman.SetupCustomOptions();
+
+        WiseMan.SetupCustomOptions();
 
         // 表示設定
 

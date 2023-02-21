@@ -33,7 +33,8 @@ public static class SoothSayer_Patch
         }
         else
         {
-            nameData = IntroData.GetIntroData(introData, Target).NameKey;
+            if (introData != RoleId.ShermansServant) nameData = IntroData.GetIntroData(introData, Target).NameKey;
+            else nameData = "Crewmate";
         }
         var name = ModTranslation.GetString(nameData + "Name");
         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.GetString("SoothSayerGetChat"), Target.NameText().text, name));
@@ -88,7 +89,8 @@ public static class SoothSayer_Patch
         }
         else
         {
-            nameData = IntroData.GetIntroData(introData, Target).NameKey;
+            if (introData != RoleId.ShermansServant) nameData = IntroData.GetIntroData(introData, Target).NameKey;
+            else nameData = "Crewmate";
         }
         var name = ModTranslation.GetString(nameData + "Name");
         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.GetString("SoothSayerGetChat"), Target.NameText().text, name));

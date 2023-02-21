@@ -26,38 +26,69 @@ class Sheriff
         }
         catch { }
     }
-    public static bool IsSheriffKill(PlayerControl Target)
-    {
-        var roledata = CountChanger.GetRoleType(Target);
-        RoleId role = Target.GetRole();
 
-        if ((roledata == TeamRoleType.Impostor) || Target.IsRole(RoleId.HauntedWolf)) return CustomOptionHolder.SheriffCanKillImpostor.GetBool();//インポスター、狼付きは設定がimp設定が有効な時切れる
-        if (RoleClass.Sheriff.IsLoversKill && Target.IsLovers()) return true;//ラバーズ
-        if (CustomOptionHolder.SheriffQuarreledKill.GetBool() && Target.IsQuarreled()) return true;//クラード
-        if (RoleClass.Sheriff.IsMadRoleKill && (Target.IsMadRoles() || Target.IsRole(RoleId.MadKiller) || Target.IsRole(RoleId.Dependents))) return true;
-        if (CustomOptionHolder.SheriffFriendsRoleKill.GetBool() && Target.IsFriendRoles()) return true;
-        if (RoleClass.Sheriff.IsNeutralKill && Target.IsNeutral()) return true;
+    public static bool IsSheriffRolesKill(PlayerControl sheriff, PlayerControl target)
+    {
+        var targetRoleData = CountChanger.GetRoleType(target);
+        var isImpostorKill = true;
+        var isMadRolesKill = false;
+        var isNeutralKill = false;
+        var isFriendRolesKill = false;
+        var isLoversKill = false;
+        var isQuarreledKill = false;
+
+        RoleId role = sheriff.GetRole();
+
+        switch (role)
+        {
+            case RoleId.Sheriff:
+                // 通常Sheriffの場合
+                if (!RoleClass.Chief.SheriffPlayer.Contains(sheriff.PlayerId))
+                {
+                    isImpostorKill = CustomOptionHolder.SheriffCanKillImpostor.GetBool();
+                    isMadRolesKill = CustomOptionHolder.SheriffMadRoleKill.GetBool(); ;
+                    isNeutralKill = CustomOptionHolder.SheriffNeutralKill.GetBool();
+                    isFriendRolesKill = CustomOptionHolder.SheriffFriendsRoleKill.GetBool();
+                    isLoversKill = CustomOptionHolder.SheriffLoversKill.GetBool();
+                    isQuarreledKill = CustomOptionHolder.SheriffQuarreledKill.GetBool();
+                }
+                else // 村長シェリフの場合
+                {
+                    isImpostorKill = CustomOptionHolder.ChiefSheriffCanKillImpostor.GetBool();
+                    isMadRolesKill = CustomOptionHolder.ChiefSheriffCanKillMadRole.GetBool();
+                    isNeutralKill = CustomOptionHolder.ChiefSheriffCanKillNeutral.GetBool();
+                    isFriendRolesKill = CustomOptionHolder.ChiefSheriffFriendsRoleKill.GetBool();
+                    isLoversKill = CustomOptionHolder.ChiefSheriffCanKillLovers.GetBool();
+                    isQuarreledKill = CustomOptionHolder.ChiefSheriffQuarreledKill.GetBool();
+                }
+                break;
+            case RoleId.RemoteSheriff:
+                isMadRolesKill = CustomOptionHolder.RemoteSheriffMadRoleKill.GetBool();
+                isNeutralKill = CustomOptionHolder.RemoteSheriffNeutralKill.GetBool();
+                isFriendRolesKill = CustomOptionHolder.RemoteSheriffFriendRolesKill.GetBool();
+                isLoversKill = CustomOptionHolder.RemoteSheriffLoversKill.GetBool();
+                isQuarreledKill = CustomOptionHolder.RemoteSheriffQuarreledKill.GetBool();
+                break;
+            case RoleId.MeetingSheriff:
+                isMadRolesKill = CustomOptionHolder.MeetingSheriffMadRoleKill.GetBool();
+                isNeutralKill = CustomOptionHolder.MeetingSheriffNeutralKill.GetBool();
+                isFriendRolesKill = CustomOptionHolder.MeetingSheriffFriendsRoleKill.GetBool();
+                isLoversKill = CustomOptionHolder.MeetingSheriffLoversKill.GetBool();
+                isQuarreledKill = CustomOptionHolder.MeetingSheriffQuarreledKill.GetBool();
+                break;
+        }
+        if ((targetRoleData == TeamRoleType.Impostor) || target.IsRole(RoleId.HauntedWolf)) return isImpostorKill;//インポスター、狼付きは設定がimp設定が有効な時切れる
+        if (target.IsMadRoles()
+            || target.IsRole(RoleId.MadKiller)
+            || target.IsRole(RoleId.Dependents))
+            return isMadRolesKill;
+        if (target.IsNeutral()) return isNeutralKill;
+        if (target.IsFriendRoles()) return isFriendRolesKill;
+        if (target.IsLovers()) return isLoversKill;//ラバーズ
+        if (target.IsQuarreled()) return isQuarreledKill;//クラード
         return false;
     }
-    public static bool IsChiefSheriffKill(PlayerControl Target)
-    {
-        var roledata = CountChanger.GetRoleType(Target);
-        return (roledata == TeamRoleType.Impostor)
-        || ((Target.IsMadRoles() || Target.IsRole(RoleId.MadKiller) || Target.IsRole(RoleId.Dependents)) && RoleClass.Chief.IsMadRoleKill)
-        || (Target.IsFriendRoles() && RoleClass.Chief.IsMadRoleKill)
-        || (Target.IsNeutral() && RoleClass.Chief.IsNeutralKill)
-        || (RoleClass.Chief.IsLoversKill && Target.IsLovers()) || Target.IsRole(RoleId.HauntedWolf);
-    }
-    public static bool IsRemoteSheriffKill(PlayerControl Target)
-    {
-        var roledata = CountChanger.GetRoleType(Target);
-        return (roledata == TeamRoleType.Impostor)
-        || ((Target.IsMadRoles() || Target.IsRole(RoleId.MadKiller) || Target.IsRole(RoleId.Dependents)) && RoleClass.RemoteSheriff.IsMadRoleKill)
-        || (Target.IsFriendRoles() && RoleClass.RemoteSheriff.IsMadRoleKill)
-        || (Target.IsNeutral() && RoleClass.RemoteSheriff.IsNeutralKill)
-        || (RoleClass.RemoteSheriff.IsLoversKill && Target.IsLovers())
-        || Target.IsRole(RoleId.HauntedWolf);
-    }
+
     public static bool IsSheriff(PlayerControl Player)
     {
         return Player.IsRole(RoleId.Sheriff) || Player.IsRole(RoleId.RemoteSheriff);

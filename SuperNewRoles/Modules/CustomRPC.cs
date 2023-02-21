@@ -8,6 +8,7 @@ using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using Sentry;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapOption;
@@ -183,6 +184,14 @@ public enum RoleId
     FireFox,
     Squid,
     DyingMessenger,
+    WiseMan,
+    NiceMechanic,
+    EvilMechanic,
+    TheFirstLittlePig,
+    TheSecondLittlePig,
+    TheThirdLittlePig,
+    OrientalShaman,
+    ShermansServant,
     //RoleId
 }
 
@@ -275,18 +284,102 @@ public enum CustomRPC
     SafecrackerGuardCount,
     SetVigilance,
     Chat,
+    SetWiseManStatus,
+    SetVentStatusMechanic,
+    SetTheThreeLittlePigsTeam,
+    UseTheThreeLittlePigsCount,
+    SetOutfit,
+    CreateShermansServant,
+    SetVisible,
 }
 
 public static class RPCProcedure
 {
+    public static void SetWiseManStatus(byte sourceId, float rotate, bool Is)
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourceId);
+        WiseMan.SetWiseManStatus(source, rotate, Is);
+    }
+    public static void SetVentStatusMechanic(byte sourceplayer, byte targetvent, bool Is, byte[] buff)
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourceplayer);
+        Vent vent = ModHelpers.VentById(targetvent);
+        Vector3 position = Vector3.zero;
+        position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
+        position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
+        position.z = BitConverter.ToSingle(buff, 2 * sizeof(float));
+        NiceMechanic.SetVentStatusMechanic(source, vent, Is, position);
+    }
+    public static void SetVisible(byte id, bool visible)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        player.Visible = visible;
+    }
+    public static void CreateShermansServant(byte OrientalShamanId, byte ShermansServantId)
+    {
+        PlayerControl OrientalShamanPlayer = ModHelpers.PlayerById(OrientalShamanId);
+        PlayerControl ShermansServantIPlayer = ModHelpers.PlayerById(ShermansServantId);
+        if (!OrientalShamanPlayer && !ShermansServantIPlayer) return;
+        OrientalShaman.OrientalShamanCausative.Add(OrientalShamanId, ShermansServantId);
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(ShermansServantIPlayer, RoleTypes.Crewmate);
+    }
+    public static void SetOutfit(byte id, int color, string hat, string pet, string skin, string visor, string name)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        GameData.PlayerOutfit outfit = new()
+        {
+            ColorId = color,
+            HatId = hat,
+            PetId = pet,
+            SkinId = skin,
+            VisorId = visor,
+            PlayerName = name
+        };
+        player.setOutfit(outfit);
+    }
+    public static void UseTheThreeLittlePigsCount(byte id)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        if (player.IsRole(RoleId.TheSecondLittlePig))
+        {
+            if (!TheThreeLittlePigs.TheSecondLittlePig.GuardCount.ContainsKey(player.PlayerId))
+                TheThreeLittlePigs.TheSecondLittlePig.GuardCount[player.PlayerId] = TheThreeLittlePigs.TheSecondLittlePigMaxGuardCount.GetInt() - 1;
+            else TheThreeLittlePigs.TheSecondLittlePig.GuardCount[player.PlayerId]--;
+        }
+        else if (player.IsRole(RoleId.TheThirdLittlePig))
+        {
+            if (!TheThreeLittlePigs.TheThirdLittlePig.CounterCount.ContainsKey(player.PlayerId))
+                TheThreeLittlePigs.TheThirdLittlePig.CounterCount[player.PlayerId] = TheThreeLittlePigs.TheThirdLittlePigMaxCounterCount.GetInt() - 1;
+            else TheThreeLittlePigs.TheThirdLittlePig.CounterCount[player.PlayerId]--;
+        }
+    }
+    public static void SetTheThreeLittlePigsTeam(byte first, byte second, byte third)
+    {
+        PlayerControl firstPlayer = ModHelpers.PlayerById(first);
+        PlayerControl secondPlayer = ModHelpers.PlayerById(second);
+        PlayerControl thirdPlayer = ModHelpers.PlayerById(third);
+        if (firstPlayer == null || secondPlayer == null || thirdPlayer == null) return;
+        List<PlayerControl> theThreeLittlePigsPlayer = new()
+        {
+            firstPlayer,
+            secondPlayer,
+            thirdPlayer
+        };
+        TheThreeLittlePigs.TheThreeLittlePigsPlayer.Add(theThreeLittlePigsPlayer);
+    }
     public static void Chat(byte id, string text)
     {
         PlayerControl player = ModHelpers.PlayerById(id);
         if (player == null) return;
-        bool isAlive = player.IsAlive();
+        bool isDead = player.IsDead();
+        Logger.Info($"{player.Data.PlayerName}が発言します。元のIsDead : {isDead}", "RPC Chat");
         player.Data.IsDead = false;
         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, text);
-        player.Data.IsDead = isAlive;
+        player.Data.IsDead = isDead;
+        if (isDead != player.Data.IsDead) Logger.Error($"{player.Data.PlayerName}のIsDeadが正常に戻りませんでした。元のIsDead : {isDead}, 現在のIsDead : {player.Data.IsDead}", "RPC Chat");
     }
     public static void SetVigilance(bool isVigilance, byte id)
     {
@@ -795,7 +888,7 @@ public static class RPCProcedure
         RoleClass.SideKiller.MadKillerPair.Add(source.PlayerId, target.PlayerId);
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
         ChacheManager.ResetMyRoleChache();
-        PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+        PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
     }
     public static void UncheckedSetVanillaRole(byte playerid, byte roletype)
     {
@@ -1147,7 +1240,7 @@ public static class RPCProcedure
                 RoleClass.Jackal.CanCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
             }
         }
-        PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+        PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         ChacheManager.ResetMyRoleChache();
     }
     public static void CreateSidekick(byte playerid, bool IsFake)
@@ -1163,7 +1256,7 @@ public static class RPCProcedure
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
             player.ClearRole();
             RoleClass.Jackal.SidekickPlayer.Add(player);
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
     }
@@ -1180,7 +1273,7 @@ public static class RPCProcedure
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
             player.ClearRole();
             RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
     }
@@ -1695,6 +1788,27 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.Chat:
                         Chat(reader.ReadByte(), reader.ReadString());
+                        break;
+                    case CustomRPC.SetWiseManStatus:
+                        SetWiseManStatus(reader.ReadByte(), reader.ReadSingle(), reader.ReadBoolean());
+                        break;
+                    case CustomRPC.SetVentStatusMechanic:
+                        SetVentStatusMechanic(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBytesAndSize());
+                        break;
+                    case CustomRPC.SetTheThreeLittlePigsTeam:
+                        SetTheThreeLittlePigsTeam(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.UseTheThreeLittlePigsCount:
+                        UseTheThreeLittlePigsCount(reader.ReadByte());
+                        break;
+                    case CustomRPC.SetOutfit:
+                        SetOutfit(reader.ReadByte(), reader.ReadInt32(), reader.ReadString(), reader.ReadString(), reader.ReadString(), reader.ReadString(), reader.ReadString());
+                        break;
+                    case CustomRPC.CreateShermansServant:
+                        CreateShermansServant(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.SetVisible:
+                        SetVisible(reader.ReadByte(), reader.ReadBoolean());
                         break;
                 }
             }
