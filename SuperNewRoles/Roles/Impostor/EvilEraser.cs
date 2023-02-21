@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Roles.Neutral;
 
 //TODO:さつまいも、いつかリファクタします
 namespace SuperNewRoles.Roles;
@@ -93,7 +95,9 @@ public static class EvilEraser
     public static bool IsFoxWinGuard()
     {
         bool IsAlive = false;
-        foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
+        List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
+        foxPlayers.AddRange(FireFox.FireFoxPlayer);
+        foreach (PlayerControl p in foxPlayers)
         {
             if (p.IsAlive())
             {

@@ -454,6 +454,42 @@ public class SetNameUpdate
                     }
                 }
             }
+            else if (LocalRole is RoleId.TheFirstLittlePig or RoleId.TheSecondLittlePig or RoleId.TheThirdLittlePig)
+            {
+                foreach (var players in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
+                {
+                    if (players.TrueForAll(x => x.PlayerId != PlayerControl.LocalPlayer.PlayerId)) continue;
+                    foreach (PlayerControl p in players)
+                    {
+                        SetNamesClass.SetPlayerRoleNames(p);
+                        SetNamesClass.SetPlayerNameColors(p);
+                    }
+                    break;
+                }
+            }
+            else if (LocalRole is RoleId.OrientalShaman)
+            {
+                foreach (var date in OrientalShaman.OrientalShamanCausative)
+                {
+                    if (date.Key != PlayerControl.LocalPlayer.PlayerId) continue;
+                    SetNamesClass.SetPlayerRoleNames(ModHelpers.PlayerById(date.Value));
+                    SetNamesClass.SetPlayerNameColors(ModHelpers.PlayerById(date.Value));
+                }
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (OrientalShaman.IsKiller(player))
+                        SetNamesClass.SetPlayerNameColors(player);
+                }
+            }
+            else if (LocalRole is RoleId.ShermansServant)
+            {
+                foreach (var date in OrientalShaman.OrientalShamanCausative)
+                {
+                    if (date.Value != PlayerControl.LocalPlayer.PlayerId) continue;
+                    SetNamesClass.SetPlayerRoleNames(ModHelpers.PlayerById(date.Key));
+                    SetNamesClass.SetPlayerNameColors(ModHelpers.PlayerById(date.Key));
+                }
+            }
             SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
             SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
         }

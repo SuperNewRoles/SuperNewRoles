@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using AmongUs.GameOptions;
 using BepInEx.IL2CPP.Utils.Collections;
 using HarmonyLib;
@@ -244,6 +245,23 @@ public class IntroPatch
                         }
                         yourTeam = FireFoxTeams;
                         break;
+                    case RoleId.TheFirstLittlePig:
+                    case RoleId.TheSecondLittlePig:
+                    case RoleId.TheThirdLittlePig:
+                        Il2CppSystem.Collections.Generic.List<PlayerControl> TheThreeLittlePigsTeams = new();
+                        int TheThreeLittlePigsNum = 0;
+                        foreach (var players in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
+                        {
+                            if (players.TrueForAll(x => x.PlayerId != PlayerControl.LocalPlayer.PlayerId)) continue;
+                            foreach (PlayerControl player in players)
+                            {
+                                TheThreeLittlePigsNum++;
+                                TheThreeLittlePigsTeams.Add(player);
+                            }
+                            break;
+                        }
+                        yourTeam = TheThreeLittlePigsTeams;
+                        break;
                     default:
                         if (PlayerControl.LocalPlayer.IsImpostor())
                         {
@@ -314,7 +332,7 @@ public class IntroPatch
                         ImpostorText = "";
                         break;
                 }
-                foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     if (player.IsRole(RoleId.Egoist))
                     {
@@ -405,7 +423,7 @@ public class IntroPatch
             {
                 PlayerControl.LocalPlayer.SetKillTimerUnchecked(SetTime);
             }
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         }
     }
 
