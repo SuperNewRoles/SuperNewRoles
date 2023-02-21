@@ -500,6 +500,7 @@ class MeetingHudStartPatch
             }, 3f, "StartMeeting CustomSyncSetting");
         }
         Roles.Crewmate.Celebrity.TimerStop();
+        TheThreeLittlePigs.TheFirstLittlePig.TimerStop();
         if (ModeHandler.IsMode(ModeId.Default))
         {
             new LateTask(() =>

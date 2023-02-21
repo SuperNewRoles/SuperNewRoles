@@ -266,8 +266,12 @@ public class IntroData
     public static IntroData NiceJumboIntro = new("NiceJumbo", CrewmateIntro.color, 1, RoleId.Jumbo, TeamRoleType.Crewmate);
     public static IntroData EvilJumboIntro = new("EvilJumbo", ImpostorIntro.color, 1, RoleId.Jumbo, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData WorshiperIntro = new("Worshiper", Roles.Impostor.MadRole.Worshiper.color, 1, RoleId.Worshiper);
-    public static IntroData SafecrackerIntro = new("Safecracker", Safecracker.color, 1, RoleId.Safecracker, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter); static IntroData FireFoxIntro = new("FireFox", FireFox.color, 1, RoleId.FireFox, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData SafecrackerIntro = new("Safecracker", Safecracker.color, 1, RoleId.Safecracker, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData FireFoxIntro = new("FireFox", FireFox.color, 1, RoleId.FireFox, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData SquidIntro = new("Squid", Squid.color, 2, RoleId.Squid, TeamRoleType.Crewmate);
     public static IntroData DyingMessengerIntro = new("DyingMessenger", DyingMessenger.color, 1, RoleId.DyingMessenger, TeamRoleType.Crewmate);
+    public static IntroData TheFirstLittlePigIntro = new("TheFirstLittlePig", TheThreeLittlePigs.color, 1, RoleId.TheFirstLittlePig, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData TheSecondLittlePigIntro = new("TheSecondLittlePig", TheThreeLittlePigs.color, 1, RoleId.TheSecondLittlePig, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData TheThirdLittlePig = new("TheThirdLittlePig", TheThreeLittlePigs.color, 1, RoleId.TheThirdLittlePig, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     // イントロオブジェ
 }

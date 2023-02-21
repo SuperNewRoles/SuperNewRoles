@@ -7,6 +7,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 
