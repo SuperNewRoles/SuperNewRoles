@@ -326,14 +326,14 @@ public static class OrientalShaman
         {
             if (OrientalShamanCausative.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
             {
-                if (PlayerControl.LocalPlayer.IsDead() || IsDoNotDisplay)
+                PlayerControl player = ModHelpers.PlayerById(OrientalShamanCausative[PlayerControl.LocalPlayer.PlayerId]);
+                if (PlayerControl.LocalPlayer.IsDead() || IsDoNotDisplay || !player.IsRole(RoleId.ShermansServant))
                 {
                     if (SeePositionArrow.arrow != null)
                         Object.Destroy(SeePositionArrow.arrow);
                     return;
                 }
                 if (SeePositionArrow == null) SeePositionArrow = new(color);
-                PlayerControl player = ModHelpers.PlayerById(OrientalShamanCausative[PlayerControl.LocalPlayer.PlayerId]);
                 if (!player) return;
                 if (player.IsAlive())
                 {
@@ -362,6 +362,23 @@ public static class OrientalShaman
 
             if (OrientalShamanCausative.ContainsValue(PlayerControl.LocalPlayer.PlayerId))
             {
+                PlayerControl player = null;
+                foreach (var item in OrientalShamanCausative)
+                {
+                    if (item.Value == PlayerControl.LocalPlayer.PlayerId)
+                    {
+                        player = ModHelpers.PlayerById(item.Key);
+                        break;
+                    }
+                }
+                if (!player) return;
+
+                if (!player.IsRole(RoleId.OrientalShaman) && PlayerControl.LocalPlayer.IsAlive())
+                {
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+                }
+
                 if (PlayerControl.LocalPlayer.IsDead())
                 {
                     if (SeePositionArrow.arrow != null)
@@ -369,17 +386,8 @@ public static class OrientalShaman
                     return;
                 }
                 if (SeePositionArrow == null) SeePositionArrow = new(color);
-                PlayerControl target = null;
-                foreach (var item in OrientalShamanCausative)
-                {
-                    if (item.Value == PlayerControl.LocalPlayer.PlayerId)
-                    {
-                        target = ModHelpers.PlayerById(item.Key);
-                        break;
-                    }
-                }
-                if (!target || target.IsDead()) return;
-                SeePositionArrow.Update(target.transform.position, color);
+                if (player.IsDead()) return;
+                SeePositionArrow.Update(player.transform.position, color);
                 SeePositionArrow.arrow.SetActive(true);
             }
         }
