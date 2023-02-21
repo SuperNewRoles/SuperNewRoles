@@ -606,6 +606,7 @@ public static class OpenVotes
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
 public class MeetingHudUpdatePatch
 {
+    public static List<string> ErrorNames;
     public static void Postfix()
     {
         if (Instance)
@@ -628,7 +629,12 @@ public class MeetingHudUpdatePatch
                     }
                     else player.NameText.text = player.NameText.text.Replace(GetLightAndDarkerText(true), "").Replace(GetLightAndDarkerText(false), "");
                 }
-                else Logger.Error($"プレイヤーコントロールを取得できませんでした。 プレイヤー名 : {player.NameText.text}", "LightAndDarkerText");
+                else
+                {
+                    if (ErrorNames.Contains(player.NameText.text)) continue;
+                    Logger.Error($"プレイヤーコントロールを取得できませんでした。 プレイヤー名 : {player.NameText.text}", "LightAndDarkerText");
+                    ErrorNames.Add(player.NameText.text);
+                }
             }
         }
     }

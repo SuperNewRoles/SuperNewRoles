@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Timers;
 using AmongUs.GameOptions;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;

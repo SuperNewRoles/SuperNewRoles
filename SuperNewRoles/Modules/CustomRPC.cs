@@ -374,10 +374,12 @@ public static class RPCProcedure
     {
         PlayerControl player = ModHelpers.PlayerById(id);
         if (player == null) return;
-        bool isAlive = player.IsAlive();
+        bool isDead = player.IsDead();
+        Logger.Info($"{player.Data.PlayerName}が発言します。元のIsDead : {isDead}", "RPC Chat");
         player.Data.IsDead = false;
         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, text);
-        player.Data.IsDead = isAlive;
+        player.Data.IsDead = isDead;
+        if (isDead != player.Data.IsDead) Logger.Error($"{player.Data.PlayerName}のIsDeadが正常に戻りませんでした。元のIsDead : {isDead}, 現在のIsDead : {player.Data.IsDead}", "RPC Chat");
     }
     public static void SetVigilance(bool isVigilance, byte id)
     {
@@ -886,7 +888,7 @@ public static class RPCProcedure
         RoleClass.SideKiller.MadKillerPair.Add(source.PlayerId, target.PlayerId);
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
         ChacheManager.ResetMyRoleChache();
-        PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+        PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
     }
     public static void UncheckedSetVanillaRole(byte playerid, byte roletype)
     {
@@ -1238,7 +1240,7 @@ public static class RPCProcedure
                 RoleClass.Jackal.CanCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
             }
         }
-        PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+        PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         ChacheManager.ResetMyRoleChache();
     }
     public static void CreateSidekick(byte playerid, bool IsFake)
@@ -1254,7 +1256,7 @@ public static class RPCProcedure
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
             player.ClearRole();
             RoleClass.Jackal.SidekickPlayer.Add(player);
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
     }
@@ -1271,7 +1273,7 @@ public static class RPCProcedure
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
             player.ClearRole();
             RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
     }

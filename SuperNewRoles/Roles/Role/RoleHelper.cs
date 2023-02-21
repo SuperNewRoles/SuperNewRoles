@@ -21,6 +21,16 @@ public enum TeamRoleType
 }
 public static class RoleHelpers
 {
+
+    public static List<PlayerControl> CrewmatePlayer;
+    public static List<PlayerControl> ImposterPlayer;
+    public static List<PlayerControl> NeutralPlayer;
+    public static List<PlayerControl> MadRolesPlayer;
+    public static List<PlayerControl> FriendRolesPlayer;
+    public static List<PlayerControl> NeutralKillingPlayer;
+
+    // |: ================陣営の分類 ================ :|
+
     public static bool IsCrew(this PlayerControl player)
     {
         return player != null && !player.IsImpostor() && !player.IsNeutral();
@@ -30,35 +40,6 @@ public static class RoleHelpers
     {
         return !player.IsRole(RoleId.Sheriff, RoleId.Sheriff) && player != null && player.Data.Role.IsImpostor;
     }
-
-    public static bool IsHauntedWolf(this PlayerControl player)
-    {
-        return player.IsRole(RoleId.HauntedWolf);
-    }
-
-    //We are Mad!
-    public static bool IsMadRoles(this PlayerControl player) =>
-        (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2) ||
-        player.GetRole() is
-        RoleId.Madmate or
-        RoleId.MadMayor or
-        RoleId.MadStuntMan or
-        RoleId.MadHawk or
-        RoleId.MadJester or
-        RoleId.MadSeer or
-        RoleId.BlackCat or
-        RoleId.MadMaker or
-        RoleId.MadCleaner or
-        RoleId.Worshiper;
-    // IsMads
-
-    //We are JackalFriends!
-    public static bool IsFriendRoles(this PlayerControl player) =>
-        player.GetRole() is
-        RoleId.JackalFriends or
-        RoleId.SeerFriends or
-        RoleId.MayorFriends;
-    // IsFriends
 
     /// <summary>
     /// v2022.12.8で発生したシェイプシフターが死亡後クルーメイトゴーストになるバグの修正用。
@@ -77,6 +58,124 @@ public static class RoleHelpers
         RoleId.EvilSeer or
         RoleId.ShiftActor;
     // IsShapeshifter
+
+    public static bool IsHauntedWolf(this PlayerControl player) => player.IsRole(RoleId.HauntedWolf);
+
+    /// <summary>
+    /// We are Mad!
+    /// マッド役職の判定に用いる。マッドの共通設定から外れる為眷属とマッドキラーはマッド判定にしていない。
+    /// </summary>
+    /// <param name="player">マッドであるか判定したいプレイヤー</param>
+    /// <returns>プレイヤーがマッド役職である場合trueを返す</returns>
+    public static bool IsMadRoles(this PlayerControl player) =>
+        (player.GetRole() == RoleId.SatsumaAndImo && RoleClass.SatsumaAndImo.TeamNumber == 2) ||
+        player.GetRole() is
+        // RoleId.MadKiller or [MadRoleでもありImpostorRoleでもある為 MadRoleに記載不可]
+        // RoleId.Dependents or [MadRoleとしての共通能力を持たない為記載しない]
+        RoleId.Madmate or
+        RoleId.MadMayor or
+        RoleId.MadStuntMan or
+        RoleId.MadHawk or
+        RoleId.MadJester or
+        RoleId.MadSeer or
+        RoleId.BlackCat or
+        RoleId.MadMaker or
+        RoleId.MadCleaner or
+        RoleId.Worshiper;
+    // IsMads
+
+    public static bool IsNeutral(this PlayerControl player) =>
+        player.GetRole() is
+        RoleId.Jester or
+        RoleId.Jackal or
+        RoleId.Sidekick or
+        RoleId.Vulture or
+        RoleId.Opportunist or
+        RoleId.Researcher or
+        RoleId.God or
+        RoleId.Egoist or
+        RoleId.Workperson or
+        RoleId.truelover or
+        RoleId.Amnesiac or
+        RoleId.FalseCharges or
+        RoleId.Fox or
+        RoleId.TeleportingJackal or
+        RoleId.Demon or
+        RoleId.JackalSeer or
+        RoleId.SidekickSeer or
+        RoleId.Arsonist or
+        RoleId.MayorFriends or
+        RoleId.Tuna or
+        RoleId.Neet or
+        RoleId.Revolutionist or
+        RoleId.Spelunker or
+        RoleId.SuicidalIdeation or
+        RoleId.Hitman or
+        RoleId.Stefinder or
+        RoleId.PartTimer or
+        RoleId.GM or
+        RoleId.WaveCannonJackal or
+        RoleId.Photographer or
+        RoleId.Pavlovsdogs or
+        RoleId.Pavlovsowner or
+        RoleId.Cupid or
+        RoleId.Pavlovsowner or
+        RoleId.LoversBreaker or
+        RoleId.Safecracker or
+        RoleId.FireFox or
+        RoleId.TheFirstLittlePig or
+        RoleId.TheSecondLittlePig or
+        RoleId.TheThirdLittlePig or
+        RoleId.OrientalShaman;
+    // 第三か
+
+    public static bool IsKiller(this PlayerControl player) =>
+        player.GetRole() ==
+            RoleId.Pavlovsowner
+            && !RoleClass.Pavlovsowner.CountData.ContainsKey(player.PlayerId)
+            || RoleClass.Pavlovsowner.CountData[player.PlayerId] > 0
+        ||
+        player.GetRole() is
+        RoleId.Pavlovsdogs or
+        RoleId.Jackal or
+        RoleId.Sidekick or
+        RoleId.TeleportingJackal or
+        RoleId.JackalSeer or
+        RoleId.SidekickSeer or
+        RoleId.WaveCannonJackal or
+        RoleId.Hitman or
+        RoleId.Egoist;
+    // 第三キル人外か
+
+    public static bool IsPavlovsTeam(this PlayerControl player) => player.GetRole() is
+            RoleId.Pavlovsdogs or
+            RoleId.Pavlovsowner;
+
+    public static bool IsJackalTeam(this PlayerControl player) =>
+        player.GetRole() is
+            RoleId.Jackal or
+            RoleId.Sidekick or
+            RoleId.JackalFriends or
+            RoleId.SeerFriends or
+            RoleId.TeleportingJackal or
+            RoleId.JackalSeer or
+            RoleId.SidekickSeer or
+            RoleId.MayorFriends or
+            RoleId.WaveCannonJackal;
+
+    public static bool IsJackalTeamJackal(this PlayerControl player)
+        => player.GetRole() is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal or RoleId.WaveCannonJackal;
+
+    public static bool IsJackalTeamSidekick(this PlayerControl player)
+        => player.GetRole() is RoleId.Sidekick or RoleId.SidekickSeer;
+
+    //We are JackalFriends!
+    public static bool IsFriendRoles(this PlayerControl player) =>
+        player.GetRole() is
+        RoleId.JackalFriends or
+        RoleId.SeerFriends or
+        RoleId.MayorFriends;
+    // IsFriends
 
     public static bool IsQuarreled(this PlayerControl player, bool IsChache = true)
     {
@@ -119,22 +218,6 @@ public static class RoleHelpers
         return false;
     }
 
-    public static bool IsKiller(this PlayerControl player) =>
-        (player.GetRole() == RoleId.Pavlovsowner &&
-            (!RoleClass.Pavlovsowner.CountData.ContainsKey(player.PlayerId) ||
-            RoleClass.Pavlovsowner.CountData[player.PlayerId] > 0)) ||
-        player.GetRole() is
-        RoleId.Pavlovsdogs or
-        RoleId.Jackal or
-        RoleId.Sidekick or
-        RoleId.TeleportingJackal or
-        RoleId.JackalSeer or
-        RoleId.SidekickSeer or
-        RoleId.WaveCannonJackal or
-        RoleId.Hitman or
-        RoleId.Egoist;
-    // 第三キル人外か
-
     public static bool IsFakeLoversFake(this PlayerControl player)
     {
         if (player == null) return false;
@@ -160,6 +243,9 @@ public static class RoleHelpers
         }
         return false;
     }
+
+    // |: ================陣営の分類 ================ :|
+
     public static void SetQuarreled(PlayerControl player1, PlayerControl player2)
     {
         List<PlayerControl> sets = new() { player1, player2 };
@@ -185,7 +271,7 @@ public static class RoleHelpers
         else RoleClass.Lovers.LoversPlayer.Add(sets);
         if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
         {
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         }
         ChacheManager.ResetLoversChache();
     }
@@ -264,25 +350,6 @@ public static class RoleHelpers
         }
         return null;
     }
-    public static bool IsPavlovsTeam(this PlayerControl player) => player.GetRole() is
-            RoleId.Pavlovsdogs or
-            RoleId.Pavlovsowner;
-    public static bool IsJackalTeam(this PlayerControl player) =>
-        player.GetRole() is
-            RoleId.Jackal or
-            RoleId.Sidekick or
-            RoleId.JackalFriends or
-            RoleId.SeerFriends or
-            RoleId.TeleportingJackal or
-            RoleId.JackalSeer or
-            RoleId.SidekickSeer or
-            RoleId.MayorFriends or
-            RoleId.WaveCannonJackal;
-    public static bool IsJackalTeamJackal(this PlayerControl player)
-        => player.GetRole() is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal or RoleId.WaveCannonJackal;
-
-    public static bool IsJackalTeamSidekick(this PlayerControl player)
-        => player.GetRole() is RoleId.Sidekick or RoleId.SidekickSeer;
 
     public static void UseShapeshift()
     {
@@ -826,6 +893,12 @@ public static class RoleHelpers
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
                 return;
         }
+        if (player.IsImpostor()) ImposterPlayer.Add(player);
+        else if (player.IsNeutral()) NeutralPlayer.Add(player);
+        else if (player.IsMadRoles()) MadRolesPlayer.Add(player);
+        else if (player.IsFriendRoles()) FriendRolesPlayer.Add(player);
+        else CrewmatePlayer.Add(player);
+        if (player.IsKiller()) NeutralKillingPlayer.Add(player);
         bool flag = player.GetRole() != role && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
         if (role.IsGhostRole())
         {
@@ -837,7 +910,7 @@ public static class RoleHelpers
         }
         if (flag)
         {
-            PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+            PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         }
         SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
         PlayerAnimation anim = PlayerAnimation.GetPlayerAnimation(player.PlayerId);
@@ -1326,6 +1399,12 @@ public static class RoleHelpers
                 break;
                 //ロールリモベ
         }
+        if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
+        else if (player.IsNeutral()) NeutralPlayer.RemoveAll(ClearRemove);
+        else if (player.IsMadRoles()) MadRolesPlayer.RemoveAll(ClearRemove);
+        else if (player.IsFriendRoles()) FriendRolesPlayer.RemoveAll(ClearRemove);
+        else CrewmatePlayer.RemoveAll(ClearRemove); // 眷族等クルーではない役職も此処に含まれる
+        if (player.IsKiller()) NeutralKillingPlayer.RemoveAll(ClearRemove);
         ChacheManager.ResetMyRoleChache();
     }
     public static void SetRoleRPC(this PlayerControl Player, RoleId selectRoleData)
@@ -1341,78 +1420,34 @@ public static class RoleHelpers
         var IsTaskClear = false;
         if (player.IsImpostor()) IsTaskClear = true;
         if (player.IsShapeshifter()) IsTaskClear = true;
+        if (player.IsMadRoles()) IsTaskClear = true;
+        if (player.IsFriendRoles()) IsTaskClear = true;
+        if (player.IsNeutral()) IsTaskClear = true;
         switch (player.GetRole())
         {
-            case RoleId.Jester:
-            case RoleId.Jackal:
-            case RoleId.Sidekick:
-            case RoleId.Vulture:
             case RoleId.HomeSecurityGuard:
-            case RoleId.Madmate:
-            case RoleId.JackalFriends:
-            case RoleId.Opportunist:
-            case RoleId.Researcher:
-            case RoleId.God:
-            case RoleId.Egoist:
-            case RoleId.Workperson:
-            case RoleId.truelover:
-            case RoleId.Amnesiac:
-            case RoleId.MadMayor:
-            case RoleId.MadStuntMan:
             case RoleId.MadKiller:
-            case RoleId.MadHawk:
-            case RoleId.MadJester:
-            case RoleId.MadSeer:
-            case RoleId.Worshiper:
-            case RoleId.FalseCharges:
-            case RoleId.Fox:
-            case RoleId.TeleportingJackal:
-            case RoleId.Demon:
-            case RoleId.SeerFriends:
-            case RoleId.Arsonist:
-            case RoleId.JackalSeer:
-            case RoleId.SidekickSeer:
-            case RoleId.MadMaker:
-            case RoleId.MadCleaner:
-            case RoleId.MayorFriends:
-            case RoleId.Tuna:
-            case RoleId.BlackCat:
-            case RoleId.Neet:
-            case RoleId.SatsumaAndImo:
-            case RoleId.Revolutionist:
-            case RoleId.Spelunker:
-            case RoleId.SuicidalIdeation:
-            case RoleId.Hitman:
-            case RoleId.Stefinder:
-            case RoleId.PartTimer:
-            case RoleId.Photographer:
-            case RoleId.Pavlovsdogs:
-            case RoleId.Pavlovsowner:
-            case RoleId.GM:
-            case RoleId.WaveCannonJackal:
-            case RoleId.Cupid:
             case RoleId.Dependents:
-            case RoleId.LoversBreaker:
-            case RoleId.Safecracker:
-            case RoleId.FireFox:
-            case RoleId.TheFirstLittlePig:
-            case RoleId.TheSecondLittlePig:
-            case RoleId.TheThirdLittlePig:
-            case RoleId.OrientalShaman:
+            case RoleId.SatsumaAndImo:
             case RoleId.ShermansServant:
-                // タスククリアか
+                // タスククリアか 個別表記
                 IsTaskClear = true;
                 break;
             case RoleId.Sheriff when RoleClass.Chief.NoTaskSheriffPlayer.Contains(player.PlayerId):
                 IsTaskClear = true;
                 break;
+            case RoleId.Sheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
+            case RoleId.RemoteSheriff when ModeHandler.IsMode(ModeId.SuperHostRoles):
+            case RoleId.ToiletFan when ModeHandler.IsMode(ModeId.SuperHostRoles):
+            case RoleId.NiceButtoner when ModeHandler.IsMode(ModeId.SuperHostRoles):
+                // インポスター置き換えクルー役職系のタスククリア
+                IsTaskClear = true;
+                break;
         }
         if (!IsTaskClear
-            && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
-            player.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff, RoleId.ToiletFan, RoleId.NiceButtoner))
-            || player.IsQuarreled()
-            || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
-            || player.IsImpostor()))
+            && (player.IsQuarreled()
+                || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers()))
+            )
         {
             IsTaskClear = true;
         }
@@ -1554,50 +1589,6 @@ public static class RoleHelpers
                 _ => false,
             };
     }
-    public static bool IsNeutral(this PlayerControl player) =>
-        player.GetRole() is
-        RoleId.Jester or
-        RoleId.Jackal or
-        RoleId.Sidekick or
-        RoleId.Vulture or
-        RoleId.Opportunist or
-        RoleId.Researcher or
-        RoleId.God or
-        RoleId.Egoist or
-        RoleId.Workperson or
-        RoleId.truelover or
-        RoleId.Amnesiac or
-        RoleId.FalseCharges or
-        RoleId.Fox or
-        RoleId.TeleportingJackal or
-        RoleId.Demon or
-        RoleId.JackalSeer or
-        RoleId.SidekickSeer or
-        RoleId.Arsonist or
-        RoleId.MayorFriends or
-        RoleId.Tuna or
-        RoleId.Neet or
-        RoleId.Revolutionist or
-        RoleId.Spelunker or
-        RoleId.SuicidalIdeation or
-        RoleId.Hitman or
-        RoleId.Stefinder or
-        RoleId.PartTimer or
-        RoleId.GM or
-        RoleId.WaveCannonJackal or
-        RoleId.Photographer or
-        RoleId.Pavlovsdogs or
-        RoleId.Pavlovsowner or
-        RoleId.Cupid or
-        RoleId.Pavlovsowner or
-        RoleId.LoversBreaker or
-        RoleId.Safecracker or
-        RoleId.FireFox or
-        RoleId.TheFirstLittlePig or
-        RoleId.TheSecondLittlePig or
-        RoleId.TheThirdLittlePig or
-        RoleId.OrientalShaman;
-    // 第三か
     public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
     {
         RoleId MyRole;

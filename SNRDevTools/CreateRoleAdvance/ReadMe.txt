@@ -12,7 +12,6 @@
 　　・Roles/RoleHelper.cs　　　 　　　→//ロールアド			SetRoleの後ろ
 　　・Roles/RoleHelper.cs　　　 　　　→//ロールリモベ　　　　　　ClearRoleの後ろ		
 　　・Roles/RoleHelper.cs　　　 　　　→//第三か　　　　　　　　　isNeutralの後ろ
-　　・Roles/RoleHelper.cs　　　 　　　→//タスククリアか		IsClearTaskの後ろ
 　　・Roles/RoleHelper.cs　　　　　　 →//ベント設定可視化        GetOptionsTextの後ろ
 　　・Roles/RoleHelper.cs　　　　　   →//ベントが使える　　　　　IsUseVentの後ろ
 　　・Roles/RoleHelper.cs　　　　　　 →//インポの視界　　　　　　IsImpostorLightの後ろ

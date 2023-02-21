@@ -4,7 +4,9 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
-
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
 class MurderPlayer

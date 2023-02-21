@@ -61,8 +61,8 @@ public static class Worshiper
         AbilitySuicideCoolTime = WorshiperAbilitySuicideCoolTime.GetFloat();
         KillSuicideCoolTime = WorshiperKillSuicideCoolTime.GetFloat();
 
-        IsUseVent = WorshiperIsImpostorLight.GetBool();
-        IsImpostorLight = WorshiperIsUseVent.GetBool();
+        IsUseVent = WorshiperIsUseVent.GetBool();
+        IsImpostorLight = WorshiperIsImpostorLight.GetBool();
         IsImpostorCheck = WorshiperIsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles);
         int Common = WorshiperCommonTask.GetInt();
         int Long = WorshiperLongTask.GetInt();

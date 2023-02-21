@@ -9,6 +9,8 @@ using SuperNewRoles.MapCustoms.Airship;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
 
 namespace SuperNewRoles.Patches;
@@ -88,7 +90,7 @@ class WrapUpPatch
         RoleClass.Tuna.IsMeetingEnd = true;
         CustomButton.MeetingEndedUpdate();
 
-        PlayerControlHepler.RefreshRoleDescription(PlayerControl.LocalPlayer);
+        PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
         if (ModeHandler.IsMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
         ModeHandler.Wrapup(exiled);
         RedRidingHood.WrapUp(exiled);
@@ -196,7 +198,13 @@ class WrapUpPatch
                     CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.MadJesterWin, false);
                 }
             }
+            /*
+                DefaultModeにシフトアクター以外のシェイプシフター置き換え役職が増えた場合
+                [if (exiled.Object.IsShapeshifter()) ~ ] のコメントアウトを解除し、
+                [if (exiled.Object.IsRole(RoleId.ShiftActor)) ~ ]のコードを削除してください。
+            */
             if (exiled.Object.IsShapeshifter()) exiled.Object.ResetAndSetImpostorghost();
+            if (exiled.Object.IsRole(RoleId.ShiftActor)) exiled.Object.ResetAndSetImpostorghost();
         }
         Mode.SuperHostRoles.Main.RealExiled = null;
     }

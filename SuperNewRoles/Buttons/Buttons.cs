@@ -285,7 +285,7 @@ static class HudManagerStartPatch
             () => false
         )
         {
-            buttonText = ModTranslation.GetString("FinalStatusKill"),
+            buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
             showButtonText = true
         };
 
@@ -1233,7 +1233,7 @@ static class HudManagerStartPatch
                     RoleClass.Jackal.CanCreateSidekick = false;
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick && CustomOptionHolder.JackalCreateSidekick.GetBool(); },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick; },
             () =>
             {
                 return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -1289,7 +1289,7 @@ static class HudManagerStartPatch
                     RoleClass.JackalSeer.CanCreateSidekick = false;
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.CanCreateSidekick && CustomOptionHolder.JackalSeerCreateSidekick.GetBool(); },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.CanCreateSidekick; },
             () =>
             {
                 return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -1509,11 +1509,9 @@ static class HudManagerStartPatch
                     {
                         var target = PlayerControlFixedUpdatePatch.SetTarget();
                         var localId = CachedPlayer.LocalPlayer.PlayerId;
-                        var misfire = !Sheriff.IsSheriffKill(target);
+                        var misfire = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target);
                         PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Sheriff.color);
-                        if (RoleClass.Chief.SheriffPlayer.Contains(localId)) misfire = !Sheriff.IsChiefSheriffKill(target);
-                        var alwaysKill = !Sheriff.IsSheriffKill(target) && CustomOptionHolder.SheriffAlwaysKills.GetBool();
-                        if (RoleClass.Chief.SheriffPlayer.Contains(localId)) alwaysKill = !Sheriff.IsChiefSheriffKill(target) && CustomOptionHolder.ChiefSheriffAlwaysKills.GetBool();
+                        var alwaysKill = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target) && CustomOptionHolder.SheriffAlwaysKills.GetBool();
                         if (alwaysKill && target.IsRole(RoleId.Squid) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
                         {
                             alwaysKill = false;
@@ -1531,6 +1529,7 @@ static class HudManagerStartPatch
                         killWriter.Write(alwaysKill);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                         FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : target, misfire ? FinalStatus.SheriffMisFire : (target.IsRole(RoleId.HauntedWolf) ? FinalStatus.SheriffHauntedWolfKill : FinalStatus.SheriffKill));
+                        if (alwaysKill) FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
                         Sheriff.ResetKillCooldown();
                         RoleClass.Sheriff.KillMaxCount--;
                     }
@@ -1729,7 +1728,7 @@ static class HudManagerStartPatch
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("SidekickName"),
+            buttonText = ModTranslation.GetString("CreateMadmateButton"),
             showButtonText = true
         };
 
@@ -1767,7 +1766,7 @@ static class HudManagerStartPatch
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("SidekickName"),
+            buttonText = ModTranslation.GetString("SideKillerSidekickButtonName"),
             showButtonText = true
         };
 
@@ -1816,7 +1815,7 @@ static class HudManagerStartPatch
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("SidekickName"),
+            buttonText = ModTranslation.GetString("MadMakerSidekickButtonName"),
             showButtonText = true
         };
 
@@ -2016,7 +2015,7 @@ static class HudManagerStartPatch
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("SidekickName"),
+            buttonText = ModTranslation.GetString("ChiefSidekickButtonName"),
             showButtonText = true
         };
 
@@ -2466,7 +2465,7 @@ static class HudManagerStartPatch
             }
         )
         {
-            buttonText = ModTranslation.GetString("FinalStatusKill"),
+            buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
             showButtonText = true
         };
 
@@ -3193,7 +3192,7 @@ static class HudManagerStartPatch
             }
         )
         {
-            buttonText = ModTranslation.GetString("FinalStatusKill"),
+            buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
             showButtonText = true
         };
 

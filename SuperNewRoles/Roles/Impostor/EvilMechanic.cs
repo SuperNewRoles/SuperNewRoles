@@ -5,7 +5,7 @@ namespace SuperNewRoles.Roles.Impostor;
 
 public static class EvilMechanic
 {
-    private const int OptionId = 1212;
+    private const int OptionId = 1239;
     public static CustomRoleOption EvilMechanicOption;
     public static CustomOption EvilMechanicPlayerCount;
     public static CustomOption EvilMechanicCoolTime;
