@@ -136,7 +136,7 @@ static class HudManagerStartPatch
             {
                 if (MechanicButton.isEffectActive)
                 {
-                    Vector3 truepos = PlayerControl.LocalPlayer.transform.position;
+                    Vector3 truepos = PlayerControl.LocalPlayer.GetTruePosition();
                     NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(forceout: true), false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
                     MechanicButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicCoolTime.GetFloat() : EvilMechanic.EvilMechanicCoolTime.GetFloat();
                     MechanicButton.Timer = MechanicButton.MaxTimer;
@@ -170,7 +170,7 @@ static class HudManagerStartPatch
             5f,
             () =>
             {
-                Vector3 truepos = PlayerControl.LocalPlayer.transform.position;
+                Vector3 truepos = PlayerControl.LocalPlayer.GetTruePosition();
                 NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(forceout: true), false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
                 MechanicButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicCoolTime.GetFloat() : EvilMechanic.EvilMechanicCoolTime.GetFloat();
                 MechanicButton.Timer = MechanicButton.MaxTimer;

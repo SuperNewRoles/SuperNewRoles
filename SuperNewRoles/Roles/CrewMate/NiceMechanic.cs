@@ -96,7 +96,7 @@ public static class NiceMechanic
     {
         if (PlayerControl.LocalPlayer.PlayerId == Target.PlayerId && IsLocalUsingNow)
         {
-            Vector3 truepos = PlayerControl.LocalPlayer.transform.position;
+            Vector3 truepos = PlayerControl.LocalPlayer.GetTruePosition();
             RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, HudManagerStartPatch.SetTargetVent(forceout: true), false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
         }
     }

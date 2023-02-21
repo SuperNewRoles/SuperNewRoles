@@ -1402,8 +1402,7 @@ public static class RoleHelpers
             RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsUseVent,
             RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.UseVent),
             RoleId.FireFox => FireFox.FireFoxIsUseVent.GetBool(),
-            RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
-            RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
+            RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool(),
             _ => player.IsImpostor(),
         };
     }
