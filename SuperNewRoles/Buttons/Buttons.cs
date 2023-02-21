@@ -140,6 +140,7 @@ static class HudManagerStartPatch
                     NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(forceout: true), false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
                     MechanicButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicCoolTime.GetFloat() : EvilMechanic.EvilMechanicCoolTime.GetFloat();
                     MechanicButton.Timer = MechanicButton.MaxTimer;
+                    MechanicButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
                     return;
                 }
                 NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(), true);
