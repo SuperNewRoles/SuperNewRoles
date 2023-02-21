@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
@@ -14,7 +12,7 @@ namespace SuperNewRoles.Roles.Neutral;
 
 public static class OrientalShaman
 {
-    private const int OptionId = 1207;
+    private const int OptionId = 1220;
     public static CustomRoleOption OrientalShamanOption;
     public static CustomOption OrientalShamanPlayerCount;
     public static CustomOption OrientalShamanImpostorVision;

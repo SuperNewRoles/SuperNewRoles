@@ -1580,7 +1580,7 @@ public static class RoleHelpers
         RoleId.FireFox or
         RoleId.TheFirstLittlePig or
         RoleId.TheSecondLittlePig or
-        RoleId.TheThirdLittlePig
+        RoleId.TheThirdLittlePig or
         RoleId.OrientalShaman;
     // 第三か
     public static bool IsRole(this PlayerControl p, RoleId role, bool IsChache = true)
