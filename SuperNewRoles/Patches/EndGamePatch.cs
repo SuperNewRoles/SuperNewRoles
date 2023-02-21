@@ -47,6 +47,7 @@ public enum CustomGameOverReason
     NoWinner,
     BugEnd,
     SafecrackerWin,
+    TheThreeLittlePigsWin,
     OrientalShamanWin,
 }
 enum WinCondition
@@ -80,6 +81,7 @@ enum WinCondition
     NoWinner,
     BugEnd,
     SafecrackerWin,
+    TheThreeLittlePigsWin,
     OrientalShamanWin,
 }
 class FinalStatusPatch
@@ -241,6 +243,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.LoversBreakerWin,("LoversBreakerName",RoleClass.LoversBreaker.color)},
                 {WinCondition.NoWinner,("NoWinner",Color.white)},
                 {WinCondition.SafecrackerWin,("SafecrackerName",Safecracker.color)},
+                {WinCondition.TheThreeLittlePigsWin,("TheThreeLittlePigsName",TheThreeLittlePigs.color)},
                 {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)}
             };
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
@@ -586,6 +589,9 @@ public static class OnGameEndPatch
             RoleClass.LoversBreaker.LoversBreakerPlayer,
             Roles.Impostor.MadRole.Worshiper.WorshiperPlayer,
             Safecracker.SafecrackerPlayer,
+            TheThreeLittlePigs.TheFirstLittlePig.Player,
+            TheThreeLittlePigs.TheSecondLittlePig.Player,
+            TheThreeLittlePigs.TheThirdLittlePig.Player,
             OrientalShaman.OrientalShamanPlayer,
             OrientalShaman.ShermansServantPlayer,
             });
@@ -988,6 +994,60 @@ public static class OnGameEndPatch
                     AdditionalTempData.winCondition = WinCondition.SpelunkerWin;
                 }
                 isreset = true;
+            }
+        }
+        isReset = false;
+        foreach (List<PlayerControl> plist in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
+        {
+            bool isAllAlive = true;
+            foreach (PlayerControl player in plist)
+            {
+                if (player.IsDead())
+                {
+                    isAllAlive = false;
+                    break;
+                }
+            }
+            if (isAllAlive)
+            {
+                if (!((isDleted && changeTheWinCondition) || isReset))
+                {
+                    TempData.winners = new();
+                    isDleted = true;
+                    isReset = true;
+                }
+                foreach (PlayerControl player in plist)
+                {
+                    TempData.winners.Add(new(player.Data));
+                    AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
+                }
+            }
+            else
+            {
+                bool isAllKillerDead = true;
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.IsDead()) continue;
+                    if (player.IsImpostor() || player.IsKiller())
+                    {
+                        isAllKillerDead = false;
+                        break;
+                    }
+                }
+                if (isAllKillerDead)
+                {
+                    if (!((isDleted && changeTheWinCondition) || isReset))
+                    {
+                        TempData.winners = new();
+                        isDleted = true;
+                        isReset = true;
+                    }
+                    foreach (PlayerControl player in plist)
+                    {
+                        TempData.winners.Add(new(player.Data));
+                        AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
+                    }
+                }
             }
         }
         isReset = false;

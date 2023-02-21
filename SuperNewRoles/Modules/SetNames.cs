@@ -454,6 +454,19 @@ public class SetNameUpdate
                     }
                 }
             }
+            else if (LocalRole is RoleId.TheFirstLittlePig or RoleId.TheSecondLittlePig or RoleId.TheThirdLittlePig)
+            {
+                foreach (var players in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
+                {
+                    if (players.TrueForAll(x => x.PlayerId != PlayerControl.LocalPlayer.PlayerId)) continue;
+                    foreach (PlayerControl p in players)
+                    {
+                        SetNamesClass.SetPlayerRoleNames(p);
+                        SetNamesClass.SetPlayerNameColors(p);
+                    }
+                    break;
+                }
+            }
             else if (LocalRole is RoleId.OrientalShaman)
             {
                 foreach (var date in OrientalShaman.OrientalShamanCausative)

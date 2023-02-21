@@ -212,6 +212,7 @@ public static class RoleClass
         FireFox.ClearAndReload();
         Squid.ClearAndReload();
         DyingMessenger.ClearAndReload();
+        TheThreeLittlePigs.ClearAndReload();
         OrientalShaman.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();

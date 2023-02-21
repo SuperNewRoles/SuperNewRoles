@@ -270,6 +270,9 @@ public class IntroData
     public static IntroData FireFoxIntro = new("FireFox", FireFox.color, 1, RoleId.FireFox, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData SquidIntro = new("Squid", Squid.color, 2, RoleId.Squid, TeamRoleType.Crewmate);
     public static IntroData DyingMessengerIntro = new("DyingMessenger", DyingMessenger.color, 1, RoleId.DyingMessenger, TeamRoleType.Crewmate);
+    public static IntroData TheFirstLittlePigIntro = new("TheFirstLittlePig", TheThreeLittlePigs.color, 1, RoleId.TheFirstLittlePig, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData TheSecondLittlePigIntro = new("TheSecondLittlePig", TheThreeLittlePigs.color, 1, RoleId.TheSecondLittlePig, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData TheThirdLittlePig = new("TheThirdLittlePig", TheThreeLittlePigs.color, 1, RoleId.TheThirdLittlePig, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData OrientalShamanIntro = new("OrientalShaman", OrientalShaman.color, 1, RoleId.OrientalShaman, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData ShermansServantIntro = new("ShermansServant", OrientalShaman.color, 1, RoleId.ShermansServant, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     // イントロオブジェ

@@ -184,6 +184,9 @@ public enum RoleId
     FireFox,
     Squid,
     DyingMessenger,
+    TheFirstLittlePig,
+    TheSecondLittlePig,
+    TheThirdLittlePig,
     OrientalShaman,
     ShermansServant,
     //RoleId
@@ -278,6 +281,8 @@ public enum CustomRPC
     SafecrackerGuardCount,
     SetVigilance,
     Chat,
+    SetTheThreeLittlePigsTeam,
+    UseTheThreeLittlePigsCount,
     SetOutfit,
     CreateShermansServant,
     SetVisible,
@@ -313,6 +318,37 @@ public static class RPCProcedure
             PlayerName = name
         };
         player.setOutfit(outfit);
+    }
+    public static void UseTheThreeLittlePigsCount(byte id)
+    {
+        PlayerControl player = ModHelpers.PlayerById(id);
+        if (player == null) return;
+        if (player.IsRole(RoleId.TheSecondLittlePig))
+        {
+            if (!TheThreeLittlePigs.TheSecondLittlePig.GuardCount.ContainsKey(player.PlayerId))
+                TheThreeLittlePigs.TheSecondLittlePig.GuardCount[player.PlayerId] = TheThreeLittlePigs.TheSecondLittlePigMaxGuardCount.GetInt() - 1;
+            else TheThreeLittlePigs.TheSecondLittlePig.GuardCount[player.PlayerId]--;
+        }
+        else if (player.IsRole(RoleId.TheThirdLittlePig))
+        {
+            if (!TheThreeLittlePigs.TheThirdLittlePig.CounterCount.ContainsKey(player.PlayerId))
+                TheThreeLittlePigs.TheThirdLittlePig.CounterCount[player.PlayerId] = TheThreeLittlePigs.TheThirdLittlePigMaxCounterCount.GetInt() - 1;
+            else TheThreeLittlePigs.TheThirdLittlePig.CounterCount[player.PlayerId]--;
+        }
+    }
+    public static void SetTheThreeLittlePigsTeam(byte first, byte second, byte third)
+    {
+        PlayerControl firstPlayer = ModHelpers.PlayerById(first);
+        PlayerControl secondPlayer = ModHelpers.PlayerById(second);
+        PlayerControl thirdPlayer = ModHelpers.PlayerById(third);
+        if (firstPlayer == null || secondPlayer == null || thirdPlayer == null) return;
+        List<PlayerControl> theThreeLittlePigsPlayer = new()
+        {
+            firstPlayer,
+            secondPlayer,
+            thirdPlayer
+        };
+        TheThreeLittlePigs.TheThreeLittlePigsPlayer.Add(theThreeLittlePigsPlayer);
     }
     public static void Chat(byte id, string text)
     {
@@ -1730,6 +1766,12 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.Chat:
                         Chat(reader.ReadByte(), reader.ReadString());
+                        break;
+                    case CustomRPC.SetTheThreeLittlePigsTeam:
+                        SetTheThreeLittlePigsTeam(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.UseTheThreeLittlePigsCount:
+                        UseTheThreeLittlePigsCount(reader.ReadByte());
                         break;
                     case CustomRPC.SetOutfit:
                         SetOutfit(reader.ReadByte(), reader.ReadInt32(), reader.ReadString(), reader.ReadString(), reader.ReadString(), reader.ReadString(), reader.ReadString());

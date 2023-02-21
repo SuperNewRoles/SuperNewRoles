@@ -1956,6 +1956,8 @@ public class CustomOptionHolder
 
         DyingMessenger.SetupCustomOptions();
 
+        TheThreeLittlePigs.SetupCustomOptions();
+
         OrientalShaman.SetupCustomOptions();
 
         // 表示設定
