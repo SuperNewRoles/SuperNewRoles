@@ -104,6 +104,7 @@ public class FixedUpdate
                 ReduceKillCooldown(__instance);
                 Roles.Impostor.Penguin.FixedUpdate();
                 Squid.FixedUpdate();
+                OrientalShaman.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
@@ -227,10 +228,12 @@ public class FixedUpdate
                             }
                             break;
                         case RoleId.Vulture:
-                            if (RoleClass.Vulture.Arrow?.arrow != null)
+                        case RoleId.ShermansServant:
+                            foreach (var arrow in RoleClass.Vulture.DeadPlayerArrows)
                             {
-                                Object.Destroy(RoleClass.Vulture.Arrow.arrow);
-                                return;
+                                if (arrow.Value?.arrow != null)
+                                    Object.Destroy(arrow.Value.arrow);
+                                RoleClass.Vulture.DeadPlayerArrows.Remove(arrow.Key);
                             }
                             break;
                     }

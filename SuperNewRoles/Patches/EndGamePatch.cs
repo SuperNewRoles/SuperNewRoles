@@ -48,6 +48,7 @@ public enum CustomGameOverReason
     BugEnd,
     SafecrackerWin,
     TheThreeLittlePigsWin,
+    OrientalShamanWin,
 }
 enum WinCondition
 {
@@ -81,6 +82,7 @@ enum WinCondition
     BugEnd,
     SafecrackerWin,
     TheThreeLittlePigsWin,
+    OrientalShamanWin,
 }
 class FinalStatusPatch
 {
@@ -242,6 +244,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.NoWinner,("NoWinner",Color.white)},
                 {WinCondition.SafecrackerWin,("SafecrackerName",Safecracker.color)},
                 {WinCondition.TheThreeLittlePigsWin,("TheThreeLittlePigsName",TheThreeLittlePigs.color)},
+                {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)}
             };
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {
@@ -589,6 +592,8 @@ public static class OnGameEndPatch
             TheThreeLittlePigs.TheFirstLittlePig.Player,
             TheThreeLittlePigs.TheSecondLittlePig.Player,
             TheThreeLittlePigs.TheThirdLittlePig.Player,
+            OrientalShaman.OrientalShamanPlayer,
+            OrientalShaman.ShermansServantPlayer,
             });
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
@@ -854,6 +859,33 @@ public static class OnGameEndPatch
                     TempData.winners.Add(new(player.Data));
                     AdditionalTempData.winCondition = WinCondition.GodWin;
                 }
+            }
+        }
+        isReset = false;
+        foreach (PlayerControl player in OrientalShaman.OrientalShamanPlayer)
+        {
+            if (!OrientalShaman.OrientalShamanCrewTaskWinHijack.GetBool() &&
+                AdditionalTempData.gameOverReason == GameOverReason.HumansByTask) break;
+            if (OrientalShaman.OrientalShamanWinTask.GetBool())
+            {
+                var (completed, total) = TaskCount.TaskDate(player.Data);
+                if (completed < total) continue;
+            }
+            if (player.IsAlive())
+            {
+                if (!((isDleted && changeTheWinCondition) || isReset))
+                {
+                    TempData.winners = new();
+                    isDleted = true;
+                    isReset = true;
+                }
+                TempData.winners.Add(new(player.Data));
+                if (OrientalShaman.OrientalShamanCausative.ContainsKey(player.PlayerId))
+                {
+                    PlayerControl causativePlayer = ModHelpers.PlayerById(OrientalShaman.OrientalShamanCausative[player.PlayerId]);
+                    if (causativePlayer) TempData.winners.Add(new(causativePlayer.Data));
+                }
+                AdditionalTempData.winCondition = WinCondition.OrientalShamanWin;
             }
         }
         isReset = false;
@@ -1610,7 +1642,7 @@ public static class CheckGameEndPatch
                 {
                     if (playerInfo.Object.IsAlive())
                     {
-                        numTotalAlive++;
+                        if (!playerInfo.Object.IsRole(RoleId.OrientalShaman)) numTotalAlive++;
                         if (playerInfo.Object.IsJackalTeamJackal() || playerInfo.Object.IsJackalTeamSidekick())
                         {
                             numTotalJackalTeam++;

@@ -18,6 +18,7 @@ public class FixSabotage
             { RoleId.Fox, (false, false, false, false) },
             { RoleId.FireFox, (false, false, false, false) },
             { RoleId.God, (false,false, false, false) },
+            { RoleId.OrientalShaman, (false, false, false, false) },
             { RoleId.Vampire, (true, false, true, true) },
             { RoleId.Dependents, (true, false, true, true) },
             { RoleId.Madmate, (true, CustomOptionHolder.MadRolesCanFixElectrical.GetBool(), CustomOptionHolder.MadRolesCanFixComms.GetBool(), true) },
@@ -55,7 +56,8 @@ public class FixSabotage
     }
     private static bool IsBlocked(TaskTypes type, RoleId role)
     {
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return false;
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
+        if (!IsSabotage(type)) return true;
         if (!SetFixSabotageDictionary.ContainsKey(role)) return true;
         (bool, bool, bool, bool) fixSabotage = SetFixSabotageDictionary[role];
         if (type is TaskTypes.StopCharles or TaskTypes.ResetSeismic or TaskTypes.ResetReactor && fixSabotage.Item1) return true;
@@ -73,6 +75,8 @@ public class FixSabotage
             return true;
         return false;
     }
+    private static bool IsSabotage(TaskTypes type) =>
+        type is TaskTypes.StopCharles or TaskTypes.ResetSeismic or TaskTypes.ResetReactor or TaskTypes.FixLights or TaskTypes.FixComms or TaskTypes.RestoreOxy;
     private static RoleId GetRole(RoleId role)
     {
         if (SetFixSabotageDictionary.ContainsKey(role)) return role;

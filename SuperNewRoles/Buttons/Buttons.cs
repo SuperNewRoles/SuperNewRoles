@@ -3172,6 +3172,8 @@ static class HudManagerStartPatch
 
         Squid.SetusCustomButton(__instance);
 
+        OrientalShaman.SetupCustomButtons(__instance);
+
         SetCustomButtonCooldowns();
     }
 }

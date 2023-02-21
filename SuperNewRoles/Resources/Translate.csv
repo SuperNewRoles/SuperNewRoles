@@ -1265,6 +1265,23 @@ TheSecondLittlePigClearTaskSetting,Percentage of tasks required for The second l
 TheSecondLittlePigManGuardMaxCountSetting,Number of times The second little pig can be guarded,2番目の仔豚がガードできる回数
 TheThirdLittlePigClearTaskSetting,Percentage of tasks required for The third little pig to complete the house,3番目の仔豚が家を完成させるのに必要なタスクの割合
 TheThirdLittlePigCounterKillSetting,Number of times The third little pig can be countered,3番目の仔豚がカウンターできる回数
+OrientalShamanName,Oriental Shaman,陰陽師
+OrientalShamanTitle1,Where this ship will end up is beyond where the stars lead us.,この船の行く末は星が導くその先に
+OrientalShamanDescription,They possess a variety of abilities necessary for survival.\nInstead， can't fix sabotage.\nIf you survive to the end， you win alone.,生き抜くために必要な様々な能力を持っています。\n代わりにサボタージュは直せません。\n最後まで生き残ると単独勝利します。
+OrientalShamanImpostorVisionSetting,Make Oriental shaman the imposter vision,陰陽師をインポスターの視界にする
+OrientalShamanVentUseCoolTimeSetting,Cool time for Oriental shaman's vent,陰陽師のベントのクールタイム
+OrientalShamanVentDurationTimeSetting,Duration of Oriental shaman's vent,陰陽師のベントの持続時間
+OrientalShamanCrewTaskWinHijackSetting,You can hijack a task victory,タスク勝利を乗っ取れる
+OrientalShamanWinTaskSetting,Oriental shaman was clear task win,タスクを完了しないと勝利できない
+OrientalShamanCreateShermansServantSetting,Sherman's servant can be appointed,式神を指名出来る
+OrientalShamanCreateShermansServantCoolSetting,Sherman's servant nomination cool time,式神指名のクールタイム
+OrientalShamanShermansServantButtoonName,Nominate Sherman's servant,式神指名
+ShermansServantName,Sherman's Servant,式神
+ShermansServantTitle1,This body is for my Lord,この身は我が主のために有り
+ShermansServantDescription,It is a sidekick to the Oriental shaman.\nIt is possible to transform into the form of an Oriental shaman.\nThe Sherman's servant is basically judged as a crew， so take advantage of this to protect the Oriental shaman.,陰陽師のサイドキックです。\n陰陽師の姿に変身することが出来ます。\n式神は基本的にクルーと判定されるので、それを生かして陰陽師を守りましょう。
+ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation cool time,式神の変身クールタイム
+ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム
+ShermansServantTransformationButtonName,Metamorphosis,変身
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示
