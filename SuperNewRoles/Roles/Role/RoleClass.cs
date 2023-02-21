@@ -33,6 +33,7 @@ public static class RoleClass
     public static void ClearAndReloadRoles()
     {
         ModHelpers.IdControlDic = new();
+        ModHelpers.VentIdControlDic = new();
         BlockPlayers = new();
         IsMeeting = false;
         RandomSpawn.IsFirstSpawn = true;
@@ -59,6 +60,7 @@ public static class RoleClass
         MapCustoms.MoveElecPad.ClearAndReload();
         Beacon.ClearBeacons();
         MeetingHudUpdatePatch.ErrorNames = new();
+        FixSabotage.ClearAndReload();
 
         RoleHelpers.CrewmatePlayer = new();
         RoleHelpers.ImposterPlayer = new();
@@ -220,6 +222,11 @@ public static class RoleClass
         FireFox.ClearAndReload();
         Squid.ClearAndReload();
         DyingMessenger.ClearAndReload();
+        WiseMan.ClearAndReload();
+        NiceMechanic.ClearAndReload();
+        EvilMechanic.ClearAndReload();
+        TheThreeLittlePigs.ClearAndReload();
+        OrientalShaman.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
@@ -585,7 +592,7 @@ public static class RoleClass
         public static int DeadBodyCount;
         public static bool IsUseVent;
         public static bool ShowArrows;
-        public static Arrow Arrow;
+        public static Dictionary<DeadBody, Arrow> DeadPlayerArrows;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
 
         public static void ClearAndReload()
@@ -595,7 +602,7 @@ public static class RoleClass
             DeadBodyCount = CustomOptionHolder.VultureDeadBodyMaxCount.GetInt();
             IsUseVent = CustomOptionHolder.VultureIsUseVent.GetBool();
             ShowArrows = CustomOptionHolder.VultureShowArrows.GetBool();
-            Arrow = null;
+            DeadPlayerArrows = new();
         }
     }
     public static class NiceScientist

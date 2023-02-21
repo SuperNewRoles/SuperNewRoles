@@ -11,9 +11,11 @@ using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using static GameData;
 using static SuperNewRoles.Helpers.DesyncHelpers;
@@ -893,7 +895,7 @@ public static class MurderPlayerPatch
 {
     public static bool resetToCrewmate = false;
     public static bool resetToDead = false;
-    public static bool Prefix(PlayerControl __instance, PlayerControl target)
+    public static bool Prefix(PlayerControl __instance, ref PlayerControl target)
     {
         if (Roles.Crewmate.Knight.GuardedPlayers.Contains(target.PlayerId))
         {
@@ -904,10 +906,25 @@ public static class MurderPlayerPatch
             target.protectedByGuardian = true;
             return false;
         }
+        if (target.IsRole(RoleId.WiseMan)  && WiseMan.WiseManData.ContainsKey(target.PlayerId) && WiseMan.WiseManData[target.PlayerId] is not null)
+        {
+            WiseMan.WiseManData[target.PlayerId] = null;
+            PlayerControl targ = target;
+            var wisemandata = WiseMan.WiseManPosData.FirstOrDefault(x => x.Key is not null && x.Key.PlayerId == targ.PlayerId);
+            if (wisemandata.Key is not null) WiseMan.WiseManPosData[wisemandata.Key] = null;
+            if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            {
+                HudManagerStartPatch.WiseManButton.isEffectActive = false;
+                HudManagerStartPatch.WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
+                HudManagerStartPatch.WiseManButton.Timer = HudManagerStartPatch.WiseManButton.MaxTimer;
+                Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                PlayerControl.LocalPlayer.moveable = true;
+            }
+            target = __instance;
+        }
         EvilGambler.MurderPlayerPrefix(__instance, target);
         Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
-        if (!DyingMessenger.ActualDeathTime.ContainsKey(target.PlayerId)) DyingMessenger.ActualDeathTime.Add(target.PlayerId, (DateTime.Now, __instance));
-        else DyingMessenger.ActualDeathTime[target.PlayerId] = (DateTime.Now, __instance);
+        DyingMessenger.ActualDeathTime[target.PlayerId] = (DateTime.Now, __instance);
         if (ModeHandler.IsMode(ModeId.Default))
         {
             target.resetChange();
@@ -926,6 +943,11 @@ public static class MurderPlayerPatch
                             RoleClass.SideKiller.IsUpMadKiller = true;
                         }
                     }
+                }
+                else if (target.IsRole(RoleId.ShermansServant) && OrientalShaman.IsTransformation && target.AmOwner)
+                {
+                    OrientalShaman.SetOutfit(target, target.Data.DefaultOutfit);
+                    OrientalShaman.IsTransformation = false;
                 }
             }
             else if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
@@ -1037,6 +1059,14 @@ public static class MurderPlayerPatch
                     HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
                 }
             }
+            if (target.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic) && target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            {
+                if (NiceMechanic.TargetVent.ContainsKey(target.PlayerId) || NiceMechanic.TargetVent[target.PlayerId] is not null)
+                {
+                    Vector3 truepos = target.transform.position;
+                    NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, NiceMechanic.TargetVent[target.PlayerId], false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
+                }
+            }
             if (__instance.IsRole(RoleId.OverKiller))
             {
                 DeadBody deadBodyPrefab = target.KillAnimations[0].bodyPrefab;
@@ -1090,6 +1120,15 @@ public static class MurderPlayerPatch
                 if (target.IsRole(RoleId.Hitman))
                 {
                     Roles.Neutral.Hitman.Death();
+                }
+                else if (target.IsRole(RoleId.OrientalShaman) && OrientalShaman.OrientalShamanCausative.ContainsKey(target.PlayerId))
+                {
+                    PlayerControl causativePlayer = PlayerById(OrientalShaman.OrientalShamanCausative[target.PlayerId]);
+                    if (causativePlayer.IsAlive())
+                    {
+                        RPCProcedure.RPCMurderPlayer(causativePlayer.PlayerId, causativePlayer.PlayerId, 0);
+                        causativePlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+                    }
                 }
             }
             Levelinger.MurderPlayer(__instance, target);
@@ -1192,6 +1231,18 @@ public static class ExilePlayerPatch
             {
                 Roles.Neutral.Hitman.Death();
             }
+            if (__instance.IsRole(RoleId.OrientalShaman) && OrientalShaman.OrientalShamanCausative.ContainsKey(__instance.PlayerId))
+            {
+                PlayerControl causativePlayer = PlayerById(OrientalShaman.OrientalShamanCausative[__instance.PlayerId]);
+                if (causativePlayer.IsAlive())
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ExiledRPC, SendOption.Reliable, -1);
+                    writer.Write(causativePlayer.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.ExiledRPC(causativePlayer.PlayerId);
+                    causativePlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+                }
+            }
             if (RoleClass.Lovers.SameDie && __instance.IsLovers())
             {
                 if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
@@ -1273,6 +1324,11 @@ class ReportDeadBodyPatch
                         writer.EndRPC();
                     }, 0.5f, "DyingMessengerText");
                 }
+            }
+            if (OrientalShaman.IsTransformation)
+            {
+                OrientalShaman.SetOutfit(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data.DefaultOutfit);
+                OrientalShaman.IsTransformation = false;
             }
         }
         if (ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))

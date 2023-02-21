@@ -100,8 +100,14 @@ colorTokiwaGreen,TokiwaGreen,常磐緑,常青绿
 colorPosi,Posi,ポジ,正片滤镜
 colorXmasRed,X'masRed,クリスマスレッド,圣诞红
 colorXmasGreen,X'masGreen,クリスマスグリーン,圣诞绿
-LightColor,bright,明るい,亮色
-DarkerColor,darker,暗い,暗色
+colorCyberRed,CyberRed,サイバーレッド
+colorCyberYellow,CyberYellow,サイバーイエロー
+colorCyberGreen,CyberGreen,サイバーグリーン
+colorCyberBlue,CyberBlue,サイバーブルー
+colorCyberPurple,CyberPurple,サイバーパープル
+
+LightColor,bright,明るい,亮
+DarkerColor,darker,暗い,暗
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
@@ -325,8 +331,9 @@ FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺
 FinalStatusRevenge,Revenge,復讐,仇杀
 FinalStatusHitmanKill,Mission accomplished.,任務遂行,遇刺
 FinalStatusHitmanDead,Disposition.,処分,沉江
-FinalStatusWorshiperSelfDeath,Suicide,自決
+FinalStatusWorshiperSelfDeath,Suicide,自決,自杀
 FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,暴発巻き添え
+FinalStatusTheThirdLittlePigCounterKill,Counter Kill,カウンターキル
 
 # Sabotages
 SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
@@ -735,6 +742,7 @@ AmnesiacName,Amnesiac,忘却者,失忆者
 AmnesiacTitle1,Let's call the cops and join them.,通報して仲間になろう,努力回想你的职业
 SideKillerName,SideKiller,サイドキラー,头目
 SideKillerTitle1,Make friends and win!,仲間を作って勝利しよう,招募喽啰来获得胜利
+SideKillerSidekickButtonName,Erosion,浸食する,策反
 SideKillerKillCoolTimeSetting,SideKiller Kill Cool Time.,サイドキラーのキルクールタイム,头目击杀冷却
 SideKillerMadKillerKillCoolTimeSetting,MadKiller Kill Cool Time.,マッドキラーのキルクールタイム,喽啰击杀冷却
 MadKillerName,MadKiller,マッドキラー,喽啰
@@ -828,6 +836,7 @@ TeleportingJackalName,TeleportingJackal,テレポートジャッカル,狼族传
 TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう,传送并杀死所有人
 MadMakerName,MadMaker,マッドメーカー,走狗
 MadMakerTitle1,Let's get more lunatics!,狂人を増やそう！,让更多的人叛变
+MadMakerSidekickButtonName,Solicitation,勧誘する,收买
 DemonName,Demon,悪魔,恶魔
 DemonTitle1,Curse the Crew and Help the Impostor!,クルーを呪いながらインポスターを手助けせよ,诅咒船员并协助内鬼
 DemonIsAliveWinSetting,You have to be alive to win.,生存していないと勝利できない,恶魔存活才能获胜
@@ -861,6 +870,7 @@ ArsonistIgniteButtonName,Ignite,燃やす,点燃
 ArsonistDescription,If you oil them all and burn them. you win alone.,油を全員に塗り燃やしたら単独勝利です。,纵火犯属于独立阵营。\n纵火犯给所有人涂油后按下点燃按钮则纵火犯独自获胜。
 ChiefName,Chief,村長,警察局长
 ChiefTitle1,Appoint a sheriff to help your crew.,シェリフを任命してクルーを助けよう,任命一位警长来帮助船员
+ChiefSidekickButtonName,Appointment,任命する,任命
 CleanerName,Cleaner,クリーナー,清理者
 CleanerTitle1,Let's destroy the evidence!,証拠を隠滅しよう!,毁尸灭迹
 CleanerButtonName,CleanButton,死体を消す!,清理
@@ -1246,6 +1256,46 @@ DyingMessengerFirstPerson1,me,私,我
 DyingMessengerFirstPerson2,me,僕,我
 DyingMessengerGetRoleText,The role of the person who killed {0} was {1}.,{0}をキルした人の役職は{1}でした。,把{0}杀害的人是一名{1}。
 DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}をキルした人の色は{1}色でした。,把{0}杀害的人是{1}色的。
+WiseManName,WiseMan,賢者
+WiseManTitle1,Protect your crew with a large shield.,大きい盾でクルーを守ろう
+WiseManButtonName,Sacred Barrier,聖なるバリア
+NiceMechanicName,NiceMechanic,ナイスメカニック
+NiceMechanicTitle1,Leave it to me to maintain this boat!,この船の整備はお任せあれ！
+EvilMechanicName,EvilMechanic,イビルメカニック
+EvilMechanicTitle1,I will convert this ship to my liking.,この船を私好みに改造してやろう
+MechanicButtonName,Relocate.,移設
+TheThreeLittlePigsName,The Three Little Pigs,3匹の仔豚
+TheFirstLittlePigName,The First Little Pig,1番目の仔豚
+TheSecondLittlePigName,The Second Little Pig,2番目の仔豚
+TheThirdLittlePigName,The Third Little Pig,3番目の仔豚
+TheFirstLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう
+TheSecondLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう
+TheThirdLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう
+TheThreeLittlePigsTaskSetting,Assign tasks separately,別にタスクを割り当てる
+TheFirstLittlePigClearTaskSetting,Percentage of tasks required for The first little pig to complete the house,1番目の仔豚が家を完成させるのに必要なタスクの割合
+TheFirstLittlePigIsCustomTimerSetting,Set the timer for The first little pig,1番目の仔豚のタイマーを設定する
+TheFirstLittlePigCustomTimerSetting,The first little pig timer,1番目の仔豚のタイマー
+TheSecondLittlePigClearTaskSetting,Percentage of tasks required for The second little pig to complete the house,2番目の仔豚が家を完成させるのに必要なタスクの割合
+TheSecondLittlePigManGuardMaxCountSetting,Number of times The second little pig can be guarded,2番目の仔豚がガードできる回数
+TheThirdLittlePigClearTaskSetting,Percentage of tasks required for The third little pig to complete the house,3番目の仔豚が家を完成させるのに必要なタスクの割合
+TheThirdLittlePigCounterKillSetting,Number of times The third little pig can be countered,3番目の仔豚がカウンターできる回数
+OrientalShamanName,Oriental Shaman,陰陽師
+OrientalShamanTitle1,Where this ship will end up is beyond where the stars lead us.,この船の行く末は星が導くその先に
+OrientalShamanDescription,They possess a variety of abilities necessary for survival.\nInstead， can't fix sabotage.\nIf you survive to the end， you win alone.,生き抜くために必要な様々な能力を持っています。\n代わりにサボタージュは直せません。\n最後まで生き残ると単独勝利します。
+OrientalShamanImpostorVisionSetting,Make Oriental shaman the imposter vision,陰陽師をインポスターの視界にする
+OrientalShamanVentUseCoolTimeSetting,Cool time for Oriental shaman's vent,陰陽師のベントのクールタイム
+OrientalShamanVentDurationTimeSetting,Duration of Oriental shaman's vent,陰陽師のベントの持続時間
+OrientalShamanCrewTaskWinHijackSetting,You can hijack a task victory,タスク勝利を乗っ取れる
+OrientalShamanWinTaskSetting,Oriental shaman was clear task win,タスクを完了しないと勝利できない
+OrientalShamanCreateShermansServantSetting,Sherman's servant can be appointed,式神を指名出来る
+OrientalShamanCreateShermansServantCoolSetting,Sherman's servant nomination cool time,式神指名のクールタイム
+OrientalShamanShermansServantButtoonName,Nominate Sherman's servant,式神指名
+ShermansServantName,Sherman's Servant,式神
+ShermansServantTitle1,This body is for my Lord,この身は我が主のために有り
+ShermansServantDescription,It is a sidekick to the Oriental shaman.\nIt is possible to transform into the form of an Oriental shaman.\nThe Sherman's servant is basically judged as a crew， so take advantage of this to protect the Oriental shaman.,陰陽師のサイドキックです。\n陰陽師の姿に変身することが出来ます。\n式神は基本的にクルーと判定されるので、それを生かして陰陽師を守りましょう。
+ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation cool time,式神の変身クールタイム
+ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム
+ShermansServantTransformationButtonName,Metamorphosis,変身
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

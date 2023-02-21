@@ -10,6 +10,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using UnhollowerBaseLib;
 using UnityEngine;
@@ -499,7 +500,6 @@ class MeetingHudStartPatch
                 SyncSetting.MeetingSyncSettings();
             }, 3f, "StartMeeting CustomSyncSetting");
         }
-        Roles.Crewmate.Celebrity.TimerStop();
         if (ModeHandler.IsMode(ModeId.Default))
         {
             new LateTask(() =>
@@ -507,6 +507,10 @@ class MeetingHudStartPatch
                 SyncSetting.MeetingSyncSettings();
             }, 3f, "StartMeeting MeetingSyncSettings SNR");
         }
+        NiceMechanic.StartMeeting();
+        Roles.Crewmate.Celebrity.TimerStop();
+        TheThreeLittlePigs.TheFirstLittlePig.TimerStop();        NiceMechanic.StartMeeting();
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.WiseMan)) WiseMan.StartMeeting();
         Roles.Crewmate.Knight.ProtectedPlayer = null;
         Roles.Crewmate.Knight.GuardedPlayers = new();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)
