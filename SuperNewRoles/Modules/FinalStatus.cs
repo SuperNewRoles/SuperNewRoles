@@ -59,4 +59,5 @@ public enum FinalStatus
     HitmanKill,
     HitmanDead,
     WorshiperSelfDeath,
+    TheThirdLittlePigCounterKill,
 }

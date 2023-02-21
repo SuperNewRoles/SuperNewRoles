@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using HarmonyLib;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Sabotage;
 
@@ -17,6 +18,7 @@ public class FixSabotage
             { RoleId.Fox, (false, false, false, false) },
             { RoleId.FireFox, (false, false, false, false) },
             { RoleId.God, (false,false, false, false) },
+            { RoleId.OrientalShaman, (false, false, false, false) },
             { RoleId.Vampire, (true, false, true, true) },
             { RoleId.Dependents, (true, false, true, true) },
             { RoleId.Madmate, (true, CustomOptionHolder.MadRolesCanFixElectrical.GetBool(), CustomOptionHolder.MadRolesCanFixComms.GetBool(), true) },
@@ -27,6 +29,7 @@ public class FixSabotage
     {
         public static bool Prefix(Console __instance)
         {
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
             if (!(SetFixSabotageDictionary.ContainsKey(PlayerControl.LocalPlayer.GetRole()) || PlayerControl.LocalPlayer.IsMadRoles())) return true;
             __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
             if (canUse) return IsBlocked(__instance.FindTask(CachedPlayer.LocalPlayer).TaskType, GetRole(PlayerControl.LocalPlayer.GetRole()));
@@ -38,6 +41,7 @@ public class FixSabotage
     {
         public static bool Prefix(UseButton __instance, [HarmonyArgument(0)] IUsable target)
         {
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
             if (IsBlocked(target))
             {
                 __instance.currentTarget = null;
@@ -52,6 +56,8 @@ public class FixSabotage
     }
     private static bool IsBlocked(TaskTypes type, RoleId role)
     {
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
+        if (!IsSabotage(type)) return true;
         if (!SetFixSabotageDictionary.ContainsKey(role)) return true;
         (bool, bool, bool, bool) fixSabotage = SetFixSabotageDictionary[role];
         if (type is TaskTypes.StopCharles or TaskTypes.ResetSeismic or TaskTypes.ResetReactor && fixSabotage.Item1) return true;
@@ -62,12 +68,15 @@ public class FixSabotage
     }
     private static bool IsBlocked(IUsable target)
     {
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return false;
         if (target == null) return false;
         Console console = target.TryCast<Console>();
         if (console != null && !IsBlocked(console.FindTask(CachedPlayer.LocalPlayer).TaskType, GetRole(PlayerControl.LocalPlayer.GetRole())))
             return true;
         return false;
     }
+    private static bool IsSabotage(TaskTypes type) =>
+        type is TaskTypes.StopCharles or TaskTypes.ResetSeismic or TaskTypes.ResetReactor or TaskTypes.FixLights or TaskTypes.FixComms or TaskTypes.RestoreOxy;
     private static RoleId GetRole(RoleId role)
     {
         if (SetFixSabotageDictionary.ContainsKey(role)) return role;

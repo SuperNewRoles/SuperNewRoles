@@ -595,33 +595,132 @@ class AllRoleSetClass
                 }
 
                 int PlayerCount = (int)GetPlayerCount(selectRoleData);
-                if (PlayerCount >= NeutralPlayerNum)
+                if (selectRoleData is not RoleId.TheFirstLittlePig)
                 {
-                    for (int i = 1; i <= NeutralPlayerNum; i++)
+                    if (PlayerCount >= NeutralPlayerNum)
                     {
-                        PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
-                        p.SetRoleRPC(selectRoleData);
-                        CrewmatePlayers.Remove(p);
+                        for (int i = 1; i <= NeutralPlayerNum; i++)
+                        {
+                            PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                            p.SetRoleRPC(selectRoleData);
+                            CrewmatePlayers.Remove(p);
+                        }
+                        IsNotEndRandomSelect = false;
                     }
-                    IsNotEndRandomSelect = false;
-                }
-                else if (PlayerCount >= CrewmatePlayers.Count)
-                {
-                    foreach (PlayerControl Player in CrewmatePlayers)
+                    else if (PlayerCount >= CrewmatePlayers.Count)
                     {
-                        NeutralPlayerNum--;
-                        Player.SetRoleRPC(selectRoleData);
+                        foreach (PlayerControl Player in CrewmatePlayers)
+                        {
+                            NeutralPlayerNum--;
+                            Player.SetRoleRPC(selectRoleData);
+                        }
+                        IsNotEndRandomSelect = false;
                     }
-                    IsNotEndRandomSelect = false;
-                }
-                else
-                {
-                    for (int i = 1; i <= PlayerCount; i++)
+                    else
                     {
-                        NeutralPlayerNum--;
-                        PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
-                        p.SetRoleRPC(selectRoleData);
-                        CrewmatePlayers.Remove(p);
+                        for (int i = 1; i <= PlayerCount; i++)
+                        {
+                            NeutralPlayerNum--;
+                            PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                            p.SetRoleRPC(selectRoleData);
+                            CrewmatePlayers.Remove(p);
+                        }
+                    }
+                }
+                else if (selectRoleData is RoleId.TheFirstLittlePig)
+                {
+                    if (PlayerCount * 3 >= NeutralPlayerNum)
+                    {
+                        int TheThreeLittlePigsTeam = (int)Math.Truncate(NeutralPlayerNum / 3f);
+                        for (int i = 1; i <= NeutralPlayerNum; i++)
+                        {
+                            List<PlayerControl> TheThreeLittlePigsPlayer = new();
+                            // 1番目の仔豚決定
+                            PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                            p.SetRoleRPC(RoleId.TheFirstLittlePig);
+                            TheThreeLittlePigsPlayer.Add(p);
+                            CrewmatePlayers.Remove(p);
+                            // 2番目の仔豚決定
+                            p = ModHelpers.GetRandom(CrewmatePlayers);
+                            p.SetRoleRPC(RoleId.TheSecondLittlePig);
+                            TheThreeLittlePigsPlayer.Add(p);
+                            CrewmatePlayers.Remove(p);
+                            // 3番目の仔豚決定
+                            p = ModHelpers.GetRandom(CrewmatePlayers);
+                            p.SetRoleRPC(RoleId.TheThirdLittlePig);
+                            TheThreeLittlePigsPlayer.Add(p);
+                            CrewmatePlayers.Remove(p);
+                            NeutralPlayerNum = NeutralPlayerNum - 3;
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetTheThreeLittlePigsTeam);
+                            writer.Write(TheThreeLittlePigsPlayer[0].PlayerId);
+                            writer.Write(TheThreeLittlePigsPlayer[1].PlayerId);
+                            writer.Write(TheThreeLittlePigsPlayer[2].PlayerId);
+                            writer.EndRPC();
+                            RPCProcedure.SetTheThreeLittlePigsTeam(TheThreeLittlePigsPlayer[0].PlayerId, TheThreeLittlePigsPlayer[1].PlayerId, TheThreeLittlePigsPlayer[2].PlayerId);
+                        }
+                        if (0 >= NeutralPlayerNum || 0 >= CrewmatePlayers.Count)
+                            IsNotEndRandomSelect = false;
+                    }
+                    else if (PlayerCount * 3 >= CrewmatePlayers.Count)
+                    {
+                        int TheThreeLittlePigsTeam = (int)Math.Truncate(CrewmatePlayers.Count / 3f);
+                        for (int i = 1; i <= CrewmatePlayers.Count; i++)
+                        {
+                            List<PlayerControl> TheThreeLittlePigsPlayer = new();
+                            // 1番目の仔豚決定
+                            PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                            p.SetRoleRPC(RoleId.TheFirstLittlePig);
+                            TheThreeLittlePigsPlayer.Add(p);
+                            CrewmatePlayers.Remove(p);
+                            // 2番目の仔豚決定
+                            p = ModHelpers.GetRandom(CrewmatePlayers);
+                            p.SetRoleRPC(RoleId.TheSecondLittlePig);
+                            TheThreeLittlePigsPlayer.Add(p);
+                            CrewmatePlayers.Remove(p);
+                            // 3番目の仔豚決定
+                            p = ModHelpers.GetRandom(CrewmatePlayers);
+                            p.SetRoleRPC(RoleId.TheThirdLittlePig);
+                            TheThreeLittlePigsPlayer.Add(p);
+                            CrewmatePlayers.Remove(p);
+                            NeutralPlayerNum = NeutralPlayerNum - 3;
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetTheThreeLittlePigsTeam);
+                            writer.Write(TheThreeLittlePigsPlayer[0].PlayerId);
+                            writer.Write(TheThreeLittlePigsPlayer[1].PlayerId);
+                            writer.Write(TheThreeLittlePigsPlayer[2].PlayerId);
+                            writer.EndRPC();
+                            RPCProcedure.SetTheThreeLittlePigsTeam(TheThreeLittlePigsPlayer[0].PlayerId, TheThreeLittlePigsPlayer[1].PlayerId, TheThreeLittlePigsPlayer[2].PlayerId);
+                        }
+                        if (0 >= NeutralPlayerNum || 0 >= CrewmatePlayers.Count)
+                            IsNotEndRandomSelect = false;
+                    }
+                    else
+                    {
+                        for (int i = 1; i <= PlayerCount; i++)
+                        {
+                            List<PlayerControl> TheThreeLittlePigsPlayer = new();
+                            // 1番目の仔豚決定
+                            PlayerControl p = ModHelpers.GetRandom(CrewmatePlayers);
+                            p.SetRoleRPC(RoleId.TheFirstLittlePig);
+                            TheThreeLittlePigsPlayer.Add(p);
+                            CrewmatePlayers.Remove(p);
+                            // 2番目の仔豚決定
+                            p = ModHelpers.GetRandom(CrewmatePlayers);
+                            p.SetRoleRPC(RoleId.TheSecondLittlePig);
+                            TheThreeLittlePigsPlayer.Add(p);
+                            CrewmatePlayers.Remove(p);
+                            // 3番目の仔豚決定
+                            p = ModHelpers.GetRandom(CrewmatePlayers);
+                            p.SetRoleRPC(RoleId.TheThirdLittlePig);
+                            TheThreeLittlePigsPlayer.Add(p);
+                            CrewmatePlayers.Remove(p);
+                            NeutralPlayerNum = NeutralPlayerNum - 3;
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetTheThreeLittlePigsTeam);
+                            writer.Write(TheThreeLittlePigsPlayer[0].PlayerId);
+                            writer.Write(TheThreeLittlePigsPlayer[1].PlayerId);
+                            writer.Write(TheThreeLittlePigsPlayer[2].PlayerId);
+                            writer.EndRPC();
+                            RPCProcedure.SetTheThreeLittlePigsTeam(TheThreeLittlePigsPlayer[0].PlayerId, TheThreeLittlePigsPlayer[1].PlayerId, TheThreeLittlePigsPlayer[2].PlayerId);
+                        }
                     }
                 }
                 Neutonepar.RemoveAt(selectRoleDataIndex);
@@ -969,6 +1068,13 @@ class AllRoleSetClass
             RoleId.FireFox => FireFox.FireFoxPlayerCount.GetFloat(),
             RoleId.Squid => Squid.SquidPlayerCount.GetFloat(),
             RoleId.DyingMessenger => DyingMessenger.DyingMessengerPlayerCount.GetFloat(),
+            RoleId.WiseMan => WiseMan.WiseManPlayerCount.GetFloat(),
+            RoleId.NiceMechanic => NiceMechanic.NiceMechanicPlayerCount.GetFloat(),
+            RoleId.EvilMechanic => EvilMechanic.EvilMechanicPlayerCount.GetFloat(),
+            RoleId.TheFirstLittlePig => TheThreeLittlePigs.TheThreeLittlePigsTeamCount.GetFloat(),
+            RoleId.TheSecondLittlePig => TheThreeLittlePigs.TheThreeLittlePigsTeamCount.GetFloat(),
+            RoleId.TheThirdLittlePig => TheThreeLittlePigs.TheThreeLittlePigsTeamCount.GetFloat(),
+            RoleId.OrientalShaman => OrientalShaman.OrientalShamanPlayerCount.GetFloat(),
             // プレイヤーカウント
             _ => 1,
         };
@@ -1010,7 +1116,8 @@ class AllRoleSetClass
                 && ((intro.RoleId != RoleId.Werewolf && intro.RoleId != RoleId.Knight) || ModeHandler.IsMode(ModeId.Werewolf))
                 && intro.RoleId is not RoleId.GM
                 && intro.RoleId != RoleId.Pavlovsdogs
-                && intro.RoleId != RoleId.Jumbo)
+                && intro.RoleId != RoleId.Jumbo
+                && intro.RoleId != RoleId.ShermansServant)
             {
                 var option = IntroData.GetOption(intro.RoleId);
                 if (option == null) continue;

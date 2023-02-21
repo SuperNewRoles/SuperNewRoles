@@ -117,6 +117,7 @@ class WrapUpPatch
         Seer.WrapUpPatch.WrapUpPostfix();
         Vampire.SetActiveBloodStaiWrapUpPatch();
         Roles.Crewmate.Celebrity.WrapUp();
+        Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
             p.resetChange();
