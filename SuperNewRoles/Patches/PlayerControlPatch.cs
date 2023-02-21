@@ -906,7 +906,9 @@ public static class MurderPlayerPatch
         if (target.IsRole(RoleId.WiseMan)  && WiseMan.WiseManData.ContainsKey(target.PlayerId) && WiseMan.WiseManData[target.PlayerId] is not null)
         {
             WiseMan.WiseManData[target.PlayerId] = null;
-            WiseMan.WiseManPosData[target] = null;
+            PlayerControl targ = target;
+            var wisemandata = WiseMan.WiseManPosData.FirstOrDefault(x => x.Key is not null && x.Key.PlayerId == targ.PlayerId);
+            if (wisemandata.Key is not null) WiseMan.WiseManPosData[wisemandata.Key] = null;
             if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
             {
                 HudManagerStartPatch.WiseManButton.isEffectActive = false;
