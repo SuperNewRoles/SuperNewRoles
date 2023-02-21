@@ -49,6 +49,7 @@ public enum FinalStatus
     RemoteSheriffHauntedWolfKill,
     RemoteSheriffKill,
     RemoteSheriffMisFire,
+    SheriffInvolvedOutburst,
     SerialKillerSelfDeath,
     VampireKill,
     OverKillerOverKill,

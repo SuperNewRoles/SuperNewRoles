@@ -1403,11 +1403,9 @@ static class HudManagerStartPatch
                     {
                         var target = PlayerControlFixedUpdatePatch.SetTarget();
                         var localId = CachedPlayer.LocalPlayer.PlayerId;
-                        var misfire = !Sheriff.IsSheriffKill(target);
+                        var misfire = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target);
                         PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Sheriff.color);
-                        if (RoleClass.Chief.SheriffPlayer.Contains(localId)) misfire = !Sheriff.IsChiefSheriffKill(target);
-                        var alwaysKill = !Sheriff.IsSheriffKill(target) && CustomOptionHolder.SheriffAlwaysKills.GetBool();
-                        if (RoleClass.Chief.SheriffPlayer.Contains(localId)) alwaysKill = !Sheriff.IsChiefSheriffKill(target) && CustomOptionHolder.ChiefSheriffAlwaysKills.GetBool();
+                        var alwaysKill = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target) && CustomOptionHolder.SheriffAlwaysKills.GetBool();
                         if (alwaysKill && target.IsRole(RoleId.Squid) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
                         {
                             alwaysKill = false;
@@ -1425,6 +1423,7 @@ static class HudManagerStartPatch
                         killWriter.Write(alwaysKill);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                         FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : target, misfire ? FinalStatus.SheriffMisFire : (target.IsRole(RoleId.HauntedWolf) ? FinalStatus.SheriffHauntedWolfKill : FinalStatus.SheriffKill));
+                        if (alwaysKill) FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
                         Sheriff.ResetKillCooldown();
                         RoleClass.Sheriff.KillMaxCount--;
                     }
