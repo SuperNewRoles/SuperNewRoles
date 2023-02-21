@@ -213,6 +213,7 @@ public static class RoleClass
         FireFox.ClearAndReload();
         Squid.ClearAndReload();
         DyingMessenger.ClearAndReload();
+        WiseMan.ClearAndReload();
         NiceMechanic.ClearAndReload();
         EvilMechanic.ClearAndReload();
         TheThreeLittlePigs.ClearAndReload();

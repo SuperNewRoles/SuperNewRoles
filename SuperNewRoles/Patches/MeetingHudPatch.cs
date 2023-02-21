@@ -500,8 +500,6 @@ class MeetingHudStartPatch
                 SyncSetting.MeetingSyncSettings();
             }, 3f, "StartMeeting CustomSyncSetting");
         }
-        Roles.Crewmate.Celebrity.TimerStop();
-        TheThreeLittlePigs.TheFirstLittlePig.TimerStop();
         if (ModeHandler.IsMode(ModeId.Default))
         {
             new LateTask(() =>
@@ -511,6 +509,8 @@ class MeetingHudStartPatch
         }
         NiceMechanic.StartMeeting();
         Roles.Crewmate.Celebrity.TimerStop();
+        TheThreeLittlePigs.TheFirstLittlePig.TimerStop();        NiceMechanic.StartMeeting();
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.WiseMan)) WiseMan.StartMeeting();
         Roles.Crewmate.Knight.ProtectedPlayer = null;
         Roles.Crewmate.Knight.GuardedPlayers = new();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Werewolf) && CachedPlayer.LocalPlayer.IsAlive() && !RoleClass.Werewolf.IsShooted)

@@ -894,7 +894,7 @@ public static class MurderPlayerPatch
 {
     public static bool resetToCrewmate = false;
     public static bool resetToDead = false;
-    public static bool Prefix(PlayerControl __instance, PlayerControl target)
+    public static bool Prefix(PlayerControl __instance, ref PlayerControl target)
     {
         if (Roles.Crewmate.Knight.GuardedPlayers.Contains(target.PlayerId))
         {
@@ -904,6 +904,22 @@ public static class MurderPlayerPatch
             RPCProcedure.KnightProtectClear(target.PlayerId);
             target.protectedByGuardian = true;
             return false;
+        }
+        if (target.IsRole(RoleId.WiseMan)  && WiseMan.WiseManData.ContainsKey(target.PlayerId) && WiseMan.WiseManData[target.PlayerId] is not null)
+        {
+            WiseMan.WiseManData[target.PlayerId] = null;
+            PlayerControl targ = target;
+            var wisemandata = WiseMan.WiseManPosData.FirstOrDefault(x => x.Key is not null && x.Key.PlayerId == targ.PlayerId);
+            if (wisemandata.Key is not null) WiseMan.WiseManPosData[wisemandata.Key] = null;
+            if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            {
+                HudManagerStartPatch.WiseManButton.isEffectActive = false;
+                HudManagerStartPatch.WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
+                HudManagerStartPatch.WiseManButton.Timer = HudManagerStartPatch.WiseManButton.MaxTimer;
+                Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                PlayerControl.LocalPlayer.moveable = true;
+            }
+            target = __instance;
         }
         EvilGambler.MurderPlayerPrefix(__instance, target);
         Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);

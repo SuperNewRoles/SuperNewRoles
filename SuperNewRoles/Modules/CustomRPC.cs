@@ -184,6 +184,7 @@ public enum RoleId
     FireFox,
     Squid,
     DyingMessenger,
+    WiseMan,
     NiceMechanic,
     EvilMechanic,
     TheFirstLittlePig,
@@ -283,6 +284,7 @@ public enum CustomRPC
     SafecrackerGuardCount,
     SetVigilance,
     Chat,
+    SetWiseManStatus,
     SetVentStatusMechanic,
     SetTheThreeLittlePigsTeam,
     UseTheThreeLittlePigsCount,
@@ -293,6 +295,11 @@ public enum CustomRPC
 
 public static class RPCProcedure
 {
+    public static void SetWiseManStatus(byte sourceId, float rotate, bool Is)
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourceId);
+        WiseMan.SetWiseManStatus(source, rotate, Is);
+    }
     public static void SetVentStatusMechanic(byte sourceplayer, byte targetvent, bool Is, byte[] buff)
     {
         PlayerControl source = ModHelpers.PlayerById(sourceplayer);
@@ -1779,6 +1786,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.Chat:
                         Chat(reader.ReadByte(), reader.ReadString());
+                        break;
+                    case CustomRPC.SetWiseManStatus:
+                        SetWiseManStatus(reader.ReadByte(), reader.ReadSingle(), reader.ReadBoolean());
                         break;
                     case CustomRPC.SetVentStatusMechanic:
                         SetVentStatusMechanic(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean(), reader.ReadBytesAndSize());

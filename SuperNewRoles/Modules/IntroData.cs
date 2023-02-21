@@ -270,6 +270,7 @@ public class IntroData
     public static IntroData FireFoxIntro = new("FireFox", FireFox.color, 1, RoleId.FireFox, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData SquidIntro = new("Squid", Squid.color, 2, RoleId.Squid, TeamRoleType.Crewmate);
     public static IntroData DyingMessengerIntro = new("DyingMessenger", DyingMessenger.color, 1, RoleId.DyingMessenger, TeamRoleType.Crewmate);
+    public static IntroData WiseManIntro = new("WiseMan", WiseMan.color, 1, RoleId.WiseMan, TeamRoleType.Crewmate);
     public static IntroData NiceMechanicIntro = new("NiceMechanic", NiceMechanic.color, 1, RoleId.NiceMechanic, TeamRoleType.Crewmate);
     public static IntroData EvilMechanicIntro = new("EvilMechanic", EvilMechanic.color, 1, RoleId.EvilMechanic, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData TheFirstLittlePigIntro = new("TheFirstLittlePig", TheThreeLittlePigs.color, 1, RoleId.TheFirstLittlePig, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);

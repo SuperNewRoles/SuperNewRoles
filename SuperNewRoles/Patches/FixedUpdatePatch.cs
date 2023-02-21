@@ -101,6 +101,7 @@ public class FixedUpdate
                 Roles.Crewmate.Psychometrist.FixedUpdate();
                 Roles.Impostor.Matryoshka.FixedUpdate();
                 Roles.Neutral.PartTimer.FixedUpdate();
+                WiseMan.FixedUpdate();
                 Vampire.FixedUpdate.AllClient();
                 ReduceKillCooldown(__instance);
                 Roles.Impostor.Penguin.FixedUpdate();

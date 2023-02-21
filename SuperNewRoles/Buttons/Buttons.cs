@@ -97,6 +97,7 @@ static class HudManagerStartPatch
     public static CustomButton DependentsKillButton;
     public static CustomButton LoversBreakerButton;
     public static CustomButton JumboKillButton;
+    public static CustomButton WiseManButton;
     public static CustomButton MechanicButton;
 
     #endregion
@@ -130,6 +131,55 @@ static class HudManagerStartPatch
     public static void Postfix(HudManager __instance)
     {
         Roles.Attribute.Debugger.canSeeRole = false;
+
+        WiseManButton = new(
+            () =>
+            {
+                if (WiseManButton.isEffectActive)
+                {
+                    WiseMan.RpcSetWiseManStatus(0f, false);
+                    WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
+                    WiseManButton.Timer = WiseManButton.MaxTimer;
+                    Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                    PlayerControl.LocalPlayer.moveable = true;
+                    return;
+                }
+                WiseMan.RpcSetWiseManStatus(WiseMan.GetRandomAngle, true);
+                Camera.main.GetComponent<FollowerCamera>().Locked = true;
+                PlayerControl.LocalPlayer.moveable = false;
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.WiseMan; },
+            () =>
+            {
+                return PlayerControl.LocalPlayer.CanMove;
+            },
+            () =>
+            {
+                WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
+                WiseManButton.Timer = WiseManButton.MaxTimer;
+                WiseManButton.effectCancellable = false;
+                WiseManButton.EffectDuration = WiseMan.WiseManDurationTime.GetFloat();
+                WiseManButton.HasEffect = true;
+            },
+            WiseMan.GetButtonSprite(), new Vector3(-2f, 1, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.F,
+            49,
+            () => { return false; },
+            true,
+            5f,
+            () =>
+            {
+                WiseMan.RpcSetWiseManStatus(0, false);
+                Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                PlayerControl.LocalPlayer.moveable = true;
+            }
+        )
+        {
+            buttonText = ModTranslation.GetString("WiseManButtonName"),
+            showButtonText = true
+        };
 
         MechanicButton = new(
             () =>

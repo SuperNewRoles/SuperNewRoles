@@ -330,6 +330,8 @@ public static class RoleHelpers
         }
         else if (player.IsRole(RoleId.Camouflager) && role != RoleId.Camouflager && RoleClass.Camouflager.IsCamouflage)
             Camouflager.ResetCamouflage();
+        else if (player.IsRole(RoleId.WiseMan) && player.PlayerId == PlayerControl.LocalPlayer.PlayerId && role is not RoleId.WiseMan)
+            WiseMan.OnChangeRole();
         else if (player.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic))
             NiceMechanic.ChangeRole(player);
         switch (role)
@@ -794,6 +796,9 @@ public static class RoleHelpers
                 break;
             case RoleId.DyingMessenger:
                 DyingMessenger.DyingMessengerPlayer.Add(player);
+                break;
+            case RoleId.WiseMan:
+                WiseMan.WiseManPlayer.Add(player);
                 break;
             case RoleId.NiceMechanic:
                 NiceMechanic.NiceMechanicPlayer.Add(player);
@@ -1847,6 +1852,7 @@ public static class RoleHelpers
             else if (FireFox.FireFoxPlayer.IsCheckListPlayerControl(player)) return RoleId.FireFox;
             else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
             else if (DyingMessenger.DyingMessengerPlayer.IsCheckListPlayerControl(player)) return RoleId.DyingMessenger;
+            else if (WiseMan.WiseManPlayer.IsCheckListPlayerControl(player)) return RoleId.WiseMan;
             else if (NiceMechanic.NiceMechanicPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceMechanic;
             else if (EvilMechanic.EvilMechanicPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilMechanic;
             else if (TheThreeLittlePigs.TheFirstLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheFirstLittlePig;

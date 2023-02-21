@@ -1068,6 +1068,7 @@ class AllRoleSetClass
             RoleId.FireFox => FireFox.FireFoxPlayerCount.GetFloat(),
             RoleId.Squid => Squid.SquidPlayerCount.GetFloat(),
             RoleId.DyingMessenger => DyingMessenger.DyingMessengerPlayerCount.GetFloat(),
+            RoleId.WiseMan => WiseMan.WiseManPlayerCount.GetFloat(),
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicPlayerCount.GetFloat(),
             RoleId.EvilMechanic => EvilMechanic.EvilMechanicPlayerCount.GetFloat(),
             RoleId.TheFirstLittlePig => TheThreeLittlePigs.TheThreeLittlePigsTeamCount.GetFloat(),
