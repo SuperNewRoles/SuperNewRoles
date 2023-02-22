@@ -38,6 +38,7 @@ public class CustomOptionHolder
     public static CustomOption neutralGhostRolesCountMax;
 
     public static CustomOption enableMirroMap;
+    public static CustomOption enableChildMap;
 
     public static CustomOption enableAgartha;
     public static CustomOption AgarthaRandomSpawn;
@@ -1025,6 +1026,7 @@ public class CustomOptionHolder
         impostorGhostRolesCountMax = Create(8, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
 
         enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false, null, isHeader: true);
+        enableChildMap = Create(1207, false, CustomOptionType.Generic, "enableChildMap", false, null);
 
         enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
         AgarthaRandomSpawn = Create(1084, false, CustomOptionType.Generic, "RandomSpawnOption", true, enableAgartha);

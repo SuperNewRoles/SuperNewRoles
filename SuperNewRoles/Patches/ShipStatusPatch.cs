@@ -151,7 +151,7 @@ class LightPatch
         return Mathf.Lerp(shipStatus.MinLightRadius, shipStatus.MaxLightRadius, lerpValue) * GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.CrewLightMod);
     }
 }
-[HarmonyPatch(typeof(ShipStatus), nameof(GameStartManager.Start))]
+[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Start))]
 public class Inversion
 { // マップ反転
     public static GameObject skeld;

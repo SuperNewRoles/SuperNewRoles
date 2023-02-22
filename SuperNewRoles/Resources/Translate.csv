@@ -107,6 +107,7 @@ DarkerColor,darker,暗い,暗色
 MapCustom,Map Custom,マップ改造,地图设置
 SecretRoom,(Airship)Secret Room,(エアーシップ)シークレットルーム,空艇：机密室
 enableMirroMap,enable MirroMap,反転マップを有効にする,启用镜像地图
+enableChildMap,enable ChildMap,小人マップを有効にする
 SettingpresetSelection,Preset,プリセット,预设
 SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>设置
 SettingImpostor,<color=#ff0000>Impostor</color> Settings,<color=#ff0000>インポスター</color>の設定,<color=#ff0000>内鬼阵营</color>设置
