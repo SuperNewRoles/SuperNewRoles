@@ -33,6 +33,7 @@ public static class RoleClass
     public static void ClearAndReloadRoles()
     {
         ModHelpers.IdControlDic = new();
+        ModHelpers.VentIdControlDic = new();
         BlockPlayers = new();
         IsMeeting = false;
         RandomSpawn.IsFirstSpawn = true;
@@ -61,6 +62,14 @@ public static class RoleClass
         MapCustoms.MoveElecPad.ClearAndReload();
         Beacon.ClearBeacons();
         MeetingHudUpdatePatch.ErrorNames = new();
+        FixSabotage.ClearAndReload();
+
+        RoleHelpers.CrewmatePlayer = new();
+        RoleHelpers.ImposterPlayer = new();
+        RoleHelpers.NeutralPlayer = new();
+        RoleHelpers.MadRolesPlayer = new();
+        RoleHelpers.FriendRolesPlayer = new();
+        //RoleHelpers.NeutralKillingPlayer = new();
 
         Debugger.ClearAndReload();
         SoothSayer.ClearAndReload();
@@ -215,6 +224,11 @@ public static class RoleClass
         FireFox.ClearAndReload();
         Squid.ClearAndReload();
         DyingMessenger.ClearAndReload();
+        WiseMan.ClearAndReload();
+        NiceMechanic.ClearAndReload();
+        EvilMechanic.ClearAndReload();
+        TheThreeLittlePigs.ClearAndReload();
+        OrientalShaman.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
@@ -324,10 +338,6 @@ public static class RoleClass
         public static Color32 color = SheriffYellow;
         public static PlayerControl currentTarget;
         public static float CoolTime;
-        public static bool IsNeutralKill;
-        public static bool IsLoversKill;
-        public static bool IsMadRoleKill;
-        public static bool IsFriendsRoleKill;
         public static float KillMaxCount;
         public static Dictionary<int, int> KillCount;
         public static DateTime ButtonTimer;
@@ -338,10 +348,6 @@ public static class RoleClass
         {
             SheriffPlayer = new();
             CoolTime = CustomOptionHolder.SheriffCoolTime.GetFloat();
-            IsNeutralKill = CustomOptionHolder.SheriffNeutralKill.GetBool();
-            IsLoversKill = CustomOptionHolder.SheriffLoversKill.GetBool();
-            IsMadRoleKill = CustomOptionHolder.SheriffMadRoleKill.GetBool();
-            IsFriendsRoleKill = CustomOptionHolder.SheriffFriendsRoleKill.GetBool();
             KillMaxCount = CustomOptionHolder.SheriffKillMaxCount.GetFloat();
             KillCount = new();
         }
@@ -350,8 +356,6 @@ public static class RoleClass
     {
         public static List<PlayerControl> MeetingSheriffPlayer;
         public static Color32 color = SheriffYellow;
-        public static bool NeutralKill;
-        public static bool MadRoleKill;
         public static float KillMaxCount;
         public static bool OneMeetingMultiKill;
 
@@ -359,8 +363,6 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             MeetingSheriffPlayer = new();
-            NeutralKill = CustomOptionHolder.MeetingSheriffNeutralKill.GetBool();
-            MadRoleKill = CustomOptionHolder.MeetingSheriffMadRoleKill.GetBool();
             KillMaxCount = CustomOptionHolder.MeetingSheriffKillMaxCount.GetFloat();
             OneMeetingMultiKill = CustomOptionHolder.MeetingSheriffOneMeetingMultiKill.GetBool();
         }
@@ -376,7 +378,6 @@ public static class RoleClass
         public static bool IsUseSabo;
         public static bool IsImpostorLight;
         public static bool CreateSidekick;
-        public static bool NewJackalCreateSidekick;
         public static bool CanCreateSidekick;
         public static List<int> CreatePlayers;
         public static bool IsCreatedFriend;
@@ -393,7 +394,6 @@ public static class RoleClass
             IsImpostorLight = CustomOptionHolder.JackalIsImpostorLight.GetBool();
             CreateSidekick = CustomOptionHolder.JackalCreateSidekick.GetBool();
             CanCreateSidekick = CustomOptionHolder.JackalCreateSidekick.GetBool();
-            NewJackalCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
             IsCreatedFriend = false;
             CreatePlayers = new();
             CanCreateFriend = CustomOptionHolder.JackalCreateFriend.GetBool();
@@ -594,7 +594,7 @@ public static class RoleClass
         public static int DeadBodyCount;
         public static bool IsUseVent;
         public static bool ShowArrows;
-        public static Arrow Arrow;
+        public static Dictionary<DeadBody, Arrow> DeadPlayerArrows;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
 
         public static void ClearAndReload()
@@ -604,7 +604,7 @@ public static class RoleClass
             DeadBodyCount = CustomOptionHolder.VultureDeadBodyMaxCount.GetInt();
             IsUseVent = CustomOptionHolder.VultureIsUseVent.GetBool();
             ShowArrows = CustomOptionHolder.VultureShowArrows.GetBool();
-            Arrow = null;
+            DeadPlayerArrows = new();
         }
     }
     public static class NiceScientist
@@ -1678,10 +1678,6 @@ public static class RoleClass
         public static List<PlayerControl> RemoteSheriffPlayer;
         public static Color32 color = SheriffYellow;
         public static float CoolTime;
-        public static bool IsNeutralKill;
-        public static bool IsLoversKill;
-        public static bool IsMadRoleKill;
-        public static bool MadRoleKill;
         public static float KillMaxCount;
         public static Dictionary<int, int> KillCount;
         public static bool IsKillTeleport;
@@ -1690,10 +1686,6 @@ public static class RoleClass
         {
             RemoteSheriffPlayer = new();
             CoolTime = CustomOptionHolder.RemoteSheriffCoolTime.GetFloat();
-            IsNeutralKill = CustomOptionHolder.RemoteSheriffNeutralKill.GetBool();
-            IsLoversKill = CustomOptionHolder.RemoteSheriffLoversKill.GetBool();
-            IsMadRoleKill = CustomOptionHolder.RemoteSheriffMadRoleKill.GetBool();
-            MadRoleKill = CustomOptionHolder.RemoteSheriffMadRoleKill.GetBool();
             KillMaxCount = CustomOptionHolder.RemoteSheriffKillMaxCount.GetFloat();
             KillCount = new();
             IsKillTeleport = CustomOptionHolder.RemoteSheriffIsKillTeleportSetting.GetBool();
@@ -1839,7 +1831,6 @@ public static class RoleClass
         public static bool IsUseSabo;
         public static bool IsImpostorLight;
         public static bool CreateSidekick;
-        public static bool NewJackalCreateSidekick;
         public static bool CanCreateSidekick;
         public static bool CanCreateFriend;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
@@ -1863,7 +1854,6 @@ public static class RoleClass
             CreateSidekick = CustomOptionHolder.JackalSeerCreateSidekick.GetBool();
             CanCreateSidekick = CustomOptionHolder.JackalSeerCreateSidekick.GetBool();
             CanCreateFriend = CustomOptionHolder.JackalSeerCreateFriend.GetBool();
-            NewJackalCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
         }
     }
     public static class Assassin
@@ -1931,10 +1921,6 @@ public static class RoleClass
         public static Color32 color = SheriffYellow;
         public static bool IsCreateSheriff;
         public static float CoolTime;
-        public static bool IsNeutralKill;
-        public static bool IsLoversKill;
-        public static bool IsMadRoleKill;
-        public static bool MadRoleKill;
         public static int KillLimit;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ChiefSidekickButton.png", 115f);
 
@@ -1945,9 +1931,6 @@ public static class RoleClass
             NoTaskSheriffPlayer = new();
             IsCreateSheriff = false;
             CoolTime = CustomOptionHolder.ChiefSheriffCoolTime.GetFloat();
-            IsNeutralKill = CustomOptionHolder.ChiefSheriffCanKillNeutral.GetBool();
-            IsLoversKill = CustomOptionHolder.ChiefSheriffCanKillLovers.GetBool();
-            IsMadRoleKill = CustomOptionHolder.ChiefSheriffCanKillMadRole.GetBool();
             KillLimit = CustomOptionHolder.ChiefSheriffKillLimit.GetInt();
         }
     }

@@ -46,7 +46,9 @@ public enum CustomGameOverReason
     LoversBreakerWin,
     NoWinner,
     BugEnd,
-    SafecrackerWin
+    SafecrackerWin,
+    TheThreeLittlePigsWin,
+    OrientalShamanWin,
 }
 enum WinCondition
 {
@@ -78,7 +80,9 @@ enum WinCondition
     LoversBreakerWin,
     NoWinner,
     BugEnd,
-    SafecrackerWin
+    SafecrackerWin,
+    TheThreeLittlePigsWin,
+    OrientalShamanWin,
 }
 class FinalStatusPatch
 {
@@ -238,7 +242,9 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.PavlovsTeamWin,("PavlovsTeamWinText",RoleClass.Pavlovsdogs.color)},
                 {WinCondition.LoversBreakerWin,("LoversBreakerName",RoleClass.LoversBreaker.color)},
                 {WinCondition.NoWinner,("NoWinner",Color.white)},
-                {WinCondition.SafecrackerWin,("SafecrackerName",Safecracker.color)}
+                {WinCondition.SafecrackerWin,("SafecrackerName",Safecracker.color)},
+                {WinCondition.TheThreeLittlePigsWin,("TheThreeLittlePigsName",TheThreeLittlePigs.color)},
+                {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)}
             };
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {
@@ -537,56 +543,27 @@ public static class OnGameEndPatch
         }
         // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
         List<PlayerControl> notWinners = new();
+        List<PlayerControl> peculiarNotWinners = new();
 
-        notWinners.AddRanges(new[]{RoleClass.Jester.JesterPlayer,
-            RoleClass.Madmate.MadmatePlayer,
-            RoleClass.Jackal.JackalPlayer,
-            RoleClass.Jackal.SidekickPlayer,
-            RoleClass.JackalFriends.JackalFriendsPlayer,
-            RoleClass.God.GodPlayer,
-            RoleClass.Opportunist.OpportunistPlayer,
-            RoleClass.Truelover.trueloverPlayer,
-            RoleClass.Egoist.EgoistPlayer,
-            RoleClass.Workperson.WorkpersonPlayer,
-            RoleClass.Amnesiac.AmnesiacPlayer,
-            RoleClass.SideKiller.MadKillerPlayer,
-            RoleClass.MadMayor.MadMayorPlayer,
-            RoleClass.MadStuntMan.MadStuntManPlayer,
-            RoleClass.MadHawk.MadHawkPlayer,
-            RoleClass.MadJester.MadJesterPlayer,
-            RoleClass.MadSeer.MadSeerPlayer,
-            RoleClass.FalseCharges.FalseChargesPlayer,
-            RoleClass.Fox.FoxPlayer,
-            BotManager.AllBots,
-            RoleClass.MadMaker.MadMakerPlayer,
-            RoleClass.Demon.DemonPlayer,
-            RoleClass.SeerFriends.SeerFriendsPlayer,
-            RoleClass.JackalSeer.JackalSeerPlayer,
-            RoleClass.JackalSeer.SidekickSeerPlayer,
-            RoleClass.Arsonist.ArsonistPlayer,
-            RoleClass.Vulture.VulturePlayer,
-            RoleClass.MadCleaner.MadCleanerPlayer,
-            RoleClass.MayorFriends.MayorFriendsPlayer,
-            RoleClass.Tuna.TunaPlayer,
-            RoleClass.BlackCat.BlackCatPlayer,
-            RoleClass.Neet.NeetPlayer,
-            RoleClass.SatsumaAndImo.SatsumaAndImoPlayer,
-            RoleClass.Revolutionist.RevolutionistPlayer,
-            RoleClass.SuicidalIdeation.SuicidalIdeationPlayer,
-            RoleClass.Spelunker.SpelunkerPlayer,
-            RoleClass.Hitman.HitmanPlayer,
-            RoleClass.PartTimer.PartTimerPlayer,
-            RoleClass.Photographer.PhotographerPlayer,
-            RoleClass.Stefinder.StefinderPlayer,
-            RoleClass.Pavlovsdogs.PavlovsdogsPlayer,
-            RoleClass.Pavlovsowner.PavlovsownerPlayer,
-            RoleClass.LoversBreaker.LoversBreakerPlayer,
-            Roles.Impostor.MadRole.Worshiper.WorshiperPlayer,
-            Safecracker.SafecrackerPlayer,
-            FireFox.FireFoxPlayer,
+        // Neutral,MadRoles,FriendRolesから溢れたクルー勝利から除外する必要のある役職を個別追記する
+        peculiarNotWinners.AddRanges(new[]
+            {
+                RoleClass.SatsumaAndImo.SatsumaAndImoPlayer, // クルー陣営の時はマッド役職でない為
+                RoleClass.SideKiller.MadKillerPlayer, // マッドロールから外され[CrewmatePlayer]に含まれている為
+                RoleClass.Dependents.DependentsPlayer, // マッドロールから外され[CrewmatePlayer]に含まれている為
+                OrientalShaman.ShermansServantPlayer, // 第三陣営ではなく[CrewmatePlayer]に含まれている為
+                /*  RoleClass.Cupid.CupidPlayer,
+                    キューピットはNeutralPlayerだが元々記載の方法が特殊だった為コメントアウトで記載を残した。*/
             });
-        notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
-        notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
+
+        notWinners.AddRanges(new[]
+            {
+                BotManager.AllBots,
+                RoleHelpers.NeutralPlayer,
+                RoleHelpers.MadRolesPlayer,
+                RoleHelpers.FriendRolesPlayer,
+                peculiarNotWinners, // 上記に含まれないクルー勝利除外役職
+            });
 
         foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
         {
@@ -852,6 +829,33 @@ public static class OnGameEndPatch
             }
         }
         isReset = false;
+        foreach (PlayerControl player in OrientalShaman.OrientalShamanPlayer)
+        {
+            if (!OrientalShaman.OrientalShamanCrewTaskWinHijack.GetBool() &&
+                AdditionalTempData.gameOverReason == GameOverReason.HumansByTask) break;
+            if (OrientalShaman.OrientalShamanWinTask.GetBool())
+            {
+                var (completed, total) = TaskCount.TaskDate(player.Data);
+                if (completed < total) continue;
+            }
+            if (player.IsAlive())
+            {
+                if (!((isDleted && changeTheWinCondition) || isReset))
+                {
+                    TempData.winners = new();
+                    isDleted = true;
+                    isReset = true;
+                }
+                TempData.winners.Add(new(player.Data));
+                if (OrientalShaman.OrientalShamanCausative.ContainsKey(player.PlayerId))
+                {
+                    PlayerControl causativePlayer = ModHelpers.PlayerById(OrientalShaman.OrientalShamanCausative[player.PlayerId]);
+                    if (causativePlayer) TempData.winners.Add(new(causativePlayer.Data));
+                }
+                AdditionalTempData.winCondition = WinCondition.OrientalShamanWin;
+            }
+        }
+        isReset = false;
         foreach (PlayerControl player in RoleClass.Tuna.TunaPlayer)
         {
             if (player.IsAlive() && !RoleClass.Tuna.IsTunaAddWin)
@@ -959,9 +963,62 @@ public static class OnGameEndPatch
                 isreset = true;
             }
         }
-        isReset = false;
+        foreach (List<PlayerControl> plist in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
+        {
+            bool isAllAlive = true;
+            foreach (PlayerControl player in plist)
+            {
+                if (player.IsDead())
+                {
+                    isAllAlive = false;
+                    break;
+                }
+            }
+            if (isAllAlive)
+            {
+                if (!((isDleted && changeTheWinCondition) || isReset))
+                {
+                    TempData.winners = new();
+                    isDleted = true;
+                    isReset = true;
+                }
+                foreach (PlayerControl player in plist)
+                {
+                    TempData.winners.Add(new(player.Data));
+                    AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
+                }
+            }
+            else
+            {
+                bool isAllKillerDead = true;
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.IsDead()) continue;
+                    if (player.IsImpostor() || player.IsKiller())
+                    {
+                        isAllKillerDead = false;
+                        break;
+                    }
+                }
+                if (isAllKillerDead)
+                {
+                    if (!((isDleted && changeTheWinCondition) || isReset))
+                    {
+                        TempData.winners = new();
+                        isDleted = true;
+                        isReset = true;
+                    }
+                    foreach (PlayerControl player in plist)
+                    {
+                        TempData.winners.Add(new(player.Data));
+                        AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
+                    }
+                }
+            }
+        }
         List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
         foxPlayers.AddRange(FireFox.FireFoxPlayer);
+        isReset = false;
         foreach (PlayerControl player in foxPlayers)
         {
             if (player.IsAlive())
@@ -1551,7 +1608,7 @@ public static class CheckGameEndPatch
                 {
                     if (playerInfo.Object.IsAlive())
                     {
-                        numTotalAlive++;
+                        if (!playerInfo.Object.IsRole(RoleId.OrientalShaman)) numTotalAlive++;
                         if (playerInfo.Object.IsJackalTeamJackal() || playerInfo.Object.IsJackalTeamSidekick())
                         {
                             numTotalJackalTeam++;

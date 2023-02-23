@@ -7,6 +7,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 
@@ -94,15 +95,18 @@ public class FixedUpdate
             case ModeId.Default:
                 SabotageManager.Update();
                 SetNameUpdate.Postfix(__instance);
+                NiceMechanic.FixedUpdate();
                 Jackal.JackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 JackalSeer.JackalSeerFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 Roles.Crewmate.Psychometrist.FixedUpdate();
                 Roles.Impostor.Matryoshka.FixedUpdate();
                 Roles.Neutral.PartTimer.FixedUpdate();
+                WiseMan.FixedUpdate();
                 Vampire.FixedUpdate.AllClient();
                 ReduceKillCooldown(__instance);
                 Roles.Impostor.Penguin.FixedUpdate();
                 Squid.FixedUpdate();
+                OrientalShaman.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
@@ -226,10 +230,12 @@ public class FixedUpdate
                             }
                             break;
                         case RoleId.Vulture:
-                            if (RoleClass.Vulture.Arrow?.arrow != null)
+                        case RoleId.ShermansServant:
+                            foreach (var arrow in RoleClass.Vulture.DeadPlayerArrows)
                             {
-                                Object.Destroy(RoleClass.Vulture.Arrow.arrow);
-                                return;
+                                if (arrow.Value?.arrow != null)
+                                    Object.Destroy(arrow.Value.arrow);
+                                RoleClass.Vulture.DeadPlayerArrows.Remove(arrow.Key);
                             }
                             break;
                     }

@@ -11,9 +11,11 @@ using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using static GameData;
 using static SuperNewRoles.Helpers.DesyncHelpers;
@@ -95,17 +97,17 @@ class RpcShapeshiftPatch
                     if (target.IsDead()) return true;
                     if (!RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] >= 1)
                     {
-                        if ((!Sheriff.IsRemoteSheriffKill(target) || target.IsRole(RoleId.RemoteSheriff)) && CustomOptionHolder.RemoteSheriffAlwaysKills.GetBool())
+                        if ((!Sheriff.IsSheriffRolesKill(__instance, target) || target.IsRole(RoleId.RemoteSheriff)) && CustomOptionHolder.RemoteSheriffAlwaysKills.GetBool())
                         {
-                            FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
+                            FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
                             __instance.RpcMurderPlayerCheck(target);
-                            FinalStatusClass.RpcSetFinalStatus(target, target.IsRole(RoleId.HauntedWolf) ? FinalStatus.RemoteSheriffHauntedWolfKill : FinalStatus.RemoteSheriffKill);
+                            FinalStatusClass.RpcSetFinalStatus(target, target.IsRole(RoleId.HauntedWolf) ? FinalStatus.RemoteSheriffHauntedWolfKill : FinalStatus.SheriffInvolvedOutburst);
                             FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
                             __instance.RpcMurderPlayer(__instance);
                             FinalStatusClass.RpcSetFinalStatus(__instance, FinalStatus.RemoteSheriffMisFire);
                             return true;
                         }
-                        else if (!Sheriff.IsRemoteSheriffKill(target) || target.IsRole(RoleId.RemoteSheriff))
+                        else if (!Sheriff.IsSheriffRolesKill(__instance, target) || target.IsRole(RoleId.RemoteSheriff))
                         {
                             FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
                             __instance.RpcMurderPlayer(__instance);
@@ -333,8 +335,8 @@ class ShapeshifterMinigameShapeshiftPatch
                     if (player.IsAlive())
                     {
                         var Target = player;
-                        var misfire = !Sheriff.IsRemoteSheriffKill(Target);
-                        var alwaysKill = !Sheriff.IsRemoteSheriffKill(Target) && CustomOptionHolder.RemoteSheriffAlwaysKills.GetBool();
+                        var misfire = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target);
+                        var alwaysKill = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target) && CustomOptionHolder.RemoteSheriffAlwaysKills.GetBool();
                         var TargetID = Target.PlayerId;
                         var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
@@ -348,6 +350,7 @@ class ShapeshifterMinigameShapeshiftPatch
                         killWriter.Write(alwaysKill);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                         FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, misfire ? FinalStatus.RemoteSheriffMisFire : (Target.IsRole(RoleId.HauntedWolf) ? FinalStatus.RemoteSheriffHauntedWolfKill : FinalStatus.RemoteSheriffKill));
+                        if (alwaysKill) FinalStatusClass.RpcSetFinalStatus(Target, FinalStatus.SheriffInvolvedOutburst);
                         RoleClass.RemoteSheriff.KillMaxCount--;
                     }
                     Sheriff.ResetKillCooldown();
@@ -537,17 +540,17 @@ static class CheckMurderPatch
                     case RoleId.Sheriff:
                         if (!RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.Sheriff.KillCount[__instance.PlayerId] >= 1)
                         {
-                            if (!Sheriff.IsSheriffKill(target) && CustomOptionHolder.SheriffAlwaysKills.GetBool())
+                            if (!Sheriff.IsSheriffRolesKill(__instance, target) && CustomOptionHolder.SheriffAlwaysKills.GetBool())
                             {
-                                FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
+                                FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
                                 __instance.RpcMurderPlayerCheck(target);
                                 if (target.IsRole(RoleId.HauntedWolf)) __instance.RpcSetFinalStatus(FinalStatus.SheriffHauntedWolfKill);
-                                else __instance.RpcSetFinalStatus(FinalStatus.SheriffKill);
+                                else __instance.RpcSetFinalStatus(FinalStatus.SheriffInvolvedOutburst);
                                 FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
                                 __instance.RpcMurderPlayer(__instance);
                                 __instance.RpcSetFinalStatus(FinalStatus.SheriffMisFire);
                             }
-                            else if (!Sheriff.IsSheriffKill(target))
+                            else if (!Sheriff.IsSheriffRolesKill(__instance, target))
                             {
                                 FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
                                 __instance.RpcMurderPlayer(__instance);
@@ -892,7 +895,7 @@ public static class MurderPlayerPatch
 {
     public static bool resetToCrewmate = false;
     public static bool resetToDead = false;
-    public static bool Prefix(PlayerControl __instance, PlayerControl target)
+    public static bool Prefix(PlayerControl __instance, ref PlayerControl target)
     {
         if (Roles.Crewmate.Knight.GuardedPlayers.Contains(target.PlayerId))
         {
@@ -903,10 +906,25 @@ public static class MurderPlayerPatch
             target.protectedByGuardian = true;
             return false;
         }
+        if (target.IsRole(RoleId.WiseMan)  && WiseMan.WiseManData.ContainsKey(target.PlayerId) && WiseMan.WiseManData[target.PlayerId] is not null)
+        {
+            WiseMan.WiseManData[target.PlayerId] = null;
+            PlayerControl targ = target;
+            var wisemandata = WiseMan.WiseManPosData.FirstOrDefault(x => x.Key is not null && x.Key.PlayerId == targ.PlayerId);
+            if (wisemandata.Key is not null) WiseMan.WiseManPosData[wisemandata.Key] = null;
+            if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            {
+                HudManagerStartPatch.WiseManButton.isEffectActive = false;
+                HudManagerStartPatch.WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
+                HudManagerStartPatch.WiseManButton.Timer = HudManagerStartPatch.WiseManButton.MaxTimer;
+                Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                PlayerControl.LocalPlayer.moveable = true;
+            }
+            target = __instance;
+        }
         EvilGambler.MurderPlayerPrefix(__instance, target);
         Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
-        if (!DyingMessenger.ActualDeathTime.ContainsKey(target.PlayerId)) DyingMessenger.ActualDeathTime.Add(target.PlayerId, (DateTime.Now, __instance));
-        else DyingMessenger.ActualDeathTime[target.PlayerId] = (DateTime.Now, __instance);
+        DyingMessenger.ActualDeathTime[target.PlayerId] = (DateTime.Now, __instance);
         if (ModeHandler.IsMode(ModeId.Default))
         {
             target.resetChange();
@@ -925,6 +943,11 @@ public static class MurderPlayerPatch
                             RoleClass.SideKiller.IsUpMadKiller = true;
                         }
                     }
+                }
+                else if (target.IsRole(RoleId.ShermansServant) && OrientalShaman.IsTransformation && target.AmOwner)
+                {
+                    OrientalShaman.SetOutfit(target, target.Data.DefaultOutfit);
+                    OrientalShaman.IsTransformation = false;
                 }
             }
             else if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
@@ -1036,6 +1059,14 @@ public static class MurderPlayerPatch
                     HudManagerStartPatch.SluggerButton.Timer = HudManagerStartPatch.SluggerButton.MaxTimer;
                 }
             }
+            if (target.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic) && target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            {
+                if (NiceMechanic.TargetVent.ContainsKey(target.PlayerId) || NiceMechanic.TargetVent[target.PlayerId] is not null)
+                {
+                    Vector3 truepos = target.transform.position;
+                    NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, NiceMechanic.TargetVent[target.PlayerId], false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
+                }
+            }
             if (__instance.IsRole(RoleId.OverKiller))
             {
                 DeadBody deadBodyPrefab = target.KillAnimations[0].bodyPrefab;
@@ -1089,6 +1120,15 @@ public static class MurderPlayerPatch
                 if (target.IsRole(RoleId.Hitman))
                 {
                     Roles.Neutral.Hitman.Death();
+                }
+                else if (target.IsRole(RoleId.OrientalShaman) && OrientalShaman.OrientalShamanCausative.ContainsKey(target.PlayerId))
+                {
+                    PlayerControl causativePlayer = PlayerById(OrientalShaman.OrientalShamanCausative[target.PlayerId]);
+                    if (causativePlayer.IsAlive())
+                    {
+                        RPCProcedure.RPCMurderPlayer(causativePlayer.PlayerId, causativePlayer.PlayerId, 0);
+                        causativePlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+                    }
                 }
             }
             Levelinger.MurderPlayer(__instance, target);
@@ -1191,6 +1231,18 @@ public static class ExilePlayerPatch
             {
                 Roles.Neutral.Hitman.Death();
             }
+            if (__instance.IsRole(RoleId.OrientalShaman) && OrientalShaman.OrientalShamanCausative.ContainsKey(__instance.PlayerId))
+            {
+                PlayerControl causativePlayer = PlayerById(OrientalShaman.OrientalShamanCausative[__instance.PlayerId]);
+                if (causativePlayer.IsAlive())
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ExiledRPC, SendOption.Reliable, -1);
+                    writer.Write(causativePlayer.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.ExiledRPC(causativePlayer.PlayerId);
+                    causativePlayer.RpcSetFinalStatus(FinalStatus.WorshiperSelfDeath);
+                }
+            }
             if (RoleClass.Lovers.SameDie && __instance.IsLovers())
             {
                 if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
@@ -1272,6 +1324,11 @@ class ReportDeadBodyPatch
                         writer.EndRPC();
                     }, 0.5f, "DyingMessengerText");
                 }
+            }
+            if (OrientalShaman.IsTransformation)
+            {
+                OrientalShaman.SetOutfit(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data.DefaultOutfit);
+                OrientalShaman.IsTransformation = false;
             }
         }
         if (ReportDeadBody.ReportDeadBodyPatch(__instance, target) && ModeHandler.IsMode(ModeId.SuperHostRoles))
