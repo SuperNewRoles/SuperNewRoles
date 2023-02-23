@@ -86,7 +86,10 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                CustomObject.WaveCannonObject.Objects.All(x => {x.CreateRotationEffect(PlayerControl.LocalPlayer.GetTruePosition(), 1); return false; });
+                for(int i = 0; i < 29; i++)
+                {
+                    BotManager.Spawn("よっキングのBot");
+                }
             }
             if (Input.GetKeyDown(KeyCode.P))
             {
