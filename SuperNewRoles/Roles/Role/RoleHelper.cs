@@ -21,11 +21,13 @@ public enum TeamRoleType
 }
 public static class RoleHelpers
 {
+    /* TODO: 蔵徒:陣営playerがうまく動いていない。SetRoleの時に``if (player.Is陣営())``がうまく動かず、リスト入りされていない。直す
     public static List<PlayerControl> CrewmatePlayer;
     public static List<PlayerControl> ImposterPlayer;
     public static List<PlayerControl> NeutralPlayer;
     public static List<PlayerControl> MadRolesPlayer;
     public static List<PlayerControl> FriendRolesPlayer;
+    */
 
     // FIXME:パブロフの犬オーナーのリスト入りがうまくいかなかった為、一度コメントアウト勝利条件整理の時に修正お願いします・・・
     // public static List<PlayerControl> NeutralKillingPlayer;
@@ -894,12 +896,14 @@ public static class RoleHelpers
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
                 return;
         }
+        /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.Add(player);
         else if (player.IsNeutral()) NeutralPlayer.Add(player);
         else if (player.IsMadRoles()) MadRolesPlayer.Add(player);
         else if (player.IsFriendRoles()) FriendRolesPlayer.Add(player);
         else CrewmatePlayer.Add(player);
-        //if (player.IsKiller()) NeutralKillingPlayer.Add(player);
+        if (player.IsKiller()) NeutralKillingPlayer.Add(player);
+        */
         bool flag = player.GetRole() != role && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
         if (role.IsGhostRole())
         {
@@ -1400,12 +1404,14 @@ public static class RoleHelpers
                 break;
                 //ロールリモベ
         }
+        /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
         else if (player.IsNeutral()) NeutralPlayer.RemoveAll(ClearRemove);
         else if (player.IsMadRoles()) MadRolesPlayer.RemoveAll(ClearRemove);
         else if (player.IsFriendRoles()) FriendRolesPlayer.RemoveAll(ClearRemove);
         else CrewmatePlayer.RemoveAll(ClearRemove); // 眷族等クルーではない役職も此処に含まれる
-        //if (player.IsKiller()) NeutralKillingPlayer.RemoveAll(ClearRemove);
+        if (player.IsKiller()) NeutralKillingPlayer.RemoveAll(ClearRemove);
+        */
         ChacheManager.ResetMyRoleChache();
     }
     public static void SetRoleRPC(this PlayerControl Player, RoleId selectRoleData)
