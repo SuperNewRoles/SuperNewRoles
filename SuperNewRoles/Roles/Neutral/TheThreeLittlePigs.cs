@@ -95,7 +95,15 @@ public class TheThreeLittlePigs
         public int ClearTask;
         public float FlashTime;
         public Timer Timer;
-        public void WrapUp() => TimerSet();
+        public void WrapUp()
+        {
+            if (!PlayerControl.LocalPlayer.IsRole(RoleId.TheFirstLittlePig))
+            {
+                Logger.Info($"1番目の仔豚では無い為、タイマーを開始しません", "TheFirstLittlePig");
+                return;
+            }
+            TimerSet();
+        }
         public void TimerSet()
         {
             Timer = new(FlashTime);
@@ -120,7 +128,7 @@ public class TheThreeLittlePigs
         {
             if (Timer == null) return;
             Timer.Stop();
-            Logger.Info($"タイマを止めました", "TheFirstLittlePig");
+            Logger.Info($"タイマーを止めました", "TheFirstLittlePig");
         }
         public TheFirstLittlePigClass()
         {
