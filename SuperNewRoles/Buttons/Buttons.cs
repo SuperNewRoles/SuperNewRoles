@@ -2082,9 +2082,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Shielder; },
             () =>
             {
-                var Target = SetTarget();
-                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Shielder.color);
-                return PlayerControl.LocalPlayer.CanMove && Target;
+                return PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
