@@ -97,11 +97,7 @@ public class TheThreeLittlePigs
         public Timer Timer;
         public void WrapUp()
         {
-            if (!PlayerControl.LocalPlayer.IsRole(RoleId.TheFirstLittlePig))
-            {
-                Logger.Info($"1番目の仔豚では無い為、タイマーを開始しません", "TheFirstLittlePig");
-                return;
-            }
+            if (!PlayerControl.LocalPlayer.IsRole(RoleId.TheFirstLittlePig)) return;
             TimerSet();
         }
         public void TimerSet()
