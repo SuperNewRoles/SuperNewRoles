@@ -1102,6 +1102,15 @@ class GameOptionsDataPatch
     }
 }
 
+[HarmonyPatch(typeof(IGameOptionsExtensions), "ToHudString")]
+public static class IGameOptionsExtensionsToHudStringPatch
+{
+    public static void Prefix(ref int numPlayers)
+    {
+        if (numPlayers > 15) numPlayers = 15;
+    }
+}
+
 [HarmonyPatch(typeof(IGameOptionsExtensions), "GetAdjustedNumImpostors")]
 public static class GameOptionsGetAdjustedNumImpostorsPatch
 {
