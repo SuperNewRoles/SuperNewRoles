@@ -45,7 +45,7 @@ public class Speeder
     }
     public static void HudUpdate()
     {
-        if (HudManagerStartPatch.SpeederButton.Timer <= 0.1 && RoleClass.Speeder.IsSpeedDown)
+        if ((HudManagerStartPatch.SpeederButton.Timer <= 0.1 || !PlayerControl.LocalPlayer.IsRole(RoleId.Speeder)) && RoleClass.Speeder.IsSpeedDown)
         {
             Speeder.SpeedDownEnd();
         }
