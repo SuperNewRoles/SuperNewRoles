@@ -102,6 +102,15 @@ public class Scientist
                 }
                 SetOpacity(Scientist, opacity, canSee);
             }
+            else if (RoleClass.NiceScientist.IsScientist == true)
+            {
+                RoleClass.NiceScientist.IsScientist = false;
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
+                writer.Write(false);
+                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
+            }
         }
     }
 }
