@@ -555,6 +555,7 @@ public static class RoleClass
         public static float CoolTime;
         public static float DurationTime;
         public static bool IsSpeedDown;
+        public static bool IsSpeedDown2;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedDownButton.png", 115f);
 
         public static void ClearAndReload()
@@ -563,6 +564,7 @@ public static class RoleClass
             CoolTime = CustomOptionHolder.SpeederCoolTime.GetFloat();
             DurationTime = CustomOptionHolder.SpeederDurationTime.GetFloat();
             IsSpeedDown = false;
+            IsSpeedDown2 = false;
         }
     }
     public static class NiceGuesser

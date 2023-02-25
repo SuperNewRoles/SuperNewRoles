@@ -21,6 +21,7 @@ public class Speeder
         writer.Write(true);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
         RPCProcedure.SetSpeedDown(true);
+        RoleClass.Speeder.IsSpeedDown2 = true;
     }
     public static void ResetSpeed()
     {
@@ -28,6 +29,7 @@ public class Speeder
         writer.Write(false);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
         RPCProcedure.SetSpeedDown(false);
+        RoleClass.Speeder.IsSpeedDown2 = false;
     }
     public static void SpeedDownEnd()
     {
@@ -40,12 +42,12 @@ public class Speeder
     }
     public static void EndMeeting()
     {
-        ResetCooldown();
         ResetSpeed();
+        ResetCooldown();
     }
     public static void HudUpdate()
     {
-        if ((HudManagerStartPatch.SpeederButton.Timer <= 0.1 || !PlayerControl.LocalPlayer.IsRole(RoleId.Speeder)) && RoleClass.Speeder.IsSpeedDown)
+        if ((HudManagerStartPatch.SpeederButton.Timer <= 0.1 || !PlayerControl.LocalPlayer.IsRole(RoleId.Speeder)) && RoleClass.Speeder.IsSpeedDown2)
         {
             Speeder.SpeedDownEnd();
         }
