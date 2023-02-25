@@ -9,7 +9,7 @@ namespace SuperNewRoles.Buttons;
 public class CustomButton
 {
     public static List<CustomButton> buttons = new();
-    public static List<CustomButton> currentButtons
+    public static List<CustomButton> CurrentButtons
     {
         get
         {
@@ -185,7 +185,7 @@ public class CustomButton
             {
                 if (OldModeButtons.IsOldMode)
                 {
-                    if (currentButtons.Count <= 1)
+                    if (CurrentButtons.Count <= 1)
                     {
                         if (actionButton is KillButton)
                         {
@@ -198,9 +198,9 @@ public class CustomButton
                             actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
                         }
                     }
-                    else if (currentButtons.Count == 2)
+                    else if (CurrentButtons.Count == 2)
                     {
-                        if (currentButtons[0] == this)
+                        if (CurrentButtons[0] == this)
                         {
                             if (actionButton is KillButton)
                             {
@@ -214,9 +214,9 @@ public class CustomButton
                                 actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
                             }
                         }
-                        else if (currentButtons[1] == this)
+                        else if (CurrentButtons[1] == this)
                         {
-                            if (currentButtons[0].actionButton is KillButton)
+                            if (CurrentButtons[0].actionButton is KillButton)
                             {
                                 actionButton.transform.localPosition = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localPosition;
                                 actionButton.transform.localScale = FastDestroyableSingleton<HudManager>.Instance.AbilityButton.transform.localScale;
