@@ -6,10 +6,13 @@ namespace SuperNewRoles.Roles;
 
 class Madmate
 {
-    public static List<byte> CheckedImpostor;
+    public static Dictionary<byte, RoleId> CheckedImpostor;
     public static bool CheckImpostor(PlayerControl p)
     {
-        if (CheckedImpostor.Contains(p.PlayerId)) return true;
+        if (CheckedImpostor.ContainsKey(p.PlayerId) && p.GetRole() == CheckedImpostor[p.PlayerId]) return true;
+        if (CheckedImpostor.ContainsKey(p.PlayerId) && p.GetRole() != CheckedImpostor[p.PlayerId])
+            CheckedImpostor.Remove(p.PlayerId);
+
         int CheckTask = 0;
         switch (p.GetRole())
         {
@@ -43,7 +46,7 @@ class Madmate
         var taskdata = TaskCount.TaskDate(p.Data).Item1;
         if (CheckTask <= taskdata)
         {
-            CheckedImpostor.Add(p.PlayerId);
+            CheckedImpostor.Add(p.PlayerId, p.GetRole());
             return true;
         }
         return false;
