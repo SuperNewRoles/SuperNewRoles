@@ -208,7 +208,7 @@ public class SetNamesClass
                 SetPlayerNameText(side, side.NameText().text + suffix);
             }
         }
-        if ((PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor())) && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
+        if (PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor()) && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
         {
             foreach (List<PlayerControl> ps in RoleClass.Quarreled.QuarreledPlayer)
             {
