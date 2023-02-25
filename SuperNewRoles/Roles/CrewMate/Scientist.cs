@@ -102,7 +102,7 @@ public class Scientist
                 }
                 SetOpacity(Scientist, opacity, canSee);
             }
-            else if (RoleClass.NiceScientist.IsScientist == true)
+            else if (RoleClass.NiceScientist.IsScientist)
             {
                 RoleClass.NiceScientist.IsScientist = false;
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
