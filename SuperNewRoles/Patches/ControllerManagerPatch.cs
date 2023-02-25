@@ -5,8 +5,6 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
-using Agartha;
-using AmongUs.GameOptions;
 using System.Linq;
 using UnityEngine;
 using Hazel;
@@ -86,7 +84,7 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                for(int i = 0; i < 29; i++)
+                for (int i = 0; i < 29; i++)
                 {
                     BotManager.Spawn("よっキングのBot");
                 }
