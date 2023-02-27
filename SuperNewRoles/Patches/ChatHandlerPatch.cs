@@ -192,6 +192,16 @@ class AddChatPatch
             Commands[0].Equals("/mr", StringComparison.OrdinalIgnoreCase)
             )
         {
+            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
+            {
+                SendCommand(sourcePlayer, ModTranslation.GetString("MyRoleErrorNotGameStart"));
+                return false;
+            }
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            {
+                SendCommand(sourcePlayer, ModTranslation.GetString("MyRoleErrorSHRMode"));
+                return false;
+            }
             if (Commands.Length == 1)
             {
                 Logger.Info("Length==1", "/mr");
@@ -376,10 +386,10 @@ class AddChatPatch
 
     /// <summary>
     /// コマンド使用者の役職説明を取得し、チャットに流す。
-    /// 送信間隔をコメントアウトしているのは、重複役の説明が必要になった時に、復活させ設定可能にする為。
+    /// 送信間隔をコメントアウトしているのは重複役の説明が必要になった時に復活させ設定可能にする為
     /// </summary>
-    /// <param name="target">送信対象者(Hostの場合nullが渡されている)</param>
-    /// <param name="commandUser">コマンド使用者</param>
+    /// <param name="target"></param>
+    /// <param name="commandUser"></param>
     static void MyRoleCommand(PlayerControl target = null, PlayerControl commandUser = null/*, float SendTime = 1.5f*/)
     {
         if (!AmongUsClient.Instance.AmHost) return;
@@ -410,29 +420,10 @@ class AddChatPatch
             string text = GetText(option);
             string roleName = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
             SuperNewRolesPlugin.Logger.LogInfo(roleName);
-            SuperNewRolesPlugin.Logger.LogInfo(text);
+            SuperNewRolesPlugin.Logger.LogInfo(option);
             Send(target, roleName, text, time);
             // time += SendTime;
         }
-
-        /*
-        List<CustomRoleOption> myRoleOptions = new();
-
-        foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
-        {
-            if (myRole != option.RoleId) continue;
-            myRoleOptions.Add(option);
-        }
-        float time = 0;
-        foreach (CustomRoleOption option in myRoleOptions)
-        {
-            string text = GetText(option);
-            string roleName = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
-            SuperNewRolesPlugin.Logger.LogInfo(myRoleOptions);
-            Send(target, roleName, text, time);
-            // time += SendTime;
-        }
-        */
     }
 
     static void Send(PlayerControl target, string rolename, string text, float time = 0)
