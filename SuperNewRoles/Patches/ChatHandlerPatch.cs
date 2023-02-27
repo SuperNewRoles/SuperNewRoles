@@ -192,42 +192,7 @@ class AddChatPatch
             Commands[0].Equals("/mr", StringComparison.OrdinalIgnoreCase)
             )
         {
-            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
-            {
-                SendCommand(sourcePlayer, ModTranslation.GetString("MyRoleErrorNotGameStart"));
-                return false;
-            }
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
-            {
-                SendCommand(sourcePlayer, ModTranslation.GetString("MyRoleErrorSHRMode"));
-                return false;
-            }
-            if (Commands.Length == 1)
-            {
-                Logger.Info("Length==1", "/mr");
-                if (sourcePlayer.AmOwner)
-                {
-                    MyRoleCommand(null, sourcePlayer);
-                }
-                else
-                {
-                    MyRoleCommand(sourcePlayer, sourcePlayer);
-                }
-            }
-            else
-            {
-                Logger.Info("Length!=1", "/mr");
-                PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
-                if (Commands.Length >= 3 && (Commands[2].Equals("mp", StringComparison.OrdinalIgnoreCase) || Commands[2].Equals("myplayer", StringComparison.OrdinalIgnoreCase) || Commands[2].Equals("myp", StringComparison.OrdinalIgnoreCase)))
-                {
-                    target = sourcePlayer;
-                }
-                if (!float.TryParse(Commands[1], out float sendTime))
-                {
-                    return false;
-                }
-                MyRoleCommand(/*SendTime: sendTime, */target: target, commandUser: sourcePlayer);
-            }
+            MyRoleCommand(/*SendTime: sendTime, */ commandUser: sourcePlayer);
             return false;
         }
         else if (
@@ -388,24 +353,23 @@ class AddChatPatch
     /// コマンド使用者の役職説明を取得し、チャットに流す。
     /// 送信間隔をコメントアウトしているのは重複役の説明が必要になった時に復活させ設定可能にする為
     /// </summary>
-    /// <param name="target"></param>
-    /// <param name="commandUser"></param>
-    static void MyRoleCommand(PlayerControl target = null, PlayerControl commandUser = null/*, float SendTime = 1.5f*/)
+    /// <param name="commandUser">コマンドを使用し、役職説明送信対象となるplayer</param>
+    static void MyRoleCommand(PlayerControl commandUser = null/*, float SendTime = 1.5f*/)
     {
         if (!AmongUsClient.Instance.AmHost) return;
         if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
         {
-            SendCommand(target, ModTranslation.GetString("MyRoleErrorNotGameStart"));
+            SendCommand(commandUser, ModTranslation.GetString("MyRoleErrorNotGameStart"));
             return;
         }
         if (ModeHandler.IsMode(ModeId.SuperHostRoles, false))
         {
-            SendCommand(target, ModTranslation.GetString("MyRoleErrorSHRMode"));
+            SendCommand(commandUser, ModTranslation.GetString("MyRoleErrorSHRMode"));
             return;
         }
         if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
         {
-            SendCommand(target, ModTranslation.GetString("Notassign"));
+            SendCommand(commandUser, ModTranslation.GetString("Notassign"));
             return;
         }
 
@@ -420,8 +384,8 @@ class AddChatPatch
             string text = GetText(option);
             string roleName = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
             SuperNewRolesPlugin.Logger.LogInfo(roleName);
-            SuperNewRolesPlugin.Logger.LogInfo(option);
-            Send(target, roleName, text, time);
+            SuperNewRolesPlugin.Logger.LogInfo(text);
+            Send(commandUser, roleName, text, time);
             // time += SendTime;
         }
     }
@@ -444,7 +408,7 @@ class AddChatPatch
             else
             {
                 string name = PlayerControl.LocalPlayer.GetDefaultName();
-                PlayerControl.LocalPlayer.SetName(SNRCommander + "\n" + rolename);
+                PlayerControl.LocalPlayer.SetName(SNRCommander + rolename);
                 FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
                 PlayerControl.LocalPlayer.SetName(name);
             }
