@@ -133,10 +133,9 @@ public static class RoleHelpers
     // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
-        player.GetRole() ==
-            RoleId.Pavlovsowner
-            && !RoleClass.Pavlovsowner.CountData.ContainsKey(player.PlayerId)
-            || RoleClass.Pavlovsowner.CountData[player.PlayerId] > 0
+        (player.GetRole() == RoleId.Pavlovsowner &&
+        (!RoleClass.Pavlovsowner.CountData.ContainsKey(player.PlayerId) ||
+        RoleClass.Pavlovsowner.CountData[player.PlayerId] > 0))
         ||
         player.GetRole() is
         RoleId.Pavlovsdogs or
@@ -147,7 +146,8 @@ public static class RoleHelpers
         RoleId.SidekickSeer or
         RoleId.WaveCannonJackal or
         RoleId.Hitman or
-        RoleId.Egoist;
+        RoleId.Egoist or
+        RoleId.FireFox;
     // 第三キル人外か
 
     public static bool IsPavlovsTeam(this PlayerControl player) => player.GetRole() is
@@ -1882,5 +1882,11 @@ public static class RoleHelpers
     public static bool IsAlive(this CachedPlayer player)
     {
         return player != null && !player.Data.Disconnected && !player.Data.IsDead;
+    }
+    public static bool IsAllDead(this List<PlayerControl> lest)
+    {
+        foreach (PlayerControl player in lest)
+            if (player.IsAlive()) return false;
+        return true;
     }
 }
