@@ -1274,11 +1274,6 @@ public static class OnGameEndPatch
             };
             PlayerData.Add(data);
         }
-        Logger.Info($"WinCondition : {AdditionalTempData.winCondition}", "EndGame");
-        string text = "勝利したプレイヤー : ";
-        foreach (var date in TempData.winners)
-            text += $"\n{date.PlayerName}";
-        Logger.Info(text, "EndGame");
     }
 }
 [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
