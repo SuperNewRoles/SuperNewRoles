@@ -1328,7 +1328,7 @@ TwitterDevLink,Development Information Account : https://twitter.com/SNRDevs,開
 Team,Team,陣営,阵营
 MessageSettings,Settings,設定,设置
 NowRolesMessage,Activate Roles,現在入っている役職,当前激活的职业
-Notassign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。,目前还没有激活任何职业。
+NotAssign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。,目前还没有激活任何职业。
 MyRoleErrorNotGameStart,This command cannot be used because the game is not in progress.,ゲーム中でない為、このコマンドは使用できません。
 MyRoleErrorSHRMode,This command is not available in SHR mode.,SHRモードではこのコマンドは使用できません。
 TeamMessage,【Team:{0}】,【{0}陣営】,【{0}阵营】

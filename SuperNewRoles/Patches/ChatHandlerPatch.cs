@@ -188,14 +188,6 @@ class AddChatPatch
             return false;
         }
         else if (
-            Commands[0].Equals("/MyRole", StringComparison.OrdinalIgnoreCase) ||
-            Commands[0].Equals("/mr", StringComparison.OrdinalIgnoreCase)
-            )
-        {
-            MyRoleCommand(/*SendTime: sendTime, */ commandUser: sourcePlayer);
-            return false;
-        }
-        else if (
             Commands[0].Equals("/Winners", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/w", StringComparison.OrdinalIgnoreCase)
             )
@@ -311,7 +303,7 @@ class AddChatPatch
         if (!AmongUsClient.Instance.AmHost) return;
         if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.SuperHostRoles, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
         {
-            SendCommand(target, ModTranslation.GetString("Notassign"));
+            SendCommand(target, ModTranslation.GetString("NotAssign"));
             return;
         }
         List<CustomRoleOption> EnableOptions = new();
@@ -336,7 +328,7 @@ class AddChatPatch
         if (!AmongUsClient.Instance.AmHost) return;
         if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.SuperHostRoles, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
         {
-            SendCommand(target, ModTranslation.GetString("Notassign"));
+            SendCommand(target, ModTranslation.GetString("NotAssign"));
             return;
         }
         List<CustomRoleOption> EnableOptions = new();
@@ -354,22 +346,17 @@ class AddChatPatch
     /// 送信間隔をコメントアウトしているのは重複役の説明が必要になった時に復活させ設定可能にする為
     /// </summary>
     /// <param name="commandUser">コマンドを使用し、役職説明送信対象となるplayer</param>
-    static void MyRoleCommand(PlayerControl commandUser = null/*, float SendTime = 1.5f*/)
+    public static void MyRoleCommand(PlayerControl commandUser = null/*, float SendTime = 1.5f*/)
     {
-        if (!AmongUsClient.Instance.AmHost) return;
-        if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
+        string errorText = null;
+        if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) errorText = ModTranslation.GetString("MyRoleErrorNotGameStart");
+        else if (ModeHandler.IsMode(ModeId.SuperHostRoles, false)) errorText = ModTranslation.GetString("MyRoleErrorSHRMode");
+        else if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false))) errorText = ModTranslation.GetString("NotAssign");
+
+        if (errorText != null)
         {
-            SendCommand(commandUser, ModTranslation.GetString("MyRoleErrorNotGameStart"));
-            return;
-        }
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles, false))
-        {
-            SendCommand(commandUser, ModTranslation.GetString("MyRoleErrorSHRMode"));
-            return;
-        }
-        if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
-        {
-            SendCommand(commandUser, ModTranslation.GetString("Notassign"));
+            if (!AmongUsClient.Instance.AmHost) FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(commandUser, errorText);
+            else SendCommand(commandUser, errorText);
             return;
         }
 

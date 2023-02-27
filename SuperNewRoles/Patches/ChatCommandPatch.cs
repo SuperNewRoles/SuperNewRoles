@@ -144,6 +144,11 @@ public static class DynamicLobbies
                 // memoの中身があるなら ファイル名を任意の文字列にする。
                 else Logger.SaveLog(memo, via);
             }
+            if (text.ToLower().StartsWith("/mr") || text.ToLower().StartsWith("/MyRole"))
+            {
+                handled = true;
+                AddChatPatch.MyRoleCommand(/*SendTime: sendTime, */ commandUser: PlayerControl.LocalPlayer);
+            }
             if (handled)
             {
                 __instance.TextArea.Clear();
