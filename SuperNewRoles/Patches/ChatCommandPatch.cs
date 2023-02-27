@@ -124,12 +124,31 @@ public static class DynamicLobbies
                         __instance.AddChat(PlayerControl.LocalPlayer, "Changed name succesfully");
                     }
                 }
-                if (handled)
-                {
-                    __instance.TextArea.Clear();
-                    FastDestroyableSingleton<HudManager>.Instance.Chat.TimeSinceLastMessage = 0f;
-                    __instance.quickChatMenu.ResetGlyphs();
-                }
+            }
+            if (text.ToLower().StartsWith("/sl") || text.ToLower().StartsWith("/savelog"))
+            {// ファイル名を付けてログを別の場所に保管するコマンド
+
+                handled = true;
+                string memo;
+                string via = "ChatCommandVia";
+
+                // textからコマンドを削除し、ファイル名につける文字列を抜き出す
+                memo = text.ToLower()
+                    .Replace("/sl", "")
+                    .Replace("/savelog", "")
+                    .Replace(" ", "")
+                    .Replace("　", "");
+
+                // memoが空なら ファイル名をChatCommandViaにする。
+                if (memo == "") Logger.SaveLog(via, via);
+                // memoの中身があるなら ファイル名を任意の文字列にする。
+                else Logger.SaveLog(memo, via);
+            }
+            if (handled)
+            {
+                __instance.TextArea.Clear();
+                FastDestroyableSingleton<HudManager>.Instance.Chat.TimeSinceLastMessage = 0f;
+                __instance.quickChatMenu.ResetGlyphs();
             }
             return !handled;
         }
