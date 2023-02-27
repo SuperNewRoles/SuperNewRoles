@@ -108,7 +108,7 @@ public static class OrientalShaman
             __instance.AbilityButton,
             KeyCode.F,
             49,
-            () => { return !PlayerControl.LocalPlayer.CanMove; }
+            () => { return false; }
         )
         {
             buttonText = ModTranslation.GetString("OrientalShamanShermansServantButtoonName"),
@@ -286,7 +286,7 @@ public static class OrientalShaman
             __instance.AbilityButton,
             KeyCode.F,
             49,
-            () => { return !PlayerControl.LocalPlayer.CanMove; }
+            () => { return false; }
         )
         {
             buttonText = ModTranslation.GetString("ShermansServantTransformationButtonName"),
@@ -312,7 +312,7 @@ public static class OrientalShaman
             __instance.AbilityButton,
             KeyCode.Q,
             8,
-            () => { return !PlayerControl.LocalPlayer.CanMove; }
+            () => { return false; }
         )
         {
             buttonText = ModTranslation.GetString("WorshiperSuicide"),
