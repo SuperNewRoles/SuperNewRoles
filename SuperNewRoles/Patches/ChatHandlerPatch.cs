@@ -188,6 +188,39 @@ class AddChatPatch
             return false;
         }
         else if (
+            Commands[0].Equals("/MyRole", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/mr", StringComparison.OrdinalIgnoreCase)
+            )
+        {
+            if (Commands.Length == 1)
+            {
+                Logger.Info("Length==1", "/mr");
+                if (sourcePlayer.AmOwner)
+                {
+                    MyRoleCommand(null, sourcePlayer);
+                }
+                else
+                {
+                    MyRoleCommand(sourcePlayer, sourcePlayer);
+                }
+            }
+            else
+            {
+                Logger.Info("Length!=1", "/mr");
+                PlayerControl target = sourcePlayer.AmOwner ? null : sourcePlayer;
+                if (Commands.Length >= 3 && (Commands[2].Equals("mp", StringComparison.OrdinalIgnoreCase) || Commands[2].Equals("myplayer", StringComparison.OrdinalIgnoreCase) || Commands[2].Equals("myp", StringComparison.OrdinalIgnoreCase)))
+                {
+                    target = sourcePlayer;
+                }
+                if (!float.TryParse(Commands[1], out float sendTime))
+                {
+                    return false;
+                }
+                MyRoleCommand(/*SendTime: sendTime, */target: target, commandUser: sourcePlayer);
+            }
+            return false;
+        }
+        else if (
             Commands[0].Equals("/Winners", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/w", StringComparison.OrdinalIgnoreCase)
             )
@@ -340,6 +373,68 @@ class AddChatPatch
         }
         SendCommand(target, GetInRole(EnableOptions));
     }
+
+    /// <summary>
+    /// コマンド使用者の役職説明を取得し、チャットに流す。
+    /// 送信間隔をコメントアウトしているのは、重複役の説明が必要になった時に、復活させ設定可能にする為。
+    /// </summary>
+    /// <param name="target">送信対象者(Hostの場合nullが渡されている)</param>
+    /// <param name="commandUser">コマンド使用者</param>
+    static void MyRoleCommand(PlayerControl target = null, PlayerControl commandUser = null/*, float SendTime = 1.5f*/)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started)
+        {
+            SendCommand(target, ModTranslation.GetString("MyRoleErrorNotGameStart"));
+            return;
+        }
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles, false))
+        {
+            SendCommand(target, ModTranslation.GetString("MyRoleErrorSHRMode"));
+            return;
+        }
+        if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
+        {
+            SendCommand(target, ModTranslation.GetString("Notassign"));
+            return;
+        }
+
+        RoleId myRole = commandUser.GetRole();
+
+        // LINQ使用 ChatGPTさんに聞いたらforeach処理よりも簡潔で効率的な可能性が高い、後開発者の好みと返答された為。
+        IEnumerable<CustomRoleOption> myRoleOptions = CustomRoleOption.RoleOptions.Where(option => option.RoleId == myRole).Select(option => { return option; });
+        float time = 0;
+        // foreach使用 ChatGPTさんに聞いたらLINQ使うより、可読性が高くより一般的と返答された為。
+        foreach (CustomRoleOption option in myRoleOptions)
+        {
+            string text = GetText(option);
+            string roleName = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
+            SuperNewRolesPlugin.Logger.LogInfo(roleName);
+            SuperNewRolesPlugin.Logger.LogInfo(text);
+            Send(target, roleName, text, time);
+            // time += SendTime;
+        }
+
+        /*
+        List<CustomRoleOption> myRoleOptions = new();
+
+        foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
+        {
+            if (myRole != option.RoleId) continue;
+            myRoleOptions.Add(option);
+        }
+        float time = 0;
+        foreach (CustomRoleOption option in myRoleOptions)
+        {
+            string text = GetText(option);
+            string roleName = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
+            SuperNewRolesPlugin.Logger.LogInfo(myRoleOptions);
+            Send(target, roleName, text, time);
+            // time += SendTime;
+        }
+        */
+    }
+
     static void Send(PlayerControl target, string rolename, string text, float time = 0)
     {
         text = "\n" + text + "\n                                                                                                                                                                                                                                              ";
