@@ -11,6 +11,9 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
@@ -19,6 +22,7 @@ namespace SuperNewRoles.Buttons;
 static class HudManagerStartPatch
 {
     #region Buttons
+    public static CustomButton DebuggerButton;
     public static CustomButton SheriffKillButton;
     public static CustomButton ClergymanLightOutButton;
     public static CustomButton SpeedBoosterBoostButton;
@@ -93,6 +97,9 @@ static class HudManagerStartPatch
     public static CustomButton DependentsKillButton;
     public static CustomButton LoversBreakerButton;
     public static CustomButton JumboKillButton;
+    public static CustomButton WiseManButton;
+    public static CustomButton MechanicButton;
+
     #endregion
 
     #region Texts
@@ -116,9 +123,141 @@ static class HudManagerStartPatch
     {
         return PlayerControlFixedUpdatePatch.SetTarget(untargetablePlayers: untarget, onlyCrewmates: Crewmateonly);
     }
+    public static Vent SetTargetVent(List<Vent> untarget = null, bool forceout = false)
+    {
+        return ModHelpers.SetTargetVent(untargetablePlayers: untarget, forceout: forceout);
+    }
 
     public static void Postfix(HudManager __instance)
     {
+        Roles.Attribute.Debugger.canSeeRole = false;
+
+        WiseManButton = new(
+            () =>
+            {
+                if (WiseManButton.isEffectActive)
+                {
+                    WiseMan.RpcSetWiseManStatus(0f, false);
+                    WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
+                    WiseManButton.Timer = WiseManButton.MaxTimer;
+                    Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                    PlayerControl.LocalPlayer.moveable = true;
+                    return;
+                }
+                WiseMan.RpcSetWiseManStatus(WiseMan.GetRandomAngle, true);
+                Camera.main.GetComponent<FollowerCamera>().Locked = true;
+                PlayerControl.LocalPlayer.moveable = false;
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.WiseMan; },
+            () =>
+            {
+                return PlayerControl.LocalPlayer.CanMove;
+            },
+            () =>
+            {
+                WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
+                WiseManButton.Timer = WiseManButton.MaxTimer;
+                WiseManButton.effectCancellable = false;
+                WiseManButton.EffectDuration = WiseMan.WiseManDurationTime.GetFloat();
+                WiseManButton.HasEffect = true;
+            },
+            WiseMan.GetButtonSprite(), new Vector3(-2f, 1, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.F,
+            49,
+            () => { return false; },
+            true,
+            5f,
+            () =>
+            {
+                WiseMan.RpcSetWiseManStatus(0, false);
+                Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                PlayerControl.LocalPlayer.moveable = true;
+            }
+        )
+        {
+            buttonText = ModTranslation.GetString("WiseManButtonName"),
+            showButtonText = true
+        };
+
+        MechanicButton = new(
+            () =>
+            {
+                if (MechanicButton.isEffectActive)
+                {
+                    Vector3 truepos = PlayerControl.LocalPlayer.GetTruePosition();
+                    NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(forceout: true), false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
+                    MechanicButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicCoolTime.GetFloat() : EvilMechanic.EvilMechanicCoolTime.GetFloat();
+                    MechanicButton.Timer = MechanicButton.MaxTimer;
+                    MechanicButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                    return;
+                }
+                NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(), true);
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role is RoleId.NiceMechanic or RoleId.EvilMechanic; },
+            () =>
+            {
+                return PlayerControl.LocalPlayer.CanMove && SetTargetVent();
+            },
+            () =>
+            {
+                MechanicButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicCoolTime.GetFloat() : EvilMechanic.EvilMechanicCoolTime.GetFloat();
+                MechanicButton.Timer = MechanicButton.MaxTimer;
+                MechanicButton.effectCancellable = true;
+                MechanicButton.EffectDuration = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicDurationTime.GetFloat() : EvilMechanic.EvilMechanicDurationTime.GetFloat();
+                MechanicButton.HasEffect = true;
+            },
+            // FIXME: EvilMechanicでもNiceMechanicのボタンが表示されている状態です。変える方法分かったら変えて下さい…
+            PlayerControl.LocalPlayer.IsImpostor() ? Roles.Impostor.EvilMechanic.GetButtonSprite() : Roles.Crewmate.NiceMechanic.GetButtonSprite(),
+            new Vector3(-2f, 1, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.F,
+            49,
+            () => { return false; },
+            true,
+            5f,
+            () =>
+            {
+                Vector3 truepos = PlayerControl.LocalPlayer.GetTruePosition();
+                NiceMechanic.RpcSetVentStatusMechanic(PlayerControl.LocalPlayer, SetTargetVent(forceout: true), false, new(truepos.x, truepos.y, truepos.z + 0.0025f));
+                MechanicButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.NiceMechanic) ? NiceMechanic.NiceMechanicCoolTime.GetFloat() : EvilMechanic.EvilMechanicCoolTime.GetFloat();
+                MechanicButton.Timer = MechanicButton.MaxTimer;
+            }
+        )
+        {
+            buttonText = ModTranslation.GetString("MechanicButtonName"),
+            showButtonText = true
+        };
+
+        DebuggerButton = new(
+            () =>
+            {
+                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+            },
+            (bool isAlive, RoleId role) => { return RoleClass.Debugger.AmDebugger; },
+            () =>
+            {
+                return PlayerControl.LocalPlayer.CanMove;
+            },
+            () => { },
+            RoleClass.Debugger.GetButtonSprite(),
+            new Vector3(0, 2, 0),
+            __instance,
+            __instance.AbilityButton,
+            null,
+            0,
+            () => { return false; }
+        )
+        {
+            Timer = 0f,
+            MaxTimer = 0f,
+            buttonText = ModTranslation.GetString("DebuggerButtonName"),
+        };
+
         JumboKillButton = new(
             () =>
             {
@@ -146,7 +285,7 @@ static class HudManagerStartPatch
             () => false
         )
         {
-            buttonText = ModTranslation.GetString("FinalStatusKill"),
+            buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
             showButtonText = true
         };
 
@@ -294,7 +433,7 @@ static class HudManagerStartPatch
         PavlovsdogKillButton = new(
             () =>
             {
-                PlayerControl target = Roles.Neutral.Pavlovsdogs.SetTarget(false);
+                PlayerControl target = Pavlovsdogs.SetTarget(false);
                 ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 PavlovsdogKillButton.MaxTimer = RoleClass.Pavlovsdogs.IsOwnerDead ? CustomOptionHolder.PavlovsdogRunAwayKillCoolTime.GetFloat() : CustomOptionHolder.PavlovsdogKillCoolTime.GetFloat();
                 PavlovsdogKillButton.Timer = PavlovsdogKillButton.MaxTimer;
@@ -314,7 +453,7 @@ static class HudManagerStartPatch
                 }
                 var Target = SetTarget();
                 PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Pavlovsdogs.color);
-                return Roles.Neutral.Pavlovsdogs.SetTarget(false) && PlayerControl.LocalPlayer.CanMove;
+                return Pavlovsdogs.SetTarget(false) && PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
@@ -344,7 +483,7 @@ static class HudManagerStartPatch
         PavlovsownerCreatedogButton = new(
             () =>
             {
-                PlayerControl target = Roles.Neutral.Pavlovsdogs.SetTarget();
+                PlayerControl target = Pavlovsdogs.SetTarget();
                 RoleClass.Pavlovsowner.CreateLimit--;
                 bool isSelfDeath = target.IsImpostor() && CustomOptionHolder.PavlovsownerIsTargetImpostorDeath.GetBool();
                 MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PavlovsOwnerCreateDog);
@@ -360,7 +499,7 @@ static class HudManagerStartPatch
             {
                 var Target = SetTarget();
                 PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Pavlovsdogs.color);
-                return PlayerControl.LocalPlayer.CanMove && Roles.Neutral.Pavlovsdogs.SetTarget();
+                return PlayerControl.LocalPlayer.CanMove && Pavlovsdogs.SetTarget();
             },
             () =>
             {
@@ -528,7 +667,7 @@ static class HudManagerStartPatch
                 //一気にキルできるか。後に設定で変更可に
                 if (CustomOptionHolder.SluggerIsMultiKill.GetBool())
                 {
-                    targets = Roles.Impostor.Slugger.SetTarget();
+                    targets = Slugger.SetTarget();
                 }
                 else
                 {
@@ -573,7 +712,7 @@ static class HudManagerStartPatch
         PhotographerButton = new(
             () =>
             {
-                List<byte> targets = Roles.Neutral.Photographer.SetTarget();
+                List<byte> targets = Photographer.SetTarget();
                 RoleClass.Photographer.PhotedPlayerIds.AddRange(targets);
                 PhotographerButton.Timer = RoleClass.Photographer.BonusCount > 0 && targets.Count >= RoleClass.Photographer.BonusCount ? CustomOptionHolder.PhotographerBonusCoolTime.GetFloat() : PhotographerButton.MaxTimer;
                 if (CustomOptionHolder.PhotographerIsNotification.GetBool())
@@ -585,7 +724,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Photographer; },
             () =>
             {
-                return PlayerControl.LocalPlayer.CanMove && Roles.Neutral.Photographer.SetTarget().Count > 0;
+                return PlayerControl.LocalPlayer.CanMove && Photographer.SetTarget().Count > 0;
             },
             () =>
             {
@@ -1094,7 +1233,7 @@ static class HudManagerStartPatch
                     RoleClass.Jackal.CanCreateSidekick = false;
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick && CustomOptionHolder.JackalCreateSidekick.GetBool(); },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick; },
             () =>
             {
                 return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -1150,7 +1289,7 @@ static class HudManagerStartPatch
                     RoleClass.JackalSeer.CanCreateSidekick = false;
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.CanCreateSidekick && CustomOptionHolder.JackalSeerCreateSidekick.GetBool(); },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.CanCreateSidekick; },
             () =>
             {
                 return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -1190,7 +1329,7 @@ static class HudManagerStartPatch
                             TeleportingJackal.ResetCooldowns();
                             break;
                         case RoleId.WaveCannonJackal:
-                            Roles.Neutral.WaveCannonJackal.ResetCooldowns();
+                            WaveCannonJackal.ResetCooldowns();
                             break;
                     }
                 }
@@ -1204,7 +1343,7 @@ static class HudManagerStartPatch
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
                 else if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
-                else if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannonJackal)) { Roles.Neutral.WaveCannonJackal.ResetCooldowns(); }
+                else if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannonJackal)) { WaveCannonJackal.ResetCooldowns(); }
             },
             __instance.KillButton.graphic.sprite,
             new Vector3(0, 1, 0),
@@ -1362,19 +1501,7 @@ static class HudManagerStartPatch
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
                 {
-                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
-                    foreach (CachedPlayer p in CachedPlayer.AllPlayers)
-                    {
-                        p.Data.Role.NameColor = Color.white;
-
-                        CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-
-                        if (p.PlayerControl.IsImpostor())
-                        {
-                            p.Data.Role.NameColor = RoleClass.ImpostorRed;
-                        }
-                    }
-                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                    RoleHelpers.UseShapeshift();
                 }
                 else if (PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff))
                 {
@@ -1382,16 +1509,15 @@ static class HudManagerStartPatch
                     {
                         var target = PlayerControlFixedUpdatePatch.SetTarget();
                         var localId = CachedPlayer.LocalPlayer.PlayerId;
-                        var misfire = !Sheriff.IsSheriffKill(target);
+                        var misfire = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target);
                         PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Sheriff.color);
-                        if (RoleClass.Chief.SheriffPlayer.Contains(localId))
+                        var alwaysKill = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target) && CustomOptionHolder.SheriffAlwaysKills.GetBool();
+                        if (alwaysKill && target.IsRole(RoleId.Squid) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
                         {
-                            misfire = !Sheriff.IsChiefSheriffKill(target);
-                        }
-                        var alwaysKill = !Sheriff.IsSheriffKill(target) && CustomOptionHolder.SheriffAlwaysKills.GetBool();
-                        if (RoleClass.Chief.SheriffPlayer.Contains(localId))
-                        {
-                            alwaysKill = !Sheriff.IsChiefSheriffKill(target) && CustomOptionHolder.ChiefSheriffAlwaysKills.GetBool();
+                            alwaysKill = false;
+                            Squid.SetVigilance(target, false);
+                            Squid.SetSpeedBoost(target);
+                            RPCHelper.StartRPC(CustomRPC.ShowFlash, target).EndRPC();
                         }
                         var targetId = target.PlayerId;
 
@@ -1403,6 +1529,7 @@ static class HudManagerStartPatch
                         killWriter.Write(alwaysKill);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                         FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : target, misfire ? FinalStatus.SheriffMisFire : (target.IsRole(RoleId.HauntedWolf) ? FinalStatus.SheriffHauntedWolfKill : FinalStatus.SheriffKill));
+                        if (alwaysKill) FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
                         Sheriff.ResetKillCooldown();
                         RoleClass.Sheriff.KillMaxCount--;
                     }
@@ -1601,7 +1728,7 @@ static class HudManagerStartPatch
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("SidekickName"),
+            buttonText = ModTranslation.GetString("CreateMadmateButton"),
             showButtonText = true
         };
 
@@ -1639,7 +1766,7 @@ static class HudManagerStartPatch
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("SidekickName"),
+            buttonText = ModTranslation.GetString("SideKillerSidekickButtonName"),
             showButtonText = true
         };
 
@@ -1688,7 +1815,7 @@ static class HudManagerStartPatch
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("SidekickName"),
+            buttonText = ModTranslation.GetString("MadMakerSidekickButtonName"),
             showButtonText = true
         };
 
@@ -1888,7 +2015,7 @@ static class HudManagerStartPatch
             () => { return false; }
         )
         {
-            buttonText = ModTranslation.GetString("SidekickName"),
+            buttonText = ModTranslation.GetString("ChiefSidekickButtonName"),
             showButtonText = true
         };
 
@@ -1896,8 +2023,9 @@ static class HudManagerStartPatch
             () =>
             {
                 Vulture.RpcCleanDeadBody(RoleClass.Vulture.DeadBodyCount);
+                RoleClass.Vulture.DeadBodyCount--;
 
-                if (RoleClass.Vulture.DeadBodyCount < 0)
+                if (RoleClass.Vulture.DeadBodyCount <= 0)
                 {
                     RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
@@ -1915,6 +2043,7 @@ static class HudManagerStartPatch
                         AmongUsClient.Instance.FinishRpcImmediately(writer2);
                     }
                 }
+                Vulture.ResetCoolDown();
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Vulture; },
             () =>
@@ -1923,8 +2052,7 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                VultureButton.MaxTimer = RoleClass.Vulture.CoolTime;
-                VultureButton.Timer = RoleClass.Vulture.CoolTime;
+                Vulture.EndMeeting();
             },
             RoleClass.Vulture.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
@@ -1954,9 +2082,7 @@ static class HudManagerStartPatch
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Shielder; },
             () =>
             {
-                var Target = SetTarget();
-                PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Shielder.color);
-                return PlayerControl.LocalPlayer.CanMove && Target;
+                return PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
@@ -2337,7 +2463,7 @@ static class HudManagerStartPatch
             }
         )
         {
-            buttonText = ModTranslation.GetString("FinalStatusKill"),
+            buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
             showButtonText = true
         };
 
@@ -2709,17 +2835,17 @@ static class HudManagerStartPatch
                 PlayerControl target = SetTarget();
                 if (RoleClass.Hitman.Target.PlayerId != target.PlayerId)
                 {
-                    Roles.Neutral.Hitman.LimitDown();
+                    Hitman.LimitDown();
                 }
                 else
                 {
-                    Roles.Neutral.Hitman.KillSuc();
+                    Hitman.KillSuc();
                 }
                 ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 target.RpcSetFinalStatus(FinalStatus.HitmanKill);
                 RoleClass.Hitman.UpdateTime = CustomOptionHolder.HitmanChangeTargetTime.GetFloat();
                 RoleClass.Hitman.ArrowUpdateTime = 0;
-                Roles.Neutral.Hitman.SetTarget();
+                Hitman.SetTarget();
                 HitmanKillButton.Timer = HitmanKillButton.MaxTimer;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Hitman; },
@@ -2731,7 +2857,7 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                Roles.Neutral.Hitman.EndMeeting();
+                Hitman.EndMeeting();
             },
             __instance.KillButton.graphic.sprite,
             new Vector3(0, 1, 0),
@@ -2752,7 +2878,7 @@ static class HudManagerStartPatch
                 if (MatryoshkaButton.isEffectActive)
                 {
                     RoleClass.Matryoshka.WearLimit--;
-                    Roles.Impostor.Matryoshka.RpcSet(null, false);
+                    Matryoshka.RpcSet(null, false);
                     MatryoshkaButton.MaxTimer = CustomOptionHolder.MatryoshkaCoolTime.GetFloat();
                     MatryoshkaButton.Timer = MatryoshkaButton.MaxTimer;
                     return;
@@ -2775,7 +2901,7 @@ static class HudManagerStartPatch
                                 }))
                                 {
                                     GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
-                                    Roles.Impostor.Matryoshka.RpcSet(playerInfo.Object, true);
+                                    Matryoshka.RpcSet(playerInfo.Object, true);
                                     RoleClass.Matryoshka.MyKillCoolTime += CustomOptionHolder.MatryoshkaAddKillCoolTime.GetFloat();
                                     break;
                                 }
@@ -2810,7 +2936,7 @@ static class HudManagerStartPatch
                 {
                     RoleClass.Matryoshka.WearLimit--;
                 }
-                Roles.Impostor.Matryoshka.RpcSet(null, false);
+                Matryoshka.RpcSet(null, false);
             },
             RoleClass.Matryoshka.PutOnButtonSprite,
             new Vector3(-2f, 1, 0),
@@ -2827,7 +2953,7 @@ static class HudManagerStartPatch
             () =>
             {
                 RoleClass.Matryoshka.WearLimit--;
-                Roles.Impostor.Matryoshka.RpcSet(null, false);
+                Matryoshka.RpcSet(null, false);
                 MatryoshkaButton.MaxTimer = CustomOptionHolder.MatryoshkaCoolTime.GetFloat();
                 MatryoshkaButton.Timer = MatryoshkaButton.MaxTimer;
             }
@@ -2950,7 +3076,7 @@ static class HudManagerStartPatch
             () =>
             {
                 if (RoleClass.IsMeeting) return;
-                Roles.Crewmate.Psychometrist.ClickButton();
+                Psychometrist.ClickButton();
             }
         )
         {
@@ -2999,7 +3125,7 @@ static class HudManagerStartPatch
         PainterButton = new(
             () =>
             {
-                Roles.Crewmate.Painter.SetTarget(SetTarget());
+                Painter.SetTarget(SetTarget());
                 PainterButton.Timer = PainterButton.MaxTimer;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Painter && RoleClass.Painter.CurrentTarget == null; },
@@ -3064,12 +3190,12 @@ static class HudManagerStartPatch
             }
         )
         {
-            buttonText = ModTranslation.GetString("FinalStatusKill"),
+            buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
             showButtonText = true
         };
 
         DoppelgangerButton = new(
-            () => { Roles.Impostor.Doppelganger.DoppelgangerShape(); },
+            () => { Doppelganger.DoppelgangerShape(); },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Doppelganger && ModeHandler.IsMode(ModeId.Default); },
             () => { return PlayerControl.LocalPlayer.CanMove; },
             () =>
@@ -3095,22 +3221,22 @@ static class HudManagerStartPatch
         RoleClass.Doppelganger.DoppelgangerDurationText.transform.localScale = Vector3.one * 0.5f;
         RoleClass.Doppelganger.DoppelgangerDurationText.transform.localPosition += new Vector3(-2.575f, -0.95f, 0);
 
-        Roles.Impostor.Conjurer.SetupCustomButtons(__instance);
+        Conjurer.SetupCustomButtons(__instance);
 
-        Roles.Neutral.GM.CreateButton(__instance);
+        GM.CreateButton(__instance);
 
         CamouflagerButton = new(
             () =>
             {
                 if (CamouflagerButton.isEffectActive)
                 {
-                    Roles.Impostor.Camouflager.RpcResetCamouflage();
+                    Camouflager.RpcResetCamouflage();
                     CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
                     CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
                 }
                 else
                 {
-                    Roles.Impostor.Camouflager.RpcCamouflage();
+                    Camouflager.RpcCamouflage();
                 }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Camouflager && ModeHandler.IsMode(ModeId.Default); },
@@ -3134,8 +3260,6 @@ static class HudManagerStartPatch
             5f,
             () =>
             {
-                Logger.Info("効果終了のお知らせ");
-                Roles.Impostor.Camouflager.RpcResetCamouflage();
                 CamouflagerButton.MaxTimer = RoleClass.Camouflager.CoolTime;
                 CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
             }
@@ -3144,6 +3268,14 @@ static class HudManagerStartPatch
             buttonText = ModTranslation.GetString("CamouflagerButtonName"),
             showButtonText = true
         };
+
+        Roles.Impostor.MadRole.Worshiper.SetupCustomButtons(__instance);
+
+        FireFox.SetupCustomButtons(__instance);
+
+        Squid.SetusCustomButton(__instance);
+
+        OrientalShaman.SetupCustomButtons(__instance);
 
         SetCustomButtonCooldowns();
     }

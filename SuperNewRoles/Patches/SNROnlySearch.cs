@@ -1,8 +1,12 @@
 using AmongUs.Data;
 using AmongUs.GameOptions;
+using BepInEx.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Hazel;
+using Il2CppSystem.Collections;
+using Il2CppSystem.Collections.Generic;
 using InnerNet;
+using Newtonsoft.Json;
 using SuperNewRoles.Helpers;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,6 +16,15 @@ namespace SuperNewRoles.Patches;
 public static class SNROnlySearch
 {
     public const string FilterText = "SNR";
+    [HarmonyPatch(typeof(FilterTagManager), nameof(FilterTagManager.CoRefreshTags))]
+    public static class FilterTagManagerPatch
+    {
+        public static void Postfix()
+        {
+            DataManager.Settings.Multiplayer.ValidGameFilterOptions.FilterTags.Add(FilterText);
+        }
+    }
+
     [HarmonyPatch(typeof(FilterTagsMenu), nameof(FilterTagsMenu.ChooseOption))]
     public static class FilterTagsMenuChooseOptionPatch
     {

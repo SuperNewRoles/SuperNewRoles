@@ -1,6 +1,8 @@
+using System.Linq;
+using Hazel;
+using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using UnityEngine;
-using Hazel;
 
 namespace SuperNewRoles.Roles;
 
@@ -11,33 +13,35 @@ public class Vulture
     {
         public static void Postfix()
         {
-            if (RoleClass.Vulture.Arrow == null)
+            foreach (var arrow in RoleClass.Vulture.DeadPlayerArrows)
             {
-                Arrow arrow = new(RoleClass.Vulture.color);
-                RoleClass.Vulture.Arrow = arrow;
-            }
-            float min_target_distance = float.MaxValue;
-            DeadBody target = null;
-            DeadBody[] deadBodies = Object.FindObjectsOfType<DeadBody>();
-            foreach (DeadBody db in deadBodies)
-            {
-                if (db == null)
+                bool isTarget = false;
+                foreach (DeadBody dead in Object.FindObjectsOfType<DeadBody>())
                 {
-                    RoleClass.Vulture.Arrow.arrow.SetActive(false);
+                    if (arrow.Key.ParentId != dead.ParentId) continue;
+                    isTarget = true;
+                    break;
                 }
-                float target_distance = Vector3.Distance(CachedPlayer.LocalPlayer.transform.position, db.transform.position);
-
-                if (target_distance < min_target_distance)
+                if (isTarget)
                 {
-                    min_target_distance = target_distance;
-                    target = db;
+                    if (arrow.Value == null) RoleClass.Vulture.DeadPlayerArrows[arrow.Key] = new(RoleClass.Vulture.color);
+                    arrow.Value.Update(arrow.Key.transform.position, color: RoleClass.Vulture.color);
+                    arrow.Value.arrow.SetActive(true);
+                }
+                else
+                {
+                    if (arrow.Value?.arrow != null)
+                        Object.Destroy(arrow.Value.arrow);
+                    RoleClass.Vulture.DeadPlayerArrows.Remove(arrow.Key);
                 }
             }
-            if (RoleClass.Vulture.Arrow != null && target != null)
+            foreach (DeadBody dead in Object.FindObjectsOfType<DeadBody>())
             {
-                RoleClass.Vulture.Arrow.Update(target.transform.position, color: RoleClass.Vulture.color);
+                if (RoleClass.Vulture.DeadPlayerArrows.Any(x => x.Key.ParentId == dead.ParentId)) continue;
+                RoleClass.Vulture.DeadPlayerArrows.Add(dead, new(RoleClass.Vulture.color));
+                RoleClass.Vulture.DeadPlayerArrows[dead].Update(dead.transform.position, color: RoleClass.Vulture.color);
+                RoleClass.Vulture.DeadPlayerArrows[dead].arrow.SetActive(true);
             }
-            RoleClass.Vulture.Arrow.arrow.SetActive(target != null);
         }
     }
     public static void RpcCleanDeadBody(int? count)
@@ -70,5 +74,16 @@ public class Vulture
                 }
             }
         }
+    }
+
+    public static void EndMeeting()
+    {
+        ResetCoolDown();
+    }
+
+    public static void ResetCoolDown()
+    {
+        HudManagerStartPatch.VultureButton.MaxTimer = RoleClass.Vulture.CoolTime;
+        HudManagerStartPatch.VultureButton.Timer = RoleClass.Vulture.CoolTime;
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
@@ -32,6 +33,7 @@ public static class RoleClass
     public static void ClearAndReloadRoles()
     {
         ModHelpers.IdControlDic = new();
+        ModHelpers.VentIdControlDic = new();
         BlockPlayers = new();
         IsMeeting = false;
         RandomSpawn.IsFirstSpawn = true;
@@ -49,8 +51,6 @@ public static class RoleClass
         ElectricPatch.Reset();
         SabotageManager.ClearAndReloads();
         Roles.Madmate.CheckedImpostor = new();
-        Roles.MadMayor.CheckedImpostor = new();
-        Roles.MadSeer.CheckedImpostor = new();
         Roles.JackalFriends.CheckedJackal = new();
         Mode.BattleRoyal.Main.VentData = new();
         FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
@@ -59,6 +59,19 @@ public static class RoleClass
         MapCustoms.SpecimenVital.ClearAndReload();
         MapCustoms.MoveElecPad.ClearAndReload();
         Beacon.ClearBeacons();
+        MeetingHudUpdatePatch.ErrorNames = new();
+        FixSabotage.ClearAndReload();
+
+        /* 陣営playerがうまく動かず使われてない為コメントアウト。
+        RoleHelpers.CrewmatePlayer = new();
+        RoleHelpers.ImposterPlayer = new();
+        RoleHelpers.NeutralPlayer = new();
+        RoleHelpers.MadRolesPlayer = new();
+        RoleHelpers.FriendRolesPlayer = new();
+        RoleHelpers.NeutralKillingPlayer = new();
+        */
+
+        Debugger.ClearAndReload();
         SoothSayer.ClearAndReload();
         Jester.ClearAndReload();
         Lighter.ClearAndReload();
@@ -133,6 +146,7 @@ public static class RoleClass
         Fox.ClearAndReload();
         DarkKiller.ClearAndReload();
         Seer.ClearAndReload();
+        Crewmate.Seer.ShowFlash_ClearAndReload();
         MadSeer.ClearAndReload();
         EvilSeer.ClearAndReload();
         RemoteSheriff.ClearAndReload();
@@ -143,7 +157,7 @@ public static class RoleClass
         SeerFriends.ClearAndReload();
         JackalSeer.ClearAndReload();
         Assassin.ClearAndReload();
-        Marine.ClearAndReload();
+        Marlin.ClearAndReload();
         Arsonist.ClearAndReload();
         Chief.ClearAndReload();
         Cleaner.ClearAndReload();
@@ -205,12 +219,35 @@ public static class RoleClass
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
         Jumbo.ClearAndReload();
+        Impostor.MadRole.Worshiper.ClearAndReload();
+        Safecracker.ClearAndReload();
+        FireFox.ClearAndReload();
+        Squid.ClearAndReload();
+        DyingMessenger.ClearAndReload();
+        WiseMan.ClearAndReload();
+        NiceMechanic.ClearAndReload();
+        EvilMechanic.ClearAndReload();
+        TheThreeLittlePigs.ClearAndReload();
+        OrientalShaman.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
         MapOption.MapOption.ClearAndReload();
         ChacheManager.Load();
     }
+
+    public static class Debugger
+    {
+        public static bool AmDebugger;
+        public static Color32 color = Palette.DisabledGrey;
+        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
+
+        public static void ClearAndReload()
+        {
+            AmDebugger = AmongUsClient.Instance.AmHost && ConfigRoles.DebugMode.Value && CustomOptionHolder.DebuggerOption.GetBool();
+        }
+    }
+
     public static class SoothSayer
     {
         public static List<PlayerControl> SoothSayerPlayer;
@@ -301,10 +338,6 @@ public static class RoleClass
         public static Color32 color = SheriffYellow;
         public static PlayerControl currentTarget;
         public static float CoolTime;
-        public static bool IsNeutralKill;
-        public static bool IsLoversKill;
-        public static bool IsMadRoleKill;
-        public static bool IsFriendsRoleKill;
         public static float KillMaxCount;
         public static Dictionary<int, int> KillCount;
         public static DateTime ButtonTimer;
@@ -315,10 +348,6 @@ public static class RoleClass
         {
             SheriffPlayer = new();
             CoolTime = CustomOptionHolder.SheriffCoolTime.GetFloat();
-            IsNeutralKill = CustomOptionHolder.SheriffNeutralKill.GetBool();
-            IsLoversKill = CustomOptionHolder.SheriffLoversKill.GetBool();
-            IsMadRoleKill = CustomOptionHolder.SheriffMadRoleKill.GetBool();
-            IsFriendsRoleKill = CustomOptionHolder.SheriffFriendsRoleKill.GetBool();
             KillMaxCount = CustomOptionHolder.SheriffKillMaxCount.GetFloat();
             KillCount = new();
         }
@@ -327,8 +356,6 @@ public static class RoleClass
     {
         public static List<PlayerControl> MeetingSheriffPlayer;
         public static Color32 color = SheriffYellow;
-        public static bool NeutralKill;
-        public static bool MadRoleKill;
         public static float KillMaxCount;
         public static bool OneMeetingMultiKill;
 
@@ -336,8 +363,6 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             MeetingSheriffPlayer = new();
-            NeutralKill = CustomOptionHolder.MeetingSheriffNeutralKill.GetBool();
-            MadRoleKill = CustomOptionHolder.MeetingSheriffMadRoleKill.GetBool();
             KillMaxCount = CustomOptionHolder.MeetingSheriffKillMaxCount.GetFloat();
             OneMeetingMultiKill = CustomOptionHolder.MeetingSheriffOneMeetingMultiKill.GetBool();
         }
@@ -353,7 +378,6 @@ public static class RoleClass
         public static bool IsUseSabo;
         public static bool IsImpostorLight;
         public static bool CreateSidekick;
-        public static bool NewJackalCreateSidekick;
         public static bool CanCreateSidekick;
         public static List<int> CreatePlayers;
         public static bool IsCreatedFriend;
@@ -370,7 +394,6 @@ public static class RoleClass
             IsImpostorLight = CustomOptionHolder.JackalIsImpostorLight.GetBool();
             CreateSidekick = CustomOptionHolder.JackalCreateSidekick.GetBool();
             CanCreateSidekick = CustomOptionHolder.JackalCreateSidekick.GetBool();
-            NewJackalCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
             IsCreatedFriend = false;
             CreatePlayers = new();
             CanCreateFriend = CustomOptionHolder.JackalCreateFriend.GetBool();
@@ -571,7 +594,7 @@ public static class RoleClass
         public static int DeadBodyCount;
         public static bool IsUseVent;
         public static bool ShowArrows;
-        public static Arrow Arrow;
+        public static Dictionary<DeadBody, Arrow> DeadPlayerArrows;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
 
         public static void ClearAndReload()
@@ -581,7 +604,7 @@ public static class RoleClass
             DeadBodyCount = CustomOptionHolder.VultureDeadBodyMaxCount.GetInt();
             IsUseVent = CustomOptionHolder.VultureIsUseVent.GetBool();
             ShowArrows = CustomOptionHolder.VultureShowArrows.GetBool();
-            Arrow = null;
+            DeadPlayerArrows = new();
         }
     }
     public static class NiceScientist
@@ -1427,6 +1450,7 @@ public static class RoleClass
             IsUseVent = CustomOptionHolder.MadJesterIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadJesterIsImpostorLight.GetBool();
             IsMadJesterTaskClearWin = CustomOptionHolder.IsMadJesterTaskClearWin.GetBool();
+            IsImpostorCheck = CustomOptionHolder.MadJesterIsCheckImpostor.GetBool();
             int Common = CustomOptionHolder.MadJesterCommonTask.GetInt();
             int Long = CustomOptionHolder.MadJesterLongTask.GetInt();
             int Short = CustomOptionHolder.MadJesterShortTask.GetInt();
@@ -1437,6 +1461,7 @@ public static class RoleClass
                 Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
                 Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
+            ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MadJesterCheckImpostorTask.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class FalseCharges
@@ -1482,11 +1507,13 @@ public static class RoleClass
         public static Color32 color = Color.yellow;
         public static bool ChangeRoleView;
         public static List<PlayerControl> ViewPlayers;
+        public static float FlashTime;
         public static void ClearAndReload()
         {
             CelebrityPlayer = new();
             ChangeRoleView = CustomOptionHolder.CelebrityChangeRoleView.GetBool();
             ViewPlayers = new();
+            FlashTime = DefaultKillCoolDown >= 5 ? DefaultKillCoolDown * 1000 : 5000;
         }
     }
     public static class Nocturnality
@@ -1584,8 +1611,6 @@ public static class RoleClass
             limitSoulDuration = CustomOptionHolder.SeerLimitSoulDuration.GetBool();
             soulDuration = CustomOptionHolder.SeerSoulDuration.GetFloat();
             mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.SeerMode.GetSelection();
-
-            Roles.Seer.FullScreenRenderer = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.FullScreen, FastDestroyableSingleton<HudManager>.Instance.transform);
         }
     }
     public static class MadSeer
@@ -1653,10 +1678,6 @@ public static class RoleClass
         public static List<PlayerControl> RemoteSheriffPlayer;
         public static Color32 color = SheriffYellow;
         public static float CoolTime;
-        public static bool IsNeutralKill;
-        public static bool IsLoversKill;
-        public static bool IsMadRoleKill;
-        public static bool MadRoleKill;
         public static float KillMaxCount;
         public static Dictionary<int, int> KillCount;
         public static bool IsKillTeleport;
@@ -1665,10 +1686,6 @@ public static class RoleClass
         {
             RemoteSheriffPlayer = new();
             CoolTime = CustomOptionHolder.RemoteSheriffCoolTime.GetFloat();
-            IsNeutralKill = CustomOptionHolder.RemoteSheriffNeutralKill.GetBool();
-            IsLoversKill = CustomOptionHolder.RemoteSheriffLoversKill.GetBool();
-            IsMadRoleKill = CustomOptionHolder.RemoteSheriffMadRoleKill.GetBool();
-            MadRoleKill = CustomOptionHolder.RemoteSheriffMadRoleKill.GetBool();
             KillMaxCount = CustomOptionHolder.RemoteSheriffKillMaxCount.GetFloat();
             KillCount = new();
             IsKillTeleport = CustomOptionHolder.RemoteSheriffIsKillTeleportSetting.GetBool();
@@ -1814,7 +1831,6 @@ public static class RoleClass
         public static bool IsUseSabo;
         public static bool IsImpostorLight;
         public static bool CreateSidekick;
-        public static bool NewJackalCreateSidekick;
         public static bool CanCreateSidekick;
         public static bool CanCreateFriend;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
@@ -1838,7 +1854,6 @@ public static class RoleClass
             CreateSidekick = CustomOptionHolder.JackalSeerCreateSidekick.GetBool();
             CanCreateSidekick = CustomOptionHolder.JackalSeerCreateSidekick.GetBool();
             CanCreateFriend = CustomOptionHolder.JackalSeerCreateFriend.GetBool();
-            NewJackalCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
         }
     }
     public static class Assassin
@@ -1848,6 +1863,7 @@ public static class RoleClass
         public static List<byte> MeetingEndPlayers;
         public static PlayerControl TriggerPlayer;
         public static PlayerControl DeadPlayer;
+        public static bool IsVoteView;
         public static bool IsImpostorWin;
         public static void ClearAndReload()
         {
@@ -1856,15 +1872,18 @@ public static class RoleClass
             TriggerPlayer = null;
             DeadPlayer = null;
             IsImpostorWin = false;
+            IsVoteView = CustomOptionHolder.AssassinViewVote.GetBool();
         }
     }
-    public static class Marine
+    public static class Marlin
     {
-        public static List<PlayerControl> MarinePlayer;
+        public static List<PlayerControl> MarlinPlayer;
         public static Color32 color = new(175, 223, 228, byte.MaxValue);
+        public static bool IsVoteView;
         public static void ClearAndReload()
         {
-            MarinePlayer = new();
+            MarlinPlayer = new();
+            IsVoteView = CustomOptionHolder.MarlinViewVote.GetBool();
         }
     }
     public static class Arsonist
@@ -1902,10 +1921,6 @@ public static class RoleClass
         public static Color32 color = SheriffYellow;
         public static bool IsCreateSheriff;
         public static float CoolTime;
-        public static bool IsNeutralKill;
-        public static bool IsLoversKill;
-        public static bool IsMadRoleKill;
-        public static bool MadRoleKill;
         public static int KillLimit;
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ChiefSidekickButton.png", 115f);
 
@@ -1916,9 +1931,6 @@ public static class RoleClass
             NoTaskSheriffPlayer = new();
             IsCreateSheriff = false;
             CoolTime = CustomOptionHolder.ChiefSheriffCoolTime.GetFloat();
-            IsNeutralKill = CustomOptionHolder.ChiefSheriffCanKillNeutral.GetBool();
-            IsLoversKill = CustomOptionHolder.ChiefSheriffCanKillLovers.GetBool();
-            IsMadRoleKill = CustomOptionHolder.ChiefSheriffCanKillMadRole.GetBool();
             KillLimit = CustomOptionHolder.ChiefSheriffKillLimit.GetInt();
         }
     }
@@ -2355,6 +2367,7 @@ public static class RoleClass
         public static Color32 color = ImpostorRed;
         public static int CheckMadmateKillCount;
         public static int KillCount;
+        public static Dictionary<byte, int> KillCounts;
         public static bool IsCheck
         {
             get
@@ -2367,6 +2380,7 @@ public static class RoleClass
             FinderPlayer = new();
             CheckMadmateKillCount = CustomOptionHolder.FinderCheckMadmateSetting.GetInt();
             KillCount = 0;
+            KillCounts = new();
         }
     }
     public static class Revolutionist
@@ -2871,6 +2885,7 @@ public static class RoleClass
         public static byte Color;
         private static Sprite buttonSprite;
         public static DateTime ButtonTimer;
+        public static float CamoDurationData;
         public static bool IsCamouflage;
         public static float Duration;
         public static Sprite GetButtonSprite()
@@ -2882,6 +2897,7 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             CamouflagerPlayer = new();
+            CamoDurationData = 0;
             CoolTime = CustomOptionHolder.CamouflagerCoolTime.GetFloat();
             DurationTime = CustomOptionHolder.CamouflagerDurationTime.GetFloat();
             ArsonistMark = CustomOptionHolder.CamouflagerCamouflageArsonist.GetBool();
@@ -2979,6 +2995,7 @@ public static class RoleClass
     public static class Jumbo
     {
         public static List<PlayerControl> JumboPlayer;
+        public static List<PlayerControl> BigPlayer;
         public static Color32 color = ImpostorRed;
         public static Dictionary<byte, float> JumboSize;
         //イビルジャンボ
@@ -2990,6 +3007,7 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             JumboPlayer = new();
+            BigPlayer = new();
             JumboSize = new();
             Killed = false;
             CanKillSeted = false;

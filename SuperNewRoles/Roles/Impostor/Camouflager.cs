@@ -72,6 +72,7 @@ public class Camouflager
     public static void Camouflage()
     {
         RoleClass.Camouflager.IsCamouflage = true;
+        RoleClass.Camouflager.ButtonTimer = DateTime.Now;
         PlayerOutfit outfit = new()
         {
             PlayerName = "　",

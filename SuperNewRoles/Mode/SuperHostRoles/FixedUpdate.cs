@@ -109,7 +109,7 @@ public static class FixedUpdate
 
         if (Madmate.CheckImpostor(player) ||
             MadMayor.CheckImpostor(player) ||
-            player.IsRole(RoleId.Marine) ||
+            player.IsRole(RoleId.Marlin) ||
             BlackCat.CheckImpostor(player))
         {
             foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
@@ -219,6 +219,23 @@ public static class FixedUpdate
                         {
                             ChangePlayers[Player.PlayerId] = ChangePlayers[Player.PlayerId] + ModHelpers.Cs(RoleClass.ImpostorRed, " (M)");
                         }
+                    }
+                }
+            }
+        }
+        else if (player.IsRole(RoleId.Finder) && RoleClass.Finder.KillCounts.ContainsKey(player.PlayerId) && RoleClass.Finder.KillCounts[player.PlayerId] >= RoleClass.Finder.CheckMadmateKillCount)
+        {
+            foreach (PlayerControl Player in CachedPlayer.AllPlayers)
+            {
+                if (!Player.IsBot() && Player.IsMadRoles())
+                {
+                    if (!ChangePlayers.ContainsKey(Player.PlayerId))
+                    {
+                        ChangePlayers.Add(Player.PlayerId, ModHelpers.Cs(RoleClass.ImpostorRed, Player.GetDefaultName()));
+                    }
+                    else
+                    {
+                        ChangePlayers[Player.PlayerId] = ModHelpers.Cs(RoleClass.ImpostorRed, ChangePlayers[Player.PlayerId]);
                     }
                 }
             }

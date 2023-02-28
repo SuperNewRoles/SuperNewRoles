@@ -1,3 +1,4 @@
+using System.Linq;
 using Hazel;
 using SuperNewRoles.Buttons;
 using UnityEngine;
@@ -6,6 +7,14 @@ namespace SuperNewRoles.Roles;
 
 public class Shielder
 {
+    public static void WrapUp()
+    {
+        foreach (var data in RoleClass.Shielder.IsShield.ToArray())
+        {
+            RoleClass.Shielder.IsShield[data.Key] = false;
+        }
+
+    }
     public static void HudUpdate()
     {
         if (HudManagerStartPatch.ShielderButton.Timer <= 0.1f && RoleClass.Shielder.IsShield[CachedPlayer.LocalPlayer.PlayerId] && PlayerControl.LocalPlayer.IsRole(RoleId.Shielder))

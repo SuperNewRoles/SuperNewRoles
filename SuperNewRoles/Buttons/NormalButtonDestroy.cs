@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using SuperNewRoles.Roles;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Buttons;
 
@@ -23,6 +24,7 @@ public class NormalButtonDestroy
             { RoleId.Minimalist, (NormalButton.ReportButton, !RoleClass.Minimalist.UseReport) },
             { RoleId.Fox, (NormalButton.ReportButton, !RoleClass.Fox.UseReport) },
             { RoleId.Neet, (NormalButton.ReportButton, true) },
+            { RoleId.FireFox, (NormalButton.ReportButton, !FireFox.FireFoxReport.GetBool()) }
 
             //{ RoleId.Neet, (NormalButton.UseButton, true) }, Key重複のため辞書に入れず直接パッチ
         };

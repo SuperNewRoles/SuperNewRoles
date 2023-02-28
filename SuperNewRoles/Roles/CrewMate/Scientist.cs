@@ -51,8 +51,8 @@ public class Scientist
             if (player.GetSkin().layer != null)
                 player.GetSkin().layer.color = color;
 
-            if (player.HatRend() != null)
-                player.HatRend().color = color;
+            if (player.cosmetics.hat != null)
+                player.cosmetics.hat.SpriteColor = color;
 
             if (player.GetPet()?.rend != null)
                 player.GetPet().rend.color = color;
@@ -63,8 +63,11 @@ public class Scientist
             if (player.VisorSlot() != null)
                 player.VisorSlot().Image.color = color;
 
+            if (player.cosmetics.colorBlindText != null)
+                player.cosmetics.colorBlindText.color = color;
+
             if (player.NameText != null)
-                if (opacity == 0.1f)
+                if (opacity <= 0.1f)
                 {
                     player.NameText().text = "";
                 }

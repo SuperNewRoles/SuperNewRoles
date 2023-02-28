@@ -181,7 +181,7 @@ public class PlayerAnimation
                     }), new(() =>
                     {
                         transform.localScale = new(Physics.FlipX ? 0.5f : -0.5f, 0.5f, 0.5f);
-                        transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
+                        transform.localPosition = new(Physics.FlipX ? -0.45f : 0.45f, 0, -1);
                         if (SoundManagerSource == null)
                         {
                             if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) <= 5f)
@@ -214,19 +214,19 @@ public class PlayerAnimation
                         OnFixedUpdate = new(() =>
                         {
                             transform.localScale = new(Physics.FlipX ? 0.5f : -0.5f, 0.5f, 0.5f);
-                            transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
+                            transform.localPosition = new(Physics.FlipX ? -0.45f : 0.45f, 0, -1);
                         });
                     });
                     OnFixedUpdate = new(() =>
                     {
                         transform.localScale = new(Physics.FlipX ? 0.5f : -0.5f, 0.5f, 0.5f);
-                        transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
+                        transform.localPosition = new(Physics.FlipX ? -0.45f : 0.45f, 0, -1);
                     });
                 });
                 OnFixedUpdate = new(() =>
                 {
                     transform.localScale = new(Physics.FlipX ? 0.5f : -0.5f, 0.5f, 0.5f);
-                    transform.localPosition = new(Physics.FlipX ? -0.75f : 0.75f, 0, -1);
+                    transform.localPosition = new(Physics.FlipX ? -0.45f : 0.45f, 0, -1);
                 });
                 if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, transform.position) <= 5f)
                 {

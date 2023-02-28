@@ -7,7 +7,7 @@ using static SuperNewRoles.Patches.ShareGameVersion;
 
 namespace SuperNewRoles;
 
-public static class PlayerControlHepler
+public static class PlayerControlHelper
 {
     public static bool IsMod(this PlayerControl player)
     {

@@ -1,18 +1,21 @@
-using System.Collections.Specialized;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Neutral;
 using TMPro;
 using UnhollowerBaseLib;
 using UnityEngine;
-using AmongUs.GameOptions;
 using UnityEngine.Audio;
 
 namespace SuperNewRoles;
@@ -34,6 +37,41 @@ public static class ModHelpers
                     !MeetingHud.Instance &&
                     !ExileController.Instance;
         }
+    }
+    public static Vent SetTargetVent(List<Vent> untargetablePlayers = null, PlayerControl targetingPlayer = null, bool forceout = false)
+    {
+        Vent result = null;
+        float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+        if (!MapUtilities.CachedShipStatus) return result;
+        if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
+        if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
+
+        if (untargetablePlayers == null)
+        {
+            untargetablePlayers = new();
+        }
+
+        Vector2 truePosition = targetingPlayer.GetTruePosition();
+        var allPlayers = ShipStatus.Instance.AllVents;
+        for (int i = 0; i < allPlayers.Count; i++)
+        {
+            Vent ventInfo = allPlayers[i];
+            if (untargetablePlayers.Any(x => x == ventInfo))
+            {
+                continue;
+            }
+            if (ventInfo && (NiceMechanic.TargetVent.All(x => x.Value is null || x.Value.Id != ventInfo.Id) || forceout))
+            {
+                Vector2 vector = new Vector2(ventInfo.transform.position.x, ventInfo.transform.position.y) - truePosition;
+                float magnitude = vector.magnitude;
+                if (magnitude <= num && !PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask))
+                {
+                    result = ventInfo;
+                    num = magnitude;
+                }
+            }
+        }
+        return result;
     }
     public static AudioSource PlaySound(Transform parent, AudioClip clip, bool loop, float volume = 1f, AudioMixerGroup audioMixer = null)
     {
@@ -296,6 +334,82 @@ public static class ModHelpers
                 }
             }
         }
+        if (target.IsRole(RoleId.Safecracker) && !killer.IsRole(RoleId.OverKiller) && Safecracker.CheckTask(target, Safecracker.CheckTasks.KillGuard) && (!Safecracker.KillGuardCount.ContainsKey(target.PlayerId) || Safecracker.KillGuardCount[target.PlayerId] >= 1))
+        {
+            if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.SafecrackerGuard, killer))
+            {
+                bool IsSend = false;
+                if (!Safecracker.KillGuardCount.ContainsKey(target.PlayerId) ||
+                    Safecracker.KillGuardCount[target.PlayerId] > 0)
+                {
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.UncheckedProtect);
+                    writer.Write(target.PlayerId);
+                    writer.Write(target.PlayerId);
+                    writer.Write(0);
+                    writer.EndRPC();
+                    RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
+                    IsSend = true;
+                }
+                if (IsSend)
+                {
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SafecrackerGuardCount);
+                    writer.Write(target.PlayerId);
+                    writer.Write(true);
+                    writer.EndRPC();
+                    RPCProcedure.SafecrackerGuardCount(target.PlayerId, true);
+                }
+            }
+        }
+        if (target.IsRole(RoleId.Squid) && !killer.IsRole(RoleId.OverKiller) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
+        {
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.ShielderProtect);
+            writer.Write(target.PlayerId);
+            writer.Write(target.PlayerId);
+            writer.Write(0);
+            writer.EndRPC();
+            RPCProcedure.ShielderProtect(target.PlayerId, target.PlayerId, 0);
+            Squid.SetVigilance(target, false);
+            Squid.SetSpeedBoost(target);
+            RPCHelper.StartRPC(CustomRPC.ShowFlash, target).EndRPC();
+            Squid.Abilitys.IsKillGuard = true;
+            Squid.Abilitys.IsObstruction = true;
+            Squid.Abilitys.ObstructionTimer = Squid.SquidObstructionTime.GetFloat();
+            GameOptionsManager.Instance.CurrentGameOptions.SetInt(Int32OptionNames.KillDistance, 0);
+            Squid.InkSet();
+        }
+        if (target.IsRole(RoleId.TheSecondLittlePig) && !killer.IsRole(RoleId.OverKiller) && TheThreeLittlePigs.TaskCheck(target) && (!TheThreeLittlePigs.TheSecondLittlePig.GuardCount.ContainsKey(target.PlayerId) || TheThreeLittlePigs.TheSecondLittlePig.GuardCount[target.PlayerId] > 0))
+        {
+            MessageWriter writer1 = RPCHelper.StartRPC(CustomRPC.ShielderProtect);
+            writer1.Write(target.PlayerId);
+            writer1.Write(target.PlayerId);
+            writer1.Write(0);
+            writer1.EndRPC();
+            RPCProcedure.ShielderProtect(target.PlayerId, target.PlayerId, 0);
+            MessageWriter writer2 = RPCHelper.StartRPC(CustomRPC.UseTheThreeLittlePigsCount);
+            writer2.Write(target.PlayerId);
+            writer2.EndRPC();
+            RPCProcedure.UseTheThreeLittlePigsCount(target.PlayerId);
+        }
+        if (target.IsRole(RoleId.TheThirdLittlePig) && !killer.IsRole(RoleId.OverKiller) && TheThreeLittlePigs.TaskCheck(target) && (!TheThreeLittlePigs.TheThirdLittlePig.CounterCount.ContainsKey(target.PlayerId) || TheThreeLittlePigs.TheThirdLittlePig.CounterCount[target.PlayerId] > 0))
+        {
+            MessageWriter writer1 = RPCHelper.StartRPC(CustomRPC.ShielderProtect);
+            writer1.Write(target.PlayerId);
+            writer1.Write(target.PlayerId);
+            writer1.Write(0);
+            writer1.EndRPC();
+            RPCProcedure.ShielderProtect(target.PlayerId, target.PlayerId, 0);
+            MessageWriter writer2 = RPCHelper.StartRPC(CustomRPC.UseTheThreeLittlePigsCount);
+            writer2.Write(target.PlayerId);
+            writer2.EndRPC();
+            RPCProcedure.UseTheThreeLittlePigsCount(target.PlayerId);
+            MessageWriter writer3 = RPCHelper.StartRPC(CustomRPC.RPCMurderPlayer);
+            writer3.Write(target.PlayerId);
+            writer3.Write(killer.PlayerId);
+            writer3.Write((byte)0);
+            writer3.EndRPC();
+            RPCProcedure.RPCMurderPlayer(target.PlayerId, killer.PlayerId, 0);
+            FinalStatusClass.RpcSetFinalStatus(killer, FinalStatus.TheThirdLittlePigCounterKill);
+        }
         return MurderAttemptResult.PerformKill;
     }
     public static void GenerateAndAssignTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
@@ -316,9 +430,13 @@ public static class ModHelpers
         {
             numShort = 1;
         }
-        if (player.IsRole(RoleId.HamburgerShop) && !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool())
+        if (player.IsRole(RoleId.HamburgerShop) && (ModeHandler.IsMode(ModeId.SuperHostRoles) || !CustomOptionHolder.HamburgerShopChangeTaskPrefab.GetBool()))
         {
             return Roles.CrewMate.HamburgerShop.GenerateTasks(numCommon + numShort + numLong);
+        }
+        else if (player.IsRole(RoleId.Safecracker) && !(Safecracker.SafecrackerChangeTaskPrefab.GetBool() || GameManager.Instance.LogicOptions.currentGameOptions.MapId != (int)MapNames.Airship))
+        {
+            return Safecracker.GenerateTasks(numCommon + numShort + numLong);
         }
         var tasks = new Il2CppSystem.Collections.Generic.List<byte>();
         var hashSet = new Il2CppSystem.Collections.Generic.HashSet<TaskTypes>();
@@ -727,17 +845,34 @@ public static class ModHelpers
     }
 
     internal static Dictionary<byte, PlayerControl> IdControlDic = new(); // ClearAndReloadで初期化されます
+    internal static Dictionary<int, Vent> VentIdControlDic = new(); // ClearAndReloadで初期化されます
     public static PlayerControl GetPlayerControl(this byte id) => PlayerById(id);
     public static PlayerControl PlayerById(byte id)
     {
-        if (!IdControlDic.ContainsKey(id)) { // idが辞書にない場合全プレイヤー分のループを回し、辞書に追加する
-            foreach (PlayerControl pc in CachedPlayer.AllPlayers) {
+        if (!IdControlDic.ContainsKey(id))
+        { // idが辞書にない場合全プレイヤー分のループを回し、辞書に追加する
+            foreach (PlayerControl pc in CachedPlayer.AllPlayers)
+            {
                 if (!IdControlDic.ContainsKey(pc.PlayerId)) // Key重複対策
-                    IdControlDic.Add(pc.PlayerId,pc);
+                    IdControlDic.Add(pc.PlayerId, pc);
             }
         }
         if (IdControlDic.ContainsKey(id)) return IdControlDic[id];
         Logger.Error($"idと合致するPlayerIdが見つかりませんでした。nullを返却します。id:{id}", "ModHelpers");
+        return null;
+    }
+    public static Vent VentById(byte id)
+    {
+        if (!VentIdControlDic.ContainsKey(id))
+        { // idが辞書にない場合全プレイヤー分のループを回し、辞書に追加する
+            foreach (Vent vn in ShipStatus.Instance.AllVents)
+            {
+                if (!VentIdControlDic.ContainsKey(vn.Id)) // Key重複対策
+                    VentIdControlDic.Add(vn.Id, vn);
+            }
+        }
+        if (VentIdControlDic.ContainsKey(id)) return VentIdControlDic[id];
+        Logger.Error($"idと合致するVentIdが見つかりませんでした。nullを返却します。id:{id}", "ModHelpers");
         return null;
     }
 
@@ -745,10 +880,9 @@ public static class ModHelpers
     {
         foreach (PlayerControl Player in listData)
         {
+            if (Player is null) continue;
             if (Player.PlayerId == CheckPlayer.PlayerId)
-            {
                 return true;
-            }
         }
         return false;
     }
@@ -785,6 +919,19 @@ public static class ModHelpers
     /// <param name="target">対象の文字列</param>
     /// <returns>文字列が半角の場合はtrue、それ以外はfalse</returns>
     public static bool IsOneByteOnlyString(string target) => new Regex("^[\u0020-\u007E\uFF66-\uFF9F]+$").IsMatch(target);
+    public static string[] CustomRates(int start = 0)
+    {
+        start = start >= 10 ? 10 : start;
+        start = start <= 0 ? 0 : start;
+        List<string> rates = new(CustomOptionHolder.rates);
+        for (int i = 0; i < start; i++)
+        {
+            string text = rates[0];
+            rates.Remove(text);
+            rates.Add(text);
+        }
+        return rates.ToArray();
+    }
 }
 public static class CreateFlag
 {
