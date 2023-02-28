@@ -188,6 +188,16 @@ class AddChatPatch
             return false;
         }
         else if (
+            Commands[0].Equals("/MyRole", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/mr", StringComparison.OrdinalIgnoreCase)
+            )
+        {
+            if (!AmongUsClient.Instance.AmHost) return true;
+            if (sourcePlayer.IsMod()) return true;
+            AddChatPatch.MyRoleCommand(/*SendTime: sendTime, */ commandUser: sourcePlayer);
+            return true;
+        }
+        else if (
             Commands[0].Equals("/Winners", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/w", StringComparison.OrdinalIgnoreCase)
             )
@@ -355,7 +365,7 @@ class AddChatPatch
 
         if (errorText != null)
         {
-            if (!AmongUsClient.Instance.AmHost) FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(commandUser, errorText);
+            if (!(AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles, false))) FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(commandUser, errorText);
             else SendCommand(commandUser, errorText);
             return;
         }
