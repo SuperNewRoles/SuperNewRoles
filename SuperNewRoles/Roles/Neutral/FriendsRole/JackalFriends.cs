@@ -5,10 +5,12 @@ namespace SuperNewRoles.Roles;
 
 class JackalFriends
 {
-    public static List<byte> CheckedJackal;
+    public static Dictionary<byte, RoleId> CheckedJackal;
     public static bool CheckJackal(PlayerControl p)
     {
-        if (CheckedJackal.Contains(p.PlayerId)) return true;
+        if (CheckedJackal.ContainsKey(p.PlayerId)) return true;
+        if (CheckedJackal.ContainsKey(p.PlayerId) && p.GetRole() != CheckedJackal[p.PlayerId])
+            CheckedJackal.Remove(p.PlayerId);
         RoleId role = p.GetRole();
         int CheckTask = 0;
         switch (role)
@@ -31,7 +33,7 @@ class JackalFriends
         var taskdata = TaskCount.TaskDate(p.Data).Item1;
         if (CheckTask <= taskdata)
         {
-            CheckedJackal.Add(p.PlayerId);
+            CheckedJackal.Add(p.PlayerId, p.GetRole());
             return true;
         }
         return false;
