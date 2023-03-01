@@ -134,7 +134,7 @@ public static class Hitman
     {
         if (RoleClass.Hitman.ArrowUpdateTimeDefault != -1)
         {
-            RoleClass.Hitman.TargetArrow = new Arrow(RoleClass.Hitman.color);
+            RoleClass.Hitman.TargetArrow = new Arrow(RoleClass.ImpostorRed);
             if (RoleClass.Hitman.Target != null)
             {
                 RoleClass.Hitman.ArrowPosition = RoleClass.Hitman.Target.transform.position;
