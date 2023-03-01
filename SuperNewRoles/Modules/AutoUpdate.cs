@@ -10,12 +10,13 @@ namespace SuperNewRoles;
 
 public class AutoUpdate
 {
-    [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.UpdateAnnounceText))]
+    [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.UpdateAnnouncementText))]
     public static class Announcement
     {
-        public static bool Prefix(AnnouncementPopUp __instance)
+        public static bool Prefix(AnnouncementPopUp __instance, int id)
         {
-            var text = __instance.AnnounceTextMeshPro;
+            if (id is not 0) return true;
+            var text = __instance.AnnouncementBodyText;
             text.text = announcement;
             return false;
         }
@@ -25,7 +26,7 @@ public class AutoUpdate
     {
         public static bool Prefix(AnnouncementPopUp __instance)
         {
-            __instance.UpdateAnnounceText();
+            __instance.UpdateAnnouncementText(0);
             return false;
         }
     }
