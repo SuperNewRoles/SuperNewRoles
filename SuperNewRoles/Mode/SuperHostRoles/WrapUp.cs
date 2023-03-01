@@ -89,6 +89,5 @@ class WrapUpClass
         }
         Roles.Jester.WrapUp(exiled);
         Roles.Nekomata.WrapUp(exiled);
-        if (exiled.Object.IsShapeshifter()) exiled.Object.ResetAndSetImpostorghost();
     }
 }

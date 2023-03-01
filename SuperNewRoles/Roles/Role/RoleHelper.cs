@@ -43,25 +43,6 @@ public static class RoleHelpers
     {
         return !player.IsRole(RoleId.Sheriff, RoleId.Sheriff) && player != null && player.Data.Role.IsImpostor;
     }
-
-    /// <summary>
-    /// v2022.12.8で発生したシェイプシフターが死亡後クルーメイトゴーストになるバグの修正用。
-    /// We are Shapeshifter!
-    /// </summary>
-    /// <param name="player">シェイプシフターであるか判定されるプレイヤー</param>
-    /// <returns>プレイヤーがシェイプシフターである場合trueを返す</returns>
-    public static bool IsShapeshifter(this PlayerControl player) =>
-        player.GetRole() is
-        RoleId.SelfBomber or
-        RoleId.Samurai or
-        RoleId.EvilButtoner or
-        RoleId.SuicideWisher or
-        RoleId.Doppelganger or
-        RoleId.Camouflager or
-        RoleId.EvilSeer or
-        RoleId.ShiftActor;
-    // IsShapeshifter
-
     public static bool IsHauntedWolf(this PlayerControl player) => player.IsRole(RoleId.HauntedWolf);
 
     /// <summary>
@@ -1426,7 +1407,6 @@ public static class RoleHelpers
     {
         var IsTaskClear = false;
         if (player.IsImpostor()) IsTaskClear = true;
-        if (player.IsShapeshifter()) IsTaskClear = true;
         if (player.IsMadRoles()) IsTaskClear = true;
         if (player.IsFriendRoles()) IsTaskClear = true;
         if (player.IsNeutral()) IsTaskClear = true;
