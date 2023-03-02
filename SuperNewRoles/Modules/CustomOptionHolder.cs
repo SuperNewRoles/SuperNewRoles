@@ -37,8 +37,6 @@ public class CustomOptionHolder
     public static CustomOption neutralRolesCountMax;
     public static CustomOption neutralGhostRolesCountMax;
 
-    public static CustomOption enableMirroMap;
-
     public static CustomOption enableAgartha;
 
     public static CustomOption IsDebugMode;
@@ -1035,7 +1033,6 @@ public class CustomOptionHolder
         Mode.ModeHandler.OptionLoad(); // モード設定
 
         MapOption.MapOption.LoadOption(); // マップの設定
-        enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false, null); // 上のオプションの中に移動
 
         MapCustoms.MapCustom.CreateOption(); // マップ改造
 

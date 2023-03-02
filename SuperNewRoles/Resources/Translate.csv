@@ -112,7 +112,7 @@ DarkerColor,darker,暗い,暗
 # CustomOptions
 MapCustom,Map Custom,<color=#84a2d4>マップ改造</color>,地图设置
 SecretRoom,(Airship)Secret Room,(エアーシップ)シークレットルーム,空艇：机密室
-enableMirroMap,enable MirroMap,反転マップを有効にする,启用镜像地图
+enableMirrorMap,enable MirrorMap,反転マップを有効にする,启用镜像地图
 SettingpresetSelection,Preset,プリセット,预设
 SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>设置
 SettingImpostor,<color=#ff0000>Impostor</color> Settings,<color=#ff0000>インポスター</color>の設定,<color=#ff0000>内鬼阵营</color>设置
@@ -188,7 +188,7 @@ MiraReactorTime,Mira Reactor Duration Time,ミラでのリアクター時間,米
 AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリアクター時間,飞艇(AirShip)撞毁路线紧急破坏持续时间
 VentMakerButtonName,Make Vent,設置,制造管道口
 AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する,米拉总部(Mira)：追加生命监测装置
-VentAnimation,No Vent Animation,ベントアニメーション無効化,取消管道口动画
+VentAnimationPlaySetting,Play Vent Animation.,ベントアニメーション有効化
 MapRemodelingOptionSetting,Map Remodeling,マップ改造,地图改造
 AirShipAdditionalVents,AirShipAdditionalVents,エアーシップにベントを追加する,飞艇(AirShip)：增加管道
 PolusAdditionalVents,PolusAdditionalVents,ポーラスにベントを追加する,波鲁斯(Polus)：增加管道
@@ -213,7 +213,7 @@ DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩�
 WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数
 IsSNROnlySearch,SNR Room Filter,SNRルームフィルター,筛选SNR房间
-RestrictDevicesOption,Restrict Devices Option,機器の時間制限,飞船设备使用时间限制
+RestrictDevicesTimeOption,Time limit setting,時間制限の設定
 RestrictAdmin,Restrict Admin,アドミンの時間制限,管理地图使用时间限制
 RestrictVital,Restrict Vital,バイタルの時間制限,生命监测装置使用时间限制
 RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
@@ -275,10 +275,11 @@ PlusGameOptionSetting,<color=#a1a46d>Plus Game Options Setting.</color>,<color=#
 SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード,内鬼禁用破坏
 SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船员禁用完成任务获胜
 SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点
-MapOptionSetting,Map Option,マップの設定,地图设置
+MapOptionSetting,<color=#aa4c8f>Map Option</color>,<color=#aa4c8f>マップの設定</color>,<color=#aa4c8f>地图设置</color>
 NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告
 NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议
-DeviceOptionsSetting,Device Options,機器の設定,飞船设备设置
+DeviceOptionsSetting,Information Device Options,情報機器制限の設定
+CanUseDeviceSetting,<color=#03ff0c>On</color>/<color=#f22f21>Off</color> setting.,使用<color=#03ff0c>可能</color>/<color=#f22f21>不可能</color> の設定
 DeviceUseAdminSetting,Use OK Admin,アドミンが使える,可以观看管理地图
 DeviceUseVitalOrDoorLogSetting,Use OK Vital Or DoorLog,バイタル・ドアログが使える,可以观看生命监测装置和通行日志
 DeviceUseCameraSetting,Use OK Camera,カメラが使える,可以观看监控

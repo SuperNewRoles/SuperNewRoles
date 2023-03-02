@@ -36,7 +36,7 @@ public static class DeviceClass
         IsAdminLimit = MapOption.Admin&& MapOption.IsAdminLimit.GetBool();
         AdminTimer = MapOption.AdminTimerOption.GetFloat();
         */
-        if (MapOption.RestrictDevicesOption.GetBool())
+        if (MapOption.IsUsingRestrictDevicesTime)
         {
             IsAdminRestrict = MapOption.RestrictAdmin.GetBool();
             AdminTimer = IsAdminRestrict ? MapOption.DeviceUseAdminTime.GetFloat() : 0;
@@ -69,7 +69,7 @@ public static class DeviceClass
                 Logger.Info($"Admin Coordinate(Z):{__instance.transform.position.z}", "Debug Mode");
             }
             Roles.Crewmate.Painter.HandleRpc(Roles.Crewmate.Painter.ActionType.CheckAdmin);
-            bool IsUse = MapOption.UseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents);
+            bool IsUse = MapOption.CanUseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents);
             return IsUse;
         }
     }
@@ -91,7 +91,7 @@ public static class DeviceClass
                 MapBehaviour.Instance.Close();
                 return false;
             }
-            bool IsUse = (MapOption.UseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) || RoleClass.EvilHacker.IsMyAdmin;
+            bool IsUse = (MapOption.CanUseAdmin && !PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents)) || RoleClass.EvilHacker.IsMyAdmin;
             if (IsUse)
             {
                 bool commsActive = false;
@@ -264,7 +264,7 @@ public static class DeviceClass
     {
         static void Postfix(VitalsMinigame __instance)
         {
-            if (!MapOption.UseVitalOrDoorLog || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire) || PlayerControl.LocalPlayer.IsRole(RoleId.Dependents))
+            if (!MapOption.CanUseVitalOrDoorLog || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire) || PlayerControl.LocalPlayer.IsRole(RoleId.Dependents))
             {
                 __instance.Close();
             }
@@ -318,7 +318,7 @@ public static class DeviceClass
     {
         public static void Postfix(SurveillanceMinigame __instance)
         {
-            if (!MapOption.UseCamera || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
+            if (!MapOption.CanUseCamera || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
             {
                 __instance.Close();
             }
@@ -416,7 +416,7 @@ public static class DeviceClass
     {
         public static void Postfix(PlanetSurveillanceMinigame __instance)
         {
-            if (!MapOption.UseCamera || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
+            if (!MapOption.CanUseCamera || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
             {
                 __instance.Close();
             }
@@ -429,7 +429,7 @@ public static class DeviceClass
     {
         public static void Postfix(SecurityLogGame __instance)
         {
-            if (!MapOption.UseVitalOrDoorLog || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
+            if (!MapOption.CanUseVitalOrDoorLog || PlayerControl.LocalPlayer.IsRole(RoleId.Vampire, RoleId.Dependents))
             {
                 __instance.Close();
             }
