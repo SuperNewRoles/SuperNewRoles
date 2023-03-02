@@ -225,7 +225,7 @@ AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをで�
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配
 
 # Modes
-ModeSetting,Mode Setting,モード設定,模式设置
+ModeSetting,<color=#fcc800>Mode Setting</color>,<color=#fcc800>モード設定</color>,<color=#fcc800>模式设置</color>
 SettingMode,Mode,モード,游戏模式
 SettingHideAndSeekMode,Hide And Seek Mode,かくれんぼモードの設定,躲猫猫模式设置
 SettingBattleRoyalMode,Battle Royal Mode,バトルロイヤルモードの設定,大逃杀模式设置
@@ -272,7 +272,7 @@ RandomColorNameColorSetting,Change Name Color,名前の色も変える,昵称颜
 RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する,会议中昵称颜色改变
 NeutralName,Neutral,第三陣営,独立阵营
 WinName,Win,勝利,胜利
-PlusGameOptionSetting,<color=#a1a46d>Plus Game Options Setting.</color>,<color=#a1a46d>ゲーム オプション</color>
+PlusGameOptionSetting,<color=#a8bf93>Plus Game Options Setting.</color>,<color=#a8bf93>ゲーム オプション</color>
 SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード,内鬼禁用破坏
 SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船员禁用完成任务获胜
 SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点
