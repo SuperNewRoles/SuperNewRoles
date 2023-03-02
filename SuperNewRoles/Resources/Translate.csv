@@ -337,7 +337,7 @@ FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,�
 FinalStatusTheThirdLittlePigCounterKill,Counter Kill,カウンターキル,反杀
 
 # Sabotages
-SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
+SabotageSetting,<color=#cc3300>SNR’s own sabotage setup</color>,<color=#cc3300>独自サボタージュの設定</color>
 SabotageCognitiveDeficitSetting,Cognitive Deficit,認識障害,破坏时附带认知干扰
 CognitiveDeficitSabotageOutfitUpdateTimeSetting,Figure Change Interval,姿変更間隔,认知干扰时其他玩家外貌变换间隔时间
 CognitiveDeficitSabotageReleaseTimeSetting,Release Time,解除時間,认知干扰持续时间
