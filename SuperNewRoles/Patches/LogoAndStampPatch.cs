@@ -239,7 +239,7 @@ public static class CredentialsPatch
             if (AnnouncementPopup != null)
             {
                 AnnouncementPopup.Show();
-                AnnouncementPopup.AnnounceTextMeshPro.text = AutoUpdate.announcement;
+                AnnouncementPopup.AnnouncementBodyText.text = AutoUpdate.announcement;
             }
             ConfigRoles.IsUpdated = false;
         }
