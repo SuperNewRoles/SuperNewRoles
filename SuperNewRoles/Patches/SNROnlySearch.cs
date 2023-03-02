@@ -16,7 +16,7 @@ namespace SuperNewRoles.Patches;
 public static class SNROnlySearch
 {
     public const string FilterText = "SNR";
-    [HarmonyPatch(typeof(FilterTagManager), nameof(FilterTagManager.CoRefreshTags))]
+    [HarmonyPatch(typeof(FilterTagManager), nameof(FilterTagManager.RefreshTags))]
     public static class FilterTagManagerPatch
     {
         public static void Postfix()

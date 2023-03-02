@@ -32,9 +32,9 @@ public static class DownLoadClassVisor
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomVisorsChache\");
         SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor:Download] バイザーダウンロード開始");
-        FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
-        FetchHats("https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master");
-        FetchHats("https://raw.githubusercontent.com/Ujet222/TOPVisors/main", true);
+        _ = FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
+        _ = FetchHats("https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master");
+        _ = FetchHats("https://raw.githubusercontent.com/Ujet222/TOPVisors/main", true);
         running = true;
     }
     private static string SanitizeResourcePath(string res)
