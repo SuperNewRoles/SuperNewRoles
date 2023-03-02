@@ -147,7 +147,6 @@ class RpcShapeshiftPatch
                         }
                     }
                     __instance.RpcMurderPlayer(__instance);
-                    __instance.ResetAndSetImpostorghost();
                     __instance.RpcSetFinalStatus(FinalStatus.SelfBomberBomb);
                     return false;
                 case RoleId.Samurai:
@@ -192,7 +191,6 @@ class RpcShapeshiftPatch
                     return false;
                 case RoleId.SuicideWisher:
                     __instance.RpcMurderPlayer(__instance);
-                    __instance.ResetAndSetImpostorghost();
                     __instance.RpcSetFinalStatus(FinalStatus.SuicideWisherSelfDeath);
                     return false;
                 case RoleId.ToiletFan:
@@ -787,7 +785,6 @@ static class CheckMurderPatch
                     }
                 }
             }
-            else if (target.IsShapeshifter()) target.ResetAndSetImpostorghost();
         }
         Logger.Info("全スタントマン系通過", "CheckMurder");
         __instance.RpcMurderPlayerCheck(target);
@@ -1175,13 +1172,6 @@ public static class MurderPlayerPatch
                 }
             }
             Minimalist.MurderPatch.Postfix(__instance);
-            /*
-                DefaultModeにシフトアクター以外のシェイプシフター置き換え役職が増えた場合
-                [if (target.IsShapeshifter()) ~ ] のコメントアウトを解除し、
-                [if (target.IsRole(RoleId.ShiftActor)) ~ ]のコードを削除してください。
-            */
-            // if (target.IsShapeshifter()) target.ResetAndSetImpostorghost();
-            if (target.IsRole(RoleId.ShiftActor)) target.ResetAndSetImpostorghost();
         }
         Vampire.OnMurderPlayer(__instance, target);
         if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && ModeHandler.IsMode(ModeId.Default))

@@ -73,7 +73,7 @@ public static class DeviceClass
             return IsUse;
         }
     }
-    [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.Awake))]
+    [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnEnable))]
     class MapCountOverlayAwakePatch
     {
         public static void Postfix()

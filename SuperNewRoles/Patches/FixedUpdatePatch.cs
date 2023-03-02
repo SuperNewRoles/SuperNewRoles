@@ -107,6 +107,7 @@ public class FixedUpdate
                 Roles.Impostor.Penguin.FixedUpdate();
                 Squid.FixedUpdate();
                 OrientalShaman.FixedUpdate();
+                TheThreeLittlePigs.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
