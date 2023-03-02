@@ -20,7 +20,8 @@ Key,English,Japanese,SChinese
 rolemodname,SuperNewRoles,SuperNewRoles,SuperNewRoles
 StartLogText,Create By ykundesu\nThank You Play SuperNewRoles,作成:ykundesu\nSuperNewRolesをプレイしてくれてありがとうございます!!!!,模组作者：ykundesu\n感谢游玩本模组！
 second,Second,秒,秒
-announcementUpdate,<size=125%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> NewData</size>\nVersion:{0}\n{1},<size=200%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の最新情報</size>\n<size=150%>バージョン:{0}</size>\n{1},<size=200%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>的最新信息</size>\n<size=150%>版本:{0}</size>\n{1}
+announcementUpdateMae,<size=125%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> NewData</size>\nVersion:{0}\n{1},<size=200%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の最新情報</size>\n<size=150%>バージョン:{0}</size>\n{1},<size=200%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>的最新信息</size>\n<size=150%>版本:{0}</size>\n{1}
+announcementUpdateTitle,<size=125%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Update v{0},<size=125%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#ff0000>New</color><color=#00ff00>Roles</color> v{0}
 GameCommonTasks,Common Tasks,通常タスク,普通任务
 GameShortTasks,Short Tasks,ショートタスク,长任务
 GameLongTasks,Long Tasks,ロングタスク,短任务
