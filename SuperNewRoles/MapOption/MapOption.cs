@@ -58,8 +58,6 @@ public class MapOption
     // |:========== その他 ==========:|
     public static Dictionary<byte, PoolablePlayer> playerIcons = new();
 
-    public static CustomOption RandomSpawnOption; // どこだよこいつ
-
 
     public static void LoadOption()
     {
@@ -71,7 +69,7 @@ public class MapOption
 
         // |:========== ON/OFFの設定 ==========:|
         CanUseDeviceSetting = Create(446, true, CustomOptionType.Generic, "CanUseDeviceSetting", true, DeviceOptions);
-        DeviceUseAdmin = Create(1207, true, CustomOptionType.Generic, "DeviceUseAdminSetting", true, CanUseDeviceSetting);
+        DeviceUseAdmin = Create(1247, true, CustomOptionType.Generic, "DeviceUseAdminSetting", true, CanUseDeviceSetting);
         DeviceUseVitalOrDoorLog = Create(448, true, CustomOptionType.Generic, "DeviceUseVitalOrDoorLogSetting", true, CanUseDeviceSetting);
         DeviceUseCamera = Create(450, true, CustomOptionType.Generic, "DeviceUseCameraSetting", true, CanUseDeviceSetting);
 
@@ -106,9 +104,6 @@ public class MapOption
 
         // |:========== 反転マップ有効化の設定 ==========:|
         enableMirrorMap = Create(9, false, CustomOptionType.Generic, "enableMirrorMap", false, MapOptionSetting, isHeader: true);
-
-        // |:========== ランダムスポーンの設定 ==========:| // どこだよこいつ
-        RandomSpawnOption = Create(955, false, CustomOptionType.Generic, "RandomSpawnOption", false, MapOptionSetting, isHeader: true);
     }
 
     #region 設定取得に使用している変数の定義
@@ -144,7 +139,6 @@ public class MapOption
     // |:========== 変数:その他 ==========:|
     public static float Default;
     public static float CameraDefault;
-    public static bool IsRandomSpawn; // だからどこなんだよこいつは
 
     #endregion
 
@@ -233,7 +227,5 @@ public class MapOption
             又　後に設定が増えた時に区切りをわかりやすくして追加しやすくする為
         */
         DeviceClass.ClearAndReload();
-
-        IsRandomSpawn = RandomSpawnOption.GetBool(); // 仮置き, マップオプションの管轄外
     }
 }
