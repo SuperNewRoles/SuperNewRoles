@@ -1014,9 +1014,9 @@ public class CustomOptionHolder
 
         if (ConfigRoles.DebugMode.Value)
         {
-            IsDebugMode = Create(10, true, CustomOptionType.Generic, "デバッグモード", false, null, isHeader: true);
-            DebugModeFastStart = Create(681, true, CustomOptionType.Generic, "即開始", false, IsDebugMode);
-            IsMurderPlayerAnnounce = Create(1073, true, CustomOptionType.Generic, "MurderPlayer発生時に通知を行う", false, IsDebugMode);
+            IsDebugMode = Create(10, true, CustomOptionType.Generic, "<color=#828282>デバッグモード</color>", false, null, isHeader: true);
+            DebugModeFastStart = Create(681, true, CustomOptionType.Generic, "<color=#828282>即開始</color>", false, IsDebugMode);
+            IsMurderPlayerAnnounce = Create(1073, true, CustomOptionType.Generic, "<color=#828282>MurderPlayer発生時に通知を行う</color>", false, IsDebugMode);
         }
 
         DisconnectNotPCOption = Create(11, true, CustomOptionType.Generic, Cs(Color.white, "DisconnectNotPC"), true, null, isHeader: true);
