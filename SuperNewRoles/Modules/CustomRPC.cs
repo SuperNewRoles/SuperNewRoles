@@ -282,7 +282,7 @@ public enum CustomRPC
     SetLoversBreakerWinner,
     RPCTeleport,
     SafecrackerGuardCount,
-    SetVigilance,
+    SetVigilance = 240,
     Chat,
     SetWiseManStatus,
     SetVentStatusMechanic,

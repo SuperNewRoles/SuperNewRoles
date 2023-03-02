@@ -26,7 +26,7 @@ public static class VanillaOptionsPatch
     public static void MainMenuManager_StartPostfix(MainMenuManager __instance)
     {
         // Prefab for the title
-        var tmp = __instance.Announcement.transform.Find("Title_Text").gameObject.GetComponent<TextMeshPro>();
+        var tmp = __instance.Announcement.Title;
         tmp.alignment = TextAlignmentOptions.Center;
         tmp.transform.localPosition += Vector3.left * 0.2f;
         titleText = Object.Instantiate(tmp);

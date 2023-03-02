@@ -42,7 +42,7 @@ public static class CredentialsPatch
 
             credentials.alignment = TMPro.TextAlignmentOptions.Center;
             credentials.fontSize *= 0.9f;
-            AutoUpdate.checkForUpdate(credentials);
+            _ = AutoUpdate.checkForUpdate(credentials);
 
             var version = UnityEngine.Object.Instantiate(credentials);
             version.transform.position = new Vector3(0, -0.35f, 0);
@@ -239,7 +239,7 @@ public static class CredentialsPatch
             if (AnnouncementPopup != null)
             {
                 AnnouncementPopup.Show();
-                AnnouncementPopup.AnnounceTextMeshPro.text = AutoUpdate.announcement;
+                AnnouncementPopup.AnnouncementBodyText.text = AutoUpdate.announcement;
             }
             ConfigRoles.IsUpdated = false;
         }

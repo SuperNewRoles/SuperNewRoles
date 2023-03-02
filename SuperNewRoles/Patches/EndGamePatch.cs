@@ -1023,17 +1023,27 @@ public static class OnGameEndPatch
                 isreset = true;
             }
         }
+        isReset = false;
         foreach (List<PlayerControl> plist in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
         {
+            if (AdditionalTempData.winCondition is WinCondition.LoversBreakerWin or WinCondition.SafecrackerWin or WinCondition.JesterWin or
+                                                   WinCondition.VultureWin or WinCondition.WorkpersonWin or WinCondition.FalseChargesWin or
+                                                   WinCondition.DemonWin or WinCondition.SuicidalIdeationWin or WinCondition.PhotographerWin or
+                                                   WinCondition.RevolutionistWin or WinCondition.QuarreledWin) break;
+            if (!TheThreeLittlePigs.IsTheThreeLittlePigs(plist) || plist.IsAllDead()) continue;
             bool isAllAlive = true;
-            foreach (PlayerControl player in plist)
+            if (plist.Count >= 3)
             {
-                if (player.IsDead())
+                foreach (PlayerControl player in plist)
                 {
-                    isAllAlive = false;
-                    break;
+                    if (player.IsDead() || !TheThreeLittlePigs.IsTheThreeLittlePigs(player))
+                    {
+                        isAllAlive = false;
+                        break;
+                    }
                 }
             }
+            else isAllAlive = false;
             if (isAllAlive)
             {
                 if (!((isDleted && changeTheWinCondition) || isReset))
@@ -1044,6 +1054,7 @@ public static class OnGameEndPatch
                 }
                 foreach (PlayerControl player in plist)
                 {
+                    if (!TheThreeLittlePigs.IsTheThreeLittlePigs(player)) continue;
                     TempData.winners.Add(new(player.Data));
                     AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
                 }
@@ -1070,6 +1081,7 @@ public static class OnGameEndPatch
                     }
                     foreach (PlayerControl player in plist)
                     {
+                        if (!TheThreeLittlePigs.IsTheThreeLittlePigs(player)) continue;
                         TempData.winners.Add(new(player.Data));
                         AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
                     }
