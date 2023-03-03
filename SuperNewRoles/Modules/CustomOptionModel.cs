@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using AmongUs.GameOptions;
 using BepInEx.Configuration;
 using HarmonyLib;
@@ -233,9 +234,21 @@ public class CustomOption
         return format != "" ? sel : ModTranslation.GetString(sel);
     }
 
+    // "+="で文字を連結するより、連結特化のStringBuilderクラスを使用して連結する事で、
+    // オブジェクト作成回数を減らし、メモリ使用量を削減できる為効率的であると、ChatGPTさんがこのコードを提案して下さったので使用。
     public virtual string GetName()
     {
-        return ModTranslation.GetString(name);
+        string pattern = @"[ + ]|(<)|(>)";
+        Regex regex = new(pattern);
+
+        string[] names = regex.Split(name);
+        StringBuilder translatedNameBuilder = new();
+        foreach (string str in names)
+        {
+            string translatedStr = ModTranslation.GetString(str);
+            translatedNameBuilder.Append(translatedStr);
+        }
+        return translatedNameBuilder.ToString();
     }
 
     // Option changes
