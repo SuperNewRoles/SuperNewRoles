@@ -5,8 +5,8 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Roles;
 using UnhollowerBaseLib;
 using UnityEngine;
-using Random = UnityEngine.Random;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 

@@ -1,4 +1,3 @@
-using System;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Patches.CursedTasks;
