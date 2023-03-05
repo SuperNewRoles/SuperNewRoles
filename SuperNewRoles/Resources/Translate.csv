@@ -1303,6 +1303,7 @@ IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅
 
 #CursedTasks
 CursedTaskOption,Cursed Mode,呪いモード
+CursedMedScanTaskText,Id : {0}Player{1}        Stature : 0b11Feet 0b110Inch\nPlayerId : {1}        PlayerName : {2}\nTeam : {3}        Role : {4}\nWeight: 0b1011100 pounds        Color : {5}        Blood Type : {6},Id : {0}プレイヤー{1}        身長 : 0b11フィート 0b110インチ\nプレイヤーId : {1}        プレイヤーネーム : {2}\n陣営 : {3}        役職 : {4}\n体重 : 0b1011100ポンド        カラー : {5}        血液型 : {6}
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！
