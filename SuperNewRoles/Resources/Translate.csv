@@ -1302,7 +1302,7 @@ IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和
 IsLightAndDarker,Show light and darker,明暗を表示する,显示颜色深浅
 
 #CursedTasks
-CursedTaskOption,Cursed Task Mode,呪いのタスクモード
+CursedTaskOption,Cursed Mode,呪いモード
 
 # Other
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！,欢迎游玩Super New Roles（超新职业）！
