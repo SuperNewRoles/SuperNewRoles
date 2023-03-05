@@ -21,11 +21,13 @@ public enum TeamRoleType
 }
 public static class RoleHelpers
 {
+    /* TODO: 蔵徒:陣営playerがうまく動いていない。SetRoleの時に``if (player.Is陣営())``がうまく動かず、リスト入りされていない。直す
     public static List<PlayerControl> CrewmatePlayer;
     public static List<PlayerControl> ImposterPlayer;
     public static List<PlayerControl> NeutralPlayer;
     public static List<PlayerControl> MadRolesPlayer;
     public static List<PlayerControl> FriendRolesPlayer;
+    */
 
     // FIXME:パブロフの犬オーナーのリスト入りがうまくいかなかった為、一度コメントアウト勝利条件整理の時に修正お願いします・・・
     // public static List<PlayerControl> NeutralKillingPlayer;
@@ -41,25 +43,6 @@ public static class RoleHelpers
     {
         return !player.IsRole(RoleId.Sheriff, RoleId.Sheriff) && player != null && player.Data.Role.IsImpostor;
     }
-
-    /// <summary>
-    /// v2022.12.8で発生したシェイプシフターが死亡後クルーメイトゴーストになるバグの修正用。
-    /// We are Shapeshifter!
-    /// </summary>
-    /// <param name="player">シェイプシフターであるか判定されるプレイヤー</param>
-    /// <returns>プレイヤーがシェイプシフターである場合trueを返す</returns>
-    public static bool IsShapeshifter(this PlayerControl player) =>
-        player.GetRole() is
-        RoleId.SelfBomber or
-        RoleId.Samurai or
-        RoleId.EvilButtoner or
-        RoleId.SuicideWisher or
-        RoleId.Doppelganger or
-        RoleId.Camouflager or
-        RoleId.EvilSeer or
-        RoleId.ShiftActor;
-    // IsShapeshifter
-
     public static bool IsHauntedWolf(this PlayerControl player) => player.IsRole(RoleId.HauntedWolf);
 
     /// <summary>
@@ -131,10 +114,9 @@ public static class RoleHelpers
     // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
-        player.GetRole() ==
-            RoleId.Pavlovsowner
-            && !RoleClass.Pavlovsowner.CountData.ContainsKey(player.PlayerId)
-            || RoleClass.Pavlovsowner.CountData[player.PlayerId] > 0
+        (player.GetRole() == RoleId.Pavlovsowner &&
+        (!RoleClass.Pavlovsowner.CountData.ContainsKey(player.PlayerId) ||
+        RoleClass.Pavlovsowner.CountData[player.PlayerId] > 0))
         ||
         player.GetRole() is
         RoleId.Pavlovsdogs or
@@ -145,7 +127,8 @@ public static class RoleHelpers
         RoleId.SidekickSeer or
         RoleId.WaveCannonJackal or
         RoleId.Hitman or
-        RoleId.Egoist;
+        RoleId.Egoist or
+        RoleId.FireFox;
     // 第三キル人外か
 
     public static bool IsPavlovsTeam(this PlayerControl player) => player.GetRole() is
@@ -894,12 +877,14 @@ public static class RoleHelpers
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
                 return;
         }
+        /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.Add(player);
         else if (player.IsNeutral()) NeutralPlayer.Add(player);
         else if (player.IsMadRoles()) MadRolesPlayer.Add(player);
         else if (player.IsFriendRoles()) FriendRolesPlayer.Add(player);
         else CrewmatePlayer.Add(player);
-        //if (player.IsKiller()) NeutralKillingPlayer.Add(player);
+        if (player.IsKiller()) NeutralKillingPlayer.Add(player);
+        */
         bool flag = player.GetRole() != role && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
         if (role.IsGhostRole())
         {
@@ -1400,12 +1385,14 @@ public static class RoleHelpers
                 break;
                 //ロールリモベ
         }
+        /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
         else if (player.IsNeutral()) NeutralPlayer.RemoveAll(ClearRemove);
         else if (player.IsMadRoles()) MadRolesPlayer.RemoveAll(ClearRemove);
         else if (player.IsFriendRoles()) FriendRolesPlayer.RemoveAll(ClearRemove);
         else CrewmatePlayer.RemoveAll(ClearRemove); // 眷族等クルーではない役職も此処に含まれる
-        //if (player.IsKiller()) NeutralKillingPlayer.RemoveAll(ClearRemove);
+        if (player.IsKiller()) NeutralKillingPlayer.RemoveAll(ClearRemove);
+        */
         ChacheManager.ResetMyRoleChache();
     }
     public static void SetRoleRPC(this PlayerControl Player, RoleId selectRoleData)
@@ -1420,7 +1407,6 @@ public static class RoleHelpers
     {
         var IsTaskClear = false;
         if (player.IsImpostor()) IsTaskClear = true;
-        if (player.IsShapeshifter()) IsTaskClear = true;
         if (player.IsMadRoles()) IsTaskClear = true;
         if (player.IsFriendRoles()) IsTaskClear = true;
         if (player.IsNeutral()) IsTaskClear = true;
@@ -1876,5 +1862,11 @@ public static class RoleHelpers
     public static bool IsAlive(this CachedPlayer player)
     {
         return player != null && !player.Data.Disconnected && !player.Data.IsDead;
+    }
+    public static bool IsAllDead(this List<PlayerControl> lest)
+    {
+        foreach (PlayerControl player in lest)
+            if (player.IsAlive()) return false;
+        return true;
     }
 }

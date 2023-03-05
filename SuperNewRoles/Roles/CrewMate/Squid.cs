@@ -179,7 +179,7 @@ public class Squid
     }
     public static void SetKillTimer(float killCool)
     {
-        foreach (var button in CustomButton.currentButtons)
+        foreach (var button in CustomButton.CurrentButtons)
         {
             if (button.actionButton.name == "KillButton(Clone)")
             {
@@ -191,7 +191,7 @@ public class Squid
         }
         new LateTask(() =>
         {
-            foreach (var button in CustomButton.currentButtons)
+            foreach (var button in CustomButton.CurrentButtons)
             {
                 if (button.actionButton.name == "KillButton(Clone)")
                 {

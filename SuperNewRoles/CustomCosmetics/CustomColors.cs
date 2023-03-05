@@ -281,10 +281,10 @@ public class CustomColors
             public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte bodyColor)
             { // Fix incorrect color assignment
                 uint color = (uint)bodyColor;
-                if (isTaken(__instance, color) || color >= Palette.PlayerColors.Length)
+                if (IsTaken(__instance, color) || color >= Palette.PlayerColors.Length)
                 {
                     int num = 0;
-                    while (num++ < 50 && (color >= pickAbleColors || isTaken(__instance, color)))
+                    while (num++ < 50 && (color >= pickAbleColors || IsTaken(__instance, color)))
                     {
                         color = (color + 1) % pickAbleColors;
                     }
@@ -293,7 +293,7 @@ public class CustomColors
                 __instance.RpcSetColor((byte)color);
                 return false;
             }
-            private static bool isTaken(PlayerControl player, uint color)
+            private static bool IsTaken(PlayerControl player, uint color)
             {
                 foreach (GameData.PlayerInfo p in GameData.Instance.AllPlayers)
                 {

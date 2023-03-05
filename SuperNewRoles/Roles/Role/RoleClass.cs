@@ -62,12 +62,14 @@ public static class RoleClass
         MeetingHudUpdatePatch.ErrorNames = new();
         FixSabotage.ClearAndReload();
 
+        /* 陣営playerがうまく動かず使われてない為コメントアウト。
         RoleHelpers.CrewmatePlayer = new();
         RoleHelpers.ImposterPlayer = new();
         RoleHelpers.NeutralPlayer = new();
         RoleHelpers.MadRolesPlayer = new();
         RoleHelpers.FriendRolesPlayer = new();
-        //RoleHelpers.NeutralKillingPlayer = new();
+        RoleHelpers.NeutralKillingPlayer = new();
+        */
 
         Debugger.ClearAndReload();
         SoothSayer.ClearAndReload();
