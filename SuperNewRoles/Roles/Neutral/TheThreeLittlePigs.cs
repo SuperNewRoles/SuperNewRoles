@@ -89,13 +89,32 @@ public class TheThreeLittlePigs
         return clearTask <= TaskCount.TaskDate(player.Data).Item1;
     }
 
+    public static void FixedUpdate()
+    {
+        foreach (List<PlayerControl> plist in TheThreeLittlePigsPlayer)
+        {
+            List<PlayerControl> removes = new();
+            foreach (PlayerControl player in plist)
+                if (!IsTheThreeLittlePigs(player)) removes.Add(player);
+            if (removes.Count > 0)
+            {
+                foreach (PlayerControl id in removes)
+                    plist.Remove(id);
+            }
+        }
+    }
+
     public class TheFirstLittlePigClass
     {
         public List<PlayerControl> Player;
         public int ClearTask;
         public float FlashTime;
         public Timer Timer;
-        public void WrapUp() => TimerSet();
+        public void WrapUp()
+        {
+            if (!PlayerControl.LocalPlayer.IsRole(RoleId.TheFirstLittlePig)) return;
+            TimerSet();
+        }
         public void TimerSet()
         {
             Timer = new(FlashTime);
@@ -120,7 +139,7 @@ public class TheThreeLittlePigs
         {
             if (Timer == null) return;
             Timer.Stop();
-            Logger.Info($"タイマを止めました", "TheFirstLittlePig");
+            Logger.Info($"タイマーを止めました", "TheFirstLittlePig");
         }
         public TheFirstLittlePigClass()
         {
@@ -156,5 +175,14 @@ public class TheThreeLittlePigs
             Logger.Info($"3番目の仔豚のタスク割合 : {ClearTask}, 割合 : {TheThirdLittlePigClearTask.GetString()}", "TheThreeLittlePigs");
             CounterCount = new();
         }
+    }
+
+    public static bool IsTheThreeLittlePigs(PlayerControl player) =>
+        player.IsRole(RoleId.TheFirstLittlePig, RoleId.TheSecondLittlePig, RoleId.TheThirdLittlePig);
+    public static bool IsTheThreeLittlePigs(List<PlayerControl> players)
+    {
+        foreach (PlayerControl player in players)
+            if (IsTheThreeLittlePigs(player)) return true;
+        return false;
     }
 }

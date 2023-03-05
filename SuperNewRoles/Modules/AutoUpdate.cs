@@ -10,26 +10,31 @@ namespace SuperNewRoles;
 
 public class AutoUpdate
 {
-    [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.UpdateAnnounceText))]
-    public static class Announcement
+    static AnnouncementPanel firstpanel;
+    [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Update))]
+    public static class AnnouncementUpdatePatch
     {
-        public static bool Prefix(AnnouncementPopUp __instance)
+        public static void Postfix(AnnouncementPopUp __instance)
         {
-            var text = __instance.AnnounceTextMeshPro;
-            text.text = announcement;
-            return false;
-        }
-    }
-    [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Init))]
-    public static class AnnouncementInitpatch
-    {
-        public static bool Prefix(AnnouncementPopUp __instance)
-        {
-            __instance.UpdateAnnounceText();
-            return false;
+            if (firstpanel is null) firstpanel = __instance.ListScroller.Inner.transform.GetComponentInChildren<AnnouncementPanel>();
+            if (firstpanel is null) return;
+            firstpanel.DateText.text = announcementtitle;
+            firstpanel.TitleText.text = announcementtitlever;
+            firstpanel.announcement.Text = announcement;
+            firstpanel.announcement.Title = announcementtitle;
+            firstpanel.announcement.ShortTitle = announcementtitle;
+            firstpanel.announcement.SubTitle = announcementtitlever;
+            if (__instance.selectedPanel == firstpanel)
+            {
+                __instance.SubTitle.text = announcementtitlever;
+                __instance.Title.text = string.Format(ModTranslation.GetString("announcementUpdateTitle"), announcementtitle);
+                __instance.AnnouncementBodyText.text = announcement;
+            }
         }
     }
     public static string announcement = "None";
+    public static string announcementtitle = "None";
+    public static string announcementtitlever = "None";
     public static GenericPopup InfoPopup;
     private static bool IsLoad = false;
     public static string updateURL = null;
@@ -116,12 +121,15 @@ public class AutoUpdate
                 return false; // Something went wrong
             }
             string changeLog = data["body"]?.ToString();
+            string title = data["name"]?.ToString();
             if (changeLog != null) announcement = changeLog;
             // check version
             SuperNewRolesPlugin.NewVersion = tagname.Replace("v", "");
             System.Version newver = System.Version.Parse(SuperNewRolesPlugin.NewVersion);
             System.Version Version = SuperNewRolesPlugin.ThisVersion;
-            announcement = string.Format(ModTranslation.GetString("announcementUpdate"), newver, announcement);
+            //announcement = string.Format(ModTranslation.GetString("announcementUpdate"), newver, announcement);
+            announcementtitle = newver.ToString();
+            announcementtitlever = title;
             if (!ConfigRoles.AutoUpdate.Value)
             {
                 Logger.Info("AutoUpdateRETURN", "AutoUpdate");

@@ -108,7 +108,7 @@ public static class OrientalShaman
             __instance.AbilityButton,
             KeyCode.F,
             49,
-            () => { return !PlayerControl.LocalPlayer.CanMove; }
+            () => { return false; }
         )
         {
             buttonText = ModTranslation.GetString("OrientalShamanShermansServantButtoonName"),
@@ -196,6 +196,19 @@ public static class OrientalShaman
                 OrientalShamanVentButton.isEffectActive = false;
                 OrientalShamanVentButton.HasEffect = true;
                 OrientalShamanVentButton.actionButton.cooldownTimerText.color = Color.white;
+
+                PlayerControl.LocalPlayer.moveable = true;
+                PlayerControl.LocalPlayer.Visible = true;
+                PlayerControl.LocalPlayer.inVent = false;
+
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SetVisible);
+                writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                writer.Write(true);
+                writer.EndRPC();
+
+                if (!ShipStatus.Instance) return;
+                foreach (Vent vent in ShipStatus.Instance.AllVents)
+                    vent.SetButtons(false);
             },
             __instance.ImpostorVentButton.graphic.sprite,
             new(-1, 1, 0),
@@ -203,7 +216,7 @@ public static class OrientalShaman
             __instance.AbilityButton,
             KeyCode.V,
             50,
-            () => { return !PlayerControl.LocalPlayer.CanMove; },
+            () => { return false; },
             true,
             OrientalShamanVentDurationTime.GetFloat(),
             () =>
@@ -223,20 +236,8 @@ public static class OrientalShaman
                 writer.EndRPC();
 
                 if (!ShipStatus.Instance) return;
-                Vent inVent = null;
-                float min_distance = float.MaxValue;
                 foreach (Vent vent in ShipStatus.Instance.AllVents)
-                {
-                    float distance = Vector2.Distance(PlayerControl.LocalPlayer.transform.position, vent.transform.position);
-                    if (distance <= vent.UsableDistance && distance < min_distance)
-                    {
-                        min_distance = distance;
-                        vent.CanUse(PlayerControl.LocalPlayer.Data, out bool canUse, out bool _);
-                        if (canUse) inVent = vent;
-                        Logger.Info($"選択されたベント : {vent.gameObject.name}", "OrientalShaman Vent Button");
-                    }
-                }
-                inVent.SetButtons(false);
+                    vent.SetButtons(false);
             }
         )
         {
@@ -285,7 +286,7 @@ public static class OrientalShaman
             __instance.AbilityButton,
             KeyCode.F,
             49,
-            () => { return !PlayerControl.LocalPlayer.CanMove; }
+            () => { return false; }
         )
         {
             buttonText = ModTranslation.GetString("ShermansServantTransformationButtonName"),
@@ -311,7 +312,7 @@ public static class OrientalShaman
             __instance.AbilityButton,
             KeyCode.Q,
             8,
-            () => { return !PlayerControl.LocalPlayer.CanMove; }
+            () => { return false; }
         )
         {
             buttonText = ModTranslation.GetString("WorshiperSuicide"),
