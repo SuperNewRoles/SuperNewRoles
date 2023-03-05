@@ -1084,6 +1084,8 @@ public class CustomOptionHolder
 
         IsChangeTheWinCondition = Create(1005, true, CustomOptionType.Generic, "IsChangeTheWinCondition", false, null, isHeader: true);
 
+        Patches.CursedTasks.Main.SetupCustomOptions();
+
         MadRolesCanFixComms = Create(984, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
         MadRolesCanFixElectrical = Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
         MadRolesCanVentMove = Create(1013, false, CustomOptionType.Crewmate, "MadRolesCanVentMove", false, null);
@@ -1972,9 +1974,11 @@ public class CustomOptionHolder
         Squid.SetupCustomOptions();
 
         DyingMessenger.SetupCustomOptions();
+
         NiceMechanic.SetupCustomOptions();
 
         EvilMechanic.SetupCustomOptions();
+
         TheThreeLittlePigs.SetupCustomOptions();
 
         OrientalShaman.SetupCustomOptions();
