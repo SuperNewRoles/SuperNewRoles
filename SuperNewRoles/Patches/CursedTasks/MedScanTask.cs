@@ -38,7 +38,7 @@ public class MedScanTask
             if (!Main.IsCursed) return;
             __instance.ScanDuration = 60f;
             IntroData intro = IntroData.GetIntroData(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
-            string color = FastDestroyableSingleton<TranslationController>.Instance.GetString(Palette.ColorNames[PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId], new Il2CppReferenceArray<Il2CppSystem.Object>(0));
+            string color = FastDestroyableSingleton<TranslationController>.Instance.GetString(Palette.ColorNames[PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId]);
             string playerIdText = $"0b{Convert.ToInt32(Convert.ToString(PlayerControl.LocalPlayer.PlayerId, 2)):000000000}";
             string text = string.Format(ModTranslation.GetString("CursedMedScanTaskText"), color.Replace("(MOD)", ""), playerIdText, PlayerControl.LocalPlayer.Data.DefaultOutfit.PlayerName, intro.Team, PlayerControl.LocalPlayer.IsHauntedWolf() ? IntroData.GetIntroData(RoleId.DefaultRole).Name : intro.Name, color, MedScanMinigame.BloodTypes[(int)PlayerControl.LocalPlayer.BodyType]);
             string errortext = "";

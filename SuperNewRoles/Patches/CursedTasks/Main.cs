@@ -16,5 +16,6 @@ public class Main
     public static void ClearAndReload()
     {
         IsCursed = CursedTask.GetBool() && ModeHandler.IsMode(ModeId.Default);
+        SampleTask.Data = new();
     }
 }
