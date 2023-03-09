@@ -57,7 +57,7 @@ public class MapOption
 
     // |:========== その他 ==========:|
     public static Dictionary<byte, PoolablePlayer> playerIcons = new();
-    private static readonly string color = "<color=#ffeefa>";
+    private readonly static string color = "<color=#ffeefa>";
 
 
     public static void LoadOption()
