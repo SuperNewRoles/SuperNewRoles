@@ -13,7 +13,7 @@ public class UnlockManifoldsTask
         {
             if (!Main.IsCursed) return;
             foreach (SpriteRenderer button in __instance.Buttons)
-                button.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.UnlockManifold.png", 100f);
+                button.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Cursed.UnlockManifold.png", 100f);
         }
     }
 }
