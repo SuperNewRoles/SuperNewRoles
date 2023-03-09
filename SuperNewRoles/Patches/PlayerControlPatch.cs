@@ -176,6 +176,8 @@ class RpcShapeshiftPatch
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
 
+                            Arsonist.SettingAfire();
+
                             Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                             Writer.Write((byte)CustomGameOverReason.ArsonistWin);
                             Writer.EndRPC();
@@ -913,7 +915,7 @@ public static class MurderPlayerPatch
             target.protectedByGuardian = true;
             return false;
         }
-        if (target.IsRole(RoleId.WiseMan)  && WiseMan.WiseManData.ContainsKey(target.PlayerId) && WiseMan.WiseManData[target.PlayerId] is not null)
+        if (target.IsRole(RoleId.WiseMan) && WiseMan.WiseManData.ContainsKey(target.PlayerId) && WiseMan.WiseManData[target.PlayerId] is not null)
         {
             WiseMan.WiseManData[target.PlayerId] = null;
             PlayerControl targ = target;
