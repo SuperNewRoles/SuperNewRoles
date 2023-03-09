@@ -234,6 +234,9 @@ public class CustomOption
         return format != "" ? sel : ModTranslation.GetString(sel);
     }
 
+    public virtual string GetName() => ModTranslation.GetString(name);
+
+    /* 今後文字列の結合が必要になった時にコメントアウトを解除してください。
     // "+="で文字を連結するより、連結特化のStringBuilderクラスを使用して連結する事で、
     // オブジェクト作成回数を減らし、メモリ使用量を削減できる為効率的であると、ChatGPTさんがこのコードを提案して下さったので使用。
     public virtual string GetName()
@@ -250,6 +253,7 @@ public class CustomOption
         }
         return translatedNameBuilder.ToString();
     }
+    */
 
     // Option changes
 
