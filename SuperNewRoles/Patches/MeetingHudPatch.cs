@@ -509,7 +509,8 @@ class MeetingHudStartPatch
         }
         NiceMechanic.StartMeeting();
         Roles.Crewmate.Celebrity.TimerStop();
-        TheThreeLittlePigs.TheFirstLittlePig.TimerStop();        NiceMechanic.StartMeeting();
+        TheThreeLittlePigs.TheFirstLittlePig.TimerStop();
+        NiceMechanic.StartMeeting();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.WiseMan)) WiseMan.StartMeeting();
         Roles.Crewmate.Knight.ProtectedPlayer = null;
         Roles.Crewmate.Knight.GuardedPlayers = new();

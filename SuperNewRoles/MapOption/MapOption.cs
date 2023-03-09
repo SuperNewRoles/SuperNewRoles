@@ -5,6 +5,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.MapOption;
 
@@ -62,7 +63,8 @@ public class MapOption
     public static void LoadOption()
     {
         // |:========== マップの設定 ==========:|
-        MapOptionSetting = Create(527, true, CustomOptionType.Generic, "MapOptionSetting", false, null, isHeader: true);
+
+        MapOptionSetting = Create(527, true, CustomOptionType.Generic, Cs(new Color(170f / 255f, 76f / 255f, 143f / 255f, 1), "MapOptionSetting"), false, null, isHeader: true);
 
         // |:========== 情報機器制限の設定 ==========:|
         DeviceOptions = Create(528, true, CustomOptionType.Generic, "DeviceOptionsSetting", false, MapOptionSetting, isHeader: true);

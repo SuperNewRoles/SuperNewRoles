@@ -111,7 +111,7 @@ LightColor,bright,明るい,亮
 DarkerColor,darker,暗い,暗
 
 # CustomOptions
-MapCustom,Map Custom,<color=#84a2d4>マップ改造</color>,地图设置
+MapCustom,Map Custom,マップ改造,地图设置
 SecretRoom,(Airship)Secret Room,(エアーシップ)シークレットルーム,空艇：机密室
 enableMirrorMap,enable MirrorMap,反転マップを有効にする,启用镜像地图
 SettingpresetSelection,Preset,プリセット,预设
@@ -210,7 +210,7 @@ IsAlwaysReduceCooldown,Reduce Cooldown,常にキルクールタイムが進む,�
 IsAlwaysReduceCooldownExceptInVent,Reduce Cooldown Except InVent,ベント内でも進む,击杀冷却会在进入管道期间停止计算
 IsAlwaysReduceCooldownExceptOnTask,Reduce Cooldown Except OnTask,停電修理中でも進む,击杀冷却会在修理紧急任务时停止计算
 IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜利条件变更
-DisconnectNotPC,<color=#eebbcb>Kick non-PCs.</color>,<color=#eebbcb>PC以外をキックする</color>,<color=#eebbcb>踢出非电脑端玩家</color>
+DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家
 WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数
 IsSNROnlySearch,SNR Room Filter,SNRルームフィルター,筛选SNR房间
@@ -225,7 +225,7 @@ AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをで�
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配
 
 # Modes
-ModeSetting,<color=#fcc800>Mode Setting</color>,<color=#fcc800>モード設定</color>,<color=#fcc800>模式设置</color>
+ModeSetting,Mode Setting,モード設定,模式设置
 SettingMode,Mode,モード,游戏模式
 SettingHideAndSeekMode,Hide And Seek Mode,かくれんぼモードの設定,躲猫猫模式设置
 SettingBattleRoyalMode,Battle Royal Mode,バトルロイヤルモードの設定,大逃杀模式设置
@@ -272,11 +272,11 @@ RandomColorNameColorSetting,Change Name Color,名前の色も変える,昵称颜
 RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する,会议中昵称颜色改变
 NeutralName,Neutral,第三陣営,独立阵营
 WinName,Win,勝利,胜利
-PlusGameOptionSetting,<color=#a8bf93>Plus Game Options Setting.</color>,<color=#a8bf93>ゲーム オプション</color>
+PlusGameOptionSetting,Plus Game Options Setting.,ゲーム オプション
 SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード,内鬼禁用破坏
 SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船员禁用完成任务获胜
 SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点
-MapOptionSetting,<color=#aa4c8f>Map Option</color>,<color=#aa4c8f>マップの設定</color>,<color=#aa4c8f>地图设置</color>
+MapOptionSetting,Map Option,マップの設定,地图设置
 NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告
 NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议
 DeviceOptionsSetting,Information Device Options,情報機器制限の設定
@@ -338,7 +338,7 @@ FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,�
 FinalStatusTheThirdLittlePigCounterKill,Counter Kill,カウンターキル,反杀
 
 # Sabotages
-SabotageSetting,<color=#cc3300>SNR’s own sabotage setup</color>,<color=#cc3300>独自サボタージュの設定</color>
+SabotageSetting,SNR’s own sabotage setup,独自サボタージュの設定
 SabotageCognitiveDeficitSetting,Cognitive Deficit,認識障害,破坏时附带认知干扰
 CognitiveDeficitSabotageOutfitUpdateTimeSetting,Figure Change Interval,姿変更間隔,认知干扰时其他玩家外貌变换间隔时间
 CognitiveDeficitSabotageReleaseTimeSetting,Release Time,解除時間,认知干扰持续时间

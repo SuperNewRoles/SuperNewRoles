@@ -1019,7 +1019,7 @@ public class CustomOptionHolder
             IsMurderPlayerAnnounce = Create(1073, true, CustomOptionType.Generic, "<color=#828282>MurderPlayer発生時に通知を行う</color>", false, IsDebugMode);
         }
 
-        DisconnectNotPCOption = Create(11, true, CustomOptionType.Generic, Cs(Color.white, "DisconnectNotPC"), true, null, isHeader: true);
+        DisconnectNotPCOption = Create(11, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectNotPC"), true, null, isHeader: true);
 
         IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 

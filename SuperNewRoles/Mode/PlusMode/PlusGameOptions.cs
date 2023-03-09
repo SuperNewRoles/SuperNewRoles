@@ -37,7 +37,7 @@ class PlusGameOptions
 
     public static void Load()
     {
-        PlusGameOptionSetting = Create(508, true, CustomOptionType.Generic, "PlusGameOptionSetting", false, null, isHeader: true);
+        PlusGameOptionSetting = Create(508, true, CustomOptionType.Generic, Cs(new Color(168f / 187f, 191f / 255f, 147f / 255f, 1f), "PlusGameOptionSetting"), false, null, isHeader: true);
 
         CanGhostSeeRole = Create(1100, true, CustomOptionType.Generic, "CanGhostSeeRole", true, PlusGameOptionSetting, isHeader: true);
         OnlyImpostorGhostSeeRole = Create(1101, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanGhostSeeRole);

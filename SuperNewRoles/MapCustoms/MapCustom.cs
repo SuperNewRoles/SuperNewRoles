@@ -1,5 +1,7 @@
 using SuperNewRoles.Mode;
+using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 
 namespace SuperNewRoles.MapCustoms;
 
@@ -45,7 +47,7 @@ class MapCustom
 
     public static void CreateOption()
     {
-        MapCustomOption = Create(623, false, CustomOptionType.Generic, "MapCustom", false, null, true);
+        MapCustomOption = Create(623, false, CustomOptionType.Generic, Cs(new Color(132f / 187f, 162f / 255f, 212f / 255f, 1f), "MapCustom"), false, null, true);
 
         /*===============スケルド===============*/
         SkeldSetting = Create(624, false, CustomOptionType.Generic, "<color=#8fbc8f>Skeld</color>", false, MapCustomOption);
