@@ -213,7 +213,6 @@ IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家
 WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数
-IsSNROnlySearch,SNR Room Filter,SNRルームフィルター,筛选SNR房间
 RestrictDevicesTimeOption,Time limit setting,時間制限の設定
 RestrictAdmin,Restrict Admin,アドミンの時間制限,管理地图使用时间限制
 RestrictVital,Restrict Vital,バイタルの時間制限,生命监测装置使用时间限制

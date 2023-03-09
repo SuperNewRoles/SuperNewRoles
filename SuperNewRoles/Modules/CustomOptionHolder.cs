@@ -28,7 +28,6 @@ public class CustomOptionHolder
 
     public static CustomOption specialOptions;
     public static CustomOption hideSettings;
-    public static CustomOption IsSNROnlySearch;
 
     public static CustomOption crewmateRolesCountMax;
     public static CustomOption crewmateGhostRolesCountMax;
@@ -1020,8 +1019,6 @@ public class CustomOptionHolder
         }
 
         DisconnectNotPCOption = Create(11, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectNotPC"), true, null, isHeader: true);
-
-        IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
 
         enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
