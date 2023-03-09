@@ -57,54 +57,53 @@ public class MapOption
 
     // |:========== その他 ==========:|
     public static Dictionary<byte, PoolablePlayer> playerIcons = new();
-    private readonly static string color = "<color=#ffeefa>";
 
 
     public static void LoadOption()
     {
         // |:========== マップの設定 ==========:|
-        MapOptionSetting = Create(527, true, CustomOptionType.Generic, "<color=#aa4c8f>" + "MapOptionSetting" + "</color>", false, null, isHeader: true);
+        MapOptionSetting = Create(527, true, CustomOptionType.Generic, "MapOptionSetting", false, null, isHeader: true);
 
         // |:========== 情報機器制限の設定 ==========:|
-        DeviceOptions = Create(528, true, CustomOptionType.Generic, color + "DeviceOptionsSetting" + "</color>", false, MapOptionSetting, isHeader: true);
+        DeviceOptions = Create(528, true, CustomOptionType.Generic, "DeviceOptionsSetting", false, MapOptionSetting, isHeader: true);
 
         // |:========== ON/OFFの設定 ==========:|
-        CanUseDeviceSetting = Create(446, true, CustomOptionType.Generic, color + "CanUseDeviceSetting" + "</color>", true, DeviceOptions);
-        DeviceUseAdmin = Create(1247, true, CustomOptionType.Generic, color + "DeviceUseAdminSetting" + "</color>", true, CanUseDeviceSetting);
-        DeviceUseVitalOrDoorLog = Create(448, true, CustomOptionType.Generic, color + "DeviceUseVitalOrDoorLogSetting" + "</color>", true, CanUseDeviceSetting);
-        DeviceUseCamera = Create(450, true, CustomOptionType.Generic, color + "DeviceUseCameraSetting" + "</color>", true, CanUseDeviceSetting);
+        CanUseDeviceSetting = Create(446, true, CustomOptionType.Generic, "CanUseDeviceSetting", true, DeviceOptions);
+        DeviceUseAdmin = Create(1247, true, CustomOptionType.Generic, "DeviceUseAdminSetting", true, CanUseDeviceSetting);
+        DeviceUseVitalOrDoorLog = Create(448, true, CustomOptionType.Generic, "DeviceUseVitalOrDoorLogSetting", true, CanUseDeviceSetting);
+        DeviceUseCamera = Create(450, true, CustomOptionType.Generic, "DeviceUseCameraSetting", true, CanUseDeviceSetting);
 
         // |:========== 時間制限の設定 ==========:|
-        RestrictDevicesTimeOption = Create(1105, false, CustomOptionType.Generic, color + "RestrictDevicesTimeOption" + "</color>", false, DeviceOptions);
-        RestrictAdmin = Create(1102, false, CustomOptionType.Generic, color + "RestrictAdmin" + "</color>", false, RestrictDevicesTimeOption);
-        DeviceUseAdminTime = Create(447, false, CustomOptionType.Generic, color + "DeviceTimeSetting" + "</color>", 10f, 0f, 120f, 1f, RestrictAdmin);
-        RestrictVital = Create(1103, false, CustomOptionType.Generic, color + "RestrictVital" + "</color>", false, RestrictDevicesTimeOption);
-        DeviceUseVitalOrDoorLogTime = Create(449, false, CustomOptionType.Generic, color + "DeviceTimeSetting" + "</color>", 10f, 0f, 120f, 1f, RestrictVital);
-        RestrictCamera = Create(1104, false, CustomOptionType.Generic, color + "RestrictCamera" + "</color>", false, RestrictDevicesTimeOption);
-        DeviceUseCameraTime = Create(451, false, CustomOptionType.Generic, color + "DeviceTimeSetting" + "</color>", 10f, 0f, 120f, 1f, RestrictCamera);
+        RestrictDevicesTimeOption = Create(1105, false, CustomOptionType.Generic, "RestrictDevicesTimeOption", false, DeviceOptions);
+        RestrictAdmin = Create(1102, false, CustomOptionType.Generic, "RestrictAdmin", false, RestrictDevicesTimeOption);
+        DeviceUseAdminTime = Create(447, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 120f, 1f, RestrictAdmin);
+        RestrictVital = Create(1103, false, CustomOptionType.Generic, "RestrictVital", false, RestrictDevicesTimeOption);
+        DeviceUseVitalOrDoorLogTime = Create(449, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 120f, 1f, RestrictVital);
+        RestrictCamera = Create(1104, false, CustomOptionType.Generic, "RestrictCamera", false, RestrictDevicesTimeOption);
+        DeviceUseCameraTime = Create(451, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 120f, 1f, RestrictCamera);
 
         // |:========== リアクター継続時間の設定 ==========:|
-        ReactorDurationOption = Create(468, true, CustomOptionType.Generic, color + "ReactorDurationSetting" + "</color>", false, MapOptionSetting, isHeader: true);
-        MiraReactorTimeLimit = Create(470, true, CustomOptionType.Generic, color + "MiraReactorTime" + "</color>", 30f, 0f, 100f, 1f, ReactorDurationOption);
-        PolusReactorTimeLimit = Create(469, true, CustomOptionType.Generic, color + "PolusReactorTime" + "</color>", 30f, 0f, 100f, 1f, ReactorDurationOption);
-        AirshipReactorTimeLimit = Create(471, true, CustomOptionType.Generic, color + "AirshipReactorTime" + "</color>", 30f, 0f, 100f, 1f, ReactorDurationOption);
+        ReactorDurationOption = Create(468, true, CustomOptionType.Generic, "ReactorDurationSetting", false, MapOptionSetting, isHeader: true);
+        MiraReactorTimeLimit = Create(470, true, CustomOptionType.Generic, "MiraReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
+        PolusReactorTimeLimit = Create(469, true, CustomOptionType.Generic, "PolusReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
+        AirshipReactorTimeLimit = Create(471, true, CustomOptionType.Generic, "AirshipReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
 
         // |:========== ベントアニメーション有効化の設定 ==========:|
-        VentAnimationPlaySetting = Create(600, false, CustomOptionType.Generic, color + "VentAnimationPlaySetting" + "</color>", true, MapOptionSetting, isHeader: true);
+        VentAnimationPlaySetting = Create(600, false, CustomOptionType.Generic, "VentAnimationPlaySetting", true, MapOptionSetting, isHeader: true);
 
         // |:========== 配線タスクランダムの設定 ==========:|
-        WireTaskIsRandomOption = Create(956, false, CustomOptionType.Generic, color + "WireTaskIsRandom" + "</color>", false, MapOptionSetting, isHeader: true);
-        WireTaskNumOption = Create(957, false, CustomOptionType.Generic, color + "WireTaskNum", 5f, 1f, 8f, 1f, WireTaskIsRandomOption);
+        WireTaskIsRandomOption = Create(956, false, CustomOptionType.Generic, "WireTaskIsRandom", false, MapOptionSetting, isHeader: true);
+        WireTaskNumOption = Create(957, false, CustomOptionType.Generic, "WireTaskNum", 5f, 1f, 8f, 1f, WireTaskIsRandomOption);
 
         // |:========== ランダムマップの設定 ==========:|
-        RandomMapOption = Create(454, true, CustomOptionType.Generic, color + "RamdomMapSetting" + "</color>", false, MapOptionSetting, isHeader: true);
-        RandomMapSkeld = Create(455, true, CustomOptionType.Generic, color + "RMSkeldSetting" + "</color>", true, RandomMapOption);
-        RandomMapMira = Create(456, true, CustomOptionType.Generic, color + "RMMiraSetting" + "</color>", true, RandomMapOption);
-        RandomMapPolus = Create(457, true, CustomOptionType.Generic, color + "RMPolusSetting" + "</color>", true, RandomMapOption);
-        RandomMapAirship = Create(458, true, CustomOptionType.Generic, color + "RMAirshipSetting" + "</color>", true, RandomMapOption);
+        RandomMapOption = Create(454, true, CustomOptionType.Generic, "RamdomMapSetting", false, MapOptionSetting, isHeader: true);
+        RandomMapSkeld = Create(455, true, CustomOptionType.Generic, "RMSkeldSetting", true, RandomMapOption);
+        RandomMapMira = Create(456, true, CustomOptionType.Generic, "RMMiraSetting", true, RandomMapOption);
+        RandomMapPolus = Create(457, true, CustomOptionType.Generic, "RMPolusSetting", true, RandomMapOption);
+        RandomMapAirship = Create(458, true, CustomOptionType.Generic, "RMAirshipSetting", true, RandomMapOption);
 
         // |:========== 反転マップ有効化の設定 ==========:|
-        enableMirrorMap = Create(9, false, CustomOptionType.Generic, color + "enableMirrorMap" + "</color>", false, MapOptionSetting, isHeader: true);
+        enableMirrorMap = Create(9, false, CustomOptionType.Generic, "enableMirrorMap", false, MapOptionSetting, isHeader: true);
     }
 
     #region 設定取得に使用している変数の定義

@@ -276,7 +276,7 @@ PlusGameOptionSetting,<color=#a8bf93>Plus Game Options Setting.</color>,<color=#
 SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード,内鬼禁用破坏
 SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船员禁用完成任务获胜
 SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点
-MapOptionSetting,Map Option,マップの設定,地图设置
+MapOptionSetting,<color=#aa4c8f>Map Option</color>,<color=#aa4c8f>マップの設定</color>,<color=#aa4c8f>地图设置</color>
 NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告
 NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议
 DeviceOptionsSetting,Information Device Options,情報機器制限の設定
