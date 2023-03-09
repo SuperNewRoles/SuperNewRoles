@@ -5,7 +5,11 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using Agartha;
+using AmongUs.GameOptions;
+using System.Linq;
 using UnityEngine;
+using Hazel;
 
 namespace SuperNewRoles.Patches;
 
@@ -37,11 +41,9 @@ class ControllerManagerUpdatePatch
             Logger.SaveLog(via, via);
         }
 
-        // 以下ホストのみ
-        if (!AmongUsClient.Instance.AmHost) return;
 
         //　ゲーム中
-        if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+        if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && AmongUsClient.Instance.AmHost)
         {
             // 廃村
             if (ModHelpers.GetManyKeyDown(new[] { KeyCode.H, KeyCode.LeftShift, KeyCode.RightShift }))
@@ -59,14 +61,14 @@ class ControllerManagerUpdatePatch
                     MapUtilities.CachedShipStatus.enabled = false;
                 }
             }
+            // 会議を強制終了
+            if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
+            {
+                if (MeetingHud.Instance != null)
+                    MeetingHud.Instance.RpcClose();
+            }
         }
 
-        // 会議を強制終了
-        if (ModHelpers.GetManyKeyDown(new[] { KeyCode.M, KeyCode.LeftShift, KeyCode.RightShift }) && RoleClass.IsMeeting)
-        {
-            if (MeetingHud.Instance != null)
-                MeetingHud.Instance.RpcClose();
-        }
         // デバッグモード　かつ　左コントロール
         if (ConfigRoles.DebugMode.Value && Input.GetKey(KeyCode.LeftControl))
         {
@@ -84,14 +86,14 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                PlayerControl.LocalPlayer.Data.IsDead = true;
-                PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.ImpostorGhost);
-                PlayerControl.LocalPlayer.Data.IsDead = false;
+                for(int i = 0; i < 29; i++)
+                {
+                    BotManager.Spawn("よっキングのBot");
+                }
             }
             if (Input.GetKeyDown(KeyCode.P))
             {
-                GameOptionsManager.Instance.SwitchGameMode(GameModes.HideNSeek);
-                RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
+                UnityEngine.Object.Instantiate(DestroyableSingleton<RoleManager>.Instance.protectAnim, PlayerControl.LocalPlayer.gameObject.transform).Play(PlayerControl.LocalPlayer, null, PlayerControl.LocalPlayer.cosmetics.FlipX, RoleEffectAnimation.SoundType.Global);
             }
             if (Input.GetKeyDown(KeyCode.J))
             {

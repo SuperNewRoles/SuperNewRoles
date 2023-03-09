@@ -216,7 +216,7 @@ public static class ModeHandler
     {
         if (mode is ModeId.VanillaHns)
             return GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek;
-        if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay || !PlayerControlHepler.IsMod(AmongUsClient.Instance.HostId))
+        if (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay || !PlayerControlHelper.IsMod(AmongUsClient.Instance.HostId))
             return mode is ModeId.Default;
         if (mode is ModeId.HideAndSeek && IsChache)
             return IsMode(ModeId.HideAndSeek, false);

@@ -25,14 +25,14 @@ public static class DownLoadClass
     public static List<CustomPlates> platedetails = new();
     public static void Load()
     {
-        Patches.CredentialsPatch.LogoPatch.FetchBoosters();
+        _ = Patches.CredentialsPatch.LogoPatch.FetchBoosters();
         if (running)
             return;
         IsEndDownload = false;
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
         Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\");
         SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate:Download] ダウンロード開始");
-        FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
+        _ = FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
         running = true;
     }
     private static string SanitizeResourcePath(string res)
