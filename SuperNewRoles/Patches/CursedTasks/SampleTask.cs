@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Il2CppSystem.Text;
-using UnhollowerBaseLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches.CursedTasks;

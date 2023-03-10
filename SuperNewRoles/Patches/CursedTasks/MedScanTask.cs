@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Roles;
-using UnhollowerBaseLib;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;

@@ -1,7 +1,6 @@
 using HarmonyLib;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 
@@ -18,8 +17,7 @@ public class LeafTask
             if (!Main.IsCursed) return;
             if (LeafDoneCount <= 0)
             {
-                // 1024 : 月城さんが決めた数字 , 1183 : ポケモン全国図鑑のリージョンホーム含めたポケモンの数(2023年03月02日現在)
-                LeavesNum = Random.RandomRange(1, 3) == 1 ? 1024 : 1183;
+                LeavesNum = Main.Num;
                 __instance.MyNormTask.taskStep = 0;
                 __instance.MyNormTask.MaxStep = LeavesNum;
                 LeafDoneCount = LeavesNum;

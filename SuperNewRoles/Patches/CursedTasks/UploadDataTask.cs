@@ -71,6 +71,7 @@ public class UploadDataTask
         [HarmonyPatch(nameof(AirshipUploadGame.Start)), HarmonyPostfix]
         public static void StartPostfix(AirshipUploadGame __instance)
         {
+            if (!Main.IsCursed) return;
             Timer = DateTime.Now;
             __instance.Poor.gameObject.GetComponent<BoxCollider2D>().size /= 2f;
             __instance.Good.gameObject.GetComponent<BoxCollider2D>().size /= 2f;
@@ -79,6 +80,7 @@ public class UploadDataTask
         [HarmonyPatch(nameof(AirshipUploadGame.Update)), HarmonyPostfix]
         public static void UpdatePostfix(AirshipUploadGame __instance)
         {
+            if (!Main.IsCursed) return;
             if (__instance.amClosing != Minigame.CloseState.None) return;
             float num = Time.deltaTime * (__instance.Hotspot.IsTouching(__instance.Perfect) ? 2f :
                                           __instance.Hotspot.IsTouching(__instance.Good) ? 1f :

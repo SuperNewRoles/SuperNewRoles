@@ -1,4 +1,3 @@
-using HarmonyLib;
 using SuperNewRoles.Mode;
 using UnityEngine;
 
@@ -21,4 +20,7 @@ public class Main
 
         SampleTask.Data = new();
     }
+
+    // 1024 : 月城さんが決めた数字 , 1183 : ポケモン全国図鑑のリージョンホーム含めたポケモンの数(2023年03月02日現在)
+    public static int Num { get { return Random.RandomRange(1, 3) == 1 ? 1024 : 1183; } }
 }
