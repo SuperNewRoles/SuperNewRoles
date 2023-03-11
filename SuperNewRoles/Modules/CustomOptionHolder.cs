@@ -4,6 +4,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 
@@ -1980,6 +1981,8 @@ public class CustomOptionHolder
         OrientalShaman.SetupCustomOptions();
 
         WiseMan.SetupCustomOptions();
+
+        RoleBaseHelper.SetUpOptions();
 
         // 表示設定
 

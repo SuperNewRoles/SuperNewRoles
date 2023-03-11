@@ -66,6 +66,12 @@ namespace SuperNewRoles.Roles.RoleBases
         public float CoolTime => CoolTimeOpt is null ? -1f : CoolTimeOpt.GetFloat();
         public float DurationTime => DurationTimeOpt is null ? -1f : DurationTimeOpt.GetFloat();
 
+
+        //役職について設定するところ
+        public bool HasTask = true;
+        public bool HasFakeTask = true;
+        //最初から割り当てられるか
+        public bool IsAssignRoleFirst = true;
         public int OptionId;
         public bool IsSHRRole = false;
         public CustomOptionType OptionType = CustomOptionType.Crewmate;
@@ -95,9 +101,12 @@ namespace SuperNewRoles.Roles.RoleBases
 
         public void SetUpOption()
         {
-            var Players = OptionType is CustomOptionType.Impostor ? CustomOptionHolder.ImpostorPlayers : CustomOptionHolder.CrewPlayers;
-            RoleOption = CustomOption.SetupCustomRoleOption(OptionId, IsSHRRole, RoleId); OptionId++;
-            PlayerCountOption = CustomOption.Create(OptionId, IsSHRRole, OptionType, "SettingPlayerCountName", Players[0], Players[1], Players[2], Players[3], RoleOption); OptionId++;
+            if (IsAssignRoleFirst)
+            {
+                var Players = OptionType is CustomOptionType.Impostor ? CustomOptionHolder.ImpostorPlayers : CustomOptionHolder.CrewPlayers;
+                RoleOption = CustomOption.SetupCustomRoleOption(OptionId, IsSHRRole, RoleId); OptionId++;
+                PlayerCountOption = CustomOption.Create(OptionId, IsSHRRole, OptionType, "SettingPlayerCountName", Players[0], Players[1], Players[2], Players[3], RoleOption); OptionId++;
+            }
             if (CoolTimeOptionOn) CoolTimeOption = CustomOption.Create(OptionId, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, CoolTimeOptionMin, CoolTimeOptionMax, 2.5f, RoleOption, format: "unitSeconds"); OptionId++;
             if (DurationTimeOptionOn) DurationTimeOption = CustomOption.Create(OptionId, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, DurationTimeOptionMin, DurationTimeOptionMax, 2.5f, RoleOption, format: "unitSeconds"); OptionId++;
             if (CanUseVentOptionOn) CanUseVentOption = CustomOption.Create(OptionId, IsSHRRole, OptionType, "JackalUseVentSetting", CanUseVentOptionDefault, RoleOption); OptionId++;
