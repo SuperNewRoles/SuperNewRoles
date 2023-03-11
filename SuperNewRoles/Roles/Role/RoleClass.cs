@@ -61,6 +61,7 @@ public static class RoleClass
         Beacon.ClearBeacons();
         MeetingHudUpdatePatch.ErrorNames = new();
         FixSabotage.ClearAndReload();
+        RoleBases.Role.ClearAll();
 
         /* 陣営playerがうまく動かず使われてない為コメントアウト。
         RoleHelpers.CrewmatePlayer = new();
