@@ -175,6 +175,16 @@ public class CustomOption
         }
     }
 
+    public static void ShareOptionSelections(CustomOption opt)
+    {
+        if (CachedPlayer.AllPlayers.Count <= 1 || AmongUsClient.Instance?.AmHost == false || PlayerControl.LocalPlayer == null) return;
+
+        MessageWriter messageWriter = RPCHelper.StartRPC(CustomRPC.ShareOptions);
+        messageWriter.WritePacked((uint)opt.id);
+        messageWriter.WritePacked(Convert.ToUInt32(opt.selection));
+        messageWriter.EndRPC();
+    }
+
     public static void ShareOptionSelections()
     {
         if (CachedPlayer.AllPlayers.Count <= 1 || AmongUsClient.Instance?.AmHost == false || PlayerControl.LocalPlayer == null) return;
@@ -256,7 +266,7 @@ public class CustomOption
                     entry.Value = selection;
                 } // Save selection to config
 
-                ShareOptionSelections();// Share all selections
+                ShareOptionSelections(this);// Share all selections
             }
         }
     }
