@@ -69,6 +69,7 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
     //役職について設定するところ
     public bool HasTask = true;
     public bool HasFakeTask = true;
+    public bool IsKiller = false;
     //最初から割り当てられるか
     public bool IsAssignRoleFirst = true;
     public int OptionId;
