@@ -2,13 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SuperNewRoles.Roles.RoleBases
+namespace SuperNewRoles.Roles.RoleBases;
+public static class RoleBaseHelper
 {
-    public static class RoleBaseHelper
+    public static void SetUpOptions()
     {
-        public static void SetUpOptions()
-        {
 
-        }
     }
 }
