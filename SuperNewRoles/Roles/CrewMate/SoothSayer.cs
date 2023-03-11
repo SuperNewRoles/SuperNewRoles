@@ -12,7 +12,7 @@ public class SoothSayer : RoleBase<SoothSayer>
 
     public SoothSayer()
     {
-        RoleId = roleId = RoleId.DefaultRole;
+        RoleId = roleId = RoleId.SoothSayer
         //以下いるもののみ変更
         OptionId = 12;
     }

@@ -143,7 +143,7 @@ public static class SoothSayer_Patch
     }
     public static void StartMeeting()
     {
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer) && RoleClass.SoothSayer.CanFirstWhite)
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer) && SoothSayer.local.CanFirstWhite)
         {
             SoothSayer.local.CanFirstWhite = false;
             List<PlayerControl> WhitePlayers = PlayerControl.AllPlayerControls.ToArray().ToList().FindAll(x => x.IsAlive() && x.IsCrew() && x.PlayerId != CachedPlayer.LocalPlayer.PlayerId);

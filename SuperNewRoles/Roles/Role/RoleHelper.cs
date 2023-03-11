@@ -388,9 +388,6 @@ public static class RoleHelpers
             NiceMechanic.ChangeRole(player);
         switch (role)
         {
-            case RoleId.SoothSayer:
-                SoothSayer.players.Add(new SoothSayer().Init(player));
-                break;
             case RoleId.Jester:
                 RoleClass.Jester.JesterPlayer.Add(player);
                 break;
@@ -913,9 +910,6 @@ public static class RoleHelpers
         ClearTarget = player;
         switch (player.GetRole())
         {
-            case RoleId.SoothSayer:
-                RoleClass.SoothSayer.SoothSayerPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.Jester:
                 RoleClass.Jester.JesterPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1676,8 +1670,7 @@ public static class RoleHelpers
         }
         try
         {
-            if (RoleClass.SoothSayer.SoothSayerPlayer.IsCheckListPlayerControl(player)) return RoleId.SoothSayer;
-            else if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player)) return RoleId.Jester;
+            if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player)) return RoleId.Jester;
             else if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player)) return RoleId.Lighter;
             else if (RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilLighter;
             else if (RoleClass.EvilScientist.EvilScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilScientist;

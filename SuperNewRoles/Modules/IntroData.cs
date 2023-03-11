@@ -4,6 +4,7 @@ using System.Linq;
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
@@ -113,7 +114,7 @@ public class IntroData
 
     public static IntroData CrewmateIntro = new("Crewmate", Color.white, 1, RoleId.DefaultRole);
     public static IntroData ImpostorIntro = new("Impostor", RoleClass.ImpostorRed, 1, RoleId.DefaultRole, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData SoothSayerIntro = new("SoothSayer", RoleClass.SoothSayer.color, 1, RoleId.SoothSayer);
+    public static IntroData SoothSayerIntro = new("SoothSayer", SoothSayer.color, 1, RoleId.SoothSayer);
     public static IntroData JesterIntro = new("Jester", RoleClass.Jester.color, 1, RoleId.Jester, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData LighterIntro = new("Lighter", RoleClass.Lighter.color, 1, RoleId.Lighter);
     public static IntroData EvilLighterIntro = new("EvilLighter", RoleClass.EvilLighter.color, 2, RoleId.EvilLighter, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
