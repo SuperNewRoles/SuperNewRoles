@@ -20,13 +20,13 @@ namespace SuperNewRoles.Roles.RoleBases
 
         public abstract void OnMeetingStart();
         public abstract void OnWrapUp();
-        public abstract void FixedUpdate();
-        public abstract void MeFixedUpdateAlive();
-        public abstract void MeFixedUpdateDead();
+        public virtual void FixedUpdate() { }
+        public virtual void MeFixedUpdateAlive() { }
+        public virtual void MeFixedUpdateDead() { }
         public abstract void OnKill(PlayerControl target);
         public abstract void OnDeath(PlayerControl killer = null);
         public abstract void HandleDisconnect(PlayerControl player, DisconnectReasons reason);
-        public abstract void EndUseAbility();
+        public virtual void EndUseAbility() { }
         public virtual void ResetRole() { }
         public virtual void PostInit() { }
         //public virtual string modifyNameText(string nameText) { return nameText; }
