@@ -12,6 +12,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using UnhollowerBaseLib;
 using UnityEngine;
 using static MeetingHud;
@@ -492,6 +493,7 @@ class MeetingHudStartPatch
     public static void Postfix(MeetingHud __instance)
     {
         Logger.Info("会議開始時の処理 開始", "MeetingHudStartPatch");
+        CustomRoles.OnMeetingStart();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
             new LateTask(() =>

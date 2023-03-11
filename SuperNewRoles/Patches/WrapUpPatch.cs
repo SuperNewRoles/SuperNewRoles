@@ -11,6 +11,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
 
 namespace SuperNewRoles.Patches;
@@ -101,6 +102,7 @@ class WrapUpPatch
         Roles.Neutral.PartTimer.WrapUp();
         Roles.Crewmate.KnightProtected_Patch.WrapUp();
         Bestfalsecharge.WrapUp();
+        CustomRoles.OnWrapUp();
         if (AmongUsClient.Instance.AmHost)
         {
             PlayerAnimation.PlayerAnimations.All(x =>
