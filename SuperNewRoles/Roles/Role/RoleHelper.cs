@@ -6,6 +6,7 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
@@ -388,7 +389,7 @@ public static class RoleHelpers
         switch (role)
         {
             case RoleId.SoothSayer:
-                RoleClass.SoothSayer.SoothSayerPlayer.Add(player);
+                SoothSayer.players.Add(new SoothSayer().Init(player));
                 break;
             case RoleId.Jester:
                 RoleClass.Jester.JesterPlayer.Add(player);

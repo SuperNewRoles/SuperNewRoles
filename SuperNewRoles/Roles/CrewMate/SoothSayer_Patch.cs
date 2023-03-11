@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.Roles.CrewMate;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
@@ -24,7 +25,7 @@ public static class SoothSayer_Patch
     {
         var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
         var introData = Target.GetRole();
-        if (RoleClass.SoothSayer.DisplayMode)
+        if (SoothSayer.DisplayMode)
         {
             if (Target.IsImpostor()) nameData = "Impostor";
             if (Target.IsHauntedWolf()) nameData = "Impostor";
@@ -39,33 +40,34 @@ public static class SoothSayer_Patch
         var name = ModTranslation.GetString(nameData + "Name");
         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.GetString("SoothSayerGetChat"), Target.NameText().text, name));
 
-        RoleClass.SoothSayer.Count--;
-        if (!RoleClass.SoothSayer.DisplayedPlayer.Contains(Target.PlayerId))
+        SoothSayer role = SoothSayer.local;
+        role.UseAbility();
+        if (!role.DisplayedPlayer.Contains(Target.PlayerId))
         {
-            RoleClass.SoothSayer.DisplayedPlayer.Add(Target.PlayerId);
+            role.DisplayedPlayer.Add(Target.PlayerId);
             __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null && x.TargetPlayerId == Target.PlayerId) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
         }
-        if (RoleClass.SoothSayer.Count <= 0)
+        if (!role.CanUseAbility())
         {
             __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
         }
     }
     static void Event(MeetingHud __instance)
     {
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer) && PlayerControl.LocalPlayer.IsAlive() && RoleClass.SoothSayer.Count >= 1)
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer) && PlayerControl.LocalPlayer.IsAlive() && SoothSayer.local.CanUseAbility())
         {
             for (int i = 0; i < __instance.playerStates.Length; i++)
             {
                 PlayerVoteArea playerVoteArea = __instance.playerStates[i];
                 var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
-                if (player.IsAlive() && !RoleClass.SoothSayer.DisplayedPlayer.Contains(player.PlayerId) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                if (player.IsAlive() && !SoothSayer.local.DisplayedPlayer.Contains(player.PlayerId) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {
                     GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                     GameObject targetBox = Object.Instantiate(template, playerVoteArea.transform);
                     targetBox.name = "SoothSayerButton";
                     targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
                     SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
-                    renderer.sprite = RoleClass.SoothSayer.GetButtonSprite();
+                    renderer.sprite = SoothSayer.GetButtonSprite();
                     PassiveButton button = targetBox.GetComponent<PassiveButton>();
                     button.OnClick.RemoveAllListeners();
                     int copiedIndex = i;
@@ -95,9 +97,9 @@ public static class SoothSayer_Patch
         var name = ModTranslation.GetString(nameData + "Name");
         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.GetString("SoothSayerGetChat"), Target.NameText().text, name));
         RoleClass.SpiritMedium.MaxCount--;
-        if (!RoleClass.SoothSayer.DisplayedPlayer.Contains(Target.PlayerId))
+        if (!SoothSayer.local.DisplayedPlayer.Contains(Target.PlayerId))
         {
-            RoleClass.SoothSayer.DisplayedPlayer.Add(Target.PlayerId);
+            SoothSayer.local.DisplayedPlayer.Add(Target.PlayerId);
         }
         if (RoleClass.SpiritMedium.MaxCount <= 0)
         {
@@ -115,7 +117,7 @@ public static class SoothSayer_Patch
                 PlayerVoteArea playerVoteArea = __instance.playerStates[i];
 
                 var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
-                if (!player.Data.Disconnected && player.IsDead() && !RoleClass.SoothSayer.DisplayedPlayer.Contains(player.PlayerId) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                if (!player.Data.Disconnected && player.IsDead() && !SoothSayer.local.DisplayedPlayer.Contains(player.PlayerId) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {
                     GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                     GameObject targetBox = Object.Instantiate(template, playerVoteArea.transform);
@@ -123,7 +125,7 @@ public static class SoothSayer_Patch
                     targetBox.name = "SoothSayerButton";
                     targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
                     SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
-                    renderer.sprite = RoleClass.SoothSayer.GetButtonSprite();
+                    renderer.sprite = SoothSayer.GetButtonSprite();
                     PassiveButton button = targetBox.GetComponent<PassiveButton>();
                     button.OnClick.RemoveAllListeners();
                     int copiedIndex = i;
@@ -143,7 +145,7 @@ public static class SoothSayer_Patch
     {
         if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer) && RoleClass.SoothSayer.CanFirstWhite)
         {
-            RoleClass.SoothSayer.CanFirstWhite = false;
+            SoothSayer.local.CanFirstWhite = false;
             List<PlayerControl> WhitePlayers = PlayerControl.AllPlayerControls.ToArray().ToList().FindAll(x => x.IsAlive() && x.IsCrew() && x.PlayerId != CachedPlayer.LocalPlayer.PlayerId);
             if (WhitePlayers.Count <= 0) { FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(CachedPlayer.LocalPlayer, ModTranslation.GetString("SoothSayerNoneTarget")); return; }
             PlayerControl Target = WhitePlayers.GetRandom();

@@ -8,37 +8,37 @@ using MonoMod.Cil;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.RoleBases;
-    public abstract class Role
+public abstract class Role
+{
+    public static List<Role> allRoles = new();
+    public PlayerControl player;
+    public RoleId roleId;
+    public int ObjectId;
+    public int AbilityLimit;
+    public static int MaxObjectId = 0;
+
+    public abstract void OnMeetingStart();
+    public abstract void OnWrapUp();
+    public virtual void FixedUpdate() { }
+    public virtual void MeFixedUpdateAlive() { }
+    public virtual void MeFixedUpdateDead() { }
+    public abstract void OnKill(PlayerControl target);
+    public abstract void OnDeath(PlayerControl killer = null);
+    public abstract void HandleDisconnect(PlayerControl player, DisconnectReasons reason);
+    public virtual void EndUseAbility() { }
+    public virtual void ResetRole() { }
+    public virtual void PostInit() { }
+    //public virtual string modifyNameText(string nameText) { return nameText; }
+    //public virtual string meetingInfoText() { return ""; }
+    public virtual void UseAbility() { AbilityLimit--; if (AbilityLimit <= 0) EndUseAbility(); }
+    public virtual bool CanUseAbility() { return AbilityLimit <= 0; }
+
+    public static void ClearAll()
     {
-        public static List<Role> allRoles = new();
-        public PlayerControl player;
-        public RoleId roleId;
-        public int ObjectId;
-        public int AbilityLimit;
-        public static int MaxObjectId = 0;
-
-        public abstract void OnMeetingStart();
-        public abstract void OnWrapUp();
-        public virtual void FixedUpdate() { }
-        public virtual void MeFixedUpdateAlive() { }
-        public virtual void MeFixedUpdateDead() { }
-        public abstract void OnKill(PlayerControl target);
-        public abstract void OnDeath(PlayerControl killer = null);
-        public abstract void HandleDisconnect(PlayerControl player, DisconnectReasons reason);
-        public virtual void EndUseAbility() { }
-        public virtual void ResetRole() { }
-        public virtual void PostInit() { }
-        //public virtual string modifyNameText(string nameText) { return nameText; }
-        //public virtual string meetingInfoText() { return ""; }
-        public virtual void UseAbility() { AbilityLimit--; if (AbilityLimit <= 0) EndUseAbility(); }
-        public virtual bool CanUseAbility() { return AbilityLimit <= 0; }
-
-        public static void ClearAll()
-        {
-            MaxObjectId = 0;
-            allRoles = new List<Role>();
-        }
+        MaxObjectId = 0;
+        allRoles = new List<Role>();
     }
+}
 
 public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
 {
@@ -95,11 +95,6 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
 
     }
 
-    public RoleBase(bool isFirst)
-    {
-        if (RoleOption is null) SetUpOption();
-    }
-
     public void SetUpOption()
     {
         if (IsAssignRoleFirst)
@@ -115,10 +110,7 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
         if (IsImpostorViewOptionOn) IsImpostorViewOption = CustomOption.Create(OptionId, IsSHRRole, OptionType, "MadmateImpostorLightSetting", IsImpostorViewOptionDefault, RoleOption); OptionId++;
         SetupMyOptions();
     }
-    public void SetupMyOptions()
-    {
-
-    }
+    public abstract void SetupMyOptions();
 
 
     public void Init(PlayerControl player)

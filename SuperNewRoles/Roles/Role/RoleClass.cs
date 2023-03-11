@@ -7,6 +7,7 @@ using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
@@ -73,7 +74,7 @@ public static class RoleClass
         */
 
         Debugger.ClearAndReload();
-        SoothSayer.ClearAndReload();
+        SoothSayer.Clear();
         Jester.ClearAndReload();
         Lighter.ClearAndReload();
         EvilLighter.ClearAndReload();
@@ -249,24 +250,6 @@ public static class RoleClass
         }
     }
 
-    public static class SoothSayer
-    {
-        public static List<PlayerControl> SoothSayerPlayer;
-        public static List<byte> DisplayedPlayer;
-        public static bool DisplayMode;
-        public static int Count;
-        public static Color32 color = new(190, 86, 235, byte.MaxValue);
-        public static bool CanFirstWhite;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SoothSayerButton.png", 115f);
-        public static void ClearAndReload()
-        {
-            SoothSayerPlayer = new();
-            DisplayedPlayer = new();
-            DisplayMode = CustomOptionHolder.SoothSayerDisplayMode.GetBool();
-            Count = CustomOptionHolder.SoothSayerMaxCount.GetInt();
-            CanFirstWhite = CustomOptionHolder.SoothSayerFirstWhiteOption.GetBool();
-        }
-    }
     public static class Jester
     {
         public static List<PlayerControl> JesterPlayer;
