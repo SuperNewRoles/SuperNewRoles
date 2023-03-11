@@ -19,17 +19,18 @@ namespace SuperNewRoles.Roles.RoleBases
         public static int MaxObjectId = 0;
 
         public abstract void OnMeetingStart();
-        public abstract void OnMeetingEnd();
         public abstract void OnWrapUp();
         public abstract void FixedUpdate();
+        public abstract void MeFixedUpdateAlive();
+        public abstract void MeFixedUpdateDead();
         public abstract void OnKill(PlayerControl target);
         public abstract void OnDeath(PlayerControl killer = null);
         public abstract void HandleDisconnect(PlayerControl player, DisconnectReasons reason);
         public abstract void EndUseAbility();
         public virtual void ResetRole() { }
         public virtual void PostInit() { }
-        public virtual string modifyNameText(string nameText) { return nameText; }
-        public virtual string meetingInfoText() { return ""; }
+        //public virtual string modifyNameText(string nameText) { return nameText; }
+        //public virtual string meetingInfoText() { return ""; }
         public virtual void UseAbility() { AbilityLimit--; if (AbilityLimit <= 0) EndUseAbility(); }
         public virtual bool CanUseAbility() { return AbilityLimit <= 0; }
 

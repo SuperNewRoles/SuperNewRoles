@@ -8,6 +8,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 
@@ -108,6 +109,7 @@ public class FixedUpdate
                 Squid.FixedUpdate();
                 OrientalShaman.FixedUpdate();
                 TheThreeLittlePigs.FixedUpdate();
+                CustomRoles.FixedUpdate(__instance);
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }

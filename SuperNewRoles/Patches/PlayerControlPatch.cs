@@ -16,10 +16,12 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 using static GameData;
 using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
+using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Patches;
 
@@ -999,6 +1001,8 @@ public static class MurderPlayerPatch
         DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);
         DeadPlayer.deadPlayers.Add(deadPlayer);
         FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
+        __instance.OnKill(target);
+        target.OnDeath(__instance);
 
         if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId)
         {
@@ -1207,6 +1211,7 @@ public static class ExilePlayerPatch
         // Collect dead player info
         DeadPlayer deadPlayer = new(__instance, __instance.PlayerId, DateTime.UtcNow, DeathReason.Exile, null);
         DeadPlayer.deadPlayers.Add(deadPlayer);
+        __instance.OnDeath(__instance);
         FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Exiled;
         if (ModeHandler.IsMode(ModeId.Default))
         {
