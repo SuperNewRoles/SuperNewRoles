@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.MapOptions;
 using UnityEngine;
 
-namespace SuperNewRoles.Roles.Neutral
+namespace SuperNewRoles.Roles.Neutral;
+
+public static class GM
 {
-    public static class GM
-    {
-        private static CustomButton gmZoomIn;
-        private static CustomButton gmZoomOut;
-        public static PlayerControl target;
-        public static Dictionary<string, Action> ActionDictionary = new()
+    private static CustomButton gmZoomIn;
+    private static CustomButton gmZoomOut;
+    public static PlayerControl target;
+    public static Dictionary<string, Action> ActionDictionary = new()
         {
             {
                 "GMTeleport",
@@ -29,15 +29,14 @@ namespace SuperNewRoles.Roles.Neutral
             {
                 "GMKill",
                 () =>
-        {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
-            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-            writer.Write(target.PlayerId);
-            writer.Write(0);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId, 0);
-            Minigame.Instance.Close();
-        }
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.MeetingKill, SendOption.Reliable, -1);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write(target.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.MeetingKill(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId);
+                    Minigame.Instance.Close();
+                }
             },
             {
                 "GMRevive",
@@ -47,19 +46,27 @@ namespace SuperNewRoles.Roles.Neutral
                     writer.Write(target.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.ReviveRPC(target.PlayerId);
+                    writer = RPCHelper.StartRPC(CustomRPC.SyncDeathMeeting);
+                    writer.Write(target.PlayerId);
+                    writer.EndRPC();
+                    RPCProcedure.SyncDeathMeeting(target.PlayerId);
                     Minigame.Instance.Close();
                 }
             },
             {
-                "GMExile",//"追放(死体なしキル)",
+                "GMExile",
                 () =>
                 {
                     target.RpcExiledUnchecked();
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.SyncDeathMeeting);
+                    writer.Write(target.PlayerId);
+                    writer.EndRPC();
+                    RPCProcedure.SyncDeathMeeting(target.PlayerId);
                     Minigame.Instance.Close();
                 }
             },
             {
-                "GMCleanDeadbody",//"死体削除",
+                "GMCleanDeadbody",
                 () =>
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CleanBody, SendOption.Reliable, -1);
@@ -70,7 +77,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             },
             {
-                "GMStartMeeting",//"会議開始",
+                "GMStartMeeting",
                 () =>
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.UncheckedMeeting, SendOption.Reliable, -1);
@@ -81,7 +88,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             },
             {
-                "GMCleanDeadbodyAndRevive",//"死体を削除して復活",
+                "GMCleanDeadbodyAndRevive",
                 () =>
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ReviveRPC, SendOption.Reliable, -1);
@@ -92,11 +99,15 @@ namespace SuperNewRoles.Roles.Neutral
                     writer.Write(target.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.CleanBody(target.PlayerId);
+                    writer = RPCHelper.StartRPC(CustomRPC.SyncDeathMeeting);
+                    writer.Write(target.PlayerId);
+                    writer.EndRPC();
+                    RPCProcedure.SyncDeathMeeting(target.PlayerId);
                     Minigame.Instance.Close();
                 }
             },
             {
-                "GMSpawnDeadBody",//"死体のみ発生",
+                "GMSpawnDeadBody",
                 () =>
                 {
                     bool IsAlive = target.IsAlive();
@@ -117,7 +128,7 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             },
             {
-                "GMEndMeeting",//"会議を終了",
+                "GMEndMeeting",
                 () =>
                 {
                     if (MeetingHud.Instance != null)
@@ -136,97 +147,96 @@ namespace SuperNewRoles.Roles.Neutral
                 }
             }
         };
-        public static void AssignGM()
+    public static void AssignGM()
+    {
+        if (CustomOptionHolder.GMOption.GetBool())
         {
-            if (CustomOptions.GMOption.GetBool())
-            {
-                PlayerControl.LocalPlayer.SetRoleRPC(RoleId.GM);
-                PlayerControl.LocalPlayer.RpcExiledUnchecked();
-                PlayerControl.LocalPlayer.Data.IsDead = true;
-                PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.Crewmate);
-            }
+            PlayerControl.LocalPlayer.SetRoleRPC(RoleId.GM);
+            PlayerControl.LocalPlayer.RpcExiledUnchecked();
+            PlayerControl.LocalPlayer.Data.IsDead = true;
+            PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.Crewmate);
         }
-        public static void CreateButton(HudManager hm)
+    }
+    public static void CreateButton(HudManager hm)
+    {
+        for (byte i = 0; i < 15; i++)
         {
-            for (byte i = 0; i < 15; i++)
+
+            gmZoomOut = new(
+                () =>
+                {
+
+                    if (Camera.main.orthographicSize < 18.0f)
+                    {
+                        Camera.main.orthographicSize *= 1.5f;
+                        hm.UICamera.orthographicSize *= 1.5f;
+                    }
+
+                    if (hm.transform.localScale.x < 6.0f)
+                    {
+                        hm.transform.localScale *= 1.5f;
+                    }
+
+                    /*TheOtherRolesPlugin.Instance.Log.LogInfo($"Camera zoom {Camera.main.orthographicSize} / {TaskPanelBehaviour.Instance.transform.localPosition.x}");*/
+                },
+                (bool IsAlive, RoleId role) => { return role == RoleId.GM; },
+                () => { return true; },
+                () => { },
+                ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GMZoomOut.png", 115f),
+                // position
+                (Vector3.zero + Vector3.up * 3.75f + Vector3.right * 0.2f) + new Vector3(0.2f, -0.5f, 0),
+                // hudmanager
+                hm,
+                hm.UseButton,
+                // keyboard shortcut
+                KeyCode.PageDown,
+                0,
+                () => false
+            )
             {
+                Timer = 0.0f,
+                MaxTimer = 0.0f,
+                showButtonText = false,
+                LocalScale = Vector3.one * 0.1f
+            };
 
-                gmZoomOut = new(
-                    () =>
-                    {
-
-                        if (Camera.main.orthographicSize < 18.0f)
-                        {
-                            Camera.main.orthographicSize *= 1.5f;
-                            hm.UICamera.orthographicSize *= 1.5f;
-                        }
-
-                        if (hm.transform.localScale.x < 6.0f)
-                        {
-                            hm.transform.localScale *= 1.5f;
-                        }
-
-                        /*TheOtherRolesPlugin.Instance.Log.LogInfo($"Camera zoom {Camera.main.orthographicSize} / {TaskPanelBehaviour.Instance.transform.localPosition.x}");*/
-                    },
-                    (bool IsAlive, RoleId role) => { return role == RoleId.GM; },
-                    () => { return true; },
-                    () => { },
-                    ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GMZoomOut.png", 115f),
-                    // position
-                    (Vector3.zero + Vector3.up * 3.75f + Vector3.right * 0.2f) + new Vector3(0.2f, -0.5f, 0),
-                    // hudmanager
-                    hm,
-                    hm.UseButton,
-                    // keyboard shortcut
-                    KeyCode.PageDown,
-                    0,
-                    () => false
-                )
+            gmZoomIn = new(
+                () =>
                 {
-                    Timer = 0.0f,
-                    MaxTimer = 0.0f,
-                    showButtonText = false,
-                    LocalScale = Vector3.one * 0.1f
-                };
 
-                gmZoomIn = new(
-                    () =>
+                    if (Camera.main.orthographicSize > 3.0f)
                     {
+                        Camera.main.orthographicSize /= 1.5f;
+                        hm.UICamera.orthographicSize /= 1.5f;
+                    }
 
-                        if (Camera.main.orthographicSize > 3.0f)
-                        {
-                            Camera.main.orthographicSize /= 1.5f;
-                            hm.UICamera.orthographicSize /= 1.5f;
-                        }
+                    if (hm.transform.localScale.x > 1.0f)
+                    {
+                        hm.transform.localScale /= 1.5f;
+                    }
 
-                        if (hm.transform.localScale.x > 1.0f)
-                        {
-                            hm.transform.localScale /= 1.5f;
-                        }
-
-                        /*TheOtherRolesPlugin.Instance.Log.LogInfo($"Camera zoom {Camera.main.orthographicSize} / {TaskPanelBehaviour.Instance.transform.localPosition.x}");*/
-                    },
-                    (bool IsAlive, RoleId role) => { return role == RoleId.GM; },
-                    () => { return true; },
-                    () => { },
-                    ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GMZoomIn.png", 115f),
-                    // position
-                    (Vector3.zero + Vector3.up * 3.75f + Vector3.right * 0.2f) + new Vector3(0.2f,0,0),
-                    // hudmanager
-                    hm,
-                    hm.UseButton,
-                    // keyboard shortcut
-                    KeyCode.PageUp,
-                    0,
-                    () => false
-                )
-                {
-                    Timer = 0.0f,
-                    MaxTimer = 0.0f,
-                    showButtonText = false,
-                    LocalScale = Vector3.one * 0.1f
-                };
-            }
+                    /*TheOtherRolesPlugin.Instance.Log.LogInfo($"Camera zoom {Camera.main.orthographicSize} / {TaskPanelBehaviour.Instance.transform.localPosition.x}");*/
+                },
+                (bool IsAlive, RoleId role) => { return role == RoleId.GM; },
+                () => { return true; },
+                () => { },
+                ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GMZoomIn.png", 115f),
+                // position
+                (Vector3.zero + Vector3.up * 3.75f + Vector3.right * 0.2f) + new Vector3(0.2f, 0, 0),
+                // hudmanager
+                hm,
+                hm.UseButton,
+                // keyboard shortcut
+                KeyCode.PageUp,
+                0,
+                () => false
+            )
+            {
+                Timer = 0.0f,
+                MaxTimer = 0.0f,
+                showButtonText = false,
+                LocalScale = Vector3.one * 0.1f
+            };
         }
     }
 }

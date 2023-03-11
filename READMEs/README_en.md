@@ -21,7 +21,7 @@ In SHR mode, "everyone's sheriff" is not supported due to the specification that
 After the match starts, the crewmate is immediately judged the winner of the task.<br>
 (No one with a task = 0 tasks left for Crew.)<br>
 Please include one Team Crewposition that has a task.<br>
-(Adding a MadMate, JackalFriends, or Home Security Guard not help.)<br>
+(Adding a Madmate, JackalFriends, or Home Security Guard not help.)<br>
 
 ##  Equipment settings
 You can set up the admin, vitals, and other settings.<br>
@@ -35,8 +35,8 @@ All crewmates can also be Sheriffs, etc.!<br>
 - Note: SHR mode
   - Due to the specification of Sheriff replacing Impostor, "Sheriff for all" is not supported with [Task Win] in the Crew win condition.
     - After the match starts, the Crew is immediately judged to have won the task. (No one with a task = 0 task remaining for Crew)
-    - Please include one person in the Crew team position who has a task. (Adding a Mad Mate, Jackal Friends, or Home Guard will not help).
-- However, if "Duplicate Mode/No Task Wins Mode" is turned on, it is possible to set "All Crew Mates are Sheriffs" in SHR mode.
+    - Please include one person in the Crew team position who has a task. (Adding a Madmate, Jackal Friends, or Home Guard will not help).
+- However, if "Duplicate Mode/No Task Wins Mode" is turned on, it is possible to set "All Crewmates are Sheriffs" in SHR mode.
   - Crew win conditions in this setting
     - Eradication of Impostor, Jackal, or other single victorious third team with a Sheriff kill.
     - Hang up the Impostor, Jackal, or other single victorious third camp.
@@ -89,22 +89,21 @@ If the host includes this mod, the position will be available to all!<br>
 [Among-Us-Love-Couple-Mod](https://github.com/Woodi-dev/Among-Us-Love-Couple-Mod) - Idea for the Lovers role comes from **Woodi-dev**<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - The idea for Sheriff comes from **Woodi-dev**. (Taken from TheOtherRoles)<br>
 [au.libhalt.net](https://au.libhalt.net) - Nice Nekomata/Ivil Nekomata idea came from **au.libhalt.net**.<br>
-[TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - Used for Add Vents , Remove Lift , AddWireTasks and move vital. Thanks to **haoming37**!<br>
+[TheOtherRolesGMHaoming]<!--(https://github.com/haoming37/TheOtherRoles-GM-Haoming)--> - Used for Add Vents , Remove Lift , AddWireTasks and move vital. Thanks to **haoming37**!<br>
 [ExtremeRoles](https://github.com/yukieiji/ExtremeRoles) - Used fix task in map,The idea for Assassin and Merine. Thanks to **yukieiji**！<br>
 
 ## Used custom cosmetics
-[SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)<br>
-[TheOtherHats](https://github.com/Eisbison/TheOtherHats)(TOR)Thanks to **Eisbison**！<br>
-[TheOtherHats-GM](https://github.com/yukinogatari/TheOtherHats-GM)(TORGM)Thanks to **yukinogatari**！<br>
+[SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)(Licences relating to costumes held independently by SNR are listed in this repository.)<br>
 [TheOtherHats](https://github.com/hinakkyu/TheOtherHats)(Me-Me-MuraSkins)Thanks to **hinakkyu**！<br>
 [TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)Thanks to **tugaru1975**and**Ujet222(Sakura_White)**！<br>
 
 ## Developers
 [Yking](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
-[UKON people](https://github.com/UKON256)<br>
-[juki maguro](https://github.com/jukimaguro1) ([Twitter](https://twitter.com/jukimaguro))<br>
-[Kurato](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
-[DekoKiyo](https://github.com/Dekokiyo) ([Twitter](https://twitter.com/kiyo_deko))<br>
+[Kurato_Tsukishiro](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
+[Kuki](https://github.com/Kuki12345)<br>
+[Glaceon](https://github.com/Glaceon-471)<br>
+[~~UKON people~~](https://github.com/UKON256)<br>
+[~~Sakurander~~](https://github.com/Sakurander)<br>
 
 ## Sponsors
 Mr. Concorde<br>
@@ -115,10 +114,12 @@ Mr. TeacherShibuya<br>
 Mr. cRox<br>
 
 ## About Contact
-Please use the Discord server:[Discord server](https://discord.gg/hXbDgQzSuK)
+Please use the Discord server:[Discord server](https://discord.gg/Cqfwx82ynN)
 
-## List of Positions
-It is already on the Discord server.
+## List of Roles
+- Migrating to Githubwiki (a table of positions that are already supported in SuperHostRoles mode is listed here).
+- If there are differences between ReadMe and Githubwiki, the information on Githubwiki is the most up-to-date.
+- [Githubwiki_Roles_List](https://github.com/ykundesu/SuperNewRoles/wiki/%E5%BD%B9%E8%81%B7%E4%B8%80%E8%A6%A7)
 
 
 | Impostor                                | Crewmate                                  | Neutral                                 | Redundant Camps         |
@@ -141,11 +142,11 @@ It is already on the Discord server.
 | [EvilMoving](#EvilMoving)               | [NiceRedRidingHood](#NiceRedRidingHood)   | [Sidekick(Seer)](#SidekickSeer)         |
 | [Levelinger](#Levelinger)               | [Mayor](#Mayor)                           | [Arsonist](#Arsonist)                   |
 | [SideKiller](#SideKiller)               | [Technician](#Technician)                 | [Neet](#Neet)                           |
-| [Survivor](#Survivor)                   | [Diviner](#Diviner)                       |
-| [EvilSeer](#EvilSeer)                   | [Spirit Medium](#SpiritMedium)            |
+| [Survivor](#Survivor)                   | [Diviner](#Diviner)                       | [Safecracker](#Safecracker)             |
+| [EvilSeer](#EvilSeer)                   | [Spirit Medium](#SpiritMedium)            | [Fire Fox](#FireFox)
 | [DarkKiller](#DarkKiller)               | [MadMayor](#MadMayor)                     |
 | [Vampire](#Vampire)                     | [NiceHawk](#NiceHawk)                     |
-| [AssassinAndMarine](#AssassinAndMarine) | [MadStuntman](#MadStuntman)               |
+| [AssassinAndMarlin](#AssassinAndMarlin) | [MadStuntman](#MadStuntman)               |
 | [Cleaner](#Cleaner)                     | [MadHawk](#MadHawk)                       |
 | [Samurai](#Samurai)                     | [Bakery](#Bakery)                         |
 | [VentMaker](#VentMaker)                 | [MadJester](#MadJester)                   |
@@ -167,6 +168,8 @@ It is already on the Discord server.
 |                                         | [GhostMechanic](#GhostMechanic)           |
 |                                         | [ToiletFan](#ToiletFan)                   |
 |                                         | [Knight](#Knight)                         |
+|                                         | [Squid](#Squid)                           |
+|                                         | [Dying Messenger](#DyingMessenger)        |
 
 # Position Details 
 ## Attention. 
@@ -176,9 +179,9 @@ The number of people is omitted from the setup.
 By pressing the teleport button, the 
 Teleport everyone to one randomly selected person. 
 ### Game Settings 
-| Name      |    Description    |
-| --------- | :---------------: |
-| Cool Down | Button Cool Down. |
+| Name     |   Description    |
+| -------- | :--------------: |
+| Cooldown | Button Cooldown. |
 
 ----------------------- 
 ## EvilSpeedBooster
@@ -188,7 +191,7 @@ You can speed up your own speed for a certain period of time.
 ### Game Settings 
 | Name                                                                  |      Description       |
 | --------------------------------------------------------------------- | :--------------------: |
-| Cool Down                                                             |   Button Cool Down.    |
+| Cooldown                                                              |    Button Cooldown.    |
 | Duration Time                                                         | Speed Boost Duration.  |
 | Double the speed                                                      | Speed during boosting. |
 | If this position is selected, the speed booster will not be selected. |
@@ -201,9 +204,9 @@ Visit www.DeepL.com/profor more information.
 By clicking on the door button, the 
 The door can be opened and closed. There is a cool time. 
 ### Game Settings 
-| Name           |    Description    |
-| -------------- | :---------------: |
-| Door Cool Time | Button Cool Down. |
+| Name           |   Description    |
+| -------------- | :--------------: |
+| Door Cool Time | Button Cooldown. |
 
 ----------------------- 
 ## EvilGambler
@@ -241,7 +244,7 @@ Whether or not Nekomata are chained together can be changed by the Nice Nekomata
 ### Game Settings 
 | Name                                 |                                Description                                 |
 | ------------------------------------ | :------------------------------------------------------------------------: |
-| Not taking the Imposter off the road | Excludes the Impostor from being taken as a companion when he/she is hung. |
+| Not taking the Impostor off the road | Excludes the Impostor from being taken as a companion when he/she is hung. |
 ----------------------- 
 ## CountChanger
 ### Team Impostor
@@ -445,7 +448,7 @@ Can commit suicide.
 ----------------------- 
 ## FastMaker
 ### Team Impostor
-The first kill can make a mad mate.<br> 
+The first kill can make a Madmate.<br> 
 The second and subsequent kills are normal kills. 
 ### Game Settings 
 | Name | Description |
@@ -493,7 +496,7 @@ only at the beginning of the match. <br>
 ### Game Settings 
 | Name         |                   Description                   |
 | ------------ | :---------------------------------------------: |
-| KillCoolDown | You can set the kill cool time for the smasher. |
+| KillCooldown | You can set the kill cool time for the smasher. |
 
 ----------------------- 
 ## DoubleKiller
@@ -504,9 +507,9 @@ You can change in the settings whether you can use sabotage or not. <br>
 ### Game Settings 
 | Name             |                                         Description                                          |
 | ---------------- | :------------------------------------------------------------------------------------------: |
-| MainKillCoolDown | You can set the kill cool time for the main kill button, which is usually activated by the Q |
+| MainKillCooldown | You can set the kill cool time for the main kill button, which is usually activated by the Q |
 key. 
-| SubKillCoolDown | You can set the kill cool down time for the sub kill button operated by the F key. 
+| SubKillCooldown | You can set the kill cooldown time for the sub kill button operated by the F key. 
 | Use Sabotage | You can set whether double killers can use sabotage. 
 
 ----------------------- 
@@ -531,7 +534,7 @@ SuperHostRoles support
 ### Game Settings 
 | Name                    |                        Description                        |
 | ----------------------- | :-------------------------------------------------------: |
-| Kill Cooldown           |        Individual kill cool down time can be set.         |
+| Kill Cooldown           |         Individual kill cooldown time can be set.         |
 | Can Kill a Neutral      |     You can set whether you can kill the third camp.      |
 | Can Kill a Lovers       |         You can set whether Lovers can be killed.         |
 | Can Kill a MadRole      | You can set whether you can kill MAD & FRIENDS positions. |
@@ -573,7 +576,7 @@ The capacity is currently not functioning.
 | Impostor Down Vision. |     You can set the visibility during power outage.      |
 
 ----------------------- 
-## MadMate
+## Madmate
 ### Team Impostor
 The verdict is in on Crewmate. 
 This is a roll of the Impostor camp. <br> 
@@ -607,7 +610,7 @@ SuperHostRoles support
 ## HomeSecurityGuard
 
 ### Team Crew
-Crew mate with no task. 
+Crewmate with no task. 
 SuperHostRoles support 
 
 ----------------------- 
@@ -851,7 +854,7 @@ Note: The behavior of the settings for creating [Jackal Friends](#JackalFriends)
 
 - SHR:
   - It can be made with a first hand kill.
-  - When the imposter is targeted,<br>
+  - When the impostor is targeted,<br>
   the protective effect is triggered and the kill can be triggered thereafter At first glance,<br>
   it looks as if you have been able to make [Jackal Friends](#JackalFriends), but it is not.<br>
   [Jackal Friends](#JackalFriends) has not been converted.
@@ -1180,8 +1183,8 @@ If the corpse is erased, the killcool is reset to the specified value. <br>
 ### Game Settings 
 | Name          |                             Description                              |
 | ------------- | :------------------------------------------------------------------: |
-| Kill CoolDown |                      Kill Cool Down for Cleaner                      | Allows you to set individual kill cool time. |
-| CoolDown      | You can set the kill cooldown time for the ability to erase corpses. |
+| Kill Cooldown |                      Kill Cooldown for Cleaner                       | Allows you to set individual kill cool time. |
+| Cooldown      | You can set the kill cooldown time for the ability to erase corpses. |
 
 ----------------------- 
 ## Samurai
@@ -1218,11 +1221,11 @@ A pair of vents can be made.<br>
 ### Team Impostor
 Impostor to see Admin anytime.<br> 
 When looking at the admins, they cannot move and do not accumulate any kill cool time.<br> 
-Possible to make side kick mad mate in settings.<br> 
+Possible to make side kick Madmate in settings.<br> 
 ### Game Settings 
-| Name                             |          Description           |
-| -------------------------------- | :----------------------------: |
-| Can an EvilHacker Make a Madmate | Can Evil Hackers Make Mad Mate |
+| Name                             |          Description          |
+| -------------------------------- | :---------------------------: |
+| Can an EvilHacker Make a Madmate | Can Evil Hackers Make Madmate |
 
 ----------------------- 
 ## Mad stuntman 
@@ -1257,7 +1260,7 @@ SHR compatible.<br>
 ### Game Settings 
 | Name                    |                        Description                        |
 | ----------------------- | :-------------------------------------------------------: |
-| Kill Cooldown           |        Individual kill cool down time can be set.         |
+| Kill Cooldown           |         Individual kill cooldown time can be set.         |
 | Can Kill a Neutral      |     You can set whether you can kill the third camp.      |
 | Can Kill a Lovers       |         You can set whether Lovers can be killed.         |
 | Can Kill a MadRole      | You can set whether you can kill MAD & FRIENDS positions. |
@@ -1269,7 +1272,7 @@ SHR compatible.<br>
 ### Team Crew
 
 Finish the task and mount up!<br>
-A crew mate that allows you to set the number of tasks individually.<br>
+A Crewmate that allows you to set the number of tasks individually.<br>
 SHR compatible. <br>
 ### Game Settings 
 | Name         |                    Description                     |
@@ -1281,7 +1284,7 @@ SHR compatible. <br>
 ----------------------- 
 ## Mudmaker 
 ### Team Impostor
-Mud Mate that can make mad mate.<br> 
+Mud Mate that can make Madmate.<br> 
 SHR compatible.<br> 
 ### Game Settings 
 | Name           |                              Description                              |
@@ -1297,7 +1300,7 @@ Trying to make an Impostor a sheriff is self-destructive.<br>
 ### Game Settings 
 | Name                    |                        Description                        |
 | ----------------------- | :-------------------------------------------------------: |
-| Kill Cooldown           |        Individual kill cool down time can be set.         |
+| Kill Cooldown           |         Individual kill cooldown time can be set.         |
 | Can Kill a Neutral      |     You can set whether you can kill the third camp.      |
 | Can Kill a Lovers       |         You can set whether Lovers can be killed.         |
 | Can Kill a MadRole      | You can set whether you can kill MAD & FRIENDS positions. |
@@ -1311,7 +1314,7 @@ Instead of being able to make corpses disappear, it does not have the fanatic ab
 ### Game Settings 
 | Name           |                              Description                              |
 | -------------- | :-------------------------------------------------------------------: |
-| CoolDown       | You can set the kill cooldown time for the ability to erase corpses.  |
+| Cooldown       | You can set the kill cooldown time for the ability to erase corpses.  |
 | Use Vent       |                  You will be able to put in a vent.                   |
 | Impostor Light | You can set whether the view will be the same as the Impostor's view. |
 
@@ -1367,7 +1370,7 @@ The ability to sabotage can be changed in the settings. <br>
 | Amount of tasks that will be able to be checked (of all tasks) |  If the result of the calculation of the task amount is a fraction, it will be rounded down.  |
 | Use Vent                                                       |                              You will be able to put in a vent.                               |
 | Impostor Light                                                 |             You can set whether the view will be the same as the Impostor's view.             |
-| Cool Down                                                      |                                       Button Cool Down.                                       |
+| Cooldown                                                       |                                       Button Cooldown.                                        |
 | Time to be teleported                                          |
 
 ----------------------- 
@@ -1477,7 +1480,7 @@ SuperHostRoles support
 ----------------------- 
 ## BlackCat 
 ### Team Impostor
-A [Mad Mate](#Mad Mate) version of [Nice Nekomata](#Nice Nekomata).<br> 
+A [Madmate](#Madmate) version of [Nice Nekomata](#Nice Nekomata).<br> 
 SuperHostRoles support 
 ### Game Settings 
 | Name                                                           |                                         Description                                         |
@@ -1489,7 +1492,7 @@ SuperHostRoles support
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
 | Use Vent                                                       |                             You will be able to put in a vent.                              |
 | Impostor Light                                                 |            You can set whether the view will be the same as the Impostor's view.            |
-| Not taking the Imposter off the road                           |         Excludes the Impostor from being taken as a companion when he/she is hung.          |
+| Not taking the Impostor off the road                           |         Excludes the Impostor from being taken as a companion when he/she is hung.          |
 ----------------------- 
 ## ToiletFan
 ### Team Crew
@@ -1527,6 +1530,95 @@ If the protection is successful, a successful protection announcement will be pl
 | Maximum number of times protection is possible.          | If an upper limit is set, set the maximum number of times the protection can be used. This set number of times will be the number of times the protection ability can be used in one match. |
 |                                                          |
 ----------------------- 
+## Safecracker
+### Team Third
+#### Intro
+- Open the safe, get the ability and win!
+#### Description
+- By opening the vault, you can acquire various abilities.<br>It grants you a kill guard, an exiled guard， vent， etc.<br>Open the safe to the end and win the game.
+#### Ability
+- All tasks will be opening the vault.
+- The ability can be acquired by opening the safe.
+### Game Settings
+| Name | Description |
+| ---- | :---------: |
+| Amount of tasks to be able to kill guard (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Kill guard max count | |
+| Amount of tasks to be able to be able to exiled guard (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Exiled guard max count | |
+| Amount of tasks for which the vent will be available (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Amount of tasks for which sabotage will be available (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Amount of tasks for become an Imposter's field of view (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Amount of tasks that will allow you to check the Imposter (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. |
+| Common Tasks | You can set the number of normal tasks before the Impostor can be checked. |
+| Long Tasks | You can set the number of long tasks before the Impostor can be checked. |
+| Short Tasks | You can set the number of short tasks before the Impostor can be checked. |
+| Replace all tasks with unlock safe tasks | You can set whether the task itself will be replaced by opening the vault. |
+---
+## FireFox
+### Team Third
+#### Intro
+- I am Fire Fox!
+#### Description
+- It is a Fox that has been given a kill button instead of a kill guard.<br>The number of kills is limited and only certain camps can be killed.<br>If you press the kill button for a player who is not in the killable camp, your kill count will decrease without a kill.<br>Think about who to kill and contribute to the Fox's victory.
+#### Ability
+- It has a kill button and can kill for a specific number of times.
+- Each kill reduces the number of kills.
+- Not kill except for certain camps.
+### Game Settings
+| Name | Description |
+| ---- | :---------: |
+| Maximum number of kills | You can set the number of kills a fire fox can make. |
+| Kill Cooldown | Individual kill cooldown time can be set. |
+| Can kill the crewmate camp | You can set whether you can kill the crewmate camp. |
+| Can kill the imposter camp | You can set whether you can kill the imposter camp. |
+| Can kill the third camp | You can set whether you can kill the third camp. |
+| Can kill the lovers | You can set whether you can kill lovers. |
+| You can check the fox | You can set whether you can see the fox. |
+| Use Vent | You will be able to put in a vent. |
+| Impostor Light | You can set whether the view will be the same as the Impostor's view. |
+| Use DeadBody Report | Off to disable reporting. |
+---
+## Squid
+### Team Crew
+#### Intro
+- Use ink to survive.
+- Let's use ink to get away with it.
+#### Description
+- You can be on alert for a certain period of time.<br>If you are about to be killed while on alert, you can prevent the kill, <br>take away your opponent's vision, and increase your own movement speed for a certain period of time.
+#### Ability
+- There is an vigilance button.
+- By pressing the vigilance button, the system enters the vigilance mode.
+- If you are kill while in vigilance mode, you can guard against the kill.
+- If you can guard against a kill, the vigilance mode is released and your movement speed is temporarily increased. <br>(A flash will also occur.)
+- The side whose kill is guarded will have a set value of kill cool, <br>its field of view will be lowered and squid ink will adhere to the screen.
+### Game Settings
+| Name | Description |
+| ---- | :---------: |
+| Cool time for vigilance mode | You can set a cool time for the vigilance mode. |
+| Duration of vigilance mode | You can set the duration of the vigilance mode. |
+| Movement speed on successful counters | You can set the duration of a successful counter |
+| Time to increase movement speed on successful counters | You can set the time to increase the speed of movement on successful counters. |
+| Time when no kills can be made on successful counters | You can set the time that no kills can be made on a successful counter. |
+| Field of vision when vision is deprived | You can set the killers' field of view on a successful counter. |
+| Time to take away the view | You can set the time to change the field of view and the time to display squid ink. |
+---
+## DyingMessenger
+### Team Crew
+#### Intro
+- Will and testament， we will tell you.
+#### Description
+- When you are able to report a kill within a certain amount of time after the kill.<br>You can get the information of the killers of the dead body you reported.<br>Get the information and contribute to the victory of the crew's camp.
+#### Ability
+- When a person is killed and is able to report it within a certain amount of time, you can get the information of the killers of the body that reported it.
+- The acquired information is sent to only you via chat.
+- The information that can be retrieved is the "Killer's role" and the "Killer's light and darker".
+### Game Settings
+| Name | Description |
+| ---- | :---------: |
+| Time to read the roll of the killers from the corpse | You can set a time limit for getting the killers' role from the corpse. |
+| Time to read the light and darker colors of the kill from the corpse| You can set a time limit for getting the killers' light and darker from the corpse. |
+---
 ## Quarreled
 ### overlapping camps 
 This roll will be in pairs. <br> 

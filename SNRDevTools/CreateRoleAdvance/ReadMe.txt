@@ -12,7 +12,6 @@
 　　・Roles/RoleHelper.cs　　　 　　　→//ロールアド			SetRoleの後ろ
 　　・Roles/RoleHelper.cs　　　 　　　→//ロールリモベ　　　　　　ClearRoleの後ろ		
 　　・Roles/RoleHelper.cs　　　 　　　→//第三か　　　　　　　　　isNeutralの後ろ
-　　・Roles/RoleHelper.cs　　　 　　　→//タスククリアか		IsClearTaskの後ろ
 　　・Roles/RoleHelper.cs　　　　　　 →//ベント設定可視化        GetOptionsTextの後ろ
 　　・Roles/RoleHelper.cs　　　　　   →//ベントが使える　　　　　IsUseVentの後ろ
 　　・Roles/RoleHelper.cs　　　　　　 →//インポの視界　　　　　　IsImpostorLightの後ろ
@@ -21,10 +20,10 @@
 　　・Roles/RoleClass.cs　 　　　　 　→//ロールクリア　　　　　　下のほうにあるラバーズソースコードの上
 
 　　・Intro/IntroData.cs 　　　　　　 →//イントロオブジェ　　　　一番下
-　　・Intro/IntroData.cs 　　　　　　 →//イントロ検知　　　　　　GetIntroDateの後ろ
+　　・Intro/IntroData.cs 　　　　　　 →//イントロ検知　　　　　　GetIntroDataの後ろ
 
-　　・CustomOption/CustomOptionDate.cs→//CustomOption　　　　　　クラードの上(上に空行はいれない)
-　　・CustomOption/CustomOptionDate.cs→//表示設定			下のほうのラバーズの上
+　　・CustomOption/CustomOptionHolder.cs→//CustomOption　　　　　　クラードの上(上に空行はいれない)
+　　・CustomOption/CustomOptionHolder.cs→//表示設定			下のほうのラバーズの上
 
 　　・Buttons/Button.cs　　　　　　　 →//カスタムなボタン達　　	CustomButtonの下
 　　・Buttons/Button.cs　　　　　　　 →//クールダウンリセット　　setCustomButtonCooldownsの下

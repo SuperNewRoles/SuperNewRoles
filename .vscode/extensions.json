@@ -1,5 +1,12 @@
 {
     "recommendations": [
-        "editorconfig.editorconfig"
+        "aliasadidev.nugetpackagemanagergui",
+        "editorconfig.editorconfig",
+        "github.vscode-pull-request-github",
+        "mechatroner.rainbow-csv",
+        "mhutchie.git-graph",
+        "ms-ceintl.vscode-language-pack-ja",
+        "ms-dotnettools.csharp",
+        "oderwat.indent-rainbow"
     ]
 }

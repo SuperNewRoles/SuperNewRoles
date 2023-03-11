@@ -1,12 +1,9 @@
+namespace SuperNewRoles.CustomCosmetics;
 
-
-namespace SuperNewRoles.CustomCosmetics
+public static class DownLoadCustomhat
 {
-    public static class DownLoadCustomhat
+    public static void Load()
     {
-        public static void Load()
-        {
-            CustomHatLoader.LaunchHatFetcher();
-        }
+        CustomHatLoader.LaunchHatFetcher();
     }
 }

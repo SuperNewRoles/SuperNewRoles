@@ -1,27 +1,21 @@
 using HarmonyLib;
-
 using SuperNewRoles.Roles;
 
-namespace SuperNewRoles.Mode.SuperHostRoles.Roles
+namespace SuperNewRoles.Mode.SuperHostRoles.Roles;
+
+class Samurai
 {
-    class Samurai
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive), new System.Type[] { typeof(PlayerControl), typeof(RoleBehaviour), typeof(bool) })]
+    class SetHudActivePatch
     {
-        [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive))]
-        class SetHudActivePatch
+        public static void Postfix(HudManager __instance)
         {
-            public static void Postfix(HudManager __instance)
+            if (!AmongUsClient.Instance.AmHost) return;
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Samurai))
             {
-                if (!AmongUsClient.Instance.AmHost) return;
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.Samurai))
-                {
-                    __instance.SabotageButton.ToggleVisible(visible: RoleClass.Samurai.UseSabo);
-                    __instance.ImpostorVentButton.ToggleVisible(visible: RoleClass.Samurai.UseVent);
-                }
+                __instance.SabotageButton.ToggleVisible(visible: RoleClass.Samurai.UseSabo);
+                __instance.ImpostorVentButton.ToggleVisible(visible: RoleClass.Samurai.UseVent);
             }
-        }
-        public static void IsSword()
-        {
-            RoleClass.Samurai.Sword = true;
         }
     }
 }

@@ -1,22 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+namespace SuperNewRoles.Mode.HideAndSeek;
 
-namespace SuperNewRoles.Mode.HideAndSeek
+class main
 {
-    class main
+    public static bool IsAllInMod;
+    public static void ClearAndReloads()
     {
-        public static bool IsAllInMod;
-        public static void ClearAndReloads()
+        IsAllInMod = true;
+        foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients)
         {
-            IsAllInMod = true;
-            foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients)
+            if (!client.IsMod())
             {
-                if (!client.IsMod())
-                {
-                    IsAllInMod = false;
-                    break;
-                }
+                IsAllInMod = false;
+                break;
             }
         }
     }
