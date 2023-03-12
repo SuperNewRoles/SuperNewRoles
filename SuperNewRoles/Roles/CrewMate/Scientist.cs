@@ -3,6 +3,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles;
@@ -16,7 +17,7 @@ public class Scientist
     }
     public static void ResetCooldown()
     {
-        float CoolTime = PlayerControl.LocalPlayer.IsImpostor() ? RoleClass.EvilScientist.CoolTime : RoleClass.NiceScientist.CoolTime;
+        float CoolTime = PlayerControl.LocalPlayer.IsImpostor() ? EvilScientist.CoolTimeS : RoleClass.NiceScientist.CoolTime;
         HudManagerStartPatch.ScientistButton.MaxTimer = CoolTime;
         RoleClass.NiceScientist.ButtonTimer = DateTime.Now;
     }

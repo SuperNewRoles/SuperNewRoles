@@ -401,9 +401,6 @@ public static class RoleHelpers
             case RoleId.EvilLighter:
                 RoleClass.EvilLighter.EvilLighterPlayer.Add(player);
                 break;
-            case RoleId.EvilScientist:
-                RoleClass.EvilScientist.EvilScientistPlayer.Add(player);
-                break;
             case RoleId.Sheriff:
                 RoleClass.Sheriff.SheriffPlayer.Add(player);
                 break;
@@ -925,9 +922,6 @@ public static class RoleHelpers
         {
             case RoleId.EvilLighter:
                 RoleClass.EvilLighter.EvilLighterPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.EvilScientist:
-                RoleClass.EvilScientist.EvilScientistPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Sheriff:
                 RoleClass.Sheriff.SheriffPlayer.RemoveAll(ClearRemove);
@@ -1680,7 +1674,6 @@ public static class RoleHelpers
             Role obj = Role.allRoles.Find(x => x.player == player);
             if (obj is not null) return obj.roleId;
             if (RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilLighter;
-            else if (RoleClass.EvilScientist.EvilScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilScientist;
             else if (RoleClass.Sheriff.SheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.Sheriff;
             else if (RoleClass.MeetingSheriff.MeetingSheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.MeetingSheriff;
             else if (RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player)) return RoleId.Jackal;

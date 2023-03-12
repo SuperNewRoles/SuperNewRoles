@@ -81,7 +81,7 @@ public static class RoleClass
         Jester.Clear();
         Lighter.Clear();
         EvilLighter.ClearAndReload();
-        EvilScientist.ClearAndReload();
+        EvilScientist.Clear();
         Sheriff.ClearAndReload();
         MeetingSheriff.ClearAndReload();
         Jackal.ClearAndReload();
@@ -265,20 +265,6 @@ public static class RoleClass
             EvilLighterPlayer = new();
             //CoolTime = CustomOptionHolder.EvilLighterCoolTime.GetFloat();
             //DurationTime = CustomOptionHolder.EvilLighterDurationTime.GetFloat();
-        }
-    }
-    public static class EvilScientist
-    {
-        public static List<PlayerControl> EvilScientistPlayer;
-        public static Color32 color = RoleClass.ImpostorRed;
-        public static float CoolTime;
-        public static float DurationTime;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.EvilScientistButton.png.png", 115f);
-        public static void ClearAndReload()
-        {
-            EvilScientistPlayer = new();
-            CoolTime = CustomOptionHolder.EvilScientistCoolTime.GetFloat();
-            DurationTime = CustomOptionHolder.EvilScientistDurationTime.GetFloat();
         }
     }
     public static class Sheriff
