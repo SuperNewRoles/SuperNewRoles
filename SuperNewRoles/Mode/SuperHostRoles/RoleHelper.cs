@@ -36,7 +36,7 @@ public static class RoleHelper
             RoleId.MadStuntMan => RoleClass.MadStuntMan.IsImpostorLight,
             RoleId.MadJester => RoleClass.MadJester.IsImpostorLight,
             RoleId.JackalFriends => RoleClass.JackalFriends.IsImpostorLight,
-            RoleId.Fox => RoleClass.Fox.IsImpostorLight,
+            RoleId.Fox => Fox.IsImpostorViewOption.GetBool(),
             RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
             RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
             RoleId.MadSeer => RoleClass.MadSeer.IsImpostorLight,
@@ -65,7 +65,7 @@ public static class RoleHelper
             case RoleId.JackalFriends:
                 return RoleClass.JackalFriends.IsUseVent;
             case RoleId.Fox:
-                return RoleClass.Fox.IsUseVent;
+                return Fox.CanUseVentOption.GetBool();
             case RoleId.MayorFriends:
                 return RoleClass.MayorFriends.IsUseVent;
             case RoleId.Tuna:

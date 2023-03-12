@@ -18,6 +18,7 @@ public static class RoleBaseHelper
             // Neutral
             { RoleId.Jester, typeof(RoleBase<Jester>) },
             { RoleId.FireFox, typeof(RoleBase<FireFox>) },
+            { RoleId.Fox, typeof(RoleBase<Fox>) },
 
             // Crew
             { RoleId.SoothSayer, typeof(RoleBase<SoothSayer>) },
@@ -40,6 +41,7 @@ public static class RoleBaseHelper
         // Neutral
         new Jester().SetUpOption();
         new FireFox().SetUpOption();
+        new Fox().SetUpOption();
 
         // Crew
         new Sheriff().SetUpOption();

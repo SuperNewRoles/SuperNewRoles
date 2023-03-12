@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Buttons;
@@ -22,7 +23,7 @@ public class NormalButtonDestroy
             { RoleId.Tasker, (NormalButton.KillButton, !CustomOptionHolder.TaskerCanKill.GetBool()) },
 
             { RoleId.Minimalist, (NormalButton.ReportButton, !RoleClass.Minimalist.UseReport) },
-            { RoleId.Fox, (NormalButton.ReportButton, !RoleClass.Fox.UseReport) },
+            { RoleId.Fox, (NormalButton.ReportButton, !Fox.FoxReport.GetBool()) },
             { RoleId.Neet, (NormalButton.ReportButton, true) },
             { RoleId.FireFox, (NormalButton.ReportButton, !FireFox.FireFoxReport.GetBool()) }
 

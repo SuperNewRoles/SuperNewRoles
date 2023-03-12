@@ -1,5 +1,4 @@
 using HarmonyLib;
-using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles;
 
@@ -13,7 +12,7 @@ class Fox
             if (!AmongUsClient.Instance.AmHost) return;
             if (PlayerControl.LocalPlayer.IsRole(RoleId.Fox))
             {
-                __instance.ReportButton.ToggleVisible(visible: RoleClass.Fox.UseReport);
+                __instance.ReportButton.ToggleVisible(visible: SuperNewRoles.Roles.Neutral.Fox.FoxReport.GetBool());
             }
         }
     }

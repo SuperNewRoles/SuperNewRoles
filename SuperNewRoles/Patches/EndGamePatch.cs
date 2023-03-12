@@ -230,7 +230,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.EgoistWin,("EgoistName",RoleClass.Egoist.color)},
                 {WinCondition.WorkpersonWin,("WorkpersonName",RoleClass.Workperson.color)},
                 {WinCondition.FalseChargesWin,("FalseChargesName",RoleClass.FalseCharges.color)},
-                {WinCondition.FoxWin,("FoxName",RoleClass.Fox.color)},
+                {WinCondition.FoxWin,("FoxName",Fox.color)},
                 {WinCondition.DemonWin,("DemonName",RoleClass.Demon.color)},
                 {WinCondition.ArsonistWin,("ArsonistName",RoleClass.Arsonist.color)},
                 {WinCondition.VultureWin,("VultureName",RoleClass.Vulture.color)},
@@ -590,7 +590,7 @@ public static class OnGameEndPatch
             RoleClass.MadJester.MadJesterPlayer,
             RoleClass.MadSeer.MadSeerPlayer,
             RoleClass.FalseCharges.FalseChargesPlayer,
-            RoleClass.Fox.FoxPlayer,
+            Fox.allPlayers,
             BotManager.AllBots,
             RoleClass.MadMaker.MadMakerPlayer,
             RoleClass.Demon.DemonPlayer,
@@ -1091,7 +1091,7 @@ public static class OnGameEndPatch
                 }
             }
         }
-        List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
+        List<PlayerControl> foxPlayers = new(Fox.allPlayers);
         foxPlayers.AddRange(FireFox.allPlayers);
         isReset = false;
         foreach (PlayerControl player in foxPlayers)

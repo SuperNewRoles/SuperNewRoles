@@ -95,7 +95,7 @@ public static class EvilEraser
     public static bool IsFoxWinGuard()
     {
         bool IsAlive = false;
-        List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
+        List<PlayerControl> foxPlayers = new(Fox.allPlayers);
         foxPlayers.AddRange(FireFox.allPlayers);
         foreach (PlayerControl p in foxPlayers)
         {
