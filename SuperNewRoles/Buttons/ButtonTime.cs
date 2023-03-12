@@ -2,6 +2,7 @@ using System;
 using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
@@ -25,8 +26,8 @@ class ButtonTime
         float cooltime;
         if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
         {
-            durationtime = RoleClass.EvilScientist.DurationTime;
-            cooltime = RoleClass.EvilScientist.CoolTime;
+            durationtime = EvilScientist.DurationTimeS;
+            cooltime = EvilScientist.CoolTimeS;
         }
         else
         {
