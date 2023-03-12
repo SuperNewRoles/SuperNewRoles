@@ -13,6 +13,7 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
@@ -3196,7 +3197,7 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
-        Roles.Impostor.MadRole.Worshiper.SetupCustomButtons(__instance);
+        Worshiper.MakeButtons(__instance);
 
         FireFox.MakeButtons(__instance);
 

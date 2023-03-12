@@ -1,5 +1,7 @@
-
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -18,7 +20,7 @@ public static class RoleHelper
             case RoleId.Arsonist:
             case RoleId.ToiletFan:
             case RoleId.NiceButtoner:
-            case RoleId.Worshiper when !SuperNewRoles.Roles.Impostor.MadRole.Worshiper.IsImpostorLight:
+            case RoleId.Worshiper when !Worshiper.IsImpostorViewS:
                 IsCrewVision = true;
                 break;
                 //クルー視界か

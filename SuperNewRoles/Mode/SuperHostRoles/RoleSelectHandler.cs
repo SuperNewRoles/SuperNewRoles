@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -58,7 +60,7 @@ public static class RoleSelectHandler
                 CustomOptionHolder.DemonOption.GetSelection() != 0 ||
                 CustomOptionHolder.ToiletFanOption.GetSelection() != 0 ||
                 CustomOptionHolder.NiceButtonerOption.GetSelection() != 0 ||
-                SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperOption.GetSelection() != 0)
+                Worshiper.RoleOption.GetSelection() != 0)
             {
                 PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
                 bot1.RpcSetRole(RoleTypes.Impostor);
@@ -132,7 +134,7 @@ public static class RoleSelectHandler
         SetRoleDesync(RemoteSheriff.allPlayers, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.ToiletFan.ToiletFanPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.NiceButtoner.NiceButtonerPlayer, RoleTypes.Shapeshifter);
-        SetRoleDesync(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperPlayer, RoleTypes.Shapeshifter);
+        SetRoleDesync(Worshiper.allPlayers, RoleTypes.Shapeshifter);
         /*============シェイプシフターDesync============*/
 
 

@@ -1,15 +1,15 @@
+using System.Linq;
+using Agartha;
 using Agartha;
 using AmongUs.GameOptions;
+using AmongUs.GameOptions;
 using HarmonyLib;
+using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
-using Agartha;
-using AmongUs.GameOptions;
-using System.Linq;
 using UnityEngine;
-using Hazel;
 
 namespace SuperNewRoles.Patches;
 

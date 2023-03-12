@@ -8,8 +8,8 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.DataManage;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
@@ -54,7 +54,7 @@ public static class RoleClass
         //Map.Data.ClearAndReloads();
         ElectricPatch.Reset();
         SabotageManager.ClearAndReloads();
-        Roles.Madmate.CheckedImpostor = new();
+        Impostor.MadRole.Madmate.CheckedImpostor = new();
         Roles.JackalFriends.CheckedJackal = new();
         Mode.BattleRoyal.Main.VentData = new();
         FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
@@ -224,7 +224,7 @@ public static class RoleClass
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
         Jumbo.ClearAndReload();
-        Impostor.MadRole.Worshiper.ClearAndReload();
+        Worshiper.Clear();
         Safecracker.ClearAndReload();
         FireFox.Clear();
         Squid.ClearAndReload();
