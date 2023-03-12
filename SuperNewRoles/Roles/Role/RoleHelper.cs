@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.CustomObject;
@@ -9,6 +10,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
 namespace SuperNewRoles;
@@ -386,6 +388,14 @@ public static class RoleHelpers
             WiseMan.OnChangeRole();
         else if (player.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic))
             NiceMechanic.ChangeRole(player);
+        foreach (var t in RoleBaseHelper.allRoleIds)
+        {
+            if (role == t.Key)
+            {
+                t.Value.GetMethod("setRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
+                return;
+            }
+        }
         switch (role)
         {
             case RoleId.Jester:
@@ -908,6 +918,15 @@ public static class RoleHelpers
             return p.PlayerId == ClearTarget.PlayerId;
         }
         ClearTarget = player;
+        RoleId role = player.GetRole();
+        foreach (var t in RoleBaseHelper.allRoleIds)
+        {
+            if (role == t.Key)
+            {
+                t.Value.GetMethod("eraseRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
+                return;
+            }
+        }
         switch (player.GetRole())
         {
             case RoleId.Jester:
@@ -1670,6 +1689,8 @@ public static class RoleHelpers
         }
         try
         {
+            Role obj = Role.allRoles.Find(x => x.player == player);
+            if (obj is not null) return obj.roleId;
             if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player)) return RoleId.Jester;
             else if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player)) return RoleId.Lighter;
             else if (RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilLighter;

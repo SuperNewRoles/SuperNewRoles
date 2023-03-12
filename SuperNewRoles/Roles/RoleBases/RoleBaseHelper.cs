@@ -6,7 +6,7 @@ using SuperNewRoles.Roles.CrewMate;
 namespace SuperNewRoles.Roles.RoleBases;
 public static class RoleBaseHelper
 {
-    public static Dictionary<RoleId, Type> allRoleTypes = new()
+    public static Dictionary<RoleId, Type> allRoleIds = new()
         {
             // Crew
             { RoleId.SoothSayer, typeof(RoleBase<SoothSayer>) },
