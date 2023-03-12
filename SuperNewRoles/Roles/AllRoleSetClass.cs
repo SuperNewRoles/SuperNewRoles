@@ -7,6 +7,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 
@@ -920,7 +921,7 @@ class AllRoleSetClass
     {
         return roleData switch
         {
-            RoleId.SoothSayer => CustomOptionHolder.SoothSayerPlayerCount.GetFloat(),
+            RoleId.SoothSayer => SoothSayer.PlayerCountOption.GetFloat(),
             RoleId.Jester => CustomOptionHolder.JesterPlayerCount.GetFloat(),
             RoleId.Lighter => CustomOptionHolder.LighterPlayerCount.GetFloat(),
             RoleId.EvilLighter => CustomOptionHolder.EvilLighterPlayerCount.GetFloat(),

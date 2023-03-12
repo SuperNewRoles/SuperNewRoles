@@ -103,11 +103,11 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
             RoleOption = CustomOption.SetupCustomRoleOption(OptionId, IsSHRRole, RoleId); OptionId++;
             PlayerCountOption = CustomOption.Create(OptionId, IsSHRRole, OptionType, "SettingPlayerCountName", Players[0], Players[1], Players[2], Players[3], RoleOption); OptionId++;
         }
-        if (CoolTimeOptionOn) CoolTimeOption = CustomOption.Create(OptionId, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, CoolTimeOptionMin, CoolTimeOptionMax, 2.5f, RoleOption, format: "unitSeconds"); OptionId++;
-        if (DurationTimeOptionOn) DurationTimeOption = CustomOption.Create(OptionId, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, DurationTimeOptionMin, DurationTimeOptionMax, 2.5f, RoleOption, format: "unitSeconds"); OptionId++;
-        if (CanUseVentOptionOn) CanUseVentOption = CustomOption.Create(OptionId, IsSHRRole, OptionType, "JackalUseVentSetting", CanUseVentOptionDefault, RoleOption); OptionId++;
-        if (CanUseSaboOptionOn) CanUseSaboOption = CustomOption.Create(OptionId, IsSHRRole, OptionType, "JackalUseSaboSetting", CanUseSaboOptionDefault, RoleOption); OptionId++;
-        if (IsImpostorViewOptionOn) IsImpostorViewOption = CustomOption.Create(OptionId, IsSHRRole, OptionType, "MadmateImpostorLightSetting", IsImpostorViewOptionDefault, RoleOption); OptionId++;
+        if (CoolTimeOptionOn) { CoolTimeOption = CustomOption.Create(OptionId, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, CoolTimeOptionMin, CoolTimeOptionMax, 2.5f, RoleOption, format: "unitSeconds"); OptionId++; }
+        if (DurationTimeOptionOn) { DurationTimeOption = CustomOption.Create(OptionId, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, DurationTimeOptionMin, DurationTimeOptionMax, 2.5f, RoleOption, format: "unitSeconds"); OptionId++; }
+        if (CanUseVentOptionOn) { CanUseVentOption = CustomOption.Create(OptionId, IsSHRRole, OptionType, "JackalUseVentSetting", CanUseVentOptionDefault, RoleOption); OptionId++; }
+        if (CanUseSaboOptionOn) { CanUseSaboOption = CustomOption.Create(OptionId, IsSHRRole, OptionType, "JackalUseSaboSetting", CanUseSaboOptionDefault, RoleOption); OptionId++; }
+        if (IsImpostorViewOptionOn) { IsImpostorViewOption = CustomOption.Create(OptionId, IsSHRRole, OptionType, "MadmateImpostorLightSetting", IsImpostorViewOptionDefault, RoleOption); OptionId++; }
         SetupMyOptions();
     }
     public abstract void SetupMyOptions();

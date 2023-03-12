@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AmongUs.GameOptions;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
@@ -27,8 +28,8 @@ public class SoothSayer : RoleBase<SoothSayer>
     public override void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { }
     public override void EndUseAbility() { }
     public override void ResetRole() { }
-    public override void PostInit() { DisplayedPlayer = new(); AbilityLimit = CustomOptionHolder.SoothSayerMaxCount.GetInt();
-        CanFirstWhite = CustomOptionHolder.SoothSayerFirstWhiteOption.GetBool();
+    public override void PostInit() { DisplayedPlayer = new(); AbilityLimit = SoothSayerMaxCount.GetInt();
+        CanFirstWhite = SoothSayerFirstWhiteOption.GetBool();
     }
     public override void UseAbility() { base.UseAbility(); AbilityLimit--; if (AbilityLimit <= 0) EndUseAbility(); }
     public override bool CanUseAbility() { return base.CanUseAbility() && AbilityLimit <= 0; }
@@ -55,6 +56,6 @@ public class SoothSayer : RoleBase<SoothSayer>
     public static void Clear()
     {
         players = new();
-        DisplayMode = CustomOptionHolder.SoothSayerDisplayMode.GetBool();
+        DisplayMode = SoothSayerDisplayMode.GetBool();
     }
 }

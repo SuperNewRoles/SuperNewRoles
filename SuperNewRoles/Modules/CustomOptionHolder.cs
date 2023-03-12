@@ -76,12 +76,6 @@ public class CustomOptionHolder
     public static CustomOption MadRolesCanFixElectrical;
     public static CustomOption MadRolesCanVentMove;
 
-    public static CustomRoleOption SoothSayerOption;
-    public static CustomOption SoothSayerPlayerCount;
-    public static CustomOption SoothSayerDisplayMode;
-    public static CustomOption SoothSayerMaxCount;
-    public static CustomOption SoothSayerFirstWhiteOption;
-
     public static CustomRoleOption JesterOption;
     public static CustomOption JesterPlayerCount;
     public static CustomOption JesterIsVent;
@@ -1267,12 +1261,6 @@ public class CustomOptionHolder
         TeleporterPlayerCount = Create(67, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], TeleporterOption);
         TeleporterCoolTime = Create(68, false, CustomOptionType.Impostor, "TeleporterCooldownSetting", 30f, 2.5f, 60f, 2.5f, TeleporterOption, format: "unitSeconds");
         TeleporterDurationTime = Create(69, false, CustomOptionType.Impostor, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleporterOption, format: "unitSeconds");
-
-        SoothSayerOption = SetupCustomRoleOption(12, false, RoleId.SoothSayer);
-        SoothSayerPlayerCount = Create(13, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
-        SoothSayerDisplayMode = Create(14, false, CustomOptionType.Crewmate, "SoothSayerDisplaySetting", false, SoothSayerOption);
-        SoothSayerMaxCount = Create(15, false, CustomOptionType.Crewmate, "SoothSayerMaxCountSetting", CrewPlayers[0] - 1, CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
-        SoothSayerFirstWhiteOption = Create(1050, false, CustomOptionType.Crewmate, "SoothSayerFirstWhiteOption", false, SoothSayerOption);
 
         SpiritMediumOption = SetupCustomRoleOption(70, false, RoleId.SpiritMedium);
         SpiritMediumPlayerCount = Create(71, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpiritMediumOption);
