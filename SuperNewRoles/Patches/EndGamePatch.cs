@@ -8,6 +8,9 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using UnhollowerBaseLib;
 using UnityEngine;
@@ -612,7 +615,7 @@ public static class OnGameEndPatch
             RoleClass.Pavlovsdogs.PavlovsdogsPlayer,
             RoleClass.Pavlovsowner.PavlovsownerPlayer,
             RoleClass.LoversBreaker.LoversBreakerPlayer,
-            Roles.Impostor.MadRole.Worshiper.WorshiperPlayer,
+            Worshiper.allPlayers,
             Safecracker.SafecrackerPlayer,
             FireFox.allPlayers,
             OrientalShaman.OrientalShamanPlayer,

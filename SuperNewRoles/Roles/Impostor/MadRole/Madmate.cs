@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Roles;
 using static SuperNewRoles.Helpers.RPCHelper;
 
-namespace SuperNewRoles.Roles;
+namespace SuperNewRoles.Roles.Impostor.MadRole;
 
 class Madmate
 {
@@ -34,8 +35,8 @@ class Madmate
                 CheckTask = RoleClass.BlackCat.ImpostorCheckTask;
                 break;
             case RoleId.Worshiper:
-                if (!Roles.Impostor.MadRole.Worshiper.IsImpostorCheck) return false;
-                CheckTask = Roles.Impostor.MadRole.Worshiper.ImpostorCheckTask;
+                if (!Worshiper.IsImpostorCheck) return false;
+                CheckTask = Worshiper.ImpostorCheckTask;
                 break;
             default:
                 return false;

@@ -8,7 +8,7 @@ using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 using static Il2CppSystem.Linq.Expressions.Interpreter.CastInstruction.CastInstructionNoT;
 
-namespace SuperNewRoles.Roles.CrewMate;
+namespace SuperNewRoles.Roles.Crewmate;
 
 public class SoothSayer : RoleBase<SoothSayer>
 {

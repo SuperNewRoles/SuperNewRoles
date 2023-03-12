@@ -6,6 +6,9 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using static SuperNewRoles.Helpers.RPCHelper;
 
@@ -30,7 +33,7 @@ class WrapUpClass
         {
             if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
         }
-        foreach (PlayerControl p in SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperPlayer)
+        foreach (PlayerControl p in Worshiper.allPlayers)
         {
             if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
         }
