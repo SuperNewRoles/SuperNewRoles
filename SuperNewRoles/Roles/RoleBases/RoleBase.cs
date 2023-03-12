@@ -5,6 +5,7 @@ using System.Text;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using MonoMod.Cil;
+using SuperNewRoles.DataManage;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.RoleBases;
@@ -38,6 +39,14 @@ public abstract class Role
         MaxObjectId = 0;
         allRoles = new List<Role>();
     }
+
+
+    public void SetValueByte(string name, byte value) => RoleDataManager.SetValueByte($"{ObjectId.ToString()}_{name}", value);
+    public void SetValueBool(string name, bool value) => RoleDataManager.SetValueBool($"{ObjectId.ToString()}_{name}", value);
+    public void SetValueFloat(string name, float value) => RoleDataManager.SetValueFloat($"{ObjectId.ToString()}_{name}", value);
+    public float GetValueFloat(string name) => RoleDataManager.GetValueFloat($"{ObjectId.ToString()}_{name}");
+    public byte GetValueByte(string name) => RoleDataManager.GetValueByte($"{ObjectId.ToString()}_{name}");
+    public bool GetValueBool(string name) => RoleDataManager.GetValueBool($"{ObjectId.ToString()}_{name}");
 }
 
 public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()

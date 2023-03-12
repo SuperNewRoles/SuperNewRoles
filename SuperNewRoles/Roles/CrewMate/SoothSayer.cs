@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using AmongUs.GameOptions;
+using SuperNewRoles.DataManage;
+using SuperNewRoles.ReplayManager;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
+using static Il2CppSystem.Linq.Expressions.Interpreter.CastInstruction.CastInstructionNoT;
 
 namespace SuperNewRoles.Roles.CrewMate;
 
@@ -39,7 +42,11 @@ public class SoothSayer : RoleBase<SoothSayer>
     public static void SetButtonCooldowns() { }
 
     public List<byte> DisplayedPlayer;
-    public bool CanFirstWhite;
+    public bool CanFirstWhite {
+        get { if (ReplayData.CanReplayCheckPlayerView) GetValueBool("CanFirstWhite"); else _CanFirstWhite; }
+        set { if (ReplayData.CanReplayCheckPlayerView) SetValueBool("CanFirstWhite", value); else _CanFirstWhite = Value; }
+    }
+    private bool _CanFirstWhite;
     public static bool DisplayMode;
     public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SoothSayerButton.png", 115f);
 

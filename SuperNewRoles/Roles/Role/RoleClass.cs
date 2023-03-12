@@ -5,6 +5,7 @@ using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.DataManage;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.CrewMate;
@@ -33,6 +34,7 @@ public static class RoleClass
 
     public static void ClearAndReloadRoles()
     {
+        RoleDataManager.ClearAndReloads();
         ModHelpers.IdControlDic = new();
         ModHelpers.VentIdControlDic = new();
         BlockPlayers = new();
