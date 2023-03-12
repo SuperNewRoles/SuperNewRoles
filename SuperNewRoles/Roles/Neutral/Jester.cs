@@ -17,6 +17,7 @@ public class Jester : RoleBase<Jester>
         OptionId = 16;
         IsSHRRole = true;
         OptionType = CustomOptionType.Neutral;
+        HasTask = false;
         CanUseVentOptionOn = true;
         CanUseVentOptionDefault = false;
         CanUseSaboOptionOn = true;

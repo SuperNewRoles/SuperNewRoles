@@ -113,29 +113,29 @@ class ButtonTime
     }
     public static void LighterButton()
     {
-        if (RoleClass.Lighter.IsLightOn)
+        if (Lighter.IsLightOn)
         {
-            var timeSpanData = new TimeSpan(0, 0, 0, (int)RoleClass.Lighter.DurationTime);
-            HudManagerStartPatch.LighterLightOnButton.MaxTimer = RoleClass.Lighter.DurationTime;
-            HudManagerStartPatch.LighterLightOnButton.Timer = (float)((RoleClass.Lighter.ButtonTimer + timeSpanData) - DateTime.Now).TotalSeconds;
+            var timeSpanData = new TimeSpan(0, 0, 0, (int)Lighter.DurationTimeS);
+            HudManagerStartPatch.LighterLightOnButton.MaxTimer = Lighter.DurationTimeS;
+            HudManagerStartPatch.LighterLightOnButton.Timer = (float)(Lighter.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
             if (HudManagerStartPatch.LighterLightOnButton.Timer <= 0f)
             {
                 Lighter.LightOutEnd();
                 Lighter.ResetCooldown();
-                HudManagerStartPatch.LighterLightOnButton.MaxTimer = RoleClass.Lighter.CoolTime;
-                RoleClass.Lighter.IsLightOn = false;
+                HudManagerStartPatch.LighterLightOnButton.MaxTimer = Lighter.CoolTimeS;
+                Lighter.IsLightOn = false;
                 HudManagerStartPatch.LighterLightOnButton.actionButton.cooldownTimerText.color = Color.white;
-                RoleClass.Lighter.ButtonTimer = DateTime.Now;
+                Lighter.ButtonTimer = DateTime.Now;
             }
         }
         else
         {
-            if (RoleClass.Lighter.ButtonTimer == null)
+            if (Lighter.ButtonTimer == null)
             {
-                RoleClass.Lighter.ButtonTimer = DateTime.Now;
+                Lighter.ButtonTimer = DateTime.Now;
             }
-            var timeSpanData = new TimeSpan(0, 0, 0, (int)RoleClass.Lighter.CoolTime);
-            HudManagerStartPatch.LighterLightOnButton.Timer = (float)(RoleClass.Lighter.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
+            var timeSpanData = new TimeSpan(0, 0, 0, (int)Lighter.CoolTimeS);
+            HudManagerStartPatch.LighterLightOnButton.Timer = (float)(Lighter.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
             if (HudManagerStartPatch.LighterLightOnButton.Timer <= 0f) HudManagerStartPatch.LighterLightOnButton.Timer = 0f; return;
         }
     }

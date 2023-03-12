@@ -398,9 +398,6 @@ public static class RoleHelpers
         }
         switch (role)
         {
-            case RoleId.Lighter:
-                RoleClass.Lighter.LighterPlayer.Add(player);
-                break;
             case RoleId.EvilLighter:
                 RoleClass.EvilLighter.EvilLighterPlayer.Add(player);
                 break;
@@ -926,9 +923,6 @@ public static class RoleHelpers
         }
         switch (player.GetRole())
         {
-            case RoleId.Lighter:
-                RoleClass.Lighter.LighterPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.EvilLighter:
                 RoleClass.EvilLighter.EvilLighterPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1685,8 +1679,7 @@ public static class RoleHelpers
         {
             Role obj = Role.allRoles.Find(x => x.player == player);
             if (obj is not null) return obj.roleId;
-            if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player)) return RoleId.Lighter;
-            else if (RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilLighter;
+            if (RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilLighter;
             else if (RoleClass.EvilScientist.EvilScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilScientist;
             else if (RoleClass.Sheriff.SheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.Sheriff;
             else if (RoleClass.MeetingSheriff.MeetingSheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.MeetingSheriff;
