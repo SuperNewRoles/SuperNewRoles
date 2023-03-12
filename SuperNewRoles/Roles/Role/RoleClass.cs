@@ -27,8 +27,8 @@ public static class RoleClass
     public static Color ImpostorRed = Palette.ImpostorRed;
     public static Color CrewmateWhite = Color.white;
     public static Color FoxPurple = Palette.Purple;
-    private static Color32 SheriffYellow = new(250, 191, 20, byte.MaxValue);
-    private static Color32 JackalBlue = new(0, 180, 235, byte.MaxValue);
+    public static Color32 SheriffYellow = new(250, 191, 20, byte.MaxValue);
+    public static Color32 JackalBlue = new(0, 180, 235, byte.MaxValue);
     public static bool IsStart;
     public static List<byte> BlockPlayers;
     public static float DefaultKillCoolDown;
@@ -82,7 +82,7 @@ public static class RoleClass
         Lighter.Clear();
         EvilLighter.ClearAndReload();
         EvilScientist.Clear();
-        Sheriff.ClearAndReload();
+        Sheriff.Clear();
         MeetingSheriff.ClearAndReload();
         Jackal.ClearAndReload();
         Teleporter.ClearAndReload();
@@ -154,7 +154,7 @@ public static class RoleClass
         Crewmate.Seer.ShowFlash_ClearAndReload();
         MadSeer.ClearAndReload();
         EvilSeer.ClearAndReload();
-        RemoteSheriff.ClearAndReload();
+        RemoteSheriff.Clear();
         TeleportingJackal.ClearAndReload();
         MadMaker.ClearAndReload();
         Demon.ClearAndReload();
@@ -265,26 +265,6 @@ public static class RoleClass
             EvilLighterPlayer = new();
             //CoolTime = CustomOptionHolder.EvilLighterCoolTime.GetFloat();
             //DurationTime = CustomOptionHolder.EvilLighterDurationTime.GetFloat();
-        }
-    }
-    public static class Sheriff
-    {
-        public static List<PlayerControl> SheriffPlayer;
-        public static Color32 color = SheriffYellow;
-        public static PlayerControl currentTarget;
-        public static float CoolTime;
-        public static float KillMaxCount;
-        public static Dictionary<int, int> KillCount;
-        public static DateTime ButtonTimer;
-
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
-
-        public static void ClearAndReload()
-        {
-            SheriffPlayer = new();
-            CoolTime = CustomOptionHolder.SheriffCoolTime.GetFloat();
-            KillMaxCount = CustomOptionHolder.SheriffKillMaxCount.GetFloat();
-            KillCount = new();
         }
     }
     public static class MeetingSheriff
@@ -1606,25 +1586,6 @@ public static class RoleClass
             soulDuration = CustomOptionHolder.EvilSeerSoulDuration.GetFloat();
             mode = Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) ? 1 : CustomOptionHolder.EvilSeerMode.GetSelection();
             IsCreateMadmate = CustomOptionHolder.EvilSeerMadmateSetting.GetBool();
-        }
-    }
-    public static class RemoteSheriff
-    {
-        public static List<PlayerControl> RemoteSheriffPlayer;
-        public static Color32 color = SheriffYellow;
-        public static float CoolTime;
-        public static float KillMaxCount;
-        public static Dictionary<int, int> KillCount;
-        public static bool IsKillTeleport;
-        public static float KillCoolTime;
-        public static void ClearAndReload()
-        {
-            RemoteSheriffPlayer = new();
-            CoolTime = CustomOptionHolder.RemoteSheriffCoolTime.GetFloat();
-            KillMaxCount = CustomOptionHolder.RemoteSheriffKillMaxCount.GetFloat();
-            KillCount = new();
-            IsKillTeleport = CustomOptionHolder.RemoteSheriffIsKillTeleportSetting.GetBool();
-            KillCoolTime = CustomOptionHolder.RemoteSheriffCoolTime.GetFloat();
         }
     }
     public static class TeleportingJackal

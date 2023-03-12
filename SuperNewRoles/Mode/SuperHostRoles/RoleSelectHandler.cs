@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -48,10 +49,10 @@ public static class RoleSelectHandler
             }
             else if (//bot出す
                 CustomOptionHolder.EgoistOption.GetSelection() != 0 ||
-                CustomOptionHolder.SheriffOption.GetSelection() != 0 ||
+                Sheriff.RoleOption.GetSelection() != 0 ||
                 CustomOptionHolder.trueloverOption.GetSelection() != 0 ||
                 CustomOptionHolder.FalseChargesOption.GetSelection() != 0 ||
-                CustomOptionHolder.RemoteSheriffOption.GetSelection() != 0 ||
+                RemoteSheriff.RoleOption.GetSelection() != 0 ||
                 CustomOptionHolder.MadMakerOption.GetSelection() != 0 ||
                 CustomOptionHolder.SamuraiOption.GetSelection() != 0 ||
                 CustomOptionHolder.DemonOption.GetSelection() != 0 ||
@@ -100,7 +101,7 @@ public static class RoleSelectHandler
     {
         /*============インポスターにDesync============*/
         SetRoleDesync(RoleClass.Jackal.JackalPlayer, RoleTypes.Impostor);
-        SetRoleDesync(RoleClass.Sheriff.SheriffPlayer, RoleTypes.Impostor);
+        SetRoleDesync(Sheriff.allPlayers, RoleTypes.Impostor);
         SetRoleDesync(RoleClass.Demon.DemonPlayer, RoleTypes.Impostor);
         SetRoleDesync(RoleClass.Truelover.trueloverPlayer, RoleTypes.Impostor);
         SetRoleDesync(RoleClass.FalseCharges.FalseChargesPlayer, RoleTypes.Impostor);
@@ -128,7 +129,7 @@ public static class RoleSelectHandler
 
         /*============シェイプシフターDesync============*/
         SetRoleDesync(RoleClass.Arsonist.ArsonistPlayer, RoleTypes.Shapeshifter);
-        SetRoleDesync(RoleClass.RemoteSheriff.RemoteSheriffPlayer, RoleTypes.Shapeshifter);
+        SetRoleDesync(RemoteSheriff.allPlayers, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.ToiletFan.ToiletFanPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.NiceButtoner.NiceButtonerPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperPlayer, RoleTypes.Shapeshifter);

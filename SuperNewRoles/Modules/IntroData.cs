@@ -118,8 +118,8 @@ public class IntroData
     public static IntroData JesterIntro = new("Jester", Jester.color, 1, RoleId.Jester, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData LighterIntro = new("Lighter", Lighter.color, 1, RoleId.Lighter);
     public static IntroData EvilLighterIntro = new("EvilLighter", RoleClass.EvilLighter.color, 2, RoleId.EvilLighter, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData EvilScientist = new("EvilScientist", EvilScientist.color, 2, RoleId.EvilScientist, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData SheriffIntro = new("Sheriff", RoleClass.Sheriff.color, 2, RoleId.Sheriff, IntroSound: RoleTypes.Engineer);
+    public static IntroData EvilScientist = new("EvilScientist", Roles.Impostor.EvilScientist.color, 2, RoleId.EvilScientist, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData SheriffIntro = new("Sheriff", Sheriff.color, 2, RoleId.Sheriff, IntroSound: RoleTypes.Engineer);
     public static IntroData MeetingSheriffIntro = new("MeetingSheriff", RoleClass.MeetingSheriff.color, 4, RoleId.MeetingSheriff, IntroSound: RoleTypes.Engineer);
     public static IntroData JackalIntro = new("Jackal", RoleClass.Jackal.color, 3, RoleId.Jackal, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData SidekickIntro = new("Sidekick", RoleClass.Jackal.color, 1, RoleId.Sidekick, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
@@ -192,7 +192,7 @@ public class IntroData
     public static IntroData SeerIntro = new("Seer", RoleClass.Seer.color, 1, RoleId.Seer);
     public static IntroData MadSeerIntro = new("MadSeer", RoleClass.MadSeer.color, 1, RoleId.MadSeer, IntroSound: RoleTypes.Impostor);
     public static IntroData EvilSeerIntro = new("EvilSeer", RoleClass.EvilSeer.color, 1, RoleId.EvilSeer, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData RemoteSheriffIntro = new("RemoteSheriff", RoleClass.RemoteSheriff.color, 1, RoleId.RemoteSheriff, IntroSound: RoleTypes.Engineer);
+    public static IntroData RemoteSheriffIntro = new("RemoteSheriff", RemoteSheriff.color, 1, RoleId.RemoteSheriff, IntroSound: RoleTypes.Engineer);
     public static IntroData TeleportingJackalIntro = new("TeleportingJackal", RoleClass.TeleportingJackal.color, 1, RoleId.TeleportingJackal, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData MadMakerIntro = new("MadMaker", RoleClass.MadMaker.color, 1, RoleId.MadMaker, IntroSound: RoleTypes.Impostor);
     public static IntroData DemonIntro = new("Demon", RoleClass.Demon.color, 1, RoleId.Demon, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);

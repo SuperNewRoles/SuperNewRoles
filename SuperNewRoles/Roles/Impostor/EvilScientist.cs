@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 
-namespace SuperNewRoles.Roles.RoleBases;
+namespace SuperNewRoles.Roles.Impostor;
 
 public class EvilScientist : RoleBase<EvilScientist>
 {

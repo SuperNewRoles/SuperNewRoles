@@ -298,7 +298,7 @@ class AddChatPatch
             int PlayerCount = 0;
             foreach (CustomOption opt in option.children)
             {
-                if (opt.GetName() == CustomOptionHolder.SheriffPlayerCount.GetName())
+                if (opt.GetName() == Sheriff.PlayerCountOption.GetName())
                 {
                     PlayerCount = (int)opt.GetFloat();
                     break;
