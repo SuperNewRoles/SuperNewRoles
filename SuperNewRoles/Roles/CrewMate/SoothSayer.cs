@@ -43,8 +43,8 @@ public class SoothSayer : RoleBase<SoothSayer>
 
     public List<byte> DisplayedPlayer;
     public bool CanFirstWhite {
-        get { if (ReplayData.CanReplayCheckPlayerView) GetValueBool("CanFirstWhite"); else _CanFirstWhite; }
-        set { if (ReplayData.CanReplayCheckPlayerView) SetValueBool("CanFirstWhite", value); else _CanFirstWhite = Value; }
+        get { return ReplayData.CanReplayCheckPlayerView? GetValueBool("CanFirstWhite") : _CanFirstWhite; }
+        set { if (ReplayData.CanReplayCheckPlayerView) SetValueBool("CanFirstWhite", value); else _CanFirstWhite = value; }
     }
     private bool _CanFirstWhite;
     public static bool DisplayMode;
