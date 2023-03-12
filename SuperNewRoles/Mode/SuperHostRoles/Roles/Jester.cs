@@ -14,7 +14,7 @@ class Jester
         if (exiled.Object.IsRole(RoleId.Jester))
         {
             var (Complete, all) = TaskCount.TaskDateNoClearCheck(exiled);
-            if (!RoleClass.Jester.IsJesterTaskClearWin || Complete >= all)
+            if (!SuperNewRoles.Roles.Neutral.Jester.JesterIsWinCleartask.GetBool() || Complete >= all)
             {
                 try
                 {

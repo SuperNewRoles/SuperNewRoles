@@ -221,7 +221,7 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.HAISON,("HAISON",HaisonColor)},
                 {WinCondition.LoversWin,("LoversName",RoleClass.Lovers.color)},
                 {WinCondition.GodWin,("GodName",RoleClass.God.color)},
-                {WinCondition.JesterWin,("JesterName",RoleClass.Jester.color)},
+                {WinCondition.JesterWin,("JesterName",Jester.color)},
                 {WinCondition.JackalWin,("JackalName",RoleClass.Jackal.color)},
                 {WinCondition.QuarreledWin,("QuarreledName",RoleClass.Quarreled.color)},
                 {WinCondition.EgoistWin,("EgoistName",RoleClass.Egoist.color)},
@@ -569,7 +569,7 @@ public static class OnGameEndPatch
             });
         */
 
-        notWinners.AddRanges(new[]{RoleClass.Jester.JesterPlayer,
+        notWinners.AddRanges(new[]{Jester.allPlayers,
             RoleClass.Madmate.MadmatePlayer,
             RoleClass.Jackal.JackalPlayer,
             RoleClass.Jackal.SidekickPlayer,

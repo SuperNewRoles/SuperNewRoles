@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -109,7 +110,7 @@ public static class RoleSelectHandler
 
 
         /*============エンジニアに役職設定============*/
-        if (RoleClass.Jester.IsUseVent) SetVanillaRole(RoleClass.Jester.JesterPlayer, RoleTypes.Engineer);
+        if (Jester.CanUseVentS) SetVanillaRole(Jester.allPlayers, RoleTypes.Engineer);
         if (RoleClass.JackalFriends.IsUseVent) SetVanillaRole(RoleClass.JackalFriends.JackalFriendsPlayer, RoleTypes.Engineer);
         if (RoleClass.Madmate.IsUseVent) SetVanillaRole(RoleClass.Madmate.MadmatePlayer, RoleTypes.Engineer);
         if (RoleClass.MadMayor.IsUseVent) SetVanillaRole(RoleClass.MadMayor.MadMayorPlayer, RoleTypes.Engineer);

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using SuperNewRoles.Roles.CrewMate;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Roles.RoleBases;
 public static class RoleBaseHelper
@@ -20,5 +21,6 @@ public static class RoleBaseHelper
     public static void SetUpOptions()
     {
         new SoothSayer().SetUpOption();
+        new Jester().SetUpOption();
     }
 }

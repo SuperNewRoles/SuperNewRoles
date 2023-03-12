@@ -1,5 +1,6 @@
 
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -50,7 +51,7 @@ public static class RoleHelper
                 IsZeroCoolEngineer = true;
                 break;
             case RoleId.Jester:
-                return RoleClass.Jester.IsUseVent;
+                return Jester.CanUseVentS;
             case RoleId.Madmate:
                 return RoleClass.Madmate.IsUseVent;
             case RoleId.MadMayor:

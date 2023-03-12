@@ -398,9 +398,6 @@ public static class RoleHelpers
         }
         switch (role)
         {
-            case RoleId.Jester:
-                RoleClass.Jester.JesterPlayer.Add(player);
-                break;
             case RoleId.Lighter:
                 RoleClass.Lighter.LighterPlayer.Add(player);
                 break;
@@ -929,9 +926,6 @@ public static class RoleHelpers
         }
         switch (player.GetRole())
         {
-            case RoleId.Jester:
-                RoleClass.Jester.JesterPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.Lighter:
                 RoleClass.Lighter.LighterPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1464,7 +1458,7 @@ public static class RoleHelpers
             RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,
             RoleId.Minimalist => RoleClass.Minimalist.UseVent,
             RoleId.Samurai => RoleClass.Samurai.UseVent,
-            RoleId.Jester => RoleClass.Jester.IsUseVent,
+            RoleId.Jester => Jester.CanUseVentS,
             RoleId.Madmate => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.Madmate.IsUseVent,
             RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseVent,
             RoleId.JackalFriends => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.JackalFriends.IsUseVent,
@@ -1542,7 +1536,7 @@ public static class RoleHelpers
         RoleId role = player.GetRole();
         return role switch
         {
-            RoleId.Jester => RoleClass.Jester.IsUseSabo && ModeHandler.IsMode(ModeId.Default),
+            RoleId.Jester => Jester.CanUseSaboS && ModeHandler.IsMode(ModeId.Default),
             RoleId.Sidekick or RoleId.Jackal => RoleClass.Jackal.IsUseSabo,
             RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
             RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
@@ -1691,8 +1685,7 @@ public static class RoleHelpers
         {
             Role obj = Role.allRoles.Find(x => x.player == player);
             if (obj is not null) return obj.roleId;
-            if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player)) return RoleId.Jester;
-            else if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player)) return RoleId.Lighter;
+            if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player)) return RoleId.Lighter;
             else if (RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilLighter;
             else if (RoleClass.EvilScientist.EvilScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilScientist;
             else if (RoleClass.Sheriff.SheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.Sheriff;

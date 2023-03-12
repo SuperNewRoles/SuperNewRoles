@@ -115,7 +115,7 @@ public class IntroData
     public static IntroData CrewmateIntro = new("Crewmate", Color.white, 1, RoleId.DefaultRole);
     public static IntroData ImpostorIntro = new("Impostor", RoleClass.ImpostorRed, 1, RoleId.DefaultRole, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SoothSayerIntro = new("SoothSayer", SoothSayer.color, 1, RoleId.SoothSayer);
-    public static IntroData JesterIntro = new("Jester", RoleClass.Jester.color, 1, RoleId.Jester, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData JesterIntro = new("Jester", Jester.color, 1, RoleId.Jester, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData LighterIntro = new("Lighter", RoleClass.Lighter.color, 1, RoleId.Lighter);
     public static IntroData EvilLighterIntro = new("EvilLighter", RoleClass.EvilLighter.color, 2, RoleId.EvilLighter, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData EvilScientist = new("EvilScientist", RoleClass.EvilScientist.color, 2, RoleId.EvilScientist, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);

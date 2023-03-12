@@ -49,7 +49,7 @@ public static class SelectTask
         if (JackalFriendsIsCheckJackal.GetBool()) taskData.Add(RoleId.JackalFriends, (JackalFriendsCommonTask.GetInt(), JackalFriendsShortTask.GetInt(), JackalFriendsLongTask.GetInt()));
         if (SeerFriendsIsCheckJackal.GetBool()) taskData.Add(RoleId.SeerFriends, (SeerFriendsCommonTask.GetInt(), SeerFriendsShortTask.GetInt(), SeerFriendsLongTask.GetInt()));
         if (MayorFriendsIsCheckJackal.GetBool()) taskData.Add(RoleId.MayorFriends, (MayorFriendsCommonTask.GetInt(), MayorFriendsShortTask.GetInt(), MayorFriendsLongTask.GetInt()));
-        if (JesterIsWinCleartask.GetBool()) taskData.Add(RoleId.Jester, (JesterCommonTask.GetInt(), JesterShortTask.GetInt(), JesterLongTask.GetInt()));
+        if (Jester.JesterIsWinCleartask.GetBool()) taskData.Add(RoleId.Jester, (Jester.JesterCommonTask.GetInt(), Jester.JesterShortTask.GetInt(), Jester.JesterLongTask.GetInt()));
         if (IsMadJesterTaskClearWin.GetBool() || MadJesterCheckImpostorTask.GetBool()) taskData.Add(RoleId.MadJester, (MadJesterCommonTask.GetInt(), MadJesterShortTask.GetInt(), MadJesterLongTask.GetInt()));
         if (GodIsEndTaskWin.GetBool()) taskData.Add(RoleId.God, (GodCommonTask.GetInt(), GodShortTask.GetInt(), GodLongTask.GetInt()));
         if (Worshiper.WorshiperIsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)) taskData.Add(RoleId.Worshiper, (Worshiper.WorshiperCommonTask.GetInt(), Worshiper.WorshiperShortTask.GetInt(), Worshiper.WorshiperLongTask.GetInt()));

@@ -922,7 +922,7 @@ class AllRoleSetClass
         return roleData switch
         {
             RoleId.SoothSayer => SoothSayer.PlayerCountOption.GetFloat(),
-            RoleId.Jester => CustomOptionHolder.JesterPlayerCount.GetFloat(),
+            RoleId.Jester => Jester.PlayerCountOption.GetFloat(),
             RoleId.Lighter => CustomOptionHolder.LighterPlayerCount.GetFloat(),
             RoleId.EvilLighter => CustomOptionHolder.EvilLighterPlayerCount.GetFloat(),
             RoleId.EvilScientist => CustomOptionHolder.EvilScientistPlayerCount.GetFloat(),

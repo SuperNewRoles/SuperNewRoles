@@ -177,13 +177,12 @@ class WrapUpPatch
             if (Player.IsRole(RoleId.Jester))
             {
 
-                if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patches.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
+                if (!Jester.JesterIsWinCleartask.GetBool() || Patches.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patches.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0)
                 {
                     RPCProcedure.ShareWinner(Player.PlayerId);
                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                     Writer.Write(Player.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                    RoleClass.Jester.IsJesterWin = true;
                     CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
                 }
             }

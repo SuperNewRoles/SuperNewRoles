@@ -76,15 +76,6 @@ public class CustomOptionHolder
     public static CustomOption MadRolesCanFixElectrical;
     public static CustomOption MadRolesCanVentMove;
 
-    public static CustomRoleOption JesterOption;
-    public static CustomOption JesterPlayerCount;
-    public static CustomOption JesterIsVent;
-    public static CustomOption JesterIsSabotage;
-    public static CustomOption JesterIsWinCleartask;
-    public static CustomOption JesterCommonTask;
-    public static CustomOption JesterShortTask;
-    public static CustomOption JesterLongTask;
-
     public static CustomRoleOption LighterOption;
     public static CustomOption LighterPlayerCount;
     public static CustomOption LighterCoolTime;
@@ -1082,16 +1073,6 @@ public class CustomOptionHolder
         MadRolesCanFixComms = Create(984, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
         MadRolesCanFixElectrical = Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
         MadRolesCanVentMove = Create(1013, false, CustomOptionType.Crewmate, "MadRolesCanVentMove", false, null);
-
-        JesterOption = SetupCustomRoleOption(16, true, RoleId.Jester);
-        JesterPlayerCount = Create(17, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JesterOption);
-        JesterIsVent = Create(18, true, CustomOptionType.Neutral, "JesterIsVentSetting", false, JesterOption);
-        JesterIsSabotage = Create(19, false, CustomOptionType.Neutral, "JesterIsSabotageSetting", false, JesterOption);
-        JesterIsWinCleartask = Create(20, true, CustomOptionType.Neutral, "JesterIsWinClearTaskSetting", false, JesterOption);
-        var jesteroption = SelectTask.TaskSetting(21, 22, 23, JesterIsWinCleartask, CustomOptionType.Neutral, true);
-        JesterCommonTask = jesteroption.Item1;
-        JesterShortTask = jesteroption.Item2;
-        JesterLongTask = jesteroption.Item3;
 
         EvilScientistOption = SetupCustomRoleOption(33, false, RoleId.EvilScientist);
         EvilScientistPlayerCount = Create(34, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilScientistOption);

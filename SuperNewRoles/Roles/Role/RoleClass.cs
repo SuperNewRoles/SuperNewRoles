@@ -11,6 +11,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
@@ -77,7 +78,7 @@ public static class RoleClass
 
         Debugger.ClearAndReload();
         SoothSayer.Clear();
-        Jester.ClearAndReload();
+        Jester.Clear();
         Lighter.ClearAndReload();
         EvilLighter.ClearAndReload();
         EvilScientist.ClearAndReload();
@@ -252,23 +253,6 @@ public static class RoleClass
         }
     }
 
-    public static class Jester
-    {
-        public static List<PlayerControl> JesterPlayer;
-        public static bool IsJesterWin;
-        public static Color32 color = new(255, 165, 0, byte.MaxValue);
-        public static bool IsUseVent;
-        public static bool IsUseSabo;
-        public static bool IsJesterTaskClearWin;
-        public static void ClearAndReload()
-        {
-            IsJesterWin = false;
-            JesterPlayer = new();
-            IsUseSabo = CustomOptionHolder.JesterIsSabotage.GetBool();
-            IsUseVent = CustomOptionHolder.JesterIsVent.GetBool();
-            IsJesterTaskClearWin = CustomOptionHolder.JesterIsWinCleartask.GetBool();
-        }
-    }
     public static class Lighter
     {
         public static List<PlayerControl> LighterPlayer;

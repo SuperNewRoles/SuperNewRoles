@@ -73,6 +73,11 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
     public bool IsImpostorView => IsImpostorViewOpt is null ? false : IsImpostorViewOpt.GetBool();
     public float CoolTime => CoolTimeOpt is null ? -1f : CoolTimeOpt.GetFloat();
     public float DurationTime => DurationTimeOpt is null ? -1f : DurationTimeOpt.GetFloat();
+    public static bool CanUseVentS => CanUseVentOption is null ? false : CanUseVentOption.GetBool();
+    public static bool CanUseSaboS => CanUseSaboOption is null ? false : CanUseSaboOption.GetBool();
+    public static bool IsImpostorViewS => CanUseSaboOption is null ? false : CanUseSaboOption.GetBool();
+    public static float CoolTimeS => CanUseSaboOption is null ? -1f : CanUseSaboOption.GetFloat();
+    public static float DurationTimeS => CanUseSaboOption is null ? -1f : CanUseSaboOption.GetFloat();
 
 
     //役職について設定するところ
