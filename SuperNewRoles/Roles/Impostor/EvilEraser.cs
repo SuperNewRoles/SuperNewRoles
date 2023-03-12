@@ -96,7 +96,7 @@ public static class EvilEraser
     {
         bool IsAlive = false;
         List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
-        foxPlayers.AddRange(FireFox.FireFoxPlayer);
+        foxPlayers.AddRange(FireFox.allPlayers);
         foreach (PlayerControl p in foxPlayers)
         {
             if (p.IsAlive())

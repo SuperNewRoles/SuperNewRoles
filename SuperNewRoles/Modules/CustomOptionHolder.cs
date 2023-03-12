@@ -1864,8 +1864,6 @@ public class CustomOptionHolder
 
         Safecracker.SetupCustomOptions();
 
-        FireFox.SetupCustomOptions();
-
         Squid.SetupCustomOptions();
 
         DyingMessenger.SetupCustomOptions();

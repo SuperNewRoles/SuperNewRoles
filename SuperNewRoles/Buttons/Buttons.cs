@@ -3198,7 +3198,7 @@ static class HudManagerStartPatch
 
         Roles.Impostor.MadRole.Worshiper.SetupCustomButtons(__instance);
 
-        FireFox.SetupCustomButtons(__instance);
+        FireFox.MakeButtons(__instance);
 
         Squid.SetusCustomButton(__instance);
 
