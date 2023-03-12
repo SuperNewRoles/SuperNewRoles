@@ -444,7 +444,7 @@ public class SetNameUpdate
             else if (LocalRole is RoleId.Fox or RoleId.FireFox)
             {
                 List<PlayerControl> foxs = new(RoleClass.Fox.FoxPlayer);
-                foxs.AddRange(FireFox.FireFoxPlayer);
+                foxs.AddRange(FireFox.allPlayers);
                 foreach (PlayerControl p in foxs)
                 {
                     if (p.IsRole(PlayerControl.LocalPlayer.GetRole()) || FireFox.FireFoxIsCheckFox.GetBool())

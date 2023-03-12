@@ -1,72 +1,70 @@
 using System.Collections.Generic;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Patches;
+using SuperNewRoles.ReplayManager;
+using SuperNewRoles.Roles.CrewMate;
+using SuperNewRoles.Roles.RoleBases;
 using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles.Neutral;
 
-public class FireFox
+public class FireFox : RoleBase<FireFox>
 {
-    private const int OptionId = 1182;// 設定のId
-    public static CustomRoleOption FireFoxOption;
-    public static CustomOption FireFoxPlayerCount;
-    public static CustomOption FireFoxMaxKillCount;
-    public static CustomOption FireFoxKillCool;
-    public static CustomOption FireFoxCanKillCrewmate;
-    public static CustomOption FireFoxCanKillImpostor;
-    public static CustomOption FireFoxCanKillNeutral;
-    public static CustomOption FireFoxCanKillLovers;
-    public static CustomOption FireFoxIsCheckFox;
-    public static CustomOption FireFoxIsUseVent;
-    public static CustomOption FireFoxIsImpostorLight;
-    public static CustomOption FireFoxReport;
-    public static void SetupCustomOptions()
+    public static Color32 color = new(190, 86, 235, byte.MaxValue);
+
+    public FireFox()
     {
-        FireFoxOption = CustomOption.SetupCustomRoleOption(OptionId, false, RoleId.FireFox);
-        FireFoxPlayerCount = CustomOption.Create(OptionId + 1, false, CustomOptionType.Neutral, "SettingPlayerCountName", CustomOptionHolder.CrewPlayers[0], CustomOptionHolder.CrewPlayers[1], CustomOptionHolder.CrewPlayers[2], CustomOptionHolder.CrewPlayers[3], FireFoxOption);
-        FireFoxMaxKillCount = CustomOption.Create(OptionId + 2, false, CustomOptionType.Neutral, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1f, FireFoxOption);
-        FireFoxKillCool = CustomOption.Create(OptionId + 3, false, CustomOptionType.Neutral, "KillCooldown", 30f, 0f, 60f, 2.5f, FireFoxOption);
-        FireFoxCanKillCrewmate = CustomOption.Create(OptionId + 4, false, CustomOptionType.Neutral, "FireFoxCanKillCrewmateSetting", false, FireFoxOption);
-        FireFoxCanKillImpostor = CustomOption.Create(OptionId + 5, false, CustomOptionType.Neutral, "FireFoxCanKillImpostorSetting", true, FireFoxOption);
-        FireFoxCanKillNeutral = CustomOption.Create(OptionId + 6, false, CustomOptionType.Neutral, "FireFoxCanKillNeutralSetting", false, FireFoxOption);
-        FireFoxCanKillLovers = CustomOption.Create(OptionId + 7, false, CustomOptionType.Neutral, "FireFoxCanKillLoversSetting", false, FireFoxOption);
-        FireFoxIsCheckFox = CustomOption.Create(OptionId + 8, false, CustomOptionType.Neutral, "FireFoxIsCheckFoxSetting", true, FireFoxOption);
-        FireFoxIsUseVent = CustomOption.Create(OptionId + 9, false, CustomOptionType.Neutral, "MadmateUseVentSetting", false, FireFoxOption);
-        FireFoxIsImpostorLight = CustomOption.Create(OptionId + 10, false, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, FireFoxOption);
-        FireFoxReport = CustomOption.Create(OptionId + 11, false, CustomOptionType.Neutral, "MinimalistReportSetting", true, FireFoxOption);
+        RoleId = roleId = RoleId.FireFox;
+        //以下いるもののみ変更
+        OptionId = 1182;
+        HasTask = false;
+        CanUseVentOptionOn = true;
+        CanUseVentOptionDefault = false;
+        IsImpostorViewOptionOn = true;
+        IsImpostorViewOptionDefault = false;
     }
 
-    public static List<PlayerControl> FireFoxPlayer;
-    public static Color32 color = new(255, 127, 28, byte.MaxValue);
-    public static int KillCount;
-    public static void ClearAndReload()
+    public override void OnMeetingStart() { }
+    public override void OnWrapUp() { }
+    public override void FixedUpdate() { }
+    public override void MeFixedUpdateAlive() { }
+    public override void MeFixedUpdateDead() { }
+    public override void OnKill(PlayerControl target) { }
+    public override void OnDeath(PlayerControl killer = null) { }
+    public override void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { }
+    public override void EndUseAbility() { }
+    public override void ResetRole() { }
+    public override void PostInit()
     {
-        FireFoxPlayer = new();
-        KillCount = FireFoxMaxKillCount.GetInt();
+        
     }
+    public override void UseAbility() { base.UseAbility(); AbilityLimit--; if (AbilityLimit <= 0) EndUseAbility(); }
+    public override bool CanUseAbility() { return base.CanUseAbility() && AbilityLimit <= 0; }
 
+    //ボタンが必要な場合のみ(Buttonsの方に記述する必要あり)
     public static CustomButton FireFoxKillButton;
     public static TMP_Text FireFoxKillNumText;
-    public static void SetupCustomButtons(HudManager __instance)
+    public static void MakeButtons(HudManager hm)
     {
+        FireFox role = local;
         FireFoxKillButton = new(
             () =>
             {
                 PlayerControl target = HudManagerStartPatch.SetTarget();
-                if (!(target && PlayerControl.LocalPlayer.CanMove) || RoleHelpers.IsDead(PlayerControl.LocalPlayer) || KillCount <= 0) return;
+                if (!(target && PlayerControl.LocalPlayer.CanMove) || RoleHelpers.IsDead(PlayerControl.LocalPlayer) || role.AbilityLimit <= 0) return;
                 if (FireFoxCanKillCrewmate.GetBool() && target.IsCrew() && !(target.IsMadRoles() || target.IsFriendRoles() || target.IsRole(RoleId.MadKiller) || target.IsRole(RoleId.Dependents))) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 if (FireFoxCanKillImpostor.GetBool() && (target.IsImpostor() || target.IsMadRoles() || target.IsRole(RoleId.MadKiller) || target.IsRole(RoleId.Dependents))) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 if (FireFoxCanKillNeutral.GetBool() && (target.IsNeutral() || target.IsFriendRoles())) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 if (FireFoxCanKillLovers.GetBool() && target.IsLovers()) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
-                KillCount--;
+                role.AbilityLimit--;
                 FireFoxKillButton.Timer = FireFoxKillButton.MaxTimer;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FireFox; },
             () =>
             {
-                FireFoxKillNumText.text = string.Format(ModTranslation.GetString("SheriffNumTextName"), KillCount);
-                if (KillCount <= 0) return false;
+                FireFoxKillNumText.text = string.Format(ModTranslation.GetString("SheriffNumTextName"), role.AbilityLimit);
+                if (role.AbilityLimit <= 0) return false;
                 PlayerControl target = HudManagerStartPatch.SetTarget();
                 if (!(target && PlayerControl.LocalPlayer.CanMove)) return false;
                 PlayerControlFixedUpdatePatch.SetPlayerOutline(target, color);
@@ -79,10 +77,10 @@ public class FireFox
                 FireFoxKillButton.MaxTimer = FireFoxKillCool.GetFloat();
                 FireFoxKillButton.Timer = FireFoxKillButton.MaxTimer;
             },
-            __instance.KillButton.graphic.sprite,
+            hm.KillButton.graphic.sprite,
             new Vector3(0, 1, 0),
-            __instance,
-            __instance.KillButton,
+            hm,
+            hm.KillButton,
             KeyCode.Q,
             8,
             () => { return false; }
@@ -96,5 +94,42 @@ public class FireFox
         FireFoxKillNumText.enableWordWrapping = false;
         FireFoxKillNumText.transform.localScale = Vector3.one * 0.5f;
         FireFoxKillNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+    }
+    public static void SetButtonCooldowns() { }
+
+    public int KillCount
+    {
+        get { return ReplayData.CanReplayCheckPlayerView ? (int)GetValueFloat("FireFoxKillCount") : _KillCount; }
+        set { if (ReplayData.CanReplayCheckPlayerView) SetValueFloat("FireFoxKillCount", value); else _KillCount = value; }
+    }
+    public int _KillCount;
+
+    public static CustomOption FireFoxMaxKillCount;
+    public static CustomOption FireFoxKillCool;
+    public static CustomOption FireFoxCanKillCrewmate;
+    public static CustomOption FireFoxCanKillImpostor;
+    public static CustomOption FireFoxCanKillNeutral;
+    public static CustomOption FireFoxCanKillLovers;
+    public static CustomOption FireFoxIsCheckFox;
+    public static CustomOption FireFoxIsUseVent;
+    public static CustomOption FireFoxIsImpostorLight;
+    public static CustomOption FireFoxReport;
+
+    public override void SetupMyOptions()
+    {
+        FireFoxReport = CustomOption.Create(OptionId, false, CustomOptionType.Neutral, "MinimalistReportSetting", true, RoleOption); OptionId++;
+        FireFoxMaxKillCount = CustomOption.Create(OptionId, false, CustomOptionType.Neutral, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1f, RoleOption); OptionId++;
+        FireFoxKillCool = CustomOption.Create(OptionId, false, CustomOptionType.Neutral, "KillCooldown", 30f, 0f, 60f, 2.5f, RoleOption); OptionId++;
+        FireFoxCanKillCrewmate = CustomOption.Create(OptionId, false, CustomOptionType.Neutral, "FireFoxCanKillCrewmateSetting", false, RoleOption); OptionId++;
+        FireFoxCanKillImpostor = CustomOption.Create(OptionId, false, CustomOptionType.Neutral, "FireFoxCanKillImpostorSetting", true, RoleOption); OptionId++;
+        FireFoxCanKillNeutral = CustomOption.Create(OptionId, false, CustomOptionType.Neutral, "FireFoxCanKillNeutralSetting", false, RoleOption); OptionId++;
+        FireFoxCanKillLovers = CustomOption.Create(OptionId, false, CustomOptionType.Neutral, "FireFoxCanKillLoversSetting", false, RoleOption); OptionId++;
+        FireFoxIsCheckFox = CustomOption.Create(OptionId, false, CustomOptionType.Neutral, "FireFoxIsCheckFoxSetting", true, RoleOption); OptionId++;
+    }
+
+    public static void Clear()
+    {
+        players = new();
+        local.AbilityLimit = FireFoxMaxKillCount.GetInt();
     }
 }

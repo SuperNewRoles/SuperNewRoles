@@ -15,6 +15,7 @@ public static class RoleBaseHelper
             // Impostor
 
             // Neutral
+            { RoleId.FireFox, typeof(RoleBase<FireFox>) },
 
             // Other
         };
@@ -22,5 +23,6 @@ public static class RoleBaseHelper
     {
         new SoothSayer().SetUpOption();
         new Jester().SetUpOption();
+        new FireFox().SetUpOption();
     }
 }

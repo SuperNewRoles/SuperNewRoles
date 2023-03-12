@@ -614,7 +614,7 @@ public static class OnGameEndPatch
             RoleClass.LoversBreaker.LoversBreakerPlayer,
             Roles.Impostor.MadRole.Worshiper.WorshiperPlayer,
             Safecracker.SafecrackerPlayer,
-            FireFox.FireFoxPlayer,
+            FireFox.allPlayers,
             OrientalShaman.OrientalShamanPlayer,
             OrientalShaman.ShermansServantPlayer,
             TheThreeLittlePigs.TheFirstLittlePig.Player,
@@ -1089,7 +1089,7 @@ public static class OnGameEndPatch
             }
         }
         List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
-        foxPlayers.AddRange(FireFox.FireFoxPlayer);
+        foxPlayers.AddRange(FireFox.allPlayers);
         isReset = false;
         foreach (PlayerControl player in foxPlayers)
         {

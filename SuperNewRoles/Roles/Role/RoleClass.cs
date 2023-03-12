@@ -226,7 +226,7 @@ public static class RoleClass
         Jumbo.ClearAndReload();
         Impostor.MadRole.Worshiper.ClearAndReload();
         Safecracker.ClearAndReload();
-        FireFox.ClearAndReload();
+        FireFox.Clear();
         Squid.ClearAndReload();
         DyingMessenger.ClearAndReload();
         WiseMan.ClearAndReload();

@@ -838,9 +838,6 @@ public static class RoleHelpers
             case RoleId.Safecracker:
                 Safecracker.SafecrackerPlayer.Add(player);
                 break;
-            case RoleId.FireFox:
-                FireFox.FireFoxPlayer.Add(player);
-                break;
             case RoleId.Squid:
                 Squid.SquidPlayer.Add(player);
                 break;
@@ -1355,9 +1352,6 @@ public static class RoleHelpers
             case RoleId.Safecracker:
                 Safecracker.SafecrackerPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.FireFox:
-                FireFox.FireFoxPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.Squid:
                 Squid.SquidPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1821,7 +1815,6 @@ public static class RoleHelpers
             else if (RoleClass.Jumbo.JumboPlayer.IsCheckListPlayerControl(player)) return RoleId.Jumbo;
             else if (Roles.Impostor.MadRole.Worshiper.WorshiperPlayer.IsCheckListPlayerControl(player)) return RoleId.Worshiper;
             else if (Safecracker.SafecrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Safecracker;
-            else if (FireFox.FireFoxPlayer.IsCheckListPlayerControl(player)) return RoleId.FireFox;
             else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
             else if (DyingMessenger.DyingMessengerPlayer.IsCheckListPlayerControl(player)) return RoleId.DyingMessenger;
             else if (WiseMan.WiseManPlayer.IsCheckListPlayerControl(player)) return RoleId.WiseMan;
