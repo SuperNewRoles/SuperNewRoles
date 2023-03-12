@@ -4,6 +4,7 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -42,7 +43,7 @@ public static class SyncSetting
         switch (role)
         {
             case RoleId.Sheriff:
-                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(CustomOptionHolder.SheriffCoolTime.GetFloat()));
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(Sheriff.CoolTimeS));
                 break;
             case RoleId.Minimalist:
                 optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Minimalist.KillCoolTime));
@@ -94,12 +95,12 @@ public static class SyncSetting
             case RoleId.RemoteSheriff:
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
-                if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId) && RoleClass.RemoteSheriff.KillCount[player.PlayerId] < 1)
+                if (!player.CanUseAbility())
                 {
                     optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                     optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, -1f);
                 }
-                optdata.SetFloat(FloatOptionNames.KillCooldown, player.IsMod() ? KillCoolSet(RoleClass.RemoteSheriff.KillCoolTime) : -1f);
+                optdata.SetFloat(FloatOptionNames.KillCooldown, player.IsMod() ? KillCoolSet(RemoteSheriff.CoolTimeS) : -1f);
                 break;
             case RoleId.Arsonist:
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 1f);

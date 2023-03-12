@@ -103,7 +103,6 @@ static class HudManagerStartPatch
     #endregion
 
     #region Texts
-    public static TMPro.TMP_Text sheriffNumShotsText;
     public static TMPro.TMP_Text PavlovsdogKillSelfText;
     public static TMPro.TMP_Text GhostMechanicNumRepairText;
     public static TMPro.TMP_Text PositionSwapperNumText;
@@ -1496,80 +1495,8 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
-        SheriffKillButton = new(
-            () =>
-            {
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
-                {
-                    RoleHelpers.UseShapeshift();
-                }
-                else if (PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff))
-                {
-                    if (RoleClass.Sheriff.KillMaxCount > 0 && SetTarget())
-                    {
-                        var target = PlayerControlFixedUpdatePatch.SetTarget();
-                        var localId = CachedPlayer.LocalPlayer.PlayerId;
-                        var misfire = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target);
-                        PlayerControlFixedUpdatePatch.SetPlayerOutline(target, RoleClass.Sheriff.color);
-                        var alwaysKill = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, target) && CustomOptionHolder.SheriffAlwaysKills.GetBool();
-                        if (alwaysKill && target.IsRole(RoleId.Squid) && Squid.IsVigilance.ContainsKey(target.PlayerId) && Squid.IsVigilance[target.PlayerId])
-                        {
-                            alwaysKill = false;
-                            Squid.SetVigilance(target, false);
-                            Squid.SetSpeedBoost(target);
-                            RPCHelper.StartRPC(CustomRPC.ShowFlash, target).EndRPC();
-                        }
-                        var targetId = target.PlayerId;
-
-                        RPCProcedure.SheriffKill(localId, targetId, misfire, alwaysKill);
-                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1);
-                        killWriter.Write(localId);
-                        killWriter.Write(targetId);
-                        killWriter.Write(misfire);
-                        killWriter.Write(alwaysKill);
-                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : target, misfire ? FinalStatus.SheriffMisFire : (target.IsRole(RoleId.HauntedWolf) ? FinalStatus.SheriffHauntedWolfKill : FinalStatus.SheriffKill));
-                        if (alwaysKill) FinalStatusClass.RpcSetFinalStatus(target, FinalStatus.SheriffInvolvedOutburst);
-                        Sheriff.ResetKillCooldown();
-                        RoleClass.Sheriff.KillMaxCount--;
-                    }
-                }
-            },
-            (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.RemoteSheriff || (role == RoleId.Sheriff && ModeHandler.IsMode(ModeId.Default))); },
-            () =>
-            {
-                float killCount = 0f;
-                bool flag = false;
-                if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
-                {
-                    killCount = RoleClass.RemoteSheriff.KillMaxCount;
-                    flag = true;
-                }
-                else if (PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff))
-                {
-                    killCount = RoleClass.Sheriff.KillMaxCount;
-                    flag = PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
-                }
-                if (!Sheriff.IsSheriffButton(PlayerControl.LocalPlayer)) flag = false;
-                sheriffNumShotsText.text = killCount > 0 ? string.Format(ModTranslation.GetString("SheriffNumTextName"), killCount) : ModTranslation.GetString("CannotUse");
-                return flag;
-            },
-            () => { Sheriff.EndMeeting(); },
-            RoleClass.Sheriff.GetButtonSprite(),
-            new Vector3(0f, 1f, 0),
-            __instance,
-            __instance.KillButton,
-            KeyCode.Q,
-            8,
-            () => { return false; }
-        );
-        sheriffNumShotsText = GameObject.Instantiate(SheriffKillButton.actionButton.cooldownTimerText, SheriffKillButton.actionButton.cooldownTimerText.transform.parent);
-        sheriffNumShotsText.text = "";
-        sheriffNumShotsText.enableWordWrapping = false;
-        sheriffNumShotsText.transform.localScale = Vector3.one * 0.5f;
-        sheriffNumShotsText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
-        SheriffKillButton.buttonText = ModTranslation.GetString("SheriffKillButtonName");
-        SheriffKillButton.showButtonText = true;
+        Sheriff.MakeButtons(__instance);
+        RemoteSheriff.MakeButtons(__instance);
 
         ClergymanLightOutButton = new(
             () =>

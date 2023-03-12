@@ -796,7 +796,7 @@ public static class RPCProcedure
         if (targetid == CachedPlayer.LocalPlayer.PlayerId)
         {
             Sheriff.ResetKillCooldown();
-            RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
+            Sheriff.local.AbilityLimit = RoleClass.Chief.KillLimit;
         }
         UncheckedSetVanillaRole(targetid, (byte)RoleTypes.Crewmate);
     }
@@ -1020,6 +1020,8 @@ public static class RPCProcedure
         PlayerControl target = ModHelpers.PlayerById(TargetId);
         if (sheriff == null || target == null) return;
 
+        sheriff.GetRoleObject().UseAbility();
+
         if (alwaysKill)
         {
             sheriff.MurderPlayer(target);
@@ -1031,7 +1033,7 @@ public static class RPCProcedure
         }
         else
         {
-            if (sheriff.IsRole(RoleId.RemoteSheriff) && !RoleClass.RemoteSheriff.IsKillTeleport)
+            if (sheriff.IsRole(RoleId.RemoteSheriff) && !RemoteSheriff.RemoteSheriffIsKillTeleportSetting.GetBool())
             {
                 if (CachedPlayer.LocalPlayer.PlayerId == SheriffId)
                 {

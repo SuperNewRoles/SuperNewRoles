@@ -5,6 +5,7 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 using static SuperNewRoles.Helpers.RPCHelper;
 
@@ -21,7 +22,7 @@ class WrapUpClass
             p.RpcSetName(p.GetDefaultName());
         }
 
-        foreach (PlayerControl p in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
+        foreach (PlayerControl p in RemoteSheriff.allPlayers)
         {
             if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
         }

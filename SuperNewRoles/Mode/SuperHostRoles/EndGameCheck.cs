@@ -5,6 +5,7 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -56,8 +57,8 @@ class EndGameCheck
 
         /*============死亡時守護天使============*/
         List<PlayerControl> SetDeadGuardianAngel = new();
-        SetDeadGuardianAngel.AddRange(RoleClass.Sheriff.SheriffPlayer);
-        SetDeadGuardianAngel.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
+        SetDeadGuardianAngel.AddRange(Sheriff.allPlayers);
+        SetDeadGuardianAngel.AddRange(RemoteSheriff.allPlayers);
         SetDeadGuardianAngel.AddRange(RoleClass.Arsonist.ArsonistPlayer);
         SetDeadGuardianAngel.AddRange(RoleClass.ToiletFan.ToiletFanPlayer);
         SetDeadGuardianAngel.AddRange(RoleClass.NiceButtoner.NiceButtonerPlayer);
