@@ -76,12 +76,6 @@ public class CustomOptionHolder
     public static CustomOption MadRolesCanFixElectrical;
     public static CustomOption MadRolesCanVentMove;
 
-    public static CustomRoleOption LighterOption;
-    public static CustomOption LighterPlayerCount;
-    public static CustomOption LighterCoolTime;
-    public static CustomOption LighterDurationTime;
-    public static CustomOption LighterUpVision;
-
     public static CustomRoleOption EvilLighterOption;
     public static CustomOption EvilLighterPlayerCount;
     public static CustomOption EvilLighterCoolTime;
@@ -1220,12 +1214,6 @@ public class CustomOptionHolder
 
         SatsumaAndImoOption = SetupCustomRoleOption(953, true, RoleId.SatsumaAndImo);
         SatsumaAndImoPlayerCount = Create(800, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SatsumaAndImoOption);
-
-        LighterOption = SetupCustomRoleOption(24, false, RoleId.Lighter);
-        LighterPlayerCount = Create(25, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LighterOption);
-        LighterCoolTime = Create(26, false, CustomOptionType.Crewmate, "LigtherCooldownSetting", 30f, 2.5f, 60f, 2.5f, LighterOption, format: "unitSeconds");
-        LighterDurationTime = Create(27, false, CustomOptionType.Crewmate, "LigtherDurationSetting", 10f, 0f, 180f, 5f, LighterOption, format: "unitSeconds");
-        LighterUpVision = Create(28, false, CustomOptionType.Crewmate, "LighterUpVisionSetting", 0.25f, 0f, 5f, 0.25f, LighterOption);
 
         JackalOption = SetupCustomRoleOption(58, true, RoleId.Jackal);
         JackalPlayerCount = Create(59, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalOption);

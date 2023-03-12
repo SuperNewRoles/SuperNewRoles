@@ -1675,8 +1675,8 @@ static class HudManagerStartPatch
         LighterLightOnButton = new CustomButton(
             () =>
             {
-                RoleClass.Lighter.IsLightOn = true;
-                RoleClass.Lighter.ButtonTimer = DateTime.Now;
+                Lighter.IsLightOn = true;
+                Lighter.ButtonTimer = DateTime.Now;
                 LighterLightOnButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                 Lighter.LightOnStart();
             },
@@ -1686,7 +1686,7 @@ static class HudManagerStartPatch
                 return LighterLightOnButton.Timer <= 0;
             },
             () => { Lighter.EndMeeting(); },
-            RoleClass.Lighter.GetButtonSprite(),
+            Lighter.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
             __instance,
             __instance.AbilityButton,

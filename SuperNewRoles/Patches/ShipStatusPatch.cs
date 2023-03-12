@@ -131,8 +131,8 @@ class LightPatch
             ? Mathf.Lerp(__instance.MaxLightRadius * Squid.SquidDownVision.GetFloat(), __instance.MaxLightRadius * Squid.SquidDownVision.GetFloat(), num)
             : player.Object.IsImpostor() || RoleHelpers.IsImpostorLight(player.Object)
             ? GetNeutralLightRadius(__instance, true)
-            : player.Object.IsRole(RoleId.Lighter) && RoleClass.Lighter.IsLightOn
-            ? Mathf.Lerp(__instance.MaxLightRadius * RoleClass.Lighter.UpVision, __instance.MaxLightRadius * RoleClass.Lighter.UpVision, num)
+            : player.Object.IsRole(RoleId.Lighter) && Lighter.IsLightOn
+            ? Mathf.Lerp(__instance.MaxLightRadius * Lighter.LighterUpVision.GetFloat(), __instance.MaxLightRadius * Lighter.LighterUpVision.GetFloat(), num)
             : GetNeutralLightRadius(__instance, false);
         return false;
     }

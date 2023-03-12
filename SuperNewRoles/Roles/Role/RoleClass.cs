@@ -79,7 +79,7 @@ public static class RoleClass
         Debugger.ClearAndReload();
         SoothSayer.Clear();
         Jester.Clear();
-        Lighter.ClearAndReload();
+        Lighter.Clear();
         EvilLighter.ClearAndReload();
         EvilScientist.ClearAndReload();
         Sheriff.ClearAndReload();
@@ -253,27 +253,6 @@ public static class RoleClass
         }
     }
 
-    public static class Lighter
-    {
-        public static List<PlayerControl> LighterPlayer;
-        public static Color32 color = new(255, 236, 71, byte.MaxValue);
-        public static float CoolTime;
-        public static float DurationTime;
-        public static bool IsLightOn;
-        public static float UpVision;
-        public static float DefaultCrewVision;
-        public static DateTime ButtonTimer;
-
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.LighterLightOnButton.png", 115f);
-        public static void ClearAndReload()
-        {
-            LighterPlayer = new();
-            CoolTime = CustomOptionHolder.LighterCoolTime.GetFloat();
-            DurationTime = CustomOptionHolder.LighterDurationTime.GetFloat();
-            UpVision = CustomOptionHolder.LighterUpVision.GetFloat();
-            DefaultCrewVision = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.CrewLightMod);
-        }
-    }
     public static class EvilLighter
     {
         public static List<PlayerControl> EvilLighterPlayer;

@@ -6,6 +6,7 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.CrewMate;
 using SuperNewRoles.Roles.Impostor;
@@ -923,7 +924,7 @@ class AllRoleSetClass
         {
             RoleId.SoothSayer => SoothSayer.PlayerCountOption.GetFloat(),
             RoleId.Jester => Jester.PlayerCountOption.GetFloat(),
-            RoleId.Lighter => CustomOptionHolder.LighterPlayerCount.GetFloat(),
+            RoleId.Lighter => Lighter.PlayerCountOption.GetFloat(),
             RoleId.EvilLighter => CustomOptionHolder.EvilLighterPlayerCount.GetFloat(),
             RoleId.EvilScientist => CustomOptionHolder.EvilScientistPlayerCount.GetFloat(),
             RoleId.Sheriff => CustomOptionHolder.SheriffPlayerCount.GetFloat(),
