@@ -5,6 +5,7 @@ using AmongUs.GameOptions;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
+using SuperNewRoles.ReplayManager;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOptionHolder;
@@ -43,7 +44,10 @@ public class Worshiper : RoleBase<Worshiper>
     public override void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { }
     public override void EndUseAbility() { }
     public override void ResetRole() { }
-    public override void PostInit() { }
+    public override void PostInit()
+    {
+        local.IsFirstResetCool = true;
+    }
     public override void UseAbility() { base.UseAbility(); AbilityLimit--; if (AbilityLimit <= 0) EndUseAbility(); }
     public override bool CanUseAbility() { return base.CanUseAbility() && AbilityLimit <= 0; }
 
@@ -126,16 +130,17 @@ public class Worshiper : RoleBase<Worshiper>
     }
     private static void ResetSuicideKillButton()
     {
+        var lf = local.IsFirstResetCool;
         /*
             [isfirstResetCool(初回クールリセットか?)]がtrueの場合、クールを10sにしている。
             SHR時非導入者クール(10s)と導入者のクール(カスタムクール)が異なる事を、SNR時共通処理として修正している。
             初手カスタムボタンクールを10sにするメソッドがあれば不要な処理。
         */
-        suicideKillButton.MaxTimer = !isfirstResetCool ? WorshiperKillSuicideCoolTime.GetFloat() : 10f;
-        suicideKillButton.Timer = !isfirstResetCool ? WorshiperKillSuicideCoolTime.GetFloat() : 10f;
+        suicideKillButton.MaxTimer = !lf ? WorshiperKillSuicideCoolTime.GetFloat() : 10f;
+        suicideKillButton.Timer = !lf ? WorshiperKillSuicideCoolTime.GetFloat() : 10f;
         suicideKillButtonTimer = DateTime.Now;
-        Logger.Info($"「初回クールリセットか?」が{isfirstResetCool}の為、クールを[{suicideKillButton.MaxTimer}s]に設定しました。", "Worshiper");
-        isfirstResetCool = false;
+        Logger.Info($"「初回クールリセットか?」が{lf}の為、クールを[{suicideKillButton.MaxTimer}s]に設定しました。", "Worshiper");
+        local.IsFirstResetCool = false;
     }
     public static void SetButtonCooldowns()
     {
@@ -170,7 +175,12 @@ public class Worshiper : RoleBase<Worshiper>
     private static CustomButton suicideKillButton;
     private static DateTime suicideButtonTimer;
     private static DateTime suicideKillButtonTimer;
-    private static bool isfirstResetCool;
+    public bool IsFirstResetCool
+    {
+        get { return ReplayData.CanReplayCheckPlayerView ? GetValueBool("IsfirstResetCool") : _IsFirstResetCool; }
+        set { if (ReplayData.CanReplayCheckPlayerView) SetValueBool("IsfirstResetCool", value); else _IsFirstResetCool = value; }
+    }
+    private bool _IsFirstResetCool;
 
     public static void Clear()
     {
@@ -188,7 +198,5 @@ public class Worshiper : RoleBase<Worshiper>
             Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
         }
         ImpostorCheckTask = (int)(AllTask * (int.Parse(WorshiperCheckImpostorTask.GetString().Replace("%", "")) / 100f));
-
-        isfirstResetCool = true;
     }
 }
