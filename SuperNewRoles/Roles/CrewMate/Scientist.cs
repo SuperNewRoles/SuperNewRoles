@@ -17,7 +17,7 @@ public class Scientist
     }
     public static void ResetCooldown()
     {
-        float CoolTime = PlayerControl.LocalPlayer.IsImpostor() ? EvilScientist.CoolTimeS : RoleClass.NiceScientist.CoolTime;
+        float CoolTime = PlayerControl.LocalPlayer.IsImpostor() ? Roles.Impostor.EvilScientist.CoolTimeS : RoleClass.NiceScientist.CoolTime;
         HudManagerStartPatch.ScientistButton.MaxTimer = CoolTime;
         RoleClass.NiceScientist.ButtonTimer = DateTime.Now;
     }

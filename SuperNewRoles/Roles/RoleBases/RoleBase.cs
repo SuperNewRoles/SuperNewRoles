@@ -33,6 +33,7 @@ public abstract class Role
     //public virtual string meetingInfoText() { return ""; }
     public virtual void UseAbility() { AbilityLimit--; if (AbilityLimit <= 0) EndUseAbility(); }
     public virtual bool CanUseAbility() { return AbilityLimit <= 0; }
+    public virtual bool CanKillByTarget() { return true; }
 
     public static void ClearAll()
     {
@@ -78,8 +79,8 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
     public static bool CanUseVentS => CanUseVentOption is null ? false : CanUseVentOption.GetBool();
     public static bool CanUseSaboS => CanUseSaboOption is null ? false : CanUseSaboOption.GetBool();
     public static bool IsImpostorViewS => CanUseSaboOption is null ? false : CanUseSaboOption.GetBool();
-    public static float CoolTimeS => CanUseSaboOption is null ? -1f : CanUseSaboOption.GetFloat();
-    public static float DurationTimeS => CanUseSaboOption is null ? -1f : CanUseSaboOption.GetFloat();
+    public static float CoolTimeS => CoolTimeOption is null ? -1f : CoolTimeOption.GetFloat();
+    public static float DurationTimeS => DurationTimeOption is null ? -1f : DurationTimeOption.GetFloat();
 
 
     //役職について設定するところ
@@ -92,7 +93,6 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
     public bool IsSHRRole = false;
     public CustomOptionType OptionType = CustomOptionType.Crewmate;
     public bool IsChangeOutfitRole = false;
-
 
     public static CustomOption RoleOption;
     public static CustomOption PlayerCountOption;

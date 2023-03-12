@@ -97,9 +97,9 @@ class RpcShapeshiftPatch
             {
                 case RoleId.RemoteSheriff:
                     if (target.IsDead()) return true;
-                    if (!RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] >= 1)
+                    if (__instance.GetRoleObject().CanUseAbility())
                     {
-                        if ((!Sheriff.IsSheriffRolesKill(__instance, target) || target.IsRole(RoleId.RemoteSheriff)) && CustomOptionHolder.RemoteSheriffAlwaysKills.GetBool())
+                        if ((!Sheriff.IsSheriffRolesKill(__instance, target) || target.IsRole(RoleId.RemoteSheriff)) && RemoteSheriff.RemoteSheriffAlwaysKills.GetBool())
                         {
                             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
                             __instance.RpcMurderPlayerCheck(target);
@@ -119,11 +119,8 @@ class RpcShapeshiftPatch
                         else
                         {
                             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
-                            if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
-                                RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
-                            else
-                                RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.RemoteSheriffKillMaxCount.GetInt() - 1;
-                            if (RoleClass.RemoteSheriff.IsKillTeleport)
+                            __instance.GetRoleObject().UseAbility();
+                            if (RemoteSheriff.RemoteSheriffIsKillTeleportSetting.GetBool())
                                 __instance.RpcMurderPlayerCheck(target);
                             else
                             {
@@ -317,7 +314,7 @@ class ShapeshifterMinigameShapeshiftPatch
         }
         if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
         {
-            if (RoleClass.RemoteSheriff.KillMaxCount > 0)
+            if (PlayerControl.LocalPlayer.CanUseAbility())
             {
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
@@ -336,7 +333,7 @@ class ShapeshifterMinigameShapeshiftPatch
                     {
                         var Target = player;
                         var misfire = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target);
-                        var alwaysKill = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target) && CustomOptionHolder.RemoteSheriffAlwaysKills.GetBool();
+                        var alwaysKill = !Sheriff.IsSheriffRolesKill(CachedPlayer.LocalPlayer, Target) && RemoteSheriff.RemoteSheriffAlwaysKills.GetBool();
                         var TargetID = Target.PlayerId;
                         var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
@@ -351,7 +348,6 @@ class ShapeshifterMinigameShapeshiftPatch
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                         FinalStatusClass.RpcSetFinalStatus(misfire ? CachedPlayer.LocalPlayer : Target, misfire ? FinalStatus.RemoteSheriffMisFire : (Target.IsRole(RoleId.HauntedWolf) ? FinalStatus.RemoteSheriffHauntedWolfKill : FinalStatus.RemoteSheriffKill));
                         if (alwaysKill) FinalStatusClass.RpcSetFinalStatus(Target, FinalStatus.SheriffInvolvedOutburst);
-                        RoleClass.RemoteSheriff.KillMaxCount--;
                     }
                     Sheriff.ResetKillCooldown();
                 };
@@ -375,7 +371,7 @@ class KillButtonDoClickPatch
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
                 {
-                    if (__instance.isActiveAndEnabled && PlayerControl.LocalPlayer.IsAlive() && PlayerControl.LocalPlayer.CanMove && !__instance.isCoolingDown && RoleClass.RemoteSheriff.KillMaxCount > 0)
+                    if (__instance.isActiveAndEnabled && PlayerControl.LocalPlayer.IsAlive() && PlayerControl.LocalPlayer.CanMove && !__instance.isCoolingDown && PlayerControl.LocalPlayer.CanUseAbility())
                     {
                         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -538,9 +534,9 @@ static class CheckMurderPatch
                         }
                         return false;
                     case RoleId.Sheriff:
-                        if (!RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.Sheriff.KillCount[__instance.PlayerId] >= 1)
+                        if (__instance.GetRoleObject().CanUseAbility())
                         {
-                            if (!Sheriff.IsSheriffRolesKill(__instance, target) && CustomOptionHolder.SheriffAlwaysKills.GetBool())
+                            if (!Sheriff.IsSheriffRolesKill(__instance, target) && Sheriff.SheriffAlwaysKills.GetBool())
                             {
                                 FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffInvolvedOutburst;
                                 __instance.RpcMurderPlayerCheck(target);
@@ -559,14 +555,7 @@ static class CheckMurderPatch
                             else
                             {
                                 FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
-                                if (RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId))
-                                {
-                                    RoleClass.Sheriff.KillCount[__instance.PlayerId]--;
-                                }
-                                else
-                                {
-                                    RoleClass.Sheriff.KillCount[__instance.PlayerId] = CustomOptionHolder.SheriffKillMaxCount.GetInt() - 1;
-                                }
+                                __instance.GetRoleObject().UseAbility();
                                 __instance.RpcMurderPlayerCheck(target);
                                 if (target.IsRole(RoleId.HauntedWolf)) __instance.RpcSetFinalStatus(FinalStatus.SheriffHauntedWolfKill);
                                 else __instance.RpcSetFinalStatus(FinalStatus.SheriffKill);

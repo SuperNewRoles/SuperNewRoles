@@ -263,17 +263,11 @@ public static class FixedUpdate
         }
         if (player.IsRole(RoleId.Sheriff))
         {
-            if (RoleClass.Sheriff.KillCount.ContainsKey(player.PlayerId))
-            {
-                RoleNameText += ModHelpers.Cs(introData.color, $"{RoleClass.Sheriff.KillCount[player.PlayerId]}");
-            }
+            RoleNameText += ModHelpers.Cs(introData.color, $"{player.GetRoleObject().AbilityLimit}");
         }
         else if (player.IsRole(RoleId.RemoteSheriff))
         {
-            if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId))
-            {
-                RoleNameText += ModHelpers.Cs(introData.color, $"{RoleClass.RemoteSheriff.KillCount[player.PlayerId]}");
-            }
+            RoleNameText += ModHelpers.Cs(introData.color, $"{player.GetRoleObject().AbilityLimit}");
         }
         else if (player.IsRole(RoleId.Mafia))
         {
@@ -389,7 +383,7 @@ public static class FixedUpdate
     {
         if (PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff))
         {
-            if (RoleClass.Sheriff.KillMaxCount >= 1)
+            if (PlayerControl.LocalPlayer.GetRoleObject().CanUseAbility())
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
                 CachedPlayer.LocalPlayer.Data.Role.CanUseKillButton = true;

@@ -26,8 +26,8 @@ class ButtonTime
         float cooltime;
         if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
         {
-            durationtime = EvilScientist.DurationTimeS;
-            cooltime = EvilScientist.CoolTimeS;
+            durationtime = Roles.Impostor.EvilScientist.DurationTimeS;
+            cooltime = Roles.Impostor.EvilScientist.CoolTimeS;
         }
         else
         {
@@ -139,17 +139,6 @@ class ButtonTime
             HudManagerStartPatch.LighterLightOnButton.Timer = (float)(Lighter.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
             if (HudManagerStartPatch.LighterLightOnButton.Timer <= 0f) HudManagerStartPatch.LighterLightOnButton.Timer = 0f; return;
         }
-    }
-    public static void SheriffKillButton()
-    {
-        if (HudManagerStartPatch.SheriffKillButton.Timer == 0) return;
-        if (RoleClass.Sheriff.ButtonTimer == null)
-        {
-            RoleClass.Sheriff.ButtonTimer = DateTime.Now;
-        }
-        var timeSpanData = new TimeSpan(0, 0, 0, PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff) ? (int)RoleClass.Sheriff.CoolTime : (int)RoleClass.RemoteSheriff.CoolTime);
-        HudManagerStartPatch.SheriffKillButton.Timer = (float)(RoleClass.Sheriff.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
-        if (HudManagerStartPatch.SheriffKillButton.Timer <= 0f) HudManagerStartPatch.SheriffKillButton.Timer = 0f; return;
     }
     public static void SpeedBoosterButton()
     {

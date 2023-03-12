@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using AmongUs.GameOptions;
 using Hazel;
@@ -388,21 +389,20 @@ public static class RoleHelpers
             WiseMan.OnChangeRole();
         else if (player.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic))
             NiceMechanic.ChangeRole(player);
+        bool Setted = false;
         foreach (var t in RoleBaseHelper.allRoleIds)
         {
             if (role == t.Key)
             {
-                t.Value.GetMethod("setRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
-                return;
+                t.Value.GetMethod("SetRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
+                Setted = true;
+                break;
             }
         }
         switch (role)
         {
             case RoleId.EvilLighter:
                 RoleClass.EvilLighter.EvilLighterPlayer.Add(player);
-                break;
-            case RoleId.Sheriff:
-                RoleClass.Sheriff.SheriffPlayer.Add(player);
                 break;
             case RoleId.MeetingSheriff:
                 RoleClass.MeetingSheriff.MeetingSheriffPlayer.Add(player);
@@ -617,9 +617,6 @@ public static class RoleHelpers
                 break;
             case RoleId.EvilSeer:
                 RoleClass.EvilSeer.EvilSeerPlayer.Add(player);
-                break;
-            case RoleId.RemoteSheriff:
-                RoleClass.RemoteSheriff.RemoteSheriffPlayer.Add(player);
                 break;
             case RoleId.TeleportingJackal:
                 RoleClass.TeleportingJackal.TeleportingJackalPlayer.Add(player);
@@ -873,6 +870,7 @@ public static class RoleHelpers
                 break;
             // ロールアド
             default:
+                if (Setted) break;
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
                 return;
         }
@@ -914,7 +912,7 @@ public static class RoleHelpers
         {
             if (role == t.Key)
             {
-                t.Value.GetMethod("eraseRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
+                t.Value.GetMethod("EraseRole", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new object[] { player });
                 return;
             }
         }
@@ -922,9 +920,6 @@ public static class RoleHelpers
         {
             case RoleId.EvilLighter:
                 RoleClass.EvilLighter.EvilLighterPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.Sheriff:
-                RoleClass.Sheriff.SheriffPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.MeetingSheriff:
                 RoleClass.MeetingSheriff.MeetingSheriffPlayer.RemoveAll(ClearRemove);
@@ -1144,9 +1139,6 @@ public static class RoleHelpers
                 break;
             case RoleId.TeleportingJackal:
                 RoleClass.TeleportingJackal.TeleportingJackalPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.RemoteSheriff:
-                RoleClass.RemoteSheriff.RemoteSheriffPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.MadMaker:
                 RoleClass.MadMaker.MadMakerPlayer.RemoveAll(ClearRemove);
@@ -1662,6 +1654,15 @@ public static class RoleHelpers
         }
         return MyRole == role;
     }
+    public static Role GetRoleObject(this PlayerControl p)
+    {
+        return Role.allRoles.Find(x => x.player == p);
+    }
+    public static bool CanUseAbility(this PlayerControl p)
+    {
+        Role obj = GetRoleObject(p);
+        return obj is null ? false : obj.CanUseAbility();
+    }
     public static RoleId GetRole(this PlayerControl player, bool IsChache = true)
     {
         if (IsChache)
@@ -1671,10 +1672,9 @@ public static class RoleHelpers
         }
         try
         {
-            Role obj = Role.allRoles.Find(x => x.player == player);
+            Role obj = Role.allRoles.FirstOrDefault(x => x.player.PlayerId == player.PlayerId);
             if (obj is not null) return obj.roleId;
             if (RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilLighter;
-            else if (RoleClass.Sheriff.SheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.Sheriff;
             else if (RoleClass.MeetingSheriff.MeetingSheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.MeetingSheriff;
             else if (RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player)) return RoleId.Jackal;
             else if (RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player)) return RoleId.Sidekick;
@@ -1747,7 +1747,6 @@ public static class RoleHelpers
             else if (RoleClass.Seer.SeerPlayer.IsCheckListPlayerControl(player)) return RoleId.Seer;
             else if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player)) return RoleId.MadSeer;
             else if (RoleClass.EvilSeer.EvilSeerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilSeer;
-            else if (RoleClass.RemoteSheriff.RemoteSheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.RemoteSheriff;
             else if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player)) return RoleId.Fox;
             else if (RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.TeleportingJackal;
             else if (RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.MadMaker;
