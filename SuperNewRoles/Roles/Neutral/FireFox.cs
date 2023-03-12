@@ -11,13 +11,14 @@ namespace SuperNewRoles.Roles.Neutral;
 
 public class FireFox : RoleBase<FireFox>
 {
-    public static Color32 color = new(190, 86, 235, byte.MaxValue);
+    public static Color32 color = new(255, 127, 28, byte.MaxValue);
 
     public FireFox()
     {
         RoleId = roleId = RoleId.FireFox;
         //以下いるもののみ変更
         OptionId = 1182;
+        OptionType = CustomOptionType.Neutral;
         HasTask = false;
         CanUseVentOptionOn = true;
         CanUseVentOptionDefault = false;
@@ -37,7 +38,8 @@ public class FireFox : RoleBase<FireFox>
     public override void ResetRole() { }
     public override void PostInit()
     {
-        
+        KillCount = FireFoxMaxKillCount.GetInt();
+        AbilityLimit = FireFoxMaxKillCount.GetInt();
     }
     public override void UseAbility() { base.UseAbility(); AbilityLimit--; if (AbilityLimit <= 0) EndUseAbility(); }
     public override bool CanUseAbility() { return base.CanUseAbility() && AbilityLimit <= 0; }
@@ -58,6 +60,7 @@ public class FireFox : RoleBase<FireFox>
                 if (FireFoxCanKillNeutral.GetBool() && (target.IsNeutral() || target.IsFriendRoles())) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 if (FireFoxCanKillLovers.GetBool() && target.IsLovers()) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
                 role.AbilityLimit--;
+                role.KillCount--;
                 FireFoxKillButton.Timer = FireFoxKillButton.MaxTimer;
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FireFox; },
@@ -130,6 +133,5 @@ public class FireFox : RoleBase<FireFox>
     public static void Clear()
     {
         players = new();
-        local.AbilityLimit = FireFoxMaxKillCount.GetInt();
     }
 }

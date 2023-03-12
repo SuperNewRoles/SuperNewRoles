@@ -443,7 +443,7 @@ public class SetNameUpdate
             }
             else if (LocalRole is RoleId.Fox or RoleId.FireFox)
             {
-                List<PlayerControl> foxs = new(RoleClass.Fox.FoxPlayer);
+                List<PlayerControl> foxs = new(Fox.allPlayers);
                 foxs.AddRange(FireFox.allPlayers);
                 foreach (PlayerControl p in foxs)
                 {

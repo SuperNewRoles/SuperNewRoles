@@ -187,7 +187,7 @@ public class IntroData
     public static IntroData NocturnalityIntro = new("Nocturnality", RoleClass.Nocturnality.color, 1, RoleId.Nocturnality);
     public static IntroData ObserverIntro = new("Observer", RoleClass.Observer.color, 1, RoleId.Observer);
     public static IntroData VampireIntro = new("Vampire", RoleClass.Vampire.color, 1, RoleId.Vampire, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData FoxIntro = new("Fox", RoleClass.Fox.color, 1, RoleId.Fox, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData FoxIntro = new("Fox", Fox.color, 1, RoleId.Fox, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData DarkKillerIntro = new("DarkKiller", RoleClass.DarkKiller.color, 1, RoleId.DarkKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SeerIntro = new("Seer", RoleClass.Seer.color, 1, RoleId.Seer);
     public static IntroData MadSeerIntro = new("MadSeer", RoleClass.MadSeer.color, 1, RoleId.MadSeer, IntroSound: RoleTypes.Impostor);

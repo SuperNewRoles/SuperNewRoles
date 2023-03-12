@@ -148,7 +148,7 @@ public static class RoleClass
         Nocturnality.ClearAndReload();
         Observer.ClearAndReload();
         Vampire.ClearAndReload();
-        Fox.ClearAndReload();
+        Fox.Clear();
         DarkKiller.ClearAndReload();
         Seer.ClearAndReload();
         Crewmate.Seer.ShowFlash_ClearAndReload();
@@ -1477,23 +1477,6 @@ public static class RoleClass
             WaitActiveBloodStains = new();
             NoActiveTurnWait = new();
             CreatedDependents = !CustomOptionHolder.VampireCanCreateDependents.GetBool();
-        }
-    }
-    public static class Fox
-    {
-        public static List<PlayerControl> FoxPlayer;
-        public static Color32 color = FoxPurple;
-        public static Dictionary<int, int> KillGuard;
-        public static bool IsUseVent;
-        public static bool UseReport;
-        public static bool IsImpostorLight;
-        public static void ClearAndReload()
-        {
-            FoxPlayer = new();
-            KillGuard = new();
-            IsUseVent = CustomOptionHolder.FoxIsUseVent.GetBool();
-            UseReport = CustomOptionHolder.FoxReport.GetBool();
-            IsImpostorLight = CustomOptionHolder.FoxIsImpostorLight.GetBool();
         }
     }
     public static class DarkKiller

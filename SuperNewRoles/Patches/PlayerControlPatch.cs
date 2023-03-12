@@ -760,20 +760,8 @@ static class CheckMurderPatch
             {
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, __instance))
                 {
-                    if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId))
-                    {
-                        __instance.RpcShowGuardEffect(target);
-                        return false;
-                    }
-                    else
-                    {
-                        if (!(RoleClass.Fox.KillGuard[target.PlayerId] <= 0))
-                        {
-                            RoleClass.Fox.KillGuard[target.PlayerId]--;
-                            __instance.RpcShowGuardEffect(target);
-                            return false;
-                        }
-                    }
+                    __instance.RpcShowGuardEffect(target);
+                    return false;
                 }
             }
         }

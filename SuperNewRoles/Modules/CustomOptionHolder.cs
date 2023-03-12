@@ -451,12 +451,6 @@ public class CustomOptionHolder
     public static CustomOption VampireDependentsKillCoolTime;
     public static CustomOption VampireDependentsCanVent;
 
-    public static CustomRoleOption FoxOption;
-    public static CustomOption FoxPlayerCount;
-    public static CustomOption FoxIsUseVent;
-    public static CustomOption FoxIsImpostorLight;
-    public static CustomOption FoxReport;
-
     public static CustomRoleOption DarkKillerOption;
     public static CustomOption DarkKillerPlayerCount;
     public static CustomOption DarkKillerKillCoolTime;
@@ -1425,12 +1419,6 @@ public class CustomOptionHolder
         VampireCreateDependentsCoolTime = Create(1076, false, CustomOptionType.Impostor, "VampireCreateDependentsCoolTime", 30f, 2.5f, 120f, 2.5f, VampireCanCreateDependents);
         VampireDependentsKillCoolTime = Create(1077, false, CustomOptionType.Impostor, "VampireDependentsKillCoolTime", 30f, 2.5f, 120f, 2.5f, VampireCanCreateDependents);
         VampireDependentsCanVent = Create(1078, false, CustomOptionType.Impostor, "VampireDependentsCanVent", true, VampireCanCreateDependents);
-
-        FoxOption = SetupCustomRoleOption(310, true, RoleId.Fox);
-        FoxPlayerCount = Create(311, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FoxOption);
-        FoxIsUseVent = Create(312, true, CustomOptionType.Neutral, "MadmateUseVentSetting", false, FoxOption);
-        FoxIsImpostorLight = Create(313, true, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, FoxOption);
-        FoxReport = Create(314, true, CustomOptionType.Neutral, "MinimalistReportSetting", true, FoxOption);
 
         DarkKillerOption = SetupCustomRoleOption(315, true, RoleId.DarkKiller);
         DarkKillerPlayerCount = Create(316, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DarkKillerOption);

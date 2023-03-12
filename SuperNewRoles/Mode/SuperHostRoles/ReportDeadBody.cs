@@ -1,5 +1,6 @@
 using System.Linq;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -28,7 +29,7 @@ class ReportDeadBody
         }
         if (__instance.IsRole(RoleId.Fox))
         {
-            var a = RoleClass.Fox.UseReport;
+            var a = Fox.FoxReport.GetBool();
             return a;
         }
         //if (target.Object.IsRole(RoleId.Bait) && (!deadPlayer.killerIfExisting.IsRole(RoleId.Minimalist) || RoleClass.Minimalist.UseReport)) if (!RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) { return false; } else { return true; }
