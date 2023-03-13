@@ -20,6 +20,7 @@ public static class RoleBaseHelper
             { RoleId.FireFox, typeof(RoleBase<FireFox>) },
             { RoleId.Fox, typeof(RoleBase<Fox>) },
             { RoleId.Vulture, typeof(RoleBase<Vulture>) },
+            { RoleId.Safecracker, typeof(RoleBase<Safecracker>) },
 
             // Crew
             { RoleId.SoothSayer, typeof(RoleBase<SoothSayer>) },
@@ -45,6 +46,7 @@ public static class RoleBaseHelper
         new FireFox().SetUpOption();
         new Fox().SetUpOption();
         new Vulture().SetUpOption();
+        new Safecracker().SetUpOption();
 
         // Crew
         new Sheriff().SetUpOption();

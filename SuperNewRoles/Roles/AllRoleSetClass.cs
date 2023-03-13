@@ -1067,7 +1067,7 @@ class AllRoleSetClass
             RoleId.LoversBreaker => CustomOptionHolder.LoversBreakerPlayerCount.GetFloat(),
             RoleId.Jumbo => CustomOptionHolder.JumboPlayerCount.GetFloat(),
             RoleId.Worshiper => Worshiper.PlayerCountOption.GetFloat(),
-            RoleId.Safecracker => Roles.Neutral.Safecracker.SafecrackerPlayerCount.GetFloat(),
+            RoleId.Safecracker => Safecracker.PlayerCountOption.GetFloat(),
             RoleId.FireFox => FireFox.PlayerCountOption.GetFloat(),
             RoleId.Squid => Squid.SquidPlayerCount.GetFloat(),
             RoleId.DyingMessenger => DyingMessenger.PlayerCountOption.GetFloat(),
