@@ -135,7 +135,7 @@ public class IntroData
     public static IntroData SpeederIntro = new("Speeder", RoleClass.Speeder.color, 2, RoleId.Speeder, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData NiceGuesserIntro = new("NiceGuesser", RoleClass.NiceGuesser.color, 3, RoleId.NiceGuesser, IntroSound: RoleTypes.Engineer);
     public static IntroData EvilGuesserIntro = new("EvilGuesser", RoleClass.EvilGuesser.color, 2, RoleId.EvilGuesser, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData VultureIntro = new("Vulture", RoleClass.Vulture.color, 1, RoleId.Vulture, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData VultureIntro = new("Vulture", Vulture.color, 1, RoleId.Vulture, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData NiceScientistIntro = new("NiceScientist", RoleClass.NiceScientist.color, 2, RoleId.NiceScientist);
     public static IntroData ClergymanIntro = new("Clergyman", RoleClass.Clergyman.color, 2, RoleId.Clergyman);
     public static IntroData MadmateIntro = new("Madmate", RoleClass.Madmate.color, 1, RoleId.Madmate, IntroSound: RoleTypes.Impostor);

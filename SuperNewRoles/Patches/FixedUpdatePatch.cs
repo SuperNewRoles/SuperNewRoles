@@ -148,9 +148,6 @@ public class FixedUpdate
                         case RoleId.Vampire:
                             Vampire.FixedUpdate.VampireOnly();
                             break;
-                        case RoleId.Vulture:
-                            Vulture.FixedUpdate.Postfix();
-                            break;
                         case RoleId.Mafia:
                             Mafia.FixedUpdate();
                             break;
@@ -230,15 +227,6 @@ public class FixedUpdate
                                     sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
                                     RoleClass.SideKiller.IsUpMadKiller = true;
                                 }
-                            }
-                            break;
-                        case RoleId.Vulture:
-                        case RoleId.ShermansServant:
-                            foreach (var arrow in RoleClass.Vulture.DeadPlayerArrows)
-                            {
-                                if (arrow.Value?.arrow != null)
-                                    Object.Destroy(arrow.Value.arrow);
-                                RoleClass.Vulture.DeadPlayerArrows.Remove(arrow.Key);
                             }
                             break;
                     }
