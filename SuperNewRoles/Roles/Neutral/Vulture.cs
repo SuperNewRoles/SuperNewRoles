@@ -36,7 +36,15 @@ public class Vulture : RoleBase<Vulture>
     public override void OnDeath(PlayerControl killer = null) { }
     public override void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { }
     public override void EndUseAbility() { }
-    public override void ResetRole() { Logger.Info("ResetRole()実行", "Vulture"); }
+    public override void ResetRole()
+    {
+        foreach (var arrow in DeadPlayerArrows)
+        {
+            if (arrow.Value?.arrow != null)
+                Object.Destroy(arrow.Value.arrow);
+            DeadPlayerArrows.Remove(arrow.Key);
+        }
+    }
     public override void PostInit()
     {
         AbilityLimit = VultureDeadBodyMaxCount.GetInt();
