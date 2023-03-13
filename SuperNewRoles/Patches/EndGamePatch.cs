@@ -616,7 +616,7 @@ public static class OnGameEndPatch
             RoleClass.Pavlovsowner.PavlovsownerPlayer,
             RoleClass.LoversBreaker.LoversBreakerPlayer,
             Worshiper.allPlayers,
-            Safecracker.SafecrackerPlayer,
+            Safecracker.allPlayers,
             FireFox.allPlayers,
             OrientalShaman.OrientalShamanPlayer,
             OrientalShaman.ShermansServantPlayer,
@@ -1620,7 +1620,7 @@ public static class CheckGameEndPatch
     }
     public static bool CheckAndEndGameForSafecrackerWin(ShipStatus __instance)
     {
-        foreach (PlayerControl p in Safecracker.SafecrackerPlayer)
+        foreach (PlayerControl p in Safecracker.allPlayers)
         {
             if (p == null) continue;
             if (!p.Data.Disconnected)

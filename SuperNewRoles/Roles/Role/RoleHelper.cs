@@ -823,9 +823,6 @@ public static class RoleHelpers
             case RoleId.Jumbo:
                 RoleClass.Jumbo.JumboPlayer.Add(player);
                 break;
-            case RoleId.Safecracker:
-                Safecracker.SafecrackerPlayer.Add(player);
-                break;
             case RoleId.Squid:
                 Squid.SquidPlayer.Add(player);
                 break;
@@ -1320,9 +1317,6 @@ public static class RoleHelpers
             case RoleId.Jumbo:
                 RoleClass.Jumbo.JumboPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.Safecracker:
-                Safecracker.SafecrackerPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.Squid:
                 Squid.SquidPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1786,7 +1780,6 @@ public static class RoleHelpers
             else if (RoleClass.Dependents.DependentsPlayer.IsCheckListPlayerControl(player)) return RoleId.Dependents;
             else if (RoleClass.LoversBreaker.LoversBreakerPlayer.IsCheckListPlayerControl(player)) return RoleId.LoversBreaker;
             else if (RoleClass.Jumbo.JumboPlayer.IsCheckListPlayerControl(player)) return RoleId.Jumbo;
-            else if (Safecracker.SafecrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Safecracker;
             else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
             else if (WiseMan.WiseManPlayer.IsCheckListPlayerControl(player)) return RoleId.WiseMan;
             else if (NiceMechanic.NiceMechanicPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceMechanic;

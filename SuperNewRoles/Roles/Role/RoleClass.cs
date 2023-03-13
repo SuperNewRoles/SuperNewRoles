@@ -225,7 +225,7 @@ public static class RoleClass
         LoversBreaker.ClearAndReload();
         Jumbo.ClearAndReload();
         Worshiper.Clear();
-        Safecracker.ClearAndReload();
+        Safecracker.Clear();
         FireFox.Clear();
         Squid.ClearAndReload();
         DyingMessenger.Clear();
