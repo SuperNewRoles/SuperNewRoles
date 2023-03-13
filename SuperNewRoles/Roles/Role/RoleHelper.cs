@@ -832,9 +832,6 @@ public static class RoleHelpers
             case RoleId.Squid:
                 Squid.SquidPlayer.Add(player);
                 break;
-            case RoleId.DyingMessenger:
-                DyingMessenger.DyingMessengerPlayer.Add(player);
-                break;
             case RoleId.WiseMan:
                 WiseMan.WiseManPlayer.Add(player);
                 break;
@@ -1335,9 +1332,6 @@ public static class RoleHelpers
             case RoleId.Squid:
                 Squid.SquidPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.DyingMessenger:
-                DyingMessenger.DyingMessengerPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.TheFirstLittlePig:
                 TheThreeLittlePigs.TheFirstLittlePig.Player.RemoveAll(ClearRemove);
                 break;
@@ -1432,7 +1426,7 @@ public static class RoleHelpers
             RoleId.MadHawk => RoleClass.MadHawk.IsUseVent,
             RoleId.MadSeer => RoleClass.MadSeer.IsUseVent,
             RoleId.MadMaker => RoleClass.MadMaker.IsUseVent,
-            RoleId.Fox => Fox.CanUseVentOption.GetBool(),
+            RoleId.Fox => Fox.CanUseVentS,
             RoleId.Demon => RoleClass.Demon.IsUseVent,
             RoleId.SeerFriends => RoleClass.SeerFriends.IsUseVent,
             RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsUseVent,
@@ -1526,7 +1520,7 @@ public static class RoleHelpers
                 RoleId.MadHawk => RoleClass.MadHawk.IsImpostorLight,
                 RoleId.MadJester => RoleClass.MadJester.IsImpostorLight,
                 RoleId.MadSeer => RoleClass.MadSeer.IsImpostorLight,
-                RoleId.Fox => Fox.IsImpostorViewOption.GetBool(),
+                RoleId.Fox => Fox.IsImpostorViewS,
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsImpostorLight,
                 RoleId.MadMaker => RoleClass.MadMaker.IsImpostorLight,
                 RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsImpostorLight,
@@ -1801,7 +1795,6 @@ public static class RoleHelpers
             else if (RoleClass.Jumbo.JumboPlayer.IsCheckListPlayerControl(player)) return RoleId.Jumbo;
             else if (Safecracker.SafecrackerPlayer.IsCheckListPlayerControl(player)) return RoleId.Safecracker;
             else if (Squid.SquidPlayer.IsCheckListPlayerControl(player)) return RoleId.Squid;
-            else if (DyingMessenger.DyingMessengerPlayer.IsCheckListPlayerControl(player)) return RoleId.DyingMessenger;
             else if (WiseMan.WiseManPlayer.IsCheckListPlayerControl(player)) return RoleId.WiseMan;
             else if (NiceMechanic.NiceMechanicPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceMechanic;
             else if (EvilMechanic.EvilMechanicPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilMechanic;

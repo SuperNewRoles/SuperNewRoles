@@ -25,6 +25,7 @@ public static class RoleBaseHelper
             { RoleId.Lighter, typeof(RoleBase<Lighter>) },
             { RoleId.Sheriff, typeof(RoleBase<Sheriff>) },
             { RoleId.RemoteSheriff, typeof(RoleBase<RemoteSheriff>) },
+            { RoleId.DyingMessenger, typeof(RoleBase<DyingMessenger>) },
 
             //MadRoles
             { RoleId.Worshiper, typeof(RoleBase<Worshiper>) },
@@ -49,6 +50,7 @@ public static class RoleBaseHelper
         new Worshiper().SetUpOption();
         new SoothSayer().SetUpOption();
         new Lighter().SetUpOption();
+        new DyingMessenger().SetUpOption();
 
         // Other
 
