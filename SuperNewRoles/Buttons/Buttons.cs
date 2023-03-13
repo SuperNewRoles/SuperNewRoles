@@ -1947,53 +1947,7 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
-        VultureButton = new(
-            () =>
-            {
-                Vulture.RpcCleanDeadBody(RoleClass.Vulture.DeadBodyCount);
-                RoleClass.Vulture.DeadBodyCount--;
-
-                if (RoleClass.Vulture.DeadBodyCount <= 0)
-                {
-                    RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
-                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    if (AmongUsClient.Instance.AmHost)
-                    {
-                        CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.VultureWin, false);
-                    }
-                    else
-                    {
-                        MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomEndGame, SendOption.Reliable, -1);
-                        writer2.Write((byte)CustomGameOverReason.VultureWin);
-                        writer2.Write(false);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer2);
-                    }
-                }
-                Vulture.ResetCoolDown();
-            },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Vulture; },
-            () =>
-            {
-                return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
-            },
-            () =>
-            {
-                Vulture.EndMeeting();
-            },
-            RoleClass.Vulture.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; }
-        )
-        {
-            buttonText = ModTranslation.GetString("VultureButtonName"),
-            showButtonText = true
-        };
+        Vulture.MakeButtons(__instance);
 
         ShielderButton = new(
             () =>

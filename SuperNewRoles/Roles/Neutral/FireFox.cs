@@ -49,10 +49,10 @@ public class FireFox : RoleBase<FireFox>
     public static TMP_Text FireFoxKillNumText;
     public static void MakeButtons(HudManager hm)
     {
-        FireFox role = local;
         FireFoxKillButton = new(
             () =>
             {
+                FireFox role = local;
                 PlayerControl target = HudManagerStartPatch.SetTarget();
                 if (!(target && PlayerControl.LocalPlayer.CanMove) || RoleHelpers.IsDead(PlayerControl.LocalPlayer) || role.AbilityLimit <= 0) return;
                 if (FireFoxCanKillCrewmate.GetBool() && target.IsCrew() && !(target.IsMadRoles() || target.IsFriendRoles() || target.IsRole(RoleId.MadKiller) || target.IsRole(RoleId.Dependents))) ModHelpers.CheckMurderAttemptAndKill(PlayerControl.LocalPlayer, target);
@@ -66,6 +66,7 @@ public class FireFox : RoleBase<FireFox>
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FireFox; },
             () =>
             {
+                FireFox role = local;
                 FireFoxKillNumText.text = string.Format(ModTranslation.GetString("SheriffNumTextName"), role.AbilityLimit);
                 if (role.AbilityLimit <= 0) return false;
                 PlayerControl target = HudManagerStartPatch.SetTarget();

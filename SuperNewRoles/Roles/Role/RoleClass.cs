@@ -97,7 +97,7 @@ public static class RoleClass
         Freezer.ClearAndReload();
         NiceGuesser.ClearAndReload();
         EvilGuesser.ClearAndReload();
-        Vulture.ClearAndReload();
+        Vulture.Clear();
         NiceScientist.ClearAndReload();
         Clergyman.ClearAndReload();
         Madmate.ClearAndReload();
@@ -498,28 +498,6 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             EvilGuesserPlayer = new();
-        }
-    }
-    public static class Vulture
-    {
-        public static List<PlayerControl> VulturePlayer;
-        public static Color32 color = new(205, 133, 63, byte.MaxValue);
-        public static int DeadBodyMaxCount;
-        public static float CoolTime;
-        public static int DeadBodyCount;
-        public static bool IsUseVent;
-        public static bool ShowArrows;
-        public static Dictionary<DeadBody, Arrow> DeadPlayerArrows;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
-
-        public static void ClearAndReload()
-        {
-            VulturePlayer = new();
-            CoolTime = CustomOptionHolder.VultureCooldown.GetFloat();
-            DeadBodyCount = CustomOptionHolder.VultureDeadBodyMaxCount.GetInt();
-            IsUseVent = CustomOptionHolder.VultureIsUseVent.GetBool();
-            ShowArrows = CustomOptionHolder.VultureShowArrows.GetBool();
-            DeadPlayerArrows = new();
         }
     }
     public static class NiceScientist

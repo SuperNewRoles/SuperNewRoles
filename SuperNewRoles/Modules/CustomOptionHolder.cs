@@ -174,13 +174,6 @@ public class CustomOptionHolder
     public static CustomOption EvilGuesserShortOneMeetingCount;
     public static CustomOption EvilGuesserShortMaxCount;
 
-    public static CustomRoleOption VultureOption;
-    public static CustomOption VulturePlayerCount;
-    public static CustomOption VultureCooldown;
-    public static CustomOption VultureDeadBodyMaxCount;
-    public static CustomOption VultureIsUseVent;
-    public static CustomOption VultureShowArrows;
-
     public static CustomRoleOption NiceScientistOption;
     public static CustomOption NiceScientistPlayerCount;
     public static CustomOption NiceScientistCoolTime;
@@ -1204,13 +1197,6 @@ public class CustomOptionHolder
         SpeederPlayerCount = Create(104, false, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpeederOption);
         SpeederCoolTime = Create(105, false, CustomOptionType.Impostor, "SpeederCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, SpeederOption, format: "unitSeconds");
         SpeederDurationTime = Create(106, false, CustomOptionType.Impostor, "SpeederDurationTimeSetting", 10f, 2.5f, 20f, 2.5f, SpeederOption, format: "unitSeconds");
-
-        VultureOption = SetupCustomRoleOption(115, false, RoleId.Vulture);
-        VulturePlayerCount = Create(116, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], VultureOption);
-        VultureCooldown = Create(117, false, CustomOptionType.Neutral, "VultureCooldownSetting", 30f, 2.5f, 60f, 2.5f, VultureOption, format: "unitSeconds");
-        VultureDeadBodyMaxCount = Create(118, false, CustomOptionType.Neutral, "VultureDeadBodyCountSetting", 3f, 1f, 6f, 1f, VultureOption);
-        VultureIsUseVent = Create(119, false, CustomOptionType.Neutral, "MadmateUseVentSetting", false, VultureOption);
-        VultureShowArrows = Create(120, false, CustomOptionType.Neutral, "VultureShowArrowsSetting", false, VultureOption);
 
         NiceScientistOption = SetupCustomRoleOption(121, false, RoleId.NiceScientist);
         NiceScientistPlayerCount = Create(122, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceScientistOption);

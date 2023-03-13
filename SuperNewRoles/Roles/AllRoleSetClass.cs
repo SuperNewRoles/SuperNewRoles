@@ -943,7 +943,7 @@ class AllRoleSetClass
             RoleId.Freezer => CustomOptionHolder.FreezerPlayerCount.GetFloat(),
             RoleId.NiceGuesser => CustomOptionHolder.NiceGuesserPlayerCount.GetFloat(),
             RoleId.EvilGuesser => CustomOptionHolder.EvilGuesserPlayerCount.GetFloat(),
-            RoleId.Vulture => CustomOptionHolder.VulturePlayerCount.GetFloat(),
+            RoleId.Vulture => Vulture.PlayerCountOption.GetFloat(),
             RoleId.NiceScientist => CustomOptionHolder.NiceScientistPlayerCount.GetFloat(),
             RoleId.Clergyman => CustomOptionHolder.ClergymanPlayerCount.GetFloat(),
             RoleId.Madmate => CustomOptionHolder.MadmatePlayerCount.GetFloat(),

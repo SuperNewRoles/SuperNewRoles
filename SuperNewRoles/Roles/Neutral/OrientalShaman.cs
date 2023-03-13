@@ -356,8 +356,7 @@ public static class OrientalShaman
         }
         else if(PlayerControl.LocalPlayer.IsRole(RoleId.ShermansServant))
         {
-            if (PlayerControl.LocalPlayer.IsAlive())
-                Vulture.FixedUpdate.Postfix();
+            Vulture.Arrows();
 
             if (OrientalShamanCausative.ContainsValue(PlayerControl.LocalPlayer.PlayerId))
             {

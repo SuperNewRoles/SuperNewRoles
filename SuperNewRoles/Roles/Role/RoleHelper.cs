@@ -449,9 +449,6 @@ public static class RoleHelpers
             case RoleId.EvilGuesser:
                 RoleClass.EvilGuesser.EvilGuesserPlayer.Add(player);
                 break;
-            case RoleId.Vulture:
-                RoleClass.Vulture.VulturePlayer.Add(player);
-                break;
             case RoleId.NiceScientist:
                 RoleClass.NiceScientist.NiceScientistPlayer.Add(player);
                 break;
@@ -954,9 +951,6 @@ public static class RoleHelpers
             case RoleId.EvilGuesser:
                 RoleClass.EvilGuesser.EvilGuesserPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.Vulture:
-                RoleClass.Vulture.VulturePlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.NiceScientist:
                 RoleClass.NiceScientist.NiceScientistPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1432,7 +1426,7 @@ public static class RoleHelpers
             RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsUseVent,
             RoleId.MadCleaner => RoleClass.MadCleaner.IsUseVent,
             RoleId.Arsonist => RoleClass.Arsonist.IsUseVent,
-            RoleId.Vulture => RoleClass.Vulture.IsUseVent,
+            RoleId.Vulture => Vulture.CanUseVentS,
             RoleId.MayorFriends => RoleClass.MayorFriends.IsUseVent,
             RoleId.Tuna => RoleClass.Tuna.IsUseVent,
             RoleId.BlackCat => !CachedPlayer.LocalPlayer.IsRole(RoleTypes.GuardianAngel) && RoleClass.BlackCat.IsUseVent,
@@ -1667,7 +1661,6 @@ public static class RoleHelpers
             else if (RoleClass.Freezer.FreezerPlayer.IsCheckListPlayerControl(player)) return RoleId.Freezer;
             else if (RoleClass.NiceGuesser.NiceGuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceGuesser;
             else if (RoleClass.EvilGuesser.EvilGuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilGuesser;
-            else if (RoleClass.Vulture.VulturePlayer.IsCheckListPlayerControl(player)) return RoleId.Vulture;
             else if (RoleClass.NiceScientist.NiceScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceScientist;
             else if (RoleClass.Clergyman.ClergymanPlayer.IsCheckListPlayerControl(player)) return RoleId.Clergyman;
             else if (RoleClass.Madmate.MadmatePlayer.IsCheckListPlayerControl(player)) return RoleId.Madmate;
