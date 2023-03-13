@@ -1070,7 +1070,7 @@ class AllRoleSetClass
             RoleId.Safecracker => Roles.Neutral.Safecracker.SafecrackerPlayerCount.GetFloat(),
             RoleId.FireFox => FireFox.PlayerCountOption.GetFloat(),
             RoleId.Squid => Squid.SquidPlayerCount.GetFloat(),
-            RoleId.DyingMessenger => DyingMessenger.DyingMessengerPlayerCount.GetFloat(),
+            RoleId.DyingMessenger => DyingMessenger.PlayerCountOption.GetFloat(),
             RoleId.WiseMan => WiseMan.WiseManPlayerCount.GetFloat(),
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicPlayerCount.GetFloat(),
             RoleId.EvilMechanic => EvilMechanic.EvilMechanicPlayerCount.GetFloat(),

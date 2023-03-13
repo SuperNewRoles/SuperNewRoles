@@ -228,7 +228,7 @@ public static class RoleClass
         Safecracker.ClearAndReload();
         FireFox.Clear();
         Squid.ClearAndReload();
-        DyingMessenger.ClearAndReload();
+        DyingMessenger.Clear();
         WiseMan.ClearAndReload();
         NiceMechanic.ClearAndReload();
         EvilMechanic.ClearAndReload();

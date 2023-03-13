@@ -1853,7 +1853,6 @@ public class CustomOptionHolder
 
         Squid.SetupCustomOptions();
 
-        DyingMessenger.SetupCustomOptions();
         NiceMechanic.SetupCustomOptions();
 
         EvilMechanic.SetupCustomOptions();
