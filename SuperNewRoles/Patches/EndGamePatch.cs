@@ -860,7 +860,7 @@ public static class OnGameEndPatch
         //単独勝利系統
         //下に行くほど優先度が高い
         bool isDleted = false;
-        bool changeTheWinCondition = CustomOptionHolder.IsChangeTheWinCondition.GetBool();
+        bool changeTheWinCondition = Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool() && Mode.PlusMode.PlusGameOptions.IsChangeTheWinCondition.GetBool();
         bool isReset = false;
 
         foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)

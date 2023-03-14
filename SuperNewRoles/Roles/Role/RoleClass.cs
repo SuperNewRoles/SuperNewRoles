@@ -46,6 +46,7 @@ public static class RoleClass
         DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
         Agartha.MapData.ClearAndReloads();
+        Mode.PlusMode.PlusGameOptions.ClearAndReload();
         LadderDead.Reset();
         //Map.Data.ClearAndReloads();
         ElectricPatch.Reset();
@@ -55,6 +56,7 @@ public static class RoleClass
         Mode.BattleRoyal.Main.VentData = new();
         FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
         Mode.ModeHandler.ClearAndReload();
+        MapCustoms.MapCustomClearAndReload.ClearAndReload();
         MapCustoms.AdditionalVents.ClearAndReload();
         MapCustoms.SpecimenVital.ClearAndReload();
         MapCustoms.MoveElecPad.ClearAndReload();
@@ -240,7 +242,7 @@ public static class RoleClass
     public static class Debugger
     {
         public static bool AmDebugger;
-        public static Color32 color = Palette.DisabledGrey;
+        public static Color32 color = new(130, 130, 130, byte.MaxValue);
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
 
         public static void ClearAndReload()

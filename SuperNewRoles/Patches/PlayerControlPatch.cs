@@ -1355,8 +1355,8 @@ class ReportDeadBodyPatch
             }
         }
         return RoleClass.Assassin.TriggerPlayer == null
-        && (MapOption.MapOption.UseDeadBodyReport || target == null)
-        && (MapOption.MapOption.UseMeetingButton || target != null)
+        && (Mode.PlusMode.PlusGameOptions.UseDeadBodyReport || target == null)
+        && (Mode.PlusMode.PlusGameOptions.UseMeetingButton || target != null)
         && !ModeHandler.IsMode(ModeId.BattleRoyal)
         && !ModeHandler.IsMode(ModeId.CopsRobbers)
 && (ModeHandler.IsMode(ModeId.SuperHostRoles)

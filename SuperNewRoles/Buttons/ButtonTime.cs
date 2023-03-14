@@ -1,5 +1,4 @@
 using System;
-using SuperNewRoles.MapOption;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -16,6 +15,7 @@ class ButtonTime
         MovingButton();
         TeleporterButton();
         HawkDuration();
+        Patches.Clairvoyant.ClairvoyantDuration();
         ScientistButton();
         CamouflagerButton();
     }
@@ -76,15 +76,6 @@ class ButtonTime
         }
         RoleClass.Hawk.Timer = (float)(RoleClass.Hawk.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
         if (RoleClass.Hawk.Timer <= 0f && PlayerControl.LocalPlayer.IsRole(RoleId.Hawk)) RoleClass.Hawk.Timer = 0f; RoleClass.Hawk.IsHawkOn = false; return;
-    }
-    public static void ClairvoyantDuration()
-    {
-        if (MapOption.MapOption.Timer == 0 && PlayerControl.LocalPlayer.Data.IsDead && MapOption.MapOption.ClairvoyantZoom) return;
-        MapOption.MapOption.IsZoomOn = true;
-        var timeSpanData = new TimeSpan(0, 0, 0, (int)MapOption.MapOption.DurationTime);
-        timeSpanData = new TimeSpan(0, 0, 0, (int)MapOption.MapOption.DurationTime);
-        MapOption.MapOption.Timer = (float)(MapOption.MapOption.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
-        if (MapOption.MapOption.Timer <= 0f) MapOption.MapOption.Timer = 0f; MapOption.MapOption.IsZoomOn = false; return;
     }
     public static void TeleporterButton()
     {

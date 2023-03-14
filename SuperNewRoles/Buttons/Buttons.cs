@@ -2515,41 +2515,7 @@ static class HudManagerStartPatch
             SecretlyKillerSecretlyKillButton.showButtonText = true;
         };
 
-        ClairvoyantButton = new(
-            () =>
-            {
-                if (PlayerControl.LocalPlayer.CanMove)
-                {
-                    MapOption.MapOption.Timer = MapOption.MapOption.DurationTime;
-                    MapOption.MapOption.ButtonTimer = DateTime.Now;
-                    ClairvoyantButton.MaxTimer = MapOption.MapOption.CoolTime;
-                    ClairvoyantButton.Timer = MapOption.MapOption.CoolTime;
-                    MapOption.MapOption.IsZoomOn = true;
-                }
-            },
-            (bool isAlive, RoleId role) => { return !PlayerControl.LocalPlayer.IsAlive() && MapOption.MapOption.ClairvoyantZoom && ModeHandler.IsMode(ModeId.Default); },
-            () =>
-            {
-                return PlayerControl.LocalPlayer.CanMove;
-            },
-            () =>
-            {
-                ClairvoyantButton.MaxTimer = MapOption.MapOption.CoolTime;
-                ClairvoyantButton.Timer = MapOption.MapOption.CoolTime;
-                MapOption.MapOption.IsZoomOn = false;
-            },
-            RoleClass.Hawk.GetButtonSprite(),
-            new Vector3(-2.925f, -0.06f, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.Q,
-            8,
-            () => { return false; }
-        )
-        {
-            buttonText = ModTranslation.GetString("ClairvoyantButtonName"),
-            showButtonText = true
-        };
+        Clairvoyant.SetupCustomButtons(__instance);
 
         DoubleKillerMainKillButton = new(
             () =>

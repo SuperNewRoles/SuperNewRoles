@@ -3,6 +3,7 @@ using HarmonyLib;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using UnityEngine;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode;
@@ -125,7 +126,7 @@ public static class ModeHandler
     public static void OptionLoad()
     {
         Mode = new CustomOptionBlank(null);
-        ModeSetting = CustomOption.Create(484, true, CustomOptionType.Generic, "ModeSetting", false, Mode, isHeader: true);
+        ModeSetting = CustomOption.Create(484, true, CustomOptionType.Generic, Cs(new Color(252f / 187f, 200f / 255f, 0, 1f), "ModeSetting"), false, Mode, isHeader: true);
         ThisModeSetting = CustomOption.Create(485, true, CustomOptionType.Generic, "SettingMode", modes, ModeSetting);
         BattleRoyal.BROption.Load();
         Zombie.ZombieOptions.Load();
@@ -133,8 +134,6 @@ public static class ModeHandler
         Detective.DetectiveOptions.Load();
         CopsRobbers.CopsRobbersOptions.Load();
         //Werewolf.WerewolfOptions.Load();
-
-        PlusMode.Options.Load();
     }
     public static void HudUpdate(HudManager __instance)
     {

@@ -12,6 +12,7 @@ namespace SuperNewRoles.MapCustoms;
 
 public class MapCustomHandler
 {
+    // TODO:デフォルトである(≒SHRでない)判定が正常にできていない為修正必要
     public static bool IsMapCustom(MapCustomId mapCustomId)
     {
         return mapCustomId switch

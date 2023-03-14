@@ -113,7 +113,7 @@ DarkerColor,darker,暗い,暗
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置
 SecretRoom,(Airship)Secret Room,(エアーシップ)シークレットルーム,空艇：机密室
-enableMirroMap,enable MirroMap,反転マップを有効にする,启用镜像地图
+enableMirrorMap,enable MirrorMap,反転マップを有効にする,启用镜像地图
 SettingpresetSelection,Preset,プリセット,预设
 SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>设置
 SettingImpostor,<color=#ff0000>Impostor</color> Settings,<color=#ff0000>インポスター</color>の設定,<color=#ff0000>内鬼阵营</color>设置
@@ -167,12 +167,12 @@ ErrorClientChangeVersion,The version of <color=#ffa500>Super</color><color=#ff00
 ErrorClientGuidMatches,{0} uses a different <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> dll file.,{0}が使用している<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のdllファイルが異なります。,{0}的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>dll文件不同
 ErrorClientCanNotPley,,ゲストのMod導入状態に問題がある為、開始できません。\n同verの<color=#ffa500>SNR</color>を導入してもらう、HostModeに変更する等対応をお願いします。,由于有玩家模组导入出现问题，游戏无法开始。\n请尝试重新导入该版本的模组文件、改变模式等方法。
 KickReasonHostNoVersion,The host has no or a different version of <color=#ffa500>SNR</color>\nYou will be kicked in {0}s,ホストが<color=#ffa500>SNR</color>を導入していない、又はバージョンが違う為、\nあと{0}秒でキックされます。,房主没有安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组或模组版本不同\n您将在{0}秒内被踢出
-IsSpecialModeOnAndVanillaKickOff,If <color=#2792c3>[Kick non-PCs]</color> is disabled， the\nmap will be selected for <color=#cd5c5c>MiraHQ</color>.\nIf you want to use<color=#a67646>Agartha</color>\nEnable <color=#2792c3>[Kick non-PCs]</color>.,<color=#2792c3>「PC以外をキックする」</color>が無効である場合、\nマップは<color=#cd5c5c>MiraHQ</color>に選択されます。\n<color=#a67646>Agartha</color>を使用したい場合は、\n<color=#2792c3>「PC以外をキックする」</color>を有効にしてください。,如果 “<color=#2792c3>踢出非电脑端玩家</color>”设置为否，\n地图将变为<color=#cd5c5c>米拉总部</color>。\n要启用<color=#a67646>雅各泰</color>地图，\n需要将“<color=#2792c3>踢出非电脑端玩家</color>”选项设置为是。
+IsSpecialModeOnAndVanillaKickOff,If <color=#eebbcb>[Kick non-PCs]</color> is disabled， the\nmap will be selected for <color=#cd5c5c>MiraHQ</color>.\nIf you want to use<color=#a67646>Agartha</color>\nEnable <color=#eebbcb>[Kick non-PCs]</color>.,<color=#eebbcb>「PC以外をキックする」</color>が無効である場合、\nマップは<color=#cd5c5c>MiraHQ</color>に選択されます。\n<color=#a67646>Agartha</color>を使用したい場合は、\n<color=#eebbcb>「PC以外をキックする」</color>を有効にしてください。,如果 “<color=#eebbcb>踢出非电脑端玩家</color>”设置为否，\n地图将变为<color=#cd5c5c>米拉总部</color>。\n要启用<color=#a67646>雅各泰</color>地图，\n需要将“<color=#eebbcb>踢出非电脑端玩家</color>”选项设置为是。
 RamdomMapSetting,RandomMap,ランダムマップ,随机地图
-RMSkeldSetting,Skeld,スケルドが有効,可随机游玩骷髅舰(Skeld)
-RMMiraSetting,Mira,ミラが有効,可随机游玩米拉总部(Mira)
-RMPolusSetting,Polus,ポーラスが有効,可随机游玩波鲁斯(Polus)
-RMAirshipSetting,AirShip,エアーシップが有効,可随机游玩飞艇(AirShip)
+RMSkeldSetting,<color=#8fbc8f>Skeld</color>,<color=#8fbc8f>Skeld</color>が有効,可随机游玩骷髅舰(<color=#8fbc8f>Skeld</color>)
+RMMiraSetting,<color=#cd5c5c>Mira HQ</color>,<color=#cd5c5c>Mira HQ</color>が有効,可随机游玩米拉总部(<color=#cd5c5c>Mira HQ</color>)
+RMPolusSetting,<color=#4b0082>Polus</color>,<color=#4b0082>Polus</color>が有効,可随机游玩波鲁斯(<color=#4b0082>Polus</color>)
+RMAirshipSetting,<color=#ff0000>Airship</color>,<color=#ff0000>Airship</color>が有効,可随机游玩飞艇(<color=#ff0000>Airship</color>)
 ADMINButton,ADMIN,アドミン,地图
 timeRemaining,Remaining: {0},残り{0},剩余：{0}秒
 restrictOutOfTime,Time up,時間切れ,超时
@@ -189,7 +189,7 @@ MiraReactorTime,Mira Reactor Duration Time,ミラでのリアクター時間,米
 AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリアクター時間,飞艇(AirShip)撞毁路线紧急破坏持续时间
 VentMakerButtonName,Make Vent,設置,制造管道口
 AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する,米拉总部(Mira)：追加生命监测装置
-VentAnimation,No Vent Animation,ベントアニメーション無効化,取消管道口动画
+VentAnimationPlaySetting,Play Vent Animation.,ベントアニメーション有効化
 MapRemodelingOptionSetting,Map Remodeling,マップ改造,地图改造
 AirShipAdditionalVents,AirShipAdditionalVents,エアーシップにベントを追加する,飞艇(AirShip)：增加管道
 PolusAdditionalVents,PolusAdditionalVents,ポーラスにベントを追加する,波鲁斯(Polus)：增加管道
@@ -213,8 +213,7 @@ IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家
 WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数
-IsSNROnlySearch,SNR Room Filter,SNRルームフィルター,筛选SNR房间
-RestrictDevicesOption,Restrict Devices Option,機器の時間制限,飞船设备使用时间限制
+RestrictDevicesTimeOption,Time limit setting,時間制限の設定
 RestrictAdmin,Restrict Admin,アドミンの時間制限,管理地图使用时间限制
 RestrictVital,Restrict Vital,バイタルの時間制限,生命监测装置使用时间限制
 RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制
@@ -272,14 +271,15 @@ RandomColorNameColorSetting,Change Name Color,名前の色も変える,昵称颜
 RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する,会议中昵称颜色改变
 NeutralName,Neutral,第三陣営,独立阵营
 WinName,Win,勝利,胜利
-PlusModeSetting,Plus Mode,重複モード,附加模式
+PlusGameOptionSetting,Plus Game Options Setting.,ゲーム オプション
 SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード,内鬼禁用破坏
 SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船员禁用完成任务获胜
 SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点
 MapOptionSetting,Map Option,マップの設定,地图设置
 NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告
 NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议
-DeviceOptionsSetting,Device Options,機器の設定,飞船设备设置
+DeviceOptionsSetting,Information Device Options,情報機器制限の設定
+CanUseDeviceSetting,<color=#03ff0c>On</color>/<color=#f22f21>Off</color> setting.,使用<color=#03ff0c>可能</color>/<color=#f22f21>不可能</color> の設定
 DeviceUseAdminSetting,Use OK Admin,アドミンが使える,可以观看管理地图
 DeviceUseVitalOrDoorLogSetting,Use OK Vital Or DoorLog,バイタル・ドアログが使える,可以观看生命监测装置和通行日志
 DeviceUseCameraSetting,Use OK Camera,カメラが使える,可以观看监控
@@ -337,7 +337,7 @@ FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,�
 FinalStatusTheThirdLittlePigCounterKill,Counter Kill,カウンターキル,反杀
 
 # Sabotages
-SabotageSetting,Sabotage Setting,サボタージュの設定,破坏设置
+SabotageSetting,SNR’s own sabotage setup,独自サボタージュの設定
 SabotageCognitiveDeficitSetting,Cognitive Deficit,認識障害,破坏时附带认知干扰
 CognitiveDeficitSabotageOutfitUpdateTimeSetting,Figure Change Interval,姿変更間隔,认知干扰时其他玩家外貌变换间隔时间
 CognitiveDeficitSabotageReleaseTimeSetting,Release Time,解除時間,认知干扰持续时间
@@ -364,7 +364,7 @@ WerewolfAbilityTime,{0} seconds remaining until the end of the ability use time,
 HauntedWolfName,HauntedWolf,狼憑き,混血儿
 HauntedWolfTitle1,Don't let the crew find out.,クルーにバレるな,别让其他船员起疑
 PlayerCountMessage,Players,人,名
-DebugModeOnText,DebugMode:ON,デバッグモードが有効です,启用调试模式
+DebugModeOnText,<color=#828282>DebugMode</color>:ON,<color=#828282>デバッグモード</color>が有効です,启用<color=#828282>调试模式</color>
 BattleRoyalRemaining,Remaining until kills can be made,キルができるようになるまで残り,允许击杀时的剩余人数
 Player,Player,プレイヤー,玩家
 CopsImpostorCome,Remaining until the Impostor arrives,インポスターが来るまで残り,内鬼出现时的剩余人数
@@ -963,7 +963,6 @@ ToiletFanName,Toilet Fan,トイレファン,腹泻者
 ToiletFanTitle1,A little faster...,少しでも早く...,要……要喷射了……
 ToiletCooldownSetting,Toilet Cool Time,トイレクールタイム,腹泻者开门冷却
 ToiletName,DoorOpen,ドア開放,开门
-PolusrandomSpawn,RandomSpawn,ランダムスポーン,出生点随机
 NotImpostorExiled,Not taking the Impostor off the road,インポスターを道連れにしない,不会连带内鬼阵营玩家死亡
 NiceButtonerName,NiceButtoner,ナイスボタナー,正义的执钮人
 NiceButtonerTitle1,Let&apos;s a start meeting.,会議を開始しよう,召开会议
@@ -1349,6 +1348,6 @@ SuccessfulExperiment,Successful Experiment,実験成功,测试成功
 Agartha_WareHouse,WareHouse,倉庫,仓库
 Agartha_ToolRoom,ToolRoom,工具室,工具室
 Agartha_WorkRoom,WorkRoom,仕事場,工坊
-AgarthaName,Agartha,アガルタ,雅各泰
+AgarthaName,<color=#a67646>Agartha</color>,<color=#a67646>Agartha</color>,雅各泰
 AgarthaRandomSpawnIsFirstSpawn,Applies to first spawn.,初スポーンにも適用される,只在游戏开始时随机出生
 AgarthaRandomSpawnIsAddSpawnWay,Add spawn to the road,道へのスポーンを追加する,在通道上增加随机出生点
