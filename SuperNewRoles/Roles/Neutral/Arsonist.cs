@@ -6,6 +6,7 @@ using Il2CppSystem;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
 using UnityEngine;
 
@@ -153,17 +154,26 @@ public static class Arsonist
         return false;
     }
 
+    public static void SettingAfire()
+    {
+        foreach (var data in RoleClass.Arsonist.DouseData)
+        {
+            foreach (PlayerControl player in data.Value)
+            {
+                if (player == null) continue;
+                if (player.IsDead()) continue;
+                if (player == PlayerControl.LocalPlayer && player.IsRole(RoleId.Arsonist)) continue;
+
+                ModHelpers.CheckMurderAttemptAndKill(player, player);
+
+                player.RpcSetFinalStatus(FinalStatus.Ignite);
+            }
+        }
+    }
+
     public static void SetWinArsonist()
     {
         RoleClass.Arsonist.TriggerArsonistWin = true;
     }
     public static Dictionary<byte, float> ArsonistTimer = new();
-
-    public static void ArsonistFinalStatus(PlayerControl __instance)
-    {
-        if (RoleClass.Arsonist.TriggerArsonistWin)
-        {
-            FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Ignite;
-        }
-    }
 }

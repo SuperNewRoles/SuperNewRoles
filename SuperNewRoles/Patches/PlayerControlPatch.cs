@@ -178,6 +178,8 @@ class RpcShapeshiftPatch
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
 
+                            Arsonist.SettingAfire();
+
                             Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                             Writer.Write((byte)CustomGameOverReason.ArsonistWin);
                             Writer.EndRPC();
@@ -915,7 +917,7 @@ public static class MurderPlayerPatch
             target.protectedByGuardian = true;
             return false;
         }
-        if (target.IsRole(RoleId.WiseMan)  && WiseMan.WiseManData.ContainsKey(target.PlayerId) && WiseMan.WiseManData[target.PlayerId] is not null)
+        if (target.IsRole(RoleId.WiseMan) && WiseMan.WiseManData.ContainsKey(target.PlayerId) && WiseMan.WiseManData[target.PlayerId] is not null)
         {
             WiseMan.WiseManData[target.PlayerId] = null;
             PlayerControl targ = target;
@@ -1163,9 +1165,11 @@ public static class MurderPlayerPatch
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
+                    if (__instance.IsQuarreled()) RoleClass.Quarreled.IsQuarreledSuicide = true;
                     var Side = RoleHelpers.GetOneSideQuarreled(target);
                     if (Side.IsDead())
                     {
+                        if (RoleClass.Quarreled.IsQuarreledSuicide) return;
                         RPCProcedure.ShareWinner(target.PlayerId);
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(target.PlayerId);

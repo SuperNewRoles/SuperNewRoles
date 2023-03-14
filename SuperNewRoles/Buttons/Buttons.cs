@@ -1903,6 +1903,8 @@ static class HudManagerStartPatch
                 writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
 
+                Arsonist.SettingAfire();
+
                 writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                 writer.Write((byte)CustomGameOverReason.ArsonistWin);
                 writer.EndRPC();

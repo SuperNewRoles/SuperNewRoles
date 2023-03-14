@@ -589,6 +589,7 @@ MovingCooldownSetting,Teleportation Cool Time,テレポートクールタイム,
 MovingButtonSetName,Location Set,場所セット,标记
 MovingButtonTpName,Teleport,テレポート,瞬移
 QuarreledName,Quarreled,クラード,福音天使
+QuarreledDescription,Teams of two.\nIf both players die，they win the game alone.\nIf they commit suicide，they cannot win alone.\nLet's make up in the next life.\n,二人一組の陣営です。\n二人とも死亡すると単独勝利勝利します。\n自殺した場合単独勝利できなくなります。\n来世で仲直りしよう。
 QuarreledIntro,{0} and it's Quarreled!,{0}とクラードになりました！,{0} 和你是福音天使
 QuarreledTeamCountSetting,Max Teams,チーム数,福音天使最多对数
 QuarreledParSetting,Only Crewmate Team,排出される確率,福音天使生成概率
