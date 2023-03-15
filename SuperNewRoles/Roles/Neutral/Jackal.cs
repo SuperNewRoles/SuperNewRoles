@@ -32,12 +32,38 @@ public class Jackal : RoleBase<Jackal>
 
     public override void OnMeetingStart() { }
     public override void OnWrapUp() { }
-    public override void FixedUpdate() { }
-    public override void MeFixedUpdateAlive() { }
+    public override void FixedUpdate()
+    {
+        if (AmongUsClient.Instance.AmHost)
+        {
+            if (Sidekick.allPlayers.Count > 0)
+            {
+                var upflag = true;
+                foreach (PlayerControl p in Jackal.allPlayers)
+                {
+                    if (p.IsAlive())
+                    {
+                        upflag = false;
+                    }
+                }
+                if (upflag)
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SidekickPromotes, SendOption.Reliable, -1);
+                    writer.Write(false);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.SidekickPromotes(false);
+                }
+            }
+        }
+    }
+    public override void MeFixedUpdateAlive()
+    {
+        JackalPlayerOutLineTarget();
+    }
     public override void MeFixedUpdateDead() { }
     public override void OnKill(PlayerControl target) { }
-    public override void OnDeath(PlayerControl killer = null) { }
-    public override void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { }
+    public override void OnDeath(PlayerControl killer = null) { FixedUpdate(); }
+    public override void HandleDisconnect(PlayerControl player, DisconnectReasons reason) { FixedUpdate(); }
     public override void EndUseAbility() { }
     public override void ResetRole() { }
     public override void PostInit() { CanCreateFriend = JackalCreateFriend.GetBool(); CanCreateSidekick = !CanCreateFriend && JackalCreateSidekick.GetBool(); }
@@ -94,39 +120,8 @@ public class Jackal : RoleBase<Jackal>
         rend.material.SetFloat("_Outline", 1f);
         rend.material.SetColor("_OutlineColor", color);
     }
-    public class JackalFixedPatch
-    {
-        static void JackalPlayerOutLineTarget()
+        public static void JackalPlayerOutLineTarget()
             => SetPlayerOutline(JackalSetTarget(), Jackal.color);
-        public static void Postfix(PlayerControl __instance, RoleId role)
-        {
-            if (AmongUsClient.Instance.AmHost)
-            {
-                if (Sidekick.allPlayers.Count > 0)
-                {
-                    var upflag = true;
-                    foreach (PlayerControl p in Jackal.allPlayers)
-                    {
-                        if (p.IsAlive())
-                        {
-                            upflag = false;
-                        }
-                    }
-                    if (upflag)
-                    {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SidekickPromotes, SendOption.Reliable, -1);
-                        writer.Write(false);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.SidekickPromotes(false);
-                    }
-                }
-            }
-            if (role == RoleId.Jackal)
-            {
-                JackalPlayerOutLineTarget();
-            }
-        }
-    }
     /// <summary>
     /// (役職をリセットし、)ジャッカルフレンズに割り当てます。
     /// </summary>

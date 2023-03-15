@@ -97,7 +97,6 @@ public class FixedUpdate
                 SabotageManager.Update();
                 SetNameUpdate.Postfix(__instance);
                 NiceMechanic.FixedUpdate();
-                Jackal.JackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 JackalSeer.JackalSeerFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 Roles.Crewmate.Psychometrist.FixedUpdate();
                 Roles.Impostor.Matryoshka.FixedUpdate();
