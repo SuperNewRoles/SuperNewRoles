@@ -21,6 +21,8 @@ public static class RoleBaseHelper
             { RoleId.Fox, typeof(RoleBase<Fox>) },
             { RoleId.Vulture, typeof(RoleBase<Vulture>) },
             { RoleId.Safecracker, typeof(RoleBase<Safecracker>) },
+            { RoleId.Jackal, typeof(RoleBase<Jackal>) },
+            { RoleId.Sidekick, typeof(RoleBase<Sidekick>) },
 
             // Crew
             { RoleId.SoothSayer, typeof(RoleBase<SoothSayer>) },
@@ -47,6 +49,8 @@ public static class RoleBaseHelper
         new Fox().SetUpOption();
         new Vulture().SetUpOption();
         new Safecracker().SetUpOption();
+        new Jackal().SetUpOption();
+        new Sidekick().SetUpOption();
 
         // Crew
         new Sheriff().SetUpOption();

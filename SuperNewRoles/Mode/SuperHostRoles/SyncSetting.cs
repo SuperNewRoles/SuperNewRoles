@@ -125,7 +125,7 @@ public static class SyncSetting
             case RoleId.Jackal:
                 if (!player.IsMod())
                 {
-                    if (!RoleClass.Jackal.IsImpostorLight)
+                    if (!Jackal.IsImpostorViewS)
                     {
                         optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
                         var switchSystemJackal = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
@@ -134,14 +134,14 @@ public static class SyncSetting
                 }
                 else
                 {
-                    if (RoleClass.Jackal.IsImpostorLight)
+                    if (Jackal.IsImpostorViewS)
                     {
                         optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
                         var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                         if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
                     }
                 }
-                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Jackal.KillCooldown));
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(Jackal.JackalKillCooldown.GetFloat()));
                 break;
             case RoleId.JackalSeer:
                 if (!player.IsMod())

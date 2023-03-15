@@ -121,8 +121,8 @@ public class IntroData
     public static IntroData EvilScientist = new("EvilScientist", Roles.Impostor.EvilScientist.color, 2, RoleId.EvilScientist, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SheriffIntro = new("Sheriff", Sheriff.color, 2, RoleId.Sheriff, IntroSound: RoleTypes.Engineer);
     public static IntroData MeetingSheriffIntro = new("MeetingSheriff", RoleClass.MeetingSheriff.color, 4, RoleId.MeetingSheriff, IntroSound: RoleTypes.Engineer);
-    public static IntroData JackalIntro = new("Jackal", RoleClass.Jackal.color, 3, RoleId.Jackal, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
-    public static IntroData SidekickIntro = new("Sidekick", RoleClass.Jackal.color, 1, RoleId.Sidekick, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData JackalIntro = new("Jackal", Jackal.color, 3, RoleId.Jackal, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData SidekickIntro = new("Sidekick", Jackal.color, 1, RoleId.Sidekick, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData TeleporterIntro = new("Teleporter", RoleClass.Teleporter.color, 2, RoleId.Teleporter, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SpiritMediumIntro = new("SpiritMedium", RoleClass.SpiritMedium.color, 1, RoleId.SpiritMedium);
     public static IntroData SpeedBoosterIntro = new("SpeedBooster", RoleClass.SpeedBooster.color, 2, RoleId.SpeedBooster);

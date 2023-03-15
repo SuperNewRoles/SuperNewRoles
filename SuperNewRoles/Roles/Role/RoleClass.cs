@@ -84,7 +84,7 @@ public static class RoleClass
         EvilScientist.Clear();
         Sheriff.Clear();
         MeetingSheriff.ClearAndReload();
-        Jackal.ClearAndReload();
+        Jackal.Clear();
         Teleporter.ClearAndReload();
         SpiritMedium.ClearAndReload();
         SpeedBooster.ClearAndReload();
@@ -280,38 +280,6 @@ public static class RoleClass
             MeetingSheriffPlayer = new();
             KillMaxCount = CustomOptionHolder.MeetingSheriffKillMaxCount.GetFloat();
             OneMeetingMultiKill = CustomOptionHolder.MeetingSheriffOneMeetingMultiKill.GetBool();
-        }
-    }
-    public static class Jackal
-    {
-        public static List<PlayerControl> JackalPlayer;
-        public static List<PlayerControl> SidekickPlayer;
-        public static List<PlayerControl> FakeSidekickPlayer;
-        public static Color32 color = JackalBlue;
-        public static float KillCooldown;
-        public static bool IsUseVent;
-        public static bool IsUseSabo;
-        public static bool IsImpostorLight;
-        public static bool CreateSidekick;
-        public static bool CanCreateSidekick;
-        public static List<int> CreatePlayers;
-        public static bool IsCreatedFriend;
-        public static bool CanCreateFriend;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSidekickButton.png", 115f);
-        public static void ClearAndReload()
-        {
-            JackalPlayer = new();
-            SidekickPlayer = new();
-            FakeSidekickPlayer = new();
-            KillCooldown = CustomOptionHolder.JackalKillCooldown.GetFloat();
-            IsUseVent = CustomOptionHolder.JackalUseVent.GetBool();
-            IsUseSabo = CustomOptionHolder.JackalUseSabo.GetBool();
-            IsImpostorLight = CustomOptionHolder.JackalIsImpostorLight.GetBool();
-            CreateSidekick = CustomOptionHolder.JackalCreateSidekick.GetBool();
-            CanCreateSidekick = CustomOptionHolder.JackalCreateSidekick.GetBool();
-            IsCreatedFriend = false;
-            CreatePlayers = new();
-            CanCreateFriend = CustomOptionHolder.JackalCreateFriend.GetBool();
         }
     }
     public static class Teleporter

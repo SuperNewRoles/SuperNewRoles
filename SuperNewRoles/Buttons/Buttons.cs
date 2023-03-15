@@ -1203,7 +1203,7 @@ static class HudManagerStartPatch
             () =>
             {
                 var target = PlayerControlFixedUpdatePatch.JackalSetTarget();
-                if (target && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.CanCreateSidekick)
+                if (target && PlayerControl.LocalPlayer.CanMove && (Jackal.local.CanCreateSidekick || Jackal.local.CanCreateFriend))
                 {
                     if (target.IsRole(RoleId.SideKiller)) // サイドキック相手がマッドキラーの場合
                     {
@@ -1217,9 +1217,10 @@ static class HudManagerStartPatch
                             }
                         }
                     }
-                    if (RoleClass.Jackal.CanCreateFriend)
+                    if (Jackal.local.CanCreateFriend)
                     {
                         Jackal.CreateJackalFriends(target); //クルーにして フレンズにする
+                        Jackal.local.CanCreateFriend = false;
                     }
                     else
                     {
@@ -1229,11 +1230,11 @@ static class HudManagerStartPatch
                         writer.Write(isFakeSidekick);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.CreateSidekick(target.PlayerId, isFakeSidekick);
+                        Jackal.local.CanCreateSidekick = false;
                     }
-                    RoleClass.Jackal.CanCreateSidekick = false;
                 }
             },
-            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.CanCreateSidekick; },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && (Jackal.local.CanCreateFriend || Jackal.local.CanCreateSidekick); },
             () =>
             {
                 return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -1242,7 +1243,7 @@ static class HudManagerStartPatch
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
             },
-            RoleClass.Jackal.GetButtonSprite(),
+            Jackal.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
             __instance,
             __instance.AbilityButton,
@@ -1298,7 +1299,7 @@ static class HudManagerStartPatch
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
             },
-            RoleClass.Jackal.GetButtonSprite(),
+            Jackal.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
             __instance,
             __instance.AbilityButton,
@@ -1647,7 +1648,7 @@ static class HudManagerStartPatch
                 ImpostorSidekickButton.MaxTimer = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
                 ImpostorSidekickButton.Timer = GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
             },
-            RoleClass.Jackal.GetButtonSprite(),
+            Jackal.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
             __instance,
             __instance.AbilityButton,
@@ -1685,7 +1686,7 @@ static class HudManagerStartPatch
                 SideKillerSidekickButton.MaxTimer = RoleClass.SideKiller.KillCoolTime;
                 SideKillerSidekickButton.Timer = RoleClass.SideKiller.KillCoolTime;
             },
-            RoleClass.Jackal.GetButtonSprite(),
+            Jackal.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
             __instance,
             __instance.AbilityButton,
@@ -1734,7 +1735,7 @@ static class HudManagerStartPatch
                 return SetTarget() && PlayerControl.LocalPlayer.CanMove;
             },
             () => { },
-            RoleClass.Jackal.GetButtonSprite(),
+            Jackal.GetButtonSprite(),
             new Vector3(-2f, 1, 0),
             __instance,
             __instance.AbilityButton,

@@ -29,7 +29,7 @@ class CoEnterVent
                 if (RoleClass.Arsonist.IsUseVent) return true;
                 break;
             case RoleId.Jackal:
-                if (RoleClass.Jackal.IsUseVent) return true;
+                if (Jackal.CanUseVentS) return true;
                 break;
             case RoleId.JackalSeer:
                 if (RoleClass.JackalSeer.IsUseVent) return true;

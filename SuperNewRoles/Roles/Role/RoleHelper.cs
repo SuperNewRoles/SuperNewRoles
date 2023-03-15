@@ -407,12 +407,6 @@ public static class RoleHelpers
             case RoleId.MeetingSheriff:
                 RoleClass.MeetingSheriff.MeetingSheriffPlayer.Add(player);
                 break;
-            case RoleId.Jackal:
-                RoleClass.Jackal.JackalPlayer.Add(player);
-                break;
-            case RoleId.Sidekick:
-                RoleClass.Jackal.SidekickPlayer.Add(player);
-                break;
             case RoleId.Teleporter:
                 RoleClass.Teleporter.TeleporterPlayer.Add(player);
                 break;
@@ -906,12 +900,6 @@ public static class RoleHelpers
             case RoleId.MeetingSheriff:
                 RoleClass.MeetingSheriff.MeetingSheriffPlayer.RemoveAll(ClearRemove);
                 break;
-            case RoleId.Jackal:
-                RoleClass.Jackal.JackalPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.Sidekick:
-                RoleClass.Jackal.SidekickPlayer.RemoveAll(ClearRemove);
-                break;
             case RoleId.Teleporter:
                 RoleClass.Teleporter.TeleporterPlayer.RemoveAll(ClearRemove);
                 break;
@@ -1399,7 +1387,7 @@ public static class RoleHelpers
         if (ModeHandler.IsMode(ModeId.VanillaHns)) return false;
         return role switch
         {
-            RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,
+            RoleId.Jackal or RoleId.Sidekick => Jackal.CanUseVentS,
             RoleId.Minimalist => RoleClass.Minimalist.UseVent,
             RoleId.Samurai => RoleClass.Samurai.UseVent,
             RoleId.Jester => Jester.CanUseVentS,
@@ -1481,7 +1469,7 @@ public static class RoleHelpers
         return role switch
         {
             RoleId.Jester => Jester.CanUseSaboS && ModeHandler.IsMode(ModeId.Default),
-            RoleId.Sidekick or RoleId.Jackal => RoleClass.Jackal.IsUseSabo,
+            RoleId.Sidekick or RoleId.Jackal => Jackal.CanUseSaboS,
             RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
             RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
             RoleId.Egoist => RoleClass.Egoist.UseSabo,
@@ -1511,7 +1499,7 @@ public static class RoleHelpers
                 RoleId.Fox => Fox.IsImpostorViewS,
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsImpostorLight,
                 RoleId.MadMaker => RoleClass.MadMaker.IsImpostorLight,
-                RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsImpostorLight,
+                RoleId.Jackal or RoleId.Sidekick => Jackal.IsImpostorViewS,
                 RoleId.JackalFriends => RoleClass.JackalFriends.IsImpostorLight,
                 RoleId.SeerFriends => RoleClass.SeerFriends.IsImpostorLight,
                 RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsImpostorLight,
@@ -1640,8 +1628,6 @@ public static class RoleHelpers
             if (obj is not null) return obj.roleId;
             if (RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilLighter;
             else if (RoleClass.MeetingSheriff.MeetingSheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.MeetingSheriff;
-            else if (RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player)) return RoleId.Jackal;
-            else if (RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player)) return RoleId.Sidekick;
             else if (RoleClass.Teleporter.TeleporterPlayer.IsCheckListPlayerControl(player)) return RoleId.Teleporter;
             else if (RoleClass.SpiritMedium.SpiritMediumPlayer.IsCheckListPlayerControl(player)) return RoleId.SpiritMedium;
             else if (RoleClass.SpeedBooster.SpeedBoosterPlayer.IsCheckListPlayerControl(player)) return RoleId.SpeedBooster;
