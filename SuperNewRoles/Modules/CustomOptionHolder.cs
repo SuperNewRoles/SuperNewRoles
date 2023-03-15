@@ -98,17 +98,6 @@ public class CustomOptionHolder
     public static CustomOption MeetingSheriffKillMaxCount;
     public static CustomOption MeetingSheriffOneMeetingMultiKill;
 
-    public static CustomRoleOption JackalOption;
-    public static CustomOption JackalPlayerCount;
-    public static CustomOption JackalKillCooldown;
-    public static CustomOption JackalUseVent;
-    public static CustomOption JackalUseSabo;
-    public static CustomOption JackalIsImpostorLight;
-    public static CustomOption JackalCreateFriend;
-    public static CustomOption JackalCreateSidekick;
-    public static CustomOption JackalSKCooldown;
-    public static CustomOption JackalNewJackalCreateSidekick;
-
     public static CustomRoleOption TeleporterOption;
     public static CustomOption TeleporterPlayerCount;
     public static CustomOption TeleporterCoolTime;
@@ -1139,17 +1128,6 @@ public class CustomOptionHolder
 
         SatsumaAndImoOption = SetupCustomRoleOption(953, true, RoleId.SatsumaAndImo);
         SatsumaAndImoPlayerCount = Create(800, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SatsumaAndImoOption);
-
-        JackalOption = SetupCustomRoleOption(58, true, RoleId.Jackal);
-        JackalPlayerCount = Create(59, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalOption);
-        JackalKillCooldown = Create(60, true, CustomOptionType.Neutral, "JackalCooldownSetting", 30f, 2.5f, 60f, 2.5f, JackalOption, format: "unitSeconds");
-        JackalUseVent = Create(61, true, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalOption);
-        JackalUseSabo = Create(62, true, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalOption);
-        JackalIsImpostorLight = Create(63, true, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, JackalOption);
-        JackalCreateFriend = Create(666, true, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, JackalOption);
-        JackalCreateSidekick = Create(64, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalOption);
-        JackalSKCooldown = Create(1108, false, CustomOptionType.Neutral, "PavlovsownerCreateDogCoolTime", 30f, 2.5f, 60f, 2.5f, JackalCreateSidekick, format: "unitSeconds");
-        JackalNewJackalCreateSidekick = Create(65, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalCreateSidekick);
 
         TeleporterOption = SetupCustomRoleOption(66, false, RoleId.Teleporter);
         TeleporterPlayerCount = Create(67, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], TeleporterOption);

@@ -652,12 +652,12 @@ static class CheckMurderPatch
                         }
                         break;
                     case RoleId.Jackal:
-                        if (!RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId) && RoleClass.Jackal.CanCreateFriend)//まだ作ってなくて、設定が有効の時
+                        if (Jackal.GetRole(__instance).CanCreateFriend)//まだ作ってなくて、設定が有効の時
                         {
                             SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
-                            if (target == null || RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                            if (target == null) return false;
                             __instance.RpcShowGuardEffect(target);
-                            RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
+                            Jackal.GetRole(__instance).CanCreateFriend = true;
                             if (!target.IsImpostor())
                             {
                                 Jackal.CreateJackalFriends(target);//クルーにして フレンズにする
@@ -669,8 +669,7 @@ static class CheckMurderPatch
                         else
                         {
                             // キルができた理由のログを表示する(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
-                            if (!RoleClass.Jackal.CanCreateFriend) Logger.Info("ジャッカルフレンズを作る設定ではない為 普通のキル", "JackalSHR");
-                            else if (RoleClass.Jackal.CanCreateFriend && RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSHR");
+                            if (Jackal.GetRole(__instance).CanCreateFriend) Logger.Info("ジャッカルフレンズ作成済みの為 普通のキル", "JackalSHR");
                             else Logger.Info("不正なキル", "JackalSHR");
                         }
                         break;

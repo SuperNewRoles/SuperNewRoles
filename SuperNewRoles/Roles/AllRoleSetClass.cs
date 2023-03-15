@@ -930,7 +930,7 @@ class AllRoleSetClass
             RoleId.EvilScientist => CustomOptionHolder.EvilScientistPlayerCount.GetFloat(),
             RoleId.Sheriff => Sheriff.PlayerCountOption.GetFloat(),
             RoleId.MeetingSheriff => CustomOptionHolder.MeetingSheriffPlayerCount.GetFloat(),
-            RoleId.Jackal => CustomOptionHolder.JackalPlayerCount.GetFloat(),
+            RoleId.Jackal => Jackal.PlayerCountOption.GetFloat(),
             RoleId.Teleporter => CustomOptionHolder.TeleporterPlayerCount.GetFloat(),
             RoleId.SpiritMedium => CustomOptionHolder.SpiritMediumPlayerCount.GetFloat(),
             RoleId.SpeedBooster => CustomOptionHolder.SpeedBoosterPlayerCount.GetFloat(),

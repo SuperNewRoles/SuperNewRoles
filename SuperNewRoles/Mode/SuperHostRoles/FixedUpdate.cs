@@ -129,14 +129,14 @@ public static class FixedUpdate
         }
         else if (JackalFriends.CheckJackal(player))
         {
-            foreach (PlayerControl Jackal in RoleClass.Jackal.JackalPlayer)
+            foreach (PlayerControl Jackal in Jackal.allPlayers)
             {
                 if (!Jackal.Data.Disconnected)
                 {
                     if (!RoleClass.Camouflager.IsCamouflage)
                     {
-                        if (!ChangePlayers.ContainsKey(Jackal.PlayerId)) ChangePlayers.Add(Jackal.PlayerId, ModHelpers.Cs(RoleClass.Jackal.color, Jackal.GetDefaultName()));
-                        else ChangePlayers[Jackal.PlayerId] = ModHelpers.Cs(RoleClass.Jackal.color, ChangePlayers[Jackal.PlayerId]);
+                        if (!ChangePlayers.ContainsKey(Jackal.PlayerId)) ChangePlayers.Add(Jackal.PlayerId, ModHelpers.Cs(SuperNewRoles.Roles.Jackal.color, Jackal.GetDefaultName()));
+                        else ChangePlayers[Jackal.PlayerId] = ModHelpers.Cs(SuperNewRoles.Roles.Jackal.color, ChangePlayers[Jackal.PlayerId]);
                     }
                 }
             }
