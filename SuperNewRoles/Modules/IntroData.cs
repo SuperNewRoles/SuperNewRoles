@@ -123,7 +123,7 @@ public class IntroData
     public static IntroData MeetingSheriffIntro = new("MeetingSheriff", RoleClass.MeetingSheriff.color, 4, RoleId.MeetingSheriff, IntroSound: RoleTypes.Engineer);
     public static IntroData JackalIntro = new("Jackal", Jackal.color, 3, RoleId.Jackal, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData SidekickIntro = new("Sidekick", Jackal.color, 1, RoleId.Sidekick, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
-    public static IntroData TeleporterIntro = new("Teleporter", RoleClass.Teleporter.color, 2, RoleId.Teleporter, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData TeleporterIntro = new("Teleporter", Teleporter.color, 2, RoleId.Teleporter, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData SpiritMediumIntro = new("SpiritMedium", RoleClass.SpiritMedium.color, 1, RoleId.SpiritMedium);
     public static IntroData SpeedBoosterIntro = new("SpeedBooster", RoleClass.SpeedBooster.color, 2, RoleId.SpeedBooster);
     public static IntroData EvilSpeedBoosterIntro = new("EvilSpeedBooster", RoleClass.EvilSpeedBooster.color, 4, RoleId.EvilSpeedBooster, TeamRoleType.Impostor, IntroSound: RoleTypes.Impostor);

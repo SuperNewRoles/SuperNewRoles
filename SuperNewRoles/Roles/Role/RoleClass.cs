@@ -85,7 +85,7 @@ public static class RoleClass
         Sheriff.Clear();
         MeetingSheriff.ClearAndReload();
         Jackal.Clear();
-        Teleporter.ClearAndReload();
+        Teleporter.Clear();
         SpiritMedium.ClearAndReload();
         SpeedBooster.ClearAndReload();
         EvilSpeedBooster.ClearAndReload();
@@ -280,21 +280,6 @@ public static class RoleClass
             MeetingSheriffPlayer = new();
             KillMaxCount = CustomOptionHolder.MeetingSheriffKillMaxCount.GetFloat();
             OneMeetingMultiKill = CustomOptionHolder.MeetingSheriffOneMeetingMultiKill.GetBool();
-        }
-    }
-    public static class Teleporter
-    {
-        public static List<PlayerControl> TeleporterPlayer;
-        public static Color32 color = RoleClass.ImpostorRed;
-        public static float CoolTime;
-        public static float DurationTime;
-        public static DateTime ButtonTimer;
-        public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
-        public static void ClearAndReload()
-        {
-            TeleporterPlayer = new();
-            CoolTime = CustomOptionHolder.TeleporterCoolTime.GetFloat();
-            DurationTime = CustomOptionHolder.TeleporterDurationTime.GetFloat();
         }
     }
     public static class SpiritMedium

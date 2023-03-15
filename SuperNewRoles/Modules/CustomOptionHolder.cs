@@ -98,11 +98,6 @@ public class CustomOptionHolder
     public static CustomOption MeetingSheriffKillMaxCount;
     public static CustomOption MeetingSheriffOneMeetingMultiKill;
 
-    public static CustomRoleOption TeleporterOption;
-    public static CustomOption TeleporterPlayerCount;
-    public static CustomOption TeleporterCoolTime;
-    public static CustomOption TeleporterDurationTime;
-
     public static CustomRoleOption SpiritMediumOption;
     public static CustomOption SpiritMediumPlayerCount;
     public static CustomOption SpiritMediumIsAutoMode;
@@ -1128,11 +1123,6 @@ public class CustomOptionHolder
 
         SatsumaAndImoOption = SetupCustomRoleOption(953, true, RoleId.SatsumaAndImo);
         SatsumaAndImoPlayerCount = Create(800, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SatsumaAndImoOption);
-
-        TeleporterOption = SetupCustomRoleOption(66, false, RoleId.Teleporter);
-        TeleporterPlayerCount = Create(67, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], TeleporterOption);
-        TeleporterCoolTime = Create(68, false, CustomOptionType.Impostor, "TeleporterCooldownSetting", 30f, 2.5f, 60f, 2.5f, TeleporterOption, format: "unitSeconds");
-        TeleporterDurationTime = Create(69, false, CustomOptionType.Impostor, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleporterOption, format: "unitSeconds");
 
         SpiritMediumOption = SetupCustomRoleOption(70, false, RoleId.SpiritMedium);
         SpiritMediumPlayerCount = Create(71, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpiritMediumOption);

@@ -10,8 +10,8 @@ class NiceTeleporter
 {
     public static void ResetCooldown()
     {
-        HudManagerStartPatch.TeleporterButton.MaxTimer = RoleClass.NiceTeleporter.CoolTime;
-        RoleClass.NiceTeleporter.ButtonTimer = DateTime.Now;
+        Teleporter.TeleporterButton.MaxTimer = RoleClass.NiceTeleporter.CoolTime;
+        Teleporter.TeleporterButton.Timer = Teleporter.TeleporterButton.MaxTimer;
     }
     public static void TeleportStart()
     {

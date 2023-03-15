@@ -407,9 +407,6 @@ public static class RoleHelpers
             case RoleId.MeetingSheriff:
                 RoleClass.MeetingSheriff.MeetingSheriffPlayer.Add(player);
                 break;
-            case RoleId.Teleporter:
-                RoleClass.Teleporter.TeleporterPlayer.Add(player);
-                break;
             case RoleId.SpiritMedium:
                 RoleClass.SpiritMedium.SpiritMediumPlayer.Add(player);
                 break;
@@ -899,9 +896,6 @@ public static class RoleHelpers
                 break;
             case RoleId.MeetingSheriff:
                 RoleClass.MeetingSheriff.MeetingSheriffPlayer.RemoveAll(ClearRemove);
-                break;
-            case RoleId.Teleporter:
-                RoleClass.Teleporter.TeleporterPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.SpiritMedium:
                 RoleClass.SpiritMedium.SpiritMediumPlayer.RemoveAll(ClearRemove);
@@ -1628,7 +1622,6 @@ public static class RoleHelpers
             if (obj is not null) return obj.roleId;
             if (RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilLighter;
             else if (RoleClass.MeetingSheriff.MeetingSheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.MeetingSheriff;
-            else if (RoleClass.Teleporter.TeleporterPlayer.IsCheckListPlayerControl(player)) return RoleId.Teleporter;
             else if (RoleClass.SpiritMedium.SpiritMediumPlayer.IsCheckListPlayerControl(player)) return RoleId.SpiritMedium;
             else if (RoleClass.SpeedBooster.SpeedBoosterPlayer.IsCheckListPlayerControl(player)) return RoleId.SpeedBooster;
             else if (RoleClass.EvilSpeedBooster.EvilSpeedBoosterPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilSpeedBooster;
