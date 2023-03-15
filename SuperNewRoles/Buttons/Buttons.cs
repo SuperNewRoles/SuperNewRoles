@@ -31,7 +31,6 @@ static class HudManagerStartPatch
     public static CustomButton LighterLightOnButton;
     public static CustomButton MovingSetButton;
     public static CustomButton MovingTpButton;
-    public static CustomButton TeleporterButton;
     public static CustomButton DoorrDoorButton;
     public static CustomButton SelfBomberButton;
     public static CustomButton DoctorVitalsButton;
@@ -1411,33 +1410,7 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
-        TeleporterButton = new(
-            () =>
-            {
-                if (!PlayerControl.LocalPlayer.CanMove) return;
-                RoleClass.Clergyman.ButtonTimer = DateTime.Now;
-                TeleporterButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
-                Teleporter.TeleportStart();
-                Teleporter.ResetCooldown();
-            },
-            (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Teleporter || role == RoleId.TeleportingJackal || role == RoleId.NiceTeleporter || (role == RoleId.Levelinger && RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Teleporter))); },
-            () =>
-            {
-                return true && PlayerControl.LocalPlayer.CanMove;
-            },
-            () => { Teleporter.EndMeeting(); },
-            RoleClass.Teleporter.GetButtonSprite(),
-            new Vector3(-2f, 1, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49,
-            () => { return false; }
-        )
-        {
-            buttonText = ModTranslation.GetString("TeleporterTeleportButton"),
-            showButtonText = true
-        };
+        Teleporter.MakeButtons(__instance);
 
         MovingSetButton = new(
             () =>

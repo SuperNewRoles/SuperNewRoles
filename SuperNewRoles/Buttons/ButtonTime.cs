@@ -15,7 +15,6 @@ class ButtonTime
         EvilSpeedBoosterButton();
         LighterButton();
         MovingButton();
-        TeleporterButton();
         HawkDuration();
         ScientistButton();
         CamouflagerButton();
@@ -86,16 +85,6 @@ class ButtonTime
         timeSpanData = new TimeSpan(0, 0, 0, (int)MapOption.MapOption.DurationTime);
         MapOption.MapOption.Timer = (float)(MapOption.MapOption.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
         if (MapOption.MapOption.Timer <= 0f) MapOption.MapOption.Timer = 0f; MapOption.MapOption.IsZoomOn = false; return;
-    }
-    public static void TeleporterButton()
-    {
-        if (RoleClass.Teleporter.ButtonTimer == null)
-        {
-            RoleClass.Teleporter.ButtonTimer = DateTime.Now;
-        }
-        var timeSpanData = new TimeSpan(0, 0, 0, (int)Teleporter.CoolTime);
-        HudManagerStartPatch.TeleporterButton.Timer = (float)(RoleClass.Teleporter.ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
-        if (HudManagerStartPatch.TeleporterButton.Timer <= 0f) HudManagerStartPatch.TeleporterButton.Timer = 0f; return;
     }
     public static void MovingButton()
     {
