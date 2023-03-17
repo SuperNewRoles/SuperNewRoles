@@ -117,42 +117,42 @@ public static class DeviceClass
                 {
                     CounterArea counterArea = __instance.CountAreas[i];
 
+                    // ロミジュリと絵画の部屋をアドミンの対象から外す
                     if (!commsActive && counterArea.RoomType > SystemTypes.Hallway)
                     {
                         PlainShipRoom plainShipRoom = MapUtilities.CachedShipStatus.FastRooms[counterArea.RoomType];
 
                         if (plainShipRoom != null && plainShipRoom.roomArea)
                         {
+                            HashSet<int> hashSet = new();
                             int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
-                            int num2 = num;
+                            int count = 0;
 
-                            // ロミジュリと絵画の部屋をアドミンの対象から外す
                             for (int j = 0; j < num; j++)
                             {
                                 Collider2D collider2D = __instance.buffer[j];
-                                if (collider2D.tag != "DeadBody")
+                                if (collider2D.CompareTag("DeadBody") && __instance.includeDeadBodies) count++;
+                                else
                                 {
                                     PlayerControl component = collider2D.GetComponent<PlayerControl>();
-                                    if (!component || component.IsDead())
-                                        num2--;
-                                    else if (!CustomOptionHolder.CrackerIsAdminView.GetBool() && RoleClass.Cracker.CrackedPlayers.Contains(component.PlayerId) && (component.PlayerId != CachedPlayer.LocalPlayer.PlayerId || !CustomOptionHolder.CrackerIsSelfNone.GetBool()))
-                                        num2--;
-                                    else if (component.IsRole(RoleId.Vampire, RoleId.Dependents))
-                                        num2--;
+                                    if (!component) continue;
+                                    if (component.Data == null || component.Data.Disconnected || component.Data.IsDead) continue;
+                                    if (!__instance.showLivePlayerPosition && component.AmOwner) continue;
+                                    if (!hashSet.Add(component.PlayerId)) continue;
+
+                                    if (component.IsRole(RoleId.Vampire, RoleId.Dependents)) continue;
+                                    if (!CustomOptionHolder.CrackerIsAdminView.GetBool() && RoleClass.Cracker.CrackedPlayers.Contains(component.PlayerId) &&
+                                       (component.PlayerId != CachedPlayer.LocalPlayer.PlayerId || !CustomOptionHolder.CrackerIsSelfNone.GetBool()))
+                                        continue;
+
+                                    count++;
                                 }
                             }
-                            if (num2 < 0) num2 = 0;
-                            counterArea.UpdateCount(num2);
+                            counterArea.UpdateCount(count);
                         }
-                        else
-                        {
-                            Debug.LogWarning($"Couldn't find counter for:{counterArea.RoomType}");
-                        }
+                        else Debug.LogWarning($"Couldn't find counter for:{counterArea.RoomType}");
                     }
-                    else
-                    {
-                        counterArea.UpdateCount(0);
-                    }
+                    else counterArea.UpdateCount(0);
                 }
             }
             return false;
