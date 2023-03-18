@@ -67,7 +67,6 @@ static class HudManagerStartPatch
     public static CustomButton KunoichiHideButton;
     public static CustomButton SecretlyKillerMainButton;
     public static CustomButton SecretlyKillerSecretlyKillButton;
-    public static CustomButton ClairvoyantButton;
     public static CustomButton DoubleKillerMainKillButton;
     public static CustomButton DoubleKillerSubKillButton;
     public static CustomButton SuicideWisherSuicideButton;
