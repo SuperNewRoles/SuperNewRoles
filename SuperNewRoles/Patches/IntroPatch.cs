@@ -457,6 +457,7 @@ public class IntroPatch
             if (OldModeButtons.IsOldMode) yield break;
             new LateTask(() =>
             {
+                var player = PlayerControl.LocalPlayer;
                 var myrole = PlayerControl.LocalPlayer.GetRole();
                 var data = IntroData.GetIntroData(myrole);
 
@@ -464,23 +465,25 @@ public class IntroPatch
                 __instance.RoleText.color = data.color;             //役職名の色を変更
                 __instance.RoleBlurbText.color = data.color;        //イントロの簡易説明の色を変更
 
-                if ((myrole == RoleId.DefaultRole && !PlayerControl.LocalPlayer.IsImpostor()) || myrole == RoleId.Bestfalsecharge)
+                if (myrole is RoleId.Bestfalsecharge)
                 {
                     data = IntroData.CrewmateIntro;
                     __instance.YouAreText.color = Palette.CrewmateBlue;     //あなたのロールは...を役職の色に変更
                     __instance.RoleText.color = Palette.CrewmateBlue;       //役職名の色を変更
                     __instance.RoleBlurbText.color = Palette.CrewmateBlue;  //イントロの簡易説明の色を変更
                 }
-                else if (myrole is RoleId.DefaultRole)
-                {
-                    data = IntroData.ImpostorIntro;
-                    __instance.YouAreText.color = Palette.ImpostorRed;     //あなたのロールは...を役職の色に変更
-                    __instance.RoleText.color = Palette.ImpostorRed;       //役職名の色を変更
-                    __instance.RoleBlurbText.color = Palette.ImpostorRed;  //イントロの簡易説明の色を変更
-                }
 
                 __instance.RoleText.text = data.Name;               //役職名を変更
                 __instance.RoleBlurbText.text = data.TitleDesc;     //イントロの簡易説明を変更
+
+                if (myrole is RoleId.DefaultRole)
+                {
+                    __instance.RoleText.text = player.Data.Role.NiceName;
+                    __instance.RoleBlurbText.text = player.Data.Role.Blurb;
+                    __instance.YouAreText.color = player.Data.Role.TeamColor;   //あなたのロールは...を役職の色に変更
+                    __instance.RoleText.color = player.Data.Role.TeamColor;     //役職名の色を変更
+                    __instance.RoleBlurbText.color = player.Data.Role.TeamColor;//イントロの簡易説明の色を変更
+                }
 
                 //重複を持っていたらメッセージ追記
                 if (PlayerControl.LocalPlayer.IsLovers()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
