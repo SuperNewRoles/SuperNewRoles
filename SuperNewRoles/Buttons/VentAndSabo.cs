@@ -94,18 +94,12 @@ public static class VentAndSabo
     [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent))]
     class EnterVentAnimPatch
     {
-        public static bool Prefix([HarmonyArgument(0)] PlayerControl pc)
-        {
-            return !MapOption.MapOption.CanNotVentAnimation || pc.AmOwner;
-        }
+        public static bool Prefix([HarmonyArgument(0)] PlayerControl pc) => MapOption.MapOption.CanPlayVentAnimation || pc.AmOwner;
     }
     [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent))]
     class ExitVentAnimPatch
     {
-        public static bool Prefix([HarmonyArgument(0)] PlayerControl pc)
-        {
-            return !MapOption.MapOption.CanNotVentAnimation || pc.AmOwner;
-        }
+        public static bool Prefix([HarmonyArgument(0)] PlayerControl pc) => MapOption.MapOption.CanPlayVentAnimation || pc.AmOwner;
     }
     [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
     public static class VentCanUsePatch
