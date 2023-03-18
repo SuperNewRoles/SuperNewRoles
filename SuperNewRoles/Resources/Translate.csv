@@ -853,7 +853,7 @@ SeerFriendsName,SeerFriends,シーアフレンズ,狈族灵媒,狽族先知
 SeerFriendsTitle1,Let's feel the activity of Jackal,ジャッカルの活躍を感じ取ろう,感知豺狼的行动,感知豺狼的行動
 SeerFriendsDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いて村を陽動しましょう。,,狽族先知属于狼族阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n狽族先知需要利用手中的情报帮助豺狼。
 JackalSeerName,SeerJackal,ジャッカルシーア,狼族灵媒,狼族先知
-JackalSeerTitle1,Detect the dead and bring victory to your camp!,死者を感知し自陣営に勝利をもたらせ!,,感知死亡，为豺狼带来胜利,感知死亡，為豺狼帶來勝利
+JackalSeerTitle1,Detect the dead and bring victory to your camp!,死者を感知し自陣営に勝利をもたらせ!,感知死亡，为豺狼带来胜利,感知死亡，為豺狼帶來勝利
 JackalSeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\nインポスターの行動を把握し、利用しましょう。,狼族灵媒属于豺狼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n狼族灵媒需要利用手中的情报确认内鬼行动并化为己用。,狼族先知属于豺狼阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n狼族先知需要利用手中的情报确认内鬼行动并化为己用。
 SidekickSeerName,Sidekick(Seer),サイドキック(シーア),狼族灵媒学徒,狼族先知學徒
 SidekickSeerTitle1,Let's help Jackal with the dead detection ability that we got,貰った死者感知能力でジャッカルを助けよう,用死亡感知能力来帮助豺狼,用死亡感知能力來幫助豺狼
@@ -1353,6 +1353,6 @@ SuccessfulExperiment,Successful Experiment,実験成功,测试成功,測試成�
 Agartha_WareHouse,WareHouse,倉庫,仓库,倉庫
 Agartha_ToolRoom,ToolRoom,工具室,工具室,工具室
 Agartha_WorkRoom,WorkRoom,仕事場,工坊,工坊
-AgarthaName,<color=#a67646>Agartha</color>,<color=#a67646>Agartha</color>,雅各泰,雅戈泰
+AgarthaName,<color=#a67646>Agartha</color>,<color=#a67646>Agartha</color>,<color=#a67646>雅各泰</color>,<color=#a67646>雅戈泰</color>
 AgarthaRandomSpawnIsFirstSpawn,Applies to first spawn.,初スポーンにも適用される,只在游戏开始时随机出生,只在遊戲開始時隨機重生
 AgarthaRandomSpawnIsAddSpawnWay,Add spawn to the road,道へのスポーンを追加する,在通道上增加随机出生点,在通道上增加隨機重生點
