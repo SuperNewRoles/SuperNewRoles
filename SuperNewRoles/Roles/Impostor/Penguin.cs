@@ -31,7 +31,8 @@ public static class Penguin
             if (data.Key == null || data.Value == null
                 || !data.Key.IsRole(RoleId.Penguin)
                 || data.Key.IsDead()
-                || data.Value.IsDead())
+                || data.Value.IsDead()
+                || RoleClass.IsMeeting)
             {
                 if (data.Key != null && data.Key.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
