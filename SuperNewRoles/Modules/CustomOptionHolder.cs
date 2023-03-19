@@ -894,16 +894,6 @@ public class CustomOptionHolder
     public static CustomOption PavlovsdogRunAwayDeathTime;
     public static CustomOption PavlovsdogRunAwayDeathTimeIsMeetingReset;
 
-    public static CustomRoleOption WaveCannonJackalOption;
-    public static CustomOption WaveCannonJackalPlayerCount;
-    public static CustomOption WaveCannonJackalCoolTime;
-    public static CustomOption WaveCannonJackalChargeTime;
-    public static CustomOption WaveCannonJackalKillCooldown;
-    public static CustomOption WaveCannonJackalUseVent;
-    public static CustomOption WaveCannonJackalUseSabo;
-    public static CustomOption WaveCannonJackalIsImpostorLight;
-    public static CustomOption WaveCannonJackalIsSyncKillCoolTime;
-
     public static CustomRoleOption CamouflagerOption;
     public static CustomOption CamouflagerPlayerCount;
     public static CustomOption CamouflagerCoolTime;
@@ -1851,15 +1841,7 @@ public class CustomOptionHolder
         WaveCannonChargeTime = Create(1021, false, CustomOptionType.Impostor, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonOption);
         WaveCannonIsSyncKillCoolTime = Create(1016, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, WaveCannonOption);
 
-        WaveCannonJackalOption = SetupCustomRoleOption(1022, false, RoleId.WaveCannonJackal, CustomOptionType.Neutral);
-        WaveCannonJackalPlayerCount = Create(1023, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WaveCannonJackalOption);
-        WaveCannonJackalCoolTime = Create(1014, false, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonJackalOption);
-        WaveCannonJackalChargeTime = Create(1015, false, CustomOptionType.Neutral, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonJackalOption);
-        WaveCannonJackalKillCooldown = Create(1024, false, CustomOptionType.Neutral, "JackalCooldownSetting", 30f, 2.5f, 60f, 2.5f, WaveCannonJackalOption, format: "unitSeconds");
-        WaveCannonJackalUseVent = Create(1025, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, WaveCannonJackalOption);
-        WaveCannonJackalIsImpostorLight = Create(1026, false, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, WaveCannonJackalOption);
-        WaveCannonJackalUseSabo = Create(1029, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, WaveCannonJackalOption);
-        WaveCannonJackalIsSyncKillCoolTime = Create(1107, false, CustomOptionType.Neutral, "IsSyncKillCoolTime", false, WaveCannonJackalOption);
+        WaveCannonJackal.SetupCustomOptions();
 
         Conjurer.SetupCustomOptions();
 

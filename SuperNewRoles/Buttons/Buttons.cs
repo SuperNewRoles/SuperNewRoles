@@ -584,10 +584,10 @@ static class HudManagerStartPatch
             },
             () =>
             {
-                WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonCoolTime.GetFloat() : CustomOptionHolder.WaveCannonJackalCoolTime.GetFloat();
+                WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonCoolTime.GetFloat() : WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
                 WaveCannonButton.Timer = WaveCannonButton.MaxTimer;
                 WaveCannonButton.effectCancellable = false;
-                WaveCannonButton.EffectDuration = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonChargeTime.GetFloat() : CustomOptionHolder.WaveCannonJackalChargeTime.GetFloat();
+                WaveCannonButton.EffectDuration = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonChargeTime.GetFloat() : WaveCannonJackal.WaveCannonJackalChargeTime.GetFloat();
                 WaveCannonButton.HasEffect = true;
             },
             RoleClass.WaveCannon.GetButtonSprite(),

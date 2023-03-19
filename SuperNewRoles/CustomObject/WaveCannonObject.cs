@@ -8,6 +8,7 @@ using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -228,12 +229,12 @@ public class WaveCannonObject
                         }
                         else
                         {
-                            if (CustomOptionHolder.WaveCannonJackalIsSyncKillCoolTime.GetBool())
-                                Roles.Neutral.WaveCannonJackal.ResetCooldowns();
+                            if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
+                                WaveCannonJackal.ResetCooldowns();
                         }
                         CachedPlayer.LocalPlayer.PlayerControl.moveable = true;
                         Camera.main.GetComponent<FollowerCamera>().Locked = false;
-                        HudManagerStartPatch.WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonCoolTime.GetFloat() : CustomOptionHolder.WaveCannonJackalCoolTime.GetFloat();
+                        HudManagerStartPatch.WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonCoolTime.GetFloat() : WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
                         HudManagerStartPatch.WaveCannonButton.Timer = HudManagerStartPatch.WaveCannonButton.MaxTimer;
                         RoleClass.WaveCannon.CannotMurderPlayers = new();
                     }
@@ -262,7 +263,7 @@ public class WaveCannonObject
             }
         }
     }
-    
+
     public static void AllFixedUpdate()
     {
         if (Objects.Count <= 0) return;
