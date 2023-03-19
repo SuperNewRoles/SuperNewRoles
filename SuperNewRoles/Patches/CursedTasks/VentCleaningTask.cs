@@ -10,7 +10,7 @@ public class VentCleaningTask
     public static class VentCleaningMinigamePatch
     {
         [HarmonyPatch(nameof(VentCleaningMinigame.Begin)), HarmonyPostfix]
-        private static void BeginPostfix(VentCleaningMinigame __instance)
+        public static void BeginPostfix(VentCleaningMinigame __instance)
         {
             if (!Main.IsCursed) return;
             Transform TaskParent = __instance.transform.parent;

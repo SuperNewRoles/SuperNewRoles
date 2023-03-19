@@ -1,10 +1,8 @@
 using SuperNewRoles.Mode;
-using UnityEngine;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 
-
-public class Main
+public static class Main
 {
     private const int OptionId = 1247;
     public static CustomOption CursedTask;
@@ -21,6 +19,8 @@ public class Main
         SampleTask.Data = new();
     }
 
+    public static int Random(int min = 1, int max = 10) => UnityEngine.Random.RandomRange(min, max + 1);
+
     // 1024 : 月城さんが決めた数字 , 1183 : ポケモン全国図鑑のリージョンホーム含めたポケモンの数(2023年03月02日現在)
-    public static int Num { get { return Random.RandomRange(1, 3) == 1 ? 1024 : 1183; } }
+    public static int Num { get { return Random(1, 2) == 1 ? 1024 : 1183; } }
 }

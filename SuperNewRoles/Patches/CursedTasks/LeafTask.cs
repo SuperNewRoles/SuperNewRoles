@@ -48,7 +48,7 @@ public class LeafTask
         }
 
         [HarmonyPatch(nameof(LeafMinigame.FixedUpdate)), HarmonyPostfix]
-        private static void FixedUpdatePostfix(LeafMinigame __instance)
+        public static void FixedUpdatePostfix(LeafMinigame __instance)
         {
             if (!Main.IsCursed) return;
             __instance.transform.FindChild("cursor").position = __instance.myController.HoverPosition;

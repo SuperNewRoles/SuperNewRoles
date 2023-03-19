@@ -27,7 +27,7 @@ public class WireTask
                 };
                 return;
             }
-            int NumWires = WiresOrder[Random.RandomRange(0, WiresOrder.Length)];
+            int NumWires = WiresOrder[Main.Random(0, WiresOrder.Length - 1)];
 
             ScalarY = NumWires < 12 ? 1f : (8f / NumWires) + 0.3f;
 
