@@ -5,6 +5,7 @@ using BepInEx.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
@@ -395,6 +396,7 @@ public class IntroPatch
     {
         public static void Prefix()
         {
+            if (ModeHandler.IsMode(ModeId.BattleRoyal)) SelectRoleSystem.OnEndIntro();
             float SetTime = 0;
             bool Flag = true;
             switch (PlayerControl.LocalPlayer.GetRole())

@@ -4,6 +4,7 @@ using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
@@ -871,6 +872,12 @@ public static class RoleHelpers
                 break;
             case RoleId.ShermansServant:
                 OrientalShaman.ShermansServantPlayer.Add(player);
+                break;
+            case RoleId.Reviver:
+                new Reviver(player);
+                break;
+            case RoleId.DefaultRole when ModeHandler.IsMode(ModeId.BattleRoyal):
+                new BattleRoyalRole(player);
                 break;
             // ロールアド
             default:

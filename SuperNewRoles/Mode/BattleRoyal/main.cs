@@ -3,6 +3,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -12,9 +13,18 @@ namespace SuperNewRoles.Mode.BattleRoyal;
 class Main
 {
     public static Dictionary<byte, int> KillCount;
+    public static bool IsRoleSetted;
+    public static List<PlayerControl> RoleSettedPlayers = new();
     public static void FixedUpdate()
     {
         if (!AmongUsClient.Instance.AmHost) return;
+        if (FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed) return;
+        if (!IsRoleSetted) return;
+        SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
+        foreach (BattleRoyalRole role in BattleRoyalRole.BattleRoyalRoles)
+        {
+            role.FixedUpdate();
+        }
         if (IsStart)
         {
             CachedPlayer.LocalPlayer.Data.Role.CanUseKillButton = true;
@@ -82,11 +92,11 @@ class Main
             {
                 IsStart = true;
                 ModeHandler.HideName();
-                foreach (List<PlayerControl> team in Teams)
+                foreach (BattleTeam team in BattleTeam.BattleTeams)
                 {
-                    if (team.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
+                    if (team.IsTeam(PlayerControl.LocalPlayer))
                     {
-                        foreach (PlayerControl p in team)
+                        foreach (PlayerControl p in team.TeamMember)
                         {
                             if (p.PlayerId != 0)
                             {
@@ -175,30 +185,24 @@ class Main
                 GameManager.Instance.RpcEndGame(GameOverReason.HumansByVote, false);
                 return true;
             }
-            foreach (List<PlayerControl> teams in Teams)
+            foreach (BattleTeam team in BattleTeam.BattleTeams)
             {
-                if (teams.IsCheckListPlayerControl(players[0]))
+                if (team.IsTeam(players[0]))
                 {
-                    foreach (PlayerControl p in players)
-                    {
-                        if (!teams.IsCheckListPlayerControl(p))
-                        {
-                            return false;
-                        }
-                    }
+                    foreach (PlayerControl p in players) if (!team.IsTeam(p)) return false;
                 }
             }
             Winners = new();
             try
             {
-                foreach (List<PlayerControl> teams in Teams)
+                foreach (BattleTeam teams in BattleTeam.BattleTeams)
                 {
-                    if (teams.IsCheckListPlayerControl(players[0]))
+                    if (teams.IsTeam(players[0]))
                     {
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
                             p.RpcSetRole(RoleTypes.GuardianAngel);
-                            if (teams.IsCheckListPlayerControl(p))
+                            if (teams.IsTeam(p))
                             {
                                 p.Data.IsDead = false;
                                 Winners.Add(p);
@@ -256,10 +260,19 @@ class Main
     public static bool IsCountOK;
     static float UpdateTime;
     public static bool IsTeamBattle;
-    public static List<List<PlayerControl>> Teams;
     static bool IsSeted;
+    public static bool IsIntroEnded;
     public static void ClearAndReload()
     {
+        IsIntroEnded = false;
+        BattleTeam.ClearAll();
+        PlayerAbility.ClearAll();
+
+        BattleRoyalRole.ClearAll();
+        Reviver.Clear();
+
+        RoleSettedPlayers = new();
+        IsRoleSetted = false;
         IsViewAlivePlayer = BROption.IsViewAlivePlayer.GetBool();
         KillCount = new();
         AlivePlayer = 0;
@@ -269,7 +282,6 @@ class Main
         IsCountOK = false;
         UpdateTime = 0f;
         IsTeamBattle = BROption.IsTeamBattle.GetBool();
-        Teams = new List<List<PlayerControl>>();
         IsSeted = false;
         Winners = new();
     }
@@ -303,7 +315,10 @@ class Main
                             SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Template Team:" + TempTeam.Count);
                             if (TempTeam.Count >= oneteamcount)
                             {
-                                Teams.Add(TempTeam);
+                                BattleTeam teamobj = new()
+                                {
+                                    TeamMember = TempTeam
+                                };
                                 TempTeam = new();
                                 SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Reset");
                             }
@@ -311,32 +326,35 @@ class Main
                     }
                     if (TempTeam.Count > 0)
                     {
-                        Teams.Add(TempTeam);
+                        BattleTeam teamobj = new()
+                        {
+                            TeamMember = TempTeam
+                        };
                         TempTeam = new();
                         SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Reset");
                     }
-                    SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Team Count:" + Teams.Count);
-                    foreach (List<PlayerControl> teamlist in Teams)
+                    SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Team Count:" + BattleTeam.BattleTeams.Count);
+                    foreach (BattleTeam teamlist in BattleTeam.BattleTeams)
                     {
-                        foreach (PlayerControl p in teamlist)
+                        foreach (PlayerControl p in teamlist.TeamMember)
                         {
                             if (p.PlayerId != 0)
                             {
-                                foreach (PlayerControl p2 in teamlist)
+                                foreach (PlayerControl p2 in teamlist.TeamMember)
                                 {
                                     if (p2.PlayerId != 0)
                                     {
                                         SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Within a Set Team");
-                                        p.RpcSetRoleDesync(RoleTypes.Impostor, p2);
+                                        p.RpcSetRoleDesync(RoleTypes.Shapeshifter, p2);
                                     }
                                     else
                                     {
-                                        p.SetRole(RoleTypes.Impostor);
+                                        p.SetRole(RoleTypes.Shapeshifter);
                                     }
                                 }
                                 foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                                 {
-                                    if (!teamlist.IsCheckListPlayerControl(p2))
+                                    if (!teamlist.IsTeam(p2))
                                     {
                                         p2.RpcSetRoleDesync(RoleTypes.Scientist, p);
                                         p.RpcSetRoleDesync(RoleTypes.Scientist, p2);
@@ -345,10 +363,10 @@ class Main
                             }
                             else
                             {
-                                p.SetRole(RoleTypes.Impostor);
+                                p.SetRole(RoleTypes.Shapeshifter);
                                 p.RpcSetRole(RoleTypes.Crewmate);
-                                FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
-                                CachedPlayer.LocalPlayer.Data.Role.Role = RoleTypes.Impostor;
+                                FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                                CachedPlayer.LocalPlayer.Data.Role.Role = RoleTypes.Shapeshifter;
                             }
                         }
                     }
@@ -357,10 +375,14 @@ class Main
                 {
                     foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
                     {
+                        new BattleTeam()
+                        {
+                            TeamMember = new() { p1 }
+                        };
                         if (p1.PlayerId != 0)
                         {
                             FastDestroyableSingleton<RoleManager>.Instance.SetRole(p1, RoleTypes.Crewmate);
-                            p1.RpcSetRoleDesync(RoleTypes.Impostor);
+                            p1.RpcSetRoleDesync(RoleTypes.Shapeshifter);
                             foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                             {
                                 if (p1.PlayerId != p2.PlayerId && p2.PlayerId != 0)
@@ -375,14 +397,19 @@ class Main
                             p1.RpcSetRole(RoleTypes.Crewmate);
                         }
                     }
-                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
-                    CachedPlayer.LocalPlayer.Data.Role.Role = RoleTypes.Impostor;
+                    FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                    CachedPlayer.LocalPlayer.Data.Role.Role = RoleTypes.Shapeshifter;
                 }
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     p.GetDefaultName();
-                    p.RpcSetName("");//Playing on SuperNewRoles!");
+                    new PlayerAbility(p);
                 }
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    p.Data.RoleType = RoleTypes.Shapeshifter;
+                }
+                RPCHelper.RpcSyncGameData();
                 new LateTask(() =>
                 {
                     if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)

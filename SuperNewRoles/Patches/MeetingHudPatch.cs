@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
+using BepInEx.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles;
@@ -92,6 +93,20 @@ class CheckForEndVotingPatch
                         return false;
                     }
                 }
+            }
+            else if (ModeHandler.IsMode(ModeId.BattleRoyal))
+            {
+                Logger.Info($"{__instance.discussionTimer}");
+                if (__instance.discussionTimer <= 0)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        p.Data.IsDead = false;
+                    }
+                    RPCHelper.RpcSyncGameData();
+                    __instance.RpcVotingComplete(new Il2CppStructArray<VoterState>(new VoterState[] { }), null, false);
+                }
+                return false;
             }
             else if (RoleClass.Assassin.TriggerPlayer != null)
             {

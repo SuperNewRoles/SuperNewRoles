@@ -255,6 +255,9 @@ BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り�
 BattleRoyalIsTeamBattle,Team competition,チーム戦,启用团队赛
 BattleRoyalTeamAmount,Number of teams,チーム数,团队数
 BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数,从游戏开始到玩家可击杀经过的时间
+BattleRoyalRoleNoneText,This role does not exist. Please check the list of roles at "/battleroles" (/btr).,この役職は存在しません。「/battleroles」(/btr)で役職一覧を確認してください。
+BattleRoyalSetRoleText,{0} role has been set to {1}!,{0}の役職が{1}に設定されました！
+BattleRoyalBattleRolesCommandText,,役職の詳細を確認する場合は、/btr [役職名]と入力しましょう。([役職名]には実際の役職名を入れてください)\n()の中にあるのが内部Idです。(こちらもゲーム内で実際に使用できます)
 ZombieZombieName,Zombie,ゾンビ,僵尸
 ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよう,感染他人获得胜利
 ZombiePoliceName,Police,警察,人类
@@ -1298,6 +1301,9 @@ ShermansServantDescription,It is a sidekick to the Oriental shaman.\nIt is possi
 ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation cool time,式神の変身クールタイム,式神化形冷却
 ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム,式神自杀冷却
 ShermansServantTransformationButtonName,Metamorphosis,変身,化形
+ReviverName,Reviver,リバイバー
+ReviverDescription,,チーム専用！能力を使用することで仲間を復活できる。ただし、全員に居場所が通知されてしまう。\n復活には12秒かかり、復活中は動けなく、キルもできない。また、復活後復活した人は3秒間動けない(ただし、キルをすることはできる。)。\n仲間を助け出し、ともに勝利を目指そう。
+
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

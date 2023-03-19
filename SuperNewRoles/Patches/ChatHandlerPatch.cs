@@ -6,6 +6,8 @@ using System.Text;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal;
+using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -70,6 +72,7 @@ class AddChatPatch
             if (AmongUsClient.Instance.AmHost)
             {
                 Assassin.AddChat(sourcePlayer, chatText);
+                if (!SelectRoleSystem.OnAddChat(sourcePlayer, chatText)) return false;
             }
         }
 
@@ -89,6 +92,37 @@ class AddChatPatch
             if (sourcePlayer.AmOwner) sendPlayer = null;
             else sendPlayer = sourcePlayer;
             SendCommand(sendPlayer, $" {SuperNewRolesPlugin.ModName} v{SuperNewRolesPlugin.VersionString}\nCreate by ykundesu{betatext}");
+            return false;
+        }
+        else if (
+            Commands[0].Equals("/BattleRoles", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/btr", StringComparison.OrdinalIgnoreCase)
+            )
+        {
+            if (Commands.Length > 1)
+            {
+                var data = SelectRoleSystem.RoleNames.FirstOrDefault(x => x.Key.Equals(Commands[1], StringComparison.OrdinalIgnoreCase));
+                //nullチェック
+                if (data.Equals(default(KeyValuePair<string, RoleId>)))
+                {
+                    SendCommand(sourcePlayer, ModTranslation.GetString("BattleRoyalRoleNoneText"), SelectRoleSystem.BattleRoyalCommander);
+                }
+                else
+                {
+                    IntroData intro = IntroData.GetIntroData(data.Value, IsImpostorReturn: true);
+                    SendCommand(sourcePlayer, intro.Description, "<size=200%>"+ModHelpers.Cs(RoleClass.ImpostorRed, ModTranslation.GetString($"{intro.NameKey}Name"))+"</size>");
+                }
+            }
+            else
+            {
+                string text = ModTranslation.GetString("BattleRoyalBattleRolesCommandText") + "\n\n";
+                foreach (var role in Enum.GetValues(typeof(BattleRoles)))
+                {
+                    IntroData intro = IntroData.GetIntroData((RoleId)(BattleRoles)role, IsImpostorReturn: true);
+                    text += $"{ModTranslation.GetString(intro.NameKey + "Name")}({(BattleRoles)role})\n";
+                }
+                SendCommand(sourcePlayer, text, SelectRoleSystem.BattleRoyalCommander);
+            }
             return false;
         }
         else if (

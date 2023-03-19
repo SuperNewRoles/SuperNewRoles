@@ -10,6 +10,8 @@ using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal;
+using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
@@ -51,6 +53,11 @@ class RpcShapeshiftPatch
     {
         SyncSetting.CustomSyncSettings();
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
+        if (ModeHandler.IsMode(ModeId.BattleRoyal) && AmongUsClient.Instance.AmHost)
+        {
+            BattleRoyalRole.GetObject(__instance).UseAbility(target);
+            return true;
+        }
         if (target.IsBot()) return true;
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return true;
         if (__instance.PlayerId != target.PlayerId)
@@ -460,23 +467,20 @@ static class CheckMurderPatch
             case ModeId.Zombie:
                 return false;
             case ModeId.BattleRoyal:
-                if (isKill)
+                if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId && isKill)
                 {
                     return false;
                 }
+                PlayerAbility targetAbility = PlayerAbility.GetPlayerAbility(target);
+                if (!PlayerAbility.GetPlayerAbility(__instance).CanUseKill) return false;
+                if (!targetAbility.CanKill) return false;
                 if (Mode.BattleRoyal.Main.StartSeconds <= 0)
                 {
                     if (Mode.BattleRoyal.Main.IsTeamBattle)
                     {
-                        foreach (List<PlayerControl> teams in Mode.BattleRoyal.Main.Teams)
+                        foreach (BattleTeam teams in BattleTeam.BattleTeams)
                         {
-                            if (teams.Count > 0)
-                            {
-                                if (teams.IsCheckListPlayerControl(__instance) && teams.IsCheckListPlayerControl(target))
-                                {
-                                    return false;
-                                }
-                            }
+                            if (teams.IsTeam(__instance) && teams.IsTeam(target)) return false;
                         }
                     }
                     SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]LateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
@@ -484,7 +488,17 @@ static class CheckMurderPatch
                     if (__instance.PlayerId != 0)
                     {
                         target.Data.IsDead = true;
-                        __instance.RpcMurderPlayer(target);
+                        if (targetAbility.CanRevive)
+                        {
+                            target.Data.IsDead = true;
+                            __instance.RpcSnapTo(target.GetTruePosition());
+                            GameDataSerializePatch.Is = true;
+                            RPCHelper.RpcSyncGameData();
+                        }
+                        else
+                        {
+                            __instance.RpcMurderPlayer(target);
+                        }
                         Mode.BattleRoyal.Main.MurderPlayer(__instance, target);
                         isKill = false;
                     }
@@ -494,7 +508,20 @@ static class CheckMurderPatch
                         {
                             if (__instance.IsAlive() && target.IsAlive())
                             {
-                                __instance.RpcMurderPlayer(target);
+                                if (targetAbility.CanRevive)
+                                {
+                                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                                    {
+                                        if (p.IsBot()) continue;
+                                        __instance.RPCMurderPlayerPrivate(target, p);
+                                    }
+                                    GameDataSerializePatch.Is = true;
+                                    RPCHelper.RpcSyncGameData();
+                                }
+                                else
+                                {
+                                    __instance.RpcMurderPlayer(target);
+                                }
                                 Mode.BattleRoyal.Main.MurderPlayer(__instance, target);
                             }
                             isKill = false;

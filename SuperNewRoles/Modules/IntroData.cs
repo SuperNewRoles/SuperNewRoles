@@ -71,11 +71,11 @@ public class IntroData
         }
         IntroList.Add(this);
     }
-    public static IntroData GetIntroData(RoleId RoleId, PlayerControl p = null)
+    public static IntroData GetIntroData(RoleId RoleId, PlayerControl p = null, bool IsImpostorReturn = false)
     {
         if (RoleId is RoleId.DefaultRole or RoleId.Bestfalsecharge)
         {
-            return p != null && p.IsImpostor() ? ImpostorIntro : CrewmateIntro;
+            return p != null && p.IsImpostor() ? ImpostorIntro : p is null && IsImpostorReturn ? ImpostorIntro : CrewmateIntro;
         }
         else if (RoleId is RoleId.Jumbo)
         {
@@ -278,5 +278,6 @@ public class IntroData
     public static IntroData TheThirdLittlePig = new("TheThirdLittlePig", TheThreeLittlePigs.color, 1, RoleId.TheThirdLittlePig, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData OrientalShamanIntro = new("OrientalShaman", OrientalShaman.color, 1, RoleId.OrientalShaman, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData ShermansServantIntro = new("ShermansServant", OrientalShaman.color, 1, RoleId.ShermansServant, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData ReviverIntro = new("Reviver", RoleClass.ImpostorRed, 1, RoleId.Reviver, TeamRoleType.Impostor, IntroSound: RoleTypes.Shapeshifter);
     // イントロオブジェ
 }

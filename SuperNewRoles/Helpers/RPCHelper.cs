@@ -1,9 +1,11 @@
 using System.Linq;
 using AmongUs.GameOptions;
+using AssemblyUnhollower.Extensions;
 using Hazel;
 using InnerNet;
 using Steamworks;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.BattleRoyal;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 using UnityEngine.UIElements.StyleSheets;
@@ -108,6 +110,35 @@ public static class RPCHelper
         val.Write(__instance.NetTransform.lastSequenceId);
         val.EndMessage();
     }
+    public static void RpcSyncGameData(int TargetClientId = -1)
+    {
+        MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+        // 書き込み {}は読みやすさのためです。
+        if (TargetClientId < 0)
+        {
+            writer.StartMessage(5);
+            writer.Write(AmongUsClient.Instance.GameId);
+        }
+        else
+        {
+            writer.StartMessage(6);
+            writer.Write(AmongUsClient.Instance.GameId);
+            if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
+            writer.WritePacked(TargetClientId);
+        }
+        writer.StartMessage(1); //0x01 Data
+        {
+            writer.WritePacked(GameData.Instance.NetId);
+            GameDataSerializePatch.Is = true;
+            GameData.Instance.Serialize(writer, true);
+
+        }
+        writer.EndMessage();
+        writer.EndMessage();
+
+        AmongUsClient.Instance.SendOrDisconnect(writer);
+        writer.Recycle();
+    }
     public static void RpcSyncOption(this IGameOptions gameOptions, int TargetClientId = -1)
     {
         GameManager gm = NormalGameManager.Instance;
@@ -117,7 +148,6 @@ public static class RPCHelper
         {
             writer.StartMessage(5);
             writer.Write(AmongUsClient.Instance.GameId);
-            return;
         }
         else
         {
