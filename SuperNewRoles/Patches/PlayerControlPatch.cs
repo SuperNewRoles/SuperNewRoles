@@ -490,8 +490,12 @@ static class CheckMurderPatch
                         target.Data.IsDead = true;
                         if (targetAbility.CanRevive)
                         {
-                            target.Data.IsDead = true;
-                            __instance.RpcSnapTo(target.GetTruePosition());
+                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                            {
+                                if (p.IsBot()) continue;
+                                if (p.PlayerId == target.PlayerId) continue;
+                                __instance.RPCMurderPlayerPrivate(target, p);
+                            }
                             GameDataSerializePatch.Is = true;
                             RPCHelper.RpcSyncGameData();
                         }
