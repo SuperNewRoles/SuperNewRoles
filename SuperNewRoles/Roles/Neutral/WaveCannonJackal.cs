@@ -1,6 +1,12 @@
 using System.Collections.Generic;
-using UnityEngine;
+using AmongUs.GameOptions;
+using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Patches;
+using SuperNewRoles.Roles.RoleBases;
+using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
 
@@ -61,9 +67,78 @@ class WaveCannonJackal
     }
     // RoleClass End
 
+    // Button Start
+    public static CustomButton WaveCannonJackalSidekickButton;
+
+    public static void MakeButtons(HudManager hm)
+    {
+        WaveCannonJackalSidekickButton = new(
+            () =>
+            {
+                var target = PlayerControlFixedUpdatePatch.JackalSetTarget();
+                if (target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && CanCreateSidekick)
+                {
+                    if (target.IsRole(RoleId.SideKiller)) // サイドキック相手がマッドキラーの場合
+                    {
+                        if (!RoleClass.SideKiller.IsUpMadKiller) // サイドキラーが未昇格の場合
+                        {
+                            var sidePlayer = RoleClass.SideKiller.GetSidePlayer(target); // targetのサイドキラーを取得
+                            if (sidePlayer != null) // null(作っていない)ならば処理しない
+                            {
+                                sidePlayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
+                                RoleClass.SideKiller.IsUpMadKiller = true;
+                            }
+                        }
+                    }
+                    if (CanCreateFriend)
+                    {
+                        Jackal.CreateJackalFriends(target); //クルーにして フレンズにする
+                    }
+                    else
+                    {
+                        bool IsFakeWaveCannonJackal = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.WaveCannonJackalSidekick, target);
+                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CreateSidekickWaveCannon, SendOption.Reliable, -1);
+                        killWriter.Write(target.PlayerId);
+                        killWriter.Write(IsFakeWaveCannonJackal);
+                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                        RPCProcedure.CreateSidekickWaveCannon(target.PlayerId, IsFakeWaveCannonJackal);
+                    }
+                    CanCreateSidekick = false;
+                }
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role is RoleId.WaveCannonJackal && ModeHandler.IsMode(ModeId.Default) && CanCreateSidekick; },
+            () =>
+            {
+                return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
+            },
+            () => { EndMeeting(); },
+            RoleClass.Jackal.GetButtonSprite(),
+            new Vector3(-2.925f, -0.06f, 0),
+            hm,
+            hm.AbilityButton,
+            null,
+            0,
+            () => { return false; }
+        )
+        {
+            buttonText = ModTranslation.GetString("JackalCreateSidekickButtonName"),
+            showButtonText = true
+        };
+    }
     public static void ResetCooldowns()
     {
         HudManagerStartPatch.JackalKillButton.MaxTimer = WaveCannonJackalKillCooldown.GetFloat();
         HudManagerStartPatch.JackalKillButton.Timer = HudManagerStartPatch.JackalKillButton.MaxTimer;
     }
+
+    public static void EndMeetingResetCooldown()
+    {
+        HudManagerStartPatch.JackalKillButton.MaxTimer = WaveCannonJackalKillCooldown.GetFloat();
+        HudManagerStartPatch.JackalKillButton.Timer = HudManagerStartPatch.JackalKillButton.MaxTimer;
+        WaveCannonJackalSidekickButton.MaxTimer = WaveCannonJackalSKCooldown.GetFloat();
+        WaveCannonJackalSidekickButton.Timer = WaveCannonJackalSidekickButton.MaxTimer;
+    }
+    public static void EndMeeting() => EndMeetingResetCooldown();
+
+    // Button Start
 }

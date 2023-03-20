@@ -216,6 +216,7 @@ public enum CustomRPC
     SidekickPromotes = 160,
     CreateSidekick,
     CreateSidekickSeer,
+    CreateSidekickWaveCannon,
     SetSpeedBoost,
     AutoCreateRoom,
     CountChangerSetRPC,
@@ -1278,6 +1279,20 @@ public static class RPCProcedure
             ChacheManager.ResetMyRoleChache();
         }
     }
+
+    public static void CreateSidekickWaveCannon(byte playerid, bool IsFake)
+    {
+        var player = ModHelpers.PlayerById(playerid);
+        if (player == null) return;
+        if (IsFake) WaveCannonJackal.FakeSidekickWaveCannonPlayer.Add(player);
+        else
+        {
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
+            player.ClearRole(); // FIXME:RoleBase化でいらなくなるはず
+            player.SetRole(RoleId.SidekickWaveCannon);
+        }
+        Logger.Info("ぷぇ");
+    }
     public static void ExiledRPC(byte playerid)
     {
         var player = ModHelpers.PlayerById(playerid);
@@ -1644,6 +1659,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.CreateSidekickSeer:
                         CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case CustomRPC.CreateSidekickWaveCannon:
+                        CreateSidekickWaveCannon(reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.ArsonistDouse:
                         ArsonistDouse(reader.ReadByte(), reader.ReadByte());

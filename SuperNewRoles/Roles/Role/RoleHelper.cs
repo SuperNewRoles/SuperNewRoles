@@ -99,6 +99,7 @@ public static class RoleHelpers
         RoleId.PartTimer or
         RoleId.GM or
         RoleId.WaveCannonJackal or
+        RoleId.SidekickWaveCannon or
         RoleId.Photographer or
         RoleId.Pavlovsdogs or
         RoleId.Pavlovsowner or
@@ -126,6 +127,7 @@ public static class RoleHelpers
         RoleId.JackalSeer or
         RoleId.SidekickSeer or
         RoleId.WaveCannonJackal or
+        RoleId.SidekickWaveCannon or
         RoleId.Hitman or
         RoleId.Egoist or
         RoleId.FireFox;
@@ -145,13 +147,14 @@ public static class RoleHelpers
             RoleId.JackalSeer or
             RoleId.SidekickSeer or
             RoleId.MayorFriends or
-            RoleId.WaveCannonJackal;
+            RoleId.WaveCannonJackal or
+            RoleId.SidekickWaveCannon;
 
     public static bool IsJackalTeamJackal(this PlayerControl player)
         => player.GetRole() is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal or RoleId.WaveCannonJackal;
 
     public static bool IsJackalTeamSidekick(this PlayerControl player)
-        => player.GetRole() is RoleId.Sidekick or RoleId.SidekickSeer;
+        => player.GetRole() is RoleId.Sidekick or RoleId.SidekickSeer or RoleId.SidekickWaveCannon ;
 
     //We are JackalFriends!
     public static bool IsFriendRoles(this PlayerControl player) =>
@@ -871,6 +874,9 @@ public static class RoleHelpers
                 break;
             case RoleId.ShermansServant:
                 OrientalShaman.ShermansServantPlayer.Add(player);
+                break;
+            case RoleId.SidekickWaveCannon:
+                SidekickWaveCannon.allPlayers.Add(player);
                 break;
             // ロールアド
             default:

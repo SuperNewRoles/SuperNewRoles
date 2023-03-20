@@ -1310,6 +1310,8 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
+        WaveCannonJackal.MakeButtons(__instance);
+
         JackalKillButton = new(
             () =>
             {
@@ -1342,7 +1344,7 @@ static class HudManagerStartPatch
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
                 else if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
-                else if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannonJackal)) { WaveCannonJackal.ResetCooldowns(); }
+                else if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannonJackal)) { WaveCannonJackal.EndMeeting(); }
             },
             __instance.KillButton.graphic.sprite,
             new Vector3(0, 1, 0),
