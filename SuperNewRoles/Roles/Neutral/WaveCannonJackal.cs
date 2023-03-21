@@ -9,6 +9,7 @@ using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
+using static SuperNewRoles.Patches.PlayerControlFixedUpdatePatch;
 
 namespace SuperNewRoles.Roles.Neutral;
 
@@ -75,7 +76,7 @@ class WaveCannonJackal
         WaveCannonJackalSidekickButton = new(
             () =>
             {
-                var target = PlayerControlFixedUpdatePatch.JackalSetTarget();
+                var target = JackalSetTarget();
                 if (target && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && CanCreateSidekick)
                 {
                     if (target.IsRole(RoleId.SideKiller)) // サイドキック相手がマッドキラーの場合
@@ -109,7 +110,7 @@ class WaveCannonJackal
             (bool isAlive, RoleId role) => { return isAlive && role is RoleId.WaveCannonJackal && ModeHandler.IsMode(ModeId.Default) && CanCreateSidekick; },
             () =>
             {
-                return PlayerControlFixedUpdatePatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
+                return JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
             },
             () => { EndMeeting(); },
             RoleClass.Jackal.GetButtonSprite(),
@@ -141,4 +142,42 @@ class WaveCannonJackal
     public static void EndMeeting() => EndMeetingResetCooldown();
 
     // Button Start
+
+    public class WaveCannonJackalFixedPatch
+    {
+        public static void WaveCannonJackalPlayerOutLineTarget()
+        {
+            JackalSeer.SetPlayerOutline(JackalSetTarget(), color);
+        }
+        public static void Postfix(PlayerControl __instance, RoleId role)
+        {
+            if (AmongUsClient.Instance.AmHost)
+            {
+                if (SidekickWaveCannon.allPlayers.Count > 0)
+                {
+                    var upflag = true;
+                    foreach (PlayerControl p in WaveCannonJackalPlayer)
+                    {
+                        if (p.IsAlive())
+                        {
+                            upflag = false;
+                        }
+                    }
+                    if (upflag)
+                    {
+                        byte jackalId = (byte)RoleId.WaveCannonJackal;
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SidekickPromotes, SendOption.Reliable, -1);
+                        writer.Write(jackalId);
+                        writer.Write(true);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        RPCProcedure.SidekickPromotes(jackalId, true);
+                    }
+                }
+            }
+            if (role == RoleId.WaveCannonJackal)
+            {
+                WaveCannonJackalPlayerOutLineTarget();
+            }
+        }
+    }
 }

@@ -49,10 +49,12 @@ class JackalSeer
                     }
                     if (upflag)
                     {
+                        byte jackalId = (byte)RoleId.JackalSeer;
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SidekickPromotes, SendOption.Reliable, -1);
+                        writer.Write(jackalId);
                         writer.Write(true);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.SidekickPromotes(true);
+                        RPCProcedure.SidekickPromotes(jackalId, true);
                     }
                 }
             }

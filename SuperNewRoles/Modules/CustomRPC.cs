@@ -1220,26 +1220,37 @@ public static class RPCProcedure
             }
         }
     }
-    public static void SidekickPromotes(bool isJackalSeer)
+    public static void SidekickPromotes(byte jackalId, bool useAbility)
     {
-        if (isJackalSeer)
-        {
-            foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
-            {
-                p.ClearRole();
-                p.SetRole(RoleId.JackalSeer);
-                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                RoleClass.JackalSeer.CanCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
-            }
-        }
-        else
+        RoleId jackalRoleId = (RoleId)jackalId;
+        if (jackalRoleId == RoleId.Jackal)
         {
             foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer.ToArray())
             {
                 p.ClearRole();
-                p.SetRole(RoleId.Jackal);
+                p.SetRole(jackalRoleId);
                 //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
                 RoleClass.Jackal.CanCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
+            }
+        }
+        else if (jackalRoleId == RoleId.JackalSeer)
+        {
+            foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
+            {
+                p.ClearRole();
+                p.SetRole(jackalRoleId);
+                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
+                RoleClass.JackalSeer.CanCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
+            }
+        }
+        else if (jackalRoleId == RoleId.WaveCannonJackal)
+        {
+            foreach (PlayerControl p in SidekickWaveCannon.allPlayers.ToArray())
+            {
+                p.ClearRole();
+                p.SetRole(jackalRoleId);
+                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
+                WaveCannonJackal.CanCreateSidekick = WaveCannonJackal.WaveCannonJackalNewJackalCreateSidekick.GetBool();
             }
         }
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
@@ -1291,7 +1302,6 @@ public static class RPCProcedure
             player.ClearRole(); // FIXME:RoleBase化でいらなくなるはず
             player.SetRole(RoleId.SidekickWaveCannon);
         }
-        Logger.Info("ぷぇ");
     }
     public static void ExiledRPC(byte playerid)
     {
@@ -1585,7 +1595,7 @@ public static class RPCProcedure
                         SetQuarreled(reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.SidekickPromotes:
-                        SidekickPromotes(reader.ReadBoolean());
+                        SidekickPromotes(reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.CreateSidekick:
                         CreateSidekick(reader.ReadByte(), reader.ReadBoolean());

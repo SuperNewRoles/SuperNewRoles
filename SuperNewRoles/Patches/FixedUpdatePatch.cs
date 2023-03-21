@@ -99,6 +99,7 @@ public class FixedUpdate
                 NiceMechanic.FixedUpdate();
                 Jackal.JackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 JackalSeer.JackalSeerFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
+                WaveCannonJackal.WaveCannonJackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 Roles.Crewmate.Psychometrist.FixedUpdate();
                 Roles.Impostor.Matryoshka.FixedUpdate();
                 Roles.Neutral.PartTimer.FixedUpdate();
