@@ -193,7 +193,8 @@ public enum RoleId
     OrientalShaman,
     ShermansServant,
     Reviver,
-    Guardrawer
+    Guardrawer,
+    KingPoster
     //RoleId
 }
 

@@ -12,6 +12,7 @@ using AmongUs.Data;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
+using UnhollowerBaseLib;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics;
@@ -204,6 +205,30 @@ public class CustomHats
 
     private static HatData CreateHatData(CustomHatLoader.CustomHatOnline chd) => CreateHatData(chd, true);
 
+    [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetUnlockedHats))]
+    public static class HatManagerUnlockedPatch
+    {
+        public static void Postfix(HatManager __instance, ref Il2CppReferenceArray<HatData> __result)
+        {
+            __result = __instance.allHats;
+        }
+    }
+    [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetUnlockedSkins))]
+    public static class HatManagerUnlockedSkinPatch
+    {
+        public static void Postfix(HatManager __instance, ref Il2CppReferenceArray<SkinData> __result)
+        {
+            __result = __instance.allSkins;
+        }
+    }
+    [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetUnlockedVisors))]
+    public static class HatManagerUnlockedVisorPatch
+    {
+        public static void Postfix(HatManager __instance, ref Il2CppReferenceArray<VisorData> __result)
+        {
+            __result = __instance.allVisors;
+        }
+    }
     [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetHatById))]
     public static class HatManagerPatch
     {

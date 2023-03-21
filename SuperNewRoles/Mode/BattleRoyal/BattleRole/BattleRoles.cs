@@ -9,6 +9,7 @@ namespace SuperNewRoles.Mode.BattleRoyal.BattleRole
         //RoleIdの値を設定するんだ！
         None = 0,
         Reviver = 166,
-        Guardrawer = 167
+        Guardrawer = 167,
+        KingPoster = 168
     }
 }
