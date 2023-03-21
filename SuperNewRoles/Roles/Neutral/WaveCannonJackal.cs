@@ -58,6 +58,7 @@ class WaveCannonJackal
     public static bool CreateSidekick;
     public static bool CanCreateSidekick;
     public static bool CanCreateFriend;
+    public static bool IwasSidekicked;
     public static void ClearAndReload()
     {
         WaveCannonJackalPlayer = new();
@@ -65,6 +66,7 @@ class WaveCannonJackal
         CreatePlayers = new();
         CanCreateSidekick = WaveCannonJackalCreateSidekick.GetBool();
         CanCreateFriend = WaveCannonJackalCreateFriend.GetBool();
+        IwasSidekicked = false;
     }
     // RoleClass End
 
