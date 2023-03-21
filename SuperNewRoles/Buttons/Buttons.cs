@@ -173,6 +173,8 @@ static class HudManagerStartPatch
                 WiseMan.RpcSetWiseManStatus(0, false);
                 Camera.main.GetComponent<FollowerCamera>().Locked = false;
                 PlayerControl.LocalPlayer.moveable = true;
+                WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
+                WiseManButton.Timer = WiseManButton.MaxTimer;
             }
         )
         {
