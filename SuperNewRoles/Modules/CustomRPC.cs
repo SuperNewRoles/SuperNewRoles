@@ -192,7 +192,8 @@ public enum RoleId
     TheThirdLittlePig,
     OrientalShaman,
     ShermansServant,
-    Reviver
+    Reviver,
+    Guardrawer
     //RoleId
 }
 

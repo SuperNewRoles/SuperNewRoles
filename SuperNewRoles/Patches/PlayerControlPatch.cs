@@ -473,6 +473,21 @@ static class CheckMurderPatch
                     return false;
                 }
                 PlayerAbility targetAbility = PlayerAbility.GetPlayerAbility(target);
+                if (target.IsRole(RoleId.Guardrawer) && Guardrawer.guardrawers.FirstOrDefault(x => x.CurrentPlayer == target).IsAbilityUsingNow) {
+                    __instance.Data.IsDead = true;
+                    if (PlayerAbility.GetPlayerAbility(__instance).CanRevive)
+                    {
+                        target.RpcSnapTo(__instance.transform.position);
+                        GameDataSerializePatch.Is = true;
+                        RPCHelper.RpcSyncGameData();
+                    }
+                    else
+                    {
+                        target.RpcMurderPlayer(__instance);
+                    }
+                    Mode.BattleRoyal.Main.MurderPlayer(target, __instance);
+                    return false;
+                }
                 if (!PlayerAbility.GetPlayerAbility(__instance).CanUseKill) return false;
                 if (!targetAbility.CanKill) return false;
                 if (Mode.BattleRoyal.Main.StartSeconds <= 0)
@@ -491,7 +506,6 @@ static class CheckMurderPatch
                         target.Data.IsDead = true;
                         if (targetAbility.CanRevive)
                         {
-                            target.Data.IsDead = true;
                             __instance.RpcSnapTo(target.transform.position);
                             GameDataSerializePatch.Is = true;
                             RPCHelper.RpcSyncGameData();

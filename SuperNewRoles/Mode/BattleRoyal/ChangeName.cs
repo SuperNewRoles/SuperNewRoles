@@ -52,7 +52,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     if (seeplayer.IsBot()) continue;
                     if (seeplayer.PlayerId == player.PlayerId) continue;
                     if (!team.IsTeam(seeplayer) && seeplayer.IsAlive()) continue;
-                    if (seeplayer.IsMod()) continue;
                     player.RpcSetNamePrivate(name, seeplayer);
                 }
             }

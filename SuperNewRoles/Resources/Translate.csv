@@ -1304,6 +1304,9 @@ ShermansServantTransformationButtonName,Metamorphosis,変身,化形
 ReviverName,Reviver,リバイバー
 ReviverDescription,For team use only! The ability can be used to revive a fellow team member. However, everyone will be notified of their location.\n It takes 12 seconds to resurrect, and while resurrected, you cannot move and you cannot kill. Also, after resurrection, the resurrected person cannot move for 3 seconds (but can still make kills). \nThe resurrected person cannot move for 3 seconds (but can still be killed). Let's rescue our friends and aim for victory together.,チーム専用！能力を使用することで仲間を復活できる。ただし、全員に居場所が通知されてしまう。\n復活には12秒かかり、復活中は動けなく、キルもできない。また、復活後復活した人は3秒間動けない(ただし、キルをすることはできる。)。\n仲間を助け出し、ともに勝利を目指そう。
 ReviverReviveStart,Somewhere Reviver has started a revive.,どこかでリバイバーが復活を開始しました。
+GuardrawerName,Guardrawer,ガードロワー
+GuardrawerDescription,,能力を使用することで一定時間攻撃を跳ね返すことができる。しかしその間自分はキルできない。使用中は味方含む周りのプレイヤーが自分へ引き寄せられる。
+GuardrawerAbilityStart,,{0}がガードロワーで引き寄せ始めた。
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示
