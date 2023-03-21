@@ -152,6 +152,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 p.Data.IsDead = false;
             }
             RPCHelper.RpcSyncGameData();
+            ChangeName.UpdateName();
         }
         private static Dictionary<string, RoleId> _roleNames;
         public static string BattleRoyalCommander => $"<size=200%><color=#745030>{ModTranslation.GetString("BattleRoyalModeName")}</color></size>";

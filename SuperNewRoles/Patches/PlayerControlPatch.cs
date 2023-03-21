@@ -53,9 +53,10 @@ class RpcShapeshiftPatch
     {
         SyncSetting.CustomSyncSettings();
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
-        if (ModeHandler.IsMode(ModeId.BattleRoyal) && AmongUsClient.Instance.AmHost)
+        if (ModeHandler.IsMode(ModeId.BattleRoyal) && AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId)
         {
             BattleRoyalRole.GetObject(__instance).UseAbility(target);
+            new LateTask(() => __instance.RpcRevertShapeshift(true), 0.1f);
             return true;
         }
         if (target.IsBot()) return true;
@@ -490,12 +491,8 @@ static class CheckMurderPatch
                         target.Data.IsDead = true;
                         if (targetAbility.CanRevive)
                         {
-                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                            {
-                                if (p.IsBot()) continue;
-                                if (p.PlayerId == target.PlayerId) continue;
-                                __instance.RPCMurderPlayerPrivate(target, p);
-                            }
+                            target.Data.IsDead = true;
+                            __instance.RpcSnapTo(target.transform.position);
                             GameDataSerializePatch.Is = true;
                             RPCHelper.RpcSyncGameData();
                         }
@@ -514,11 +511,8 @@ static class CheckMurderPatch
                             {
                                 if (targetAbility.CanRevive)
                                 {
-                                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                                    {
-                                        if (p.IsBot()) continue;
-                                        __instance.RPCMurderPlayerPrivate(target, p);
-                                    }
+                                    target.Data.IsDead = true;
+                                    __instance.RpcSnapTo(target.transform.position);
                                     GameDataSerializePatch.Is = true;
                                     RPCHelper.RpcSyncGameData();
                                 }

@@ -86,6 +86,11 @@ public static class RPCHelper
     {
         if (TargetPlayer == null || NewName == null || !AmongUsClient.Instance.AmHost) return;
         if (SeePlayer == null) SeePlayer = TargetPlayer;
+        if (SeePlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+        {
+            TargetPlayer.SetName(NewName);
+            return;
+        }
         var clientId = SeePlayer.GetClientId();
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SetName, SendOption.Reliable, clientId);
         writer.Write(NewName);

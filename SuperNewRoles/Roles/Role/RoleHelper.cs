@@ -1843,6 +1843,7 @@ public static class RoleHelpers
             else if (TheThreeLittlePigs.TheFirstLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheFirstLittlePig;
             else if (TheThreeLittlePigs.TheSecondLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheSecondLittlePig;
             else if (TheThreeLittlePigs.TheThirdLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheThirdLittlePig;
+            else if (Reviver.IsReviver(player)) return RoleId.Reviver;
             else if (OrientalShaman.OrientalShamanPlayer.IsCheckListPlayerControl(player)) return RoleId.OrientalShaman;
             else if (OrientalShaman.ShermansServantPlayer.IsCheckListPlayerControl(player)) return RoleId.ShermansServant;
             // ロールチェック

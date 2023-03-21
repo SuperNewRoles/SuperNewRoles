@@ -20,7 +20,8 @@ class Main
         if (!AmongUsClient.Instance.AmHost) return;
         if (FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed) return;
         if (!IsRoleSetted) return;
-        SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
+        //SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
+        ChangeName.FixedUpdate();
         foreach (BattleRoyalRole role in BattleRoyalRole.BattleRoyalRoles)
         {
             role.FixedUpdate();
@@ -83,6 +84,7 @@ class Main
                 {
                     if (!p.Data.Disconnected)
                     {
+                        p.GetDefaultName();
                         p.RpcSetNamePrivate(ModTranslation.GetString("BattleRoyalRemaining") + ((int)StartSeconds + 1) + ModTranslation.GetString("second"));
                     }
                 }
@@ -91,7 +93,7 @@ class Main
             if (StartSeconds <= 0)
             {
                 IsStart = true;
-                ModeHandler.HideName();
+                //ModeHandler.HideName();
                 foreach (BattleTeam team in BattleTeam.BattleTeams)
                 {
                     if (team.IsTeam(PlayerControl.LocalPlayer))
@@ -105,6 +107,7 @@ class Main
                         }
                     }
                 }
+                ChangeName.UpdateName();
             }
         }
     }
@@ -267,6 +270,8 @@ class Main
         IsIntroEnded = false;
         BattleTeam.ClearAll();
         PlayerAbility.ClearAll();
+
+        ChangeName.ClearAll();
 
         BattleRoyalRole.ClearAll();
         Reviver.Clear();

@@ -57,7 +57,7 @@ namespace SuperNewRoles.Mode.BattleRoyal.BattleRole
                         targetability.CanUseKill = true;
                         targetability.CanMove = false;
                         currentTarget.Data.IsDead = false;
-                        currentTarget.RpcSnapTo(CurrentPlayer.GetTruePosition());
+                        currentTarget.RpcSnapTo(CurrentPlayer.transform.position);
                         RPCHelper.RpcSyncGameData();
                         SyncBattleOptions.CustomSyncOptions(CurrentPlayer);
                         IsReviverTime = true;
@@ -86,6 +86,8 @@ namespace SuperNewRoles.Mode.BattleRoyal.BattleRole
             IsReviverTime = false;
             AbilityTime = RoleParameter.ReviverPlayerStuckTime;
             currentTarget = target;
+            ChangeName.SetNotification(ModTranslation.GetString("ReviverReviveStart"), RoleParameter.ReviverShowNotificationDurationTime);
+            ChangeName.UpdateName(true);
         }
         public static void Clear()
         {
