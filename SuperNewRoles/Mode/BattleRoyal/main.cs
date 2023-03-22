@@ -276,6 +276,7 @@ class Main
         BattleRoyalRole.ClearAll();
         Reviver.Clear();
         Guardrawer.Clear();
+        KingPoster.Clear();
 
         RoleSettedPlayers = new();
         IsRoleSetted = false;

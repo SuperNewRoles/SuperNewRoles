@@ -211,6 +211,40 @@ public static class RPCHelper
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
 
+    public static void RpcSetHatUnchecked(this PlayerControl player, string hatId, PlayerControl seePlayer = null)
+    {
+        if (AmongUsClient.Instance.AmClient)
+        {
+            int valueOrDefault = (player.Data?.DefaultOutfit?.ColorId).GetValueOrDefault();
+            player.SetHat(hatId, valueOrDefault);
+        }
+        MessageWriter messageWriter = StartRPC(player.NetId, RpcCalls.SetHat, seePlayer);
+        messageWriter.Write(hatId);
+        messageWriter.EndRPC();
+    }
+    public static void RpcSetVisorUnchecked(this PlayerControl player, string visorId, PlayerControl seePlayer = null)
+    {
+        if (AmongUsClient.Instance.AmClient)
+        {
+            int valueOrDefault = (player.Data?.DefaultOutfit?.ColorId).GetValueOrDefault();
+            player.SetVisor(visorId, valueOrDefault);
+        }
+        MessageWriter messageWriter = StartRPC(player.NetId, RpcCalls.SetVisor, seePlayer);
+        messageWriter.Write(visorId);
+        messageWriter.EndRPC();
+    }
+    public static void RpcSetSkinUnchecked(this PlayerControl player, string skinId, PlayerControl seePlayer = null)
+    {
+        if (AmongUsClient.Instance.AmClient)
+        {
+            int valueOrDefault = (player.Data?.DefaultOutfit?.ColorId).GetValueOrDefault();
+            player.SetSkin(skinId, valueOrDefault);
+        }
+        MessageWriter messageWriter = StartRPC(player.NetId, RpcCalls.SetSkin, seePlayer);
+        messageWriter.Write(skinId);
+        messageWriter.EndRPC();
+    }
+
     public static void RpcVotingCompletePrivate(MeetingHud __instance, VoterState[] states, GameData.PlayerInfo exiled, bool tie, PlayerControl SeePlayer)
     {
         MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 23, SendOption.None, SeePlayer.GetClientId());

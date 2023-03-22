@@ -1307,6 +1307,9 @@ ReviverReviveStart,Somewhere Reviver has started a revive.,どこかでリバイ
 GuardrawerName,Guardrawer,ガードロワー
 GuardrawerDescription,,能力を使用することで一定時間攻撃を跳ね返すことができる。しかしその間自分はキルできない。使用中は味方含む周りのプレイヤーが自分へ引き寄せられる。
 GuardrawerAbilityStart,,{0}がガードロワーで引き寄せ始めた。
+KingPosterName,KingPoster,キングポスター
+KingPosterTitle,,最初と最後に大きな硬直があるが、効果時間中は無敵。敵に近づくことで自動でキルされるぞ!無敵を利用して敵をキルしまくれ！
+KingPosterStartMessage,KingPoster is using ability now!!!,キングポスターが能力を使用した！
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

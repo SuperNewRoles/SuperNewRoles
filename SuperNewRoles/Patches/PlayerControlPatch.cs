@@ -46,6 +46,42 @@ public class UsePlatformPlayerControlPatch
         return false;
     }
 }
+// Allow movement interpolation to use velocities greater than the local player's
+[HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.FixedUpdate))]
+public static class NetworkTransformFixedUpdatePatch
+{
+    public static bool Prefix(CustomNetworkTransform __instance)
+    {
+        if (__instance.AmOwner)
+        {
+            if (__instance.HasMoved())
+            {
+                __instance.SetDirtyBit(3U);
+                return false;
+            }
+        }
+        else
+        {
+            if (__instance.interpolateMovement != 0f)
+            {
+                Vector2 vector = __instance.targetSyncPosition - __instance.body.position;
+                if (vector.sqrMagnitude >= 0.0001f)
+                {
+                    float num = __instance.interpolateMovement / __instance.sendInterval;
+                    vector.x *= num;
+                    vector.y *= num;
+                    __instance.body.velocity = vector;
+                }
+                else
+                {
+                    __instance.body.velocity = Vector2.zero;
+                }
+            }
+            __instance.targetSyncPosition += __instance.targetSyncVelocity * Time.fixedDeltaTime * 0.1f;
+        }
+        return false;
+    }
+}
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
 class RpcShapeshiftPatch
 {
@@ -53,7 +89,7 @@ class RpcShapeshiftPatch
     {
         SyncSetting.CustomSyncSettings();
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
-        if (ModeHandler.IsMode(ModeId.BattleRoyal) && AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId)
+        if (ModeHandler.IsMode(ModeId.BattleRoyal) && AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId && Mode.BattleRoyal.Main.StartSeconds <= 0)
         {
             BattleRoyalRole.GetObject(__instance).UseAbility(target);
             new LateTask(() => __instance.RpcRevertShapeshift(true), 0.1f);
@@ -489,7 +525,13 @@ static class CheckMurderPatch
                     return false;
                 }
                 if (!PlayerAbility.GetPlayerAbility(__instance).CanUseKill) return false;
+                KingPoster kp = KingPoster.GetKingPoster(__instance);
                 if (!targetAbility.CanKill) return false;
+                if (__instance.IsRole(RoleId.KingPoster) && kp.IsAbilityUsingNow)
+                {
+                    kp.OnKillClick(target);
+                    return false;
+                }
                 if (Mode.BattleRoyal.Main.StartSeconds <= 0)
                 {
                     if (Mode.BattleRoyal.Main.IsTeamBattle)
