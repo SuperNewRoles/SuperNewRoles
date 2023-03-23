@@ -882,6 +882,9 @@ public static class RoleHelpers
             case RoleId.KingPoster:
                 new KingPoster(player);
                 break;
+            case RoleId.LongKiller:
+                new LongKiller(player);
+                break;
             case RoleId.DefaultRole when ModeHandler.IsMode(ModeId.BattleRoyal):
                 new BattleRoyalRole(player);
                 break;
@@ -1852,6 +1855,7 @@ public static class RoleHelpers
             else if (Reviver.IsReviver(player)) return RoleId.Reviver;
             else if (Guardrawer.IsGuardrawer(player)) return RoleId.Guardrawer;
             else if (KingPoster.IsKingPoster(player)) return RoleId.KingPoster;
+            else if (LongKiller.IsLongKiller(player)) return RoleId.LongKiller;
             else if (OrientalShaman.OrientalShamanPlayer.IsCheckListPlayerControl(player)) return RoleId.OrientalShaman;
             else if (OrientalShaman.ShermansServantPlayer.IsCheckListPlayerControl(player)) return RoleId.ShermansServant;
             // ロールチェック

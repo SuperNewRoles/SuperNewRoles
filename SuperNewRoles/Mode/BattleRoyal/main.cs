@@ -277,6 +277,7 @@ class Main
         Reviver.Clear();
         Guardrawer.Clear();
         KingPoster.Clear();
+        LongKiller.Clear();
 
         RoleSettedPlayers = new();
         IsRoleSetted = false;

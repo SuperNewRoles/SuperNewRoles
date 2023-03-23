@@ -1310,6 +1310,8 @@ GuardrawerAbilityStart,,{0}がガードロワーで引き寄せ始めた。
 KingPosterName,KingPoster,キングポスター
 KingPosterTitle,,最初と最後に大きな硬直があるが、効果時間中は無敵。敵に近づくことで自動でキルされるぞ!無敵を利用して敵をキルしまくれ！
 KingPosterStartMessage,KingPoster is using ability now!!!,キングポスターが能力を使用した！
+LongKillerName,LongKiller,ロングキラー
+LongKillerDescription,It has a long kill range, but the kill time is also a bit long. (1.3x)\nKill with your own kill range!,キル範囲は長いが、キルクールタイムもちょっと長い。(1.3倍)\n持ち前のキル範囲を生かしてキルせよ!
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

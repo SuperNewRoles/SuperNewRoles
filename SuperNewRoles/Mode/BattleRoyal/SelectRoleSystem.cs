@@ -152,6 +152,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 p.Data.IsDead = false;
             }
             RPCHelper.RpcSyncGameData();
+            SyncBattleOptions.CustomSyncOptions();
             ChangeName.UpdateName();
         }
         private static Dictionary<string, RoleId> _roleNames;

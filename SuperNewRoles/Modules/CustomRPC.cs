@@ -194,7 +194,8 @@ public enum RoleId
     ShermansServant,
     Reviver,
     Guardrawer,
-    KingPoster
+    KingPoster,
+    LongKiller
     //RoleId
 }
 

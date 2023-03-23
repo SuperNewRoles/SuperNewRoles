@@ -10,6 +10,7 @@ namespace SuperNewRoles.Mode.BattleRoyal.BattleRole
         None = 0,
         Reviver = 166,
         Guardrawer = 167,
-        KingPoster = 168
+        KingPoster = 168,
+        LongKiller = 169
     }
 }
