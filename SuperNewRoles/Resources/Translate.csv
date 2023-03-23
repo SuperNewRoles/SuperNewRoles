@@ -1184,6 +1184,7 @@ PenguinName,Penguin,ペンギン,绑匪,綁匪
 PenguinTitle1,Let's drag and kill!,ぺちぺち！,绑架他人,綁架他人
 PenguinButtonName,Abduction,拉致,绑架,綁架
 PenguinCanDefaultKill,Can default kill,通常キルができる,绑匪可以进行通常击杀,綁匪可以進行通常擊殺
+PenguinMeetingKill,Kill when the meeting starts,能力発動中に会議が始まった場合キルをする
 LoversBreakerName,LoversBreaker,爆ぜ師,FFF团,現充爆破者
 LoversBreakerTitle1,fulfilling life explosion!!fulfilling life explosion!!,リア充爆発！！リア充爆発！！,现充去死！现充爆炸！,現充通通爆破吧！
 LoversBreakerBreakCount,Number of explosions needed to win,勝利に必要な爆破数,FFF团获胜所需击杀的恋人数,現充爆破者所需擊殺戀人數

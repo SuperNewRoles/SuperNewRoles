@@ -9,6 +9,7 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using Sentry;
+using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapOption;
@@ -291,6 +292,7 @@ public enum CustomRPC
     SetOutfit,
     CreateShermansServant,
     SetVisible,
+    PenguinMeetingEnd,
 }
 
 public static class RPCProcedure
@@ -1461,6 +1463,13 @@ public static class RPCProcedure
         Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
     }
 
+    public static void PenguinMeetingEnd()
+    {
+        RoleClass.Penguin.PenguinData.Clear();
+        if (PlayerControl.LocalPlayer.GetRole() == RoleId.Penguin)
+            HudManagerStartPatch.PenguinButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+    }
+
     public static void SetLoversBreakerWinner(byte playerid) => RoleClass.LoversBreaker.CanEndGamePlayers.Add(playerid);
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
@@ -1809,6 +1818,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetVisible:
                         SetVisible(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case CustomRPC.PenguinMeetingEnd:
+                        PenguinMeetingEnd();
                         break;
                 }
             }
