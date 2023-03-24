@@ -20,5 +20,7 @@ namespace SuperNewRoles.Mode.BattleRoyal.BattleRole
         public static readonly string[] KingPosterAbilityCosmeticSpecialHats = new string[3] { "hat_crownDouble", "hat_crownBean", "hat_crownTall" };
         public const string KingPosterAbilityCosmeticVisor = "visor_hl_marine";
         public static readonly string[] KingPosterAbilityCosmeticSkins = new string[3] { "skin_D2Hunter", "skin_D2Osiris", "skin_D2Saint14" };
+
+        public const float RevengerReviveTime = 7;
     }
 }

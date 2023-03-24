@@ -283,5 +283,6 @@ public class IntroData
     public static IntroData KingPosterIntro = new("KingPoster", RoleClass.ImpostorRed, 1, RoleId.KingPoster, TeamRoleType.Impostor, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData LongKillerIntro = new("LongKiller", RoleClass.ImpostorRed, 1, RoleId.LongKiller, TeamRoleType.Impostor, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData DarknightIntro = new("Darknight", RoleClass.ImpostorRed, 1, RoleId.Darknight, TeamRoleType.Impostor, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData RevengerIntro = new("Revenger", RoleClass.ImpostorRed, 1, RoleId.Revenger, TeamRoleType.Impostor, IntroSound: RoleTypes.Shapeshifter);
     // イントロオブジェ
 }

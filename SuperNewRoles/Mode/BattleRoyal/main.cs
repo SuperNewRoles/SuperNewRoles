@@ -131,6 +131,10 @@ class Main
         {
             Darknight.GetDarknightPlayer(source).OnKill(target);
         }
+        foreach (Revenger revenger in Revenger.revengers)
+        {
+            revenger.OnKill(source, target);
+        }
         if (!KillCount.ContainsKey(source.PlayerId)) KillCount[source.PlayerId] = 0;
         KillCount[source.PlayerId]++;
     }
@@ -294,6 +298,7 @@ class Main
         KingPoster.Clear();
         LongKiller.Clear();
         Darknight.Clear();
+        Revenger.Clear();
 
         RoleSettedPlayers = new();
         IsRoleSetted = false;

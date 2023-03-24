@@ -750,6 +750,14 @@ public static class ModHelpers
         return null;
     }
 
+    public static SystemTypes GetInRoom(Vector2 pos)
+    {
+        if (ShipStatus.Instance is null) return SystemTypes.Doors;
+        PlainShipRoom room = ShipStatus.Instance.AllRooms.FirstOrDefault(x => x.roomArea.ClosestPoint(pos) == pos);
+        if (room is null) return SystemTypes.Doors;
+        return room.RoomId;
+    }
+
     public static string Cs(Color c, string s)
     {
         return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptionHolder.ToByte(c.r), CustomOptionHolder.ToByte(c.g), CustomOptionHolder.ToByte(c.b), CustomOptionHolder.ToByte(c.a), s);

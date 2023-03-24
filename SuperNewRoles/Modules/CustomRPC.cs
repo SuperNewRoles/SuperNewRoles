@@ -196,7 +196,8 @@ public enum RoleId
     Guardrawer,
     KingPoster,
     LongKiller,
-    Darknight
+    Darknight,
+    Revenger,
     //RoleId
 }
 
