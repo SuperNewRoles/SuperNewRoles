@@ -1,11 +1,10 @@
 using HarmonyLib;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 
-public class WireTask
+public class CursedWireTask
 {
     public static readonly int[] WiresOrder = { 4, 8, 16, 32, 64 };
     public static float ScalarY;

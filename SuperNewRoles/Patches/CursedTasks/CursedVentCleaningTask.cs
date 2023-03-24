@@ -4,7 +4,7 @@ using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 
-public class VentCleaningTask
+public class CursedVentCleaningTask
 {
     [HarmonyPatch(typeof(VentCleaningMinigame))]
     public static class VentCleaningMinigamePatch

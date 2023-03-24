@@ -5,11 +5,10 @@ using SuperNewRoles.CustomObject;
 using SuperNewRoles.Roles;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 
-public class MedScanTask
+public class CursedMedScanTask
 {
     public static bool IsRetrograde;
     public static bool IsRetrogradeStop;

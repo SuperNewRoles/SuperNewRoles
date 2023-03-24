@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 
-public class UnlockManifoldsTask
+public class CursedUnlockManifoldsTask
 {
     [HarmonyPatch(typeof(UnlockManifoldsMinigame))]
     public static class UnlockManifoldsMinigamePatch

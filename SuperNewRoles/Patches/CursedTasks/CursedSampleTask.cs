@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 
-public class SampleTask
+public class CursedSampleTask
 {
     public static Dictionary<uint, CursedSample> Data;
     public const float TimePerStep = 60f;
@@ -44,7 +44,7 @@ public class SampleTask
         public static void NextStepPostfix(SampleMinigame __instance)
         {
             if (!Main.IsCursed) return;
-            Logger.Info($"初期化", "SampleTask");
+            Logger.Info($"初期化", "CursedSampleTask");
             Data[__instance.MyTask.Id] = new(__instance.MyTask.Id);
         }
 
@@ -80,8 +80,9 @@ public class SampleTask
                 else Data[__instance.Id].DeteriorationTimer = 0;
             }
         }
+
         [HarmonyPatch(nameof(NormalPlayerTask.AppendTaskText)), HarmonyPrefix]
-        public static bool BeginPrefix(NormalPlayerTask __instance, [HarmonyArgument(0)] StringBuilder sb)
+        public static bool AppendTaskTextPrefix(NormalPlayerTask __instance, [HarmonyArgument(0)] StringBuilder sb)
         {
             if (!Main.IsCursed) return true;
             if (!Data.ContainsKey(__instance.Id)) return true;
@@ -93,17 +94,16 @@ public class SampleTask
 
             if (Data[__instance.Id].IsMiss)
             {
-                _ = sb.AppendLine($"{room}: {task}");
+                sb.AppendLine($"{room}: {task}");
                 return false;
             }
             if (!Data[__instance.Id].IsDeterioration) return true;
 
-            if (Data[__instance.Id].DeteriorationTimer > 0) _ = sb.AppendLine($"<color=#FFFF00FF>{room}: {task} </color><color=#B00000>({timer})</color>");
-            if (Data[__instance.Id].DeteriorationTimer <= 0) _ = sb.AppendLine($"{room}: {task}");
+            if (Data[__instance.Id].DeteriorationTimer > 0) sb.AppendLine($"<color=#FFFF00FF>{room}: {task} </color><color=#B00000>({timer})</color>");
+            if (Data[__instance.Id].DeteriorationTimer <= 0) sb.AppendLine($"{room}: {task}");
 
             return false;
         }
-
     }
 
     public class CursedSample

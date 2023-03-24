@@ -16,7 +16,10 @@ public static class Main
     {
         IsCursed = CursedTask.GetBool() && ModeHandler.IsMode(ModeId.Default);
 
-        SampleTask.Data = new();
+        CursedSampleTask.Data = new();
+
+        CursedDivertPowerTask.Data = new();
+        CursedDivertPowerTask.Change = false;
     }
 
     public static int Random(int min = 1, int max = 10) => UnityEngine.Random.RandomRange(min, max + 1);

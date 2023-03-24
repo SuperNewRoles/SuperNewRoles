@@ -4,7 +4,7 @@ using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 
-public class LeafTask
+public class CursedLeafTask
 {
     public static int LeavesNum;
     public static int LeafDoneCount;

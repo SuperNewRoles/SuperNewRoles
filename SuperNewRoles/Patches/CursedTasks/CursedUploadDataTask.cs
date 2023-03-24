@@ -1,14 +1,13 @@
 using System;
 using AmongUs.Data;
 using HarmonyLib;
-using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 
-public class UploadDataTask
+public class CursedUploadDataTask
 {
     public static GameObject BlueScreen;
     [HarmonyPatch(typeof(UploadDataGame))]

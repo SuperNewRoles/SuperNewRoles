@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 
-public class EnterCodeTask
+public class CursedEnterCodeTask
 {
     public static string TragetCode;
     public static string AnswerCode;
@@ -32,6 +32,7 @@ public class EnterCodeTask
             {
                 "slnur-3tyu8ki25",
                 "ossn692hdtinpponch",
+                "shithuthjuyh-fhg",
             };
             code = codes.GetRandom();
             if (!code.Contains("-")) card = code.Length <= 10 ? code : code.Insert(10, "\n");
@@ -54,6 +55,8 @@ public class EnterCodeTask
                 "SabaCan33333333-09",
                 "Glaceon-471-11",
                 "seono968-12",
+                "hacchan-59",
+                "hacchan-59-jane-wa",
             };
             code = codes.GetRandom();
             if (!code.Contains("-")) card = code.Length <= 10 ? code : code.Insert(10, "\n");
