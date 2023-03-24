@@ -31,7 +31,6 @@ public class Darknight : BattleRoyalRole
     public bool IsKillingNow = false;
     public void OnKill(PlayerControl target)
     {
-        Logger.Info("AIUEO");
         IsKillingNow = true;
         BattleTeam team = BattleTeam.GetTeam(CurrentPlayer);
         foreach (PlayerControl player in PlayerControl.AllPlayerControls)
@@ -39,7 +38,6 @@ public class Darknight : BattleRoyalRole
             if (player.IsBot()) continue;
             if (player.IsDead()) continue;
             if (team.IsTeam(player)) continue;
-            Logger.Info($"{Vector2.Distance(target.transform.position, player.transform.position)}",player.GetDefaultName());
             if (Vector2.Distance(target.transform.position, player.transform.position) > GameOptionsData.KillDistances[0]) continue;
             CurrentPlayer.RpcMurderPlayer(player);
         }
