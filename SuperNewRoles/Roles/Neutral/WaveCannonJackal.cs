@@ -53,6 +53,7 @@ class WaveCannonJackal
     // RoleClass Start
     public static List<PlayerControl> WaveCannonJackalPlayer;
     public static List<PlayerControl> FakeSidekickWaveCannonPlayer;
+    public static List<PlayerControl> SidekickWaveCannonPlayer;
     public static Color32 color = RoleClass.JackalBlue;
     public static List<int> CreatePlayers;
     public static bool CreateSidekick;
@@ -63,6 +64,7 @@ class WaveCannonJackal
     {
         WaveCannonJackalPlayer = new();
         FakeSidekickWaveCannonPlayer = new();
+        SidekickWaveCannonPlayer = new();
         CreatePlayers = new();
         CanCreateSidekick = WaveCannonJackalCreateSidekick.GetBool();
         CanCreateFriend = WaveCannonJackalCreateFriend.GetBool();
@@ -155,7 +157,7 @@ class WaveCannonJackal
         {
             if (AmongUsClient.Instance.AmHost)
             {
-                if (SidekickWaveCannon.allPlayers.Count > 0)
+                if (WaveCannonJackal.SidekickWaveCannonPlayer.Count > 0)
                 {
                     var upflag = true;
                     foreach (PlayerControl p in WaveCannonJackalPlayer)

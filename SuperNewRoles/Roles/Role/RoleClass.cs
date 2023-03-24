@@ -214,7 +214,7 @@ public static class RoleClass
         Pavlovsdogs.ClearAndReload();
         Pavlovsowner.ClearAndReload();
         Neutral.WaveCannonJackal.ClearAndReload();
-        SidekickWaveCannon.Clear();
+        //SidekickWaveCannon.Clear();
         Conjurer.ClearAndReload();
         Camouflager.ClearAndReload();
         Cupid.ClearAndReload();

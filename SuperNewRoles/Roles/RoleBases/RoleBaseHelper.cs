@@ -8,11 +8,11 @@ public static class RoleBaseHelper
 {
     public static Dictionary<RoleId, Type> allRoleIds = new()
         {
-            { RoleId.SidekickWaveCannon, typeof(RoleBase<SidekickWaveCannon>) },
+            //{ RoleId.SidekickWaveCannon, typeof(RoleBase<SidekickWaveCannon>) },
         };
 
     public static void SetUpOptions()
     {
-        new SidekickWaveCannon().SetUpOption();
+        //new SidekickWaveCannon().SetUpOption();
     }
 }

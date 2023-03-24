@@ -166,6 +166,7 @@ public enum RoleId
     Cracker,
     WaveCannon,
     WaveCannonJackal,
+    SideKickWaveCannon,
     NekoKabocha,
     Doppelganger,
     Werewolf,
@@ -1247,7 +1248,7 @@ public static class RPCProcedure
         }
         else if (jackalRoleId == RoleId.WaveCannonJackal)
         {
-            foreach (PlayerControl p in SidekickWaveCannon.allPlayers.ToArray())
+            foreach (PlayerControl p in WaveCannonJackal.SidekickWaveCannonPlayer.ToArray())
             {
                 p.ClearRole();
                 p.SetRole(jackalRoleId);

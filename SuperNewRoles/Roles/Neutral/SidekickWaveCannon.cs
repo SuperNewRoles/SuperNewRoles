@@ -1,4 +1,6 @@
-using System;
+// FIXME:RoleBase以前の方式で記載中、RoleBaseに戻す場合は「SKWaveCannonをRoleBase以前の形式に変更」をリバートしてください
+
+/*using System;
 
 using System.Collections.Generic;
 
@@ -69,4 +71,4 @@ public class SidekickWaveCannon : RoleBase<SidekickWaveCannon>
         players = new();
     }
 
-}
+}*/

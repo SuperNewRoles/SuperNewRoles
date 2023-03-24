@@ -629,7 +629,7 @@ public static class OnGameEndPatch
             TheThreeLittlePigs.TheSecondLittlePig.Player,
             TheThreeLittlePigs.TheThirdLittlePig.Player,
             WaveCannonJackal.WaveCannonJackalPlayer,
-            SidekickWaveCannon.allPlayers,
+            WaveCannonJackal.SidekickWaveCannonPlayer,
             });
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
