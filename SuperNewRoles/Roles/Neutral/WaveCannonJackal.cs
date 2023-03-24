@@ -56,7 +56,6 @@ class WaveCannonJackal
     public static List<PlayerControl> SidekickWaveCannonPlayer;
     public static Color32 color = RoleClass.JackalBlue;
     public static List<int> CreatePlayers;
-    public static bool CreateSidekick;
     public static bool CanCreateSidekick;
     public static bool CanCreateFriend;
     public static List<PlayerControl> IwasSidekicked;
