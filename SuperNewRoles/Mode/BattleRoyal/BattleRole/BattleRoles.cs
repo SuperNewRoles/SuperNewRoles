@@ -11,6 +11,7 @@ namespace SuperNewRoles.Mode.BattleRoyal.BattleRole
         Reviver = 166,
         Guardrawer = 167,
         KingPoster = 168,
-        LongKiller = 169
+        LongKiller = 169,
+        Darknight = 170
     }
 }

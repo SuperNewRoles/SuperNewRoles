@@ -510,18 +510,7 @@ static class CheckMurderPatch
                 }
                 PlayerAbility targetAbility = PlayerAbility.GetPlayerAbility(target);
                 if (target.IsRole(RoleId.Guardrawer) && Guardrawer.guardrawers.FirstOrDefault(x => x.CurrentPlayer == target).IsAbilityUsingNow) {
-                    __instance.Data.IsDead = true;
-                    if (PlayerAbility.GetPlayerAbility(__instance).CanRevive)
-                    {
-                        target.RpcSnapTo(__instance.transform.position);
-                        GameDataSerializePatch.Is = true;
-                        RPCHelper.RpcSyncGameData();
-                    }
-                    else
-                    {
-                        target.RpcMurderPlayer(__instance);
-                    }
-                    Mode.BattleRoyal.Main.MurderPlayer(target, __instance);
+                    Mode.BattleRoyal.Main.MurderPlayer(target, __instance, targetAbility);
                     return false;
                 }
                 if (!PlayerAbility.GetPlayerAbility(__instance).CanUseKill) return false;
@@ -545,18 +534,7 @@ static class CheckMurderPatch
                     isKill = true;
                     if (__instance.PlayerId != 0)
                     {
-                        target.Data.IsDead = true;
-                        if (targetAbility.CanRevive)
-                        {
-                            __instance.RpcSnapTo(target.transform.position);
-                            GameDataSerializePatch.Is = true;
-                            RPCHelper.RpcSyncGameData();
-                        }
-                        else
-                        {
-                            __instance.RpcMurderPlayer(target);
-                        }
-                        Mode.BattleRoyal.Main.MurderPlayer(__instance, target);
+                        Mode.BattleRoyal.Main.MurderPlayer(__instance, target, targetAbility);
                         isKill = false;
                     }
                     else
@@ -565,18 +543,7 @@ static class CheckMurderPatch
                         {
                             if (__instance.IsAlive() && target.IsAlive())
                             {
-                                if (targetAbility.CanRevive)
-                                {
-                                    target.Data.IsDead = true;
-                                    __instance.RpcSnapTo(target.transform.position);
-                                    GameDataSerializePatch.Is = true;
-                                    RPCHelper.RpcSyncGameData();
-                                }
-                                else
-                                {
-                                    __instance.RpcMurderPlayer(target);
-                                }
-                                Mode.BattleRoyal.Main.MurderPlayer(__instance, target);
+                                Mode.BattleRoyal.Main.MurderPlayer(__instance, target, targetAbility);
                             }
                             isKill = false;
                         }, AmongUsClient.Instance.Ping / 1000f * 1.1f, "BattleRoyal Murder");

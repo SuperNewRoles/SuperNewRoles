@@ -114,8 +114,23 @@ class Main
     public static int AlivePlayer;
     public static int AllPlayer;
     public static bool IsStart;
-    public static void MurderPlayer(PlayerControl source, PlayerControl target)
+    public static void MurderPlayer(PlayerControl source, PlayerControl target, PlayerAbility targetAbility)
     {
+        target.Data.IsDead = true;
+        if (targetAbility.CanRevive)
+        {
+            source.RpcSnapTo(target.transform.position);
+            GameDataSerializePatch.Is = true;
+            RPCHelper.RpcSyncGameData();
+        }
+        else
+        {
+            source.RpcMurderPlayer(target);
+        }
+        if (source.IsRole(RoleId.Darknight))
+        {
+            Darknight.GetDarknightPlayer(source).OnKill(target);
+        }
         if (!KillCount.ContainsKey(source.PlayerId)) KillCount[source.PlayerId] = 0;
         KillCount[source.PlayerId]++;
     }
@@ -278,6 +293,7 @@ class Main
         Guardrawer.Clear();
         KingPoster.Clear();
         LongKiller.Clear();
+        Darknight.Clear();
 
         RoleSettedPlayers = new();
         IsRoleSetted = false;

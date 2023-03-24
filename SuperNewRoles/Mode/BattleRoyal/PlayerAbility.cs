@@ -38,6 +38,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 float kt = MyKillCoolTime;
                 foreach (float akt in AbilityKillCoolTime.Values) kt += akt;
+                if (kt <= 0) kt = 0.000001f;
                 return kt;
             }
         }

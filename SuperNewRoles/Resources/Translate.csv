@@ -1312,6 +1312,8 @@ KingPosterTitle,,最初と最後に大きな硬直があるが、効果時間中
 KingPosterStartMessage,KingPoster is using ability now!!!,キングポスターが能力を使用した！
 LongKillerName,LongKiller,ロングキラー
 LongKillerDescription,It has a long kill range, but the kill time is also a bit long. (1.3x)\nKill with your own kill range!,キル範囲は長いが、キルクールタイムもちょっと長い。(1.3倍)\n持ち前のキル範囲を生かしてキルせよ!
+DarknightName,Darknight,闇の騎士
+DarknightDescription,,闇に飲まれた騎士。キルクールタイムが0。しかし、視界も0。キル範囲も狭いがキルした人の周り(自分の仲間以外)も一斉にキルできる。何も見えない故に孤独だが、その孤独を活かして敵をキルせよ。
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

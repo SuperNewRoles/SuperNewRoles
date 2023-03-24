@@ -195,7 +195,8 @@ public enum RoleId
     Reviver,
     Guardrawer,
     KingPoster,
-    LongKiller
+    LongKiller,
+    Darknight
     //RoleId
 }
 
