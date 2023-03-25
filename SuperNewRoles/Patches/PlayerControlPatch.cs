@@ -464,7 +464,7 @@ static class CheckMurderPatch
             case ModeId.Zombie:
                 return false;
             case ModeId.BattleRoyal:
-                if (isKill)
+                if (__instance == PlayerControl.LocalPlayer && isKill)
                 {
                     return false;
                 }
@@ -484,16 +484,15 @@ static class CheckMurderPatch
                         }
                     }
                     SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]LateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
-                    isKill = true;
                     if (__instance.PlayerId != 0)
                     {
                         target.Data.IsDead = true;
                         __instance.RpcMurderPlayer(target);
                         Mode.BattleRoyal.Main.MurderPlayer(__instance, target);
-                        isKill = false;
                     }
                     else
                     {
+                        isKill = true;
                         new LateTask(() =>
                         {
                             if (__instance.IsAlive() && target.IsAlive())
