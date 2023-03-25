@@ -181,6 +181,7 @@ public class CustomOption
         if (CachedPlayer.AllPlayers.Count <= 1 || AmongUsClient.Instance?.AmHost == false || PlayerControl.LocalPlayer == null) return;
 
         MessageWriter messageWriter = RPCHelper.StartRPC(CustomRPC.ShareOptions);
+        messageWriter.WritePacked((uint)1);
         messageWriter.WritePacked((uint)opt.id);
         messageWriter.WritePacked(Convert.ToUInt32(opt.selection));
         messageWriter.EndRPC();
