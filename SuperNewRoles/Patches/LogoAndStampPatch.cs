@@ -103,6 +103,9 @@ public static class CredentialsPatch
     {
         public static SpriteRenderer renderer;
         public static Sprite bannerSprite;
+        // ☆ス☆ー☆パ☆ー☆な☆感☆じ☆の
+        // ☆バ☆ナ☆ー☆ス☆プ☆ラ☆イ☆ト
+        public static Sprite SuperNakanzinoBannerSprite;
         public static Sprite horseBannerSprite;
         static IEnumerator ViewBoosterCoro(MainMenuManager __instance)
         {
@@ -272,18 +275,25 @@ public static class CredentialsPatch
             var snrLogo = new GameObject("bannerLogo");
             snrLogo.transform.position = Vector3.up;
             renderer = snrLogo.AddComponent<SpriteRenderer>();
-            LoadSprites();
-            renderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.banner.png", 150f);
 
             LoadSprites();
-            renderer.sprite = HorseModeOption.enableHorseMode ? horseBannerSprite : bannerSprite;
+            renderer.sprite = bannerRendSprite;
         }
 
 
         public static void LoadSprites()
         {
             if (bannerSprite == null) bannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.banner.png", 150f);
+            if (SuperNakanzinoBannerSprite == null) SuperNakanzinoBannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.banner_April.png", 150f);
             if (horseBannerSprite == null) horseBannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuperHorseRoles.png", 150f);
+        }
+
+        public static Sprite bannerRendSprite {
+            get
+            {
+                if (HorseModeOption.enableHorseMode) return horseBannerSprite;
+                return SuperNewRolesPlugin.IsApril() ? SuperNakanzinoBannerSprite : bannerSprite;
+            }
         }
 
         public static void UpdateSprite()
@@ -297,7 +307,7 @@ public static class CredentialsPatch
                     renderer.color = new Color(1, 1, 1, 1 - p);
                     if (p == 1)
                     {
-                        renderer.sprite = HorseModeOption.enableHorseMode ? horseBannerSprite : bannerSprite;
+                        renderer.sprite = bannerRendSprite;
                         AmongUsClient.Instance.StartCoroutine(Effects.Lerp(fadeDuration, new Action<float>((p) =>
                         {
                             renderer.color = new Color(1, 1, 1, p);

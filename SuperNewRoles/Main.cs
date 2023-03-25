@@ -21,7 +21,7 @@ namespace SuperNewRoles;
 [BepInIncompatibility("com.tugaru.TownOfPlus")]
 [BepInProcess("Among Us.exe")]
 public partial class SuperNewRolesPlugin : BasePlugin
-{
+{    
     public static readonly string VersionString = $"{Assembly.GetExecutingAssembly().GetName().Version}";
 
     public static bool IsBeta = IsViewText && ThisAssembly.Git.Branch != MasterBranch;
@@ -31,8 +31,8 @@ public partial class SuperNewRolesPlugin : BasePlugin
 
     public const string ModUrl = "ykundesu/SuperNewRoles";
     public const string MasterBranch = "master";
-    public const string ModName = "SuperNewRoles";
-    public const string ColorModName = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
+    public static string ModName => IsApril() ? "SuperNakanzinoRoles" : "SuperNewRoles";
+    public static string ColorModName => $"<color=#ffa500>Super</color><color=#ff0000>{(IsApril() ? "Nakanzino" : "New")}</color><color=#00ff00>Roles</color>";
     public const string DiscordServer = "https://discord.gg/Cqfwx82ynN";
     public const string Twitter1 = "https://twitter.com/SNRDevs";
     public const string Twitter2 = "https://twitter.com/SuperNewRoles";
@@ -119,6 +119,15 @@ public partial class SuperNewRolesPlugin : BasePlugin
             if (resourceName.EndsWith(".png"))
                 ModHelpers.LoadSpriteFromResources(resourceName, 115f);
     }
+
+    public static bool IsApril()
+    {
+        DateTime utcNow = DateTime.UtcNow;
+        DateTime dateTime = new(utcNow.Year, 3, 31, 15, 0, 0, 0, DateTimeKind.Utc);
+        DateTime dateTime2 = dateTime.AddDays(1.0);
+        return utcNow >= dateTime && utcNow <= dateTime2;
+    }
+
     [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.AmBanned), MethodType.Getter)]
     public static class AmBannedPatch
     {
