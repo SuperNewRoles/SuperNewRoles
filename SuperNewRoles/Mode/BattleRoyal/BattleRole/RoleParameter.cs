@@ -22,5 +22,8 @@ namespace SuperNewRoles.Mode.BattleRoyal.BattleRole
         public static readonly string[] KingPosterAbilityCosmeticSkins = new string[3] { "skin_D2Hunter", "skin_D2Osiris", "skin_D2Saint14" };
 
         public const float RevengerReviveTime = 7;
+
+        public const float CrystalMagicianCrystalTime = 10;
+        public const float CrystalMagicianSuperPowerTime = 5;
     }
 }

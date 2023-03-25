@@ -97,23 +97,31 @@ public static class RPCHelper
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
 
-    public static void RpcSnapTo(this PlayerControl __instance, Vector2 position)
+    public static void RpcSnapTo(this PlayerControl __instance, Vector2 position, PlayerControl seer = null)
     {
+        var caller = new System.Diagnostics.StackFrame(1, false);
+        var callerMethod = caller.GetMethod();
+        string callerMethodName = callerMethod.Name;
+        string callerClassName = callerMethod.DeclaringType.FullName;
+        SuperNewRolesPlugin.Logger.LogInfo("[SHR:RpcSnapTo] CustomSyncSettingsが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
         Logger.Info("CustomRpcSnapToが呼び出されました");
-        if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+        if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && seer is null)
         {
             __instance.NetTransform.RpcSnapTo(position);
             return;
         }
         ushort minSid = (ushort)(__instance.NetTransform.lastSequenceId + 5);
-        if (AmongUsClient.Instance.AmClient)
+        if (AmongUsClient.Instance.AmClient && (seer is null || seer.PlayerId == PlayerControl.LocalPlayer.PlayerId))
         {
             __instance.NetTransform.SnapTo(position, minSid);
         }
-        MessageWriter val = AmongUsClient.Instance.StartRpc(__instance.NetTransform.NetId, (byte)RpcCalls.SnapTo, SendOption.None);
-        NetHelpers.WriteVector2(position, val);
-        val.Write(__instance.NetTransform.lastSequenceId);
-        val.EndMessage();
+        if (seer is null || seer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+        {
+            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetTransform.NetId, (byte)RpcCalls.SnapTo, SendOption.None, seer is null ? -1 : seer.GetClientId());
+            NetHelpers.WriteVector2(position, val);
+            val.Write(__instance.NetTransform.lastSequenceId);
+            val.EndRPC();
+        }
     }
     public static void RpcSyncGameData(int TargetClientId = -1)
     {

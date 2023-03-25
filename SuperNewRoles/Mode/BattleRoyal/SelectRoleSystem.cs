@@ -46,6 +46,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 }
                 foreach (PlayerControl player in team.TeamMember)
                 {
+                    if (player.IsBot()) continue;
                     RPCHelper.RpcSyncGameData(player.GetClientId());
                 }
             }
@@ -59,19 +60,16 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 p.Data.IsDead = false;
             }
             RPCHelper.RpcSyncGameData();
-            Logger.Info("a");
             MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
             //if (AmongUsClient.Instance.AmHost)
             {
                 FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
                 PlayerControl.LocalPlayer.RpcStartMeeting(null);
             }
-            Logger.Info("b");
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 p.RpcSetName(p.GetDefaultName());
             }
-            Logger.Info("d");
             AddChatPatch.SendCommand(null, ModTranslation.GetString("BattleRoyalStartMeetingText"), BattleRoyalCommander);
 
             BattleTeam team = BattleTeam.GetTeam(PlayerControl.LocalPlayer);
@@ -109,17 +107,12 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 new LateTask(() =>
                 {
                     TeamOnlyChat();
-                    Logger.Info("c");
                     BattleTeam team = BattleTeam.GetTeam(PlayerControl.LocalPlayer);
-                    Logger.Info("d");
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
-                        Logger.Info("e");
                         if (player.IsBot()) continue;
                         if (player is null) continue;
-                        Logger.Info("f");
                         player.Data.IsDead = !team.IsTeam(player);
-                        Logger.Info("g");
                     }
                 }, 1.5f);
 
@@ -150,6 +143,8 @@ namespace SuperNewRoles.Mode.BattleRoyal
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 p.Data.IsDead = false;
+                if (!p.IsBot()) continue;
+                p.RpcSnapTo(new(999,999));
             }
             RPCHelper.RpcSyncGameData();
             SyncBattleOptions.CustomSyncOptions();
@@ -160,13 +155,10 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static bool OnAddChat(PlayerControl source, string chat)
         {
             var Commands = chat.Split(" ");
-            Logger.Info("a");
             if (Commands[0].Equals("/SetRole", StringComparison.OrdinalIgnoreCase))
             {
                 if (Commands.Length <= 1) return false;
-                Logger.Info("b");
                 var data = RoleNames.FirstOrDefault(x => x.Key.Equals(Commands[1], StringComparison.OrdinalIgnoreCase));
-                Logger.Info("c");
                 //nullチェック
                 if (data.Equals(default(KeyValuePair<string, RoleId>)))
                 {
@@ -174,22 +166,14 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 }
                 else
                 {
-                    Logger.Info("e");
                     source.SetRoleRPC(data.Value);
-                    Logger.Info("f");
                     string text = string.Format(ModTranslation.GetString("BattleRoyalSetRoleText"), source.GetDefaultName(), ModTranslation.GetString(IntroData.GetIntroData(data.Value, IsImpostorReturn: true).NameKey + "Name"));
-                    Logger.Info("g");
                     foreach (PlayerControl teammember in BattleTeam.GetTeam(source).TeamMember)
                     {
-                        Logger.Info("h");
                         AddChatPatch.SendCommand(teammember, text, BattleRoyalCommander);
-                        Logger.Info("i");
                     }
-                    Logger.Info("j");
                     Main.RoleSettedPlayers.Add(source);
-                    Logger.Info("k");
                     bool IsEnd = true;
-                    Logger.Info("l");
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
                         if (p.IsBot()) continue;
@@ -199,7 +183,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
                             break;
                         }
                     }
-                    Logger.Info("m");
                     if (IsEnd)
                     {
                         foreach(PlayerControl p in PlayerControl.AllPlayerControls)
@@ -213,9 +196,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         }
                         Instance.RpcClose();
                     }
-                    Logger.Info("n");
                 }
-                Logger.Info("d");
                 return false;
             }
             return true;

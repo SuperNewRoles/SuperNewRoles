@@ -115,6 +115,7 @@ public class KingPoster : BattleRoyalRole
     }
     public override void UseAbility(PlayerControl target)
     {
+        if (IsAbilityUsingNow) return;
         PlayerAbility ability = PlayerAbility.GetPlayerAbility(CurrentPlayer);
         ability.CanUseKill = false;
         ability.CanMove = false;

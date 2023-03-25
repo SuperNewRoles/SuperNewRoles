@@ -483,8 +483,6 @@ static class CheckMurderPatch
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
         Logger.Info($"{__instance.Data.PlayerName}=>{target.Data.PlayerName}", "CheckMurder");
-        if (__instance.IsBot() || target.IsBot()) return false;
-        Logger.Info("Bot通過", "CheckMurder");
         if (__instance.IsDead() || target.IsDead()) return false;
         Logger.Info("死亡通過", "CheckMurder");
         if (GameOptionsManager.Instance.currentGameMode == GameModes.HideNSeek) return true;
@@ -511,6 +509,11 @@ static class CheckMurderPatch
                 PlayerAbility targetAbility = PlayerAbility.GetPlayerAbility(target);
                 if (target.IsRole(RoleId.Guardrawer) && Guardrawer.guardrawers.FirstOrDefault(x => x.CurrentPlayer == target).IsAbilityUsingNow) {
                     Mode.BattleRoyal.Main.MurderPlayer(target, __instance, targetAbility);
+                    return false;
+                }
+                if (target.IsBot()) {
+                    if (target == CrystalMagician.Bot)
+                        CrystalMagician.UseWater(__instance);
                     return false;
                 }
                 if (!PlayerAbility.GetPlayerAbility(__instance).CanUseKill) return false;

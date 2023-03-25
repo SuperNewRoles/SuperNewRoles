@@ -47,6 +47,7 @@ public class Guardrawer : BattleRoyalRole
     }
     public override void UseAbility(PlayerControl target)
     {
+        if (IsAbilityUsingNow) return;
         PlayerAbility currentability = PlayerAbility.GetPlayerAbility(CurrentPlayer);
         currentability.CanUseKill = false;
         ChangeName.SetNotification(string.Format(ModTranslation.GetString("GuardrawerAbilityStart"), CurrentPlayer.GetDefaultName()), RoleParameter.GuardrawerShowNotificationDurationTime);

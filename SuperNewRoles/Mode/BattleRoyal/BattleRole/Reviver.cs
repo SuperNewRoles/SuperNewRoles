@@ -69,6 +69,7 @@ public class Reviver : BattleRoyalRole
     }
     public override void UseAbility(PlayerControl target)
     {
+        if (IsAbilityUsingNow) return;
         BattleTeam team = BattleTeam.GetTeam(CurrentPlayer);
         List<PlayerControl> targets = new();
         foreach (PlayerControl p in team.TeamMember)

@@ -15,6 +15,10 @@ class Main
     public static Dictionary<byte, int> KillCount;
     public static bool IsRoleSetted;
     public static List<PlayerControl> RoleSettedPlayers = new();
+    public static void SpawnBots()
+    {
+        CrystalMagician.Bot = BotManager.Spawn(ModTranslation.GetString("CrystalMagicianCrystalBot"));
+    }
     public static void FixedUpdate()
     {
         if (!AmongUsClient.Instance.AmHost) return;
@@ -299,6 +303,7 @@ class Main
         LongKiller.Clear();
         Darknight.Clear();
         Revenger.Clear();
+        CrystalMagician.Clear();
 
         RoleSettedPlayers = new();
         IsRoleSetted = false;
@@ -307,7 +312,7 @@ class Main
         AlivePlayer = 0;
         AllPlayer = 0;
         IsStart = false;
-        StartSeconds = BROption.StartSeconds.GetFloat() + 4.5f;
+        StartSeconds = BROption.StartSeconds.GetFloat();
         IsCountOK = false;
         UpdateTime = 0f;
         IsTeamBattle = BROption.IsTeamBattle.GetBool();
@@ -320,15 +325,21 @@ class Main
         {
             if (AmongUsClient.Instance.AmHost)
             {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (!p.IsBot()) continue;
+                    p.RpcSetRole(RoleTypes.Scientist);
+                }
                 if (IsTeamBattle)
                 {
                     float count = BROption.TeamAmount.GetFloat();
-                    var oneteamcount = Mathf.CeilToInt(CachedPlayer.AllPlayers.Count / count);
                     List<PlayerControl> target = new();
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
+                        if (p.IsBot()) continue;
                         target.Add(p);
                     }
+                    var oneteamcount = Mathf.CeilToInt(target.Count / count);
                     List<PlayerControl> TempTeam = new();
                     var counttemp = target.Count;
                     for (int i = 0; i < counttemp; i++)
@@ -404,6 +415,7 @@ class Main
                 {
                     foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
                     {
+                        if (p1.IsBot()) continue;
                         new BattleTeam()
                         {
                             TeamMember = new() { p1 }
@@ -431,6 +443,7 @@ class Main
                 }
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
+                    if (p.IsBot()) continue;
                     p.GetDefaultName();
                     new PlayerAbility(p);
                 }

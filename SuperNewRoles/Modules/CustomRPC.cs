@@ -198,6 +198,7 @@ public enum RoleId
     LongKiller,
     Darknight,
     Revenger,
+    CrystalMagician,
     //RoleId
 }
 

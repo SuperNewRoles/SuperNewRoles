@@ -891,6 +891,9 @@ public static class RoleHelpers
             case RoleId.Revenger:
                 new Revenger(player);
                 break;
+            case RoleId.CrystalMagician:
+                new CrystalMagician(player);
+                break;
             case RoleId.DefaultRole when ModeHandler.IsMode(ModeId.BattleRoyal):
                 new BattleRoyalRole(player);
                 break;
@@ -1864,6 +1867,7 @@ public static class RoleHelpers
             else if (LongKiller.IsLongKiller(player)) return RoleId.LongKiller;
             else if (Darknight.IsDarknight(player)) return RoleId.Darknight;
             else if (Revenger.IsRevenger(player)) return RoleId.Revenger;
+            else if (CrystalMagician.IsCrystalMagician(player)) return RoleId.CrystalMagician;
             else if (OrientalShaman.OrientalShamanPlayer.IsCheckListPlayerControl(player)) return RoleId.OrientalShaman;
             else if (OrientalShaman.ShermansServantPlayer.IsCheckListPlayerControl(player)) return RoleId.ShermansServant;
             // ロールチェック

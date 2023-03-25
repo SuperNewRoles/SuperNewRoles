@@ -14,5 +14,6 @@ namespace SuperNewRoles.Mode.BattleRoyal.BattleRole
         LongKiller = 169,
         Darknight = 170,
         Revenger = 171,
+        CrystalMagician = 172
     }
 }
