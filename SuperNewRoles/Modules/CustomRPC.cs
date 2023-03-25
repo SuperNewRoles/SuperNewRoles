@@ -1223,7 +1223,7 @@ public static class RPCProcedure
             }
         }
     }
-    public static void SidekickPromotes(byte jackalId, bool useAbility)
+    public static void SidekickPromotes(byte jackalId)
     {
         RoleId jackalRoleId = (RoleId)jackalId;
         if (jackalRoleId == RoleId.Jackal)
@@ -1606,7 +1606,7 @@ public static class RPCProcedure
                         SetQuarreled(reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.SidekickPromotes:
-                        SidekickPromotes(reader.ReadByte(), reader.ReadBoolean());
+                        SidekickPromotes(reader.ReadByte());
                         break;
                     case CustomRPC.CreateSidekick:
                         CreateSidekick(reader.ReadByte(), reader.ReadBoolean());
