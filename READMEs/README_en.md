@@ -1620,10 +1620,15 @@ If the protection is successful, a successful protection announcement will be pl
 | Time to read the light and darker colors of the kill from the corpse| You can set a time limit for getting the killers' light and darker from the corpse. |
 ---
 ## Quarreled
-### overlapping camps 
-This roll will be in pairs. <br> 
-If both die, they win alone. <br> 
-If you live to the end, you are defeated. 
+#### Description
+- Teams of two.
+- If both players die, they win the game alone.
+- If they commit suicide, they cannot win alone.
+- Let's make up in the next life.
+
+#### Victory Conditions
+- If both players die, the game is won by a single player.
+- If you live to the end, you lose.
 ### Game Settings 
 | Name               |                   Description                    |
 | ------------------ | :----------------------------------------------: |

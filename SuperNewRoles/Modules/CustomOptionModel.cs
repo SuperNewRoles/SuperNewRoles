@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using AmongUs.GameOptions;
 using BepInEx.Configuration;
 using HarmonyLib;
@@ -175,6 +176,17 @@ public class CustomOption
         }
     }
 
+    public static void ShareOptionSelections(CustomOption opt)
+    {
+        if (CachedPlayer.AllPlayers.Count <= 1 || AmongUsClient.Instance?.AmHost == false || PlayerControl.LocalPlayer == null) return;
+
+        MessageWriter messageWriter = RPCHelper.StartRPC(CustomRPC.ShareOptions);
+        messageWriter.WritePacked((uint)1);
+        messageWriter.WritePacked((uint)opt.id);
+        messageWriter.WritePacked(Convert.ToUInt32(opt.selection));
+        messageWriter.EndRPC();
+    }
+
     public static void ShareOptionSelections()
     {
         if (CachedPlayer.AllPlayers.Count <= 1 || AmongUsClient.Instance?.AmHost == false || PlayerControl.LocalPlayer == null) return;
@@ -233,10 +245,26 @@ public class CustomOption
         return format != "" ? sel : ModTranslation.GetString(sel);
     }
 
+    public virtual string GetName() => ModTranslation.GetString(name);
+
+    /* 今後文字列の結合が必要になった時にコメントアウトを解除してください。
+    // "+="で文字を連結するより、連結特化のStringBuilderクラスを使用して連結する事で、
+    // オブジェクト作成回数を減らし、メモリ使用量を削減できる為効率的であると、ChatGPTさんがこのコードを提案して下さったので使用。
     public virtual string GetName()
     {
-        return ModTranslation.GetString(name);
+        string pattern = @"[ + ]|(<)|(>)";
+        Regex regex = new(pattern);
+
+        string[] names = regex.Split(name);
+        StringBuilder translatedNameBuilder = new();
+        foreach (string str in names)
+        {
+            string translatedStr = ModTranslation.GetString(str);
+            translatedNameBuilder.Append(translatedStr);
+        }
+        return translatedNameBuilder.ToString();
     }
+    */
 
     // Option changes
 
@@ -256,7 +284,7 @@ public class CustomOption
                     entry.Value = selection;
                 } // Save selection to config
 
-                ShareOptionSelections();// Share all selections
+                ShareOptionSelections(this);// Share all selections
             }
         }
     }

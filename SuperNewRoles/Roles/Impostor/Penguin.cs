@@ -3,9 +3,11 @@ using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles.Impostor;
 
+[HarmonyPatch]
 public static class Penguin
 {
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
@@ -49,4 +51,22 @@ public static class Penguin
                 data.Value.transform.position = data.Key.transform.position;
         }
     }
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody))]
+    public static void Prefix(PlayerControl __instance)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        if (CustomOptionHolder.PenguinMeetingKill.GetBool())
+        {
+            foreach (var data in RoleClass.Penguin.PenguinData.ToArray())
+            {
+                ModHelpers.CheckMurderAttemptAndKill(data.Key, data.Value);
+            }
+        }
+        else
+        {
+            RPCHelper.StartRPC(CustomRPC.PenguinMeetingEnd).EndRPC();
+            RPCProcedure.PenguinMeetingEnd();
+        }
+    }
+
 }
