@@ -193,8 +193,8 @@ MiraReactorTime,Mira Reactor Duration Time,ミラでのリアクター時間,米
 AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリアクター時間,飞艇(AirShip)撞毁路线紧急破坏持续时间,AirShip飛船撞毀緊急任務持續時間
 VentMakerButtonName,Make Vent,設置,制造管道口,製造通風管道出入口
 AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する,米拉总部(Mira)：追加生命监测装置,MiraHQ：增加生命跡象檢測器
-VentAnimationPlaySetting,Play Vent Animation,ベントアニメーション有効化
-MapRemodelingOptionSetting,Map Remodeling,マップ改造,地图改造,地圖重造
+VentAnimationPlaySetting,Play Vent Animation,ベントアニメーション有効化,,啟用通風管道動畫
+MapRemodelingOptionSetting,Map Remodeling,マップ改造,地图改造,地圖改造
 AirShipAdditionalVents,AirShipAdditionalVents,エアーシップにベントを追加する,飞艇(AirShip)：增加管道,AirShip：增加通風管道
 PolusAdditionalVents,PolusAdditionalVents,ポーラスにベントを追加する,波鲁斯(Polus)：增加管道,Polus：增加通風管道
 MiraAdditionalVents,MiraAdditionalVents,ミラにベントを追加する,米拉总部(Mira)：增加管道,MiraHQ：增加通風管道
@@ -217,7 +217,7 @@ IsChangeTheWinCondition,Change the win condition,勝利条件を変更する,胜
 DisconnectNotPC,Kick non-PCs.,PC以外をキックする,踢出非电脑端玩家,踢出非PC端玩家
 WireTaskIsRandom,Wire task random,配線タスクランダム,随机分配修复配线的任务地点,隨機分配配線任務位置
 WireTaskNum,Wire task num,配線タスク数,修复配线任务总数,配線任務總數
-RestrictDevicesTimeOption,Time limit setting,時間制限の設定
+RestrictDevicesTimeOption,Time limit setting,時間制限の設定,,時間限制設定
 RestrictAdmin,Restrict Admin,アドミンの時間制限,管理地图使用时间限制,管理員地圖時間限制
 RestrictVital,Restrict Vital,バイタルの時間制限,生命监测装置使用时间限制,生命跡象檢測器時間限制
 RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制,監視器時間限制
@@ -275,15 +275,15 @@ RandomColorNameColorSetting,Change Name Color,名前の色も変える,昵称颜
 RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する,会议中昵称颜色改变,會議中暱稱顏色改變
 NeutralName,Neutral,第三陣営,独立阵营,中立陣營
 WinName,Win,勝利,胜利,勝利
-PlusGameOptionSetting,Plus Game Options Setting.,ゲーム オプション,額外模式
+PlusGameOptionSetting,Plus Game Options Setting.,ゲーム オプション,附加模式,其他設定
 SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード,内鬼禁用破坏,內鬼禁用破壞
-SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船员禁用完成任务获胜,船員進用完成任務獲勝
+SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船员禁用完成任务获胜,船員禁用完成任務獲勝
 SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点,固定重生點
 MapOptionSetting,Map Option,マップの設定,地图设置,地圖設定
 NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告,禁用屍體報告
-NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议,進用召開緊急會議
-DeviceOptionsSetting,Information Device Options,情報機器制限の設定
-CanUseDeviceSetting,<color=#03ff0c>On</color>/<color=#f22f21>Off</color> setting.,使用<color=#03ff0c>可能</color>/<color=#f22f21>不可能</color> の設定
+NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议,禁用召開緊急會議
+DeviceOptionsSetting,Information Device Options,情報機器制限の設定,,情報獲取裝置限制使用設定
+CanUseDeviceSetting,<color=#03ff0c>On</color>/<color=#f22f21>Off</color> setting.,使用<color=#03ff0c>可能</color>/<color=#f22f21>不可能</color> の設定,,<color=#03ff0c>可以</color>/<color=#f22f21>不行</color>使用設定
 DeviceUseAdminSetting,Use OK Admin,アドミンが使える,可以观看管理地图,可以觀看管理員地圖
 DeviceUseVitalOrDoorLogSetting,Use OK Vital Or DoorLog,バイタル・ドアログが使える,可以观看生命监测装置和通行日志,可以觀看生命跡象檢測器與通行日誌
 DeviceUseCameraSetting,Use OK Camera,カメラが使える,可以观看监控,可以觀看監視器
@@ -302,7 +302,7 @@ FinalStatusSheriffKill,Executing justice,正義執行,出警,警長正義執行
 FinalStatusSheriffMisFire,Sheriff misfire,シェリフ誤爆,走火,警長誤傷
 FinalStatusMeetingSheriffKill,Meeting Sheriff kill，Executing justice,正義執行,执法,執法官正義執行
 FinalStatusMeetingSheriffMisFire,Meeting Sheriff misfire,ミーティングシェリフ誤爆,误判,執法官誤傷
-FinalStatusIgnite,Ignite,焼殺,纵火,縱火
+FinalStatusIgnite,Ignite,焼殺,纵火,燒死
 FinalStatusDisconnected,Amputation,切断,断连,截肢
 FinalStatusDead,Death,死亡,死亡,死亡
 FinalStatusSabotage,Sabotage,サボタージュ,破坏,破壞
@@ -313,7 +313,7 @@ FinalStatusKunaiKill,Kunai,クナイ,苦无,苦無
 FinalStatusSamuraiKill,Farewell.,切り捨て御免,一刀两断,切捨御免
 FinalStatusChiefMisSet,Misnaming,指名誤爆,背刺,指名失敗
 FinalStatusFalseChargesFalseCharge,Self-determination for injustice,冤罪自決,冤案,冤罪自裁
-FinalStatusSelfBomberBomb,Suicide bomb attack,自爆特攻,自爆,自爆
+FinalStatusSelfBomberBomb,Suicide bomb attack,自爆特攻,自爆,阿拉花瓜！
 FinalStatusBySelfBomberBomb,Bomb victim,自爆巻き添え,恐袭,恐攻犧牲者
 FinalStatusLadderDeath,Death by fall,転落死,坠落,摔死
 FinalStatusNunDeath,Death by fall from Nun,ぬーん転落死,鬼上身,摔死
@@ -329,7 +329,7 @@ FinalStatusRemoteSheriffHauntedWolfKill,Executing justice,正義執行,超能轰
 FinalStatusRemoteSheriffKill,Executing justice,正義執行,超能轰击,正義轟擊
 FinalStatusRemoteSheriffMisFire,Remote Sheriff MisFire,リモートシェリフ誤爆,超能反噬,轟擊誤判
 FinalStatusSerialKillerSelfDeath,Suicide of Serial Killer,シリアルキラー自殺,躁狂,連環殺手自殺
-FinalStatusVampireKill,Death by bloodsucking,吸血死,吸血,被吸血
+FinalStatusVampireKill,Death by bloodsucking,吸血死,吸血,吸血而亡
 FinalStatusOverKillerOverKill,Over Kill!,オーバーキル!,肢解,被肢解
 FinalStatusSuicideWisherSelfDeath,Suicide,自殺,自杀,自殺
 FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺,指名失敗
@@ -432,7 +432,7 @@ SheriffIsKillMadRoleSetting,Can kill mad roles,マッド系をキルできる,�
 SheriffIsKillImpostorSetting,Can kill impostors,インポスターをキルできる,可以击杀内鬼,可以擊殺內鬼
 SheriffAlwaysKills,Killing a target even when it is misfiring.,誤射した時も対象を殺す,警长误杀时选择的对象也会死亡,警長誤殺時該對象也會死亡
 SheriffIsKillFriendsRoleSetting,Can kill jackal friend roles,ジャッカルフレンズ系をキルできる,可以击杀狈系职业,可以擊殺狽系職業
-SheriffIsKillQuarreledSetting,Can kill quarreleds,クラードをキルできる,可以击杀福音天使,可以擊殺福音天使
+SheriffIsKillQuarreledSetting,Can kill quarreleds,クラードをキルできる,可以击杀福音天使,可以擊殺冤家兄弟
 SheriffYes,Yes,できる,是,是
 SheriffNo,No,できない,否,否
 CannotUse,Number of kills remaining: 0,キル残り回数:0,擊殺剩餘次數：0
@@ -592,13 +592,13 @@ MovingTitle1,Let's run away from the Impostor.,インポスターから逃げよ
 MovingCooldownSetting,Teleportation Cool Time,テレポートクールタイム,技能冷却,技能冷卻時間
 MovingButtonSetName,Location Set,場所セット,标记,標記
 MovingButtonTpName,Teleport,テレポート,瞬移,順移
-QuarreledName,Quarreled,クラード,福音天使,福音天使
-QuarreledDescription,Teams of two.\nIf both players die，they win the game alone.\nIf they commit suicide，they cannot win alone.\nLet's make up in the next life.\n,二人一組の陣営です。\n二人とも死亡すると単独勝利勝利します。\n自殺した場合単独勝利できなくなります。\n来世で仲直りしよう。
-QuarreledIntro,{0} and it's Quarreled!,{0}とクラードになりました！,{0} 和你是福音天使,{0}和你是福音天使
-QuarreledTeamCountSetting,Max Teams,チーム数,福音天使最多对数,福音天使最多對數
-QuarreledParSetting,Only Crewmate Team,排出される確率,福音天使生成概率,福音天使生成概率
-QuarreledOnlyCrewmateSetting,Discharge probability,クルーメイト陣営のみ,只有船员可以成为福音天使,只有船員可以成為福音天使
-QuarreledWinText,Quarreled{0}Win,クラード{0}勝利,他们狂傲，我看见便将他们除掉,他們狂傲，我看見便將他們除掉
+QuarreledName,Quarreled,クラード,福音天使,冤家兄弟
+QuarreledDescription,Teams of two.\nIf both players die，they win the game alone.\nIf they commit suicide，they cannot win alone.\nLet's make up in the next life.\n,二人一組の陣営です。\n二人とも死亡すると単独勝利勝利します。\n自殺した場合単独勝利できなくなります。\n来世で仲直りしよう。,,當你和你的冤家皆死亡時，你們將獨自獲勝。\n如果你們自殺，你們將無法獨自獲勝。\n讓我們在來世中和好吧。
+QuarreledIntro,{0} and it's Quarreled!,{0}とクラードになりました！,{0} 和你是福音天使,{0}和你是冤家
+QuarreledTeamCountSetting,Max Teams,チーム数,福音天使最多对数,冤家兄弟最多對數
+QuarreledParSetting,Only Crewmate Team,排出される確率,福音天使生成概率,冤家兄弟生成概率
+QuarreledOnlyCrewmateSetting,Discharge probability,クルーメイト陣営のみ,只有船员可以成为福音天使,只有船員可以成為冤家兄弟
+QuarreledWinText,Quarreled{0}Win,クラード{0}勝利,他们狂傲，我看见便将他们除掉,冤家路窄，死後也作伴
 OpportunistName,Opportunist,オポチュニスト,投机者,投機者
 OpportunistTitle1,We'll survive.,生き残ろう,活下去,活下去
 OpportunistTitle2,Let's try not to die.,死なないようにしよう,我……不想死……,我...不想死...
@@ -709,7 +709,7 @@ LoversOnlyCrewmateSetting,Chosen only by Cluemate,クルーメイトのみに選
 LoversSingleTeamSetting,Single camp,単独陣営,恋人是否作为独立阵营,戀人是否視為中立陣營
 LoversSameDieSetting,Two people die at the same time,2人同時に死ぬ,恋人共死,戀人共死
 LoversAliveTaskCountSetting,Tasks are counted when surviving,生存時、タスクがカウントされる,恋人存活时任务进度计入船员总任务进度,戀人存活時任務進度計入船員總任務進度
-LoversDuplicationQuarreledSetting,Does not overlap with Quarreled,クラードと重複しない,恋人中不能有玩家同时是福音天使,戀人中不能有玩家同時是福音天使
+LoversDuplicationQuarreledSetting,Does not overlap with Quarreled,クラードと重複しない,恋人中不能有玩家同时是福音天使,戀人中不能有玩家同時是冤家兄弟
 MayorName,Mayor,メイヤー,市长,市長
 MayorTitle1,Let's add our vote at the meeting.,会議で票を追加で入れよう,你的投票更有分量,你的投票更有分量
 MayorDescription,Has more votes than usual when voting,票する時に通常よりも多くの票を持ちます。,投票阶段市长的一票算作多票。,投票階段市長的一票算作多票。
@@ -794,7 +794,7 @@ NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてイン
 NiceTeleporterCooldownSetting,Teleport cooldown,テレポートのクールダウン,传送冷却,傳送冷卻時間
 CelebrityName,Celebrity,スター,大明星,網紅
 CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！,你的名字无人不知无人不晓！,大家都知道你是誰！
-CelebrityDescription,You can tell from all of them that you are the star.\nThere is also a setting that shines each time kill cool time elapses.\nHis presence illuminates the surroundings and gives hope.\nThe people around him cling to that hope. \nWithout thinking of the consequences of believing in him...,全員から自分がスターと分かります。\nスター存在時キルクールタイムが経過するたびに輝く設定もあります。\n彼の存在は周囲を照らし希望を与える。\n周囲は縋るその希望に。\n信じた結果齎す事など考えもせず・・・,所有人都可以确认大明星是谁。\n此外，根据房间设置，行动阶段，只要大明星存活，每当经过等同于内鬼通用击杀冷却的时间，所有人的屏幕将发出闪光。\n“——他宛若晨星照亮世间，带给我们生的希望\n他让身旁的人沐浴在希望的光芒下\n他身旁的人紧紧握住这份希望\n他们再无暇顾及对他的信任将要酿成的后果——”,大明星屬於中立陣營。\n網紅可以讓所有人確認自己是誰。\n此外，根據房間設置，行動階段，只要大明星存活，每當經過等同於內鬼通用擊殺冷卻的時間，所有人的屏幕將發出閃光。\n「——他宛若晨星照亮世間，帶給我們生的希望\n他讓身旁的人沐浴在希望的光芒下\n他身旁的人緊緊握住這份希望\n他們再無暇顧及對他的信任將要釀成的後果——」
+CelebrityDescription,You can tell from all of them that you are the star.\nThere is also a setting that shines each time kill cool time elapses.\nHis presence illuminates the surroundings and gives hope.\nThe people around him cling to that hope. \nWithout thinking of the consequences of believing in him...,全員から自分がスターと分かります。\nスター存在時キルクールタイムが経過するたびに輝く設定もあります。\n彼の存在は周囲を照らし希望を与える。\n周囲は縋るその希望に。\n信じた結果齎す事など考えもせず・・・,所有人都可以确认大明星是谁。\n此外，根据房间设置，行动阶段，只要大明星存活，每当经过等同于内鬼通用击杀冷却的时间，所有人的屏幕将发出闪光。\n“——他宛若晨星照亮世间，带给我们生的希望\n他让身旁的人沐浴在希望的光芒下\n他身旁的人紧紧握住这份希望\n他们再无暇顾及对他的信任将要酿成的后果——”,網紅屬於中立陣營。\n網紅可以讓所有人確認自己是誰。\n此外，根據房間設置，行動階段，只要網紅存活，每當經過等同於內鬼通用擊殺冷卻的時間，所有人的屏幕將發出閃光。\n「——他宛若晨星照亮世間，帶給我們生的希望\n他讓身旁的人沐浴在希望的光芒下\n他身旁的人緊緊握住這份希望\n他們再無暇顧及對他的信任將要釀成的後果——」
 CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる,因他人技能导致职业变更不会影响大明星的效果,因他人技能導致職業變更不會影響網紅的效果
 CelebrityIsTaskPhaseFlashSetting,During the task phase，does the screen light up every set number of seconds of kill time?,タスクフェイズ中、設定したキルクール秒数毎に画面を光らせるか。,行动阶段每过内鬼通用击杀冷却的时间时是否会出现屏幕闪光,行動階段每過內鬼通用擊殺冷卻的時間時是否會出現屏幕閃光
 CelebrityIsFlashWhileAlivingOnly,Does the screen glow only while it is alive?(Meeting Update),画面が光るのは生きている間のみか(会議更新)。,屏幕闪光是否只在大明星存活期间发生（会议阶段开始时判定）,屏幕閃光是否只在網紅存活期間發生（會議階段開始時判定）
@@ -1102,9 +1102,9 @@ WaveCannonButtonName,Wave Cannon,波動砲,开炮,開炮
 IsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクールタイムを同期,冷却与通用击杀同步冷却,冷卻與通用擊殺同步冷卻
 WaveCannonJackalName,Wave Cannon Jackal,波動砲ジャッカル,狼族重炮手,狼族重炮手
 WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！,看我轟飛你全家！
-WaveCannonJackalNewJackalHaveWaveCannon,When the Sidekick is promoted，will it inherit the wave gun?,サイドキック昇格時、波動砲を受け継ぐか。
-SidekickWaveCannonName,Sidekick (Wave Cannon),サイドキック(波動砲)
-SidekickWaveCannonTitle1,He who inherits the will of the waves.,波動の遺志を受け継ぎし者
+WaveCannonJackalNewJackalHaveWaveCannon,When the Sidekick is promoted，will it inherit the wave gun?,サイドキック昇格時、波動砲を受け継ぐか。,,當跟班升級時，是否繼承重炮？
+SidekickWaveCannonName,Sidekick (Wave Cannon),サイドキック(波動砲),,狼族重炮手跟班
+SidekickWaveCannonTitle1,He who inherits the will of the waves.,波動の遺志を受け継ぎし者,,繼承重炮意志之人
 CrackerName,Cracker,クラッカー,神隐者,神隱者
 CrackerTitle1,Let's crack on and play God!,クラックして神隠しをしよう,让他人神隐,讓他人神隱
 CrackerIsAdminView,Counted by Admins,アドミンにカウントされる,被神隐玩家可以在地图上被观测到,被神隱玩家可以在地圖上被觀測到
@@ -1120,7 +1120,7 @@ CamouflagerDurationTimeSetting,Camouflage Duration,カモフラージュの持�
 CamouflagerCamouflageArsonistSetting,Arsonists can still see mark while activating their skill,アーソニストがカモフラージュ中に塗った人がわかる,纵火犯不受隐蔽者技能影响,縱火犯不受隐蔽者技能影響
 CamouflagerCamouflageDemonSetting,Demon can still see mark while activating their skill,悪魔がカモフラージュ中に呪った人がわかる,恶魔不受隐蔽者技能影响,惡魔不受隐蔽者技能影響
 CamouflagerCamouflageLoversSetting,Lovers can still see mark while activating their skill,ラバーズがカモフラージュ中に相方がわかる,恋人不受隐蔽者技能影响,戀人不受隐蔽者技能影響
-CamouflagerCamouflageQuarreledSetting,Quarreled can still mark while activating their skill,クラードがカモフラージュ中に相方がわかる,福音天使不受隐蔽者技能影响,福音天使不受隐蔽者技能影響
+CamouflagerCamouflageQuarreledSetting,Quarreled can still mark while activating their skill,クラードがカモフラージュ中に相方がわかる,福音天使不受隐蔽者技能影响,冤家兄弟不受隐蔽者技能影響
 CamouflagerCamouflageChangeColorSetting,Change the color of camouflage,カモフラージュ中の色を変更する,自定义隐蔽色,自定義隱蔽色
 CamouflagerCamouflageColorSetting,Camouflage color,カモフラージュ中の色,隐蔽色,隱蔽色
 CamouflagerButtonName,Camouflager,カモフラージュ,隐蔽,隱蔽
@@ -1187,7 +1187,7 @@ PenguinName,Penguin,ペンギン,绑匪,綁匪
 PenguinTitle1,Let's drag and kill!,ぺちぺち！,绑架他人,綁架他人
 PenguinButtonName,Abduction,拉致,绑架,綁架
 PenguinCanDefaultKill,Can default kill,通常キルができる,绑匪可以进行通常击杀,綁匪可以進行通常擊殺
-PenguinMeetingKill,Kill when the meeting starts,能力発動中に会議が始まった場合キルをする
+PenguinMeetingKill,Kill when the meeting starts,能力発動中に会議が始まった場合キルをする,,綁架中進入會議則撕票
 LoversBreakerName,LoversBreaker,爆ぜ師,FFF团,現充爆破者
 LoversBreakerTitle1,fulfilling life explosion!!fulfilling life explosion!!,リア充爆発！！リア充爆発！！,现充去死！现充爆炸！,現充通通爆破吧！
 LoversBreakerBreakCount,Number of explosions needed to win,勝利に必要な爆破数,FFF团获胜所需击杀的恋人数,現充爆破者所需擊殺戀人數
