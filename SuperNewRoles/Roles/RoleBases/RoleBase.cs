@@ -115,10 +115,7 @@ public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
         if (IsImpostorViewOptionOn) IsImpostorViewOption = CustomOption.Create(OptionId, IsSHRRole, OptionType, "MadmateImpostorLightSetting", IsImpostorViewOptionDefault, RoleOption); OptionId++;
         SetupMyOptions();
     }
-    public void SetupMyOptions()
-    {
-
-    }
+    public abstract void SetupMyOptions();
 
 
     public void Init(PlayerControl player)

@@ -1014,8 +1014,8 @@ public static class MurderPlayerPatch
             }
             else
             {
-                if (CustomOptionHolder.WaveCannonJackalIsSyncKillCoolTime.GetBool())
-                    HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptionHolder.WaveCannonJackalCoolTime.GetFloat();
+                if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
+                    HudManagerStartPatch.WaveCannonButton.MaxTimer = WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
             }
         }
 

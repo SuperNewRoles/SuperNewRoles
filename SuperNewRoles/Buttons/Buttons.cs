@@ -579,17 +579,17 @@ static class HudManagerStartPatch
                 writer.EndRPC();
                 RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Spawn, 0, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, buff);
             },
-            (bool isAlive, RoleId role) => { return isAlive && role is RoleId.WaveCannon or RoleId.WaveCannonJackal; },
+            (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.WaveCannon || role == RoleId.WaveCannonJackal) && (!WaveCannonJackal.IwasSidekicked.Contains(PlayerControl.LocalPlayer.PlayerId) || WaveCannonJackal.WaveCannonJackalNewJackalHaveWaveCannon.GetBool()); },
             () =>
             {
                 return PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
-                WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonCoolTime.GetFloat() : CustomOptionHolder.WaveCannonJackalCoolTime.GetFloat();
+                WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonCoolTime.GetFloat() : WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
                 WaveCannonButton.Timer = WaveCannonButton.MaxTimer;
                 WaveCannonButton.effectCancellable = false;
-                WaveCannonButton.EffectDuration = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonChargeTime.GetFloat() : CustomOptionHolder.WaveCannonJackalChargeTime.GetFloat();
+                WaveCannonButton.EffectDuration = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonChargeTime.GetFloat() : WaveCannonJackal.WaveCannonJackalChargeTime.GetFloat();
                 WaveCannonButton.HasEffect = true;
             },
             RoleClass.WaveCannon.GetButtonSprite(),
@@ -1312,6 +1312,8 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
+        WaveCannonJackal.MakeButtons(__instance);
+
         JackalKillButton = new(
             () =>
             {
@@ -1344,7 +1346,7 @@ static class HudManagerStartPatch
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
                 else if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
-                else if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannonJackal)) { WaveCannonJackal.ResetCooldowns(); }
+                else if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannonJackal)) { WaveCannonJackal.EndMeeting(); }
             },
             __instance.KillButton.graphic.sprite,
             new Vector3(0, 1, 0),

@@ -1102,6 +1102,9 @@ WaveCannonButtonName,Wave Cannon,波動砲,开炮,開炮
 IsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクールタイムを同期,冷却与通用击杀同步冷却,冷卻與通用擊殺同步冷卻
 WaveCannonJackalName,Wave Cannon Jackal,波動砲ジャッカル,狼族重炮手,狼族重炮手
 WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！,看我轟飛你全家！
+WaveCannonJackalNewJackalHaveWaveCannon,When the Sidekick is promoted，will it inherit the wave gun?,サイドキック昇格時、波動砲を受け継ぐか。
+SidekickWaveCannonName,Sidekick (Wave Cannon),サイドキック(波動砲)
+SidekickWaveCannonTitle1,He who inherits the will of the waves.,波動の遺志を受け継ぎし者
 CrackerName,Cracker,クラッカー,神隐者,神隱者
 CrackerTitle1,Let's crack on and play God!,クラックして神隠しをしよう,让他人神隐,讓他人神隱
 CrackerIsAdminView,Counted by Admins,アドミンにカウントされる,被神隐玩家可以在地图上被观测到,被神隱玩家可以在地圖上被觀測到

@@ -171,6 +171,22 @@ public class SetNamesClass
             roleNames = introData.Name + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
             roleColors = RoleClass.Pavlovsdogs.color;
         }
+        else if (WaveCannonJackal.IwasSidekicked.Contains(p.PlayerId) &&
+                !WaveCannonJackal.WaveCannonJackalNewJackalHaveWaveCannon.GetBool())
+        {
+            if (p.IsRole(RoleId.WaveCannonJackal))
+            {
+                var introData = IntroData.GetIntroData(RoleId.Jackal, p);
+                roleNames = introData.Name;
+                roleColors = introData.color;
+            }
+            else
+            {
+                var introData = IntroData.GetIntroData(RoleId.Sidekick, p);
+                roleNames = introData.Name;
+                roleColors = introData.color;
+            }
+        }
         else
         {
             var introData = IntroData.GetIntroData(role, p);

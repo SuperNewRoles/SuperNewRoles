@@ -25,7 +25,7 @@ public static class RoleClass
     public static Color CrewmateWhite = Color.white;
     public static Color FoxPurple = Palette.Purple;
     private static Color32 SheriffYellow = new(250, 191, 20, byte.MaxValue);
-    private static Color32 JackalBlue = new(0, 180, 235, byte.MaxValue);
+    public static Color32 JackalBlue = new(0, 180, 235, byte.MaxValue);
     public static bool IsStart;
     public static List<byte> BlockPlayers;
     public static float DefaultKillCoolDown;
@@ -213,7 +213,8 @@ public static class RoleClass
         Knight.ClearAndReload();
         Pavlovsdogs.ClearAndReload();
         Pavlovsowner.ClearAndReload();
-        WaveCannonJackal.ClearAndReload();
+        Neutral.WaveCannonJackal.ClearAndReload();
+        //SidekickWaveCannon.Clear();
         Conjurer.ClearAndReload();
         Camouflager.ClearAndReload();
         Cupid.ClearAndReload();
@@ -2815,16 +2816,6 @@ public static class RoleClass
             Duration = DurationTime + 1.1f;
             Targets = new();
             CurrentCool = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
-        }
-    }
-    public static class WaveCannonJackal
-    {
-        public static List<PlayerControl> WaveCannonJackalPlayer;
-        public static Color32 color = JackalBlue;
-        public static void ClearAndReload()
-        {
-            WaveCannonJackalPlayer = new();
-
         }
     }
     public static class GM
