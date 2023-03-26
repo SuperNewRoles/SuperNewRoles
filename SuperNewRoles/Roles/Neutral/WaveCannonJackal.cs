@@ -152,6 +152,10 @@ class WaveCannonJackal
         {
             JackalSeer.SetPlayerOutline(JackalSetTarget(), color);
         }
+        /// <summary>
+        /// SK昇格処理を行うかの判定、追放処理時・キル発生時に判定される
+        /// </summary>
+        /// <param name="role">死亡者の役職</param>
         public static void Postfix(PlayerControl __instance, RoleId role)
         {
             if (AmongUsClient.Instance.AmHost)

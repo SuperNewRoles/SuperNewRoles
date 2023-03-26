@@ -1223,6 +1223,10 @@ public static class RPCProcedure
             }
         }
     }
+    /// <summary>
+    /// ジャッカルロールのサイドキック昇格処理
+    /// </summary>
+    /// <param name="jackalId">昇格先のジャッカルロールのid</param>
     public static void SidekickPromotes(byte jackalId)
     {
         RoleId jackalRoleId = (RoleId)jackalId;
@@ -1294,6 +1298,11 @@ public static class RPCProcedure
         }
     }
 
+    /// <summary>
+    /// サイドキック(波動砲)の作成
+    /// </summary>
+    /// <param name="playerid">SK対象者のplayerid</param>
+    /// <param name="IsFake">見せかけのSKか(TORでインポスターSK時ジャッカル視点のみSKできた様になる状態SNRでは使われていない)</param>
     public static void CreateSidekickWaveCannon(byte playerid, bool IsFake)
     {
         var player = ModHelpers.PlayerById(playerid);
