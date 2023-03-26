@@ -71,6 +71,7 @@ public class CrystalMagician : BattleRoyalRole
                         SyncBattleOptions.CustomSyncOptions(player);
                     }
                     IsAbilityUsingNow = false;
+                    CurrentPlayer.RpcResetAbilityCooldown();
                 }
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AmongUs.GameOptions;
+using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.BattleRoyal.BattleRole;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -41,7 +42,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             if (player.IsRole(RoleId.KingPoster) && KingPoster.KingPosters.FirstOrDefault(x => x.CurrentPlayer == player).IsAbilityUsingNow) optdata.SetInt(Int32OptionNames.KillDistance, GameOptionsData.KillDistances.Length - 1);
 
             if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-            optdata.RpcSyncOption(player.GetClientId());
+            optdata.RpcSyncOption(player.GetClientId(), sendOption:SendOption.None);
         }
     }
 }

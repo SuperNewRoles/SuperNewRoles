@@ -123,6 +123,35 @@ public static class RPCHelper
             val.EndRPC();
         }
     }
+    public static void RpcSyncMeetingHud(int TargetClientId = -1)
+    {
+        if (Instance is null) return;
+        MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+        // 書き込み {}は読みやすさのためです。
+        if (TargetClientId < 0)
+        {
+            writer.StartMessage(5);
+            writer.Write(AmongUsClient.Instance.GameId);
+        }
+        else
+        {
+            writer.StartMessage(6);
+            writer.Write(AmongUsClient.Instance.GameId);
+            if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
+            writer.WritePacked(TargetClientId);
+        }
+        writer.StartMessage(1); //0x01 Data
+        {
+            writer.WritePacked(Instance.NetId);
+            Instance.Serialize(writer, true);
+
+        }
+        writer.EndMessage();
+        writer.EndMessage();
+
+        AmongUsClient.Instance.SendOrDisconnect(writer);
+        writer.Recycle();
+    }
     public static void RpcSyncGameData(int TargetClientId = -1)
     {
         MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
@@ -152,10 +181,10 @@ public static class RPCHelper
         AmongUsClient.Instance.SendOrDisconnect(writer);
         writer.Recycle();
     }
-    public static void RpcSyncOption(this IGameOptions gameOptions, int TargetClientId = -1)
+    public static void RpcSyncOption(this IGameOptions gameOptions, int TargetClientId = -1, SendOption sendOption = SendOption.Reliable)
     {
         GameManager gm = NormalGameManager.Instance;
-        MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+        MessageWriter writer = MessageWriter.Get(sendOption);
         // 書き込み {}は読みやすさのためです。
         if (TargetClientId < 0)
         {
@@ -318,10 +347,22 @@ public static class RPCHelper
         else
         {
             MessageWriter writer = StartRPC(target.NetId, RpcCalls.ProtectPlayer, target);
-            writer.Write(0);
+            writer.WriteNetObject(target);
             writer.Write(0);
             writer.EndRPC();
+            target.RPCMurderPlayerPrivate(target, target);
         }
+    }
+    public static void RpcExitVentUnchecked(this PlayerPhysics player, int id)
+    {
+        if (AmongUsClient.Instance.AmClient)
+        {
+            ((MonoBehaviour)player).StopAllCoroutines();
+            ((MonoBehaviour)player).StartCoroutine(player.CoExitVent(id));
+        }
+        MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(player.NetId, 20, SendOption.None);
+        messageWriter.WritePacked(id);
+        messageWriter.EndMessage();
     }
 
     public static void RpcOpenToilet()

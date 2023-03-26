@@ -76,7 +76,13 @@ class AddChatPatch
             }
         }
 
-        var Commands = chatText.Split(" ");
+        var Commandsa = chatText.Split(" ");
+        var Commandsb = new List<string>();
+        foreach (string com in Commandsa)
+        {
+            Commandsb.AddRange(com.Split("　"));
+        }
+        var Commands = Commandsb.ToArray();
         if (Commands[0].Equals("/version", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/v", StringComparison.OrdinalIgnoreCase))
         {

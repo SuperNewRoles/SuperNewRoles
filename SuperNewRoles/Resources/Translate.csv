@@ -258,6 +258,7 @@ BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるよ�
 BattleRoyalRoleNoneText,This role does not exist. Please check the list of roles at "/battleroles" (/btr).,この役職は存在しません。「/battleroles」(/btr)で役職一覧を確認してください。
 BattleRoyalSetRoleText,{0} role has been set to {1}!,{0}の役職が{1}に設定されました！
 BattleRoyalBattleRolesCommandText,,役職の詳細を確認する場合は、/btr [役職名]と入力しましょう。([役職名]には実際の役職名を入れてください)\n()の中にあるのが内部Idです。(こちらもゲーム内で実際に使用できます)
+BattleRoyalStartMeetingText,,バトルロイヤルへようこそ!\nこの会議内では、チャットは味方にのみ聞こえます!ここで仲間と話し合い、自分の役職を決めましょう!\n役職は/setrole [役職]で決められます!仲間と相談して決めましょう!\n役職一覧は/btrで確認できるよ!
 ZombieZombieName,Zombie,ゾンビ,僵尸
 ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよう,感染他人获得胜利
 ZombiePoliceName,Police,警察,人类
@@ -1320,6 +1321,9 @@ RevengerStartRevenge,{0} started revenging at {1}.,{0}が{1}でリベンジを�
 CrystalMagicianName,CrystalMagician,クリスタルマジシャン
 CrystalMagicianDescription,,
 CrystalMagicianCrystalBot,Crystal,クリスタル
+GrimReaperName,GrimReaper,死神
+GrimReaperDescription,,エネルギーを貯めることで敵を動けなくし、一方的にキルすることができる。ただし、エネルギーを貯めるのには時間が必要で、さらに動けなくなる。さらに、エネルギーを貯めている位置も分かってしまう。注意しよう。
+GrimReaperAbilityStart,GrimReaper is charging energy at {0} now...,死神が{0}でエネルギーを貯め始めた...
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示

@@ -41,6 +41,7 @@ public class Guardrawer : BattleRoyalRole
             {
                 PlayerAbility currentability = PlayerAbility.GetPlayerAbility(CurrentPlayer);
                 IsAbilityUsingNow = false;
+                CurrentPlayer.RpcResetAbilityCooldown();
                 currentability.CanUseKill = true;
             }
         }

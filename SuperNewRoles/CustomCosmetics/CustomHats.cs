@@ -204,7 +204,7 @@ public class CustomHats
     }
 
     private static HatData CreateHatData(CustomHatLoader.CustomHatOnline chd) => CreateHatData(chd, true);
-
+    /*
     [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetUnlockedHats))]
     public static class HatManagerUnlockedPatch
     {
@@ -228,7 +228,7 @@ public class CustomHats
         {
             __result = __instance.allVisors;
         }
-    }
+    }*/
     [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetHatById))]
     public static class HatManagerPatch
     {

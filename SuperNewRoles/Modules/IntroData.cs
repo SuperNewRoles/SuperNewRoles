@@ -285,5 +285,6 @@ public class IntroData
     public static IntroData DarknightIntro = new("Darknight", RoleClass.ImpostorRed, 1, RoleId.Darknight, TeamRoleType.Impostor, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData RevengerIntro = new("Revenger", RoleClass.ImpostorRed, 1, RoleId.Revenger, TeamRoleType.Impostor, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData CrystalMagicianIntro = new("CrystalMagician", RoleClass.ImpostorRed, 1, RoleId.CrystalMagician, TeamRoleType.Impostor, IntroSound: RoleTypes.Shapeshifter);
+    public static IntroData GrimReaperIntro = new("GrimReaper", RoleClass.ImpostorRed, 1, RoleId.GrimReaper, TeamRoleType.Impostor, IntroSound: RoleTypes.Shapeshifter);
     // イントロオブジェ
 }

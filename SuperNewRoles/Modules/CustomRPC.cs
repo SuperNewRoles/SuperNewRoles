@@ -199,6 +199,7 @@ public enum RoleId
     Darknight,
     Revenger,
     CrystalMagician,
+    GrimReaper
     //RoleId
 }
 

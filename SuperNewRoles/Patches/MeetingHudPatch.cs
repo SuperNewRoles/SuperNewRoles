@@ -96,15 +96,12 @@ class CheckForEndVotingPatch
             }
             else if (ModeHandler.IsMode(ModeId.BattleRoyal))
             {
-                Logger.Info($"{__instance.discussionTimer}");
-                if (__instance.discussionTimer <= 0)
+                int votingTime = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.VotingTime);
+                float num4 = __instance.discussionTimer - GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.DiscussionTime);
+                if (votingTime > 0 && num4 >= (float)votingTime)
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                    {
-                        p.Data.IsDead = false;
-                    }
-                    RPCHelper.RpcSyncGameData();
-                    __instance.RpcVotingComplete(new Il2CppStructArray<VoterState>(new VoterState[] { }), null, false);
+                    __instance.discussionTimer = 0;
+                    Mode.BattleRoyal.SelectRoleSystem.OnEndSetRole();
                 }
                 return false;
             }

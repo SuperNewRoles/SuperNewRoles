@@ -74,6 +74,7 @@ public class KingPoster : BattleRoyalRole
                     currentability.CanMove = true;
                     IsAbilityUsingNow = false;
                     IsAbilityEnded = false;
+                    CurrentPlayer.RpcResetAbilityCooldown();
                 }
                 //AbilityTimeが終わったとき
                 else if (IsAbilityTime)

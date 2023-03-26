@@ -26,6 +26,7 @@ class Main
         if (!IsRoleSetted) return;
         //SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
         ChangeName.FixedUpdate();
+        BattleRoyalRole.BattleRoyalRoles.RemoveAll(x => x.CurrentPlayer == null);
         foreach (BattleRoyalRole role in BattleRoyalRole.BattleRoyalRoles)
         {
             role.FixedUpdate();
@@ -131,6 +132,7 @@ class Main
         {
             source.RpcMurderPlayer(target);
         }
+        SyncBattleOptions.CustomSyncOptions();
         if (source.IsRole(RoleId.Darknight))
         {
             Darknight.GetDarknightPlayer(source).OnKill(target);
@@ -194,12 +196,14 @@ class Main
     public static bool IsViewAlivePlayer;
     public static bool EndGameCheck(ShipStatus __instance)
     {
+        if (!IsRoleSetted) return false;
         if (IsTeamBattle)
         {
             if (!IsSeted) return false;
             List<PlayerControl> players = new();
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
+                if (p.IsBot()) continue;
                 if (p.IsAlive())
                 {
                     players.Add(p);
@@ -211,11 +215,18 @@ class Main
                 GameManager.Instance.RpcEndGame(GameOverReason.HumansByVote, false);
                 return true;
             }
+            bool Flag = false;
             foreach (BattleTeam team in BattleTeam.BattleTeams)
             {
-                if (team.IsTeam(players[0]))
+                foreach (PlayerControl player in team.TeamMember)
                 {
-                    foreach (PlayerControl p in players) if (!team.IsTeam(p)) return false;
+                    if (player.IsDead()) continue;
+                    if (Flag)
+                    {
+                        return false;
+                    }
+                    Flag = true;
+                    break;
                 }
             }
             Winners = new();
@@ -251,6 +262,7 @@ class Main
             FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
+                if (p.IsBot()) continue;
                 if (p.IsAlive())
                 {
                     alives++;
@@ -304,6 +316,7 @@ class Main
         Darknight.Clear();
         Revenger.Clear();
         CrystalMagician.Clear();
+        GrimReaper.Clear();
 
         RoleSettedPlayers = new();
         IsRoleSetted = false;

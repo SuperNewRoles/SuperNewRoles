@@ -114,6 +114,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         if (player is null) continue;
                         player.Data.IsDead = !team.IsTeam(player);
                     }
+                    RPCHelper.RpcSyncMeetingHud();
                 }, 1.5f);
 
             }
@@ -154,7 +155,13 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static string BattleRoyalCommander => $"<size=200%><color=#745030>{ModTranslation.GetString("BattleRoyalModeName")}</color></size>";
         public static bool OnAddChat(PlayerControl source, string chat)
         {
-            var Commands = chat.Split(" ");
+            var Commandsa = chat.Split(" ");
+            var Commandsb = new List<string>();
+            foreach (string com in Commandsa)
+            {
+                Commandsb.AddRange(com.Split("　"));
+            }
+            var Commands = Commandsb.ToArray();
             if (Commands[0].Equals("/SetRole", StringComparison.OrdinalIgnoreCase))
             {
                 if (Commands.Length <= 1) return false;
@@ -185,21 +192,25 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     }
                     if (IsEnd)
                     {
-                        foreach(PlayerControl p in PlayerControl.AllPlayerControls)
-                        {
-                            p.Data.IsDead = false;
-                        }
-                        RPCHelper.RpcSyncGameData();
-                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                        {
-                            p.MyPhysics.RpcExitVent(0);
-                        }
-                        Instance.RpcClose();
+                        OnEndSetRole();
                     }
                 }
                 return false;
             }
             return true;
+        }
+        public static void OnEndSetRole()
+        {
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                p.Data.IsDead = false;
+            }
+            RPCHelper.RpcSyncGameData();
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                p.MyPhysics.RpcExitVentUnchecked(0);
+            }
+            Instance.RpcClose();
         }
     }
 }

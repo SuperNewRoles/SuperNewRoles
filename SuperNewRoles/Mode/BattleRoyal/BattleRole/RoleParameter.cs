@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Agartha;
 
 namespace SuperNewRoles.Mode.BattleRoyal.BattleRole
 {
@@ -25,5 +26,35 @@ namespace SuperNewRoles.Mode.BattleRoyal.BattleRole
 
         public const float CrystalMagicianCrystalTime = 10;
         public const float CrystalMagicianSuperPowerTime = 5;
+        public const float GrimReaperEndStuckTime = 4;
+        public const float GrimReaperFirstStuckTimeSkeld = 10;
+        public const float GrimReaperFirstStuckTimeMira = 13;
+        public const float GrimReaperFirstStuckTimeAgartha = 14.5f;
+        public const float GrimReaperFirstStuckTimePolus = 16;
+        public const float GrimReaperFirstStuckTimeAirship = 23;
+        public const float GrimReaperShowNotificationDurationTime = 4.5f;
+
+
+        public static float GrimReaperFirstStuckTime
+        {
+            get
+            {
+                switch (MapData.ThisMap)
+                {
+                    case CustomMapNames.Skeld:
+                        return GrimReaperFirstStuckTimeSkeld;
+                    case CustomMapNames.Mira:
+                        return GrimReaperFirstStuckTimeMira;
+                    case CustomMapNames.Agartha:
+                        return GrimReaperFirstStuckTimeAgartha;
+                    case CustomMapNames.Polus:
+                        return GrimReaperFirstStuckTimePolus;
+                    case CustomMapNames.Airship:
+                        return GrimReaperFirstStuckTimeAirship;
+                }
+                return 0f;
+            }
+        }
+        public static float GrimReaperAbilityTime => GrimReaperFirstStuckTime * 0.75f;
     }
 }

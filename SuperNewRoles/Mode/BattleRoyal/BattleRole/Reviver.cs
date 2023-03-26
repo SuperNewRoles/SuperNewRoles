@@ -48,6 +48,7 @@ public class Reviver : BattleRoyalRole
                 {
                     targetability.CanMove = true;
                     IsAbilityUsingNow = false;
+                    CurrentPlayer.RpcResetAbilityCooldown();
                 }
                 else
                 {
@@ -61,7 +62,7 @@ public class Reviver : BattleRoyalRole
                     SyncBattleOptions.CustomSyncOptions(CurrentPlayer);
                     IsReviverTime = true;
                     AbilityTime = RoleParameter.ReviverRevivePlayerStuckTime;
-                    currentTarget.MyPhysics.RpcExitVent(0);
+                    currentTarget.MyPhysics.RpcExitVentUnchecked(0);
                 }
                 SyncBattleOptions.CustomSyncOptions(currentTarget);
             }

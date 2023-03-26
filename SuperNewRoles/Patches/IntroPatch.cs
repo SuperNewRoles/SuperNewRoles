@@ -396,7 +396,6 @@ public class IntroPatch
     {
         public static void Prefix()
         {
-            if (ModeHandler.IsMode(ModeId.BattleRoyal)) SelectRoleSystem.OnEndIntro();
             float SetTime = 0;
             bool Flag = true;
             switch (PlayerControl.LocalPlayer.GetRole())
