@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles.Neutral;
 class WaveCannonJackal
 {
     // CustomOption Start
-    private static int OptionId = 1251;
+    private static int OptionId = 1252;
     public static CustomRoleOption WaveCannonJackalOption;
     public static CustomOption WaveCannonJackalPlayerCount;
     public static CustomOption WaveCannonJackalCoolTime;
