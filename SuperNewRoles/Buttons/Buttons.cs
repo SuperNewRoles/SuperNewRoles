@@ -579,7 +579,7 @@ static class HudManagerStartPatch
                 writer.EndRPC();
                 RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Spawn, 0, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, buff);
             },
-            (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.WaveCannon || role == RoleId.WaveCannonJackal) && (!WaveCannonJackal.IwasSidekicked.Contains(PlayerControl.LocalPlayer) || WaveCannonJackal.WaveCannonJackalNewJackalHaveWaveCannon.GetBool()); },
+            (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.WaveCannon || role == RoleId.WaveCannonJackal) && (!WaveCannonJackal.IwasSidekicked.Contains(PlayerControl.LocalPlayer.PlayerId) || WaveCannonJackal.WaveCannonJackalNewJackalHaveWaveCannon.GetBool()); },
             () =>
             {
                 return PlayerControl.LocalPlayer.CanMove;

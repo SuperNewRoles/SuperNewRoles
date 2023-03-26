@@ -58,7 +58,7 @@ class WaveCannonJackal
     public static List<int> CreatePlayers;
     public static bool CanCreateSidekick;
     public static bool CanCreateFriend;
-    public static List<PlayerControl> IwasSidekicked;
+    public static List<byte> IwasSidekicked;
     public static void ClearAndReload()
     {
         WaveCannonJackalPlayer = new();
