@@ -26,7 +26,7 @@ public static class NiceMechanic
     }
 
     public static List<PlayerControl> NiceMechanicPlayer;
-    public static Color32 color = new Color32(82, 108, 173, byte.MaxValue);
+    public static Color32 color = new(82, 108, 173, byte.MaxValue);
     public static Dictionary<byte, Vent> TargetVent;
     public static bool IsLocalUsingNow => TargetVent.ContainsKey(PlayerControl.LocalPlayer.PlayerId) && TargetVent[PlayerControl.LocalPlayer.PlayerId] is not null;
     public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MechanicButton_Nice.png", 115f);

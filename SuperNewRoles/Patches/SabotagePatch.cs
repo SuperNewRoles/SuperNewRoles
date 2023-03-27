@@ -50,7 +50,7 @@ public static class MeltdownBooster
 {
     public static void Prefix(ReactorSystemType __instance, float deltaTime)
     {
-        if (MapOption.MapOption.ReactorDurationOption.GetBool())
+        if (MapOption.MapOption.IsReactorDurationSetting)
         {
             if (!__instance.IsActive)
             {
@@ -82,7 +82,7 @@ public static class HeliMeltdownBooster
 {
     public static void Prefix(HeliSabotageSystem __instance)
     {
-        if (MapOption.MapOption.ReactorDurationOption.GetBool())
+        if (MapOption.MapOption.IsReactorDurationSetting)
         {
             if (!__instance.IsActive)
             {

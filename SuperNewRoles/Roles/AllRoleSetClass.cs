@@ -1054,7 +1054,7 @@ class AllRoleSetClass
             RoleId.Werewolf => CustomOptionHolder.WerewolfPlayerCount.GetFloat(),
             RoleId.Knight => Knight.KnightPlayerCount.GetFloat(),
             RoleId.Pavlovsowner => CustomOptionHolder.PavlovsownerPlayerCount.GetFloat(),
-            RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalPlayerCount.GetFloat(),
+            RoleId.WaveCannonJackal => WaveCannonJackal.WaveCannonJackalPlayerCount.GetFloat(),
             RoleId.Conjurer => Conjurer.PlayerCount.GetFloat(),
             RoleId.Camouflager => CustomOptionHolder.CamouflagerPlayerCount.GetFloat(),
             RoleId.Cupid => CustomOptionHolder.CupidPlayerCount.GetFloat(),

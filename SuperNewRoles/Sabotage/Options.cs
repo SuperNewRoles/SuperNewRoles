@@ -1,5 +1,8 @@
-namespace SuperNewRoles.Sabotage;
+using UnityEngine;
+using static SuperNewRoles.Modules.CustomOption;
+using static SuperNewRoles.Modules.CustomOptionHolder;
 
+namespace SuperNewRoles.Sabotage;
 public static class Options
 {
     public static CustomOption SabotageSetting;
@@ -9,10 +12,10 @@ public static class Options
     public static CustomOption CognitiveDeficitIsAllEndSabotageSetting;
     public static void Load()
     {
-        SabotageSetting = CustomOption.Create(512, false, CustomOptionType.Generic, "SabotageSetting", false, null, isHeader: true);
-        CognitiveDeficitSetting = CustomOption.Create(513, false, CustomOptionType.Generic, "SabotageCognitiveDeficitSetting", false, SabotageSetting);
-        CognitiveDeficitOutfitUpdateTimeSetting = CustomOption.Create(514, false, CustomOptionType.Generic, "CognitiveDeficitSabotageOutfitUpdateTimeSetting", 3f, 0.5f, 10f, 0.5f, CognitiveDeficitSetting);
-        CognitiveDeficitReleaseTimeSetting = CustomOption.Create(515, false, CustomOptionType.Generic, "CognitiveDeficitSabotageReleaseTimeSetting", 3f, 0.5f, 10f, 0.5f, CognitiveDeficitSetting);
-        CognitiveDeficitIsAllEndSabotageSetting = CustomOption.Create(516, false, CustomOptionType.Generic, "CognitiveDeficitSabotageIsAllPlayerEndSabotageSetting", true, CognitiveDeficitSetting);
+        SabotageSetting = Create(512, false, CustomOptionType.Generic, Cs(new Color(204f / 187f, 51f / 255f, 0, 1f), "SabotageSetting"), false, null, isHeader: true);
+        CognitiveDeficitSetting = Create(513, false, CustomOptionType.Generic, "SabotageCognitiveDeficitSetting", false, SabotageSetting);
+        CognitiveDeficitOutfitUpdateTimeSetting = Create(514, false, CustomOptionType.Generic, "CognitiveDeficitSabotageOutfitUpdateTimeSetting", 3f, 0.5f, 10f, 0.5f, CognitiveDeficitSetting);
+        CognitiveDeficitReleaseTimeSetting = Create(515, false, CustomOptionType.Generic, "CognitiveDeficitSabotageReleaseTimeSetting", 3f, 0.5f, 10f, 0.5f, CognitiveDeficitSetting);
+        CognitiveDeficitIsAllEndSabotageSetting = Create(516, false, CustomOptionType.Generic, "CognitiveDeficitSabotageIsAllPlayerEndSabotageSetting", true, CognitiveDeficitSetting);
     }
 }

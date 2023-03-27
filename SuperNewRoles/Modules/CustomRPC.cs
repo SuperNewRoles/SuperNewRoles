@@ -9,6 +9,7 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using Sentry;
+using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.MapOption;
@@ -165,6 +166,7 @@ public enum RoleId
     Cracker,
     WaveCannon,
     WaveCannonJackal,
+    SideKickWaveCannon,
     NekoKabocha,
     Doppelganger,
     Werewolf,
@@ -192,6 +194,7 @@ public enum RoleId
     TheThirdLittlePig,
     OrientalShaman,
     ShermansServant,
+    SidekickWaveCannon,
     //RoleId
 }
 
@@ -215,6 +218,7 @@ public enum CustomRPC
     SidekickPromotes = 160,
     CreateSidekick,
     CreateSidekickSeer,
+    CreateSidekickWaveCannon,
     SetSpeedBoost,
     AutoCreateRoom,
     CountChangerSetRPC,
@@ -291,6 +295,7 @@ public enum CustomRPC
     SetOutfit,
     CreateShermansServant,
     SetVisible,
+    PenguinMeetingEnd,
 }
 
 public static class RPCProcedure
@@ -1218,26 +1223,41 @@ public static class RPCProcedure
             }
         }
     }
-    public static void SidekickPromotes(bool isJackalSeer)
+    /// <summary>
+    /// ジャッカルロールのサイドキック昇格処理
+    /// </summary>
+    /// <param name="jackalId">昇格先のジャッカルロールのid</param>
+    public static void SidekickPromotes(byte jackalId)
     {
-        if (isJackalSeer)
-        {
-            foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
-            {
-                p.ClearRole();
-                p.SetRole(RoleId.JackalSeer);
-                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
-                RoleClass.JackalSeer.CanCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
-            }
-        }
-        else
+        RoleId jackalRoleId = (RoleId)jackalId;
+        if (jackalRoleId == RoleId.Jackal)
         {
             foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer.ToArray())
             {
                 p.ClearRole();
-                p.SetRole(RoleId.Jackal);
+                p.SetRole(jackalRoleId);
                 //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
                 RoleClass.Jackal.CanCreateSidekick = CustomOptionHolder.JackalNewJackalCreateSidekick.GetBool();
+            }
+        }
+        else if (jackalRoleId == RoleId.JackalSeer)
+        {
+            foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
+            {
+                p.ClearRole();
+                p.SetRole(jackalRoleId);
+                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
+                RoleClass.JackalSeer.CanCreateSidekick = CustomOptionHolder.JackalSeerNewJackalCreateSidekick.GetBool();
+            }
+        }
+        else if (jackalRoleId == RoleId.WaveCannonJackal)
+        {
+            foreach (PlayerControl p in WaveCannonJackal.SidekickWaveCannonPlayer.ToArray())
+            {
+                p.ClearRole();
+                p.SetRole(jackalRoleId);
+                //無限サイドキック化の設定の取得(CanCreateSidekickにfalseが代入されると新ジャッカルにSKボタンが表示されなくなる)
+                WaveCannonJackal.CanCreateSidekick = WaveCannonJackal.WaveCannonJackalNewJackalCreateSidekick.GetBool();
             }
         }
         PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
@@ -1275,6 +1295,25 @@ public static class RPCProcedure
             RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
             PlayerControlHelper.RefreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
+        }
+    }
+
+    /// <summary>
+    /// サイドキック(波動砲)の作成
+    /// </summary>
+    /// <param name="playerid">SK対象者のplayerid</param>
+    /// <param name="IsFake">見せかけのSKか(TORでインポスターSK時ジャッカル視点のみSKできた様になる状態SNRでは使われていない)</param>
+    public static void CreateSidekickWaveCannon(byte playerid, bool IsFake)
+    {
+        var player = ModHelpers.PlayerById(playerid);
+        if (player == null) return;
+        if (IsFake) WaveCannonJackal.FakeSidekickWaveCannonPlayer.Add(player);
+        else
+        {
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
+            player.ClearRole(); // FIXME:RoleBase化でいらなくなるはず
+            player.SetRole(RoleId.SidekickWaveCannon);
+            WaveCannonJackal.IwasSidekicked.Add(playerid);
         }
     }
     public static void ExiledRPC(byte playerid)
@@ -1461,6 +1500,13 @@ public static class RPCProcedure
         Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
     }
 
+    public static void PenguinMeetingEnd()
+    {
+        RoleClass.Penguin.PenguinData.Clear();
+        if (PlayerControl.LocalPlayer.GetRole() == RoleId.Penguin)
+            HudManagerStartPatch.PenguinButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+    }
+
     public static void SetLoversBreakerWinner(byte playerid) => RoleClass.LoversBreaker.CanEndGamePlayers.Add(playerid);
 
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
@@ -1569,7 +1615,7 @@ public static class RPCProcedure
                         SetQuarreled(reader.ReadByte(), reader.ReadByte());
                         break;
                     case CustomRPC.SidekickPromotes:
-                        SidekickPromotes(reader.ReadBoolean());
+                        SidekickPromotes(reader.ReadByte());
                         break;
                     case CustomRPC.CreateSidekick:
                         CreateSidekick(reader.ReadByte(), reader.ReadBoolean());
@@ -1643,6 +1689,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.CreateSidekickSeer:
                         CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case CustomRPC.CreateSidekickWaveCannon:
+                        CreateSidekickWaveCannon(reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case CustomRPC.ArsonistDouse:
                         ArsonistDouse(reader.ReadByte(), reader.ReadByte());
@@ -1809,6 +1858,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.SetVisible:
                         SetVisible(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case CustomRPC.PenguinMeetingEnd:
+                        PenguinMeetingEnd();
                         break;
                 }
             }

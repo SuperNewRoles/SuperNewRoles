@@ -31,6 +31,7 @@ public class CursedDivertPowerTask
         [HarmonyPatch(nameof(AcceptDivertPowerGame.Start)), HarmonyPrefix]
         public static void StartPrefix(AcceptDivertPowerGame __instance)
         {
+            if (!Main.IsCursed) return;
             Data[__instance.MyTask.Id].Count++;
             Change = true;
             if (Data[__instance.MyTask.Id].Count < 5) __instance.Close();

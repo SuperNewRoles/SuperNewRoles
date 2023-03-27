@@ -53,12 +53,5 @@ public class CursedLeafTask
             if (!Main.IsCursed) return;
             __instance.transform.FindChild("cursor").position = __instance.myController.HoverPosition;
         }
-
-        [HarmonyPatch(nameof(LeafMinigame.LeafDone)), HarmonyPostfix]
-        public static void LeafDonePostfix()
-        {
-            if (!Main.IsCursed) return;
-            LeafDoneCount--;
-        }
     }
 }
