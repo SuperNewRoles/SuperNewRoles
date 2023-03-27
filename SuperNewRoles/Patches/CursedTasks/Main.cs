@@ -4,7 +4,7 @@ namespace SuperNewRoles.Patches.CursedTasks;
 
 public static class Main
 {
-    private const int OptionId = 1247;
+    private const int OptionId = 1266;
     public static CustomOption CursedTask;
     public static void SetupCustomOptions()
     {
