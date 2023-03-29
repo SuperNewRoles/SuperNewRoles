@@ -1506,7 +1506,7 @@ public static class RPCProcedure
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
         {
             if (!IsWritingRPCLog.ContainsKey((CustomRPC)callId))
-                Logger.Info(ModHelpers.GetRPCNameFromByte(callId), "RPC");
+                Logger.Info(ModHelpers.GetRPCNameFromByte(__instance, callId), "RPC");
             try
             {
                 byte packetId = callId;

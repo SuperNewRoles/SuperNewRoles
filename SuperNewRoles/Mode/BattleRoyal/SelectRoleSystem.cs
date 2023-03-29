@@ -39,14 +39,18 @@ namespace SuperNewRoles.Mode.BattleRoyal
         {
             foreach (BattleTeam team in BattleTeam.BattleTeams)
             {
+                Logger.Info("ーー終了ーー");
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     if (player.IsBot()) continue;
+                    if (player is null) continue;
                     player.Data.IsDead = !team.IsTeam(player);
+                    Logger.Info($"{player.GetDefaultName()} : {player.Data.IsDead} : {!team.IsTeam(player)}");
                 }
+                Logger.Info("ーー開始ーー");
                 foreach (PlayerControl player in team.TeamMember)
                 {
-                    if (player.IsBot()) continue;
+                    if (player is null) continue;
                     RPCHelper.RpcSyncGameData(player.GetClientId());
                 }
             }
@@ -164,7 +168,11 @@ namespace SuperNewRoles.Mode.BattleRoyal
             var Commands = Commandsb.ToArray();
             if (Commands[0].Equals("/SetRole", StringComparison.OrdinalIgnoreCase))
             {
-                if (Commands.Length <= 1) return false;
+                if (Commands.Length <= 1)
+                {
+                    AddChatPatch.SendCommand(source, ModTranslation.GetString("BattleRoyalRoleNoneText"), BattleRoyalCommander);
+                    return false;
+                }
                 var data = RoleNames.FirstOrDefault(x => x.Key.Equals(Commands[1], StringComparison.OrdinalIgnoreCase));
                 //nullチェック
                 if (data.Equals(default(KeyValuePair<string, RoleId>)))
@@ -177,6 +185,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     string text = string.Format(ModTranslation.GetString("BattleRoyalSetRoleText"), source.GetDefaultName(), ModTranslation.GetString(IntroData.GetIntroData(data.Value, IsImpostorReturn: true).NameKey + "Name"));
                     foreach (PlayerControl teammember in BattleTeam.GetTeam(source).TeamMember)
                     {
+                        if (teammember == null) continue;
                         AddChatPatch.SendCommand(teammember, text, BattleRoyalCommander);
                     }
                     Main.RoleSettedPlayers.Add(source);

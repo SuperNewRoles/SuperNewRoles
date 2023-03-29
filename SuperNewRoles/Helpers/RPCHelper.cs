@@ -158,14 +158,16 @@ public static class RPCHelper
         // 書き込み {}は読みやすさのためです。
         if (TargetClientId < 0)
         {
+            Logger.Info("Send=>All");
             writer.StartMessage(5);
             writer.Write(AmongUsClient.Instance.GameId);
         }
         else
         {
+            if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
+            Logger.Info("Send=>"+TargetClientId.ToString());
             writer.StartMessage(6);
             writer.Write(AmongUsClient.Instance.GameId);
-            if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
             writer.WritePacked(TargetClientId);
         }
         writer.StartMessage(1); //0x01 Data
@@ -353,6 +355,36 @@ public static class RPCHelper
             target.RPCMurderPlayerPrivate(target, target);
         }
     }
+
+    public static void RpcRevertShapeshiftUnchecked(this PlayerControl player, bool shouldAnimate, PlayerControl seer = null)
+    {
+        if (seer is not null)
+        {
+            if (AmongUsClient.Instance.AmClient && PlayerControl.LocalPlayer == seer)
+            {
+                player.Shapeshift(player, shouldAnimate);
+            }
+            else
+            {
+                MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetId, 46, SendOption.None, seer.GetClientId());
+                messageWriter.WriteNetObject(player);
+                messageWriter.Write(shouldAnimate);
+                AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+            }
+        }
+        else
+        {
+            if (AmongUsClient.Instance.AmClient)
+            {
+                player.Shapeshift(player, shouldAnimate);
+            }
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetId, 46, SendOption.None);
+            messageWriter.WriteNetObject(player);
+            messageWriter.Write(shouldAnimate);
+            AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+        }
+    }
+
     public static void RpcExitVentUnchecked(this PlayerPhysics player, int id)
     {
         if (AmongUsClient.Instance.AmClient)

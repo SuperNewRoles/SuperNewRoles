@@ -91,8 +91,8 @@ class RpcShapeshiftPatch
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
         if (ModeHandler.IsMode(ModeId.BattleRoyal) && AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId && Mode.BattleRoyal.Main.StartSeconds <= 0)
         {
+            new LateTask(() => __instance.RpcRevertShapeshiftUnchecked(true), 0.1f);
             BattleRoyalRole.GetObject(__instance).UseAbility(target);
-            new LateTask(() => __instance.RpcRevertShapeshift(true), 0.1f);
             return true;
         }
         if (target.IsBot()) return true;
@@ -506,6 +506,13 @@ static class CheckMurderPatch
                 {
                     return false;
                 }
+                if (Mode.BattleRoyal.Main.IsTeamBattle)
+                {
+                    foreach (BattleTeam teams in BattleTeam.BattleTeams)
+                    {
+                        if (teams.IsTeam(__instance) && teams.IsTeam(target)) return false;
+                    }
+                }
                 PlayerAbility targetAbility = PlayerAbility.GetPlayerAbility(target);
                 if (target.IsRole(RoleId.Guardrawer) && Guardrawer.guardrawers.FirstOrDefault(x => x.CurrentPlayer == target).IsAbilityUsingNow) {
                     Mode.BattleRoyal.Main.MurderPlayer(target, __instance, targetAbility);
@@ -526,13 +533,6 @@ static class CheckMurderPatch
                 }
                 if (Mode.BattleRoyal.Main.StartSeconds <= 0)
                 {
-                    if (Mode.BattleRoyal.Main.IsTeamBattle)
-                    {
-                        foreach (BattleTeam teams in BattleTeam.BattleTeams)
-                        {
-                            if (teams.IsTeam(__instance) && teams.IsTeam(target)) return false;
-                        }
-                    }
                     SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]LateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
                     isKill = true;
                     if (__instance.PlayerId != 0)

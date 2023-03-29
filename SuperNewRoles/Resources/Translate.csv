@@ -258,7 +258,7 @@ BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるよ�
 BattleRoyalRoleNoneText,This role does not exist. Please check the list of roles at "/battleroles" (/btr).,この役職は存在しません。「/battleroles」(/btr)で役職一覧を確認してください。
 BattleRoyalSetRoleText,{0} role has been set to {1}!,{0}の役職が{1}に設定されました！
 BattleRoyalBattleRolesCommandText,,役職の詳細を確認する場合は、/btr [役職名]と入力しましょう。([役職名]には実際の役職名を入れてください)\n()の中にあるのが内部Idです。(こちらもゲーム内で実際に使用できます)
-BattleRoyalStartMeetingText,,バトルロイヤルへようこそ!\nこの会議内では、チャットは味方にのみ聞こえます!ここで仲間と話し合い、自分の役職を決めましょう!\n役職は/setrole [役職]で決められます!仲間と相談して決めましょう!\n役職一覧は/btrで確認できるよ!
+BattleRoyalStartMeetingText,,バトルロイヤルへようこそ!\nこの会議内では、チャットは味方にのみ聞こえます!ここで仲間と話し合い、自分の役職を決めましょう!\n役職は/setrole [役職]で決められます!仲間と相談して決めましょう!\n役職一覧は/btrで確認できるよ!\n能力は、シェイプシフトで発動できます!
 ZombieZombieName,Zombie,ゾンビ,僵尸
 ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよう,感染他人获得胜利
 ZombiePoliceName,Police,警察,人类
@@ -1303,7 +1303,7 @@ ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation 
 ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム,式神自杀冷却
 ShermansServantTransformationButtonName,Metamorphosis,変身,化形
 ReviverName,Reviver,リバイバー
-ReviverDescription,For team use only! The ability can be used to revive a fellow team member. However, everyone will be notified of their location.\n It takes 12 seconds to resurrect, and while resurrected, you cannot move and you cannot kill. Also, after resurrection, the resurrected person cannot move for 3 seconds (but can still make kills). \nThe resurrected person cannot move for 3 seconds (but can still be killed). Let's rescue our friends and aim for victory together.,チーム専用！能力を使用することで仲間を復活できる。ただし、全員に居場所が通知されてしまう。\n復活には12秒かかり、復活中は動けなく、キルもできない。また、復活後復活した人は3秒間動けない(ただし、キルをすることはできる。)。\n仲間を助け出し、ともに勝利を目指そう。
+ReviverDescription,For team use only! The ability can be used to revive a fellow team member. However， everyone will be notified of their location.\n It takes 12 seconds to resurrect， and while resurrected， you cannot move and you cannot kill. Also，\n after resurrection， the resurrected person cannot move for 3 seconds (but can still make kills). \nThe resurrected person cannot move for 3 seconds (but can still be killed). Let's rescue our friends and aim for victory together.,チーム専用！能力を使用することで仲間を復活できる。ただし、全員に居場所が通知されてしまう。\n復活には12秒かかり、復活中は動けなく、キルもできない。また、復活後復活した人は3秒間動けない(ただし、キルをすることはできる。)。\n仲間を助け出し、ともに勝利を目指そう。
 ReviverReviveStart,Somewhere Reviver has started a revive.,どこかでリバイバーが復活を開始しました。
 GuardrawerName,Guardrawer,ガードロワー
 GuardrawerDescription,,能力を使用することで一定時間攻撃を跳ね返すことができる。しかしその間自分はキルできない。使用中は味方含む周りのプレイヤーが自分へ引き寄せられる。
@@ -1312,11 +1312,11 @@ KingPosterName,KingPoster,キングポスター
 KingPosterTitle,,最初と最後に大きな硬直があるが、効果時間中は無敵。敵に近づくことで自動でキルされるぞ!無敵を利用して敵をキルしまくれ！
 KingPosterStartMessage,KingPoster is using ability now!!!,キングポスターが能力を使用した！
 LongKillerName,LongKiller,ロングキラー
-LongKillerDescription,It has a long kill range, but the kill time is also a bit long. (1.3x)\nKill with your own kill range!,キル範囲は長いが、キルクールタイムもちょっと長い。(1.3倍)\n持ち前のキル範囲を生かしてキルせよ!
+LongKillerDescription,It has a long kill range， but the kill time is also a bit long. (1.3x)\nKill with your own kill range!,キル範囲は長いが、キルクールタイムもちょっと長い。(1.3倍)\n持ち前のキル範囲を生かしてキルせよ!
 DarknightName,Darknight,闇の騎士
 DarknightDescription,,闇に飲まれた騎士。キルクールタイムが0。しかし、視界も0。キル範囲も狭いがキルした人の周り(自分の仲間以外)も一斉にキルできる。何も見えない故に孤独だが、その孤独を活かして敵をキルせよ。
 RevengerName,Revenger,リベンジャー
-RevengerDescription,If an ally kills an opponent who has killed you, you can resurrect from the place where you died after 7 seconds. However, the location of the resurrection is notified, so be careful not to be killed immediately after resurrection. Do not attack too quickly just because you can resurrect quickly, but aim for a steady victory.,自分をキルした相手を味方がキルした場合、7秒後に死んだ場所から復活できる。しかし、復活場所が通知されてしまうので、復活直後にキルされないように注意しよう。すぐ復活できるからといって、特攻せずに堅実に勝ちを目指そう。
+RevengerDescription,If an ally kills an opponent who has killed you， you can resurrect from the place where you died after 7 seconds. However，the location of the resurrection is notified， so be careful not to be killed immediately after resurrection. Do not attack too quickly just because you can resurrect quickly， but aim for a steady victory.,自分をキルした相手を味方がキルした場合、7秒後に死んだ場所から復活できる。しかし、復活場所が通知されてしまうので、復活直後にキルされないように注意しよう。すぐ復活できるからといって、特攻せずに堅実に勝ちを目指そう。
 RevengerStartRevenge,{0} started revenging at {1}.,{0}が{1}でリベンジを開始した。
 CrystalMagicianName,CrystalMagician,クリスタルマジシャン
 CrystalMagicianDescription,,

@@ -75,6 +75,8 @@ class ControllerManagerUpdatePatch
             // Spawn dummys
             if (Input.GetKeyDown(KeyCode.G))
             {
+                Logger.Info(EOSManager.Instance.UserIDToken);
+
                 PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text);
 
                 bot.NetTransform.SnapTo(PlayerControl.LocalPlayer.transform.position);

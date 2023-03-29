@@ -918,12 +918,12 @@ public static class ModHelpers
             list.AddRange(c);
     }
 
-    public static string GetRPCNameFromByte(byte callId) =>
+    public static string GetRPCNameFromByte(PlayerControl __instance, byte callId) =>
         Enum.GetName(typeof(RpcCalls), callId) != null ? // RpcCallsに当てはまる
             Enum.GetName(typeof(RpcCalls), callId) :
         Enum.GetName(typeof(CustomRPC), callId) != null ? // CustomRPCに当てはまる
             Enum.GetName(typeof(CustomRPC), callId) :
-        $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}";
+        $"{nameof(RpcCalls)}及び、{nameof(CustomRPC)}にも当てはまらない無効な値です:{callId}:{__instance.Data.PlayerName}";
     public static bool IsDebugMode() => ConfigRoles.DebugMode.Value && CustomOptionHolder.IsDebugMode.GetBool();
     /// <summary>
     /// 文字列が半角かどうかを判定します

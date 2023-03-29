@@ -30,6 +30,7 @@ public class GrimReaper : BattleRoyalRole
     {
         if (IsAbilityUsingNow)
         {
+            if (CurrentPlayer.IsDead()) return;
             AbilityTime -= Time.fixedDeltaTime;
             if (AbilityTime <= 0)
             {
@@ -91,9 +92,15 @@ public class GrimReaper : BattleRoyalRole
             }
         }
     }
+    public static bool CanUseAbility()
+    {
+        foreach (GrimReaper gr in GrimReaper.grimReapers) if (gr.IsAbilityUsingNow) return false;
+        return true;
+    }
     public override void UseAbility(PlayerControl target)
     {
         if (IsAbilityUsingNow) return;
+        if (!CanUseAbility()) return;
         PlayerAbility ability = PlayerAbility.GetPlayerAbility(CurrentPlayer);
         ability.CanUseKill = false;
         ability.CanMove = false;
