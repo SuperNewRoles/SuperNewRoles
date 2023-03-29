@@ -30,6 +30,7 @@ public class MainMenuPatch
 
         passiveHorseButton.OnClick = new ButtonClickedEvent();
 
+        //FIXME:[SHRモードを一時封印] #1100 mergeをリバートしてください
         if (!BeforeAprilR5())
         {
             passiveHorseButton.OnClick.AddListener((UnityEngine.Events.UnityAction)delegate
