@@ -1,5 +1,6 @@
 using Hazel;
 using SuperNewRoles.Helpers;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles.Impostor;
 
@@ -11,7 +12,7 @@ public static class Matryoshka
         {
             if (Data.Value == null) continue;
             Data.Value.Reported = !CustomOptionHolder.MatryoshkaWearReport.GetBool();
-            Data.Value.bodyRenderer.enabled = false;
+            foreach (SpriteRenderer deadbody in Data.Value.bodyRenderers) deadbody.enabled = false;
             PlayerControl player = ModHelpers.PlayerById(Data.Key);
             Data.Value.transform.position = player.transform.position;
             if (!player.IsRole(RoleId.Matryoshka))
@@ -41,8 +42,7 @@ public static class Matryoshka
                 if (RoleClass.Matryoshka.Data[source.PlayerId] != null)
                 {
                     RoleClass.Matryoshka.Data[source.PlayerId].Reported = false;
-                    if (RoleClass.Matryoshka.Data[source.PlayerId].bodyRenderer != null)
-                        RoleClass.Matryoshka.Data[source.PlayerId].bodyRenderer.enabled = true;
+                    foreach(SpriteRenderer render in RoleClass.Matryoshka.Data[source.PlayerId].bodyRenderers) render.enabled = true;
                 }
                 RoleClass.Matryoshka.Data.Remove(source.PlayerId);
             }
