@@ -22,7 +22,7 @@ public static class RandomSpawn
     }
     static void SpawnAt(SpawnInMinigame __instance, Vector3 spawnAt)
     {
-        if (MapOption.MapOption.RandomSpawn)
+        if (MapCustomClearAndReload.AirshipRandomSpawn)
         {
             if (IsFirstSpawn) resetButtons();
             if (__instance.amClosing != Minigame.CloseState.None)
@@ -39,7 +39,7 @@ public static class RandomSpawn
     }
     public static bool Prefix(SpawnInMinigame __instance, PlayerTask task)
     {
-        if (!MapOption.MapOption.RandomSpawn) return true;
+        if (!MapCustomClearAndReload.AirshipRandomSpawn) return true;
         __instance.MyTask = task;
         __instance.MyNormTask = task as NormalPlayerTask;
         if (CachedPlayer.LocalPlayer.PlayerControl)

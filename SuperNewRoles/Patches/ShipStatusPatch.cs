@@ -160,7 +160,7 @@ public class Inversion
     public static GameObject airship;
     public static void Prefix()
     {
-        if (AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay && CustomOptionHolder.enableMirroMap.GetBool())
+        if (AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay && MapOption.MapOption.IsenableMirrorMap)
         {
             if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 0)
             {

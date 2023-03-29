@@ -27,7 +27,7 @@ public static class WiseMan
         }
     }
     public static List<PlayerControl> WiseManPlayer;
-    public static Color32 color = new Color32(85, 180, 236, byte.MaxValue);
+    public static Color32 color = new(85, 180, 236, byte.MaxValue);
     public static Dictionary<byte, float?> WiseManData;
     public static Dictionary<PlayerControl, Vector3?> WiseManPosData;
     public static void ClearAndReload()
@@ -41,7 +41,8 @@ public static class WiseMan
 
     public static void FixedUpdate()
     {
-        foreach (var data in WiseManPosData) {
+        foreach (var data in WiseManPosData)
+        {
             if (data.Key is null) continue;
             if (!data.Value.HasValue) continue;
             data.Key.transform.position = data.Value.Value;

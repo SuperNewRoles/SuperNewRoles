@@ -100,6 +100,7 @@ public static class RoleHelpers
         RoleId.PartTimer or
         RoleId.GM or
         RoleId.WaveCannonJackal or
+        RoleId.SidekickWaveCannon or
         RoleId.Photographer or
         RoleId.Pavlovsdogs or
         RoleId.Pavlovsowner or
@@ -127,6 +128,7 @@ public static class RoleHelpers
         RoleId.JackalSeer or
         RoleId.SidekickSeer or
         RoleId.WaveCannonJackal or
+        RoleId.SidekickWaveCannon or
         RoleId.Hitman or
         RoleId.Egoist or
         RoleId.FireFox;
@@ -146,13 +148,14 @@ public static class RoleHelpers
             RoleId.JackalSeer or
             RoleId.SidekickSeer or
             RoleId.MayorFriends or
-            RoleId.WaveCannonJackal;
+            RoleId.WaveCannonJackal or
+            RoleId.SidekickWaveCannon;
 
     public static bool IsJackalTeamJackal(this PlayerControl player)
         => player.GetRole() is RoleId.Jackal or RoleId.JackalSeer or RoleId.TeleportingJackal or RoleId.WaveCannonJackal;
 
     public static bool IsJackalTeamSidekick(this PlayerControl player)
-        => player.GetRole() is RoleId.Sidekick or RoleId.SidekickSeer;
+        => player.GetRole() is RoleId.Sidekick or RoleId.SidekickSeer or RoleId.SidekickWaveCannon;
 
     //We are JackalFriends!
     public static bool IsFriendRoles(this PlayerControl player) =>
@@ -808,7 +811,10 @@ public static class RoleHelpers
                 RoleClass.Pavlovsowner.PavlovsownerPlayer.Add(player);
                 break;
             case RoleId.WaveCannonJackal:
-                RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.Add(player);
+                WaveCannonJackal.WaveCannonJackalPlayer.Add(player);
+                break;
+            case RoleId.SideKickWaveCannon:
+                WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
                 break;
             case RoleId.Conjurer:
                 Conjurer.Player.Add(player);
@@ -899,6 +905,10 @@ public static class RoleHelpers
                 break;
             case RoleId.DefaultRole when ModeHandler.IsMode(ModeId.BattleRoyal):
                 new BattleRoyalRole(player);
+                break;
+            case RoleId.SidekickWaveCannon:
+                WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
+                //SidekickWaveCannon.allPlayers.Add(player);
                 break;
             // ロールアド
             default:
@@ -1355,7 +1365,10 @@ public static class RoleHelpers
                 RoleClass.Pavlovsowner.PavlovsownerPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.WaveCannonJackal:
-                RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.RemoveAll(ClearRemove);
+                WaveCannonJackal.WaveCannonJackalPlayer.RemoveAll(ClearRemove);
+                break;
+            case RoleId.SideKickWaveCannon:
+                WaveCannonJackal.SidekickWaveCannonPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.Conjurer:
                 Conjurer.Player.RemoveAll(ClearRemove);
@@ -1445,6 +1458,7 @@ public static class RoleHelpers
             case RoleId.Dependents:
             case RoleId.SatsumaAndImo:
             case RoleId.ShermansServant:
+            case RoleId.SidekickWaveCannon:
                 // タスククリアか 個別表記
                 IsTaskClear = true;
                 break;
@@ -1503,7 +1517,7 @@ public static class RoleHelpers
             RoleId.Spy => RoleClass.Spy.CanUseVent,
             RoleId.Pavlovsdogs => CustomOptionHolder.PavlovsdogCanVent.GetBool(),
             RoleId.Stefinder => CustomOptionHolder.StefinderVent.GetBool(),
-            RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalUseVent.GetBool(),
+            RoleId.WaveCannonJackal or RoleId.SidekickWaveCannon => WaveCannonJackal.WaveCannonJackalUseVent.GetBool(),
             RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerVent.GetBool(),
             RoleId.Dependents => CustomOptionHolder.VampireDependentsCanVent.GetBool(),
             RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsUseVent,
@@ -1562,7 +1576,7 @@ public static class RoleHelpers
             RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
             RoleId.Egoist => RoleClass.Egoist.UseSabo,
             RoleId.Stefinder => CustomOptionHolder.StefinderSabo.GetBool(),
-            RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalUseSabo.GetBool(),
+            RoleId.WaveCannonJackal or RoleId.SidekickWaveCannon => WaveCannonJackal.WaveCannonJackalUseSabo.GetBool(),
             RoleId.Minimalist => RoleClass.Minimalist.UseSabo,
             RoleId.DoubleKiller => CustomOptionHolder.DoubleKillerSabo.GetBool(),
             RoleId.Samurai => RoleClass.Samurai.UseSabo,
@@ -1596,7 +1610,7 @@ public static class RoleHelpers
                 RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
                 RoleId.Pavlovsdogs => CustomOptionHolder.PavlovsdogIsImpostorView.GetBool(),
                 RoleId.Photographer => CustomOptionHolder.PhotographerIsImpostorVision.GetBool(),
-                RoleId.WaveCannonJackal => CustomOptionHolder.WaveCannonJackalIsImpostorLight.GetBool(),
+                RoleId.WaveCannonJackal or RoleId.SidekickWaveCannon => WaveCannonJackal.WaveCannonJackalIsImpostorLight.GetBool(),
                 RoleId.Worshiper => Roles.Impostor.MadRole.Worshiper.IsImpostorLight,
                 RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.ImpostorLight),
                 RoleId.FireFox => FireFox.FireFoxIsImpostorLight.GetBool(),
@@ -1844,7 +1858,8 @@ public static class RoleHelpers
             else if (Knight.Player.IsCheckListPlayerControl(player)) return RoleId.Knight;
             else if (RoleClass.Pavlovsdogs.PavlovsdogsPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsdogs;
             else if (RoleClass.Pavlovsowner.PavlovsownerPlayer.IsCheckListPlayerControl(player)) return RoleId.Pavlovsowner;
-            else if (RoleClass.WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
+            else if (WaveCannonJackal.WaveCannonJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.WaveCannonJackal;
+            else if (WaveCannonJackal.SidekickWaveCannonPlayer.IsCheckListPlayerControl(player)) return RoleId.SidekickWaveCannon;
             else if (Conjurer.Player.IsCheckListPlayerControl(player)) return RoleId.Conjurer;
             else if (RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player)) return RoleId.Camouflager;
             else if (RoleClass.Cupid.CupidPlayer.IsCheckListPlayerControl(player)) return RoleId.Cupid;

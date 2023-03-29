@@ -1,5 +1,9 @@
+using System;
+using SuperNewRoles.Buttons;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
+using static SuperNewRoles.Mode.PlusMode.PlusGameOptions;
 
 namespace SuperNewRoles.Patches;
 
@@ -12,15 +16,15 @@ public class Clairvoyant
         public static void Postfix()
         {
             SuperNewRolesPlugin.Logger.LogInfo(count);
-            SuperNewRolesPlugin.Logger.LogInfo(MapOption.MapOption.Timer);
-            if (MapOption.MapOption.Timer >= 0.1 && !RoleClass.IsMeeting)
+            SuperNewRolesPlugin.Logger.LogInfo(Timer);
+            if (Timer >= 0.1 && !RoleClass.IsMeeting)
             {
                 Camera.main.orthographicSize = MapOption.MapOption.CameraDefault * 3f;
                 FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize = MapOption.MapOption.Default * 3f;
                 if (count == 0)
                 {
                     count = 1;
-                    MapOption.MapOption.Timer = 0;
+                    Timer = 0;
                     return;
                 }
             }
@@ -30,5 +34,57 @@ public class Clairvoyant
                 FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize = MapOption.MapOption.Default;
             }
         }
+    }
+
+    private static CustomButton ClairvoyantButton;
+
+    public static void SetupCustomButtons(HudManager __instance)
+    {
+        ClairvoyantButton = new(
+            () =>
+            {
+                if (PlayerControl.LocalPlayer.CanMove)
+                {
+                    Timer = DurationTime;
+                    ButtonTimer = DateTime.Now;
+                    ClairvoyantButton.MaxTimer = CoolTime;
+                    ClairvoyantButton.Timer = CoolTime;
+                    IsZoomOn = true;
+                }
+            },
+            (bool isAlive, RoleId role) => { return !PlayerControl.LocalPlayer.IsAlive() && IsClairvoyantZoom && ModeHandler.IsMode(ModeId.Default); },
+            () =>
+            {
+                return PlayerControl.LocalPlayer.CanMove;
+            },
+            () =>
+            {
+                ClairvoyantButton.MaxTimer = CoolTime;
+                ClairvoyantButton.Timer = CoolTime;
+                IsZoomOn = false;
+            },
+            Roles.RoleClass.Hawk.GetButtonSprite(),
+            new Vector3(-2.925f, -0.06f, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.Q,
+            8,
+            () => { return false; }
+        )
+        {
+            buttonText = ModTranslation.GetString("ClairvoyantButtonName"),
+            showButtonText = true
+        };
+    }
+
+    public static void ClairvoyantDuration()
+    {
+        if (Timer == 0 && PlayerControl.LocalPlayer.Data.IsDead && IsClairvoyantZoom) return;
+        IsZoomOn = true;
+        var timeSpanData = new TimeSpan(0, 0, 0, (int)DurationTime);
+        timeSpanData = new TimeSpan(0, 0, 0, (int)DurationTime);
+        Timer = (float)(ButtonTimer + timeSpanData - DateTime.Now).TotalSeconds;
+        if (Timer <= 0f) Timer = 0f; IsZoomOn = false;
+        return;
     }
 }

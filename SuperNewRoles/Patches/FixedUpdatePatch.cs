@@ -8,6 +8,7 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
 
@@ -50,12 +51,12 @@ public class FixedUpdate
 
     static void ReduceKillCooldown(PlayerControl __instance)
     {
-        if (CustomOptionHolder.IsAlwaysReduceCooldown.GetBool())
+        if (Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool() && Mode.PlusMode.PlusGameOptions.IsAlwaysReduceCooldown.GetBool())
         {
             // オプションがOFFの場合はベント内はクールダウン減少を止める
-            bool exceptInVent = !CustomOptionHolder.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
+            bool exceptInVent = !Mode.PlusMode.PlusGameOptions.IsAlwaysReduceCooldownExceptInVent.GetBool() && PlayerControl.LocalPlayer.inVent;
             // 配電盤タスク中はクールダウン減少を止める
-            bool exceptOnTask = !CustomOptionHolder.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
+            bool exceptOnTask = !Mode.PlusMode.PlusGameOptions.IsAlwaysReduceCooldownExceptOnTask.GetBool() && ElectricPatch.onTask;
 
             if (!__instance.Data.IsDead && !__instance.CanMove && !exceptInVent && !exceptOnTask)
             {
@@ -98,6 +99,7 @@ public class FixedUpdate
                 NiceMechanic.FixedUpdate();
                 Jackal.JackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 JackalSeer.JackalSeerFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
+                WaveCannonJackal.WaveCannonJackalFixedPatch.Postfix(__instance, PlayerControl.LocalPlayer.GetRole());
                 Roles.Crewmate.Psychometrist.FixedUpdate();
                 Roles.Impostor.Matryoshka.FixedUpdate();
                 Roles.Neutral.PartTimer.FixedUpdate();
@@ -108,6 +110,7 @@ public class FixedUpdate
                 Squid.FixedUpdate();
                 OrientalShaman.FixedUpdate();
                 TheThreeLittlePigs.FixedUpdate();
+                CustomRoles.FixedUpdate(__instance);
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
@@ -207,7 +210,7 @@ public class FixedUpdate
                 }
                 else // -- 死亡時 --
                 {
-                    if (MapOption.MapOption.ClairvoyantZoom)
+                    if (Mode.PlusMode.PlusGameOptions.IsClairvoyantZoom)
                     {
                         Clairvoyant.FixedUpdate.Postfix();
                     }

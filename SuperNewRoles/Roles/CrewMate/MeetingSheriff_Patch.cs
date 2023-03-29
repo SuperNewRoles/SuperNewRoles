@@ -241,7 +241,7 @@ class MeetingSheriff_Patch
     public static GameObject Left;
     static void CreateAreaButton(MeetingHud __instance)
     {
-        GameObject template = __instance.transform.FindChild("ButtonStuff").FindChild("button_skipVoting").gameObject;
+        GameObject template = __instance.SkipVoteButton.gameObject;
         GameObject targetBox = Object.Instantiate(template, __instance.transform);
         targetBox.name = "RightButton";
         targetBox.gameObject.SetActive(true);

@@ -18,10 +18,12 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 using static GameData;
 using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
+using static UnityEngine.GraphicsBuffer;
 
 namespace SuperNewRoles.Patches;
 
@@ -219,6 +221,8 @@ class RpcShapeshiftPatch
                             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
+
+                            Arsonist.SettingAfire();
 
                             Writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                             Writer.Write((byte)CustomGameOverReason.ArsonistWin);
@@ -534,7 +538,6 @@ static class CheckMurderPatch
                 if (Mode.BattleRoyal.Main.StartSeconds <= 0)
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]LateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
-                    isKill = true;
                     if (__instance.PlayerId != 0)
                     {
                         Mode.BattleRoyal.Main.MurderPlayer(__instance, target, targetAbility);
@@ -542,6 +545,7 @@ static class CheckMurderPatch
                     }
                     else
                     {
+                        isKill = true;
                         new LateTask(() =>
                         {
                             if (__instance.IsAlive() && target.IsAlive())
@@ -964,7 +968,7 @@ public static class MurderPlayerPatch
             target.protectedByGuardian = true;
             return false;
         }
-        if (target.IsRole(RoleId.WiseMan)  && WiseMan.WiseManData.ContainsKey(target.PlayerId) && WiseMan.WiseManData[target.PlayerId] is not null)
+        if (target.IsRole(RoleId.WiseMan) && WiseMan.WiseManData.ContainsKey(target.PlayerId) && WiseMan.WiseManData[target.PlayerId] is not null)
         {
             WiseMan.WiseManData[target.PlayerId] = null;
             PlayerControl targ = target;
@@ -1050,6 +1054,8 @@ public static class MurderPlayerPatch
         DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);
         DeadPlayer.deadPlayers.Add(deadPlayer);
         FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
+        __instance.OnKill(target);
+        target.OnDeath(__instance);
 
         if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId)
         {
@@ -1060,8 +1066,8 @@ public static class MurderPlayerPatch
             }
             else
             {
-                if (CustomOptionHolder.WaveCannonJackalIsSyncKillCoolTime.GetBool())
-                    HudManagerStartPatch.WaveCannonButton.MaxTimer = CustomOptionHolder.WaveCannonJackalCoolTime.GetFloat();
+                if (WaveCannonJackal.WaveCannonJackalIsSyncKillCoolTime.GetBool())
+                    HudManagerStartPatch.WaveCannonButton.MaxTimer = WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
             }
         }
 
@@ -1127,7 +1133,7 @@ public static class MurderPlayerPatch
             }
             if (__instance.IsRole(RoleId.OverKiller))
             {
-                DeadBody deadBodyPrefab = target.KillAnimations[0].bodyPrefab;
+                DeadBody deadBodyPrefab = GameManager.Instance.DeadBodyPrefab;
                 Vector3 BodyOffset = target.KillAnimations[0].BodyOffset;
                 for (int i = 0; i < RoleClass.OverKiller.KillCount - 1; i++)
                 {
@@ -1210,9 +1216,11 @@ public static class MurderPlayerPatch
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
+                    if (__instance.IsQuarreled()) RoleClass.Quarreled.IsQuarreledSuicide = true;
                     var Side = RoleHelpers.GetOneSideQuarreled(target);
                     if (Side.IsDead())
                     {
+                        if (RoleClass.Quarreled.IsQuarreledSuicide) return;
                         RPCProcedure.ShareWinner(target.PlayerId);
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(target.PlayerId);
@@ -1258,6 +1266,7 @@ public static class ExilePlayerPatch
         // Collect dead player info
         DeadPlayer deadPlayer = new(__instance, __instance.PlayerId, DateTime.UtcNow, DeathReason.Exile, null);
         DeadPlayer.deadPlayers.Add(deadPlayer);
+        __instance.OnDeath(__instance);
         FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Exiled;
         if (ModeHandler.IsMode(ModeId.Default))
         {
@@ -1397,8 +1406,8 @@ class ReportDeadBodyPatch
             }
         }
         return RoleClass.Assassin.TriggerPlayer == null
-        && (MapOption.MapOption.UseDeadBodyReport || target == null)
-        && (MapOption.MapOption.UseMeetingButton || target != null)
+        && (Mode.PlusMode.PlusGameOptions.UseDeadBodyReport || target == null)
+        && (Mode.PlusMode.PlusGameOptions.UseMeetingButton || target != null)
         && !ModeHandler.IsMode(ModeId.BattleRoyal)
         && !ModeHandler.IsMode(ModeId.CopsRobbers)
 && (ModeHandler.IsMode(ModeId.SuperHostRoles)
