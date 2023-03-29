@@ -1,5 +1,6 @@
 using SuperNewRoles.Mode;
 using UnityEngine;
+using static SuperNewRoles.Mode.PlusMode.PlusGameOptions;
 
 namespace SuperNewRoles.Modules;
 
@@ -8,7 +9,7 @@ public static class Zoom
 {
     public static void HudUpdate(HudManager __instance)
     {
-        if (ModeHandler.IsMode(ModeId.Default) && MapOption.MapOption.MouseZoom && CachedPlayer.LocalPlayer.Data.IsDead)
+        if (ModeHandler.IsMode(ModeId.Default) && IsMouseZoom && CachedPlayer.LocalPlayer.Data.IsDead)
         {
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {

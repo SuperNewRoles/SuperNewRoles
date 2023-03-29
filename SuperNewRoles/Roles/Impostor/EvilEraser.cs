@@ -17,6 +17,7 @@ public static class EvilEraser
         RedRidingHoodRevive,
         JackalSidekick,
         JackalSeerSidekick,
+        WaveCannonJackalSidekick,
         NekomataExiled,
         FoxGuard,
         SafecrackerGuard
@@ -33,6 +34,8 @@ public static class EvilEraser
                 BlockTypes.BaitReport => true,
                 BlockTypes.RedRidingHoodRevive => true,
                 BlockTypes.JackalSidekick => true,
+                BlockTypes.JackalSeerSidekick => true,
+                BlockTypes.WaveCannonJackalSidekick => true,
                 BlockTypes.NekomataExiled => true,
                 BlockTypes.FoxGuard => true,
                 BlockTypes.SafecrackerGuard => true,

@@ -25,7 +25,7 @@ public static class RoleClass
     public static Color CrewmateWhite = Color.white;
     public static Color FoxPurple = Palette.Purple;
     private static Color32 SheriffYellow = new(250, 191, 20, byte.MaxValue);
-    private static Color32 JackalBlue = new(0, 180, 235, byte.MaxValue);
+    public static Color32 JackalBlue = new(0, 180, 235, byte.MaxValue);
     public static bool IsStart;
     public static List<byte> BlockPlayers;
     public static float DefaultKillCoolDown;
@@ -46,6 +46,7 @@ public static class RoleClass
         DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
         Agartha.MapData.ClearAndReloads();
+        Mode.PlusMode.PlusGameOptions.ClearAndReload();
         LadderDead.Reset();
         //Map.Data.ClearAndReloads();
         ElectricPatch.Reset();
@@ -55,12 +56,14 @@ public static class RoleClass
         Mode.BattleRoyal.Main.VentData = new();
         FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
         Mode.ModeHandler.ClearAndReload();
+        MapCustoms.MapCustomClearAndReload.ClearAndReload();
         MapCustoms.AdditionalVents.ClearAndReload();
         MapCustoms.SpecimenVital.ClearAndReload();
         MapCustoms.MoveElecPad.ClearAndReload();
         Beacon.ClearBeacons();
         MeetingHudUpdatePatch.ErrorNames = new();
         FixSabotage.ClearAndReload();
+        RoleBases.Role.ClearAll();
 
         /* 陣営playerがうまく動かず使われてない為コメントアウト。
         RoleHelpers.CrewmatePlayer = new();
@@ -210,7 +213,8 @@ public static class RoleClass
         Knight.ClearAndReload();
         Pavlovsdogs.ClearAndReload();
         Pavlovsowner.ClearAndReload();
-        WaveCannonJackal.ClearAndReload();
+        Neutral.WaveCannonJackal.ClearAndReload();
+        //SidekickWaveCannon.Clear();
         Conjurer.ClearAndReload();
         Camouflager.ClearAndReload();
         Cupid.ClearAndReload();
@@ -239,7 +243,7 @@ public static class RoleClass
     public static class Debugger
     {
         public static bool AmDebugger;
-        public static Color32 color = Palette.DisabledGrey;
+        public static Color32 color = new(130, 130, 130, byte.MaxValue);
         public static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
 
         public static void ClearAndReload()
@@ -2814,16 +2818,6 @@ public static class RoleClass
             CurrentCool = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         }
     }
-    public static class WaveCannonJackal
-    {
-        public static List<PlayerControl> WaveCannonJackalPlayer;
-        public static Color32 color = JackalBlue;
-        public static void ClearAndReload()
-        {
-            WaveCannonJackalPlayer = new();
-
-        }
-    }
     public static class GM
     {
         public static PlayerControl gm;
@@ -3021,9 +3015,12 @@ public static class RoleClass
         public static List<List<PlayerControl>> QuarreledPlayer;
         public static Color32 color = new(210, 105, 30, byte.MaxValue);
         public static bool IsQuarreledWin;
+        public static bool IsQuarreledSuicide;
         public static void ClearAndReload()
         {
             QuarreledPlayer = new List<List<PlayerControl>>();
+            IsQuarreledWin = false;
+            IsQuarreledSuicide = false;
         }
     }
     public static class Lovers

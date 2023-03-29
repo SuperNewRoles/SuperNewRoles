@@ -4,6 +4,7 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using UnityEngine;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Roles.Attribute;
 
@@ -49,7 +50,7 @@ class Guesser
         PageButtons = new();
         __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(false));
 
-        Transform container = UnityEngine.Object.Instantiate(__instance.transform.FindChild("PhoneUI"), __instance.transform);
+        Transform container = UnityEngine.Object.Instantiate(__instance.transform.FindChild("MeetingContents/PhoneUI"), __instance.transform);
         container.transform.localPosition = new Vector3(0, 0, -200f);
         guesserUI = container.gameObject;
 
@@ -180,6 +181,7 @@ class Guesser
         }
         if (CustomOptionHolder.JackalOption.GetSelection() is not 0 && CustomOptionHolder.JackalCreateSidekick.GetBool()) CreateRole(IntroData.SidekickIntro);
         if (CustomOptionHolder.JackalSeerOption.GetSelection() is not 0 && CustomOptionHolder.JackalSeerCreateSidekick.GetBool()) CreateRole(IntroData.SidekickSeerIntro);
+        if (WaveCannonJackal.WaveCannonJackalOption.GetSelection() is not 0 && WaveCannonJackal.WaveCannonJackalCreateSidekick.GetBool()) CreateRole(IntroData.SidekickWaveCannonIntro);
         if (CustomOptionHolder.PavlovsownerOption.GetSelection() is not 0) CreateRole(IntroData.PavlovsdogsIntro);
         if (CustomOptionHolder.RevolutionistAndDictatorOption.GetSelection() is not 0) { CreateRole(IntroData.DictatorIntro); CreateRole(IntroData.RevolutionistIntro); }
         if (CustomOptionHolder.AssassinAndMarlinOption.GetSelection() is not 0) { CreateRole(IntroData.AssassinIntro); CreateRole(IntroData.MarlinIntro); }

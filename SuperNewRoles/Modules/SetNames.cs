@@ -171,6 +171,22 @@ public class SetNamesClass
             roleNames = introData.Name + (role == RoleId.Pavlovsdogs ? "(D)" : "(O)");
             roleColors = RoleClass.Pavlovsdogs.color;
         }
+        else if (WaveCannonJackal.IwasSidekicked.Contains(p.PlayerId) &&
+                !WaveCannonJackal.WaveCannonJackalNewJackalHaveWaveCannon.GetBool())
+        {
+            if (p.IsRole(RoleId.WaveCannonJackal))
+            {
+                var introData = IntroData.GetIntroData(RoleId.Jackal, p);
+                roleNames = introData.Name;
+                roleColors = introData.color;
+            }
+            else
+            {
+                var introData = IntroData.GetIntroData(RoleId.Sidekick, p);
+                roleNames = introData.Name;
+                roleColors = introData.color;
+            }
+        }
         else
         {
             var introData = IntroData.GetIntroData(role, p);
@@ -185,6 +201,23 @@ public class SetNamesClass
             GhostroleColors = GhostIntro.color;
         }
         SetPlayerRoleInfoView(p, roleColors, roleNames, GhostroleColors, GhostroleNames);
+    }
+    /// <summary>
+    /// 死亡後役職が見えるかの基本的な条件を取得する　(全員が役職を見られるか/Impostorのみ役職が見られるか)
+    /// </summary>
+    /// <returns> true:見られる / false:見られない </returns>
+    public static bool DefaultGhostSeeRoles()
+    {
+        if (PlayerControl.LocalPlayer.IsDead())
+        {
+            if (!Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool()) return true;
+            else
+            {
+                if (Mode.PlusMode.PlusGameOptions.CanGhostSeeRole.GetBool()) return true;
+                else if (!Mode.PlusMode.PlusGameOptions.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor()) return true;
+            }
+        }
+        return false;
     }
     public static void SetPlayerNameColors(PlayerControl player)
     {
@@ -208,7 +241,7 @@ public class SetNamesClass
                 SetPlayerNameText(side, side.NameText().text + suffix);
             }
         }
-        if ((PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor())) && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
+        if (DefaultGhostSeeRoles() && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
         {
             foreach (List<PlayerControl> ps in RoleClass.Quarreled.QuarreledPlayer)
             {
@@ -249,7 +282,7 @@ public class SetNamesClass
             if (!side.Data.Disconnected)
                 SetPlayerNameText(side, $"{side.NameText().text}{suffix}");
         }
-        else if (((PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor())) || PlayerControl.LocalPlayer.IsRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
+        else if ((DefaultGhostSeeRoles() || PlayerControl.LocalPlayer.IsRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
         {
             foreach (List<PlayerControl> ps in RoleClass.Lovers.LoversPlayer)
             {
@@ -263,7 +296,7 @@ public class SetNamesClass
     }
     public static void DemonSet()
     {
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.Demon) || (PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor())) || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Demon) || DefaultGhostSeeRoles() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
         {
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
@@ -277,7 +310,7 @@ public class SetNamesClass
     }
     public static void ArsonistSet()
     {
-        if (PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist) || (PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor())) || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+        if (PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist) || DefaultGhostSeeRoles() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
         {
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
@@ -308,7 +341,7 @@ public class SetNamesClass
     }
     public static void SatsumaimoSet()
     {
-        if ((PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor())) || PlayerControl.LocalPlayer.IsRole(RoleId.God))
+        if (DefaultGhostSeeRoles() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
         {
             foreach (PlayerControl player in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
             {
@@ -343,7 +376,7 @@ public class SetNameUpdate
     {
         SetNamesClass.ResetNameTagsAndColors();
         RoleId LocalRole = PlayerControl.LocalPlayer.GetRole();
-        if ((PlayerControl.LocalPlayer.IsDead() && CustomOptionHolder.CanGhostSeeRole.GetBool() && (!CustomOptionHolder.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor()) && LocalRole != RoleId.NiceRedRidingHood) || Roles.Attribute.Debugger.canSeeRole)
+        if ((SetNamesClass.DefaultGhostSeeRoles() && LocalRole != RoleId.NiceRedRidingHood) || Roles.Attribute.Debugger.canSeeRole)
         {
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {

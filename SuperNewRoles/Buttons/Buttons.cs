@@ -67,7 +67,6 @@ static class HudManagerStartPatch
     public static CustomButton KunoichiHideButton;
     public static CustomButton SecretlyKillerMainButton;
     public static CustomButton SecretlyKillerSecretlyKillButton;
-    public static CustomButton ClairvoyantButton;
     public static CustomButton DoubleKillerMainKillButton;
     public static CustomButton DoubleKillerSubKillButton;
     public static CustomButton SuicideWisherSuicideButton;
@@ -174,6 +173,8 @@ static class HudManagerStartPatch
                 WiseMan.RpcSetWiseManStatus(0, false);
                 Camera.main.GetComponent<FollowerCamera>().Locked = false;
                 PlayerControl.LocalPlayer.moveable = true;
+                WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
+                WiseManButton.Timer = WiseManButton.MaxTimer;
             }
         )
         {
@@ -578,17 +579,17 @@ static class HudManagerStartPatch
                 writer.EndRPC();
                 RPCProcedure.WaveCannon((byte)WaveCannonObject.RpcType.Spawn, 0, CachedPlayer.LocalPlayer.PlayerPhysics.FlipX, CachedPlayer.LocalPlayer.PlayerId, buff);
             },
-            (bool isAlive, RoleId role) => { return isAlive && role is RoleId.WaveCannon or RoleId.WaveCannonJackal; },
+            (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.WaveCannon || role == RoleId.WaveCannonJackal) && (!WaveCannonJackal.IwasSidekicked.Contains(PlayerControl.LocalPlayer.PlayerId) || WaveCannonJackal.WaveCannonJackalNewJackalHaveWaveCannon.GetBool()); },
             () =>
             {
                 return PlayerControl.LocalPlayer.CanMove;
             },
             () =>
             {
-                WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonCoolTime.GetFloat() : CustomOptionHolder.WaveCannonJackalCoolTime.GetFloat();
+                WaveCannonButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonCoolTime.GetFloat() : WaveCannonJackal.WaveCannonJackalCoolTime.GetFloat();
                 WaveCannonButton.Timer = WaveCannonButton.MaxTimer;
                 WaveCannonButton.effectCancellable = false;
-                WaveCannonButton.EffectDuration = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonChargeTime.GetFloat() : CustomOptionHolder.WaveCannonJackalChargeTime.GetFloat();
+                WaveCannonButton.EffectDuration = PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannon) ? CustomOptionHolder.WaveCannonChargeTime.GetFloat() : WaveCannonJackal.WaveCannonJackalChargeTime.GetFloat();
                 WaveCannonButton.HasEffect = true;
             },
             RoleClass.WaveCannon.GetButtonSprite(),
@@ -1311,6 +1312,8 @@ static class HudManagerStartPatch
             showButtonText = true
         };
 
+        WaveCannonJackal.MakeButtons(__instance);
+
         JackalKillButton = new(
             () =>
             {
@@ -1343,7 +1346,7 @@ static class HudManagerStartPatch
             {
                 if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
                 else if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
-                else if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannonJackal)) { WaveCannonJackal.ResetCooldowns(); }
+                else if (PlayerControl.LocalPlayer.IsRole(RoleId.WaveCannonJackal)) { WaveCannonJackal.EndMeeting(); }
             },
             __instance.KillButton.graphic.sprite,
             new Vector3(0, 1, 0),
@@ -1902,6 +1905,8 @@ static class HudManagerStartPatch
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
                 writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
+
+                Arsonist.SettingAfire();
 
                 writer = RPCHelper.StartRPC(CustomRPC.SetWinCond);
                 writer.Write((byte)CustomGameOverReason.ArsonistWin);
@@ -2513,41 +2518,7 @@ static class HudManagerStartPatch
             SecretlyKillerSecretlyKillButton.showButtonText = true;
         };
 
-        ClairvoyantButton = new(
-            () =>
-            {
-                if (PlayerControl.LocalPlayer.CanMove)
-                {
-                    MapOption.MapOption.Timer = MapOption.MapOption.DurationTime;
-                    MapOption.MapOption.ButtonTimer = DateTime.Now;
-                    ClairvoyantButton.MaxTimer = MapOption.MapOption.CoolTime;
-                    ClairvoyantButton.Timer = MapOption.MapOption.CoolTime;
-                    MapOption.MapOption.IsZoomOn = true;
-                }
-            },
-            (bool isAlive, RoleId role) => { return !PlayerControl.LocalPlayer.IsAlive() && MapOption.MapOption.ClairvoyantZoom && ModeHandler.IsMode(ModeId.Default); },
-            () =>
-            {
-                return PlayerControl.LocalPlayer.CanMove;
-            },
-            () =>
-            {
-                ClairvoyantButton.MaxTimer = MapOption.MapOption.CoolTime;
-                ClairvoyantButton.Timer = MapOption.MapOption.CoolTime;
-                MapOption.MapOption.IsZoomOn = false;
-            },
-            RoleClass.Hawk.GetButtonSprite(),
-            new Vector3(-2.925f, -0.06f, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.Q,
-            8,
-            () => { return false; }
-        )
-        {
-            buttonText = ModTranslation.GetString("ClairvoyantButtonName"),
-            showButtonText = true
-        };
+        Clairvoyant.SetupCustomButtons(__instance);
 
         DoubleKillerMainKillButton = new(
             () =>
