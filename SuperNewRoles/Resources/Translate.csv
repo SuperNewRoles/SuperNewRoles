@@ -159,7 +159,7 @@ SettingCrewmateGhostRoles,Crewmate GhostRole Setting,クルーメイトの幽霊
 SettingNeutralRoles,Neutral Setting,第三陣営の人数設定,独立阵营职业设置,中立陣營職業設定
 SettingNeutralGhostRoles,Neutral GhostRole Setting,第三陣営の幽霊役職の人数設定,独立阵营幽灵职业设置,中立陣營亡靈職業設定
 SettingImpostorRoles,Impostor Setting,インポスターの人数設定,内鬼阵营职业设置,內鬼陣營職業設定
-SettingImpostorGhostRoles,Impostor GhostRole Setting,インポスターの幽霊役職の人数設定,内鬼阵营幽灵职业设置,內鬼陣營職業設定
+SettingImpostorGhostRoles,Impostor GhostRole Setting,インポスターの幽霊役職の人数設定,内鬼阵营幽灵职业设置,內鬼陣營亡靈職業設定
 SettingOptionOn,On,オン,开启,開
 SettingOptionOff,Off,オフ,关闭,關
 SettingPressTabForMore,Press Tab For More,Tabを押して詳細を表示,按Tab键查看更多...,按下 TAB 查看更多...
@@ -194,7 +194,7 @@ AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリア
 VentMakerButtonName,Make Vent,設置,制造管道口,製造通風管道出入口
 AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する,米拉总部(Mira)：追加生命监测装置,MiraHQ：增加生命跡象檢測器
 VentAnimationPlaySetting,Play Vent Animation,ベントアニメーション有効化,播放管道动画,啟用通風管道動畫
-MapRemodelingOptionSetting,Map Remodeling,マップ改造,地图改造,地圖重造
+MapRemodelingOptionSetting,Map Remodeling,マップ改造,地图改造,地圖改造
 AirShipAdditionalVents,AirShipAdditionalVents,エアーシップにベントを追加する,飞艇(AirShip)：增加管道,AirShip：增加通風管道
 PolusAdditionalVents,PolusAdditionalVents,ポーラスにベントを追加する,波鲁斯(Polus)：增加管道,Polus：增加通風管道
 MiraAdditionalVents,MiraAdditionalVents,ミラにベントを追加する,米拉总部(Mira)：增加管道,MiraHQ：增加通風管道
@@ -281,7 +281,7 @@ SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船�
 SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点,固定重生點
 MapOptionSetting,Map Option,マップの設定,地图设置,地圖設定
 NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告,禁用屍體報告
-NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议,進用召開緊急會議
+NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议,禁用召開緊急會議
 DeviceOptionsSetting,Information Device Options,情報機器制限の設定,飞船设备设置,情報獲取裝置限制使用設定
 CanUseDeviceSetting,<color=#03ff0c>On</color>/<color=#f22f21>Off</color> setting.,使用<color=#03ff0c>可能</color>/<color=#f22f21>不可能</color> の設定,<color=#03ff0c>启用</color>/<color=#f22f21>禁用</color>设置,<color=#03ff0c>可以</color>/<color=#f22f21>不行</color>使用設定
 DeviceUseAdminSetting,Use OK Admin,アドミンが使える,可以观看管理地图,可以觀看管理員地圖
@@ -332,7 +332,7 @@ FinalStatusSerialKillerSelfDeath,Suicide of Serial Killer,シリアルキラー�
 FinalStatusVampireKill,Death by bloodsucking,吸血死,吸血,吸血而亡
 FinalStatusOverKillerOverKill,Over Kill!,オーバーキル!,肢解,被肢解
 FinalStatusSuicideWisherSelfDeath,Suicide,自殺,自杀,自殺
-FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺,指名失敗
+FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺,指名反噬
 FinalStatusRevenge,Revenge,復讐,仇杀,仇殺
 FinalStatusHitmanKill,Mission accomplished.,任務遂行,遇刺,暗殺
 FinalStatusHitmanDead,Disposition.,処分,沉江,被處分
@@ -551,9 +551,9 @@ PreviousPage,Previous Page,前のページへ,上一页,上一頁
 VultureName,Vulture,ヴァルチャー,秃鹫,禿鷲
 VultureTitle1,Let's eat a corpse.,死体を食べよう,吞噬尸体获得胜利,吞噬屍體獲得勝利
 VultureCooldownSetting,Corpse cooldown,死体クールダウン,秃鹫技能冷却,禿鷲技能冷卻時間
-VultureDeadBodyCountSetting,Victory corpse count,勝利死体数,秃鹫胜利所需吞噬尸体数,禿鷲勝利所需吞噬屍體數
+VultureDeadBodyCountSetting,Victory corpse count,勝利死体数,秃鹫胜利所需吞噬尸体数,禿鷲勝利所需吞食屍體數
 VultureShowArrowsSetting,Show arrows pointing to dead bodies,死体を指す矢印を表示する,秃鹫可见指向尸体的箭头,禿鷲可見指向屍體的箭頭
-VultureButtonName,Eat,食らう,吞噬,吞噬
+VultureButtonName,Eat,食らう,吞噬,吞食
 NiceScientistName,Nice Scientist,ナイスサイエンティスト,正义的隐身人,正義的隱身人
 NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう,通过隐身来找寻尸体,透明化以找尋屍體
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう,隐身，很神奇吧,利用科學的力量勝利吧！
@@ -1102,7 +1102,7 @@ WaveCannonButtonName,Wave Cannon,波動砲,开炮,開炮
 IsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクールタイムを同期,冷却与通用击杀同步冷却,冷卻與通用擊殺同步冷卻
 WaveCannonJackalName,Wave Cannon Jackal,波動砲ジャッカル,狼族重炮手,狼族重炮手
 WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！,看我轟飛你全家！
-WaveCannonJackalNewJackalHaveWaveCannon,When the Sidekick is promoted，will it inherit the wave gun?,サイドキック昇格時、波動砲を受け継ぐか。,狼族重炮手招募的跟班晋升时获得重炮手的能力,當跟班升級時，是否繼承重炮？
+WaveCannonJackalNewJackalHaveWaveCannon,When the Sidekick is promoted，will it inherit the wave gun?,サイドキック昇格時、波動砲を受け継ぐか。,狼族重炮手招募的跟班晋升时获得重炮手的能力,當跟班晉升時繼承重炮之力
 SidekickWaveCannonName,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）,狼族重炮手跟班
 SidekickWaveCannonTitle1,He who inherits the will of the waves.,波動の遺志を受け継ぎし者,重炮之力的继承者,繼承重炮意志之人
 CrackerName,Cracker,クラッカー,神隐者,神隱者
@@ -1135,7 +1135,7 @@ PavlovsdogIsImpostorView,Pavlov's dog has a view of the impostor,パブロフの
 PavlovsdogRunAwayKillCoolTime,Coold time when out of control,暴走時のクールタイム,巴甫洛夫的狗发狂时的击杀冷却,巴甫洛夫的狗發狂時的擊殺冷卻時間
 PavlovsdogRunAwayDeathTime,Self-destruct time when out of control,暴走時の自爆タイム,巴甫洛夫的狗发狂时的自杀时限,巴甫洛夫的狗發狂時的自殺時限
 PavlovsdogRunAwayDeathTimeIsMeetingReset,Reset self-destruct time in a meeting,会議で自爆タイムをリセットする,会议后重置巴甫洛夫的狗的自杀时限,會議後重置巴甫洛夫的狗的自殺時限
-PavlovsTeamWinText,Pavlov's dog and owner,パブロフの犬とオーナー,巴甫洛夫团队,巴甫洛夫團隊
+PavlovsTeamWinText,Pavlov's dog and owner,パブロフの犬とオーナー,巴甫洛夫团队,巴甫洛夫與狗
 PavlovsownerCreatedogButtonName,stenciling,刷り込み,驯化,馴化
 KnightName,Knight,騎士,骑士,騎士
 KnightTitle1,I will protect you according to my beliefs.,我が信念に沿って護衛しよう,举起正义之盾,為了吾之信仰而守護
@@ -1265,8 +1265,8 @@ DyingMessengerGetRoleTimeSetting,Time to read the roll of the killers from the c
 DyingMessengerGetLightAndDarkerTimeSetting,Time to read the light and darker colors of the kill from the corpse,死体からキル者の色の明暗を読み取れる時間,报告获得凶手颜色深浅所需死亡间隔时间,報告獲得凶手顏色深淺所需死亡間隔時間
 DyingMessengerFirstPerson1,me,私,我,我
 DyingMessengerFirstPerson2,me,僕,我,我
-DyingMessengerGetRoleText,The role of the person who killed {0} was {1}.,{0}をキルした人の役職は{1}でした。,杀害{0}的人是一名{1}。,把{0}殺害的人是一名{1}。
-DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}をキルした人の色は{1}色でした。,杀害{0}的人是{1}色的。,把{0}殺害的人是{1}色的。
+DyingMessengerGetRoleText,The role of the person who killed {0} was {1}.,{0}をキルした人の役職は{1}でした。,杀害{0}的人是一名{1}。,將{0}殺害的人是一名{1}。
+DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}をキルした人の色は{1}色でした。,杀害{0}的人是{1}色的。,將{0}殺害的人是{1}色的。
 WiseManName,WiseMan,賢者,贤者,賢者
 WiseManTitle1,Protect your crew with a large shield.,大きい盾でクルーを守ろう,用神圣之盾保护船员,用神聖之盾保護船員
 WiseManButtonName,Sacred Barrier,聖なるバリア,神圣之盾,神聖之盾
@@ -1298,7 +1298,7 @@ OrientalShamanVentUseCoolTimeSetting,Cool time for Oriental shaman's vent,陰陽
 OrientalShamanVentDurationTimeSetting,Duration of Oriental shaman's vent,陰陽師のベントの持続時間,阴阳师允许使用管道的持续时间,陰陽師允許使用通風管道的持續時間
 OrientalShamanCrewTaskWinHijackSetting,You can hijack a task victory,タスク勝利を乗っ取れる,阴阳师的胜利优先于船员完成任务获胜,陰陽師的勝利判定優先於船員完成任務獲勝
 OrientalShamanWinTaskSetting,Oriental shaman was clear task win,タスクを完了しないと勝利できない,阴阳师不完成所有任务就不能获胜,陰陽師不完成所有任務就不能獲勝
-OrientalShamanCreateShermansServantSetting,Sherman's servant can be appointed,式神を指名出来る,阴阳师可以招募一名式神,陰陽師可以招募一名式神
+OrientalShamanCreateShermansServantSetting,Sherman's servant can be appointed,式神を指名出来る,阴阳师可以招募一名式神,陰陽師可以指名一位式神
 OrientalShamanCreateShermansServantCoolSetting,Sherman's servant nomination cool time,式神指名のクールタイム,招募式神冷却,指名式神冷卻時間
 OrientalShamanShermansServantButtoonName,Nominate Sherman's servant,式神指名,指名式神,指名式神
 ShermansServantName,Sherman's Servant,式神,式神,式神
