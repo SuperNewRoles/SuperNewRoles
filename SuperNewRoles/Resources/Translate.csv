@@ -193,7 +193,7 @@ MiraReactorTime,Mira Reactor Duration Time,ミラでのリアクター時間,米
 AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリアクター時間,飞艇(AirShip)撞毁路线紧急破坏持续时间,AirShip飛船撞毀緊急任務持續時間
 VentMakerButtonName,Make Vent,設置,制造管道口,製造通風管道出入口
 AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する,米拉总部(Mira)：追加生命监测装置,MiraHQ：增加生命跡象檢測器
-VentAnimationPlaySetting,Play Vent Animation,ベントアニメーション有効化
+VentAnimationPlaySetting,Play Vent Animation,ベントアニメーション有効化,播放管道动画
 MapRemodelingOptionSetting,Map Remodeling,マップ改造,地图改造,地圖重造
 AirShipAdditionalVents,AirShipAdditionalVents,エアーシップにベントを追加する,飞艇(AirShip)：增加管道,AirShip：增加通風管道
 PolusAdditionalVents,PolusAdditionalVents,ポーラスにベントを追加する,波鲁斯(Polus)：增加管道,Polus：增加通風管道
@@ -275,15 +275,15 @@ RandomColorNameColorSetting,Change Name Color,名前の色も変える,昵称颜
 RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する,会议中昵称颜色改变,會議中暱稱顏色改變
 NeutralName,Neutral,第三陣営,独立阵营,中立陣營
 WinName,Win,勝利,胜利,勝利
-PlusGameOptionSetting,Plus Game Options Setting.,ゲーム オプション,額外模式
+PlusGameOptionSetting,Plus Game Options Setting.,ゲーム オプション,更多游戏设置,額外模式
 SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード,内鬼禁用破坏,內鬼禁用破壞
 SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード,船员禁用完成任务获胜,船員進用完成任務獲勝
 SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード,固定出生点,固定重生點
 MapOptionSetting,Map Option,マップの設定,地图设置,地圖設定
 NotUseReportSetting,Unable to Report DeadBody,死体通報ができない,禁用报告,禁用屍體報告
 NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない,禁用紧急会议,進用召開緊急會議
-DeviceOptionsSetting,Information Device Options,情報機器制限の設定
-CanUseDeviceSetting,<color=#03ff0c>On</color>/<color=#f22f21>Off</color> setting.,使用<color=#03ff0c>可能</color>/<color=#f22f21>不可能</color> の設定
+DeviceOptionsSetting,Information Device Options,情報機器制限の設定,飞船设备设置
+CanUseDeviceSetting,<color=#03ff0c>On</color>/<color=#f22f21>Off</color> setting.,使用<color=#03ff0c>可能</color>/<color=#f22f21>不可能</color> の設定,<color=#03ff0c>启用</color>/<color=#f22f21>禁用</color>设置
 DeviceUseAdminSetting,Use OK Admin,アドミンが使える,可以观看管理地图,可以觀看管理員地圖
 DeviceUseVitalOrDoorLogSetting,Use OK Vital Or DoorLog,バイタル・ドアログが使える,可以观看生命监测装置和通行日志,可以觀看生命跡象檢測器與通行日誌
 DeviceUseCameraSetting,Use OK Camera,カメラが使える,可以观看监控,可以觀看監視器
@@ -341,7 +341,7 @@ FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,�
 FinalStatusTheThirdLittlePigCounterKill,Counter Kill,カウンターキル,反杀,反殺
 
 # Sabotages
-SabotageSetting,SNR’s own sabotage setup,独自サボタージュの設定,破壞設定,破壞設定
+SabotageSetting,SNR’s own sabotage setup,独自サボタージュの設定,破壞設定,模组紧急破坏设置,破壞設定
 SabotageCognitiveDeficitSetting,Cognitive Deficit,認識障害,破坏时附带认知干扰,破壞時附加認知干擾
 CognitiveDeficitSabotageOutfitUpdateTimeSetting,Figure Change Interval,姿変更間隔,认知干扰时其他玩家外貌变换间隔时间,認知干擾時其他玩家外貌變換的間隔時間
 CognitiveDeficitSabotageReleaseTimeSetting,Release Time,解除時間,认知干扰持续时间,認知干擾持續時間
@@ -931,7 +931,7 @@ SpyDescription,Spies are crewmates but they look like friends to the Impostor.\n
 SpecimenVitalSetting,Move Vital to specimen (polus),標本室にバイタルを移動する(ポーラス),波鲁斯(Polus)：将生命监测仪移动至样本室,Polus：將生命跡象檢測器移動至樣本室
 CustomDownloadSuperNewNamePlates,Download custom hat,カスタムハットをダウンロードする,下载自定义帽子,下載自訂義帽子
 KunoichiName,Kunoichi,クノイチ,女忍,女忍
-KunoichiTitle1,Use your ninjutsu to deceive the village.,忍術を駆使して村を欺け,用你的忍术来欺骗村子,用你的忍術來欺騙村子
+KunoichiTitle1,Use your ninjutsu to deceive the village.,忍術を駆使して村を欺け,用忍术来欺骗船员,用你的忍術來欺騙村子
 KunoichiCoolTime,Kunai Cool Time,クナイのクールタイム,女忍苦无冷却,女忍苦無冷卻
 KunoichiKillKunai,Number of kunai required for a kill,キルに必要なクナイ数,女忍进行击杀所需要的苦无数,女忍進行擊殺所需要的苦無數
 KunoichiIsHide,Transparency,透明化,隐身,隱身
@@ -1102,9 +1102,9 @@ WaveCannonButtonName,Wave Cannon,波動砲,开炮,開炮
 IsSyncKillCoolTime,Synchronize cool time with normal kills,通常キルとクールタイムを同期,冷却与通用击杀同步冷却,冷卻與通用擊殺同步冷卻
 WaveCannonJackalName,Wave Cannon Jackal,波動砲ジャッカル,狼族重炮手,狼族重炮手
 WaveCannonJackalTitle1,Use the cannon and get the kill!,大砲を使用し、キルしよう,看我把你们一个个轰上天！,看我轟飛你全家！
-WaveCannonJackalNewJackalHaveWaveCannon,When the Sidekick is promoted，will it inherit the wave gun?,サイドキック昇格時、波動砲を受け継ぐか。
-SidekickWaveCannonName,Sidekick (Wave Cannon),サイドキック(波動砲)
-SidekickWaveCannonTitle1,He who inherits the will of the waves.,波動の遺志を受け継ぎし者
+WaveCannonJackalNewJackalHaveWaveCannon,When the Sidekick is promoted，will it inherit the wave gun?,サイドキック昇格時、波動砲を受け継ぐか。,狼族重炮手招募的跟班晋升时获得重炮手的能力
+SidekickWaveCannonName,Sidekick (Wave Cannon),サイドキック(波動砲),跟班（重炮手）
+SidekickWaveCannonTitle1,He who inherits the will of the waves.,波動の遺志を受け継ぎし者,重炮之力的继承者
 CrackerName,Cracker,クラッカー,神隐者,神隱者
 CrackerTitle1,Let's crack on and play God!,クラックして神隠しをしよう,让他人神隐,讓他人神隱
 CrackerIsAdminView,Counted by Admins,アドミンにカウントされる,被神隐玩家可以在地图上被观测到,被神隱玩家可以在地圖上被觀測到
@@ -1187,7 +1187,7 @@ PenguinName,Penguin,ペンギン,绑匪,綁匪
 PenguinTitle1,Let's drag and kill!,ぺちぺち！,绑架他人,綁架他人
 PenguinButtonName,Abduction,拉致,绑架,綁架
 PenguinCanDefaultKill,Can default kill,通常キルができる,绑匪可以进行通常击杀,綁匪可以進行通常擊殺
-PenguinMeetingKill,Kill when the meeting starts,能力発動中に会議が始まった場合キルをする
+PenguinMeetingKill,Kill when the meeting starts,能力発動中に会議が始まった場合キルをする,技能持续期间若会议阶段开始则进行击杀
 LoversBreakerName,LoversBreaker,爆ぜ師,FFF团,現充爆破者
 LoversBreakerTitle1,fulfilling life explosion!!fulfilling life explosion!!,リア充爆発！！リア充爆発！！,现充去死！现充爆炸！,現充通通爆破吧！
 LoversBreakerBreakCount,Number of explosions needed to win,勝利に必要な爆破数,FFF团获胜所需击杀的恋人数,現充爆破者所需擊殺戀人數
@@ -1265,8 +1265,8 @@ DyingMessengerGetRoleTimeSetting,Time to read the roll of the killers from the c
 DyingMessengerGetLightAndDarkerTimeSetting,Time to read the light and darker colors of the kill from the corpse,死体からキル者の色の明暗を読み取れる時間,报告获得凶手颜色深浅所需死亡间隔时间,報告獲得凶手顏色深淺所需死亡間隔時間
 DyingMessengerFirstPerson1,me,私,我,我
 DyingMessengerFirstPerson2,me,僕,我,我
-DyingMessengerGetRoleText,The role of the person who killed {0} was {1}.,{0}をキルした人の役職は{1}でした。,把{0}杀害的人是一名{1}。,把{0}殺害的人是一名{1}。
-DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}をキルした人の色は{1}色でした。,把{0}杀害的人是{1}色的。,把{0}殺害的人是{1}色的。
+DyingMessengerGetRoleText,The role of the person who killed {0} was {1}.,{0}をキルした人の役職は{1}でした。,杀害{0}的人是一名{1}。,把{0}殺害的人是一名{1}。
+DyingMessengerGetLightAndDarkerText,The person who killed {0} had {1} color.,{0}をキルした人の色は{1}色でした。,杀害{0}的人是{1}色的。,把{0}殺害的人是{1}色的。
 WiseManName,WiseMan,賢者,贤者,賢者
 WiseManTitle1,Protect your crew with a large shield.,大きい盾でクルーを守ろう,用神圣之盾保护船员,用神聖之盾保護船員
 WiseManButtonName,Sacred Barrier,聖なるバリア,神圣之盾,神聖之盾
@@ -1299,7 +1299,7 @@ OrientalShamanVentDurationTimeSetting,Duration of Oriental shaman's vent,陰陽�
 OrientalShamanCrewTaskWinHijackSetting,You can hijack a task victory,タスク勝利を乗っ取れる,阴阳师的胜利优先于船员完成任务获胜,陰陽師的勝利判定優先於船員完成任務獲勝
 OrientalShamanWinTaskSetting,Oriental shaman was clear task win,タスクを完了しないと勝利できない,阴阳师不完成所有任务就不能获胜,陰陽師不完成所有任務就不能獲勝
 OrientalShamanCreateShermansServantSetting,Sherman's servant can be appointed,式神を指名出来る,阴阳师可以招募一名式神,陰陽師可以招募一名式神
-OrientalShamanCreateShermansServantCoolSetting,Sherman's servant nomination cool time,式神指名のクールタイム,指名式神冷却,指名式神冷卻時間
+OrientalShamanCreateShermansServantCoolSetting,Sherman's servant nomination cool time,式神指名のクールタイム,招募式神冷却,指名式神冷卻時間
 OrientalShamanShermansServantButtoonName,Nominate Sherman's servant,式神指名,指名式神,指名式神
 ShermansServantName,Sherman's Servant,式神,式神,式神
 ShermansServantTitle1,This body is for my Lord,この身は我が主のために有り,此身为吾主所有,此身皆為吾主所用
