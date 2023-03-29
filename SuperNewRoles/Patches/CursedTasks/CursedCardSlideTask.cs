@@ -14,6 +14,7 @@ public class CursedCardSlideTask
         [HarmonyPatch(nameof(CardSlideGame.Begin)), HarmonyPrefix]
         private static void BeginPrefix(CardSlideGame __instance)
         {
+            if (!Main.IsCursed) return;
             int random = Main.Random(0, 25);
             Accepted = 0.25f + (0.05f * random);
             Timer = 60f;
@@ -23,6 +24,7 @@ public class CursedCardSlideTask
         [HarmonyPatch(nameof(CardSlideGame.Update)), HarmonyPrefix]
         public static void UpdatePrefix(CardSlideGame __instance)
         {
+            if (!Main.IsCursed) return;
             __instance.AcceptedTime = new(Accepted - (0.025f * (Timer / 60f)), Accepted + (0.025f * (Timer / 60f)));
             Timer -= Time.fixedDeltaTime;
             if (Timer <= 0) Timer = 0;
