@@ -20,8 +20,8 @@ public static class ShouldAlwaysHorseAround
         if (isHorseMode != HorseModeOption.enableHorseMode && LobbyBehaviour.Instance != null) __result = isHorseMode;
         else
         {
-            __result = HorseModeOption.enableHorseMode;
-            isHorseMode = HorseModeOption.enableHorseMode;
+            __result = !MainMenuPatch.BeforeAprilR5() && HorseModeOption.enableHorseMode;
+            isHorseMode = !MainMenuPatch.BeforeAprilR5() && HorseModeOption.enableHorseMode;
         }
         return false;
     }

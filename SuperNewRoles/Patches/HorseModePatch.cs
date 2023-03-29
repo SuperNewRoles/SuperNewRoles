@@ -9,30 +9,31 @@ namespace SuperNewRoles.Patches;
 [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
 public class MainMenuPatch
 {
-    private static bool BeforeAprilR5() => DateTime.UtcNow <= new DateTime(2023, 3, 31, 15, 0, 0, 0, DateTimeKind.Utc);
+    public static bool BeforeAprilR5() => DateTime.UtcNow <= new DateTime(2023, 3, 31, 15, 0, 0, 0, DateTimeKind.Utc);
     private static bool horseButtonState = HorseModeOption.enableHorseMode;
     private static Sprite horseModeOffSprite = null;
 
     private static void Prefix()
     {
-        // Horse mode stuff
-        var horseModeSelectionBehavior = new ClientModOptionsPatch.SelectionBehaviour("Enable Horse Mode", () => HorseModeOption.enableHorseMode = ConfigRoles.EnableHorseMode.Value = !ConfigRoles.EnableHorseMode.Value, ConfigRoles.EnableHorseMode.Value);
-
         var bottomTemplate = GameObject.Find("InventoryButton");
-        if (bottomTemplate == null) return;
-        var horseButton = Object.Instantiate(bottomTemplate, bottomTemplate.transform.parent);
-        var passiveHorseButton = horseButton.GetComponent<PassiveButton>();
-        var spriteHorseButton = horseButton.GetComponent<SpriteRenderer>();
-
-        horseModeOffSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
-
-        spriteHorseButton.sprite = horseModeOffSprite;
-
-        passiveHorseButton.OnClick = new ButtonClickedEvent();
 
         //FIXME:[SHRモードを一時封印] #1100 mergeをリバートしてください
         if (!BeforeAprilR5())
         {
+            // Horse mode stuff
+            var horseModeSelectionBehavior = new ClientModOptionsPatch.SelectionBehaviour("Enable Horse Mode", () => HorseModeOption.enableHorseMode = ConfigRoles.EnableHorseMode.Value = !ConfigRoles.EnableHorseMode.Value, ConfigRoles.EnableHorseMode.Value);
+
+            if (bottomTemplate == null) return;
+            var horseButton = Object.Instantiate(bottomTemplate, bottomTemplate.transform.parent);
+            var passiveHorseButton = horseButton.GetComponent<PassiveButton>();
+            var spriteHorseButton = horseButton.GetComponent<SpriteRenderer>();
+
+            horseModeOffSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
+
+            spriteHorseButton.sprite = horseModeOffSprite;
+
+            passiveHorseButton.OnClick = new ButtonClickedEvent();
+
             passiveHorseButton.OnClick.AddListener((UnityEngine.Events.UnityAction)delegate
             {
                 horseButtonState = horseModeSelectionBehavior.OnClick();
