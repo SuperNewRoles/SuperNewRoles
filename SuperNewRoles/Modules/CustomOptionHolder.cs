@@ -4,6 +4,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 
@@ -28,7 +29,6 @@ public class CustomOptionHolder
 
     public static CustomOption specialOptions;
     public static CustomOption hideSettings;
-    public static CustomOption IsSNROnlySearch;
 
     public static CustomOption crewmateRolesCountMax;
     public static CustomOption crewmateGhostRolesCountMax;
@@ -37,16 +37,7 @@ public class CustomOptionHolder
     public static CustomOption neutralRolesCountMax;
     public static CustomOption neutralGhostRolesCountMax;
 
-    public static CustomOption enableMirroMap;
-
     public static CustomOption enableAgartha;
-    public static CustomOption AgarthaRandomSpawn;
-    public static CustomOption AgarthaRandomSpawnIsFirstSpawn;
-    public static CustomOption AgarthaRandomSpawnIsAddSpawnWay;
-
-    public static CustomOption CanGhostSeeRole;
-    public static CustomOption OnlyImpostorGhostSeeRole;
-    public static CustomOption CanGhostSeeVote;
 
     public static CustomOption IsDebugMode;
     public static CustomOption DebugModeFastStart;
@@ -54,19 +45,7 @@ public class CustomOptionHolder
 
     public static CustomOption DisconnectNotPCOption;
 
-    public static CustomOption ZoomOption;
-    public static CustomOption ClairvoyantZoom;
-    public static CustomOption MouseZoom;
-    public static CustomOption ZoomCoolTime;
-    public static CustomOption ZoomDurationTime;
-
-    public static CustomOption IsAlwaysReduceCooldown;
-    public static CustomOption IsAlwaysReduceCooldownExceptInVent;
-    public static CustomOption IsAlwaysReduceCooldownExceptOnTask;
-
     public static CustomOption IsOldMode;
-
-    public static CustomOption IsChangeTheWinCondition;
 
     public static CustomOption DetectiveRate;
     public static CustomOption DetectivePlayerCount;
@@ -915,16 +894,6 @@ public class CustomOptionHolder
     public static CustomOption PavlovsdogRunAwayDeathTime;
     public static CustomOption PavlovsdogRunAwayDeathTimeIsMeetingReset;
 
-    public static CustomRoleOption WaveCannonJackalOption;
-    public static CustomOption WaveCannonJackalPlayerCount;
-    public static CustomOption WaveCannonJackalCoolTime;
-    public static CustomOption WaveCannonJackalChargeTime;
-    public static CustomOption WaveCannonJackalKillCooldown;
-    public static CustomOption WaveCannonJackalUseVent;
-    public static CustomOption WaveCannonJackalUseSabo;
-    public static CustomOption WaveCannonJackalIsImpostorLight;
-    public static CustomOption WaveCannonJackalIsSyncKillCoolTime;
-
     public static CustomRoleOption CamouflagerOption;
     public static CustomOption CamouflagerPlayerCount;
     public static CustomOption CamouflagerCoolTime;
@@ -952,6 +921,7 @@ public class CustomOptionHolder
     public static CustomOption PenguinCoolTime;
     public static CustomOption PenguinDurationTime;
     public static CustomOption PenguinCanDefaultKill;
+    public static CustomOption PenguinMeetingKill;
 
     public static CustomRoleOption DependentsOption;
     public static CustomOption DependentsPlayerCount;
@@ -988,8 +958,6 @@ public class CustomOptionHolder
     public static CustomOption LoversCommonTask;
     public static CustomOption LoversLongTask;
     public static CustomOption LoversShortTask;
-    public static CustomOption LadderDead;
-    public static CustomOption LadderDeadChance;
 
     public static string[] LevelingerTexts = new string[] { };
     public static List<float> CrewPlayers = new() { 1f, 1f, 15f, 1f };
@@ -1026,63 +994,45 @@ public class CustomOptionHolder
         specialOptions = new CustomOptionBlank(null);
         hideSettings = Create(2, true, CustomOptionType.Generic, Cs(Color.white, "SettingsHideSetting"), false, specialOptions);
 
-        crewmateRolesCountMax = Create(3, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewRole"), 0f, 0f, 15f, 1f);
-        crewmateGhostRolesCountMax = Create(4, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewGhostRole"), 0f, 0f, 15f, 1f);
-        neutralRolesCountMax = Create(5, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralRole"), 0f, 0f, 15f, 1f);
-        neutralGhostRolesCountMax = Create(6, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralGhostRole"), 0f, 0f, 15f, 1f);
-        impostorRolesCountMax = Create(7, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoRole"), 0f, 0f, 15f, 1f);
-        impostorGhostRolesCountMax = Create(8, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
+        /* |: ========================= Mod Normal Settings ========================== :| */
 
-        enableMirroMap = Create(9, false, CustomOptionType.Generic, "enableMirroMap", false, null, isHeader: true);
+        impostorRolesCountMax = Create(3, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoRole"), 0f, 0f, 15f, 1f);
+        neutralRolesCountMax = Create(4, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralRole"), 0f, 0f, 15f, 1f);
+        crewmateRolesCountMax = Create(5, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewRole"), 0f, 0f, 15f, 1f);
+        impostorGhostRolesCountMax = Create(6, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
+        neutralGhostRolesCountMax = Create(7, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralGhostRole"), 0f, 0f, 15f, 1f);
+        crewmateGhostRolesCountMax = Create(8, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewGhostRole"), 0f, 0f, 15f, 1f);
+
+        if (ConfigRoles.DebugMode.Value)
+        {
+            IsDebugMode = Create(10, true, CustomOptionType.Generic, "<color=#828282>デバッグモード</color>", false, null, isHeader: true);
+            DebugModeFastStart = Create(681, true, CustomOptionType.Generic, "<color=#828282>即開始</color>", false, IsDebugMode);
+            IsMurderPlayerAnnounce = Create(1073, true, CustomOptionType.Generic, "<color=#828282>MurderPlayer発生時に通知を行う</color>", false, IsDebugMode);
+        }
+
+        DisconnectNotPCOption = Create(11, true, CustomOptionType.Generic, Cs(new Color(238f / 187f, 204f / 255f, 203f / 255f, 1f), "DisconnectNotPC"), true, null, isHeader: true);
 
         enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
-        AgarthaRandomSpawn = Create(1084, false, CustomOptionType.Generic, "RandomSpawnOption", true, enableAgartha);
-        AgarthaRandomSpawnIsFirstSpawn = Create(1085, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsFirstSpawn", false, AgarthaRandomSpawn);
-        AgarthaRandomSpawnIsAddSpawnWay = Create(1086, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
 
-        CanGhostSeeRole = Create(1100, true, CustomOptionType.Generic, "CanGhostSeeRole", true, null, isHeader: true);
-        OnlyImpostorGhostSeeRole = Create(1101, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanGhostSeeRole);
+        GMOption = Create(1028, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
+        if (ConfigRoles.DebugMode.Value) { DebuggerOption = Create(1172, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false); }
 
-        CanGhostSeeVote = Create(1144, true, CustomOptionType.Generic, "CanGhostSeeVote", true, null, isHeader: true);
+        /* |: ========================= Mod Normal Settings ========================== :| */
 
-        IsSNROnlySearch = Create(1083, false, CustomOptionType.Generic, "IsSNROnlySearch", false, null, isHeader: true);
+        Mode.ModeHandler.OptionLoad(); // モード設定
+
+        MapOption.MapOption.LoadOption(); // マップの設定
+
+        MapCustoms.MapCustom.CreateOption(); // マップ改造
+
+        Sabotage.Options.Load(); // 独自サボタージュの設定
+
+        Mode.PlusMode.PlusGameOptions.Load(); // プラスゲームオプション
 
         IsOldMode = Create(1027, false, CustomOptionType.Generic, "IsOldMode", false, null, isHeader: true, isHidden: true);
         IsOldMode.selection = 0;
 
-        if (ConfigRoles.DebugMode.Value)
-        {
-            IsDebugMode = Create(10, true, CustomOptionType.Generic, "デバッグモード", false, null, isHeader: true);
-            DebugModeFastStart = Create(681, true, CustomOptionType.Generic, "即開始", false, IsDebugMode);
-            IsMurderPlayerAnnounce = Create(1073, true, CustomOptionType.Generic, "MurderPlayer発生時に通知を行う", false, IsDebugMode);
-        }
-
-        DisconnectNotPCOption = Create(11, true, CustomOptionType.Generic, Cs(Color.white, "DisconnectNotPC"), true, null, isHeader: true);
-
-        ZoomOption = Create(618, false, CustomOptionType.Generic, Cs(Color.white, "Zoomafterdeath"), true, null, isHeader: true);
-        MouseZoom = Create(619, false, CustomOptionType.Generic, "mousemode", false, ZoomOption);
-        ClairvoyantZoom = Create(620, false, CustomOptionType.Generic, "clairvoyantmode", false, ZoomOption);
-        ZoomCoolTime = Create(621, false, CustomOptionType.Generic, "clairvoyantCoolTime", 15f, 1f, 120f, 2.5f, ClairvoyantZoom, format: "unitCouples");
-        ZoomDurationTime = Create(622, false, CustomOptionType.Generic, "clairvoyantDurationTime", 5f, 1f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
-
-        MapOption.MapOption.LoadOption();
-
-        //SoothSayerRate = Create(2, Cs(SoothSayer.color,"soothName"),rates, null, true);
-        Mode.ModeHandler.OptionLoad();
-
-        MapCustoms.MapCustom.CreateOption();
-
-        Sabotage.Options.Load();
-
-        if (ConfigRoles.DebugMode.Value) { DebuggerOption = Create(1172, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false, isHeader: true); }
-
-        GMOption = Create(1028, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
-
-        IsAlwaysReduceCooldown = Create(682, false, CustomOptionType.Generic, "IsAlwaysReduceCooldown", false, null, isHeader: true);
-        IsAlwaysReduceCooldownExceptInVent = Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
-        IsAlwaysReduceCooldownExceptOnTask = Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
-
-        IsChangeTheWinCondition = Create(1005, true, CustomOptionType.Generic, "IsChangeTheWinCondition", false, null, isHeader: true);
+        /* |: ========================= Roles Settings ========================== :| */
 
         MadRolesCanFixComms = Create(984, true, CustomOptionType.Crewmate, "MadRolesCanFixComms", false, null);
         MadRolesCanFixElectrical = Create(985, true, CustomOptionType.Crewmate, "MadRolesCanFixElectrical", false, null);
@@ -1892,15 +1842,7 @@ public class CustomOptionHolder
         WaveCannonChargeTime = Create(1021, false, CustomOptionType.Impostor, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonOption);
         WaveCannonIsSyncKillCoolTime = Create(1016, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, WaveCannonOption);
 
-        WaveCannonJackalOption = SetupCustomRoleOption(1022, false, RoleId.WaveCannonJackal, CustomOptionType.Neutral);
-        WaveCannonJackalPlayerCount = Create(1023, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WaveCannonJackalOption);
-        WaveCannonJackalCoolTime = Create(1014, false, CustomOptionType.Neutral, "NiceScientistCooldownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonJackalOption);
-        WaveCannonJackalChargeTime = Create(1015, false, CustomOptionType.Neutral, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonJackalOption);
-        WaveCannonJackalKillCooldown = Create(1024, false, CustomOptionType.Neutral, "JackalCooldownSetting", 30f, 2.5f, 60f, 2.5f, WaveCannonJackalOption, format: "unitSeconds");
-        WaveCannonJackalUseVent = Create(1025, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, WaveCannonJackalOption);
-        WaveCannonJackalIsImpostorLight = Create(1026, false, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, WaveCannonJackalOption);
-        WaveCannonJackalUseSabo = Create(1029, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, WaveCannonJackalOption);
-        WaveCannonJackalIsSyncKillCoolTime = Create(1107, false, CustomOptionType.Neutral, "IsSyncKillCoolTime", false, WaveCannonJackalOption);
+        WaveCannonJackal.SetupCustomOptions();
 
         Conjurer.SetupCustomOptions();
 
@@ -1951,6 +1893,7 @@ public class CustomOptionHolder
         PenguinCoolTime = Create(1088, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, PenguinOption, format: "unitSeconds");
         PenguinDurationTime = Create(1089, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
         PenguinCanDefaultKill = Create(1090, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
+        PenguinMeetingKill = Create(1251, false, CustomOptionType.Impostor, "PenguinMeetingKill", true, PenguinOption);
 
         LoversBreakerOption = SetupCustomRoleOption(1132, false, RoleId.LoversBreaker);
         LoversBreakerPlayerCount = Create(1133, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LoversBreakerOption);
@@ -1981,6 +1924,8 @@ public class CustomOptionHolder
 
         WiseMan.SetupCustomOptions();
 
+        RoleBaseHelper.SetUpOptions();
+
         // 表示設定
 
         QuarreledOption = Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
@@ -1999,6 +1944,8 @@ public class CustomOptionHolder
         LoversCommonTask = loversoption.Item1;
         LoversShortTask = loversoption.Item2;
         LoversLongTask = loversoption.Item3;
+
+        /* |: ========================= Roles Settings ========================== :| */
 
         SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:" + Max);
         SuperNewRolesPlugin.Logger.LogInfo("設定数:" + options.Count);
