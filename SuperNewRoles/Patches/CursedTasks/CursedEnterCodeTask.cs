@@ -12,6 +12,7 @@ public class CursedEnterCodeTask
 {
     public static string TragetCode;
     public static string AnswerCode;
+
     public static string GetCode(out string card)
     {
         string code = string.Empty;

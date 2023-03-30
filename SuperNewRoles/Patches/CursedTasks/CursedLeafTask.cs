@@ -8,6 +8,7 @@ public class CursedLeafTask
 {
     public static int LeavesNum;
     public static int LeafDoneCount;
+
     [HarmonyPatch(typeof(LeafMinigame))]
     public static class LeafMinigamePatch
     {

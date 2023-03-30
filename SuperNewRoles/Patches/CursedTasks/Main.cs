@@ -20,6 +20,8 @@ public static class Main
 
         CursedDivertPowerTask.Data = new();
         CursedDivertPowerTask.Change = false;
+
+        CursedShowerTask.Timer = new();
     }
 
     public static int Random(int min = 1, int max = 10) => UnityEngine.Random.RandomRange(min, max + 1);

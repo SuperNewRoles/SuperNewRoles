@@ -10,6 +10,7 @@ namespace SuperNewRoles.Patches.CursedTasks;
 public class CursedUploadDataTask
 {
     public static GameObject BlueScreen;
+
     [HarmonyPatch(typeof(UploadDataGame))]
     public static class UploadDataGamePatch
     {
