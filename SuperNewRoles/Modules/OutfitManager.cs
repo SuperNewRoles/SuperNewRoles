@@ -11,6 +11,8 @@ public static class OutfitManager
         pc.RawSetHat(outfit.HatId, outfit.ColorId);
         pc.RawSetVisor(outfit.VisorId, outfit.ColorId);
         pc.RawSetColor(outfit.ColorId);
+        pc.RawSetPet(outfit.PetId, outfit.ColorId);
+        pc.RawSetSkin(outfit.SkinId, outfit.ColorId);
         ModHelpers.SetSkinWithAnim(pc.MyPhysics, outfit.SkinId);
     }
     public static void changeToPlayer(this PlayerControl pc, PlayerControl target)

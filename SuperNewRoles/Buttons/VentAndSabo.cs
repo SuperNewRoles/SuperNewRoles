@@ -1,6 +1,8 @@
+using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.MapOption;
+using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons;
@@ -113,13 +115,14 @@ public static class VentAndSabo
             float num = float.MaxValue;
             PlayerControl @object = pc.Object;
 
-            bool roleCouldUse = @object.IsUseVent();
+            bool roleCouldUse = @object.IsUseVent() || @object.IsRole(RoleId.OrientalShaman);
 
             var usableDistance = __instance.UsableDistance;
 
             couldUse = (@object.inVent || roleCouldUse) && !pc.IsDead && (@object.CanMove || @object.inVent);
             canUse = couldUse;
             if (pc.Object.IsRole(RoleTypes.Engineer)) return true;
+            if (NiceMechanic.TargetVent.Values.FirstOrDefault(x => x is not null && x.Id == __instance.Id) is not null) canUse = false;
             if (canUse)
             {
                 Vector2 truePosition = @object.GetTruePosition();
@@ -179,6 +182,7 @@ public static class VentAndSabo
         public static void Prefix(Vent __instance, ref bool enabled)
         {
             if (!Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles) && PlayerControl.LocalPlayer.IsMadRoles() && !CustomOptionHolder.MadRolesCanVentMove.GetBool()) enabled = false;
+            if (NiceMechanic.TargetVent.ContainsValue(__instance) && ModHelpers.PlayerById(NiceMechanic.TargetVent.ToArray().FirstOrDefault(x => x.Value == __instance).Key).IsRole(RoleId.NiceMechanic)) enabled = false;
         }
     }
 

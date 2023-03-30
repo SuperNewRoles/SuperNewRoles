@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using Hazel;
+using Il2CppSystem;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
@@ -22,7 +24,7 @@ public static class Arsonist
             Writer.EndRPC();
             RPCProcedure.ArsonistDouse(source.PlayerId, target.PlayerId);
         }
-        catch (Exception e)
+        catch (System.Exception e)
         {
             SuperNewRolesPlugin.Logger.LogError(e);
         }
@@ -100,10 +102,14 @@ public static class Arsonist
 
     public static void HudUpdate()
     {
-        if (RoleClass.Arsonist.DouseTarget == null) return;
+        if (RoleClass.Arsonist.DouseTarget is null) return;
         if (RoleClass.Arsonist.IsDouse)
         {
-            if (RoleClass.Arsonist.DouseTarget != HudManagerStartPatch.SetTarget(untarget: GetUntarget()))
+            Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+            float num = GameOptionsData.KillDistances[Mathf.Clamp(GameManager.Instance.LogicOptions.currentGameOptions.GetInt(Int32OptionNames.KillDistance), 0, 2)];
+            Vector2 vector = RoleClass.Arsonist.DouseTarget.GetTruePosition() - truePosition;
+            float magnitude = vector.magnitude;
+            if (magnitude > num || PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask))
             {
                 RoleClass.Arsonist.IsDouse = false;
                 HudManagerStartPatch.ArsonistDouseButton.Timer = 0;

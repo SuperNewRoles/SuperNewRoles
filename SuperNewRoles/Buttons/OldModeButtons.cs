@@ -47,7 +47,7 @@ public static class OldModeButtons
             }
         }
     }
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive))]
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive), new System.Type[] {typeof(PlayerControl), typeof(RoleBehaviour), typeof(bool) })]
     class HudManagerSetHudActivePatch
     {
         public static void Postfix() => OldModeUpdate();

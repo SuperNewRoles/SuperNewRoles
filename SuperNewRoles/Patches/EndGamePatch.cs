@@ -46,7 +46,9 @@ public enum CustomGameOverReason
     LoversBreakerWin,
     NoWinner,
     BugEnd,
-    SafecrackerWin
+    SafecrackerWin,
+    TheThreeLittlePigsWin,
+    OrientalShamanWin,
 }
 enum WinCondition
 {
@@ -78,7 +80,9 @@ enum WinCondition
     LoversBreakerWin,
     NoWinner,
     BugEnd,
-    SafecrackerWin
+    SafecrackerWin,
+    TheThreeLittlePigsWin,
+    OrientalShamanWin,
 }
 class FinalStatusPatch
 {
@@ -238,7 +242,9 @@ public class EndGameManagerSetUpPatch
                 {WinCondition.PavlovsTeamWin,("PavlovsTeamWinText",RoleClass.Pavlovsdogs.color)},
                 {WinCondition.LoversBreakerWin,("LoversBreakerName",RoleClass.LoversBreaker.color)},
                 {WinCondition.NoWinner,("NoWinner",Color.white)},
-                {WinCondition.SafecrackerWin,("SafecrackerName",Safecracker.color)}
+                {WinCondition.SafecrackerWin,("SafecrackerName",Safecracker.color)},
+                {WinCondition.TheThreeLittlePigsWin,("TheThreeLittlePigsName",TheThreeLittlePigs.color)},
+                {WinCondition.OrientalShamanWin,("OrientalShamanName", OrientalShaman.color)}
             };
         if (WinConditionDictionary.ContainsKey(AdditionalTempData.winCondition))
         {
@@ -468,7 +474,7 @@ public static class OnGameEndPatch
             }
             catch { }
         }
-        if (ConfigRoles.IsSendAnalytics.Value)
+        if (ConfigRoles.IsSendAnalytics.Value && !SuperNewRolesPlugin.IsBeta && !ConfigRoles.DebugMode.Value)
         {
             try
             {
@@ -537,6 +543,31 @@ public static class OnGameEndPatch
         }
         // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
         List<PlayerControl> notWinners = new();
+        List<PlayerControl> peculiarNotWinners = new();
+
+        /*
+        TODO: 蔵徒:陣営Playerがうまく動かない為コメントアウトし、個別表記式に変更。いつか直す。
+
+        // Neutral,MadRoles,FriendRolesから溢れたクルー勝利から除外する必要のある役職を個別追記する
+        peculiarNotWinners.AddRanges(new[]
+            {
+                RoleClass.SatsumaAndImo.SatsumaAndImoPlayer, // クルー陣営の時はマッド役職でない為
+                RoleClass.SideKiller.MadKillerPlayer, // マッドロールから外され[CrewmatePlayer]に含まれている為
+                RoleClass.Dependents.DependentsPlayer, // マッドロールから外され[CrewmatePlayer]に含まれている為
+                OrientalShaman.ShermansServantPlayer, // 第三陣営ではなく[CrewmatePlayer]に含まれている為
+                //  RoleClass.Cupid.CupidPlayer,
+                //  キューピットはNeutralPlayerだが元々記載の方法が特殊だった為コメントアウトで記載を残した。
+            });
+
+        notWinners.AddRanges(new[]
+            {
+                BotManager.AllBots,
+                RoleHelpers.NeutralPlayer,
+                RoleHelpers.MadRolesPlayer,
+                RoleHelpers.FriendRolesPlayer,
+                peculiarNotWinners, // 上記に含まれないクルー勝利除外役職
+            });
+        */
 
         notWinners.AddRanges(new[]{RoleClass.Jester.JesterPlayer,
             RoleClass.Madmate.MadmatePlayer,
@@ -583,6 +614,13 @@ public static class OnGameEndPatch
             RoleClass.LoversBreaker.LoversBreakerPlayer,
             Roles.Impostor.MadRole.Worshiper.WorshiperPlayer,
             Safecracker.SafecrackerPlayer,
+            FireFox.FireFoxPlayer,
+            OrientalShaman.OrientalShamanPlayer,
+            OrientalShaman.ShermansServantPlayer,
+            TheThreeLittlePigs.TheFirstLittlePig.Player,
+            TheThreeLittlePigs.TheSecondLittlePig.Player,
+            TheThreeLittlePigs.TheThirdLittlePig.Player,
+            RoleClass.WaveCannonJackal.WaveCannonJackalPlayer,
             });
         notWinners.AddRange(RoleClass.Cupid.CupidPlayer);
         notWinners.AddRange(RoleClass.Dependents.DependentsPlayer);
@@ -851,6 +889,33 @@ public static class OnGameEndPatch
             }
         }
         isReset = false;
+        foreach (PlayerControl player in OrientalShaman.OrientalShamanPlayer)
+        {
+            if (!OrientalShaman.OrientalShamanCrewTaskWinHijack.GetBool() &&
+                AdditionalTempData.gameOverReason == GameOverReason.HumansByTask) break;
+            if (OrientalShaman.OrientalShamanWinTask.GetBool())
+            {
+                var (completed, total) = TaskCount.TaskDate(player.Data);
+                if (completed < total) continue;
+            }
+            if (player.IsAlive())
+            {
+                if (!((isDleted && changeTheWinCondition) || isReset))
+                {
+                    TempData.winners = new();
+                    isDleted = true;
+                    isReset = true;
+                }
+                TempData.winners.Add(new(player.Data));
+                if (OrientalShaman.OrientalShamanCausative.ContainsKey(player.PlayerId))
+                {
+                    PlayerControl causativePlayer = ModHelpers.PlayerById(OrientalShaman.OrientalShamanCausative[player.PlayerId]);
+                    if (causativePlayer) TempData.winners.Add(new(causativePlayer.Data));
+                }
+                AdditionalTempData.winCondition = WinCondition.OrientalShamanWin;
+            }
+        }
+        isReset = false;
         foreach (PlayerControl player in RoleClass.Tuna.TunaPlayer)
         {
             if (player.IsAlive() && !RoleClass.Tuna.IsTunaAddWin)
@@ -959,8 +1024,73 @@ public static class OnGameEndPatch
             }
         }
         isReset = false;
-        var foxPlayers = RoleClass.Fox.FoxPlayer;
-        foxPlayers.AddRange(foxPlayers);
+        foreach (List<PlayerControl> plist in TheThreeLittlePigs.TheThreeLittlePigsPlayer)
+        {
+            if (AdditionalTempData.winCondition is WinCondition.LoversBreakerWin or WinCondition.SafecrackerWin or WinCondition.JesterWin or
+                                                   WinCondition.VultureWin or WinCondition.WorkpersonWin or WinCondition.FalseChargesWin or
+                                                   WinCondition.DemonWin or WinCondition.SuicidalIdeationWin or WinCondition.PhotographerWin or
+                                                   WinCondition.RevolutionistWin or WinCondition.QuarreledWin) break;
+            if (!TheThreeLittlePigs.IsTheThreeLittlePigs(plist) || plist.IsAllDead()) continue;
+            bool isAllAlive = true;
+            if (plist.Count >= 3)
+            {
+                foreach (PlayerControl player in plist)
+                {
+                    if (player.IsDead() || !TheThreeLittlePigs.IsTheThreeLittlePigs(player))
+                    {
+                        isAllAlive = false;
+                        break;
+                    }
+                }
+            }
+            else isAllAlive = false;
+            if (isAllAlive)
+            {
+                if (!((isDleted && changeTheWinCondition) || isReset))
+                {
+                    TempData.winners = new();
+                    isDleted = true;
+                    isReset = true;
+                }
+                foreach (PlayerControl player in plist)
+                {
+                    if (!TheThreeLittlePigs.IsTheThreeLittlePigs(player)) continue;
+                    TempData.winners.Add(new(player.Data));
+                    AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
+                }
+            }
+            else
+            {
+                bool isAllKillerDead = true;
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.IsDead()) continue;
+                    if (player.IsImpostor() || player.IsKiller())
+                    {
+                        isAllKillerDead = false;
+                        break;
+                    }
+                }
+                if (isAllKillerDead)
+                {
+                    if (!((isDleted && changeTheWinCondition) || isReset))
+                    {
+                        TempData.winners = new();
+                        isDleted = true;
+                        isReset = true;
+                    }
+                    foreach (PlayerControl player in plist)
+                    {
+                        if (!TheThreeLittlePigs.IsTheThreeLittlePigs(player)) continue;
+                        TempData.winners.Add(new(player.Data));
+                        AdditionalTempData.winCondition = WinCondition.TheThreeLittlePigsWin;
+                    }
+                }
+            }
+        }
+        List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
+        foxPlayers.AddRange(FireFox.FireFoxPlayer);
+        isReset = false;
         foreach (PlayerControl player in foxPlayers)
         {
             if (player.IsAlive())
@@ -1550,7 +1680,7 @@ public static class CheckGameEndPatch
                 {
                     if (playerInfo.Object.IsAlive())
                     {
-                        numTotalAlive++;
+                        if (!playerInfo.Object.IsRole(RoleId.OrientalShaman)) numTotalAlive++;
                         if (playerInfo.Object.IsJackalTeamJackal() || playerInfo.Object.IsJackalTeamSidekick())
                         {
                             numTotalJackalTeam++;
