@@ -121,6 +121,7 @@ class Main
     public static bool IsStart;
     public static void MurderPlayer(PlayerControl source, PlayerControl target, PlayerAbility targetAbility)
     {
+        if (source.IsRole(RoleId.LongKiller) && !PlayerAbility.GetPlayerAbility(target).CanUseKill) return;
         target.Data.IsDead = true;
         if (targetAbility.CanRevive)
         {
