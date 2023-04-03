@@ -48,9 +48,9 @@ class BlockTool
         Count--;
         if (Count > 0) return;
         Count = 3;
-        if ((!MapOption.MapOption.UseAdmin ||
-            !MapOption.MapOption.UseVitalOrDoorLog ||
-            !MapOption.MapOption.UseCamera)
+        if ((!MapOption.MapOption.CanUseAdmin ||
+            !MapOption.MapOption.CanUseVitalOrDoorLog ||
+            !MapOption.MapOption.CanUseCamera)
             && !ModeHandler.IsMode(ModeId.Default))
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -63,27 +63,27 @@ class BlockTool
                         bool IsGuard = false;
                         Vector2 playerposition = p.GetTruePosition();
                         //カメラチェック
-                        if (!MapOption.MapOption.UseCamera && CameraPlayers.Contains(p.PlayerId)) IsGuard = true;
+                        if (!MapOption.MapOption.CanUseCamera && CameraPlayers.Contains(p.PlayerId)) IsGuard = true;
                         //アドミンチェック
-                        if (!MapOption.MapOption.UseAdmin)
+                        if (!MapOption.MapOption.CanUseAdmin)
                         {
                             var AdminDistance = Vector2.Distance(playerposition, GetAdminTransform());
                             if (AdminDistance <= UsableDistance) IsGuard = true;
                         }
                         //Polus用のアドミンチェック。Polusはアドミンが2つあるから
-                        if (!IsGuard && GameManager.Instance.LogicOptions.currentGameOptions.MapId == 2 && !MapOption.MapOption.UseAdmin)
+                        if (!IsGuard && GameManager.Instance.LogicOptions.currentGameOptions.MapId == 2 && !MapOption.MapOption.CanUseAdmin)
                         {
                             var AdminDistance = Vector2.Distance(playerposition, new Vector2(24.66107f, -21.523f));
                             if (AdminDistance <= UsableDistance) IsGuard = true;
                         }
                         //AirShip(アーカイブ)用のアドミンチェック。AirShipはアドミンが2つあるから
-                        if ((!IsGuard && GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4 && !MapOption.MapOption.UseAdmin) || (!IsGuard && GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4 && MapCustoms.MapCustom.RecordsAdminDestroy.GetBool() && MapOption.MapOption.MapOptionSetting.GetBool()))
+                        if ((!IsGuard && GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4 && !MapOption.MapOption.CanUseAdmin) || (!IsGuard && GameManager.Instance.LogicOptions.currentGameOptions.MapId == 4 && MapCustoms.MapCustom.RecordsAdminDestroy.GetBool() && MapOption.MapOption.MapOptionSetting.GetBool()))
                         {
                             var AdminDistance = Vector2.Distance(playerposition, new Vector2(19.9f, 12.9f));
                             if (AdminDistance <= UsableDistance) IsGuard = true;
                         }
                         //バイタルもしくはドアログを防ぐ
-                        if (!IsGuard && !MapOption.MapOption.UseVitalOrDoorLog)
+                        if (!IsGuard && !MapOption.MapOption.CanUseVitalOrDoorLog)
                         {
                             float distance = UsableDistance;
                             if (GameManager.Instance.LogicOptions.currentGameOptions.MapId == 2) distance += 0.5f;

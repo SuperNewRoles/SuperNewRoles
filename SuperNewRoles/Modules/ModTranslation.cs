@@ -17,19 +17,28 @@ public static class ModTranslation
 
         if (!dictionary.ContainsKey(key)) return key; // keyが辞書にないならkeyのまま返す
 
-        if (dictionary[key].Length < 4)
-        { //中国語がない場合英語で返す
+        if (dictionary[key].Length < 4 || dictionary[key][3] == "")
+        { //簡体中国語がない場合英語で返す
             if (!outputtedStr.Contains(key))
                 Logger.Info($"SChinese not found:{key}", "ModTranslation");
             outputtedStr.Add(key);
             if (langId == SupportedLangs.SChinese) return dictionary[key][1];
         }
 
+        if (dictionary[key].Length < 5 || dictionary[key][4] == "")
+        { //繁体中国語がない場合英語で返す
+            if (!outputtedStr.Contains(key))
+                Logger.Info($"TChinese not found:{key}", "ModTranslation");
+            outputtedStr.Add(key);
+            if (langId == SupportedLangs.TChinese) return dictionary[key][1];
+        }
+
         return langId switch
         {
             SupportedLangs.English => dictionary[key][1], // 英語
             SupportedLangs.Japanese => dictionary[key][2],// 日本語
-            SupportedLangs.SChinese => dictionary[key][3],// 中国語
+            SupportedLangs.SChinese => dictionary[key][3],// 簡体中国語
+            SupportedLangs.TChinese => dictionary[key][4],// 繁体中国語
             _ => dictionary[key][1] // それ以外は英語
         };
     }
