@@ -168,11 +168,13 @@ class Guesser
         }
 
         int ind = 0;
+        bool CanCrewShot = PlayerControl.LocalPlayer.GetRole() == RoleId.NiceGuesser ? CustomOptionHolder.NiceGuesserCanShotCrew.GetBool() : CustomOptionHolder.EvilGuesserCanShotCrew.GetBool();
         foreach (IntroData roleInfo in IntroData.IntroList)
         {
             if (roleInfo == null ||
                 roleInfo.RoleId == RoleId.Hunter ||
-                (roleInfo != IntroData.CrewmateIntro && roleInfo != IntroData.ImpostorIntro && IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0))
+                (roleInfo != IntroData.CrewmateIntro && roleInfo != IntroData.ImpostorIntro && IntroData.GetOption(roleInfo.RoleId)?.GetSelection() is null or 0) ||
+                (roleInfo == IntroData.CrewmateIntro && !CanCrewShot))
             {
                 Logger.Info("continueになりました:" + roleInfo.RoleId, "Guesser");
                 continue; // Not guessable roles
