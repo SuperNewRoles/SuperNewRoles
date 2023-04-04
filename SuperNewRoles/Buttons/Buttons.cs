@@ -1554,6 +1554,8 @@ static class HudManagerStartPatch
                 {
                     killCount = RoleClass.Sheriff.KillMaxCount;
                     flag = PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    var Target = SetTarget();
+                    PlayerControlFixedUpdatePatch.SetPlayerOutline(Target, RoleClass.Sheriff.color);
                 }
                 if (!Sheriff.IsSheriffButton(PlayerControl.LocalPlayer)) flag = false;
                 sheriffNumShotsText.text = killCount > 0 ? string.Format(ModTranslation.GetString("SheriffNumTextName"), killCount) : ModTranslation.GetString("CannotUse");
@@ -3220,7 +3222,8 @@ static class HudManagerStartPatch
                 }
             },
             (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Camouflager && ModeHandler.IsMode(ModeId.Default); },
-            () => {
+            () =>
+            {
                 if (CamouflagerButton.isEffectActive) CustomButton.FillUp(CamouflagerButton);
                 return PlayerControl.LocalPlayer.CanMove;
             },
