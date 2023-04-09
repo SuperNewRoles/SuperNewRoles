@@ -1343,6 +1343,7 @@ public static class CheckGameEndHnSPatch
             if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
             if (CheckAndEndGameForTaskerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
+            if (CheckAndEndGameForFoxHouwaWin(__instance)) return false;
             if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
             if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
             if (CheckAndEndGameForSafecrackerWin(__instance)) return false;
@@ -1380,6 +1381,7 @@ public static class CheckGameEndPatch
             if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
             if (CheckAndEndGameForTaskerWin(__instance, statistics)) return false;
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
+            if (CheckAndEndGameForFoxHouwaWin(__instance)) return false;
             if (CheckAndEndGameForSuicidalIdeationWin(__instance)) return false;
             if (CheckAndEndGameForHitmanWin(__instance, statistics)) return false;
             if (CheckAndEndGameForSafecrackerWin(__instance)) return false;
@@ -1598,6 +1600,38 @@ public static class CheckGameEndPatch
                 }
             }
         }
+        return false;
+    }
+    public static bool CheckAndEndGameForFoxHouwaWin(ShipStatus __instance)
+    {
+        int impostorNum = 0;
+        int crewNum = 0;
+        bool foxAlive = false;
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+        {
+            if (p.IsDead() || p.Data.Disconnected || p == null) continue;
+
+            if (p.IsImpostor()) impostorNum++;
+            else if (p.IsCrew()) crewNum++;
+            else if (RoleClass.Fox.FoxPlayer.Contains(p) && p.IsAlive()) foxAlive = true;
+        }
+        if (!CustomOptionHolder.FoxCanHouwaWin.GetBool() || !foxAlive) return false;
+
+        if (impostorNum == crewNum) {
+            List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
+            foxPlayers.AddRange(FireFox.FireFoxPlayer);
+            foreach (PlayerControl p in foxPlayers) {
+                if (p.IsDead()) continue;
+                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                Writer.Write(p.PlayerId);
+                AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                RPCProcedure.ShareWinner(p.PlayerId);
+
+                __instance.enabled = false;
+                CustomEndGame((GameOverReason)CustomGameOverReason.FoxWin, false);
+            }
+            return true;
+        };
         return false;
     }
     public static bool CheckAndEndGameForSuicidalIdeationWin(ShipStatus __instance)
