@@ -1081,7 +1081,7 @@ public static class MurderPlayerPatch
             }
             if (__instance.IsRole(RoleId.OverKiller))
             {
-                DeadBody deadBodyPrefab = target.KillAnimations[0].bodyPrefab;
+                DeadBody deadBodyPrefab = GameManager.Instance.DeadBodyPrefab;
                 Vector3 BodyOffset = target.KillAnimations[0].BodyOffset;
                 for (int i = 0; i < RoleClass.OverKiller.KillCount - 1; i++)
                 {
