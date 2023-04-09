@@ -88,7 +88,7 @@ public class CustomColors
     // main, shadow, isLighter
     private static Dictionary<ColorType, (Color32, Color32, bool)> CustomColorData = new() { };
     
-    private static Dictionary<ColorType, (Color32, Color32, bool)> CustomColorDataa = new() {
+    private static Dictionary<ColorType, (Color32, Color32, bool)> CustomColorDataOld = new() {
             //明るい色(V値が70/100以上、並びはH値順、同じH値の場合はS値が高い方が先、S値も同じ場合はV値が高い方が先)
             { ColorType.Pitchwhite, (new(255, 255, 255, bmv), new(240, 240, 240, bmv), true) }, //H000
             { ColorType.Posi, (new(255, 255, 255, bmv), new(0, 0, 0, bmv), true) }, //H000
