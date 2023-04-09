@@ -204,13 +204,11 @@ public class CustomColors
                 // 配列から辞書に格納する
                 // Mがメイン、Sが影
                 //カラーId,MR,MG,MB,MA,SR,SG,SB,SA,明るいならaでそれ以外ならb
-                Logger.Info((int.Parse(values[0].ToString()) - Palette.PlayerColors.Length).ToString());
                 CustomColorData.Add((ColorType)(int.Parse(values[0].ToString()) - Palette.PlayerColors.Length),
                     (new(values[1].ParseToByte(), values[2].ParseToByte(), values[3].ParseToByte(), values[4].ParseToByte())
                     ,new(values[5].ParseToByte(), values[6].ParseToByte(), values[7].ParseToByte(), values[8].ParseToByte()),
                     values[9] == "a"));
-                Logger.Info((ColorType)(int.Parse(values[0].ToString()) - Palette.PlayerColors.Length) +":"+ CustomColorData[(ColorType)(int.Parse(values[0].ToString()) - Palette.PlayerColors.Length)].ToString());
-
+                
                 i++;
             }
             catch (Exception e)
