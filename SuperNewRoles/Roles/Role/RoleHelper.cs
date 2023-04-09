@@ -882,6 +882,9 @@ public static class RoleHelpers
                 WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
                 //SidekickWaveCannon.allPlayers.Add(player);
                 break;
+            case RoleId.PoliceSurgeon:
+                PoliceSurgeon.PoliceSurgeonPlayer.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1853,6 +1856,7 @@ public static class RoleHelpers
             else if (TheThreeLittlePigs.TheThirdLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheThirdLittlePig;
             else if (OrientalShaman.OrientalShamanPlayer.IsCheckListPlayerControl(player)) return RoleId.OrientalShaman;
             else if (OrientalShaman.ShermansServantPlayer.IsCheckListPlayerControl(player)) return RoleId.ShermansServant;
+            else if (PoliceSurgeon.PoliceSurgeonPlayer.IsCheckListPlayerControl(player)) return RoleId.PoliceSurgeon;
             // ロールチェック
         }
         catch (Exception e)

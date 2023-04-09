@@ -195,6 +195,7 @@ public enum RoleId
     OrientalShaman,
     ShermansServant,
     SidekickWaveCannon,
+    PoliceSurgeon,
     //RoleId
 }
 
