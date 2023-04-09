@@ -236,6 +236,7 @@ SettingSuperHostRolesMode,Super Host Roles Mode,SuperHostRolesの設定,SuperHos
 SettingZombieMode,Zombie Mode,ゾンビモードの設定,生化危机模式设置,殭屍模式設定
 SettingRandomColorMode,Random Color Mode,ランダムカラーモードの設定,随机颜色模式设置,隨機顏色模式設定
 SettingDetectiveMode,Detective Mode,探偵モードの設定,侦探模式设置,偵探模式設定
+DefaultModeName,Default Mode,通常モード
 HideAndSeekModeName,Hide And Seek,かくれんぼ,躲猫猫,躲貓貓
 BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀,大逃殺
 SuperHostRolesModeName,Super Host Roles,SuperHostRoles,Super Host Roles,SuperHostRoles
@@ -1360,3 +1361,16 @@ Agartha_WorkRoom,WorkRoom,仕事場,工坊,工坊
 AgarthaName,<color=#a67646>Agartha</color>,<color=#a67646>Agartha</color>,<color=#a67646>雅各泰</color>,<color=#a67646>雅戈泰</color>
 AgarthaRandomSpawnIsFirstSpawn,Applies to first spawn.,初スポーンにも適用される,只在游戏开始时随机出生,只在遊戲開始時隨機重生
 AgarthaRandomSpawnIsAddSpawnWay,Add spawn to the road,道へのスポーンを追加する,在通道上增加随机出生点,在通道上增加隨機重生點
+
+# SuperNewRolesWeb
+SNRWebMMOnlineWelcomeText,Hey!{0}!,ようこそ！{0}さん！
+SNRWebMMOnlineNoneLoginText,Now， to the world of SuperNewRolesWeb!,さあ、SuperNewRolesWebの世界へ！
+SNRWebLoginPopupTitle,Login to SuperNewRolesWeb!,SuperNewRolesWebへログイン！
+SNRWebLogoutText,Logout,ログアウト
+SNRWebSucGenerateCode,Code was generated!\nYou code is \n{0},コードを生成しました。\nあなたのコードは\n{0}\nです。
+SNRWebCodeGeneratingNow,,コードの生成を開始しました。しばらくお待ちください。
+SNRWebErrorReasonPrefix,,エラーが発生しました。
+SNRWebErrorReasonAllMatch,,生成しようとしましたが、生成したすべてのコードが生成済みでした。
+SNRWebErrorReasonUnknow,,もう一度お試しください。
+SNRWebErrorReasonGenerated,,このコードは生成済みです。
+SNRWebErrorReasonRegistered,,もうこのフレンドコードは登録済みです。\n登録した覚えがない場合は、SuperNewRolesWeb公式サイトから、\n不正登録申請を送信してください。

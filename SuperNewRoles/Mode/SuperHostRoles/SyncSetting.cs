@@ -4,6 +4,7 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.SuperNewRolesWeb;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -336,6 +337,7 @@ public static class SyncSetting
     {
         public static void Postfix()
         {
+            var RPD = RoomPlayerData.Instance;
             OptionData = GameOptionsManager.Instance.CurrentGameOptions.DeepCopy();
             OnGameEndPatch.PlayerData = new();
         }
