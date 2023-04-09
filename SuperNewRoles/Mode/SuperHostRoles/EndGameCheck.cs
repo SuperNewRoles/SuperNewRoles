@@ -242,11 +242,10 @@ class EndGameCheck
 
             if (p.IsImpostor()) impostorNum++;
             else if (p.IsCrew()) crewNum++;
-            else if (RoleClass.Fox.FoxPlayer.Contains(p) && p.IsAlive()) foxAlive = true;
+            else if (RoleClass.Fox.FoxPlayer.Contains(p) || FireFox.FireFoxPlayer.Contains(p)) foxAlive = true;
         }
-        if (!CustomOptionHolder.FoxCanHouwaWin.GetBool() || !foxAlive) return false;
 
-        if (impostorNum == crewNum) {
+        if (impostorNum == crewNum && foxAlive && CustomOptionHolder.FoxCanHouwaWin.GetBool()) {
             List<PlayerControl> foxPlayers = new(RoleClass.Fox.FoxPlayer);
             foxPlayers.AddRange(FireFox.FireFoxPlayer);
             foreach (PlayerControl p in foxPlayers) {
