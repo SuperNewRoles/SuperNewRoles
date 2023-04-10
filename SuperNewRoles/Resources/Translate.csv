@@ -1308,6 +1308,16 @@ ShermansServantDescription,It is a sidekick to the Oriental shaman.\nIt is possi
 ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation cool time,式神の変身クールタイム,式神化形冷却,式神化形冷卻時間
 ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム,式神自杀冷却,式神自殺冷卻時間
 ShermansServantTransformationButtonName,Metamorphosis,変身,化形,化形
+PoliceSurgeonName,Police Surgeon,警察医
+PoliceSurgeonTitle1,I just wanted to assist in helping to ensure a peaceful and happy passing，yet...,私は幸せな最期を看取る手伝いをしたかっただけなのに...
+PoliceSurgeonDescription,The role that allows you to check the time of death during meetings，and can be changed to estimate the time of death depending on the settings. \nYou can also use the portable vital monitor during task phases，depending on the settings. \nI became a doctor to save lives，to help people die peacefully，\nand to provide comfort in their final moments...\nnot to witness premature deaths like this!,会議中、死亡時刻を確認する事ができる役職です (設定により死亡推定時刻に変更可能です)。\n設定によりタスクフェイズ中に携帯バイタルを使用する事もできます。\n私が医師になったのは、命を救い、時には最期をよりよくする手助けをし、看取る為であって... この様な... 志半ばで亡くなる死を視る為ではなかったのに!!
+PoliceSurgeonHaveVitalsInTaskPhase,Do you have portable vitals in your possession during the task phase?,タスクフェイズ中に携帯バイタルを所持しているか。
+VitalsDisplayCooldown,Vitals Display Cooldown,バイタル画面クールダウン
+BatteryDuration,Battery Duration,充電持続時間
+PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn,Do you still list the time of death after the end of the meeting phase of the turn in which the death occurred?,死亡したターンの会議フェイズ終了後も、死亡時刻を表記するか。
+PoliceSurgeonHowManyTurnAgoTheDied,During the Conference Phase，does it indicate how many turns ago the dead person died?,会議フェイズ中その死者が何ターン前に死亡したかを表示するか。
+PoliceSurgeonIncludeAnErrorInTheTimeOfDeath,Whether to include an error margin in the time of death.,死亡時刻に誤差を含めるか。
+PoliceSurgeonMarginOfErrorToIncludeInTimeOfDeath,The range of error to include in the time of death.,死亡時刻に含める誤差の範囲
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
