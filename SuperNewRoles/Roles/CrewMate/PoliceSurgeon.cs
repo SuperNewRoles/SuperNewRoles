@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 
@@ -27,7 +28,7 @@ public static class PoliceSurgeon
         PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn", true, PoliceSurgeonOption); optionId++;
         PoliceSurgeonHowManyTurnAgoTheDied = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonHowManyTurnAgoTheDied", false, PoliceSurgeonOption); optionId++;
         PoliceSurgeonIncludeAnErrorInTheTimeOfDeath = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonIncludeAnErrorInTheTimeOfDeath", true, PoliceSurgeonOption); optionId++;
-        PoliceSurgeonMarginOfErrorToIncludeInTimeOfDeath = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonMarginOfErrorToIncludeInTimeOfDeath", 5f, 1f, 15f, 1f,  PoliceSurgeonIncludeAnErrorInTheTimeOfDeath);
+        PoliceSurgeonMarginOfErrorToIncludeInTimeOfDeath = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonMarginOfErrorToIncludeInTimeOfDeath", 5f, 1f, 15f, 1f, PoliceSurgeonIncludeAnErrorInTheTimeOfDeath);
     }
 
     public static List<PlayerControl> PoliceSurgeonPlayer;
@@ -35,5 +36,11 @@ public static class PoliceSurgeon
     public static void ClearAndReload()
     {
         PoliceSurgeonPlayer = new();
+    }
+
+    public static void FixedUpdate()
+    {
+        if (CachedPlayer.LocalPlayer.Data.Role == null || !CachedPlayer.LocalPlayer.IsRole(RoleTypes.Scientist))
+            FastDestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer, RoleTypes.Scientist);
     }
 }

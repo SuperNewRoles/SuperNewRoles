@@ -206,6 +206,9 @@ public class FixedUpdate
                         case RoleId.Dependents:
                             Vampire.FixedUpdate.DependentsOnly();
                             break;
+                        case RoleId.PoliceSurgeon:
+                            PoliceSurgeon.FixedUpdate();
+                            break;
                     }
                 }
                 else // -- 死亡時 --
