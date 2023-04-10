@@ -36,28 +36,20 @@ public static class PoliceSurgeon
     public static List<PlayerControl> PoliceSurgeonPlayer;
     public static Color32 color = new(137, 195, 235, byte.MaxValue);
     public static bool HaveVital;
-    public static bool fastCoolReset;
     public static void ClearAndReload()
     {
         PoliceSurgeonPlayer = new();
         HaveVital = PoliceSurgeonHaveVitalsInTaskPhase.GetBool();
-        fastCoolReset = true;
     }
 
     public static void FixedUpdate()
     {
         if (!HaveVital) return;
-        if (!fastCoolReset)
-        {
-            fastCoolReset = false;
-            VitalAbilityCoolSettings();
-        }
         if (CachedPlayer.LocalPlayer.Data.Role == null || !CachedPlayer.LocalPlayer.IsRole(RoleTypes.Scientist))
-            new LateTask(() =>
-            {
-                FastDestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer, RoleTypes.Scientist);
-                VitalAbilityCoolSettings();
-            }, 1f, "ScientistSet");
+        {
+            VitalAbilityCoolSettings();
+            new LateTask(() => { FastDestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer, RoleTypes.Scientist); }, 1f, "ScientistSet");
+        }
     }
 
     public static void VitalAbilityCoolSettings()
