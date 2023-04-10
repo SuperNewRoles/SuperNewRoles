@@ -4,6 +4,10 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
+using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Crewmate;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -212,21 +216,25 @@ public static class SyncSetting
                 }
                 else
                 {
-                    if (SuperNewRoles.Roles.Impostor.MadRole.Worshiper.IsImpostorLight)
+                    if (Worshiper.IsImpostorLight)
                     {
                         optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
                         var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                         if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
                     }
                 }
-                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.KillSuicideCoolTime));
-                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, SuperNewRoles.Roles.Impostor.MadRole.Worshiper.AbilitySuicideCoolTime);
+                optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(Worshiper.KillSuicideCoolTime));
+                optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, Worshiper.AbilitySuicideCoolTime);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
             case RoleId.EvilSeer:
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
+            case RoleId.PoliceSurgeon:
+                optdata.SetFloat(FloatOptionNames.ScientistCooldown, PoliceSurgeon.PoliceSurgeonVitalsDisplayCooldown.GetFloat());
+                optdata.SetFloat(FloatOptionNames.ScientistBatteryCharge, PoliceSurgeon.PoliceSurgeonBatteryDuration.GetFloat());
+            break;
         }
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
