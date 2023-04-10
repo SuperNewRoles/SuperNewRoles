@@ -129,7 +129,7 @@ public static class RoleSelectHandler
         /*============エンジニアに役職設定============*/
 
         /*============科学者に役職設定============*/
-        if (PoliceSurgeon.PoliceSurgeonHaveVitalsInTaskPhase.GetBool()) SetVanillaRole(PoliceSurgeon.PoliceSurgeonPlayer, RoleTypes.Scientist, false);
+        if (PoliceSurgeon.HaveVital) SetVanillaRole(PoliceSurgeon.PoliceSurgeonPlayer, RoleTypes.Scientist, false);
         /*============科学者に役職設定============*/
 
         /*============シェイプシフターDesync============*/

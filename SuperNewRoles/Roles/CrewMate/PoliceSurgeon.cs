@@ -33,13 +33,16 @@ public static class PoliceSurgeon
 
     public static List<PlayerControl> PoliceSurgeonPlayer;
     public static Color32 color = new(137, 195, 235, byte.MaxValue);
+    public static bool HaveVital;
     public static void ClearAndReload()
     {
         PoliceSurgeonPlayer = new();
+        HaveVital = PoliceSurgeonHaveVitalsInTaskPhase.GetBool();
     }
 
     public static void FixedUpdate()
     {
+        if (!HaveVital) return;
         if (CachedPlayer.LocalPlayer.Data.Role == null || !CachedPlayer.LocalPlayer.IsRole(RoleTypes.Scientist))
             FastDestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer, RoleTypes.Scientist);
     }
