@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -124,13 +128,16 @@ public static class RoleSelectHandler
         if (RoleClass.SeerFriends.IsUseVent) SetVanillaRole(RoleClass.SeerFriends.SeerFriendsPlayer, RoleTypes.Engineer);
         /*============エンジニアに役職設定============*/
 
+        /*============科学者に役職設定============*/
+        if (PoliceSurgeon.PoliceSurgeonHaveVitalsInTaskPhase.GetBool()) SetVanillaRole(PoliceSurgeon.PoliceSurgeonPlayer, RoleTypes.Scientist);
+        /*============科学者に役職設定============*/
 
         /*============シェイプシフターDesync============*/
         SetRoleDesync(RoleClass.Arsonist.ArsonistPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.RemoteSheriff.RemoteSheriffPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.ToiletFan.ToiletFanPlayer, RoleTypes.Shapeshifter);
         SetRoleDesync(RoleClass.NiceButtoner.NiceButtonerPlayer, RoleTypes.Shapeshifter);
-        SetRoleDesync(SuperNewRoles.Roles.Impostor.MadRole.Worshiper.WorshiperPlayer, RoleTypes.Shapeshifter);
+        SetRoleDesync(Worshiper.WorshiperPlayer, RoleTypes.Shapeshifter);
         /*============シェイプシフターDesync============*/
 
 
