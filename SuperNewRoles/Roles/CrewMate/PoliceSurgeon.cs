@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using UnityEngine;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using static SuperNewRoles.Modules.CustomOption;
 
 namespace SuperNewRoles.Roles.Crewmate;
@@ -34,16 +36,40 @@ public static class PoliceSurgeon
     public static List<PlayerControl> PoliceSurgeonPlayer;
     public static Color32 color = new(137, 195, 235, byte.MaxValue);
     public static bool HaveVital;
+    public static bool fastCoolReset;
     public static void ClearAndReload()
     {
         PoliceSurgeonPlayer = new();
         HaveVital = PoliceSurgeonHaveVitalsInTaskPhase.GetBool();
+        fastCoolReset = true;
     }
 
     public static void FixedUpdate()
     {
         if (!HaveVital) return;
+        if (!fastCoolReset)
+        {
+            fastCoolReset = false;
+            VitalAbilityCoolSettings();
+        }
         if (CachedPlayer.LocalPlayer.Data.Role == null || !CachedPlayer.LocalPlayer.IsRole(RoleTypes.Scientist))
-            FastDestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer, RoleTypes.Scientist);
+            new LateTask(() =>
+            {
+                FastDestroyableSingleton<RoleManager>.Instance.SetRole(CachedPlayer.LocalPlayer, RoleTypes.Scientist);
+                VitalAbilityCoolSettings();
+            }, 1f, "ScientistSet");
+    }
+
+    public static void VitalAbilityCoolSettings()
+    {
+        if (PlayerControl.LocalPlayer.GetRole() != RoleId.PoliceSurgeon) return;
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.CopsRobbers)) return;
+
+        var optData = SyncSetting.OptionData.DeepCopy();
+
+        optData.SetFloat(FloatOptionNames.ScientistCooldown, PoliceSurgeonVitalsDisplayCooldown.GetFloat());
+        optData.SetFloat(FloatOptionNames.ScientistBatteryCharge, PoliceSurgeonBatteryDuration.GetFloat());
+
+        GameManager.Instance.LogicOptions.SetGameOptions(optData);
     }
 }
