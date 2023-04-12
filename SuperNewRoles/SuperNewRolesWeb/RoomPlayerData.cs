@@ -21,7 +21,7 @@ public class RoomPlayerData
     public static RoomPlayerData _instance = null;
     public PlayerControl Local;
 
-    public List<WebPlayer> WebPlayers;
+    public List<WebPlayer> WebPlayers = new();
     public RoomPlayerData()
     {
         if (_instance != null) return;

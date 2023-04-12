@@ -13,6 +13,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
+using SuperNewRoles.SuperNewRolesWeb;
 using UnhollowerBaseLib;
 using UnityEngine;
 using static MeetingHud;
@@ -29,6 +30,13 @@ class VotingComplete
         {
             exiled = null;
         }
+    }
+}
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
+class VotingComplatePatch
+{
+    public static void Postfix(MeetingHud __instance, Il2CppStructArray<VoterState> states, GameData.PlayerInfo exiled, bool tie) {
+        new GameHistoryManager.MeetingHistory(states, exiled);
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]

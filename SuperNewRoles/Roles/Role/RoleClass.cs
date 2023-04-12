@@ -10,6 +10,7 @@ using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Sabotage;
+using SuperNewRoles.SuperNewRolesWeb;
 using TMPro;
 using UnityEngine;
 
@@ -45,6 +46,7 @@ public static class RoleClass
         IsCoolTimeSetted = false;
         DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;
+        GameHistoryManager.ClearAndReloads();
         Agartha.MapData.ClearAndReloads();
         Mode.PlusMode.PlusGameOptions.ClearAndReload();
         LadderDead.Reset();
