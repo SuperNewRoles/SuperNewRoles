@@ -4,6 +4,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -81,10 +82,7 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                for (int i = 0; i < 29; i++)
-                {
-                    BotManager.Spawn("よっキングのBot");
-                }
+                Average.StartAbility();
             }
             if (Input.GetKeyDown(KeyCode.P))
             {

@@ -233,6 +233,7 @@ public static class RoleClass
         EvilMechanic.ClearAndReload();
         TheThreeLittlePigs.ClearAndReload();
         OrientalShaman.ClearAndReload();
+        Average.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();
