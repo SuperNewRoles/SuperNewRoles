@@ -1485,7 +1485,7 @@ public class CustomOptionHolder
         FoxIsUseVent = Create(312, true, CustomOptionType.Neutral, "MadmateUseVentSetting", false, FoxOption);
         FoxIsImpostorLight = Create(313, true, CustomOptionType.Neutral, "MadmateImpostorLightSetting", false, FoxOption);
         FoxReport = Create(314, true, CustomOptionType.Neutral, "MinimalistReportSetting", true, FoxOption);
-        FoxCanHouwaWin = Create(1024, true, CustomOptionType.Neutral, "CanHouwaWin", true, FoxOption);
+        FoxCanHouwaWin = Create(1024, true, CustomOptionType.Neutral, "CanHouwaWin", false, FoxOption);
 
         DarkKillerOption = SetupCustomRoleOption(315, true, RoleId.DarkKiller);
         DarkKillerPlayerCount = Create(316, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DarkKillerOption);
