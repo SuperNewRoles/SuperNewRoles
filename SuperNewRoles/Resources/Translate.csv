@@ -1316,8 +1316,10 @@ VitalsDisplayCooldown,Vitals Display Cooldown,バイタル画面クールダウ�
 BatteryDuration,Battery Duration,充電持続時間
 PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn,Do you still list the time of death after the end of the meeting phase of the turn in which the death occurred?,死亡したターンの会議フェイズ終了後も、死亡時刻を表記するか。
 PoliceSurgeonHowManyTurnAgoTheDied,During the Conference Phase，does it indicate how many turns ago the dead person died?,会議フェイズ中その死者が何ターン前に死亡したかを表示するか。
-PoliceSurgeonIncludeAnErrorInTheTimeOfDeath,Whether to include an error margin in the time of death.,死亡時刻に誤差を含めるか。
+PoliceSurgeon_IncludeErrorInDeathTime,Whether to include an error margin in the time of death.,死亡時刻に誤差を含めるか。
 PoliceSurgeonMarginOfErrorToIncludeInTimeOfDeath,The range of error to include in the time of death.,死亡時刻に含める誤差の範囲
+PoliceSurgeonDeathTimeUnknown,unknown.,不明
+PoliceSurgeonDeathTimeMeetingPhase,Meeting.,会議中
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
