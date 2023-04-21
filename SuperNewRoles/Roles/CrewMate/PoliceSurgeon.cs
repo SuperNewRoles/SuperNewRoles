@@ -1,6 +1,9 @@
 using System;
+using System.Text;
+using System.Globalization;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
+using AmongUs.Data;
 using HarmonyLib;
 using UnityEngine;
 using SuperNewRoles.Mode;
@@ -39,12 +42,14 @@ public static class PoliceSurgeon
     public static Color32 color = new(137, 195, 235, byte.MaxValue);
     public static bool HaveVital;
     public static int MeetingTurn_Now; // ReportDeadBodyで代入している為 Host以外は正常に反映されていません (SNRはクライアント個人処理の為同時にRpcで送る必要がある)
+    public static string OfficialDateNotation;
     public static Dictionary<byte, (string, int)> PoliceSurgeon_ActualDeathTimes;
     public static void ClearAndReload()
     {
         PoliceSurgeonPlayer = new();
         HaveVital = PoliceSurgeonHaveVitalsInTaskPhase.GetBool();
         MeetingTurn_Now = 0;
+        OfficialDateNotation = PoliceSurgeon_PostMortemCertificate.GetOfficialDateNotation();
         PoliceSurgeon_ActualDeathTimes = new();
     }
 
@@ -184,8 +189,36 @@ internal static class PoliceSurgeon_AddActualDeathTime
     }
 }
 
-internal static class PostMortemCertificate
+internal static class PoliceSurgeon_PostMortemCertificate
 {
+    /// <summary>
+    /// 公的な年月日を文字列として取得する
+    /// (日本語に設定している場合は和歴、それ以外は西暦且つアメリカ英語表記で取得)
+    /// </summary>
+    /// <returns>公的な年月日の文字列</returns>
+    // 参考 => https://csharp.programmer-reference.com/datetime-wareki/
+    // 参考 => https://www.ipentec.com/document/csharp-datetime-get-english-month-and-date-name-in-format-string
+    internal static string GetOfficialDateNotation()
+    {
+        string dateOfDocumentIssuance;
+
+        SupportedLangs langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : DataManager.Settings.Language.CurrentLanguage;
+        if (langId == SupportedLangs.Japanese)
+        {
+            JapaneseCalendar jc = new();
+            CultureInfo ci = new("Ja-JP", true);
+            ci.DateTimeFormat.Calendar = jc;
+            dateOfDocumentIssuance = DateTime.Now.ToString("ggy年 M月 d日", ci);
+        }
+        else
+        {
+            CultureInfo ci = new("en-US");
+            dateOfDocumentIssuance = DateTime.Now.ToString("MMMM d, yyyy", ci);
+        }
+
+        return dateOfDocumentIssuance;
+    }
+
     /*構造メモ
     |----------------------------------------------------| // <=SSPの[private const string delimiterLine]と同じように(ExRさんもこれだった)"
                    ~~死亡診断書~~ (死体検案書)<br>
