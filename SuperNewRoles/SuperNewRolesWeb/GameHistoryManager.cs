@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using AmongUs.GameOptions;
+using Il2CppSystem;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patches;
@@ -23,6 +24,8 @@ namespace SuperNewRoles.SuperNewRolesWeb
             public List<int> SkipPlayers = new();
             public byte exiledPlayer = 255;
             public List<byte> DeadPlayers = new();
+            public byte reporter = 255;
+            public byte reportedbody = 255;
             public MeetingHistory(Il2CppStructArray<VoterState> states, GameData.PlayerInfo exiled) {
                 foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers) {
                     bool IsDead = player.IsDead || player.Disconnected;
@@ -33,6 +36,10 @@ namespace SuperNewRoles.SuperNewRolesWeb
                     }
                     VoteColors.Add(player.PlayerId, new());
                 }
+                reporter = Instance.reporterId;
+                reportedbody = 255;
+                if (MeetingRoomManager.Instance != null && MeetingRoomManager.Instance.target != null)
+                        reportedbody = MeetingRoomManager.Instance.target.PlayerId;
                 if (exiled == null) exiledPlayer = 255;
                 else exiledPlayer = exiled.PlayerId;
                 foreach (VoterState state in states) {
@@ -133,13 +140,15 @@ namespace SuperNewRoles.SuperNewRolesWeb
                 SendData[$"meeting_{indexstr}_dead"] = string.Join(",", mh.DeadPlayers);
                 SendData[$"meeting_{indexstr}_SkipPlayers"] = string.Join(",", mh.SkipPlayers);
                 SendData[$"meeting_{indexstr}_VoteColorTargets"] = string.Join(",", mh.VoteColors.Keys);
+                SendData[$"meeting_{indexstr}_reporter"] = mh.reporter.ToString();
+                SendData[$"meeting_{indexstr}_reporttarget"] = mh.reportedbody.ToString();
                 foreach (var votecolor in mh.VoteColors) {
                     SendData[$"meeting_{indexstr}_VoteData_{votecolor.Key}"] = string.Join(",", votecolor.Value);
                 }
                 index++;
             }
         }
-        public static void Send(string WinReasonText, Color32 WinReasonColor,Action<long, DownloadHandler> callback = null) {
+        public static void Send(string WinReasonText, Color32 WinReasonColor, System.Action<long, DownloadHandler> callback = null) {
             if (SendData == null) return;
             SendData["WinReasonText"] = WinReasonText;
             SendData["WinReasonColor_0"] = WinReasonColor.r.ToString();
