@@ -38,6 +38,9 @@ public static class ModHelpers
                     !ExileController.Instance;
         }
     }
+    public static byte ParseToByte(this string txt) {
+        return byte.Parse(txt.ToString());
+    }
     public static Vent SetTargetVent(List<Vent> untargetablePlayers = null, PlayerControl targetingPlayer = null, bool forceout = false)
     {
         Vent result = null;

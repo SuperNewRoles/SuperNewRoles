@@ -34,6 +34,7 @@ public class CursedElecLeverTask
             new(24.5441f, 10.4653f, 0.1f),
             new(31.7973f, 2.2524f, 0.1f),
         };
+
         public static readonly List<SystemTypes> Rooms = new()
         {
             SystemTypes.Cockpit,
@@ -44,6 +45,7 @@ public class CursedElecLeverTask
             SystemTypes.Lounge,
             SystemTypes.CargoBay,
         };
+
         [HarmonyPatch(nameof(ShipStatus.Start)), HarmonyPostfix]
         public static void StartPostfix(ShipStatus __instance)
         {

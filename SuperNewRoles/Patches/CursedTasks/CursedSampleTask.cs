@@ -44,7 +44,6 @@ public class CursedSampleTask
         public static void NextStepPostfix(SampleMinigame __instance)
         {
             if (!Main.IsCursed) return;
-            Logger.Info($"初期化", "CursedSampleTask");
             Data[__instance.MyTask.Id] = new(__instance.MyTask.Id);
         }
 
