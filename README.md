@@ -11,6 +11,9 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 [English](https://github.com/ykundesu/SuperNewRoles/blob/master/READMEs/README_en.md)
 
+## MODのダウンロード
+[ダウンロードはこちら](https://github.com/ykundesu/SuperNewRoles/releases)
+
 ## 公式情報
 - [SNR公式 Discordサーバ](https://discord.gg/Cqfwx82ynN)
 
