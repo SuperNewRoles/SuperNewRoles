@@ -111,8 +111,7 @@ public static class RoleHelpers
         RoleId.TheFirstLittlePig or
         RoleId.TheSecondLittlePig or
         RoleId.TheThirdLittlePig or
-        RoleId.OrientalShaman or
-        RoleId.Average;
+        RoleId.OrientalShaman;
     // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
@@ -883,8 +882,8 @@ public static class RoleHelpers
                 WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
                 //SidekickWaveCannon.allPlayers.Add(player);
                 break;
-            case RoleId.Average:
-                Average.AveragePlayer.Add(player);
+            case RoleId.Balancer:
+                Balancer.BalancerPlayer.Add(player);
                 break;
             // ロールアド
             default:
@@ -1857,7 +1856,7 @@ public static class RoleHelpers
             else if (TheThreeLittlePigs.TheThirdLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheThirdLittlePig;
             else if (OrientalShaman.OrientalShamanPlayer.IsCheckListPlayerControl(player)) return RoleId.OrientalShaman;
             else if (OrientalShaman.ShermansServantPlayer.IsCheckListPlayerControl(player)) return RoleId.ShermansServant;
-            else if (Average.AveragePlayer.IsCheckListPlayerControl(player)) return RoleId.Average;
+            else if (Balancer.BalancerPlayer.IsCheckListPlayerControl(player)) return RoleId.Balancer;
             // ロールチェック
         }
         catch (Exception e)

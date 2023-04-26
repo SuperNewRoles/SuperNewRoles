@@ -195,7 +195,7 @@ public enum RoleId
     OrientalShaman,
     ShermansServant,
     SidekickWaveCannon,
-    Average,
+    Balancer,
     //RoleId
 }
 

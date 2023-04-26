@@ -1308,8 +1308,14 @@ ShermansServantDescription,It is a sidekick to the Oriental shaman.\nIt is possi
 ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation cool time,式神の変身クールタイム,式神化形冷却,式神化形冷卻時間
 ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム,式神自杀冷却,式神自殺冷卻時間
 ShermansServantTransformationButtonName,Metamorphosis,変身,化形,化形
-AverageName,Average,アベレージ
-AverageTitle1,(x+y)/2,(x+y)/2
+BalancerName,Balancer,バランサー
+BalancerTitle1,(x+y)/2,(x+y)/2
+BalancerTitleTextEither,,どちらかに入れろ
+BalancerTitleTextAverage,,平均を求めよ。
+BalancerTitleTextYouVoteEither,,どっちに入れる？
+BalancerTitleTextEitherExile,,どっちを追放する？
+BalancerTitleTextWhoIsImpostor,,インポスターはどっちだ？それとも他か...
+BalancerDoubleExileText,,どちらも追放された。
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示

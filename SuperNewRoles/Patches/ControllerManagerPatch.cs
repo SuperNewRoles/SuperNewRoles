@@ -82,7 +82,7 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                Average.StartAbility();
+                Roles.Crewmate.Balancer.StartAbility(PlayerControl.LocalPlayer, PlayerControl.AllPlayerControls[0], PlayerControl.AllPlayerControls[1]);
             }
             if (Input.GetKeyDown(KeyCode.P))
             {

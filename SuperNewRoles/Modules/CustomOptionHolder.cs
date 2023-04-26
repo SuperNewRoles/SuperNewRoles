@@ -1930,7 +1930,7 @@ public class CustomOptionHolder
 
         RoleBaseHelper.SetUpOptions();
 
-        Average.SetupCustomOptions();
+        Balancer.SetupCustomOptions();
 
         // 表示設定
 
