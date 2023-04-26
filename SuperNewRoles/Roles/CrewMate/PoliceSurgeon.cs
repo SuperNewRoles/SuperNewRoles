@@ -98,11 +98,20 @@ internal static class PoliceSurgeon_AddActualDeathTime
     internal static void CheckForEndVoting_Postfix() => AddActualDeathTime((int)DeadTiming.MeetingPhase);
 
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp)), HarmonyPostfix]
-    internal static void WrapUp_Postfix(ExileController __instance) => AddActualDeathTime((int)DeadTiming.Exited, __instance.exiled.Object);
+    internal static void WrapUp_Postfix(ExileController __instance)
+    {
+        if (__instance.exiled != null && __instance.exiled.Object == null) __instance.exiled = null;
+        PlayerControl exiledObject = __instance.exiled != null ? __instance.exiled.Object : null;
+        AddActualDeathTime((int)DeadTiming.Exited, exiledObject);
+    }
 
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn)), HarmonyPostfix]
-    internal static void WrapUpAndSpawn_Postfix(AirshipExileController __instance) => AddActualDeathTime((int)DeadTiming.Exited, __instance.exiled.Object);
-
+    internal static void WrapUpAndSpawn_Postfix(AirshipExileController __instance)
+    {
+        if (__instance.exiled != null && __instance.exiled.Object == null) __instance.exiled = null;
+        PlayerControl exiledObject = __instance.exiled != null ? __instance.exiled.Object : null;
+        AddActualDeathTime((int)DeadTiming.Exited, exiledObject);
+    }
     /// <summary>
     /// 死亡推定時刻を保存する
     /// </summary>
@@ -236,7 +245,8 @@ internal static class PoliceSurgeon_PostMortemCertificate
         titleBuilder.AppendLine(ModTranslation.GetString("PostMortemCertificate_main1"));
         titleBuilder.AppendLine(delimiterLine);
 
-        /*if (ModeHandler.IsMode(ModeId.Default) || ModeHandler.IsMode(ModeId.Werewolf))*/ builder.Append(titleBuilder);
+        /*if (ModeHandler.IsMode(ModeId.Default) || ModeHandler.IsMode(ModeId.Werewolf))*/
+        builder.Append(titleBuilder);
         //else ;
 
         foreach (KeyValuePair<byte, (int, int, int)> kvp in PoliceSurgeon_ActualDeathTimes)
