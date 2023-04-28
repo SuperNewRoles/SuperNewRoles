@@ -138,7 +138,16 @@ class AddChatPatch
             {
                 if (sourcePlayer is null) return;
                 if (responseCode != 200)
-                    SendCommand(sourcePlayer, ModTranslation.GetString("SNRWebErrorReasonPrefix") + ModTranslation.GetString(downloadHandler.text));
+                {
+                    if (downloadHandler.text.Length > 30)
+                    {
+                        SendCommand(sourcePlayer, ModTranslation.GetString("SNRWebErrorReasonPrefix") + ModTranslation.GetString("SNRWebErrorReasonServer505"));
+                    }
+                    else
+                    {
+                        SendCommand(sourcePlayer, ModTranslation.GetString("SNRWebErrorReasonPrefix") + ModTranslation.GetString(downloadHandler.text));
+                    }
+                }
                 else
                     SendCommand(sourcePlayer, Format(ModTranslation.GetString("SNRWebSucGenerateCode"), downloadHandler.text));
             }
