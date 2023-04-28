@@ -24,6 +24,7 @@ public static class PoliceSurgeon
     public static CustomOption PoliceSurgeonHowManyTurnAgoTheDied;
     public static CustomOption PoliceSurgeon_IncludeErrorInDeathTime;
     public static CustomOption PoliceSurgeonMarginOfErrorToIncludeInTimeOfDeath;
+    public static CustomOption PoliceSurgeonIsUseTaiwanCalendar;
 
     public static void SetupCustomOptions()
     {
@@ -34,6 +35,7 @@ public static class PoliceSurgeon
         PoliceSurgeonBatteryDuration = Create(optionId, true, CustomOptionType.Crewmate, "BatteryDuration", 5f, 5f, 30f, 5f, PoliceSurgeonHaveVitalsInTaskPhase); optionId++;
         PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn", true, PoliceSurgeonOption); optionId++;
         PoliceSurgeonHowManyTurnAgoTheDied = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonHowManyTurnAgoTheDied", false, PoliceSurgeonOption); optionId++;
+        if (DataManager.Settings.Language.CurrentLanguage == SupportedLangs.TChinese) PoliceSurgeonIsUseTaiwanCalendar = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonIsUseTaiwanCalendar", true, PoliceSurgeonOption); optionId++;
         PoliceSurgeon_IncludeErrorInDeathTime = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeon_IncludeErrorInDeathTime", true, PoliceSurgeonOption); optionId++;
         PoliceSurgeonMarginOfErrorToIncludeInTimeOfDeath = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonMarginOfErrorToIncludeInTimeOfDeath", 5f, 1f, 15f, 1f, PoliceSurgeon_IncludeErrorInDeathTime);
     }
@@ -219,20 +221,64 @@ internal static class PoliceSurgeon_PostMortemCertificate
         string dateOfDocumentIssuance;
 
         SupportedLangs langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : DataManager.Settings.Language.CurrentLanguage;
-        if (langId == SupportedLangs.Japanese)
-        {
-            JapaneseCalendar jc = new();
-            CultureInfo ci = new("Ja-JP", true);
-            ci.DateTimeFormat.Calendar = jc;
-            dateOfDocumentIssuance = DateTime.Now.ToString("ggy年 M月 d日", ci);
-        }
-        else
-        {
-            CultureInfo ci = new("en-US");
-            dateOfDocumentIssuance = DateTime.Now.ToString("MMMM d, yyyy", ci);
-        }
+        CultureInfo ci = new("en-US");
 
+        switch (langId)
+        {
+            case SupportedLangs.Japanese:
+                JapaneseCalendar jc = new();
+                ci = new("Ja-JP", true);
+                ci.DateTimeFormat.Calendar = jc;
+                dateOfDocumentIssuance = DateTime.Now.ToString("ggy年 M月 d日", ci);
+                break;
+            case SupportedLangs.SChinese:
+                dateOfDocumentIssuance = GetKanjiCalendar();
+                break;
+            case SupportedLangs.TChinese:
+                if (PoliceSurgeonIsUseTaiwanCalendar.GetBool())
+                {
+                    TaiwanCalendar tc = new();
+                    ci = new("zh-TW", true);
+                    ci.DateTimeFormat.Calendar = tc;
+                    dateOfDocumentIssuance = DateTime.Now.ToString("ggy年 M月 d日", ci);
+                }
+                else dateOfDocumentIssuance = GetKanjiCalendar();
+                break;
+            default:
+                dateOfDocumentIssuance = DateTime.Now.ToString("MMMM d, yyyy", ci);
+                break;
+        }
+        Logger.Info("DateOfDocumentIssuance");
         return dateOfDocumentIssuance;
+    }
+
+    /// <summary>
+    /// 今日の日付を漢数字表記にする
+    /// </summary>
+    /// <returns>string : 漢数字に変換された今日の日付</returns>
+    //  参考 => https://qiita.com/Akirakong/items/22477de0fff2e711e07f
+    private static string GetKanjiCalendar()
+    {
+        string dateNum = DateTime.Now.ToString("yyyy年MM月dd日");
+
+        // 年表記及び一の位(インデックスと要素(int.Parse(str))が一致している為、順序変更不可)
+        string[] kanjiArr = { "〇", "一", "二", "三", "四", "五", "六", "七", "八", "九" };
+        string[] kanjiArr10 = { "", "十", "二十", "三十" }; // 十の位
+
+        StringBuilder returnBuilder = new();
+        int i = 1; // foreachで現在処理している文字列の位(及び年月日)を示す為のインデックス
+
+        foreach (char c in dateNum)
+        {
+            string str = c.ToString();
+
+            if (i is 5 or 8 or 11) returnBuilder.Append(str); // 年月日を[int.Parse(str)](int変換)しないようにする
+            else if (i is 6 or 9) returnBuilder.Append(kanjiArr10[int.Parse(str)]); // 月日の十の位を変換する
+            else returnBuilder.Append(kanjiArr[int.Parse(str)]); // 上記に引っかからなかった部分を漢数字に変換する
+
+            i++;
+        }
+        return returnBuilder.ToString();
     }
 
     internal static string CreatePostMortemCertificate(PlayerControl policeSurgeon)
