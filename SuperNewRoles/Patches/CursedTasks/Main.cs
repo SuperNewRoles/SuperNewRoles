@@ -24,6 +24,8 @@ public static class Main
         CursedDivertPowerTask.Change = false;
 
         CursedShowerTask.Timer = new();
+
+        CursedFixShowerTask.Data = new();
     }
 
     public static int Random(int min = 1, int max = 10) => UnityEngine.Random.RandomRange(min, max + 1);

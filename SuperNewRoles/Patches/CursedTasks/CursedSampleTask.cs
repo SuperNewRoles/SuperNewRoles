@@ -62,6 +62,7 @@ public class CursedSampleTask
             Data[__instance.MyTask.Id].DeteriorationTimer = CursedSample.DeteriorationTime;
         }
     }
+
     [HarmonyPatch(typeof(NormalPlayerTask))]
     public static class NormalPlayerTaskPatch
     {
@@ -100,7 +101,6 @@ public class CursedSampleTask
 
             if (Data[__instance.Id].DeteriorationTimer > 0) sb.AppendLine($"<color=#FFFF00FF>{room}: {task} </color><color=#B00000>({timer})</color>");
             if (Data[__instance.Id].DeteriorationTimer <= 0) sb.AppendLine($"{room}: {task}");
-
             return false;
         }
     }
@@ -108,7 +108,6 @@ public class CursedSampleTask
     public class CursedSample
     {
         public static readonly float DeteriorationTime = 25f;
-        public uint Id;
         public bool IsStart;
         public bool IsDeterioration;
         public float DeteriorationTimer;
@@ -116,7 +115,6 @@ public class CursedSampleTask
 
         public CursedSample(uint id)
         {
-            Id = id;
             IsStart = true;
             IsDeterioration = false;
             DeteriorationTimer = DeteriorationTime;

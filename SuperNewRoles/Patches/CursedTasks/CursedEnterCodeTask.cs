@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
+using BepInEx.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -81,7 +81,6 @@ public class CursedEnterCodeTask
         public static void BeginPostfix(EnterCodeMinigame __instance)
         {
             if (!Main.IsCursed) return;
-
             __instance.transform.FindChild("Background").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Cursed.EnterCode.png", 100f);
 
             // テキスト類
@@ -145,7 +144,6 @@ public class CursedEnterCodeTask
             if (!Main.IsCursed) return true;
             if (__instance.animating) return false;
             if (__instance.done) return false;
-
             if (__instance.NumberText.text.Length >= 20)
             {
                 if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.RejectSound, false, 1f, null);
@@ -164,59 +162,54 @@ public class CursedEnterCodeTask
         public static bool AcceptDigitsPrefix(EnterCodeMinigame __instance)
         {
             if (!Main.IsCursed) return true;
-            Logger.Info($"回答 : {AnswerCode}, 答え : {TragetCode}", "EnterCodeTask");
             if (__instance.animating) return false;
             if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.NumberSound, false, 1f, null);
 
-            Animate(__instance);
-            if (AnswerCode == TragetCode) __instance.MyNormTask.NextStep();
+            if (AnswerCode == TragetCode) __instance.StartCoroutine(OKAnimate(__instance).WrapToIl2Cpp());
+            else __instance.StartCoroutine(BadAnimate(__instance).WrapToIl2Cpp());
             return false;
         }
 
-        public static async void Animate(EnterCodeMinigame __instance)
+        public static IEnumerator<Il2CppSystem.Collections.IEnumerator> OKAnimate(EnterCodeMinigame __instance)
         {
             __instance.animating = true;
-            await Task.Delay(100);
-
+            yield return Effects.Wait(0.1f);
             __instance.NumberText.text = string.Empty;
-            await Task.Delay(100);
-
+            yield return Effects.Wait(0.1f);
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.AcceptSound, false, 1f, null);
             string text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.OK);
-            if (AnswerCode == TragetCode)
-            {
-                __instance.done = true;
-                if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.AcceptSound, false, 1f, null);
-                __instance.NumberText.text = text;
-                await Task.Delay(100);
-
-                __instance.NumberText.text = string.Empty;
-                await Task.Delay(100);
-
-                __instance.NumberText.text = text;
-                await Task.Delay(100);
-
-                __instance.NumberText.text = string.Empty;
-                __instance.StartCoroutine(__instance.CoStartClose(0.5f));
-            }
-            else
-            {
-                if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.RejectSound, false, 1f, null);
-                text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Bad);
-                __instance.NumberText.text = text;
-                await Task.Delay(100);
-
-                __instance.NumberText.text = string.Empty;
-                await Task.Delay(100);
-
-                __instance.NumberText.text = text;
-                await Task.Delay(100);
-
-                __instance.numString = string.Empty;
-                __instance.NumberText.text = string.Empty;
-                AnswerCode = string.Empty;
-            }
+            __instance.done = true;
+            __instance.NumberText.text = text;
+            __instance.MyNormTask.NextStep();
+            yield return Effects.Wait(0.1f);
+            __instance.NumberText.text = string.Empty;
+            yield return Effects.Wait(0.1f);
+            __instance.NumberText.text = text;
+            yield return Effects.Wait(0.1f);
+            __instance.NumberText.text = string.Empty;
+            __instance.StartCoroutine(__instance.CoStartClose(0.5f));
             __instance.animating = false;
-            Logger.Info($"終了", "EnterCodeTask");
+            yield break;
+        }
+        public static IEnumerator<Il2CppSystem.Collections.IEnumerator> BadAnimate(EnterCodeMinigame __instance)
+        {
+            __instance.animating = true;
+            yield return Effects.Wait(0.1f);
+            __instance.NumberText.text = string.Empty;
+            yield return Effects.Wait(0.1f);
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(__instance.RejectSound, false, 1f, null);
+            string text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Bad);
+            __instance.NumberText.text = text;
+            yield return Effects.Wait(0.1f);
+            __instance.NumberText.text = string.Empty;
+            yield return Effects.Wait(0.1f);
+            __instance.NumberText.text = text;
+            yield return Effects.Wait(0.1f);
+            __instance.numString = string.Empty;
+            __instance.NumberText.text = string.Empty;
+            AnswerCode = string.Empty;
+            __instance.animating = false;
+            yield break;
         }
     }
 
