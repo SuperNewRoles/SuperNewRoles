@@ -34,7 +34,7 @@ public static class PoliceSurgeon
         PoliceSurgeonVitalsDisplayCooldown = Create(optionId, true, CustomOptionType.Crewmate, "VitalsDisplayCooldown", 15f, 5f, 60f, 5f, PoliceSurgeonHaveVitalsInTaskPhase); optionId++;
         PoliceSurgeonBatteryDuration = Create(optionId, true, CustomOptionType.Crewmate, "BatteryDuration", 5f, 5f, 30f, 5f, PoliceSurgeonHaveVitalsInTaskPhase); optionId++;
         PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn", true, PoliceSurgeonOption); optionId++;
-        PoliceSurgeonHowManyTurnAgoTheDied = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonHowManyTurnAgoTheDied", false, PoliceSurgeonOption); optionId++;
+        PoliceSurgeonHowManyTurnAgoTheDied = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonHowManyTurnAgoTheDied", false, PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn); optionId++;
         if (DataManager.Settings.Language.CurrentLanguage == SupportedLangs.TChinese) PoliceSurgeonIsUseTaiwanCalendar = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonIsUseTaiwanCalendar", true, PoliceSurgeonOption); optionId++;
         PoliceSurgeon_IncludeErrorInDeathTime = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeon_IncludeErrorInDeathTime", true, PoliceSurgeonOption); optionId++;
         PoliceSurgeonMarginOfErrorToIncludeInTimeOfDeath = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonMarginOfErrorToIncludeInTimeOfDeath", 5f, 1f, 15f, 1f, PoliceSurgeon_IncludeErrorInDeathTime);
@@ -335,7 +335,8 @@ internal static class PoliceSurgeon_PostMortemCertificate
 
             isWrite = true;
 
-            var isWritingBeforeTurn = PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn.GetBool();
+            // ターンを表記する設定が有効か? (全てのターンの死亡情報を出す設定 且つ 死亡ターンを表記する設定 の時に有効)
+            var isWritingTurn = PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn.GetBool() && PoliceSurgeonHowManyTurnAgoTheDied.GetBool();
             var inError = PoliceSurgeon_IncludeErrorInDeathTime.GetBool();
 
             var deadPl = ModHelpers.GetPlayerControl(kvp.Key);
@@ -349,7 +350,7 @@ internal static class PoliceSurgeon_PostMortemCertificate
                 case (int)PoliceSurgeon_AddActualDeathTime.DeadTiming.TaskPhase_killed:
                     if (inError)
                     {
-                        if (isWritingBeforeTurn)
+                        if (isWritingTurn)
                             // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) {2:kvp.Value.Item2}秒前 ({3:推定})
                             builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_AlreadyKnown_WriteTurn"), OfficialDateNotation, MeetingTurn_Now - kvp.Value.Item3, deadTime, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath1"))}");
                         else// 死亡したとき {0:年月日} {1:kvp.Value.Item2}秒前 ({2:推定})
@@ -357,7 +358,7 @@ internal static class PoliceSurgeon_PostMortemCertificate
                     }
                     else
                     {
-                        if (isWritingBeforeTurn)
+                        if (isWritingTurn)
                             // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) {2:kvp.Value.Item2}秒前 ({3:確認})
                             builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_AlreadyKnown_WriteTurn"), OfficialDateNotation, MeetingTurn_Now - kvp.Value.Item3, deadTime, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath2"))}");
                         else// 死亡したとき {0:年月日} {1:kvp.Value.Item2}秒前 ({2:確認})
@@ -370,7 +371,7 @@ internal static class PoliceSurgeon_PostMortemCertificate
 
                 case (int)PoliceSurgeon_AddActualDeathTime.DeadTiming.TaskPhase_Exited:
                 case (int)PoliceSurgeon_AddActualDeathTime.DeadTiming.MeetingPhase:
-                    if (isWritingBeforeTurn)
+                    if (isWritingTurn)
                         // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) ({2:頃})
                         builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_Unknown_WriteTurn"), OfficialDateNotation, MeetingTurn_Now - kvp.Value.Item3, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3"))}");
                     else// 死亡したとき {0:年月日} ({1:頃})
@@ -381,7 +382,7 @@ internal static class PoliceSurgeon_PostMortemCertificate
                     break;
 
                 case (int)PoliceSurgeon_AddActualDeathTime.DeadTiming.Exited:
-                    if (isWritingBeforeTurn)
+                    if (isWritingTurn)
                         // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) ({2:頃})
                         builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_Unknown_WriteTurn"), OfficialDateNotation, MeetingTurn_Now - kvp.Value.Item3, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3"))}");
                     else// 死亡したとき {0:年月日} ({1:頃})
