@@ -46,6 +46,11 @@ public static class PoliceSurgeon
     public static int MeetingTurn_Now; // ReportDeadBodyで代入している為 Host以外は正常に反映されていません (SNRはクライアント個人処理の為同時にRpcで送る必要がある)
     public static string OfficialDateNotation;
     /// <summary>
+    /// 死体検案書を保管する辞書
+    /// key = 発行ターン, Value = 死体検案書
+    /// </summary>
+    public static Dictionary<int, string> PostMortemCertificate;
+    /// <summary>
     /// key = PlayerId, Value.Item1 = 死亡時刻, Value.Item3 = 死因, Value.Item3 = 死亡記録ターン,
     /// </summary>
     public static Dictionary<byte, (int, int, int)> PoliceSurgeon_ActualDeathTimes;
@@ -56,6 +61,7 @@ public static class PoliceSurgeon
         MeetingTurn_Now = 0;
         OfficialDateNotation = PoliceSurgeon_PostMortemCertificate.GetOfficialDateNotation();
         PoliceSurgeon_ActualDeathTimes = new();
+        PostMortemCertificate = new();
     }
 
     /// <summary>
@@ -205,6 +211,10 @@ internal static class PoliceSurgeon_AddActualDeathTime
     }
 }
 
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
+/// <summary>
+/// 死体検案書の作成及び送信関連のメソッドを集約したクラス
+/// </summary>
 internal static class PoliceSurgeon_PostMortemCertificate
 {
     private const string delimiterLine = "|----------------------------------------------------|";
@@ -281,19 +291,42 @@ internal static class PoliceSurgeon_PostMortemCertificate
         return returnBuilder.ToString();
     }
 
-    internal static string CreatePostMortemCertificate(PlayerControl policeSurgeon)
+    /// <summary>
+    ///会議開始時 警察医に死体検案書を送信する。
+    /// </summary>
+    private static void Postfix()
     {
-        bool isWrite = false;
+        if (!AmongUsClient.Instance.AmHost) return;
+        foreach (var pl in PoliceSurgeonPlayer)
+            Patches.AddChatPatch.SendCommand(pl, "", GetPostMortemCertificate(pl));
+    }
+
+    /// <summary>
+    /// 死体検案書を取得する。
+    /// (そのターンの検案書が辞書に格納されていたらそれを取得し、されていなかったら作成して辞書に保存する。)
+    /// </summary>
+    /// <param name="policeSurgeon">送信先の警察医</param>
+    /// <returns>string : 死体検案書 (名前は送信先の警察医名に置き換わっている)</returns>
+    private static string GetPostMortemCertificate(PlayerControl policeSurgeon)
+    {
+        if (!PostMortemCertificate.ContainsKey(MeetingTurn_Now))
+            PostMortemCertificate.Add(MeetingTurn_Now, CreatePostMortemCertificate());
+        return string.Format(PostMortemCertificate[MeetingTurn_Now], policeSurgeon.name);
+    }
+
+    /// <summary>
+    /// 死体検案書を作成する。
+    /// 警察医名は{0}になっている為、呼び出し元で埋め込む必要がある。
+    /// </summary>
+    /// <returns>string : 死体検案書 (警察医名が{0}に置き換わっている)</returns>
+    private static string CreatePostMortemCertificate()
+    {
+        bool isWrite = false; // 死体検案書に書く死者の情報があるか
         StringBuilder builder = new();
-        StringBuilder titleBuilder = new();
 
-        titleBuilder.AppendLine(delimiterLine);
-        titleBuilder.AppendLine(ModTranslation.GetString("PostMortemCertificate_main1"));
-        titleBuilder.AppendLine(delimiterLine);
-
-        /*if (ModeHandler.IsMode(ModeId.Default) || ModeHandler.IsMode(ModeId.Werewolf))*/
-        builder.Append(titleBuilder);
-        //else ;
+        builder.AppendLine(delimiterLine);
+        builder.AppendLine(ModTranslation.GetString("PostMortemCertificate_main1"));
+        builder.AppendLine(delimiterLine);
 
         foreach (KeyValuePair<byte, (int, int, int)> kvp in PoliceSurgeon_ActualDeathTimes)
         {
@@ -361,46 +394,57 @@ internal static class PoliceSurgeon_PostMortemCertificate
             builder.AppendLine(delimiterLine);
         }
 
-        if (!isWrite) return null; // 記載対象がいなければ死体検案書を作成せずnullを返す。
+        if (isWrite) // 死体検案書に記載する 死者の情報がある時
+        {
+            builder.AppendLine(ModTranslation.GetString("PostMortemCertificate_main3")); // 上記のとおり<s>診断</s>(検案)する
+            builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_main4")} {OfficialDateNotation}"); // 本診断書(検案書) 発行年月日
+            builder.AppendLine($"{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}"); // マップ名
+            builder.AppendLine("");
+            builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_main5")} {{0}}"); // (氏名) 医師
+            builder.AppendLine("");
+            builder.AppendLine(delimiterLine);
+            builder.AppendLine("");
+        }
+        else // 死者の情報がない時はランダムに警察医の独白を出す
+        {
+            builder = new();
 
-        builder.AppendLine(ModTranslation.GetString("PostMortemCertificate_main3")); // 上記のとおり<s>診断</s>(検案)する
-        builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_main4")} {OfficialDateNotation}"); // 本診断書(検案書) 発行年月日
-        builder.AppendLine($"{(MapNames)GameManager.Instance.LogicOptions.currentGameOptions.MapId}"); // マップ名
-        builder.AppendLine("");
-        builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_main5")} {policeSurgeon.name}"); // (氏名) 医師
-        builder.AppendLine("");
-        builder.AppendLine(delimiterLine);
-        builder.AppendLine("");
+            System.Random random = new((int)DateTime.Now.Ticks);
+            int rand = random.Next(1, 15 + 1);
+            string transRandomText = ModTranslation.GetString($"PostMortemCertificate_NoDeaths_RandomMessage_{rand}");
+
+            builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_NoDeaths"), OfficialDateNotation, "{0}", transRandomText)}");
+        }
 
         return builder.ToString();
+
+        /*構造メモ
+        |----------------------------------------------------|
+        <s>死亡診断書</s> (死体検案書)
+        |----------------------------------------------------|
+
+        氏名 ◯◯◯◯◯◯◯◯◯◯
+
+        死亡したとき 令和  年  月  日 (  ターン前)   秒前 (推定) // <= 死亡推定時刻設定の時
+        死亡したとき 令和  年  月  日 (  ターン前)   秒前 (確認) // <= 死亡時刻設定の時
+        死亡したとき 令和  年  月  日 (  ターン前) (頃) // <= MurderPlayer以外の死亡の時
+
+        死因 不詳の外因 // <= 死因が会議追放以外の時
+        死因 追放 // <= 死因が会議追放の時
+
+        |-----------------------------------------------------|
+
+        繰り返し
+
+        |-----------------------------------------------------|
+
+        上記のとおり<s>診断</s>(検案)する
+        <s>本診断書</s>(検案書) 発行年月日 令和  年  月  日
+        Map名
+
+        (氏名) 医師 ◯◯◯◯◯◯◯◯◯◯
+
+        |-----------------------------------------------------|
+        */
     }
-
-    /*構造メモ
-    |----------------------------------------------------|
-                   ~~死亡診断書~~ (死体検案書)<br>
-    |----------------------------------------------------|
-
-     氏名 ◯◯◯◯◯◯◯◯◯◯
-
-     死亡したとき 令和  年  月  日 (  ターン前)   秒前 (推定) // <= 死亡推定時刻設定の時
-     死亡したとき 令和  年  月  日 (  ターン前)   秒前 (確認) // <= 死亡時刻設定の時
-     死亡したとき 令和  年  月  日 (  ターン前) (頃) // <= MurderPlayer以外の死亡の時
-
-     死因 不詳の外因 // <= 死因が会議追放以外の時
-     死因 追放 // <= 死因が会議追放の時
-
-    |-----------------------------------------------------|
-
-     繰り返し
-
-    |-----------------------------------------------------|
-
-     上記のとおり~~診断~~(検案)する
-     ~~本診断書~~(検案書) 発行年月日 令和  年  月  日
-     Map名<br>
-
-     (氏名) 医師 ◯◯◯◯◯◯◯◯◯◯
-
-    |-----------------------------------------------------|
-    */
 }
