@@ -29,6 +29,10 @@ class VotingComplete
         {
             exiled = null;
         }
+        if (tie && Balancer.currentAbilityUser != null)
+        {
+            Balancer.IsDoubleExile = true;
+        }
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
@@ -397,7 +401,6 @@ class CheckForEndVotingPatch
 
             if (tie && Balancer.currentAbilityUser != null)
             {
-                Balancer.IsDoubleExile = true;
                 exiledPlayer = Balancer.targetplayerleft.Data;
             }
 

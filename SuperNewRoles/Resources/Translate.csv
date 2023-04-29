@@ -1311,11 +1311,12 @@ ShermansServantTransformationButtonName,Metamorphosis,変身,化形,化形
 BalancerName,Balancer,バランサー
 BalancerTitle1,(x+y)/2,(x+y)/2
 BalancerTitleTextEither,,どちらかに入れろ
-BalancerTitleTextAverage,,平均を求めよ。
+BalancerTitleTextAverage,,バランスを求めよ。
 BalancerTitleTextYouVoteEither,,どっちに入れる？
 BalancerTitleTextEitherExile,,どっちを追放する？
 BalancerTitleTextWhoIsImpostor,,インポスターはどっちだ？それとも他か...
 BalancerDoubleExileText,,どちらも追放された。
+BalancerVoteTime,Votetime,天秤の投票時間
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示

@@ -1,4 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
+using HarmonyLib;
+using Hazel;
+using SuperNewRoles.Helpers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,12 +25,15 @@ public static class Balancer
 
     public static List<PlayerControl> BalancerPlayer;
     public static Color32 color = new(255, 128, 0, byte.MaxValue);
+    public static bool IsAbilityUsed;
     public static void ClearAndReload()
     {
         BalancerPlayer = new();
         currentAbilityUser = null;
         CurrentState = BalancerState.NotBalance;
         IsDoubleExile = false;
+        currentTarget = null;
+        IsAbilityUsed = false;
     }
     public static PlayerControl currentAbilityUser;
     public static SpriteRenderer BackObject;
@@ -52,7 +59,23 @@ public static class Balancer
     static float rotate;
     static float openMADENOtimer;
     public static void Update() {
-        if (BackObject != null) {
+        if (BackObject != null)
+        {
+            //切断したなら
+            if (targetplayerleft == null || targetplayerright == null || targetplayerleft.IsDead() || targetplayerright.IsDead())
+            {
+                PlayerControl target = null;
+                if (targetplayerright == null || targetplayerright.IsDead())
+                {
+                    target = targetplayerleft;
+                }
+                if (targetplayerleft == null || targetplayerleft.IsDead())
+                {
+                    target = targetplayerright;
+                }
+                if (AmongUsClient.Instance.AmHost) MeetingHud.Instance.RpcVotingComplete(new List<MeetingHud.VoterState>().ToArray(), target.Data, false);
+                return;
+            }
             switch (CurrentState)
             {
                 case BalancerState.NotBalance:
@@ -190,10 +213,6 @@ public static class Balancer
                     }
                     break;
             }
-            //切断したなら
-            if (targetplayerleft == null || targetplayerright == null) {
-
-            }
         }
     }
     public static PlayerControl targetplayerleft;
@@ -203,6 +222,7 @@ public static class Balancer
     static PlayerVoteArea rightplayerarea;
     static readonly Vector3 rightpos = new(2.3f, 0, -201f);
     public static bool IsDoubleExile;
+    static PlayerControl currentTarget;
     static string[] titletexts =
         new string[] {
             "BalancerTitleTextEither",
@@ -220,6 +240,17 @@ public static class Balancer
             MeetingHud.Instance.SkipVoteButton.gameObject.SetActive(active);
             MeetingHud.Instance.SkippedVoting.SetActive(active);
         }
+    }
+    public static void WrapUp(PlayerControl exiled) {
+        if (exiled != null) {
+            if (IsDoubleExile && exiled.PlayerId == targetplayerleft.PlayerId) return;
+        }
+        targetplayerright = null;
+        targetplayerleft = null;
+        IsDoubleExile = false;
+        currentAbilityUser = null;
+        CurrentState = BalancerState.NotBalance;
+        currentTarget = null;
     }
     public static void StartAbility(PlayerControl source, PlayerControl player1, PlayerControl player2)
     {
@@ -325,6 +356,72 @@ public static class Balancer
         obj.transform.localScale = new(2f, 1.7f, 2f);
         obj.transform.Rotate(new(0, 0, rotate));
         return obj;
+    }
+
+
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
+    class Balancer_updatepatch
+    {
+        static void Postfix(MeetingHud __instance)
+        {
+            if (PlayerControl.LocalPlayer.IsDead() && PlayerControl.LocalPlayer.IsRole(RoleId.Balancer))
+            {
+                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+            }
+        }
+    }
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
+    public static class Balancer_Patch
+    {
+        private static string nameData;
+        static void BalancerOnClick(int Index, MeetingHud __instance)
+        {
+            if (currentAbilityUser != null) return;
+            var Target = ModHelpers.PlayerById(__instance.playerStates[Index].TargetPlayerId);
+            if (currentTarget == null)
+            {
+                currentTarget = Target;
+                __instance.playerStates.ToList().ForEach(x => { if (x.TargetPlayerId == currentTarget.PlayerId && x.transform.FindChild("BalancerButton") != null) x.transform.FindChild("BalancerButton").gameObject.SetActive(false); });
+                return;
+            }
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.BalancerBalance);
+            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+            writer.Write(currentTarget.PlayerId);
+            writer.Write(Target.PlayerId);
+            writer.EndRPC();
+            RPCProcedure.BalancerBalance(PlayerControl.LocalPlayer.PlayerId, currentTarget.PlayerId, Target.PlayerId);
+            IsAbilityUsed = true;
+            __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("BalancerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("BalancerButton").gameObject); });
+        }
+        static void Event(MeetingHud __instance)
+        {
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Balancer) && PlayerControl.LocalPlayer.IsAlive() && !IsAbilityUsed)
+            {
+                for (int i = 0; i < __instance.playerStates.Length; i++)
+                {
+                    PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+                    var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
+                    if (player.IsAlive())
+                    {
+                        GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
+                        GameObject targetBox = Object.Instantiate(template, playerVoteArea.transform);
+                        targetBox.name = "BalancerButton";
+                        targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
+                        SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
+                        renderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Balancer.icon_average.png", 115f);
+                        PassiveButton button = targetBox.GetComponent<PassiveButton>();
+                        button.OnClick.RemoveAllListeners();
+                        int copiedIndex = i;
+                        button.OnClick.AddListener((UnityAction)(() => BalancerOnClick(copiedIndex, __instance)));
+                    }
+                }
+            }
+        }
+
+        static void Postfix(MeetingHud __instance)
+        {
+            Event(__instance);
+        }
     }
     // ここにコードを書きこんでください
 }
