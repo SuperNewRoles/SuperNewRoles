@@ -39,7 +39,8 @@ public static class RoleHelpers
         return player != null && !player.IsImpostor() && !player.IsNeutral();
     }
 
-    public static bool IsImpostorAddedFake(this PlayerControl player) {
+    public static bool IsImpostorAddedFake(this PlayerControl player)
+    {
         return player.IsImpostor() || player.IsRole(RoleId.Egoist, RoleId.Spy);
     }
     public static bool IsImpostor(this PlayerControl player)
@@ -350,7 +351,8 @@ public static class RoleHelpers
             p.Data.Role.NameColor = Color.white;
         }
         CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-        foreach (CachedPlayer p in CachedPlayer.AllPlayers) { 
+        foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+        {
             if (p.PlayerControl.IsImpostorAddedFake())
                 p.Data.Role.NameColor = RoleClass.ImpostorRed;
         }
@@ -1406,7 +1408,7 @@ public static class RoleHelpers
             case RoleId.Balancer:
                 Balancer.BalancerPlayer.RemoveAll(ClearRemove);
                 break;
-            // ロールリモベ
+                // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);

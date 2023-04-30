@@ -17,7 +17,7 @@ public static class ShouldAlwaysHorseAround
     public static bool isHorseMode;
     public static void Postfix(ref bool __result)
     {
-        if(__result) return;
+        if (__result) return;
 
         if (isHorseMode != HorseModeOption.enableHorseMode && LobbyBehaviour.Instance != null) __result = isHorseMode;
         else
@@ -291,8 +291,10 @@ public class IntroPatch
                 yourTeam = temp;
             }
         }
-        if (PlayerControl.LocalPlayer.IsImpostor()) {
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
+        if (PlayerControl.LocalPlayer.IsImpostor())
+        {
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            {
                 if (player.IsImpostorAddedFake())
                     player.Data.Role.NameColor = Color.red;
             }

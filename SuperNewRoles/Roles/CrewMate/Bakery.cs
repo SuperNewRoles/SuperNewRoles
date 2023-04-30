@@ -102,7 +102,8 @@ public class Bakery
                 SkinViewData skin = ShipStatus.Instance.CosmeticsCache.GetSkin(controller.exiled.Outfits[PlayerOutfitType.Default].SkinId);
                 controller.Player.FixSkinSprite(skin.EjectFrame);
                 AudioClip sound = null;
-                if (controller.EjectSound != null) {
+                if (controller.EjectSound != null)
+                {
                     sound = new(controller.EjectSound.Pointer);
                 }
                 controller.EjectSound = null;
@@ -111,7 +112,8 @@ public class Bakery
                     new LateTask(() => { controller.StopAllCoroutines(); controller.StartCoroutine(controller.Animate()); }, 0.025f + index * 0.025f);
                 }
                 new LateTask(() => controller.StartCoroutine(controller.Animate()), 0f);
-                for (int i = 0; i < 23; i++) {
+                for (int i = 0; i < 23; i++)
+                {
                     createlate(i);
                 }
                 new LateTask(() => { controller.StopAllCoroutines(); controller.EjectSound = sound; controller.StartCoroutine(controller.Animate()); }, 0.6f);
@@ -159,7 +161,8 @@ public class Bakery
             else breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.2f, 0f);
             breadText.gameObject.SetActive(true);                                               //文字の表示
         }
-        if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile && __instance.exiled?.PlayerId == Balancer.targetplayerleft.PlayerId) {
+        if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile && __instance.exiled?.PlayerId == Balancer.targetplayerleft.PlayerId)
+        {
             __instance.completeString = ModTranslation.GetString("BalancerDoubleExileText");
         }
     }

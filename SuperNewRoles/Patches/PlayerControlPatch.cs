@@ -1055,7 +1055,8 @@ public static class MurderPlayerPatch
                     }
                 }
             }
-            if (target.IsRole(RoleId.Speeder)) {
+            if (target.IsRole(RoleId.Speeder))
+            {
                 if (RoleClass.Speeder.IsSpeedDown) Speeder.SpeedDownEnd();
             }
             else if (target.IsRole(RoleId.Clergyman))

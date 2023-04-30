@@ -37,7 +37,8 @@ class WrapUpPatch
         public static bool Prefix(AirshipExileController __instance)
         {
             WrapUpPatch.Prefix(__instance.exiled);
-            if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile && __instance != ExileController.Instance){
+            if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile && __instance != ExileController.Instance)
+            {
                 if (__instance.exiled != null)
                 {
                     PlayerControl @object = __instance.exiled.Object;
