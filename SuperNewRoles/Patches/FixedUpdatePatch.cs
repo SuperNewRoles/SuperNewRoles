@@ -111,6 +111,7 @@ public class FixedUpdate
                 OrientalShaman.FixedUpdate();
                 TheThreeLittlePigs.FixedUpdate();
                 CustomRoles.FixedUpdate(__instance);
+                Balancer.Update();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }

@@ -759,6 +759,11 @@ public static class ModHelpers
         var indexData = UnityEngine.Random.Range(0, list.Count);
         return list[indexData];
     }
+    public static T GetRandom<T>(this T[] list)
+    {
+        var indexData = UnityEngine.Random.Range(0, list.Length);
+        return list[indexData];
+    }
     public static int GetRandomIndex<T>(List<T> list)
     {
         var indexData = UnityEngine.Random.Range(0, list.Count);

@@ -1919,9 +1919,11 @@ public class CustomOptionHolder
         Squid.SetupCustomOptions();
 
         DyingMessenger.SetupCustomOptions();
+
         NiceMechanic.SetupCustomOptions();
 
         EvilMechanic.SetupCustomOptions();
+
         TheThreeLittlePigs.SetupCustomOptions();
 
         OrientalShaman.SetupCustomOptions();
@@ -1929,6 +1931,8 @@ public class CustomOptionHolder
         WiseMan.SetupCustomOptions();
 
         RoleBaseHelper.SetUpOptions();
+
+        Balancer.SetupCustomOptions();
 
         PoliceSurgeon.SetupCustomOptions();
 
