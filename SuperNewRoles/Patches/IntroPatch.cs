@@ -291,6 +291,12 @@ public class IntroPatch
                 yourTeam = temp;
             }
         }
+        if (PlayerControl.LocalPlayer.IsImpostor()) {
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
+                if (player.IsImpostorAddedFake())
+                    player.Data.Role.NameColor = Color.red;
+            }
+        }
     }
 
     public static void SetupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
