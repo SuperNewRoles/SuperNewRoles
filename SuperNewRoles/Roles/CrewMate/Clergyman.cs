@@ -57,6 +57,9 @@ class Clergyman
             RoleClass.Clergyman.currentMessage = new(ModTranslation.GetString("ClergymanLightOutMessage"), RoleClass.Clergyman.DurationTime);
         }
     }
+    public static void WrapUp() {
+        RoleClass.Clergyman.IsLightOff = false;
+    }
     public static void EndMeeting()
     {
         HudManagerStartPatch.ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
@@ -65,6 +68,5 @@ class Clergyman
         Logger.Info(RoleClass.Clergyman.DurationTime.ToString(), "ClergymanDuration");
         HudManagerStartPatch.ClergymanLightOutButton.EffectDuration = RoleClass.Clergyman.DurationTime;
         HudManagerStartPatch.ClergymanLightOutButton.HasEffect = true;
-        RoleClass.Clergyman.IsLightOff = false;
     }
 }
