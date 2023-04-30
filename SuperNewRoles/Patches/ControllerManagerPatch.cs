@@ -5,6 +5,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -101,10 +102,7 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                for (int i = 0; i < 29; i++)
-                {
-                    BotManager.Spawn("よっキングのBot");
-                }
+                Roles.Crewmate.Balancer.StartAbility(PlayerControl.LocalPlayer, PlayerControl.AllPlayerControls[0], PlayerControl.AllPlayerControls[1]);
             }
             if (Input.GetKeyDown(KeyCode.P))
             {
