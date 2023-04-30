@@ -161,14 +161,14 @@ public class CustomButton
     {
         float timer = button.Timer;
 
-		if (button.actionButton.isCoolingDown && timer < fillUpTime)
-		{
-			button.actionButton.graphic.transform.localPosition = button.actionButton.position + (Vector3)UnityEngine.Random.insideUnitCircle * 0.05f;
-		}
-		else
-		{
-			button.actionButton.graphic.transform.localPosition = button.actionButton.position;
-		}
+        if (button.actionButton.isCoolingDown && timer < fillUpTime)
+        {
+            button.actionButton.graphic.transform.localPosition = button.actionButton.position + (Vector3)UnityEngine.Random.insideUnitCircle * 0.05f;
+        }
+        else
+        {
+            button.actionButton.graphic.transform.localPosition = button.actionButton.position;
+        }
     }
 
     private void Update(bool isAlive, RoleId role)

@@ -236,7 +236,7 @@ SettingSuperHostRolesMode,Super Host Roles Mode,SuperHostRolesの設定,SuperHos
 SettingZombieMode,Zombie Mode,ゾンビモードの設定,生化危机模式设置,殭屍模式設定
 SettingRandomColorMode,Random Color Mode,ランダムカラーモードの設定,随机颜色模式设置,隨機顏色模式設定
 SettingDetectiveMode,Detective Mode,探偵モードの設定,侦探模式设置,偵探模式設定
-DefaultModeName,Defalut Mode,通常モード
+DefaultModeName,Defalut Mode,通常モード,,預設模式
 HideAndSeekModeName,Hide And Seek,かくれんぼ,躲猫猫,躲貓貓
 BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀,大逃殺
 SuperHostRolesModeName,Super Host Roles,SuperHostRoles,Super Host Roles,SuperHostRoles
@@ -258,8 +258,8 @@ DetectiveTitle1,Guess and win over your crewmates!,推理してクルーメイ�
 BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り生存人数がわかる,所有玩家可见存活玩家数,所有玩家可見存活玩家總數
 BattleRoyalIsTeamBattle,Team competition,チーム戦,启用团队赛,團體戰
 BattleRoyalTeamAmount,Number of teams,チーム数,团队数,團隊數
-BattleRoyalIsKillCountView,Display kill count,キル数を表示する
-BattleRoyalIsKillCountViewSelfOnly,Show only to yourself,自分のみに表示する
+BattleRoyalIsKillCountView,Display kill count,キル数を表示する,,顯示擊殺數
+BattleRoyalIsKillCountViewSelfOnly,Show only to yourself,自分のみに表示する,,只顯示自己的擊殺數
 BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数,从游戏开始到玩家可击杀经过的时间,可擊殺所需時間
 ZombieZombieName,Zombie,ゾンビ,僵尸,殭屍
 ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよう,感染他人获得胜利,感染他人以獲得勝利
@@ -1311,15 +1311,15 @@ ShermansServantDescription,It is a sidekick to the Oriental shaman.\nIt is possi
 ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation cool time,式神の変身クールタイム,式神化形冷却,式神化形冷卻時間
 ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム,式神自杀冷却,式神自殺冷卻時間
 ShermansServantTransformationButtonName,Metamorphosis,変身,化形,化形
-BalancerName,Balancer,天秤
-BalancerTitle1,(x+y)/2,(x+y)/2
-BalancerTitleTextEither,Put it one way or the other.,どちらかに入れろ
-BalancerTitleTextAverage,Seek balance.,バランスを求めよ。
-BalancerTitleTextYouVoteEither,Which way do you want to vote it?,どっちに入れる？
-BalancerTitleTextEitherExileWhich way do you want to exile it?,,どっちを追放する？
-BalancerTitleTextWhoIsImpostor,Which is the Imposter? Or the other...,インポスターはどっちだ？それとも他か...
-BalancerDoubleExileText,Both were exiled.,どちらも追放された。
-BalancerVoteTime,Votetime,天秤の投票時間
+BalancerName,Balancer,天秤,,天秤
+BalancerTitle1,(x+y)/2,(x+y)/2,,(x+y)/2
+BalancerTitleTextEither,Put it one way or the other.,どちらかに入れろ,,要選誰才好呢
+BalancerTitleTextAverage,Seek balance.,バランスを求めよ。,,尋求平衡
+BalancerTitleTextYouVoteEither,Which way do you want to vote it?,どっちに入れる？,,要投誰？
+BalancerTitleTextEitherExileWhich way do you want to exile it?,,どっちを追放する？,,要放逐誰？
+BalancerTitleTextWhoIsImpostor,Which is the Imposter? Or the other...,インポスターはどっちだ？それとも他か...,,誰是內鬼？還是他是．．．
+BalancerDoubleExileText,Both were exiled.,どちらも追放された。,,兩者皆被放逐
+BalancerVoteTime,Votetime,天秤の投票時間,,天秤的投票時間
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示

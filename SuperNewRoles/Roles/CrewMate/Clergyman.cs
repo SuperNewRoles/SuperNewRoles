@@ -57,7 +57,8 @@ class Clergyman
             RoleClass.Clergyman.currentMessage = new(ModTranslation.GetString("ClergymanLightOutMessage"), RoleClass.Clergyman.DurationTime);
         }
     }
-    public static void WrapUp() {
+    public static void WrapUp()
+    {
         RoleClass.Clergyman.IsLightOff = false;
     }
     public static void EndMeeting()

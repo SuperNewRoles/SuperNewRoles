@@ -39,7 +39,8 @@ public static class RoleHelpers
         return player != null && !player.IsImpostor() && !player.IsNeutral();
     }
 
-    public static bool IsImpostorAddedFake(this PlayerControl player) {
+    public static bool IsImpostorAddedFake(this PlayerControl player)
+    {
         return player.IsImpostor() || player.IsRole(RoleId.Egoist, RoleId.Spy);
     }
     public static bool IsImpostor(this PlayerControl player)
@@ -69,7 +70,7 @@ public static class RoleHelpers
         RoleId.MadMaker or
         RoleId.MadCleaner or
         RoleId.Worshiper;
-    // IsMads
+        // IsMads
 
     public static bool IsNeutral(this PlayerControl player) =>
         player.GetRole() is
@@ -115,7 +116,7 @@ public static class RoleHelpers
         RoleId.TheSecondLittlePig or
         RoleId.TheThirdLittlePig or
         RoleId.OrientalShaman;
-    // 第三か
+        // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
         (player.GetRole() == RoleId.Pavlovsowner &&
@@ -134,7 +135,7 @@ public static class RoleHelpers
         RoleId.Hitman or
         RoleId.Egoist or
         RoleId.FireFox;
-    // 第三キル人外か
+        // 第三キル人外か
 
     public static bool IsPavlovsTeam(this PlayerControl player) => player.GetRole() is
             RoleId.Pavlovsdogs or
@@ -350,7 +351,8 @@ public static class RoleHelpers
             p.Data.Role.NameColor = Color.white;
         }
         CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-        foreach (CachedPlayer p in CachedPlayer.AllPlayers) { 
+        foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+        {
             if (p.PlayerControl.IsImpostorAddedFake())
                 p.Data.Role.NameColor = RoleClass.ImpostorRed;
         }
