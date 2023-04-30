@@ -117,6 +117,7 @@ class WrapUpPatch
         Roles.Neutral.PartTimer.WrapUp();
         Roles.Crewmate.KnightProtected_Patch.WrapUp();
         Balancer.WrapUp(exiled == null ? null : exiled.Object);
+        Speeder.WrapUp();
         Bestfalsecharge.WrapUp();
         CustomRoles.OnWrapUp();
         if (AmongUsClient.Instance.AmHost)

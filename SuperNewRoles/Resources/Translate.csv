@@ -236,6 +236,7 @@ SettingSuperHostRolesMode,Super Host Roles Mode,SuperHostRolesの設定,SuperHos
 SettingZombieMode,Zombie Mode,ゾンビモードの設定,生化危机模式设置,殭屍模式設定
 SettingRandomColorMode,Random Color Mode,ランダムカラーモードの設定,随机颜色模式设置,隨機顏色模式設定
 SettingDetectiveMode,Detective Mode,探偵モードの設定,侦探模式设置,偵探模式設定
+DefaultModeName,Defalut Mode,通常モード
 HideAndSeekModeName,Hide And Seek,かくれんぼ,躲猫猫,躲貓貓
 BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀,大逃殺
 SuperHostRolesModeName,Super Host Roles,SuperHostRoles,Super Host Roles,SuperHostRoles
@@ -257,6 +258,8 @@ DetectiveTitle1,Guess and win over your crewmates!,推理してクルーメイ�
 BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り生存人数がわかる,所有玩家可见存活玩家数,所有玩家可見存活玩家總數
 BattleRoyalIsTeamBattle,Team competition,チーム戦,启用团队赛,團體戰
 BattleRoyalTeamAmount,Number of teams,チーム数,团队数,團隊數
+BattleRoyalIsKillCountView,Display kill count,キル数を表示する
+BattleRoyalIsKillCountViewSelfOnly,Show only to yourself,自分のみに表示する
 BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数,从游戏开始到玩家可击杀经过的时间,可擊殺所需時間
 ZombieZombieName,Zombie,ゾンビ,僵尸,殭屍
 ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよう,感染他人获得胜利,感染他人以獲得勝利
