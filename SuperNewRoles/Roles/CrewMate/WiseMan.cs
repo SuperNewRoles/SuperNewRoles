@@ -23,7 +23,7 @@ public static class WiseMan
     {
         get
         {
-            return ModHelpers.GetRandom<float>(new() { 135, 90, 270, 225 });
+            return ModHelpers.GetRandom(new List<float>() { 135, 90, 270, 225 });
         }
     }
     public static List<PlayerControl> WiseManPlayer;
