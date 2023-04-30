@@ -391,6 +391,8 @@ public static class RoleHelpers
             WiseMan.OnChangeRole();
         else if (player.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic))
             NiceMechanic.ChangeRole(player);
+        else if (player.IsRole(RoleId.EvilScientist, RoleId.NiceScientist))
+            Scientist.SetOpacity(player, 0.1f, true);
         switch (role)
         {
             case RoleId.SoothSayer:
