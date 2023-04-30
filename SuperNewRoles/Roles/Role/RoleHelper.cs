@@ -1399,7 +1399,9 @@ public static class RoleHelpers
             case RoleId.ShermansServant:
                 OrientalShaman.ShermansServantPlayer.RemoveAll(ClearRemove);
                 break;
-                //ロールリモベ
+            case RoleId.Balancer:
+                Balancer.BalancerPlayer.RemoveAll(ClearRemove);
+            // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
