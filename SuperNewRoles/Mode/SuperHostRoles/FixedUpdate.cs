@@ -4,6 +4,9 @@ using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
+using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Impostor;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -425,6 +428,11 @@ public static class FixedUpdate
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
             }
+        }
+        else if (PlayerControl.LocalPlayer.IsRole(RoleId.PoliceSurgeon))
+        {
+            if (!AmongUsClient.Instance.AmHost) return;
+            PoliceSurgeon.FixedUpdate();
         }
         SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
         if (!AmongUsClient.Instance.AmHost) return;
