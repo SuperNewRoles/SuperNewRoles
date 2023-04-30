@@ -1414,7 +1414,7 @@ public static class RoleHelpers
             case RoleId.PoliceSurgeon:
                 PoliceSurgeon.PoliceSurgeonPlayer.RemoveAll(ClearRemove);
                 break;
-                // ロールリモベ
+            // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
