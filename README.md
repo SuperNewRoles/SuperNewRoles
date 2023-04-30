@@ -11,12 +11,16 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 [English](https://github.com/ykundesu/SuperNewRoles/blob/master/READMEs/README_en.md)
 
+## MODのダウンロード
+ - [最新版](https://github.com/ykundesu/SuperNewRoles/releases/latest)<br>
+ - [最新版以外](https://github.com/ykundesu/SuperNewRoles/releases/)
+
 ## 公式情報
 - [SNR公式 Discordサーバ](https://discord.gg/Cqfwx82ynN)
 
 - [Github wiki](https://github.com/ykundesu/SuperNewRoles/wiki)
   - 初めに読む場所
-    - [導入方法](https://github.com/ykundesu/SuperNewRoles/wiki)
+    - [導入方法](https://github.com/ykundesu/SuperNewRoles/wiki/%E5%B0%8E%E5%85%A5%E6%96%B9%E6%B3%95)
     - [入室・開始制限関係や,正常動作を保証しない状態についての説明](https://github.com/ykundesu/SuperNewRoles/wiki/ClientMode)
     - [解析について](https://github.com/ykundesu/SuperNewRoles/wiki/%E8%A7%A3%E6%9E%90%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6)
     - [Mode一覧](https://github.com/ykundesu/SuperNewRoles/wiki/Mode%E4%B8%80%E8%A6%A7)

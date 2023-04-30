@@ -39,6 +39,9 @@ public static class RoleHelpers
         return player != null && !player.IsImpostor() && !player.IsNeutral();
     }
 
+    public static bool IsImpostorAddedFake(this PlayerControl player) {
+        return player.IsImpostor() || player.IsRole(RoleId.Egoist, RoleId.Spy);
+    }
     public static bool IsImpostor(this PlayerControl player)
     {
         return !player.IsRole(RoleId.Sheriff, RoleId.Sheriff) && player != null && player.Data.Role.IsImpostor;
@@ -340,19 +343,18 @@ public static class RoleHelpers
 
     public static void UseShapeshift()
     {
+        RoleTypes myrole = PlayerControl.LocalPlayer.Data.Role.Role;
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
         foreach (CachedPlayer p in CachedPlayer.AllPlayers)
         {
             p.Data.Role.NameColor = Color.white;
-
-            CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-
-            if (p.PlayerControl.IsImpostor())
-            {
-                p.Data.Role.NameColor = RoleClass.ImpostorRed;
-            }
         }
-        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+        CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+        foreach (CachedPlayer p in CachedPlayer.AllPlayers) { 
+            if (p.PlayerControl.IsImpostorAddedFake())
+                p.Data.Role.NameColor = RoleClass.ImpostorRed;
+        }
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, myrole);
     }
 
     public static void SetRole(this PlayerControl player, RoleId role)
@@ -388,6 +390,8 @@ public static class RoleHelpers
             WiseMan.OnChangeRole();
         else if (player.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic))
             NiceMechanic.ChangeRole(player);
+        else if (player.IsRole(RoleId.EvilScientist, RoleId.NiceScientist))
+            Scientist.SetOpacity(player, 0.1f, true);
         switch (role)
         {
             case RoleId.SoothSayer:
@@ -881,6 +885,9 @@ public static class RoleHelpers
             case RoleId.SidekickWaveCannon:
                 WaveCannonJackal.SidekickWaveCannonPlayer.Add(player);
                 //SidekickWaveCannon.allPlayers.Add(player);
+                break;
+            case RoleId.Balancer:
+                Balancer.BalancerPlayer.Add(player);
                 break;
             // ロールアド
             default:
@@ -1396,7 +1403,9 @@ public static class RoleHelpers
             case RoleId.ShermansServant:
                 OrientalShaman.ShermansServantPlayer.RemoveAll(ClearRemove);
                 break;
-                //ロールリモベ
+            case RoleId.Balancer:
+                Balancer.BalancerPlayer.RemoveAll(ClearRemove);
+            // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
@@ -1853,6 +1862,7 @@ public static class RoleHelpers
             else if (TheThreeLittlePigs.TheThirdLittlePig.Player.IsCheckListPlayerControl(player)) return RoleId.TheThirdLittlePig;
             else if (OrientalShaman.OrientalShamanPlayer.IsCheckListPlayerControl(player)) return RoleId.OrientalShaman;
             else if (OrientalShaman.ShermansServantPlayer.IsCheckListPlayerControl(player)) return RoleId.ShermansServant;
+            else if (Balancer.BalancerPlayer.IsCheckListPlayerControl(player)) return RoleId.Balancer;
             // ロールチェック
         }
         catch (Exception e)
