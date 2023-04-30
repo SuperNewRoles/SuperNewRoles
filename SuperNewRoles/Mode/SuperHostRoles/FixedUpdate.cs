@@ -79,7 +79,7 @@ public static class FixedUpdate
         {
             if (p.PlayerId != 0 && p.PlayerId != player.PlayerId && !p.IsBot())
             {
-                if (p.IsDead() || p.IsRole(RoleId.God))
+                if (SetNamesClass.DefaultGhostSeeRoles() || p.IsRole(RoleId.God))
                 {
                     DiePlayers.Add(p);
                 }
@@ -299,7 +299,7 @@ public static class FixedUpdate
         }
         bool IsDemonVIew = false;
         bool IsArsonistVIew = false;
-        if ((player.IsDead() || player.IsRole(RoleId.God)) && !IsUnchecked)
+        if ((SetNamesClass.DefaultGhostSeeRoles() || player.IsRole(RoleId.God)) && !IsUnchecked)
         {
             if (Demon.IsViewIcon(player))
             {
@@ -321,7 +321,7 @@ public static class FixedUpdate
         }
         else if (player.IsAlive() || IsUnchecked)
         {
-            if (player.IsDead() || player.IsRole(RoleId.God))
+            if (SetNamesClass.DefaultGhostSeeRoles() || player.IsRole(RoleId.God))
             {
                 if (Demon.IsViewIcon(player))
                 {

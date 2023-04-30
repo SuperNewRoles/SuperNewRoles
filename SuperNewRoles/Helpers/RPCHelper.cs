@@ -117,7 +117,6 @@ public static class RPCHelper
         {
             writer.StartMessage(5);
             writer.Write(AmongUsClient.Instance.GameId);
-            return;
         }
         else
         {
@@ -126,7 +125,7 @@ public static class RPCHelper
             if (TargetClientId == PlayerControl.LocalPlayer.GetClientId()) return;
             writer.WritePacked(TargetClientId);
         }
-        Logger.Info($"共有なうーーー:{TargetClientId} : {gameOptions.GetFloat(FloatOptionNames.CrewLightMod)}");
+
         {
             writer.StartMessage(1); //0x01 Data
             {

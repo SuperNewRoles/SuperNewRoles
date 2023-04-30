@@ -39,6 +39,9 @@ public static class RoleHelpers
         return player != null && !player.IsImpostor() && !player.IsNeutral();
     }
 
+    public static bool IsImpostorAddedFake(this PlayerControl player) {
+        return player.IsImpostor() || player.IsRole(RoleId.Egoist, RoleId.Spy);
+    }
     public static bool IsImpostor(this PlayerControl player)
     {
         return !player.IsRole(RoleId.Sheriff, RoleId.Sheriff) && player != null && player.Data.Role.IsImpostor;
@@ -348,10 +351,8 @@ public static class RoleHelpers
         }
         CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
         foreach (CachedPlayer p in CachedPlayer.AllPlayers) { 
-            if (p.PlayerControl.IsImpostor())
-            {
+            if (p.PlayerControl.IsImpostorAddedFake())
                 p.Data.Role.NameColor = RoleClass.ImpostorRed;
-            }
         }
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, myrole);
     }
@@ -389,6 +390,8 @@ public static class RoleHelpers
             WiseMan.OnChangeRole();
         else if (player.IsRole(RoleId.NiceMechanic, RoleId.EvilMechanic))
             NiceMechanic.ChangeRole(player);
+        else if (player.IsRole(RoleId.EvilScientist, RoleId.NiceScientist))
+            Scientist.SetOpacity(player, 0.1f, true);
         switch (role)
         {
             case RoleId.SoothSayer:
