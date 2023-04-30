@@ -198,11 +198,13 @@ public class CustomOptionHolder
     public static CustomOption NiceGuesserPlayerCount;
     public static CustomOption NiceGuesserShortOneMeetingCount;
     public static CustomOption NiceGuesserShortMaxCount;
+    public static CustomOption NiceGuesserCanShotCrew;
 
     public static CustomRoleOption EvilGuesserOption;
     public static CustomOption EvilGuesserPlayerCount;
     public static CustomOption EvilGuesserShortOneMeetingCount;
     public static CustomOption EvilGuesserShortMaxCount;
+    public static CustomOption EvilGuesserCanShotCrew;
 
     public static CustomRoleOption VultureOption;
     public static CustomOption VulturePlayerCount;
@@ -1870,11 +1872,13 @@ public class CustomOptionHolder
         NiceGuesserPlayerCount = Create(1070, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGuesserOption);
         NiceGuesserShortMaxCount = Create(977, false, CustomOptionType.Crewmate, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, NiceGuesserOption);
         NiceGuesserShortOneMeetingCount = Create(978, false, CustomOptionType.Crewmate, "EvilGuesserOneMeetingShortSetting", true, NiceGuesserOption);
+        NiceGuesserCanShotCrew = Create(1266, false, CustomOptionType.Crewmate, "EvilGuesserCanCrewShotSetting", true, NiceGuesserOption);
 
         EvilGuesserOption = SetupCustomRoleOption(1071, false, RoleId.EvilGuesser);
         EvilGuesserPlayerCount = Create(974, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
         EvilGuesserShortMaxCount = Create(975, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
         EvilGuesserShortOneMeetingCount = Create(976, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
+        EvilGuesserCanShotCrew = Create(1267, false, CustomOptionType.Impostor, "EvilGuesserCanCrewShotSetting", true, EvilGuesserOption);
 
         CupidOption = SetupCustomRoleOption(1079, false, RoleId.Cupid);
         CupidPlayerCount = Create(1080, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CupidOption);
@@ -1925,6 +1929,8 @@ public class CustomOptionHolder
         WiseMan.SetupCustomOptions();
 
         RoleBaseHelper.SetUpOptions();
+
+        Balancer.SetupCustomOptions();
 
         // 表示設定
 

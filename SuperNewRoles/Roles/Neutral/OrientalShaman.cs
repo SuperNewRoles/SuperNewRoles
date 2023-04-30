@@ -45,7 +45,7 @@ public static class OrientalShaman
         ShermansServantTransformationCoolTime = CustomOption.Create(OptionId + 12, false, CustomOptionType.Neutral, "ShermansServantTransformationCoolTimeSetting", 0f, 0f, 60f, 2.5f, OrientalShamanCreateShermansServant);
         ShermansServantSuicideCoolTime = CustomOption.Create(OptionId + 13, false, CustomOptionType.Neutral, "ShermansServantSuicideCoolTimeSetting", 30f, 0f, 60f, 2.5f, OrientalShamanCreateShermansServant);
     }
-    
+
     public static List<PlayerControl> OrientalShamanPlayer;
     public static List<PlayerControl> ShermansServantPlayer;
     public static Dictionary<byte, byte> OrientalShamanCausative;
@@ -88,7 +88,7 @@ public static class OrientalShaman
                 writer.Write(target.PlayerId);
                 writer.EndRPC();
                 RPCProcedure.CreateShermansServant(PlayerControl.LocalPlayer.PlayerId, target.PlayerId);
-                
+
             },
             (bool isAlive, RoleId role) => { return role == RoleId.OrientalShaman && isAlive && CanCreateShermansServant && OrientalShamanCreateShermansServant.GetBool(); },
             () =>
@@ -354,7 +354,7 @@ public static class OrientalShaman
                 if (RoleClass.IsMeeting) IsDoNotDisplay = player.IsDead();
             }
         }
-        else if(PlayerControl.LocalPlayer.IsRole(RoleId.ShermansServant))
+        else if (PlayerControl.LocalPlayer.IsRole(RoleId.ShermansServant))
         {
             if (PlayerControl.LocalPlayer.IsAlive())
                 Vulture.FixedUpdate.Postfix();

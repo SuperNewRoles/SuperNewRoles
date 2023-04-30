@@ -236,6 +236,7 @@ SettingSuperHostRolesMode,Super Host Roles Mode,SuperHostRolesの設定,SuperHos
 SettingZombieMode,Zombie Mode,ゾンビモードの設定,生化危机模式设置,殭屍模式設定
 SettingRandomColorMode,Random Color Mode,ランダムカラーモードの設定,随机颜色模式设置,隨機顏色模式設定
 SettingDetectiveMode,Detective Mode,探偵モードの設定,侦探模式设置,偵探模式設定
+DefaultModeName,Defalut Mode,通常モード
 HideAndSeekModeName,Hide And Seek,かくれんぼ,躲猫猫,躲貓貓
 BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀,大逃殺
 SuperHostRolesModeName,Super Host Roles,SuperHostRoles,Super Host Roles,SuperHostRoles
@@ -257,6 +258,8 @@ DetectiveTitle1,Guess and win over your crewmates!,推理してクルーメイ�
 BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り生存人数がわかる,所有玩家可见存活玩家数,所有玩家可見存活玩家總數
 BattleRoyalIsTeamBattle,Team competition,チーム戦,启用团队赛,團體戰
 BattleRoyalTeamAmount,Number of teams,チーム数,团队数,團隊數
+BattleRoyalIsKillCountView,Display kill count,キル数を表示する
+BattleRoyalIsKillCountViewSelfOnly,Show only to yourself,自分のみに表示する
 BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数,从游戏开始到玩家可击杀经过的时间,可擊殺所需時間
 ZombieZombieName,Zombie,ゾンビ,僵尸,殭屍
 ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよう,感染他人获得胜利,感染他人以獲得勝利
@@ -546,6 +549,7 @@ EvilGuesserTitle1,Guess the position of the camp other than Impostor.,インポ�
 EvilGuesserTitle2,He dies from the one who named the roll.,迂闊に名乗ればあの世行き,,太過高調將會死於他人之手
 EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,邪恶的赌怪能否在一次会议中多次猜测,邪惡的賭怪能否在一次會議中多次猜測
 EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,邪恶的赌怪最大可猜测次数,邪惡的賭怪最大可猜測次數
+EvilGuesserCanCrewShotSetting,You Can hit Crewmates,クルーメイトを打てる,邪恶的赌怪可以猜测“船员”,邪惡的賭怪可以猜測船員陣營職業
 NextPage,Next Page,次のページへ,下一页,下一頁
 PreviousPage,Previous Page,前のページへ,上一页,上一頁
 VultureName,Vulture,ヴァルチャー,秃鹫,禿鷲
@@ -1307,6 +1311,15 @@ ShermansServantDescription,It is a sidekick to the Oriental shaman.\nIt is possi
 ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation cool time,式神の変身クールタイム,式神化形冷却,式神化形冷卻時間
 ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム,式神自杀冷却,式神自殺冷卻時間
 ShermansServantTransformationButtonName,Metamorphosis,変身,化形,化形
+BalancerName,Balancer,天秤
+BalancerTitle1,(x+y)/2,(x+y)/2
+BalancerTitleTextEither,Put it one way or the other.,どちらかに入れろ
+BalancerTitleTextAverage,Seek balance.,バランスを求めよ。
+BalancerTitleTextYouVoteEither,Which way do you want to vote it?,どっちに入れる？
+BalancerTitleTextEitherExileWhich way do you want to exile it?,,どっちを追放する？
+BalancerTitleTextWhoIsImpostor,Which is the Imposter? Or the other...,インポスターはどっちだ？それとも他か...
+BalancerDoubleExileText,Both were exiled.,どちらも追放された。
+BalancerVoteTime,Votetime,天秤の投票時間
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
