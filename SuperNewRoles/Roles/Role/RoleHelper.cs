@@ -1405,6 +1405,7 @@ public static class RoleHelpers
                 break;
             case RoleId.Balancer:
                 Balancer.BalancerPlayer.RemoveAll(ClearRemove);
+                break;
             // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
