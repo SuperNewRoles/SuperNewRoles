@@ -101,6 +101,7 @@ class WrapUpPatch
         Roles.Impostor.Matryoshka.WrapUp();
         Roles.Neutral.PartTimer.WrapUp();
         Roles.Crewmate.KnightProtected_Patch.WrapUp();
+        Speeder.WrapUp();
         Bestfalsecharge.WrapUp();
         CustomRoles.OnWrapUp();
         if (AmongUsClient.Instance.AmHost)

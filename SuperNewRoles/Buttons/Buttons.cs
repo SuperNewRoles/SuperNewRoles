@@ -1970,7 +1970,7 @@ static class HudManagerStartPatch
                 if (SpeederButton.isEffectActive) CustomButton.FillUp(SpeederButton);
                 return PlayerControl.LocalPlayer.CanMove;
             },
-            () => { Speeder.EndMeeting(); },
+            Speeder.EndMeeting,
             RoleClass.Speeder.GetButtonSprite(),
 
             new Vector3(-2f, 1, 0),
@@ -1981,7 +1981,7 @@ static class HudManagerStartPatch
             () => { return false; },
             true,
             5f,
-            () => { Speeder.SpeedDownEnd(); }
+            Speeder.SpeedDownEnd
         )
         {
             buttonText = ModTranslation.GetString("SpeederButtonName"),
