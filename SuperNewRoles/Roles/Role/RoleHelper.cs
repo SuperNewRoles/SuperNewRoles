@@ -340,6 +340,7 @@ public static class RoleHelpers
 
     public static void UseShapeshift()
     {
+        RoleTypes myrole = PlayerControl.LocalPlayer.Data.Role.Role;
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
         foreach (CachedPlayer p in CachedPlayer.AllPlayers)
         {
@@ -352,7 +353,7 @@ public static class RoleHelpers
                 p.Data.Role.NameColor = RoleClass.ImpostorRed;
             }
         }
-        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+        FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, myrole);
     }
 
     public static void SetRole(this PlayerControl player, RoleId role)
