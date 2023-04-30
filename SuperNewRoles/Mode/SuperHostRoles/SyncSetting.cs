@@ -340,6 +340,8 @@ public static class SyncSetting
             var RPD = RoomPlayerData.Instance;
             OptionData = GameOptionsManager.Instance.CurrentGameOptions.DeepCopy();
             OnGameEndPatch.PlayerData = new();
+            if (ModeHandler.IsMode(ModeId.BattleRoyal))
+                BattleRoyalWebManager.StartGame();
         }
     }
 }

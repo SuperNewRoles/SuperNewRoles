@@ -1374,3 +1374,4 @@ SNRWebErrorReasonAllMatch,,生成しようとしましたが、生成したす�
 SNRWebErrorReasonUnknow,,もう一度お試しください。
 SNRWebErrorReasonGenerated,,このコードは生成済みです。
 SNRWebErrorReasonRegistered,,もうこのフレンドコードは登録済みです。\n登録した覚えがない場合は、SuperNewRolesWeb公式サイトから、\n不正登録申請を送信してください。
+SNRWebBRMultiRate,,{0}倍マッチ！\nこの試合は通常の{0}倍レートが変動します！

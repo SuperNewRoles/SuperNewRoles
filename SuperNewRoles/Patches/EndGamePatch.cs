@@ -1290,6 +1290,7 @@ public static class OnGameEndPatch
             FinalStatuss.Add((byte)playerRoleInfo.PlayerId, playerRoleInfo.Status);
         }
         GameHistoryManager.OnGameEndSet(FinalStatuss);
+        BattleRoyalWebManager.EndGame();
     }
 }
 [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]

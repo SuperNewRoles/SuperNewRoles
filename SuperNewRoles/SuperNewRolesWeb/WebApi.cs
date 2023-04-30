@@ -43,5 +43,15 @@ namespace SuperNewRoles.SuperNewRolesWeb
         {
             Requests.Post(WebConstants.ApiUrl + "getwebplayerdata", GetString(new() { { "token", WebAccountManager.Token }, { "FriendCode", FriendCode } }), callback);
         }
+        public static void BRStartgame(Dictionary<string, string> data, Action<long, DownloadHandler> callback)
+        {
+            data.Add("token", WebAccountManager.Token);
+            Requests.Post(WebConstants.ApiUrl + "battleroyal/startgame", GetString(data), callback);
+        }
+        public static void BREndgame(Dictionary<string, string> data, Action<long, DownloadHandler> callback)
+        {
+            data.Add("token", WebAccountManager.Token);
+            Requests.Post(WebConstants.ApiUrl + "battleroyal/gameend", GetString(data), callback);
+        }
     }
 }
