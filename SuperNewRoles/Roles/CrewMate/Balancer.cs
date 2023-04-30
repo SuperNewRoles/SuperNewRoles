@@ -45,7 +45,8 @@ public static class Balancer
     static TextMeshPro textuseability;
     static TextMeshPro textpleasevote;
     static float textpleasetimer;
-    public enum BalancerState {
+    public enum BalancerState
+    {
         NotBalance,
         Animation_Chain,
         Animation_Eye,
@@ -58,7 +59,8 @@ public static class Balancer
     static int pleasevoteanimIndex;
     static float rotate;
     static float openMADENOtimer;
-    public static void Update() {
+    public static void Update()
+    {
         if (BackObject != null)
         {
             //切断したなら
@@ -196,7 +198,8 @@ public static class Balancer
                     BackObject.transform.localPosition -= speed;
                     textpleasevote.transform.localPosition -= speed;
                     textuseability.transform.localPosition -= speed;
-                    if (BackObject.transform.localPosition.x <= -10) {
+                    if (BackObject.transform.localPosition.x <= -10)
+                    {
                         CurrentState = BalancerState.WaitVote;
                         SetActiveMeetingHud(true);
                         MeetingHud.Instance.transform.FindChild("MeetingContents/PhoneUI/baseGlass").transform.localPosition = new(0.012f, 0, 0);
@@ -232,7 +235,8 @@ public static class Balancer
             "BalancerTitleTextWhoIsImpostor"
         };
     static string titletext => ModTranslation.GetString(ModHelpers.GetRandom(titletexts));
-    static void SetActiveMeetingHud(bool active) {
+    static void SetActiveMeetingHud(bool active)
+    {
         MeetingHud.Instance.TitleText.gameObject.SetActive(active);
         MeetingHud.Instance.TimerText.gameObject.SetActive(active);
         if (!active)
@@ -241,8 +245,10 @@ public static class Balancer
             MeetingHud.Instance.SkippedVoting.SetActive(active);
         }
     }
-    public static void WrapUp(PlayerControl exiled) {
-        if (exiled != null) {
+    public static void WrapUp(PlayerControl exiled)
+    {
+        if (exiled != null)
+        {
             if (IsDoubleExile && exiled.PlayerId == targetplayerleft.PlayerId) return;
         }
         targetplayerright = null;
@@ -260,7 +266,8 @@ public static class Balancer
         targetplayerright = player2;
         CurrentState = BalancerState.Animation_Chain;
         MeetingHud.Instance.ClearVote();
-        foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates) {
+        foreach (PlayerVoteArea area in MeetingHud.Instance.playerStates)
+        {
             if (area.TargetPlayerId == targetplayerleft.PlayerId)
             {
                 area.transform.localPosition = new(999, 999, 999);
@@ -298,8 +305,10 @@ public static class Balancer
 
         // アニメーションの初期化
         animIndex = 0;
-        if (chainsprites.Count <= 0) {
-            for (int i = 0; i < 15; i++) {
+        if (chainsprites.Count <= 0)
+        {
+            for (int i = 0; i < 15; i++)
+            {
                 chainsprites.Add(ModHelpers.LoadSpriteFromResources($"SuperNewRoles.Resources.Balancer.chain.average_anim_chain_0{i + 16}.png", 115f));
             }
         }
@@ -331,7 +340,8 @@ public static class Balancer
         textpleasetimer = 0.35f;
         SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.Balancer.chain.raw"), false);
     }
-    static TextMeshPro createtext(Vector3 pos, string text, float fontsize) {
+    static TextMeshPro createtext(Vector3 pos, string text, float fontsize)
+    {
         TextMeshPro tmp = GameObject.Instantiate(MeetingHud.Instance.TitleText, MeetingHud.Instance.transform);
         tmp.text = text;
         tmp.gameObject.gameObject.layer = 5;
@@ -345,7 +355,8 @@ public static class Balancer
         GameObject.Destroy(tmp.GetComponent<TextTranslatorTMP>());
         return tmp;
     }
-    static SpriteRenderer createchain(float pos, float rotate, float zpos = 7f) {
+    static SpriteRenderer createchain(float pos, float rotate, float zpos = 7f)
+    {
 
         SpriteRenderer obj = new GameObject("Chain").AddComponent<SpriteRenderer>();
         obj.transform.parent = MeetingHud.Instance.transform;

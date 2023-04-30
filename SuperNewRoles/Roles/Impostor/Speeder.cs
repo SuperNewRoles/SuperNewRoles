@@ -38,7 +38,8 @@ public class Speeder
     {
         return Player.IsRole(RoleId.Speeder);
     }
-    public static void WrapUp() {
+    public static void WrapUp()
+    {
         RoleClass.Speeder.IsSpeedDown = false;
     }
     public static void EndMeeting()
