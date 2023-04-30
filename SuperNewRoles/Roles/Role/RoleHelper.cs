@@ -1399,6 +1399,9 @@ public static class RoleHelpers
             case RoleId.ShermansServant:
                 OrientalShaman.ShermansServantPlayer.RemoveAll(ClearRemove);
                 break;
+            case RoleId.PoliceSurgeon:
+                PoliceSurgeon.PoliceSurgeonPlayer.RemoveAll(ClearRemove);
+                break;
                 //ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
