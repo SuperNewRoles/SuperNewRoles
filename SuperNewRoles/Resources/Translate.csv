@@ -1308,14 +1308,14 @@ ShermansServantDescription,It is a sidekick to the Oriental shaman.\nIt is possi
 ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation cool time,式神の変身クールタイム,式神化形冷却,式神化形冷卻時間
 ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム,式神自杀冷却,式神自殺冷卻時間
 ShermansServantTransformationButtonName,Metamorphosis,変身,化形,化形
-BalancerName,Balancer,バランサー
+BalancerName,Balancer,天秤
 BalancerTitle1,(x+y)/2,(x+y)/2
-BalancerTitleTextEither,,どちらかに入れろ
-BalancerTitleTextAverage,,バランスを求めよ。
-BalancerTitleTextYouVoteEither,,どっちに入れる？
-BalancerTitleTextEitherExile,,どっちを追放する？
-BalancerTitleTextWhoIsImpostor,,インポスターはどっちだ？それとも他か...
-BalancerDoubleExileText,,どちらも追放された。
+BalancerTitleTextEither,Put it one way or the other.,どちらかに入れろ
+BalancerTitleTextAverage,Seek balance.,バランスを求めよ。
+BalancerTitleTextYouVoteEither,Which way do you want to vote it?,どっちに入れる？
+BalancerTitleTextEitherExileWhich way do you want to exile it?,,どっちを追放する？
+BalancerTitleTextWhoIsImpostor,Which is the Imposter? Or the other...,インポスターはどっちだ？それとも他か...
+BalancerDoubleExileText,Both were exiled.,どちらも追放された。
 BalancerVoteTime,Votetime,天秤の投票時間
 
 #ConfigRoles

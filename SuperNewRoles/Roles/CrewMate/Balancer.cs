@@ -199,17 +199,17 @@ public static class Balancer
                     if (BackObject.transform.localPosition.x <= -10) {
                         CurrentState = BalancerState.WaitVote;
                         SetActiveMeetingHud(true);
-                        MeetingHud.Instance.transform.FindChild("MeetingContents/PhoneUI/baseGlass").gameObject.SetActive(false);
+                        MeetingHud.Instance.transform.FindChild("MeetingContents/PhoneUI/baseGlass").transform.localPosition = new(0.012f, 0, 0);
                         MeetingHud.Instance.TitleText.GetComponent<TextTranslatorTMP>().enabled = false;
-                        MeetingHud.Instance.TitleText.transform.localPosition = new(0, 2, -200);
+                        MeetingHud.Instance.TitleText.transform.localPosition = new(0, 2, -1);
                         MeetingHud.Instance.TitleText.transform.localScale = Vector3.one * 2f;
                         MeetingHud.Instance.TitleText.text = titletext;
                         leftplayerarea.transform.localPosition = leftpos;
                         rightplayerarea.transform.localPosition = rightpos;
                         MeetingHud.Instance.discussionTimer = GameOptionsManager.Instance.CurrentGameOptions.GetInt(AmongUs.GameOptions.Int32OptionNames.VotingTime) - BalancerVoteTime.GetFloat();
                         MeetingHud.Instance.TimerText.gameObject.SetActive(true);
-                        MeetingHud.Instance.TimerText.transform.localPosition = new(2.05f, -2, -20);
-                        MeetingHud.Instance.ProceedButton.transform.localPosition = new(3.5f, -2, -20.5f);
+                        MeetingHud.Instance.TimerText.transform.localPosition = new(2.05f, -2, -1);
+                        MeetingHud.Instance.ProceedButton.transform.localPosition = new(3.5f, -2, -1.05f);
                     }
                     break;
             }
@@ -217,10 +217,10 @@ public static class Balancer
     }
     public static PlayerControl targetplayerleft;
     static PlayerVoteArea leftplayerarea;
-    static readonly Vector3 leftpos = new(-2.9f, 0, -201f);
+    static readonly Vector3 leftpos = new(-2.9f, 0, -0.9f);
     public static PlayerControl targetplayerright;
     static PlayerVoteArea rightplayerarea;
-    static readonly Vector3 rightpos = new(2.3f, 0, -201f);
+    static readonly Vector3 rightpos = new(2.3f, 0, -0.9f);
     public static bool IsDoubleExile;
     static PlayerControl currentTarget;
     static string[] titletexts =
@@ -290,7 +290,7 @@ public static class Balancer
         // UIレイヤーに移動
         BackPictureObject.gameObject.layer = 5;
         // 位置移動
-        BackPictureObject.transform.localPosition = new(0, 0, -20);
+        BackPictureObject.transform.localPosition = new(0, 0, -1);
         BackPictureObject.transform.localScale = Vector3.one * 1.65f;
         //初期化
         BackPictureObject.enabled = false;
