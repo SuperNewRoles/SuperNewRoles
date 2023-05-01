@@ -7,6 +7,7 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
 using UnhollowerBaseLib;
@@ -487,6 +488,7 @@ public static class OnGameEndPatch
                 Logger.Info(e.ToString(), "解析エラー");
             }
         }
+        Recorder.OnEndGame();
         if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
     }
 

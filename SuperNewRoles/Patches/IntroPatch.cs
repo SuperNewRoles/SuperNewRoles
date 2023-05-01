@@ -5,6 +5,7 @@ using BepInEx.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
 using UnityEngine;
@@ -55,6 +56,7 @@ public class IntroPatch
             {
                 data._titleDesc = IntroData.GetTitle(data.NameKey, data.TitleNum);
             }
+            Recorder.CoIntroStart();
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
