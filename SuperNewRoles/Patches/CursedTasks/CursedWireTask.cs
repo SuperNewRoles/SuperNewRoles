@@ -26,7 +26,7 @@ public class CursedWireTask
                 };
                 return;
             }
-            int NumWires = WiresOrder[Main.Random(0, WiresOrder.Length - 1)];
+            int NumWires = WiresOrder[Random.RandomRange(0, WiresOrder.Length)];
 
             ScalarY = NumWires < 12 ? 1f : (8f / NumWires) + 0.3f;
 

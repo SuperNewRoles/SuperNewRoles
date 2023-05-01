@@ -15,7 +15,7 @@ public class CursedCardSlideTask
         private static void BeginPrefix(CardSlideGame __instance)
         {
             if (!Main.IsCursed) return;
-            int random = Main.Random(0, 25);
+            int random = Random.RandomRange(0, 25 + 1);
             Accepted = 0.25f + (0.05f * random);
             Timer = 60f;
             __instance.AcceptedTime = new(Accepted - 0.025f, Accepted + 0.025f);

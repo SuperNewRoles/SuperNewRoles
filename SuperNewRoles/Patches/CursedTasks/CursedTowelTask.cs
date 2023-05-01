@@ -92,7 +92,7 @@ public class CursedTowelTask
     public static class NormalPlayerTaskPatch
     {
         [HarmonyPatch(nameof(NormalPlayerTask.Initialize)), HarmonyPostfix]
-        public static void PostfixInitialize(NormalPlayerTask __instance)
+        public static void InitializePostfix(NormalPlayerTask __instance)
         {
             if (!Main.IsCursed) return;
             if (__instance.TaskType != TaskTypes.PickUpTowels) return;

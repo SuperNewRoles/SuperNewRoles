@@ -17,13 +17,13 @@ public static class ShouldAlwaysHorseAround
     public static bool isHorseMode;
     public static void Postfix(ref bool __result)
     {
-        if(__result) return;
+        if (__result) return;
 
         if (isHorseMode != HorseModeOption.enableHorseMode && LobbyBehaviour.Instance != null) __result = isHorseMode;
         else
         {
-            __result = !MainMenuPatch.BeforeAprilR5() && HorseModeOption.enableHorseMode;
-            isHorseMode = !MainMenuPatch.BeforeAprilR5() && HorseModeOption.enableHorseMode;
+            __result = HorseModeOption.enableHorseMode;
+            isHorseMode = HorseModeOption.enableHorseMode;
         }
         return;
     }
@@ -289,6 +289,14 @@ public class IntroPatch
                 temp = new();
                 temp.Add(PlayerControl.LocalPlayer);
                 yourTeam = temp;
+            }
+        }
+        if (PlayerControl.LocalPlayer.IsImpostor())
+        {
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            {
+                if (player.IsImpostorAddedFake())
+                    player.Data.Role.NameColor = Color.red;
             }
         }
     }

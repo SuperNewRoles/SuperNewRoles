@@ -5,6 +5,7 @@ using BepInEx.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace SuperNewRoles.Patches.CursedTasks;
 
@@ -17,17 +18,17 @@ public class CursedEnterCodeTask
     {
         string code = string.Empty;
         card = string.Empty;
-        if (Main.Random(1, 5) != 1)
+        if (BoolRange.Next(0.8f))
         {
-            int length = Main.Random(5, 20);
+            int length = Random.RandomRange(5, 20 + 1);
             string chars = "0123456789abcdefghijklmnopqrstuvwxyz";
             StringBuilder sb = new(length);
             for (int i = 0; i < length; i++)
-                sb.Append(chars[Main.Random(0, chars.Length - 1)]);
+                sb.Append(chars[Random.RandomRange(0, chars.Length)]);
             code = sb.ToString();
             card = code.Length <= 10 ? code : code.Insert(10, "\n");
         }
-        else if (Main.Random(1, 2) != 1)
+        else if (BoolRange.Next(0.5f))
         {
             List<string> codes = new()
             {
@@ -131,8 +132,6 @@ public class CursedEnterCodeTask
                 ui.GetComponent<ButtonBehavior>().OnClick.AddListener((Action)(() => __instance.EnterDigit(key + 10)));
                 line++;
             }
-
-            
         }
 
         [HarmonyPatch(nameof(EnterCodeMinigame.ClearDigits)), HarmonyPostfix]

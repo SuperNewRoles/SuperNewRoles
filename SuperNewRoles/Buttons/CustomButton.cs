@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using SuperNewRoles.Roles;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -155,6 +154,23 @@ public class CustomButton
         }
     }
 
+    /// <summary>
+    /// fillUpTime未満になったらボタンが震えます
+    /// </summary>
+    public static void FillUp(CustomButton button, float fillUpTime = 3f)
+    {
+        float timer = button.Timer;
+
+        if (button.actionButton.isCoolingDown && timer < fillUpTime)
+        {
+            button.actionButton.graphic.transform.localPosition = button.actionButton.position + (Vector3)UnityEngine.Random.insideUnitCircle * 0.05f;
+        }
+        else
+        {
+            button.actionButton.graphic.transform.localPosition = button.actionButton.position;
+        }
+    }
+
     private void Update(bool isAlive, RoleId role)
     {
         var localPlayer = CachedPlayer.LocalPlayer;
@@ -176,7 +192,8 @@ public class CustomButton
 
         if (hudManager.UseButton != null)
         {
-            actionButton.transform.localPosition = PositionOffset;
+            //actionButton.transform.localPosition = PositionOffset;
+
             if (PlayerControl.LocalPlayer.IsRole(RoleId.GM))
             {
                 actionButton.transform.localScale = new(0.7f, 0.7f, 0.7f);

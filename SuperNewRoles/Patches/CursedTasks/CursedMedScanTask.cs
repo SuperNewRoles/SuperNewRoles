@@ -25,7 +25,7 @@ public class CursedMedScanTask
             if (!Main.IsCursed) return;
             IsRetrograde = false;
             IsRetrogradeStop = false;
-            Isﾖｯｷﾝｸﾞ = Main.Random(1, 5) == 1;
+            Isﾖｯｷﾝｸﾞ = BoolRange.Next(0.2f);
             Bloods = new();
             Timer = DateTime.Now;
         }
@@ -55,7 +55,7 @@ public class CursedMedScanTask
             }
             if (__instance.ScanTimer >= 30 && !IsRetrogradeStop)
             {
-                __instance.charStats.color = Main.Random(1, 2) == 1 ? Color.red : Color.white;
+                __instance.charStats.color = BoolRange.Next(0.5f) ? Color.red : Color.white;
                 TimeSpan span = new(0, 0, 0, 5);
                 if ((Timer + span - DateTime.Now).TotalSeconds <= 0f)
                 {

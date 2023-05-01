@@ -144,10 +144,9 @@ class LightPatch
         SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
         float lerpValue = switchSystem.Value / 255f;
         var LocalPlayer = PlayerControl.LocalPlayer;
-        if (LocalPlayer.IsRole(RoleId.Nocturnality, RoleId.Dependents))
-        {
+        if (LocalPlayer.IsRole(RoleId.Dependents) ||
+            (LocalPlayer.IsRole(RoleId.Nocturnality) && !ModeHandler.IsMode(ModeId.SuperHostRoles)))
             lerpValue = 1 - lerpValue;
-        }
         return Mathf.Lerp(shipStatus.MinLightRadius, shipStatus.MaxLightRadius, lerpValue) * GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.CrewLightMod);
     }
 }
