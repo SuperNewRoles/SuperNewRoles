@@ -14,7 +14,7 @@ using static SuperNewRoles.Roles.Crewmate.PoliceSurgeon;
 namespace SuperNewRoles.Roles.Crewmate;
 public static class PoliceSurgeon
 {
-    private static int optionId = 1266;
+    private static int optionId = 1276;
     public static CustomRoleOption PoliceSurgeonOption;
     public static CustomOption PoliceSurgeonPlayerCount;
     public static CustomOption PoliceSurgeonHaveVitalsInTaskPhase;
