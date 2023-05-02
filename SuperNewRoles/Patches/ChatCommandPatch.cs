@@ -59,8 +59,8 @@ public static class DynamicLobbies
                         if (!float.TryParse(text[4..], out var cooltime)) __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/kc {キルクールタイム}");
                         var settime = cooltime;
                         if (settime == 0) settime = 0.00001f;
-                        GameManager.Instance.LogicOptions.currentGameOptions.SetFloat(FloatOptionNames.KillCooldown, settime);
-                        RPCHelper.RpcSyncOption(GameManager.Instance.LogicOptions.currentGameOptions);
+                        GameOptionsManager.Instance.CurrentGameOptions.SetFloat(FloatOptionNames.KillCooldown, settime);
+                        RPCHelper.RpcSyncOption();
                         __instance.AddChat(PlayerControl.LocalPlayer, $"キルクールタイムを{cooltime}秒に変更しました！");
                     }
                 }
