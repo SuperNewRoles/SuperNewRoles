@@ -297,7 +297,7 @@ public static class Balancer
         // UIレイヤーに移動
         BackPictureObject.gameObject.layer = 5;
         // 位置移動
-        BackPictureObject.transform.localPosition = new(0, 0, 0);
+        BackPictureObject.transform.localPosition = new(0, 0, -0.1f);
         BackPictureObject.transform.localScale = Vector3.one * 1.65f;
         //初期化
         BackPictureObject.enabled = false;
