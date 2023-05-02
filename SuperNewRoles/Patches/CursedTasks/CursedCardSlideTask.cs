@@ -12,7 +12,7 @@ public class CursedCardSlideTask
     public static class CardSlideGamePatch
     {
         [HarmonyPatch(nameof(CardSlideGame.Begin)), HarmonyPrefix]
-        private static void BeginPrefix(CardSlideGame __instance)
+        public static void BeginPrefix(CardSlideGame __instance)
         {
             if (!Main.IsCursed) return;
             int random = Random.RandomRange(0, 25 + 1);
