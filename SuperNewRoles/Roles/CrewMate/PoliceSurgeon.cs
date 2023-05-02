@@ -65,7 +65,7 @@ public static class PoliceSurgeon
     }
 
     /// <summary>
-    /// Defaultモード時且つバイタルを有する設定の時に警察医を科学者置き換えにする
+    /// 通常モードの時とSHRでHostの時, 且つバイタルを有する設定の時に警察医を科学者置き換えにする
     /// </summary>
     public static void FixedUpdate()
     {
