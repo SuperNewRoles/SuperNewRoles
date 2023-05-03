@@ -29,6 +29,16 @@ namespace SuperNewRoles.Replay
             writer.Write((byte)version.Revision);
             writer.Write(DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss"));
         }
+        public static void WriteCheckSam(BinaryWriter writer)
+        {
+            int randomnum = ModHelpers.GetRandomInt(9);
+            writer.Write(GameData.Instance.AllPlayers.Count - (byte)ModeHandler.GetMode() + randomnum);
+            writer.Write(randomnum);
+        }
+        public static void WriteReplayData(BinaryWriter writer, float RecordRate, bool IsPosFloat) {
+            writer.Write(RecordRate);
+            writer.Write(IsPosFloat);
+        }
         public static void WriteGameData(BinaryWriter writer) {
             writer.Write((byte)GameOptionsManager.Instance.CurrentGameOptions.GameMode);
             writer.Write((byte)ModeHandler.GetMode());
@@ -36,7 +46,9 @@ namespace SuperNewRoles.Replay
             writer.Write(BotManager.AllBots.Count);
         }
         public static void WriteGameOptionData(BinaryWriter writer) {
-            writer.Write(GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
+            byte[] option = GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions);
+            writer.Write(option.Length);
+            writer.Write(option);
         }
         public static void WriteCustomOptionData(BinaryWriter writer)
         {
