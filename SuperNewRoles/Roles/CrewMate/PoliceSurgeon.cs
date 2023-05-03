@@ -235,7 +235,7 @@ internal static class PostMortemCertificate_Display
     // [ ]MEMO: ショートカットキー操作は仮 できれば霊媒方式で死者単位で読めるようにしたい。
     // [ ]MEMO:全文はチャットコマンドか、自分についているボタン方式で　強制送信は有効にする
     [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update)), HarmonyPostfix]
-    public static void KeyboardJoystickUpdate_Postfix(KeyboardJoystick __instance)
+    private static void KeyboardJoystickUpdate_Postfix(KeyboardJoystick __instance)
     {
         if (!PlayerControl.LocalPlayer.IsRole(RoleId.PoliceSurgeon)) return;
         if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && OverlayInfo.overlayShown)
