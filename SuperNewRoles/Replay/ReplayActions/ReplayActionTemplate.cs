@@ -11,6 +11,10 @@ public class ReplayActionTemplate : ReplayAction
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
     }
+    //アクション実行時の処理
+    public override void OnAction() {
+        //ここに処理書く
+    }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionTemplate Create(byte sourcePlayer)
     {
