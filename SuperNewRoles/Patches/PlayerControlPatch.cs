@@ -12,6 +12,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Modules;
+using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
@@ -1002,6 +1003,7 @@ public static class MurderPlayerPatch
         DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);
         DeadPlayer.deadPlayers.Add(deadPlayer);
         FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
+        ReplayActionMurder.Create(__instance.PlayerId, target.PlayerId);
         __instance.OnKill(target);
         target.OnDeath(__instance);
 
