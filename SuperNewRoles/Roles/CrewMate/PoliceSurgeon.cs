@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Globalization;
+using System.Linq;
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using AmongUs.Data;
@@ -447,5 +448,143 @@ internal static class PoliceSurgeon_PostMortemCertificate
 
         |-----------------------------------------------------|
         */
+    }
+    [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
+    private class PostMortemCertificateOverlayInfo
+    {
+        // overlayを出現させるコード
+        // [ ]MEMO: ショートカットキー操作は仮 できれば霊媒方式で死者単位で読めるようにしたい。
+        // [ ]MEMO:全文はチャットコマンドか、自分についているボタン方式で　強制送信は有効にする
+        public static void Postfix(KeyboardJoystick __instance)
+        {
+            if (!PlayerControl.LocalPlayer.IsRole(RoleId.PoliceSurgeon)) return;
+            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && overlayShown)
+                HideInfoOverlay();
+            if (Input.GetKeyDown(KeyCode.L) && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
+                YoggleInfoOverlay();
+        }
+
+        private static Sprite colorBG;
+        private static SpriteRenderer infoUnderlay;
+        private static SpriteRenderer meetingUnderlay;
+        private static TMPro.TextMeshPro infoOverlay;
+        public static bool overlayShown = false;
+
+        public static bool InitializeOverlays()
+        {
+            HudManager hudManager = FastDestroyableSingleton<HudManager>.Instance;
+            if (hudManager == null) return false;
+
+            if (colorBG == null)
+            {
+                colorBG = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.White.png", 100f);
+            }
+
+            if (meetingUnderlay == null)
+            {
+                meetingUnderlay = UnityEngine.Object.Instantiate(hudManager.FullScreen, hudManager.transform);
+                meetingUnderlay.transform.localPosition = new Vector3(0f, 0f, 20f);
+                meetingUnderlay.gameObject.SetActive(true);
+                meetingUnderlay.enabled = false;
+            }
+
+            if (infoUnderlay == null)
+            {
+                infoUnderlay = UnityEngine.Object.Instantiate(meetingUnderlay, hudManager.transform);
+                infoUnderlay.transform.localPosition = new Vector3(0f, 0f, -900f);
+                infoUnderlay.gameObject.SetActive(true);
+                infoUnderlay.enabled = false;
+            }
+
+            if (infoOverlay == null)
+            {
+                infoOverlay = UnityEngine.Object.Instantiate(hudManager.TaskPanel.taskText, hudManager.transform);
+                infoOverlay.fontSize = infoOverlay.fontSizeMin = infoOverlay.fontSizeMax = 1.15f;
+                infoOverlay.autoSizeTextContainer = false;
+                infoOverlay.enableWordWrapping = false;
+                infoOverlay.alignment = TMPro.TextAlignmentOptions.TopLeft;
+                infoOverlay.transform.position = Vector3.zero;
+                infoOverlay.transform.localPosition = new Vector3(-2.5f, 1.15f, -910f);
+                infoOverlay.transform.localScale = Vector3.one;
+                infoOverlay.color = Palette.White;
+                infoOverlay.enabled = false;
+            }
+            return true;
+        }
+
+        public static void ShowInfoOverlay()
+        {
+            if (overlayShown) return;
+
+            HudManager hudManager = FastDestroyableSingleton<HudManager>.Instance;
+            if ((MapUtilities.CachedShipStatus == null || PlayerControl.LocalPlayer == null || hudManager == null || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed || PlayerControl.LocalPlayer.CanMove) && MeetingHud.Instance != null)
+                return;
+
+            if (!InitializeOverlays()) return;
+
+            if (MapBehaviour.Instance != null)
+                MapBehaviour.Instance.Close();
+
+            hudManager.SetHudActive(false);
+
+            overlayShown = true;
+
+            Transform parent = MeetingHud.Instance != null ? MeetingHud.Instance.transform : hudManager.transform;
+            infoUnderlay.transform.parent = parent;
+            infoOverlay.transform.parent = parent;
+
+            infoUnderlay.sprite = colorBG;
+            infoUnderlay.color = new Color(0.1f, 0.1f, 0.1f, 0.88f);
+            infoUnderlay.transform.localScale = new Vector3(7.5f, 5f, 1f);
+            infoUnderlay.enabled = true;
+
+            SuperNewRolesPlugin.optionsPage = 0;
+            IGameOptions o = GameManager.Instance.LogicOptions.currentGameOptions;
+            string text = "";
+            text = GetPostMortemCertificate(PlayerControl.LocalPlayer);
+            infoOverlay.text = text;
+            infoOverlay.enabled = true;
+
+            var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
+            var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
+            {
+                infoUnderlay.color = Color.Lerp(underlayTransparent, underlayOpaque, t);
+                infoOverlay.color = Color.Lerp(Palette.ClearWhite, Palette.White, t);
+            })));
+        }
+        public static void HideInfoOverlay()
+        {
+            if (!overlayShown) return;
+
+            if (MeetingHud.Instance == null) FastDestroyableSingleton<HudManager>.Instance.SetHudActive(true);
+
+            overlayShown = false;
+            var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
+            var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
+
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
+            {
+                if (infoUnderlay != null)
+                {
+                    infoUnderlay.color = Color.Lerp(underlayOpaque, underlayTransparent, t);
+                    if (t >= 1.0f) infoUnderlay.enabled = false;
+                }
+
+                if (infoOverlay != null)
+                {
+                    infoOverlay.color = Color.Lerp(Palette.White, Palette.ClearWhite, t);
+                    if (t >= 1.0f) infoOverlay.enabled = false;
+                }
+            })));
+        }
+
+        public static void YoggleInfoOverlay()
+        {
+            if (overlayShown)
+                HideInfoOverlay();
+            else
+                ShowInfoOverlay();
+        }
     }
 }
