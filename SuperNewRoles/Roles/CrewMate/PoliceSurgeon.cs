@@ -1,14 +1,14 @@
 using System;
-using System.Text;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Collections.Generic;
-using AmongUs.GameOptions;
+using System.Text;
 using AmongUs.Data;
+using AmongUs.GameOptions;
 using HarmonyLib;
-using UnityEngine;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using UnityEngine;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Roles.Crewmate.PoliceSurgeon;
 
@@ -46,13 +46,14 @@ public static class PoliceSurgeon
     public static bool HaveVital;
     public static int MeetingTurn_Now; // ReportDeadBodyで代入している為 Host以外は正常に反映されていません (SNRはクライアント個人処理の為同時にRpcで送る必要がある)
     public static string OfficialDateNotation;
+    public static Dictionary<int, string> PostMortemCertificateFullText;
     /// <summary>
-    /// 死体検案書を保管する辞書
-    /// key = 発行ターン, Value = 死体検案書
+    /// 個人単位の死体検案書の情報を保管する辞書
+    /// key = PlayerId, Value.Item2 = 発行ターン, Value.Item2 = 死体検案書
     /// </summary>
-    public static Dictionary<int, string> PostMortemCertificate;
+    public static Dictionary<int, (int, string)> PostMortemCertificateIndividual;
     /// <summary>
-    /// key = PlayerId, Value.Item1 = 死亡時刻, Value.Item3 = 死因, Value.Item3 = 死亡記録ターン,
+    /// key = PlayerId, Value.Item1 = 死亡時刻, Value.Item2 = 死因, Value.Item3 = 死亡記録ターン,
     /// </summary>
     public static Dictionary<byte, (int, int, int)> PoliceSurgeon_ActualDeathTimes;
     public static void ClearAndReload()
@@ -60,9 +61,10 @@ public static class PoliceSurgeon
         PoliceSurgeonPlayer = new();
         HaveVital = PoliceSurgeonHaveVitalsInTaskPhase.GetBool();
         MeetingTurn_Now = 0;
-        OfficialDateNotation = PoliceSurgeon_PostMortemCertificate.GetOfficialDateNotation();
+        OfficialDateNotation = PostMortemCertificate_CreateAndGet.GetOfficialDateNotation();
         PoliceSurgeon_ActualDeathTimes = new();
-        PostMortemCertificate = new();
+        PostMortemCertificateFullText = new();
+        PostMortemCertificateIndividual = new();
     }
 
     /// <summary>
@@ -93,7 +95,7 @@ public static class PoliceSurgeon
 }
 
 [Harmony]
-internal static class PoliceSurgeon_AddActualDeathTime
+internal static class PostMortemCertificate_AddActualDeathTime
 {
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody)), HarmonyPostfix]
     internal static void ReportDeadBody_Postfix()
@@ -212,12 +214,181 @@ internal static class PoliceSurgeon_AddActualDeathTime
     }
 }
 
-[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
+[HarmonyPatch]
 /// <summary>
-/// 死体検案書の作成及び送信関連のメソッドを集約したクラス
+/// 死体検案書の表示関連のメソッドを集約したクラス
 /// </summary>
-internal static class PoliceSurgeon_PostMortemCertificate
+internal static class PostMortemCertificate_Display
 {
+    /// <summary>
+    ///会議開始時 警察医に死体検案書を送信する。
+    /// </summary>
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start)), HarmonyPostfix]
+    private static void MeetingHudStart_Postfix()
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        foreach (var pl in PoliceSurgeonPlayer)
+            Patches.AddChatPatch.SendCommand(pl, "", PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(pl));
+    }
+
+    // overlayを出現させるコード
+    // [ ]MEMO: ショートカットキー操作は仮 できれば霊媒方式で死者単位で読めるようにしたい。
+    // [ ]MEMO:全文はチャットコマンドか、自分についているボタン方式で　強制送信は有効にする
+    [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update)), HarmonyPostfix]
+    public static void KeyboardJoystickUpdate_Postfix(KeyboardJoystick __instance)
+    {
+        if (!PlayerControl.LocalPlayer.IsRole(RoleId.PoliceSurgeon)) return;
+        if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && OverlayInfo.overlayShown)
+            OverlayInfo.HideInfoOverlay();
+        if (Input.GetKeyDown(KeyCode.L) && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
+            OverlayInfo.YoggleInfoOverlay();
+    }
+
+    private class OverlayInfo
+    {
+        private static Sprite colorBG;
+        private static SpriteRenderer infoUnderlay;
+        private static SpriteRenderer meetingUnderlay;
+        private static TMPro.TextMeshPro infoOverlay;
+        public static bool overlayShown = false;
+
+        public static bool InitializeOverlays()
+        {
+            HudManager hudManager = FastDestroyableSingleton<HudManager>.Instance;
+            if (hudManager == null) return false;
+
+            if (colorBG == null)
+            {
+                colorBG = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.White.png", 100f);
+            }
+
+            if (meetingUnderlay == null)
+            {
+                meetingUnderlay = UnityEngine.Object.Instantiate(hudManager.FullScreen, hudManager.transform);
+                meetingUnderlay.transform.localPosition = new Vector3(0f, 0f, 20f);
+                meetingUnderlay.gameObject.SetActive(true);
+                meetingUnderlay.enabled = false;
+            }
+
+            if (infoUnderlay == null)
+            {
+                infoUnderlay = UnityEngine.Object.Instantiate(meetingUnderlay, hudManager.transform);
+                infoUnderlay.transform.localPosition = new Vector3(0f, 0f, -900f);
+                infoUnderlay.gameObject.SetActive(true);
+                infoUnderlay.enabled = false;
+            }
+
+            if (infoOverlay == null)
+            {
+                infoOverlay = UnityEngine.Object.Instantiate(hudManager.TaskPanel.taskText, hudManager.transform);
+                infoOverlay.fontSize = infoOverlay.fontSizeMin = infoOverlay.fontSizeMax = 1.15f;
+                infoOverlay.autoSizeTextContainer = false;
+                infoOverlay.enableWordWrapping = false;
+                infoOverlay.alignment = TMPro.TextAlignmentOptions.TopLeft;
+                infoOverlay.transform.position = Vector3.zero;
+                infoOverlay.transform.localPosition = new Vector3(-2.5f, 1.15f, -910f);
+                infoOverlay.transform.localScale = Vector3.one;
+                infoOverlay.color = Palette.White;
+                infoOverlay.enabled = false;
+            }
+            return true;
+        }
+
+        public static void ShowInfoOverlay() // [ ]MEMO: ボタンターゲットのPlIdを引数にしたい
+        {
+            if (overlayShown) return;
+
+            HudManager hudManager = FastDestroyableSingleton<HudManager>.Instance;
+            if ((MapUtilities.CachedShipStatus == null || PlayerControl.LocalPlayer == null || hudManager == null || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed || PlayerControl.LocalPlayer.CanMove) && MeetingHud.Instance != null)
+                return;
+
+            if (!InitializeOverlays()) return;
+
+            if (MapBehaviour.Instance != null)
+                MapBehaviour.Instance.Close();
+
+            hudManager.SetHudActive(false);
+
+            overlayShown = true;
+
+            Transform parent = MeetingHud.Instance != null ? MeetingHud.Instance.transform : hudManager.transform;
+            infoUnderlay.transform.parent = parent;
+            infoOverlay.transform.parent = parent;
+
+            infoUnderlay.sprite = colorBG;
+            infoUnderlay.color = new Color(0.1f, 0.1f, 0.1f, 0.88f);
+            infoUnderlay.transform.localScale = new Vector3(7.5f, 5f, 1f);
+            infoUnderlay.enabled = true;
+
+            SuperNewRolesPlugin.optionsPage = 0;
+            IGameOptions o = GameManager.Instance.LogicOptions.currentGameOptions;
+            string text = "";
+            text = PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(PlayerControl.LocalPlayer); // ここで引数のplid使って任意の情報取得したい。
+            infoOverlay.text = text;
+            infoOverlay.enabled = true;
+
+            var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
+            var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
+            {
+                infoUnderlay.color = Color.Lerp(underlayTransparent, underlayOpaque, t);
+                infoOverlay.color = Color.Lerp(Palette.ClearWhite, Palette.White, t);
+            })));
+        }
+        public static void HideInfoOverlay()
+        {
+            if (!overlayShown) return;
+
+            if (MeetingHud.Instance == null) FastDestroyableSingleton<HudManager>.Instance.SetHudActive(true);
+
+            overlayShown = false;
+            var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
+            var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
+
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
+            {
+                if (infoUnderlay != null)
+                {
+                    infoUnderlay.color = Color.Lerp(underlayOpaque, underlayTransparent, t);
+                    if (t >= 1.0f) infoUnderlay.enabled = false;
+                }
+
+                if (infoOverlay != null)
+                {
+                    infoOverlay.color = Color.Lerp(Palette.White, Palette.ClearWhite, t);
+                    if (t >= 1.0f) infoOverlay.enabled = false;
+                }
+            })));
+        }
+
+        public static void YoggleInfoOverlay()
+        {
+            if (overlayShown)
+                HideInfoOverlay();
+            else
+                ShowInfoOverlay();
+        }
+    }
+}
+
+/// <summary>
+/// 死体検案書の取得及び作成関連のメソッドを集約したクラス
+/// </summary>
+internal static class PostMortemCertificate_CreateAndGet
+{
+    /// <summary>
+    /// 全文の死体検案書を取得する。
+    /// (そのターンの検案書が辞書に格納されていたらそれを取得し、されていなかったら作成して辞書に保存する。)
+    /// </summary>
+    /// <param name="policeSurgeon">送信先の警察医</param>
+    /// <returns>string : 死体検案書 (名前は送信先の警察医名に置き換わっている)</returns>
+    internal static string GetPostMortemCertificateFullText(PlayerControl policeSurgeon)
+    {
+        if (!PostMortemCertificateFullText.ContainsKey(MeetingTurn_Now))
+            PostMortemCertificateFullText.Add(MeetingTurn_Now, CreatePostMortemCertificate());
+        return string.Format(PostMortemCertificateFullText[MeetingTurn_Now], policeSurgeon.name);
+    }
+
     private const string delimiterLine = "|----------------------------------------------------|";
 
     /// <summary>
@@ -293,29 +464,6 @@ internal static class PoliceSurgeon_PostMortemCertificate
     }
 
     /// <summary>
-    ///会議開始時 警察医に死体検案書を送信する。
-    /// </summary>
-    private static void Postfix()
-    {
-        if (!AmongUsClient.Instance.AmHost) return;
-        foreach (var pl in PoliceSurgeonPlayer)
-            Patches.AddChatPatch.SendCommand(pl, "", GetPostMortemCertificate(pl));
-    }
-
-    /// <summary>
-    /// 死体検案書を取得する。
-    /// (そのターンの検案書が辞書に格納されていたらそれを取得し、されていなかったら作成して辞書に保存する。)
-    /// </summary>
-    /// <param name="policeSurgeon">送信先の警察医</param>
-    /// <returns>string : 死体検案書 (名前は送信先の警察医名に置き換わっている)</returns>
-    private static string GetPostMortemCertificate(PlayerControl policeSurgeon)
-    {
-        if (!PostMortemCertificate.ContainsKey(MeetingTurn_Now))
-            PostMortemCertificate.Add(MeetingTurn_Now, CreatePostMortemCertificate());
-        return string.Format(PostMortemCertificate[MeetingTurn_Now], policeSurgeon.name);
-    }
-
-    /// <summary>
     /// 死体検案書を作成する。
     /// 警察医名は{0}になっている為、呼び出し元で埋め込む必要がある。
     /// </summary>
@@ -348,7 +496,7 @@ internal static class PoliceSurgeon_PostMortemCertificate
 
             switch (deadReason)
             {
-                case (int)PoliceSurgeon_AddActualDeathTime.DeadTiming.TaskPhase_killed:
+                case (int)PostMortemCertificate_AddActualDeathTime.DeadTiming.TaskPhase_killed:
                     if (inError)
                     {
                         if (isWritingTurn)
@@ -370,8 +518,8 @@ internal static class PoliceSurgeon_PostMortemCertificate
                     builder.AppendLine("");
                     break;
 
-                case (int)PoliceSurgeon_AddActualDeathTime.DeadTiming.TaskPhase_Exited:
-                case (int)PoliceSurgeon_AddActualDeathTime.DeadTiming.MeetingPhase:
+                case (int)PostMortemCertificate_AddActualDeathTime.DeadTiming.TaskPhase_Exited:
+                case (int)PostMortemCertificate_AddActualDeathTime.DeadTiming.MeetingPhase:
                     if (isWritingTurn)
                         // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) ({2:頃})
                         builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_Unknown_WriteTurn"), OfficialDateNotation, MeetingTurn_Now - kvp.Value.Item3, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3"))}");
@@ -382,7 +530,7 @@ internal static class PoliceSurgeon_PostMortemCertificate
                     builder.AppendLine("");
                     break;
 
-                case (int)PoliceSurgeon_AddActualDeathTime.DeadTiming.Exited:
+                case (int)PostMortemCertificate_AddActualDeathTime.DeadTiming.Exited:
                     if (isWritingTurn)
                         // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) ({2:頃})
                         builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_Unknown_WriteTurn"), OfficialDateNotation, MeetingTurn_Now - kvp.Value.Item3, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3"))}");
@@ -448,143 +596,5 @@ internal static class PoliceSurgeon_PostMortemCertificate
 
         |-----------------------------------------------------|
         */
-    }
-    [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
-    private class PostMortemCertificateOverlayInfo
-    {
-        // overlayを出現させるコード
-        // [ ]MEMO: ショートカットキー操作は仮 できれば霊媒方式で死者単位で読めるようにしたい。
-        // [ ]MEMO:全文はチャットコマンドか、自分についているボタン方式で　強制送信は有効にする
-        public static void Postfix(KeyboardJoystick __instance)
-        {
-            if (!PlayerControl.LocalPlayer.IsRole(RoleId.PoliceSurgeon)) return;
-            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && overlayShown)
-                HideInfoOverlay();
-            if (Input.GetKeyDown(KeyCode.L) && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
-                YoggleInfoOverlay();
-        }
-
-        private static Sprite colorBG;
-        private static SpriteRenderer infoUnderlay;
-        private static SpriteRenderer meetingUnderlay;
-        private static TMPro.TextMeshPro infoOverlay;
-        public static bool overlayShown = false;
-
-        public static bool InitializeOverlays()
-        {
-            HudManager hudManager = FastDestroyableSingleton<HudManager>.Instance;
-            if (hudManager == null) return false;
-
-            if (colorBG == null)
-            {
-                colorBG = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.White.png", 100f);
-            }
-
-            if (meetingUnderlay == null)
-            {
-                meetingUnderlay = UnityEngine.Object.Instantiate(hudManager.FullScreen, hudManager.transform);
-                meetingUnderlay.transform.localPosition = new Vector3(0f, 0f, 20f);
-                meetingUnderlay.gameObject.SetActive(true);
-                meetingUnderlay.enabled = false;
-            }
-
-            if (infoUnderlay == null)
-            {
-                infoUnderlay = UnityEngine.Object.Instantiate(meetingUnderlay, hudManager.transform);
-                infoUnderlay.transform.localPosition = new Vector3(0f, 0f, -900f);
-                infoUnderlay.gameObject.SetActive(true);
-                infoUnderlay.enabled = false;
-            }
-
-            if (infoOverlay == null)
-            {
-                infoOverlay = UnityEngine.Object.Instantiate(hudManager.TaskPanel.taskText, hudManager.transform);
-                infoOverlay.fontSize = infoOverlay.fontSizeMin = infoOverlay.fontSizeMax = 1.15f;
-                infoOverlay.autoSizeTextContainer = false;
-                infoOverlay.enableWordWrapping = false;
-                infoOverlay.alignment = TMPro.TextAlignmentOptions.TopLeft;
-                infoOverlay.transform.position = Vector3.zero;
-                infoOverlay.transform.localPosition = new Vector3(-2.5f, 1.15f, -910f);
-                infoOverlay.transform.localScale = Vector3.one;
-                infoOverlay.color = Palette.White;
-                infoOverlay.enabled = false;
-            }
-            return true;
-        }
-
-        public static void ShowInfoOverlay()
-        {
-            if (overlayShown) return;
-
-            HudManager hudManager = FastDestroyableSingleton<HudManager>.Instance;
-            if ((MapUtilities.CachedShipStatus == null || PlayerControl.LocalPlayer == null || hudManager == null || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed || PlayerControl.LocalPlayer.CanMove) && MeetingHud.Instance != null)
-                return;
-
-            if (!InitializeOverlays()) return;
-
-            if (MapBehaviour.Instance != null)
-                MapBehaviour.Instance.Close();
-
-            hudManager.SetHudActive(false);
-
-            overlayShown = true;
-
-            Transform parent = MeetingHud.Instance != null ? MeetingHud.Instance.transform : hudManager.transform;
-            infoUnderlay.transform.parent = parent;
-            infoOverlay.transform.parent = parent;
-
-            infoUnderlay.sprite = colorBG;
-            infoUnderlay.color = new Color(0.1f, 0.1f, 0.1f, 0.88f);
-            infoUnderlay.transform.localScale = new Vector3(7.5f, 5f, 1f);
-            infoUnderlay.enabled = true;
-
-            SuperNewRolesPlugin.optionsPage = 0;
-            IGameOptions o = GameManager.Instance.LogicOptions.currentGameOptions;
-            string text = "";
-            text = GetPostMortemCertificate(PlayerControl.LocalPlayer);
-            infoOverlay.text = text;
-            infoOverlay.enabled = true;
-
-            var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
-            var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
-            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
-            {
-                infoUnderlay.color = Color.Lerp(underlayTransparent, underlayOpaque, t);
-                infoOverlay.color = Color.Lerp(Palette.ClearWhite, Palette.White, t);
-            })));
-        }
-        public static void HideInfoOverlay()
-        {
-            if (!overlayShown) return;
-
-            if (MeetingHud.Instance == null) FastDestroyableSingleton<HudManager>.Instance.SetHudActive(true);
-
-            overlayShown = false;
-            var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
-            var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
-
-            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
-            {
-                if (infoUnderlay != null)
-                {
-                    infoUnderlay.color = Color.Lerp(underlayOpaque, underlayTransparent, t);
-                    if (t >= 1.0f) infoUnderlay.enabled = false;
-                }
-
-                if (infoOverlay != null)
-                {
-                    infoOverlay.color = Color.Lerp(Palette.White, Palette.ClearWhite, t);
-                    if (t >= 1.0f) infoOverlay.enabled = false;
-                }
-            })));
-        }
-
-        public static void YoggleInfoOverlay()
-        {
-            if (overlayShown)
-                HideInfoOverlay();
-            else
-                ShowInfoOverlay();
-        }
     }
 }

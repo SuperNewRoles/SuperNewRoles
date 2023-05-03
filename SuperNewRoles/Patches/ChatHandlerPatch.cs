@@ -115,7 +115,7 @@ class AddChatPatch
         else if (
     Commands[0].Equals("/pl", StringComparison.OrdinalIgnoreCase))
         {
-            SendCommand(sourcePlayer, "", string.Format(SuperNewRoles.Roles.Crewmate.PoliceSurgeon.PostMortemCertificate[SuperNewRoles.Roles.Crewmate.PoliceSurgeon.MeetingTurn_Now], sourcePlayer.name));
+            SendCommand(sourcePlayer, "", Format(Roles.Crewmate.PoliceSurgeon.PostMortemCertificateFullText[Roles.Crewmate.PoliceSurgeon.MeetingTurn_Now], sourcePlayer.name));
             return false;
         }
         else if (
