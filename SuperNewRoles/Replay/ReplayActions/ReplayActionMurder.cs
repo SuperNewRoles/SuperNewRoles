@@ -29,6 +29,7 @@ public class ReplayActionMurder : ReplayAction
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionMurder Create(byte sourcePlayer, byte targetPlayer)
     {
+        if (Recorder.IsReplayMode) return null;
         ReplayActionMurder action = new();
         Recorder.ReplayActions.Add(action);
         //ここで秒数指定

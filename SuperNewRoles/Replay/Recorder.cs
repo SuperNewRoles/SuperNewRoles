@@ -14,6 +14,7 @@ namespace SuperNewRoles.Replay
     {
         public static float RecordRate;
         public static bool IsPosFloat;
+        public static bool IsReplayMode;
         public static void ClearAndReloads() {
             RecordRate = 0.5f;
             currenttime = 0;
@@ -25,6 +26,7 @@ namespace SuperNewRoles.Replay
             PlayerPositions = new();
             ReplayActions = new();
             ReplayActionTime = 0;
+            IsReplayMode = false;
         }
         static GameData.PlayerOutfit CopyOutfit(GameData.PlayerOutfit outfit) {
             GameData.PlayerOutfit result = new()

@@ -18,6 +18,7 @@ public class ReplayActionTemplate : ReplayAction
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionTemplate Create(byte sourcePlayer)
     {
+        if (Recorder.IsReplayMode) return null;
         ReplayActionTemplate action = new();
         Recorder.ReplayActions.Add(action);
         //ここで秒数指定
