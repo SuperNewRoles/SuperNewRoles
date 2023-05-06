@@ -1337,15 +1337,15 @@ PostMortemCertificate_main2,Full name ,氏名
 PostMortemCertificate_main3,<s>Diagnose as stated</s> (Confirming as described) above,上記のとおり<s>診断</s>(検案)する
 PostMortemCertificate_main4,Date of Issue:,<s>本診断書</s>(検案書) 発行年月日 
 PostMortemCertificate_main5,Medical Examiner: Dr. ,(氏名) 医師
-PostMortemCertificate_AlreadyKnown_WriteTurn,Date and Time of Death: {0} {1}seconds ago ({2}),死亡したとき {0} ({1}ターン前) {2}秒前 ({3})
-PostMortemCertificate_AlreadyKnown,Date and Time of Death: {0} ({1} turn ago) {2}seconds ago ({3}),死亡したとき {0} {1}秒前 ({2})
-PostMortemCertificate_Unknown_WriteTurn,Date and Time of Death: {0} ({1} turn ago) ({2}),死亡したとき {0} ({1}ターン前) ({2})
-PostMortemCertificate_Unknown,Date and Time of Death: {0} ({1}),死亡したとき {0} ({1})
-PostMortemCertificate_DeadReason1,Cause of Death: EUnknown external cause of death,死因 不詳の外因死
-PostMortemCertificate_DeadReason2,Cause of Death: Ejection,死因 追放
-PostMortemCertificate_CauseOfDeath1,estimated,推定
-PostMortemCertificate_CauseOfDeath2,confirmed,確認
-PostMortemCertificate_CauseOfDeath3,Approximate,頃
+PostMortemCertificate_AlreadyKnown_WriteTurn,<color=#89c3eb>Date and Time of Death</color>: {0} ({1} turn ago) <color=#89c3eb>{2}seconds</color> ago ({3}),<color=#89c3eb>死亡したとき</color> {0} ({1}ターン前) <color=#89c3eb>{2}秒前</color> ({3})
+PostMortemCertificate_AlreadyKnown,<color=#89c3eb>Date and Time of Death</color>: {0} <color=#89c3eb>{1}</color>seconds ago ({2}),<color=#89c3eb>死亡したとき</color> {0} <color=#89c3eb>{1}秒前</color> ({2})
+PostMortemCertificate_Unknown_WriteTurn,<color=#89c3eb>Date and Time of Death</color>: {0} ({1} turn ago) ({2}),<color=#89c3eb>死亡したとき</color> {0} ({1}ターン前) ({2})
+PostMortemCertificate_Unknown,<color=#89c3eb>Date and Time of Death</color>: {0} ({1}),<color=#89c3eb>死亡したとき</color> {0} ({1})
+PostMortemCertificate_DeadReason1,Cause of Death: EUnknown external cause of death,死因 <color=#89c3eb>不詳の外因死</color>
+PostMortemCertificate_DeadReason2,Cause of Death: <color=#89c3eb>Ejection</color>,死因 <color=#89c3eb>追放</color>
+PostMortemCertificate_CauseOfDeath1,<color=#89c3eb>estimated</color>,<color=#89c3eb>推定</color>
+PostMortemCertificate_CauseOfDeath2,<color=#89c3eb>confirmed</color>,<color=#89c3eb>確認</color>
+PostMortemCertificate_CauseOfDeath3,<color=#89c3eb>Approximate</color>,<color=#89c3eb>頃</color>
 PostMortemCertificate_NoDeaths,{0}/nPoliceSurgeon {1}:/ "{2}",{0}\n警察医 {1}\n「{2}」
 PostMortemCertificate_NoDeaths_RandomMessage_1,There were no deaths during this turn.,今回ターンの死者はいなかった。
 PostMortemCertificate_NoDeaths_RandomMessage_2,There were no deaths during this round. ...I wonder if there will be a sudden increase in deaths from now on...,今回ターンの死者はいなかった。\n...以降一気に死者が増えるのではないか...

@@ -43,33 +43,42 @@ public static class PoliceSurgeon
 
     public static List<PlayerControl> PoliceSurgeonPlayer;
     public static Color32 color = new(137, 195, 235, byte.MaxValue);
-    public static bool HaveVital;
+    private static bool HaveVital;
     public static int MeetingTurn_Now; // ReportDeadBodyで代入している為 Host以外は正常に反映されていません (SNRはクライアント個人処理の為同時にRpcで送る必要がある)
     public static string OfficialDateNotation;
+    /// <summary>
+    /// 死亡情報を管理する辞書, 死体検案書の発行時 情報はここから取得する。
+    /// key = PlayerId, Value.Item1 = 死亡(推定)時刻, Value.Item2 = 死因, Value.Item3 = 死亡記録ターン,
+    /// </summary>
+    public static Dictionary<byte, (int, int, int)> ActualDeathTimeManager;
+
+    /// <summary>
+    /// 全体の死体検案書の情報を保管する辞書
+    /// key = 発行ターン, Value.Item1 = 死体検案書
+    /// </summary>
     public static Dictionary<int, string> PostMortemCertificateFullText;
+
     /// <summary>
     /// 個人単位の死体検案書の情報を保管する辞書
-    /// key = PlayerId, Value.Item2 = 発行ターン, Value.Item2 = 死体検案書
+    /// key = PlayerId, Value.Item1 = 発行ターン, Value.Item2 = 死体検案書
     /// </summary>
-    public static Dictionary<int, (int, string)> PostMortemCertificateIndividual;
-    /// <summary>
-    /// key = PlayerId, Value.Item1 = 死亡時刻, Value.Item2 = 死因, Value.Item3 = 死亡記録ターン,
-    /// </summary>
-    public static Dictionary<byte, (int, int, int)> PoliceSurgeon_ActualDeathTimes;
+    public static Dictionary<int, (int, string)> PostMortemCertificateShortText;
+
+    public static Sprite GetButtonSprite() =>
+        ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
+
     public static void ClearAndReload()
     {
         PoliceSurgeonPlayer = new();
         HaveVital = PoliceSurgeonHaveVitalsInTaskPhase.GetBool();
         MeetingTurn_Now = 0;
         OfficialDateNotation = PostMortemCertificate_CreateAndGet.GetOfficialDateNotation();
-        PoliceSurgeon_ActualDeathTimes = new();
+        ActualDeathTimeManager = new();
         PostMortemCertificateFullText = new();
-        PostMortemCertificateIndividual = new();
+        PostMortemCertificateShortText = new();
     }
 
-    /// <summary>
-    /// 通常モードの時とSHRでHostの時, 且つバイタルを有する設定の時に警察医を科学者置き換えにする
-    /// </summary>
+    // 通常モードの時とSHRでHostの時, 且つバイタルを有する設定の時に警察医を科学者置き換えにする
     public static void FixedUpdate()
     {
         if (!HaveVital) return;
@@ -80,6 +89,7 @@ public static class PoliceSurgeon
         }
     }
 
+    // バイタルの時間設定系の反映
     public static void VitalAbilityCoolSettings()
     {
         if (PlayerControl.LocalPlayer.GetRole() != RoleId.PoliceSurgeon) return;
@@ -95,20 +105,25 @@ public static class PoliceSurgeon
 }
 
 [Harmony]
+/// <summary>
+/// 死亡(推定)時刻の計算や保存に関係するメソッドを纏めたクラス
+/// </summary>
 internal static class PostMortemCertificate_AddActualDeathTime
 {
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody)), HarmonyPostfix]
     internal static void ReportDeadBody_Postfix()
     {
         MeetingTurn_Now++;
-        Logger.Info("ぷぇ");
-        AddActualDeathTime((int)DeadTiming.TaskPhase_killed);
+        AddActualDeathTime((int)DeadTiming.TaskPhase_killed); // タスクフェイズ中の死亡を処理する。
+        //[ ]MEMO : ここでLateTaskでPoliceSurgeon_ActualDeathTimesをRPCで送る
     }
 
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting)), HarmonyPostfix]
+    // 会議中の死亡を記録する。
     internal static void CheckForEndVoting_Postfix() => AddActualDeathTime((int)DeadTiming.MeetingPhase);
 
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp)), HarmonyPostfix]
+    // 追放による死亡を記録する。(Airship以外)
     internal static void WrapUp_Postfix(ExileController __instance)
     {
         if (__instance.exiled != null && __instance.exiled.Object == null) __instance.exiled = null;
@@ -117,14 +132,16 @@ internal static class PostMortemCertificate_AddActualDeathTime
     }
 
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn)), HarmonyPostfix]
+    // 追放による死亡を記録する。(Airship)
     internal static void WrapUpAndSpawn_Postfix(AirshipExileController __instance)
     {
         if (__instance.exiled != null && __instance.exiled.Object == null) __instance.exiled = null;
         PlayerControl exiledObject = __instance.exiled != null ? __instance.exiled.Object : null;
         AddActualDeathTime((int)DeadTiming.Exited, exiledObject);
     }
+
     /// <summary>
-    /// 死亡推定時刻を保存する
+    /// 死亡(推定)時刻の計算 & 辞書[ActualDeathTimeManager]に全死亡情報を保存する。
     /// </summary>
     /// <param name="timingOfCall">死亡推定時刻を辞書に保存するメソッドが どこで呼び出されたか</param>
     /// <param name="playerWhoPlansToDie">死亡が予定されているプレイヤー(IsAliveがtrueになっているが後で死ぬプレイヤー)</param>
@@ -137,7 +154,7 @@ internal static class PostMortemCertificate_AddActualDeathTime
 
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
         {
-            if (PoliceSurgeon_ActualDeathTimes.ContainsKey(p.PlayerId)) continue;
+            if (ActualDeathTimeManager.ContainsKey(p.PlayerId)) continue;
             if (p.IsAlive() && p != playerWhoPlansToDie) continue;
 
             int actualDeathTime = 0;
@@ -157,7 +174,9 @@ internal static class PostMortemCertificate_AddActualDeathTime
                     break;
             }
             Logger.Info($"{p.name} : 死亡推定時刻_{actualDeathTime}s");
-            PoliceSurgeon_ActualDeathTimes.Add(p.PlayerId, (actualDeathTime, deadReason, MeetingTurn_Now));
+
+            // 死亡情報を一元管理している辞書に保存する。(この辞書に保存するのはここでのみ)
+            ActualDeathTimeManager.Add(p.PlayerId, (actualDeathTime, deadReason, MeetingTurn_Now));
         }
     }
 
@@ -220,30 +239,70 @@ internal static class PostMortemCertificate_AddActualDeathTime
 /// </summary>
 internal static class PostMortemCertificate_Display
 {
-    /// <summary>
-    ///会議開始時 警察医に死体検案書を送信する。
-    /// </summary>
+    // 会議開始時 警察医に死体検案書を送信する。
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start)), HarmonyPostfix]
-    private static void MeetingHudStart_Postfix()
+    private static void MeetingHudStart_Postfix(MeetingHud __instance)
     {
+        Event(__instance);
+
         if (!AmongUsClient.Instance.AmHost) return;
         foreach (var pl in PoliceSurgeonPlayer)
             Patches.AddChatPatch.SendCommand(pl, "", PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(pl));
     }
 
-    // overlayを出現させるコード
-    // [ ]MEMO: ショートカットキー操作は仮 できれば霊媒方式で死者単位で読めるようにしたい。
-    // [ ]MEMO:全文はチャットコマンドか、自分についているボタン方式で　強制送信は有効にする
-    [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update)), HarmonyPostfix]
-    private static void KeyboardJoystickUpdate_Postfix(KeyboardJoystick __instance)
+    // ネームプレート上に死体検案書を確認するためのボタンを作成する。
+    private static void Event(MeetingHud __instance)
     {
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
         if (!PlayerControl.LocalPlayer.IsRole(RoleId.PoliceSurgeon)) return;
-        if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && OverlayInfo.overlayShown)
-            OverlayInfo.HideInfoOverlay();
-        if (Input.GetKeyDown(KeyCode.L) && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
-            OverlayInfo.YoggleInfoOverlay();
+
+        for (int i = 0; i < __instance.playerStates.Length; i++)
+        {
+            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+            var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
+
+            // ネームプレートの対象が生存している、又は本人ならば
+            if (player.IsAlive() || player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
+            // 死亡ターン以外に情報を表示しない設定で、ネームプレートの対象が現在ターンに死亡した者でないなら
+            if (!PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn.GetBool() && ActualDeathTimeManager[player.PlayerId].Item3 != MeetingTurn_Now) continue;
+
+            GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
+            GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
+            targetBox.name = "PoliceSurgeonButton";
+            targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
+            SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
+            renderer.sprite = GetButtonSprite();
+            PassiveButton button = targetBox.GetComponent<PassiveButton>();
+            button.OnClick.RemoveAllListeners();
+            int TargetPlayerId = player.PlayerId;
+            button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => OnClick(TargetPlayerId)));
+            Logger.Info($"{player.name}に死体検案書を確認する為のボタンを作成します。", "PoliceSurgeonButton");
+        }
     }
 
+    // 確認ボタンを押したときの動作。
+    private static void OnClick(int TargetPlayerId)
+    {
+        var Target = ModHelpers.PlayerById((byte)TargetPlayerId);
+
+        if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && OverlayInfo.overlayShown)
+            OverlayInfo.HideInfoOverlay();
+        else OverlayInfo.YoggleInfoOverlay(Target);
+    }
+
+    // overlayを閉じる時。
+    [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update)), HarmonyPostfix]
+    private static void KeyboardJoystickUpdatePostfix(KeyboardJoystick __instance)
+    {
+        if (!PlayerControl.LocalPlayer.IsRole(RoleId.PoliceSurgeon)) return;
+        // チャットを開いた時、Esc, Tab, hキーを押した時に 死体検案書が開かれていれば 死体検案書を閉じる。
+        if (!OverlayInfo.overlayShown) return;
+        if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen
+            || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.H))
+            OverlayInfo.HideInfoOverlay();
+    }
+
+    // 死体検案書用のoverlayの作成に関わるクラス
     private class OverlayInfo
     {
         private static Sprite colorBG;
@@ -252,15 +311,14 @@ internal static class PostMortemCertificate_Display
         private static TMPro.TextMeshPro infoOverlay;
         public static bool overlayShown = false;
 
+        // overlayの初期化
         public static bool InitializeOverlays()
         {
             HudManager hudManager = FastDestroyableSingleton<HudManager>.Instance;
             if (hudManager == null) return false;
 
             if (colorBG == null)
-            {
                 colorBG = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.White.png", 100f);
-            }
 
             if (meetingUnderlay == null)
             {
@@ -286,20 +344,31 @@ internal static class PostMortemCertificate_Display
                 infoOverlay.enableWordWrapping = false;
                 infoOverlay.alignment = TMPro.TextAlignmentOptions.TopLeft;
                 infoOverlay.transform.position = Vector3.zero;
-                infoOverlay.transform.localPosition = new Vector3(-2.5f, 1.15f, -910f);
+                // 死体検案書をoverlayの真ん中に表示する
+                infoOverlay.transform.localPosition = new Vector3(-1.5f, 1.15f, -910f);
                 infoOverlay.transform.localScale = Vector3.one;
-                infoOverlay.color = Palette.White;
+                infoOverlay.color = Palette.Black;
                 infoOverlay.enabled = false;
             }
             return true;
         }
 
-        public static void ShowInfoOverlay() // [ ]MEMO: ボタンターゲットのPlIdを引数にしたい
+        // overlayの表示と文字表記
+        public static void ShowInfoOverlay(PlayerControl target) // [x]MEMO: ボタンターゲットのPlIdを引数にしたい ← PLCになってて草
         {
             if (overlayShown) return;
 
             HudManager hudManager = FastDestroyableSingleton<HudManager>.Instance;
-            if ((MapUtilities.CachedShipStatus == null || PlayerControl.LocalPlayer == null || hudManager == null || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed || PlayerControl.LocalPlayer.CanMove) && MeetingHud.Instance != null)
+            if
+            (
+                (
+                    MapUtilities.CachedShipStatus == null ||
+                    PlayerControl.LocalPlayer == null ||
+                    hudManager == null ||
+                    FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed
+                )
+                && MeetingHud.Instance != null
+            )
                 return;
 
             if (!InitializeOverlays()) return;
@@ -316,25 +385,26 @@ internal static class PostMortemCertificate_Display
             infoOverlay.transform.parent = parent;
 
             infoUnderlay.sprite = colorBG;
-            infoUnderlay.color = new Color(0.1f, 0.1f, 0.1f, 0.88f);
+            infoUnderlay.color = new Color(192f / 255f, 198f / 255f, 201f / 255f);
             infoUnderlay.transform.localScale = new Vector3(7.5f, 5f, 1f);
             infoUnderlay.enabled = true;
 
-            SuperNewRolesPlugin.optionsPage = 0;
-            IGameOptions o = GameManager.Instance.LogicOptions.currentGameOptions;
-            string text = "";
-            text = PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(PlayerControl.LocalPlayer); // ここで引数のplid使って任意の情報取得したい。
-            infoOverlay.text = text;
+            StringBuilder text = new();
+            // ボタン対象の死体検案書を取得する
+            text.Append(PostMortemCertificate_CreateAndGet.GetPostMortemCertificateShortText(PlayerControl.LocalPlayer, target));
+            infoOverlay.text = text.ToString();
             infoOverlay.enabled = true;
 
             var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
-            var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
+            var underlayOpaque = new Color(192f / 255f, 198f / 255f, 201f / 255f);
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
             {
                 infoUnderlay.color = Color.Lerp(underlayTransparent, underlayOpaque, t);
                 infoOverlay.color = Color.Lerp(Palette.ClearWhite, Palette.White, t);
             })));
         }
+
+        // overlayを消す
         public static void HideInfoOverlay()
         {
             if (!overlayShown) return;
@@ -343,7 +413,7 @@ internal static class PostMortemCertificate_Display
 
             overlayShown = false;
             var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
-            var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
+            var underlayOpaque = new Color(192f / 255f, 198f / 255f, 201f / 255f);
 
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
             {
@@ -361,12 +431,10 @@ internal static class PostMortemCertificate_Display
             })));
         }
 
-        public static void YoggleInfoOverlay()
+        public static void YoggleInfoOverlay(PlayerControl target)
         {
-            if (overlayShown)
-                HideInfoOverlay();
-            else
-                ShowInfoOverlay();
+            if (overlayShown) HideInfoOverlay();
+            else ShowInfoOverlay(target);
         }
     }
 }
@@ -382,18 +450,31 @@ internal static class PostMortemCertificate_CreateAndGet
     /// </summary>
     /// <param name="policeSurgeon">送信先の警察医</param>
     /// <returns>string : 死体検案書 (名前は送信先の警察医名に置き換わっている)</returns>
+
     internal static string GetPostMortemCertificateFullText(PlayerControl policeSurgeon)
     {
         if (!PostMortemCertificateFullText.ContainsKey(MeetingTurn_Now))
-            PostMortemCertificateFullText.Add(MeetingTurn_Now, CreatePostMortemCertificate());
+            PostMortemCertificateFullText.Add(MeetingTurn_Now, CreateBody());
         return string.Format(PostMortemCertificateFullText[MeetingTurn_Now], policeSurgeon.name);
     }
 
-    private const string delimiterLine = "|----------------------------------------------------|";
+    /// <summary>
+    /// 対象プレイヤー個人の死体検案書を取得する。
+    /// (対象の検案書が辞書に格納されていたら取得し、されていなかったら作成して辞書に保存する。)
+    /// </summary>
+    /// <param name="policeSurgeon">閲覧する警察医</param>
+    /// <param name="victimPlayer">死体検案書を確認したい対象</param>
+    /// <returns>string : 死体検案書 (名前は閲覧する警察医名に置き換わっている)</returns>
+    internal static string GetPostMortemCertificateShortText(PlayerControl policeSurgeon, PlayerControl victimPlayer)
+    {
+        if (!PostMortemCertificateShortText.ContainsKey(victimPlayer.PlayerId))
+            PostMortemCertificateShortText[victimPlayer.PlayerId] = (ActualDeathTimeManager[victimPlayer.PlayerId].Item3, CreateBody(victimPlayer));
+        return string.Format(PostMortemCertificateShortText[victimPlayer.PlayerId].Item2, policeSurgeon.name);
+    }
 
     /// <summary>
     /// 公的な年月日を文字列として取得する
-    /// (日本語に設定している場合は和歴、それ以外は西暦且つアメリカ英語表記で取得)
+    /// (日本語 => 和歴, 繁体字 => 西暦漢数字, 簡体字 => 民国歴 or 西暦漢数字, 其の他 =>西暦アメリカ英語)
     /// </summary>
     /// <returns>公的な年月日の文字列</returns>
     // 参考 => https://csharp.programmer-reference.com/datetime-wareki/
@@ -434,10 +515,7 @@ internal static class PostMortemCertificate_CreateAndGet
         return dateOfDocumentIssuance;
     }
 
-    /// <summary>
-    /// 今日の日付を漢数字表記にする
-    /// </summary>
-    /// <returns>string : 漢数字に変換された今日の日付</returns>
+    // 今日の日付を漢数字表記にする
     //  参考 => https://qiita.com/Akirakong/items/22477de0fff2e711e07f
     private static string GetKanjiCalendar()
     {
@@ -464,83 +542,48 @@ internal static class PostMortemCertificate_CreateAndGet
     }
 
     /// <summary>
-    /// 死体検案書を作成する。
+    /// 死体検案書の本体を作成する。
     /// 警察医名は{0}になっている為、呼び出し元で埋め込む必要がある。
     /// </summary>
-    /// <returns>string : 死体検案書 (警察医名が{0}に置き換わっている)</returns>
-    private static string CreatePostMortemCertificate()
+    /// <param name="victimPlayer">個人単位の死体検案書を発行したい対象(nullの場合全体の死体検案書を発行する)</param>
+    /// <returns></returns>
+    private static string CreateBody(PlayerControl victimPlayer = null)
     {
         bool isWrite = false; // 死体検案書に書く死者の情報があるか
         StringBuilder builder = new();
 
+        string fullDelimiterLine = "|------------------------------------------------------|";
+        string shortDelimiterLine = "|----------------------------------------------------------------|";
+
+        string delimiterLine = victimPlayer == null ? fullDelimiterLine : shortDelimiterLine;
+
         builder.AppendLine(delimiterLine);
         builder.AppendLine(ModTranslation.GetString("PostMortemCertificate_main1"));
         builder.AppendLine(delimiterLine);
-
-        foreach (KeyValuePair<byte, (int, int, int)> kvp in PoliceSurgeon_ActualDeathTimes)
+        if (victimPlayer == null) // 特定のプレイヤー指定ではない時、全員の死体検案書を取得する。
         {
-            // 以降に進むのは、[全てのターンの死亡情報を出す時]の全てのプレイヤーの情報と　[現在ターンの死亡情報しか出さない時]の現在ターンに死亡したプレイヤーの情報
-            if (!PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn.GetBool() && kvp.Value.Item3 != MeetingTurn_Now) continue;
+            foreach (KeyValuePair<byte, (int, int, int)> kvp in ActualDeathTimeManager)
+            {
+                // 以降に進むのは、[全てのターンの死亡情報を出す時]の全てのプレイヤーの情報と　[現在ターンの死亡情報しか出さない時]の現在ターンに死亡したプレイヤーの情報
+                if (!PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn.GetBool() && kvp.Value.Item3 != MeetingTurn_Now) continue;
 
+                isWrite = true;
+
+                builder.Append(CreateContents(kvp.Key, kvp.Value.Item1, kvp.Value.Item2, kvp.Value.Item3));
+                builder.AppendLine(delimiterLine);
+            }
+        }
+        else
+        {
+            // [x]MEMO : ここでは「現在ターンの情報しか出さない」を判断しない。判断はボタン側で行う。
             isWrite = true;
 
-            // ターンを表記する設定が有効か? (全てのターンの死亡情報を出す設定 且つ 死亡ターンを表記する設定 の時に有効)
-            var isWritingTurn = PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn.GetBool() && PoliceSurgeonHowManyTurnAgoTheDied.GetBool();
-            var inError = PoliceSurgeon_IncludeErrorInDeathTime.GetBool();
+            var victimPlayerId = victimPlayer.PlayerId;
+            var deadTime = ActualDeathTimeManager[victimPlayerId].Item1;
+            var deadReason = ActualDeathTimeManager[victimPlayerId].Item2;
+            var deadTurn = ActualDeathTimeManager[victimPlayerId].Item3;
 
-            var deadPl = ModHelpers.GetPlayerControl(kvp.Key);
-            builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_main2")}{deadPl.name}");
-
-            var deadTime = kvp.Value.Item1;
-            var deadReason = kvp.Value.Item2;
-
-            switch (deadReason)
-            {
-                case (int)PostMortemCertificate_AddActualDeathTime.DeadTiming.TaskPhase_killed:
-                    if (inError)
-                    {
-                        if (isWritingTurn)
-                            // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) {2:kvp.Value.Item2}秒前 ({3:推定})
-                            builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_AlreadyKnown_WriteTurn"), OfficialDateNotation, MeetingTurn_Now - kvp.Value.Item3, deadTime, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath1"))}");
-                        else// 死亡したとき {0:年月日} {1:kvp.Value.Item2}秒前 ({2:推定})
-                            builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_AlreadyKnown"), OfficialDateNotation, deadTime, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath1"))}");
-                    }
-                    else
-                    {
-                        if (isWritingTurn)
-                            // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) {2:kvp.Value.Item2}秒前 ({3:確認})
-                            builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_AlreadyKnown_WriteTurn"), OfficialDateNotation, MeetingTurn_Now - kvp.Value.Item3, deadTime, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath2"))}");
-                        else// 死亡したとき {0:年月日} {1:kvp.Value.Item2}秒前 ({2:確認})
-                            builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_AlreadyKnown"), OfficialDateNotation, deadTime, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath2"))}");
-                    }
-                    builder.AppendLine("");
-                    builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_DeadReason1")}"); // 死因 不詳の外因死
-                    builder.AppendLine("");
-                    break;
-
-                case (int)PostMortemCertificate_AddActualDeathTime.DeadTiming.TaskPhase_Exited:
-                case (int)PostMortemCertificate_AddActualDeathTime.DeadTiming.MeetingPhase:
-                    if (isWritingTurn)
-                        // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) ({2:頃})
-                        builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_Unknown_WriteTurn"), OfficialDateNotation, MeetingTurn_Now - kvp.Value.Item3, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3"))}");
-                    else// 死亡したとき {0:年月日} ({1:頃})
-                        builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_Unknown"), OfficialDateNotation, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3"))}");
-                    builder.AppendLine("");
-                    builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_DeadReason1")}"); // 死因 不詳の外因死
-                    builder.AppendLine("");
-                    break;
-
-                case (int)PostMortemCertificate_AddActualDeathTime.DeadTiming.Exited:
-                    if (isWritingTurn)
-                        // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) ({2:頃})
-                        builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_Unknown_WriteTurn"), OfficialDateNotation, MeetingTurn_Now - kvp.Value.Item3, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3"))}");
-                    else// 死亡したとき {0:年月日} ({1:頃})
-                        builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_Unknown"), OfficialDateNotation, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3"))}");
-                    builder.AppendLine("");
-                    builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_DeadReason2")}"); // 死因 追放
-                    builder.AppendLine("");
-                    break;
-            }
+            builder.Append(CreateContents(victimPlayerId, deadTime, deadReason, deadTurn));
             builder.AppendLine(delimiterLine);
         }
 
@@ -565,6 +608,11 @@ internal static class PostMortemCertificate_CreateAndGet
 
             builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_NoDeaths"), OfficialDateNotation, "{0}", transRandomText)}");
         }
+
+        // 死体検案書の文字サイズと色をchat式とCustomoverlay式に合わせて変更する
+        var sizeColor = victimPlayer == null ? "<size=90%><color=#c8c2c6>" : "<size=200%><color=#7d7d7d>";
+        builder.Insert(0, sizeColor);
+        builder.AppendLine("</color></size>");
 
         return builder.ToString();
 
@@ -596,5 +644,74 @@ internal static class PostMortemCertificate_CreateAndGet
 
         |-----------------------------------------------------|
         */
+    }
+
+    /// <summary>
+    /// 死体検案書の中身を作成する
+    /// </summary>
+    /// <param name="victimPlayerId">作成対象</param>
+    /// <param name="deadTime">対象の死亡(推定)時刻</param>
+    /// <param name="deadReason">死亡理由</param>
+    /// <param name="DeadTurn">死亡ターン</param>
+    /// <returns>string = 作成対象の死体検案書の文章</returns>
+    private static string CreateContents(byte victimPlayerId, int deadTime, int deadReason, int DeadTurn)
+    {
+        StringBuilder builder = new();
+
+        // ターンを表記する設定が有効か? (全てのターンの死亡情報を出す設定 且つ 死亡ターンを表記する設定 の時に有効)
+        var isWritingTurn = PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn.GetBool() && PoliceSurgeonHowManyTurnAgoTheDied.GetBool();
+        var inError = PoliceSurgeon_IncludeErrorInDeathTime.GetBool();
+
+        var deadPlayer = ModHelpers.GetPlayerControl(victimPlayerId);
+        builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_main2")}<color=#89c3eb>{deadPlayer.name}</color>");
+
+        switch (deadReason)
+        {
+            case (int)PostMortemCertificate_AddActualDeathTime.DeadTiming.TaskPhase_killed:
+                if (inError)
+                {
+                    if (isWritingTurn)
+                        // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) {2:kvp.Value.Item2}秒前 ({3:推定})
+                        builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_AlreadyKnown_WriteTurn"), OfficialDateNotation, MeetingTurn_Now - DeadTurn, deadTime, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath1"))}");
+                    else// 死亡したとき {0:年月日} {1:kvp.Value.Item2}秒前 ({2:推定})
+                        builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_AlreadyKnown"), OfficialDateNotation, deadTime, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath1"))}");
+                }
+                else
+                {
+                    if (isWritingTurn)
+                        // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) {2:kvp.Value.Item2}秒前 ({3:確認})
+                        builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_AlreadyKnown_WriteTurn"), OfficialDateNotation, MeetingTurn_Now - DeadTurn, deadTime, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath2"))}");
+                    else// 死亡したとき {0:年月日} {1:kvp.Value.Item2}秒前 ({2:確認})
+                        builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_AlreadyKnown"), OfficialDateNotation, deadTime, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath2"))}");
+                }
+                builder.AppendLine("");
+                builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_DeadReason1")}"); // 死因 不詳の外因死
+                builder.AppendLine("");
+                break;
+
+            case (int)PostMortemCertificate_AddActualDeathTime.DeadTiming.TaskPhase_Exited:
+            case (int)PostMortemCertificate_AddActualDeathTime.DeadTiming.MeetingPhase:
+                if (isWritingTurn)
+                    // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) ({2:頃})
+                    builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_Unknown_WriteTurn"), OfficialDateNotation, MeetingTurn_Now - DeadTurn, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3"))}");
+                else// 死亡したとき {0:年月日} ({1:頃})
+                    builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_Unknown"), OfficialDateNotation, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3"))}");
+                builder.AppendLine("");
+                builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_DeadReason1")}"); // 死因 不詳の外因死
+                builder.AppendLine("");
+                break;
+
+            case (int)PostMortemCertificate_AddActualDeathTime.DeadTiming.Exited:
+                if (isWritingTurn)
+                    // 死亡したとき {0:年月日} ({1:Value.Item3}ターン前) ({2:頃})
+                    builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_Unknown_WriteTurn"), OfficialDateNotation, MeetingTurn_Now - DeadTurn, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3"))}");
+                else// 死亡したとき {0:年月日} ({1:頃})
+                    builder.AppendLine($"{string.Format(ModTranslation.GetString("PostMortemCertificate_Unknown"), OfficialDateNotation, ModTranslation.GetString("PostMortemCertificate_CauseOfDeath3"))}");
+                builder.AppendLine("");
+                builder.AppendLine($"{ModTranslation.GetString("PostMortemCertificate_DeadReason2")}"); // 死因 追放
+                builder.AppendLine("");
+                break;
+        }
+        return builder.ToString();
     }
 }
