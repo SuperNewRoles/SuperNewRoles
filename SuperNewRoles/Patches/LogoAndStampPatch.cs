@@ -288,7 +288,8 @@ public static class CredentialsPatch
             if (horseBannerSprite == null) horseBannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuperHorseRoles.png", 150f);
         }
 
-        public static Sprite bannerRendSprite {
+        public static Sprite bannerRendSprite
+        {
             get
             {
                 if (HorseModeOption.enableHorseMode) return horseBannerSprite;

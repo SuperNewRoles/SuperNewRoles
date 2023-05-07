@@ -42,7 +42,7 @@ public static class Matryoshka
                 if (RoleClass.Matryoshka.Data[source.PlayerId] != null)
                 {
                     RoleClass.Matryoshka.Data[source.PlayerId].Reported = false;
-                    foreach(SpriteRenderer render in RoleClass.Matryoshka.Data[source.PlayerId].bodyRenderers) render.enabled = true;
+                    foreach (SpriteRenderer render in RoleClass.Matryoshka.Data[source.PlayerId].bodyRenderers) render.enabled = true;
                 }
                 RoleClass.Matryoshka.Data.Remove(source.PlayerId);
             }

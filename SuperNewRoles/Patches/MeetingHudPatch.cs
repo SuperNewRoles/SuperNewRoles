@@ -29,6 +29,10 @@ class VotingComplete
         {
             exiled = null;
         }
+        if (tie && Balancer.currentAbilityUser != null)
+        {
+            Balancer.IsDoubleExile = true;
+        }
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
@@ -230,11 +234,23 @@ class CheckForEndVotingPatch
                         if (ps == null) continue;
                         var voter = ModHelpers.PlayerById(ps.TargetPlayerId);
                         if (voter == null || voter.Data == null || voter.Data.Disconnected || voter.IsBot() || voter.IsDead() || ModHelpers.PlayerById(ps.TargetPlayerId).IsRole(RoleId.Neet)) continue;
+
+                        //バランサー処理
+                        if (Balancer.currentAbilityUser != null)
+                        {
+                            if (ps.VotedFor != Balancer.targetplayerright.PlayerId &&
+                                ps.VotedFor != Balancer.targetplayerleft.PlayerId)
+                            {
+                                ps.VotedFor = ModHelpers.GetRandom(new byte[2] { Balancer.targetplayerright.PlayerId, Balancer.targetplayerleft.PlayerId });
+                            }
+                        }
+
                         //BOT・ニートならスキップ判定
                         if ((ps.VotedFor != 253 && ps.VotedFor != 254 && ModHelpers.PlayerById(ps.VotedFor).IsBot()) || ModHelpers.PlayerById(ps.TargetPlayerId).IsRole(RoleId.Neet))
                         {
                             ps.VotedFor = 253;
                         }
+
                         statesList.Add(new VoterState()
                         {
                             VoterId = ps.TargetPlayerId,
@@ -383,8 +399,12 @@ class CheckForEndVotingPatch
                 exiledPlayer = null;
             }
 
-            __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
+            if (tie && Balancer.currentAbilityUser != null)
+            {
+                exiledPlayer = Balancer.targetplayerleft.Data;
+            }
 
+            __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
 
             return false;
         }
@@ -600,7 +620,7 @@ public static class OpenVotes
                 optdata.SetBool(BoolOptionNames.AnonymousVotes, !RoleClass.Assassin.IsVoteView);
                 break;
         }
-        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, !Mode.PlusMode.PlusGameOptions.IsGhostSeeVote);
+        if (player.IsDead()) optdata.SetBool(BoolOptionNames.AnonymousVotes, !Mode.PlusMode.PlusGameOptions.IsGhostSeeVote && optdata.GetBool(BoolOptionNames.AnonymousVotes));
         Logger.Info("開票しました。", "OpenVotes");
         return optdata.GetBool(BoolOptionNames.AnonymousVotes);
     }

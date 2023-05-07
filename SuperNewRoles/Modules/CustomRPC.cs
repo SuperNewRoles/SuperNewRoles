@@ -195,6 +195,7 @@ public enum RoleId
     OrientalShaman,
     ShermansServant,
     SidekickWaveCannon,
+    Balancer,
     //RoleId
 }
 
@@ -296,10 +297,19 @@ public enum CustomRPC
     CreateShermansServant,
     SetVisible,
     PenguinMeetingEnd,
+    BalancerBalance,
 }
 
 public static class RPCProcedure
 {
+    public static void BalancerBalance(byte sourceId, byte player1Id, byte player2Id)
+    {
+        PlayerControl source = ModHelpers.PlayerById(sourceId);
+        PlayerControl player1 = ModHelpers.PlayerById(player1Id);
+        PlayerControl player2 = ModHelpers.PlayerById(player2Id);
+        if (source is null || player1 is null || player2 is null) return;
+        Balancer.StartAbility(source, player1, player2);
+    }
     public static void SetWiseManStatus(byte sourceId, float rotate, bool Is)
     {
         PlayerControl source = ModHelpers.PlayerById(sourceId);
@@ -1861,6 +1871,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.PenguinMeetingEnd:
                         PenguinMeetingEnd();
+                        break;
+                    case CustomRPC.BalancerBalance:
+                        BalancerBalance(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                 }
             }

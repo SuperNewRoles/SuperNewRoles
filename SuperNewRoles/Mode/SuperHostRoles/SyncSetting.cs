@@ -230,7 +230,7 @@ public static class SyncSetting
         }
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-        optdata.RpcSyncOption(player.GetClientId());
+        else optdata.RpcSyncOption(player.GetClientId());
     }
     public static float KillCoolSet(float cool) { return cool <= 0 ? 0.001f : cool; }
     public static void MurderSyncSetting(PlayerControl player)
@@ -258,7 +258,7 @@ public static class SyncSetting
         }
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-        optdata.RpcSyncOption(player.GetClientId());
+        else optdata.RpcSyncOption(player.GetClientId());
     }
 
     public static void MeetingSyncSettings(this PlayerControl player)
@@ -269,7 +269,7 @@ public static class SyncSetting
 
         optdata.SetBool(BoolOptionNames.AnonymousVotes, OpenVotes.VoteSyncSetting(player));
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-        optdata.RpcSyncOption(player.GetClientId());
+        else optdata.RpcSyncOption(player.GetClientId());
     }
     public static void GamblersetCool(PlayerControl p)
     {
@@ -278,7 +278,7 @@ public static class SyncSetting
         var optdata = OptionData.DeepCopy();
         optdata.SetFloat(FloatOptionNames.KillCooldown, RoleClass.EvilGambler.GetSuc() ? KillCoolSet(RoleClass.EvilGambler.SucCool) : KillCoolSet(RoleClass.EvilGambler.NotSucCool));
         if (p.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-        optdata.RpcSyncOption(p.GetClientId());
+       else  optdata.RpcSyncOption(p.GetClientId());
     }
     public static void DoppelgangerCool(PlayerControl player, PlayerControl target)
     {
@@ -294,7 +294,7 @@ public static class SyncSetting
         }
         else optdata.SetFloat(FloatOptionNames.KillCooldown, KillCoolSet(RoleClass.Doppelganger.NotSucCool));
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-        optdata.RpcSyncOption(player.GetClientId());
+        else optdata.RpcSyncOption(player.GetClientId());
     }
     public static void CustomSyncSettings()
     {
