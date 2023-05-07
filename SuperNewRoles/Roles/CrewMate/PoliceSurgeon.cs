@@ -43,7 +43,7 @@ public static class PoliceSurgeon
 
     public static List<PlayerControl> PoliceSurgeonPlayer;
     public static Color32 color = new(137, 195, 235, byte.MaxValue);
-    private static bool HaveVital;
+    public static bool HaveVital;
     public static int MeetingTurn_Now; // ReportDeadBodyで代入している為 Host以外は正常に反映されていません (SNRはクライアント個人処理の為同時にRpcで送る必要がある)
     public static string OfficialDateNotation;
     /// <summary>
@@ -65,7 +65,7 @@ public static class PoliceSurgeon
     public static Dictionary<int, (int, string)> PostMortemCertificateShortText;
 
     public static Sprite GetButtonSprite() =>
-        ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
+        ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PoliceSurgeonButton.png", 115f);
 
     public static void ClearAndReload()
     {
@@ -272,6 +272,7 @@ internal static class PostMortemCertificate_Display
             targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
             renderer.sprite = GetButtonSprite();
+            renderer.sortingOrder = 1;
             PassiveButton button = targetBox.GetComponent<PassiveButton>();
             button.OnClick.RemoveAllListeners();
             int TargetPlayerId = player.PlayerId;
@@ -332,6 +333,7 @@ internal static class PostMortemCertificate_Display
             {
                 infoUnderlay = UnityEngine.Object.Instantiate(meetingUnderlay, hudManager.transform);
                 infoUnderlay.transform.localPosition = new Vector3(0f, 0f, -900f);
+                infoUnderlay.sortingOrder = 2;
                 infoUnderlay.gameObject.SetActive(true);
                 infoUnderlay.enabled = false;
             }
@@ -346,6 +348,7 @@ internal static class PostMortemCertificate_Display
                 infoOverlay.transform.position = Vector3.zero;
                 // 死体検案書をoverlayの真ん中に表示する
                 infoOverlay.transform.localPosition = new Vector3(-1.5f, 1.15f, -910f);
+                infoOverlay.sortingOrder = 2;
                 infoOverlay.transform.localScale = Vector3.one;
                 infoOverlay.color = Palette.Black;
                 infoOverlay.enabled = false;
@@ -385,7 +388,7 @@ internal static class PostMortemCertificate_Display
             infoOverlay.transform.parent = parent;
 
             infoUnderlay.sprite = colorBG;
-            infoUnderlay.color = new Color(192f / 255f, 198f / 255f, 201f / 255f);
+            infoUnderlay.color = new Color(192f / 255f, 198f / 255f, 201f / 255f); // #c0c6c9 灰青
             infoUnderlay.transform.localScale = new Vector3(7.5f, 5f, 1f);
             infoUnderlay.enabled = true;
 
@@ -396,7 +399,7 @@ internal static class PostMortemCertificate_Display
             infoOverlay.enabled = true;
 
             var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
-            var underlayOpaque = new Color(192f / 255f, 198f / 255f, 201f / 255f);
+            var underlayOpaque = infoUnderlay.color;
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
             {
                 infoUnderlay.color = Color.Lerp(underlayTransparent, underlayOpaque, t);
