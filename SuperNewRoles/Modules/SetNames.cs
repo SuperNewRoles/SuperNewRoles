@@ -206,15 +206,16 @@ public class SetNamesClass
     /// 死亡後役職が見えるかの基本的な条件を取得する　(全員が役職を見られるか/Impostorのみ役職が見られるか)
     /// </summary>
     /// <returns> true:見られる / false:見られない </returns>
-    public static bool DefaultGhostSeeRoles()
+    public static bool DefaultGhostSeeRoles(PlayerControl target = null)
     {
-        if (PlayerControl.LocalPlayer.IsDead())
+        if (target == null) target = PlayerControl.LocalPlayer;
+        if (target.IsDead())
         {
             if (!Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool()) return true;
             else
             {
                 if (Mode.PlusMode.PlusGameOptions.CanGhostSeeRole.GetBool()) return true;
-                else if (!Mode.PlusMode.PlusGameOptions.OnlyImpostorGhostSeeRole.GetBool() || PlayerControl.LocalPlayer.IsImpostor()) return true;
+                else if (!Mode.PlusMode.PlusGameOptions.OnlyImpostorGhostSeeRole.GetBool() || target.IsImpostor()) return true;
             }
         }
         return false;

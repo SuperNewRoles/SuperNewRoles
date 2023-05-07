@@ -303,7 +303,8 @@ public enum CustomRPC
 
 public static class RPCProcedure
 {
-    public static void BalancerBalance(byte sourceId, byte player1Id, byte player2Id){
+    public static void BalancerBalance(byte sourceId, byte player1Id, byte player2Id)
+    {
         PlayerControl source = ModHelpers.PlayerById(sourceId);
         PlayerControl player1 = ModHelpers.PlayerById(player1Id);
         PlayerControl player2 = ModHelpers.PlayerById(player2Id);

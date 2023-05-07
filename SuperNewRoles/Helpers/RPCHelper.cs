@@ -108,15 +108,38 @@ public static class RPCHelper
         val.Write(__instance.NetTransform.lastSequenceId);
         val.EndMessage();
     }
+    public static void RpcSyncOption()
+    {
+        GameManager gm = NormalGameManager.Instance;
+        MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+        writer.StartMessage(5);
+        writer.Write(AmongUsClient.Instance.GameId);
+        {
+            writer.StartMessage(1); //0x01 Data
+            {
+                writer.WritePacked(gm.NetId);
+                writer.StartMessage((byte)4);
+                writer.WriteBytesAndSize(gm.LogicOptions.gameOptionsFactory.ToBytes(GameOptionsManager.Instance.CurrentGameOptions));
+                writer.EndMessage();
+            }
+            writer.EndMessage();
+        }
+        writer.EndMessage();
+
+        AmongUsClient.Instance.SendOrDisconnect(writer);
+        writer.Recycle();
+    }
     public static void RpcSyncOption(this IGameOptions gameOptions, int TargetClientId = -1)
     {
         GameManager gm = NormalGameManager.Instance;
         MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+
         // 書き込み {}は読みやすさのためです。
         if (TargetClientId < 0)
         {
             writer.StartMessage(5);
             writer.Write(AmongUsClient.Instance.GameId);
+            return;
         }
         else
         {
