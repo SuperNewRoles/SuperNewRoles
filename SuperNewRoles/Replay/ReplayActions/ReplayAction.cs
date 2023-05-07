@@ -7,13 +7,17 @@ using Hazel;
 namespace SuperNewRoles.Replay.ReplayActions;
 
 public enum ReplayActionId {
-    MurderPlayer
+    None,
+    MurderPlayer,
+    Exile
 }
 public abstract class ReplayAction
 {
     public float ActionTime = 0f;
     public abstract void ReadReplayFile(BinaryReader reader);
+    public abstract void WriteReplayFile(BinaryWriter writer);
     public abstract void OnAction();
+    public virtual ReplayActionId GetActionId() => ReplayActionId.None;
     public static ReplayAction CreateReplayAction(ReplayActionId id)
     {
         switch (id) {

@@ -1,8 +1,10 @@
+using System.IO;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
@@ -81,9 +83,15 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
-                for (int i = 0; i < 29; i++)
-                {
-                    BotManager.Spawn("よっキングのBot");
+                string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";
+                DirectoryInfo d = new(filePath);
+                Logger.Info("FileName:"+ d.GetFiles()[0].Name);
+                (ReplayData replay, bool IsSuc) = ReplayReader.ReadReplayDataFirst(d.GetFiles()[0].Name);
+                Logger.Info($"IsSuc:{IsSuc}");
+                if (IsSuc) {
+                    Logger.Info($"PlayerCount:{replay.AllPlayersCount}");
+                    Logger.Info($"Mode:{replay.CustomMode}");
+                    Logger.Info($"Time:{replay.RecordTime.ToString()}");
                 }
             }
             if (Input.GetKeyDown(KeyCode.P))

@@ -13,6 +13,13 @@ public class ReplayActionExile : ReplayAction
         //ここにパース処理書く
         exilePlayer = reader.ReadByte();
     }
+    public override void WriteReplayFile(BinaryWriter writer)
+    {
+        writer.Write(ActionTime);
+        //ここにパース処理書く
+        writer.Write(exilePlayer);
+    }
+    public override ReplayActionId GetActionId() => ReplayActionId.Exile;
     //アクション実行時の処理
     public override void OnAction()
     {

@@ -10,7 +10,15 @@ public class ReplayActionTemplate : ReplayAction
     public override void ReadReplayFile(BinaryReader reader) {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
+        sourcePlayer = reader.ReadByte();
     }
+    public override void WriteReplayFile(BinaryWriter writer)
+    {
+        writer.Write(ActionTime);
+        //ここにパース処理書く
+        writer.Write(sourcePlayer);
+    }
+    public override ReplayActionId GetActionId() => ReplayActionId.None;
     //アクション実行時の処理
     public override void OnAction() {
         //ここに処理書く

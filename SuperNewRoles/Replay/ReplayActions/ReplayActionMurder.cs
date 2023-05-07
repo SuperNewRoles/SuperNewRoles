@@ -15,6 +15,14 @@ public class ReplayActionMurder : ReplayAction
         sourcePlayer = reader.ReadByte();
         targetPlayer = reader.ReadByte();
     }
+    public override void WriteReplayFile(BinaryWriter writer)
+    {
+        writer.Write(ActionTime);
+        //ここにパース処理書く
+        writer.Write(sourcePlayer);
+        writer.Write(targetPlayer);
+    }
+    public override ReplayActionId GetActionId() => ReplayActionId.MurderPlayer;
     //アクション実行時の処理
     public override void OnAction()
     {

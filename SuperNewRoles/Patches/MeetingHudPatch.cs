@@ -9,6 +9,7 @@ using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
@@ -493,6 +494,7 @@ class MeetingHudStartPatch
     public static void Postfix(MeetingHud __instance)
     {
         Logger.Info("会議開始時の処理 開始", "MeetingHudStartPatch");
+        Recorder.StartMeeting();
         CustomRoles.OnMeetingStart();
         if (ModeHandler.IsMode(ModeId.SuperHostRoles))
         {
