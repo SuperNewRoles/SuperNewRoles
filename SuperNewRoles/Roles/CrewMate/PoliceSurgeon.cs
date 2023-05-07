@@ -269,10 +269,10 @@ internal static class PostMortemCertificate_Display
             GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
             GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
             targetBox.name = "PoliceSurgeonButton";
-            targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
+            targetBox.transform.localPosition = new Vector3(1f, 0.03f, -10f);
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
             renderer.sprite = GetButtonSprite();
-            renderer.sortingOrder = 1;
+            renderer.sortingOrder = 0;
             PassiveButton button = targetBox.GetComponent<PassiveButton>();
             button.OnClick.RemoveAllListeners();
             int TargetPlayerId = player.PlayerId;
@@ -332,8 +332,7 @@ internal static class PostMortemCertificate_Display
             if (infoUnderlay == null)
             {
                 infoUnderlay = UnityEngine.Object.Instantiate(meetingUnderlay, hudManager.transform);
-                infoUnderlay.transform.localPosition = new Vector3(0f, 0f, -900f);
-                infoUnderlay.sortingOrder = 2;
+                infoUnderlay.transform.localPosition = new Vector3(0f, 0f, -9.367681f);
                 infoUnderlay.gameObject.SetActive(true);
                 infoUnderlay.enabled = false;
             }
