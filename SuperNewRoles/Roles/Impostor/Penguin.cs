@@ -1,9 +1,9 @@
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles.Crewmate;
-using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles.Impostor;
 

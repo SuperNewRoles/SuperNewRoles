@@ -13,6 +13,7 @@ using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using SuperNewRoles.Sabotage;
+using UnityEngine;
 
 namespace SuperNewRoles.Patches;
 
@@ -33,9 +34,24 @@ class WrapUpPatch
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
     public class AirshipExileControllerWrapUpPatch
     {
-        public static void Prefix(AirshipExileController __instance)
+        public static bool Prefix(AirshipExileController __instance)
         {
             WrapUpPatch.Prefix(__instance.exiled);
+            if (Balancer.currentAbilityUser != null && Balancer.IsDoubleExile && __instance != ExileController.Instance)
+            {
+                if (__instance.exiled != null)
+                {
+                    PlayerControl @object = __instance.exiled.Object;
+                    if (@object)
+                    {
+                        @object.Exiled();
+                    }
+                    __instance.exiled.IsDead = true;
+                }
+                GameObject.Destroy(__instance.gameObject);
+                return false;
+            }
+            return true;
         }
         public static void Postfix(AirshipExileController __instance)
         {
@@ -101,6 +117,9 @@ class WrapUpPatch
         Roles.Impostor.Matryoshka.WrapUp();
         Roles.Neutral.PartTimer.WrapUp();
         Roles.Crewmate.KnightProtected_Patch.WrapUp();
+        Clergyman.WrapUp();
+        Balancer.WrapUp(exiled == null ? null : exiled.Object);
+        Speeder.WrapUp();
         Bestfalsecharge.WrapUp();
         CustomRoles.OnWrapUp();
         if (AmongUsClient.Instance.AmHost)

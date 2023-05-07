@@ -1055,7 +1055,11 @@ public static class MurderPlayerPatch
                     }
                 }
             }
-            if (target.IsRole(RoleId.Clergyman))
+            if (target.IsRole(RoleId.Speeder))
+            {
+                if (RoleClass.Speeder.IsSpeedDown) Speeder.SpeedDownEnd();
+            }
+            else if (target.IsRole(RoleId.Clergyman))
             {
                 RPCProcedure.RPCClergymanLightOut(false);
             }
@@ -1218,7 +1222,11 @@ public static class ExilePlayerPatch
         FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Exiled;
         if (ModeHandler.IsMode(ModeId.Default))
         {
-            if (__instance.IsRole(RoleId.Assassin) && !RoleClass.Assassin.MeetingEndPlayers.Contains(__instance.PlayerId))
+            if (__instance.IsRole(RoleId.Speeder))
+            {
+                if (RoleClass.Speeder.IsSpeedDown) Speeder.SpeedDownEnd();
+            }
+            else if (__instance.IsRole(RoleId.Assassin) && !RoleClass.Assassin.MeetingEndPlayers.Contains(__instance.PlayerId))
             {
                 __instance.Revive();
                 __instance.Data.IsDead = false;
