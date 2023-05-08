@@ -35,7 +35,7 @@ public static class RoleClass
     {
         ModHelpers.IdControlDic = new();
         ModHelpers.VentIdControlDic = new();
-        Recorder.ClearAndReloads();
+        ReplayManager.ClearAndReloads();
         BlockPlayers = new();
         IsMeeting = false;
         RandomSpawn.IsFirstSpawn = true;

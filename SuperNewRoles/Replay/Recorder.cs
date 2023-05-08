@@ -14,19 +14,16 @@ namespace SuperNewRoles.Replay
     {
         public static float RecordRate;
         public static bool IsPosFloat;
-        public static bool IsReplayMode;
         public static void ClearAndReloads() {
             RecordRate = 0.5f;
             currenttime = 99999;
             FirstOutfits = new();
             FirstRoles = new();
-            FirstIsImpostor = new();
             writer = null;
             filePath = "";
             PlayerPositions = new();
             ReplayActions = new();
             ReplayActionTime = 0;
-            IsReplayMode = false;
             ReplayReader.ClearAndReloads();
         }
         static GameData.PlayerOutfit CopyOutfit(GameData.PlayerOutfit outfit) {
@@ -46,13 +43,9 @@ namespace SuperNewRoles.Replay
             foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers) {
                 FirstOutfits.Add(player.PlayerId, CopyOutfit(player.DefaultOutfit));
                 RoleId role = RoleId.DefaultRole;
-                bool IsImpostor = false;
                 if (player.Object != null)
                     role = player.Object.GetRole();
-                if (player.Role != null)
-                    IsImpostor = player.Role.IsImpostor;
                 FirstRoles.Add(player.PlayerId, role);
-                FirstIsImpostor.Add(player.PlayerId, IsImpostor);
             }
             WriteReplayDataFirst();
             PlayerPositions = new();
@@ -61,11 +54,11 @@ namespace SuperNewRoles.Replay
                 PlayerPositions.Add(player.PlayerId, new());
             }
             currenttime = 0;
+            ReplayActionTime = 0;
         }
         static float currenttime;
         public static Dictionary<byte, GameData.PlayerOutfit> FirstOutfits;
         public static Dictionary<byte, RoleId> FirstRoles;
-        public static Dictionary<byte, bool> FirstIsImpostor;
         static Dictionary<byte, List<Vector2>> PlayerPositions;
         static List<(byte, byte, float)> MeetingVoteData;
         public static List<ReplayAction> ReplayActions;
@@ -84,7 +77,7 @@ namespace SuperNewRoles.Replay
         }
         public static void StartMeeting()
         {
-            if (IsReplayMode) return;
+            if (ReplayManager.IsReplayMode) return;
             AmongUsClient.Instance.StartCoroutine(SavePositions());
         }
         public static IEnumerator SavePositions() {
@@ -97,6 +90,7 @@ namespace SuperNewRoles.Replay
                 Logger.Info("PlayerPositionsがnullです", "Recorder:SavePositions");
                 yield break;
             }
+            writer.Write(PlayerPositions.Count);
             foreach (var data in PlayerPositions) {
                 int count = 0;
                 writer.Write(data.Key);
@@ -131,6 +125,8 @@ namespace SuperNewRoles.Replay
             writer.Write(false);
         }
         public static void OnEndGame() {
+            if (ReplayManager.IsReplayMode) return;
+            writer.Write(PlayerPositions.Count);
             foreach (var data in PlayerPositions)
             {
                 writer.Write(data.Key);
@@ -149,6 +145,7 @@ namespace SuperNewRoles.Replay
                     }
                 }
             }
+            writer.Write(ReplayActions.Count);
             foreach (ReplayAction action in ReplayActions)
             {
                 writer.Write((byte)action.GetActionId());
@@ -180,7 +177,7 @@ namespace SuperNewRoles.Replay
             ReplayFileWriter.WriteReplayData(writer, RecordRate, IsPosFloat);
             ReplayFileWriter.WriteGameOptionData(writer);
             ReplayFileWriter.WriteCustomOptionData(writer);
-            ReplayFileWriter.WritePlayerData(writer, FirstOutfits, FirstRoles, FirstIsImpostor);
+            ReplayFileWriter.WritePlayerData(writer, FirstOutfits, FirstRoles);
         }
     }
 }

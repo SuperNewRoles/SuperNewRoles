@@ -3,6 +3,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
@@ -338,6 +339,7 @@ public static class SyncSetting
         {
             OptionData = GameOptionsManager.Instance.CurrentGameOptions.DeepCopy();
             OnGameEndPatch.PlayerData = new();
+            ReplayLoader.CoStartGame();
         }
     }
 }

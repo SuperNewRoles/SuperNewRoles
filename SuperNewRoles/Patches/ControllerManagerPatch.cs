@@ -72,7 +72,7 @@ class ControllerManagerUpdatePatch
             // Spawn dummys
             if (Input.GetKeyDown(KeyCode.G))
             {
-                PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text);
+                PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text, false);
 
                 bot.NetTransform.SnapTo(PlayerControl.LocalPlayer.transform.position);
                 //new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
@@ -87,6 +87,7 @@ class ControllerManagerUpdatePatch
                 DirectoryInfo d = new(filePath);
                 Logger.Info("FileName:"+ d.GetFiles()[0].Name);
                 (ReplayData replay, bool IsSuc) = ReplayReader.ReadReplayDataFirst(d.GetFiles()[0].Name);
+                ReplayManager.IsReplayMode = true;
                 Logger.Info($"IsSuc:{IsSuc}");
                 if (IsSuc) {
                     Logger.Info($"PlayerCount:{replay.AllPlayersCount}");

@@ -23,6 +23,8 @@ public abstract class ReplayAction
         switch (id) {
             case ReplayActionId.MurderPlayer:
                 return new ReplayActionMurder();
+            case ReplayActionId.Exile:
+                return new ReplayActionExile();
         }
         Logger.Info("typeに合うReplayActionがありませんでした。:"+id);
         return null;

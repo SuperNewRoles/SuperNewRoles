@@ -226,7 +226,7 @@ public static class ModHelpers
     public static Dictionary<byte, PlayerControl> AllPlayersById()
     {
         Dictionary<byte, PlayerControl> res = new();
-        foreach (CachedPlayer player in CachedPlayer.AllPlayers)
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             res.Add(player.PlayerId, player);
         return res;
     }

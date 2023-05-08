@@ -75,6 +75,7 @@ public static class ReplayFileReader
             };
             if (reader.ReadBoolean())
             {
+                player.IsBot = reader.ReadBoolean();
                 player.PlayerName = reader.ReadString();
                 player.ColorId = reader.ReadInt32();
                 player.HatId = reader.ReadString();
@@ -91,7 +92,7 @@ public static class ReplayFileReader
                     player.Tasks.Add((taskId, taskType));
                 }
                 player.RoleId = (RoleId)reader.ReadByte();
-                player.IsImpostor = reader.ReadBoolean();
+                player.RoleType = (RoleTypes)reader.ReadByte();
             }
             else
             {

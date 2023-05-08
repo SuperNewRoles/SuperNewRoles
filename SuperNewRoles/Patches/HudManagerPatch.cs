@@ -19,7 +19,7 @@ class HudManagerPatch
         {
             WallHack.WallHackUpdate();
             if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-            Recorder.HudUpdate();
+            ReplayManager.HudUpdate();
             Mode.Zombie.FixedUpdate.ZombieTimerUpdate(__instance);
             CustomButton.HudUpdate();
             ButtonTime.Update();

@@ -56,7 +56,7 @@ public class IntroPatch
             {
                 data._titleDesc = IntroData.GetTitle(data.NameKey, data.TitleNum);
             }
-            Recorder.CoIntroStart();
+            ReplayManager.CoIntroStart();
         }
     }
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]

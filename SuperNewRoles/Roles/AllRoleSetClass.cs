@@ -6,12 +6,21 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles;
 
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetRole))]
+class SetRoleLogger
+{
+    public static void Postfix(PlayerControl __instance, RoleTypes role)
+    {
+        Logger.Info($"{__instance.Data.PlayerName} の役職が {role} になりました", "SetRole");
+    }
+}
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
 class RpcSetRoleReplacer
 {
@@ -64,6 +73,7 @@ class RoleManagerSelectRolesPatch
     public static bool IsNotDesync = false;
     public static bool Prefix(RoleManager __instance)
     {
+        ReplayLoader.AllRoleSet();
         AllRoleSetClass.SetPlayerNum();
         IsNotPrefix = false;
         IsSetRoleRPC = false;

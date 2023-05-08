@@ -63,23 +63,25 @@ public static class ReplayFileWriter
             writer.Write(option.GetSelection());
         }
     }
-    public static void WritePlayerData(BinaryWriter writer, Dictionary<byte, GameData.PlayerOutfit> FirstOutfits, Dictionary<byte, RoleId> FirstRoleIds, Dictionary<byte, bool> FirstIsImpostors)
+    public static void WritePlayerData(BinaryWriter writer, Dictionary<byte, GameData.PlayerOutfit> FirstOutfits, Dictionary<byte, RoleId> FirstRoleIds)
     {
         foreach (GameData.PlayerInfo player in GameData.Instance.AllPlayers)
         {
             writer.Write(player.PlayerId);
             var outfitdata = FirstOutfits.FirstOrDefault(x => x.Key == player.PlayerId);
             var roledata = FirstRoleIds.FirstOrDefault(x => x.Key == player.PlayerId);
-            var isimpostordata = FirstIsImpostors.FirstOrDefault(x => x.Key == player.PlayerId);
             //nullチェック
             if (outfitdata.Equals(default(Dictionary<byte, GameData.PlayerOutfit>)) ||
-                roledata.Equals(default(Dictionary<byte, RoleId>)) ||
-                isimpostordata.Equals(default(Dictionary<byte, bool>)))
+                roledata.Equals(default(Dictionary<byte, RoleId>)))
             {
                 writer.Write(false);
                 continue;
             }
             writer.Write(true);
+            if (player.Object != null && player.Object.IsBot())
+                writer.Write(true);
+            else
+                writer.Write(false);
             GameData.PlayerOutfit outfit = outfitdata.Value;
             writer.Write(outfit.PlayerName);
             writer.Write(outfit.ColorId);
@@ -95,7 +97,7 @@ public static class ReplayFileWriter
                 writer.Write(task.TypeId);
             }
             writer.Write((byte)roledata.Value);
-            writer.Write(isimpostordata.Value);
+            writer.Write((byte)player.Role.Role);
         }
     }
 }
