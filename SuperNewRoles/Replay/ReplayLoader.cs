@@ -32,7 +32,7 @@ namespace SuperNewRoles.Replay
                     Bot.Data.Tasks.Add(new TaskInfo(player.Tasks[i].Item2, player.Tasks[i].Item1));
                     Bot.Data.Tasks[i].Id = player.Tasks[i].Item1;
                 }
-                Bot.Data.Object.SetTasks(Bot.Data.Tasks);
+                Bot.SetTasks(Bot.Data.Tasks);
             }
         }
         public static void UpdateLocalPlayerFirst() {
@@ -73,12 +73,12 @@ namespace SuperNewRoles.Replay
             IsStarted = true;
             GetPosAndActionsThisTurn();
             if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
-                actiontime = ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime - 0.8f;
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-            {
-                if (p.PlayerId == PlayerControl.LocalPlayer.PlayerId)
-                    p.SetRole(RoleTypes.CrewmateGhost);
-            }
+                actiontime = ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
+            PlayerControl.LocalPlayer.Exiled();
+            PlayerControl.LocalPlayer.SetTasks(new());
+            PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.transform.parent.gameObject.SetActive(false);
+            PlayerControl.LocalPlayer.cosmetics.gameObject.SetActive(false);
+            PlayerControl.LocalPlayer.cosmetics.nameText.transform.parent.gameObject.SetActive(false);
         }
         static bool IsStarted;
         public static void AllRoleSet()
@@ -87,7 +87,7 @@ namespace SuperNewRoles.Replay
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    RoleTypes role = RoleTypes.CrewmateGhost;
+                    RoleTypes role = RoleTypes.Crewmate;
                     if (p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
                         ReplayPlayer rp = ReplayManager.CurrentReplay.ReplayPlayers.FirstOrDefault(x => x.PlayerId == p.PlayerId);

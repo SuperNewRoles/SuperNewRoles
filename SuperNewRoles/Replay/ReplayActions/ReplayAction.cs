@@ -9,7 +9,9 @@ namespace SuperNewRoles.Replay.ReplayActions;
 public enum ReplayActionId {
     None,
     MurderPlayer,
-    Exile
+    Exile,
+    SetRole,
+    SetCosmetics,
 }
 public abstract class ReplayAction
 {

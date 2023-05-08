@@ -15,7 +15,7 @@ namespace SuperNewRoles.Replay
         public static float RecordRate;
         public static bool IsPosFloat;
         public static void ClearAndReloads() {
-            RecordRate = 0.5f;
+            RecordRate = 0.1f;
             currenttime = 99999;
             FirstOutfits = new();
             FirstRoles = new();

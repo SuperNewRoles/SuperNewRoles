@@ -4,6 +4,7 @@ using AmongUs.GameOptions;
 using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
@@ -361,6 +362,7 @@ public static class RoleHelpers
 
     public static void SetRole(this PlayerControl player, RoleId role)
     {
+        ReplayActionSetRole.Create(player.PlayerId, role);
         if (!Spelunker.CheckSetRole(player, role)) return;
         if (player.IsRole(RoleId.Doppelganger) && role != RoleId.Doppelganger)
         {
