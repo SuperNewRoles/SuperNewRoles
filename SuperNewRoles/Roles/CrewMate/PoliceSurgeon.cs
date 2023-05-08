@@ -302,7 +302,7 @@ internal static class PostMortemCertificate_Display
             GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
             GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
             targetBox.name = "PoliceSurgeonButton";
-            targetBox.transform.localPosition = new Vector3(1f, 0.03f, -10f);
+            targetBox.transform.localPosition = new Vector3(1f, 0.03f, -8.0f);
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
             renderer.sprite = GetButtonSprite();
             renderer.sortingOrder = 0;
@@ -379,8 +379,7 @@ internal static class PostMortemCertificate_Display
                 infoOverlay.alignment = TMPro.TextAlignmentOptions.TopLeft;
                 infoOverlay.transform.position = Vector3.zero;
                 // 死体検案書をoverlayの真ん中に表示する
-                infoOverlay.transform.localPosition = new Vector3(-1.5f, 1.15f, -910f);
-                infoOverlay.sortingOrder = 2;
+                infoOverlay.transform.localPosition = new Vector3(-1.5f, 1.15f, -10f);
                 infoOverlay.transform.localScale = Vector3.one;
                 infoOverlay.color = Palette.Black;
                 infoOverlay.enabled = false;
