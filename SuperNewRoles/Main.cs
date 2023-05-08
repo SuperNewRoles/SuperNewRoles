@@ -21,7 +21,7 @@ namespace SuperNewRoles;
 [BepInIncompatibility("com.tugaru.TownOfPlus")]
 [BepInProcess("Among Us.exe")]
 public partial class SuperNewRolesPlugin : BasePlugin
-{    
+{
     public static readonly string VersionString = $"{Assembly.GetExecutingAssembly().GetName().Version}";
 
     public static bool IsBeta = IsViewText && ThisAssembly.Git.Branch != MasterBranch;

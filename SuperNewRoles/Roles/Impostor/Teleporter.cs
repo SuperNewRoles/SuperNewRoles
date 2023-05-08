@@ -33,7 +33,8 @@ class Teleporter
     {
         return Player.IsRole(RoleId.Teleporter);
     }
-    public static float CoolTime {
+    public static float CoolTime
+    {
         get
         {
             switch (PlayerControl.LocalPlayer.GetRole())

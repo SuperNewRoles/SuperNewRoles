@@ -116,7 +116,7 @@ DarkerColor,darker,暗い,暗,暗
 
 # CustomOptions
 MapCustom,Map Custom,マップ改造,地图设置,地圖設定
-SecretRoom,(Airship)Secret Room,(エアーシップ)シークレットルーム,空艇：机密室,AirShip：密室
+SecretRoom,(Airship)Secret Room,(エアーシップ)シークレットルーム,Airship：机密室,AirShip：密室
 enableMirrorMap,enable MirrorMap,反転マップを有効にする,启用镜像地图,啟動鏡像地圖
 SettingpresetSelection,Preset,プリセット,预设,預設
 SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>设置,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>設定
@@ -236,6 +236,7 @@ SettingSuperHostRolesMode,Super Host Roles Mode,SuperHostRolesの設定,SuperHos
 SettingZombieMode,Zombie Mode,ゾンビモードの設定,生化危机模式设置,殭屍模式設定
 SettingRandomColorMode,Random Color Mode,ランダムカラーモードの設定,随机颜色模式设置,隨機顏色模式設定
 SettingDetectiveMode,Detective Mode,探偵モードの設定,侦探模式设置,偵探模式設定
+DefaultModeName,Defalut Mode,通常モード,,預設模式
 HideAndSeekModeName,Hide And Seek,かくれんぼ,躲猫猫,躲貓貓
 BattleRoyalModeName,Battle Royal,バトルロイヤル,大逃杀,大逃殺
 SuperHostRolesModeName,Super Host Roles,SuperHostRoles,Super Host Roles,SuperHostRoles
@@ -257,6 +258,8 @@ DetectiveTitle1,Guess and win over your crewmates!,推理してクルーメイ�
 BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り生存人数がわかる,所有玩家可见存活玩家数,所有玩家可見存活玩家總數
 BattleRoyalIsTeamBattle,Team competition,チーム戦,启用团队赛,團體戰
 BattleRoyalTeamAmount,Number of teams,チーム数,团队数,團隊數
+BattleRoyalIsKillCountView,Display kill count,キル数を表示する,,顯示擊殺數
+BattleRoyalIsKillCountViewSelfOnly,Show only to yourself,自分のみに表示する,,只顯示自己的擊殺數
 BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数,从游戏开始到玩家可击杀经过的时间,可擊殺所需時間
 ZombieZombieName,Zombie,ゾンビ,僵尸,殭屍
 ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよう,感染他人获得胜利,感染他人以獲得勝利
@@ -546,6 +549,7 @@ EvilGuesserTitle1,Guess the position of the camp other than Impostor.,インポ�
 EvilGuesserTitle2,He dies from the one who named the roll.,迂闊に名乗ればあの世行き,,太過高調將會死於他人之手
 EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる,邪恶的赌怪能否在一次会议中多次猜测,邪惡的賭怪能否在一次會議中多次猜測
 EvilGuesserShortMaxCountSetting,Number of times you can hit,打てる最大数,邪恶的赌怪最大可猜测次数,邪惡的賭怪最大可猜測次數
+EvilGuesserCanCrewShotSetting,You Can hit Crewmates,クルーメイトを打てる,邪恶的赌怪可以猜测“船员”,邪惡的賭怪可以猜測船員陣營職業
 NextPage,Next Page,次のページへ,下一页,下一頁
 PreviousPage,Previous Page,前のページへ,上一页,上一頁
 VultureName,Vulture,ヴァルチャー,秃鹫,禿鷲
@@ -961,7 +965,7 @@ NeetName,Neet,ニート,废柴,尼特
 NeetTitle1,NeetLet others handle it.,他人に任せよう,今天也没什么干劲呢，明天再努力吧,交給其他人吧
 FastMakerName,Fast Maker,ファストメーカー,洗脑师,洗腦師
 FastMakerTitle1,Let's make Madmate with a light heart.,軽い気持ちでマッドメイトを作ろう,让船员背叛成为你的俘虏,讓船員背叛成為你的手下
-FastMakerDescription,This role can create a Mad Mate with the first kill.,初手キルでマッドメイトを作成出来るインポスターです。,,首次擊殺可以使船員背叛
+FastMakerDescription,This role can create a Mad Mate with the first kill.,初手キルでマッドメイトを作成出来るインポスターです。,洗脑师的首次击杀不会造成死亡，而是将击杀目标变为叛徒,首次擊殺可以使船員背叛
 KillName,KILL,キル,击杀,擊殺
 JackalCreateFriendSetting,Can Create JackalFriends,ジャッカルフレンズを作れる,豺狼可以将一名玩家招募为狈,豺狼可以將一名玩家招募為狽
 ToiletFanName,Toilet Fan,トイレファン,腹泻者,腹瀉者
@@ -1308,6 +1312,15 @@ ShermansServantDescription,It is a sidekick to the Oriental shaman.\nIt is possi
 ShermansServantTransformationCoolTimeSetting,Sherman's servant's transformation cool time,式神の変身クールタイム,式神化形冷却,式神化形冷卻時間
 ShermansServantSuicideCoolTimeSetting,Sherman's servant suicide cool time,式神の自決クールタイム,式神自杀冷却,式神自殺冷卻時間
 ShermansServantTransformationButtonName,Metamorphosis,変身,化形,化形
+BalancerName,Balancer,天秤,大神官,天秤
+BalancerTitle1,(x+y)/2,(x+y)/2,审判他人罪孽的轻重,(x+y)/2
+BalancerTitleTextEither,Put it one way or the other.,どちらかに入れろ,到底要选哪个呢,要選誰才好呢
+BalancerTitleTextAverage,Seek balance.,バランスを求めよ。,寻求平衡,尋求平衡
+BalancerTitleTextYouVoteEither,Which way do you want to vote it?,どっちに入れる？,要投给谁？,要投誰？
+BalancerTitleTextEitherExile,Which way do you want to exile it?,どっちを追放する？,要放逐谁？,要放逐誰？
+BalancerTitleTextWhoIsImpostor,Which is the Imposter? Or the other...,インポスターはどっちだ？それとも他か...,内鬼在这边？还是那边呢……,誰是內鬼？還是他是．．．
+BalancerDoubleExileText,Both were exiled.,どちらも追放された。,二者一同放逐,兩者皆被放逐
+BalancerVoteTime,Votetime,天秤の投票時間,审判时间,天秤的投票時間
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示
