@@ -11,6 +11,8 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
+using UnhollowerBaseLib;
+using static MeetingHud;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Roles.Crewmate.PoliceSurgeon;
 
@@ -469,6 +471,36 @@ internal static class PostMortemCertificate_Display
         {
             if (overlayShown) HideInfoOverlay();
             else ShowInfoOverlay(target);
+        }
+    }
+
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CastVote)), HarmonyPostfix]
+    /// <summary>
+    /// 自投票リセット形式での死体検案書閲覧要求
+    /// </summary>
+    /// <param name="srcPlayerId">投票者のplayerId</param>
+    /// <param name="suspectPlayerId">投票先のplayerId</param>
+    /// <param name="__instance"></param>
+    private static void MeetingHudCastVote_Postfix(byte srcPlayerId, byte suspectPlayerId, MeetingHud __instance)
+    {
+        if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
+        if (PoliceSurgeonPlayer.Count <= 0) return;
+
+        PlayerControl srcPlayer = ModHelpers.GetPlayerControl(srcPlayerId);
+        PlayerControl suspectPlayer = ModHelpers.GetPlayerControl(suspectPlayerId);
+        if (!(srcPlayer == suspectPlayer && srcPlayer.IsRole(RoleId.PoliceSurgeon))) return;
+
+        Il2CppStructArray<VoterState> array = new(__instance.playerStates.Length);
+
+        for (int i = 0; i < __instance.playerStates.Length; i++)
+        {
+            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+            if (srcPlayerId != playerVoteArea.TargetPlayerId) continue;
+
+            playerVoteArea.UnsetVote();
+            __instance.RpcClearVote(srcPlayer.GetClientId());
+
+            Patches.AddChatPatch.SendCommand(srcPlayer, "", PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(srcPlayer));
         }
     }
 }
