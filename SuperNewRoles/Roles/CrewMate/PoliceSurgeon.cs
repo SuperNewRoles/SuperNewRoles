@@ -6,6 +6,8 @@ using System.Text;
 using AmongUs.Data;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using Hazel;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
@@ -110,36 +112,57 @@ public static class PoliceSurgeon
 /// </summary>
 internal static class PostMortemCertificate_AddActualDeathTime
 {
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody)), HarmonyPostfix]
-    internal static void ReportDeadBody_Postfix()
+#pragma warning disable 8321
+    // 警察医が存在しない場合読む必要のないHarmonyPatchをまとめている
+    internal static void Harmony()
     {
-        MeetingTurn_Now++;
-        AddActualDeathTime((int)DeadTiming.TaskPhase_killed); // タスクフェイズ中の死亡を処理する。
-        //[ ]MEMO : ここでLateTaskでPoliceSurgeon_ActualDeathTimesをRPCで送る
+        if (PoliceSurgeonPlayer.Count <= 0) return; // 警察医が存在しない場合harmonyを読まないようにする。
+
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ReportDeadBody)), HarmonyPostfix]
+        static void ReportDeadBody_Postfix()
+        {
+            MeetingTurn_Now++;
+            AddActualDeathTime((int)DeadTiming.TaskPhase_killed); // タスクフェイズ中の死亡を処理する。
+            //[x]MEMO : ここでLateTaskでPoliceSurgeon_ActualDeathTimesをRPCで送る <= 此処じゃダメで草 会議終了時とかの処理ができない&ラグ影響大きそう AddActualDeathTimeの処理内に移動ホストの記録と送信を同時で行う。
+        }
+
+        [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting)), HarmonyPostfix]
+        // 会議中の死亡を記録する。
+        static void CheckForEndVoting_Postfix() => AddActualDeathTime((int)DeadTiming.MeetingPhase);
+
+        [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp)), HarmonyPostfix]
+        // 追放による死亡を記録する。(Airship以外)
+        static void WrapUp_Postfix(ExileController __instance)
+        {
+            if (__instance.exiled != null && __instance.exiled.Object == null) __instance.exiled = null;
+            PlayerControl exiledObject = __instance.exiled != null ? __instance.exiled.Object : null;
+            AddActualDeathTime((int)DeadTiming.Exited, exiledObject);
+        }
+
+        [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn)), HarmonyPostfix]
+        // 追放による死亡を記録する。(Airship)
+        static void WrapUpAndSpawn_Postfix(AirshipExileController __instance)
+        {
+            if (__instance.exiled != null && __instance.exiled.Object == null) __instance.exiled = null;
+            PlayerControl exiledObject = __instance.exiled != null ? __instance.exiled.Object : null;
+            AddActualDeathTime((int)DeadTiming.Exited, exiledObject);
+        }
+#pragma warning restore 8321
     }
 
-    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting)), HarmonyPostfix]
-    // 会議中の死亡を記録する。
-    internal static void CheckForEndVoting_Postfix() => AddActualDeathTime((int)DeadTiming.MeetingPhase);
-
-    [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp)), HarmonyPostfix]
-    // 追放による死亡を記録する。(Airship以外)
-    internal static void WrapUp_Postfix(ExileController __instance)
+    /// <summary>
+    /// ホストからrpcで送られた死体検案書用死亡情報を辞書[ActualDeathTimeManager]に格納する
+    /// </summary>
+    /// <param name="victimPlayerId">死者のPlayerId => Key</param>
+    /// <param name="actualDeathTime">死亡(推定)時刻 => value.Item1</param>
+    /// <param name="deadReason">死因 => value.Item2</param>
+    /// <param name="nowTurn">現在ターン数 => value.Item3 & MeetingTurn_Now</param>
+    internal static void RPCImportActualDeathTimeManager(byte victimPlayerId, byte actualDeathTime, byte deadReason, byte nowTurn)
     {
-        if (__instance.exiled != null && __instance.exiled.Object == null) __instance.exiled = null;
-        PlayerControl exiledObject = __instance.exiled != null ? __instance.exiled.Object : null;
-        AddActualDeathTime((int)DeadTiming.Exited, exiledObject);
+        MeetingTurn_Now = nowTurn;
+        if (!ActualDeathTimeManager.ContainsKey(victimPlayerId))
+            ActualDeathTimeManager.Add(victimPlayerId, (actualDeathTime, deadReason, nowTurn));
     }
-
-    [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn)), HarmonyPostfix]
-    // 追放による死亡を記録する。(Airship)
-    internal static void WrapUpAndSpawn_Postfix(AirshipExileController __instance)
-    {
-        if (__instance.exiled != null && __instance.exiled.Object == null) __instance.exiled = null;
-        PlayerControl exiledObject = __instance.exiled != null ? __instance.exiled.Object : null;
-        AddActualDeathTime((int)DeadTiming.Exited, exiledObject);
-    }
-
     /// <summary>
     /// 死亡(推定)時刻の計算 & 辞書[ActualDeathTimeManager]に全死亡情報を保存する。
     /// </summary>
@@ -177,6 +200,16 @@ internal static class PostMortemCertificate_AddActualDeathTime
 
             // 死亡情報を一元管理している辞書に保存する。(この辞書に保存するのはここでのみ)
             ActualDeathTimeManager.Add(p.PlayerId, (actualDeathTime, deadReason, MeetingTurn_Now));
+
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles)) continue; // SHRの場合RPCは送らない
+
+            // ゲストのActualDeathTimeManagerに死亡情報を保存させるために送信
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.PoliceSurgeonSendActualDeathTimeManager);
+            writer.Write(p.PlayerId);
+            writer.Write((byte)actualDeathTime);
+            writer.Write((byte)deadReason);
+            writer.Write((byte)MeetingTurn_Now);
+            writer.EndRPC();
         }
     }
 

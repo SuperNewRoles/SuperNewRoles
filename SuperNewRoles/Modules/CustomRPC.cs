@@ -299,6 +299,7 @@ public enum CustomRPC
     SetVisible,
     PenguinMeetingEnd,
     BalancerBalance,
+    PoliceSurgeonSendActualDeathTimeManager,
 }
 
 public static class RPCProcedure
@@ -1875,6 +1876,9 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.BalancerBalance:
                         BalancerBalance(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.PoliceSurgeonSendActualDeathTimeManager:
+                        PostMortemCertificate_AddActualDeathTime.RPCImportActualDeathTimeManager(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                 }
             }
