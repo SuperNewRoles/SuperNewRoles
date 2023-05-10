@@ -268,27 +268,74 @@ internal static class PostMortemCertificate_AddActualDeathTime
     }
 }
 
-[HarmonyPatch] // [ ]MEMO : HarmonyPatchだけを纏めた内部クラスも作成する。
+[HarmonyPatch] // [x]MEMO : HarmonyPatchだけを纏めた内部クラスも作成する。
 /// <summary>
 /// 死体検案書の表示関連のメソッドを集約したクラス
 /// </summary>
 internal static class PostMortemCertificate_Display
 {
-    // 会議開始時 警察医に死体検案書を送信する。
-    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start)), HarmonyPostfix]
-    private static void MeetingHudStart_Postfix(MeetingHud __instance)
+#pragma warning disable 8321
+    // 警察医が存在しない場合読む必要のないHarmonyPatchをまとめている
+    internal static void Harmony()
     {
-        Event(__instance);
+        if (PoliceSurgeonPlayer.Count <= 0) return; // 警察医が存在しない場合harmonyを読まないようにする。
 
-        if (!AmongUsClient.Instance.AmHost) return;
-
-        bool canResend = PoliceSurgeonCanResend.GetBool();
-        foreach (var pl in PoliceSurgeonPlayer)
+        // 会議開始時 警察医に死体検案書を送信する。
+        [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start)), HarmonyPostfix]
+        static void MeetingHudStart_Postfix(MeetingHud __instance)
         {
-            Patches.AddChatPatch.SendCommand(pl, "", PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(pl));
-            if (canResend) Patches.AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), AboutResendPostMortemCertificate(), "#89c3eb");
+            Event(__instance);
+
+            if (!AmongUsClient.Instance.AmHost) return;
+
+            bool canResend = PoliceSurgeonCanResend.GetBool();
+            foreach (var pl in PoliceSurgeonPlayer)
+            {
+                Patches.AddChatPatch.SendCommand(pl, "", PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(pl));
+                if (canResend) Patches.AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), AboutResendPostMortemCertificate(), "#89c3eb");
+            }
+        }
+
+        // overlayを閉じる時。
+        [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update)), HarmonyPostfix]
+        static void KeyboardJoystickUpdatePostfix(KeyboardJoystick __instance)
+        {
+            if (!PlayerControl.LocalPlayer.IsRole(RoleId.PoliceSurgeon)) return;
+            // チャットを開いた時、Esc, Tab, hキーを押した時に 死体検案書が開かれていれば 死体検案書を閉じる。
+            if (!OverlayInfo.overlayShown) return;
+            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen
+                || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.H))
+                OverlayInfo.HideInfoOverlay();
+        }
+
+        [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CastVote)), HarmonyPrefix]
+        /// <summary>
+        /// 自投票リセット形式での死体検案書閲覧要求
+        /// </summary>
+        /// <param name="srcPlayerId">投票者のplayerId</param>
+        /// <param name="suspectPlayerId">投票先のplayerId</param>
+        /// <param name="__instance"></param>
+        /// <returns> true:投票を反映する / false:投票を反映しない </returns>
+        static bool MeetingHudCastVote_Prefix(byte srcPlayerId, byte suspectPlayerId, MeetingHud __instance)
+        {
+            // SHRで, 設定が有効な時, 警察医が自投票していたら
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
+            if (!PoliceSurgeonCanResend.GetBool()) return true;
+
+            if (srcPlayerId != suspectPlayerId) return true;
+
+            PlayerControl srcPlayer = ModHelpers.GetPlayerControl(srcPlayerId);
+            if (!srcPlayer.IsRole(RoleId.PoliceSurgeon)) return true;
+
+            __instance.RpcClearVote(srcPlayer.GetClientId()); // 投票を解除する
+            // 死体検案書全文を送信する。
+            Patches.AddChatPatch.SendCommand(srcPlayer, "", PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(srcPlayer));
+
+            return false; // 投票を無効化する
         }
     }
+#pragma warning restore 8321
+
     // 死体検案書再確認方法に関するシステムメッセージ
     private static string AboutResendPostMortemCertificate()
     {
@@ -350,18 +397,6 @@ internal static class PostMortemCertificate_Display
         if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && OverlayInfo.overlayShown)
             OverlayInfo.HideInfoOverlay();
         else OverlayInfo.YoggleInfoOverlay(target);
-    }
-
-    // overlayを閉じる時。
-    [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update)), HarmonyPostfix]
-    private static void KeyboardJoystickUpdatePostfix(KeyboardJoystick __instance)
-    {
-        if (!PlayerControl.LocalPlayer.IsRole(RoleId.PoliceSurgeon)) return;
-        // チャットを開いた時、Esc, Tab, hキーを押した時に 死体検案書が開かれていれば 死体検案書を閉じる。
-        if (!OverlayInfo.overlayShown) return;
-        if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen
-            || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.H))
-            OverlayInfo.HideInfoOverlay();
     }
 
     // 死体検案書用のoverlayの作成に関わるクラス
@@ -498,32 +533,6 @@ internal static class PostMortemCertificate_Display
             if (overlayShown) HideInfoOverlay();
             else ShowInfoOverlay(target);
         }
-    }
-
-    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CastVote)), HarmonyPrefix]
-    /// <summary>
-    /// 自投票リセット形式での死体検案書閲覧要求
-    /// </summary>
-    /// <param name="srcPlayerId">投票者のplayerId</param>
-    /// <param name="suspectPlayerId">投票先のplayerId</param>
-    /// <param name="__instance"></param>
-    /// <returns> true:投票を反映する / false:投票を反映しない </returns>
-    private static bool MeetingHudCastVote_Prefix(byte srcPlayerId, byte suspectPlayerId, MeetingHud __instance)
-    {
-        // SHRで, 設定が有効な時, 警察医が自投票していたら
-        if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
-        if (PoliceSurgeonPlayer.Count <= 0 || !PoliceSurgeonCanResend.GetBool()) return true;
-
-        if (srcPlayerId != suspectPlayerId) return true;
-
-        PlayerControl srcPlayer = ModHelpers.GetPlayerControl(srcPlayerId);
-        if (!srcPlayer.IsRole(RoleId.PoliceSurgeon)) return true;
-
-        __instance.RpcClearVote(srcPlayer.GetClientId()); // 投票を解除する
-        // 死体検案書全文を送信する。
-        Patches.AddChatPatch.SendCommand(srcPlayer, "", PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(srcPlayer));
-
-        return false; // 投票を無効化する
     }
 }
 
