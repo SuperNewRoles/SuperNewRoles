@@ -25,6 +25,7 @@ public static class PoliceSurgeon
     public static CustomOption PoliceSurgeonHaveVitalsInTaskPhase;
     public static CustomOption PoliceSurgeonVitalsDisplayCooldown;
     public static CustomOption PoliceSurgeonBatteryDuration;
+    public static CustomOption PoliceSurgeonCanResend;
     public static CustomOption PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn;
     public static CustomOption PoliceSurgeonHowManyTurnAgoTheDied;
     public static CustomOption PoliceSurgeon_IncludeErrorInDeathTime;
@@ -38,6 +39,7 @@ public static class PoliceSurgeon
         PoliceSurgeonHaveVitalsInTaskPhase = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonHaveVitalsInTaskPhase", false, PoliceSurgeonOption); optionId++;
         PoliceSurgeonVitalsDisplayCooldown = Create(optionId, true, CustomOptionType.Crewmate, "VitalsDisplayCooldown", 15f, 5f, 60f, 5f, PoliceSurgeonHaveVitalsInTaskPhase); optionId++;
         PoliceSurgeonBatteryDuration = Create(optionId, true, CustomOptionType.Crewmate, "BatteryDuration", 5f, 5f, 30f, 5f, PoliceSurgeonHaveVitalsInTaskPhase); optionId++;
+        PoliceSurgeonCanResend = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonCanResend", false, PoliceSurgeonCanResend); optionId++;
         PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn", true, PoliceSurgeonOption); optionId++;
         PoliceSurgeonHowManyTurnAgoTheDied = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonHowManyTurnAgoTheDied", false, PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn); optionId++;
         if (DataManager.Settings.Language.CurrentLanguage == SupportedLangs.TChinese) PoliceSurgeonIsUseTaiwanCalendar = Create(optionId, true, CustomOptionType.Crewmate, "PoliceSurgeonIsUseTaiwanCalendar", true, PoliceSurgeonOption); optionId++;
@@ -268,7 +270,7 @@ internal static class PostMortemCertificate_AddActualDeathTime
     }
 }
 
-[HarmonyPatch]
+[HarmonyPatch] // [ ]MEMO : HarmonyPatchだけを纏めた内部クラスも作成する。
 /// <summary>
 /// 死体検案書の表示関連のメソッドを集約したクラス
 /// </summary>
@@ -281,10 +283,24 @@ internal static class PostMortemCertificate_Display
         Event(__instance);
 
         if (!AmongUsClient.Instance.AmHost) return;
-        foreach (var pl in PoliceSurgeonPlayer)
-            Patches.AddChatPatch.SendCommand(pl, "", PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(pl));
-    }
 
+        bool canResend = PoliceSurgeonCanResend.GetBool();
+        foreach (var pl in PoliceSurgeonPlayer)
+        {
+            Patches.AddChatPatch.SendCommand(pl, "", PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(pl));
+            if (canResend) Patches.AddChatPatch.ChatInformation(pl, ModTranslation.GetString("PoliceSurgeonName"), AboutResendPostMortemCertificate(), "#89c3eb");
+        }
+    }
+    // 死体検案書再確認方法に関するシステムメッセージ
+    private static string AboutResendPostMortemCertificate()
+    {
+        string text;
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles))
+            text = $"{ModTranslation.GetString("PoliceSurgeonResendSHR")}";
+        else
+            text = $"{ModTranslation.GetString("PoliceSurgeonResendSNR")}";
+        return text;
+    }
     // ネームプレート上に死体検案書を確認するためのボタンを作成する。
     private static void Event(MeetingHud __instance)
     {
@@ -296,10 +312,12 @@ internal static class PostMortemCertificate_Display
             PlayerVoteArea playerVoteArea = __instance.playerStates[i];
             var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
 
-            // ネームプレートの対象が生存している、又は本人ならば
-            if (player.IsAlive() || player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
-            // 死亡ターン以外に情報を表示しない設定で、ネームプレートの対象が現在ターンに死亡した者でないなら
-            if (!PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn.GetBool() && ActualDeathTimeManager[player.PlayerId].Item3 != MeetingTurn_Now) continue;
+            // 再確認確認な設定で、ネームプレートの対象が生存していて、自分自身ではないなら
+            if (PoliceSurgeonCanResend.GetBool()) { if (player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId) continue; }
+            // 再確認不可能な設定で、ネームプレートの対象が生存している、又は本人ならば
+            else if (player.IsAlive() || player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
+            // 死亡ターン以外に情報を表示しない設定で、ネームプレートの対象が現在ターンに死亡した者でなく、自分自身でもないなら
+            if (!PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn.GetBool() && ActualDeathTimeManager[player.PlayerId].Item3 != MeetingTurn_Now && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId) continue;
 
             GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
             GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
@@ -319,11 +337,21 @@ internal static class PostMortemCertificate_Display
     // 確認ボタンを押したときの動作。
     private static void OnClick(int TargetPlayerId)
     {
-        var Target = ModHelpers.PlayerById((byte)TargetPlayerId);
+        var target = ModHelpers.PlayerById((byte)TargetPlayerId);
+
+        // 自分に表示されているボタンの場合死体検案書全文をチャットに表示する。
+        if (target == PlayerControl.LocalPlayer)
+        {
+            string name = target.Data.PlayerName;
+            target.SetName(PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(target));
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(target, "");
+            target.SetName(name);
+            return;
+        }
 
         if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && OverlayInfo.overlayShown)
             OverlayInfo.HideInfoOverlay();
-        else OverlayInfo.YoggleInfoOverlay(Target);
+        else OverlayInfo.YoggleInfoOverlay(target);
     }
 
     // overlayを閉じる時。
@@ -474,34 +502,30 @@ internal static class PostMortemCertificate_Display
         }
     }
 
-    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CastVote)), HarmonyPostfix]
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CastVote)), HarmonyPrefix]
     /// <summary>
     /// 自投票リセット形式での死体検案書閲覧要求
     /// </summary>
     /// <param name="srcPlayerId">投票者のplayerId</param>
     /// <param name="suspectPlayerId">投票先のplayerId</param>
     /// <param name="__instance"></param>
-    private static void MeetingHudCastVote_Postfix(byte srcPlayerId, byte suspectPlayerId, MeetingHud __instance)
+    /// <returns> true:投票を反映する / false:投票を反映しない </returns>
+    private static bool MeetingHudCastVote_Prefix(byte srcPlayerId, byte suspectPlayerId, MeetingHud __instance)
     {
-        if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
-        if (PoliceSurgeonPlayer.Count <= 0) return;
+        // SHRで, 設定が有効な時, 警察医が自投票していたら
+        if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
+        if (PoliceSurgeonPlayer.Count <= 0 || !PoliceSurgeonCanResend.GetBool()) return true;
+
+        if (srcPlayerId != suspectPlayerId) return true;
 
         PlayerControl srcPlayer = ModHelpers.GetPlayerControl(srcPlayerId);
-        PlayerControl suspectPlayer = ModHelpers.GetPlayerControl(suspectPlayerId);
-        if (!(srcPlayer == suspectPlayer && srcPlayer.IsRole(RoleId.PoliceSurgeon))) return;
+        if (!srcPlayer.IsRole(RoleId.PoliceSurgeon)) return true;
 
-        Il2CppStructArray<VoterState> array = new(__instance.playerStates.Length);
+        __instance.RpcClearVote(srcPlayer.GetClientId()); // 投票を解除する
+        // 死体検案書全文を送信する。
+        Patches.AddChatPatch.SendCommand(srcPlayer, "", PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(srcPlayer));
 
-        for (int i = 0; i < __instance.playerStates.Length; i++)
-        {
-            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-            if (srcPlayerId != playerVoteArea.TargetPlayerId) continue;
-
-            playerVoteArea.UnsetVote();
-            __instance.RpcClearVote(srcPlayer.GetClientId());
-
-            Patches.AddChatPatch.SendCommand(srcPlayer, "", PostMortemCertificate_CreateAndGet.GetPostMortemCertificateFullText(srcPlayer));
-        }
+        return false; // 投票を無効化する
     }
 }
 

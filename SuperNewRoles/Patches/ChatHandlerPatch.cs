@@ -467,6 +467,22 @@ class AddChatPatch
             AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SendName, command));
         }
     }
+
+    /// <summary>
+    /// システムメッセージ等を送信する。
+    /// </summary>
+    /// <param name="target">送信先</param>
+    /// <param name="infoName">情報タイトル(名前で表記)</param>
+    /// <param name="infoContents">情報本文(チャットで表記)</param>
+    /// <param name="color">文字色, 16進数のcolorコードで指定([#FFFFFF]等)</param>
+    public static void ChatInformation(PlayerControl target, string infoName, string infoContents, string color = "white")
+    {
+        string line = "|------------------------------------------------------|";
+        string name = $"<size=90%><color={color}>{line}\n{infoName} {ModTranslation.GetString("InformationName")}\n{line}</color></size>";
+        string contents = $"\n{infoContents}\n　\n";
+
+        SendCommand(target, contents, name);
+    }
     static IEnumerator AllSend(string SendName, string command, string name, float time = 0)
     {
         if (time > 0)
