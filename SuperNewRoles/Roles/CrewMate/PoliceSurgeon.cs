@@ -11,8 +11,6 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
-using UnhollowerBaseLib;
-using static MeetingHud;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Roles.Crewmate.PoliceSurgeon;
 

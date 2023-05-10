@@ -4,10 +4,10 @@ using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
-using SuperNewRoles.Roles.Crewmate;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
 
@@ -234,7 +234,7 @@ public static class SyncSetting
             case RoleId.PoliceSurgeon:
                 optdata.SetFloat(FloatOptionNames.ScientistCooldown, PoliceSurgeon.PoliceSurgeonVitalsDisplayCooldown.GetFloat());
                 optdata.SetFloat(FloatOptionNames.ScientistBatteryCharge, PoliceSurgeon.PoliceSurgeonBatteryDuration.GetFloat());
-            break;
+                break;
         }
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
@@ -286,7 +286,7 @@ public static class SyncSetting
         var optdata = OptionData.DeepCopy();
         optdata.SetFloat(FloatOptionNames.KillCooldown, RoleClass.EvilGambler.GetSuc() ? KillCoolSet(RoleClass.EvilGambler.SucCool) : KillCoolSet(RoleClass.EvilGambler.NotSucCool));
         if (p.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-       else  optdata.RpcSyncOption(p.GetClientId());
+        else optdata.RpcSyncOption(p.GetClientId());
     }
     public static void DoppelgangerCool(PlayerControl player, PlayerControl target)
     {

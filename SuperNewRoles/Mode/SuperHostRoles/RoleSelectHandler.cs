@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
 using SuperNewRoles.Roles.Impostor.MadRole;
-using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 
 namespace SuperNewRoles.Mode.SuperHostRoles;
