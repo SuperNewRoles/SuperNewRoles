@@ -133,9 +133,9 @@ public class CustomOverlays
         meetingUnderlay.enabled = false;
     }
 
-    public static void ShowInfoOverlay(int pattern)
+    public static void ShowInfoOverlay(int pattern, bool update = false)
     {
-        if (overlayShown) return;
+        if (overlayShown && !update) return;
 
         HudManager hudManager = FastDestroyableSingleton<HudManager>.Instance;
         if ((MapUtilities.CachedShipStatus == null || PlayerControl.LocalPlayer == null || hudManager == null || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed || PlayerControl.LocalPlayer.CanMove) && MeetingHud.Instance != null)
@@ -189,6 +189,7 @@ public class CustomOverlays
 
         var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
         var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
+
         FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
         {
             infoUnderlay.color = Color.Lerp(underlayTransparent, underlayOpaque, t);
@@ -236,12 +237,12 @@ public class CustomOverlays
         })));
     }
 
-    public static void YoggleInfoOverlay(int pattern)
+    public static void YoggleInfoOverlay(int pattern, bool update = false)
     {
-        if (overlayShown)
+        if (overlayShown && !update)
             HideInfoOverlay();
         else
-            ShowInfoOverlay(pattern);
+            ShowInfoOverlay(pattern, update);
     }
 
     [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
@@ -251,19 +252,22 @@ public class CustomOverlays
         {
             if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && overlayShown)
                 HideInfoOverlay();
+
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen) return;
 
             if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay((int)CustomOverlayPattern.GameInfo);
-            if (Input.GetKeyDown(KeyCode.H)) YoggleInfoOverlay((int)CustomOverlayPattern.Regulation);
-            else if (Input.GetKeyDown(KeyCode.M)) YoggleInfoOverlay((int)CustomOverlayPattern.MyRole);
+            else if (Input.GetKeyDown(KeyCode.H)) YoggleInfoOverlay((int)CustomOverlayPattern.MyRole);
+            else if (Input.GetKeyDown(KeyCode.I)) YoggleInfoOverlay((int)CustomOverlayPattern.Regulation);
+            else if (Input.GetKeyDown(KeyCode.Tab) && overlayShown) YoggleInfoOverlay((int)CustomOverlayPattern.Regulation, true);
         }
     }
 
     private enum CustomOverlayPattern
     {
         GameInfo,
-        Regulation,
         MyRole,
+        Regulation,
     }
 
     // 2頁毎に設定を表示する
