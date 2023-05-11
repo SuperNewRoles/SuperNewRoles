@@ -13,8 +13,9 @@ public class CustomOverlays
     private static Sprite colorBG;
     private static SpriteRenderer meetingUnderlay;
     private static SpriteRenderer infoUnderlay;
-    private static TMPro.TextMeshPro infoOverlayRules;
-    private static TMPro.TextMeshPro infoOverlayRoles;
+    private static TMPro.TextMeshPro infoOverlayLeft;
+    private static TMPro.TextMeshPro infoOverlayCenter;
+    private static TMPro.TextMeshPro infoOverlayRight;
     public static bool overlayShown = false;
 
     public static void ResetOverlays()
@@ -23,10 +24,11 @@ public class CustomOverlays
         HideInfoOverlay();
         UnityEngine.Object.Destroy(meetingUnderlay);
         UnityEngine.Object.Destroy(infoUnderlay);
-        UnityEngine.Object.Destroy(infoOverlayRules);
-        UnityEngine.Object.Destroy(infoOverlayRoles);
+        UnityEngine.Object.Destroy(infoOverlayLeft);
+        UnityEngine.Object.Destroy(infoOverlayCenter);
+        UnityEngine.Object.Destroy(infoOverlayRight);
         meetingUnderlay = infoUnderlay = null;
-        infoOverlayRules = infoOverlayRoles = null;
+        infoOverlayLeft = infoOverlayCenter = infoOverlayRight = null;
         overlayShown = false;
     }
 
@@ -61,34 +63,50 @@ public class CustomOverlays
             infoUnderlay.enabled = false;
         }
 
-        if (infoOverlayRules == null)
+        if (infoOverlayLeft == null)
         {
-            infoOverlayRules = UnityEngine.Object.Instantiate(hudManager.TaskPanel.taskText, hudManager.transform);
-            infoOverlayRules.fontSize = infoOverlayRules.fontSizeMin = infoOverlayRules.fontSizeMax = 1.15f;
-            infoOverlayRules.autoSizeTextContainer = false;
-            infoOverlayRules.enableWordWrapping = false;
-            infoOverlayRules.alignment = TMPro.TextAlignmentOptions.TopLeft;
-            infoOverlayRules.transform.position = Vector3.zero;
-            infoOverlayRules.transform.localPosition = new Vector3(-2.5f, 1.15f, -910f);
-            infoOverlayRules.transform.localScale = Vector3.one;
-            infoOverlayRules.color = Palette.White;
-            infoOverlayRules.enabled = false;
+            infoOverlayLeft = UnityEngine.Object.Instantiate(hudManager.TaskPanel.taskText, hudManager.transform);
+            infoOverlayLeft.fontSize = infoOverlayLeft.fontSizeMin = infoOverlayLeft.fontSizeMax = 1.15f;
+            infoOverlayLeft.autoSizeTextContainer = false;
+            infoOverlayLeft.enableWordWrapping = false;
+            infoOverlayLeft.alignment = TMPro.TextAlignmentOptions.TopLeft;
+            infoOverlayLeft.transform.position = Vector3.zero;
+            infoOverlayLeft.transform.localPosition = new Vector3(-2.5f, 1.15f, -910f);
+            infoOverlayLeft.transform.localScale = Vector3.one;
+            infoOverlayLeft.color = Palette.White;
+            infoOverlayLeft.enabled = false;
         }
 
-        if (infoOverlayRoles == null)
+        if (infoOverlayCenter == null)
         {
-            infoOverlayRoles = UnityEngine.Object.Instantiate(infoOverlayRules, hudManager.transform);
-            infoOverlayRoles.maxVisibleLines = 28;
-            infoOverlayRoles.fontSize = infoOverlayRoles.fontSizeMin = infoOverlayRoles.fontSizeMax = 1.15f;
-            infoOverlayRoles.outlineWidth += 0.02f;
-            infoOverlayRoles.autoSizeTextContainer = false;
-            infoOverlayRoles.enableWordWrapping = false;
-            infoOverlayRoles.alignment = TMPro.TextAlignmentOptions.TopLeft;
-            infoOverlayRoles.transform.position = Vector3.zero;
-            infoOverlayRoles.transform.localPosition = infoOverlayRules.transform.localPosition + new Vector3(2.5f, 0.0f, 0.0f);
-            infoOverlayRoles.transform.localScale = Vector3.one;
-            infoOverlayRoles.color = Palette.White;
-            infoOverlayRoles.enabled = false;
+            infoOverlayCenter = UnityEngine.Object.Instantiate(infoOverlayLeft, hudManager.transform);
+            infoOverlayCenter.maxVisibleLines = 28;
+            infoOverlayCenter.fontSize = infoOverlayCenter.fontSizeMin = infoOverlayCenter.fontSizeMax = 1.15f;
+            infoOverlayCenter.outlineWidth += 0.02f;
+            infoOverlayCenter.autoSizeTextContainer = false;
+            infoOverlayCenter.enableWordWrapping = false;
+            infoOverlayCenter.alignment = TMPro.TextAlignmentOptions.TopLeft;
+            infoOverlayCenter.transform.position = Vector3.zero;
+            infoOverlayCenter.transform.localPosition = infoOverlayLeft.transform.localPosition + new Vector3(2.5f, 0.0f, 0.0f);
+            infoOverlayCenter.transform.localScale = Vector3.one;
+            infoOverlayCenter.color = Palette.White;
+            infoOverlayCenter.enabled = false;
+        }
+
+        if (infoOverlayRight == null)
+        {
+            infoOverlayRight = UnityEngine.Object.Instantiate(infoOverlayCenter, hudManager.transform);
+            infoOverlayRight.maxVisibleLines = 28;
+            infoOverlayRight.fontSize = infoOverlayRight.fontSizeMin = infoOverlayRight.fontSizeMax = 1.15f;
+            infoOverlayRight.outlineWidth += 0.02f;
+            infoOverlayRight.autoSizeTextContainer = false;
+            infoOverlayRight.enableWordWrapping = false;
+            infoOverlayRight.alignment = TMPro.TextAlignmentOptions.TopLeft;
+            infoOverlayRight.transform.position = Vector3.zero;
+            infoOverlayRight.transform.localPosition = infoOverlayCenter.transform.localPosition + new Vector3(2.5f, 0.0f, 0.0f);
+            infoOverlayRight.transform.localScale = Vector3.one;
+            infoOverlayRight.color = Palette.White;
+            infoOverlayRight.enabled = false;
         }
         return true;
     }
@@ -115,7 +133,7 @@ public class CustomOverlays
         meetingUnderlay.enabled = false;
     }
 
-    public static void ShowInfoOverlay()
+    public static void ShowInfoOverlay(int pattern)
     {
         if (overlayShown) return;
 
@@ -134,34 +152,49 @@ public class CustomOverlays
 
         Transform parent = MeetingHud.Instance != null ? MeetingHud.Instance.transform : hudManager.transform;
         infoUnderlay.transform.parent = parent;
-        infoOverlayRules.transform.parent = parent;
-        infoOverlayRoles.transform.parent = parent;
+        infoOverlayLeft.transform.parent = parent;
+        infoOverlayCenter.transform.parent = parent;
+        infoOverlayRight.transform.parent = parent;
 
         infoUnderlay.sprite = colorBG;
         infoUnderlay.color = new Color(0.1f, 0.1f, 0.1f, 0.88f);
         infoUnderlay.transform.localScale = new Vector3(7.5f, 5f, 1f);
         infoUnderlay.enabled = true;
 
-        SuperNewRolesPlugin.optionsPage = 0;
-        IGameOptions o = GameManager.Instance.LogicOptions.currentGameOptions;
-        List<string> gameOptions = o.ToString().Split("\n", StringSplitOptions.RemoveEmptyEntries).ToList().GetRange(2, 17);
-        string text = "";
-        text = GameOptionsDataPatch.ResultData();
-        infoOverlayRules.text = text;
-        infoOverlayRules.enabled = true;
+        string leftText = "";
+        string centerText = "";
+        string rightText = "";
 
-        string rolesText = "";
+        switch (pattern)
+        {
+            case (int)CustomOverlayPattern.GameInfo:
+                SuperNewRolesPlugin.optionsPage = 0;
+                break;
+            case (int)CustomOverlayPattern.Regulation:
+                Regulation(out leftText, out centerText, out rightText);
+                infoOverlayRight.transform.localPosition = infoOverlayLeft.transform.localPosition + new Vector3(3.75f, 0.0f, 0.0f);
+                break;
+            case (int)CustomOverlayPattern.MyRole:
+                break;
+        }
 
-        infoOverlayRoles.text = rolesText;
-        infoOverlayRoles.enabled = true;
+        infoOverlayLeft.text = leftText;
+        infoOverlayLeft.enabled = true;
+
+        infoOverlayCenter.text = centerText;
+        infoOverlayCenter.enabled = true;
+
+        infoOverlayRight.text = rightText;
+        infoOverlayRight.enabled = true;
 
         var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
         var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
         FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
         {
             infoUnderlay.color = Color.Lerp(underlayTransparent, underlayOpaque, t);
-            infoOverlayRules.color = Color.Lerp(Palette.ClearWhite, Palette.White, t);
-            infoOverlayRoles.color = Color.Lerp(Palette.ClearWhite, Palette.White, t);
+            infoOverlayLeft.color = Color.Lerp(Palette.ClearWhite, Palette.White, t);
+            infoOverlayCenter.color = Color.Lerp(Palette.ClearWhite, Palette.White, t);
+            infoOverlayRight.color = Color.Lerp(Palette.ClearWhite, Palette.White, t);
         })));
     }
 
@@ -183,26 +216,32 @@ public class CustomOverlays
                 if (t >= 1.0f) infoUnderlay.enabled = false;
             }
 
-            if (infoOverlayRules != null)
+            if (infoOverlayLeft != null)
             {
-                infoOverlayRules.color = Color.Lerp(Palette.White, Palette.ClearWhite, t);
-                if (t >= 1.0f) infoOverlayRules.enabled = false;
+                infoOverlayLeft.color = Color.Lerp(Palette.White, Palette.ClearWhite, t);
+                if (t >= 1.0f) infoOverlayLeft.enabled = false;
             }
 
-            if (infoOverlayRoles != null)
+            if (infoOverlayCenter != null)
             {
-                infoOverlayRoles.color = Color.Lerp(Palette.White, Palette.ClearWhite, t);
-                if (t >= 1.0f) infoOverlayRoles.enabled = false;
+                infoOverlayCenter.color = Color.Lerp(Palette.White, Palette.ClearWhite, t);
+                if (t >= 1.0f) infoOverlayCenter.enabled = false;
+            }
+
+            if (infoOverlayRight != null)
+            {
+                infoOverlayRight.color = Color.Lerp(Palette.White, Palette.ClearWhite, t);
+                if (t >= 1.0f) infoOverlayRight.enabled = false;
             }
         })));
     }
 
-    public static void YoggleInfoOverlay()
+    public static void YoggleInfoOverlay(int pattern)
     {
         if (overlayShown)
             HideInfoOverlay();
         else
-            ShowInfoOverlay();
+            ShowInfoOverlay(pattern);
     }
 
     [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
@@ -212,10 +251,45 @@ public class CustomOverlays
         {
             if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && overlayShown)
                 HideInfoOverlay();
-            if (Input.GetKeyDown(KeyCode.H) && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
-            {
-                YoggleInfoOverlay();
-            }
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+
+            if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay((int)CustomOverlayPattern.GameInfo);
+            if (Input.GetKeyDown(KeyCode.H)) YoggleInfoOverlay((int)CustomOverlayPattern.Regulation);
+            else if (Input.GetKeyDown(KeyCode.M)) YoggleInfoOverlay((int)CustomOverlayPattern.MyRole);
         }
+    }
+
+    private enum CustomOverlayPattern
+    {
+        GameInfo,
+        Regulation,
+        MyRole,
+    }
+
+    // 2頁毎に設定を表示する
+    private static void Regulation(out string left, out string center, out string right)
+    {
+        left = center = right = null;
+        if (SuperNewRolesPlugin.optionsPage > SuperNewRolesPlugin.optionsMaxPage) SuperNewRolesPlugin.optionsPage = 0;
+
+        switch (SuperNewRolesPlugin.optionsPage % 2)
+        {
+            case 0:
+                break;
+            case 1:
+                SuperNewRolesPlugin.optionsPage -= 1;
+                break;
+        }
+
+        int firstPage = SuperNewRolesPlugin.optionsPage;
+        int page = firstPage;
+
+        left = GameOptionsDataPatch.ResultData();
+        SuperNewRolesPlugin.optionsPage = page + 1;
+
+        if (SuperNewRolesPlugin.optionsPage <= SuperNewRolesPlugin.optionsMaxPage)
+            right = GameOptionsDataPatch.ResultData();
+
+        SuperNewRolesPlugin.optionsPage = firstPage;
     }
 }
