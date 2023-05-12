@@ -188,16 +188,6 @@ class AddChatPatch
             return false;
         }
         else if (
-            Commands[0].Equals("/MyRole", StringComparison.OrdinalIgnoreCase) ||
-            Commands[0].Equals("/mr", StringComparison.OrdinalIgnoreCase)
-            )
-        {
-            if (!AmongUsClient.Instance.AmHost) return true;
-            if (sourcePlayer.IsMod()) return true;
-            AddChatPatch.MyRoleCommand(/*SendTime: sendTime, */ commandUser: sourcePlayer);
-            return true;
-        }
-        else if (
             Commands[0].Equals("/Winners", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/w", StringComparison.OrdinalIgnoreCase)
             )
@@ -349,42 +339,6 @@ class AddChatPatch
             EnableOptions.Add(option);
         }
         SendCommand(target, GetInRole(EnableOptions));
-    }
-
-    /// <summary>
-    /// コマンド使用者の役職説明を取得し、チャットに流す。
-    /// 送信間隔をコメントアウトしているのは重複役の説明が必要になった時に復活させ設定可能にする為
-    /// </summary>
-    /// <param name="commandUser">コマンドを使用し、役職説明送信対象となるplayer</param>
-    public static void MyRoleCommand(PlayerControl commandUser = null/*, float SendTime = 1.5f*/)
-    {
-        string errorText = null;
-        if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) errorText = ModTranslation.GetString("MyRoleErrorNotGameStart");
-        else if (ModeHandler.IsMode(ModeId.SuperHostRoles, false)) errorText = ModTranslation.GetString("MyRoleErrorSHRMode");
-        else if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false))) errorText = ModTranslation.GetString("NotAssign");
-
-        if (errorText != null)
-        {
-            if (!(AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles, false))) FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(commandUser, errorText);
-            else SendCommand(commandUser, errorText);
-            return;
-        }
-
-        RoleId myRole = commandUser.GetRole();
-
-        // LINQ使用 ChatGPTさんに聞いたらforeach処理よりも簡潔で効率的な可能性が高い、後開発者の好みと返答された為。
-        IEnumerable<CustomRoleOption> myRoleOptions = CustomRoleOption.RoleOptions.Where(option => option.RoleId == myRole).Select(option => { return option; });
-        float time = 0;
-        // foreach使用 ChatGPTさんに聞いたらLINQ使うより、可読性が高くより一般的と返答された為。
-        foreach (CustomRoleOption option in myRoleOptions)
-        {
-            string text = GetText(option);
-            string roleName = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
-            SuperNewRolesPlugin.Logger.LogInfo(roleName);
-            SuperNewRolesPlugin.Logger.LogInfo(text);
-            Send(commandUser, roleName, text, time);
-            // time += SendTime;
-        }
     }
 
     static void Send(PlayerControl target, string rolename, string text, float time = 0)

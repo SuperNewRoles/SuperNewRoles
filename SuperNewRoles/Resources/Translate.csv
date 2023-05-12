@@ -1353,7 +1353,6 @@ Team,Team,陣営,阵营,陣營
 MessageSettings,Settings,設定,设置,設定
 NowRolesMessage,Activate Roles,現在入っている役職,当前激活的职业,當前啟用的職業
 NotAssign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。,目前还没有激活任何职业。,目前還沒有啟用任何職業
-MyRoleErrorNotGameStart,This command cannot be used because the game is not in progress.,ゲーム中でない為、このコマンドは使用できません。,,由於遊戲沒有運行，此指令無法被使用
 MyRoleErrorSHRMode,This command is not available in SHR mode.,SHRモードではこのコマンドは使用できません。,,在SHR模式中無法使用此指令。
 TeamMessage,【Team:{0}】,【{0}陣営】,【{0}阵营】,【{0}陣營】
 NameIncludeMod,You cannot make a room public contains mod in your name.,modが名前に含まれている状態では公開部屋にすることはできません。,不能在昵称里有“mod”时将房间状态设置为公开。,不能在暱稱裡有「mod」時將房間狀態設置為公開。
