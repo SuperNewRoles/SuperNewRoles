@@ -288,9 +288,9 @@ public class CustomOverlays
 
         // myRoleを表示できない時はエラーメッセージを表示する
         if (ModeHandler.IsMode(ModeId.SuperHostRoles, false))
-            left = ModTranslation.GetString("MyRoleErrorSHRMode");
+            left = $"<size=200%>{ModTranslation.GetString("MyRoleErrorSHRMode")}</size>";
         else if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
-            left = ModTranslation.GetString("NotAssign");
+            left = $"<size=200%>{ModTranslation.GetString("NotAssign")}</size>";
         if (left != null) return;
 
         RoleId myRole = PlayerControl.LocalPlayer.GetRole();
