@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
+using SuperNewRoles.Mode;
 using HarmonyLib;
 using UnityEngine;
 
@@ -170,11 +171,12 @@ public class CustomOverlays
             case (int)CustomOverlayPattern.GameInfo:
                 SuperNewRolesPlugin.optionsPage = 0;
                 break;
+            case (int)CustomOverlayPattern.MyRole:
+                MyRole(out leftText, out centerText, out rightText);
+                break;
             case (int)CustomOverlayPattern.Regulation:
                 Regulation(out leftText, out centerText, out rightText);
                 infoOverlayRight.transform.localPosition = infoOverlayLeft.transform.localPosition + new Vector3(3.75f, 0.0f, 0.0f);
-                break;
-            case (int)CustomOverlayPattern.MyRole:
                 break;
         }
 
@@ -270,7 +272,37 @@ public class CustomOverlays
         Regulation,
     }
 
-    // 2頁毎に設定を表示する
+    // 自分の役職の説明をoverlayに表示する (Hキーの動作)
+    private static void MyRole(out string left, out string center, out string right)
+    {
+        left = center = right = null;
+
+        // myRoleを表示できない時はエラーメッセージを表示する
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles, false))
+            left = ModTranslation.GetString("MyRoleErrorSHRMode");
+        else if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
+            left = ModTranslation.GetString("NotAssign");
+        if (left != null) return;
+
+        RoleId myRole = PlayerControl.LocalPlayer.GetRole();
+
+        // LINQ使用 ChatGPTさんに聞いたらforeach処理よりも簡潔で効率的な可能性が高い、後開発者の好みと返答された為。
+        IEnumerable<CustomRoleOption> myRoleOptions = CustomRoleOption.RoleOptions.Where(option => option.RoleId == myRole).Select(option => { return option; });
+        // foreach使用 ChatGPTさんに聞いたらLINQ使うより、可読性が高くより一般的と返答された為。
+        foreach (CustomRoleOption option in myRoleOptions)
+        {
+            left = $"<size=115%>\n{CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name")}</size>";
+            center = AddChatPatch.GetText(option);
+            Logger.Info(left);
+            Logger.Info(center);
+        }
+        // [ ]MEMO : AddChatPatchのMyRoleCommandと翻訳key[MyRoleErrorNotGameStart]を一つのCommitで削除したい(復活する可能性もあるから)
+        // [ ]MEMO : 置換で設定の上に改行と区切り線入れたい <= returnBuilderに変更, center直代入でなく中間変数作る
+        // [ ]MEMO : 陣営と鍵括弧の間に改行、できたらイントロとデスクリプションの間にも改行入れたい
+        // [ ]MEMO : 位置調整
+    }
+
+    // バニラ設定(カスタム設定)とSNRの設定を2頁毎にoverlayに表示する (Iキーの動作)
     private static void Regulation(out string left, out string center, out string right)
     {
         left = center = right = null;

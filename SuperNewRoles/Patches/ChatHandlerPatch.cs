@@ -262,7 +262,7 @@ class AddChatPatch
             _ => "",
         };
     }
-    static string GetText(CustomRoleOption option)
+    internal static string GetText(CustomRoleOption option)
     {
         Logger.Info("GetText", "Chathandler");
         string text = "\n";
