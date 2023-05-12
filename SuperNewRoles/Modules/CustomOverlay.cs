@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AmongUs.GameOptions;
-using SuperNewRoles.Mode;
+using System.Text;
 using HarmonyLib;
+using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
@@ -144,6 +144,11 @@ public class CustomOverlays
 
         if (!InitializeOverlays()) return;
 
+        // 文字位置の初期化
+        infoOverlayLeft.transform.localPosition = new Vector3(-2.5f, 1.15f, -910f);
+        infoOverlayCenter.transform.localPosition = infoOverlayLeft.transform.localPosition + new Vector3(2.5f, 0.0f, 0.0f);
+        infoOverlayRight.transform.localPosition = infoOverlayCenter.transform.localPosition + new Vector3(2.5f, 0.0f, 0.0f);
+
         if (MapBehaviour.Instance != null)
             MapBehaviour.Instance.Close();
 
@@ -170,9 +175,12 @@ public class CustomOverlays
         {
             case (int)CustomOverlayPattern.GameInfo:
                 SuperNewRolesPlugin.optionsPage = 0;
+                // [ ]MEMO : TOPではバニラ設定を表示していた物を代わりに /gr の情報を載せても面白い?
                 break;
             case (int)CustomOverlayPattern.MyRole:
                 MyRole(out leftText, out centerText, out rightText);
+                infoOverlayLeft.transform.localPosition += new Vector3(0.0f, +0.25f, 0.0f);
+                infoOverlayCenter.transform.localPosition = infoOverlayLeft.transform.localPosition + new Vector3(0.0f, -0.30f, 0.0f);
                 break;
             case (int)CustomOverlayPattern.Regulation:
                 Regulation(out leftText, out centerText, out rightText);
@@ -276,6 +284,7 @@ public class CustomOverlays
     private static void MyRole(out string left, out string center, out string right)
     {
         left = center = right = null;
+        StringBuilder option = new();
 
         // myRoleを表示できない時はエラーメッセージを表示する
         if (ModeHandler.IsMode(ModeId.SuperHostRoles, false))
@@ -289,17 +298,26 @@ public class CustomOverlays
         // LINQ使用 ChatGPTさんに聞いたらforeach処理よりも簡潔で効率的な可能性が高い、後開発者の好みと返答された為。
         IEnumerable<CustomRoleOption> myRoleOptions = CustomRoleOption.RoleOptions.Where(option => option.RoleId == myRole).Select(option => { return option; });
         // foreach使用 ChatGPTさんに聞いたらLINQ使うより、可読性が高くより一般的と返答された為。
-        foreach (CustomRoleOption option in myRoleOptions)
+        foreach (CustomRoleOption roleOption in myRoleOptions)
         {
-            left = $"<size=115%>\n{CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name")}</size>";
-            center = AddChatPatch.GetText(option);
-            Logger.Info(left);
-            Logger.Info(center);
+            IntroData intro = roleOption.Intro;
+
+            left += $"<size=200%>\n{CustomOptionHolder.Cs(roleOption.Intro.color, roleOption.Intro.NameKey + "Name")}</size> <size=95%>: {AddChatPatch.GetTeamText(intro.TeamType)}</size>";
+            option.AppendLine("\n");
+
+            option.AppendLine($"<size=125%>「{CustomOptionHolder.Cs(roleOption.Intro.color, IntroData.GetTitle(intro.NameKey, intro.TitleNum))}」</size>\n");
+            option.AppendLine($"<size=95%>{intro.Description}\n</size>");
+            option.AppendLine($"<size=125%>{ModTranslation.GetString("MessageSettings")}:");
+            option.AppendLine($"{AddChatPatch.GetOptionText(roleOption, intro)}</size>");
         }
+
+        center = option.ToString();
+
         // [x]MEMO : AddChatPatchのMyRoleCommandと翻訳key[MyRoleErrorNotGameStart]を一つのCommitで削除したい(復活する可能性もあるから)
-        // [ ]MEMO : 置換で設定の上に改行と区切り線入れたい <= returnBuilderに変更, center直代入でなく中間変数作る
-        // [ ]MEMO : 陣営と鍵括弧の間に改行、できたらイントロとデスクリプションの間にも改行入れたい
-        // [ ]MEMO : 位置調整
+        // [x]MEMO : 置換で設定の上に改行と区切り線入れたい <= returnBuilderに変更, center直代入でなく中間変数作る <= 文字サイズ変更で区切られてるから区切り線は逆に見づらそうなので止める
+        // [x]MEMO : 陣営と鍵括弧の間に改行、できたらイントロとデスクリプションの間にも改行入れたい <= 流用ではなくコードを持ってきて代入する文字を変えた
+        // [x]MEMO : 位置調整
+        // [ ]MEMO : 素インポ素クルーの時何か情報出そう()
     }
 
     // バニラ設定(カスタム設定)とSNRの設定を2頁毎にoverlayに表示する (Iキーの動作)

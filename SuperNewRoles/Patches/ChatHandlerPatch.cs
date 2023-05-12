@@ -235,29 +235,40 @@ class AddChatPatch
         }
         return text;
     }
-    static string GetOptionText(CustomRoleOption RoleOption, IntroData intro)
+    internal static string GetOptionText(CustomRoleOption RoleOption, IntroData intro)
     {
         Logger.Info("GetOptionText", "ChatHandler");
         string text = "";
         text += GetChildText(RoleOption.children, "  ").Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", "");
         return text;
     }
-    static string GetTeamText(TeamRoleType type)
+    static string GetRoleTypeText(TeamRoleType type)
     {
         return type switch
         {
             TeamRoleType.Crewmate => ModTranslation.GetString("CrewmateName"),
             TeamRoleType.Impostor => ModTranslation.GetString("ImpostorName"),
-            TeamRoleType.Neutral => ModTranslation.GetString("NeutralName").Replace("陣営", ""),
+            TeamRoleType.Neutral => ModTranslation.GetString("NeutralName"),
             _ => "",
         };
     }
-    internal static string GetText(CustomRoleOption option)
+
+    internal static string GetTeamText(TeamType type)
+    {
+        return type switch
+        {
+            TeamType.Crewmate => Format(ModTranslation.GetString("TeamMessage"), ModTranslation.GetString("CrewmateName")),
+            TeamType.Impostor => Format(ModTranslation.GetString("TeamMessage"), ModTranslation.GetString("ImpostorName")),
+            TeamType.Neutral => Format(ModTranslation.GetString("TeamMessage"), ModTranslation.GetString("NeutralName").Replace("陣営", "").Replace("阵营", "").Replace("陣營", "")),
+            _ => "",
+        };
+    }
+    static string GetText(CustomRoleOption option)
     {
         Logger.Info("GetText", "Chathandler");
         string text = "\n";
         IntroData intro = option.Intro;
-        text += GetTeamText(intro.Team) + ModTranslation.GetString("Team") + "\n";
+        text += GetTeamText(intro.TeamType) + ModTranslation.GetString("TeamRoleType") + "\n";
         text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
         text += intro.Description + "\n";
         text += ModTranslation.GetString("MessageSettings") + ":\n";
@@ -283,7 +294,7 @@ class AddChatPatch
             if (type != option.Intro.Team)
             {
                 type = option.Intro.Team;
-                text += "\n" + Format(ModTranslation.GetString("TeamMessage"), GetTeamText(type)) + "\n\n";
+                text += "\n" + Format(ModTranslation.GetString("TeamRoleTypeMessage"), GetRoleTypeText(type)) + "\n\n";
             }
             int PlayerCount = 0;
             foreach (CustomOption opt in option.children)
