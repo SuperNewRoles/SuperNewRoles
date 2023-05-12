@@ -293,6 +293,7 @@ public class CustomOverlays
             left = $"<size=200%>{ModTranslation.GetString("NotAssign")}</size>";
         if (left != null) return;
 
+        // 役職を所持している時の記載
         RoleId myRole = PlayerControl.LocalPlayer.GetRole();
 
         // LINQ使用 ChatGPTさんに聞いたらforeach処理よりも簡潔で効率的な可能性が高い、後開発者の好みと返答された為。
@@ -313,11 +314,40 @@ public class CustomOverlays
 
         center = option.ToString();
 
+        if (left != null) return;
+
+        // 以下素インポスター及び素クルーメイト時の, 役職説明の記載
+        Color color;
+        string roleName;
+        TeamType teamType;
+
+        if (PlayerControl.LocalPlayer.IsImpostor())
+        {
+            color = Roles.RoleClass.ImpostorRed;
+            roleName = "Impostor";
+            teamType = TeamType.Impostor;
+        }
+        else
+        {
+            color = Palette.CrewmateBlue;
+            roleName = "Crewmate";
+            teamType = TeamType.Crewmate;
+        }
+
+        left = $"<size=200%>\n{CustomOptionHolder.Cs(color, roleName + "Name")}</size> <size=95%>: {AddChatPatch.GetTeamText(teamType)}</size>";
+
+        option.AppendLine("\n");
+
+        option.AppendLine($"<size=200%>「{CustomOptionHolder.Cs(color, roleName + "Title1")}」</size>\n");
+        option.AppendLine($"<size=150%>{ModTranslation.GetString(roleName + "Description")}\n</size>");
+
+        center = option.ToString();
+
         // [x]MEMO : AddChatPatchのMyRoleCommandと翻訳key[MyRoleErrorNotGameStart]を一つのCommitで削除したい(復活する可能性もあるから)
         // [x]MEMO : 置換で設定の上に改行と区切り線入れたい <= returnBuilderに変更, center直代入でなく中間変数作る <= 文字サイズ変更で区切られてるから区切り線は逆に見づらそうなので止める
         // [x]MEMO : 陣営と鍵括弧の間に改行、できたらイントロとデスクリプションの間にも改行入れたい <= 流用ではなくコードを持ってきて代入する文字を変えた
         // [x]MEMO : 位置調整
-        // [ ]MEMO : 素インポ素クルーの時何か情報出そう()
+        // [x]MEMO : 素インポ素クルーの時何か情報出そう()
     }
 
     // バニラ設定(カスタム設定)とSNRの設定を2頁毎にoverlayに表示する (Iキーの動作)
