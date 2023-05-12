@@ -275,7 +275,7 @@ class AddChatPatch
         text += GetOptionText(option, intro);
         return text;
     }
-    static string GetInRole(List<CustomRoleOption> optionsnotorder)
+    internal static string GetInRole(List<CustomRoleOption> optionsnotorder)
     {
         string text = ModTranslation.GetString("NowRolesMessage") + "\n";
         var options = optionsnotorder.OrderBy((CustomRoleOption x) =>

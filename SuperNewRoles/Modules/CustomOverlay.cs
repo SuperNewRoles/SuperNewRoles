@@ -174,8 +174,8 @@ public class CustomOverlays
         switch (pattern)
         {
             case (int)CustomOverlayPattern.GameInfo:
-                SuperNewRolesPlugin.optionsPage = 0;
-                // [ ]MEMO : TOPではバニラ設定を表示していた物を代わりに /gr の情報を載せても面白い?
+                GameInfo(out leftText, out centerText, out rightText);
+                // [x]MEMO : TOPではバニラ設定を表示していた物を代わりに /gr の情報を載せても面白い?
                 break;
             case (int)CustomOverlayPattern.MyRole:
                 MyRole(out leftText, out centerText, out rightText);
@@ -278,6 +278,25 @@ public class CustomOverlays
         GameInfo,
         MyRole,
         Regulation,
+    }
+
+    private static void GameInfo(out string left, out string center, out string right)
+    {
+        left = center = right = null;
+
+        if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.SuperHostRoles, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
+            left = ModTranslation.GetString("NotAssign");
+        else
+        {
+            List<CustomRoleOption> EnableOptions = new();
+            foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
+            {
+                if (!option.IsRoleEnable) continue;
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
+                EnableOptions.Add(option);
+            }
+            left = AddChatPatch.GetInRole(EnableOptions);
+        }
     }
 
     // 自分の役職の説明をoverlayに表示する (Hキーの動作)
