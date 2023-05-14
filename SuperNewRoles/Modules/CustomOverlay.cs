@@ -5,7 +5,8 @@ using System.Text;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using UnityEngine;
-
+using UnhollowerBaseLib;
+using AmongUs.Data;
 namespace SuperNewRoles.Patches;
 [Harmony]
 public class CustomOverlays
@@ -18,6 +19,7 @@ public class CustomOverlays
     private static TMPro.TextMeshPro infoOverlayCenter;
     private static TMPro.TextMeshPro infoOverlayRight;
     public static bool overlayShown = false;
+    private static Dictionary<byte, string> playerDataDictionary = new();
 
     public static void ResetOverlays()
     {
@@ -81,7 +83,7 @@ public class CustomOverlays
         if (infoOverlayCenter == null)
         {
             infoOverlayCenter = UnityEngine.Object.Instantiate(infoOverlayLeft, hudManager.transform);
-            infoOverlayCenter.maxVisibleLines = 28;
+            infoOverlayCenter.maxVisibleLines = 30;
             infoOverlayCenter.fontSize = infoOverlayCenter.fontSizeMin = infoOverlayCenter.fontSizeMax = 1.15f;
             infoOverlayCenter.outlineWidth += 0.02f;
             infoOverlayCenter.autoSizeTextContainer = false;
@@ -97,7 +99,7 @@ public class CustomOverlays
         if (infoOverlayRight == null)
         {
             infoOverlayRight = UnityEngine.Object.Instantiate(infoOverlayCenter, hudManager.transform);
-            infoOverlayRight.maxVisibleLines = 28;
+            infoOverlayRight.maxVisibleLines = 30;
             infoOverlayRight.fontSize = infoOverlayRight.fontSizeMin = infoOverlayRight.fontSizeMax = 1.15f;
             infoOverlayRight.outlineWidth += 0.02f;
             infoOverlayRight.autoSizeTextContainer = false;
@@ -173,8 +175,8 @@ public class CustomOverlays
 
         switch (pattern)
         {
-            case (int)CustomOverlayPattern.GameInfo:
-                GameInfo(out leftText, out centerText, out rightText);
+            case (int)CustomOverlayPattern.PlayerDataInfo:
+                PlayerDataInfo(out leftText, out centerText, out rightText);
                 // [x]MEMO : TOPではバニラ設定を表示していた物を代わりに /gr の情報を載せても面白い?
                 break;
             case (int)CustomOverlayPattern.MyRole:
@@ -263,11 +265,11 @@ public class CustomOverlays
             if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && overlayShown)
                 HideInfoOverlay();
 
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen) return;
+            if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay((int)CustomOverlayPattern.PlayerDataInfo);
 
-            if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay((int)CustomOverlayPattern.GameInfo);
-            else if (Input.GetKeyDown(KeyCode.H)) YoggleInfoOverlay((int)CustomOverlayPattern.MyRole);
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+            if (Input.GetKeyDown(KeyCode.H)) YoggleInfoOverlay((int)CustomOverlayPattern.MyRole);
             else if (Input.GetKeyDown(KeyCode.I)) YoggleInfoOverlay((int)CustomOverlayPattern.Regulation);
             else if (Input.GetKeyDown(KeyCode.Tab) && overlayShown) YoggleInfoOverlay((int)CustomOverlayPattern.Regulation, true);
         }
@@ -275,29 +277,84 @@ public class CustomOverlays
 
     private enum CustomOverlayPattern
     {
-        GameInfo,
+        PlayerDataInfo,
         MyRole,
         Regulation,
     }
 
-    private static void GameInfo(out string left, out string center, out string right)
+    // PlayerData一覧(名前, カラー, 導入状態, フレンドコード, プラットフォーム)を overlayに表示する (F3キーの動作)
+    private static void PlayerDataInfo(out string left, out string center, out string right)
     {
         left = center = right = null;
 
-        if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.SuperHostRoles, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
-            left = ModTranslation.GetString("NotAssign");
-        else
+        StringBuilder leftBuilder = new();
+        StringBuilder centerBuilder = new();
+        StringBuilder rightBuilder = new();
+
+        // ゲーム開始後はゲーム開始時に辞書に格納した情報から表示する。
+        if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
         {
-            List<CustomRoleOption> EnableOptions = new();
-            foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
+            foreach (var kvp in playerDataDictionary)
             {
-                if (!option.IsRoleEnable) continue;
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
-                EnableOptions.Add(option);
+                if (kvp.Key < 5) leftBuilder.AppendLine(kvp.Value);
+                else if (kvp.Key < 10) centerBuilder.AppendLine(kvp.Value);
+                else rightBuilder.AppendLine(kvp.Value);
             }
-            left = AddChatPatch.GetInRole(EnableOptions);
         }
+        else // ゲーム開始前は表示時に情報を取得する。
+        {
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            {
+                if (p.IsBot()) continue;
+                string data = GetPlayerData(p);
+
+                if (p.PlayerId < 5) leftBuilder.AppendLine(data);
+                else if (p.PlayerId < 10) centerBuilder.AppendLine(data);
+                else rightBuilder.AppendLine(data);
+            }
+        }
+
+        left = leftBuilder.ToString(); // PlayerId 0 ~ 4 => 左の列に表示
+        center = centerBuilder.ToString(); // PlayerId 5 ~ 9 => 中央の列に表示
+        right = rightBuilder.ToString(); // PlayerId 10 ~ => 右の列に表示
     }
+
+    // ゲーム開始時にPlayerDataを辞書に格納する
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin)), HarmonyPostfix]
+    private static void PlayerDataDictionaryAdd_CoBeginPostfix()
+    {
+        playerDataDictionary = new();
+
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            if (!p.IsBot()) playerDataDictionary.Add(p.PlayerId, GetPlayerData(p));
+    }
+
+    // 渡されたPlayerControlから, PlayerDataのテキストを取得する。
+    private static string GetPlayerData(PlayerControl p)
+    {
+        string data = null;
+        string friendCode;
+
+        // フレンドコードの取得&加工
+        if (p.GetClient()?.FriendCode is not null and not "") friendCode = p.GetClient()?.FriendCode; // フレンドコードを所持している場合
+        else friendCode = ModTranslation.GetString("NoFriendCode"); // クライアントデータやフレンドコードがない場合, フレンドコードがブランクだった場合
+        if (DataManager.Settings.Gameplay.StreamerMode) friendCode = "**********#****"; // バニラ設定[配信者モード]が有効時フレンドコードを伏字風にする
+
+        // プレイヤー名とクルーカラーを■で表記
+        data += $"<size=150%>{p.PlayerId + 1}. {p.name}{ModHelpers.Cs(Palette.PlayerColors[p.Data.DefaultOutfit.ColorId], "■")}</size>\n";
+        // クルーカラーとカラー名を表記
+        data += $"<pos=10%>{ModHelpers.Cs(Palette.PlayerColors[p.Data.DefaultOutfit.ColorId], "■")} : {GetColorTranslation(Palette.ColorNames[p.Data.DefaultOutfit.ColorId])}\n";
+        data += $"<size=90%><pos=10%>{ModTranslation.GetString("SNRIntroduction")} : {(p.IsMod() ? "〇" : "×")}\n"; // Mod導入状態
+        data += $"<pos=10%>FriendCode : {friendCode}\n"; // フレンドコード
+        data += $"<pos=10%>Platform : {p.GetClient()?.PlatformData?.Platform}</size>\n"; // プラットフォーム
+
+        return data;
+    }
+
+    // クルーカラーの翻訳を取得する。
+    // 参考=>https://github.com/tugaru1975/TownOfPlus/blob/main/Helpers.cs
+    private static string GetColorTranslation(StringNames name) =>
+        DestroyableSingleton<TranslationController>.Instance.GetString(name, new Il2CppReferenceArray<Il2CppSystem.Object>(0));
 
     // 自分の役職の説明をoverlayに表示する (Hキーの動作)
     private static void MyRole(out string left, out string center, out string right)

@@ -1366,6 +1366,8 @@ Experimenting...,Experimenting...,実験中...,测试中...,測試中...
 StartExperiment,Start experiment,実験を開始する,开始测试,開始測試
 Processing,Processing...,処理中...,处理中...,處理中...
 SuccessfulExperiment,Successful Experiment,実験成功,测试成功,測試成功
+SNRIntroduction,introduction status,導入状況
+NoFriendCode,No possession.,未所持
 
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库,倉庫
