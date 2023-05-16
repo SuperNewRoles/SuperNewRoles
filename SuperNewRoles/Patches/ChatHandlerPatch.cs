@@ -242,16 +242,6 @@ class AddChatPatch
         text += GetChildText(RoleOption.children, "  ").Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", "");
         return text;
     }
-    static string GetRoleTypeText(TeamRoleType type)
-    {
-        return type switch
-        {
-            TeamRoleType.Crewmate => ModTranslation.GetString("CrewmateName"),
-            TeamRoleType.Impostor => ModTranslation.GetString("ImpostorName"),
-            TeamRoleType.Neutral => ModTranslation.GetString("NeutralName"),
-            _ => "",
-        };
-    }
 
     internal static string GetTeamText(TeamType type)
     {
@@ -275,38 +265,17 @@ class AddChatPatch
         text += GetOptionText(option, intro);
         return text;
     }
-    internal static string GetInRole(List<CustomRoleOption> optionsnotorder)
+    // /grのコマンド結果を返す。辞書を加工する。
+    static string GetInRole()
     {
-        string text = ModTranslation.GetString("NowRolesMessage") + "\n";
-        var options = optionsnotorder.OrderBy((CustomRoleOption x) =>
-        {
-            return x.Intro.Team switch
-            {
-                TeamRoleType.Impostor => 0,
-                TeamRoleType.Neutral => 1000,
-                TeamRoleType.Crewmate => 2000,
-                _ => 500,
-            };
-        });
-        TeamRoleType type = TeamRoleType.Error;
-        foreach (CustomRoleOption option in options)
-        {
-            if (type != option.Intro.Team)
-            {
-                type = option.Intro.Team;
-                text += "\n" + Format(ModTranslation.GetString("TeamRoleTypeMessage"), GetRoleTypeText(type)) + "\n\n";
-            }
-            int PlayerCount = 0;
-            foreach (CustomOption opt in option.children)
-            {
-                if (opt.GetName() == CustomOptionHolder.SheriffPlayerCount.GetName())
-                {
-                    PlayerCount = (int)opt.GetFloat();
-                    break;
-                }
-            }
-            text += option.Intro.Name + " : " + PlayerCount + ModTranslation.GetString("PlayerCountMessage") + "\n";
-        }
+        string text = null;
+        const string pos = "<pos=75%>";
+        if (CustomOverlays.GetInRolesDictionary.ContainsKey((byte)TeamRoleType.Impostor))
+            text += CustomOverlays.GetInRolesDictionary[(byte)TeamRoleType.Impostor].Replace(pos, "");
+        if (CustomOverlays.GetInRolesDictionary.ContainsKey((byte)TeamRoleType.Crewmate))
+            text += CustomOverlays.GetInRolesDictionary[(byte)TeamRoleType.Crewmate].Replace(pos, "");
+        if (CustomOverlays.GetInRolesDictionary.ContainsKey((byte)TeamRoleType.Neutral))
+            text += CustomOverlays.GetInRolesDictionary[(byte)TeamRoleType.Neutral].Replace(pos, "");
         return text;
     }
     static void RoleCommand(PlayerControl target = null, float SendTime = 1.5f)
@@ -342,14 +311,13 @@ class AddChatPatch
             SendCommand(target, ModTranslation.GetString("NotAssign"));
             return;
         }
-        List<CustomRoleOption> EnableOptions = new();
-        foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
+        // ゲーム開始前は毎回現在の役職を取得する
+        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
         {
-            if (!option.IsRoleEnable) continue;
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
-            EnableOptions.Add(option);
+            CustomOverlays.GetInRolesDictionary = new(); // 辞書を初期化して
+            CustomOverlays.RetrieveGetInRoles(); // 現在の役職設定を取得し、辞書に保存するメソッドに渡す。
         }
-        SendCommand(target, GetInRole(EnableOptions));
+        SendCommand(target, GetInRole()); // 辞書の内容を加工した文字列を取得し、ターゲットに送信する
     }
 
     static void Send(PlayerControl target, string rolename, string text, float time = 0)

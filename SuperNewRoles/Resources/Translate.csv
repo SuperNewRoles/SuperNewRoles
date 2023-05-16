@@ -136,6 +136,7 @@ SettingMiniImpoRole,Minimum Impostor Roles,最小インポスター役職数,内
 SettingMaxImpoRole,Maximum Impostor Roles,インポスター役職人数,内鬼阵营最大职业数,內鬼陣營職業數最大值
 SettingMiniImpoGhostRole,Minimum Impostor Ghost Roles,最小インポスター幽霊役職数,内鬼阵营最小亡灵职业数,內鬼陣營亡靈職業數最小值
 SettingMaxImpoGhostRole,Maximum Impostor GhostRoles,インポスター幽霊役職人数,内鬼阵营最大亡灵职业数,內鬼陣營亡靈職業數最大值
+SettingMaxRoleCount,Maximum {0} persons,最大{0}人
 SettingsHideSetting,Hide Setting,設定を隠す,隐藏房间设置,隱藏設定
 SettingCrewmateTeamRolesName,Position setting of crewmate camp,クルーメイト陣営の役職設定,船员阵营职业设置,船員陣營職業設定
 SettingImpostorTeamRolesName,Impostor camp position setting,インポスター陣営の役職設定,内鬼阵营职业设置,內鬼陣營職業設定

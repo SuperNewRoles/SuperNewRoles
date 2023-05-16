@@ -20,6 +20,7 @@ public class CustomOverlays
     private static TMPro.TextMeshPro infoOverlayRight;
     public static bool overlayShown = false;
     private static Dictionary<byte, string> playerDataDictionary = new();
+    internal static Dictionary<byte, string> GetInRolesDictionary = new();
 
     public static void ResetOverlays()
     {
@@ -175,6 +176,10 @@ public class CustomOverlays
 
         switch (pattern)
         {
+            case (int)CustomOverlayPattern.GetInRoles:
+                GetInRoles(out leftText, out centerText, out rightText);
+                // [ ]MEMO : 行数オーバーで...表示欲しい
+                break;
             case (int)CustomOverlayPattern.PlayerDataInfo:
                 PlayerDataInfo(out leftText, out centerText, out rightText);
                 // [x]MEMO : TOPではバニラ設定を表示していた物を代わりに /gr の情報を載せても面白い?
@@ -267,6 +272,7 @@ public class CustomOverlays
 
             if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen) return;
             if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay((int)CustomOverlayPattern.PlayerDataInfo);
+            else if (Input.GetKeyDown(KeyCode.G)) YoggleInfoOverlay((int)CustomOverlayPattern.GetInRoles);
 
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (Input.GetKeyDown(KeyCode.H)) YoggleInfoOverlay((int)CustomOverlayPattern.MyRole);
@@ -277,9 +283,151 @@ public class CustomOverlays
 
     private enum CustomOverlayPattern
     {
+        GetInRoles,
         PlayerDataInfo,
         MyRole,
         Regulation,
+    }
+
+    // ゲーム開始時辞書に格納する, [内容 : PlayerData, 現在入っている役職(/grの結果)]
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin)), HarmonyPostfix]
+    private static void PlayerDataDictionaryAdd_CoBeginPostfix()
+    {
+        GetInRolesDictionary = new();
+        RetrieveGetInRoles();
+
+        playerDataDictionary = new();
+        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            if (!p.IsBot()) playerDataDictionary.Add(p.PlayerId, GetPlayerData(p));
+    }
+
+    /// <summary>
+    /// 「現在入っている役職」(/grコマンドの返答)を取得する。
+    /// </summary>
+    internal static void RetrieveGetInRoles()
+    {
+        List<CustomRoleOption> EnableOptions = new();
+        foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
+        {
+            if (!option.IsRoleEnable) continue;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
+            EnableOptions.Add(option);
+        }
+
+        GetInRolesSave(EnableOptions);
+    }
+    // [ ]MEMO:役職数(行数)により文字サイズ調整したい
+    // [ ]MEMO:頁切り替えにしたい
+    // [x]MEMO:パーセント表示したい <= なんで1/100じゃなくて1/10なのか <= GetSelection([0,10,20...90,100])の変換結果なんだからそりゃそうなる() 確率が10倍表記されてるのではなく、indexを取得しているからそうなっただけ()
+    // [x]MEMO:パーセント順に変更したい<=これは無理かな()<=*1
+    // [x]MEMO:インポスター,第三,クルーで役名,人数,percentを辞書で保存する。<=*1 <= Local変数で
+    // [x]MEMO:*1辞書で保存したものをorder Byで並び替えればよい?
+
+    // 「現在入っている役職」を overlayに表示する (Gキーの動作)
+    private static void GetInRoles(out string left, out string center, out string right)
+    {
+        left = center = right = null;
+
+        if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.SuperHostRoles, false) || ModeHandler.IsMode(ModeId.Werewolf, false)))
+            left = ModTranslation.GetString("NotAssign");
+        else
+        {
+            // ゲームが開始する前は、毎回辞書を初期化し再度取得する。
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+            {
+                GetInRolesDictionary = new();
+                RetrieveGetInRoles();
+            }
+            if (GetInRolesDictionary.ContainsKey((byte)TeamRoleType.Impostor))
+                left += GetInRolesDictionary[(byte)TeamRoleType.Impostor];
+            if (GetInRolesDictionary.ContainsKey((byte)TeamRoleType.Crewmate))
+                center += GetInRolesDictionary[(byte)TeamRoleType.Crewmate];
+            if (GetInRolesDictionary.ContainsKey((byte)TeamRoleType.Neutral))
+                right += GetInRolesDictionary[(byte)TeamRoleType.Neutral];
+        }
+    }
+
+    // 「現在の役職」を辞書に保存する
+    private static void GetInRolesSave(List<CustomRoleOption> optionsnotorder)
+    {
+        // 一時的に設定を保持する。
+        Dictionary<CustomRoleOption, (TeamRoleType, int, string)> dic = new();
+        StringBuilder impostorRoles = new();
+        StringBuilder crewmateRoles = new();
+        StringBuilder neutralRoles = new();
+
+        impostorRoles.AppendLine(ModTranslation.GetString("NowRolesMessage") + "\n");
+        crewmateRoles.AppendLine("\n");
+        neutralRoles.AppendLine("\n");
+
+        var options = optionsnotorder.OrderBy((CustomRoleOption x) =>
+        {
+            return x.Intro.Team switch
+            {
+                TeamRoleType.Impostor => 0,
+                TeamRoleType.Neutral => 1000,
+                TeamRoleType.Crewmate => 2000,
+                _ => 500,
+            };
+        });
+
+        TeamRoleType type = TeamRoleType.Error;
+        foreach (CustomRoleOption option in options)
+        {
+            // 役職の分類を記載する部分を作成 (【インポスター役職】等)
+            if (type != option.Intro.Team)
+            {
+                type = option.Intro.Team;
+                string teamText = $"{string.Format(ModTranslation.GetString("TeamRoleTypeMessage"), GetRoleTypeText(type))}{ModTranslation.GetString("SettingMaxRoleCount")}\n";
+                if (type == TeamRoleType.Impostor) impostorRoles.AppendLine($"{string.Format(teamText, CustomOptionHolder.impostorRolesCountMax.GetSelection())}");
+                else if (type == TeamRoleType.Crewmate) crewmateRoles.AppendLine($"{string.Format(teamText, CustomOptionHolder.crewmateRolesCountMax.GetSelection())}");
+                else neutralRoles.AppendLine($"{string.Format(teamText, CustomOptionHolder.neutralRolesCountMax.GetSelection())}");
+            }
+            int PlayerCount = 0;
+            int percentInt = option.Rate * 10; // 10をかけている理由 => [0.10,20...90,100]というstring[]で表された確率をGetSelectionで取得している為。
+            string percent = percentInt < 100 ? $"  {percentInt}" : $"{percentInt}"; // 配役確率の文字数調整
+
+            foreach (CustomOption opt in option.children)
+            {
+                if (opt.GetName() == CustomOptionHolder.SheriffPlayerCount.GetName())
+                {
+                    PlayerCount = (int)opt.GetFloat();
+                    break;
+                }
+            }
+
+            // 一時的な辞書に取得した設定を保存
+            if (!dic.ContainsKey(option))
+                dic.Add(option, (type, PlayerCount, percent));
+            else dic[option] = (type, PlayerCount, percent);
+        }
+
+        // 一時的辞書の中身から[役職名, 人数, 配役確率]を配役確率の降順に並べ直して、陣営別に保存する
+        string roleTextTemplate = $"{{0}} : <pos=75%>{{1}}{ModTranslation.GetString("PlayerCountMessage")}　{{2}}%"; // 文章構造をテンプレートとして取得
+        foreach (KeyValuePair<CustomRoleOption, (TeamRoleType, int, string)> kvp in dic.OrderByDescending(i => i.Value.Item3))
+        {
+            string roleText = string.Format(roleTextTemplate, kvp.Key.Intro.Name, kvp.Value.Item2, kvp.Value.Item3);
+            if (kvp.Value.Item1 == TeamRoleType.Impostor) impostorRoles.AppendLine(roleText);
+            else if (kvp.Value.Item1 == TeamRoleType.Crewmate) crewmateRoles.AppendLine(roleText);
+            else neutralRoles.AppendLine(roleText);
+        }
+
+        // internalな辞書に陣営毎に保存する(kewは陣営)
+        GetInRolesDictionary.Add((byte)TeamRoleType.Impostor, impostorRoles.ToString());
+        GetInRolesDictionary.Add((byte)TeamRoleType.Crewmate, crewmateRoles.ToString());
+        GetInRolesDictionary.Add((byte)TeamRoleType.Neutral, neutralRoles.ToString());
+    }
+
+    // 役職の所属を表す文字を作成
+    private static string GetRoleTypeText(TeamRoleType type)
+    {
+        return type switch
+        {
+            TeamRoleType.Crewmate => ModTranslation.GetString("CrewmateName"),
+            TeamRoleType.Impostor => ModTranslation.GetString("ImpostorName"),
+            TeamRoleType.Neutral => ModTranslation.GetString("NeutralName"),
+            _ => "",
+        };
     }
 
     // PlayerData一覧(名前, カラー, 導入状態, フレンドコード, プラットフォーム)を overlayに表示する (F3キーの動作)
@@ -317,16 +465,6 @@ public class CustomOverlays
         left = leftBuilder.ToString(); // PlayerId 0 ~ 4 => 左の列に表示
         center = centerBuilder.ToString(); // PlayerId 5 ~ 9 => 中央の列に表示
         right = rightBuilder.ToString(); // PlayerId 10 ~ => 右の列に表示
-    }
-
-    // ゲーム開始時にPlayerDataを辞書に格納する
-    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin)), HarmonyPostfix]
-    private static void PlayerDataDictionaryAdd_CoBeginPostfix()
-    {
-        playerDataDictionary = new();
-
-        foreach (PlayerControl p in CachedPlayer.AllPlayers)
-            if (!p.IsBot()) playerDataDictionary.Add(p.PlayerId, GetPlayerData(p));
     }
 
     // 渡されたPlayerControlから, PlayerDataのテキストを取得する。
