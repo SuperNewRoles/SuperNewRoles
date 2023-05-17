@@ -20,7 +20,7 @@ public class CustomOverlays
     private static TMPro.TextMeshPro infoOverlayRight;
     public static bool overlayShown = false;
     private static Dictionary<byte, string> playerDataDictionary = new();
-    internal static Dictionary<byte, string> GetInRolesDictionary = new();
+    internal static Dictionary<byte, string> ActivateRolesDictionary = new();
 
     public static void ResetOverlays()
     {
@@ -176,8 +176,8 @@ public class CustomOverlays
 
         switch (pattern)
         {
-            case (int)CustomOverlayPattern.GetInRoles:
-                GetInRoles(out leftText, out centerText, out rightText);
+            case (int)CustomOverlayPattern.ActivateRoles:
+                ActivateRoles(out leftText, out centerText, out rightText);
                 // [ ]MEMO : 行数オーバーで...表示欲しい
                 break;
             case (int)CustomOverlayPattern.PlayerDataInfo:
@@ -272,7 +272,7 @@ public class CustomOverlays
 
             if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen) return;
             if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay((int)CustomOverlayPattern.PlayerDataInfo);
-            else if (Input.GetKeyDown(KeyCode.G)) YoggleInfoOverlay((int)CustomOverlayPattern.GetInRoles);
+            else if (Input.GetKeyDown(KeyCode.G)) YoggleInfoOverlay((int)CustomOverlayPattern.ActivateRoles);
 
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (Input.GetKeyDown(KeyCode.H)) YoggleInfoOverlay((int)CustomOverlayPattern.MyRole);
@@ -283,30 +283,33 @@ public class CustomOverlays
 
     private enum CustomOverlayPattern
     {
-        GetInRoles,
+        ActivateRoles,
         PlayerDataInfo,
         MyRole,
         Regulation,
     }
 
-    // ゲーム開始時辞書に格納する, [内容 : PlayerData, 現在入っている役職(/grの結果)]
+    // ゲーム開始時辞書に格納する, [内容 : PlayerData, 現在有効な役職(/grの結果)]
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin)), HarmonyPostfix]
     private static void PlayerDataDictionaryAdd_CoBeginPostfix()
     {
-        GetInRolesDictionary = new();
-        RetrieveGetInRoles();
-
         playerDataDictionary = new();
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
             if (!p.IsBot()) playerDataDictionary.Add(p.PlayerId, GetPlayerData(p));
+
+        // 現在有効な役職の保存は, IntroPatchの IntroCutscene.CoBegin postfixで行っている。
+        // 理由は試合情報のlog記載を正常に行う為。
     }
 
     /// <summary>
-    /// 「現在入っている役職」(/grコマンドの返答)を取得する。
+    /// 現在有効な役職をListで取得し, 文章として加工及び辞書への保存を行うメソッドに渡す。
+    /// (辞書 : ActivateRolesDictionary)
     /// </summary>
-    internal static void RetrieveGetInRoles()
+    internal static void GetActivateRoles()
     {
+        ActivateRolesDictionary = new(); // 辞書の初期化
         List<CustomRoleOption> EnableOptions = new();
+
         foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
         {
             if (!option.IsRoleEnable) continue;
@@ -314,7 +317,7 @@ public class CustomOverlays
             EnableOptions.Add(option);
         }
 
-        GetInRolesSave(EnableOptions);
+        SaveActivateRoles(EnableOptions);
     }
     // [ ]MEMO:役職数(行数)により文字サイズ調整したい
     // [ ]MEMO:頁切り替えにしたい
@@ -323,8 +326,8 @@ public class CustomOverlays
     // [x]MEMO:インポスター,第三,クルーで役名,人数,percentを辞書で保存する。<=*1 <= Local変数で
     // [x]MEMO:*1辞書で保存したものをorder Byで並び替えればよい?
 
-    // 「現在入っている役職」を overlayに表示する (Gキーの動作)
-    private static void GetInRoles(out string left, out string center, out string right)
+    // 「現在有効な役職」を overlayに表示する (Gキーの動作)
+    private static void ActivateRoles(out string left, out string center, out string right)
     {
         left = center = right = null;
 
@@ -332,23 +335,22 @@ public class CustomOverlays
             left = ModTranslation.GetString("NotAssign");
         else
         {
-            // ゲームが開始する前は、毎回辞書を初期化し再度取得する。
+            // ゲームが開始する前は、毎回辞書に保存する。
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
-            {
-                GetInRolesDictionary = new();
-                RetrieveGetInRoles();
-            }
-            if (GetInRolesDictionary.ContainsKey((byte)TeamRoleType.Impostor))
-                left += GetInRolesDictionary[(byte)TeamRoleType.Impostor];
-            if (GetInRolesDictionary.ContainsKey((byte)TeamRoleType.Crewmate))
-                center += GetInRolesDictionary[(byte)TeamRoleType.Crewmate];
-            if (GetInRolesDictionary.ContainsKey((byte)TeamRoleType.Neutral))
-                right += GetInRolesDictionary[(byte)TeamRoleType.Neutral];
+                GetActivateRoles();
+
+            // ゲーム開始前は上のif文で辞書に保存してから文章を取得、開始後は保存してあるものから文章を取得する。 文章取得は共通処理
+            if (ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Impostor))
+                left += ActivateRolesDictionary[(byte)TeamRoleType.Impostor];
+            if (ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Crewmate))
+                center += ActivateRolesDictionary[(byte)TeamRoleType.Crewmate];
+            if (ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Neutral))
+                right += ActivateRolesDictionary[(byte)TeamRoleType.Neutral];
         }
     }
 
-    // 「現在の役職」を辞書に保存する
-    private static void GetInRolesSave(List<CustomRoleOption> optionsnotorder)
+    // 「現在有効な役職」を辞書に保存する
+    private static void SaveActivateRoles(List<CustomRoleOption> optionsnotorder)
     {
         // 一時的に設定を保持する。
         Dictionary<CustomRoleOption, (TeamRoleType, int, string)> dic = new();
@@ -407,19 +409,27 @@ public class CustomOverlays
         foreach (KeyValuePair<CustomRoleOption, (TeamRoleType, int, string)> kvp in dic.OrderByDescending(i => i.Value.Item3))
         {
             string roleText = string.Format(roleTextTemplate, kvp.Key.Intro.Name, kvp.Value.Item2, kvp.Value.Item3);
-            if (kvp.Value.Item1 == TeamRoleType.Impostor) impostorRoles.AppendLine(roleText);
-            else if (kvp.Value.Item1 == TeamRoleType.Crewmate) crewmateRoles.AppendLine(roleText);
+            type = kvp.Value.Item1;
+            if (type == TeamRoleType.Impostor) impostorRoles.AppendLine(roleText);
+            else if (type == TeamRoleType.Crewmate) crewmateRoles.AppendLine(roleText);
             else neutralRoles.AppendLine(roleText);
+
+            var log = type == TeamRoleType.Impostor ? "ImpostorRole" : type == TeamRoleType.Crewmate ? "CrewmateRole" : " NeutralRole";
+            Logger.Info($"{roleText.Replace("<pos=75%>", "").Replace("  ", "").Replace("　", "_")}", log);
         }
 
         // internalな辞書に陣営毎に保存する(kewは陣営)
-        GetInRolesDictionary.Add((byte)TeamRoleType.Impostor, impostorRoles.ToString());
-        GetInRolesDictionary.Add((byte)TeamRoleType.Crewmate, crewmateRoles.ToString());
-        GetInRolesDictionary.Add((byte)TeamRoleType.Neutral, neutralRoles.ToString());
+        ActivateRolesDictionary.Add((byte)TeamRoleType.Impostor, impostorRoles.ToString());
+        ActivateRolesDictionary.Add((byte)TeamRoleType.Crewmate, crewmateRoles.ToString());
+        ActivateRolesDictionary.Add((byte)TeamRoleType.Neutral, neutralRoles.ToString());
     }
 
-    // 役職の所属を表す文字を作成
-    private static string GetRoleTypeText(TeamRoleType type)
+    /// <summary>
+    /// 役職の所属(アサイン枠)を表す文字を作成
+    /// </summary>
+    /// <param name="type">アサイン枠の分類</param>
+    /// <returns>string : 役職の所属(アサイン枠)</returns>
+    internal static string GetRoleTypeText(TeamRoleType type)
     {
         return type switch
         {

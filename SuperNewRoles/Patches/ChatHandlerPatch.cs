@@ -270,12 +270,12 @@ class AddChatPatch
     {
         string text = null;
         const string pos = "<pos=75%>";
-        if (CustomOverlays.GetInRolesDictionary.ContainsKey((byte)TeamRoleType.Impostor))
-            text += CustomOverlays.GetInRolesDictionary[(byte)TeamRoleType.Impostor].Replace(pos, "");
-        if (CustomOverlays.GetInRolesDictionary.ContainsKey((byte)TeamRoleType.Crewmate))
-            text += CustomOverlays.GetInRolesDictionary[(byte)TeamRoleType.Crewmate].Replace(pos, "");
-        if (CustomOverlays.GetInRolesDictionary.ContainsKey((byte)TeamRoleType.Neutral))
-            text += CustomOverlays.GetInRolesDictionary[(byte)TeamRoleType.Neutral].Replace(pos, "");
+        if (CustomOverlays.ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Impostor))
+            text += CustomOverlays.ActivateRolesDictionary[(byte)TeamRoleType.Impostor].Replace(pos, "");
+        if (CustomOverlays.ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Crewmate))
+            text += CustomOverlays.ActivateRolesDictionary[(byte)TeamRoleType.Crewmate].Replace(pos, "");
+        if (CustomOverlays.ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Neutral))
+            text += CustomOverlays.ActivateRolesDictionary[(byte)TeamRoleType.Neutral].Replace(pos, "");
         return text;
     }
     static void RoleCommand(PlayerControl target = null, float SendTime = 1.5f)
@@ -313,10 +313,7 @@ class AddChatPatch
         }
         // ゲーム開始前は毎回現在の役職を取得する
         if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
-        {
-            CustomOverlays.GetInRolesDictionary = new(); // 辞書を初期化して
-            CustomOverlays.RetrieveGetInRoles(); // 現在の役職設定を取得し、辞書に保存するメソッドに渡す。
-        }
+            CustomOverlays.GetActivateRoles();
         SendCommand(target, GetInRole()); // 辞書の内容を加工した文字列を取得し、ターゲットに送信する
     }
 
