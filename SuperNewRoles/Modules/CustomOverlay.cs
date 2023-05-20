@@ -11,14 +11,14 @@ namespace SuperNewRoles.Patches;
 [Harmony]
 public class CustomOverlays
 {
-    public static Sprite helpButton;
+    private static Sprite helpButton;
     private static Sprite colorBG;
     private static SpriteRenderer meetingUnderlay;
     private static SpriteRenderer infoUnderlay;
     private static TMPro.TextMeshPro infoOverlayLeft;
     private static TMPro.TextMeshPro infoOverlayCenter;
     private static TMPro.TextMeshPro infoOverlayRight;
-    public static bool overlayShown = false;
+    private static bool overlayShown = false;
     private static Dictionary<byte, string> playerDataDictionary = new();
     internal static Dictionary<byte, string> ActivateRolesDictionary = new();
 
@@ -177,8 +177,8 @@ public class CustomOverlays
         switch (pattern)
         {
             case (int)CustomOverlayPattern.ActivateRoles:
-                ActivateRoles(out leftText, out centerText, out rightText);
-                // [ ]MEMO : 行数オーバーで...表示欲しい
+                ActivateRoles(in update, out leftText, out centerText, out rightText);
+                // [x]MEMO : 行数オーバーで...表示してほしかったが、頁式のため必要なくなった
                 break;
             case (int)CustomOverlayPattern.PlayerDataInfo:
                 PlayerDataInfo(out leftText, out centerText, out rightText);
@@ -267,11 +267,12 @@ public class CustomOverlays
     {
         public static void Postfix(KeyboardJoystick __instance)
         {
-            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && overlayShown)
-                HideInfoOverlay();
+            if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && overlayShown) HideInfoOverlay();
 
             if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen) return;
-            if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay((int)CustomOverlayPattern.PlayerDataInfo);
+            if (Input.GetKeyDown(KeyCode.Escape) && overlayShown) HideInfoOverlay();
+            else if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay((int)CustomOverlayPattern.PlayerDataInfo);
+            else if (Input.GetKeyDown(KeyCode.G) && overlayShown) YoggleInfoOverlay((int)CustomOverlayPattern.ActivateRoles, true);
             else if (Input.GetKeyDown(KeyCode.G)) YoggleInfoOverlay((int)CustomOverlayPattern.ActivateRoles);
 
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
@@ -319,15 +320,15 @@ public class CustomOverlays
 
         SaveActivateRoles(EnableOptions);
     }
-    // [ ]MEMO:役職数(行数)により文字サイズ調整したい
-    // [ ]MEMO:頁切り替えにしたい
+    // [x]MEMO:役職数(行数)により文字サイズ調整したい
+    // [x]MEMO:頁切り替えにしたい
     // [x]MEMO:パーセント表示したい <= なんで1/100じゃなくて1/10なのか <= GetSelection([0,10,20...90,100])の変換結果なんだからそりゃそうなる() 確率が10倍表記されてるのではなく、indexを取得しているからそうなっただけ()
     // [x]MEMO:パーセント順に変更したい<=これは無理かな()<=*1
     // [x]MEMO:インポスター,第三,クルーで役名,人数,percentを辞書で保存する。<=*1 <= Local変数で
     // [x]MEMO:*1辞書で保存したものをorder Byで並び替えればよい?
 
     // 「現在有効な役職」を overlayに表示する (Gキーの動作)
-    private static void ActivateRoles(out string left, out string center, out string right)
+    private static void ActivateRoles(in bool update, out string left, out string center, out string right)
     {
         left = center = right = null;
 
@@ -335,18 +336,152 @@ public class CustomOverlays
             left = ModTranslation.GetString("NotAssign");
         else
         {
-            // ゲームが開始する前は、毎回辞書に保存する。
+            // ゲームが開始する前は、毎回辞書に保存する。開始後は保存してあるものから文章を取得する。 文章取得は共通処理
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
                 GetActivateRoles();
 
-            // ゲーム開始前は上のif文で辞書に保存してから文章を取得、開始後は保存してあるものから文章を取得する。 文章取得は共通処理
+            int impLine = 0, crewLine = 0, neuLine = 0;
+
+            // 説明の行数をカウントする
             if (ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Impostor))
-                left += ActivateRolesDictionary[(byte)TeamRoleType.Impostor];
+                impLine = ActivateRolesDictionary[(byte)TeamRoleType.Impostor].Count(c => c == '\n') + 1;
             if (ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Crewmate))
-                center += ActivateRolesDictionary[(byte)TeamRoleType.Crewmate];
+                crewLine = ActivateRolesDictionary[(byte)TeamRoleType.Crewmate].Count(c => c == '\n') + 1;
             if (ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Neutral))
-                right += ActivateRolesDictionary[(byte)TeamRoleType.Neutral];
+                neuLine = ActivateRolesDictionary[(byte)TeamRoleType.Neutral].Count(c => c == '\n') + 1;
+
+            // 複数ページにまたがらない場合、辞書内の調整して取得するメソッドを呼ばず、辞書から直接取得する。
+            if (impLine <= 28 && crewLine <= 28 && neuLine <= 28)
+            {
+                // [x]MEMO:最初は0の変数を作り, ActivatePageで呼び出されたら1 頁の表示が必要だったら2にして,ゲーム開始後 1の場合は下の米アウトから取得したい<=米アウト解除したから文章の対称が無くなってて草
+                if (ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Impostor))
+                    left += ActivateRolesDictionary[(byte)TeamRoleType.Impostor];
+                if (ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Crewmate))
+                    center += ActivateRolesDictionary[(byte)TeamRoleType.Crewmate];
+                if (ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Neutral))
+                    right += ActivateRolesDictionary[(byte)TeamRoleType.Neutral];
+            }
+            else ActivatePage(update, out left, out center, out right);
+
+            if (impLine <= 15 && crewLine <= 15 && neuLine <= 15) // 全陣営が10役職以内の場合、拡大する
+            {
+                const string size = "<size=135%>";
+                left = size + left.Replace(": ", ": \n<size=100%>").Replace("%\r", "%\r</size>") + "</size>";
+                center = size + center.Replace(": ", ": \n<size=100%>").Replace("%\r", "%\r</size>") + "</size>";
+                right = size + right.Replace(": ", ": \n<size=100%>").Replace("%\r", "%\r</size>") + "</size>";
+                Logger.Info(left);
+            }
         }
+    }
+
+    private static int ActiveRoleNowPage = 0;
+    private static int ActiveRoleMaxPage = 0;
+
+    // [x]MEMO : TMProの方で規定ライン超えたらこっちを呼ぶ方がよさそう
+    private static void ActivatePage(in bool update, out string left, out string center, out string right)
+    {
+        // ページ更新でない場合と最大ページまで開いている場合は「現在の頁」を初期化する。そうでない場合は+1する。
+        ActiveRoleNowPage = !update ? 0 : ActiveRoleNowPage < ActiveRoleMaxPage ? ActiveRoleNowPage += 1 : 0;
+        ActiveRoleMaxPage = 0; // ActiveRoleMaxPageが使い終わり、設定変更で最大ページ数の変更が起きる事に対応する為初期化する。(ActiveRoleNowPageを決める前に動作させてはいけない。)
+
+        // 頁数, インポ役, クルー役, 第三役
+        Dictionary<int, string> impostorDictionary = new(), crewmateDictionary = new(), neutralDictionary = new();
+
+        const int maxLines = 54; // 1行に"\n\n"が含まれる為、2倍にカウントされる。実際の最大行数は 27行 (+ 1(次の頁の文章用))
+        int impoLineCount = 0, crewLineCount = 0, neuLineCount = 0; // 各役職の現在処理している行数をカウント。
+        int impoPageCount = 0, crewPageCount = 0, neuPageCount = 0; // 各役職の現在のページ数をカウントする。
+
+        string[] impostors = null, crewmates = null, neutrals = null; // /grを役職単位で分割し文字列を
+        string impoContent = "", crewContent = "", neuContent = ""; // 全陣営共通変数にするとうまく動かない
+        string teamText = $"{string.Format(ModTranslation.GetString("TeamRoleTypeMessage"), "{0}")}{string.Format(ModTranslation.GetString("SettingMaxRoleCount"), "{1}")}\n\n";
+
+        // 陣営別に保存した「現在配役されている役職」を辞書から出し、1役職毎に配列に格納する。
+        if (ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Impostor))
+            if (ActivateRolesDictionary[(byte)TeamRoleType.Impostor].Trim('\n', '\r') is not "\r" and not "")
+                impostors = ActivateRolesDictionary[(byte)TeamRoleType.Impostor].Split('\n');
+
+        if (ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Crewmate))
+            if (ActivateRolesDictionary[(byte)TeamRoleType.Crewmate].Trim('\n', '\r') is not "\r" and not "")
+                crewmates = ActivateRolesDictionary[(byte)TeamRoleType.Crewmate].Split('\n');
+
+        if (ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Neutral))
+            if (ActivateRolesDictionary[(byte)TeamRoleType.Neutral].Trim('\n', '\r') is not "\r" and not "")
+                neutrals = ActivateRolesDictionary[(byte)TeamRoleType.Neutral].Split('\n');
+
+        // インポスター役職を頁振り分けする。
+        if (impostors != null) // 配役していなかった場合、配列に要素が入らずnullの為Instance参照エラーが生じる。それを防止する為のnullチェック。
+        {
+            foreach (var imp in impostors)
+            {
+                int lines = imp.Count(c => c == '\n') + 1;
+                if (impoLineCount + lines > maxLines)
+                {
+                    if (impostorDictionary.ContainsKey(impoPageCount)) impostorDictionary[impoPageCount] = impoContent;
+                    else impostorDictionary.Add(impoPageCount, impoContent);
+                    impoPageCount++;
+                    impoLineCount = 4;
+                    impoContent = $"{string.Format(teamText, GetRoleTypeText(TeamRoleType.Impostor), CustomOptionHolder.impostorRolesCountMax.GetSelection())}";
+                }
+                impoContent = impoContent + imp + "\n";
+                impoLineCount += lines + 1;
+            }
+            if (impostorDictionary.ContainsKey(impoPageCount)) impostorDictionary[impoPageCount] = impoContent;
+            else impostorDictionary.Add(impoPageCount, impoContent);
+            ActiveRoleMaxPage = impoPageCount;
+        }
+
+        // クルーメイト役職を頁振り分けする。
+        if (crewmates != null) // 配役していなかった場合、以下略
+        {
+            foreach (var crew in crewmates)
+            {
+                int lines = crew.Count(c => c == '\n') + 1;
+                if (crewLineCount + lines > maxLines)
+                {
+                    if (crewmateDictionary.ContainsKey(crewPageCount)) crewmateDictionary[crewPageCount] = crewContent;
+                    else crewmateDictionary.Add(crewPageCount, crewContent);
+                    crewPageCount++;
+                    crewLineCount = 4;
+                    crewContent = $"{string.Format(teamText, GetRoleTypeText(TeamRoleType.Crewmate), CustomOptionHolder.crewmateRolesCountMax.GetSelection())}";
+                }
+                crewContent = crewContent + crew + "\n";
+                crewLineCount += lines + 1;
+            }
+            if (crewmateDictionary.ContainsKey(crewPageCount)) crewmateDictionary[crewPageCount] = crewContent;
+            else crewmateDictionary.Add(crewPageCount, crewContent);
+            ActiveRoleMaxPage = crewPageCount < ActiveRoleMaxPage ? ActiveRoleMaxPage : crewPageCount;
+        }
+
+        // 第三陣営役職を頁振り分けする。
+        if (neutrals != null)  // 配役していなかった場合、以下略
+        {
+            foreach (var neu in neutrals)
+            {
+                int lines = neu.Count(c => c == '\n') + 1;
+                if (neuLineCount + lines > maxLines)
+                {
+                    if (neutralDictionary.ContainsKey(neuPageCount)) neutralDictionary[neuPageCount] = neuContent;
+                    else neutralDictionary.Add(neuPageCount, neuContent);
+                    neuPageCount++;
+                    neuLineCount = 4;
+                    neuContent = $"{string.Format(teamText, GetRoleTypeText(TeamRoleType.Neutral), CustomOptionHolder.neutralRolesCountMax.GetSelection())}";
+                }
+                neuContent = neuContent + neu + "\n";
+                neuLineCount += lines + 1;
+            }
+            if (neutralDictionary.ContainsKey(neuPageCount)) neutralDictionary[neuPageCount] = neuContent;
+            else neutralDictionary.Add(neuPageCount, neuContent);
+            ActiveRoleMaxPage = neuPageCount < ActiveRoleMaxPage ? ActiveRoleMaxPage : neuPageCount;
+        }
+
+        string pageText = $"\n{string.Format(ModTranslation.GetString("SettingPressG"), ActiveRoleNowPage + 1, ActiveRoleMaxPage + 1)}";
+        // 文字位置を揃える為改行する。改行が必要な回数文字リテラル`*`を繰り返した文字列を作成し、それを文字列"\n"に置き換える。
+        // 参考 => https://dobon.net/vb/dotnet/string/repeat.html
+        string n = new string('*', 25).Replace("*", "　\n"); // 2行 (役職分類と分類別人数+改行) + 25行("　"(行幅調整のための全角space)+改行) + 3行(改行*2+頁数) => 全30行
+
+        left = impostorDictionary.ContainsKey(ActiveRoleNowPage) ? $"{impostorDictionary[ActiveRoleNowPage]}{pageText}" : string.Format(teamText, GetRoleTypeText(TeamRoleType.Impostor), CustomOptionHolder.impostorRolesCountMax.GetSelection()) + $"{n}" + pageText;
+        center = crewmateDictionary.ContainsKey(ActiveRoleNowPage) ? $"{crewmateDictionary[ActiveRoleNowPage]}{pageText}" : string.Format(teamText, GetRoleTypeText(TeamRoleType.Crewmate), CustomOptionHolder.crewmateRolesCountMax.GetSelection()) + $"{n}" + pageText;
+        right = neutralDictionary.ContainsKey(ActiveRoleNowPage) ? $"{neutralDictionary[ActiveRoleNowPage]}{pageText}" : string.Format(teamText, GetRoleTypeText(TeamRoleType.Neutral), CustomOptionHolder.neutralRolesCountMax.GetSelection()) + $"{n}" + pageText;
     }
 
     // 「現在有効な役職」を辞書に保存する
@@ -359,8 +494,8 @@ public class CustomOverlays
         StringBuilder neutralRoles = new();
 
         impostorRoles.AppendLine(ModTranslation.GetString("NowRolesMessage") + "\n");
-        crewmateRoles.AppendLine("\n");
-        neutralRoles.AppendLine("\n");
+        crewmateRoles.AppendLine("　\n"); // インポスターと文字の高さを合わせる為の全角space
+        neutralRoles.AppendLine("　\n"); // インポスターと文字の高さを合わせる為の全角space
 
         var options = optionsnotorder.OrderBy((CustomRoleOption x) =>
         {
@@ -415,10 +550,10 @@ public class CustomOverlays
             else neutralRoles.AppendLine(roleText);
 
             var log = type == TeamRoleType.Impostor ? "ImpostorRole" : type == TeamRoleType.Crewmate ? "CrewmateRole" : " NeutralRole";
-            Logger.Info($"{roleText.Replace("<pos=75%>", "").Replace("  ", "").Replace("　", "_")}", log);
+            Logger.Info($"{roleText.Replace("<pos=75%>", "").Replace("  ", "").Replace("　", "_")}", log); // [ ]MEMO : 試合開始時以外は表示しないようにしたい
         }
 
-        // internalな辞書に陣営毎に保存する(kewは陣営)
+        // internalな辞書に陣営毎に保存する(keyは陣営)
         ActivateRolesDictionary.Add((byte)TeamRoleType.Impostor, impostorRoles.ToString());
         ActivateRolesDictionary.Add((byte)TeamRoleType.Crewmate, crewmateRoles.ToString());
         ActivateRolesDictionary.Add((byte)TeamRoleType.Neutral, neutralRoles.ToString());
@@ -429,7 +564,7 @@ public class CustomOverlays
     /// </summary>
     /// <param name="type">アサイン枠の分類</param>
     /// <returns>string : 役職の所属(アサイン枠)</returns>
-    internal static string GetRoleTypeText(TeamRoleType type)
+    private static string GetRoleTypeText(TeamRoleType type)
     {
         return type switch
         {

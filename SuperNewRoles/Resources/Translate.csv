@@ -164,6 +164,7 @@ SettingImpostorGhostRoles,Impostor GhostRole Setting,インポスターの幽霊
 SettingOptionOn,On,オン,开启,開
 SettingOptionOff,Off,オフ,关闭,關
 SettingPressTabForMore,Press Tab For More,Tabを押して詳細を表示,按Tab键查看更多...,按下 TAB 查看更多...
+SettingPressG,Press G to open the next page {0} / {1},Gを押してページを送る {0} / {1}
 ErrorHostNoVersion,Your host does not have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストに<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>が導入されておりません。,房主没有安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组,房主沒有安裝<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模組
 ErrorHostChangeVersion,The host has a different version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストが使用している<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のバージョンと異なります。,房主安装的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组版本不同,與房主安裝的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模組版本不同
 ErrorHostGuidMatches,The host uses a different <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> dll file.,ホストが使用している<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のdllファイルと異なります。,房主的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>dll文件不同,與房主的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>dll文件不同
