@@ -306,7 +306,7 @@ public class CustomOverlays
     /// 現在有効な役職をListで取得し, 文章として加工及び辞書への保存を行うメソッドに渡す。
     /// (辞書 : ActivateRolesDictionary)
     /// </summary>
-    internal static void GetActivateRoles()
+    internal static void GetActivateRoles(bool isLogWrite = false)
     {
         ActivateRolesDictionary = new(); // 辞書の初期化
         List<CustomRoleOption> EnableOptions = new();
@@ -318,7 +318,7 @@ public class CustomOverlays
             EnableOptions.Add(option);
         }
 
-        SaveActivateRoles(EnableOptions);
+        SaveActivateRoles(EnableOptions, isLogWrite);
     }
     // [x]MEMO:役職数(行数)により文字サイズ調整したい
     // [x]MEMO:頁切り替えにしたい
@@ -369,7 +369,6 @@ public class CustomOverlays
                 left = size + left.Replace(": ", ": \n<size=100%>").Replace("%\r", "%\r</size>") + "</size>";
                 center = size + center.Replace(": ", ": \n<size=100%>").Replace("%\r", "%\r</size>") + "</size>";
                 right = size + right.Replace(": ", ": \n<size=100%>").Replace("%\r", "%\r</size>") + "</size>";
-                Logger.Info(left);
             }
         }
     }
@@ -485,7 +484,7 @@ public class CustomOverlays
     }
 
     // 「現在有効な役職」を辞書に保存する
-    private static void SaveActivateRoles(List<CustomRoleOption> optionsnotorder)
+    private static void SaveActivateRoles(List<CustomRoleOption> optionsnotorder, bool isLogWrite = false)
     {
         // 一時的に設定を保持する。
         Dictionary<CustomRoleOption, (TeamRoleType, int, string)> dic = new();
@@ -550,7 +549,7 @@ public class CustomOverlays
             else neutralRoles.AppendLine(roleText);
 
             var log = type == TeamRoleType.Impostor ? "ImpostorRole" : type == TeamRoleType.Crewmate ? "CrewmateRole" : " NeutralRole";
-            Logger.Info($"{roleText.Replace("<pos=75%>", "").Replace("  ", "").Replace("　", "_")}", log); // [ ]MEMO : 試合開始時以外は表示しないようにしたい
+            if (isLogWrite) Logger.Info($"{roleText.Replace("<pos=75%>", "").Replace("  ", "").Replace("　", "_")}", log); // [x]MEMO : 試合開始時以外は表示しないようにしたい
         }
 
         // internalな辞書に陣営毎に保存する(keyは陣営)

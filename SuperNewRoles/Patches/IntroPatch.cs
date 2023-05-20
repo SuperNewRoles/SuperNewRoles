@@ -59,7 +59,7 @@ public class IntroPatch
                 Logger.Info($"インポスター役職 : 最大 {CustomOptionHolder.impostorRolesCountMax.GetSelection()}役職", "ImpostorRole");
                 Logger.Info($"クルーメイト役職 : 最大 {CustomOptionHolder.crewmateRolesCountMax.GetSelection()}役職", "CremateRole");
                 Logger.Info($"第三陣営役職 : 最大 {CustomOptionHolder.neutralRolesCountMax.GetSelection()}役職", "NeutralRole");
-                CustomOverlays.GetActivateRoles(); // 現在の役職設定を取得し、辞書に保存するついでにlogに記載する
+                CustomOverlays.GetActivateRoles(true); // 現在の役職設定を取得し、辞書に保存するついでにlogに記載する
             }
         }
     }
