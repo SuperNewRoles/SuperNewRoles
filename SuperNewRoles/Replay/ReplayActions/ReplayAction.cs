@@ -12,6 +12,12 @@ public enum ReplayActionId {
     Exile,
     SetRole,
     SetCosmetics,
+    Shapeshift,
+    AddChat,
+    Vent,
+    ClimbLadder,
+    CompleteTask,
+
 }
 public abstract class ReplayAction
 {

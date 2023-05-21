@@ -237,6 +237,10 @@ class RpcShapeshiftPatch
         }
         return true;
     }
+    public static void Postfix(PlayerControl __instance, PlayerControl targetPlayer, bool animate)
+    {
+        ReplayActionShapeshift.Create(__instance.PlayerId, targetPlayer.PlayerId, animate);
+    }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
 class CheckProtectPatch

@@ -7,6 +7,36 @@ namespace SuperNewRoles.Replay.ReplayActions
 {
     public static class ReplayActionPatcher
     {
+        [HarmonyPatch(typeof(ChatController),nameof(ChatController.AddChat))]
+        public static class ChatControllerAddChatPatch
+        {
+            public static void Postfix(PlayerControl sourcePlayer, string chatText)
+            {
+                ReplayActionAddChat.Create(sourcePlayer.PlayerId, chatText);
+            }
+        }
+        [HarmonyPatch(typeof(PlayerPhysics))]
+        public static class PlayerPhysicsPatch
+        {
+            [HarmonyPatch(nameof(PlayerPhysics.CoEnterVent))]
+            [HarmonyPostfix]
+            public static void CoEnterVent(PlayerPhysics __instance, int id)
+            {
+                ReplayActionVent.Create(__instance.myPlayer.PlayerId, id, true);
+            }
+            [HarmonyPatch(nameof(PlayerPhysics.CoExitVent))]
+            [HarmonyPostfix]
+            public static void CoExitVent(PlayerPhysics __instance, int id)
+            {
+                ReplayActionVent.Create(__instance.myPlayer.PlayerId, id, false);
+            }
+            [HarmonyPatch(nameof(PlayerPhysics.ClimbLadder))]
+            [HarmonyPostfix]
+            public static void ClimbLadder(PlayerPhysics __instance, Ladder source, byte climbLadderSid)
+            {
+                ReplayActionClimbLadder.Create(__instance.myPlayer.PlayerId, source.Id, climbLadderSid);
+            }
+        }
         [HarmonyPatch(typeof(PlayerControl))]
         public static class PlayerControlPatch
         {
@@ -48,15 +78,21 @@ namespace SuperNewRoles.Replay.ReplayActions
             }
             [HarmonyPatch(nameof(PlayerControl.SetSkin))]
             [HarmonyPostfix]
-            public static void SetSkinPatch(PlayerControl __instance, string skinId, int colorId)
+            public static void SetSkinPatch(PlayerControl __instance, string skinId, int color)
             {
-                ReplayActionSetCosmetics.Create(__instance.PlayerId, ReplayCosmeticsType.Skin, skinId, colorId);
+                ReplayActionSetCosmetics.Create(__instance.PlayerId, ReplayCosmeticsType.Skin, skinId, color);
             }
             [HarmonyPatch(nameof(PlayerControl.SetName))]
             [HarmonyPostfix]
             public static void SetNamePatch(PlayerControl __instance, string name, bool dontCensor)
             {
                 ReplayActionSetCosmetics.Create(__instance.PlayerId, ReplayCosmeticsType.Name, name, dontCensor:dontCensor);
+            }
+            [HarmonyPatch(nameof(PlayerControl.CompleteTask))]
+            [HarmonyPostfix]
+            public static void SetNamePatch(PlayerControl __instance, uint idx)
+            {
+                ReplayActionCompleteTask.Create(__instance.PlayerId, idx);
             }
         }
     }
