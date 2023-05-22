@@ -1155,10 +1155,13 @@ public static class GameOptionsNextPagePatch
     {
         if (Input.GetKeyDown(KeyCode.Tab) || ConsoleJoystick.player.GetButtonDown(7))
         {
+            // 試合開始前はTabキーが押されたら常に, 1ページ単位でページを送る
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
                 SuperNewRolesPlugin.optionsPage++;
-            else SuperNewRolesPlugin.optionsPage += 2; // 試合中はCustomOverlay(H)に2ページ単位で表記する
+            // 試合中はRegulationのoverlayを表示している時のみ, 2ページ単位でページを送る
+            else if (CustomOverlays.nowPattern == (int)CustomOverlays.CustomOverlayPattern.Regulation) SuperNewRolesPlugin.optionsPage += 2;
 
+            // ページが最大ページを超えたら, ページを0に戻す
             if (SuperNewRolesPlugin.optionsPage > SuperNewRolesPlugin.optionsMaxPage)
                 SuperNewRolesPlugin.optionsPage = 0;
         }

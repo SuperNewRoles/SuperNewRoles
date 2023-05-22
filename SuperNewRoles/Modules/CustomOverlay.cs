@@ -34,6 +34,7 @@ public class CustomOverlays
         meetingUnderlay = infoUnderlay = null;
         infoOverlayLeft = infoOverlayCenter = infoOverlayRight = null;
         overlayShown = false;
+        nowPattern = (int)CustomOverlayPattern.None;
     }
 
     public static bool InitializeOverlays()
@@ -158,6 +159,7 @@ public class CustomOverlays
         hudManager.SetHudActive(false);
 
         overlayShown = true;
+        nowPattern = pattern;
 
         Transform parent = MeetingHud.Instance != null ? MeetingHud.Instance.transform : hudManager.transform;
         infoUnderlay.transform.parent = parent;
@@ -223,6 +225,7 @@ public class CustomOverlays
         if (MeetingHud.Instance == null) FastDestroyableSingleton<HudManager>.Instance.SetHudActive(true);
 
         overlayShown = false;
+        nowPattern = (int)CustomOverlayPattern.None;
         var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
         var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
 
@@ -268,27 +271,29 @@ public class CustomOverlays
         public static void Postfix(KeyboardJoystick __instance)
         {
             if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && overlayShown) HideInfoOverlay();
-
             if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen) return;
-            if (Input.GetKeyDown(KeyCode.Escape) && overlayShown) HideInfoOverlay();
-            else if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay((int)CustomOverlayPattern.PlayerDataInfo);
-            else if (Input.GetKeyDown(KeyCode.G) && overlayShown) YoggleInfoOverlay((int)CustomOverlayPattern.ActivateRoles, true);
-            else if (Input.GetKeyDown(KeyCode.G)) YoggleInfoOverlay((int)CustomOverlayPattern.ActivateRoles);
+
+            if (Input.GetKeyDown(KeyCode.Escape) && overlayShown) HideInfoOverlay(); // overlayを閉じる
+            else if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay((int)CustomOverlayPattern.PlayerDataInfo); // プレイヤー情報(プレイヤー名,カラー,導入状況,プラットフォーム,フレンドコード)を表示
+            else if (Input.GetKeyDown(KeyCode.G)) YoggleInfoOverlay((int)CustomOverlayPattern.ActivateRoles); // 「現在配役されている役職」を表示
+            else if (Input.GetKeyDown(KeyCode.Tab) && overlayShown) YoggleInfoOverlay(nowPattern, true); // 全てのoverlayの文章の更新 & GとIはページ送り
 
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-            if (Input.GetKeyDown(KeyCode.H)) YoggleInfoOverlay((int)CustomOverlayPattern.MyRole);
-            else if (Input.GetKeyDown(KeyCode.I)) YoggleInfoOverlay((int)CustomOverlayPattern.Regulation);
-            else if (Input.GetKeyDown(KeyCode.Tab) && overlayShown) YoggleInfoOverlay((int)CustomOverlayPattern.Regulation, true);
+            if (Input.GetKeyDown(KeyCode.H)) YoggleInfoOverlay((int)CustomOverlayPattern.MyRole); // 自分の役職の説明を表示
+            else if (Input.GetKeyDown(KeyCode.I)) YoggleInfoOverlay((int)CustomOverlayPattern.Regulation); // レギュレーション(バニラ設定 & SNRの設定)を表示
         }
     }
 
-    private enum CustomOverlayPattern
+    public enum CustomOverlayPattern
     {
+        None,
         ActivateRoles,
         PlayerDataInfo,
         MyRole,
         Regulation,
     }
+
+    internal static int nowPattern = (int)CustomOverlayPattern.None;
 
     // ゲーム開始時辞書に格納する, [内容 : PlayerData, 現在有効な役職(/grの結果)]
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin)), HarmonyPostfix]
@@ -485,14 +490,22 @@ public class CustomOverlays
             ActiveRoleMaxPage = crewPageCount < ActiveRoleMaxPage ? ActiveRoleMaxPage : crewPageCount;
         }
 
-        string pageText = $"\n{string.Format(ModTranslation.GetString("SettingPressG"), ActiveRoleNowPage + 1, ActiveRoleMaxPage + 1)}";
+        string pageText = $"\n{string.Format(ModTranslation.GetString("SettingPressTabUpdateString"), ActiveRoleNowPage + 1, ActiveRoleMaxPage + 1)}";
         // 文字位置を揃える為改行する。改行が必要な回数文字リテラル`*`を繰り返した文字列を作成し、それを文字列"\n"に置き換える。
         // 参考 => https://dobon.net/vb/dotnet/string/repeat.html
         string n = new string('*', 25).Replace("*", "　\n"); // 2行 (役職分類と分類別人数+改行) + 25行("　"(行幅調整のための全角space)+改行) + 3行(改行*2+頁数) => 全30行
 
-        left = impostorDictionary.ContainsKey(ActiveRoleNowPage) ? $"{impostorDictionary[ActiveRoleNowPage]}{pageText}" : string.Format(teamText, GetRoleTypeText(TeamRoleType.Impostor), CustomOptionHolder.impostorRolesCountMax.GetSelection()) + $"{n}" + pageText;
-        center = neutralDictionary.ContainsKey(ActiveRoleNowPage) ? $"{neutralDictionary[ActiveRoleNowPage]}{pageText}" : string.Format(teamText, GetRoleTypeText(TeamRoleType.Neutral), CustomOptionHolder.neutralRolesCountMax.GetSelection()) + $"{n}" + pageText;
-        right = crewmateDictionary.ContainsKey(ActiveRoleNowPage) ? $"{crewmateDictionary[ActiveRoleNowPage]}{pageText}" : string.Format(teamText, GetRoleTypeText(TeamRoleType.Crewmate), CustomOptionHolder.crewmateRolesCountMax.GetSelection()) + $"{n}" + pageText;
+        left = impostorDictionary.ContainsKey(ActiveRoleNowPage)
+            ? $"{impostorDictionary[ActiveRoleNowPage]}{pageText}" // 辞書に含まれている場合そのまま表示
+            : string.Format(teamText, GetRoleTypeText(TeamRoleType.Impostor), CustomOptionHolder.impostorRolesCountMax.GetSelection()) + $"{n}" + pageText; // 含まれていない場合、陣営&配役最大人数とページ関連の文を表示する
+
+        center = neutralDictionary.ContainsKey(ActiveRoleNowPage)
+            ? $"{neutralDictionary[ActiveRoleNowPage]}{pageText}"
+            : string.Format(teamText, GetRoleTypeText(TeamRoleType.Neutral), CustomOptionHolder.neutralRolesCountMax.GetSelection()) + $"{n}" + pageText;
+
+        right = crewmateDictionary.ContainsKey(ActiveRoleNowPage)
+            ? $"{crewmateDictionary[ActiveRoleNowPage]}{pageText}"
+            : string.Format(teamText, GetRoleTypeText(TeamRoleType.Crewmate), CustomOptionHolder.crewmateRolesCountMax.GetSelection()) + $"{n}" + pageText;
     }
 
     // 「現在有効な役職」を辞書に保存する
@@ -555,7 +568,7 @@ public class CustomOverlays
         foreach (KeyValuePair<CustomRoleOption, (TeamRoleType, int, string)> kvp in dic.OrderByDescending(i => i.Value.Item3))
         {
             string roleText = string.Format(roleTextTemplate, kvp.Key.Intro.Name, kvp.Value.Item2, kvp.Value.Item3);
-            type = kvp.Value.Item1;ひょうき
+            type = kvp.Value.Item1;
             if (type == TeamRoleType.Impostor) impostorRoles.AppendLine(roleText);
             else if (type == TeamRoleType.Crewmate) crewmateRoles.AppendLine(roleText);
             else neutralRoles.AppendLine(roleText);
