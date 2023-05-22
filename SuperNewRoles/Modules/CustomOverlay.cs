@@ -176,15 +176,14 @@ public class CustomOverlays
         string centerText = "";
         string rightText = "";
 
+        // 文章を取得し、表示位置の調整を行う
         switch (pattern)
         {
             case (int)CustomOverlayPattern.ActivateRoles:
                 ActivateRoles(in update, out leftText, out centerText, out rightText);
-                // [x]MEMO : 行数オーバーで...表示してほしかったが、頁式のため必要なくなった
                 break;
             case (int)CustomOverlayPattern.PlayerDataInfo:
                 PlayerDataInfo(out leftText, out centerText, out rightText);
-                // [x]MEMO : TOPではバニラ設定を表示していた物を代わりに /gr の情報を載せても面白い?
                 break;
             case (int)CustomOverlayPattern.MyRole:
                 MyRole(out leftText, out centerText, out rightText);
@@ -326,12 +325,6 @@ public class CustomOverlays
 
         SaveActivateRoles(EnableOptions, isLogWrite);
     }
-    // [x]MEMO:役職数(行数)により文字サイズ調整したい
-    // [x]MEMO:頁切り替えにしたい
-    // [x]MEMO:パーセント表示したい <= なんで1/100じゃなくて1/10なのか <= GetSelection([0,10,20...90,100])の変換結果なんだからそりゃそうなる() 確率が10倍表記されてるのではなく、indexを取得しているからそうなっただけ()
-    // [x]MEMO:パーセント順に変更したい<=これは無理かな()<=*1
-    // [x]MEMO:インポスター,第三,クルーで役名,人数,percentを辞書で保存する。<=*1 <= Local変数で
-    // [x]MEMO:*1辞書で保存したものをorder Byで並び替えればよい?
 
     // 「現在有効な役職」を overlayに表示する (Gキーの動作)
     private static void ActivateRoles(in bool update, out string left, out string center, out string right)
@@ -359,7 +352,6 @@ public class CustomOverlays
             // 複数ページにまたがらない場合、辞書内の調整して取得するメソッドを呼ばず、辞書から直接取得する。
             if (impLine <= 28 && neuLine <= 28 && crewLine <= 28)
             {
-                // [x]MEMO:最初は0の変数を作り, ActivatePageで呼び出されたら1 頁の表示が必要だったら2にして,ゲーム開始後 1の場合は下の米アウトから取得したい<=米アウト解除したから文章の対称が無くなってて草
                 if (ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Impostor))
                     left += ActivateRolesDictionary[(byte)TeamRoleType.Impostor];
                 if (ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Neutral))
@@ -393,7 +385,6 @@ public class CustomOverlays
     private static int ActiveRoleNowPage = 0;
     private static int ActiveRoleMaxPage = 0;
 
-    // [x]MEMO : TMProの方で規定ライン超えたらこっちを呼ぶ方がよさそう
     private static void ActivatePage(in bool update, out string left, out string center, out string right)
     {
         // ページ更新でない場合と最大ページまで開いている場合は「現在の頁」を初期化する。そうでない場合は+1する。
@@ -574,7 +565,7 @@ public class CustomOverlays
             else neutralRoles.AppendLine(roleText);
 
             var log = type == TeamRoleType.Impostor ? "ImpostorRole" : type == TeamRoleType.Crewmate ? "CrewmateRole" : " NeutralRole";
-            if (isLogWrite) Logger.Info($"{roleText.Replace("<pos=75%>", "").Replace("  ", "").Replace("　", "_")}", log); // [x]MEMO : 試合開始時以外は表示しないようにしたい
+            if (isLogWrite) Logger.Info($"{roleText.Replace("<pos=75%>", "").Replace("  ", "").Replace("　", "_")}", log);
         }
 
         // internalな辞書に陣営毎に保存する(keyは陣営)
@@ -725,12 +716,6 @@ public class CustomOverlays
         option.AppendLine($"<size=150%>{ModTranslation.GetString(roleName + "Description")}\n</size>");
 
         center = option.ToString();
-
-        // [x]MEMO : AddChatPatchのMyRoleCommandと翻訳key[MyRoleErrorNotGameStart]を一つのCommitで削除したい(復活する可能性もあるから)
-        // [x]MEMO : 置換で設定の上に改行と区切り線入れたい <= returnBuilderに変更, center直代入でなく中間変数作る <= 文字サイズ変更で区切られてるから区切り線は逆に見づらそうなので止める
-        // [x]MEMO : 陣営と鍵括弧の間に改行、できたらイントロとデスクリプションの間にも改行入れたい <= 流用ではなくコードを持ってきて代入する文字を変えた
-        // [x]MEMO : 位置調整
-        // [x]MEMO : 素インポ素クルーの時何か情報出そう()
     }
 
     // バニラ設定(カスタム設定)とSNRの設定を2頁毎にoverlayに表示する (Iキーの動作)
