@@ -382,10 +382,10 @@ CRHideNameSetting,Hide Name,名前を隠す,隐藏昵称,隱藏暱稱
 IsOldMode,OldMode,オルドモード,怀旧模式,懷舊模式
 CrewmateName,Crewmate,クルーメイト,船员,船員
 CrewmateTitle1,Use Task,タスクを行う,找出内鬼,找出內鬼
-CrewmateDescription,Default Crewmate.,通常のクルーメイトです。,普通船员。,普通船員
+CrewmateDescription,Default Crewmate.\nScientist，Engineer，and GuardianAngel in vanilla Roles are also listed as Crewmate.\n\nYou may be an ordinary person with no special abilities，but that is why you are free from any ties.\nEnjoy the freedom that only freedom can give you!\n\nBut remember that with freedom comes responsibility...\n\n.........You are responsible for whatever happens as a result of your actions.\nAbandoning responsibility for the consequences and shifting the blame to others is unforgivable.\nAccept it. That is the result of free action.,通常のクルーメイトです。\nバニラ役職の科学者，エンジニア，守護天使もクルーメイトとして表記されます。\n\n貴方は確かに特殊能力のない平凡な存在かもしれません、\nしかしそれ故に しがらみのない自由な存在です。\n自由だからこそ可能な 立ち回りを楽しんでみましょう!\n\n但し、自由には責任が伴う事を忘れずに...\n\n.........お前が起こした行動で 何が起きてもお前の責任だ。\n結果について責任を放棄する事、責任を他人に転嫁する事は赦されない。\n受け入れろ。それが自由な行動の結果なのだ。
 ImpostorName,Impostor,インポスター,内鬼,內鬼
 ImpostorTitle1,Use Sabotage & Vent,サボタージュ＆ベントを行う,破坏并杀死所有人,破壞並殺死所有人
-ImpostorDescription,Default Impostor.,通常のインポスターです。,普通内鬼。,普通內鬼。
+ImpostorDescription,Default Impostor.\nShapeshifter in vanilla role are also represented as impostors.,通常のインポスターです。\nバニラ役職のシェイプシフターもインポスターとして表記されます。\n\n相方や味方のサポートを行いましょう。\n相方が役職持ちの場合でも、能力が全て通常のインポスターの上位互換とは限りません。\n全て上位互換であったとしても、貴方のサポートが無ければ勝つことなどできません。\n相方やマッドメイトは貴方の行動を必要としています。\n\n揺動に回るも良し、潜伏するも良し、相方の能力を生かせるよう立ち回ってみましょう!\n味方の能力を活用するのも立派な能力なのですから...\n騙せ　身代わりを作れ　追放を逃れろ。\n我らはインポスターだ。\n自らの生死は関係がない。\nただクルーを殺し尽くせば良いだけだ。
 Neutral,Neutral,第三陣営,独立阵营,中立陣營
 NeutralSubIntro,Let's work only for ourselves.Let's Take advantage of others.,自分の事だけ考えろ。他人の事は利用せよ。,你不属于船员或内鬼阵营，需要独自达成胜利条件。,為自己而戰。利用他人，並取得勝利。
 detecName,Detective,探偵,侦探,偵探
