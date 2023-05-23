@@ -1161,9 +1161,9 @@ public static class GameOptionsNextPagePatch
             // 試合中はRegulationのoverlayを表示している時のみ, 2ページ単位でページを送る
             else if (CustomOverlays.nowPattern == CustomOverlays.CustomOverlayPattern.Regulation) SuperNewRolesPlugin.optionsPage += 2;
 
-            // ページが最大ページを超えたら, ページを0に戻す
+            // ページが最大ページを超えたら, ページを1に戻す
             if (SuperNewRolesPlugin.optionsPage > SuperNewRolesPlugin.optionsMaxPage)
-                SuperNewRolesPlugin.optionsPage = 0;
+                SuperNewRolesPlugin.optionsPage = 1;
         }
     }
 }

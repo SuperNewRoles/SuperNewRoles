@@ -428,19 +428,23 @@ public class CustomOverlays
             foreach (var imp in impostors)
             {
                 int lines = imp.Count(c => c == '\n') + 1;
-                if (impoLineCount + lines > maxLines)
+                if (impoLineCount + lines > maxLines) // 表示可能行数を超えた場合
                 {
-                    if (impostorDictionary.ContainsKey(impoPageCount)) impostorDictionary[impoPageCount] = impoContent;
-                    else impostorDictionary.Add(impoPageCount, impoContent);
-                    impoPageCount++;
-                    impoLineCount = 4;
+                    // 現在のページをkeyとして、辞書に表示可能な最大行数を満たしたインポスターの配役情報を保存する。
+                    if (impostorDictionary.ContainsKey(impoPageCount)) impostorDictionary[impoPageCount] = impoContent; // keyが存在していた場合上書きする。
+                    else impostorDictionary.Add(impoPageCount, impoContent); // keyが存在していなかった場合追加する。
+                    impoPageCount++; // 次のページに移動する
+                    impoLineCount = 4; // 現在の行数を初期化する。0でない理由は、下記の初期化で4行入る為。
+                    // [ 現在入っている役職\n\n【インポスター】 最大x役職\n\n] と言う文字列で初期化
                     impoContent = $"{string.Format(teamText, GetRoleTypeText(TeamRoleType.Impostor), CustomOptionHolder.impostorRolesCountMax.GetSelection())}";
                 }
                 impoContent = impoContent + imp + "\n";
-                impoLineCount += lines + 1;
+                impoLineCount += lines + 1; // 現在の行数をカウントする
             }
+            // 表示可能な最大行数を満たさず余った文字列を辞書に追加する。
             if (impostorDictionary.ContainsKey(impoPageCount)) impostorDictionary[impoPageCount] = impoContent;
             else impostorDictionary.Add(impoPageCount, impoContent);
+            // 最大ページ数をインポスター役職のページ数にする
             ActiveRoleMaxPage = impoPageCount;
         }
 
@@ -463,6 +467,7 @@ public class CustomOverlays
             }
             if (neutralDictionary.ContainsKey(neuPageCount)) neutralDictionary[neuPageCount] = neuContent;
             else neutralDictionary.Add(neuPageCount, neuContent);
+            // 現在のページ数(=インポのページ数)より第三陣営役職のページ数の方が大きければ、現在のページ数を第三陣営役職のページ数にする。
             ActiveRoleMaxPage = neuPageCount < ActiveRoleMaxPage ? ActiveRoleMaxPage : neuPageCount;
         }
 
@@ -729,8 +734,8 @@ public class CustomOverlays
     private static void Regulation(out string left, out string center, out string right)
     {
         left = center = right = null;
-        if (SuperNewRolesPlugin.optionsPage > SuperNewRolesPlugin.optionsMaxPage) SuperNewRolesPlugin.optionsPage = 0;
 
+        // 左の列が必ず奇数ページになるようにする
         switch (SuperNewRolesPlugin.optionsPage % 2)
         {
             case 0:
@@ -749,6 +754,6 @@ public class CustomOverlays
         if (SuperNewRolesPlugin.optionsPage <= SuperNewRolesPlugin.optionsMaxPage)
             right = GameOptionsDataPatch.ResultData();
 
-        SuperNewRolesPlugin.optionsPage = firstPage;
+        SuperNewRolesPlugin.optionsPage = firstPage; // 現在のページを左の列に表示しているページに戻す
     }
 }
