@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AmongUs.Data;
 using HarmonyLib;
 using SuperNewRoles.Mode;
-using UnityEngine;
 using UnhollowerBaseLib;
-using AmongUs.Data;
+using UnityEngine;
 namespace SuperNewRoles.Patches;
 [Harmony]
 public class CustomOverlays
@@ -34,7 +34,7 @@ public class CustomOverlays
         meetingUnderlay = infoUnderlay = null;
         infoOverlayLeft = infoOverlayCenter = infoOverlayRight = null;
         overlayShown = false;
-        nowPattern = (int)CustomOverlayPattern.None;
+        nowPattern = CustomOverlayPattern.None;
     }
 
     public static bool InitializeOverlays()
@@ -138,7 +138,7 @@ public class CustomOverlays
         meetingUnderlay.enabled = false;
     }
 
-    public static void ShowInfoOverlay(int pattern, bool update = false)
+    public static void ShowInfoOverlay(CustomOverlayPattern pattern, bool update = false)
     {
         if (overlayShown && !update) return;
 
@@ -179,18 +179,18 @@ public class CustomOverlays
         // 文章を取得し、表示位置の調整を行う
         switch (pattern)
         {
-            case (int)CustomOverlayPattern.ActivateRoles:
+            case CustomOverlayPattern.ActivateRoles:
                 ActivateRoles(in update, out leftText, out centerText, out rightText);
                 break;
-            case (int)CustomOverlayPattern.PlayerDataInfo:
+            case CustomOverlayPattern.PlayerDataInfo:
                 PlayerDataInfo(out leftText, out centerText, out rightText);
                 break;
-            case (int)CustomOverlayPattern.MyRole:
+            case CustomOverlayPattern.MyRole:
                 MyRole(out leftText, out centerText, out rightText);
                 infoOverlayLeft.transform.localPosition += new Vector3(0.0f, +0.25f, 0.0f);
                 infoOverlayCenter.transform.localPosition = infoOverlayLeft.transform.localPosition + new Vector3(0.0f, -0.30f, 0.0f);
                 break;
-            case (int)CustomOverlayPattern.Regulation:
+            case CustomOverlayPattern.Regulation:
                 Regulation(out leftText, out centerText, out rightText);
                 infoOverlayRight.transform.localPosition = infoOverlayLeft.transform.localPosition + new Vector3(3.75f, 0.0f, 0.0f);
                 break;
@@ -224,7 +224,7 @@ public class CustomOverlays
         if (MeetingHud.Instance == null) FastDestroyableSingleton<HudManager>.Instance.SetHudActive(true);
 
         overlayShown = false;
-        nowPattern = (int)CustomOverlayPattern.None;
+        nowPattern = CustomOverlayPattern.None;
         var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
         var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
 
@@ -256,7 +256,7 @@ public class CustomOverlays
         })));
     }
 
-    public static void YoggleInfoOverlay(int pattern, bool update = false)
+    public static void YoggleInfoOverlay(CustomOverlayPattern pattern, bool update = false)
     {
         if (overlayShown && !update)
             HideInfoOverlay();
@@ -273,26 +273,33 @@ public class CustomOverlays
             if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen) return;
 
             if (Input.GetKeyDown(KeyCode.Escape) && overlayShown) HideInfoOverlay(); // overlayを閉じる
-            else if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay((int)CustomOverlayPattern.PlayerDataInfo); // プレイヤー情報(プレイヤー名,カラー,導入状況,プラットフォーム,フレンドコード)を表示
-            else if (Input.GetKeyDown(KeyCode.G)) YoggleInfoOverlay((int)CustomOverlayPattern.ActivateRoles); // 「現在配役されている役職」を表示
+            else if (Input.GetKeyDown(KeyCode.F3)) YoggleInfoOverlay(CustomOverlayPattern.PlayerDataInfo); // 参加プレイヤーの情報を表示
+            else if (Input.GetKeyDown(KeyCode.G)) YoggleInfoOverlay(CustomOverlayPattern.ActivateRoles); // 「現在配役されている役職」を表示
             else if (Input.GetKeyDown(KeyCode.Tab) && overlayShown) YoggleInfoOverlay(nowPattern, true); // 全てのoverlayの文章の更新 & GとIはページ送り
 
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-            if (Input.GetKeyDown(KeyCode.H)) YoggleInfoOverlay((int)CustomOverlayPattern.MyRole); // 自分の役職の説明を表示
-            else if (Input.GetKeyDown(KeyCode.I)) YoggleInfoOverlay((int)CustomOverlayPattern.Regulation); // レギュレーション(バニラ設定 & SNRの設定)を表示
+            if (Input.GetKeyDown(KeyCode.H)) YoggleInfoOverlay(CustomOverlayPattern.MyRole); // 自分の役職の説明を表示
+            else if (Input.GetKeyDown(KeyCode.I)) YoggleInfoOverlay(CustomOverlayPattern.Regulation); // レギュレーション(バニラ設定 & SNRの設定)を表示
         }
     }
 
+    /// <summary>
+    /// CustomOverlayの状況を表す
+    /// </summary>
     public enum CustomOverlayPattern
     {
-        None,
-        ActivateRoles,
-        PlayerDataInfo,
-        MyRole,
-        Regulation,
+        None, // 現在開いていない
+        ActivateRoles, // Gキー : 現在配役している役職
+        PlayerDataInfo, // F3キー : 参加プレイヤーの情報(プレイヤー名,カラー,導入状況,プラットフォーム,フレンドコード)
+        MyRole, // Hキー : 自分の役職の説明と設定の情報
+        Regulation, // Iキー : バニラとSNRのゲーム設定の情報
     }
 
-    internal static int nowPattern = (int)CustomOverlayPattern.None;
+    /// <summary>
+    ///　現在のCustomOverlayの状況を保存する
+    /// </summary>
+    /// <returns>CustomOverlayPattern : 現在のCustomOverlayの状況</returns>
+    internal static CustomOverlayPattern nowPattern = CustomOverlayPattern.None;
 
     // ゲーム開始時辞書に格納する, [内容 : PlayerData, 現在有効な役職(/grの結果)]
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin)), HarmonyPostfix]
