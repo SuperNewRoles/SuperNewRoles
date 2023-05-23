@@ -52,6 +52,7 @@ public enum FinalStatus
     SheriffInvolvedOutburst,
     SerialKillerSelfDeath,
     VampireKill,
+    DependentsExiled,
     OverKillerOverKill,
     SuicideWisherSelfDeath,
     MadmakerMisSet,

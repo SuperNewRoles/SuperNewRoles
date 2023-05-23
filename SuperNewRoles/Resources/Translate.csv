@@ -333,6 +333,7 @@ FinalStatusRemoteSheriffKill,Executing justice,正義執行,超能轰击,正義�
 FinalStatusRemoteSheriffMisFire,Remote Sheriff MisFire,リモートシェリフ誤爆,超能反噬,轟擊誤判
 FinalStatusSerialKillerSelfDeath,Suicide of Serial Killer,シリアルキラー自殺,躁狂,連環殺手自殺
 FinalStatusVampireKill,Death by bloodsucking,吸血死,吸血,吸血而亡
+FinalStatusDependentsExiled
 FinalStatusOverKillerOverKill,Over Kill!,オーバーキル!,肢解,被肢解
 FinalStatusSuicideWisherSelfDeath,Suicide,自殺,自杀,自殺
 FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺,指名反噬
