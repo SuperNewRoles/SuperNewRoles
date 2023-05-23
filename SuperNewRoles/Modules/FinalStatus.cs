@@ -60,4 +60,6 @@ public enum FinalStatus
     HitmanDead,
     WorshiperSelfDeath,
     TheThirdLittlePigCounterKill,
+    GuesserKill,
+    GuesserMisFire,
 }
