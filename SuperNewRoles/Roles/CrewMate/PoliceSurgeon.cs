@@ -666,6 +666,10 @@ internal static class PostMortemCertificate_CreateAndGet
                 // 以降に進むのは、[全てのターンの死亡情報を出す時]の全てのプレイヤーの情報と　[現在ターンの死亡情報しか出さない時]の現在ターンに死亡したプレイヤーの情報
                 if (!PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn.GetBool() && kvp.Value.Item3 != MeetingTurn_Now) continue;
 
+                // ヴァンパイアと眷属は検案書を作成しない
+                var victimPlayerRole = ModHelpers.PlayerById(kvp.Key).GetRole();
+                if (victimPlayerRole is RoleId.Vampire or RoleId.Dependents) continue;
+
                 isWrite = true;
 
                 builder.Append(CreateContents(kvp.Key, kvp.Value.Item1, kvp.Value.Item2, kvp.Value.Item3));
