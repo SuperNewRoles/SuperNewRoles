@@ -361,6 +361,8 @@ internal static class PostMortemCertificate_Display
             if (PoliceSurgeonCanResend.GetBool()) { if (player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId) continue; }
             // 再確認不可能な設定で、ネームプレートの対象が生存している、又は本人ならば
             else if (player.IsAlive() || player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
+            // 死亡した者がヴァンパイアでも眷属でもないなら
+            if (player.IsRole(RoleId.Vampire) || player.IsRole(RoleId.Dependents)) continue;
             // 死亡ターン以外に情報を表示しない設定で、ネームプレートの対象が現在ターンに死亡した者でなく、自分自身でもないなら
             if (!PoliceSurgeonIndicateTimeOfDeathInSubsequentTurn.GetBool() && ActualDeathTimeManager[player.PlayerId].Item3 != MeetingTurn_Now && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId) continue;
 
