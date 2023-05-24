@@ -348,7 +348,7 @@ FinalStatusGuesserMisFire,,
 FinalStatusLoversBreakerKill
 
 # Sabotages
-SabotageSetting,SNR’s own sabotage setup,独自サボタージュの設定,破壞設定,模组紧急破坏设置,破壞設定
+SabotageSetting,SNR’s own sabotage setup,独自サボタージュの設定,模组紧急破坏设置,破壞設定
 SabotageCognitiveDeficitSetting,Cognitive Deficit,認識障害,破坏时附带认知干扰,破壞時附加認知干擾
 CognitiveDeficitSabotageOutfitUpdateTimeSetting,Figure Change Interval,姿変更間隔,认知干扰时其他玩家外貌变换间隔时间,認知干擾時其他玩家外貌變換的間隔時間
 CognitiveDeficitSabotageReleaseTimeSetting,Release Time,解除時間,认知干扰持续时间,認知干擾持續時間
