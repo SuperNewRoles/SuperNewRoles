@@ -346,6 +346,7 @@ FinalStatusTheThirdLittlePigCounterKill,Counter Kill,カウンターキル,反�
 FinalStatusGuesserKill,,
 FinalStatusGuesserMisFire,,
 FinalStatusLoversBreakerKill
+FinalStatusMadJesterExiled,Death liberates,解放
 
 # Sabotages
 SabotageSetting,SNR’s own sabotage setup,独自サボタージュの設定,模组紧急破坏设置,破壞設定
@@ -790,6 +791,8 @@ MadHawkName,MadHawk,マッドホーク,叛变的鹰眼,叛變的鷹眼
 MadHawkTitle1,See it all.,すべてを見渡そう,将一切尽收眼底,將一切盡收眼底
 MadJesterName,MadJester,マッドてるてる,傀儡小丑,傀儡小丑
 MadJesterTitle1,Get voted out and win with the Impostors!,投票で追放されてインポスターと勝利しよう,想办法被投出去，与内鬼一同获胜,想辦法被投出去，與內鬼一同獲勝
+MadJesterTitle2,,解放を望む者
+MadJesterTitle2,,嗚呼ご主人 どうしようもないこの世界をどうか...
 MadJesterDescription,It is a crewmate decision. but it is in the Impostor camp. \nThe impostor wins by being expelled at the meeting.\nYou go for the gallows，climb up，tumbling down，tumbling down...\nFor I believe it will bring us glory...,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。\n貴方は絞首台をめざす、のぼる、おちる。\nそれが我らの栄光につながると信じて。,规则上傀儡小丑被视为船员阵营，但其跟随内鬼阵营获胜。\n傀儡小丑被放逐则内鬼阵营获胜。\n你听到绞刑台正向你呼唤……你爬上去……垂下身躯……日渐西沉……\n而你在死前看到，这是无辜者们的落日。,規則上傀儡小丑屬於船員陣營，但其跟隨內鬼陣營獲勝。\n傀儡小丑遭放逐則內鬼陣營獲勝。\n當你聽到處刑台正向你呼喚...你爬上去...垂下身軀...日漸西沉\n而你在死前看到的，是無辜者們的落日。
 FalseChargesName,FalseCharges,冤罪師,冤罪师,冤罪師
 FalseChargesTitle1,Let the false accusations win!,冤罪をさせて勝利しよう,栽赃他人获取胜利,栽賄他人獲取勝利
