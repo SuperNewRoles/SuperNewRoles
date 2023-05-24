@@ -63,4 +63,5 @@ public enum FinalStatus
     TheThirdLittlePigCounterKill,
     GuesserKill,
     GuesserMisFire,
+    LoversBreakerKill,
 }
