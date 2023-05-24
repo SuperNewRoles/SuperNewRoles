@@ -214,12 +214,16 @@ public class SetNamesClass
             if (!Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool()) return true;
             else
             {
-                if (Mode.PlusMode.PlusGameOptions.CanGhostSeeRole.GetBool()) return true;
-                else if (!Mode.PlusMode.PlusGameOptions.OnlyImpostorGhostSeeRole.GetBool() || target.IsImpostor()) return true;
+                if (Mode.PlusMode.PlusGameOptions.CanGhostSeeRole.GetBool()) // 「死亡者が全員の役職を確認できる」設定が有効で、
+                {
+                    if (!Mode.PlusMode.PlusGameOptions.OnlyImpostorGhostSeeRole.GetBool()) return true; // 「死亡したインポスターのみが役職を見れる設定」が無効であれば trueを返す。
+                    else return target.IsImpostor(); // 「死亡したインポスターのみが役職を見れる設定」が有効な場合, targetがインポスターならtrueを そうではない場合 falseを返す。                }
+                }
             }
         }
-        return false;
+        return false; // 上記[役職が確認できる]条件を満たさなかった場合falseを返す。
     }
+
     public static void SetPlayerNameColors(PlayerControl player)
     {
         var role = player.GetRole();
