@@ -221,9 +221,9 @@ RestrictDevicesTimeOption,Time limit setting,時間制限の設定,,時間限制
 RestrictAdmin,Restrict Admin,アドミンの時間制限,管理地图使用时间限制,管理員地圖時間限制
 RestrictVital,Restrict Vital,バイタルの時間制限,生命监测装置使用时间限制,生命跡象檢測器時間限制
 RestrictCamera,Restrict Camera,カメラの時間制限,监控使用时间限制,監視器時間限制
-CanGhostSeeRole,After death，everyone's role can be confirmed.,死亡者が全員の役職を確認できる,死亡玩家能确认所有玩家的职业,死亡玩家能確認所有玩家的職業
+CanNotGhostSeeRole,When a player dies，the role of other players is not displayed.,死亡時に他プレイヤーの役職を表示しない
+OnlyImpostorGhostSeeRole,Impostors display the roles of other players.,インポスターは死亡時に他プレイヤーの役職を表示する
 CanGhostSeeVote,After death，everyone's voting address can be confirmed.,死亡者が全員の投票先を確認できる,死亡玩家能确认所有玩家的职业,死亡玩家能確認所有玩家的投票
-OnlyImpostorGhostSeeRole,,死亡しているインポスターのみが全員の役職を確認できる,只有死亡的内鬼阵营玩家可以确认所有玩家的职业,只有死亡的內鬼陣營玩家能確認所有玩家的職業
 AntiTaskOverWallSetting,Cannot tasks over the wall.,壁越しにタスクをできない,禁止隔墙做任务,禁止隔牆做任務
 ShuffleElectricalDoorsSetting,Shuffle electrical doors after meeting,会議後に電気室のドアをシャッフルする,飞艇地图配电室门的开关在会议后重新分配,AirShip地圖配電室門的開關會在會議結束後重新配置
 

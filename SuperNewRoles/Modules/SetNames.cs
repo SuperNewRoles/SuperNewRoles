@@ -214,11 +214,9 @@ public class SetNamesClass
             if (!Mode.PlusMode.PlusGameOptions.PlusGameOptionSetting.GetBool()) return true;
             else
             {
-                if (Mode.PlusMode.PlusGameOptions.CanGhostSeeRole.GetBool()) // 「死亡者が全員の役職を確認できる」設定が有効で、
-                {
-                    if (!Mode.PlusMode.PlusGameOptions.OnlyImpostorGhostSeeRole.GetBool()) return true; // 「死亡したインポスターのみが役職を見れる設定」が無効であれば trueを返す。
-                    else return target.IsImpostor(); // 「死亡したインポスターのみが役職を見れる設定」が有効な場合, targetがインポスターならtrueを そうではない場合 falseを返す。                }
-                }
+                if (!Mode.PlusMode.PlusGameOptions.CanNotGhostSeeRole.GetBool()) return true; // 「死亡時に他プレイヤーの役職を表示しない」設定が無効な時
+                // この設定は、上記bool判定の子Optionである為、上記true時（親Option無効時）取得しない設定。
+                else if (Mode.PlusMode.PlusGameOptions.OnlyImpostorGhostSeeRole.GetBool()) return target.IsImpostor();
             }
         }
         return false; // 上記[役職が確認できる]条件を満たさなかった場合falseを返す。
