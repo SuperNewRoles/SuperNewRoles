@@ -333,7 +333,7 @@ FinalStatusRemoteSheriffKill,Executing justice,正義執行,超能轰击,正義�
 FinalStatusRemoteSheriffMisFire,Remote Sheriff MisFire,リモートシェリフ誤爆,超能反噬,轟擊誤判
 FinalStatusSerialKillerSelfDeath,Suicide of Serial Killer,シリアルキラー自殺,躁狂,連環殺手自殺
 FinalStatusVampireKill,Death by bloodsucking,吸血死,吸血,吸血而亡
-FinalStatusDependentsExiled
+FinalStatusDependentsExiled,Consumed by the night.,夜に歠まれた
 FinalStatusOverKillerOverKill,Over Kill!,オーバーキル!,肢解,被肢解
 FinalStatusSuicideWisherSelfDeath,Suicide,自殺,自杀,自殺
 FinalStatusMadmakerMisSet,Misnaming,指名誤爆,背刺,指名反噬
@@ -343,9 +343,9 @@ FinalStatusHitmanDead,Disposition.,処分,沉江,被處分
 FinalStatusWorshiperSelfDeath,Suicide,自決,自杀,自殺
 FinalStatusSheriffInvolvedOutburst,Collateral damage to the sheriff's misfire.,暴発巻き添え,误杀,警長誤殺
 FinalStatusTheThirdLittlePigCounterKill,Counter Kill,カウンターキル,反杀,反殺
-FinalStatusGuesserKill,,
-FinalStatusGuesserMisFire,,
-FinalStatusLoversBreakerKill
+FinalStatusGuesserKill,Deadshot by guess,推測射殺
+FinalStatusGuesserMisFire,Guesser misfire,ゲッサー誤爆
+FinalStatusLoversBreakerKill,explosion,爆破
 FinalStatusMadJesterExiled,Death liberates,解放
 
 # Sabotages
@@ -814,7 +814,7 @@ MadHawkTitle1,See it all.,すべてを見渡そう,将一切尽收眼底,將一�
 MadJesterName,MadJester,マッドてるてる,傀儡小丑,傀儡小丑
 MadJesterTitle1,Get voted out and win with the Impostors!,投票で追放されてインポスターと勝利しよう,想办法被投出去，与内鬼一同获胜,想辦法被投出去，與內鬼一同獲勝
 MadJesterTitle2,Seeker of Liberation,解放を望む者
-MadJesterTitle2,Oh，my master，please do something about this hopeless world...,嗚呼ご主人 どうしようもないこの世界をどうか...
+MadJesterTitle3,Oh，my master，please do something about this hopeless world...,嗚呼ご主人 どうしようもないこの世界をどうか...
 MadJesterDescription,It is a crewmate decision. but it is in the Impostor camp. \nThe impostor wins by being expelled at the meeting.\nYou go for the gallows，climb up，tumbling down，tumbling down...\nFor I believe it will bring us glory...,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。\n貴方は絞首台をめざす、のぼる、おちる。\nそれが我らの栄光につながると信じて。,规则上傀儡小丑被视为船员阵营，但其跟随内鬼阵营获胜。\n傀儡小丑被放逐则内鬼阵营获胜。\n你听到绞刑台正向你呼唤……你爬上去……垂下身躯……日渐西沉……\n而你在死前看到，这是无辜者们的落日。,規則上傀儡小丑屬於船員陣營，但其跟隨內鬼陣營獲勝。\n傀儡小丑遭放逐則內鬼陣營獲勝。\n當你聽到處刑台正向你呼喚...你爬上去...垂下身軀...日漸西沉\n而你在死前看到的，是無辜者們的落日。
 FalseChargesName,FalseCharges,冤罪師,冤罪师,冤罪師
 FalseChargesTitle1,Let the false accusations win!,冤罪をさせて勝利しよう,栽赃他人获取胜利,栽賄他人獲取勝利
