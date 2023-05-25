@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AmongUs.GameOptions;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using SuperNewRoles.Mode;
@@ -227,7 +228,20 @@ class AddChatPatch
         string text = "";
         foreach (CustomOption option in options)
         {
-            text += indent + option.GetName() + ":" + option.GetString() + "\n";
+            if (option.GetName() != ModTranslation.GetString("MadmateCheckImpostorTaskSetting"))
+                text += indent + option.GetName() + ":" + option.GetString() + "\n";
+            else
+            {
+                text += indent + ModTranslation.GetString("MadmateCheckImpostorTaskNumber") + ":";
+
+                int Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
+                int Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
+                int Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
+                int AllTask = Common + Long + Short;
+                float percent = int.Parse(option.GetString().Replace("%", "")) / 100f;
+
+                text += $"{(int)(AllTask * percent)} ( {AllTask} × {percent * 100}% )\n";
+            }
             if (option.children.Count > 0)
             {
                 text += GetChildText(option.children, indent + "  ");
@@ -264,7 +278,7 @@ class AddChatPatch
         text += ModTranslation.GetString("MessageSettings") + ":\n";
         text += GetOptionText(option, intro);
         return text;
-    }
+    }// [ ]MEMO:陣営表記に変更したい
     // /grのコマンド結果を返す。辞書を加工する。
     static string GetInRole()
     {
@@ -298,7 +312,7 @@ class AddChatPatch
         {
             string text = GetText(option);
             string rolename = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
-            SuperNewRolesPlugin.Logger.LogInfo(text);
+            Logger.Info(text);
             Send(target, rolename, text, time);
             time += SendTime;
         }

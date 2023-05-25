@@ -678,17 +678,19 @@ public static class RoleClass
             IsImpostorCheck = CustomOptionHolder.MadmateIsCheckImpostor.GetBool();
             IsUseVent = CustomOptionHolder.MadmateIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadmateIsImpostorLight.GetBool();
+
+            bool vanilla = CustomOptionHolder.MadmateIsCheckImpostorTaskMode.GetBool();
             int Common = CustomOptionHolder.MadmateCommonTask.GetInt();
             int Long = CustomOptionHolder.MadmateLongTask.GetInt();
             int Short = CustomOptionHolder.MadmateShortTask.GetInt();
             int AllTask = Common + Long + Short;
-            if (AllTask == 0)
+            if (AllTask == 0 || vanilla)
             {
                 Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
                 Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
                 Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
-            ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MadmateCheckImpostorTask.GetString().Replace("%", "")) / 100f));
+            ImpostorCheckTask = vanilla ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadmateCheckImpostorTask.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class Bait
@@ -1342,17 +1344,18 @@ public static class RoleClass
             IsImpostorCheck = CustomOptionHolder.MadMayorIsCheckImpostor.GetBool();
             IsUseVent = CustomOptionHolder.MadMayorIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadMayorIsImpostorLight.GetBool();
+            bool vanilla = CustomOptionHolder.MadMayorIsCheckImpostorTaskMode.GetBool();
             int Common = CustomOptionHolder.MadMayorCommonTask.GetInt();
             int Long = CustomOptionHolder.MadMayorLongTask.GetInt();
             int Short = CustomOptionHolder.MadMayorShortTask.GetInt();
             int AllTask = Common + Long + Short;
-            if (AllTask == 0)
+            if (AllTask == 0 || vanilla)
             {
                 Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
                 Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
                 Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
-            ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MadMayorCheckImpostorTask.GetString().Replace("%", "")) / 100f));
+            ImpostorCheckTask = vanilla ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadMayorCheckImpostorTask.GetString().Replace("%", "")) / 100f));
             Roles.MadMayor.CheckedImpostor = new();
         }
     }
@@ -1645,6 +1648,7 @@ public static class RoleClass
             IsImpostorCheck = CustomOptionHolder.MadSeerIsCheckImpostor.GetBool();
             IsUseVent = CustomOptionHolder.MadSeerIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadSeerIsImpostorLight.GetBool();
+            bool vanilla = CustomOptionHolder.MadSeerIsCheckImpostorTaskMode.GetBool();
             int Common = CustomOptionHolder.MadSeerCommonTask.GetInt();
             int Long = CustomOptionHolder.MadSeerLongTask.GetInt();
             int Short = CustomOptionHolder.MadSeerShortTask.GetInt();
@@ -1655,7 +1659,7 @@ public static class RoleClass
                 Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
                 Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
-            ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MadSeerCheckImpostorTask.GetString().Replace("%", "")) / 100f));
+            ImpostorCheckTask = vanilla ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadSeerCheckImpostorTask.GetString().Replace("%", "")) / 100f));
             Roles.MadSeer.CheckedImpostor = new();
         }
     }
@@ -1806,17 +1810,18 @@ public static class RoleClass
             IsJackalCheck = CustomOptionHolder.SeerFriendsIsCheckJackal.GetBool();
             IsUseVent = CustomOptionHolder.SeerFriendsIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.SeerFriendsIsImpostorLight.GetBool();
+            bool vanilla = CustomOptionHolder.MadmateIsCheckImpostorTaskMode.GetBool();
             int Common = CustomOptionHolder.SeerFriendsCommonTask.GetInt();
             int Long = CustomOptionHolder.SeerFriendsLongTask.GetInt();
             int Short = CustomOptionHolder.SeerFriendsShortTask.GetInt();
             int AllTask = Common + Long + Short;
-            if (AllTask == 0)
+            if (AllTask == 0 || vanilla)
             {
                 Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
                 Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
                 Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
-            JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.SeerFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
+            JackalCheckTask = vanilla ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.JackalFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class JackalSeer
@@ -2012,17 +2017,18 @@ public static class RoleClass
             IsJackalCheck = CustomOptionHolder.MayorFriendsIsCheckJackal.GetBool();
             IsUseVent = CustomOptionHolder.MayorFriendsIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MayorFriendsIsImpostorLight.GetBool();
+            bool vanilla = CustomOptionHolder.MadmateIsCheckImpostorTaskMode.GetBool();
             int Common = CustomOptionHolder.MayorFriendsCommonTask.GetInt();
             int Long = CustomOptionHolder.MayorFriendsLongTask.GetInt();
             int Short = CustomOptionHolder.MayorFriendsShortTask.GetInt();
             int AllTask = Common + Long + Short;
-            if (AllTask == 0)
+            if (AllTask == 0 || vanilla)
             {
                 Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
                 Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
                 Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
-            JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.MayorFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
+            JackalCheckTask = vanilla ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.JackalFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
             AddVote = CustomOptionHolder.MayorFriendsVoteCount.GetInt();
         }
     }
@@ -2161,17 +2167,18 @@ public static class RoleClass
             IsImpostorCheck = CustomOptionHolder.BlackCatIsCheckImpostor.GetBool();
             IsUseVent = CustomOptionHolder.BlackCatIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.BlackCatIsImpostorLight.GetBool();
+            bool vanilla = CustomOptionHolder.BlackCatIsCheckImpostorTaskMode.GetBool();
             int Common = CustomOptionHolder.BlackCatCommonTask.GetInt();
             int Long = CustomOptionHolder.BlackCatLongTask.GetInt();
             int Short = CustomOptionHolder.BlackCatShortTask.GetInt();
             int AllTask = Common + Long + Short;
-            if (AllTask == 0)
+            if (AllTask == 0 || vanilla)
             {
                 Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
                 Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
                 Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
             }
-            ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptionHolder.BlackCatCheckImpostorTask.GetString().Replace("%", "")) / 100f));
+            ImpostorCheckTask = vanilla ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.BlackCatCheckImpostorTask.GetString().Replace("%", "")) / 100f));
         }
     }
 

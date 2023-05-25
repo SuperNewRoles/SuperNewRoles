@@ -963,7 +963,22 @@ class GameOptionsDataPatch
 
     public static string OptionToString(CustomOption option)
     {
-        return option == null ? "" : $"{option.GetName()}: {option.GetString()}";
+        if (option.GetName() != ModTranslation.GetString("MadmateCheckImpostorTaskSetting"))
+            return option == null ? "" : $"{option.GetName()}: {option.GetString()}";
+        else
+        {
+            string text = $"{option.GetName()} : {option.GetString()}";
+
+            int Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
+            int Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
+            int Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
+            int AllTask = Common + Long + Short;
+            float percent = int.Parse(option.GetString().Replace("%", "")) / 100f;
+
+            text += $" × {AllTask} => {(int)(AllTask * percent)}{ModTranslation.GetString("MadmateCheckImpostorTaskCount")}";
+
+            return text;
+        }
     }
 
     public static string OptionsToString(CustomOption option, bool skipFirst = false)

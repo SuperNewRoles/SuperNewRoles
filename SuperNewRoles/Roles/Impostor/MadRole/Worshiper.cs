@@ -22,6 +22,7 @@ public static class Worshiper
     public static CustomOption WorshiperCommonTask;
     public static CustomOption WorshiperShortTask;
     public static CustomOption WorshiperLongTask;
+    public static CustomOption WorshiperIsCheckImpostorTaskMode;
     public static CustomOption WorshiperCheckImpostorTask;
     public static CustomOption WorshiperIsUseVent;
     public static CustomOption WorshiperIsImpostorLight;
@@ -39,7 +40,8 @@ public static class Worshiper
         WorshiperCommonTask = Worshiperoption.Item1;
         WorshiperShortTask = Worshiperoption.Item2;
         WorshiperLongTask = Worshiperoption.Item3;
-        WorshiperCheckImpostorTask = CustomOption.Create(optionId + 10, false, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, WorshiperIsCheckImpostor);
+        WorshiperIsCheckImpostorTaskMode = CustomOption.Create(optionId + 10, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, WorshiperIsCheckImpostor);
+        WorshiperCheckImpostorTask = CustomOption.Create(optionId + 11, false, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, WorshiperIsCheckImpostorTaskMode);
     }
 
     // RoleClass
@@ -64,17 +66,18 @@ public static class Worshiper
         IsUseVent = WorshiperIsUseVent.GetBool();
         IsImpostorLight = WorshiperIsImpostorLight.GetBool();
         IsImpostorCheck = WorshiperIsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles);
+        bool vanilla = MadmateIsCheckImpostorTaskMode.GetBool();
         int Common = WorshiperCommonTask.GetInt();
         int Long = WorshiperLongTask.GetInt();
         int Short = WorshiperShortTask.GetInt();
         int AllTask = Common + Long + Short;
-        if (AllTask == 0)
+        if (AllTask == 0 || vanilla)
         {
             Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
             Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
             Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
         }
-        ImpostorCheckTask = (int)(AllTask * (int.Parse(WorshiperCheckImpostorTask.GetString().Replace("%", "")) / 100f));
+        ImpostorCheckTask = vanilla ? AllTask : (int)(AllTask * (int.Parse(WorshiperCheckImpostorTask.GetString().Replace("%", "")) / 100f));
 
         isfirstResetCool = true;
     }

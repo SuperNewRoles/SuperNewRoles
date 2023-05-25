@@ -42,17 +42,17 @@ public static class SelectTask
     public static (int, int, int) GetTaskCount(this PlayerControl p)
     {
         Dictionary<RoleId, (int, int, int)> taskData = new();
-        if (MadmateCheckImpostorTask.GetBool()) taskData.Add(RoleId.Madmate, (MadmateCommonTask.GetInt(), MadmateShortTask.GetInt(), MadmateLongTask.GetInt()));
-        if (MadMayorIsCheckImpostor.GetBool()) taskData.Add(RoleId.MadMayor, (MadMayorCommonTask.GetInt(), MadMayorShortTask.GetInt(), MadMayorLongTask.GetInt()));
-        if (MadSeerIsCheckImpostor.GetBool()) taskData.Add(RoleId.MadSeer, (MadSeerCommonTask.GetInt(), MadSeerShortTask.GetInt(), MadSeerLongTask.GetInt()));
-        if (BlackCatIsCheckImpostor.GetBool()) taskData.Add(RoleId.BlackCat, (BlackCatCommonTask.GetInt(), BlackCatShortTask.GetInt(), BlackCatLongTask.GetInt()));
-        if (JackalFriendsIsCheckJackal.GetBool()) taskData.Add(RoleId.JackalFriends, (JackalFriendsCommonTask.GetInt(), JackalFriendsShortTask.GetInt(), JackalFriendsLongTask.GetInt()));
-        if (SeerFriendsIsCheckJackal.GetBool()) taskData.Add(RoleId.SeerFriends, (SeerFriendsCommonTask.GetInt(), SeerFriendsShortTask.GetInt(), SeerFriendsLongTask.GetInt()));
-        if (MayorFriendsIsCheckJackal.GetBool()) taskData.Add(RoleId.MayorFriends, (MayorFriendsCommonTask.GetInt(), MayorFriendsShortTask.GetInt(), MayorFriendsLongTask.GetInt()));
+        if (MadmateCheckImpostorTask.GetBool()) taskData.Add(RoleId.Madmate, !MadmateIsCheckImpostorTaskMode.GetBool() ? (MadmateCommonTask.GetInt(), MadmateShortTask.GetInt(), MadmateLongTask.GetInt()) : (0, 0, 0));
+        if (MadMayorIsCheckImpostor.GetBool()) taskData.Add(RoleId.MadMayor, !MadMayorIsCheckImpostorTaskMode.GetBool() ? (MadMayorCommonTask.GetInt(), MadMayorShortTask.GetInt(), MadMayorLongTask.GetInt()) : (0, 0, 0));
+        if (MadSeerIsCheckImpostor.GetBool()) taskData.Add(RoleId.MadSeer, !MadSeerIsCheckImpostorTaskMode.GetBool() ? (MadSeerCommonTask.GetInt(), MadSeerShortTask.GetInt(), MadSeerLongTask.GetInt()) : (0, 0, 0));
+        if (BlackCatIsCheckImpostor.GetBool()) taskData.Add(RoleId.BlackCat, !BlackCatIsCheckImpostorTaskMode.GetBool() ? (BlackCatCommonTask.GetInt(), BlackCatShortTask.GetInt(), BlackCatLongTask.GetInt()) : (0, 0, 0));
+        if (JackalFriendsIsCheckJackal.GetBool()) taskData.Add(RoleId.JackalFriends, !JackalFriendsIsCheckJackalTaskMode.GetBool() ? (JackalFriendsCommonTask.GetInt(), JackalFriendsShortTask.GetInt(), JackalFriendsLongTask.GetInt()) : (0, 0, 0));
+        if (SeerFriendsIsCheckJackal.GetBool()) taskData.Add(RoleId.SeerFriends, !SeerFriendsIsCheckJackalTaskMode.GetBool() ? (SeerFriendsCommonTask.GetInt(), SeerFriendsShortTask.GetInt(), SeerFriendsLongTask.GetInt()) : (0, 0, 0));
+        if (MayorFriendsIsCheckJackal.GetBool()) taskData.Add(RoleId.MayorFriends, !MayorFriendsIsCheckJackalTaskMode.GetBool() ? (MayorFriendsCommonTask.GetInt(), MayorFriendsShortTask.GetInt(), MayorFriendsLongTask.GetInt()) : (0, 0, 0));
         if (JesterIsWinCleartask.GetBool()) taskData.Add(RoleId.Jester, (JesterCommonTask.GetInt(), JesterShortTask.GetInt(), JesterLongTask.GetInt()));
         if (IsMadJesterTaskClearWin.GetBool() || MadJesterCheckImpostorTask.GetBool()) taskData.Add(RoleId.MadJester, (MadJesterCommonTask.GetInt(), MadJesterShortTask.GetInt(), MadJesterLongTask.GetInt()));
         if (GodIsEndTaskWin.GetBool()) taskData.Add(RoleId.God, (GodCommonTask.GetInt(), GodShortTask.GetInt(), GodLongTask.GetInt()));
-        if (Worshiper.WorshiperIsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)) taskData.Add(RoleId.Worshiper, (Worshiper.WorshiperCommonTask.GetInt(), Worshiper.WorshiperShortTask.GetInt(), Worshiper.WorshiperLongTask.GetInt()));
+        if (Worshiper.WorshiperIsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles)) taskData.Add(RoleId.Worshiper, !Worshiper.WorshiperIsCheckImpostorTaskMode.GetBool() ? (Worshiper.WorshiperCommonTask.GetInt(), Worshiper.WorshiperShortTask.GetInt(), Worshiper.WorshiperLongTask.GetInt()) : (0, 0, 0));
         taskData.Add(RoleId.Workperson, (WorkpersonCommonTask.GetInt(), WorkpersonShortTask.GetInt(), WorkpersonLongTask.GetInt()));
         taskData.Add(RoleId.TaskManager, (TaskManagerCommonTask.GetInt(), TaskManagerShortTask.GetInt(), TaskManagerLongTask.GetInt()));
         taskData.Add(RoleId.SuicidalIdeation, (SuicidalIdeationCommonTask.GetInt(), SuicidalIdeationShortTask.GetInt(), SuicidalIdeationLongTask.GetInt()));

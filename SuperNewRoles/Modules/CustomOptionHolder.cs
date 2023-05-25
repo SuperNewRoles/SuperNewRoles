@@ -230,6 +230,7 @@ public class CustomOptionHolder
     public static CustomOption MadmateCommonTask;
     public static CustomOption MadmateShortTask;
     public static CustomOption MadmateLongTask;
+    public static CustomOption MadmateIsCheckImpostorTaskMode;
     public static CustomOption MadmateCheckImpostorTask;
     public static CustomOption MadmateIsUseVent;
     public static CustomOption MadmateIsImpostorLight;
@@ -300,6 +301,7 @@ public class CustomOptionHolder
     public static CustomOption JackalFriendsCommonTask;
     public static CustomOption JackalFriendsShortTask;
     public static CustomOption JackalFriendsLongTask;
+    public static CustomOption JackalFriendsIsCheckJackalTaskMode;
     public static CustomOption JackalFriendsCheckJackalTask;
     public static CustomOption JackalFriendsIsUseVent;
     public static CustomOption JackalFriendsIsImpostorLight;
@@ -411,6 +413,7 @@ public class CustomOptionHolder
     public static CustomOption MadMayorCommonTask;
     public static CustomOption MadMayorShortTask;
     public static CustomOption MadMayorLongTask;
+    public static CustomOption MadMayorIsCheckImpostorTaskMode;
     public static CustomOption MadMayorCheckImpostorTask;
     public static CustomOption MadMayorIsUseVent;
     public static CustomOption MadMayorIsImpostorLight;
@@ -450,6 +453,7 @@ public class CustomOptionHolder
     public static CustomOption MadJesterCommonTask;
     public static CustomOption MadJesterShortTask;
     public static CustomOption MadJesterLongTask;
+    public static CustomOption MadJesterIsCheckImpostorTaskMode;
     public static CustomOption MadJesterIsCheckImpostor;
     public static CustomOption MadJesterCheckImpostorTask;
 
@@ -515,6 +519,7 @@ public class CustomOptionHolder
     public static CustomOption MadSeerCommonTask;
     public static CustomOption MadSeerShortTask;
     public static CustomOption MadSeerLongTask;
+    public static CustomOption MadSeerIsCheckImpostorTaskMode;
     public static CustomOption MadSeerCheckImpostorTask;
     public static CustomOption MadSeerIsUseVent;
     public static CustomOption MadSeerIsImpostorLight;
@@ -574,6 +579,7 @@ public class CustomOptionHolder
     public static CustomOption SeerFriendsCommonTask;
     public static CustomOption SeerFriendsShortTask;
     public static CustomOption SeerFriendsLongTask;
+    public static CustomOption SeerFriendsIsCheckJackalTaskMode;
     public static CustomOption SeerFriendsCheckJackalTask;
     public static CustomOption SeerFriendsIsUseVent;
     public static CustomOption SeerFriendsIsImpostorLight;
@@ -600,6 +606,7 @@ public class CustomOptionHolder
     public static CustomOption BlackCatCommonTask;
     public static CustomOption BlackCatShortTask;
     public static CustomOption BlackCatLongTask;
+    public static CustomOption BlackCatIsCheckImpostorTaskMode;
     public static CustomOption BlackCatCheckImpostorTask;
     public static CustomOption BlackCatIsUseVent;
     public static CustomOption BlackCatIsImpostorLight;
@@ -665,6 +672,7 @@ public class CustomOptionHolder
     public static CustomOption MayorFriendsCommonTask;
     public static CustomOption MayorFriendsShortTask;
     public static CustomOption MayorFriendsLongTask;
+    public static CustomOption MayorFriendsIsCheckJackalTaskMode;
     public static CustomOption MayorFriendsCheckJackalTask;
     public static CustomOption MayorFriendsIsUseVent;
     public static CustomOption MayorFriendsIsImpostorLight;
@@ -1017,7 +1025,7 @@ public class CustomOptionHolder
         enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
         GMOption = Create(1028, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
-        if (ConfigRoles.DebugMode.Value) { DebuggerOption = Create(1172, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false); }
+        if (ConfigRoles.DebugMode.Value) { DebuggerOption = Create(1278, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false); }
 
         /* |: ========================= Mod Normal Settings ========================== :| */
 
@@ -1113,8 +1121,8 @@ public class CustomOptionHolder
         MadmateCommonTask = madmateoption.Item1;
         MadmateShortTask = madmateoption.Item2;
         MadmateLongTask = madmateoption.Item3;
-        //MadmateIsNotTask = madmateoption.Item4;
-        MadmateCheckImpostorTask = Create(136, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MadmateIsCheckImpostor);
+        MadmateIsCheckImpostorTaskMode = Create(1271, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, MadmateIsCheckImpostor);
+        MadmateCheckImpostorTask = Create(136, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MadmateIsCheckImpostorTaskMode);
         MadmateIsUseVent = Create(137, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadmateOption);
         MadmateIsImpostorLight = Create(138, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadmateOption);
 
@@ -1126,8 +1134,8 @@ public class CustomOptionHolder
         BlackCatCommonTask = blackcatoption.Item1;
         BlackCatShortTask = blackcatoption.Item2;
         BlackCatLongTask = blackcatoption.Item3;
-        //MadmateIsNotTask = madmateoption.Item4;
-        BlackCatCheckImpostorTask = Create(562, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, BlackCatIsCheckImpostor);
+        BlackCatIsCheckImpostorTaskMode = Create(1272, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, BlackCatIsCheckImpostor);
+        BlackCatCheckImpostorTask = Create(562, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, BlackCatIsCheckImpostorTaskMode);
         BlackCatIsUseVent = Create(563, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, BlackCatOption);
         BlackCatIsImpostorLight = Create(564, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, BlackCatOption);
 
@@ -1141,7 +1149,8 @@ public class CustomOptionHolder
         MadMayorCommonTask = madmayoroption.Item1;
         MadMayorShortTask = madmayoroption.Item2;
         MadMayorLongTask = madmayoroption.Item3;
-        MadMayorCheckImpostorTask = Create(276, true, CustomOptionType.Crewmate, "MadMayorCheckImpostorTaskSetting", rates4, MadMayorIsCheckImpostor);
+        MadMayorIsCheckImpostorTaskMode = Create(1273, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, MadMayorIsCheckImpostor);
+        MadMayorCheckImpostorTask = Create(276, true, CustomOptionType.Crewmate, "MadMayorCheckImpostorTaskSetting", rates4, MadMayorIsCheckImpostorTaskMode);
         MadMayorIsUseVent = Create(277, true, CustomOptionType.Crewmate, "MadMayorUseVentSetting", false, MadMayorOption);
         MadMayorIsImpostorLight = Create(278, true, CustomOptionType.Crewmate, "MadMayorImpostorLightSetting", false, MadMayorOption);
 
@@ -1157,7 +1166,8 @@ public class CustomOptionHolder
         MadSeerCommonTask = madseeroption.Item1;
         MadSeerShortTask = madseeroption.Item2;
         MadSeerLongTask = madseeroption.Item3;
-        MadSeerCheckImpostorTask = Create(333, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MadSeerIsCheckImpostor);
+        MadSeerIsCheckImpostorTaskMode = Create(1274, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, MadSeerIsCheckImpostor);
+        MadSeerCheckImpostorTask = Create(333, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MadSeerIsCheckImpostorTaskMode);
 
         MadMakerOption = SetupCustomRoleOption(347, true, RoleId.MadMaker);
         MadMakerPlayerCount = Create(348, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMakerOption);
@@ -1343,7 +1353,8 @@ public class CustomOptionHolder
         JackalFriendsCommonTask = JackalFriendsoption.Item1;
         JackalFriendsShortTask = JackalFriendsoption.Item2;
         JackalFriendsLongTask = JackalFriendsoption.Item3;
-        JackalFriendsCheckJackalTask = Create(189, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, JackalFriendsIsCheckJackal);
+        JackalFriendsIsCheckJackalTaskMode = Create(1275, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, JackalFriendsIsCheckJackal);
+        JackalFriendsCheckJackalTask = Create(189, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, JackalFriendsIsCheckJackalTaskMode);
 
         DoctorOption = SetupCustomRoleOption(190, false, RoleId.Doctor);
         DoctorPlayerCount = Create(191, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
@@ -1539,7 +1550,8 @@ public class CustomOptionHolder
         SeerFriendsCommonTask = SeerFriendsoption.Item1;
         SeerFriendsShortTask = SeerFriendsoption.Item2;
         SeerFriendsLongTask = SeerFriendsoption.Item3;
-        SeerFriendsCheckJackalTask = Create(374, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, SeerFriendsIsCheckJackal);
+        SeerFriendsIsCheckJackalTaskMode = Create(1276, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, SeerFriendsIsCheckJackal);
+        SeerFriendsCheckJackalTask = Create(374, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, SeerFriendsIsCheckJackalTaskMode);
 
         JackalSeerOption = SetupCustomRoleOption(375, true, RoleId.JackalSeer);
         JackalSeerPlayerCount = Create(376, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalSeerOption);
@@ -1584,6 +1596,7 @@ public class CustomOptionHolder
         MayorFriendsCommonTask = MayorFriendsoption.Item1;
         MayorFriendsShortTask = MayorFriendsoption.Item2;
         MayorFriendsLongTask = MayorFriendsoption.Item3;
+        MayorFriendsIsCheckJackalTaskMode = Create(1277, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, MayorFriendsIsCheckJackal);
         MayorFriendsCheckJackalTask = Create(413, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MayorFriendsIsCheckJackal);
         MayorFriendsVoteCount = Create(414, true, CustomOptionType.Crewmate, "MayorVoteCountSetting", 2f, 1f, 100f, 1f, MayorFriendsOption);
 

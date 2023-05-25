@@ -578,10 +578,13 @@ MadmateName,Madmate,マッドメイト,叛徒,叛徒
 MadmateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助内鬼获得胜利,幫助內鬼獲得勝利
 MadmateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。,叛徒屬於船員陣營，但是其為內鬼的同伴。\n內鬼獲勝則叛徒一同獲勝。
 MadmateIsCheckImpostorSetting,Do you have the capacity for fanaticism?,狂信能力を有するか,叛徒是否能确认内鬼玩家,叛徒是否能確認內鬼玩家
-MadmateCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量(全タスク内),确认身份需要完成的任务量,確認身份需要完成的任務量
+MadmateIsCheckImpostorTaskMode,Do you want to get the number of tasks from the vanilla settings?,バニラ設定からタスク数を取得するか
+MadmateCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (Percentage of total tasks),確認できるようになるタスク量(全タスクに対する割合),确认身份需要完成的任务量,確認身份需要完成的任務量
 MadmateUseVentSetting,Use Vent,ベントに入れる,可以进入管道,可以進入管道
 MadmateVentMoveSetting,Move Vent,ベントで動ける,叛徒可以使用管道,叛徒可以使用管道
 MadmateImpostorLightSetting,Impostor Light,インポスターの視界,拥有内鬼视野,擁有內鬼視野
+MadmateCheckImpostorTaskNumber,Number of tasks required to activate fanaticism capability,狂信能力の発動に必要なタスク数
+MadmateCheckImpostorTaskCount,pieces,個
 BaitName,Bait,ベイト,诱饵,誘餌
 BaitTitle1,Bait your enemies,相手に通報させよう,诱骗你的敌人,我是陽光開朗大男孩！
 BaitDescription,If you are killed you can force the person who killed you to report you.,自分がキルされると、キルしてきた相手に強制的に通報させることができます。,诱饵被杀死，则杀死诱饵的凶手将会在指定时间后强制报告诱饵的尸体。,誘餌被殺死則殺死誘餌的兇手將會在指定時間後強制報告誘餌的屍體。
