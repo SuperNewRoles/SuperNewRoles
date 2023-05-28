@@ -52,6 +52,7 @@ public enum FinalStatus
     SheriffInvolvedOutburst,
     SerialKillerSelfDeath,
     VampireKill,
+    DependentsExiled,
     OverKillerOverKill,
     SuicideWisherSelfDeath,
     MadmakerMisSet,
@@ -60,4 +61,8 @@ public enum FinalStatus
     HitmanDead,
     WorshiperSelfDeath,
     TheThirdLittlePigCounterKill,
+    GuesserKill,
+    GuesserMisFire,
+    LoversBreakerKill,
+    MadJesterExiled,
 }
