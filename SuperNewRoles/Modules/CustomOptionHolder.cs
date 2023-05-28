@@ -227,11 +227,12 @@ public class CustomOptionHolder
     public static CustomRoleOption MadmateOption;
     public static CustomOption MadmatePlayerCount;
     public static CustomOption MadmateIsCheckImpostor;
+    public static CustomOption MadmateIsSettingNumberOfUniqueTasks;
     public static CustomOption MadmateCommonTask;
     public static CustomOption MadmateShortTask;
     public static CustomOption MadmateLongTask;
-    public static CustomOption MadmateIsCheckImpostorTaskMode;
-    public static CustomOption MadmateCheckImpostorTask;
+    public static CustomOption MadmateIsParcentageForTaskTrigger;
+    public static CustomOption MadmateParcentageForTaskTriggerSetting;
     public static CustomOption MadmateIsUseVent;
     public static CustomOption MadmateIsImpostorLight;
 
@@ -298,11 +299,12 @@ public class CustomOptionHolder
     public static CustomRoleOption JackalFriendsOption;
     public static CustomOption JackalFriendsPlayerCount;
     public static CustomOption JackalFriendsIsCheckJackal;
+    public static CustomOption JackalFriendsIsSettingNumberOfUniqueTasks;
     public static CustomOption JackalFriendsCommonTask;
     public static CustomOption JackalFriendsShortTask;
     public static CustomOption JackalFriendsLongTask;
-    public static CustomOption JackalFriendsIsCheckJackalTaskMode;
-    public static CustomOption JackalFriendsCheckJackalTask;
+    public static CustomOption JackalFriendsIsParcentageForTaskTrigger;
+    public static CustomOption JackalFriendsParcentageForTaskTriggerSetting;
     public static CustomOption JackalFriendsIsUseVent;
     public static CustomOption JackalFriendsIsImpostorLight;
 
@@ -411,10 +413,11 @@ public class CustomOptionHolder
     public static CustomOption MadMayorPlayerCount;
     public static CustomOption MadMayorIsCheckImpostor;
     public static CustomOption MadMayorCommonTask;
+    public static CustomOption MadMayorIsSettingNumberOfUniqueTasks;
     public static CustomOption MadMayorShortTask;
     public static CustomOption MadMayorLongTask;
-    public static CustomOption MadMayorIsCheckImpostorTaskMode;
-    public static CustomOption MadMayorCheckImpostorTask;
+    public static CustomOption MadMayorIsParcentageForTaskTrigger;
+    public static CustomOption MadMayorParcentageForTaskTriggerSetting;
     public static CustomOption MadMayorIsUseVent;
     public static CustomOption MadMayorIsImpostorLight;
     public static CustomOption MadMayorVoteCount;
@@ -450,12 +453,13 @@ public class CustomOptionHolder
     public static CustomOption MadJesterIsUseVent;
     public static CustomOption MadJesterIsImpostorLight;
     public static CustomOption IsMadJesterTaskClearWin;
+    public static CustomOption MadJesterIsSettingNumberOfUniqueTasks;
     public static CustomOption MadJesterCommonTask;
     public static CustomOption MadJesterShortTask;
     public static CustomOption MadJesterLongTask;
-    public static CustomOption MadJesterIsCheckImpostorTaskMode;
+    public static CustomOption MadJesterIsParcentageForTaskTrigger;
+    public static CustomOption MadJesterParcentageForTaskTriggerSetting;
     public static CustomOption MadJesterIsCheckImpostor;
-    public static CustomOption MadJesterCheckImpostorTask;
 
     public static CustomRoleOption FalseChargesOption;
     public static CustomOption FalseChargesPlayerCount;
@@ -516,11 +520,12 @@ public class CustomOptionHolder
     public static CustomOption MadSeerLimitSoulDuration;
     public static CustomOption MadSeerSoulDuration;
     public static CustomOption MadSeerIsCheckImpostor;
+    public static CustomOption MadSeerIsSettingNumberOfUniqueTasks;
     public static CustomOption MadSeerCommonTask;
     public static CustomOption MadSeerShortTask;
     public static CustomOption MadSeerLongTask;
-    public static CustomOption MadSeerIsCheckImpostorTaskMode;
-    public static CustomOption MadSeerCheckImpostorTask;
+    public static CustomOption MadSeerIsParcentageForTaskTrigger;
+    public static CustomOption MadSeerParcentageForTaskTriggerSetting;
     public static CustomOption MadSeerIsUseVent;
     public static CustomOption MadSeerIsImpostorLight;
 
@@ -576,11 +581,12 @@ public class CustomOptionHolder
     public static CustomOption SeerFriendsLimitSoulDuration;
     public static CustomOption SeerFriendsSoulDuration;
     public static CustomOption SeerFriendsIsCheckJackal;
+    public static CustomOption SeerFriendsIsSettingNumberOfUniqueTasks;
     public static CustomOption SeerFriendsCommonTask;
     public static CustomOption SeerFriendsShortTask;
     public static CustomOption SeerFriendsLongTask;
-    public static CustomOption SeerFriendsIsCheckJackalTaskMode;
-    public static CustomOption SeerFriendsCheckJackalTask;
+    public static CustomOption SeerFriendsIsParcentageForTaskTrigger;
+    public static CustomOption SeerFriendsParcentageForTaskTriggerSetting;
     public static CustomOption SeerFriendsIsUseVent;
     public static CustomOption SeerFriendsIsImpostorLight;
 
@@ -603,11 +609,12 @@ public class CustomOptionHolder
     public static CustomOption BlackCatPlayerCount;
     public static CustomOption BlackCatNotImpostorExiled;
     public static CustomOption BlackCatIsCheckImpostor;
+    public static CustomOption BlackCatIsSettingNumberOfUniqueTasks;
     public static CustomOption BlackCatCommonTask;
     public static CustomOption BlackCatShortTask;
     public static CustomOption BlackCatLongTask;
-    public static CustomOption BlackCatIsCheckImpostorTaskMode;
-    public static CustomOption BlackCatCheckImpostorTask;
+    public static CustomOption BlackCatIsParcentageForTaskTrigger;
+    public static CustomOption BlackCatParcentageForTaskTriggerSetting;
     public static CustomOption BlackCatIsUseVent;
     public static CustomOption BlackCatIsImpostorLight;
 
@@ -669,11 +676,12 @@ public class CustomOptionHolder
     public static CustomRoleOption MayorFriendsOption;
     public static CustomOption MayorFriendsPlayerCount;
     public static CustomOption MayorFriendsIsCheckJackal;
+    public static CustomOption MayorFriendsIsSettingNumberOfUniqueTasks;
     public static CustomOption MayorFriendsCommonTask;
     public static CustomOption MayorFriendsShortTask;
     public static CustomOption MayorFriendsLongTask;
-    public static CustomOption MayorFriendsIsCheckJackalTaskMode;
-    public static CustomOption MayorFriendsCheckJackalTask;
+    public static CustomOption MayorFriendsIsParcentageForTaskTrigger;
+    public static CustomOption MayorFriendsParcentageForTaskTriggerSetting;
     public static CustomOption MayorFriendsIsUseVent;
     public static CustomOption MayorFriendsIsImpostorLight;
     public static CustomOption MayorFriendsVoteCount;
@@ -1025,7 +1033,7 @@ public class CustomOptionHolder
         enableAgartha = Create(970, false, CustomOptionType.Generic, "AgarthaName", true, null, isHeader: true);
 
         GMOption = Create(1028, false, CustomOptionType.Generic, Cs(RoleClass.GM.color, "GMName"), false, isHeader: true);
-        if (ConfigRoles.DebugMode.Value) { DebuggerOption = Create(1278, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false); }
+        if (ConfigRoles.DebugMode.Value) { DebuggerOption = Create(1172, false, CustomOptionType.Generic, Cs(RoleClass.Debugger.color, "DebuggerName"), false); }
 
         /* |: ========================= Mod Normal Settings ========================== :| */
 
@@ -1117,12 +1125,13 @@ public class CustomOptionHolder
         MadmateOption = SetupCustomRoleOption(130, true, RoleId.Madmate);
         MadmatePlayerCount = Create(131, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadmateOption);
         MadmateIsCheckImpostor = Create(132, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadmateOption);
-        var madmateoption = SelectTask.TaskSetting(133, 134, 135, MadmateIsCheckImpostor, CustomOptionType.Crewmate, true);
+        MadmateIsSettingNumberOfUniqueTasks = Create(1161, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadmateIsCheckImpostor);
+        var madmateoption = SelectTask.TaskSetting(133, 134, 135, MadmateIsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true);
         MadmateCommonTask = madmateoption.Item1;
         MadmateShortTask = madmateoption.Item2;
         MadmateLongTask = madmateoption.Item3;
-        MadmateIsCheckImpostorTaskMode = Create(1271, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, MadmateIsCheckImpostor);
-        MadmateCheckImpostorTask = Create(136, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MadmateIsCheckImpostorTaskMode);
+        MadmateIsParcentageForTaskTrigger = Create(1162, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadmateIsCheckImpostor);
+        MadmateParcentageForTaskTriggerSetting = Create(136, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadmateIsParcentageForTaskTrigger, roleId: RoleId.Madmate);
         MadmateIsUseVent = Create(137, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadmateOption);
         MadmateIsImpostorLight = Create(138, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadmateOption);
 
@@ -1130,27 +1139,29 @@ public class CustomOptionHolder
         BlackCatPlayerCount = Create(557, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BlackCatOption);
         BlackCatNotImpostorExiled = Create(675, true, CustomOptionType.Crewmate, "NotImpostorExiled", false, BlackCatOption);
         BlackCatIsCheckImpostor = Create(558, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, BlackCatOption);
+        BlackCatIsSettingNumberOfUniqueTasks = Create(1163, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, BlackCatIsCheckImpostor);
         var blackcatoption = SelectTask.TaskSetting(559, 560, 561, BlackCatIsCheckImpostor, CustomOptionType.Crewmate, true);
         BlackCatCommonTask = blackcatoption.Item1;
         BlackCatShortTask = blackcatoption.Item2;
         BlackCatLongTask = blackcatoption.Item3;
-        BlackCatIsCheckImpostorTaskMode = Create(1272, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, BlackCatIsCheckImpostor);
-        BlackCatCheckImpostorTask = Create(562, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, BlackCatIsCheckImpostorTaskMode);
+        BlackCatIsParcentageForTaskTrigger = Create(1164, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, BlackCatIsCheckImpostor);
+        BlackCatParcentageForTaskTriggerSetting = Create(562, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, BlackCatIsParcentageForTaskTrigger, roleId: RoleId.BlackCat);
         BlackCatIsUseVent = Create(563, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, BlackCatOption);
         BlackCatIsImpostorLight = Create(564, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, BlackCatOption);
 
-        Roles.Impostor.MadRole.Worshiper.SetupCustomOptions();
+        Roles.Impostor.MadRole.Worshiper.CustomOptionData.SetupCustomOptions();
 
         MadMayorOption = SetupCustomRoleOption(269, true, RoleId.MadMayor);
         MadMayorPlayerCount = Create(270, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMayorOption);
         MadMayorVoteCount = Create(271, true, CustomOptionType.Crewmate, "MadMayorVoteCountSetting", 2f, 1f, 100f, 1f, MadMayorOption);
         MadMayorIsCheckImpostor = Create(272, true, CustomOptionType.Crewmate, "MadMayorIsCheckImpostorSetting", false, MadMayorOption);
+        MadMayorIsSettingNumberOfUniqueTasks = Create(1165, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadMayorIsCheckImpostor);
         var madmayoroption = SelectTask.TaskSetting(273, 274, 275, MadMayorIsCheckImpostor, CustomOptionType.Crewmate, true);
         MadMayorCommonTask = madmayoroption.Item1;
         MadMayorShortTask = madmayoroption.Item2;
         MadMayorLongTask = madmayoroption.Item3;
-        MadMayorIsCheckImpostorTaskMode = Create(1273, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, MadMayorIsCheckImpostor);
-        MadMayorCheckImpostorTask = Create(276, true, CustomOptionType.Crewmate, "MadMayorCheckImpostorTaskSetting", rates4, MadMayorIsCheckImpostorTaskMode);
+        MadMayorIsParcentageForTaskTrigger = Create(1166, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadMayorIsCheckImpostor);
+        MadMayorParcentageForTaskTriggerSetting = Create(276, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadMayorIsParcentageForTaskTrigger, roleId: RoleId.MadMayor);
         MadMayorIsUseVent = Create(277, true, CustomOptionType.Crewmate, "MadMayorUseVentSetting", false, MadMayorOption);
         MadMayorIsImpostorLight = Create(278, true, CustomOptionType.Crewmate, "MadMayorImpostorLightSetting", false, MadMayorOption);
 
@@ -1162,12 +1173,13 @@ public class CustomOptionHolder
         MadSeerIsUseVent = Create(328, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadSeerOption);
         MadSeerIsImpostorLight = Create(329, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadSeerOption);
         MadSeerIsCheckImpostor = Create(330, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadSeerOption);
+        MadSeerIsSettingNumberOfUniqueTasks = Create(1167, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadSeerIsCheckImpostor);
         var madseeroption = SelectTask.TaskSetting(331, 332, 526, MadSeerIsCheckImpostor, CustomOptionType.Crewmate, true);
         MadSeerCommonTask = madseeroption.Item1;
         MadSeerShortTask = madseeroption.Item2;
         MadSeerLongTask = madseeroption.Item3;
-        MadSeerIsCheckImpostorTaskMode = Create(1274, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, MadSeerIsCheckImpostor);
-        MadSeerCheckImpostorTask = Create(333, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MadSeerIsCheckImpostorTaskMode);
+        MadSeerIsParcentageForTaskTrigger = Create(1168, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadSeerIsCheckImpostor);
+        MadSeerParcentageForTaskTriggerSetting = Create(333, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadSeerIsParcentageForTaskTrigger, roleId: RoleId.MadSeer);
 
         MadMakerOption = SetupCustomRoleOption(347, true, RoleId.MadMaker);
         MadMakerPlayerCount = Create(348, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMakerOption);
@@ -1180,11 +1192,13 @@ public class CustomOptionHolder
         MadJesterIsImpostorLight = Create(299, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadJesterOption);
         IsMadJesterTaskClearWin = Create(300, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
         MadJesterIsCheckImpostor = Create(1173, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadJesterOption);
-        MadJesterCheckImpostorTask = Create(1174, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MadJesterIsCheckImpostor);
+        MadJesterIsSettingNumberOfUniqueTasks = Create(1169, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadJesterIsCheckImpostor);
         var MadJesteroption = SelectTask.TaskSetting(667, 668, 669, MadJesterOption, CustomOptionType.Crewmate, true);
         MadJesterCommonTask = MadJesteroption.Item1;
         MadJesterShortTask = MadJesteroption.Item2;
         MadJesterLongTask = MadJesteroption.Item3;
+        MadJesterIsParcentageForTaskTrigger = Create(1170, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadJesterIsCheckImpostor);
+        MadJesterParcentageForTaskTriggerSetting = Create(1174, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadJesterIsParcentageForTaskTrigger, roleId: RoleId.MadJester);
 
         MadHawkOption = SetupCustomRoleOption(287, false, RoleId.MadHawk);
         MadHawkPlayerCount = Create(289, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadHawkOption);
@@ -1349,12 +1363,13 @@ public class CustomOptionHolder
         JackalFriendsIsUseVent = Create(182, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, JackalFriendsOption);
         JackalFriendsIsImpostorLight = Create(183, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, JackalFriendsOption);
         JackalFriendsIsCheckJackal = Create(184, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, JackalFriendsOption);
+        JackalFriendsIsSettingNumberOfUniqueTasks = Create(1271, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, JackalFriendsIsCheckJackal);
         var JackalFriendsoption = SelectTask.TaskSetting(185, 186, 187, JackalFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
         JackalFriendsCommonTask = JackalFriendsoption.Item1;
         JackalFriendsShortTask = JackalFriendsoption.Item2;
         JackalFriendsLongTask = JackalFriendsoption.Item3;
-        JackalFriendsIsCheckJackalTaskMode = Create(1275, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, JackalFriendsIsCheckJackal);
-        JackalFriendsCheckJackalTask = Create(189, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, JackalFriendsIsCheckJackalTaskMode);
+        JackalFriendsIsParcentageForTaskTrigger = Create(1272, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, JackalFriendsIsCheckJackal);
+        JackalFriendsParcentageForTaskTriggerSetting = Create(189, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, JackalFriendsIsParcentageForTaskTrigger, roleId: RoleId.JackalFriends);
 
         DoctorOption = SetupCustomRoleOption(190, false, RoleId.Doctor);
         DoctorPlayerCount = Create(191, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
@@ -1546,12 +1561,13 @@ public class CustomOptionHolder
         SeerFriendsIsUseVent = Create(367, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, SeerFriendsOption);
         SeerFriendsIsImpostorLight = Create(368, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, SeerFriendsOption);
         SeerFriendsIsCheckJackal = Create(369, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, SeerFriendsOption);
+        SeerFriendsIsSettingNumberOfUniqueTasks = Create(1273, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, SeerFriendsIsCheckJackal);
         var SeerFriendsoption = SelectTask.TaskSetting(371, 372, 373, SeerFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
         SeerFriendsCommonTask = SeerFriendsoption.Item1;
         SeerFriendsShortTask = SeerFriendsoption.Item2;
         SeerFriendsLongTask = SeerFriendsoption.Item3;
-        SeerFriendsIsCheckJackalTaskMode = Create(1276, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, SeerFriendsIsCheckJackal);
-        SeerFriendsCheckJackalTask = Create(374, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, SeerFriendsIsCheckJackalTaskMode);
+        SeerFriendsIsParcentageForTaskTrigger = Create(1274, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, SeerFriendsIsCheckJackal);
+        SeerFriendsParcentageForTaskTriggerSetting = Create(374, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, SeerFriendsIsParcentageForTaskTrigger, roleId: RoleId.SeerFriends);
 
         JackalSeerOption = SetupCustomRoleOption(375, true, RoleId.JackalSeer);
         JackalSeerPlayerCount = Create(376, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalSeerOption);
@@ -1592,12 +1608,13 @@ public class CustomOptionHolder
         MayorFriendsIsUseVent = Create(407, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MayorFriendsOption);
         MayorFriendsIsImpostorLight = Create(408, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MayorFriendsOption);
         MayorFriendsIsCheckJackal = Create(409, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, MayorFriendsOption);
+        MayorFriendsIsSettingNumberOfUniqueTasks = Create(1275, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MayorFriendsIsCheckJackal);
         var MayorFriendsoption = SelectTask.TaskSetting(410, 411, 412, MayorFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
         MayorFriendsCommonTask = MayorFriendsoption.Item1;
         MayorFriendsShortTask = MayorFriendsoption.Item2;
         MayorFriendsLongTask = MayorFriendsoption.Item3;
-        MayorFriendsIsCheckJackalTaskMode = Create(1277, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorTaskMode", false, MayorFriendsIsCheckJackal);
-        MayorFriendsCheckJackalTask = Create(413, true, CustomOptionType.Crewmate, "MadmateCheckImpostorTaskSetting", rates4, MayorFriendsIsCheckJackal);
+        MayorFriendsIsParcentageForTaskTrigger = Create(1276, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MayorFriendsIsCheckJackal);
+        MayorFriendsParcentageForTaskTriggerSetting = Create(413, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MayorFriendsIsParcentageForTaskTrigger, roleId: RoleId.MayorFriends);
         MayorFriendsVoteCount = Create(414, true, CustomOptionType.Crewmate, "MayorVoteCountSetting", 2f, 1f, 100f, 1f, MayorFriendsOption);
 
         VentMakerOption = SetupCustomRoleOption(415, false, RoleId.VentMaker);

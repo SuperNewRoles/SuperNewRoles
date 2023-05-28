@@ -228,11 +228,11 @@ class AddChatPatch
         string text = "";
         foreach (CustomOption option in options)
         {
-            if (option.GetName() != ModTranslation.GetString("MadmateCheckImpostorTaskSetting"))
+            if (option.GetName() != ModTranslation.GetString("IsParcentageForTaskTrigger"))
                 text += indent + option.GetName() + ":" + option.GetString() + "\n";
             else
             {
-                text += indent + ModTranslation.GetString("MadmateCheckImpostorTaskNumber") + ":";
+                text += indent + ModTranslation.GetString("TaskTriggerAbilityTaskNumber") + ":";
 
                 int Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
                 int Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);

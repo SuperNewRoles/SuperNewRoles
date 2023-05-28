@@ -578,13 +578,14 @@ MadmateName,Madmate,マッドメイト,叛徒,叛徒
 MadmateTitle1,Let's help the Impostor.,インポスターを助けよう,帮助内鬼获得胜利,幫助內鬼獲得勝利
 MadmateDescription,The decision is in the Crewmate camp but he is a companion of the Impostor.\nIf the Impostor wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。\nインポスターが勝利すると、マッドメイトも勝利できます。,叛徒属于船员阵营，但是其为内鬼的同伙。\n内鬼获胜则叛徒一同获胜。,叛徒屬於船員陣營，但是其為內鬼的同伴。\n內鬼獲勝則叛徒一同獲勝。
 MadmateIsCheckImpostorSetting,Do you have the capacity for fanaticism?,狂信能力を有するか,叛徒是否能确认内鬼玩家,叛徒是否能確認內鬼玩家
-MadmateIsCheckImpostorTaskMode,Do you want to get the number of tasks from the vanilla settings?,バニラ設定からタスク数を取得するか
-MadmateCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (Percentage of total tasks),確認できるようになるタスク量(全タスクに対する割合),确认身份需要完成的任务量,確認身份需要完成的任務量
+IsSettingNumberOfUniqueTasks,Do you want to set a unique number of tasks required to trigger an ability?,能力発動に必要なタスク数を固有で設定するか
+IsParcentageForTaskTrigger,Is the number of tasks required to trigger the capability a percentage of the total number of tasks?,能力発動に必要なタスク数を総タスク数に対する割合にするか。
+ParcentageForTaskTriggerSetting,Amount of tasks that will be able to be checked (Percentage of total tasks),能力が発動するタスク量(全タスクに対する割合),确认身份需要完成的任务量,確認身份需要完成的任務量
+TaskTriggerAbilityTaskNumber,Number of tasks required to activate fanaticism capability,能力の発動に必要なタスク数
+TaskTriggerAbilityTaskCount,pieces,個
 MadmateUseVentSetting,Use Vent,ベントに入れる,可以进入管道,可以進入管道
 MadmateVentMoveSetting,Move Vent,ベントで動ける,叛徒可以使用管道,叛徒可以使用管道
 MadmateImpostorLightSetting,Impostor Light,インポスターの視界,拥有内鬼视野,擁有內鬼視野
-MadmateCheckImpostorTaskNumber,Number of tasks required to activate fanaticism capability,狂信能力の発動に必要なタスク数
-MadmateCheckImpostorTaskCount,pieces,個
 BaitName,Bait,ベイト,诱饵,誘餌
 BaitTitle1,Bait your enemies,相手に通報させよう,诱骗你的敌人,我是陽光開朗大男孩！
 BaitDescription,If you are killed you can force the person who killed you to report you.,自分がキルされると、キルしてきた相手に強制的に通報させることができます。,诱饵被杀死，则杀死诱饵的凶手将会在指定时间后强制报告诱饵的尸体。,誘餌被殺死則殺死誘餌的兇手將會在指定時間後強制報告誘餌的屍體。
@@ -774,7 +775,7 @@ MadMayorIsCheckImpostorSetting,You can check the Impostor.,インポスターが
 MadMayorUseVentSetting,Use Vent,ベントを使える,可以进入管道,可以進入通風管道
 MadMayorVentMoveSetting,Move Vent,ベントで動ける,可以使用管道,可以在管道中移動
 MadMayorImpostorLightSetting,Impostor Light,インポスターの視界,拥有内鬼视野,擁有內鬼視野
-MadMayorCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量（全タスク内）,叛变的市长确认内鬼阵营玩家需要完成的任务量,叛變的市長確認內鬼陣營玩家所需完成的任務數
+MadMayorParcentageForTaskTriggerSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量（全タスク内）,叛变的市长确认内鬼阵营玩家需要完成的任务量,叛變的市長確認內鬼陣營玩家所需完成的任務數
 NiceHawkName,NiceHawk,ナイスホーク,鹰眼,正義的鷹眼
 NiceHawkTitle1,See it all.,全てを見渡せ,将一切尽收眼底,將一切盡收眼底
 NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう,把犯人抓个现行,把犯人抓個現行
@@ -1245,7 +1246,7 @@ SafecrackerMaxExiledGuardCountSetting,Exiled guard max count,追放ガードで�
 SafecrackerUseVentTaskSetting,Amount of tasks for which the vent will be available (of all tasks),ベントが使用可能になるタスク量(全タスク内),盗贼获得使用管道能力需要打开的保险库数,盜賊獲得使用通風管道能力需要打開的保險箱數目
 SafecrackerUseSaboTaskSetting,Amount of tasks for which sabotage will be available (of all tasks),サボタージュが使用可能になるタスク量(全タスク内),盗贼获得破坏能力需要打开的保险库数,盜賊獲得破壞能力需要打開的保險箱數目
 SafecrackerIsImpostorLightTaskSetting,Amount of tasks for become an Imposter's field of view (of all tasks),インポスターの視界になるタスク量(全タスク内),盗贼获得内鬼视野需要打开的保险库数,盜賊獲得內鬼視野需要打開的保險箱數目
-SafecrackerCheckImpostorTaskSetting,Amount of tasks that will allow you to check the Imposter (of all tasks),インポスターを確認できるようになるタスク量(全タスク内),盗贼确认内鬼玩家需要打开的保险库数,盜賊確認內鬼玩家需要打開的保險箱數目
+SafecrackerParcentageForTaskTriggerSetting,Amount of tasks that will allow you to check the Imposter (of all tasks),インポスターを確認できるようになるタスク量(全タスク内),盗贼确认内鬼玩家需要打开的保险库数,盜賊確認內鬼玩家需要打開的保險箱數目
 SafecrackerChangeTaskPrefabSetting,Replace all tasks with unlock safe tasks,全タスクを金庫タスクに置き換える,盗贼的全部任务替换为解锁保险库的任务,盜賊的全部任務替換為解鎖保險箱的任務
 FireFoxName,Fier Fox,炎狐,烈焰狐,烈焰狐
 FireFoxTitle1,I am Fier Fox!,私は炎狐です！,吾乃火之化身！,吾乃火之化身！

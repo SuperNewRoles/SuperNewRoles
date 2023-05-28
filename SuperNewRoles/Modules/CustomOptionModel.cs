@@ -73,6 +73,7 @@ public class CustomOption
     public List<CustomOption> children;
     public bool isHeader;
     public bool isHidden;
+    public RoleId roleId;
 
     public virtual bool Enabled
     {
@@ -88,7 +89,7 @@ public class CustomOption
 
     }
 
-    public CustomOption(int id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
+    public CustomOption(int id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, RoleId roleId)
     {
         this.id = id;
         this.isSHROn = IsSHROn;
@@ -101,6 +102,8 @@ public class CustomOption
         this.parent = parent;
         this.isHeader = isHeader;
         this.isHidden = isHidden;
+        this.roleId = roleId;
+
 
         this.children = new List<CustomOption>();
         if (parent != null)
@@ -126,22 +129,22 @@ public class CustomOption
     }
     public static int Max = 0;
 
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", RoleId roleId = RoleId.DefaultRole)
     {
-        return new CustomOption(id, IsSHROn, type, name, selections, "", parent, isHeader, isHidden, format);
+        return new CustomOption(id, IsSHROn, type, name, selections, "", parent, isHeader, isHidden, format, roleId);
     }
 
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", RoleId roleId = RoleId.DefaultRole)
     {
         List<float> selections = new();
         for (float s = min; s <= max; s += step)
             selections.Add(s);
-        return new CustomOption(id, IsSHROn, type, name, selections.Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format);
+        return new CustomOption(id, IsSHROn, type, name, selections.Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format, roleId);
     }
 
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", RoleId roleId = RoleId.DefaultRole)
     {
-        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format);
+        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format, roleId);
     }
 
     public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1)
@@ -337,8 +340,8 @@ public class CustomRoleOption : CustomOption
         }
     }
 
-    public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15) :
-        base(id, isSHROn, type, CustomOptionHolder.Cs(color, name), CustomOptionHolder.rates, "", null, true, false, "")
+    public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15, RoleId roleId = RoleId.DefaultRole) :
+        base(id, isSHROn, type, CustomOptionHolder.Cs(color, name), CustomOptionHolder.rates, "", null, true, false, "", roleId)
     {
         try
         {
@@ -963,19 +966,24 @@ class GameOptionsDataPatch
 
     public static string OptionToString(CustomOption option)
     {
-        if (option.GetName() != ModTranslation.GetString("MadmateCheckImpostorTaskSetting"))
-            return option == null ? "" : $"{option.GetName()}: {option.GetString()}";
+        if (option.GetName() != ModTranslation.GetString("ParcentageForTaskTriggerSetting"))
+            return option == null ? "" : $"{option.GetName()} : {option.GetString()}";
         else
         {
-            string text = $"{option.GetName()} : {option.GetString()}";
-
-            int Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-            int Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-            int Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
-            int AllTask = Common + Long + Short;
+            RoleId roleId = option.roleId;
+            int AllTask = SelectTask.GetTotalTasks(roleId);
             float percent = int.Parse(option.GetString().Replace("%", "")) / 100f;
+            int activeTaskNum = (int)(AllTask * percent);
 
-            text += $" × {AllTask} => {(int)(AllTask * percent)}{ModTranslation.GetString("MadmateCheckImpostorTaskCount")}";
+            string text = $"{option.GetName()} : {option.GetString()} ";
+            if (AllTask != 0)
+                text += $"× {AllTask} => {activeTaskNum}{ModTranslation.GetString("TaskTriggerAbilityTaskCount")}";
+            else
+            {
+                string errorText = $"{roleId} のタスク数が取得できず、能力発動に必要なタスク数を計算する事ができませんでした。";
+                text += $"=> {errorText}";
+                Logger.Error($"{errorText}", "ParcentageForTaskTriggerSetting");
+            }
 
             return text;
         }
