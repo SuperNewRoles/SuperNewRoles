@@ -183,7 +183,7 @@ public class IntroData
     public static IntroData BakeryIntro = new("Bakery", RoleClass.Bakery.color, 1, RoleId.Bakery);
     public static IntroData MadStuntManIntro = new("MadStuntMan", RoleClass.MadStuntMan.color, 1, RoleId.MadStuntMan, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData MadHawkIntro = new("MadHawk", RoleClass.MadHawk.color, 1, RoleId.MadHawk, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
-    public static IntroData MadJesterIntro = new("MadJester", RoleClass.MadJester.color, 1, RoleId.MadJester, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
+    public static IntroData MadJesterIntro = new("MadJester", RoleClass.MadJester.color, 3, RoleId.MadJester, teamType: TeamType.Impostor, IntroSound: RoleTypes.Impostor);
     public static IntroData FalseChargesIntro = new("FalseCharges", RoleClass.FalseCharges.color, 1, RoleId.FalseCharges, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData NiceTeleporterIntro = new("NiceTeleporter", RoleClass.NiceTeleporter.color, 1, RoleId.NiceTeleporter);
     public static IntroData CelebrityIntro = new("Celebrity", RoleClass.Celebrity.color, 1, RoleId.Celebrity);

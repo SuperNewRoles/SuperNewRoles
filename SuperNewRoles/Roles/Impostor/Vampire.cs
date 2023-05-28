@@ -40,7 +40,10 @@ class Vampire
             bool Is = true;
             foreach (PlayerControl p in RoleClass.Vampire.VampirePlayer) if (p.IsAlive() && (exiled == null || exiled.PlayerId != p.PlayerId)) Is = false;
             if (Is)
+            {
                 PlayerControl.LocalPlayer.RpcExiledUnchecked();
+                PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.DependentsExiled);
+            }
         }
     }
     [HarmonyPatch(typeof(VitalsPanel), nameof(VitalsPanel.SetDead))]
@@ -108,6 +111,7 @@ class Vampire
                 writer.Write(0);
                 writer.EndRPC();
                 RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, RoleClass.Vampire.target.PlayerId, 0);
+                RoleClass.Vampire.target.RpcSetFinalStatus(FinalStatus.VampireKill);
                 writer = RPCHelper.StartRPC(CustomRPC.SetVampireStatus);
                 writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                 writer.Write(RoleClass.Vampire.target.PlayerId);

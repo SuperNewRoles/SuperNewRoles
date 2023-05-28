@@ -54,6 +54,7 @@ class WrapUpClass
                 if (SideLoverPlayer.IsAlive())
                 {
                     SideLoverPlayer.RpcCheckExile();
+                    SideLoverPlayer.RpcSetFinalStatus(FinalStatus.LoversBomb);
                 }
             }
         }
