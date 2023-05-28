@@ -1118,6 +1118,7 @@ class GameOptionsDataPatch
         }
 
         int numPages = pages.Count;
+        SuperNewRolesPlugin.optionsMaxPage = numPages - 1;
         int counter = SuperNewRolesPlugin.optionsPage %= numPages;
         return pages[counter].Trim('\r', '\n') + "\n\n" + Tl("SettingPressTabForMore") + $" ({counter + 1}/{numPages})";
     }
@@ -1154,7 +1155,15 @@ public static class GameOptionsNextPagePatch
     {
         if (Input.GetKeyDown(KeyCode.Tab) || ConsoleJoystick.player.GetButtonDown(7))
         {
-            SuperNewRolesPlugin.optionsPage++;
+            // 試合開始前はTabキーが押されたら常に, 1ページ単位でページを送る
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+                SuperNewRolesPlugin.optionsPage++;
+            // 試合中はRegulationのoverlayを表示している時のみ, 2ページ単位でページを送る
+            else if (CustomOverlays.nowPattern == CustomOverlays.CustomOverlayPattern.Regulation) SuperNewRolesPlugin.optionsPage += 2;
+
+            // ページが最大ページを超えたら, ページを0に戻す
+            if (SuperNewRolesPlugin.optionsPage > SuperNewRolesPlugin.optionsMaxPage)
+                SuperNewRolesPlugin.optionsPage = 0;
         }
     }
 }

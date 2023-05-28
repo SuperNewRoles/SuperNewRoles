@@ -136,6 +136,7 @@ SettingMiniImpoRole,Minimum Impostor Roles,最小インポスター役職数,内
 SettingMaxImpoRole,Maximum Impostor Roles,インポスター役職人数,内鬼阵营最大职业数,內鬼陣營職業數最大值
 SettingMiniImpoGhostRole,Minimum Impostor Ghost Roles,最小インポスター幽霊役職数,内鬼阵营最小亡灵职业数,內鬼陣營亡靈職業數最小值
 SettingMaxImpoGhostRole,Maximum Impostor GhostRoles,インポスター幽霊役職人数,内鬼阵营最大亡灵职业数,內鬼陣營亡靈職業數最大值
+SettingMaxRoleCount,Maximum {0} Roles,最大{0}役職
 SettingsHideSetting,Hide Setting,設定を隠す,隐藏房间设置,隱藏設定
 SettingCrewmateTeamRolesName,Position setting of crewmate camp,クルーメイト陣営の役職設定,船员阵营职业设置,船員陣營職業設定
 SettingImpostorTeamRolesName,Impostor camp position setting,インポスター陣営の役職設定,内鬼阵营职业设置,內鬼陣營職業設定
@@ -163,6 +164,7 @@ SettingImpostorGhostRoles,Impostor GhostRole Setting,インポスターの幽霊
 SettingOptionOn,On,オン,开启,開
 SettingOptionOff,Off,オフ,关闭,關
 SettingPressTabForMore,Press Tab For More,Tabを押して詳細を表示,按Tab键查看更多...,按下 TAB 查看更多...
+SettingPressTabUpdateString,Press G to open the next page {0} / {1},Tabを押してページを送る {0} / {1}
 ErrorHostNoVersion,Your host does not have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストに<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>が導入されておりません。,房主没有安装<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组,房主沒有安裝<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模組
 ErrorHostChangeVersion,The host has a different version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.,ホストが使用している<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のバージョンと異なります。,房主安装的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模组版本不同,與房主安裝的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>模組版本不同
 ErrorHostGuidMatches,The host uses a different <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> dll file.,ホストが使用している<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>のdllファイルと異なります。,房主的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>dll文件不同,與房主的<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>dll文件不同
@@ -380,10 +382,10 @@ CRHideNameSetting,Hide Name,名前を隠す,隐藏昵称,隱藏暱稱
 IsOldMode,OldMode,オルドモード,怀旧模式,懷舊模式
 CrewmateName,Crewmate,クルーメイト,船员,船員
 CrewmateTitle1,Use Task,タスクを行う,找出内鬼,找出內鬼
-CrewmateDescription,Default Crewmate.,通常のクルーメイトです。,普通船员。,普通船員
+CrewmateDescription,Default Crewmate.\nScientist，Engineer，and GuardianAngel in vanilla Roles are also listed as Crewmate.\n\nYou may be an ordinary person with no special abilities，but that is why you are free from any ties.\nEnjoy the freedom that only freedom can give you!\n\nBut remember that with freedom comes responsibility...\n\n.........You are responsible for whatever happens as a result of your actions.\nAbandoning responsibility for the consequences and shifting the blame to others is unforgivable.\nAccept it. That is the result of free action.,通常のクルーメイトです。\nバニラ役職の科学者，エンジニア，守護天使もクルーメイトとして表記されます。\n\n貴方は確かに特殊能力のない平凡な存在かもしれません、\nしかしそれ故に しがらみのない自由な存在です。\n自由だからこそ可能な 立ち回りを楽しんでみましょう!\n\n但し、自由には責任が伴う事を忘れずに...\n\n.........お前が起こした行動で 何が起きてもお前の責任だ。\n結果について責任を放棄する事、責任を他人に転嫁する事は赦されない。\n受け入れろ。それが自由な行動の結果なのだ。
 ImpostorName,Impostor,インポスター,内鬼,內鬼
 ImpostorTitle1,Use Sabotage & Vent,サボタージュ＆ベントを行う,破坏并杀死所有人,破壞並殺死所有人
-ImpostorDescription,Default Impostor.,通常のインポスターです。,普通内鬼。,普通內鬼。
+ImpostorDescription,Default Impostor.\nShapeshifter in vanilla role are also represented as impostors.Provide support to your partner or ally.\nEven if your partner has a position，not all of his or her abilities may be superior to those of a regular impostor.\nEven if they are all top compatible，they cannot win without your support.\nYour partner or Madmate needs your action.\n\nYou can swing，you can lurk，or you can take advantage of your partner's abilities!\nIt is also a great ability to make use of your allies' abilities...\n\nDeceive，make a scapegoat，escape banishment. \nWe are the "Impostors". \nIt does not matter if we live or die.\nWe just have to kill all the crew.,通常のインポスターです。\nバニラ役職のシェイプシフターもインポスターとして表記されます。\n\n相方や味方のサポートを行いましょう。\n相方が役職持ちの場合でも、能力が全て通常のインポスターの上位互換とは限りません。\n全て上位互換であったとしても、貴方のサポートが無ければ勝つことなどできません。\n相方やマッドメイトは貴方の行動を必要としています。\n\n揺動に回るも良し、潜伏するも良し、相方の能力を生かせるよう立ち回ってみましょう!\n味方の能力を活用するのも立派な能力なのですから...\n\n騙せ　身代わりを作れ　追放を逃れろ。\n我らはインポスターだ。\n自らの生死は関係がない。\nただクルーを殺し尽くせば良いだけだ。
 Neutral,Neutral,第三陣営,独立阵营,中立陣營
 NeutralSubIntro,Let's work only for ourselves.Let's Take advantage of others.,自分の事だけ考えろ。他人の事は利用せよ。,你不属于船员或内鬼阵营，需要独自达成胜利条件。,為自己而戰。利用他人，並取得勝利。
 detecName,Detective,探偵,侦探,偵探
@@ -1350,12 +1352,13 @@ SNROfficialTwitterMessage,Come here to visit the official SuperNewRoles Twitter 
 TwitterOfficialLink,Official Account : https://twitter.com/SuperNewRoles,公式アカウント：https://twitter.com/SuperNewRoles,官方Twitter：https://twitter.com/SuperNewRoles,官方Twitter：https://twitter.com/SuperNewRoles
 TwitterDevLink,Development Information Account : https://twitter.com/SNRDevs,開発情報アカウント：https://twitter.com/SNRDevs,开发状况Twitter：https://twitter.com/SNRDevs,開發狀態Twitter：https://twitter.com/SNRDevs
 Team,Team,陣営,阵营,陣營
+TeamRoleType,Role,役職
 MessageSettings,Settings,設定,设置,設定
 NowRolesMessage,Activate Roles,現在入っている役職,当前激活的职业,當前啟用的職業
 NotAssign,This is the mode in which no roles are assigned.,役職が選出されないモードに設定されています。,目前还没有激活任何职业。,目前還沒有啟用任何職業
-MyRoleErrorNotGameStart,This command cannot be used because the game is not in progress.,ゲーム中でない為、このコマンドは使用できません。,,由於遊戲沒有運行，此指令無法被使用
 MyRoleErrorSHRMode,This command is not available in SHR mode.,SHRモードではこのコマンドは使用できません。,,在SHR模式中無法使用此指令。
 TeamMessage,【Team:{0}】,【{0}陣営】,【{0}阵营】,【{0}陣營】
+TeamRoleTypeMessage,【RoleType:{0}】,【{0}役職】
 NameIncludeMod,You cannot make a room public contains mod in your name.,modが名前に含まれている状態では公開部屋にすることはできません。,不能在昵称里有“mod”时将房间状态设置为公开。,不能在暱稱裡有「mod」時將房間狀態設置為公開。
 CannotUseRenameMessage,Cannot rename.\nThe /rename command can only be used on\navailable only when hosted.,名前を変更することができません。\n/renameコマンドは\nホスト時のみ使用可能です。,无法重命名。\n/rename命令仅房主可用。,無法重新命名。\n/rename命令僅房主可用。
 betatext1,\nThis is a beta version! Watch out for bugs!,\nベータ版です! バグには注意してください!,这是测试版本。请注意是否有bug。,這是測試版本。請注意是否有bug。
@@ -1365,6 +1368,8 @@ Experimenting...,Experimenting...,実験中...,测试中...,測試中...
 StartExperiment,Start experiment,実験を開始する,开始测试,開始測試
 Processing,Processing...,処理中...,处理中...,處理中...
 SuccessfulExperiment,Successful Experiment,実験成功,测试成功,測試成功
+SNRIntroduction,introduction status,導入状況
+NoFriendCode,No possession.,未所持
 
 # Agartha
 Agartha_WareHouse,WareHouse,倉庫,仓库,倉庫
