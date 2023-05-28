@@ -600,6 +600,7 @@ static class CheckMurderPatch
                         return false;
                     case RoleId.OverKiller:
                         __instance.RpcMurderPlayerCheck(target);
+                        target.RpcSetFinalStatus(FinalStatus.OverKillerOverKill);
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
                             if (!p.Data.Disconnected && p.PlayerId != target.PlayerId && !p.IsBot())
@@ -1085,6 +1086,7 @@ public static class MurderPlayerPatch
             }
             if (__instance.IsRole(RoleId.OverKiller))
             {
+                FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.OverKillerOverKill;
                 DeadBody deadBodyPrefab = GameManager.Instance.DeadBodyPrefab;
                 Vector3 BodyOffset = target.KillAnimations[0].BodyOffset;
                 for (int i = 0; i < RoleClass.OverKiller.KillCount - 1; i++)
@@ -1161,6 +1163,7 @@ public static class MurderPlayerPatch
                         writer.Write(byte.MaxValue);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
+                        SideLoverPlayer.RpcSetFinalStatus(FinalStatus.LoversBomb);
                     }
                 }
             }
@@ -1270,6 +1273,7 @@ public static class ExilePlayerPatch
                         writer.Write(SideLoverPlayer.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.ExiledRPC(SideLoverPlayer.PlayerId);
+                        SideLoverPlayer.RpcSetFinalStatus(FinalStatus.LoversBomb);
                     }
                 }
             }
