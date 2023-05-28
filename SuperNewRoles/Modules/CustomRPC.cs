@@ -625,6 +625,8 @@ public static class RPCProcedure
         PlayerControl dyingTarget = ModHelpers.PlayerById(dyingTargetId);
         if (dyingTarget == null) return;
         dyingTarget.Exiled();
+        if (killerId == dyingTargetId) FinalStatusData.FinalStatuses[dyingTargetId] = FinalStatus.GuesserMisFire;
+        else FinalStatusData.FinalStatuses[dyingTargetId] = FinalStatus.GuesserKill;
         if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(dyingTarget.KillSfx, false, 0.8f);
         if (MeetingHud.Instance)
         {

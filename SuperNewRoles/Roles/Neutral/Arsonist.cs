@@ -163,6 +163,7 @@ public static class Arsonist
                 if (player == null) continue;
                 if (player.IsDead()) continue;
                 if (player == PlayerControl.LocalPlayer && player.IsRole(RoleId.Arsonist)) continue;
+                if (player.IsRole(RoleId.FireFox)) continue; // 炎狐が燃やされるわけないだろ!!
 
                 ModHelpers.CheckMurderAttemptAndKill(player, player);
 
