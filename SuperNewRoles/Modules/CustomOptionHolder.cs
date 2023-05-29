@@ -1156,7 +1156,7 @@ public class CustomOptionHolder
         MadMayorVoteCount = Create(271, true, CustomOptionType.Crewmate, "MadMayorVoteCountSetting", 2f, 1f, 100f, 1f, MadMayorOption);
         MadMayorIsCheckImpostor = Create(272, true, CustomOptionType.Crewmate, "MadMayorIsCheckImpostorSetting", false, MadMayorOption);
         MadMayorIsSettingNumberOfUniqueTasks = Create(1165, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadMayorIsCheckImpostor);
-        var madmayoroption = SelectTask.TaskSetting(273, 274, 275, MadMayorIsCheckImpostor, CustomOptionType.Crewmate, true);
+        var madmayoroption = SelectTask.TaskSetting(273, 274, 275, MadMayorIsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true);
         MadMayorCommonTask = madmayoroption.Item1;
         MadMayorShortTask = madmayoroption.Item2;
         MadMayorLongTask = madmayoroption.Item3;
@@ -1174,7 +1174,7 @@ public class CustomOptionHolder
         MadSeerIsImpostorLight = Create(329, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadSeerOption);
         MadSeerIsCheckImpostor = Create(330, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadSeerOption);
         MadSeerIsSettingNumberOfUniqueTasks = Create(1167, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadSeerIsCheckImpostor);
-        var madseeroption = SelectTask.TaskSetting(331, 332, 526, MadSeerIsCheckImpostor, CustomOptionType.Crewmate, true);
+        var madseeroption = SelectTask.TaskSetting(331, 332, 526, MadSeerIsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true);
         MadSeerCommonTask = madseeroption.Item1;
         MadSeerShortTask = madseeroption.Item2;
         MadSeerLongTask = madseeroption.Item3;
@@ -1193,7 +1193,7 @@ public class CustomOptionHolder
         IsMadJesterTaskClearWin = Create(300, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
         MadJesterIsCheckImpostor = Create(1173, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadJesterOption);
         MadJesterIsSettingNumberOfUniqueTasks = Create(1169, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadJesterIsCheckImpostor);
-        var MadJesteroption = SelectTask.TaskSetting(667, 668, 669, MadJesterOption, CustomOptionType.Crewmate, true);
+        var MadJesteroption = SelectTask.TaskSetting(667, 668, 669, MadJesterIsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true);
         MadJesterCommonTask = MadJesteroption.Item1;
         MadJesterShortTask = MadJesteroption.Item2;
         MadJesterLongTask = MadJesteroption.Item3;
@@ -1220,6 +1220,49 @@ public class CustomOptionHolder
 
         SatsumaAndImoOption = SetupCustomRoleOption(953, true, RoleId.SatsumaAndImo);
         SatsumaAndImoPlayerCount = Create(800, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SatsumaAndImoOption);
+
+        JackalFriendsOption = SetupCustomRoleOption(180, true, RoleId.JackalFriends);
+        JackalFriendsPlayerCount = Create(181, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalFriendsOption);
+        JackalFriendsIsUseVent = Create(182, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, JackalFriendsOption);
+        JackalFriendsIsImpostorLight = Create(183, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, JackalFriendsOption);
+        JackalFriendsIsCheckJackal = Create(184, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, JackalFriendsOption);
+        JackalFriendsIsSettingNumberOfUniqueTasks = Create(1271, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, JackalFriendsIsCheckJackal);
+        var JackalFriendsoption = SelectTask.TaskSetting(185, 186, 187, JackalFriendsIsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true);
+        JackalFriendsCommonTask = JackalFriendsoption.Item1;
+        JackalFriendsShortTask = JackalFriendsoption.Item2;
+        JackalFriendsLongTask = JackalFriendsoption.Item3;
+        JackalFriendsIsParcentageForTaskTrigger = Create(1272, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, JackalFriendsIsCheckJackal);
+        JackalFriendsParcentageForTaskTriggerSetting = Create(189, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, JackalFriendsIsParcentageForTaskTrigger, roleId: RoleId.JackalFriends);
+
+        SeerFriendsOption = SetupCustomRoleOption(362, true, RoleId.SeerFriends);
+        SeerFriendsPlayerCount = Create(363, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeerFriendsOption);
+        SeerFriendsMode = Create(364, false, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, SeerFriendsOption);
+        SeerFriendsLimitSoulDuration = Create(365, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, SeerFriendsOption);
+        SeerFriendsSoulDuration = Create(366, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerFriendsLimitSoulDuration, format: "unitCouples");
+        SeerFriendsIsUseVent = Create(367, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, SeerFriendsOption);
+        SeerFriendsIsImpostorLight = Create(368, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, SeerFriendsOption);
+        SeerFriendsIsCheckJackal = Create(369, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, SeerFriendsOption);
+        SeerFriendsIsSettingNumberOfUniqueTasks = Create(1273, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, SeerFriendsIsCheckJackal);
+        var SeerFriendsoption = SelectTask.TaskSetting(371, 372, 373, SeerFriendsIsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true);
+        SeerFriendsCommonTask = SeerFriendsoption.Item1;
+        SeerFriendsShortTask = SeerFriendsoption.Item2;
+        SeerFriendsLongTask = SeerFriendsoption.Item3;
+        SeerFriendsIsParcentageForTaskTrigger = Create(1274, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, SeerFriendsIsCheckJackal);
+        SeerFriendsParcentageForTaskTriggerSetting = Create(374, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, SeerFriendsIsParcentageForTaskTrigger, roleId: RoleId.SeerFriends);
+
+        MayorFriendsOption = SetupCustomRoleOption(405, true, RoleId.MayorFriends);
+        MayorFriendsPlayerCount = Create(406, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MayorFriendsOption);
+        MayorFriendsIsUseVent = Create(407, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MayorFriendsOption);
+        MayorFriendsIsImpostorLight = Create(408, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MayorFriendsOption);
+        MayorFriendsIsCheckJackal = Create(409, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, MayorFriendsOption);
+        MayorFriendsIsSettingNumberOfUniqueTasks = Create(1275, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MayorFriendsIsCheckJackal);
+        var MayorFriendsoption = SelectTask.TaskSetting(410, 411, 412, MayorFriendsIsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true);
+        MayorFriendsCommonTask = MayorFriendsoption.Item1;
+        MayorFriendsShortTask = MayorFriendsoption.Item2;
+        MayorFriendsLongTask = MayorFriendsoption.Item3;
+        MayorFriendsIsParcentageForTaskTrigger = Create(1276, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MayorFriendsIsCheckJackal);
+        MayorFriendsParcentageForTaskTriggerSetting = Create(413, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MayorFriendsIsParcentageForTaskTrigger, roleId: RoleId.MayorFriends);
+        MayorFriendsVoteCount = Create(414, true, CustomOptionType.Crewmate, "MayorVoteCountSetting", 2f, 1f, 100f, 1f, MayorFriendsOption);
 
         LighterOption = SetupCustomRoleOption(24, false, RoleId.Lighter);
         LighterPlayerCount = Create(25, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LighterOption);
@@ -1357,19 +1400,6 @@ public class CustomOptionHolder
         EvilNekomataOption = SetupCustomRoleOption(178, true, RoleId.EvilNekomata);
         EvilNekomataPlayerCount = Create(179, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilNekomataOption);
         EvilNekomataNotImpostorExiled = Create(674, true, CustomOptionType.Impostor, "NotImpostorExiled", false, EvilNekomataOption);
-
-        JackalFriendsOption = SetupCustomRoleOption(180, true, RoleId.JackalFriends);
-        JackalFriendsPlayerCount = Create(181, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalFriendsOption);
-        JackalFriendsIsUseVent = Create(182, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, JackalFriendsOption);
-        JackalFriendsIsImpostorLight = Create(183, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, JackalFriendsOption);
-        JackalFriendsIsCheckJackal = Create(184, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, JackalFriendsOption);
-        JackalFriendsIsSettingNumberOfUniqueTasks = Create(1271, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, JackalFriendsIsCheckJackal);
-        var JackalFriendsoption = SelectTask.TaskSetting(185, 186, 187, JackalFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
-        JackalFriendsCommonTask = JackalFriendsoption.Item1;
-        JackalFriendsShortTask = JackalFriendsoption.Item2;
-        JackalFriendsLongTask = JackalFriendsoption.Item3;
-        JackalFriendsIsParcentageForTaskTrigger = Create(1272, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, JackalFriendsIsCheckJackal);
-        JackalFriendsParcentageForTaskTriggerSetting = Create(189, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, JackalFriendsIsParcentageForTaskTrigger, roleId: RoleId.JackalFriends);
 
         DoctorOption = SetupCustomRoleOption(190, false, RoleId.Doctor);
         DoctorPlayerCount = Create(191, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
@@ -1553,22 +1583,6 @@ public class CustomOptionHolder
         TaskManagerShortTask = taskmanageroption.Item2;
         TaskManagerLongTask = taskmanageroption.Item3;
 
-        SeerFriendsOption = SetupCustomRoleOption(362, true, RoleId.SeerFriends);
-        SeerFriendsPlayerCount = Create(363, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeerFriendsOption);
-        SeerFriendsMode = Create(364, false, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, SeerFriendsOption);
-        SeerFriendsLimitSoulDuration = Create(365, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, SeerFriendsOption);
-        SeerFriendsSoulDuration = Create(366, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerFriendsLimitSoulDuration, format: "unitCouples");
-        SeerFriendsIsUseVent = Create(367, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, SeerFriendsOption);
-        SeerFriendsIsImpostorLight = Create(368, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, SeerFriendsOption);
-        SeerFriendsIsCheckJackal = Create(369, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, SeerFriendsOption);
-        SeerFriendsIsSettingNumberOfUniqueTasks = Create(1273, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, SeerFriendsIsCheckJackal);
-        var SeerFriendsoption = SelectTask.TaskSetting(371, 372, 373, SeerFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
-        SeerFriendsCommonTask = SeerFriendsoption.Item1;
-        SeerFriendsShortTask = SeerFriendsoption.Item2;
-        SeerFriendsLongTask = SeerFriendsoption.Item3;
-        SeerFriendsIsParcentageForTaskTrigger = Create(1274, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, SeerFriendsIsCheckJackal);
-        SeerFriendsParcentageForTaskTriggerSetting = Create(374, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, SeerFriendsIsParcentageForTaskTrigger, roleId: RoleId.SeerFriends);
-
         JackalSeerOption = SetupCustomRoleOption(375, true, RoleId.JackalSeer);
         JackalSeerPlayerCount = Create(376, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalSeerOption);
         JackalSeerMode = Create(377, false, CustomOptionType.Neutral, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, JackalSeerOption);
@@ -1602,20 +1616,6 @@ public class CustomOptionHolder
         CleanerPlayerCount = Create(397, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CleanerOption);
         CleanerKillCoolTime = Create(398, false, CustomOptionType.Impostor, "CleanerKillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, CleanerOption, format: "unitSeconds");
         CleanerCooldown = Create(399, false, CustomOptionType.Impostor, "CleanerCooldownSetting", 60f, 40f, 70f, 2.5f, CleanerOption, format: "unitSeconds");
-
-        MayorFriendsOption = SetupCustomRoleOption(405, true, RoleId.MayorFriends);
-        MayorFriendsPlayerCount = Create(406, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MayorFriendsOption);
-        MayorFriendsIsUseVent = Create(407, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MayorFriendsOption);
-        MayorFriendsIsImpostorLight = Create(408, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MayorFriendsOption);
-        MayorFriendsIsCheckJackal = Create(409, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, MayorFriendsOption);
-        MayorFriendsIsSettingNumberOfUniqueTasks = Create(1275, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MayorFriendsIsCheckJackal);
-        var MayorFriendsoption = SelectTask.TaskSetting(410, 411, 412, MayorFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
-        MayorFriendsCommonTask = MayorFriendsoption.Item1;
-        MayorFriendsShortTask = MayorFriendsoption.Item2;
-        MayorFriendsLongTask = MayorFriendsoption.Item3;
-        MayorFriendsIsParcentageForTaskTrigger = Create(1276, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MayorFriendsIsCheckJackal);
-        MayorFriendsParcentageForTaskTriggerSetting = Create(413, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MayorFriendsIsParcentageForTaskTrigger, roleId: RoleId.MayorFriends);
-        MayorFriendsVoteCount = Create(414, true, CustomOptionType.Crewmate, "MayorVoteCountSetting", 2f, 1f, 100f, 1f, MayorFriendsOption);
 
         VentMakerOption = SetupCustomRoleOption(415, false, RoleId.VentMaker);
         VentMakerPlayerCount = Create(416, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VentMakerOption);
