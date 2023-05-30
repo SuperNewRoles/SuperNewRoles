@@ -1140,7 +1140,7 @@ public class CustomOptionHolder
         BlackCatNotImpostorExiled = Create(675, true, CustomOptionType.Crewmate, "NotImpostorExiled", false, BlackCatOption);
         BlackCatIsCheckImpostor = Create(558, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, BlackCatOption);
         BlackCatIsSettingNumberOfUniqueTasks = Create(1163, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, BlackCatIsCheckImpostor);
-        var blackcatoption = SelectTask.TaskSetting(559, 560, 561, BlackCatIsCheckImpostor, CustomOptionType.Crewmate, true);
+        var blackcatoption = SelectTask.TaskSetting(559, 560, 561, BlackCatIsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true);
         BlackCatCommonTask = blackcatoption.Item1;
         BlackCatShortTask = blackcatoption.Item2;
         BlackCatLongTask = blackcatoption.Item3;
@@ -1190,13 +1190,13 @@ public class CustomOptionHolder
         MadJesterPlayerCount = Create(297, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadJesterOption);
         MadJesterIsUseVent = Create(298, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadJesterOption);
         MadJesterIsImpostorLight = Create(299, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadJesterOption);
-        IsMadJesterTaskClearWin = Create(300, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
-        MadJesterIsCheckImpostor = Create(1173, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadJesterOption);
-        MadJesterIsSettingNumberOfUniqueTasks = Create(1169, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadJesterIsCheckImpostor);
+        MadJesterIsSettingNumberOfUniqueTasks = Create(1169, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadJesterOption);
         var MadJesteroption = SelectTask.TaskSetting(667, 668, 669, MadJesterIsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true);
         MadJesterCommonTask = MadJesteroption.Item1;
         MadJesterShortTask = MadJesteroption.Item2;
         MadJesterLongTask = MadJesteroption.Item3;
+        IsMadJesterTaskClearWin = Create(300, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
+        MadJesterIsCheckImpostor = Create(1173, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadJesterOption);
         MadJesterIsParcentageForTaskTrigger = Create(1170, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadJesterIsCheckImpostor);
         MadJesterParcentageForTaskTriggerSetting = Create(1174, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadJesterIsParcentageForTaskTrigger, roleId: RoleId.MadJester);
 
