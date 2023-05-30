@@ -1730,16 +1730,6 @@ public static class RoleClass
         public static void ClearAndReload()
         {
             TaskManagerPlayer = new();
-            int Common = CustomOptionHolder.TaskManagerCommonTask.GetInt();
-            int Long = CustomOptionHolder.TaskManagerLongTask.GetInt();
-            int Short = CustomOptionHolder.TaskManagerShortTask.GetInt();
-            int AllTask = Common + Long + Short;
-            if (AllTask == 0)
-            {
-                Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
-            }
         }
     }
     public static class SeerFriends

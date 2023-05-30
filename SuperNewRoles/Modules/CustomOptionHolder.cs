@@ -165,6 +165,7 @@ public class CustomOptionHolder
 
     public static CustomRoleOption TaskerOption;
     public static CustomOption TaskerPlayerCount;
+    public static CustomOption TaskerIsSettingNumberOfUniqueTasks;
     public static CustomOption TaskerCommonTask;
     public static CustomOption TaskerShortTask;
     public static CustomOption TaskerLongTask;
@@ -352,6 +353,7 @@ public class CustomOptionHolder
     public static CustomRoleOption WorkpersonOption;
     public static CustomOption WorkpersonPlayerCount;
     public static CustomOption WorkpersonIsAliveWin;
+    public static CustomOption WorkpersonIsSettingNumberOfUniqueTasks;
     public static CustomOption WorkpersonCommonTask;
     public static CustomOption WorkpersonLongTask;
     public static CustomOption WorkpersonShortTask;
@@ -790,6 +792,7 @@ public class CustomOptionHolder
     public static CustomOption SuicidalIdeationTimeLeft;
     public static CustomOption SuicidalIdeationAddTimeLeft;
     public static CustomOption SuicidalIdeationFallProbability;
+    public static CustomOption SuicidalIdeationIsSettingNumberOfUniqueTasks;
     public static CustomOption SuicidalIdeationCommonTask;
     public static CustomOption SuicidalIdeationShortTask;
     public static CustomOption SuicidalIdeationLongTask;
@@ -930,6 +933,7 @@ public class CustomOptionHolder
     public static CustomRoleOption HamburgerShopOption;
     public static CustomOption HamburgerShopPlayerCount;
     public static CustomOption HamburgerShopChangeTaskPrefab;
+    public static CustomOption HamburgerShopIsSettingNumberOfUniqueTasks;
     public static CustomOption HamburgerShopCommonTask;
     public static CustomOption HamburgerShopShortTask;
     public static CustomOption HamburgerShopLongTask;
@@ -1445,6 +1449,7 @@ public class CustomOptionHolder
         WorkpersonOption = SetupCustomRoleOption(220, true, RoleId.Workperson);
         WorkpersonPlayerCount = Create(221, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WorkpersonOption);
         WorkpersonIsAliveWin = Create(222, true, CustomOptionType.Neutral, "WorkpersonIsAliveWinSetting", false, WorkpersonOption);
+        WorkpersonIsSettingNumberOfUniqueTasks = Create(1290, true, CustomOptionType.Neutral, "IsSettingNumberOfUniqueTasks", true, WorkpersonOption);
         WorkpersonCommonTask = Create(223, true, CustomOptionType.Neutral, "GameCommonTasks", 2, 0, 12, 1, WorkpersonOption);
         WorkpersonLongTask = Create(224, true, CustomOptionType.Neutral, "GameLongTasks", 10, 0, 69, 1, WorkpersonOption);
         WorkpersonShortTask = Create(225, true, CustomOptionType.Neutral, "GameShortTasks", 5, 0, 45, 1, WorkpersonOption);
@@ -1743,7 +1748,8 @@ public class CustomOptionHolder
         SuicidalIdeationTimeLeft = Create(833, false, CustomOptionType.Neutral, "SuicidalIdeationTimeLeftSetting", 90f, 30f, 600f, 5f, SuicidalIdeationOption, format: "unitSeconds");
         SuicidalIdeationAddTimeLeft = Create(834, false, CustomOptionType.Neutral, "SuicidalIdeationAddTimeLeftSetting", 20f, 0f, 300f, 5f, SuicidalIdeationOption, format: "unitSeconds");
         SuicidalIdeationFallProbability = Create(835, false, CustomOptionType.Neutral, "SuicidalIdeationFallProbabilitySetting", rates, SuicidalIdeationOption);
-        var SuicidalIdeationoption = SelectTask.TaskSetting(836, 837, 838, SuicidalIdeationOption, CustomOptionType.Neutral, false);
+        SuicidalIdeationIsSettingNumberOfUniqueTasks = Create(1291, false, CustomOptionType.Neutral, "IsSettingNumberOfUniqueTasks", true, SuicidalIdeationOption);
+        var SuicidalIdeationoption = SelectTask.TaskSetting(836, 837, 838, SuicidalIdeationIsSettingNumberOfUniqueTasks, CustomOptionType.Neutral, false);
         SuicidalIdeationCommonTask = SuicidalIdeationoption.Item1;
         SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
         SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
@@ -1880,7 +1886,8 @@ public class CustomOptionHolder
 
         TaskerOption = SetupCustomRoleOption(1006, false, RoleId.Tasker);
         TaskerPlayerCount = Create(1007, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
-        var taskeroption = SelectTask.TaskSetting(1008, 1009, 1010, TaskerOption, CustomOptionType.Impostor, false);
+        TaskerIsSettingNumberOfUniqueTasks = Create(1292, false, CustomOptionType.Impostor, "IsSettingNumberOfUniqueTasks", true, TaskerOption);
+        var taskeroption = SelectTask.TaskSetting(1008, 1009, 1010, TaskerIsSettingNumberOfUniqueTasks, CustomOptionType.Impostor, false);
         TaskerCommonTask = taskeroption.Item1;
         TaskerShortTask = taskeroption.Item2;
         TaskerLongTask = taskeroption.Item3;
@@ -1917,7 +1924,8 @@ public class CustomOptionHolder
         HamburgerShopOption = SetupCustomRoleOption(1091, true, RoleId.HamburgerShop);
         HamburgerShopPlayerCount = Create(1093, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HamburgerShopOption);
         HamburgerShopChangeTaskPrefab = Create(1094, false, CustomOptionType.Crewmate, "HamburgerShopChangeTaskPrefab", true, HamburgerShopOption);
-        var HamburgerShopoption = SelectTask.TaskSetting(1095, 1096, 1097, HamburgerShopOption, CustomOptionType.Crewmate, true);
+        HamburgerShopIsSettingNumberOfUniqueTasks = Create(1293, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, HamburgerShopOption);
+        var HamburgerShopoption = SelectTask.TaskSetting(1095, 1096, 1097, HamburgerShopIsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true);
         HamburgerShopCommonTask = HamburgerShopoption.Item1;
         HamburgerShopShortTask = HamburgerShopoption.Item2;
         HamburgerShopLongTask = HamburgerShopoption.Item3;

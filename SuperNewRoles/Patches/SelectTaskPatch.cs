@@ -104,9 +104,9 @@ public static class SelectTask
             { RoleId.Tasker, true },
             { RoleId.HamburgerShop, true },
             { RoleId.Safecracker, true },
-            { RoleId.TheFirstLittlePig, TheThreeLittlePigs.TheThreeLittlePigsTask.GetBool() },
-            { RoleId.TheSecondLittlePig, TheThreeLittlePigs.TheThreeLittlePigsTask.GetBool() },
-            { RoleId.TheThirdLittlePig, TheThreeLittlePigs.TheThreeLittlePigsTask.GetBool() },
+            { RoleId.TheFirstLittlePig, true },
+            { RoleId.TheSecondLittlePig, true },
+            { RoleId.TheThirdLittlePig, true },
             { RoleId.OrientalShaman, OrientalShaman.OrientalShamanWinTask.GetBool() }
         };
 

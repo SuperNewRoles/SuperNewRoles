@@ -1290,7 +1290,7 @@ SafecrackerMaxExiledGuardCountSetting,Exiled guard max count,追放ガードで�
 SafecrackerUseVentTaskSetting,Amount of tasks for which the vent will be available (of all tasks),ベントが使用可能になるタスク量(全タスク内),盗贼获得使用管道能力需要打开的保险库数,盜賊獲得使用通風管道能力需要打開的保險箱數目
 SafecrackerUseSaboTaskSetting,Amount of tasks for which sabotage will be available (of all tasks),サボタージュが使用可能になるタスク量(全タスク内),盗贼获得破坏能力需要打开的保险库数,盜賊獲得破壞能力需要打開的保險箱數目
 SafecrackerIsImpostorLightTaskSetting,Amount of tasks for become an Imposter's field of view (of all tasks),インポスターの視界になるタスク量(全タスク内),盗贼获得内鬼视野需要打开的保险库数,盜賊獲得內鬼視野需要打開的保險箱數目
-SafecrackerParcentageForTaskTriggerSetting,Amount of tasks that will allow you to check the Imposter (of all tasks),インポスターを確認できるようになるタスク量(全タスク内),盗贼确认内鬼玩家需要打开的保险库数,盜賊確認內鬼玩家需要打開的保險箱數目
+SafecrackerCheckImpostorTaskSetting,Amount of tasks that will allow you to check the Imposter (of all tasks),インポスターを確認できるようになるタスク量(全タスク内),盗贼确认内鬼玩家需要打开的保险库数,盜賊確認內鬼玩家需要打開的保險箱數目
 SafecrackerChangeTaskPrefabSetting,Replace all tasks with unlock safe tasks,全タスクを金庫タスクに置き換える,盗贼的全部任务替换为解锁保险库的任务,盜賊的全部任務替換為解鎖保險箱的任務
 FireFoxName,Fier Fox,炎狐,烈焰狐,烈焰狐
 FireFoxTitle1,I am Fier Fox!,私は炎狐です！,吾乃火之化身！,吾乃火之化身！
@@ -1336,7 +1336,6 @@ TheThirdLittlePigName,The Third Little Pig,3番目の仔豚,猪老三,猪老三
 TheFirstLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
 TheSecondLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
 TheThirdLittlePigTitle1,House， keep us safe!,家を作って狼から身を守ろう,盖出保护自己的房子,蓋出保護自己的房子
-TheThreeLittlePigsTaskSetting,Assign tasks separately,別にタスクを割り当てる,单独分配任务数,單獨分配任務數
 TheFirstLittlePigClearTaskSetting,Percentage of tasks required for The first little pig to complete the house,1番目の仔豚が家を完成させるのに必要なタスクの割合,猪老大盖出房子需要的任务进度,豬老大蓋出房子需要的任務進度
 TheFirstLittlePigIsCustomTimerSetting,Set the timer for The first little pig,1番目の仔豚のタイマーを設定する,猪老大盖房子有时间限制,豬老大蓋房子有時間限制
 TheFirstLittlePigCustomTimerSetting,The first little pig timer,1番目の仔豚のタイマー,猪老大盖房子的时间限制,豬老大蓋房子的時間限制
