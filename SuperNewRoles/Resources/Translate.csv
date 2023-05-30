@@ -607,7 +607,7 @@ IsSettingNumberOfUniqueTasks,Do you want to set a unique number of tasks require
 IsParcentageForTaskTrigger,Is the number of tasks required to trigger the capability a percentage of the total number of tasks?,能力発動に必要なタスク数を総タスク数に対する割合にするか。
 ParcentageForTaskTriggerSetting,Amount of tasks that will be able to be checked (Percentage of total tasks),能力が発動するタスク量(全タスクに対する割合),确认身份需要完成的任务量,確認身份需要完成的任務量
 TaskTriggerAbilityTaskNumber,Number of tasks required to activate fanaticism capability,能力の発動に必要なタスク数
-TaskTriggerAbilityTaskCount,pieces,個
+UnitPieces,pieces,個
 MadmateUseVentSetting,Use Vent,ベントに入れる,可以进入管道,可以進入管道
 MadmateVentMoveSetting,Move Vent,ベントで動ける,叛徒可以使用管道,叛徒可以使用管道
 MadmateImpostorLightSetting,Impostor Light,インポスターの視界,拥有内鬼视野,擁有內鬼視野
@@ -802,7 +802,6 @@ MadMayorIsCheckImpostorSetting,You can check the Impostor.,インポスターが
 MadMayorUseVentSetting,Use Vent,ベントを使える,可以进入管道,可以進入通風管道
 MadMayorVentMoveSetting,Move Vent,ベントで動ける,可以使用管道,可以在管道中移動
 MadMayorImpostorLightSetting,Impostor Light,インポスターの視界,拥有内鬼视野,擁有內鬼視野
-MadMayorParcentageForTaskTriggerSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量（全タスク内）,叛变的市长确认内鬼阵营玩家需要完成的任务量,叛變的市長確認內鬼陣營玩家所需完成的任務數
 NiceHawkName,NiceHawk,ナイスホーク,鹰眼,正義的鷹眼
 NiceHawkTitle1,See it all.,全てを見渡せ,将一切尽收眼底,將一切盡收眼底
 NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう,把犯人抓个现行,把犯人抓個現行

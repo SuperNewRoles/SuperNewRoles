@@ -228,24 +228,28 @@ class AddChatPatch
         string text = "";
         foreach (CustomOption option in options)
         {
-            if (option.GetName() != ModTranslation.GetString("IsParcentageForTaskTrigger"))
-                text += indent + option.GetName() + ":" + option.GetString() + "\n";
-            else
-            {
-                text += indent + ModTranslation.GetString("TaskTriggerAbilityTaskNumber") + ":";
+            text += indent + option.GetName() + ":" + option.GetString() + "\n";
 
-                int Common = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumCommonTasks);
-                int Long = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumLongTasks);
-                int Short = GameOptionsManager.Instance.CurrentGameOptions.GetInt(Int32OptionNames.NumShortTasks);
-                int AllTask = Common + Long + Short;
+            if (option.GetName() == ModTranslation.GetString("ParcentageForTaskTriggerSetting"))
+            {
+                RoleId roleId = option.roleId;
+                int AllTask = SelectTask.GetTotalTasks(roleId);
                 float percent = int.Parse(option.GetString().Replace("%", "")) / 100f;
+                int activeTaskNum = (int)(AllTask * percent);
+                text += indent + "  " + ModTranslation.GetString("TaskTriggerAbilityTaskNumber") + ":";
 
-                text += $"{(int)(AllTask * percent)} ( {AllTask} × {percent * 100}% )\n";
+                if (AllTask != 0)
+                    text += $"{AllTask} × {option.GetString()} => {activeTaskNum}{ModTranslation.GetString("UnitPieces")}\n";
+                else
+                {
+                    string errorText = $"{roleId} のタスク数が取得できず、能力発動に必要なタスク数を計算する事ができませんでした。";
+                    text += $"=> {errorText}\n";
+                    Logger.Error($"{errorText}", "ParcentageForTaskTriggerSetting");
+                }
             }
+
             if (option.children.Count > 0)
-            {
                 text += GetChildText(option.children, indent + "  ");
-            }
         }
         return text;
     }

@@ -975,12 +975,14 @@ class GameOptionsDataPatch
             float percent = int.Parse(option.GetString().Replace("%", "")) / 100f;
             int activeTaskNum = (int)(AllTask * percent);
 
-            string text = $"{option.GetName()} : {option.GetString()} ";
+            string text = option.GetName() + ":" + option.GetString() + "\n";
+            text += $"    ({ModTranslation.GetString("TaskTriggerAbilityTaskNumber")}:";
+
             if (AllTask != 0)
-                text += $"× {AllTask} => {activeTaskNum}{ModTranslation.GetString("TaskTriggerAbilityTaskCount")}";
+                text += $"{AllTask} × {option.GetString()} => {activeTaskNum}{ModTranslation.GetString("UnitPieces")})";
             else
             {
-                string errorText = $"{roleId} のタスク数が取得できず、能力発動に必要なタスク数を計算する事ができませんでした。";
+                string errorText = $"{roleId} のタスク数が取得できず、能力発動に必要なタスク数を計算する事ができませんでした。)";
                 text += $"=> {errorText}";
                 Logger.Error($"{errorText}", "ParcentageForTaskTriggerSetting");
             }
