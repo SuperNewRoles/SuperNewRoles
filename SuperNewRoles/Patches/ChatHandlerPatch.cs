@@ -188,16 +188,6 @@ class AddChatPatch
             return false;
         }
         else if (
-            Commands[0].Equals("/MyRole", StringComparison.OrdinalIgnoreCase) ||
-            Commands[0].Equals("/mr", StringComparison.OrdinalIgnoreCase)
-            )
-        {
-            if (!AmongUsClient.Instance.AmHost) return true;
-            if (sourcePlayer.IsMod()) return true;
-            AddChatPatch.MyRoleCommand(/*SendTime: sendTime, */ commandUser: sourcePlayer);
-            return true;
-        }
-        else if (
             Commands[0].Equals("/Winners", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/w", StringComparison.OrdinalIgnoreCase)
             )
@@ -245,20 +235,21 @@ class AddChatPatch
         }
         return text;
     }
-    static string GetOptionText(CustomRoleOption RoleOption, IntroData intro)
+    internal static string GetOptionText(CustomRoleOption RoleOption, IntroData intro)
     {
         Logger.Info("GetOptionText", "ChatHandler");
         string text = "";
         text += GetChildText(RoleOption.children, "  ").Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", "");
         return text;
     }
-    static string GetTeamText(TeamRoleType type)
+
+    internal static string GetTeamText(TeamType type)
     {
         return type switch
         {
-            TeamRoleType.Crewmate => ModTranslation.GetString("CrewmateName"),
-            TeamRoleType.Impostor => ModTranslation.GetString("ImpostorName"),
-            TeamRoleType.Neutral => ModTranslation.GetString("NeutralName").Replace("陣営", ""),
+            TeamType.Crewmate => Format(ModTranslation.GetString("TeamMessage"), ModTranslation.GetString("CrewmateName")),
+            TeamType.Impostor => Format(ModTranslation.GetString("TeamMessage"), ModTranslation.GetString("ImpostorName")),
+            TeamType.Neutral => Format(ModTranslation.GetString("TeamMessage"), ModTranslation.GetString("NeutralName").Replace("陣営", "").Replace("阵营", "").Replace("陣營", "")),
             _ => "",
         };
     }
@@ -267,45 +258,24 @@ class AddChatPatch
         Logger.Info("GetText", "Chathandler");
         string text = "\n";
         IntroData intro = option.Intro;
-        text += GetTeamText(intro.Team) + ModTranslation.GetString("Team") + "\n";
+        text += GetTeamText(intro.TeamType) + ModTranslation.GetString("TeamRoleType") + "\n";
         text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
         text += intro.Description + "\n";
         text += ModTranslation.GetString("MessageSettings") + ":\n";
         text += GetOptionText(option, intro);
         return text;
     }
-    static string GetInRole(List<CustomRoleOption> optionsnotorder)
+    // /grのコマンド結果を返す。辞書を加工する。
+    static string GetInRole()
     {
-        string text = ModTranslation.GetString("NowRolesMessage") + "\n";
-        var options = optionsnotorder.OrderBy((CustomRoleOption x) =>
-        {
-            return x.Intro.Team switch
-            {
-                TeamRoleType.Impostor => 0,
-                TeamRoleType.Neutral => 1000,
-                TeamRoleType.Crewmate => 2000,
-                _ => 500,
-            };
-        });
-        TeamRoleType type = TeamRoleType.Error;
-        foreach (CustomRoleOption option in options)
-        {
-            if (type != option.Intro.Team)
-            {
-                type = option.Intro.Team;
-                text += "\n" + Format(ModTranslation.GetString("TeamMessage"), GetTeamText(type)) + "\n\n";
-            }
-            int PlayerCount = 0;
-            foreach (CustomOption opt in option.children)
-            {
-                if (opt.GetName() == CustomOptionHolder.SheriffPlayerCount.GetName())
-                {
-                    PlayerCount = (int)opt.GetFloat();
-                    break;
-                }
-            }
-            text += option.Intro.Name + " : " + PlayerCount + ModTranslation.GetString("PlayerCountMessage") + "\n";
-        }
+        string text = null;
+        const string pos = "<pos=75%>";
+        if (CustomOverlays.ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Impostor))
+            text += CustomOverlays.ActivateRolesDictionary[(byte)TeamRoleType.Impostor].Replace(pos, "");
+        if (CustomOverlays.ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Crewmate))
+            text += CustomOverlays.ActivateRolesDictionary[(byte)TeamRoleType.Crewmate].Replace(pos, "");
+        if (CustomOverlays.ActivateRolesDictionary.ContainsKey((byte)TeamRoleType.Neutral))
+            text += CustomOverlays.ActivateRolesDictionary[(byte)TeamRoleType.Neutral].Replace(pos, "");
         return text;
     }
     static void RoleCommand(PlayerControl target = null, float SendTime = 1.5f)
@@ -341,50 +311,10 @@ class AddChatPatch
             SendCommand(target, ModTranslation.GetString("NotAssign"));
             return;
         }
-        List<CustomRoleOption> EnableOptions = new();
-        foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
-        {
-            if (!option.IsRoleEnable) continue;
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
-            EnableOptions.Add(option);
-        }
-        SendCommand(target, GetInRole(EnableOptions));
-    }
-
-    /// <summary>
-    /// コマンド使用者の役職説明を取得し、チャットに流す。
-    /// 送信間隔をコメントアウトしているのは重複役の説明が必要になった時に復活させ設定可能にする為
-    /// </summary>
-    /// <param name="commandUser">コマンドを使用し、役職説明送信対象となるplayer</param>
-    public static void MyRoleCommand(PlayerControl commandUser = null/*, float SendTime = 1.5f*/)
-    {
-        string errorText = null;
-        if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) errorText = ModTranslation.GetString("MyRoleErrorNotGameStart");
-        else if (ModeHandler.IsMode(ModeId.SuperHostRoles, false)) errorText = ModTranslation.GetString("MyRoleErrorSHRMode");
-        else if (!(ModeHandler.IsMode(ModeId.Default, false) || ModeHandler.IsMode(ModeId.Werewolf, false))) errorText = ModTranslation.GetString("NotAssign");
-
-        if (errorText != null)
-        {
-            if (!(AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles, false))) FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(commandUser, errorText);
-            else SendCommand(commandUser, errorText);
-            return;
-        }
-
-        RoleId myRole = commandUser.GetRole();
-
-        // LINQ使用 ChatGPTさんに聞いたらforeach処理よりも簡潔で効率的な可能性が高い、後開発者の好みと返答された為。
-        IEnumerable<CustomRoleOption> myRoleOptions = CustomRoleOption.RoleOptions.Where(option => option.RoleId == myRole).Select(option => { return option; });
-        float time = 0;
-        // foreach使用 ChatGPTさんに聞いたらLINQ使うより、可読性が高くより一般的と返答された為。
-        foreach (CustomRoleOption option in myRoleOptions)
-        {
-            string text = GetText(option);
-            string roleName = "<size=115%>\n" + CustomOptionHolder.Cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
-            SuperNewRolesPlugin.Logger.LogInfo(roleName);
-            SuperNewRolesPlugin.Logger.LogInfo(text);
-            Send(commandUser, roleName, text, time);
-            // time += SendTime;
-        }
+        // ゲーム開始前は毎回現在の役職を取得する
+        if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+            CustomOverlays.GetActivateRoles();
+        SendCommand(target, GetInRole()); // 辞書の内容を加工した文字列を取得し、ターゲットに送信する
     }
 
     static void Send(PlayerControl target, string rolename, string text, float time = 0)

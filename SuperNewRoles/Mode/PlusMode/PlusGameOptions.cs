@@ -9,7 +9,7 @@ class PlusGameOptions
 {
     public static CustomOption PlusGameOptionSetting;
 
-    public static CustomOption CanGhostSeeRole;
+    public static CustomOption CanNotGhostSeeRole;
     public static CustomOption OnlyImpostorGhostSeeRole;
 
     public static CustomOption CanGhostSeeVote;
@@ -39,8 +39,8 @@ class PlusGameOptions
     {
         PlusGameOptionSetting = Create(508, true, CustomOptionType.Generic, Cs(new Color(168f / 187f, 191f / 255f, 147f / 255f, 1f), "PlusGameOptionSetting"), false, null, isHeader: true);
 
-        CanGhostSeeRole = Create(1100, true, CustomOptionType.Generic, "CanGhostSeeRole", true, PlusGameOptionSetting, isHeader: true);
-        OnlyImpostorGhostSeeRole = Create(1101, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanGhostSeeRole);
+        CanNotGhostSeeRole = Create(1100, true, CustomOptionType.Generic, "CanNotGhostSeeRole", false, PlusGameOptionSetting, isHeader: true);
+        OnlyImpostorGhostSeeRole = Create(1101, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanNotGhostSeeRole);
 
         CanGhostSeeVote = Create(1144, true, CustomOptionType.Generic, "CanGhostSeeVote", true, PlusGameOptionSetting, isHeader: true);
 

@@ -51,6 +51,7 @@ class Jester
             {
                 try
                 {
+                    exiled.Object.RpcSetFinalStatus(FinalStatus.MadJesterExiled);
                     var Writer = RPCHelper.StartRPC(CustomRPC.ShareWinner);
                     Writer.Write(exiled.Object.PlayerId);
                     Writer.EndRPC();

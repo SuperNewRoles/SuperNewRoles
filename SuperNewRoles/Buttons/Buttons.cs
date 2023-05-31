@@ -297,6 +297,7 @@ static class HudManagerStartPatch
                 if (Target.IsLovers() || Target.IsRole(RoleId.truelover, RoleId.Cupid))
                 {
                     PlayerControl.LocalPlayer.RpcMurderPlayer(Target);
+                    Target.RpcSetFinalStatus(FinalStatus.LoversBreakerKill);
                     LoversBreakerButton.MaxTimer = CustomOptionHolder.LoversBreakerCoolTime.GetFloat();
                     LoversBreakerButton.Timer = LoversBreakerButton.MaxTimer;
                     if (Target.IsRole(RoleId.Cupid) && !Target.IsLovers()) return;
