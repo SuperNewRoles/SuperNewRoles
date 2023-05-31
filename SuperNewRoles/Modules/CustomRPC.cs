@@ -27,6 +27,7 @@ namespace SuperNewRoles.Modules;
 
 public enum RoleId
 {
+    None, // RoleIdの初期化用
     DefaultRole,
     SoothSayer,
     Jester,

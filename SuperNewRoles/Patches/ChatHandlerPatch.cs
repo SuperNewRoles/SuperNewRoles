@@ -223,7 +223,7 @@ class AddChatPatch
             return true;
         }
     }
-    static string GetChildText(List<CustomOption> options, string indent)
+    static string GetChildText(List<CustomOption> options, string indent, RoleId roleId = RoleId.None)
     {
         string text = "";
         foreach (CustomOption option in options)
@@ -232,7 +232,6 @@ class AddChatPatch
 
             if (option.GetName() == ModTranslation.GetString("ParcentageForTaskTriggerSetting"))
             {
-                RoleId roleId = option.roleId;
                 int AllTask = SelectTask.GetTotalTasks(roleId);
                 float percent = int.Parse(option.GetString().Replace("%", "")) / 100f;
                 int activeTaskNum = (int)(AllTask * percent);
@@ -249,15 +248,16 @@ class AddChatPatch
             }
 
             if (option.children.Count > 0)
-                text += GetChildText(option.children, indent + "  ");
+                text += GetChildText(option.children, indent + "  ", roleId);
         }
         return text;
     }
     internal static string GetOptionText(CustomRoleOption RoleOption, IntroData intro)
     {
         Logger.Info("GetOptionText", "ChatHandler");
+        RoleId roleId = RoleOption.RoleId;
         string text = "";
-        text += GetChildText(RoleOption.children, "  ").Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", "");
+        text += GetChildText(RoleOption.children, "  ", roleId).Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", "");
         return text;
     }
 

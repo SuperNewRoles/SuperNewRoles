@@ -1135,7 +1135,7 @@ public class CustomOptionHolder
         MadmateShortTask = madmateoption.Item2;
         MadmateLongTask = madmateoption.Item3;
         MadmateIsParcentageForTaskTrigger = Create(1162, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadmateIsCheckImpostor);
-        MadmateParcentageForTaskTriggerSetting = Create(136, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadmateIsParcentageForTaskTrigger, roleId: RoleId.Madmate);
+        MadmateParcentageForTaskTriggerSetting = Create(136, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadmateIsParcentageForTaskTrigger);
         MadmateIsUseVent = Create(137, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadmateOption);
         MadmateIsImpostorLight = Create(138, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadmateOption);
 
@@ -1149,7 +1149,7 @@ public class CustomOptionHolder
         BlackCatShortTask = blackcatoption.Item2;
         BlackCatLongTask = blackcatoption.Item3;
         BlackCatIsParcentageForTaskTrigger = Create(1164, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, BlackCatIsCheckImpostor);
-        BlackCatParcentageForTaskTriggerSetting = Create(562, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, BlackCatIsParcentageForTaskTrigger, roleId: RoleId.BlackCat);
+        BlackCatParcentageForTaskTriggerSetting = Create(562, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, BlackCatIsParcentageForTaskTrigger);
         BlackCatIsUseVent = Create(563, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, BlackCatOption);
         BlackCatIsImpostorLight = Create(564, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, BlackCatOption);
 
@@ -1165,7 +1165,7 @@ public class CustomOptionHolder
         MadMayorShortTask = madmayoroption.Item2;
         MadMayorLongTask = madmayoroption.Item3;
         MadMayorIsParcentageForTaskTrigger = Create(1166, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadMayorIsCheckImpostor);
-        MadMayorParcentageForTaskTriggerSetting = Create(276, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadMayorIsParcentageForTaskTrigger, roleId: RoleId.MadMayor);
+        MadMayorParcentageForTaskTriggerSetting = Create(276, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadMayorIsParcentageForTaskTrigger);
         MadMayorIsUseVent = Create(277, true, CustomOptionType.Crewmate, "MadMayorUseVentSetting", false, MadMayorOption);
         MadMayorIsImpostorLight = Create(278, true, CustomOptionType.Crewmate, "MadMayorImpostorLightSetting", false, MadMayorOption);
 
@@ -1183,7 +1183,7 @@ public class CustomOptionHolder
         MadSeerShortTask = madseeroption.Item2;
         MadSeerLongTask = madseeroption.Item3;
         MadSeerIsParcentageForTaskTrigger = Create(1168, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadSeerIsCheckImpostor);
-        MadSeerParcentageForTaskTriggerSetting = Create(333, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadSeerIsParcentageForTaskTrigger, roleId: RoleId.MadSeer);
+        MadSeerParcentageForTaskTriggerSetting = Create(333, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadSeerIsParcentageForTaskTrigger);
 
         MadMakerOption = SetupCustomRoleOption(347, true, RoleId.MadMaker);
         MadMakerPlayerCount = Create(348, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMakerOption);
@@ -1202,7 +1202,7 @@ public class CustomOptionHolder
         IsMadJesterTaskClearWin = Create(300, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
         MadJesterIsCheckImpostor = Create(1173, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadJesterOption);
         MadJesterIsParcentageForTaskTrigger = Create(1170, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadJesterIsCheckImpostor);
-        MadJesterParcentageForTaskTriggerSetting = Create(1174, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadJesterIsParcentageForTaskTrigger, roleId: RoleId.MadJester);
+        MadJesterParcentageForTaskTriggerSetting = Create(1174, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadJesterIsParcentageForTaskTrigger);
 
         MadHawkOption = SetupCustomRoleOption(287, false, RoleId.MadHawk);
         MadHawkPlayerCount = Create(289, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadHawkOption);
@@ -1236,7 +1236,7 @@ public class CustomOptionHolder
         JackalFriendsShortTask = JackalFriendsoption.Item2;
         JackalFriendsLongTask = JackalFriendsoption.Item3;
         JackalFriendsIsParcentageForTaskTrigger = Create(1272, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, JackalFriendsIsCheckJackal);
-        JackalFriendsParcentageForTaskTriggerSetting = Create(189, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, JackalFriendsIsParcentageForTaskTrigger, roleId: RoleId.JackalFriends);
+        JackalFriendsParcentageForTaskTriggerSetting = Create(189, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, JackalFriendsIsParcentageForTaskTrigger);
 
         SeerFriendsOption = SetupCustomRoleOption(362, true, RoleId.SeerFriends);
         SeerFriendsPlayerCount = Create(363, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeerFriendsOption);
@@ -1252,7 +1252,7 @@ public class CustomOptionHolder
         SeerFriendsShortTask = SeerFriendsoption.Item2;
         SeerFriendsLongTask = SeerFriendsoption.Item3;
         SeerFriendsIsParcentageForTaskTrigger = Create(1274, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, SeerFriendsIsCheckJackal);
-        SeerFriendsParcentageForTaskTriggerSetting = Create(374, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, SeerFriendsIsParcentageForTaskTrigger, roleId: RoleId.SeerFriends);
+        SeerFriendsParcentageForTaskTriggerSetting = Create(374, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, SeerFriendsIsParcentageForTaskTrigger);
 
         MayorFriendsOption = SetupCustomRoleOption(405, true, RoleId.MayorFriends);
         MayorFriendsPlayerCount = Create(406, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MayorFriendsOption);
@@ -1265,7 +1265,7 @@ public class CustomOptionHolder
         MayorFriendsShortTask = MayorFriendsoption.Item2;
         MayorFriendsLongTask = MayorFriendsoption.Item3;
         MayorFriendsIsParcentageForTaskTrigger = Create(1276, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MayorFriendsIsCheckJackal);
-        MayorFriendsParcentageForTaskTriggerSetting = Create(413, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MayorFriendsIsParcentageForTaskTrigger, roleId: RoleId.MayorFriends);
+        MayorFriendsParcentageForTaskTriggerSetting = Create(413, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MayorFriendsIsParcentageForTaskTrigger);
         MayorFriendsVoteCount = Create(414, true, CustomOptionType.Crewmate, "MayorVoteCountSetting", 2f, 1f, 100f, 1f, MayorFriendsOption);
 
         LighterOption = SetupCustomRoleOption(24, false, RoleId.Lighter);

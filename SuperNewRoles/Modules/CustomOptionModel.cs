@@ -73,7 +73,6 @@ public class CustomOption
     public List<CustomOption> children;
     public bool isHeader;
     public bool isHidden;
-    public RoleId roleId;
 
     public virtual bool Enabled
     {
@@ -89,7 +88,7 @@ public class CustomOption
 
     }
 
-    public CustomOption(int id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, RoleId roleId)
+    public CustomOption(int id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
     {
         this.id = id;
         this.isSHROn = IsSHROn;
@@ -102,8 +101,6 @@ public class CustomOption
         this.parent = parent;
         this.isHeader = isHeader;
         this.isHidden = isHidden;
-        this.roleId = roleId;
-
 
         this.children = new List<CustomOption>();
         if (parent != null)
@@ -129,22 +126,22 @@ public class CustomOption
     }
     public static int Max = 0;
 
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", RoleId roleId = RoleId.DefaultRole)
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
     {
-        return new CustomOption(id, IsSHROn, type, name, selections, "", parent, isHeader, isHidden, format, roleId);
+        return new CustomOption(id, IsSHROn, type, name, selections, "", parent, isHeader, isHidden, format);
     }
 
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", RoleId roleId = RoleId.DefaultRole)
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
     {
         List<float> selections = new();
         for (float s = min; s <= max; s += step)
             selections.Add(s);
-        return new CustomOption(id, IsSHROn, type, name, selections.Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format, roleId);
+        return new CustomOption(id, IsSHROn, type, name, selections.Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format);
     }
 
-    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "", RoleId roleId = RoleId.DefaultRole)
+    public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
     {
-        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format, roleId);
+        return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format);
     }
 
     public static CustomRoleOption SetupCustomRoleOption(int id, bool IsSHROn, RoleId roleId, CustomOptionType type = CustomOptionType.Empty, int max = 1)
@@ -340,8 +337,8 @@ public class CustomRoleOption : CustomOption
         }
     }
 
-    public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15, RoleId roleId = RoleId.DefaultRole) :
-        base(id, isSHROn, type, CustomOptionHolder.Cs(color, name), CustomOptionHolder.rates, "", null, true, false, "", roleId)
+    public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15) :
+        base(id, isSHROn, type, CustomOptionHolder.Cs(color, name), CustomOptionHolder.rates, "", null, true, false, "")
     {
         try
         {
@@ -964,13 +961,12 @@ class GameOptionsDataPatch
         return typeof(IGameOptionsExtensions).GetMethods().Where(x => x.ReturnType == typeof(string) && x.GetParameters().Length == 2 && x.GetParameters()[1].ParameterType == typeof(int));
     }
 
-    public static string OptionToString(CustomOption option)
+    public static string OptionToString(CustomOption option, RoleId roleId = RoleId.None)
     {
         if (option.GetName() != ModTranslation.GetString("ParcentageForTaskTriggerSetting"))
             return option == null ? "" : $"{option.GetName()} : {option.GetString()}";
         else
         {
-            RoleId roleId = option.roleId;
             int AllTask = SelectTask.GetTotalTasks(roleId);
             float percent = int.Parse(option.GetString().Replace("%", "")) / 100f;
             int activeTaskNum = (int)(AllTask * percent);
