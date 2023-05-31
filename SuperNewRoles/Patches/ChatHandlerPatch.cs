@@ -228,20 +228,25 @@ class AddChatPatch
         string text = "";
         foreach (CustomOption option in options)
         {
+            if (!option.parent.Enabled && option.parent != null) continue;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !option.isSHROn) continue;
+
             text += indent + option.GetName() + ":" + option.GetString() + "\n";
 
             if (option.GetName() == ModTranslation.GetString("ParcentageForTaskTriggerSetting"))
                 text += $"{GameOptionsDataPatch.ProcessingOptionString(option, indent, GameOptionsDataPatch.ProcessingPattern.GetTaskTriggerAbilityTaskNumber)}\n";
 
             if (option.children.Count > 0)
+            {
+                if (!option.Enabled) continue;
                 text += GetChildText(option.children, indent + "  ");
+            }
         }
         return text;
     }
     internal static string GetOptionText(CustomRoleOption RoleOption, IntroData intro)
     {
         Logger.Info("GetOptionText", "ChatHandler");
-        RoleId roleId = RoleOption.RoleId;
         string text = "";
         text += GetChildText(RoleOption.children, "  ").Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", "");
         return text;
