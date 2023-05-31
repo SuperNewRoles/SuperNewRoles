@@ -223,7 +223,7 @@ class AddChatPatch
             return true;
         }
     }
-    static string GetChildText(List<CustomOption> options, string indent, RoleId roleId = RoleId.None)
+    static string GetChildText(List<CustomOption> options, string indent)
     {
         string text = "";
         foreach (CustomOption option in options)
@@ -231,24 +231,10 @@ class AddChatPatch
             text += indent + option.GetName() + ":" + option.GetString() + "\n";
 
             if (option.GetName() == ModTranslation.GetString("ParcentageForTaskTriggerSetting"))
-            {
-                int AllTask = SelectTask.GetTotalTasks(roleId);
-                float percent = int.Parse(option.GetString().Replace("%", "")) / 100f;
-                int activeTaskNum = (int)(AllTask * percent);
-                text += indent + "  " + ModTranslation.GetString("TaskTriggerAbilityTaskNumber") + ":";
-
-                if (AllTask != 0)
-                    text += $"{AllTask} × {option.GetString()} => {activeTaskNum}{ModTranslation.GetString("UnitPieces")}\n";
-                else
-                {
-                    string errorText = $"{roleId} のタスク数が取得できず、能力発動に必要なタスク数を計算する事ができませんでした。";
-                    text += $"=> {errorText}\n";
-                    Logger.Error($"{errorText}", "ParcentageForTaskTriggerSetting");
-                }
-            }
+                text += $"{GameOptionsDataPatch.ProcessingOptionString(option, indent, GameOptionsDataPatch.ProcessingPattern.GetTaskTriggerAbilityTaskNumber)}\n";
 
             if (option.children.Count > 0)
-                text += GetChildText(option.children, indent + "  ", roleId);
+                text += GetChildText(option.children, indent + "  ");
         }
         return text;
     }
@@ -257,7 +243,7 @@ class AddChatPatch
         Logger.Info("GetOptionText", "ChatHandler");
         RoleId roleId = RoleOption.RoleId;
         string text = "";
-        text += GetChildText(RoleOption.children, "  ", roleId).Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", "");
+        text += GetChildText(RoleOption.children, "  ").Replace("<color=#03ff0c>", "").Replace("<color=#f22f21>", "").Replace("</color>", "");
         return text;
     }
 

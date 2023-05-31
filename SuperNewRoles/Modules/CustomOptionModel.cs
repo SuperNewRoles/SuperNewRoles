@@ -73,6 +73,7 @@ public class CustomOption
     public List<CustomOption> children;
     public bool isHeader;
     public bool isHidden;
+    public RoleId RoleId;
 
     public virtual bool Enabled
     {
@@ -88,7 +89,7 @@ public class CustomOption
 
     }
 
-    public CustomOption(int id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
+    public CustomOption(int id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format, RoleId roleId = RoleId.None)
     {
         this.id = id;
         this.isSHROn = IsSHROn;
@@ -101,6 +102,11 @@ public class CustomOption
         this.parent = parent;
         this.isHeader = isHeader;
         this.isHidden = isHidden;
+        this.RoleId = roleId;
+        if (parent != null)
+        {
+            this.RoleId = parent.RoleId;
+        }
 
         this.children = new List<CustomOption>();
         if (parent != null)
@@ -294,8 +300,6 @@ public class CustomRoleOption : CustomOption
     public static List<CustomRoleOption> RoleOptions = new();
 
     public CustomOption countOption = null;
-
-    public RoleId RoleId;
 
     public int Rate
     {
@@ -961,30 +965,59 @@ class GameOptionsDataPatch
         return typeof(IGameOptionsExtensions).GetMethods().Where(x => x.ReturnType == typeof(string) && x.GetParameters().Length == 2 && x.GetParameters()[1].ParameterType == typeof(int));
     }
 
-    public static string OptionToString(CustomOption option, RoleId roleId = RoleId.None)
+    public static string OptionToString(CustomOption option)
     {
-        if (option.GetName() != ModTranslation.GetString("ParcentageForTaskTriggerSetting"))
-            return option == null ? "" : $"{option.GetName()} : {option.GetString()}";
-        else
-        {
-            int AllTask = SelectTask.GetTotalTasks(roleId);
-            float percent = int.Parse(option.GetString().Replace("%", "")) / 100f;
-            int activeTaskNum = (int)(AllTask * percent);
+        if (option == null) return "";
 
-            string text = option.GetName() + ":" + option.GetString() + "\n";
-            text += $"    ({ModTranslation.GetString("TaskTriggerAbilityTaskNumber")}:";
+        string text = option.GetName() + ":" + option.GetString();
+
+        if (option.GetName() == ModTranslation.GetString("ParcentageForTaskTriggerSetting"))
+            text += $"\n{ProcessingOptionString(option, "  ", ProcessingPattern.GetTaskTriggerAbilityTaskNumber)}";
+
+        return text;
+    }
+
+    /// <summary>
+    /// CustomOptionに追記をする。
+    /// </summary>
+    /// <param name="option">追記が必要なオプション</param>
+    /// <param name="indent">追記が必要なオプションのインデント</param>
+    /// <param name="pattern">追記の内容指定</param>
+    /// <returns>string : 追記した文字列(インデントは一つ追加している)</returns>
+    internal static string ProcessingOptionString(CustomOption option, string indent = "", ProcessingPattern pattern = ProcessingPattern.None)
+    {
+        if (option == null) return "";
+        string text = "";
+
+        if (pattern == ProcessingPattern.GetTaskTriggerAbilityTaskNumber) // タスクの割合から, タスク数を求める
+        {
+            int AllTask = SelectTask.GetTotalTasks(option.RoleId);
+            int.TryParse(option.GetString().Replace("%", ""), out int percent);
+            float rate = percent / 100f;
+            int activeTaskNum = (int)(AllTask * rate);
+
+            text += indent + "  " + "(" + $"{ModTranslation.GetString("TaskTriggerAbilityTaskNumber")}:";
 
             if (AllTask != 0)
-                text += $"{AllTask} × {option.GetString()} => {activeTaskNum}{ModTranslation.GetString("UnitPieces")})";
+                text += $"{AllTask} × {option.GetString()} => {activeTaskNum}{ModTranslation.GetString("UnitPieces")}" + ")";
             else
             {
-                string errorText = $"{roleId} のタスク数が取得できず、能力発動に必要なタスク数を計算する事ができませんでした。)";
+                string errorText = $"{option.RoleId} のタスク数が取得できず、能力発動に必要なタスク数を計算する事ができませんでした。" + ")";
                 text += $"=> {errorText}";
-                Logger.Error($"{errorText}", "ParcentageForTaskTriggerSetting");
+                Logger.Error($"{errorText}", "GetTaskTriggerAbilityTaskNumber");
             }
-
-            return text;
         }
+
+        return text;
+    }
+
+    /// <summary>
+    /// 追記が必要なCustomOptionの種類
+    /// </summary>
+    internal enum ProcessingPattern
+    {
+        None,
+        GetTaskTriggerAbilityTaskNumber,
     }
 
     public static string OptionsToString(CustomOption option, bool skipFirst = false)
@@ -1020,9 +1053,8 @@ class GameOptionsDataPatch
         StringBuilder entry = new();
         List<string> entries = new()
             {
-
                 // First add the presets and the role counts
-                OptionToString(CustomOptionHolder.presetSelection)
+                OptionToString(CustomOptionHolder.presetSelection) // [ ]MEMO:ここでRoleId取得できないとtabには表示不可
             };
 
         var optionName = CustomOptionHolder.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingCrewmateRoles"));

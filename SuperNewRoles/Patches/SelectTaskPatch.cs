@@ -163,6 +163,7 @@ public static class SelectTask
 
         // タスク数を (0, 0, 0) で返す必要のある役職
         if (id == RoleId.GM) return (0, 0, 0);
+        else if (id == RoleId.None) return (0, 0, 0);
 
         // RoleIdが辞書に含まれない, あるいは合計値が0だった場合, バニラのタスク数を返す
         return (vanillaCommon, vanillaShort, vanillaLong);
