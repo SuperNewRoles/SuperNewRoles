@@ -47,7 +47,7 @@ public class Safecracker
         SafecrackerUseSaboTask = CustomOption.Create(OptionId + 7, false, CustomOptionType.Neutral, "SafecrackerUseSaboTaskSetting", CustomRates, SafecrackerOption);
         SafecrackerIsImpostorLightTask = CustomOption.Create(OptionId + 8, false, CustomOptionType.Neutral, "SafecrackerIsImpostorLightTaskSetting", CustomRates, SafecrackerOption);
         SafecrackerCheckImpostorTask = CustomOption.Create(OptionId + 9, false, CustomOptionType.Neutral, "SafecrackerCheckImpostorTaskSetting", CustomRates, SafecrackerOption);
-        SafecrackerIsSettingNumberOfUniqueTasks = CustomOption.Create(1293, false, CustomOptionType.Neutral, "IsSettingNumberOfUniqueTasks", true, SafecrackerOption);
+        SafecrackerIsSettingNumberOfUniqueTasks = CustomOption.Create(1294, false, CustomOptionType.Neutral, "IsSettingNumberOfUniqueTasks", true, SafecrackerOption);
         SafecrackerCommonTask = CustomOption.Create(OptionId + 10, false, CustomOptionType.Neutral, "GameCommonTasks", 1f, 0f, 300f, 1f, SafecrackerIsSettingNumberOfUniqueTasks);
         SafecrackerShortTask = CustomOption.Create(OptionId + 11, false, CustomOptionType.Neutral, "GameShortTasks", 1f, 0f, 300f, 1f, SafecrackerIsSettingNumberOfUniqueTasks);
         SafecrackerLongTask = CustomOption.Create(OptionId + 12, false, CustomOptionType.Neutral, "GameLongTasks", 1f, 0f, 300f, 1f, SafecrackerIsSettingNumberOfUniqueTasks);
