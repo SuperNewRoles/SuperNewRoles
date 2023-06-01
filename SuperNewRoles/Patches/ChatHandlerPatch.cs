@@ -229,7 +229,7 @@ class AddChatPatch
         foreach (CustomOption option in options)
         {
             if (!option.parent.Enabled && option.parent != null) continue;
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !option.isSHROn) continue;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
 
             text += indent + option.GetName() + ":" + option.GetString() + "\n";
 
