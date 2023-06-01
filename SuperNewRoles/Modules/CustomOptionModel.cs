@@ -970,9 +970,10 @@ class GameOptionsDataPatch
         if (option == null) return "";
 
         string text = option.GetName() + ":" + option.GetString();
+        var (isProcessingRequired, pattern) = ProcessingOptionCheck(option);
 
-        if (option.GetName() == ModTranslation.GetString("ParcentageForTaskTriggerSetting"))
-            text += $"\n{ProcessingOptionString(option, "  ", ProcessingPattern.GetTaskTriggerAbilityTaskNumber)}";
+        if (isProcessingRequired)
+            text += $"{ProcessingOptionString(option, "  ", pattern)}";
 
         return text;
     }
@@ -992,11 +993,11 @@ class GameOptionsDataPatch
         if (pattern == ProcessingPattern.GetTaskTriggerAbilityTaskNumber) // タスクの割合から, タスク数を求める
         {
             int AllTask = SelectTask.GetTotalTasks(option.RoleId);
-            int.TryParse(option.GetString().Replace("%", ""), out int percent);
+            if (!int.TryParse(option.GetString().Replace("%", ""), out int percent)) return ""; // int変換できない物の場合, ブランクを返す
             float rate = percent / 100f;
             int activeTaskNum = (int)(AllTask * rate);
 
-            text += indent + "  " + "(" + $"{ModTranslation.GetString("TaskTriggerAbilityTaskNumber")}:";
+            text += "\n" + indent + "  " + "(" + $"{ModTranslation.GetString("TaskTriggerAbilityTaskNumber")}:";
 
             if (AllTask != 0)
                 text += $"{AllTask} × {option.GetString()} => {activeTaskNum}{ModTranslation.GetString("UnitPieces")}" + ")";
@@ -1009,6 +1010,30 @@ class GameOptionsDataPatch
         }
 
         return text;
+    }
+
+    /// <summary>
+    /// 追記対象のオプションか判定する
+    /// </summary>
+    /// <param name="option">判定対象</param>
+    /// <returns> true : 対象 _ false: 対象外 / ProcessingPattern : 追記形式 </returns>
+    internal static (bool, ProcessingPattern) ProcessingOptionCheck(CustomOption option)
+    {
+        string optionName = option.GetName();
+
+        Dictionary<string, ProcessingPattern> targetString = new()
+        {
+            {ModTranslation.GetString("ParcentageForTaskTriggerSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerKillGuardTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerUseVentTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerExiledGuardTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerUseSaboTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerIsImpostorLightTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+            {ModTranslation.GetString("SafecrackerCheckImpostorTaskSetting"), ProcessingPattern.GetTaskTriggerAbilityTaskNumber},
+        };
+
+        if (targetString.ContainsKey(optionName)) return (true, targetString[optionName]);
+        else return (false, ProcessingPattern.None);
     }
 
     /// <summary>

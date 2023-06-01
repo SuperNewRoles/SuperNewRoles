@@ -231,10 +231,13 @@ class AddChatPatch
             if (!option.parent.Enabled && option.parent != null) continue;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles, false) && !option.isSHROn) continue;
 
-            text += indent + option.GetName() + ":" + option.GetString() + "\n";
+            string optionName = option.GetName();
 
-            if (option.GetName() == ModTranslation.GetString("ParcentageForTaskTriggerSetting"))
-                text += $"{GameOptionsDataPatch.ProcessingOptionString(option, indent, GameOptionsDataPatch.ProcessingPattern.GetTaskTriggerAbilityTaskNumber)}\n";
+            text += indent + option.GetName() + ":" + option.GetString() + "\n";
+            var (isProcessingRequired, pattern) = GameOptionsDataPatch.ProcessingOptionCheck(option);
+
+            if (isProcessingRequired)
+                text += $"{GameOptionsDataPatch.ProcessingOptionString(option, indent, pattern)}\n";
 
             if (option.children.Count > 0)
             {
