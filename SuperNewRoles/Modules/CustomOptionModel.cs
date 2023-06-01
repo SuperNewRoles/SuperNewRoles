@@ -1054,7 +1054,7 @@ class GameOptionsDataPatch
         List<string> entries = new()
             {
                 // First add the presets and the role counts
-                OptionToString(CustomOptionHolder.presetSelection) // [ ]MEMO:ここでRoleId取得できないとtabには表示不可
+                OptionToString(CustomOptionHolder.presetSelection)
             };
 
         var optionName = CustomOptionHolder.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingCrewmateRoles"));
