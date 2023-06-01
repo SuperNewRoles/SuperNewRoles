@@ -267,7 +267,7 @@ class AddChatPatch
         Logger.Info("GetText", "Chathandler");
         string text = "\n";
         IntroData intro = option.Intro;
-        text += GetTeamText(intro.TeamType) + ModTranslation.GetString("TeamRoleType") + "\n";
+        text += GetTeamText(intro.TeamType) + "\n";
         text += "「" + IntroData.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
         text += intro.Description + "\n";
         text += ModTranslation.GetString("MessageSettings") + ":\n";
