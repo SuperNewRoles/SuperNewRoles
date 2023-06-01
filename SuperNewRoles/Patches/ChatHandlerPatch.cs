@@ -273,7 +273,8 @@ class AddChatPatch
         text += ModTranslation.GetString("MessageSettings") + ":\n";
         text += GetOptionText(option, intro);
         return text;
-    }// [ ]MEMO:陣営表記に変更したい
+    }
+
     // /grのコマンド結果を返す。辞書を加工する。
     static string GetInRole()
     {
