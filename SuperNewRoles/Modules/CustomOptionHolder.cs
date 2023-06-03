@@ -3,6 +3,7 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
@@ -1172,7 +1173,7 @@ public class CustomOptionHolder
         BlackCatIsUseVent = Create(563, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, BlackCatOption);
         BlackCatIsImpostorLight = Create(564, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, BlackCatOption);
 
-        Roles.Impostor.MadRole.Worshiper.CustomOptionData.SetupCustomOptions();
+        Worshiper.CustomOptionData.SetupCustomOptions();
 
         MadMayorOption = SetupCustomRoleOption(269, true, RoleId.MadMayor);
         MadMayorPlayerCount = Create(270, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMayorOption);
@@ -2013,6 +2014,8 @@ public class CustomOptionHolder
         RoleBaseHelper.SetUpOptions();
 
         Balancer.SetupCustomOptions();
+
+        MadRaccoon.CustomOptionData.SetupCustomOptions();
 
         // 表示設定
 
