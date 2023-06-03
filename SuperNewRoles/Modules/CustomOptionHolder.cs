@@ -65,6 +65,7 @@ public class CustomOptionHolder
     public static CustomOption JesterIsVent;
     public static CustomOption JesterIsSabotage;
     public static CustomOption JesterIsWinCleartask;
+    public static CustomOption JesterIsSettingNumberOfUniqueTasks;
     public static CustomOption JesterCommonTask;
     public static CustomOption JesterShortTask;
     public static CustomOption JesterLongTask;
@@ -281,6 +282,7 @@ public class CustomOptionHolder
     public static CustomOption GodPlayerCount;
     public static CustomOption GodViewVote;
     public static CustomOption GodIsEndTaskWin;
+    public static CustomOption GodIsSettingNumberOfUniqueTasks;
     public static CustomOption GodCommonTask;
     public static CustomOption GodShortTask;
     public static CustomOption GodLongTask;
@@ -1081,7 +1083,8 @@ public class CustomOptionHolder
         JesterIsVent = Create(18, true, CustomOptionType.Neutral, "JesterIsVentSetting", false, JesterOption);
         JesterIsSabotage = Create(19, false, CustomOptionType.Neutral, "JesterIsSabotageSetting", false, JesterOption);
         JesterIsWinCleartask = Create(20, true, CustomOptionType.Neutral, "JesterIsWinClearTaskSetting", false, JesterOption);
-        var jesteroption = SelectTask.TaskSetting(21, 22, 23, JesterIsWinCleartask, CustomOptionType.Neutral, true);
+        JesterIsSettingNumberOfUniqueTasks = Create(1318, true, CustomOptionType.Neutral, "IsSettingNumberOfUniqueTasks", true, JesterIsWinCleartask);
+        var jesteroption = SelectTask.TaskSetting(21, 22, 23, JesterIsSettingNumberOfUniqueTasks, CustomOptionType.Neutral, true);
         JesterCommonTask = jesteroption.Item1;
         JesterShortTask = jesteroption.Item2;
         JesterLongTask = jesteroption.Item3;
@@ -1432,7 +1435,8 @@ public class CustomOptionHolder
         GodPlayerCount = Create(165, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GodOption);
         GodViewVote = Create(167, true, CustomOptionType.Neutral, "GodViewVoteSetting", false, GodOption);
         GodIsEndTaskWin = Create(168, true, CustomOptionType.Neutral, "GodIsEndTaskWinSetting", true, GodOption);
-        var godoption = SelectTask.TaskSetting(169, 170, 171, GodIsEndTaskWin, CustomOptionType.Neutral, true);
+        GodIsSettingNumberOfUniqueTasks = Create(1169, true, CustomOptionType.Neutral, "IsSettingNumberOfUniqueTasks", true, GodIsEndTaskWin);
+        var godoption = SelectTask.TaskSetting(169, 170, 171, GodIsSettingNumberOfUniqueTasks, CustomOptionType.Neutral, true);
         GodCommonTask = godoption.Item1;
         GodShortTask = godoption.Item2;
         GodLongTask = godoption.Item3;
