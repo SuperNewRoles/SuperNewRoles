@@ -89,7 +89,10 @@ public static class SelectTask
         {
             { RoleId.Madmate, MadmateIsCheckImpostor.GetBool() },
             { RoleId.MadMayor, MadMayorIsCheckImpostor.GetBool() },
+            { RoleId.MadStuntMan, MadStuntManIsCheckImpostor.GetBool() },
+            { RoleId.MadHawk, MadHawkIsCheckImpostor.GetBool() },
             { RoleId.MadSeer, MadSeerIsCheckImpostor.GetBool() },
+            { RoleId.MadCleaner, MadCleanerIsCheckImpostor.GetBool() },
             { RoleId.BlackCat, BlackCatIsCheckImpostor.GetBool() },
             { RoleId.JackalFriends, JackalFriendsIsCheckJackal.GetBool() },
             { RoleId.SeerFriends, SeerFriendsIsCheckJackal.GetBool() },
@@ -132,7 +135,10 @@ public static class SelectTask
         {
             { RoleId.Madmate, MadmateIsSettingNumberOfUniqueTasks.GetBool() ? (MadmateCommonTask.GetInt(), MadmateShortTask.GetInt(), MadmateLongTask.GetInt()) : (0, 0, 0) },
             { RoleId.MadMayor, MadMayorIsSettingNumberOfUniqueTasks.GetBool() ? (MadMayorCommonTask.GetInt(), MadMayorShortTask.GetInt(), MadMayorLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.MadStuntMan, MadStuntManIsSettingNumberOfUniqueTasks.GetBool() ? (MadStuntManCommonTask.GetInt(), MadStuntManShortTask.GetInt(), MadStuntManLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.MadHawk, MadHawkIsSettingNumberOfUniqueTasks.GetBool() ? (MadHawkCommonTask.GetInt(), MadHawkShortTask.GetInt(), MadHawkLongTask.GetInt()) : (0, 0, 0) },
             { RoleId.MadSeer, MadSeerIsSettingNumberOfUniqueTasks.GetBool() ? (MadSeerCommonTask.GetInt(), MadSeerShortTask.GetInt(), MadSeerLongTask.GetInt()) : (0, 0, 0) },
+            { RoleId.MadCleaner, MadCleanerIsSettingNumberOfUniqueTasks.GetBool() ? (MadCleanerCommonTask.GetInt(), MadCleanerShortTask.GetInt(), MadCleanerLongTask.GetInt()) : (0, 0, 0) },
             { RoleId.BlackCat, BlackCatIsSettingNumberOfUniqueTasks.GetBool() ? (BlackCatCommonTask.GetInt(), BlackCatShortTask.GetInt(), BlackCatLongTask.GetInt()) : (0, 0, 0) },
             { RoleId.JackalFriends, JackalFriendsIsSettingNumberOfUniqueTasks.GetBool() ? (JackalFriendsCommonTask.GetInt(), JackalFriendsShortTask.GetInt(), JackalFriendsLongTask.GetInt()) : (0, 0, 0) },
             { RoleId.SeerFriends, SeerFriendsIsSettingNumberOfUniqueTasks.GetBool() ? (SeerFriendsCommonTask.GetInt(), SeerFriendsShortTask.GetInt(), SeerFriendsLongTask.GetInt()) : (0, 0, 0) },

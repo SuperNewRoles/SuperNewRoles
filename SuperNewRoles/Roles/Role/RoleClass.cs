@@ -1375,6 +1375,8 @@ public static class RoleClass
     {
         public static List<PlayerControl> MadStuntManPlayer;
         public static Color32 color = ImpostorRed;
+        public static bool IsImpostorCheck;
+        public static int ImpostorCheckTask;
         public static Dictionary<int, int> GuardCount;
         public static bool IsUseVent;
         public static bool IsImpostorLight;
@@ -1383,12 +1385,21 @@ public static class RoleClass
             MadStuntManPlayer = new();
             IsUseVent = CustomOptionHolder.MadStuntManIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadStuntManIsImpostorLight.GetBool();
+            IsImpostorCheck = CustomOptionHolder.MadStuntManIsCheckImpostor.GetBool();
+            IsUseVent = CustomOptionHolder.MadStuntManIsUseVent.GetBool();
+            IsImpostorLight = CustomOptionHolder.MadStuntManIsImpostorLight.GetBool();
+
+            bool IsFullTask = !CustomOptionHolder.MadStuntManIsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.MadStuntMan);
+            ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadStuntManParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class MadHawk
     {
         public static List<PlayerControl> MadHawkPlayer;
         public static Color32 color = ImpostorRed;
+        public static bool IsImpostorCheck;
+        public static int ImpostorCheckTask;
         public static bool IsUseVent;
         public static bool IsImpostorLight;
         public static float CoolTime;
@@ -1405,7 +1416,6 @@ public static class RoleClass
             MadHawkPlayer = new();
             IsUseVent = CustomOptionHolder.MadHawkIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadHawkIsImpostorLight.GetBool();
-            MadHawkPlayer = new();
             CoolTime = CustomOptionHolder.MadHawkCoolTime.GetFloat();
             DurationTime = CustomOptionHolder.MadHawkDurationTime.GetFloat();
             Timer = 0;
@@ -1415,6 +1425,13 @@ public static class RoleClass
             Postion = new Vector3(0, 0, 0);
             timer1 = 0;
             Timer2 = DateTime.Now;
+            IsImpostorCheck = CustomOptionHolder.MadHawkIsCheckImpostor.GetBool();
+            IsUseVent = CustomOptionHolder.MadHawkIsUseVent.GetBool();
+            IsImpostorLight = CustomOptionHolder.MadHawkIsImpostorLight.GetBool();
+
+            bool IsFullTask = !CustomOptionHolder.MadHawkIsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.MadHawk);
+            ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadHawkParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class MadJester
@@ -1906,6 +1923,8 @@ public static class RoleClass
     {
         public static List<PlayerControl> MadCleanerPlayer;
         public static Color32 color = ImpostorRed;
+        public static bool IsImpostorCheck;
+        public static int ImpostorCheckTask;
         public static float CoolTime;
         public static bool IsUseVent;
         public static bool IsImpostorLight;
@@ -1918,6 +1937,13 @@ public static class RoleClass
             CoolTime = CustomOptionHolder.MadCleanerCooldown.GetFloat();
             IsUseVent = CustomOptionHolder.MadCleanerIsUseVent.GetBool();
             IsImpostorLight = CustomOptionHolder.MadCleanerIsImpostorLight.GetBool();
+            IsImpostorCheck = CustomOptionHolder.MadCleanerIsCheckImpostor.GetBool();
+            IsUseVent = CustomOptionHolder.MadCleanerIsUseVent.GetBool();
+            IsImpostorLight = CustomOptionHolder.MadCleanerIsImpostorLight.GetBool();
+
+            bool IsFullTask = !CustomOptionHolder.MadCleanerIsSettingNumberOfUniqueTasks.GetBool();
+            int AllTask = SelectTask.GetTotalTasks(RoleId.MadCleaner);
+            ImpostorCheckTask = IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionHolder.MadCleanerParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
         }
     }
     public static class Samurai
