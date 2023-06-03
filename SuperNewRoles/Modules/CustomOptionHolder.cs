@@ -1435,7 +1435,7 @@ public class CustomOptionHolder
         GodPlayerCount = Create(165, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GodOption);
         GodViewVote = Create(167, true, CustomOptionType.Neutral, "GodViewVoteSetting", false, GodOption);
         GodIsEndTaskWin = Create(168, true, CustomOptionType.Neutral, "GodIsEndTaskWinSetting", true, GodOption);
-        GodIsSettingNumberOfUniqueTasks = Create(1169, true, CustomOptionType.Neutral, "IsSettingNumberOfUniqueTasks", true, GodIsEndTaskWin);
+        GodIsSettingNumberOfUniqueTasks = Create(1319, true, CustomOptionType.Neutral, "IsSettingNumberOfUniqueTasks", true, GodIsEndTaskWin);
         var godoption = SelectTask.TaskSetting(169, 170, 171, GodIsSettingNumberOfUniqueTasks, CustomOptionType.Neutral, true);
         GodCommonTask = godoption.Item1;
         GodShortTask = godoption.Item2;
