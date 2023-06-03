@@ -100,7 +100,7 @@ public static class SelectTask
             { RoleId.Jester, JesterIsWinCleartask.GetBool() },
             { RoleId.MadJester, IsMadJesterTaskClearWin.GetBool() || MadJesterIsCheckImpostor.GetBool() },
             { RoleId.God, GodIsEndTaskWin.GetBool() },
-            { RoleId.Worshiper, Worshiper.CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles) },
+            { RoleId.Worshiper, Worshiper.CustomOptionData.IsCheckImpostor.GetBool()},
             { RoleId.Workperson, true },
             { RoleId.TaskManager, true },
             { RoleId.SuicidalIdeation, true },
@@ -110,7 +110,8 @@ public static class SelectTask
             { RoleId.TheFirstLittlePig, true },
             { RoleId.TheSecondLittlePig, true },
             { RoleId.TheThirdLittlePig, true },
-            { RoleId.OrientalShaman, OrientalShaman.OrientalShamanWinTask.GetBool() }
+            { RoleId.OrientalShaman, OrientalShaman.OrientalShamanWinTask.GetBool() },
+            { RoleId.Worshiper, Worshiper.CustomOptionData.IsCheckImpostor.GetBool()},
         };
 
         if (taskTriggerAbilityData.ContainsKey(id)) return taskTriggerAbilityData[id];
@@ -156,7 +157,8 @@ public static class SelectTask
             { RoleId.TheFirstLittlePig, (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()) },
             { RoleId.TheSecondLittlePig, (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()) },
             { RoleId.TheThirdLittlePig, (TheThreeLittlePigs.TheThreeLittlePigsCommonTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsShortTask.GetInt(), TheThreeLittlePigs.TheThreeLittlePigsLongTask.GetInt()) },
-            { RoleId.OrientalShaman, (OrientalShaman.OrientalShamanCommonTask.GetInt(), OrientalShaman.OrientalShamanShortTask.GetInt(), OrientalShaman.OrientalShamanLongTask.GetInt()) }
+            { RoleId.OrientalShaman, (OrientalShaman.OrientalShamanCommonTask.GetInt(), OrientalShaman.OrientalShamanShortTask.GetInt(), OrientalShaman.OrientalShamanLongTask.GetInt()) },
+            { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles) ? (MadRaccoon.CustomOptionData.CommonTask.GetInt(),MadRaccoon.CustomOptionData.ShortTask.GetInt(), MadRaccoon.CustomOptionData.LongTask.GetInt())  : (0, 0, 0) },
         };
 
         //テンプレート

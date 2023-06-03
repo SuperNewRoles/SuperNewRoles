@@ -1525,6 +1525,7 @@ public static class RoleHelpers
             RoleId.FireFox => FireFox.FireFoxIsUseVent.GetBool(),
             RoleId.EvilMechanic => !NiceMechanic.IsLocalUsingNow,
             RoleId.NiceMechanic => NiceMechanic.NiceMechanicUseVent.GetBool() && !NiceMechanic.IsLocalUsingNow,
+            RoleId.MadRaccoon => MadRaccoon.RoleClass.IsUseVent,
             _ => player.IsImpostor(),
         };
     }
@@ -1615,6 +1616,7 @@ public static class RoleHelpers
                 RoleId.Safecracker => Safecracker.CheckTask(player, Safecracker.CheckTasks.ImpostorLight),
                 RoleId.FireFox => FireFox.FireFoxIsImpostorLight.GetBool(),
                 RoleId.OrientalShaman => OrientalShaman.OrientalShamanImpostorVision.GetBool(),
+                RoleId.MadRaccoon => MadRaccoon.RoleClass.IsImpostorLight,
                 _ => false,
             };
     }

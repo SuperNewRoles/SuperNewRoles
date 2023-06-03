@@ -227,6 +227,26 @@ public static class SyncSetting
                 optdata.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0f);
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
+            case RoleId.MadRaccoon:
+                if (!player.IsMod())
+                {
+                    if (!SuperNewRoles.Roles.Impostor.MadRole.MadRaccoon.RoleClass.IsImpostorLight)
+                    {
+                        optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.CrewLightMod));
+                        var switchSystemMadRaccoon = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystemMadRaccoon != null && switchSystemMadRaccoon.IsActive) optdata.SetFloat(FloatOptionNames.ImpostorLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) / 5);
+                    }
+                }
+                else
+                {
+                    if (SuperNewRoles.Roles.Impostor.MadRole.MadRaccoon.RoleClass.IsImpostorLight)
+                    {
+                        optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod));
+                        var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystem2 != null && switchSystem2.IsActive) optdata.SetFloat(FloatOptionNames.CrewLightMod, optdata.GetFloat(FloatOptionNames.ImpostorLightMod) * 15);
+                    }
+                }
+                break;
         }
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);
         if (player.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
@@ -278,7 +298,7 @@ public static class SyncSetting
         var optdata = OptionData.DeepCopy();
         optdata.SetFloat(FloatOptionNames.KillCooldown, RoleClass.EvilGambler.GetSuc() ? KillCoolSet(RoleClass.EvilGambler.SucCool) : KillCoolSet(RoleClass.EvilGambler.NotSucCool));
         if (p.AmOwner) GameManager.Instance.LogicOptions.SetGameOptions(optdata);
-       else  optdata.RpcSyncOption(p.GetClientId());
+        else optdata.RpcSyncOption(p.GetClientId());
     }
     public static void DoppelgangerCool(PlayerControl player, PlayerControl target)
     {
