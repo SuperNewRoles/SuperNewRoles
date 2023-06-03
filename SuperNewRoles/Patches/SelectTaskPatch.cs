@@ -146,7 +146,7 @@ public static class SelectTask
             { RoleId.Jester, JesterIsSettingNumberOfUniqueTasks.GetBool() ? (JesterCommonTask.GetInt(), JesterShortTask.GetInt(), JesterLongTask.GetInt()) : (0, 0, 0) },
             { RoleId.MadJester, MadJesterIsSettingNumberOfUniqueTasks.GetBool() ? (MadJesterCommonTask.GetInt(), MadJesterShortTask.GetInt(), MadJesterLongTask.GetInt()) : (0, 0, 0) },
             { RoleId.God, GodIsSettingNumberOfUniqueTasks.GetBool() ? (GodCommonTask.GetInt(), GodShortTask.GetInt(), GodLongTask.GetInt()) : (0, 0, 0) },
-            { RoleId.Worshiper, Worshiper.CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool() ? (Worshiper.CustomOptionData.CommonTask.GetInt(), Worshiper.CustomOptionData.ShortTask.GetInt(), Worshiper.CustomOptionData.LongTask.GetInt())  : (0, 0, 0) },
+            { RoleId.Worshiper, Worshiper.CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles) ? (Worshiper.CustomOptionData.CommonTask.GetInt(), Worshiper.CustomOptionData.ShortTask.GetInt(), Worshiper.CustomOptionData.LongTask.GetInt())  : (0, 0, 0) },
             { RoleId.Workperson, WorkpersonIsSettingNumberOfUniqueTasks.GetBool() ? (WorkpersonCommonTask.GetInt(), WorkpersonShortTask.GetInt(), WorkpersonLongTask.GetInt()) : (0, 0, 0) },
             { RoleId.TaskManager, (TaskManagerCommonTask.GetInt(), TaskManagerShortTask.GetInt(), TaskManagerLongTask.GetInt())},
             { RoleId.SuicidalIdeation, SuicidalIdeationIsSettingNumberOfUniqueTasks.GetBool() ? (SuicidalIdeationCommonTask.GetInt(), SuicidalIdeationShortTask.GetInt(), SuicidalIdeationLongTask.GetInt()) : (0, 0, 0) },

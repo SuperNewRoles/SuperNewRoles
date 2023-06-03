@@ -1228,14 +1228,14 @@ public class CustomOptionHolder
         MadHawkPlayerCount = Create(289, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadHawkOption);
         MadHawkCoolTime = Create(290, false, CustomOptionType.Crewmate, "HawkCoolTimeSetting", 15f, 0f, 120f, 2.5f, MadHawkOption, format: "unitCouples");
         MadHawkDurationTime = Create(291, false, CustomOptionType.Crewmate, "HawkDurationTimeSetting", 5f, 0f, 60f, 0.5f, MadHawkOption, format: "unitCouples");
-        MadHawkIsCheckImpostor = Create(1296, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadHawkOption);
-        MadHawkIsSettingNumberOfUniqueTasks = Create(1297, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadHawkIsCheckImpostor);
+        MadHawkIsCheckImpostor = Create(1296,false, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadHawkOption);
+        MadHawkIsSettingNumberOfUniqueTasks = Create(1297, false, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadHawkIsCheckImpostor);
         var madhawkoption = SelectTask.TaskSetting(1298, 1299, 1300, MadHawkIsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true);
         MadHawkCommonTask = madhawkoption.Item1;
         MadHawkShortTask = madhawkoption.Item2;
         MadHawkLongTask = madhawkoption.Item3;
-        MadHawkIsParcentageForTaskTrigger = Create(1301, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadHawkIsCheckImpostor);
-        MadHawkParcentageForTaskTriggerSetting = Create(1302, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadHawkIsParcentageForTaskTrigger);
+        MadHawkIsParcentageForTaskTrigger = Create(1301, false, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadHawkIsCheckImpostor);
+        MadHawkParcentageForTaskTriggerSetting = Create(1302, false, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadHawkIsParcentageForTaskTrigger);
         MadHawkIsUseVent = Create(292, false, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadHawkOption);
         MadHawkIsImpostorLight = Create(293, false, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadHawkOption);
 
@@ -1243,26 +1243,26 @@ public class CustomOptionHolder
         MadCleanerPlayerCount = Create(401, false, CustomOptionType.Crewmate, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MadCleanerOption);
         MadCleanerCooldown = Create(402, false, CustomOptionType.Crewmate, "CleanerCooldownSetting", 30f, 2.5f, 60f, 2.5f, MadCleanerOption, format: "unitSeconds");
         MadCleanerIsCheckImpostor = Create(1303, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadCleanerOption);
-        MadCleanerIsSettingNumberOfUniqueTasks = Create(1304, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadCleanerIsCheckImpostor);
+        MadCleanerIsSettingNumberOfUniqueTasks = Create(1304, false, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadCleanerIsCheckImpostor);
         var MadCleaneroption = SelectTask.TaskSetting(1305, 1306, 1307, MadCleanerIsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true);
         MadCleanerCommonTask = MadCleaneroption.Item1;
         MadCleanerShortTask = MadCleaneroption.Item2;
         MadCleanerLongTask = MadCleaneroption.Item3;
-        MadCleanerIsParcentageForTaskTrigger = Create(1308, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadCleanerIsCheckImpostor);
-        MadCleanerParcentageForTaskTriggerSetting = Create(1309, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadCleanerIsParcentageForTaskTrigger);
+        MadCleanerIsParcentageForTaskTrigger = Create(1308, false, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadCleanerIsCheckImpostor);
+        MadCleanerParcentageForTaskTriggerSetting = Create(1309, false, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadCleanerIsParcentageForTaskTrigger);
         MadCleanerIsUseVent = Create(403, false, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadCleanerOption);
         MadCleanerIsImpostorLight = Create(404, false, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadCleanerOption);
 
         MadStuntManOption = SetupCustomRoleOption(283, false, RoleId.MadStuntMan);
         MadStuntManPlayerCount = Create(284, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadStuntManOption);
-        MadStuntManIsCheckImpostor = Create(1310, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadStuntManOption);
-        MadStuntManIsSettingNumberOfUniqueTasks = Create(1311, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadStuntManIsCheckImpostor);
+        MadStuntManIsCheckImpostor = Create(1310, false, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, MadStuntManOption);
+        MadStuntManIsSettingNumberOfUniqueTasks = Create(1311, false, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, MadStuntManIsCheckImpostor);
         var MadStuntManoption = SelectTask.TaskSetting(1312, 1313, 1314, MadStuntManIsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true);
         MadStuntManCommonTask = MadStuntManoption.Item1;
         MadStuntManShortTask = MadStuntManoption.Item2;
         MadStuntManLongTask = MadStuntManoption.Item3;
-        MadStuntManIsParcentageForTaskTrigger = Create(1316, true, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadStuntManIsCheckImpostor);
-        MadStuntManParcentageForTaskTriggerSetting = Create(1317, true, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadStuntManIsParcentageForTaskTrigger);
+        MadStuntManIsParcentageForTaskTrigger = Create(1316, false, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, MadStuntManIsCheckImpostor);
+        MadStuntManParcentageForTaskTriggerSetting = Create(1317, false, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, MadStuntManIsParcentageForTaskTrigger);
         MadStuntManIsUseVent = Create(285, false, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, MadStuntManOption);
         MadStuntManIsImpostorLight = Create(286, false, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, MadStuntManOption);
 
