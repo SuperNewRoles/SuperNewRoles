@@ -39,7 +39,7 @@ public static class Worshiper
             IsUseVent = Create(optionId, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, Option); optionId++;
             IsImpostorLight = Create(optionId, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, Option); optionId++;
             IsCheckImpostor = Create(optionId, false, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, Option); optionId++;
-            IsSettingNumberOfUniqueTasks = Create(optionId, true, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, IsCheckImpostor); optionId++;
+            IsSettingNumberOfUniqueTasks = Create(optionId, false, CustomOptionType.Crewmate, "IsSettingNumberOfUniqueTasks", true, IsCheckImpostor); optionId++;
             var taskOption = SelectTask.TaskSetting(optionId, optionId + 1, optionId + 2, IsSettingNumberOfUniqueTasks, CustomOptionType.Crewmate, true); optionId += 3;
             CommonTask = taskOption.Item1;
             ShortTask = taskOption.Item2;
