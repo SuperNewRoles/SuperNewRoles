@@ -10,6 +10,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Replay;
+using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
@@ -34,6 +35,7 @@ class VotingComplete
         {
             Balancer.IsDoubleExile = true;
         }
+        ReplayActionVotingComplete.Create(states, exiled is null ? (byte)255 : exiled.PlayerId, tie);
     }
 }
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]

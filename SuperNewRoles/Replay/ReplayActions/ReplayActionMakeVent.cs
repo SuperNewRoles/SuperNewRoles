@@ -4,43 +4,41 @@ using System.IO;
 using System.Text;
 
 namespace SuperNewRoles.Replay.ReplayActions;
-public class ReplayActionCompleteTask : ReplayAction
+public class ReplayActionMakeVent : ReplayAction
 {
-    public byte sourcePlayer;
-    public uint taskId;
+    public float x;
+    public float y;
+    public float z;
     public override void ReadReplayFile(BinaryReader reader) {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
-        sourcePlayer = reader.ReadByte();
-        taskId = reader.ReadUInt32();
+        x = reader.ReadSingle();
+        y = reader.ReadSingle();
+        z = reader.ReadSingle();
     }
     public override void WriteReplayFile(BinaryWriter writer)
     {
         writer.Write(ActionTime);
         //ここにパース処理書く
-        writer.Write(sourcePlayer);
-        writer.Write(taskId);
+        writer.Write(x);
+        writer.Write(y);
+        writer.Write(z);
     }
-    public override ReplayActionId GetActionId() => ReplayActionId.CompleteTask;
+    public override ReplayActionId GetActionId() => ReplayActionId.MakeVent;
     //アクション実行時の処理
     public override void OnAction() {
         //ここに処理書く
-        PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
-        if (source == null)
-        {
-            Logger.Info("sourceがnull");
-            return;
-        }
-        source.CompleteTask(taskId);
+        RPCProcedure.MakeVent(x,y,z);
     }
     //試合内でアクションがあったら実行するやつ
-    public static ReplayActionCompleteTask Create(byte sourcePlayer, uint taskId)
+    public static ReplayActionMakeVent Create(float x,float y,float z)
     {
-        ReplayActionCompleteTask action = new();
+        ReplayActionMakeVent action = new();
         if (!CheckAndCreate(action)) return null;
         //ここで初期化(コレは仮処理だから消してね)
-        action.sourcePlayer = sourcePlayer;
-        action.taskId = taskId;
+        action.x = x;
+        action.y = y;
+        action.z = z;
         return action;
     }
 }

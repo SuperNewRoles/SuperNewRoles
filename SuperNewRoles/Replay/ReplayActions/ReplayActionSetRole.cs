@@ -36,12 +36,8 @@ public class ReplayActionSetRole : ReplayAction
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionSetRole Create(byte sourcePlayer, RoleId roleId)
     {
-        if (ReplayManager.IsReplayMode) return null;
         ReplayActionSetRole action = new();
-        Recorder.ReplayActions.Add(action);
-        //ここで秒数指定
-        action.ActionTime = Recorder.ReplayActionTime;
-        Recorder.ReplayActionTime = 0f;
+        if (!CheckAndCreate(action)) return null;
         //ここで初期化(コレは仮処理だから消してね)
         action.sourcePlayer = sourcePlayer;
         action.RoleId = roleId;

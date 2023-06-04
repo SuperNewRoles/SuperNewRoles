@@ -1302,6 +1302,7 @@ class ReportDeadBodyPatch
         {
             Camouflager.ResetCamouflage();
         }
+        ReplayActionReportDeadBody.Create(__instance.PlayerId, target is null ? (byte)255 : target.PlayerId);
         if (!AmongUsClient.Instance.AmHost) return true;
         if (target != null && RoleClass.BlockPlayers.Contains(target.PlayerId)) return false;
         if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;

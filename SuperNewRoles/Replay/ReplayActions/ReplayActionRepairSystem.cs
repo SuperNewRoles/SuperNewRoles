@@ -2,59 +2,49 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using UnityEngine;
 
 namespace SuperNewRoles.Replay.ReplayActions;
-public class ReplayActionVent : ReplayAction
+public class ReplayActionRepairSystem : ReplayAction
 {
+    public byte systemType;
     public byte sourcePlayer;
-    public int id;
-    public bool isEnter;
+    public byte amount;
     public override void ReadReplayFile(BinaryReader reader) {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
+        systemType = reader.ReadByte();
         sourcePlayer = reader.ReadByte();
-        id = reader.ReadInt32();
-        isEnter = reader.ReadBoolean();
+        amount = reader.ReadByte();
     }
     public override void WriteReplayFile(BinaryWriter writer)
     {
         writer.Write(ActionTime);
         //ここにパース処理書く
+        writer.Write(systemType);
         writer.Write(sourcePlayer);
-        writer.Write(id);
-        writer.Write(isEnter);
+        writer.Write(amount);
     }
-    public override ReplayActionId GetActionId() => ReplayActionId.Vent;
+    public override ReplayActionId GetActionId() => ReplayActionId.RepairSystem;
     //アクション実行時の処理
     public override void OnAction() {
         //ここに処理書く
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         if (source == null)
         {
-            Logger.Info("sourceがnullだったで");
+            Logger.Info("エラー");
             return;
         }
-        if (isEnter)
-        {
-            ((MonoBehaviour)source.MyPhysics).StopAllCoroutines();
-            ((MonoBehaviour)source.MyPhysics).StartCoroutine(source.MyPhysics.CoEnterVent(id));
-        }
-        else
-        {
-            ((MonoBehaviour)source.MyPhysics).StopAllCoroutines();
-            ((MonoBehaviour)source.MyPhysics).StartCoroutine(source.MyPhysics.CoExitVent(id));
-        }
+        ShipStatus.Instance.RepairSystem((SystemTypes)systemType, source, amount);
     }
     //試合内でアクションがあったら実行するやつ
-    public static ReplayActionVent Create(byte sourcePlayer, int id, bool isEnter)
+    public static ReplayActionRepairSystem Create(SystemTypes systemType, byte sourcePlayer, byte amount)
     {
-        ReplayActionVent action = new();
+        ReplayActionRepairSystem action = new();
         if (!CheckAndCreate(action)) return null;
         //ここで初期化(コレは仮処理だから消してね)
+        action.systemType = (byte)systemType;
         action.sourcePlayer = sourcePlayer;
-        action.id = id;
-        action.isEnter = isEnter;
+        action.amount = amount;
         return action;
     }
 }

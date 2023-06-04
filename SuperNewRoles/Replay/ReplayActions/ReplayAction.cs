@@ -17,7 +17,16 @@ public enum ReplayActionId {
     Vent,
     ClimbLadder,
     CompleteTask,
-
+    Wavecannon,
+    SluggerExile,
+    PlayerAnimation,
+    ReportDeadBody,
+    Balancer,
+    Disconnect,
+    MakeVent,
+    SetMechanicStatus,
+    RepairSystem,
+    VotingComplete
 }
 public abstract class ReplayAction
 {
@@ -26,6 +35,15 @@ public abstract class ReplayAction
     public abstract void WriteReplayFile(BinaryWriter writer);
     public abstract void OnAction();
     public virtual ReplayActionId GetActionId() => ReplayActionId.None;
+    public static bool CheckAndCreate(ReplayAction action)
+    {
+        if (!ReplayManager.IsReplayMode) return false;
+        Recorder.ReplayActions.Add(action);
+        //ここで秒数指定
+        float actiontime = Recorder.ReplayActionTime;
+        Recorder.ReplayActionTime = 0f;
+        return true;
+    }
     public static ReplayAction CreateReplayAction(ReplayActionId id)
     {
         switch (id) {

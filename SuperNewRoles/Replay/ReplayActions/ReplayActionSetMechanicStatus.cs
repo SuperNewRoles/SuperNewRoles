@@ -4,48 +4,46 @@ using System.IO;
 using System.Text;
 
 namespace SuperNewRoles.Replay.ReplayActions;
-public class ReplayActionShapeshift : ReplayAction
+public class ReplayActionSetMechanicStatus : ReplayAction
 {
     public byte sourcePlayer;
-    public byte targetPlayer;
-    public bool animate;
+    public byte targetVent;
+    public bool Is;
+    public byte[] buff;
     public override void ReadReplayFile(BinaryReader reader) {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
         sourcePlayer = reader.ReadByte();
-        targetPlayer = reader.ReadByte();
-        animate = reader.ReadBoolean();
+        targetVent = reader.ReadByte();
+        Is = reader.ReadBoolean();
+        buff = reader.ReadBytes(reader.ReadInt32());
     }
     public override void WriteReplayFile(BinaryWriter writer)
     {
         writer.Write(ActionTime);
         //ここにパース処理書く
         writer.Write(sourcePlayer);
-        writer.Write(targetPlayer);
-        writer.Write(animate);
+        writer.Write(targetVent);
+        writer.Write(Is);
+        writer.Write(buff.Length);
+        writer.Write(buff);
     }
-    public override ReplayActionId GetActionId() => ReplayActionId.Shapeshift;
+    public override ReplayActionId GetActionId() => ReplayActionId.SetMechanicStatus;
     //アクション実行時の処理
     public override void OnAction() {
         //ここに処理書く
-        PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
-        PlayerControl target = ModHelpers.PlayerById(targetPlayer);
-        if (source == null || target == null)
-        {
-            Logger.Info("対象がnullでした。");
-            return;
-        }
-        source.Shapeshift(target, animate);
+        RPCProcedure.SetVentStatusMechanic(sourcePlayer, targetVent, Is, buff);
     }
     //試合内でアクションがあったら実行するやつ
-    public static ReplayActionShapeshift Create(byte sourcePlayer, byte targetPlayer, bool animate)
+    public static ReplayActionSetMechanicStatus Create(byte sourcePlayer, byte targetPlayer, bool Is, byte[] buff)
     {
-        ReplayActionShapeshift action = new();
+        ReplayActionSetMechanicStatus action = new();
         if (!CheckAndCreate(action)) return null;
         //ここで初期化(コレは仮処理だから消してね)
         action.sourcePlayer = sourcePlayer;
-        action.targetPlayer = targetPlayer;
-        action.animate = animate;
+        action.targetVent = targetPlayer;
+        action.Is = Is;
+        action.buff = buff;
         return action;
     }
 }

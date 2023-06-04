@@ -15,6 +15,14 @@ namespace SuperNewRoles.Replay.ReplayActions
                 ReplayActionAddChat.Create(sourcePlayer.PlayerId, chatText);
             }
         }
+        [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
+        public static class GameDataHandleDisconnectPatch
+        {
+            public static void Postfix(PlayerControl player, DisconnectReasons reason)
+            {
+                ReplayActionDisconnect.Create(player.PlayerId, reason);
+            }
+        }
         [HarmonyPatch(typeof(PlayerPhysics))]
         public static class PlayerPhysicsPatch
         {

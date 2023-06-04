@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Replay;
 using SuperNewRoles.Roles;
 using UnityEngine;
 using static System.String;
@@ -74,6 +76,41 @@ class AddChatPatch
         }
 
         var Commands = chatText.Split(" ");
+        //
+        if (Commands[0].Equals("/list", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/ls", StringComparison.OrdinalIgnoreCase))
+        {
+            string text = "";
+            string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";
+            DirectoryInfo d = new(filePath);
+            int index = 0;
+            foreach (FileInfo info in d.GetFiles())
+            {
+                text += index.ToString() + ":" + info.Name + "\n";
+                index++;
+            }
+            SendCommand(PlayerControl.LocalPlayer, text);
+            return false;
+        }
+        if (Commands[0].Equals("/set", StringComparison.OrdinalIgnoreCase) ||
+            Commands[0].Equals("/st", StringComparison.OrdinalIgnoreCase))
+        {
+            string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";
+            DirectoryInfo d = new(filePath);
+            (ReplayData replay, bool IsSuc) = ReplayReader.ReadReplayDataFirst(d.GetFiles()[int.Parse(Commands[1])].Name);
+            ReplayManager.IsReplayMode = true;
+            string text = "";
+            text += "正常なファイルか:" + IsSuc.ToString()+"\n";
+            if (IsSuc)
+            {
+                text += $"PlayerCount:{replay.AllPlayersCount}\n";
+                text += $"Mode:{replay.CustomMode}\n";
+                text += $"Time:{replay.RecordTime}";
+            }
+            SendCommand(PlayerControl.LocalPlayer, text);
+            return false;
+        }
+        //
         if (Commands[0].Equals("/version", StringComparison.OrdinalIgnoreCase) ||
             Commands[0].Equals("/v", StringComparison.OrdinalIgnoreCase))
         {

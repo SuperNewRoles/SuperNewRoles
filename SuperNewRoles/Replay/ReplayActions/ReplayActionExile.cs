@@ -33,12 +33,8 @@ public class ReplayActionExile : ReplayAction
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionExile Create(byte exilePlayer)
     {
-        if (ReplayManager.IsReplayMode) return null;
         ReplayActionExile action = new();
-        Recorder.ReplayActions.Add(action);
-        //ここで秒数指定
-        action.ActionTime = Recorder.ReplayActionTime;
-        Recorder.ReplayActionTime = 0f;
+        if (!CheckAndCreate(action)) return null;
         //初期化
         action.exilePlayer = exilePlayer;
         return action;

@@ -20,10 +20,17 @@ namespace SuperNewRoles.Replay
         {
             (reader, filePath) = ReplayFileReader.CreateReader(filename);
             var replay = new ReplayData();
-            replay = ReplayFileReader.ReadSNRData(reader, replay);
-            replay = ReplayFileReader.ReadGameData(reader, replay);
-            if (!ReplayFileReader.IsCheckSumSuc(reader, replay))
+            try
+            {
+                replay = ReplayFileReader.ReadSNRData(reader, replay);
+                replay = ReplayFileReader.ReadGameData(reader, replay);
+
+                if (!ReplayFileReader.IsCheckSumSuc(reader, replay))
+                    return (replay, false);
+            } catch (EndOfStreamException) {
+                Logger.Info("ふぁいるのないようすくなすぎ！");
                 return (replay, false);
+            }
             replay = ReplayFileReader.ReadReplayData(reader, replay);
             replay = ReplayFileReader.ReadGameOptionData(reader, replay);
             replay = ReplayFileReader.ReadCustomOptionData(reader, replay);

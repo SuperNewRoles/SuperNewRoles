@@ -3,6 +3,7 @@ using HarmonyLib;
 using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Replay.ReplayActions;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using UnityEngine;
@@ -77,6 +78,7 @@ class RepairSystemPatch
         [HarmonyArgument(1)] PlayerControl player,
         [HarmonyArgument(2)] byte amount)
     {
+        ReplayActionRepairSystem.Create(systemType, player.PlayerId, amount);
         if (!RoleHelpers.IsSabotage())
         {
             new LateTask(() =>
