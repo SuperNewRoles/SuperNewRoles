@@ -23,11 +23,13 @@ public static class MadRaccoon
         public static CustomOption ParcentageForTaskTriggerSetting;
         public static CustomOption IsUseVent;
         public static CustomOption IsImpostorLight;
+        public static CustomOption ShapeshifterCooldown;
+        public static CustomOption ShapeshifterDuration;
 
         public static void SetupCustomOptions()
         {
             Option = SetupCustomRoleOption(optionId, true, RoleId.MadRaccoon); optionId++;
-            PlayerCount = Create(optionId, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CustomOptionHolder.CrewPlayers[0], CustomOptionHolder.CrewPlayers[1], CustomOptionHolder.CrewPlayers[2], CustomOptionHolder.CrewPlayers[3], Option); optionId++;
+            PlayerCount = Create(optionId, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], Option); optionId++;
             IsUseVent = Create(optionId, true, CustomOptionType.Crewmate, "MadmateUseVentSetting", false, Option); optionId++;
             IsImpostorLight = Create(optionId, true, CustomOptionType.Crewmate, "MadmateImpostorLightSetting", false, Option); optionId++;
             IsCheckImpostor = Create(optionId, true, CustomOptionType.Crewmate, "MadmateIsCheckImpostorSetting", false, Option); optionId++;
@@ -37,8 +39,9 @@ public static class MadRaccoon
             ShortTask = taskOption.Item2;
             LongTask = taskOption.Item3;
             IsParcentageForTaskTrigger = Create(optionId, false, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, IsCheckImpostor); optionId++;
-            ParcentageForTaskTriggerSetting = Create(optionId, false, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, IsParcentageForTaskTrigger);
-
+            ParcentageForTaskTriggerSetting = Create(optionId, false, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, IsParcentageForTaskTrigger); optionId++;
+            ShapeshifterCooldown = Create(optionId, true, CustomOptionType.Crewmate, "DoppelgangerCooldownSetting", 5f, 5f, 60f, 2.5f, Option); optionId++;
+            ShapeshifterDuration = Create(optionId, true, CustomOptionType.Crewmate, "DoppelgangerDurationTimeSetting", 90f, 0f, 250f, 5f, Option);
         }
     }
 
@@ -50,6 +53,8 @@ public static class MadRaccoon
         public static bool IsImpostorLight;
         public static bool IsImpostorCheck;
         public static int ImpostorCheckTask;
+        public static float ShapeshifterCooldown;
+        public static float ShapeshifterDuration;
         public static void ClearAndReload()
         {
             Player = new();
@@ -61,6 +66,9 @@ public static class MadRaccoon
             bool IsFullTask = !CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool();
             int AllTask = SelectTask.GetTotalTasks(RoleId.Worshiper);
             ImpostorCheckTask = ModeHandler.IsMode(ModeId.SuperHostRoles) ? 0 : IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionData.ParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
+
+            ShapeshifterCooldown = CustomOptionData.ShapeshifterCooldown.GetFloat();
+            ShapeshifterDuration = CustomOptionData.ShapeshifterDuration.GetFloat();
         }
     }
 }
