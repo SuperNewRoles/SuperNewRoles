@@ -307,7 +307,8 @@ public class CustomOverlays
     {
         playerDataDictionary = new();
         foreach (PlayerControl p in CachedPlayer.AllPlayers)
-            if (!p.IsBot()) playerDataDictionary.Add(p.PlayerId, GetPlayerData(p));
+            if (!p.IsBot() || SuperNewRolesPlugin.IsBeta || ConfigRoles.DebugMode.Value)
+                playerDataDictionary.Add(p.PlayerId, GetPlayerData(p));
 
         // 現在有効な役職の保存は, IntroPatchの IntroCutscene.CoBegin postfixで行っている。
         // 理由は試合情報のlog記載を正常に行う為。
@@ -625,7 +626,7 @@ public class CustomOverlays
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.IsBot()) continue;
+                if (p.IsBot() && !(SuperNewRolesPlugin.IsBeta || ConfigRoles.DebugMode.Value)) continue;
                 string data = GetPlayerData(p);
 
                 if (p.PlayerId < 5) leftBuilder.AppendLine(data);
