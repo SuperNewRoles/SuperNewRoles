@@ -23,6 +23,7 @@ public static class SerialKiller
                             if (RoleClass.SerialKiller.SuicideTimers[p.PlayerId] <= 0)
                             {
                                 p.RpcMurderPlayer(p);
+                                p.RpcSetFinalStatus(FinalStatus.SerialKillerSelfDeath);
                             }
                         }
                     }
@@ -57,6 +58,7 @@ public static class SerialKiller
                     writer.Write(byte.MaxValue);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, CachedPlayer.LocalPlayer.PlayerId, byte.MaxValue);
+                    PlayerControl.LocalPlayer.RpcSetFinalStatus(FinalStatus.SerialKillerSelfDeath);
                 }
             }
         }

@@ -25,14 +25,19 @@ public class ReplayActionReportDeadBody : ReplayAction
     //アクション実行時の処理
     public override void OnAction() {
         //ここに処理書く
+        Logger.Info("a");
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
+        Logger.Info("b");
         GameData.PlayerInfo target = GameData.Instance.GetPlayerById(targetPlayer);
+        Logger.Info("c");
         if (source == null)
         {
             Logger.Info("エラー");
             return;
         }
+        Logger.Info("d");
         source.ReportDeadBody(target);
+        Logger.Info("e");
     }
     //試合内でアクションがあったら実行するやつ
     public static ReplayActionReportDeadBody Create(byte sourcePlayer, byte targetPlayer)

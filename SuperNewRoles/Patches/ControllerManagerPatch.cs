@@ -104,6 +104,11 @@ class ControllerManagerUpdatePatch
             //ここにデバッグ用のものを書いてね
             if (Input.GetKeyDown(KeyCode.I))
             {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    Logger.Info(p.Data.PlayerName+":"+p.IsBot()+":"+p.roleAssigned.ToString());
+                }
+                return;
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\Replay\";
                 DirectoryInfo d = new(filePath);
                 Logger.Info("FileName:"+ d.GetFiles()[0].Name);

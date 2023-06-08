@@ -23,6 +23,7 @@ public class ReplayActionVotingComplete : ReplayAction
             };
             states.Add(state);
         }
+        States = states.ToArray();
         exilePlayer = reader.ReadByte();
         tie = reader.ReadBoolean();
     }

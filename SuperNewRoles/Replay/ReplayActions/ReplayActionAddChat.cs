@@ -13,6 +13,7 @@ public class ReplayActionAddChat : ReplayAction
         //ここにパース処理書く
         sourcePlayer = reader.ReadByte();
         chatText = reader.ReadString();
+        Logger.Info(chatText,"CHATTEXT");
     }
     public override void WriteReplayFile(BinaryWriter writer)
     {

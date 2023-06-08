@@ -25,6 +25,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static readonly string VersionString = $"{Assembly.GetExecutingAssembly().GetName().Version}";
 
     public static bool IsBeta = IsViewText && ThisAssembly.Git.Branch != MasterBranch;
+    public static bool IsSecretBranch = true;
 
     //プルリク時にfalseなら指摘してください
     public const bool IsViewText = true;
@@ -42,6 +43,7 @@ public partial class SuperNewRolesPlugin : BasePlugin
     public static BepInEx.Logging.ManualLogSource Logger;
     public static Sprite ModStamp;
     public static int optionsPage = 1;
+    public static int optionsMaxPage = 0;
     public Harmony Harmony { get; } = new Harmony("jp.ykundesu.supernewroles");
     public static SuperNewRolesPlugin Instance;
     public static Dictionary<string, Dictionary<int, string>> StringDATA;

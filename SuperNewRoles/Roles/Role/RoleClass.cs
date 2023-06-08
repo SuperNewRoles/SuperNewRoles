@@ -44,6 +44,7 @@ public static class RoleClass
         LateTask.Tasks = new();
         LateTask.AddTasks = new();
         BotManager.AllBots = new();
+        CustomOverlays.ResetOverlays();
         IsCoolTimeSetted = false;
         DefaultKillCoolDown = GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.KillCooldown);
         IsStart = false;

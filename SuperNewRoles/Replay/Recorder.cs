@@ -7,6 +7,7 @@ using System.Collections;
 using BepInEx.IL2CPP.Utils;
 using System.Linq;
 using SuperNewRoles.Replay.ReplayActions;
+using System.Collections.Concurrent;
 
 namespace SuperNewRoles.Replay
 {
@@ -15,7 +16,7 @@ namespace SuperNewRoles.Replay
         public static float RecordRate;
         public static bool IsPosFloat;
         public static void ClearAndReloads() {
-            RecordRate = 0.1f;
+            RecordRate = 0.25f;
             currenttime = 99999;
             FirstOutfits = new();
             FirstRoles = new();
@@ -48,10 +49,11 @@ namespace SuperNewRoles.Replay
                 FirstRoles.Add(player.PlayerId, role);
             }
             WriteReplayDataFirst();
+            ReplayActions = new();
             PlayerPositions = new();
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
-                PlayerPositions.Add(player.PlayerId, new());
+                PlayerPositions.TryAdd(player.PlayerId, new());
             }
             currenttime = 0;
             ReplayActionTime = 0;
@@ -59,9 +61,9 @@ namespace SuperNewRoles.Replay
         static float currenttime;
         public static Dictionary<byte, GameData.PlayerOutfit> FirstOutfits;
         public static Dictionary<byte, RoleId> FirstRoles;
-        static Dictionary<byte, List<Vector2>> PlayerPositions;
+        static ConcurrentDictionary<byte, ConcurrentBag<Vector2>> PlayerPositions;
         static List<(byte, byte, float)> MeetingVoteData;
-        public static List<ReplayAction> ReplayActions;
+        public static ConcurrentBag<ReplayAction> ReplayActions;
         public static float ReplayActionTime;
         public static void HudUpdate() {
             currenttime -= Time.deltaTime;
@@ -120,6 +122,7 @@ namespace SuperNewRoles.Replay
                 action.WriteReplayFile(writer);
             }
             ReplayActions = new();
+            PlayerPositions = new();
             ReplayActionTime = 0f;
             //ゲーム終了かのフラグ
             writer.Write(false);
@@ -146,10 +149,14 @@ namespace SuperNewRoles.Replay
                 }
             }
             writer.Write(ReplayActions.Count);
+            int index = 0;
             foreach (ReplayAction action in ReplayActions)
             {
+                Logger.Info(index.ToString()+"開始:"+action.GetActionId().ToString()+":"+writer.BaseStream.Position.ToString());
                 writer.Write((byte)action.GetActionId());
                 action.WriteReplayFile(writer);
+                Logger.Info(index.ToString()+"終了:" + action.GetActionId().ToString() + ":" + writer.BaseStream.Position.ToString());
+                index++;
             }
             ReplayActions = new();
             ReplayActionTime = 0f;

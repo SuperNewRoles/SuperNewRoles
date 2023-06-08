@@ -26,6 +26,7 @@ public class ReplayActionMurder : ReplayAction
     //アクション実行時の処理
     public override void OnAction()
     {
+        Logger.Info("キルアクション");
         PlayerControl source = ModHelpers.PlayerById(sourcePlayer);
         PlayerControl target = ModHelpers.PlayerById(targetPlayer);
         if (source == null || target == null) {

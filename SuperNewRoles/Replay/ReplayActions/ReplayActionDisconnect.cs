@@ -11,7 +11,9 @@ public class ReplayActionDisconnect : ReplayAction
     public override void ReadReplayFile(BinaryReader reader) {
         ActionTime = reader.ReadSingle();
         //ここにパース処理書く
+        Logger.Info("POS:"+reader.BaseStream.Position.ToString());
         sourcePlayer = reader.ReadByte();
+        Logger.Info("POS2:" + reader.BaseStream.Position.ToString());
         reason = reader.ReadByte();
     }
     public override void WriteReplayFile(BinaryWriter writer)

@@ -12,7 +12,7 @@ namespace SuperNewRoles.Replay
     public static class ReplayLoader
     {
         public static void SpawnBots() {
-            if (ReplayManager.CurrentReplay == null) return;
+            if (!ReplayManager.IsReplayMode) return;
             foreach (ReplayPlayer player in ReplayManager.CurrentReplay.ReplayPlayers)
             {
                 PlayerControl Bot = BotManager.SpawnBot(player.PlayerId);
@@ -44,8 +44,10 @@ namespace SuperNewRoles.Replay
         public static void UpdateLocalPlayerEnd()
         {
             byte id = 0;
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
+                if (p == PlayerControl.LocalPlayer) continue;
+                Logger.Info(p.Data.PlayerName+":"+p.PlayerId.ToString());
                 if (p.PlayerId > id)
                 {
                     id = p.PlayerId;
@@ -54,6 +56,18 @@ namespace SuperNewRoles.Replay
             id++;
             PlayerControl.LocalPlayer.PlayerId = id;
             PlayerControl.LocalPlayer.Data.PlayerId = id;
+        }
+        public static void StartMeeting()
+        {
+            if (!ReplayManager.IsReplayMode) return;
+            CurrentTurn++;
+            posindex = 0;
+            postime = 0;
+            actiontime = 0;
+            actionindex = 0;
+            GetPosAndActionsThisTurn();
+            if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
+                actiontime = ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
         }
         public static void CoStartGame() {
             if (ReplayManager.IsReplayMode)
@@ -65,8 +79,9 @@ namespace SuperNewRoles.Replay
         }
         public static void CoIntroStart()
         {
-            postime = 0;
+            SetOptions();
             posindex = 0;
+            postime = 0;
             actiontime = 0;
             CurrentTurn = 0;
             actionindex = 0;
@@ -74,6 +89,8 @@ namespace SuperNewRoles.Replay
             GetPosAndActionsThisTurn();
             if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
                 actiontime = ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
+            Logger.Info(ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime.ToString()+":"+ReplayManager.CurrentReplay.RecordRate.ToString());
+            //postime -= ReplayManager.CurrentReplay.RecordRate;
             PlayerControl.LocalPlayer.Exiled();
             PlayerControl.LocalPlayer.SetTasks(new());
             PlayerControl.LocalPlayer.cosmetics.currentBodySprite.BodySprite.transform.parent.gameObject.SetActive(false);
@@ -98,7 +115,27 @@ namespace SuperNewRoles.Replay
                     }
                     p.SetRole(role);
                 }
+                ShowIntro();
             }
+        }
+        public static void ShowIntro()
+        {
+            PlayerControl.AllPlayerControls.ForEach((Il2CppSystem.Action<PlayerControl>)((PlayerControl pc) =>
+            {
+                PlayerNameColor.Set(pc);
+            }));
+            ((MonoBehaviour)PlayerControl.LocalPlayer).StopAllCoroutines();
+            ((MonoBehaviour)DestroyableSingleton<HudManager>.Instance).StartCoroutine(DestroyableSingleton<HudManager>.Instance.CoShowIntro());
+            FastDestroyableSingleton<HudManager>.Instance.HideGameLoader();
+        }
+        public static void SetOptions()
+        {
+            Logger.Info(ReplayManager.CurrentReplay.GameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString());
+            GameOptionsManager.Instance.CurrentGameOptions = ReplayManager.CurrentReplay.GameOptions;
+            GameManager.Instance.LogicOptions.SetGameOptions(ReplayManager.CurrentReplay.GameOptions);
+            Logger.Info(GameManager.Instance.LogicOptions.currentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString());
+            Logger.Info(GameOptionsManager.Instance.CurrentGameOptions.GetFloat(FloatOptionNames.PlayerSpeedMod).ToString());
+            ReplayManager.CurrentReplay.UpdateCustomOptionByData();
         }
         public static void GetPosAndActionsThisTurn()
         {
@@ -115,6 +152,7 @@ namespace SuperNewRoles.Replay
                 byte playerId = reader.ReadByte();
                 turn.Positions.Add(playerId, new());
                 int poscount = reader.ReadInt32();
+                Logger.Info(poscount.ToString(),"poscount");
                 for (int i2 = 0; i2 < poscount; i2++)
                 {
                     if (IsPosFloat)
@@ -124,20 +162,32 @@ namespace SuperNewRoles.Replay
                     }
                     else
                     {
-                        turn.Positions[playerId].Add(new(reader.ReadInt16() / 10.0f,
-                            reader.ReadInt16() / 10.0f));
+                        turn.Positions[playerId].Add(new((reader.ReadInt16() / 10.0f),
+                            (reader.ReadInt16() / 10.0f)));
                     }
+                    Logger.Info(i2.ToString(),"ab");
                 }
             }
             int actioncount = reader.ReadInt32();
+            Logger.Info("アクション数:"+actioncount.ToString());
             for (int i = 0; i < actioncount; i++)
             {
                 ReplayActionId replayActionId = (ReplayActionId)reader.ReadByte();
-                Logger.Info(replayActionId+"追加");
-                ReplayAction action = ReplayAction.CreateReplayAction(replayActionId);
-                action.ReadReplayFile(reader);
-                turn.Actions.Add(action);
+                Logger.Info(i.ToString()+":"+actioncount.ToString(),"今の数");
+                if (replayActionId != ReplayActionId.None)
+                {
+                    Logger.Info(replayActionId + "追加:"+reader.BaseStream.Position.ToString());
+                    ReplayAction action = ReplayAction.CreateReplayAction(replayActionId);
+                    action.ReadReplayFile(reader);
+                    turn.Actions.Add(action);
+                    Logger.Info(replayActionId + "終わり:" + reader.BaseStream.Position.ToString());
+                }
+                else
+                {
+                    Logger.Info(replayActionId + "だったのでパス");
+                }
             }
+            Logger.Info(reader.ReadBoolean().ToString(),"終了？");
             ReplayTurns.Add(turn);
         }
         public static void ClearAndReloads()
@@ -155,7 +205,8 @@ namespace SuperNewRoles.Replay
         public static void HudUpdate() {
             if (!IsStarted) return;
             postime -= Time.deltaTime;
-            actiontime -= Time.deltaTime;
+            if (actiontime != -999)
+                actiontime -= Time.deltaTime;
             if (postime <= 0)
             {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
@@ -164,7 +215,7 @@ namespace SuperNewRoles.Replay
                     try
                     {
                         if (ReplayTurns[CurrentTurn].Positions[player.PlayerId].Count <= posindex) continue;
-                        Logger.Info(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex].ToString());
+                        //Logger.Info(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex].ToString());
                         //player.StopAllCoroutines();
                         //player.NetTransform.RpcSnapTo(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex]);
                         //if (ReplayTurns[CurrentTurn].Positions[player.PlayerId].Count > posindex + 1)
@@ -175,9 +226,9 @@ namespace SuperNewRoles.Replay
                         player.transform.position = new(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex].x,
                             ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex].y,
                             0f);
-                        Logger.Info($"{ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex + 1]} => {new Vector3(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex + 1].x,
-                            ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex + 1].y,
-                            0f)}");
+                        //Logger.Info($"{ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex + 1]} => {new Vector3(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex + 1].x,
+                        //    ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex + 1].y,
+                        //    0f)}");
                         //player.MyPhysics.Animations.PlayRunAnimation();
                         //AmongUsClient.Instance.StartCoroutine(player.MyPhysics.WalkPlayerTo(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex]));
                         //AmongUsClient.Instance.StartCoroutine(player.MyPhysics.WalkPlayerTo(ReplayTurns[CurrentTurn].Positions[player.PlayerId][posindex]));
@@ -191,14 +242,16 @@ namespace SuperNewRoles.Replay
                 posindex++;
                 postime = ReplayManager.CurrentReplay.RecordRate;
             }
-            Logger.Info("actiontime:"+actiontime.ToString());
-            if (actiontime <= 0)
+            //Logger.Info("actiontime:"+actiontime.ToString());
+            while (actiontime <= 0 && actiontime != -999)
             {
                 if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)
                 {
+                    Logger.Info("アクション！:"+ ReplayTurns[CurrentTurn].Actions[actionindex].GetActionId());
                     ReplayTurns[CurrentTurn].Actions[actionindex].OnAction();
                     actionindex++;
-                    if (ReplayTurns[CurrentTurn].Actions.Count > actionindex)  actiontime = ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
+                    if (ReplayTurns[CurrentTurn].Actions.Count > actionindex) actiontime = ReplayTurns[CurrentTurn].Actions[actionindex].ActionTime;
+                    else actiontime = -999;
                 }
             }
         }
