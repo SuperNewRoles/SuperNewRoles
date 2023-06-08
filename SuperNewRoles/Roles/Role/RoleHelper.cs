@@ -363,7 +363,7 @@ public static class RoleHelpers
         CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
         foreach (CachedPlayer p in CachedPlayer.AllPlayers)
         {
-            if (p.PlayerControl.IsImpostorAddedFake())
+            if (p.PlayerControl.IsImpostorAddedFake() || Madmate.CheckImpostor(PlayerControl.LocalPlayer))
                 p.Data.Role.NameColor = RoleClass.ImpostorRed;
         }
         FastDestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, myrole);

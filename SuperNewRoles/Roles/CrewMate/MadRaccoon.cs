@@ -1,6 +1,10 @@
+using System;
+using TMPro;
+using System.Timers;
 using System.Collections.Generic;
 using UnityEngine;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Buttons;
 using SuperNewRoles.Patches;
 using static SuperNewRoles.Modules.CustomOption;
 using static SuperNewRoles.Modules.CustomOptionHolder;
@@ -55,6 +59,7 @@ public static class MadRaccoon
         public static int ImpostorCheckTask;
         public static float ShapeshifterCooldown;
         public static float ShapeshifterDuration;
+        public static bool IsShapeNow;
         public static void ClearAndReload()
         {
             Player = new();
@@ -64,11 +69,108 @@ public static class MadRaccoon
             IsImpostorCheck = CustomOptionData.IsCheckImpostor.GetBool() && !ModeHandler.IsMode(ModeId.SuperHostRoles);
 
             bool IsFullTask = !CustomOptionData.IsSettingNumberOfUniqueTasks.GetBool();
-            int AllTask = SelectTask.GetTotalTasks(RoleId.Worshiper);
+            int AllTask = SelectTask.GetTotalTasks(RoleId.MadRaccoon);
             ImpostorCheckTask = ModeHandler.IsMode(ModeId.SuperHostRoles) ? 0 : IsFullTask ? AllTask : (int)(AllTask * (int.Parse(CustomOptionData.ParcentageForTaskTriggerSetting.GetString().Replace("%", "")) / 100f));
 
             ShapeshifterCooldown = CustomOptionData.ShapeshifterCooldown.GetFloat();
             ShapeshifterDuration = CustomOptionData.ShapeshifterDuration.GetFloat();
+            IsShapeNow = false;
+        }
+    }
+
+    internal static class Button
+    {
+        private static CustomButton shapeshiftButton;
+        private static Timer coolTimeTimer;
+        private static Timer durationTimeTimer;
+        internal static TextMeshPro shapeDurationText = null;
+
+        internal static void SetupCustomButtons(HudManager hm)
+        {
+            shapeshiftButton = new(
+                () => { RoleHelpers.UseShapeshift(); },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.MadRaccoon; },
+                () => { return PlayerControl.LocalPlayer.CanMove; },
+                () => { ResetShapeshiftCool(true); },
+                hm.AbilityButton.graphic.sprite,
+                new Vector3(-2f, 1, 0),
+                hm,
+                hm.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("DoppelgangerButtonName"),
+                showButtonText = true
+            };
+            shapeDurationText = UnityEngine.Object.Instantiate(shapeshiftButton.actionButton.cooldownTimerText, shapeshiftButton.actionButton.cooldownTimerText.transform.parent);
+            shapeDurationText.text = "";
+            shapeDurationText.enableWordWrapping = false;
+            shapeDurationText.transform.localScale = Vector3.one * 0.5f;
+            shapeDurationText.transform.localPosition += new Vector3(0f, 0f, 0f);
+        }
+
+        /// <summary>
+        /// シェイプの効果時間と能力持続時間の表示を制御するタイマー
+        /// </summary>
+        internal static void SetShapeDurationTimer()
+        {
+            coolTimeTimer = new Timer(RoleClass.ShapeshifterDuration * 1000);
+            coolTimeTimer.Elapsed += (source, e) =>
+            {
+                ResetShapeDuration();
+                RevertShapeshift();
+            };
+            coolTimeTimer.AutoReset = false;
+            coolTimeTimer.Enabled = true;
+
+            int num = (int)RoleClass.ShapeshifterDuration;
+            shapeDurationText.text = $"<size=255%><color=#19fe19>{num}</color></size>";
+            num--;
+
+            durationTimeTimer = new Timer(1000);
+            durationTimeTimer.Elapsed += (source, e) =>
+            {
+                if (num > 0)
+                {
+                    shapeDurationText.text = $"<size=255%><color=#19fe19>{num}</color></size>";
+                    num--;
+                }
+            };
+            durationTimeTimer.AutoReset = num >= 0;
+            durationTimeTimer.Enabled = true;
+        }
+
+        /// <summary>
+        /// 能力が解除された時の処理。
+        /// 効果時間のタイマーを止める, クールタイムをリセットする
+        /// </summary>
+        internal static void ResetShapeDuration()
+        {
+            TimerStop();
+            ResetShapeshiftCool(false);
+        }
+
+        private static void ResetShapeshiftCool(bool endMeeting)
+        {
+            float timerSet = !endMeeting ? RoleClass.ShapeshifterCooldown : 0f; // 会議終了時は能力クールを0sにする
+
+            shapeshiftButton.MaxTimer = timerSet;
+            shapeshiftButton.Timer = timerSet;
+        }
+
+        private static void TimerStop()
+        {
+            if (coolTimeTimer != null) coolTimeTimer.Stop();
+            if (durationTimeTimer != null) durationTimeTimer.Stop();
+            shapeDurationText.text = "";
+        }
+
+        private static void RevertShapeshift()
+        {
+            PlayerControl.LocalPlayer.NetTransform.Halt();
+            PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
         }
     }
 }

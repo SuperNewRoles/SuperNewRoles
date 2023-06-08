@@ -3257,6 +3257,8 @@ static class HudManagerStartPatch
         };
 
         Roles.Impostor.MadRole.Worshiper.SetupCustomButtons(__instance);
+        
+        Roles.Impostor.MadRole.MadRaccoon.Button.SetupCustomButtons(__instance);
 
         FireFox.SetupCustomButtons(__instance);
 

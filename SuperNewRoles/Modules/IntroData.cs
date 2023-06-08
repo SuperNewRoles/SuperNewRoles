@@ -285,6 +285,6 @@ public class IntroData
     public static IntroData OrientalShamanIntro = new("OrientalShaman", OrientalShaman.color, 1, RoleId.OrientalShaman, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData ShermansServantIntro = new("ShermansServant", OrientalShaman.color, 1, RoleId.ShermansServant, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData BalancerIntro = new("Balancer", Balancer.color, 1, RoleId.Balancer, TeamRoleType.Crewmate);
-    public static IntroData MadRaccoonIntro = new("MadRaccoon", MadRaccoon.RoleClass.color, 1, RoleId.MadRaccoon, TeamRoleType.Crewmate, IntroSound : RoleTypes.Impostor);
+    public static IntroData MadRaccoonIntro = new("MadRaccoon", MadRaccoon.RoleClass.color, 1, RoleId.MadRaccoon, TeamRoleType.Crewmate, IntroSound: RoleTypes.Impostor);
     // イントロオブジェ
 }

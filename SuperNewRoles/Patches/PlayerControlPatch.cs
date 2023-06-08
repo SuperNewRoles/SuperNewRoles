@@ -54,13 +54,21 @@ class RpcShapeshiftPatch
         SyncSetting.CustomSyncSettings();
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
         if (target.IsBot()) return true;
-        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return true;
+        if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return true; // [ ]MEMO:今のままじゃSHRクライアントで動かない!外に出して!!
         if (__instance.PlayerId != target.PlayerId)
         {
             if (__instance.IsRole(RoleId.Doppelganger))
             {
                 RoleClass.Doppelganger.Targets.Add(__instance.PlayerId, target);
                 SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
+            }
+            if (__instance.IsRole(RoleId.MadRaccoon))
+            {
+                if (__instance == PlayerControl.LocalPlayer)
+                {
+                    Roles.Impostor.MadRole.MadRaccoon.Button.SetShapeDurationTimer();
+                    Roles.Impostor.MadRole.MadRaccoon.RoleClass.IsShapeNow = true;
+                }
             }
         }
         if (__instance.PlayerId == target.PlayerId)
@@ -69,6 +77,14 @@ class RpcShapeshiftPatch
             {
                 RoleClass.Doppelganger.Targets.Remove(__instance.PlayerId);
                 SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲット、{target.Data.PlayerName}を削除");
+            }
+            if (__instance.IsRole(RoleId.MadRaccoon))
+            {
+                if (__instance == PlayerControl.LocalPlayer)
+                {
+                    Roles.Impostor.MadRole.MadRaccoon.Button.ResetShapeDuration();
+                    Roles.Impostor.MadRole.MadRaccoon.RoleClass.IsShapeNow = false;
+                }
             }
             if (ModeHandler.IsMode(ModeId.Default))
             {
