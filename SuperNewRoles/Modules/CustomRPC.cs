@@ -196,6 +196,7 @@ public enum RoleId
     ShermansServant,
     SidekickWaveCannon,
     Balancer,
+    BlackHatHacker,
     //RoleId
 }
 
@@ -297,11 +298,17 @@ public enum CustomRPC
     CreateShermansServant,
     SetVisible,
     PenguinMeetingEnd,
-    BalancerBalance,
+    BalancerBalance = 250,
+    SetInfectionTimer,
 }
 
 public static class RPCProcedure
 {
+    public static void SetInfectionTimer(byte id, Dictionary<byte, float> infectionTimer)
+    {
+        if (!ModHelpers.PlayerById(id)) return;
+        BlackHatHacker.InfectionTimer[id] = infectionTimer;
+    }
     public static void BalancerBalance(byte sourceId, byte player1Id, byte player2Id)
     {
         PlayerControl source = ModHelpers.PlayerById(sourceId);
@@ -1549,6 +1556,7 @@ public static class RPCProcedure
             {CustomRPC.ShareSNRVersion,false},
             {CustomRPC.SetRoomTimerRPC,false},
             {CustomRPC.SetDeviceTime,false},
+            {CustomRPC.SetInfectionTimer,false},
         };
 
         static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
@@ -1874,6 +1882,13 @@ public static class RPCProcedure
                         break;
                     case CustomRPC.BalancerBalance:
                         BalancerBalance(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case CustomRPC.SetInfectionTimer:
+                        byte id = reader.ReadByte();
+                        int num = reader.ReadInt32();
+                        Dictionary<byte, float> timer = new();
+                        for (int i = 0; i < num; i++) timer[reader.ReadByte()] = reader.ReadSingle();
+                        SetInfectionTimer(id, timer);
                         break;
                 }
             }

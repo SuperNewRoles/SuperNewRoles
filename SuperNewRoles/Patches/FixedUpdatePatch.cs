@@ -112,6 +112,7 @@ public class FixedUpdate
                 TheThreeLittlePigs.FixedUpdate();
                 CustomRoles.FixedUpdate(__instance);
                 Balancer.Update();
+                BlackHatHacker.FixedUpdate();
                 if (PlayerControl.LocalPlayer.IsAlive())
                 {
                     if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }

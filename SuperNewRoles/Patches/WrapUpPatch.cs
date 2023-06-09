@@ -139,6 +139,7 @@ class WrapUpPatch
         Vampire.SetActiveBloodStaiWrapUpPatch();
         Roles.Crewmate.Celebrity.WrapUp();
         Roles.Neutral.TheThreeLittlePigs.TheFirstLittlePig.WrapUp();
+        BlackHatHacker.WrapUp();
         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
         {
             p.resetChange();
