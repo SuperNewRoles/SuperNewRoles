@@ -40,6 +40,7 @@ public class CustomOptionHolder
     public static CustomOption enableAgartha;
 
     public static CustomOption IsDebugMode;
+    public static CustomOption CanUseChatWhenTaskPhase;
     public static CustomOption DebugModeFastStart;
     public static CustomOption IsMurderPlayerAnnounce;
 
@@ -1009,6 +1010,7 @@ public class CustomOptionHolder
         {
             IsDebugMode = Create(10, true, CustomOptionType.Generic, "<color=#828282>デバッグモード</color>", false, null, isHeader: true);
             DebugModeFastStart = Create(681, true, CustomOptionType.Generic, "<color=#828282>即開始</color>", false, IsDebugMode);
+            CanUseChatWhenTaskPhase = Create(1334, true, CustomOptionType.Generic, "<color=#828282>タスクフェイズ中にチャットを使える</color>", false, IsDebugMode);
             IsMurderPlayerAnnounce = Create(1073, true, CustomOptionType.Generic, "<color=#828282>MurderPlayer発生時に通知を行う</color>", false, IsDebugMode);
         }
 
