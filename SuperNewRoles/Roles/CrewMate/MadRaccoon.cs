@@ -83,7 +83,7 @@ public static class MadRaccoon
         private static CustomButton shapeshiftButton;
         private static Timer coolTimeTimer;
         private static Timer durationTimeTimer;
-        internal static TextMeshPro shapeDurationText = null;
+        private static TextMeshPro shapeDurationText = null;
         private static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MadRacoonButtonb.png", 115f);
 
         internal static void SetupCustomButtons(HudManager hm)
@@ -117,11 +117,12 @@ public static class MadRaccoon
         /// </summary>
         internal static void SetShapeDurationTimer()
         {
+            TimerStop();
+
             coolTimeTimer = new Timer(RoleClass.ShapeshifterDuration * 1000);
             coolTimeTimer.Elapsed += (source, e) =>
             {
                 ResetShapeDuration();
-                RevertShapeshift();
             };
             coolTimeTimer.AutoReset = false;
             coolTimeTimer.Enabled = true;
@@ -151,6 +152,7 @@ public static class MadRaccoon
         {
             TimerStop();
             ResetShapeshiftCool(false);
+            RevertShapeshift();
         }
 
         private static void ResetShapeshiftCool(bool endMeeting)
@@ -170,8 +172,11 @@ public static class MadRaccoon
 
         private static void RevertShapeshift()
         {
+            if (!RoleClass.IsShapeNow) return;
             PlayerControl.LocalPlayer.NetTransform.Halt();
             PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
+
+            RoleClass.IsShapeNow = false;
         }
     }
 }

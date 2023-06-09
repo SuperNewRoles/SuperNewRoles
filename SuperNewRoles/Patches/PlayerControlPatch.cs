@@ -65,8 +65,8 @@ class RpcShapeshiftPatch
                 }
                 else
                 {
-                    Roles.Impostor.MadRole.MadRaccoon.Button.ResetShapeDuration();
                     Roles.Impostor.MadRole.MadRaccoon.RoleClass.IsShapeNow = false;
+                    Roles.Impostor.MadRole.MadRaccoon.Button.ResetShapeDuration();
                 }
             }
         }
