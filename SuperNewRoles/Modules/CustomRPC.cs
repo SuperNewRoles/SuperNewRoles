@@ -196,6 +196,7 @@ public enum RoleId
     ShermansServant,
     SidekickWaveCannon,
     Balancer,
+    Pteranodon,
     //RoleId
 }
 

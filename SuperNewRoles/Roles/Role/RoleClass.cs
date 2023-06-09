@@ -235,6 +235,7 @@ public static class RoleClass
         TheThreeLittlePigs.ClearAndReload();
         OrientalShaman.ClearAndReload();
         Balancer.ClearAndReload();
+        Pteranodon.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

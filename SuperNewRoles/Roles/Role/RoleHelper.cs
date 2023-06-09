@@ -899,6 +899,9 @@ public static class RoleHelpers
             case RoleId.Balancer:
                 Balancer.BalancerPlayer.Add(player);
                 break;
+            case RoleId.Pteranodon:
+                Pteranodon.PteranodonPlayer.Add(player);
+                break;
             // ロールアド
             default:
                 SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1416,6 +1419,9 @@ public static class RoleHelpers
             case RoleId.Balancer:
                 Balancer.BalancerPlayer.RemoveAll(ClearRemove);
                 break;
+            case RoleId.Pteranodon:
+                Pteranodon.PteranodonPlayer.RemoveAll(ClearRemove);
+                break;
             // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
@@ -1874,6 +1880,7 @@ public static class RoleHelpers
             else if (OrientalShaman.OrientalShamanPlayer.IsCheckListPlayerControl(player)) return RoleId.OrientalShaman;
             else if (OrientalShaman.ShermansServantPlayer.IsCheckListPlayerControl(player)) return RoleId.ShermansServant;
             else if (Balancer.BalancerPlayer.IsCheckListPlayerControl(player)) return RoleId.Balancer;
+            else if (Pteranodon.PteranodonPlayer.IsCheckListPlayerControl(player)) return RoleId.Pteranodon;
             // ロールチェック
         }
         catch (Exception e)

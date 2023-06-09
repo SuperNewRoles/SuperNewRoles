@@ -1367,6 +1367,7 @@ BalancerTitleTextEitherExile,Which way do you want to exile it?,どっちを追�
 BalancerTitleTextWhoIsImpostor,Which is the Imposter? Or the other...,インポスターはどっちだ？それとも他か...,内鬼在这边？还是那边呢……,他是內鬼？還是他才是內鬼...
 BalancerDoubleExileText,Both were exiled.,どちらも追放された。,二者一同放逐,兩者一同放逐
 BalancerVoteTime,Votetime,天秤の投票時間,审判时间,阿努比斯的審判時間
+PteranodonName,Pteranodon,プテラノドン
 
 #ConfigRoles
 IsNotUsingBlood,Make the blood expression black.,血液表現を黒にする,和谐血液显示,血液黑色表示

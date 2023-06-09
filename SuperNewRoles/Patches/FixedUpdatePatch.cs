@@ -207,6 +207,9 @@ public class FixedUpdate
                         case RoleId.Dependents:
                             Vampire.FixedUpdate.DependentsOnly();
                             break;
+                        case RoleId.Pteranodon:
+                            Pteranodon.FixedUpdate();
+                            break;
                     }
                 }
                 else // -- 死亡時 --

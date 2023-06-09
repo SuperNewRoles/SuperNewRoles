@@ -98,6 +98,7 @@ static class HudManagerStartPatch
     public static CustomButton JumboKillButton;
     public static CustomButton WiseManButton;
     public static CustomButton MechanicButton;
+    public static CustomButton PteranodonButton;
 
     #endregion
 
@@ -130,6 +131,52 @@ static class HudManagerStartPatch
     public static void Postfix(HudManager __instance)
     {
         Roles.Attribute.Debugger.canSeeRole = false;
+
+        PteranodonButton = new(
+            () =>
+            {
+                AirshipStatus status = ShipStatus.Instance.TryCast<AirshipStatus>();
+                if (status == null)
+                    return;
+                Pteranodon.IsPteranodonNow = true;
+                Pteranodon.StartPosition = PlayerControl.LocalPlayer.transform.position;
+                if (Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.5f)
+                    Pteranodon.TargetPosition = status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.RightUsePosition);
+                else
+                    Pteranodon.TargetPosition = status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition);
+                PlayerControl.LocalPlayer.moveable = false;
+                PlayerControl.LocalPlayer.Collider.enabled = false;
+                Pteranodon.Timer = Pteranodon.StartTime;
+            },
+            (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Pteranodon; },
+            () =>
+            {
+                AirshipStatus status = ShipStatus.Instance.TryCast<AirshipStatus>();
+                if (status == null)
+                    return false;
+                bool flag = Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.LeftUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.5f || Vector3.Distance(status.GapPlatform.transform.parent.TransformPoint(status.GapPlatform.RightUsePosition), PlayerControl.LocalPlayer.transform.position) <= 0.5f;
+                return PlayerControl.LocalPlayer.CanMove && flag;
+            },
+            () =>
+            {
+                WiseManButton.MaxTimer = WiseMan.WiseManCoolTime.GetFloat();
+                WiseManButton.Timer = WiseManButton.MaxTimer;
+                WiseManButton.effectCancellable = false;
+                WiseManButton.EffectDuration = WiseMan.WiseManDurationTime.GetFloat();
+                WiseManButton.HasEffect = true;
+            },
+            ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PteranodonButton.png", 115f),
+            new Vector3(-2f, 1, 0),
+            __instance,
+            __instance.AbilityButton,
+            KeyCode.F,
+            49,
+            () => { return false; }
+        )
+        {
+            buttonText = ModTranslation.GetString("PteranodonButtonName"),
+            showButtonText = true
+        };
 
         WiseManButton = new(
             () =>
