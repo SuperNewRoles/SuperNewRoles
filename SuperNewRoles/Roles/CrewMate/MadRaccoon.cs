@@ -84,6 +84,7 @@ public static class MadRaccoon
         private static Timer coolTimeTimer;
         private static Timer durationTimeTimer;
         internal static TextMeshPro shapeDurationText = null;
+        private static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MadRacoonButtonb.png", 115f);
 
         internal static void SetupCustomButtons(HudManager hm)
         {
@@ -92,7 +93,7 @@ public static class MadRaccoon
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.MadRaccoon; },
                 () => { return PlayerControl.LocalPlayer.CanMove; },
                 () => { ResetShapeshiftCool(true); },
-                hm.AbilityButton.graphic.sprite,
+                GetButtonSprite(),
                 new Vector3(-2f, 1, 0),
                 hm,
                 hm.AbilityButton,
