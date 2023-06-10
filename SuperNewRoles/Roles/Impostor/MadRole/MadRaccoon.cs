@@ -171,6 +171,13 @@ public static class MadRaccoon
         }
         private static void RevertShapeshift()
         {
+            if (PlayerControl.LocalPlayer.CurrentOutfitType != PlayerOutfitType.Shapeshifted)
+            {
+                Logger.Error("シェイプシフトが既に解除されている状態で[RpcRevertShapeshift]を呼ぼうとした為, 無効化しました。","MadRaccoon Button");
+                return;
+                // MeetingHud.Startで呼び出した際は[PlayerOutfitType.Default], 任意解除(PlayerControl.Shapeshift)で呼び出した際は[PlayerOutfitType.Shapeshifted]になって状態が変動している。
+                // その為, CurrentOutfitTypeでの制御は予備のループ対処機構として使用している。
+            }
             PlayerControl.LocalPlayer.NetTransform.Halt();
             PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
         }
