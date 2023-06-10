@@ -59,7 +59,6 @@ public static class MadRaccoon
         public static int ImpostorCheckTask;
         public static float ShapeshifterCooldown;
         public static float ShapeshifterDuration;
-        public static bool IsShapeNow;
         public static void ClearAndReload()
         {
             Player = new();
@@ -74,7 +73,6 @@ public static class MadRaccoon
 
             ShapeshifterCooldown = CustomOptionData.ShapeshifterCooldown.GetFloat();
             ShapeshifterDuration = CustomOptionData.ShapeshifterDuration.GetFloat();
-            IsShapeNow = false;
         }
     }
 
@@ -145,16 +143,19 @@ public static class MadRaccoon
         }
 
         /// <summary>
-        /// 能力が解除された時の処理。
-        /// 効果時間のタイマーを止める, クールタイムをリセットする
+        /// 能力解除時の処理
+        /// [効果タイマーの停止, クールタイムのリセット, シェイプ状態のリセット]
+        /// シェイプが既に解除されている状態の時 引数としてfalseを渡し忘れるとループしクラッシュする
         /// </summary>
-        internal static void ResetShapeDuration()
+        /// <param name="beforeRevertShapeshift">
+        /// bool => true : シェイプが未だ解除されていない / false : シェイプが既に解除されている</param>
+        internal static void ResetShapeDuration(bool beforeRevertShapeshift = true)
         {
             TimerStop();
             ResetShapeshiftCool(false);
-            RevertShapeshift();
-        }
 
+            if (beforeRevertShapeshift) RevertShapeshift();
+        }
         private static void ResetShapeshiftCool(bool endMeeting)
         {
             float timerSet = !endMeeting ? RoleClass.ShapeshifterCooldown : 0f; // 会議終了時は能力クールを0sにする
@@ -162,21 +163,16 @@ public static class MadRaccoon
             shapeshiftButton.MaxTimer = timerSet;
             shapeshiftButton.Timer = timerSet;
         }
-
         private static void TimerStop()
         {
             if (coolTimeTimer != null) coolTimeTimer.Stop();
             if (durationTimeTimer != null) durationTimeTimer.Stop();
             shapeDurationText.text = "";
         }
-
         private static void RevertShapeshift()
         {
-            if (!RoleClass.IsShapeNow) return;
             PlayerControl.LocalPlayer.NetTransform.Halt();
             PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
-
-            RoleClass.IsShapeNow = false;
         }
     }
 }

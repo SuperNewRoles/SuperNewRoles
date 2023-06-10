@@ -15,6 +15,7 @@ using SuperNewRoles.Modules;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.Neutral;
 using SuperNewRoles.Roles.RoleBases;
 using UnityEngine;
@@ -52,26 +53,20 @@ class RpcShapeshiftPatch
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
     {
         SyncSetting.CustomSyncSettings();
+
         if (RoleClass.Assassin.TriggerPlayer != null) return false;
         if (target.IsBot()) return true;
-        if (__instance.IsRole(RoleId.MadRaccoon))
+
+        bool isActivationShapeshift = __instance.PlayerId != target.PlayerId; // true : シェイプシフトする時 / false : シェイプシフトを解除する時
+
+        if (__instance.IsRole(RoleId.MadRaccoon) && __instance == PlayerControl.LocalPlayer) // 導入者が個人で行う処理 (SHR, SNR共通)
         {
-            if (__instance == PlayerControl.LocalPlayer)
-            {
-                if (__instance.PlayerId != target.PlayerId)
-                {
-                    Roles.Impostor.MadRole.MadRaccoon.Button.SetShapeDurationTimer();
-                    Roles.Impostor.MadRole.MadRaccoon.RoleClass.IsShapeNow = true; // [ ]MEMO:シェイプ状態いらなかったら消す
-                }
-                else
-                {
-                    Roles.Impostor.MadRole.MadRaccoon.RoleClass.IsShapeNow = false;
-                    Roles.Impostor.MadRole.MadRaccoon.Button.ResetShapeDuration();
-                }
-            }
+            if (isActivationShapeshift) MadRaccoon.Button.SetShapeDurationTimer();
+            // [x]MEMO:シェイプ状態いらなかったら消す <= いるので消さない <= (MadRaccoon.RoleClass.IsShapeNow = true;)タイマーセットに移動() <= 最終的に読み取らなかったので削除()()()
+            else MadRaccoon.Button.ResetShapeDuration(false);
         }
         if (ModeHandler.IsMode(ModeId.SuperHostRoles) && !AmongUsClient.Instance.AmHost) return true; // [x]MEMO:今のままじゃSHRクライアントで動かない!外に出して!!
-        if (__instance.PlayerId != target.PlayerId)
+        if (isActivationShapeshift)
         {
             if (__instance.IsRole(RoleId.Doppelganger))
             {
@@ -79,7 +74,7 @@ class RpcShapeshiftPatch
                 SuperNewRolesPlugin.Logger.LogInfo($"{__instance.Data.PlayerName}のターゲットが{target.Data.PlayerName}に変更");
             }
         }
-        if (__instance.PlayerId == target.PlayerId)
+        if (!isActivationShapeshift)
         {
             if (__instance.IsRole(RoleId.Doppelganger))
             {

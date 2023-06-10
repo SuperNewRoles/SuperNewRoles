@@ -12,6 +12,8 @@ using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
+using SuperNewRoles.Roles.Impostor;
+using SuperNewRoles.Roles.Impostor.MadRole;
 using SuperNewRoles.Roles.RoleBases;
 using UnhollowerBaseLib;
 using UnityEngine;
@@ -532,6 +534,7 @@ class MeetingHudStartPatch
         NiceMechanic.StartMeeting();
         Roles.Crewmate.Celebrity.TimerStop();
         TheThreeLittlePigs.TheFirstLittlePig.TimerStop();
+        MadRaccoon.Button.ResetShapeDuration(false);
         NiceMechanic.StartMeeting();
         if (PlayerControl.LocalPlayer.IsRole(RoleId.WiseMan)) WiseMan.StartMeeting();
         Roles.Crewmate.Knight.ProtectedPlayer = null;
