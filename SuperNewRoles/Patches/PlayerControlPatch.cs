@@ -948,6 +948,7 @@ public static class MurderPlayerPatch
         EvilGambler.MurderPlayerPrefix(__instance, target);
         Doppelganger.KillCoolSetting.SHRMurderPlayer(__instance, target);
         DyingMessenger.ActualDeathTime[target.PlayerId] = (DateTime.Now, __instance);
+        if (target.IsRole(RoleId.MadRaccoon) && target == PlayerControl.LocalPlayer) MadRaccoon.Button.ResetShapeDuration(false);
         if (ModeHandler.IsMode(ModeId.Default))
         {
             target.resetChange();
