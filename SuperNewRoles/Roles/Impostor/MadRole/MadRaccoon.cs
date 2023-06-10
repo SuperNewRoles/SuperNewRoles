@@ -100,7 +100,7 @@ public static class MadRaccoon
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.GetString("DoppelgangerButtonName"),
+                buttonText = ModTranslation.GetString("MadRaccoonButtonName"),
                 showButtonText = true
             };
             shapeDurationText = UnityEngine.Object.Instantiate(shapeshiftButton.actionButton.cooldownTimerText, shapeshiftButton.actionButton.cooldownTimerText.transform.parent);
