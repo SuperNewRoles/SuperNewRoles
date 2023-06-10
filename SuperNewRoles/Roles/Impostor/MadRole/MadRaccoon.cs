@@ -44,8 +44,8 @@ public static class MadRaccoon
             LongTask = taskOption.Item3;
             IsParcentageForTaskTrigger = Create(optionId, false, CustomOptionType.Crewmate, "IsParcentageForTaskTrigger", true, IsCheckImpostor); optionId++;
             ParcentageForTaskTriggerSetting = Create(optionId, false, CustomOptionType.Crewmate, "ParcentageForTaskTriggerSetting", rates4, IsParcentageForTaskTrigger); optionId++;
-            ShapeshifterCooldown = Create(optionId, true, CustomOptionType.Crewmate, "DoppelgangerCooldownSetting", 5f, 5f, 60f, 2.5f, Option); optionId++;
-            ShapeshifterDuration = Create(optionId, true, CustomOptionType.Crewmate, "DoppelgangerDurationTimeSetting", 90f, 0f, 250f, 5f, Option);
+            ShapeshifterCooldown = Create(optionId, true, CustomOptionType.Crewmate, "DoppelgangerCooldownSetting", 10f, 5f, 60f, 2.5f, Option); optionId++;
+            ShapeshifterDuration = Create(optionId, true, CustomOptionType.Crewmate, "DoppelgangerDurationTimeSetting", 30f, 0f, 250f, 5f, Option);
         }
     }
 
