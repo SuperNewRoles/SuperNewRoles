@@ -84,7 +84,7 @@ public static class MadRaccoon
         private static Timer coolTimeTimer;
         private static Timer durationTimeTimer;
         private static TextMeshPro shapeDurationText = null;
-        private static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MadRacoonButtonb.png", 115f);
+        private static Sprite GetButtonSprite() => ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MadRacoonButton.png", 115f);
 
         internal static void SetupCustomButtons(HudManager hm)
         {
