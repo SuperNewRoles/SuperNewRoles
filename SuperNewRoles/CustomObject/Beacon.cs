@@ -63,12 +63,12 @@ public class Beacon
 
     public static void ClearBeacons()
     {
-        int[] num = { -1, -2, -3 };
-        foreach (var n in num)
+        //int[] num = { -1, -2, -3 };
+        foreach (var beacon in AllBeacons)
         {
-            Logger.Info($"Beacon{Conjurer.Count + n}をClearします", "ClearBeacons");
-            GameObject.Find($"Beacon{Conjurer.Count + n}")?.SetActive(false);
-            GameObject.Find($"Beacon{Conjurer.Count + n}(Clone)")?.SetActive(false);
+            Logger.Info($"{beacon.GameObject.name}をClearします", "ClearBeacons");
+            beacon.GameObject.SetActive(false);
+            beacon.GameObject.SetActive(false);
         }
     }
 }

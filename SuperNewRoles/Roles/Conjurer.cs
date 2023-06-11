@@ -20,13 +20,13 @@ public class Conjurer
     public static CustomOption CanKillImpostor;
     public static CustomOption ShowFlash;
     public static void SetupCustomOptions()
-    {/*
+    {
             Option = new(Id, false, CustomOptionType.Impostor, "ConjurerName", color, 1);
             PlayerCount = CustomOption.Create(Id + 1, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], Option);
             Cooldown = CustomOption.Create(Id + 2, false, CustomOptionType.Impostor, "Cooldown", 10f, 1f, 30f, 0.5f, Option);
             CanAddLength = CustomOption.Create(Id + 3, false, CustomOptionType.Impostor, "CanAddLength", 10f, 0.5f, 40f, 0.5f, Option);
             CanKillImpostor = CustomOption.Create(Id + 4, false, CustomOptionType.Impostor, "CanKillImpostor", false, Option);
-            ShowFlash = CustomOption.Create(Id + 5, false, CustomOptionType.Impostor, "ShowFlash", false, Option);*/
+            ShowFlash = CustomOption.Create(Id + 5, false, CustomOptionType.Impostor, "ShowFlash", false, Option);
     }
 
     public static List<PlayerControl> Player;
@@ -61,9 +61,9 @@ public class Conjurer
     private static bool CanAddBeacon()
     {
         if (!PlayerControl.LocalPlayer.CanMove) return false;
-        if (Count == 0) return true;
+        if (Count <= 0) return true;
 
-        if (Count != 3)
+        if (Count < 3)
         {
             if (Vector2.Distance(PlayerControl.LocalPlayer.transform.position, Positions[Count - 1]) < CanAddLength.GetFloat())
             {
@@ -150,7 +150,7 @@ public class Conjurer
         StartButton = new(
         () =>
         {
-            if (PlayerControl.LocalPlayer.CanMove && Count == 3)
+            if (PlayerControl.LocalPlayer.CanMove && Count > 3)
             {
                 //Logger.Info($"Beacon{Round}{Count}", "Beacons");
                 foreach (PlayerControl pc in CachedPlayer.AllPlayers)
