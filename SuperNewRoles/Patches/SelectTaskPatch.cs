@@ -85,6 +85,7 @@ public static class SelectTask
     private static bool GetHaveTaskManageAbility(RoleId id)
     {
         // RoleIdと タスクで管理する能力を有すか
+        // RoleIdが重複するとタスクが配布されず, 非導入者の画面でもTaskInfoが開けなくなる。
         Dictionary<RoleId, bool> taskTriggerAbilityData = new()
         {
             { RoleId.Madmate, MadmateIsCheckImpostor.GetBool() },
@@ -111,7 +112,7 @@ public static class SelectTask
             { RoleId.TheSecondLittlePig, true },
             { RoleId.TheThirdLittlePig, true },
             { RoleId.OrientalShaman, OrientalShaman.OrientalShamanWinTask.GetBool() },
-            { RoleId.Worshiper, Worshiper.CustomOptionData.IsCheckImpostor.GetBool()},
+            { RoleId.MadRaccoon, MadRaccoon.CustomOptionData.IsCheckImpostor.GetBool()},
         };
 
         if (taskTriggerAbilityData.ContainsKey(id)) return taskTriggerAbilityData[id];
