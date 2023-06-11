@@ -261,4 +261,14 @@ public static class CustomRpcSenderExtensions
           .WriteNetObject(target)
           .EndRpc();
     }
+    public static void RpcEndGame(this CustomRpcSender sender, GameOverReason endReason, bool showAd)
+    {
+        GameManager.Instance.ShouldCheckForGameEnd = false;
+        Logger.Info($"Endgame for {endReason}");
+        sender.StartMessage(8);
+        sender.Write(AmongUsClient.Instance.GameId);
+        sender.Write((byte)endReason);
+        sender.Write(showAd);
+        sender.EndMessage();
+    }
 }

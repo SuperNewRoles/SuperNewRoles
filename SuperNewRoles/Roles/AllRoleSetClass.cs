@@ -147,6 +147,11 @@ class RoleManagerSelectRolesPatch
             Mode.BattleRoyal.Main.ChangeRole.Postfix();
             return false;
         }
+        else if (ModeHandler.IsMode(ModeId.PantsRoyal))
+        {
+            Mode.PantsRoyal.main.AssignRole();
+            return false;
+        }
         else if (ModeHandler.IsMode(ModeId.CopsRobbers))
         {
             Mode.CopsRobbers.RoleSelectHandler.Handler();

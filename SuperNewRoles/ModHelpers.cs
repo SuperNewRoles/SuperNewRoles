@@ -38,6 +38,13 @@ public static class ModHelpers
                     !ExileController.Instance;
         }
     }
+    public static int GetAlivePlayerCount()
+    {
+        int count = 0;
+        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            if (p.IsAlive()) count++;
+        return count;
+    }
     public static Vent SetTargetVent(List<Vent> untargetablePlayers = null, PlayerControl targetingPlayer = null, bool forceout = false)
     {
         Vent result = null;

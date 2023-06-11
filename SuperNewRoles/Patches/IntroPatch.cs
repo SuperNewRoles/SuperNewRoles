@@ -392,6 +392,8 @@ public class IntroPatch
         }
         __instance.TeamTitle.text = TeamTitle;
         __instance.ImpostorText.text = ImpostorText;
+        if (ImpostorText != "")
+            __instance.ImpostorText.gameObject.SetActive(true);
         __instance.BackgroundBar.material.color = color;
         __instance.TeamTitle.color = color;
 

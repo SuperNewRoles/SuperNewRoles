@@ -18,6 +18,7 @@ namespace SuperNewRoles.Roles;
 [HarmonyPatch]
 public static class RoleClass
 {
+    public static List<string> RuleAgrees = new();
     public static bool IsMeeting;
     public static bool IsCoolTimeSetted;
     public static System.Random rnd = new((int)DateTime.Now.Ticks);

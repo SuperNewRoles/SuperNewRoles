@@ -463,6 +463,9 @@ static class CheckMurderPatch
         {
             case ModeId.Zombie:
                 return false;
+            case ModeId.PantsRoyal:
+                Mode.PantsRoyal.main.OnMurderClick(__instance, target);
+                return false;
             case ModeId.BattleRoyal:
                 if (__instance == PlayerControl.LocalPlayer && isKill)
                 {
@@ -1368,7 +1371,7 @@ class ReportDeadBodyPatch
         return RoleClass.Assassin.TriggerPlayer == null
         && (Mode.PlusMode.PlusGameOptions.UseDeadBodyReport || target == null)
         && (Mode.PlusMode.PlusGameOptions.UseMeetingButton || target != null)
-        && !ModeHandler.IsMode(ModeId.BattleRoyal)
+        && !ModeHandler.IsMode(ModeId.BattleRoyal, ModeId.PantsRoyal)
         && !ModeHandler.IsMode(ModeId.CopsRobbers)
 && (ModeHandler.IsMode(ModeId.SuperHostRoles)
             ? Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target)
