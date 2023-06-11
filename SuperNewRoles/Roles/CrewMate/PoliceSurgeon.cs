@@ -362,13 +362,14 @@ internal static class PostMortemCertificate_Display
         {
             PlayerVoteArea playerVoteArea = __instance.playerStates[i];
             var player = ModHelpers.PlayerById(__instance.playerStates[i].TargetPlayerId);
+            var playerRole = player.GetRole();
 
             // 再確認確認な設定で、ネームプレートの対象が生存していて、自分自身ではないなら
             if (CustomOptionData.CanResend.GetBool()) { if (player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId) continue; }
             // 再確認不可能な設定で、ネームプレートの対象が生存している、又は本人ならば
             else if (player.IsAlive() || player.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
-            // 死亡した者がヴァンパイアでも眷属でもないなら
-            if (player.IsRole(RoleId.Vampire) || player.IsRole(RoleId.Dependents)) continue;
+            // 死亡した者が妖狐でもヴァンパイアでも眷属でもないなら
+            if (playerRole is RoleId.Fox or RoleId.Vampire or RoleId.Dependents) continue;
             // 死亡ターン以外に情報を表示しない設定で、ネームプレートの対象が現在ターンに死亡した者でなく、自分自身でもないなら
             if (!CustomOptionData.IndicateTimeOfDeathInSubsequentTurn.GetBool() && RoleData.ActualDeathTimeManager[player.PlayerId].Item3 != RoleData.MeetingTurn_Now && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId) continue;
 
@@ -672,9 +673,9 @@ internal static class PostMortemCertificate_CreateAndGet
                 // 以降に進むのは、[全てのターンの死亡情報を出す時]の全てのプレイヤーの情報と　[現在ターンの死亡情報しか出さない時]の現在ターンに死亡したプレイヤーの情報
                 if (!CustomOptionData.IndicateTimeOfDeathInSubsequentTurn.GetBool() && kvp.Value.Item3 != RoleData.MeetingTurn_Now) continue;
 
-                // ヴァンパイアと眷属は検案書を作成しない
+                // 妖狐とヴァンパイアと眷属は検案書を作成しない
                 var victimPlayerRole = ModHelpers.PlayerById(kvp.Key).GetRole();
-                if (victimPlayerRole is RoleId.Vampire or RoleId.Dependents) continue;
+                if (victimPlayerRole is RoleId.Fox or RoleId.Vampire or RoleId.Dependents) continue;
 
                 isWrite = true;
 
