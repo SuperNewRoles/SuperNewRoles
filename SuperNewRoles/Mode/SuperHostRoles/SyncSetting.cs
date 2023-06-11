@@ -232,8 +232,8 @@ public static class SyncSetting
                 optdata.SetFloat(FloatOptionNames.ShapeshifterDuration, 1f);
                 break;
             case RoleId.PoliceSurgeon:
-                optdata.SetFloat(FloatOptionNames.ScientistCooldown, PoliceSurgeon.PoliceSurgeonVitalsDisplayCooldown.GetFloat());
-                optdata.SetFloat(FloatOptionNames.ScientistBatteryCharge, PoliceSurgeon.PoliceSurgeonBatteryDuration.GetFloat());
+                optdata.SetFloat(FloatOptionNames.ScientistCooldown, PoliceSurgeon.CustomOptionData.VitalsDisplayCooldown.GetFloat());
+                optdata.SetFloat(FloatOptionNames.ScientistBatteryCharge, PoliceSurgeon.CustomOptionData.BatteryDuration.GetFloat());
                 break;
         }
         optdata.SetBool(BoolOptionNames.ShapeshifterLeaveSkin, false);

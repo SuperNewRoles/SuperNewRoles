@@ -1934,7 +1934,7 @@ public class CustomOptionHolder
 
         Balancer.SetupCustomOptions();
 
-        PoliceSurgeon.SetupCustomOptions();
+        PoliceSurgeon.CustomOptionData.SetupCustomOptions();
 
         // 表示設定
 

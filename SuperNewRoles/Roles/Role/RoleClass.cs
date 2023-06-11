@@ -234,7 +234,7 @@ public static class RoleClass
         TheThreeLittlePigs.ClearAndReload();
         OrientalShaman.ClearAndReload();
         Balancer.ClearAndReload();
-        PoliceSurgeon.ClearAndReload();
+        PoliceSurgeon.RoleData.ClearAndReload();
         // ロールクリア
         Quarreled.ClearAndReload();
         Lovers.ClearAndReload();

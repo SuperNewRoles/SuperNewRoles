@@ -70,7 +70,7 @@ public static class RoleHelpers
         RoleId.MadMaker or
         RoleId.MadCleaner or
         RoleId.Worshiper;
-        // IsMads
+    // IsMads
 
     public static bool IsNeutral(this PlayerControl player) =>
         player.GetRole() is
@@ -116,7 +116,7 @@ public static class RoleHelpers
         RoleId.TheSecondLittlePig or
         RoleId.TheThirdLittlePig or
         RoleId.OrientalShaman;
-        // 第三か
+    // 第三か
 
     public static bool IsKiller(this PlayerControl player) =>
         (player.GetRole() == RoleId.Pavlovsowner &&
@@ -135,7 +135,7 @@ public static class RoleHelpers
         RoleId.Hitman or
         RoleId.Egoist or
         RoleId.FireFox;
-        // 第三キル人外か
+    // 第三キル人外か
 
     public static bool IsPavlovsTeam(this PlayerControl player) => player.GetRole() is
             RoleId.Pavlovsdogs or
@@ -892,7 +892,7 @@ public static class RoleHelpers
                 Balancer.BalancerPlayer.Add(player);
                 break;
             case RoleId.PoliceSurgeon:
-                PoliceSurgeon.PoliceSurgeonPlayer.Add(player);
+                PoliceSurgeon.RoleData.Player.Add(player);
                 break;
             // ロールアド
             default:
@@ -1412,9 +1412,9 @@ public static class RoleHelpers
                 Balancer.BalancerPlayer.RemoveAll(ClearRemove);
                 break;
             case RoleId.PoliceSurgeon:
-                PoliceSurgeon.PoliceSurgeonPlayer.RemoveAll(ClearRemove);
+                PoliceSurgeon.RoleData.Player.RemoveAll(ClearRemove);
                 break;
-            // ロールリモベ
+                // ロールリモベ
         }
         /* if (player.Is陣営())がうまく動かず、リスト入りされない為コメントアウト
         if (player.IsImpostor()) ImposterPlayer.RemoveAll(ClearRemove);
@@ -1872,7 +1872,7 @@ public static class RoleHelpers
             else if (OrientalShaman.OrientalShamanPlayer.IsCheckListPlayerControl(player)) return RoleId.OrientalShaman;
             else if (OrientalShaman.ShermansServantPlayer.IsCheckListPlayerControl(player)) return RoleId.ShermansServant;
             else if (Balancer.BalancerPlayer.IsCheckListPlayerControl(player)) return RoleId.Balancer;
-            else if (PoliceSurgeon.PoliceSurgeonPlayer.IsCheckListPlayerControl(player)) return RoleId.PoliceSurgeon;
+            else if (PoliceSurgeon.RoleData.Player.IsCheckListPlayerControl(player)) return RoleId.PoliceSurgeon;
             // ロールチェック
         }
         catch (Exception e)

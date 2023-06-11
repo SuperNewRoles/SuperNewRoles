@@ -280,6 +280,6 @@ public class IntroData
     public static IntroData OrientalShamanIntro = new("OrientalShaman", OrientalShaman.color, 1, RoleId.OrientalShaman, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData ShermansServantIntro = new("ShermansServant", OrientalShaman.color, 1, RoleId.ShermansServant, TeamRoleType.Neutral, IntroSound: RoleTypes.Shapeshifter);
     public static IntroData BalancerIntro = new("Balancer", Balancer.color, 1, RoleId.Balancer, TeamRoleType.Crewmate);
-    public static IntroData PoliceSurgeonIntro = new("PoliceSurgeon", PoliceSurgeon.color, 1, RoleId.PoliceSurgeon, TeamRoleType.Crewmate, IntroSound: RoleTypes.Scientist);
+    public static IntroData PoliceSurgeonIntro = new("PoliceSurgeon", PoliceSurgeon.RoleData.color, 1, RoleId.PoliceSurgeon, TeamRoleType.Crewmate, IntroSound: RoleTypes.Scientist);
     // イントロオブジェ
 }
