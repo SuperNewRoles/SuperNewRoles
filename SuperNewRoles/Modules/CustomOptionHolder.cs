@@ -1038,80 +1038,80 @@ public class CustomOptionHolder
 
         /* |: ========================= Impostor Settings ========================== :| */
 
-        WaveCannonOption = SetupCustomRoleOption(1019, false, RoleId.WaveCannon, CustomOptionType.Impostor);
-        WaveCannonPlayerCount = Create(1018, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WaveCannonOption);
-        WaveCannonCoolTime = Create(1020, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonOption);
-        WaveCannonChargeTime = Create(1021, false, CustomOptionType.Impostor, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonOption);
-        WaveCannonIsSyncKillCoolTime = Create(1016, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, WaveCannonOption);
+        WaveCannonOption = SetupCustomRoleOption(200000, false, RoleId.WaveCannon, CustomOptionType.Impostor);
+        WaveCannonPlayerCount = Create(200001, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WaveCannonOption);
+        WaveCannonCoolTime = Create(200002, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 20f, 2.5f, 180f, 2.5f, WaveCannonOption);
+        WaveCannonChargeTime = Create(200003, false, CustomOptionType.Impostor, "WaveCannonChargeTime", 3f, 0.5f, 15f, 0.5f, WaveCannonOption);
+        WaveCannonIsSyncKillCoolTime = Create(200004, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, WaveCannonOption);
 
-        SluggerOption = SetupCustomRoleOption(901, false, RoleId.Slugger);
-        SluggerPlayerCount = Create(902, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SluggerOption);
-        SluggerChargeTime = Create(903, false, CustomOptionType.Impostor, "SluggerChargeTime", 3f, 0f, 30f, 0.5f, SluggerOption);
-        SluggerCoolTime = Create(904, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 20f, 2.5f, 60f, 2.5f, SluggerOption);
-        SluggerIsMultiKill = Create(905, false, CustomOptionType.Impostor, "SluggerIsMultiKill", false, SluggerOption);
-        SluggerIsKillCoolSync = Create(1030, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, SluggerOption);
+        SluggerOption = SetupCustomRoleOption(200100, false, RoleId.Slugger);
+        SluggerPlayerCount = Create(200101, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SluggerOption);
+        SluggerChargeTime = Create(200102, false, CustomOptionType.Impostor, "SluggerChargeTime", 3f, 0f, 30f, 0.5f, SluggerOption);
+        SluggerCoolTime = Create(200103, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 20f, 2.5f, 60f, 2.5f, SluggerOption);
+        SluggerIsMultiKill = Create(200104, false, CustomOptionType.Impostor, "SluggerIsMultiKill", false, SluggerOption);
+        SluggerIsKillCoolSync = Create(200105, false, CustomOptionType.Impostor, "IsSyncKillCoolTime", false, SluggerOption);
 
         Conjurer.SetupCustomOptions();
 
-        EvilHackerOption = SetupCustomRoleOption(424, false, RoleId.EvilHacker);
-        EvilHackerPlayerCount = Create(425, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
-        EvilHackerCanMoveWhenUsesAdmin = Create(1017, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
-        EvilHackerMadmateSetting = Create(426, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
+        EvilHackerOption = SetupCustomRoleOption(200300, false, RoleId.EvilHacker);
+        EvilHackerPlayerCount = Create(200301, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
+        EvilHackerCanMoveWhenUsesAdmin = Create(200302, false, CustomOptionType.Impostor, "CanMoveWhenUsesAdmin", false, EvilHackerOption);
+        EvilHackerMadmateSetting = Create(200304, false, CustomOptionType.Impostor, "CreateMadmateSetting", false, EvilHackerOption);
 
-        EvilGuesserOption = SetupCustomRoleOption(1071, false, RoleId.EvilGuesser);
-        EvilGuesserPlayerCount = Create(974, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
-        EvilGuesserShortMaxCount = Create(975, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
-        EvilGuesserShortOneMeetingCount = Create(976, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
-        EvilGuesserCanShotCrew = Create(1267, false, CustomOptionType.Impostor, "EvilGuesserCanCrewShotSetting", true, EvilGuesserOption);
+        EvilGuesserOption = SetupCustomRoleOption(200400, false, RoleId.EvilGuesser);
+        EvilGuesserPlayerCount = Create(200401, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
+        EvilGuesserShortMaxCount = Create(200402, false, CustomOptionType.Impostor, "EvilGuesserShortMaxCountSetting", 2f, 1f, 15f, 1f, EvilGuesserOption);
+        EvilGuesserShortOneMeetingCount = Create(200403, false, CustomOptionType.Impostor, "EvilGuesserOneMeetingShortSetting", true, EvilGuesserOption);
+        EvilGuesserCanShotCrew = Create(200404, false, CustomOptionType.Impostor, "EvilGuesserCanCrewShotSetting", true, EvilGuesserOption);
 
-        AssassinAndMarlinOption = new(386, true, CustomOptionType.Impostor, "AssassinAndMarlinName", Color.white, 1)
+        AssassinAndMarlinOption = new(200500, true, CustomOptionType.Impostor, "AssassinAndMarlinName", Color.white, 1)
         {
             RoleId = RoleId.Assassin
         };
-        AssassinPlayerCount = Create(387, true, CustomOptionType.Impostor, "AssassinSettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], AssassinAndMarlinOption);
-        AssassinViewVote = Create(1145, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
-        MarlinPlayerCount = Create(388, true, CustomOptionType.Impostor, "MarlinSettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AssassinAndMarlinOption);
-        MarlinViewVote = Create(1146, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
+        AssassinPlayerCount = Create(200501, true, CustomOptionType.Impostor, "AssassinSettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], AssassinAndMarlinOption);
+        AssassinViewVote = Create(200502, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
+        MarlinPlayerCount = Create(200503, true, CustomOptionType.Impostor, "MarlinSettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AssassinAndMarlinOption);
+        MarlinViewVote = Create(200504, true, CustomOptionType.Impostor, "GodViewVoteSetting", false, AssassinAndMarlinOption);
 
-        PenguinOption = SetupCustomRoleOption(1082, false, RoleId.Penguin);
-        PenguinPlayerCount = Create(1087, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PenguinOption);
-        PenguinCoolTime = Create(1088, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, PenguinOption, format: "unitSeconds");
-        PenguinDurationTime = Create(1089, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
-        PenguinCanDefaultKill = Create(1090, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
-        PenguinMeetingKill = Create(1251, false, CustomOptionType.Impostor, "PenguinMeetingKill", true, PenguinOption);
+        PenguinOption = SetupCustomRoleOption(200600, false, RoleId.Penguin);
+        PenguinPlayerCount = Create(200601, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PenguinOption);
+        PenguinCoolTime = Create(200602, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 2.5f, 60f, 2.5f, PenguinOption, format: "unitSeconds");
+        PenguinDurationTime = Create(200603, false, CustomOptionType.Impostor, "NiceScientistDurationSetting", 10f, 2.5f, 30f, 2.5f, PenguinOption, format: "unitSeconds");
+        PenguinCanDefaultKill = Create(200604, false, CustomOptionType.Impostor, "PenguinCanDefaultKill", false, PenguinOption);
+        PenguinMeetingKill = Create(200605, false, CustomOptionType.Impostor, "PenguinMeetingKill", true, PenguinOption);
 
-        DoppelgangerOption = SetupCustomRoleOption(986, true, RoleId.Doppelganger);
-        DoppelgangerPlayerCount = Create(987, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
-        DoppelgangerDurationTime = Create(988, true, CustomOptionType.Impostor, "DoppelgangerDurationTimeSetting", 90f, 0f, 250f, 5f, DoppelgangerOption);
-        DoppelgangerCoolTime = Create(989, true, CustomOptionType.Impostor, "DoppelgangerCooldownSetting", 5f, 5f, 60f, 2.5f, DoppelgangerOption);
-        DoppelgangerSucTime = Create(990, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
-        DoppelgangerNotSucTime = Create(991, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
+        DoppelgangerOption = SetupCustomRoleOption(200700, true, RoleId.Doppelganger);
+        DoppelgangerPlayerCount = Create(200701, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoppelgangerOption);
+        DoppelgangerDurationTime = Create(200702, true, CustomOptionType.Impostor, "DoppelgangerDurationTimeSetting", 90f, 0f, 250f, 5f, DoppelgangerOption);
+        DoppelgangerCoolTime = Create(200703, true, CustomOptionType.Impostor, "DoppelgangerCooldownSetting", 5f, 5f, 60f, 2.5f, DoppelgangerOption);
+        DoppelgangerSucTime = Create(200704, true, CustomOptionType.Impostor, "DoppelgangerSucTimeSetting", 2.5f, 0f, 120f, 2.5f, DoppelgangerOption);
+        DoppelgangerNotSucTime = Create(200705, true, CustomOptionType.Impostor, "DoppelgangerNotSucTimeSetting", 40f, 0f, 120f, 2.5f, DoppelgangerOption);
 
-        MatryoshkaOption = SetupCustomRoleOption(849, false, RoleId.Matryoshka);
-        MatryoshkaPlayerCount = Create(850, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MatryoshkaOption);
-        MatryoshkaWearLimit = Create(851, false, CustomOptionType.Impostor, "MatryoshkaWearLimit", 3f, 1f, 15f, 1f, MatryoshkaOption);
-        MatryoshkaWearReport = Create(852, false, CustomOptionType.Impostor, "MatryoshkaWearReport", true, MatryoshkaOption);
-        MatryoshkaWearTime = Create(853, false, CustomOptionType.Impostor, "MatryoshkaWearTime", 7.5f, 0.5f, 60f, 0.5f, MatryoshkaOption);
-        MatryoshkaAddKillCoolTime = Create(854, false, CustomOptionType.Impostor, "MatryoshkaAddKillCoolTime", 2.5f, 0f, 30f, 0.5f, MatryoshkaOption);
-        MatryoshkaCoolTime = Create(855, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 0f, 180f, 2.5f, MatryoshkaOption);
+        MatryoshkaOption = SetupCustomRoleOption(200800, false, RoleId.Matryoshka);
+        MatryoshkaPlayerCount = Create(200801, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MatryoshkaOption);
+        MatryoshkaWearLimit = Create(200802, false, CustomOptionType.Impostor, "MatryoshkaWearLimit", 3f, 1f, 15f, 1f, MatryoshkaOption);
+        MatryoshkaWearReport = Create(200803, false, CustomOptionType.Impostor, "MatryoshkaWearReport", true, MatryoshkaOption);
+        MatryoshkaWearTime = Create(200804, false, CustomOptionType.Impostor, "MatryoshkaWearTime", 7.5f, 0.5f, 60f, 0.5f, MatryoshkaOption);
+        MatryoshkaAddKillCoolTime = Create(200805, false, CustomOptionType.Impostor, "MatryoshkaAddKillCoolTime", 2.5f, 0f, 30f, 0.5f, MatryoshkaOption);
+        MatryoshkaCoolTime = Create(200806, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 30f, 0f, 180f, 2.5f, MatryoshkaOption);
 
-        VampireOption = SetupCustomRoleOption(307, false, RoleId.Vampire);
-        VampirePlayerCount = Create(308, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VampireOption);
-        VampireKillDelay = Create(309, false, CustomOptionType.Impostor, "VampireKillDelay", 10f, 1f, 60f, 0.5f, VampireOption, format: "unitSeconds");
-        VampireViewBloodStainsTurn = Create(1074, false, CustomOptionType.Impostor, "VampireViewBloodStainsTurn", 1f, 1f, 15f, 1f, VampireOption, format: "unitSeconds");
-        VampireCanCreateDependents = Create(1075, false, CustomOptionType.Impostor, "VampireCanCreateDependents", true, VampireOption);
-        VampireCreateDependentsCoolTime = Create(1076, false, CustomOptionType.Impostor, "VampireCreateDependentsCoolTime", 30f, 2.5f, 120f, 2.5f, VampireCanCreateDependents);
-        VampireDependentsKillCoolTime = Create(1077, false, CustomOptionType.Impostor, "VampireDependentsKillCoolTime", 30f, 2.5f, 120f, 2.5f, VampireCanCreateDependents);
-        VampireDependentsCanVent = Create(1078, false, CustomOptionType.Impostor, "VampireDependentsCanVent", true, VampireCanCreateDependents);
+        VampireOption = SetupCustomRoleOption(200900, false, RoleId.Vampire);
+        VampirePlayerCount = Create(200901, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VampireOption);
+        VampireKillDelay = Create(200902, false, CustomOptionType.Impostor, "VampireKillDelay", 10f, 1f, 60f, 0.5f, VampireOption, format: "unitSeconds");
+        VampireViewBloodStainsTurn = Create(200903, false, CustomOptionType.Impostor, "VampireViewBloodStainsTurn", 1f, 1f, 15f, 1f, VampireOption, format: "unitSeconds");
+        VampireCanCreateDependents = Create(200904, false, CustomOptionType.Impostor, "VampireCanCreateDependents", true, VampireOption);
+        VampireCreateDependentsCoolTime = Create(200905, false, CustomOptionType.Impostor, "VampireCreateDependentsCoolTime", 30f, 2.5f, 120f, 2.5f, VampireCanCreateDependents);
+        VampireDependentsKillCoolTime = Create(200906, false, CustomOptionType.Impostor, "VampireDependentsKillCoolTime", 30f, 2.5f, 120f, 2.5f, VampireCanCreateDependents);
+        VampireDependentsCanVent = Create(200907, false, CustomOptionType.Impostor, "VampireDependentsCanVent", true, VampireCanCreateDependents);
 
-        KunoichiOption = SetupCustomRoleOption(638, false, RoleId.Kunoichi);
-        KunoichiPlayerCount = Create(639, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], KunoichiOption);
-        KunoichiCoolTime = Create(640, false, CustomOptionType.Impostor, "KunoichiCoolTime", 2.5f, 0f, 15f, 0.5f, KunoichiOption);
-        KunoichiKillKunai = Create(641, false, CustomOptionType.Impostor, "KunoichiKillKunai", 10f, 1f, 20f, 1f, KunoichiOption);
-        KunoichiIsHide = Create(642, false, CustomOptionType.Impostor, "KunoichiIsHide", true, KunoichiOption);
-        KunoichiIsWaitAndPressTheButtonToHide = Create(907, false, CustomOptionType.Impostor, "KunoichiIsWaitAndPressTheButtonToHide", true, KunoichiIsHide);
-        KunoichiHideTime = Create(643, false, CustomOptionType.Impostor, "KunoichiHideTime", 3f, 0.5f, 10f, 0.5f, KunoichiIsHide);
-        KunoichiHideKunai = Create(644, false, CustomOptionType.Impostor, "KunoichiHideKunai", false, KunoichiIsHide);
+        KunoichiOption = SetupCustomRoleOption(201000, false, RoleId.Kunoichi);
+        KunoichiPlayerCount = Create(201001, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], KunoichiOption);
+        KunoichiCoolTime = Create(201002, false, CustomOptionType.Impostor, "KunoichiCoolTime", 2.5f, 0f, 15f, 0.5f, KunoichiOption);
+        KunoichiKillKunai = Create(201003, false, CustomOptionType.Impostor, "KunoichiKillKunai", 10f, 1f, 20f, 1f, KunoichiOption);
+        KunoichiIsHide = Create(201004, false, CustomOptionType.Impostor, "KunoichiIsHide", true, KunoichiOption);
+        KunoichiIsWaitAndPressTheButtonToHide = Create(201005, false, CustomOptionType.Impostor, "KunoichiIsWaitAndPressTheButtonToHide", true, KunoichiIsHide);
+        KunoichiHideTime = Create(201006, false, CustomOptionType.Impostor, "KunoichiHideTime", 3f, 0.5f, 10f, 0.5f, KunoichiIsHide);
+        KunoichiHideKunai = Create(201007, false, CustomOptionType.Impostor, "KunoichiHideKunai", false, KunoichiIsHide);
 
         SerialKillerOption = SetupCustomRoleOption(236, true, RoleId.SerialKiller);
         SerialKillerPlayerCount = Create(237, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SerialKillerOption);
