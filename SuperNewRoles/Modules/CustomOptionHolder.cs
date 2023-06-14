@@ -1320,7 +1320,7 @@ public class CustomOptionHolder
         SecretlyKillerSecretKillLimit = Create(204905, false, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 99f, 1f, SecretlyKillerOption);
         SecretlyKillerSecretKillCoolTime = Create(204906, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 45f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
 
-        DoubleKillerOption = SetupCustomRoleOption(205000 false, RoleId.DoubleKiller);
+        DoubleKillerOption = SetupCustomRoleOption(205000, false, RoleId.DoubleKiller);
         DoubleKillerPlayerCount = Create(205001, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoubleKillerOption);
         MainKillCoolTime = Create(205002, false, CustomOptionType.Impostor, "MainCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, DoubleKillerOption, format: "unitSeconds");
         SubKillCoolTime = Create(205003, false, CustomOptionType.Impostor, "SubCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, DoubleKillerOption, format: "unitSeconds");
