@@ -1968,13 +1968,25 @@ public class CustomOptionHolder
 
         /* |: ========================= Roles Settings ========================== :| */
 
-        Logger.Info("---------- SettingId Info start ----------", "SettingId Info");
+        Logger.Info("---------- CustomOption Id Info start ----------", "CustomOptionId Info");
+
+        Logger.Info("---------- SettingRoleId Info----------", "SettingRoleId Info");
+        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(GenericIdMax), "Generic");
+        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(ImpostorIdMax), "Impostor");
+        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(NeutralIdMax), "Neutral");
+        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(CrewmateIdMax), "Crewmate");
+        Logger.Info("SettingRoleIdのMax:" + GetRoleSettingid(ModifierIdMax), "Modifier");
+
+        Logger.Info("---------- SettingId Info----------", "SettingId Info");
         Logger.Info("CustomOptionのIdのMax:" + GenericIdMax, "Generic");
         Logger.Info("CustomOptionのIdのMax:" + ImpostorIdMax, "Impostor");
         Logger.Info("CustomOptionのIdのMax:" + NeutralIdMax, "Neutral");
         Logger.Info("CustomOptionのIdのMax:" + CrewmateIdMax, "Crewmate");
         Logger.Info("CustomOptionのIdのMax:" + ModifierIdMax, "Modifier");
         Logger.Info("設定数:" + options.Count);
-        Logger.Info("---------- SettingId Info End ----------", "SettingId Info");
+
+        Logger.Info("---------- CustomOption Id Info End ----------", "CustomOptionId Info");
     }
+    private static int GetRoleSettingid(int maxId) => maxId / 100;
 }
+
