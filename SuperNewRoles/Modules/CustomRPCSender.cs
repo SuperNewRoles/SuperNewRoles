@@ -1,8 +1,8 @@
 using System;
 using AmongUs.GameOptions;
 using Hazel;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using InnerNet;
-using UnhollowerBaseLib;
 //TOHの開発者さんたち(主に空き瓶さん)ありがとうございます
 
 namespace SuperNewRoles.Modules;

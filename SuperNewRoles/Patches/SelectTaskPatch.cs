@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
@@ -20,7 +21,7 @@ public static class SelectTask
         public static void Prefix(
             GameData __instance,
             [HarmonyArgument(0)] byte playerId,
-            [HarmonyArgument(1)] ref UnhollowerBaseLib.Il2CppStructArray<byte> taskTypeIds)
+            [HarmonyArgument(1)] ref Il2CppStructArray<byte> taskTypeIds)
         {
             if (GameData.Instance.GetPlayerById(playerId).Object.IsBot() || taskTypeIds.Length == 0)
             {
@@ -31,7 +32,7 @@ public static class SelectTask
             {
                 var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
                 var TasksList = ModHelpers.GenerateTasks(__instance.GetPlayerById(playerId).Object, commont, shortt, longt);
-                taskTypeIds = new UnhollowerBaseLib.Il2CppStructArray<byte>(TasksList.Count);
+                taskTypeIds = new Il2CppStructArray<byte>(TasksList.Count);
                 for (int i = 0; i < TasksList.Count; i++)
                 {
                     taskTypeIds[i] = TasksList[i];

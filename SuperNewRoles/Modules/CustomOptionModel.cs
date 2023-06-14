@@ -342,10 +342,18 @@ public class CustomRoleOption : CustomOption
     {
         try
         {
-            this.RoleId = IntroData.IntroList.FirstOrDefault((_) =>
+            IntroData? intro = IntroData.IntroList.FirstOrDefault((_) =>
             {
                 return _.NameKey + "Name" == name;
-            }).RoleId;
+            });
+            if (intro != null)
+            {
+                this.RoleId = intro.RoleId;
+            }
+            else
+            {
+                Logger.Info("RoleId取得できませんでした:" + name, "CustomRoleOption");
+            }
         }
         catch
         {
