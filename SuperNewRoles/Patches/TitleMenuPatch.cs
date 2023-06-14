@@ -30,7 +30,8 @@ public class MainMenuStartPatch
         var textDiscord = buttonDiscord.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
         __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
         {
-            textDiscord.SetText("Discord");
+            if (textDiscord != null)
+                textDiscord.SetText("Discord");
         })));
 
         PassiveButton passiveButtonDiscord = buttonDiscord.GetComponent<PassiveButton>();

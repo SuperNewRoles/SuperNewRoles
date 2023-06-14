@@ -275,7 +275,8 @@ public static class CredentialsPatch
             }
 
             var snrLogo = new GameObject("bannerLogo");
-            snrLogo.transform.position = Vector3.up;
+            snrLogo.transform.position = new(2, 1, 0);
+            //snrLogo.transform.localScale = Vector3.one;
             renderer = snrLogo.AddComponent<SpriteRenderer>();
 
             LoadSprites();
