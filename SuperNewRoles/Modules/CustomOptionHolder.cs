@@ -1952,8 +1952,12 @@ public class CustomOptionHolder
         LoversLongTask = loversoption.Item3;
 
         /* |: ========================= Roles Settings ========================== :| */
-
-        SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:" + Max);
-        SuperNewRolesPlugin.Logger.LogInfo("設定数:" + options.Count);
+        Logger.Info("----------  ");
+        Logger.Info("RoleSettingIdのMax:" + GenericIdMax, "Generic");
+        Logger.Info("RoleSettingIdのMax:" + ImpostorIdMax, "Impostor");
+        Logger.Info("RoleSettingIdのMax:" + NeutralIdMax, "Neutral");
+        Logger.Info("RoleSettingIdのMax:" + CrewmateIdMax, "Crewmate");
+        Logger.Info("RoleSettingIdのMax:" + ModifierIdMax, "Modifier");
+        Logger.Info("設定数:" + options.Count);
     }
 }

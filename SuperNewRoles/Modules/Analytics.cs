@@ -77,7 +77,7 @@ public static class Analytics
         foreach (CustomOption opt in CustomOption.options)
         {
             if (opt.GetSelection() == 0) continue;
-            Options += $"{opt.id}:{opt.GetSelection()},";
+            Options += $"{opt.roleSettingId}:{opt.GetSelection()},";
         }
         if (Options.Length >= 1)
         {
