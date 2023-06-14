@@ -2,13 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AmongUs.Data;
 using AmongUs.GameOptions;
-using BepInEx.IL2CPP.Utils;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
-using Sentry;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Helpers;
@@ -773,7 +771,7 @@ public static class RPCProcedure
             else
             {
                 airshipStatus.GapPlatform.StopAllCoroutines();
-                airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform));
+                airshipStatus.GapPlatform.StartCoroutine(Roles.Impostor.Nun.NotMoveUsePlatform(airshipStatus.GapPlatform).WrapToIl2Cpp());
             }
         }
     }
