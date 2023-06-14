@@ -1279,62 +1279,62 @@ public class CustomOptionHolder
         LevelingerReviveXP = Create(204009, false, CustomOptionType.Impostor, "LevelingerReviveXPSetting", false, LevelingerOption);
         LevelingerUseXPRevive = Create(204010, false, CustomOptionType.Impostor, "LevelingerUseXPReviveSetting", 5f, 0f, 20f, 1f, LevelingerReviveXP);
 
-        EvilMovingOption = SetupCustomRoleOption(257, false, RoleId.EvilMoving);
-        EvilMovingPlayerCount = Create(258, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilMovingOption);
-        EvilMovingCoolTime = Create(259, false, CustomOptionType.Impostor, "MovingCooldownSetting", 30f, 0f, 60f, 2.5f, EvilMovingOption);
+        EvilMovingOption = SetupCustomRoleOption(204100, false, RoleId.EvilMoving);
+        EvilMovingPlayerCount = Create(204101, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilMovingOption);
+        EvilMovingCoolTime = Create(204102, false, CustomOptionType.Impostor, "MovingCooldownSetting", 30f, 0f, 60f, 2.5f, EvilMovingOption);
 
-        SideKillerOption = SetupCustomRoleOption(262, false, RoleId.SideKiller);
-        SideKillerPlayerCount = Create(263, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SideKillerOption);
-        SideKillerKillCoolTime = Create(264, false, CustomOptionType.Impostor, "SideKillerKillCoolTimeSetting", 45f, 0f, 75f, 2.5f, SideKillerOption);
-        SideKillerMadKillerKillCoolTime = Create(265, false, CustomOptionType.Impostor, "SideKillerMadKillerKillCoolTimeSetting", 45f, 0f, 75f, 2.5f, SideKillerOption);
+        SideKillerOption = SetupCustomRoleOption(204200, false, RoleId.SideKiller);
+        SideKillerPlayerCount = Create(204201, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SideKillerOption);
+        SideKillerKillCoolTime = Create(204202, false, CustomOptionType.Impostor, "SideKillerKillCoolTimeSetting", 45f, 0f, 75f, 2.5f, SideKillerOption);
+        SideKillerMadKillerKillCoolTime = Create(204203, false, CustomOptionType.Impostor, "SideKillerMadKillerKillCoolTimeSetting", 45f, 0f, 75f, 2.5f, SideKillerOption);
 
-        SurvivorOption = SetupCustomRoleOption(266, true, RoleId.Survivor);
-        SurvivorPlayerCount = Create(267, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SurvivorOption);
-        SurvivorKillCoolTime = Create(268, true, CustomOptionType.Impostor, "SurvivorKillCoolTimeSetting", 15f, 0f, 75f, 2.5f, SurvivorOption);
+        SurvivorOption = SetupCustomRoleOption(204300, true, RoleId.Survivor);
+        SurvivorPlayerCount = Create(204301, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SurvivorOption);
+        SurvivorKillCoolTime = Create(204302, true, CustomOptionType.Impostor, "SurvivorKillCoolTimeSetting", 15f, 0f, 75f, 2.5f, SurvivorOption);
 
-        DarkKillerOption = SetupCustomRoleOption(315, true, RoleId.DarkKiller);
-        DarkKillerPlayerCount = Create(316, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DarkKillerOption);
-        DarkKillerKillCoolTime = Create(317, true, CustomOptionType.Impostor, "DarkKillerKillCoolSetting", 20f, 2.5f, 60f, 2.5f, DarkKillerOption);
+        DarkKillerOption = SetupCustomRoleOption(204400, true, RoleId.DarkKiller);
+        DarkKillerPlayerCount = Create(204401, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DarkKillerOption);
+        DarkKillerKillCoolTime = Create(204402, true, CustomOptionType.Impostor, "DarkKillerKillCoolSetting", 20f, 2.5f, 60f, 2.5f, DarkKillerOption);
 
-        CleanerOption = SetupCustomRoleOption(396, false, RoleId.Cleaner);
-        CleanerPlayerCount = Create(397, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CleanerOption);
-        CleanerKillCoolTime = Create(398, false, CustomOptionType.Impostor, "CleanerKillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, CleanerOption, format: "unitSeconds");
-        CleanerCooldown = Create(399, false, CustomOptionType.Impostor, "CleanerCooldownSetting", 60f, 40f, 70f, 2.5f, CleanerOption, format: "unitSeconds");
+        CleanerOption = SetupCustomRoleOption(204500, false, RoleId.Cleaner);
+        CleanerPlayerCount = Create(204501, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CleanerOption);
+        CleanerKillCoolTime = Create(204502, false, CustomOptionType.Impostor, "CleanerKillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, CleanerOption, format: "unitSeconds");
+        CleanerCooldown = Create(204503, false, CustomOptionType.Impostor, "CleanerCooldownSetting", 60f, 40f, 70f, 2.5f, CleanerOption, format: "unitSeconds");
 
-        VentMakerOption = SetupCustomRoleOption(415, false, RoleId.VentMaker);
-        VentMakerPlayerCount = Create(416, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VentMakerOption);
+        VentMakerOption = SetupCustomRoleOption(204600, false, RoleId.VentMaker);
+        VentMakerPlayerCount = Create(204601, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VentMakerOption);
 
-        PositionSwapperOption = SetupCustomRoleOption(609, false, RoleId.PositionSwapper);
-        PositionSwapperPlayerCount = Create(610, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PositionSwapperOption);
-        PositionSwapperSwapCount = Create(611, false, CustomOptionType.Impostor, "SettingPositionSwapperSwapCountName", 1f, 0f, 99f, 1f, PositionSwapperOption);
-        PositionSwapperCoolTime = Create(616, false, CustomOptionType.Impostor, "SettingPositionSwapperSwapCoolTimeName", 2.5f, 2.5f, 90f, 2.5f, PositionSwapperOption);
+        PositionSwapperOption = SetupCustomRoleOption(204700, false, RoleId.PositionSwapper);
+        PositionSwapperPlayerCount = Create(204701, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PositionSwapperOption);
+        PositionSwapperSwapCount = Create(204702, false, CustomOptionType.Impostor, "SettingPositionSwapperSwapCountName", 1f, 0f, 99f, 1f, PositionSwapperOption);
+        PositionSwapperCoolTime = Create(204703, false, CustomOptionType.Impostor, "SettingPositionSwapperSwapCoolTimeName", 2.5f, 2.5f, 90f, 2.5f, PositionSwapperOption);
 
-        MafiaOption = SetupCustomRoleOption(602, true, RoleId.Mafia);
-        MafiaPlayerCount = Create(603, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MafiaOption);
+        MafiaOption = SetupCustomRoleOption(204800, true, RoleId.Mafia);
+        MafiaPlayerCount = Create(204801, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MafiaOption);
 
-        SecretlyKillerOption = SetupCustomRoleOption(607, false, RoleId.SecretlyKiller);
-        SecretlyKillerPlayerCount = Create(608, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SecretlyKillerOption);
-        SecretlyKillerKillCoolTime = Create(632, false, CustomOptionType.Impostor, "SheriffCooldownSetting", 2.5f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
-        SecretlyKillerIsKillCoolTimeChange = Create(633, false, CustomOptionType.Impostor, "SettingCoolCharge", true, SecretlyKillerOption);
-        SecretlyKillerIsBlackOutKillCharge = Create(634, false, CustomOptionType.Impostor, "SettingBlackoutCharge", false, SecretlyKillerOption);
-        SecretlyKillerSecretKillLimit = Create(635, false, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 99f, 1f, SecretlyKillerOption);
-        SecretlyKillerSecretKillCoolTime = Create(636, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 45f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
+        SecretlyKillerOption = SetupCustomRoleOption(204900, false, RoleId.SecretlyKiller);
+        SecretlyKillerPlayerCount = Create(204901, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SecretlyKillerOption);
+        SecretlyKillerKillCoolTime = Create(204902, false, CustomOptionType.Impostor, "SheriffCooldownSetting", 2.5f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
+        SecretlyKillerIsKillCoolTimeChange = Create(204903, false, CustomOptionType.Impostor, "SettingCoolCharge", true, SecretlyKillerOption);
+        SecretlyKillerIsBlackOutKillCharge = Create(204904, false, CustomOptionType.Impostor, "SettingBlackoutCharge", false, SecretlyKillerOption);
+        SecretlyKillerSecretKillLimit = Create(204905, false, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 99f, 1f, SecretlyKillerOption);
+        SecretlyKillerSecretKillCoolTime = Create(204906, false, CustomOptionType.Impostor, "NiceScientistCooldownSetting", 45f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
 
-        DoubleKillerOption = SetupCustomRoleOption(647, false, RoleId.DoubleKiller);
-        DoubleKillerPlayerCount = Create(648, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoubleKillerOption);
-        MainKillCoolTime = Create(649, false, CustomOptionType.Impostor, "MainCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, DoubleKillerOption, format: "unitSeconds");
-        SubKillCoolTime = Create(650, false, CustomOptionType.Impostor, "SubCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, DoubleKillerOption, format: "unitSeconds");
-        DoubleKillerSabo = Create(651, false, CustomOptionType.Impostor, "DoubleKillerSaboSetting", false, DoubleKillerOption);
-        DoubleKillerVent = Create(652, false, CustomOptionType.Impostor, "MinimalistVentSetting", false, DoubleKillerOption);
+        DoubleKillerOption = SetupCustomRoleOption(205000 false, RoleId.DoubleKiller);
+        DoubleKillerPlayerCount = Create(205001, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoubleKillerOption);
+        MainKillCoolTime = Create(205002, false, CustomOptionType.Impostor, "MainCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, DoubleKillerOption, format: "unitSeconds");
+        SubKillCoolTime = Create(205003, false, CustomOptionType.Impostor, "SubCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, DoubleKillerOption, format: "unitSeconds");
+        DoubleKillerSabo = Create(205004, false, CustomOptionType.Impostor, "DoubleKillerSaboSetting", false, DoubleKillerOption);
+        DoubleKillerVent = Create(205005, false, CustomOptionType.Impostor, "MinimalistVentSetting", false, DoubleKillerOption);
 
-        SmasherOption = SetupCustomRoleOption(653, false, RoleId.Smasher);
-        SmasherPlayerCount = Create(654, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SmasherOption);
-        SmasherKillCoolTime = Create(655, false, CustomOptionType.Impostor, "KillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, SmasherOption, format: "unitSeconds");
+        SmasherOption = SetupCustomRoleOption(205100, false, RoleId.Smasher);
+        SmasherPlayerCount = Create(205101, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SmasherOption);
+        SmasherKillCoolTime = Create(205102, false, CustomOptionType.Impostor, "KillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, SmasherOption, format: "unitSeconds");
 
-        WerewolfOption = new(1057, false, CustomOptionType.Impostor, "WerewolfName", RoleClass.Werewolf.color, 1);
-        WerewolfPlayerCount = Create(1051, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
+        WerewolfOption = new(205200, false, CustomOptionType.Impostor, "WerewolfName", RoleClass.Werewolf.color, 1);
+        WerewolfPlayerCount = Create(205201, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
 
-        // SetupImpostorCustomOptions // [ ]MEMO:インポスター陣営
+        // SetupImpostorCustomOptions
 
         /* |: ========================= Neutral Settings ========================== :| */
 
