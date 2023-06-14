@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles.Neutral;
 
 public class TheThreeLittlePigs
 {
-    private const int OptionId = 300800;
+    private const int OptionId = 301700;
     private const CustomOptionType type = CustomOptionType.Neutral;
     public static CustomRoleOption TheThreeLittlePigsOption;
     public static CustomOption TheThreeLittlePigsTeamCount;
