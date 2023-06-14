@@ -31,7 +31,7 @@ public class CustomOption
     public static List<CustomOption> options = new();
     public static int preset = 0;
 
-    public int roleSettingId;
+    public int id;
     public bool isSHROn;
     public CustomOptionType type;
     public string name;
@@ -88,9 +88,9 @@ public class CustomOption
 
     }
 
-    public CustomOption(int RoleSettingId, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
+    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
     {
-        this.roleSettingId = RoleSettingId;
+        this.id = Id;
         this.isSHROn = IsSHROn;
         this.type = type;
         this.name = name;
@@ -110,38 +110,38 @@ public class CustomOption
 
         selection = 0;
 
-        entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", RoleSettingId.ToString(), defaultSelection);
+        entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", Id.ToString(), defaultSelection);
         selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
 
-        bool duplication = options.Any(x => x.roleSettingId == RoleSettingId);
-        string duplicationString = $"CustomOptionのRoleSettingId({RoleSettingId})が重複しています。";
+        bool duplication = options.Any(x => x.id == Id);
+        string duplicationString = $"CustomOptionのId({Id})が重複しています。";
 
-        SettingPattern pattern = GetSettingPattern(RoleSettingId);
+        SettingPattern pattern = GetSettingPattern(Id);
         switch (pattern)
         {
             case SettingPattern.ErrorId:
-                Logger.Info($"CustomOptionのId({RoleSettingId})は Id規則に従っていません。",$"{SettingPattern.ErrorId}");
-                if (duplication) Logger.Info(duplicationString,$"{SettingPattern.ErrorId}");
+                Logger.Info($"CustomOptionのId({Id})は Id規則に従っていません。", $"{SettingPattern.ErrorId}");
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.ErrorId}");
                 break;
             case SettingPattern.GenericId:
-                if (GenericIdMax < RoleSettingId) GenericIdMax = RoleSettingId;
-                if (duplication) Logger.Info(duplicationString,$"{SettingPattern.GenericId}");
+                if (GenericIdMax < Id) GenericIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.GenericId}");
                 break;
             case SettingPattern.ImpostorId:
-                if (ImpostorIdMax < RoleSettingId) ImpostorIdMax = RoleSettingId;
-                if (duplication) Logger.Info(duplicationString,$"{SettingPattern.ImpostorId}");
+                if (ImpostorIdMax < Id) ImpostorIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.ImpostorId}");
                 break;
             case SettingPattern.NeutralId:
-                if (NeutralIdMax < RoleSettingId) NeutralIdMax = RoleSettingId;
-                if (duplication) Logger.Info(duplicationString,$"{SettingPattern.NeutralId}");
+                if (NeutralIdMax < Id) NeutralIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.NeutralId}");
                 break;
             case SettingPattern.CrewmateId:
-                if (CrewmateIdMax < RoleSettingId) CrewmateIdMax = RoleSettingId;
-                if (duplication) Logger.Info(duplicationString,$"{SettingPattern.CrewmateId}");
+                if (CrewmateIdMax < Id) CrewmateIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.CrewmateId}");
                 break;
             case SettingPattern.ModifierId:
-                if (ModifierIdMax < RoleSettingId) ModifierIdMax = RoleSettingId;
-                if (duplication) Logger.Info(duplicationString,$"{SettingPattern.ModifierId}");
+                if (ModifierIdMax < Id) ModifierIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.ModifierId}");
                 break;
         }
         options.Add(this);
@@ -155,11 +155,11 @@ public class CustomOption
 
     private SettingPattern GetSettingPattern(int id)
     {
-        if (id is >= 1000 and < 2000) return SettingPattern.GenericId;
-        if (id is >= 2000 and < 3000) return SettingPattern.ImpostorId;
-        if (id is >= 3000 and < 4000) return SettingPattern.NeutralId;
-        if (id is >= 4000 and < 5000) return SettingPattern.CrewmateId;
-        if (id is >= 5000 and < 6000) return SettingPattern.ModifierId;
+        if (id is >= 100000 and < 200000) return SettingPattern.GenericId;
+        if (id is >= 200000 and < 300000) return SettingPattern.ImpostorId;
+        if (id is >= 300000 and < 400000) return SettingPattern.NeutralId;
+        if (id is >= 400000 and < 500000) return SettingPattern.CrewmateId;
+        if (id is >= 500000 and < 600000) return SettingPattern.ModifierId;
 
         return SettingPattern.ErrorId;
     }
@@ -167,11 +167,11 @@ public class CustomOption
     private enum SettingPattern
     {
         ErrorId = 0,
-        GenericId = 1000,
-        ImpostorId = 2000,
-        NeutralId = 3000,
-        CrewmateId = 4000,
-        ModifierId = 5000,
+        GenericId = 100000,
+        ImpostorId = 200000,
+        NeutralId = 300000,
+        CrewmateId = 400000,
+        ModifierId = 500000,
     }
     public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
     {
@@ -211,9 +211,9 @@ public class CustomOption
         CustomOption.preset = newPreset;
         foreach (CustomOption option in CustomOption.options)
         {
-            if (option.roleSettingId <= 0) continue;
+            if (option.id <= 0) continue;
 
-            option.entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", option.roleSettingId.ToString(), option.defaultSelection);
+            option.entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", option.id.ToString(), option.defaultSelection);
             option.selection = Mathf.Clamp(option.entry.Value, 0, option.selections.Length - 1);
             if (option.optionBehaviour is not null and StringOption stringOption)
             {
@@ -229,7 +229,7 @@ public class CustomOption
 
         MessageWriter messageWriter = RPCHelper.StartRPC(CustomRPC.ShareOptions);
         messageWriter.WritePacked((uint)1);
-        messageWriter.WritePacked((uint)opt.roleSettingId);
+        messageWriter.WritePacked((uint)opt.id);
         messageWriter.WritePacked(Convert.ToUInt32(opt.selection));
         messageWriter.EndRPC();
     }
@@ -255,7 +255,7 @@ public class CustomOption
             {
                 if (options.Count <= count) break;
                 CustomOption option = options[count];
-                messageWriter.WritePacked((uint)option.roleSettingId);
+                messageWriter.WritePacked((uint)option.id);
                 messageWriter.WritePacked(Convert.ToUInt32(option.selection));
                 count++;
             }
@@ -325,7 +325,7 @@ public class CustomOption
 
             if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
             {
-                if (roleSettingId == 0) SwitchPreset(selection); // Switch presets
+                if (id == 0) SwitchPreset(selection); // Switch presets
                 else if (entry != null && AmongUsClient.Instance.AmHost && RegulationData.Selected == 0)
                 {
                     entry.Value = selection;
@@ -415,7 +415,7 @@ public class CustomOptionBlank : CustomOption
     public CustomOptionBlank(CustomOption parent)
     {
         this.parent = parent;
-        this.roleSettingId = -1;
+        this.id = -1;
         this.name = "";
         this.isHeader = false;
         this.isHidden = true;

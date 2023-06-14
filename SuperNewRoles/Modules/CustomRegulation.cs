@@ -107,7 +107,7 @@ public static class CustomRegulation
         }
         foreach (var option in data.ChangeOptions)
         {
-            var opt = CustomOption.options.FirstOrDefault((CustomOption optiondata) => optiondata.roleSettingId == option.Key);
+            var opt = CustomOption.options.FirstOrDefault((CustomOption optiondata) => optiondata.id == option.Key);
             if (opt != null)
             {
                 opt.selection = option.Value;
