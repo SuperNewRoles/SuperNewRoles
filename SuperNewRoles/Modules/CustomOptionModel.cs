@@ -155,6 +155,7 @@ public class CustomOption
 
     private SettingPattern GetSettingPattern(int id)
     {
+        if (id == 0) return SettingPattern.GenericId;
         if (id is >= 100000 and < 200000) return SettingPattern.GenericId;
         if (id is >= 200000 and < 300000) return SettingPattern.ImpostorId;
         if (id is >= 300000 and < 400000) return SettingPattern.NeutralId;

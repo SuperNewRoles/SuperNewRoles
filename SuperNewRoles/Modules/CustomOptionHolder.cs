@@ -991,7 +991,7 @@ public class CustomOptionHolder
             LeveTransed.Add(ModTranslation.GetString(data));
         }
         LevelingerTexts = LeveTransed.ToArray();
-        presetSelection = Create(100000, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingpresetSelection"), presets, null, true);
+        presetSelection = Create(0, true, CustomOptionType.Generic, Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingpresetSelection"), presets, null, true);
 
         specialOptions = new CustomOptionBlank(null);
         hideSettings = Create(100100, true, CustomOptionType.Generic, Cs(Color.white, "SettingsHideSetting"), false, specialOptions);
