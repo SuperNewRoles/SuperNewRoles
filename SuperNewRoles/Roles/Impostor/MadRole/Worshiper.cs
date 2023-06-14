@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles.Impostor.MadRole;
 
 public static class Worshiper
 {
-    private const int optionId = 1161;// 設定のId
+    private const int optionId = 401100;// 設定のId
 
     // CustomOptionHolder
     public static CustomRoleOption WorshiperOption;

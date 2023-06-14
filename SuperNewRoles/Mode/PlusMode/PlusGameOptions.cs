@@ -37,33 +37,33 @@ class PlusGameOptions
 
     public static void Load()
     {
-        PlusGameOptionSetting = Create(508, true, CustomOptionType.Generic, Cs(new Color(168f / 187f, 191f / 255f, 147f / 255f, 1f), "PlusGameOptionSetting"), false, null, isHeader: true);
+        PlusGameOptionSetting = Create(103500, true, CustomOptionType.Generic, Cs(new Color(168f / 187f, 191f / 255f, 147f / 255f, 1f), "PlusGameOptionSetting"), false, null, isHeader: true);
 
-        CanNotGhostSeeRole = Create(1100, true, CustomOptionType.Generic, "CanNotGhostSeeRole", false, PlusGameOptionSetting, isHeader: true);
-        OnlyImpostorGhostSeeRole = Create(1101, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanNotGhostSeeRole);
+        CanNotGhostSeeRole = Create(103600, true, CustomOptionType.Generic, "CanNotGhostSeeRole", false, PlusGameOptionSetting, isHeader: true);
+        OnlyImpostorGhostSeeRole = Create(103601, true, CustomOptionType.Generic, "OnlyImpostorGhostSeeRole", false, CanNotGhostSeeRole);
 
-        CanGhostSeeVote = Create(1144, true, CustomOptionType.Generic, "CanGhostSeeVote", true, PlusGameOptionSetting, isHeader: true);
+        CanGhostSeeVote = Create(103700, true, CustomOptionType.Generic, "CanGhostSeeVote", true, PlusGameOptionSetting, isHeader: true);
 
-        IsAlwaysReduceCooldown = Create(682, false, CustomOptionType.Generic, "IsAlwaysReduceCooldown", false, PlusGameOptionSetting, isHeader: true);
-        IsAlwaysReduceCooldownExceptInVent = Create(954, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
-        IsAlwaysReduceCooldownExceptOnTask = Create(684, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
+        IsAlwaysReduceCooldown = Create(103800, false, CustomOptionType.Generic, "IsAlwaysReduceCooldown", false, PlusGameOptionSetting, isHeader: true);
+        IsAlwaysReduceCooldownExceptInVent = Create(103801, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptInVent", false, IsAlwaysReduceCooldown);
+        IsAlwaysReduceCooldownExceptOnTask = Create(103802, false, CustomOptionType.Generic, "IsAlwaysReduceCooldownExceptOnTask", true, IsAlwaysReduceCooldown);
 
-        LadderDead = Create(637, true, CustomOptionType.Generic, "LadderDead", false, PlusGameOptionSetting, isHeader: true);
-        LadderDeadChance = Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], LadderDead);
+        LadderDead = Create(103900, true, CustomOptionType.Generic, "LadderDead", false, PlusGameOptionSetting, isHeader: true);
+        LadderDeadChance = Create(103901, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], LadderDead);
 
-        NoTaskWinModeSetting = Create(510, true, CustomOptionType.Generic, "SettingNoTaskWinMode", false, PlusGameOptionSetting, isHeader: true);
+        NoTaskWinModeSetting = Create(104000, true, CustomOptionType.Generic, "SettingNoTaskWinMode", false, PlusGameOptionSetting, isHeader: true);
 
-        IsChangeTheWinCondition = Create(1005, true, CustomOptionType.Generic, "IsChangeTheWinCondition", false, PlusGameOptionSetting, isHeader: true);
+        IsChangeTheWinCondition = Create(104100, true, CustomOptionType.Generic, "IsChangeTheWinCondition", false, PlusGameOptionSetting, isHeader: true);
 
-        ZoomOption = Create(618, false, CustomOptionType.Generic, Cs(Color.white, "Zoomafterdeath"), true, PlusGameOptionSetting, isHeader: true);
-        MouseZoom = Create(619, false, CustomOptionType.Generic, "mousemode", false, ZoomOption);
-        ClairvoyantZoom = Create(620, false, CustomOptionType.Generic, "clairvoyantmode", false, ZoomOption);
-        ZoomCoolTime = Create(621, false, CustomOptionType.Generic, "clairvoyantCoolTime", 15f, 0f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
-        ZoomDurationTime = Create(622, false, CustomOptionType.Generic, "clairvoyantDurationTime", 5f, 0f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
+        ZoomOption = Create(104200, false, CustomOptionType.Generic, Cs(Color.white, "Zoomafterdeath"), true, PlusGameOptionSetting, isHeader: true);
+        MouseZoom = Create(104201, false, CustomOptionType.Generic, "mousemode", false, ZoomOption);
+        ClairvoyantZoom = Create(104202, false, CustomOptionType.Generic, "clairvoyantmode", false, ZoomOption);
+        ZoomCoolTime = Create(104203, false, CustomOptionType.Generic, "clairvoyantCoolTime", 15f, 0f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
+        ZoomDurationTime = Create(104204, false, CustomOptionType.Generic, "clairvoyantDurationTime", 5f, 0f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
 
-        NoSabotageModeSetting = Create(509, true, CustomOptionType.Generic, "SettingNoSabotageMode", false, PlusGameOptionSetting, isHeader: true);
-        NotUseReportDeadBody = Create(452, true, CustomOptionType.Generic, "NotUseReportSetting", false, PlusGameOptionSetting);
-        NotUseMeetingButton = Create(453, true, CustomOptionType.Generic, "NotUseMeetingSetting", false, PlusGameOptionSetting);
+        NoSabotageModeSetting = Create(104300, true, CustomOptionType.Generic, "SettingNoSabotageMode", false, PlusGameOptionSetting, isHeader: true);
+        NotUseReportDeadBody = Create(104301, true, CustomOptionType.Generic, "NotUseReportSetting", false, PlusGameOptionSetting);
+        NotUseMeetingButton = Create(104302, true, CustomOptionType.Generic, "NotUseMeetingSetting", false, PlusGameOptionSetting);
     }
 
     public static bool UseDeadBodyReport;

@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles.Impostor;
 
 public static class NekoKabocha
 {
-    private const int OptionId = 992;
+    private const int OptionId = 205400;
     public static CustomRoleOption NekoKabochaOption;
     public static CustomOption NekoKabochaPlayerCount;
     public static CustomOption KillCooldown;
