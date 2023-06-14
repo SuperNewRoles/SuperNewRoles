@@ -1540,6 +1540,8 @@ public class CustomOptionHolder
         BestfalsechargeOption = SetupCustomRoleOption(157, true, RoleId.Bestfalsecharge);
         BestfalsechargePlayerCount = Create(158, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BestfalsechargeOption);
 
+        NiceMechanic.SetupCustomOptions();
+
         NiceRedRidingHoodOption = SetupCustomRoleOption(214, false, RoleId.NiceRedRidingHood);
         NiceRedRidingHoodPlayerCount = Create(215, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceRedRidingHoodOption);
         NiceRedRidingHoodCount = Create(216, false, CustomOptionType.Crewmate, "NiceRedRidingHoodCount", 1f, 1f, 15f, 1f, NiceRedRidingHoodOption);
@@ -1666,6 +1668,8 @@ public class CustomOptionHolder
         SpyOption = SetupCustomRoleOption(614, true, RoleId.Spy);
         SpyPlayerCount = Create(615, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
         SpyCanUseVent = Create(617, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
+
+        Knight.SetupCustomOptions();
 
         // SetupCrewmateCustomOptions
 
@@ -1929,8 +1933,6 @@ public class CustomOptionHolder
         WerewolfOption = new(1057, false, CustomOptionType.Impostor, "WerewolfName", RoleClass.Werewolf.color, 1);
         WerewolfPlayerCount = Create(1051, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], WerewolfOption);
 
-        Knight.SetupCustomOptions();
-
         JumboOption = SetupCustomRoleOption(1137, false, RoleId.Jumbo, type: CustomOptionType.Neutral);
         JumboPlayerCount = Create(1138, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JumboOption);
         JumboCrewmateChance = Create(1139, false, CustomOptionType.Neutral, "JumboCrewmateChance", rates, JumboOption);
@@ -1941,8 +1943,6 @@ public class CustomOptionHolder
         Safecracker.SetupCustomOptions();
 
         FireFox.SetupCustomOptions();
-
-        NiceMechanic.SetupCustomOptions();
 
         EvilMechanic.SetupCustomOptions();
         TheThreeLittlePigs.SetupCustomOptions();
