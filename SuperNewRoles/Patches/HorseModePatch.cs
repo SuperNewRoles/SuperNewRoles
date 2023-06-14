@@ -12,7 +12,7 @@ public class MainMenuPatch
     private static bool horseButtonState = HorseModeOption.enableHorseMode;
     private static Sprite horseModeOffSprite = null;
 
-    private static void Prefix()
+    private static void Prefix(MainMenuManager __instance)
     {
         var bottomTemplate = GameObject.Find("InventoryButton");
         // Horse mode stuff
@@ -55,11 +55,25 @@ public class MainMenuPatch
 
         passiveCreditsButton.OnClick.AddListener((UnityEngine.Events.UnityAction)delegate
         {
-            SuperNewRolesPlugin.Logger.LogInfo("クリック");
             if (CredentialsPatch.LogoPatch.CreditsPopup != null)
             {
                 CredentialsPatch.LogoPatch.CreditsPopup.SetActive(true);
             }
+        });
+
+        //ModDownloader
+
+        var ModDownloaderButton = Object.Instantiate(bottomTemplate, bottomTemplate.transform.parent);
+        var passiveModDownloaderButton = ModDownloaderButton.GetComponent<PassiveButton>();
+        var spriteModDownloaderButton = ModDownloaderButton.GetComponent<SpriteRenderer>();
+
+        spriteModDownloaderButton.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
+
+        passiveModDownloaderButton.OnClick = new ButtonClickedEvent();
+
+        passiveModDownloaderButton.OnClick.AddListener((UnityEngine.Events.UnityAction)delegate
+        {
+            ModDownloader.OnPopupOpen(__instance);
         });
     }
 }

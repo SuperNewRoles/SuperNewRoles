@@ -260,6 +260,7 @@ public static class CredentialsPatch
             instance = __instance;
 
             AmongUsClient.Instance.StartCoroutine(ViewBoosterCoro(__instance));
+            AmongUsClient.Instance.StartCoroutine(ModDownloader.DownloadModData(__instance));
 
             //ViewBoosterPatch(__instance);
 
