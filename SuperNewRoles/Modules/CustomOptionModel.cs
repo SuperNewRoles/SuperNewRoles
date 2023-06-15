@@ -88,9 +88,9 @@ public class CustomOption
 
     }
 
-    public CustomOption(int id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
+    public CustomOption(int Id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
     {
-        this.id = id;
+        this.id = Id;
         this.isSHROn = IsSHROn;
         this.type = type;
         this.name = name;
@@ -109,23 +109,71 @@ public class CustomOption
         }
 
         selection = 0;
-        if (id > 0)
+
+        entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", Id.ToString(), defaultSelection);
+        selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
+
+        bool duplication = options.Any(x => x.id == Id);
+        string duplicationString = $"CustomOptionのId({Id})が重複しています。";
+
+        SettingPattern pattern = GetSettingPattern(Id);
+        switch (pattern)
         {
-            entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", id.ToString(), defaultSelection);
-            selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
-            if (options.Any(x => x.id == id))
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("CustomOptionのId(" + id + ")が重複しています。");
-            }
-            if (Max < id)
-            {
-                Max = id;
-            }
+            case SettingPattern.ErrorId:
+                Logger.Info($"CustomOptionのId({Id})は Id規則に従っていません。", $"{SettingPattern.ErrorId}");
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.ErrorId}");
+                break;
+            case SettingPattern.GenericId:
+                if (GenericIdMax < Id) GenericIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.GenericId}");
+                break;
+            case SettingPattern.ImpostorId:
+                if (ImpostorIdMax < Id) ImpostorIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.ImpostorId}");
+                break;
+            case SettingPattern.NeutralId:
+                if (NeutralIdMax < Id) NeutralIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.NeutralId}");
+                break;
+            case SettingPattern.CrewmateId:
+                if (CrewmateIdMax < Id) CrewmateIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.CrewmateId}");
+                break;
+            case SettingPattern.ModifierId:
+                if (ModifierIdMax < Id) ModifierIdMax = Id;
+                if (duplication) Logger.Info(duplicationString, $"{SettingPattern.ModifierId}");
+                break;
         }
         options.Add(this);
     }
-    public static int Max = 0;
 
+    public static int GenericIdMax = 0;
+    public static int ImpostorIdMax = 0;
+    public static int NeutralIdMax = 0;
+    public static int CrewmateIdMax = 0;
+    public static int ModifierIdMax = 0;
+
+    private SettingPattern GetSettingPattern(int id)
+    {
+        if (id == 0) return SettingPattern.GenericId;
+        if (id is >= 100000 and < 200000) return SettingPattern.GenericId;
+        if (id is >= 200000 and < 300000) return SettingPattern.ImpostorId;
+        if (id is >= 300000 and < 400000) return SettingPattern.NeutralId;
+        if (id is >= 400000 and < 500000) return SettingPattern.CrewmateId;
+        if (id is >= 500000 and < 600000) return SettingPattern.ModifierId;
+
+        return SettingPattern.ErrorId;
+    }
+
+    private enum SettingPattern
+    {
+        ErrorId = 0,
+        GenericId = 100000,
+        ImpostorId = 200000,
+        NeutralId = 300000,
+        CrewmateId = 400000,
+        ModifierId = 500000,
+    }
     public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
     {
         return new CustomOption(id, IsSHROn, type, name, selections, "", parent, isHeader, isHidden, format);
@@ -342,10 +390,18 @@ public class CustomRoleOption : CustomOption
     {
         try
         {
-            this.RoleId = IntroData.IntroList.FirstOrDefault((_) =>
+            IntroData? intro = IntroData.IntroList.FirstOrDefault((_) =>
             {
                 return _.NameKey + "Name" == name;
-            }).RoleId;
+            });
+            if (intro != null)
+            {
+                this.RoleId = intro.RoleId;
+            }
+            else
+            {
+                Logger.Info("RoleId取得できませんでした:" + name, "CustomRoleOption");
+            }
         }
         catch
         {

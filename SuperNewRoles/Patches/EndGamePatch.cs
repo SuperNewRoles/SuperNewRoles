@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using HarmonyLib;
 using Hazel;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Neutral;
-using UnhollowerBaseLib;
 using UnityEngine;
 using static SuperNewRoles.Patches.CheckGameEndPatch;
 

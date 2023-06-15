@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using AmongUs.Data;
 using HarmonyLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Mode;
-using UnhollowerBaseLib;
 using UnityEngine;
 namespace SuperNewRoles.Patches;
 [Harmony]
