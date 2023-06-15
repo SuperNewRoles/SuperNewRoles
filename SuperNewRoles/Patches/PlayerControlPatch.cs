@@ -289,7 +289,7 @@ class ShapeshifterMinigameBeginPatch
                 Create(panel, index, Data.Value);
                 panel.PlayerIcon.gameObject.SetActive(false);
                 panel.LevelNumberText.transform.parent.gameObject.SetActive(false);
-                panel.transform.FindChild("Nameplate").GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+                // panel.transform.FindChild("Nameplate").GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
                 panel.transform.FindChild("Nameplate/Highlight/ShapeshifterIcon").gameObject.SetActive(false);
                 panel.NameText.text = ModTranslation.GetString(Data.Key);
                 panel.NameText.transform.localPosition = new(0, 0, -0.1f);

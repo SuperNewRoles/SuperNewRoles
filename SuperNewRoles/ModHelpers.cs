@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -8,13 +7,15 @@ using System.Text.RegularExpressions;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
+using Il2CppInterop.Runtime;
+using Il2CppInterop.Runtime.InteropTypes;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Roles.Crewmate;
 using SuperNewRoles.Roles.Neutral;
 using TMPro;
-using UnhollowerBaseLib;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -196,6 +197,7 @@ public static class ModHelpers
     }
     public static void SetSkinWithAnim(PlayerPhysics playerPhysics, string SkinId)
     {
+        /*
         SkinViewData nextSkin = FastDestroyableSingleton<HatManager>.Instance.GetSkinById(SkinId).viewData.viewData;
         AnimationClip clip = null;
         var spriteAnim = playerPhysics.GetSkin().animator;
@@ -219,6 +221,7 @@ public static class ModHelpers
         spriteAnim.Play(clip, 1f);
         anim.Play("a", 0, progress % 1);
         anim.Update(0f);
+        */
     }
     public static Dictionary<byte, PlayerControl> AllPlayersById()
     {
@@ -492,10 +495,10 @@ public static class ModHelpers
             console.checkWalls = true;
             console.usableDistance = 0.7f;
             console.TaskTypes = new TaskTypes[0];
-            console.ValidTasks = new UnhollowerBaseLib.Il2CppReferenceArray<TaskSet>(0);
+            console.ValidTasks = new Il2CppReferenceArray<TaskSet>(0);
             var list = ShipStatus.Instance.AllConsoles.ToList();
             list.Add(console);
-            ShipStatus.Instance.AllConsoles = new UnhollowerBaseLib.Il2CppReferenceArray<Console>(list.ToArray());
+            ShipStatus.Instance.AllConsoles = new Il2CppReferenceArray<Console>(list.ToArray());
         }
         if (console.Image == null)
         {

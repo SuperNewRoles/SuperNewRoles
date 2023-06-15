@@ -6,10 +6,8 @@ using System.Linq;
 using System.Reflection;
 using AmongUs.Data;
 using BepInEx;
-using BepInEx.IL2CPP;
-using Cpp2IL.Core;
+using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
-using InnerNet;
 using UnityEngine;
 
 namespace SuperNewRoles;

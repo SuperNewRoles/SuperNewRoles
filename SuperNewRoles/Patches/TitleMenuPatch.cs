@@ -1,6 +1,6 @@
 using System.Linq;
-using BepInEx.IL2CPP.Utils.Collections;
 using HarmonyLib;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,16 +26,20 @@ public class MainMenuStartPatch
         if (template == null) return;
 
         var buttonDiscord = UnityEngine.Object.Instantiate(template, null);
-        buttonDiscord.transform.localPosition = new Vector3(buttonDiscord.transform.localPosition.x, buttonDiscord.transform.localPosition.y + 0.6f, buttonDiscord.transform.localPosition.z);
+        GameObject.Destroy(buttonDiscord.GetComponent<AspectPosition>());
+        buttonDiscord.transform.localPosition = new(4f, -2, 0);
 
-        var textDiscord = buttonDiscord.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+        var textDiscord = buttonDiscord.GetComponentInChildren<TextMeshPro>();
+        textDiscord.transform.localPosition = new(0, 0.035f, -2);
+        textDiscord.alignment = TextAlignmentOptions.Right;
         __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
         {
-            textDiscord.SetText("Discord");
+            if (textDiscord != null)
+                textDiscord.SetText("Discord");
         })));
 
         PassiveButton passiveButtonDiscord = buttonDiscord.GetComponent<PassiveButton>();
-        SpriteRenderer buttonSpriteDiscord = buttonDiscord.GetComponent<SpriteRenderer>();
+        SpriteRenderer buttonSpriteDiscord = buttonDiscord.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
 
         passiveButtonDiscord.OnClick = new Button.ButtonClickedEvent();
         passiveButtonDiscord.OnClick.AddListener((System.Action)(() => Application.OpenURL(SuperNewRolesPlugin.DiscordServer)));
@@ -48,16 +52,19 @@ public class MainMenuStartPatch
         });
 
         var buttonTwitter = Object.Instantiate(template, null);
-        buttonTwitter.transform.localPosition = new Vector3(buttonTwitter.transform.localPosition.x, buttonTwitter.transform.localPosition.y + 1.2f, buttonTwitter.transform.localPosition.z);
+        GameObject.Destroy(buttonTwitter.GetComponent<AspectPosition>());
+        buttonTwitter.transform.localPosition = new(0.25f, -2, 0);
 
-        var textTwitter = buttonTwitter.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+        var textTwitter = buttonTwitter.GetComponentInChildren<TextMeshPro>();
+        textTwitter.transform.localPosition = new(0, 0.035f, -2);
+        textTwitter.alignment = TextAlignmentOptions.Right;
         __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
         {
             textTwitter.SetText("Twitter");
         })));
 
         PassiveButton passiveButtonTwitter = buttonTwitter.GetComponent<PassiveButton>();
-        SpriteRenderer buttonSpriteTwitter = buttonTwitter.GetComponent<SpriteRenderer>();
+        SpriteRenderer buttonSpriteTwitter = buttonTwitter.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
 
         passiveButtonTwitter.OnClick = new Button.ButtonClickedEvent();
 
@@ -69,34 +76,42 @@ public class MainMenuStartPatch
         });
 
         var buttonTwitterSNRDevs = Object.Instantiate(template, null);
+        GameObject.Destroy(buttonTwitterSNRDevs.GetComponent<AspectPosition>());
+        buttonTwitterSNRDevs.transform.localPosition = new(2f, -2.25f, 0);
         buttonTwitterSNRDevs.SetActive(false);
 
         var buttonTwitterSuperNewRoles = Object.Instantiate(template, null);
+        GameObject.Destroy(buttonTwitterSuperNewRoles.GetComponent<AspectPosition>());
+        buttonTwitterSuperNewRoles.transform.localPosition = new(2f, -1.75f, 0);
         buttonTwitterSuperNewRoles.SetActive(false);
 
         passiveButtonTwitter.OnClick.AddListener((System.Action)(() =>
         {
             buttonTwitterSNRDevs.SetActive(true);
-            var textTwitterSNRDevs = buttonTwitterSNRDevs.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+            var textTwitterSNRDevs = buttonTwitterSNRDevs.GetComponentInChildren<TextMeshPro>();
+            textTwitterSNRDevs.transform.localPosition = new(0, 0.035f, -2);
+            textTwitterSNRDevs.alignment = TextAlignmentOptions.Right;
             __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
             {
                 textTwitterSNRDevs.SetText("SuperNewRolesの人");
             })));
-            buttonTwitterSNRDevs.transform.localPosition = new Vector3(buttonTwitter.transform.localPosition.x + 1.1f, buttonTwitter.transform.localPosition.y + -0.3f, buttonTwitter.transform.localPosition.z);
+            //buttonTwitterSNRDevs.transform.localPosition = new Vector3(buttonTwitter.transform.localPosition.x + 1.1f, buttonTwitter.transform.localPosition.y + -0.3f, buttonTwitter.transform.localPosition.z);
             PassiveButton passivebuttonTwitterSNRDevs = buttonTwitterSNRDevs.GetComponent<PassiveButton>();
-            SpriteRenderer buttonSpriteTwitterSNRDevs = buttonTwitterSNRDevs.GetComponent<SpriteRenderer>();
+            SpriteRenderer buttonSpriteTwitterSNRDevs = buttonTwitterSNRDevs.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
             passivebuttonTwitterSNRDevs.OnClick = new Button.ButtonClickedEvent();
             passivebuttonTwitterSNRDevs.OnClick.AddListener((System.Action)(() => Application.OpenURL(SuperNewRolesPlugin.Twitter1)));
 
             buttonTwitterSuperNewRoles.SetActive(true);
-            var textTwitterSuperNewRoles = buttonTwitterSuperNewRoles.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+            var textTwitterSuperNewRoles = buttonTwitterSuperNewRoles.GetComponentInChildren<TextMeshPro>();
+            textTwitterSuperNewRoles.transform.localPosition = new(0, 0.035f, -2);
+            textTwitterSuperNewRoles.alignment = TextAlignmentOptions.Right;
             __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
             {
                 textTwitterSuperNewRoles.SetText("Super New Roles");
             })));
-            buttonTwitterSuperNewRoles.transform.localPosition = new Vector3(buttonTwitter.transform.localPosition.x + 1.1f, buttonTwitter.transform.localPosition.y + 0.3f, buttonTwitter.transform.localPosition.z);
+            //buttonTwitterSuperNewRoles.transform.localPosition = new Vector3(buttonTwitter.transform.localPosition.x + 1.1f, buttonTwitter.transform.localPosition.y + 0.3f, buttonTwitter.transform.localPosition.z);
             PassiveButton passivebuttonTwitterSuperNewRoles = buttonTwitterSuperNewRoles.GetComponent<PassiveButton>();
-            SpriteRenderer buttonSpriteTwitterSuperNewRoles = buttonTwitterSuperNewRoles.GetComponent<SpriteRenderer>();
+            SpriteRenderer buttonSpriteTwitterSuperNewRoles = buttonTwitterSuperNewRoles.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
             passivebuttonTwitterSuperNewRoles.OnClick = new Button.ButtonClickedEvent();
             passivebuttonTwitterSuperNewRoles.OnClick.AddListener((System.Action)(() => Application.OpenURL(SuperNewRolesPlugin.Twitter2)));
         }));

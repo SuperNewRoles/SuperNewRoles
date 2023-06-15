@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    ".NETStandard,Version=v2.1": {
+    "net6.0": {
       "BepInEx.AutoPlugin": {
         "type": "Direct",
         "requested": "[1.0.1, )",
