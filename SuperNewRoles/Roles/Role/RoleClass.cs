@@ -224,7 +224,7 @@ public static class RoleClass
         Dependents.ClearAndReload();
         LoversBreaker.ClearAndReload();
         Jumbo.ClearAndReload();
-        Impostor.MadRole.Worshiper.RoleClass.ClearAndReload();
+        Impostor.MadRole.Worshiper.RoleData.ClearAndReload();
         Safecracker.ClearAndReload();
         FireFox.ClearAndReload();
         Squid.ClearAndReload();

@@ -47,41 +47,41 @@ class MapCustom
 
     public static void CreateOption()
     {
-        MapCustomOption = Create(623, false, CustomOptionType.Generic, Cs(new Color(132f / 187f, 162f / 255f, 212f / 255f, 1f), "MapCustom"), false, null, true);
+        MapCustomOption = Create(102800, false, CustomOptionType.Generic, Cs(new Color(132f / 187f, 162f / 255f, 212f / 255f, 1f), "MapCustom"), false, null, true);
 
         /*===============スケルド===============*/
-        SkeldSetting = Create(624, false, CustomOptionType.Generic, "<color=#8fbc8f>Skeld</color>", false, MapCustomOption);
+        SkeldSetting = Create(102900, false, CustomOptionType.Generic, "<color=#8fbc8f>Skeld</color>", false, MapCustomOption);
         // SkeldRandomSpawn = Create(1248, false, CustomOptionType.Generic, "RandomSpawnOption", false, SkeldSetting);
 
         /*===============ミラ===============*/
-        MiraSetting = Create(660, false, CustomOptionType.Generic, "<color=#cd5c5c>Mira</color>", false, MapCustomOption);
-        // MiraRandomSpawn = Create(1249, false, CustomOptionType.Generic, "RandomSpawnOption", false, MiraSetting);
-        MiraAdditionalVents = Create(631, false, CustomOptionType.Generic, "MiraAdditionalVents", false, MiraSetting);
-        AddVitalsMira = Create(472, false, CustomOptionType.Generic, "AddVitalsMiraSetting", false, MiraSetting);
+        MiraSetting = Create(103000, false, CustomOptionType.Generic, "<color=#cd5c5c>Mira</color>", false, MapCustomOption);
+        // MiraRandomSpawn = Create(103001, false, CustomOptionType.Generic, "RandomSpawnOption", false, MiraSetting);
+        MiraAdditionalVents = Create(103002, false, CustomOptionType.Generic, "MiraAdditionalVents", false, MiraSetting);
+        AddVitalsMira = Create(103003, false, CustomOptionType.Generic, "AddVitalsMiraSetting", false, MiraSetting);
 
         /*===============ポーラス===============*/
-        PolusSetting = Create(677, false, CustomOptionType.Generic, "<color=#4b0082>Polus</color>", false, MapCustomOption);
-        PolusRandomSpawn = Create(670, false, CustomOptionType.Generic, "RandomSpawnOption", false, PolusSetting);
-        PolusAdditionalVents = Create(662, false, CustomOptionType.Generic, "PolusAdditionalVents", false, PolusSetting);
-        SpecimenVital = Create(613, false, CustomOptionType.Generic, "SpecimenVitalSetting", false, PolusSetting);
+        PolusSetting = Create(103100, false, CustomOptionType.Generic, "<color=#4b0082>Polus</color>", false, MapCustomOption);
+        PolusRandomSpawn = Create(103101, false, CustomOptionType.Generic, "RandomSpawnOption", false, PolusSetting);
+        PolusAdditionalVents = Create(103102, false, CustomOptionType.Generic, "PolusAdditionalVents", false, PolusSetting);
+        SpecimenVital = Create(103103, false, CustomOptionType.Generic, "SpecimenVitalSetting", false, PolusSetting);
 
         /*===============エアーシップ===============*/
-        AirshipSetting = Create(663, false, CustomOptionType.Generic, "<color=#ff0000>Airship</color>", false, MapCustomOption);
-        AirshipRandomSpawn = Create(955, false, CustomOptionType.Generic, "RandomSpawnOption", false, AirshipSetting);
-        SecretRoomOption = Create(664, false, CustomOptionType.Generic, "SecretRoom", false, AirshipSetting);
-        AirShipAdditionalVents = Create(605, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, AirshipSetting);
-        AirshipDisableMovingPlatform = Create(665, false, CustomOptionType.Generic, "AirshipDisableMovingPlatformSetting", false, AirshipSetting);
-        RecordsAdminDestroy = Create(612, false, CustomOptionType.Generic, "RecordsAdminDestroySetting", false, AirshipSetting);
-        MoveElecPad = Create(645, false, CustomOptionType.Generic, "MoveElecPadSetting", false, AirshipSetting);
-        AddWireTask = Create(646, false, CustomOptionType.Generic, "AddWireTaskSetting", false, AirshipSetting);
-        AntiTaskOverWall = Create(1106, false, CustomOptionType.Generic, "AntiTaskOverWallSetting", false, AirshipSetting);
-        ShuffleElectricalDoors = Create(1110, false, CustomOptionType.Generic, "ShuffleElectricalDoorsSetting", false, AirshipSetting);
+        AirshipSetting = Create(103200, false, CustomOptionType.Generic, "<color=#ff0000>Airship</color>", false, MapCustomOption);
+        AirshipRandomSpawn = Create(103201, false, CustomOptionType.Generic, "RandomSpawnOption", false, AirshipSetting);
+        SecretRoomOption = Create(103202, false, CustomOptionType.Generic, "SecretRoom", false, AirshipSetting);
+        AirShipAdditionalVents = Create(103203, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, AirshipSetting);
+        AirshipDisableMovingPlatform = Create(103204, false, CustomOptionType.Generic, "AirshipDisableMovingPlatformSetting", false, AirshipSetting);
+        RecordsAdminDestroy = Create(103205, false, CustomOptionType.Generic, "RecordsAdminDestroySetting", false, AirshipSetting);
+        MoveElecPad = Create(103206, false, CustomOptionType.Generic, "MoveElecPadSetting", false, AirshipSetting);
+        AddWireTask = Create(103207, false, CustomOptionType.Generic, "AddWireTaskSetting", false, AirshipSetting);
+        AntiTaskOverWall = Create(103208, false, CustomOptionType.Generic, "AntiTaskOverWallSetting", false, AirshipSetting);
+        ShuffleElectricalDoors = Create(103209, false, CustomOptionType.Generic, "ShuffleElectricalDoorsSetting", false, AirshipSetting);
 
         /*===============アガルタ===============*/
-        AgarthaSetting = Create(1250, false, CustomOptionType.Generic, "<color=#a67646>Agartha</color>", false, MapCustomOption);
-        AgarthaRandomSpawn = Create(1084, false, CustomOptionType.Generic, "RandomSpawnOption", true, AgarthaSetting);
-        AgarthaRandomSpawnIsFirstSpawn = Create(1085, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsFirstSpawn", false, AgarthaRandomSpawn);
-        AgarthaRandomSpawnIsAddSpawnWay = Create(1086, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
+        AgarthaSetting = Create(103300, false, CustomOptionType.Generic, "<color=#a67646>Agartha</color>", false, MapCustomOption);
+        AgarthaRandomSpawn = Create(103301, false, CustomOptionType.Generic, "RandomSpawnOption", true, AgarthaSetting);
+        AgarthaRandomSpawnIsFirstSpawn = Create(103302, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsFirstSpawn", false, AgarthaRandomSpawn);
+        AgarthaRandomSpawnIsAddSpawnWay = Create(103303, false, CustomOptionType.Generic, "AgarthaRandomSpawnIsAddSpawnWay", false, AgarthaRandomSpawn);
     }
 }
 

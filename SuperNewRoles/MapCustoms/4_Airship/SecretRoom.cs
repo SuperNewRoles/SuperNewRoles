@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
-using BepInEx.IL2CPP.Utils;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Hazel;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using TMPro;
@@ -374,8 +375,8 @@ public static class SecretRoom
                     SetSecretRoomTeleportStatus(Status.Join, CachedPlayer.LocalPlayer.PlayerId, (byte)id);
                     PlayerControl.LocalPlayer.moveable = false;
                     //__instance.StartCoroutine(Move(__instance));
-                    Coroutine move = __instance.StartCoroutine(Move2(__instance));
-                    __instance.StartCoroutine(Escape(__instance, move));
+                    Coroutine move = __instance.StartCoroutine(Move2(__instance).WrapToIl2Cpp());
+                    __instance.StartCoroutine(Escape(__instance, move).WrapToIl2Cpp());
                 }
                 return false;
             }
@@ -613,10 +614,10 @@ public static class SecretRoom
             console.checkWalls = true;
             console.usableDistance = 0.7f;
             console.TaskTypes = new TaskTypes[0];
-            console.ValidTasks = new UnhollowerBaseLib.Il2CppReferenceArray<TaskSet>(0);
+            console.ValidTasks = new Il2CppReferenceArray<TaskSet>(0);
             var list = ShipStatus.Instance.AllConsoles.ToList();
             list.Add(console);
-            ShipStatus.Instance.AllConsoles = new UnhollowerBaseLib.Il2CppReferenceArray<Console>(list.ToArray());
+            ShipStatus.Instance.AllConsoles = new Il2CppReferenceArray<Console>(list.ToArray());
         }
         if (console.Image == null)
         {

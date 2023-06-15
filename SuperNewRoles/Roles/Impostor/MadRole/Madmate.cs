@@ -47,8 +47,8 @@ class Madmate
                 CheckTask = RoleClass.BlackCat.ImpostorCheckTask;
                 break;
             case RoleId.Worshiper:
-                if (!Worshiper.RoleClass.IsImpostorCheck) return false;
-                CheckTask = Worshiper.RoleClass.ImpostorCheckTask;
+                if (!Worshiper.RoleData.IsImpostorCheck) return false;
+                CheckTask = Worshiper.RoleData.ImpostorCheckTask;
                 break;
             default:
                 return false;

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AmongUs.Data.Legacy;
 using HarmonyLib;
-using UnhollowerBaseLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics;
