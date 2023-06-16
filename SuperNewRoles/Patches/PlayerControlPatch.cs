@@ -1000,6 +1000,12 @@ public static class MurderPlayerPatch
         // SuperNewRolesPlugin.Logger.LogInfo("MurderPlayer発生！元:" + __instance.GetDefaultName() + "、ターゲット:" + target.GetDefaultName());
         // Collect dead player info
         Logger.Info("追加");
+        Logger.Info($"prefix : {target.IsDead()}");
+        if (target.IsDead())
+        {
+            target.RpcSetPet("peet_EmptyPet");
+            Logger.Info($"{target.name}が死亡した為, Petを外しました。");
+        }
         DeadPlayer deadPlayer = new(target, target.PlayerId, DateTime.UtcNow, DeathReason.Kill, __instance);
         DeadPlayer.deadPlayers.Add(deadPlayer);
         FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
