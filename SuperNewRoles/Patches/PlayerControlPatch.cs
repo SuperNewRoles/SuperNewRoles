@@ -1032,8 +1032,6 @@ public static class MurderPlayerPatch
 
         if (ModeHandler.IsMode(ModeId.Default))
         {
-            Levelinger.MurderPlayer(__instance, target); // [ ]MEMO:要仕様調整
-
             Minimalist.MurderPatch.Postfix(__instance);
 
             Vampire.OnMurderPlayer(__instance, target); // ヴァンパイアと眷属のキルクール同期の為 対象の死亡状態にかかわらず呼び出す
@@ -1094,6 +1092,8 @@ public static class MurderPlayerPatch
         }
         else if (ModeHandler.IsMode(ModeId.Default))
         {
+            Levelinger.MurderPlayer(__instance, target);
+
             if (RoleClass.Camouflager.IsCamouflage)
             {
                 PlayerOutfit outfit = new()
