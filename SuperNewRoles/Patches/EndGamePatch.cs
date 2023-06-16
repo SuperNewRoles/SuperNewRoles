@@ -526,9 +526,6 @@ public static class OnGameEndPatch
                             : gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor
                                 ? FinalStatus.Sabotage
                                 : FinalStatus.Alive;
-                // FIXME:守護天使の能力でのガード時、キルが起きた(MurderPlayerが通った)判定になる。このコードは根本的な修正ではないうえに、問題をマスキングしている。
-                // 妖狐やFastMakerのMK等、守護が発動した場合、死亡していなくとも[死因:キル]が記載される為、生きている場合は生存で上書きする。
-                if (!p.IsDead) finalStatus = FinalStatus.Alive;
 
                 string namesuffix = "";
                 if (p.Object.IsLovers())
