@@ -37,7 +37,7 @@ public static class RoleClass
         BlockPlayers = new();
         IsMeeting = false;
         RandomSpawn.IsFirstSpawn = true;
-        DeadPlayer.deadPlayers = new();
+        DeadPlayer.ClearAndReloads();
         AllRoleSetClass.Assigned = false;
         LateTask.Tasks = new();
         LateTask.AddTasks = new();
