@@ -1575,6 +1575,7 @@ public static class RoleClass
         public static List<PlayerControl> FoxPlayer;
         public static Color32 color = FoxPurple;
         public static Dictionary<int, int> KillGuard;
+        public static Dictionary<byte, bool> Killer;
         public static bool IsUseVent;
         public static bool UseReport;
         public static bool IsImpostorLight;
@@ -1582,6 +1583,7 @@ public static class RoleClass
         {
             FoxPlayer = new();
             KillGuard = new();
+            Killer = new();
             IsUseVent = CustomOptionHolder.FoxIsUseVent.GetBool();
             UseReport = CustomOptionHolder.FoxReport.GetBool();
             IsImpostorLight = CustomOptionHolder.FoxIsImpostorLight.GetBool();

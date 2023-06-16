@@ -78,6 +78,7 @@ public static class SerialKiller
     {
         if (__instance.IsRole(RoleId.SerialKiller))
         {
+            if (target.IsRole(RoleId.Fox) && RoleClass.Fox.Killer.ContainsKey(__instance.PlayerId)) return;
             if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
                 RoleClass.SerialKiller.SuicideTime = RoleClass.SerialKiller.SuicideDefaultTime;

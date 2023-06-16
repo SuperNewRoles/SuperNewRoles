@@ -1016,7 +1016,11 @@ public static class MurderPlayerPatch
             }
         }
 
-        SerialKiller.MurderPlayer(__instance, target); // [ ]MEMO:要仕様確認
+        // FIXME:狐キル時にはキルクールリセットが発生しないようにして, この処理は死体が発生した時の処理にしたい。
+        SerialKiller.MurderPlayer(__instance, target);
+        if (target.IsRole(RoleId.Fox) && !RoleClass.Fox.Killer.ContainsKey(__instance.PlayerId))
+            RoleClass.Fox.Killer.Add(__instance.PlayerId, true);
+
 
         if (IsDebugMode() && CustomOptionHolder.IsMurderPlayerAnnounce.GetBool())
         {
