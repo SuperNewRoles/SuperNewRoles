@@ -1,5 +1,5 @@
 using System.IO;
-using UnhollowerRuntimeLib;
+using Il2CppInterop.Runtime;
 using UnityEngine;
 
 namespace SuperNewRoles.Modules;

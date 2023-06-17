@@ -1,6 +1,6 @@
 using System;
 using System.Linq.Expressions;
-using UnhollowerBaseLib;
+using Il2CppInterop.Runtime;
 using UnityEngine;
 
 namespace SuperNewRoles;
