@@ -230,7 +230,7 @@ public static class Debugger
             panel.PlayerIcon.gameObject.SetActive(false);
             panel.LevelNumberText.transform.parent.gameObject.SetActive(false);
             panel.ColorBlindName.gameObject.SetActive(false);
-            panel.transform.FindChild("Nameplate").GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+            // panel.transform.FindChild("Nameplate").GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
             panel.transform.FindChild("Nameplate/Highlight/ShapeshifterIcon").gameObject.SetActive(false);
             panel.NameText.text = ModTranslation.GetString(data.text);
             panel.NameText.transform.localPosition = new(0, 0, -0.1f);
@@ -262,7 +262,7 @@ public static class Debugger
             panel.PlayerIcon.gameObject.SetActive(false);
             panel.LevelNumberText.transform.parent.gameObject.SetActive(false);
             panel.ColorBlindName.gameObject.SetActive(false);
-            panel.transform.FindChild("Nameplate").GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+            // panel.transform.FindChild("Nameplate").GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
             panel.transform.FindChild("Nameplate/Highlight/ShapeshifterIcon").gameObject.SetActive(false);
             panel.NameText.text = ModTranslation.GetString(data.text);
             panel.NameText.transform.localPosition = new(0, 0, -0.1f);
@@ -322,7 +322,7 @@ public static class Debugger
             panel.PlayerIcon.gameObject.SetActive(false);
             panel.LevelNumberText.transform.parent.gameObject.SetActive(false);
             panel.ColorBlindName.gameObject.SetActive(false);
-            panel.transform.FindChild("Nameplate").GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+            // panel.transform.FindChild("Nameplate").GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
             panel.transform.FindChild("Nameplate/Highlight/ShapeshifterIcon").gameObject.SetActive(false);
             panel.NameText.text = ModTranslation.GetString(data.text);
             panel.NameText.transform.localPosition = new(0, 0, -0.1f);
@@ -359,7 +359,7 @@ public static class Debugger
             panel.PlayerIcon.gameObject.SetActive(false);
             panel.LevelNumberText.transform.parent.gameObject.SetActive(false);
             panel.ColorBlindName.gameObject.SetActive(false);
-            panel.transform.FindChild("Nameplate").GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+            // panel.transform.FindChild("Nameplate").GetComponent<SpriteRenderer>().sprite = FastDestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
             panel.transform.FindChild("Nameplate/Highlight/ShapeshifterIcon").gameObject.SetActive(false);
             panel.NameText.text = CustomOptionHolder.Cs(roleInfo.color, ModTranslation.GetString(roleInfo.Name));
             panel.NameText.transform.localPosition = new(0, 0, -0.1f);
