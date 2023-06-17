@@ -13,7 +13,7 @@ class AwakePatch
     }
     public static void Postfix(PlayerCustomizationMenu __instance)
     {
-        // CustomHats.HatsTabOnEnablePatch.Chips = new();
+        CustomHats.HatsTabOnEnablePatch.Chips = new();
         ObjectData.Presets = new Transform[] { };
         ObjectData.hats = new HatParent[] { };
         ObjectData.Selected = "";

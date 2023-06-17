@@ -1,4 +1,4 @@
-/*
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -7,13 +7,18 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using AmongUs.Data;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
+using Innersloth.Assets;
 using Newtonsoft.Json.Linq;
+using SuperNewRoles.CustomCosmetics.CustomCosmeticsData;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace SuperNewRoles.CustomCosmetics;
 
@@ -51,7 +56,7 @@ public class CustomHats
         public bool adaptive { get; set; }
         public bool behind { get; set; }
     }
-
+    
     private static List<CustomHat> CreateCustomHatDetails(string[] hats, bool fromDisk = false)
     {
         Dictionary<string, CustomHat> fronts = new();
@@ -135,26 +140,27 @@ public class CustomHats
         return HatSprites.ContainsKey(path) ? HatSprites[path] : null;
     }
     static readonly Dictionary<string, Sprite> HatSprites = new();
-    private static HatData CreateHatData(CustomHat ch, bool fromDisk = false, bool testOnly = false)
+    private static CustomHatData CreateHatData(CustomHat ch, bool fromDisk = false, bool testOnly = false)
     {
         if (hatShader == null && DestroyableSingleton<HatManager>.InstanceExists)
             hatShader = new Material(Shader.Find("Unlit/PlayerShader"));
 
-        HatData hat = new();
-        hat.hatViewData.viewData = new HatViewData
+        HatViewData hatViewData = new()
         {
             MainImage = GetHatSprite(ch.resource)
         };
+        CustomHatData hat = new(hatViewData);
         if (ch.backresource != null)
         {
-            hat.hatViewData.viewData.BackImage = GetHatSprite(ch.backresource);
+            hatViewData.BackImage = GetHatSprite(ch.backresource);
             ch.behind = true; // Required to view backresource
         }
         if (ch.climbresource != null)
-            hat.hatViewData.viewData.ClimbImage = GetHatSprite(ch.climbresource);
+            hatViewData.ClimbImage = GetHatSprite(ch.climbresource);
         hat.name = ch.name + "\nby " + ch.author;
         hat.displayOrder = 99;
         hat.ProductId = "MOD_" + ch.package + "_" + ch.name.Replace(' ', '_');
+        hatViewData.name = hat.ProdId;
         hat.InFront = !ch.behind;
         hat.NoBounce = !ch.bounce;
         hat.ChipOffset = new Vector2(0f, 0.2f);
@@ -162,7 +168,7 @@ public class CustomHats
         hat.NotInStore = true;
 
         if (ch.adaptive && hatShader != null)
-            hat.hatViewData.viewData.AltShader = hatShader;
+            hatViewData.AltShader = hatShader;
 
         HatExtension extend = new()
         {
@@ -185,6 +191,7 @@ public class CustomHats
         {
             CustomHatRegistry.Add(hat.name, extend);
         }
+        hat.hatViewData = hatViewData;
         return hat;
     }
 
@@ -203,7 +210,7 @@ public class CustomHats
         return chd;
     }
 
-    private static HatData CreateHatData(CustomHatLoader.CustomHatOnline chd) => CreateHatData(chd, true);
+    private static CustomHatData CreateHatData(CustomHatLoader.CustomHatOnline chd) => CreateHatData(chd, true);
 
     [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetHatById))]
     public static class HatManagerPatch
@@ -212,6 +219,7 @@ public class CustomHats
         private static bool SPRITELOADED = false;
         private static bool RUNNING = false;
         public static bool IsLoadingnow = false;
+        public static List<HatData> hatdata = new();
 
         static void Prefix(HatManager __instance)
         {
@@ -238,13 +246,18 @@ public class CustomHats
                 }
                 while (CustomHatLoader.hatDetails.Count > 0)
                 {
-                    addHatData.Add(CreateHatData(CustomHatLoader.hatDetails[0]));
+                    CustomHatData chdata = CreateHatData(CustomHatLoader.hatDetails[0]);
+                    addHatData.Add(chdata);
                     CustomHatLoader.hatDetails.RemoveAt(0);
                 }
                 LOADED = true;
                 var data = __instance.allHats.ToList();
                 data.AddRange(addHatData);
-                __instance.allHats = data.ToArray();
+                hatdata = data;
+                __instance.allHats = new Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppReferenceArray<HatData>(data.ToArray());
+                foreach (HatData hd in __instance.allHats) {
+                    Logger.Info(((hd.CreateAddressableAsset() as CustomAddressableAsset<HatViewData>) == null).ToString(),hd.ProdId);
+                }
                 IsLoadingnow = false;
             }
             else
@@ -254,7 +267,7 @@ public class CustomHats
             }
         }
 
-        static readonly List<HatData> addHatData = new();
+        public static readonly List<CustomHatData> addHatData = new();
 
         static IEnumerator LoadHatSprite()
         {
@@ -333,11 +346,11 @@ public class CustomHats
             if (extend.IsNull) return;
             if (extend.FlipImage != null)
             {
-                hp.FrontLayer.sprite = __instance.Rend().flipX ? extend.FlipImage : hp.Hat.hatViewData.viewData.MainImage;
+                hp.FrontLayer.sprite = __instance.Rend().flipX ? extend.FlipImage : hp.Hat.CreateAddressableAsset().GetAsset().MainImage;
             }
             if (extend.BackFlipImage != null)
             {
-                hp.BackLayer.sprite = __instance.Rend().flipX ? extend.BackFlipImage : hp.Hat.hatViewData.viewData.BackImage;
+                hp.BackLayer.sprite = __instance.Rend().flipX ? extend.BackFlipImage : hp.Hat.CreateAddressableAsset().GetAsset().BackImage;
             }
         }
     }
@@ -468,7 +481,6 @@ public class CustomHats
         public static bool Prefix(HatsTab __instance)
         {
             CalcItemBounds(__instance);
-
             HatData[] unlockedHats = FastDestroyableSingleton<HatManager>.Instance.GetUnlockedHats();
             Dictionary<string, List<System.Tuple<HatData, HatExtension>>> packages = new();
 
@@ -843,4 +855,3 @@ public static class PoolablePlayerPatch
             );
     }
 }
-*/

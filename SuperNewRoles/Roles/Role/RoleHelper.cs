@@ -1615,7 +1615,15 @@ public static class RoleHelpers
         RoleId MyRole;
         if (IsChache)
         {
-            try { MyRole = ChacheManager.MyRoleChache[p.PlayerId]; }
+            try { if (p == null)
+                {
+                    MyRole = RoleId.DefaultRole;
+                }
+                else
+                {
+                    MyRole = ChacheManager.MyRoleChache[p.PlayerId];
+                }
+            }
             catch { MyRole = RoleId.DefaultRole; }
         }
         else

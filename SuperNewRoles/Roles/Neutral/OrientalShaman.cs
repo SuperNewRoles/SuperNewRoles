@@ -65,7 +65,8 @@ public static class OrientalShaman
         DeadPlayerArrows = new();
         SeePositionArrow = null;
         IsDoNotDisplay = false;
-        ShermansServantTransformationButton.Timer = ShermansServantTransformationCoolTime.GetFloat();
+        if (ShermansServantTransformationButton != null)
+            ShermansServantTransformationButton.Timer = ShermansServantTransformationCoolTime.GetFloat();
         ShermansServantSuicideButton.Timer = ShermansServantSuicideCoolTime.GetFloat();
     }
 
