@@ -858,6 +858,7 @@ DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキ�
 FoxName,Fox,妖狐,妖狐,狐妖
 FoxTitle1,I am Fox!,私は狐です!,我是一只小狐狸！,我是一隻小狐狸！
 FoxDescription,If you survive to the end，you win alone.\nYou will not be killed.\nThat's because I'm not me there.,最後まで生存していると単独勝利します。\nキルされることはありません。\nそりゃあそこにいる私は私ではないからね。,,如果狐妖存活到最後則獨自勝利。\n不存在什麼我被殺，因為在那的我並不是我。
+CanHouwaWin,Fox can win on stalemate,飽和勝利が可能
 SeerName,Seer,シーア,灵媒,先知
 SeerDescription,,死亡時刻や死亡場所を把握する事が可能な、死者に関わる情報を司る役職です。\n取得した情報を用いてインポスターを特定しましょう。,灵媒属于船员阵营，可以获知死亡时间与死亡场所，来获取与死亡有关的情报。\n灵媒需要利用手中的情报来确认内鬼。,先知屬於船員陣營，可以獲知死亡時間與死亡場所，來獲取與死亡有關的情報。\n先知需要利用手中的情報來確認內鬼。,
 SeerTitle1,You will see players die,船員の気配を感じ取ろう,你能感知死亡,你能感知死亡
