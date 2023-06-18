@@ -33,6 +33,17 @@ public class CustomHatData : HatData
         }
         return cache[id];
     }
+    [HarmonyPatch(typeof(CosmeticsCache), nameof(CosmeticsCache.GetHat))]
+    class CosmeticsCacheGetHatPatch
+    {
+        public static bool Prefix(CosmeticsCache __instance, string id, ref HatViewData __result)
+        {
+            if (!id.StartsWith("MOD_")) return true;
+            __result = getbycache(id);
+            return false;
+        }
+    }
+
     [HarmonyPatch(typeof(HatParent), nameof(HatParent.SetMaterialColor))]
     class HatParentSetMaterialColorPatch
     {

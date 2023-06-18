@@ -28,6 +28,16 @@ public class CustomVisorData : VisorData
         }
         return cache[id];
     }
+    [HarmonyPatch(typeof(CosmeticsCache), nameof(CosmeticsCache.GetVisor))]
+    class CosmeticsCacheGetVisorPatch
+    {
+        public static bool Prefix(CosmeticsCache __instance, string id, ref VisorViewData __result)
+        {
+            if (!id.StartsWith("CustomVisors_")) return true;
+            __result = getbycache(id);
+            return false;
+        }
+    }
     [HarmonyPatch(typeof(VisorLayer), nameof(VisorLayer.UpdateMaterial))]
     class VisorLayerUpdateMaterialPatch
     {

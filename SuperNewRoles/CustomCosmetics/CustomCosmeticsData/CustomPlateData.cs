@@ -30,6 +30,16 @@ public class CustomPlateData : NamePlateData
         }
         return cache[id];
     }
+    [HarmonyPatch(typeof(CosmeticsCache), nameof(CosmeticsCache.GetNameplate))]
+    class CosmeticsCacheGetPlatePatch
+    {
+        public static bool Prefix(CosmeticsCache __instance, string id, ref NamePlateViewData __result)
+        {
+            if (!id.StartsWith("CustomNamePlates_")) return true;
+            __result = getbycache(id);
+            return false;
+        }
+    }
     [HarmonyPatch(typeof(NameplatesTab), nameof(NameplatesTab.OnEnable))]
     class NameplatesTabOnEnablePatch
     {
