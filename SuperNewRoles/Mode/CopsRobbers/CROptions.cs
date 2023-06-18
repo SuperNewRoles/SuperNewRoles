@@ -6,7 +6,7 @@ public class CopsRobbersOptions
     public static CustomOption CRHideName;
     public static void Load()
     {
-        CopsRobbersMode = CustomOption.Create(968, true, CustomOptionType.Generic, "CopsRobbersModeName", false, ModeHandler.ModeSetting);
-        CRHideName = CustomOption.Create(969, true, CustomOptionType.Generic, "CRHideNameSetting", true, CopsRobbersMode);
+        CopsRobbersMode = CustomOption.Create(101800, true, CustomOptionType.Generic, "CopsRobbersModeName", false, ModeHandler.ModeSetting);
+        CRHideName = CustomOption.Create(101801, true, CustomOptionType.Generic, "CRHideNameSetting", true, CopsRobbersMode);
     }
 }

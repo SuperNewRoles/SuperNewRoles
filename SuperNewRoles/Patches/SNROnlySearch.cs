@@ -1,15 +1,5 @@
 using AmongUs.Data;
-using AmongUs.GameOptions;
-using BepInEx.IL2CPP.Utils.Collections;
 using HarmonyLib;
-using Hazel;
-using Il2CppSystem.Collections;
-using Il2CppSystem.Collections.Generic;
-using InnerNet;
-using Newtonsoft.Json;
-using SuperNewRoles.Helpers;
-using UnityEngine;
-using UnityEngine.Events;
 
 namespace SuperNewRoles.Patches;
 

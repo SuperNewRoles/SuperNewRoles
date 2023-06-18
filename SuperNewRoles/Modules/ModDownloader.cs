@@ -9,7 +9,8 @@ using System.Reflection;
 using System.Text;
 using BepInEx;
 using BepInEx.IL2CPP;
-using BepInEx.IL2CPP.Utils;
+using BepInEx.Unity.IL2CPP;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using Newtonsoft.Json.Linq;
 using TMPro;
 using UnityEngine;
@@ -76,7 +77,7 @@ public static class ModDownloader
             Logger.Info("MODがnullでした:"+guid);
             return;
         }
-        AmongUsClient.Instance.StartCoroutine(InstallMod(obj));
+        AmongUsClient.Instance.StartCoroutine(InstallMod(obj).WrapToIl2Cpp());
     }
     public static IEnumerator InstallMod(ModObject obj)
     {
@@ -142,7 +143,7 @@ public static class ModDownloader
             static void pasonclick(MainMenuManager __instance)
             {
                 Transform TextTemplate = Popup.transform.FindChild("StatsText_TMP(Clone)");
-                PassiveButton ButtonTemplate = GameObject.Find("MainUI/PlayOnlineButton").GetComponent<PassiveButton>();
+                PassiveButton ButtonTemplate = AccountManager.Instance.transform.FindChild("InfoTextBox/Button1").GetComponent<PassiveButton>();
                 int index = -1;
                 foreach (ModObject modobj in ModObjects)
                 {
@@ -305,7 +306,7 @@ public static class ModDownloader
             devtitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
 
             Transform TextTemplate = obj.transform.FindChild("StatsText_TMP");
-            PassiveButton ButtonTemplate = GameObject.Find("MainUI/PlayOnlineButton").GetComponent<PassiveButton>();
+            PassiveButton ButtonTemplate = AccountManager.Instance.transform.FindChild("InfoTextBox/Button1").GetComponent<PassiveButton>();
             int index = 0;
             foreach (ModObject modobj in ModObjects)
             {
