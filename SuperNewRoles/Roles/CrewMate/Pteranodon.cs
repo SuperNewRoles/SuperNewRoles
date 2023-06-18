@@ -54,6 +54,11 @@ public static class Pteranodon
         foreach (var data in UsingPlayers.ToArray())
         {
             PlayerControl target = ModHelpers.PlayerById(data.Key);
+            if (target.IsDead())
+            {
+                UsingPlayers.Remove(data.Key);
+                continue;
+            }
             float NewTimer = data.Value.Item2 - Time.fixedDeltaTime;
             Vector3 pos = data.Value.Item3;
             target.MyPhysics.Animations.PlayIdleAnimation();
