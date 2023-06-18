@@ -11,6 +11,7 @@ using BepInEx;
 using BepInEx.IL2CPP;
 using BepInEx.Unity.IL2CPP;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
+using Il2CppSystem.Data;
 using Newtonsoft.Json.Linq;
 using TMPro;
 using UnityEngine;
@@ -32,6 +33,8 @@ public static class ModDownloader
             }
         }
         public bool? _installed;
+        public PassiveButton DescButton;
+        public bool ButtonInited => DescButton != null;
         public string RepoURL = "NoneURL";
         public string ModId = "NoneId";
         public string ModGUId = "NoneId";
@@ -57,6 +60,7 @@ public static class ModDownloader
     }
     public static List<ModObject> ModObjects;
     public static GameObject Popup;
+    public static TransitionOpen DownloadingPopup;
     public static void Load()
     {
         ModObjects = new()
@@ -76,6 +80,17 @@ public static class ModDownloader
         {
             Logger.Info("MODがnullでした:"+guid);
             return;
+        }
+        if (DownloadingPopup == null)
+        {
+            var template = GameObject.FindObjectOfType<MainMenuManager>().transform.FindChild("StatsPopup").GetComponent<TransitionOpen>(); ;
+            DownloadingPopup = GameObject.Instantiate(template, template.transform.parent);
+            DownloadingPopup.OnClose = new();
+            DownloadingPopup.transform.localPosition = new();
+            GameObject.Destroy(DownloadingPopup.GetComponent<StatsPopup>());
+            DownloadingPopup.transform.FindChild("Background").localScale = new Vector3(1.5f, 1f, 1f);
+            DownloadingPopup.transform.FindChild("Background").GetComponent<PassiveButton>().enabled = false;
+            DownloadingPopup.transform.FindChild("CloseButton").localPosition = new Vector3(-3.75f, 2.65f, 0);
         }
         AmongUsClient.Instance.StartCoroutine(InstallMod(obj).WrapToIl2Cpp());
     }
@@ -147,8 +162,9 @@ public static class ModDownloader
                 int index = -1;
                 foreach (ModObject modobj in ModObjects)
                 {
+                    Logger.Info("YEAHHHHHH");
                     index++;
-                    if (modobj.DescriptionPopup != null) continue;
+                    if (modobj.ButtonInited) continue;
                     //DescriptionButton
                     var descbtn = GameObject.Instantiate(ButtonTemplate, TextTemplate.parent);
                     descbtn.transform.localPosition = new(1.77f, 1.265f - (index * 0.835f), -2);
@@ -210,6 +226,7 @@ public static class ModDownloader
                         }
                         mobj.DescriptionPopup.gameObject.SetActive(true);
                     }));
+                    modobj.DescButton = descbtn;
                     GameObject.Destroy(descbtn.GetComponentInChildren<TextTranslatorTMP>());
                     descbtn.GetComponentInChildren<TextMeshPro>().text = "説明";
                     //DownloadButton
