@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Linq;
 using AmongUs.GameOptions;
-using BepInEx.IL2CPP.Utils.Collections;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;

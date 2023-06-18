@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using BepInEx.IL2CPP.Utils;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
@@ -391,12 +391,12 @@ class AddChatPatch
             if (target == null)
             {
                 string name = PlayerControl.LocalPlayer.GetDefaultName();
-                AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name));
+                AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name).WrapToIl2Cpp());
                 return;
             }
             if (target.PlayerId != 0)
             {
-                AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander + rolename, text, time));
+                AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander + rolename, text, time).WrapToIl2Cpp());
             }
             else
             {
@@ -412,12 +412,12 @@ class AddChatPatch
             string name = PlayerControl.LocalPlayer.GetDefaultName();
             if (target == null)
             {
-                AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name, time));
+                AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name, time).WrapToIl2Cpp());
                 return;
             }
             if (target.PlayerId != 0)
             {
-                AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander + rolename, text, time));
+                AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander + rolename, text, time).WrapToIl2Cpp());
             }
             else
             {
@@ -441,7 +441,7 @@ class AddChatPatch
         {
             string name = CachedPlayer.LocalPlayer.Data.PlayerName;
             if (name == SNRCommander) return;
-            AmongUsClient.Instance.StartCoroutine(AllSend(SendName, command, name));
+            AmongUsClient.Instance.StartCoroutine(AllSend(SendName, command, name).WrapToIl2Cpp());
             return;
         }
         else if (target.PlayerId == 0)
@@ -453,7 +453,7 @@ class AddChatPatch
         }
         else
         {
-            AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SendName, command));
+            AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SendName, command).WrapToIl2Cpp());
         }
     }
     static IEnumerator AllSend(string SendName, string command, string name, float time = 0)

@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using PowerTools;
 using SuperNewRoles.MapCustoms;
-using SuperNewRoles.MapOption;
 using TMPro;
-using UnhollowerBaseLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches;
